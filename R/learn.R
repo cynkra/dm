@@ -47,6 +47,109 @@ dm_learn_from_db <- function(dest, dbname = NULL, ...) {
     return()
   }
 
+  if (!is_mssql(con)) {
+    return(dm_learn_from_db_legacy(dest, dbname, ...))
+  }
+
+  dm_learn_from_db_meta(dest, catalog = dbname, ...)
+}
+
+dm_learn_from_db_meta <- function(dest, catalog = NULL, schema = NULL) {
+  info <- dm_meta(con, catalog = dbname, )
+  info
+}
+
+dm_meta <- function(con, catalog = NULL, schema = NULL) {
+  schemata <- tbl_lc(con, dbplyr::ident_q("information_schema.schemata"))
+  tables <- tbl_lc(con, dbplyr::ident_q("information_schema.tables"))
+  views <- tbl_lc(con, dbplyr::ident_q("information_schema.views"))
+  columns <- tbl_lc(con, dbplyr::ident_q("information_schema.columns"))
+  table_constraints <- tbl_lc(con, dbplyr::ident_q("information_schema.table_constraints"))
+  referential_constraints <- tbl_lc(con, dbplyr::ident_q("information_schema.referential_constraints"))
+  key_column_usage <- tbl_lc(con, dbplyr::ident_q("information_schema.key_column_usage"))
+
+  # not on mariadb:
+  constraint_column_usage <- tbl_lc(con, dbplyr::ident_q("information_schema.constraint_column_usage"))
+
+  if (!is.null(catalog)) {
+    schemata <- schemata %>% filter(catalog_name %in% !!catalog)
+    tables <- tables %>% filter(table_catalog %in% !!catalog)
+    views <- views %>% filter(table_catalog %in% !!catalog)
+    columns <- columns %>% filter(table_catalog %in% !!catalog)
+    table_constraints <- table_constraints %>% filter(table_catalog %in% !!catalog)
+    referential_constraints <- referential_constraints %>% filter(table_catalog %in% !!catalog)
+    key_column_usage <- key_column_usage %>% filter(table_catalog %in% !!catalog)
+    constraint_column_usage <- constraint_column_usage %>% filter(table_catalog %in% !!catalog)
+  }
+
+  if (!is.null(schema)) {
+    schemata <- schemata %>% filter(schema_name %in% !!catalog)
+    tables <- tables %>% filter(table_schema %in% !!schema)
+    views <- views %>% filter(table_schema %in% !!schema)
+    columns <- columns %>% filter(table_schema %in% !!schema)
+    table_constraints <- table_constraints %>% filter(table_schema %in% !!schema)
+    referential_constraints <- referential_constraints %>% filter(table_schema %in% !!schema)
+    key_column_usage <- key_column_usage %>% filter(table_schema %in% !!schema)
+    constraint_column_usage <- constraint_column_usage %>% filter(table_schema %in% !!schema)
+  }
+
+  info_raw <- dm(schemata, tables, columns, views, table_constraints, referential_constraints, key_column_usage, constraint_column_usage)
+  info_raw
+
+  info <-
+    info_raw %>%
+    dm_add_pk(schemata, c(catalog_name, schema_name)) %>%
+    dm_add_pk(tables, c(table_catalog, table_schema, table_name)) %>%
+    dm_add_fk(tables, c(table_catalog, table_schema), schemata) %>%
+    dm_add_pk(columns, c(table_catalog, table_schema, table_name, column_name)) %>%
+    dm_add_fk(columns, c(table_catalog, table_schema, table_name), tables) %>%
+    dm_add_fk(views, c(table_catalog, table_schema, table_name), tables) %>%
+    #dm_add_fk(table_constraints, table_schema, schemata) %>%
+    dm_add_pk(table_constraints, c(constraint_catalog, constraint_schema, constraint_name)) %>%
+    dm_add_fk(table_constraints, c(table_catalog, table_schema, table_name), tables) %>%
+    # constraint_schema vs. table_schema?
+
+    # do we even need this?
+    dm_add_pk(referential_constraints, c(constraint_catalog, constraint_schema, constraint_name)) %>%
+    dm_add_fk(referential_constraints, c(constraint_catalog, constraint_schema), schemata) %>%
+    dm_select(referential_constraints, constraint_catalog, constraint_schema, constraint_name, everything()) %>%
+
+    # not on mssql:
+    #dm_add_fk(referential_constraints, c(constraint_schema, table_name), tables) %>%
+    #dm_add_fk(referential_constraints, c(constraint_schema, referenced_table_name), tables) %>%
+
+    dm_add_fk(key_column_usage, c(table_catalog, table_schema, table_name, column_name), columns) %>%
+
+    # not on mssql:
+    #dm_add_fk(key_column_usage, c(referenced_table_schema, referenced_table_name, referenced_column_name), columns) %>%
+
+    dm_add_fk(key_column_usage, c(constraint_catalog, constraint_schema, constraint_name), table_constraints) %>%
+
+    # not on mariadb;
+    dm_add_fk(constraint_column_usage, c(table_catalog, table_schema, table_name, column_name), columns) %>%
+
+    # not on mssql:
+    #dm_add_fk(constraint_column_usage, c(referenced_table_schema, referenced_table_name, referenced_column_name), columns) %>%
+
+    # not on mariadb:
+    dm_add_fk(constraint_column_usage, c(constraint_catalog, constraint_schema, constraint_name), table_constraints) %>%
+
+    dm_set_colors(brown = c(tables, columns, views), blue = schemata, green4 = ends_with("_constraints"), orange = ends_with("_usage"))
+
+  info
+}
+
+tbl_lc <- function(con, name) {
+  out <- tbl(con, name)
+  names <- colnames(out)
+  names_lc <- tolower(names)
+  if (all(names == names_lc)) {
+    return(out)
+  }
+  out %>% rename(!!!set_names(syms(names), names_lc))
+}
+
+dm_learn_from_db_legacy <- function(dest, dbname, ...) {
   sql <- db_learn_query(con, dbname = dbname, ...)
   if (is.null(sql)) {
     return()
