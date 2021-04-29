@@ -4,7 +4,7 @@ pkgload::load_all()
 #src <- dm::dm_get_src(dm_financial())
 #src <- test_src_maria()
 #src <- test_src_postgres()
-#src <- test_src_mssql()
+src <- test_src_mssql()
 
 # DuckDB doesn't have references
 #src <- test_src_duckdb()
@@ -24,7 +24,7 @@ if (FALSE) {
     copy_dm_to(con, ., temporary = FALSE)
 }
 
-DBI::dbListTables(con)
+DBI::dbListTables(con, schema_name = "information_schema")
 
 obj <- DBI::dbListObjects(con)
 obj %>% filter(is_prefix)
@@ -32,10 +32,13 @@ obj %>% filter(is_prefix)
 DBI::dbListObjects(con, DBI::Id(schema = "INFORMATION_SCHEMA"))
 
 info <-
-  dm_meta(con)
+  dm_meta(con, schema = "dbo")
 
 info %>%
   dm_draw()
+
+info %>%
+  dm_get_tables()
 
 info_local <-
   info %>%

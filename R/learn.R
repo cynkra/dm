@@ -55,7 +55,7 @@ dm_learn_from_db <- function(dest, dbname = NULL, ...) {
 }
 
 dm_learn_from_db_meta <- function(dest, catalog = NULL, schema = NULL) {
-  info <- dm_meta(con, catalog = dbname, )
+  info <- dm_meta(con, catalog = dbname, schema = schema)
   info
 }
 
@@ -83,7 +83,7 @@ dm_meta <- function(con, catalog = NULL, schema = NULL) {
   }
 
   if (!is.null(schema)) {
-    schemata <- schemata %>% filter(schema_name %in% !!catalog)
+    schemata <- schemata %>% filter(schema_name %in% !!schema)
     tables <- tables %>% filter(table_schema %in% !!schema)
     views <- views %>% filter(table_schema %in% !!schema)
     columns <- columns %>% filter(table_schema %in% !!schema)
