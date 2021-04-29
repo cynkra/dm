@@ -47,9 +47,9 @@ dm_learn_from_db <- function(dest, dbname = NULL, ...) {
     return()
   }
 
-  if (!is_mssql(con)) {
+  #if (!is_mssql(con)) {
     return(dm_learn_from_db_legacy(dest, dbname, ...))
-  }
+  #}
 
   dm_learn_from_db_meta(dest, catalog = dbname, ...)
 }
