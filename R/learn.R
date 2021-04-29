@@ -61,29 +61,36 @@ dm_learn_from_db_meta <- function(dest, catalog = NULL, schema = NULL) {
 
 dm_meta <- function(con, catalog = NULL, schema = NULL) {
   schemata <-
-    tbl_lc(con, dbplyr::ident_q("information_schema.schemata")) %>%
-    select(catalog_name, schema_name)
+    tbl_lc(con, dbplyr::ident_q("information_schema.schemata"))# %>%
+    #select(catalog_name, schema_name)
 
   tables <-
-    tbl_lc(con, dbplyr::ident_q("information_schema.tables")) %>%
-    select(table_catalog, table_schema, table_name, table_type)
+    tbl_lc(con, dbplyr::ident_q("information_schema.tables"))# %>%
+    #select(table_catalog, table_schema, table_name, table_type)
 
   columns <-
-    tbl_lc(con, dbplyr::ident_q("information_schema.columns")) %>%
-    select(table_catalog, table_schema, table_name, column_name, ordinal_position, column_default, is_nullable)
+    tbl_lc(con, dbplyr::ident_q("information_schema.columns"))# %>%
+    #select(table_catalog, table_schema, table_name, column_name, ordinal_position, column_default, is_nullable)
 
   table_constraints <-
-    tbl_lc(con, dbplyr::ident_q("information_schema.table_constraints")) %>%
-    select(constraint_catalog, constraint_schema, constraint_name, table_catalog, table_schema, table_name, constraint_type)
+    tbl_lc(con, dbplyr::ident_q("information_schema.table_constraints"))# %>%
+    #select(constraint_catalog, constraint_schema, constraint_name, table_catalog, table_schema, table_name, constraint_type)
 
   key_column_usage <-
-    tbl_lc(con, dbplyr::ident_q("information_schema.key_column_usage")) %>%
-    select(constraint_catalog, constraint_schema, constraint_name, table_catalog, table_schema, table_name, column_name, ordinal_position, position_in_unique_constraint)
+    tbl_lc(con, dbplyr::ident_q("information_schema.key_column_usage"))# %>%
+    # position_in_unique_constraint: removed, can't be part of a primary key
+    #select(constraint_catalog, constraint_schema, constraint_name, table_catalog, table_schema, table_name, column_name, ordinal_position)
 
   # not on mariadb:
   constraint_column_usage <-
     tbl_lc(con, dbplyr::ident_q("information_schema.constraint_column_usage")) %>%
-    select(table_catalog, table_schema, table_name, column_name, constraint_catalog, constraint_schema, constraint_name)
+
+    # Postgres:
+    group_by(constraint_catalog, constraint_schema, constraint_name) %>%
+    mutate(ordinal_position = row_number()) %>%
+    ungroup()
+    # %>%
+    #select(table_catalog, table_schema, table_name, column_name, constraint_catalog, constraint_schema, constraint_name)
 
   if (!is.null(catalog)) {
     schemata <- schemata %>% filter(catalog_name %in% !!catalog)
@@ -122,21 +129,14 @@ dm_meta <- function(con, catalog = NULL, schema = NULL) {
     #dm_add_fk(referential_constraints, c(constraint_schema, table_name), tables) %>%
     #dm_add_fk(referential_constraints, c(constraint_schema, referenced_table_name), tables) %>%
 
+    dm_add_pk(key_column_usage, c(constraint_catalog, constraint_schema, constraint_name, ordinal_position)) %>%
     dm_add_fk(key_column_usage, c(table_catalog, table_schema, table_name, column_name), columns) %>%
-
-    # not on mssql:
-    #dm_add_fk(key_column_usage, c(referenced_table_schema, referenced_table_name, referenced_column_name), columns) %>%
-
     dm_add_fk(key_column_usage, c(constraint_catalog, constraint_schema, constraint_name), table_constraints) %>%
 
     # not on mariadb;
     dm_add_fk(constraint_column_usage, c(table_catalog, table_schema, table_name, column_name), columns) %>%
-
-    # not on mssql:
-    #dm_add_fk(constraint_column_usage, c(referenced_table_schema, referenced_table_name, referenced_column_name), columns) %>%
-
-    # not on mariadb:
     dm_add_fk(constraint_column_usage, c(constraint_catalog, constraint_schema, constraint_name), table_constraints) %>%
+    dm_add_fk(constraint_column_usage, c(constraint_catalog, constraint_schema, constraint_name, ordinal_position), key_column_usage) %>%
 
     dm_set_colors(brown = c(tables, columns), blue = schemata, green4 = ends_with("_constraints"), orange = ends_with("_usage"))
 
