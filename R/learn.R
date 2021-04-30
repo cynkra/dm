@@ -75,12 +75,15 @@ dm_meta_raw <- function(con) {
 
   # not on mariadb:
   constraint_column_usage <-
-    tbl_lc(con, dbplyr::ident_q("information_schema.constraint_column_usage")) %>%
+    tbl_lc(con, dbplyr::ident_q("information_schema.constraint_column_usage"))
 
-    # Postgres:
-    group_by(constraint_catalog, constraint_schema, constraint_name) %>%
-    mutate(ordinal_position = row_number()) %>%
-    ungroup()
+  if (is_postgres(con)) {
+    constraint_column_usage <-
+      constraint_column_usage %>%
+      group_by(constraint_catalog, constraint_schema, constraint_name) %>%
+      mutate(ordinal_position = row_number()) %>%
+      ungroup()
+  }
 
   dm(schemata, tables, columns, table_constraints, key_column_usage, constraint_column_usage) %>%
     dm_add_pk(schemata, c(catalog_name, schema_name)) %>%
