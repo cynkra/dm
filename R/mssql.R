@@ -64,14 +64,16 @@ mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
 
   sys_fkc_column_usage <-
     fkc %>%
-    left_join(columns, by = c("catalog",  "parent_object_id" = "object_id", "parent_column_id" = "column_id")) %>%
+    left_join(columns, by = c("catalog",  "referenced_object_id" = "object_id", "referenced_column_id" = "column_id")) %>%
     left_join(tables, by = c("catalog", "referenced_object_id" = "object_id")) %>%
     left_join(schemas, by = c("catalog", "schema_id")) %>%
     left_join(objects, by = c("constraint_object_id" = "object_id")) %>%
+    # table_schema is used twice
     transmute(constraint_catalog = catalog, constraint_schema = table_schema, constraint_name, table_schema, table_name, column_name, ordinal_position = constraint_column_id)
 
   tbl_lc(con, dbplyr::ident_q("information_schema.constraint_column_usage")) %>%
     semi_join(info_fkc, by = c("constraint_catalog", "constraint_schema", "constraint_name")) %>%
-    select(-table_schema, -table_name) %>%
-    left_join(sys_fkc_column_usage, by = c("constraint_catalog", "constraint_schema", "constraint_name", "column_name"))
+    select(-table_schema, -table_name, -column_name) %>%
+    distinct() %>%
+    left_join(sys_fkc_column_usage, by = c("constraint_catalog", "constraint_schema", "constraint_name"))
 }
