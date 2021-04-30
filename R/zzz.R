@@ -14,7 +14,7 @@
   register_pkgdown_methods()
 
   #rigg(enum_pk_candidates_impl)
-  #rigg(build_copy_data)
+  #rigg(mssql_sys_all_db)
 }
 
 rigg <- function(fun) {
