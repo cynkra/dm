@@ -78,11 +78,29 @@ dm_meta_raw <- function(con) {
     tbl_lc(con, dbplyr::ident_q("information_schema.constraint_column_usage"))
 
   if (is_postgres(con)) {
+    fkc <-
+      table_constraints %>%
+      select(constraint_catalog, constraint_schema, constraint_name, constraint_type) %>%
+      filter(constraint_type == "FOREIGN KEY")
+
     constraint_column_usage <-
       constraint_column_usage %>%
       group_by(constraint_catalog, constraint_schema, constraint_name) %>%
       mutate(ordinal_position = row_number()) %>%
-      ungroup()
+      ungroup() %>%
+      semi_join(fkc, by = c("constraint_catalog", "constraint_schema", "constraint_name"))
+
+    # FIXME: Also has `position_in_unique_constraint`, used elsewhere?
+  } else if (is_mssql(con)) {
+    fkc <-
+      table_constraints %>%
+      select(constraint_catalog, constraint_schema, constraint_name, constraint_type) %>%
+      filter(constraint_type == "FOREIGN KEY")
+
+    constraint_column_usage <-
+      constraint_column_usage %>%
+      semi_join(fkc, by = c("constraint_catalog", "constraint_schema", "constraint_name")) %>%
+      mutate(ordinal_position = NA_integer_)
   }
 
   dm(schemata, tables, columns, table_constraints, key_column_usage, constraint_column_usage) %>%
