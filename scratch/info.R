@@ -27,17 +27,10 @@ if (FALSE) {
 src_pg <- test_src_postgres()
 con_pg <- src_pg$con
 
-dm_meta(con)
-mssql_constraint_column_usage(con, tbl_lc(con, dbplyr::ident_q("information_schema.table_constraints")), "test")
-
-asdf
-
 dm_meta(con)$key_column_usage
 dm_meta(con_pg)$key_column_usage
 dm_meta(con)$constraint_column_usage
 dm_meta(con_pg)$constraint_column_usage
-
-asdf
 
 DBI::dbListTables(con, schema_name = "information_schema")
 
@@ -182,6 +175,9 @@ info_simple <-
 info_simple %>%
   dm_draw()
 
+info_simple %>%
+  dm_get_tables()
+
 key_dm <-
   info_simple %>%
 
@@ -217,3 +213,8 @@ key_dm %>%
 
 key_dm %>%
   dm_get_tables()
+
+key_dm$fk %>%
+  select(-fq_constraint_name)
+
+# FIXME: Why is this missing?
