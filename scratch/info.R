@@ -48,6 +48,9 @@ info %>%
 info %>%
   dm_get_tables()
 
+info %>%
+  dm_examine_constraints()
+
 info_local <-
   info %>%
   collect()
