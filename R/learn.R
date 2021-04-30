@@ -59,7 +59,7 @@ dm_learn_from_db_meta <- function(dest, catalog = NULL, schema = NULL) {
   info
 }
 
-dm_meta <- function(con, catalog = NULL, schema = NULL) {
+dm_meta <- function(con, catalog = NA, schema = NULL) {
   con %>%
     dm_meta_raw(catalog) %>%
     select_dm_meta() %>%
@@ -142,7 +142,7 @@ select_dm_meta <- function(dm_meta) {
 }
 
 filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
-  if (!is.null(catalog)) {
+  if (!is.null(catalog) && !is.na(catalog)) {
     FIXME
     schemata <- schemata %>% filter(catalog_name %in% !!catalog)
     tables <- tables %>% filter(table_catalog %in% !!catalog)
