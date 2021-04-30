@@ -3,8 +3,8 @@ pkgload::load_all()
 
 #src <- dm::dm_get_src(dm_financial())
 #src <- test_src_maria()
-src <- test_src_postgres()
-#src <- test_src_mssql()
+#src <- test_src_postgres()
+src <- test_src_mssql()
 
 # DuckDB doesn't have references
 #src <- test_src_duckdb()
