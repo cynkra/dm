@@ -92,5 +92,32 @@ utils::globalVariables(c(
   "districts",
   "loans",
   "orders",
-  "trans"
+  "trans",
+  #
+  # information_schema
+  "catalog",
+  "catalog_name",
+  "column_default",
+  "column_id",
+  "column_name",
+  "con",
+  "constraint_catalog",
+  "constraint_column_id",
+  "constraint_column_usage",
+  "constraint_name",
+  "constraint_schema",
+  "constraint_type",
+  "dbname",
+  "FIXME",
+  "is_nullable",
+  "key_column_usage",
+  "object_id",
+  "ordinal_position",
+  "schema_id",
+  "schemata",
+  "table_catalog",
+  "table_constraints",
+  "table_schema",
+  "table_type",
+  "tables"
 ))
