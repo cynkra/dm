@@ -27,55 +27,17 @@ if (FALSE) {
 src_pg <- test_src_postgres()
 con_pg <- src_pg$con
 
-mssql_sys_db <- function(con, dbname, name) {
-  tbl(con, dbplyr::ident_q(paste0(dbname, ".", name))) %>%
-    mutate(catalog = !!dbname) %>%
-    select(catalog, everything())
-}
+dm_meta(con)
+mssql_constraint_column_usage(con, tbl_lc(con, dbplyr::ident_q("information_schema.table_constraints")), "test")
 
-mssql_sys_all_db <- function(con, name) {
-  # https://stackoverflow.com/a/9767471/946850
-  databases <-
-    tbl(con, dbplyr::ident_q("sys.databases")) %>%
-    select(name) %>%
-    collect() %>%
-    pull()
-
-  # FIXME: All databases
-  databases <- "test"
-
-  lazy <- map(databases, ~tryCatch(mssql_sys_db(con, .x, name), error = function(e) NULL))
-  reduce(compact(lazy), union_all)
-}
-
-fkc <- mssql_sys_all_db(con, "sys.foreign_key_columns")
-objects <- mssql_sys_all_db(con, "sys.objects")
-tables <- mssql_sys_all_db(con, "sys.tables")
-columns <- mssql_sys_all_db(con, "sys.columns")
-schemas <- mssql_sys_all_db(con, "sys.schemas")
-
-sys_fkc_column_usage <-
-  fkc %>%
-  rename(ordinal_position = constraint_column_id) %>%
-  left_join(columns %>% select(catalog = catalog, column_name = name, object_id, column_id), by = c("catalog",  "parent_object_id" = "object_id", "parent_column_id" = "column_id")) %>%
-  select(-parent_column_id) %>%
-  left_join(tables %>% select(catalog = catalog, schema_id, table_name = name, object_id), by = c("catalog", "parent_object_id" = "object_id")) %>%
-  select(-parent_object_id) %>%
-  left_join(schemas %>% select(catalog = catalog, schema_id, table_schema = name), by = c("catalog", "schema_id")) %>%
-  select(-schema_id) %>%
-  left_join(objects %>% select(constraint_name = name, object_id), by = c("constraint_object_id" = "object_id")) %>%
-  select(-constraint_object_id) %>%
-
-  transmute(constraint_catalog = catalog, constraint_schema = table_schema, constraint_name, table_schema, table_name, column_name, ordinal_position)
-
-dm_meta(con)$constraint_column_usage %>%
-  select(-table_schema, -table_name, -ordinal_position) %>%
-  left_join(sys_fkc_column_usage)
+asdf
 
 dm_meta(con)$key_column_usage
 dm_meta(con_pg)$key_column_usage
 dm_meta(con)$constraint_column_usage
 dm_meta(con_pg)$constraint_column_usage
+
+asdf
 
 DBI::dbListTables(con, schema_name = "information_schema")
 

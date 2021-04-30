@@ -61,46 +61,36 @@ dm_learn_from_db_meta <- function(dest, catalog = NULL, schema = NULL) {
 
 dm_meta <- function(con, catalog = NULL, schema = NULL) {
   con %>%
-    dm_meta_raw() %>%
+    dm_meta_raw(catalog) %>%
     select_dm_meta() %>%
     filter_dm_meta(catalog, schema)
 }
 
-dm_meta_raw <- function(con) {
-  schemata <- tbl_lc(con, dbplyr::ident_q("information_schema.schemata"))# %>%
-  tables <- tbl_lc(con, dbplyr::ident_q("information_schema.tables"))# %>%
-  columns <- tbl_lc(con, dbplyr::ident_q("information_schema.columns"))# %>%
-  table_constraints <- tbl_lc(con, dbplyr::ident_q("information_schema.table_constraints"))# %>%
-  key_column_usage <- tbl_lc(con, dbplyr::ident_q("information_schema.key_column_usage"))# %>%
+dm_meta_raw <- function(con, catalog) {
+  src <- src_from_src_or_con(con)
 
-  # not on mariadb:
-  constraint_column_usage <-
-    tbl_lc(con, dbplyr::ident_q("information_schema.constraint_column_usage"))
+  schemata <- tbl_lc(src, dbplyr::ident_q("information_schema.schemata"))
+  tables <- tbl_lc(src, dbplyr::ident_q("information_schema.tables"))
+  columns <- tbl_lc(src, dbplyr::ident_q("information_schema.columns"))
+  table_constraints <- tbl_lc(src, dbplyr::ident_q("information_schema.table_constraints"))
+  key_column_usage <- tbl_lc(src, dbplyr::ident_q("information_schema.key_column_usage"))
 
-  if (is_postgres(con)) {
-    fkc <-
+  if (is_postgres(src)) {
+    info_fkc <-
       table_constraints %>%
       select(constraint_catalog, constraint_schema, constraint_name, constraint_type) %>%
       filter(constraint_type == "FOREIGN KEY")
 
     constraint_column_usage <-
-      constraint_column_usage %>%
+      tbl_lc(src, dbplyr::ident_q("information_schema.constraint_column_usage")) %>%
       group_by(constraint_catalog, constraint_schema, constraint_name) %>%
       mutate(ordinal_position = row_number()) %>%
       ungroup() %>%
-      semi_join(fkc, by = c("constraint_catalog", "constraint_schema", "constraint_name"))
+      semi_join(info_fkc, by = c("constraint_catalog", "constraint_schema", "constraint_name"))
 
     # FIXME: Also has `position_in_unique_constraint`, used elsewhere?
-  } else if (is_mssql(con)) {
-    fkc <-
-      table_constraints %>%
-      select(constraint_catalog, constraint_schema, constraint_name, constraint_type) %>%
-      filter(constraint_type == "FOREIGN KEY")
-
-    constraint_column_usage <-
-      constraint_column_usage %>%
-      semi_join(fkc, by = c("constraint_catalog", "constraint_schema", "constraint_name")) %>%
-      mutate(ordinal_position = NA_integer_)
+  } else if (is_mssql(src)) {
+    constraint_column_usage <- mssql_constraint_column_usage(src, table_constraints, catalog)
   }
 
   dm(schemata, tables, columns, table_constraints, key_column_usage, constraint_column_usage) %>%
