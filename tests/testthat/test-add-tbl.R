@@ -47,8 +47,8 @@ test_that("dm_add_tbl() works", {
 
   # 2. Is the resulting order of the tables correct?
   expect_identical(
-    src_tbls(dm_add_tbl(dm_for_filter(), data_card_1(), data_card_2())),
-    c(src_tbls(dm_for_filter()), "data_card_1()", "data_card_2()")
+    src_tbls_impl(dm_add_tbl(dm_for_filter(), data_card_1(), data_card_2())),
+    c(src_tbls_impl(dm_for_filter()), "data_card_1()", "data_card_2()")
   )
 
   # Is an error thrown in case I try to give the new table an old table's name if `repair = "check_unique"`?
@@ -59,7 +59,7 @@ test_that("dm_add_tbl() works", {
 
   # are in the default case (`repair = 'unique'`) the tables renamed (old table AND new table) according to "unique" default setting
   expect_identical(
-    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), quiet = TRUE) %>% src_tbls(),
+    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), quiet = TRUE) %>% src_tbls_impl(),
     c("tf_1...1", "tf_2", "tf_3", "tf_4", "tf_5", "tf_6", "tf_1...7")
   )
 
