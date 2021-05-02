@@ -16,6 +16,7 @@
 #' The syntax of these functions will be extended but will remain compatible
 #' with current semantics.
 #'
+#' @inheritParams ellipsis::dots_empty
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
 #' @param columns Table columns, unquoted.
@@ -49,7 +50,7 @@
 #'   nycflights_dm %>%
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
 #' )
-dm_add_pk <- function(dm, table, columns, check = FALSE, force = FALSE) {
+dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
@@ -102,7 +103,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #' dm_nycflights13() %>%
 #'   dm_has_pk(planes)
 #' @export
-dm_has_pk <- function(dm, table) {
+dm_has_pk <- function(dm, table, ...) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   dm_has_pk_impl(dm, table_name)
@@ -143,7 +144,7 @@ dm_has_pk_impl <- function(dm, table) {
 #' dm_nycflights13() %>%
 #'   dm_get_pk(planes)
 #' @export
-dm_get_pk <- function(dm, table) {
+dm_get_pk <- function(dm, table, ...) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   new_keys(dm_get_pk_impl(dm, table_name))
@@ -181,7 +182,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_get_all_pks()
-dm_get_all_pks <- function(dm) {
+dm_get_all_pks <- function(dm, ...) {
   check_not_zoomed(dm)
   dm_get_all_pks_impl(dm)
 }
@@ -217,7 +218,7 @@ dm_get_all_pks_def_impl <- function(def) {
 #'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
 #'   dm_draw()
 #' @export
-dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
+dm_rm_pk <- function(dm, table, ..., rm_referencing_fks = FALSE) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
@@ -271,7 +272,7 @@ dm_rm_pk_impl <- function(dm, table_name) {
 #' @examplesIf rlang::is_installed("nycflights13")
 #' nycflights13::flights %>%
 #'   enum_pk_candidates()
-enum_pk_candidates <- function(table) {
+enum_pk_candidates <- function(table, ...) {
   # a list of ayes and noes:
   if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)
 
@@ -293,7 +294,7 @@ enum_pk_candidates <- function(table) {
 #'
 #' dm_nycflights13() %>%
 #'   dm_enum_pk_candidates(airports)
-dm_enum_pk_candidates <- function(dm, table) {
+dm_enum_pk_candidates <- function(dm, table, ...) {
   check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
