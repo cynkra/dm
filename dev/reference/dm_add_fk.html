@@ -203,9 +203,9 @@ of the values of the primary key in table <code>ref_table</code>.</p>
 All arguments may be provided quoted or unquoted.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_add_fk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>columns</span>, <span class='va'>ref_table</span>, check <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>dm_add_fk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>columns</span>, <span class='va'>ref_table</span>, <span class='va'>...</span>, check <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='fu'>dm_rm_fk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>columns</span>, <span class='va'>ref_table</span><span class='op'>)</span></pre>
+<span class='fu'>dm_rm_fk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>columns</span>, <span class='va'>ref_table</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -230,6 +230,10 @@ If <code>NULL</code>, all columns will be evaluated.</p></td>
       <td><p>For <code>dm_add_fk()</code>: The table which <code>table</code> will be referencing.
 This table needs to have a primary key set.</p>
 <p>For <code>dm_rm_fk()</code>: The table that <code>table</code> is referencing.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>These dots are for future extensions and must be empty.</p></td>
     </tr>
     <tr>
       <th>check</th>

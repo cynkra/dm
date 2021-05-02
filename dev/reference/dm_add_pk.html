@@ -205,9 +205,9 @@ set key.</p>
 Foreign keys that point to the table from other tables, can be optionally removed as well.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>columns</span>, check <span class='op'>=</span> <span class='cn'>FALSE</span>, force <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>columns</span>, <span class='va'>...</span>, check <span class='op'>=</span> <span class='cn'>FALSE</span>, force <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='fu'>dm_rm_pk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, rm_referencing_fks <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+<span class='fu'>dm_rm_pk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>...</span>, rm_referencing_fks <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -223,6 +223,10 @@ Foreign keys that point to the table from other tables, can be optionally remove
     <tr>
       <th>columns</th>
       <td><p>Table columns, unquoted.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>These dots are for future extensions and must be empty.</p></td>
     </tr>
     <tr>
       <th>check</th>
