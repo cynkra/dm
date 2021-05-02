@@ -60,7 +60,7 @@ Lazy tables defer downloading of table data until results are required for print
 A dm can also be constructed from individual tables or views.
 This is useful for when you want to work with a subset of a database's tables, perhaps from different schemas.
 
-Below we use the `tbl()` function from {dplyr} to extract two tables from the financial database.
+Below we use the `$` notation to extract two tables from the financial database.
 Then we create our dm by passing the tables in as arguments.
 Note that the tables arguments have to all be from the same source, in this case `my_db`.
 
@@ -68,8 +68,8 @@ Note that the tables arguments have to all be from the same source, in this case
 dbListTables(my_db)
 
 library(dbplyr)
-loans <- tbl(my_db, "loans")
-accounts <- tbl(my_db, "accounts")
+loans <- my_db$loans
+accounts <- my_db$accounts
 
 my_manual_dm <- dm(loans, accounts)
 my_manual_dm
@@ -116,7 +116,7 @@ Once you have instantiated a dm object you can continue to add tables to it.
 For tables from the original source for the dm, use `dm_add_tbl()`
 
 ``````{r }
-trans <- tbl(my_db, "trans")
+trans <- my_db$trans
 
 my_dm_keys %>%
   dm_add_tbl(trans)

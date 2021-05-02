@@ -355,8 +355,8 @@ cdm_enum_fk_candidates <- function(dm, table, ref_table) {
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
   ref_tbl_pk <- dm_get_pk_impl(dm, ref_table_name)
-  ref_tbl <- tbl(dm, ref_table_name)
-  tbl <- tbl(dm, table_name)
+  ref_tbl <- tbl_impl(dm, ref_table_name)
+  tbl <- tbl_impl(dm, table_name)
   enum_fk_candidates_impl(
     table_name, tbl, ref_table_name,
     ref_tbl, ref_tbl_pk
