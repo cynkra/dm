@@ -284,10 +284,11 @@ dbname_mssql <- function(con, dbname) {
 get_names_table_mssql <- function(con, dbname_sql) {
   tbl(
     con,
-    glue::glue("SELECT tabs.name AS table_name, schemas.name AS schema_name
+    sql(glue::glue("SELECT tabs.name AS table_name, schemas.name AS schema_name
       FROM {dbname_sql}sys.tables tabs
       INNER JOIN {dbname_sql}sys.schemas schemas ON
-      tabs.schema_id = schemas.schema_id")
+      tabs.schema_id = schemas.schema_id"
+    ))
   )
 }
 
