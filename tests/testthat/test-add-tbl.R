@@ -8,13 +8,13 @@ test_that("dm_add_tbl() works", {
 
   # can I retrieve the tibble under its old name?
   expect_equivalent_tbl(
-    tbl(dm_add_tbl(dm_for_filter(), data_card_1()), "data_card_1()"),
+    dm_add_tbl(dm_for_filter(), data_card_1())[["data_card_1()"]],
     data_card_1()
   )
 
   # can I retrieve the tibble under a new name?
   expect_equivalent_tbl(
-    tbl(dm_add_tbl(dm_for_filter(), test = data_card_1()), "test"),
+    dm_add_tbl(dm_for_filter(), test = data_card_1())[["test"]],
     data_card_1()
   )
 
@@ -26,14 +26,14 @@ test_that("dm_add_tbl() works", {
 
   # we accept even weird table names, as long as they are unique
   expect_equivalent_tbl(
-    tbl(data_card_1() %>% dm_add_tbl(dm_for_filter(), .), "."),
+    data_card_1() %>% dm_add_tbl(dm_for_filter(), .)[["."]],
     data_card_1()
   )
 
   # do I avoid the warning when piping the table but setting the name?
   expect_silent(
     expect_equivalent_tbl(
-      dm_for_filter() %>% dm_add_tbl(new_name = data_card_1()) %>% tbl("new_name"),
+      dm_for_filter() %>% dm_add_tbl(new_name = data_card_1()) %>% pull_tbl(new_name),
       data_card_1()
     )
   )
