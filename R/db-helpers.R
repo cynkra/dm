@@ -185,6 +185,11 @@ is_postgres <- function(dest) {
     inherits(dest, "PqConnection")
 }
 
+is_mariadb <- function(dest) {
+  inherits(dest, "src_MariaDBConnection") ||
+    inherits(dest, "MariaDBConnection")
+}
+
 src_from_src_or_con <- function(dest) {
   if (is.src(dest)) dest else dbplyr::src_dbi(dest)
 }
@@ -217,13 +222,18 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
 }
 
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
-  if (!is_mssql(src) && !is_postgres(src)) {
-    warn_if_arg_not(schema)
+  if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
+    warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
     return(src_tbls(src))
   }
 
   con <- src$con
+
+  if (!is.null(schema)) {
+    check_param_class(schema, "character")
+    check_param_length(schema)
+  }
 
   if (is_mssql(src)) {
     # MSSQL
@@ -236,11 +246,16 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
     schema <- schema_postgres(con, schema)
     dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
     names_table <- get_names_table_postgres(con)
+  } else if (is_mariadb(src)) {
+    # MariaDB
+    schema <- schema_mariadb(con, schema)
+    dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
+    names_table <- get_names_table_mariadb(con)
   }
-  check_param_class(schema, "character")
-  check_param_length(schema)
+
   names_table %>%
     filter(schema_name == !!schema) %>%
+    collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
     mutate(remote_name = schema_if(schema_name, table_name, con, dbname)) %>%
     select(-schema_name) %>%
@@ -262,6 +277,13 @@ schema_postgres <- function(con, schema) {
   schema
 }
 
+schema_mariadb <- function(con, schema) {
+  if (is_null(schema)) {
+    schema <- sql("database()")
+  }
+  schema
+}
+
 dbname_mssql <- function(con, dbname) {
   if (is_null(dbname)) {
     dbname <- ""
@@ -275,18 +297,21 @@ dbname_mssql <- function(con, dbname) {
 
 
 get_names_table_mssql <- function(con, dbname_sql) {
-  DBI::dbGetQuery(
+  tbl(
     con,
-    glue::glue("SELECT tabs.name AS table_name, schemas.name AS schema_name
+    sql(glue::glue("SELECT tabs.name AS table_name, schemas.name AS schema_name
       FROM {dbname_sql}sys.tables tabs
       INNER JOIN {dbname_sql}sys.schemas schemas ON
-      tabs.schema_id = schemas.schema_id")
+      tabs.schema_id = schemas.schema_id"
+    ))
   )
 }
 
 get_names_table_postgres <- function(con) {
-  DBI::dbGetQuery(
+  tbl(
     con,
-    "SELECT table_schema as schema_name, table_name as table_name from information_schema.tables"
+    sql("SELECT table_schema as schema_name, table_name as table_name from information_schema.tables")
   )
 }
+
+get_names_table_mariadb <- get_names_table_postgres

@@ -21,10 +21,10 @@
 #'
 #'   Additional parameters for the schema learning query.
 #'
-#'   - `schema`: supported for MSSQL (default: `"dbo"`) and Postgres (default: `"public"`).
-#'   Learn the tables in a specific schema.
+#'   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres (default: `"public"`), and MariaDB/MySQL
+#'     (default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).
 #'   - `dbname`: supported for MSSQL. Access different databases on the connected MSSQL-server;
-#'   default: database addressed by `src`.
+#'     default: active database.
 #'   - `table_type`: supported for Postgres (default: `"BASE TABLE"`). Specify the table type. Options are:
 #'     1. `"BASE TABLE"` for a persistent table (normal table type)
 #'     2. `"VIEW"` for a view
