@@ -195,7 +195,7 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-creation-and-basic-functionality" class="hasAnchor"><a href="#section-creation-and-basic-functionality" class="anchor"></a>Creation and basic functionality</h2>
+          <h2 id="section-basic" class="hasAnchor"><a href="#section-basic" class="anchor"></a>Basic</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -216,12 +216,6 @@
           <p><code><a href="dm_from_src.html">dm_from_src()</a></code> </p>
         </td>
         <td><p>Load a dm from a remote data source</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dm_paste.html">dm_paste()</a></code> </p>
-        </td>
-        <td><p>Create R code for a dm object</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -271,25 +265,6 @@
           <p><code><a href="dm_bind.html">dm_bind()</a></code> </p>
         </td>
         <td><p>Merge several <code>dm</code></p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-table-retrieval-table-info-and-db-interaction-methods-dplyr-" class="hasAnchor"><a href="#section-table-retrieval-table-info-and-db-interaction-methods-dplyr-" class="anchor"></a>Table retrieval, table info and DB interaction methods (`dplyr`)</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="dplyr_db.html">tbl(<i>&lt;dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">compute(<i>&lt;dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">compute(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">src_tbls(<i>&lt;dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">copy_to(<i>&lt;dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">collect(<i>&lt;dm&gt;</i>)</a></code> </p>
-        </td>
-        <td><p><span class="pkg">dplyr</span> table retrieval, table info and DB interaction methods</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -392,44 +367,7 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-schema-handling-methods" class="hasAnchor"><a href="#section-schema-handling-methods" class="anchor"></a>Schema handling methods</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="sql_schema_create.html">sql_schema_create()</a></code> </p>
-        </td>
-        <td><p>Create a schema on a database</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sql_schema_drop.html">sql_schema_drop()</a></code> </p>
-        </td>
-        <td><p>Remove a schema from a database</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sql_schema_exists.html">sql_schema_exists()</a></code> </p>
-        </td>
-        <td><p>Check for existence of a schema on a database</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sql_schema_list.html">sql_schema_list()</a></code> </p>
-        </td>
-        <td><p>List schemas on a database</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-visualization" class="hasAnchor"><a href="#section-visualization" class="anchor"></a>Visualization</h2>
+          <h2 id="section-visualize" class="hasAnchor"><a href="#section-visualize" class="anchor"></a>Visualize</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -450,11 +388,17 @@
           <p><code><a href="dm_set_colors.html">dm_set_colors()</a></code> <code><a href="dm_set_colors.html">dm_get_colors()</a></code> <code><a href="dm_set_colors.html">dm_get_available_colors()</a></code> </p>
         </td>
         <td><p>Color in database diagrams</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dm_paste.html">dm_paste()</a></code> </p>
+        </td>
+        <td><p>Create R code for a dm object</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-zooming" class="hasAnchor"><a href="#section-zooming" class="anchor"></a>Zooming</h2>
+          <h2 id="section-select-columns" class="hasAnchor"><a href="#section-select-columns" class="anchor"></a>Select columns</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -466,38 +410,20 @@
       <tr>
         
         <td>
-          <p><code><a href="dm_zoom_to.html">dm_zoom_to()</a></code> <code><a href="dm_zoom_to.html">dm_insert_zoomed()</a></code> <code><a href="dm_zoom_to.html">dm_update_zoomed()</a></code> <code><a href="dm_zoom_to.html">dm_discard_zoomed()</a></code> </p>
+          <p><code><a href="dm_select.html">dm_select()</a></code> </p>
         </td>
-        <td><p>Mark table for manipulation</p></td>
+        <td><p>Select columns</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="dplyr_table_manipulation.html">filter(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">mutate(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">transmute(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">select(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">rename(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">distinct(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">arrange(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">slice(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">group_by(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">ungroup(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">summarise(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">count(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">tally(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">pull(<i>&lt;zoomed_dm&gt;</i>)</a></code> </p>
+          <p><code><a href="dm_rename.html">dm_rename()</a></code> </p>
         </td>
-        <td><p><span class="pkg">dplyr</span> table manipulation methods for zoomed dm objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tidyr_table_manipulation.html">unite(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="tidyr_table_manipulation.html">separate(<i>&lt;zoomed_dm&gt;</i>)</a></code> </p>
-        </td>
-        <td><p><span class="pkg">tidyr</span> table manipulation methods for zoomed dm objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dplyr_join.html">left_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">inner_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">full_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">right_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">semi_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">anti_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> </p>
-        </td>
-        <td><p><span class="pkg">dplyr</span> join methods for zoomed dm objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="utils_table_manipulation.html">head(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="utils_table_manipulation.html">tail(<i>&lt;zoomed_dm&gt;</i>)</a></code> </p>
-        </td>
-        <td><p><span class="pkg">utils</span> table manipulation methods for <code>zoomed_dm</code> objects</p></td>
+        <td><p>Rename columns</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-flattening" class="hasAnchor"><a href="#section-flattening" class="anchor"></a>Flattening</h2>
+          <h2 id="section-flatten" class="hasAnchor"><a href="#section-flatten" class="anchor"></a>Flatten</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -528,7 +454,7 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-filtering" class="hasAnchor"><a href="#section-filtering" class="anchor"></a>Filtering</h2>
+          <h2 id="section-zoom" class="hasAnchor"><a href="#section-zoom" class="anchor"></a>Zoom</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -540,20 +466,44 @@
       <tr>
         
         <td>
-          <p><code><a href="dm_filter.html">dm_filter()</a></code> <code><a href="dm_filter.html">dm_apply_filters()</a></code> <code><a href="dm_filter.html">dm_apply_filters_to_tbl()</a></code> </p>
+          <p><code><a href="dm_zoom_to.html">dm_zoom_to()</a></code> <code><a href="dm_zoom_to.html">dm_insert_zoomed()</a></code> <code><a href="dm_zoom_to.html">dm_update_zoomed()</a></code> <code><a href="dm_zoom_to.html">dm_discard_zoomed()</a></code> </p>
         </td>
-        <td><p>Filtering</p></td>
+        <td><p>Mark table for manipulation</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="dm_get_filters.html">dm_get_filters()</a></code> </p>
+          <p><code><a href="dplyr_table_manipulation.html">filter(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">mutate(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">transmute(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">select(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">rename(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">distinct(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">arrange(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">slice(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">group_by(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">ungroup(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">summarise(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">count(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">tally(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">pull(<i>&lt;zoomed_dm&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Get filter expressions</p></td>
+        <td><p><span class="pkg">dplyr</span> table manipulation methods for zoomed dm objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dplyr_db.html">tbl(<i>&lt;dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">compute(<i>&lt;dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">compute(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">src_tbls(<i>&lt;dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">copy_to(<i>&lt;dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">collect(<i>&lt;dm&gt;</i>)</a></code> </p>
+        </td>
+        <td><p><span class="pkg">dplyr</span> table retrieval, table info and DB interaction methods</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="tidyr_table_manipulation.html">unite(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="tidyr_table_manipulation.html">separate(<i>&lt;zoomed_dm&gt;</i>)</a></code> </p>
+        </td>
+        <td><p><span class="pkg">tidyr</span> table manipulation methods for zoomed dm objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dplyr_join.html">left_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">inner_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">full_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">right_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">semi_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">anti_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> </p>
+        </td>
+        <td><p><span class="pkg">dplyr</span> join methods for zoomed dm objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="utils_table_manipulation.html">head(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="utils_table_manipulation.html">tail(<i>&lt;zoomed_dm&gt;</i>)</a></code> </p>
+        </td>
+        <td><p><span class="pkg">utils</span> table manipulation methods for <code>zoomed_dm</code> objects</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-column-selection" class="hasAnchor"><a href="#section-column-selection" class="anchor"></a>Column selection</h2>
+          <h2 id="section-materialize" class="hasAnchor"><a href="#section-materialize" class="anchor"></a>Materialize</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -565,15 +515,9 @@
       <tr>
         
         <td>
-          <p><code><a href="dm_rename.html">dm_rename()</a></code> </p>
+          <p><code><a href="dplyr_db.html">tbl(<i>&lt;dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">compute(<i>&lt;dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">compute(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">src_tbls(<i>&lt;dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">copy_to(<i>&lt;dm&gt;</i>)</a></code> <code><a href="dplyr_db.html">collect(<i>&lt;dm&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Rename columns</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dm_select.html">dm_select()</a></code> </p>
-        </td>
-        <td><p>Select columns</p></td>
+        <td><p><span class="pkg">dplyr</span> table retrieval, table info and DB interaction methods</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -611,6 +555,31 @@
           <p><code><a href="rows_truncate.html">rows_truncate()</a></code> <code><a href="rows_truncate.html">sql_rows_truncate()</a></code> </p>
         </td>
         <td><p>Truncate all rows</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-filter" class="hasAnchor"><a href="#section-filter" class="anchor"></a>Filter</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="dm_filter.html">dm_filter()</a></code> <code><a href="dm_filter.html">dm_apply_filters()</a></code> <code><a href="dm_filter.html">dm_apply_filters_to_tbl()</a></code> </p>
+        </td>
+        <td><p>Filtering</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dm_get_filters.html">dm_get_filters()</a></code> </p>
+        </td>
+        <td><p>Get filter expressions</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -679,6 +648,43 @@
           <p><code><a href="check_set_equality.html">check_set_equality()</a></code> </p>
         </td>
         <td><p>Check column values for set equality</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-database-schemas" class="hasAnchor"><a href="#section-database-schemas" class="anchor"></a>Database schemas</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="sql_schema_create.html">sql_schema_create()</a></code> </p>
+        </td>
+        <td><p>Create a schema on a database</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sql_schema_drop.html">sql_schema_drop()</a></code> </p>
+        </td>
+        <td><p>Remove a schema from a database</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sql_schema_exists.html">sql_schema_exists()</a></code> </p>
+        </td>
+        <td><p>Check for existence of a schema on a database</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sql_schema_list.html">sql_schema_list()</a></code> </p>
+        </td>
+        <td><p>List schemas on a database</p></td>
       </tr>
     </tbody><tbody>
       <tr>
