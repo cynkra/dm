@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.99.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.99.9003</span>
       </span>
     </div>
 
@@ -185,6 +185,19 @@
       <small>Source: <a href='https://github.com/cynkra/dm/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="dm-01999003" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.99.9003">
+<a href="#dm-01999003" class="anchor" aria-hidden="true"></a>dm 0.1.99.9003<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> supports the <code>schema</code> argument also for MariaDB and MySQL databases (<a href='https://github.com/cynkra/dm/issues/516'>#516</a>).</li>
+<li>dm objects now inherit from <code>"dm_v1"</code> in addition to <code>"dm"</code>, to allow backward-compatible changes of the internal format (<a href='https://github.com/cynkra/dm/issues/521'>#521</a>).</li>
+<li>Breaking: <code>*_pk()</code> and <code>*_fk()</code> functions gain an ellipsis argument that comes before <code>check</code>, <code>force</code> and <code>rm_referencing_fks</code> arguments (<a href='https://github.com/cynkra/dm/issues/520'>#520</a>).</li>
+<li>Use hack to create compound primary keys (<a href='https://github.com/cynkra/dm/issues/522'>#522</a>).</li>
+<li>Fix creation of one-column PKs (<a href='https://github.com/cynkra/dm/issues/515'>#515</a>).</li>
+</ul>
+</div>
     <div id="dm-01999002" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.99.9002">
 <a href="#dm-01999002" class="anchor" aria-hidden="true"></a>dm 0.1.99.9002<small> Unreleased </small>

@@ -94,7 +94,7 @@ are imported from the database." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.99.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.99.9003</span>
       </span>
     </div>
 
@@ -225,10 +225,10 @@ The default attempts to query and issues an informative message.</p></td>
       <th>...</th>
       <td><p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
 <p>Additional parameters for the schema learning query.</p><ul>
-<li><p><code>schema</code>: supported for MSSQL (default: <code>"dbo"</code>) and Postgres (default: <code>"public"</code>).
-Learn the tables in a specific schema.</p></li>
+<li><p><code>schema</code>: supported for MSSQL (default: <code>"dbo"</code>), Postgres (default: <code>"public"</code>), and MariaDB/MySQL
+(default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).</p></li>
 <li><p><code>dbname</code>: supported for MSSQL. Access different databases on the connected MSSQL-server;
-default: database addressed by <code>src</code>.</p></li>
+default: active database.</p></li>
 <li><p><code>table_type</code>: supported for Postgres (default: <code>"BASE TABLE"</code>). Specify the table type. Options are:</p><ol>
 <li><p><code>"BASE TABLE"</code> for a persistent table (normal table type)</p></li>
 <li><p><code>"VIEW"</code> for a view</p></li>
