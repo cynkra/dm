@@ -220,7 +220,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   if (!is_mssql(src) && !is_postgres(src)) {
     warn_if_arg_not(schema)
     warn_if_arg_not(dbname, only_on = "MSSQL")
-    return(src_tbls_impl(src))
+    return(src_tbls(src))
   }
 
   con <- src$con
