@@ -638,10 +638,17 @@ tbl.dm <- function(src, from, ...) {
   check_not_zoomed(src)
 
   # The src argument here is a dm object
-  dm <- src
-  from <- dm_tbl_name(dm, !!from)
+  tbl_impl(src, from)
+}
 
-  dm_get_tables_impl(dm)[[from]]
+tbl_impl <- function(dm, from) {
+  out <- dm_get_tables_impl(dm)[[from]]
+
+  if (is.null(out)) {
+    abort_table_not_in_dm(from, src_tbls_impl(dm))
+  }
+
+  out
 }
 
 #' @param x Either a `dm` or a `zoomed_dm`; the latter leads to an error for `src_tbls.dm()`
