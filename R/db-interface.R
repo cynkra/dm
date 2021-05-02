@@ -183,7 +183,7 @@ copy_dm_to <- function(dest, dm, ...,
     return(dm)
   }
 
-  copy_data <- build_copy_data(dm, dest, table_names_out, set_key_constraints)
+  copy_data <- build_copy_data(dm, dest, table_names_out, set_key_constraints, dest_con)
 
   new_tables <- copy_list_of_tables_to(
     dest,
