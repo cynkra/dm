@@ -194,7 +194,7 @@ dm_set_colors <- function(dm, ...) {
   if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")
   cols <- names(quos)
   if (!all(cols[!is_hex_color(cols)] %in% dm_get_available_colors()) &&
-    all(cols %in% src_tbls(dm))) {
+    all(cols %in% src_tbls_impl(dm))) {
     abort_wrong_syntax_set_cols()
   }
 

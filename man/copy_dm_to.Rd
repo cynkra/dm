@@ -84,8 +84,9 @@ as the input \code{dm}.
 \code{copy_dm_to()} takes a \link[dplyr:src_dbi]{dplyr::src_dbi} object or a \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object as its first argument
 and a \code{\link{dm}} object as its second argument.
 The latter is copied to the former.
-By default, temporary tables will be created and the key constraints will be set
-(currently only on MSSQL and Postgres databases).
+The default is to create temporary tables, set \code{temporary = FALSE} to create permanent tables.
+Unless \code{set_key_constraints} is \code{FALSE}, primary key constraints are set on all databases,
+and in addition foreign key constraints are set on MSSQL and Postgres databases.
 }
 \details{
 No tables will be overwritten; passing \code{overwrite = TRUE} to the function will give an error.

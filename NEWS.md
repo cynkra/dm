@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.1.99.9003
+
+- `dm_from_src()` supports the `schema` argument also for MariaDB and MySQL databases (#516).
+- dm objects now inherit from `"dm_v1"` in addition to `"dm"`, to allow backward-compatible changes of the internal format (#521).
+- Breaking: `*_pk()` and `*_fk()` functions gain an ellipsis argument that comes before `check`, `force` and `rm_referencing_fks` arguments (#520). 
+- Use hack to create compound primary keys (#522).
+- Fix creation of one-column PKs (#515).
+
+
 # dm 0.1.99.9002
 
 - `dm_add_pk()` and `dm_add_fk()` support compound keys via the `c()` notation, e.g. `dm_add_pk(dm, table, c(col1, col2))`. `dm_nycflights13()` returns a data model with compound keys by default. Use `compound = FALSE` to return the data model from dm v0.1.13 or earlier (#3).

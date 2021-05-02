@@ -196,7 +196,7 @@ test_that("some methods/functions for `zoomed_dm` work", {
 
 test_that("length and names for dm work", {
   expect_length(dm_for_filter(), 6L)
-  expect_identical(names(dm_for_filter()), src_tbls(dm_for_filter()))
+  expect_identical(names(dm_for_filter()), src_tbls_impl(dm_for_filter()))
 })
 
 test_that("validator is silent", {

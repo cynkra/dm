@@ -130,6 +130,7 @@ new_dm <- function(tables = list()) {
 new_dm3 <- function(def, zoomed = FALSE) {
   class <- c(
     if (zoomed) "zoomed_dm",
+    "dm_v1",
     "dm"
   )
   structure(list(def = def), class = class)
@@ -563,7 +564,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 #' @export
 `[.dm` <- function(x, id) {
-  if (is.numeric(id)) id <- src_tbls(x)[id]
+  if (is.numeric(id)) id <- src_tbls_impl(x)[id]
   id <- as.character(id)
   dm_select_tbl(x, !!!id)
 }
@@ -581,7 +582,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 #' @export
 names.dm <- function(x) { # for both dm and zoomed_dm
-  src_tbls(x)
+  src_tbls_impl(x)
 }
 
 #' @export
@@ -597,7 +598,7 @@ names.zoomed_dm <- function(x) {
 
 #' @export
 length.dm <- function(x) { # for both dm and zoomed_dm
-  length(src_tbls(x))
+  length(src_tbls_impl(x))
 }
 
 #' @export
@@ -698,7 +699,7 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FAL
     # FIXME: should we allow `overwrite` argument?
     df <- copy_to(dest_src, df, unique_db_table_name(name), temporary = temporary, ...)
   }
-  names_list <- repair_table_names(src_tbls(dest), name, repair, quiet)
+  names_list <- repair_table_names(src_tbls_impl(dest), name, repair, quiet)
   # rename old tables with potentially new names
   dest <- dm_rename_tbl(dest, !!!names_list$new_old_names)
   # `repair` argument is `unique` by default

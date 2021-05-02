@@ -21,10 +21,10 @@
 #'
 #'   Additional parameters for the schema learning query.
 #'
-#'   - `schema`: supported for MSSQL (default: `"dbo"`) and Postgres (default: `"public"`).
-#'   Learn the tables in a specific schema.
+#'   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres (default: `"public"`), and MariaDB/MySQL
+#'     (default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).
 #'   - `dbname`: supported for MSSQL. Access different databases on the connected MSSQL-server;
-#'   default: database addressed by `src`.
+#'     default: active database.
 #'   - `table_type`: supported for Postgres (default: `"BASE TABLE"`). Specify the table type. Options are:
 #'     1. `"BASE TABLE"` for a persistent table (normal table type)
 #'     2. `"VIEW"` for a view
@@ -70,7 +70,7 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
         inform("Keys queried successfully, use `learn_keys = TRUE` to mute this message.")
       }
 
-      tbls_in_dm <- src_tbls(dm_learned)
+      tbls_in_dm <- src_tbls_impl(dm_learned)
 
       if (is_null(table_names)) {
         return(dm_learned)

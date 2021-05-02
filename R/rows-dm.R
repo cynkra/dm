@@ -240,7 +240,7 @@ dm_rows_run <- function(x, y, rows_op, top_down, in_place, require_keys) {
   # topologically sort tables
   graph <- create_graph_from_dm(x, directed = TRUE)
   topo <- igraph::topo_sort(graph, mode = if (top_down) "in" else "out")
-  tables <- intersect(names(topo), src_tbls(y))
+  tables <- intersect(names(topo), src_tbls_impl(y))
 
   # Use tables and keys
   target_tbls <- dm_get_tables_impl(x)[tables]
