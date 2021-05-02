@@ -47,7 +47,7 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints) {
     pks_flat <-
       pks %>%
       filter(lengths(column) == 1) %>%
-      mutate(column = unlist(column))
+      mutate(column = as.character(unlist(column)))
 
     fks <-
       dm_get_all_fks_impl(dm) %>%
