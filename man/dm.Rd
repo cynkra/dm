@@ -4,7 +4,6 @@
 \alias{dm}
 \alias{new_dm}
 \alias{validate_dm}
-\alias{dm_get_src}
 \alias{dm_get_con}
 \alias{dm_get_tables}
 \alias{is_dm}
@@ -16,8 +15,6 @@ dm(..., .name_repair = c("check_unique", "unique", "universal", "minimal"))
 new_dm(tables = list())
 
 validate_dm(x)
-
-dm_get_src(x)
 
 dm_get_con(x)
 
@@ -45,9 +42,6 @@ For \code{dm()}, \code{new_dm()}, \code{as_dm()}: A \code{dm} object.
 
 For \code{validate_dm()}: Returns the \code{dm}, invisibly, after finishing all checks.
 
-For \code{dm_get_src()}: the \pkg{dplyr} source for a \code{dm} object,
-or \code{NULL} if the \code{dm} objcet contains data frames.
-
 For \code{dm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
 
 For \code{dm_get_tables()}: A named list with the tables constituting the \code{dm}.
@@ -72,11 +66,6 @@ use \code{validate_dm()} to double-check the returned object.
 
 \code{validate_dm()} checks the internal consistency of a \code{dm} object.
 
-\code{dm_get_src()} returns the \pkg{dplyr} source for a \code{dm} object.
-All tables in a \code{dm} object must be from the same source,
-i.e. either they are all data frames, or they all are stored on the same
-database.
-
 \code{dm_get_con()} returns the \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
 This works only if the tables are stored on a database, otherwise an error
 is thrown.
@@ -89,6 +78,11 @@ To get a filtered table, use \code{dm_apply_filters_to_tbl()}, to apply filters 
 \code{is_dm()} returns \code{TRUE} if the input is of class \code{dm}.
 
 \code{as_dm()} coerces objects to the \code{dm} class
+}
+\details{
+All lazy tables in a dm objects must be stored on the same database
+and accessed through the same connection.
+In addition, all tables must be objects of the same class.
 }
 \examples{
 dm(trees, mtcars)
