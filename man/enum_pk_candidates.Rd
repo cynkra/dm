@@ -5,12 +5,14 @@
 \alias{dm_enum_pk_candidates}
 \title{Primary key candidate}
 \usage{
-enum_pk_candidates(table)
+enum_pk_candidates(table, ...)
 
-dm_enum_pk_candidates(dm, table)
+dm_enum_pk_candidates(dm, table, ...)
 }
 \arguments{
 \item{table}{A table in the \code{dm}.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 
 \item{dm}{A \code{dm} object.}
 }

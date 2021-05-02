@@ -16,6 +16,7 @@
 #' The syntax of these functions will be extended but will remain compatible
 #' with current semantics.
 #'
+#' @inheritParams ellipsis::dots_empty
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
 #' @param columns Table columns, unquoted.
