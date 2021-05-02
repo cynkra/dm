@@ -270,15 +270,15 @@ with current semantics.</p>
   flights <span class='op'>=</span> <span class='fu'>nycflights13</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/nycflights13/man/flights.html'>flights</a></span>
 <span class='op'>)</span>
 
-<span class='va'>nycflights_dm</span> <span class='op'>%&gt;%</span>
+<span class='va'>nycflights_dm</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='va'>nycflights_dm</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_add_pk.html'>dm_add_pk</a></span><span class='op'>(</span><span class='va'>planes</span>, <span class='va'>tailnum</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_add_fk</span><span class='op'>(</span><span class='va'>flights</span>, <span class='va'>tailnum</span>, <span class='va'>planes</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>nycflights_dm</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='dm_add_pk.html'>dm_add_pk</a></span><span class='op'>(</span><span class='va'>planes</span>, <span class='va'>tailnum</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'>dm_add_fk</span><span class='op'>(</span><span class='va'>flights</span>, <span class='va'>tailnum</span>, <span class='va'>planes</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>cycle <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_rm_fk</span><span class='op'>(</span><span class='va'>flights</span>, <span class='va'>dest</span>, <span class='va'>airports</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>cycle <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'>dm_rm_fk</span><span class='op'>(</span><span class='va'>flights</span>, <span class='va'>dest</span>, <span class='va'>airports</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span>
 </div></pre>
   </div>

@@ -245,7 +245,7 @@ Use the <code>...</code> argument if you would like to control which tables shou
 The necessary disambiguations of the column names are performed first.
 Then all involved foreign tables are joined to the <code>start</code> table successively, with the join function given in the <code>join</code> argument.</p>
 <p><strong>Case 2</strong>, filter conditions are set for at least one table that is connected to <code>start</code>:
-First, disambiguation will be performed if necessary. The <code>start</code> table is then calculated using <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl(dm, "start")</a></code>.
+First, disambiguation will be performed if necessary. The <code>start</code> table is then calculated using <code>tbl(dm, "start")</code>.
 This implies
 that the effect of the filters on this table is taken into account.
 For <code>right_join</code>, <code>full_join</code> and <code>nest_join</code>, an error
@@ -267,31 +267,31 @@ each nested column entry would be a tibble of one row), an error will be thrown 
 <code><a href='dm_join_to_tbl.html'>dm_join_to_tbl</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>weather</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>weather</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
   <span class='fu'>dm_flatten_to_tbl</span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
-#&gt; <span class='message'>* year -&gt; flights.year, planes.year</span>
-#&gt; <span class='message'>* name -&gt; airlines.name, airports.name</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 11,227 x 35</span><span>
+</div><div class='co'>#&gt; Renamed columns:
+#&gt; * year -&gt; flights.year, planes.year
+#&gt; * name -&gt; airlines.name, airports.name</div><div class='co'>#&gt; <span style='color: #949494;'># A tibble: 11,227 x 35</span>
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
-#&gt;           </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359        17      447
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450            500       -</span><span style='color: #BB0000;'>10</span><span>      634
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520            525        -</span><span style='color: #BB0000;'>5</span><span>      813
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      530            530         0      824
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531            540        -</span><span style='color: #BB0000;'>9</span><span>      832
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535            540        -</span><span style='color: #BB0000;'>5</span><span>     </span><span style='text-decoration: underline;'>1</span><span>015
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      546            600       -</span><span style='color: #BB0000;'>14</span><span>      645
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      549            600       -</span><span style='color: #BB0000;'>11</span><span>      652
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550            600       -</span><span style='color: #BB0000;'>10</span><span>      649
-#&gt; </span><span style='color: #949494;'># … with 11,217 more rows, and 28 more variables: sched_arr_time &lt;int&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   time_hour &lt;dttm&gt;, airlines.name &lt;chr&gt;, airports.name &lt;chr&gt;, lat &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;, planes.year &lt;int&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   speed &lt;int&gt;, engine &lt;chr&gt;</span><span></div></span></pre>
+#&gt;           <span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426</span>
+#&gt; <span style='color: #BCBCBC;'> 2</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359        17      447</span>
+#&gt; <span style='color: #BCBCBC;'> 3</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450            500       -</span><span style='color: #BB0000;'>10</span><span>      634</span>
+#&gt; <span style='color: #BCBCBC;'> 4</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520            525        -</span><span style='color: #BB0000;'>5</span><span>      813</span>
+#&gt; <span style='color: #BCBCBC;'> 5</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      530            530         0      824</span>
+#&gt; <span style='color: #BCBCBC;'> 6</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531            540        -</span><span style='color: #BB0000;'>9</span><span>      832</span>
+#&gt; <span style='color: #BCBCBC;'> 7</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535            540        -</span><span style='color: #BB0000;'>5</span><span>     </span><span style='text-decoration: underline;'>1</span><span>015</span>
+#&gt; <span style='color: #BCBCBC;'> 8</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      546            600       -</span><span style='color: #BB0000;'>14</span><span>      645</span>
+#&gt; <span style='color: #BCBCBC;'> 9</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      549            600       -</span><span style='color: #BB0000;'>11</span><span>      652</span>
+#&gt; <span style='color: #BCBCBC;'>10</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550            600       -</span><span style='color: #BB0000;'>10</span><span>      649</span>
+#&gt; <span style='color: #949494;'># … with 11,217 more rows, and 28 more variables: sched_arr_time &lt;int&gt;,</span>
+#&gt; <span style='color: #949494;'>#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;,</span>
+#&gt; <span style='color: #949494;'>#   dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   time_hour &lt;dttm&gt;, airlines.name &lt;chr&gt;, airports.name &lt;chr&gt;, lat &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;, planes.year &lt;int&gt;,</span>
+#&gt; <span style='color: #949494;'>#   type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,</span>
+#&gt; <span style='color: #949494;'>#   speed &lt;int&gt;, engine &lt;chr&gt;</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

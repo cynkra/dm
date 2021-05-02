@@ -300,60 +300,60 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='co'># Entire dataset with all dimension tables populated</span>
 <span class='co'># with flights and weather data truncated:</span>
 <span class='va'>flights_init</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>weather</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>weather</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># Target database:</span>
 <span class='va'>flights_sqlite</span> <span class='op'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span><span class='op'>(</span><span class='va'>sqlite</span>, <span class='va'>flights_init</span>, temporary <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_sqlite</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
+</div><div class='co'>#&gt; airlines airports  flights   planes  weather 
 #&gt;       16     1458        0     3322        0 </div><div class='input'>
 <span class='co'># First update:</span>
 <span class='va'>flights_jan</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span><span class='op'>(</span><span class='va'>flights</span>, <span class='va'>weather</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>weather</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span><span class='op'>(</span><span class='va'>flights</span>, <span class='va'>weather</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>weather</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_jan</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; flights weather 
+</div><div class='co'>#&gt; flights weather 
 #&gt;     932      72 </div><div class='input'>
 <span class='co'># Copy to temporary tables on the target database:</span>
 <span class='va'>flights_jan_sqlite</span> <span class='op'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span><span class='op'>(</span><span class='va'>sqlite</span>, <span class='va'>flights_jan</span><span class='op'>)</span>
 
 <span class='co'># Dry run by default:</span>
 <span class='fu'>dm_rows_insert</span><span class='op'>(</span><span class='va'>flights_sqlite</span>, <span class='va'>flights_jan_sqlite</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Not persisting, use `in_place = FALSE` to turn off this message.</span></div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
+</div><div class='co'>#&gt; Not persisting, use `in_place = FALSE` to turn off this message.</div><div class='co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span>
 #&gt; src:  sqlite 3.35.5 []
-#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span><span>
+#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 4
 #&gt; Foreign keys: 4</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_sqlite</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
+</div><div class='co'>#&gt; airlines airports  flights   planes  weather 
 #&gt;       16     1458        0     3322        0 </div><div class='input'>
 <span class='co'># Explicitly request persistence:</span>
 <span class='fu'>dm_rows_insert</span><span class='op'>(</span><span class='va'>flights_sqlite</span>, <span class='va'>flights_jan_sqlite</span>, in_place <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_sqlite</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
+</div><div class='co'>#&gt; airlines airports  flights   planes  weather 
 #&gt;       16     1458      932     3322       72 </div><div class='input'>
 <span class='co'># Second update:</span>
 <span class='va'>flights_feb</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span><span class='op'>(</span><span class='va'>flights</span>, <span class='va'>weather</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>weather</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span><span class='op'>(</span><span class='va'>flights</span>, <span class='va'>weather</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>weather</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>month</span> <span class='op'>==</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># Copy to temporary tables on the target database:</span>
@@ -366,21 +366,21 @@ and <code>x</code> is returned, invisibly.</p>
   in_place <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_new</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
+</div><div class='co'>#&gt; airlines airports  flights   planes  weather 
 #&gt;       16     1458     1761     3322      144 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_sqlite</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
+</div><div class='co'>#&gt; airlines airports  flights   planes  weather 
 #&gt;       16     1458      932     3322       72 </div><div class='input'>
 <span class='co'># Check for consistency before applying:</span>
-<span class='va'>flights_new</span> <span class='op'>%&gt;%</span>
+<span class='va'>flights_new</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='dm_examine_constraints.html'>dm_examine_constraints</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></div><div class='output co'>#&gt; </span><span style='color: #BB0000;'>•</span><span> Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</div><div class='input'>
+</div><div class='co'>#&gt; <span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></div><div class='co'>#&gt; <span style='color: #BB0000;'>•</span><span> Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</span></div><div class='input'>
 <span class='co'># Apply:</span>
 <span class='fu'>dm_rows_insert</span><span class='op'>(</span><span class='va'>flights_sqlite</span>, <span class='va'>flights_feb_sqlite</span>, in_place <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_sqlite</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
+</div><div class='co'>#&gt; airlines airports  flights   planes  weather 
 #&gt;       16     1458     1761     3322      144 </div><div class='input'>
 <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span><span class='op'>(</span><span class='va'>sqlite</span><span class='op'>)</span>
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

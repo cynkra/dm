@@ -191,13 +191,13 @@
 </h1>
 <ul>
 <li>
-<code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> and <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> support compound keys via the <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> notation, e.g. <code><a href="../reference/dm_add_pk.html">dm_add_pk(dm, table, c(col1, col2))</a></code>. <code><a href="../reference/dm_nycflights13.html">dm_nycflights13()</a></code> returns a data model with compound keys by default. Use <code>compound = FALSE</code> to return the data model from dm v0.1.13 or earlier (<a href='https://github.com/cynkra/dm/issues/3'>#3</a>).</li>
+<code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> and <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> support compound keys via the <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> notation, e.g. <code>dm_add_pk(dm, table, c(col1, col2))</code>. <code><a href="../reference/dm_nycflights13.html">dm_nycflights13()</a></code> returns a data model with compound keys by default. Use <code>compound = FALSE</code> to return the data model from dm v0.1.13 or earlier (<a href='https://github.com/cynkra/dm/issues/3'>#3</a>).</li>
 <li>
 <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code> includes <code>parent_pk_cols</code> column that describes the primary key columns of the parent table (<a href='https://github.com/cynkra/dm/issues/335'>#335</a>).</li>
 <li>
 <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> and other check functions count the number of rows that violate constraints for primary and foreign keys (<a href='https://github.com/cynkra/dm/issues/335'>#335</a>).</li>
 <li>
-<code><a href="../reference/copy_dm_to.html">copy_dm_to(set_key_constraints = FALSE)</a></code> downgrades unique indexes to regular indexes (<a href='https://github.com/cynkra/dm/issues/335'>#335</a>).</li>
+<code>copy_dm_to(set_key_constraints = FALSE)</code> downgrades unique indexes to regular indexes (<a href='https://github.com/cynkra/dm/issues/335'>#335</a>).</li>
 <li>
 <code><a href="../reference/rows_truncate.html">rows_truncate()</a></code> implemented for data frames (<a href='https://github.com/cynkra/dm/issues/335'>#335</a>).</li>
 <li>
@@ -375,7 +375,7 @@
 <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> works on a zoomed dm, with a message.</li>
 <li>The data model is drawn in a more compact way if it comprises of multiple connected components.</li>
 <li>
-<code><a href="../reference/dm_add_pk.html">dm_add_pk(check = TRUE)</a></code> gives a better error message.</li>
+<code>dm_add_pk(check = TRUE)</code> gives a better error message.</li>
 </ul>
 </div>
 <div id="bug-fixes-2" class="section level2">
@@ -486,7 +486,7 @@
 <li>
 <code><a href="../reference/check_subset.html">check_subset()</a></code> gives a clean error message if the tables are complex expressions.</li>
 <li>
-<code><a href="../reference/dm_from_src.html">dm_from_src(schema = "...")</a></code> works on Postgres if <code>search_path</code> is not set on the connection.</li>
+<code>dm_from_src(schema = "...")</code> works on Postgres if <code>search_path</code> is not set on the connection.</li>
 <li>
 <code><a href="../reference/dplyr_db.html">compute.zoomed_dm()</a></code> no longer throws an error.</li>
 <li>Remove unused DT import (<a href='https://github.com/cynkra/dm/issues/295'>#295</a>).</li>
@@ -515,7 +515,7 @@
 <ul>
 <li>Testing on local data frames (by default), optionally also SQLite, Postgres, RMariaDB, and SQL Server. Currently requires development versions and various pull requests (<a href='https://github.com/cynkra/dm/issues/334'>#334</a>, <a href='https://github.com/cynkra/dm/issues/327'>#327</a>, <a href='https://github.com/cynkra/dm/issues/312'>#312</a>, <a href='https://github.com/cynkra/dm/issues/76'>#76</a>).</li>
 <li>
-<code><a href="../reference/dm_nycflights13.html">dm_nycflights13(subset = TRUE)</a></code> memoizes subset and also reduces the size of the <code>weather</code> table.</li>
+<code>dm_nycflights13(subset = TRUE)</code> memoizes subset and also reduces the size of the <code>weather</code> table.</li>
 <li>Expand definitions of deprecated functions (<a href='https://github.com/cynkra/dm/issues/204'>#204</a>).</li>
 </ul>
 </div>
@@ -563,7 +563,7 @@
 <ul>
 <li>Change <code>cdm_</code> prefix to <code>dm_</code>. The old names are still available (<a href='https://github.com/cynkra/dm/issues/117'>#117</a>).</li>
 <li>New <code><a href="../reference/pull_tbl.html">pull_tbl()</a></code> extracts a single table from a <code>dm</code> (<a href='https://github.com/cynkra/dm/issues/206'>#206</a>).</li>
-<li>New <code><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl()</a></code> that applies filters in related tables to a table, similar to <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code>; <code><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl()</a></code>, <code><a href="https://rdrr.io/r/base/Extract.html" class="external-link">$</a></code> and <code><a href="https://rdrr.io/r/base/Extract.html" class="external-link">[[</a></code> no longer apply filter conditions defined in related tables (<a href='https://github.com/cynkra/dm/issues/161'>#161</a>).</li>
+<li>New <code><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl()</a></code> that applies filters in related tables to a table, similar to <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code>; <code><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl()</a></code>, <code>$</code> and <code>[[</code> no longer apply filter conditions defined in related tables (<a href='https://github.com/cynkra/dm/issues/161'>#161</a>).</li>
 <li>New <code><a href="../reference/dm_paste.html">dm_paste()</a></code> (<a href='https://github.com/cynkra/dm/issues/160'>#160</a>).</li>
 <li>New <code><a href="../reference/deprecated.html">check_cardinality()</a></code> returns the nature of the relationship between <code>parent_table$pk_col</code> and <code>child_table$fk_col</code> (<a href='https://github.com/cynkra/dm/issues/15'>#15</a>).</li>
 <li>New zoom vignette (<a href='https://github.com/cynkra/dm/issues/171'>#171</a>).</li>
@@ -767,7 +767,7 @@
 <li>New <code><a href="../reference/deprecated.html">cdm_rename()</a></code> (<a href='https://github.com/cynkra/dm/issues/41'>#41</a>) and <code><a href="../reference/deprecated.html">cdm_select()</a></code> (<a href='https://github.com/cynkra/dm/issues/50'>#50</a>) for renaming and selecting columns of <code>dm</code> tables.</li>
 <li>New <code>length.dm()</code> and <code>length&lt;-.dm()</code> (<a href='https://github.com/cynkra/dm/issues/53'>#53</a>).</li>
 <li>
-<code><a href="https://rdrr.io/r/base/Extract.html" class="external-link">$</a></code>, <code><a href="https://rdrr.io/r/base/Extract.html" class="external-link">[[</a></code>, <code><a href="https://rdrr.io/r/base/Extract.html" class="external-link">[</a></code>, <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code>, <code><a href="https://rdrr.io/r/utils/str.html" class="external-link">str()</a></code> and <code><a href="https://rdrr.io/r/base/length.html" class="external-link">length()</a></code> now implemented for dm objects (read-only).</li>
+<code>$</code>, <code>[[</code>, <code>[</code>, <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code>, <code><a href="https://rdrr.io/r/utils/str.html" class="external-link">str()</a></code> and <code><a href="https://rdrr.io/r/base/length.html" class="external-link">length()</a></code> now implemented for dm objects (read-only).</li>
 <li>New <code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code>.</li>
 </ul>
 </div>
