@@ -130,6 +130,7 @@ new_dm <- function(tables = list()) {
 new_dm3 <- function(def, zoomed = FALSE) {
   class <- c(
     if (zoomed) "zoomed_dm",
+    "dm_v1",
     "dm"
   )
   structure(list(def = def), class = class)
