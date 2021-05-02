@@ -32,7 +32,7 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
     dm_get_tables_impl()
 
   copy_data_base <-
-    tibble(source_name = src_tbls(dm), name = table_names) %>%
+    tibble(source_name = src_tbls_impl(dm), name = table_names) %>%
     mutate(df = map(source_name, function(x) tbl(dm, x)))
 
   if (is_db(dest)) {
@@ -220,7 +220,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   if (!is_mssql(src) && !is_postgres(src)) {
     warn_if_arg_not(schema)
     warn_if_arg_not(dbname, only_on = "MSSQL")
-    return(src_tbls(src))
+    return(src_tbls_impl(src))
   }
 
   con <- src$con
