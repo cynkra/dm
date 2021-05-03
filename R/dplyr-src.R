@@ -22,7 +22,7 @@ dm_get_src <- function(x) {
 }
 
 #' @details
-#' Use [[[] instead of `tbl()` to access individual tables in a `dm` object.
+#' Use [`[[`][base::Extract] instead of `tbl()` to access individual tables in a `dm` object.
 #' @param src A `dm` object.
 #' @param from A length one character variable containing the name of the requested table
 #' @param ... See original function documentation
