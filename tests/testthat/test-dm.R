@@ -3,7 +3,7 @@ test_that("can access tables", {
 
   expect_identical(tbl(dm_nycflights13(), "airlines"), nycflights13::airlines)
   expect_dm_error(
-    tbl(dm_nycflights13(), "x"),
+    tbl_impl(dm_nycflights13(), "x"),
     class = "table_not_in_dm"
   )
 })

@@ -208,6 +208,13 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
   src_db <- my_test_src()
   con_db <- src_db$con
 
+  # delete database after test
+  withr::defer({
+    try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_2]"))
+    try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_1]"))
+    try(dbExecute(con_db, "DROP DATABASE test_database_dm"))
+  })
+
   # create another DB and 2 connected tables
   DBI::dbExecute(con_db, "CREATE DATABASE test_database_dm")
   dbWriteTable(
@@ -226,13 +233,6 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
   # set FK relation
   DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dbo].[test_1] ([b]) ON DELETE CASCADE ON UPDATE CASCADE")
 
-
-  # delete database after test
-  withr::defer({
-    try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_2]"))
-    try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_1]"))
-    try(dbExecute(con_db, "DROP DATABASE test_database_dm"))
-  })
 
   # test 'get_src_tbl_names()'
   src_tbl_names <- unname(get_src_tbl_names(src_db, dbname = "test_database_dm"))
