@@ -13,8 +13,8 @@ tables”](https://cynkra.github.io/dm/articles/tech-dm-zoom.html).
 ## Prefixes
 
 1.  `dm_`: There are two cases for this prefix:
-      - The function takes a `dm` object as a first argument
-      - The function constructs a `dm` object from other objects
+    -   The function takes a `dm` object as a first argument
+    -   The function constructs a `dm` object from other objects
 2.  `check_`: Certain tests on the arguments are performed and an error
     is thrown in case they are not passed. If the tests are passed, the
     first argument is returned invisibly.

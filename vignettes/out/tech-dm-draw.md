@@ -3,7 +3,7 @@
 Once you have all your primary keys set and all foreign key relations
 defined, a graphical representation of your data model offers a
 condensed view of the tables and the relationships between the tables.
-The following functions can be used to visualize the `dm` object:\[1\]
+The following functions can be used to visualize the `dm` object:[1]
 
 1.  `dm_draw()`
 2.  `dm_set_colors()`
@@ -31,8 +31,8 @@ flights_dm_w_many_keys
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
-#> Primary keys: 3
-#> Foreign keys: 3
+#> Primary keys: 4
+#> Foreign keys: 4
 ```
 
 The schema is drawn with `dm_draw()`.
@@ -41,7 +41,7 @@ The schema is drawn with `dm_draw()`.
 dm_draw(flights_dm_w_many_keys)
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/tech-dm-draw_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/tech-dm-draw_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 You can use colors to visually group your tables into families to
 reflect their logical grouping. The available colors are either hexcoded
@@ -280,7 +280,7 @@ with the rest of the metadata.
 
 ``` r
 flights_dm_w_many_keys_and_colors <-
-  flights_dm_w_many_keys %>% 
+  flights_dm_w_many_keys %>%
   dm_set_colors(
     maroon4 = flights,
     orange = starts_with("air"),
@@ -294,7 +294,7 @@ Draw the schema with `dm_draw()`.
 dm_draw(flights_dm_w_many_keys_and_colors)
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/tech-dm-draw_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/tech-dm-draw_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 The colors can be queried with `dm_get_colors()`.
 
@@ -310,22 +310,33 @@ argument is `view_type`. Besides the default `"keys_only"`, it accepts
 title of the table.
 
 ``` r
-flights_dm_w_many_keys_and_colors %>% 
+flights_dm_w_many_keys_and_colors %>%
   dm_draw(view_type = "title_only")
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/tech-dm-draw_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/tech-dm-draw_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 If you would like to visualize only a some of the tables, use
 `dm_select_tbl()` before drawing:
 
 ``` r
-flights_dm_w_many_keys_and_colors %>% 
-  dm_select_tbl(flights, airports, planes) %>% 
+flights_dm_w_many_keys_and_colors %>%
+  dm_select_tbl(flights, airports, planes) %>%
   dm_draw()
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/tech-dm-draw_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/tech-dm-draw_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
-1.  The code for the functions in this section is borrowed from the
-    [{datamodelr}](https://github.com/bergant/datamodelr) package.
+Finally, for exporting a drawing to `svg` you could use
+`DiagrammeRsvg::export_svg()`:
+
+``` r
+flights_dm_w_many_keys_and_colors %>% 
+  dm_select_tbl(flights, airports, planes) %>% 
+  dm_draw() %>% 
+  DiagrammeRsvg::export_svg() %>% 
+  write("flights_dm_w_many_keys_and_color.svg")
+```
+
+[1] The code for the functions in this section is borrowed from the
+[{datamodelr}](https://github.com/bergant/datamodelr) package.

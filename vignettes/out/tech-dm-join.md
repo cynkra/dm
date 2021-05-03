@@ -6,7 +6,7 @@ attribute is merging the data.
 
 This document introduces you to the joining functions of {dm} and shows
 how to apply them using data from the
-[{nycflights13}](https://github.com/hadley/nycflights13) package.
+[{nycflights13}](https://github.com/tidyverse/nycflights13) package.
 
 [Relational data
 models](https://cynkra.github.io/dm/articles/howto-dm-theory#model)
@@ -66,31 +66,28 @@ The existing links can be inspected in two ways:
 
 1.  Visually, by drawing the data model with `dm_draw()`
 
-<!-- end list -->
-
 ``` r
-dm %>% 
+dm %>%
   dm_draw()
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/tech-dm-join_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/tech-dm-join_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 The directed arrows show explicitly the relation between different
 columns.
 
-2.  Printed to the console by calling `dm_get_all_fks()`
-
-<!-- end list -->
+1.  Printed to the console by calling `dm_get_all_fks()`
 
 ``` r
-dm %>% 
+dm %>%
   dm_get_all_fks()
-#> # A tibble: 3 x 3
-#>   child_table child_fk_cols parent_table
-#>   <chr>       <keys>        <chr>       
-#> 1 flights     carrier       airlines    
-#> 2 flights     origin        airports    
-#> 3 flights     tailnum       planes
+#> # A tibble: 4 x 4
+#>   child_table child_fk_cols     parent_table parent_pk_cols   
+#>   <chr>       <keys>            <chr>        <keys>           
+#> 1 flights     carrier           airlines     carrier          
+#> 2 flights     origin            airports     faa              
+#> 3 flights     tailnum           planes       tailnum          
+#> 4 flights     origin, time_hour weather      origin, time_hour
 ```
 
 ### Joining Examples
@@ -101,7 +98,7 @@ Let’s look at some examples:
 `flights` table.**
 
 ``` r
-dm_joined <- dm %>% 
+dm_joined <- dm %>%
   dm_join_to_tbl(flights, airlines, join = left_join)
 dm_joined
 #> # A tibble: 11,227 x 20
@@ -128,20 +125,22 @@ the `flights` table. The difference is the `name` column from the
 `airlines` table.
 
 ``` r
-dm$flights %>% 
-  colnames()
+dm %>%
+  tbl("flights") %>%
+  names()
 #>  [1] "year"           "month"          "day"            "dep_time"      
 #>  [5] "sched_dep_time" "dep_delay"      "arr_time"       "sched_arr_time"
 #>  [9] "arr_delay"      "carrier"        "flight"         "tailnum"       
 #> [13] "origin"         "dest"           "air_time"       "distance"      
 #> [17] "hour"           "minute"         "time_hour"
 
-dm$airlines %>% 
-  colnames()
+dm %>%
+  tbl("airlines") %>%
+  names()
 #> [1] "carrier" "name"
 
-dm_joined %>% 
-  colnames()
+dm_joined %>%
+  names()
 #>  [1] "year"           "month"          "day"            "dep_time"      
 #>  [5] "sched_dep_time" "dep_delay"      "arr_time"       "sched_arr_time"
 #>  [9] "arr_delay"      "carrier"        "flight"         "tailnum"       
@@ -152,7 +151,7 @@ dm_joined %>%
 The result is not a `dm` object anymore, but a conventional dataframe:
 
 ``` r
-dm_joined %>% 
+dm_joined %>%
   class()
 #> [1] "tbl_df"     "tbl"        "data.frame"
 ```
@@ -166,7 +165,7 @@ well organized, so no flights should remain. You can check this with an
 `anti_join`:
 
 ``` r
-dm %>% 
+dm %>%
   dm_join_to_tbl(flights, airlines, join = anti_join)
 #> # A tibble: 0 x 19
 #> # … with 19 variables: year <int>, month <int>, day <int>, dep_time <int>,
@@ -191,8 +190,8 @@ towards removing this inconvenience
 ``` r
 dm_nycflights13() %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  dm_filter(flights, month == 5) %>% 
-  dm_apply_filters() %>% 
+  dm_filter(flights, month == 5) %>%
+  dm_apply_filters() %>%
   dm_join_to_tbl(flights, airports, join = left_join)
 #> # A tibble: 136 x 26
 #>     year month   day dep_time sched_dep_time dep_delay arr_time
@@ -256,5 +255,5 @@ dm_nycflights13() %>%
 
 Be aware that all column names need to be unique. The
 `dm_flatten_to_tbl` cares about automatically renaming the relevant
-columns and prints if something was changed, e.g. `name ->
-airlines.name`.
+columns and prints if something was changed,
+e.g. `name -> airlines.name`.
