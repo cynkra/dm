@@ -202,7 +202,7 @@
 <div id="define-primary-and-foreign-keys" class="section level2">
 <h2 class="hasAnchor">
 <a href="#define-primary-and-foreign-keys" class="anchor" aria-hidden="true"></a>Define Primary and Foreign Keys</h2>
-<p>Primary keys and foreign keys are how relational database tables are linked with each other. A primary key is a column that has a unique value for each row within a table. A foreign key is a column containing the primary key for a row in another table.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Foreign keys act as cross references between tables. They specify the relationships that gives us the <em>relational</em> database. For more information on keys and a crash course on databases, see <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
+<p>Primary keys and foreign keys are how relational database tables are linked with each other. A primary key is a column or column tuple that has a unique value for each row within a table. A foreign key is a column or column tuple containing the primary key for a row in another table. Foreign keys act as cross references between tables. They specify the relationships that gives us the <em>relational</em> database. For more information on keys and a crash course on databases, see <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
 <p>The <a href="https://relational.fit.cvut.cz/assets/img/datasets-generated/financial.svg" class="external-link">model diagram</a> provided by our test database loosely illustrates the intended relationships between tables. In the diagram we can see that the <code>loans</code> table should be linked to the <code>accounts</code> table. Below we create those links in 3 steps:</p>
 <ol style="list-style-type: decimal">
 <li>Add a primary key <code>id</code> to the <code>accounts</code> table</li>
@@ -439,12 +439,6 @@
 <a href="#further-reading" class="anchor" aria-hidden="true"></a>Further reading</h2>
 <p><code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code> - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.</p>
 <p><code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code> - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.</p>
-</div>
-<div class="footnotes">
-<hr>
-<ol>
-<li id="fn1"><p>Support for compound keys (consisting of multiple columns) is <a href="https://github.com/cynkra/dm/issues/3" class="external-link">planned</a>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
   </div>
 

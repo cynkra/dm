@@ -246,7 +246,7 @@
 <h2 class="hasAnchor">
 <a href="#defining-keys" class="anchor" aria-hidden="true"></a>Defining Keys</h2>
 <p>Even though we now have a <code>dm</code> object that contains all our data, we have not specified how our five tables are connected. To do this we need to define primary keys and foreign keys on the tables.</p>
-<p>Primary keys and foreign keys are how relational database tables are linked with each other. A primary key is a column that has a unique value for each row within a table. A foreign key is a column containing the primary key for a row in another table.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Foreign keys act as cross references between tables. They specify the relationships that gives us the <em>relational</em> database. For more information on keys and a crash course on databases, see <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
+<p>Primary keys and foreign keys are how relational database tables are linked with each other. A primary key is a column or column tuple that has a unique value for each row within a table. A foreign key is a column or column tuple containing the primary key for a row in another table. Foreign keys act as cross references between tables. They specify the relationships that gives us the <em>relational</em> database. For more information on keys and a crash course on databases, see <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
 </div>
 <div id="primary-keys" class="section level2">
 <h2 class="hasAnchor">
@@ -465,12 +465,6 @@
 #&gt; </span><span style="color: #555555;">6</span><span> flights FK    origin  airports  TRUE   </span><span style="color: #555555;">""</span><span>
 </span></code></pre>
 </div>
-</div>
-<div class="footnotes">
-<hr>
-<ol>
-<li id="fn1"><p>Support for compound keys (consisting of multiple columns) is <a href="https://github.com/cynkra/dm/issues/3" class="external-link">planned</a>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
   </div>
 

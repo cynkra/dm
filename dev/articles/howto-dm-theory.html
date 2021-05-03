@@ -189,7 +189,7 @@
 <p>Thus, to take full advantage of the relational database approach, an associated data model is needed to overcome the challenges that arise when working with multiple tables.</p>
 <p>Let’s illustrate this challenge with the data from the <a href="https://github.com/tidyverse/nycflights13" class="external-link"><code>nycflights13</code> dataset</a> that contains detailed information about the 336776 flights that departed from New York City in 2013. The information is stored in five tables.</p>
 <p>Details like the full name of an airport are not available immediately; these can only be obtained by joining or merging the constituent tables, which can result in long and inflated pipe chains full of <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code> and other forms of data merging.</p>
-<p>In classical {dplyr} notation, you will need three <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code> calls to merge the <code>flights</code> table gradually to <code>airlines</code>, <code>planes</code> and <code>airports</code> tables to create one wide data frame.</p>
+<p>In classical {dplyr} notation, you will need three <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code> calls to merge the <code>flights</code> table gradually to <code>airlines</code>, <code>planes</code>, <code>airports</code> and <code>weather</code> tables to create one wide data frame.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Attaching packages</span><span> ────────────────────────────────── tidyverse 1.3.1 ──
@@ -210,27 +210,31 @@
 <span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airlines</span>, by <span class="op">=</span> <span class="st">"carrier"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">planes</span>, by <span class="op">=</span> <span class="st">"tailnum"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airports</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span> <span class="op">=</span> <span class="st">"faa"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 35</span><span>
-#&gt;    year.x month   day dep_time sched_dep_time dep_delay arr_time
-#&gt;     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
-#&gt; </span><span style="color: #555555;"> 1</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      517            515         2      830
-#&gt; </span><span style="color: #555555;"> 2</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      533            529         4      850
-#&gt; </span><span style="color: #555555;"> 3</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      542            540         2      923
-#&gt; </span><span style="color: #555555;"> 4</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      544            545        -</span><span style="color: #BB0000;">1</span><span>     </span><span style="text-decoration: underline;">1</span><span>004
-#&gt; </span><span style="color: #555555;"> 5</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      554            600        -</span><span style="color: #BB0000;">6</span><span>      812
-#&gt; </span><span style="color: #555555;"> 6</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      554            558        -</span><span style="color: #BB0000;">4</span><span>      740
-#&gt; </span><span style="color: #555555;"> 7</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      555            600        -</span><span style="color: #BB0000;">5</span><span>      913
-#&gt; </span><span style="color: #555555;"> 8</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      557            600        -</span><span style="color: #BB0000;">3</span><span>      709
-#&gt; </span><span style="color: #555555;"> 9</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      557            600        -</span><span style="color: #BB0000;">3</span><span>      838
-#&gt; </span><span style="color: #555555;">10</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      558            600        -</span><span style="color: #BB0000;">2</span><span>      753
-#&gt; </span><span style="color: #555555;"># … with 336,766 more rows, and 28 more variables: sched_arr_time &lt;int&gt;,</span><span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airports</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span> <span class="op">=</span> <span class="st">"faa"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">weather</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span>, <span class="st">"time_hour"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 48</span><span>
+#&gt;    year.x month.x day.x dep_time sched_dep_time dep_delay arr_time
+#&gt;     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
+#&gt; </span><span style="color: #555555;"> 1</span><span>   </span><span style="text-decoration: underline;">2</span><span>013       1     1      517            515         2      830
+#&gt; </span><span style="color: #555555;"> 2</span><span>   </span><span style="text-decoration: underline;">2</span><span>013       1     1      533            529         4      850
+#&gt; </span><span style="color: #555555;"> 3</span><span>   </span><span style="text-decoration: underline;">2</span><span>013       1     1      542            540         2      923
+#&gt; </span><span style="color: #555555;"> 4</span><span>   </span><span style="text-decoration: underline;">2</span><span>013       1     1      544            545        -</span><span style="color: #BB0000;">1</span><span>     </span><span style="text-decoration: underline;">1</span><span>004
+#&gt; </span><span style="color: #555555;"> 5</span><span>   </span><span style="text-decoration: underline;">2</span><span>013       1     1      554            600        -</span><span style="color: #BB0000;">6</span><span>      812
+#&gt; </span><span style="color: #555555;"> 6</span><span>   </span><span style="text-decoration: underline;">2</span><span>013       1     1      554            558        -</span><span style="color: #BB0000;">4</span><span>      740
+#&gt; </span><span style="color: #555555;"> 7</span><span>   </span><span style="text-decoration: underline;">2</span><span>013       1     1      555            600        -</span><span style="color: #BB0000;">5</span><span>      913
+#&gt; </span><span style="color: #555555;"> 8</span><span>   </span><span style="text-decoration: underline;">2</span><span>013       1     1      557            600        -</span><span style="color: #BB0000;">3</span><span>      709
+#&gt; </span><span style="color: #555555;"> 9</span><span>   </span><span style="text-decoration: underline;">2</span><span>013       1     1      557            600        -</span><span style="color: #BB0000;">3</span><span>      838
+#&gt; </span><span style="color: #555555;">10</span><span>   </span><span style="text-decoration: underline;">2</span><span>013       1     1      558            600        -</span><span style="color: #BB0000;">2</span><span>      753
+#&gt; </span><span style="color: #555555;"># … with 336,766 more rows, and 41 more variables: sched_arr_time &lt;int&gt;,</span><span>
 #&gt; </span><span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span><span>
-#&gt; </span><span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span><span>
-#&gt; </span><span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, name.x &lt;chr&gt;, year.y &lt;int&gt;,</span><span>
-#&gt; </span><span style="color: #555555;">#   type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;,</span><span>
-#&gt; </span><span style="color: #555555;">#   seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;, name.y &lt;chr&gt;, lat &lt;dbl&gt;,</span><span>
-#&gt; </span><span style="color: #555555;">#   lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;</span><span>
+#&gt; </span><span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   hour.x &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, name.x &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   year.y &lt;int&gt;, type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   engines &lt;int&gt;, seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;, name.y &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   year &lt;int&gt;, month.y &lt;int&gt;, day.y &lt;int&gt;, hour.y &lt;int&gt;, temp &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   dewp &lt;dbl&gt;, humid &lt;dbl&gt;, wind_dir &lt;dbl&gt;, wind_speed &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;</span><span>
 </span></code></pre>
 <p>{dm} offers a more elegant and shorter way to combine tables while augmenting {dplyr}/{dbplyr} workflows.</p>
 <p>It is possible to have the best of both worlds: manage your data with {dm} as linked tables, then flatten multiple tables into one for your analysis with {dplyr} on an as-needed basis.</p>
@@ -268,8 +272,8 @@
 <div id="pk" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pk" class="anchor" aria-hidden="true"></a>3. Primary Keys</h2>
-<p>In a relational data model, every table needs to have <strong>one column or attribute that uniquely identifies a row</strong>. This column is called the <em>primary key</em> (abbreviated with pk). A primary key can be either an existing column that satisfies the condition of being unique, or a new column that assigns an identifier.</p>
-<p>Example: In the <code>airlines</code> table of <code>nycflights13</code> the column <code>carrier</code> is the primary key.</p>
+<p>In a relational data model, each table should have <strong>one or several columns that uniquely identifies a row</strong>. These columns define the <em>primary key</em> (abbreviated with “pk”). If the key consists of a single column, it is called <em>simple key</em>. A key consisting of more than one column is called a <em>compound key</em>.</p>
+<p>Example: In the <code>airlines</code> table of <code>nycflights13</code> the column <code>carrier</code> is the primary key, a simple key. The <code>weather</code> table has the combination of <code>origin</code> and <code>time_hour</code> as primary key, a compound key.</p>
 <p>You can get all primary keys in a <code>dm</code> by calling <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -282,7 +286,7 @@
 #&gt; </span><span style="color: #555555;">3</span><span> planes   tailnum          
 #&gt; </span><span style="color: #555555;">4</span><span> weather  origin, time_hour
 </span></code></pre>
-<p>If an attribute is suitable as a primary key, it can be checked with <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code>. Which columns of the <code>airlines</code> table can serve as a primary key?</p>
+<p><code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> checks all columns if they are suitable as a simple primary key:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span><span class="va">airports</span><span class="op">)</span></code></pre></div>
@@ -303,8 +307,9 @@
 <div id="fk" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fk" class="anchor" aria-hidden="true"></a>4. Foreign Keys</h2>
-<p>The <strong>counterpart of a primary key in one table is the foreign key in another table</strong>. In order to join two tables, the primary key of the first table needs to be available in the second table as well. This second column is called the <em>foreign key</em> (abbreviated with fk).</p>
-<p>For example, if you want to link the <code>airlines</code> table to the <code>flights</code> table, the primary key in <code>airlines</code> needs to match the foreign key in <code>flights</code>. This condition is satisfied because the column <code>carrier</code> is present as a primary key in the <code>airlines</code> table as well as a foreign key in the <code>flights</code> table. You can find foreign key candidates with the function <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>, they are marked with <code>TRUE</code> in the <code>candidate</code> column.</p>
+<p>The <strong>counterpart of a primary key in one table is the foreign key in another table</strong>. In order to join two tables, the primary key of the first table needs to be referenced from the second table. This column or these columns are called the <em>foreign key</em> (abbreviated with “fk”).</p>
+<p>For example, if you want to link the <code>airlines</code> table to the <code>flights</code> table, the primary key in <code>airlines</code> needs to match the foreign key in <code>flights</code>. This condition is satisfied because the column <code>carrier</code> is present as a primary key in the <code>airlines</code> table as well as a foreign key in the <code>flights</code> table. In the case of compound keys, the <code>origin</code> and <code>time_hour</code> columns (which form the primary key of the <code>weather</code> table) are also present in the <code>flights</code> table.</p>
+<p>You can find foreign key candidates for simple keys with the function <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>, they are marked with <code>TRUE</code> in the <code>candidate</code> column.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span><span class="op">)</span></code></pre></div>
@@ -331,19 +336,12 @@
 #&gt; </span><span style="color: #555555;">18</span><span> minute       FALSE     </span><span style="color: #555555;">"</span><span>Can't combine `value1` &lt;double&gt; and `value1` &lt;c…
 #&gt; </span><span style="color: #555555;">19</span><span> time_hour    FALSE     </span><span style="color: #555555;">"</span><span>Can't combine `value1` &lt;datetime&lt;America/New_Yo…
 </span></code></pre>
-<p>After finding and assigning foreign keys, get the name of the set foreign key:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span><span class="op">)</span>
-<span class="co">#&gt; &lt;list_of&lt;character&gt;[1]&gt;</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "carrier"</span></code></pre></div>
 <p>Further Reading: All {dm} functions for working with <a href="https://cynkra.github.io/dm/articles/tech-dm-class.html#foreign-keys">foreign keys</a>.</p>
 </div>
 <div id="referential-integrity" class="section level2">
 <h2 class="hasAnchor">
 <a href="#referential-integrity" class="anchor" aria-hidden="true"></a>5. Referential Integrity</h2>
-<p>A data set has referential integrity if all relations between tables are valid. That is, every foreign key holds a primary key that is present in the parent table. If a foreign key contains a parent table primary key that has been deleted that row is an orphan row and the database no longer has referential integrity.</p>
+<p>A data set has referential integrity if all relations between tables are valid. That is, every foreign key holds a primary key that is present in the parent table. If a foreign key contains a reference where the corresponding row in the parent table is not availabe, that row is an orphan row and the database no longer has referential integrity.</p>
 <p>{dm} allows checking referential integrity with the <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> function. The following conditions are checked:</p>
 <ul>
 <li>All primary key values must be unique.</li>
@@ -351,7 +349,7 @@
 <li>Each foreign key value must have a corresponding primary key value.</li>
 </ul>
 <p>In the example data model, for a substantial share of the flights, detailed information for the corresponding airplane is not available:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #BBBB00;">!</span><span> Unsatisfied constraints:
@@ -367,7 +365,7 @@
 <p>Normalization is a technical term that describes the <strong>central design principle of a relational data model</strong>: splitting data into multiple tables.</p>
 <p>A normalized data schema consists of several relations (tables) that are linked with attributes (columns). The relations can be joined together by means of <a href="#pk">primary</a> and <a href="#fk">foreign keys</a>. The main goal of normalization is to keep data organization as clean and simple as possible by avoiding redundant data entries.</p>
 <p>For example, if you want to change the name of one airport in the <code>nycflights13</code> dataset, you will only need to update a single data value. This principle is sometimes called the <em>single point of truth</em>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#  Update in one single location...</span>
 <span class="va">airlines</span><span class="op">[</span><span class="va">airlines</span><span class="op">$</span><span class="va">carrier</span> <span class="op">==</span> <span class="st">"UA"</span>, <span class="st">"name"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"United broke my guitar"</span>
 
@@ -378,7 +376,7 @@
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 
 #&gt; </span><span style="color: #555555;">1</span><span> UA      United broke my guitar
 </span></code></pre>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># ...propagates to all related records</span>
 <span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -404,7 +402,7 @@
 <p>Let’s look at the <code>planes</code> table, which consists of 3322 individual tail numbers and corresponding information for the specific airplane, like the year it was manufactured or the average cruising speed.</p>
 <p>The function <code><a href="../reference/decompose_table.html">decompose_table()</a></code> extracts two new tables and creates a new key <code>model_id</code>, that links both tables.</p>
 <p>This results in a <code>parent_table</code> and a <code>child_table</code> that differ massively in the number of rows:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">planes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">model_id</span>, <span class="va">model</span>, <span class="va">manufacturer</span>, <span class="va">type</span>, <span class="va">engines</span>, <span class="va">seats</span>, <span class="va">manufacturer</span>, <span class="va">speed</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; $child_table
@@ -449,7 +447,7 @@
 <p>In production, the data is stored in a relational database and {dm} is used to work with the data.</p>
 <p>Therefore, {dm} can copy data <a href="https://cynkra.github.io/dm/articles/dm.html#copy">from and to databases</a>, and works transparently with both in-memory data and with relational database systems.</p>
 <p>For example, let’s create a local SQLite database and copy the <code>dm</code> object to it:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">con_sqlite</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">con_sqlite</span>
 <span class="co">#&gt; &lt;SQLiteConnection&gt;</span>
@@ -468,7 +466,7 @@
 <span class="co">#&gt; [6] "sqlite_stat4"                        </span>
 <span class="co">#&gt; [7] "weather_2020_08_28_07_13_03_12345_1"</span></code></pre></div>
 <p>In the opposite direction, <code>dm</code> can also be populated with data from a DB. Unfortunately, keys currently can be learned only for MSSQL and Postgres, but not for SQLite. Therefore, the dm contains the tables but not the keys:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
 <span class="co">#&gt; Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
@@ -480,7 +478,7 @@
 #&gt; Foreign keys: 0
 </span></code></pre>
 <p>Remember to terminate the database connection:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
