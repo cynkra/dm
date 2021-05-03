@@ -4,11 +4,8 @@
       flights_init <- dm_nycflights13() %>% dm_zoom_to(flights) %>% filter(FALSE) %>%
         dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(FALSE) %>%
         dm_update_zoomed()
-    Code
       sqlite <- dbConnect(RSQLite::SQLite())
-    Code
       flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
-    Code
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
@@ -17,14 +14,12 @@
       flights_jan <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
         dm_zoom_to(flights) %>% filter(month == 1) %>% dm_update_zoomed() %>%
         dm_zoom_to(weather) %>% filter(month == 1) %>% dm_update_zoomed()
-    Code
       print(dm_nrow(flights_jan))
     Output
       flights weather 
           932      72 
     Code
       flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan)
-    Code
       out <- dm_rows_insert(flights_sqlite, flights_jan_sqlite)
     Message <simpleMessage>
       Not persisting, use `in_place = FALSE` to turn off this message.
@@ -35,7 +30,6 @@
             16     1458        0     3322        0 
     Code
       dm_rows_insert(flights_sqlite, flights_jan_sqlite, in_place = TRUE)
-    Code
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
@@ -44,11 +38,8 @@
       flights_feb <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
         dm_zoom_to(flights) %>% filter(month == 2) %>% dm_update_zoomed() %>%
         dm_zoom_to(weather) %>% filter(month == 2) %>% dm_update_zoomed()
-    Code
       flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb)
-    Code
       flights_new <- dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = FALSE)
-    Code
       print(dm_nrow(flights_new))
     Output
       airlines airports  flights   planes  weather 
@@ -63,10 +54,9 @@
     Message <cliMessage>
       ! Unsatisfied constraints:
     Output
-      * Table `flights`: foreign key tailnum into table `planes`: 273 entries (15.5%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
+      * Table `flights`: foreign key tailnum into table `planes`: 166 values (14.9%) of `flights$tailnum` not in `planes$tailnum`: N0EGMQ, N318AT, N395AA, N3ACAA, N3AEMQ, ...
     Code
       dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
-    Code
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
@@ -77,15 +67,11 @@
     Code
       dm_filter_rearranged <- dm_for_filter() %>% dm_select(tf_2, d, everything()) %>%
         dm_select(tf_4, i, everything()) %>% dm_select(tf_5, l, m, everything())
-    Code
       suppressMessages(dm_copy <- copy_dm_to(my_test_src(), dm_filter_rearranged))
-    Code
       dm_update_local <- dm(tf_1 = tibble(a = 2L, b = "q"), tf_2 = tibble(c = c(
         "worm"), d = 10L, ), tf_4 = tibble(h = "e", i = "sieben", ), tf_5 = tibble(k = 3L,
         m = "tree", ), )
-    Code
       dm_update_copy <- suppressMessages(copy_dm_to(my_test_src(), dm_update_local))
-    Code
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
             d c        e    
@@ -201,7 +187,6 @@
       
     Code
       dm_copy %>% dm_rows_update(dm_update_copy, in_place = TRUE)
-    Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
       $tf_1
@@ -273,13 +258,10 @@
 
     Code
       suppressMessages(dm_copy <- copy_dm_to(my_test_src(), dm_for_filter()))
-    Code
       dm_truncate_local <- dm(tf_2 = tibble(c = c("worm"), d = 10L, ), tf_5 = tibble(
         k = 3L, m = "tree", ), )
-    Code
       dm_truncate_copy <- suppressMessages(copy_dm_to(my_test_src(),
       dm_truncate_local))
-    Code
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
         c            d e    
@@ -382,7 +364,6 @@
       
     Code
       dm_copy %>% dm_rows_truncate(dm_truncate_copy, in_place = TRUE)
-    Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
       $tf_1

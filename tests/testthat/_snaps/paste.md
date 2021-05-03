@@ -2,13 +2,11 @@
 
     Code
       # empty
-    Code
       empty_dm() %>% dm_paste()
     Message <cliMessage>
       dm::dm()
     Code
       # baseline
-    Code
       dm_for_filter() %>% dm_paste()
     Message <cliMessage>
       dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
@@ -25,7 +23,6 @@
         dm::dm_add_fk(tf_5, m, tf_6)
     Code
       # changing the tab width
-    Code
       dm_for_filter() %>% dm_paste(tab_width = 4)
     Message <cliMessage>
       dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
@@ -42,7 +39,6 @@
           dm::dm_add_fk(tf_5, m, tf_6)
     Code
       # we don't care if the tables really exist
-    Code
       dm_for_filter() %>% dm_rename_tbl(tf_1_new = tf_1) %>% dm_paste()
     Message <cliMessage>
       dm::dm(tf_1_new, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
@@ -59,7 +55,6 @@
         dm::dm_add_fk(tf_5, m, tf_6)
     Code
       # produce `dm_select()` statements in addition to the rest
-    Code
       dm_for_filter() %>% dm_select(tf_5, k = k, m) %>% dm_select(tf_1, a) %>%
         dm_add_tbl(x = copy_to_my_test_src(tibble(q = 1L), qq)) %>% dm_paste(options = "select")
     Message <cliMessage>
@@ -73,7 +68,6 @@
         dm::dm_select(x, q)
     Code
       # produce code with colors
-    Code
       dm_for_filter() %>% dm_set_colors(orange = tf_1:tf_3, darkgreen = tf_5:tf_6) %>%
         dm_paste()
     Message <cliMessage>
@@ -96,11 +90,8 @@
         dm::dm_set_colors(`#006400FF` = tf_6)
     Code
       # tick if needed
-    Code
       a <- tibble(x = 1)
-    Code
       names(a) <- "a b"
-    Code
       dm(a) %>% dm_zoom_to(a) %>% dm_insert_zoomed("a b") %>% dm_add_pk(a, "a b") %>%
         dm_add_fk("a b", "a b", a) %>% dm_set_colors(green = "a b") %>% dm_paste(
         options = "all")
@@ -117,7 +108,6 @@
         dm::dm_set_colors(`#00FF00FF` = `a b`)
     Code
       # all of nycflights13
-    Code
       dm_nycflights13() %>% dm_paste(options = "all")
     Message <cliMessage>
       airlines <- tibble::tibble(
@@ -197,7 +187,6 @@
         dm::dm_set_colors(`#70AD47FF` = weather)
     Code
       # deprecation warning for select argument
-    Code
       dm() %>% dm_paste(select = TRUE)
     Warning <lifecycle_warning_deprecated>
       The `select` argument of `dm_paste()` is deprecated as of dm 0.1.2.
@@ -206,8 +195,8 @@
       dm::dm()
     Code
       # error for bad option
-    Code
-      dm() %>% dm_paste(options = c("bogus", "all", "mad"))
-    Error <dm_error_unknown_option>
+      writeLines(conditionMessage(expect_error(dm() %>% dm_paste(options = c("bogus",
+        "all", "mad")))))
+    Output
       Option unknown: "bogus", "mad". Must be one of "all", "tables", "keys", "select", "color".
 

@@ -27,7 +27,7 @@ dm_rows_truncate(x, y, ..., in_place = NULL)
 
 \item{y}{\code{dm} object with new data.}
 
-\item{...}{Must be empty.}
+\item{...}{These dots are for future extensions and must be empty.}
 
 \item{in_place}{Should \code{x} be modified in place? This argument is only
 relevant for mutable backends (e.g. databases, data.tables).
@@ -41,7 +41,7 @@ If \code{in_place = TRUE}, the underlying data is updated as a side effect,
 and \code{x} is returned, invisibly.
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 These functions provide a framework for updating data in existing tables.
 Unlike \code{\link[=compute]{compute()}}, \code{\link[=copy_to]{copy_to()}} or \code{\link[=copy_dm_to]{copy_dm_to()}}, no new tables are created

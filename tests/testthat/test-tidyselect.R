@@ -18,10 +18,12 @@ test_that("tidyselecting tables works", {
   )
 })
 
-verify_output("out/tidyselect.txt", {
-  dm_for_filter() %>%
-    dm_select_tbl(tf_7)
+test_that("output", {
+  expect_snapshot(error = TRUE, {
+    dm_for_filter() %>%
+      dm_select_tbl(tf_7)
 
-  dm_for_filter() %>%
-    dm_rename_tbl(tf_0 = tf_7)
+    dm_for_filter() %>%
+      dm_rename_tbl(tf_0 = tf_7)
+  })
 })

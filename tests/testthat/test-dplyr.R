@@ -86,6 +86,50 @@ test_that("basic test: 'summarise()'-methods work", {
   )
 })
 
+test_that("basic test: 'count()'-method works", {
+  expect_equivalent_tbl(
+    count(zoomed_dm()) %>% get_zoomed_tbl(),
+    count(tf_2())
+  )
+
+  expect_equivalent_tbl(
+    count(zoomed_dm(), c) %>% get_zoomed_tbl(),
+    count(tf_2(), c)
+  )
+
+  expect_equivalent_tbl(
+    count(zoomed_dm(), wt = d) %>% get_zoomed_tbl(),
+    count(tf_2(), wt = d)
+  )
+
+  expect_equivalent_tbl(
+    count(zoomed_dm(), sort = TRUE) %>% get_zoomed_tbl(),
+    count(tf_2(), sort = TRUE)
+  )
+
+  expect_equivalent_tbl(
+    count(zoomed_dm(), name = "COUNT") %>% get_zoomed_tbl(),
+    count(tf_2(), name = "COUNT")
+  )
+
+  expect_dm_error(
+    count(dm_for_filter()),
+    "only_possible_w_zoom"
+  )
+})
+
+test_that("basic test: 'tally()'-method works", {
+  expect_equivalent_tbl(
+    tally(zoomed_dm()) %>% get_zoomed_tbl(),
+    tally(tf_2())
+  )
+
+  expect_dm_error(
+    tally(dm_for_filter()),
+    "only_possible_w_zoom"
+  )
+})
+
 test_that("basic test: 'filter()'-methods work", {
   skip_if_src("maria")
 
@@ -513,7 +557,7 @@ test_that("key tracking works", {
 
   # dm_nycflights13() (with FK constraints) doesn't work on DB
   # here, FK constraints are not implemented on the DB
-  skip_if_src_not("df", "mssql")
+  skip_if_src_not("df", "mssql", "postgres")
   skip_if_not_installed("dbplyr")
   skip_if_not_installed("nycflights13")
 

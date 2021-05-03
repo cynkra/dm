@@ -58,7 +58,7 @@ test_that("output", {
       dm_paste(select = TRUE)
 
     "error for bad option"
-    dm() %>%
-      dm_paste(options = c("bogus", "all", "mad"))
+    writeLines(conditionMessage(expect_error(dm() %>%
+      dm_paste(options = c("bogus", "all", "mad")))))
   })
 })

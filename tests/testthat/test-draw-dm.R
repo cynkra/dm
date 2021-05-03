@@ -61,7 +61,6 @@ test_that("`dm_set_colors()` errors if old syntax used", {
 
 test_that("`dm_set_colors()` errors with unnamed args", {
   skip_if_not_installed("nycflights13")
-  skip_if_src("postgres")
 
   expect_dm_error(
     dm_set_colors(
@@ -96,7 +95,6 @@ test_that("bad color", {
 })
 
 test_that("getter", {
-  skip_if_src("postgres")
   skip_if_not_installed("nycflights13")
 
   expect_equal(
@@ -112,7 +110,7 @@ test_that("getter", {
 })
 
 test_that("datamodel-code for drawing", {
-  data_model_for_filter <- dm_get_data_model(dm_for_filter())
+  data_model_for_filter <- dm_get_data_model(dm_for_filter(), column_types = TRUE)
 
   expect_s3_class(
     data_model_for_filter,
@@ -136,22 +134,44 @@ test_that("helpers", {
   expect_identical(
     dm_get_all_columns(dm_for_filter()),
     tibble::tribble(
-      ~table, ~id, ~column,
-      "tf_1", 1L, "a",
-      "tf_1", 2L, "b",
-      "tf_2", 1L, "c",
-      "tf_2", 2L, "d",
-      "tf_2", 3L, "e",
-      "tf_3", 1L, "f",
-      "tf_3", 2L, "g",
-      "tf_4", 1L, "h",
-      "tf_4", 2L, "i",
-      "tf_4", 3L, "j",
-      "tf_5", 1L, "k",
-      "tf_5", 2L, "l",
-      "tf_5", 3L, "m",
-      "tf_6", 1L, "n",
-      "tf_6", 2L, "o"
+      ~table, ~column, ~id,
+      "tf_1",     "a",  1L,
+      "tf_1",     "b",  2L,
+      "tf_2",     "c",  1L,
+      "tf_2",     "d",  2L,
+      "tf_2",     "e",  3L,
+      "tf_3",     "f",  1L,
+      "tf_3",     "g",  2L,
+      "tf_4",     "h",  1L,
+      "tf_4",     "i",  2L,
+      "tf_4",     "j",  3L,
+      "tf_5",     "k",  1L,
+      "tf_5",     "l",  2L,
+      "tf_5",     "m",  3L,
+      "tf_6",     "n",  1L,
+      "tf_6",     "o",  2L,
+    )
+  )
+
+  expect_identical(
+    dm_get_all_column_types(dm_for_filter()),
+    tibble::tribble(
+      ~table, ~column, ~id, ~type,
+      "tf_1",     "a",  1L, "int",
+      "tf_1",     "b",  2L, "chr",
+      "tf_2",     "c",  1L, "chr",
+      "tf_2",     "d",  2L, "int",
+      "tf_2",     "e",  3L, "chr",
+      "tf_3",     "f",  1L, "chr",
+      "tf_3",     "g",  2L, "chr",
+      "tf_4",     "h",  1L, "chr",
+      "tf_4",     "i",  2L, "chr",
+      "tf_4",     "j",  3L, "chr",
+      "tf_5",     "k",  1L, "int",
+      "tf_5",     "l",  2L, "chr",
+      "tf_5",     "m",  3L, "chr",
+      "tf_6",     "n",  1L, "chr",
+      "tf_6",     "o",  2L, "chr",
     )
   )
 })
@@ -160,20 +180,25 @@ test_that("output", {
   skip_if_not_installed("DiagrammeRsvg")
   skip_if_not_installed("nycflights13")
 
-  expect_snapshot(
+  expect_snapshot_diagram(
     dm_nycflights13() %>%
-      dm_draw() %>%
-      DiagrammeRsvg::export_svg() %>%
-      cli::cat_line()
+      dm_draw(),
+    "nycflight-dm.svg"
+  )
+
+  # 444: types
+  expect_snapshot_diagram(
+    dm_nycflights13() %>%
+      dm_draw(column_types = TRUE),
+    "nycflight-dm-types.svg"
   )
 
   # Multi-fk (#37)
-  expect_snapshot(
+  expect_snapshot_diagram(
     dm_nycflights13() %>%
       dm_zoom_to(planes) %>%
       dm_insert_zoomed("planes_copy") %>%
-      dm_draw() %>%
-      DiagrammeRsvg::export_svg() %>%
-      cli::cat_line()
+      dm_draw(),
+    "nycflight-dm-copy.svg"
   )
 })

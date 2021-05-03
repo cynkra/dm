@@ -19,10 +19,10 @@ source("setup/setup.R")
 The {dm} package offers functions to work with relational data models in R.
 A common task for multiple, separated tables that have a shared attribute is merging the data.
 
-This document introduces you to the joining functions of {dm} and shows how to apply them using data from the [{nycflights13}](https://github.com/hadley/nycflights13) package.
+This document introduces you to the joining functions of {dm} and shows how to apply them using data from the [{nycflights13}](https://github.com/tidyverse/nycflights13) package.
 
-[Relational data models](https://krlmlr.github.io/dm/articles/howto-dm-theory#model) consist of multiple tables that are linked with [foreign keys](https://krlmlr.github.io/dm/articles/howto-dm-theory#fk). They are the building blocks for joining tables.
-Read more about relational data models in the vignette ["Introduction to Relational Data Models"](https://krlmlr.github.io/dm/articles/howto-dm-theory).
+[Relational data models](https://cynkra.github.io/dm/articles/howto-dm-theory#model) consist of multiple tables that are linked with [foreign keys](https://cynkra.github.io/dm/articles/howto-dm-theory#fk). They are the building blocks for joining tables.
+Read more about relational data models in the vignette ["Introduction to Relational Data Models"](https://cynkra.github.io/dm/articles/howto-dm-theory).
 
 First, we load the packages that we need:
 
@@ -41,7 +41,7 @@ The data comes from the US Bureau of Transportation Statistics, and is documente
 First, we have to create a `dm` object from the {nycflights13} data.
 This is implemented with `dm::dm_nycflights13()`.
 
-A [data model object](https://krlmlr.github.io/dm/articles/tech-dm-class.html#class-dm) contains the data as well as metadata.
+A [data model object](https://cynkra.github.io/dm/articles/tech-dm-class.html#class-dm) contains the data as well as metadata.
 
 If you would like to create a `dm` from other tables, please look at `?dm` and the function `new_dm()`.
 
@@ -58,14 +58,14 @@ See `?dplyr::join` for details.
 ### How it works
 
 A join is the combination of two tables based on shared information.
-In technical terms, we merge the tables that need to be directly connected by a [foreign key relation](https://krlmlr.github.io/dm/articles/howto-dm-theory#fk).
+In technical terms, we merge the tables that need to be directly connected by a [foreign key relation](https://cynkra.github.io/dm/articles/howto-dm-theory#fk).
 
 The existing links can be inspected in two ways:
 
 1. Visually, by drawing the data model with `dm_draw()`
 
 ```{r}
-dm %>% 
+dm %>%
   dm_draw()
 ```
 
@@ -74,7 +74,7 @@ The directed arrows show explicitly the relation between different columns.
 2. Printed to the console by calling `dm_get_all_fks()`
 
 ```{r}
-dm %>% 
+dm %>%
   dm_get_all_fks()
 ```
 
@@ -85,7 +85,7 @@ Let's look at some examples:
 **Add a column with airline names from the `airlines` table to the `flights` table.**
 
 ```{r}
-dm_joined <- dm %>% 
+dm_joined <- dm %>%
   dm_join_to_tbl(flights, airlines, join = left_join)
 dm_joined
 ```
@@ -94,22 +94,22 @@ As you can see below, the `dm_joined` dataframe has one more column than the `fl
 The difference is the `name` column from the `airlines` table.
 
 ```{r}
-dm %>% 
-  tbl("flights") %>% 
+dm %>%
+  tbl("flights") %>%
   names()
 
-dm %>% 
-  tbl("airlines") %>% 
+dm %>%
+  tbl("airlines") %>%
   names()
 
-dm_joined %>% 
+dm_joined %>%
   names()
 ```
 
 The result is not a `dm` object anymore, but a conventional dataframe:
 
 ```{r}
-dm_joined %>% 
+dm_joined %>%
   class()
 ```
 
@@ -121,7 +121,7 @@ We expect the flights data from {nycflights13} package to be clean and well orga
 You can check this with an `anti_join`:
 
 ```{r}
-dm %>% 
+dm %>%
   dm_join_to_tbl(flights, airlines, join = anti_join)
 ```
 
@@ -131,13 +131,13 @@ An example with filtering on a `dm` and then merging:
 
 Currently, it is important to call `dm_apply_filters()` after piping your conditions.
 Only then the underlying tables and key relations are updated and you can perform a join on the filtered data.
-We are working towards removing this inconvenience [#62](https://github.com/krlmlr/dm/issues/62).
+We are working towards removing this inconvenience [#62](https://github.com/cynkra/dm/issues/62).
 
 ```{r}
 dm_nycflights13() %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  dm_filter(flights, month == 5) %>% 
-  dm_apply_filters() %>% 
+  dm_filter(flights, month == 5) %>%
+  dm_apply_filters() %>%
   dm_join_to_tbl(flights, airports, join = left_join)
 ```
 

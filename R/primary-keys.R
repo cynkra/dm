@@ -12,7 +12,7 @@
 #' @section Compound keys:
 #'
 #' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
 #' The syntax of these functions will be extended but will remain compatible
 #' with current semantics.
 #'
@@ -122,7 +122,7 @@ dm_has_pk_impl <- function(dm, table) {
 #' @section Compound keys and multiple primary keys:
 #'
 #' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
 #' Therefore the function may return vectors of length greater than one in the future.
 #'
 #' Similarly, each table currently can have only one primary key.
@@ -167,7 +167,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @section Compound keys:
 #'
 #' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
 #' Therefore the `pk_cols` column may contain vectors of length greater than one.
 #'
 #' @family primary key functions
@@ -318,8 +318,26 @@ check_pk <- function(table, column) {
   }
 
   fun <- ~ format(.x, trim = TRUE, justify = "none")
-  values <- commas(duplicate_values$data[[1]]$value, capped = TRUE, fun = fun)
-  paste0("has duplicate values: ", values)
+
+  values <- duplicate_values$data[[1]]$value
+  values_na <- is.na(values)
+
+  if (any(values_na)) {
+    missing <- "missing values"
+    values <- values[!values_na]
+  } else {
+    missing <- NULL
+  }
+
+  if (length(values) > 0) {
+    values_text <- commas(values, capped = TRUE, fun = fun)
+    duplicate <- paste0("duplicate values: ", values_text)
+  } else {
+    duplicate <- NULL
+  }
+
+  problem <- glue_collapse(c(missing, duplicate), sep = "", last = ", and ")
+  paste0("has ", problem)
 }
 
 

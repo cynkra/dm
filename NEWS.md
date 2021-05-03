@@ -1,3 +1,47 @@
+<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+
+# dm 0.1.13
+
+## Features
+
+- `dm_draw()` gains `column_types` argument, if `TRUE` the column type is shown for each displayed column (#444, @samssann).
+- `copy_dm_to()` gains `schema` argument (#432).
+- `dm_from_src()` gains `dbname` argument for MSSQL (#472).
+
+## Bug fixes
+
+- Fix `rows_update()` when multiple columns are updated (#488, @samssann).
+
+## Performance
+
+- `enum_fk_candidates()` now only checks distinct values, this improves performance for large tables. As a consequence, only the number of distinct values is reported for mismatches, not the number of mismatching rows/entries (#494).
+
+## Documentation
+
+- Fix description of filtering behavior in `?dm_zoom_to` (#403).
+
+## Internal
+
+- Move repository to <https://github.com/cynkra/dm> (#500).
+- Enable more Postgres tests (#497).
+- Test DuckDB on GitHub Actions (#498).
+
+
+# dm 0.1.12
+
+- `dm_from_src()` gains `dbname` argument for MSSQL (#472).
+- Implement `count()` and `tally()` for dplyr 1.0.3 compatibility (#475).
+- Use databases.pacha.dev instead of db-edu.pacha.dev (#478, @pachamaltese).
+
+
+# dm 0.1.10
+
+- Columns with missing values are no longer primary keys (#469).
+- Fix `dm_from_src()` for MSSQL when `learn_keys = FALSE` (#427).
+- Tests use `expect_snapshot()` everywhere (#456).
+- Fix compatibility with testthat 3.0.1 (#457).
+
+
 # dm 0.1.9
 
 - New `vignette("howto-dm-copy", package = "dm")` and `vignette("howto-dm-rows", package = "dm")` discuss updating data on the database. In part derived from `vignette("howto-dm-db", package = "dm")` (#411, @jawond).
@@ -372,7 +416,7 @@ Initial GitHub release.
 - `cdm_check_for_pk_candidates()`
 
 ## Foreign keys
-  
+
 - `cdm_add_fk()`
 - `cdm_has_fk()`
 - `cdm_get_fk()`
@@ -388,7 +432,7 @@ Initial GitHub release.
 - `cdm_get_available_colors()`
 
 ## Flattening
-  
+
 - `cdm_join_tbl()`
 
 ## Filtering

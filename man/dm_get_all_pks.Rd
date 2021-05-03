@@ -24,7 +24,7 @@ returns the tables, the respective primary key columns and their classes.
 
 
 Currently, keys consisting of more than one column are not supported.
-\href{https://github.com/krlmlr/dm/issues/3}{This feature} is planned for dm 0.2.0.
+\href{https://github.com/cynkra/dm/issues/3}{This feature} is planned for dm 0.2.0.
 Therefore the \code{pk_cols} column may contain vectors of length greater than one.
 }
 

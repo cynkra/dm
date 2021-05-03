@@ -3,7 +3,7 @@ unique_db_table_name <- local({
 
   function(table_name) {
     i <<- i + 1
-    glue("{table_name}_", systime_convenient(), "_", as.character(i))
+    glue("{table_name}_", systime_convenient(), "_", get_pid(), "_", as.character(i))
   }
 })
 
@@ -13,6 +13,14 @@ systime_convenient <- function() {
   } else {
     time <- as.character(Sys.time())
     gsub("[-: ]", "_", time)
+  }
+}
+
+get_pid <- function() {
+  if (Sys.getenv("IN_PKGDOWN") != "") {
+    "12345"
+  } else {
+    as.character(Sys.getpid())
   }
 }
 
@@ -151,8 +159,11 @@ con_from_src_or_con <- function(dest) {
   if (is.src(dest)) dest$con else dest
 }
 
-repair_table_names_for_db <- function(table_names, temporary, con) {
+repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL) {
   if (temporary) {
+    if (!is.null(schema)) {
+      abort_temporary_not_in_schema()
+    }
     # FIXME: Better logic for temporary table names
     if (is_mssql(con)) {
       names <- paste0("#", table_names)
@@ -161,8 +172,87 @@ repair_table_names_for_db <- function(table_names, temporary, con) {
     }
     names <- unique_db_table_name(names)
   } else {
+    # permanent tables
+    if (!is.null(schema) && !is_mssql(con) && !is_postgres(con)) {
+      abort_no_schemas_supported(con = con)
+    }
     names <- table_names
   }
   names <- set_names(names, table_names)
-  quote_ids(names, con)
+  quote_ids(names, con, schema)
+}
+
+get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
+  if (!is_mssql(src) && !is_postgres(src)) {
+    warn_if_arg_not(schema)
+    warn_if_arg_not(dbname, only_on = "MSSQL")
+    return(src_tbls(src))
+  }
+
+  con <- src$con
+
+  if (is_mssql(src)) {
+    # MSSQL
+    schema <- schema_mssql(con, schema)
+    dbname_sql <- dbname_mssql(con, dbname)
+    names_table <- get_names_table_mssql(con, dbname_sql)
+    dbname <- names(dbname_sql)
+  } else if (is_postgres(src)) {
+    # Postgres
+    schema <- schema_postgres(con, schema)
+    dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
+    names_table <- get_names_table_postgres(con)
+  }
+  check_param_class(schema, "character")
+  check_param_length(schema)
+  names_table %>%
+    filter(schema_name == !!schema) %>%
+    # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
+    mutate(remote_name = schema_if(schema_name, table_name, con, dbname)) %>%
+    select(-schema_name) %>%
+    deframe()
+}
+
+# `schema_*()` : default schema if NULL, otherwise unchanged
+schema_mssql <- function(con, schema) {
+  if (is_null(schema)) {
+    schema <- "dbo"
+  }
+  schema
+}
+
+schema_postgres <- function(con, schema) {
+  if (is_null(schema)) {
+    schema <- "public"
+  }
+  schema
+}
+
+dbname_mssql <- function(con, dbname) {
+  if (is_null(dbname)) {
+    dbname <- ""
+    dbname_sql <- ""
+  } else {
+    check_param_class(dbname, "character")
+    dbname_sql <- paste0(DBI::dbQuoteIdentifier(con, dbname), ".")
+  }
+  set_names(dbname_sql, dbname)
+}
+
+
+get_names_table_mssql <- function(con, dbname_sql) {
+  DBI::dbGetQuery(
+    con,
+    glue::glue("SELECT tabs.name AS table_name, schemas.name AS schema_name
+      FROM {dbname_sql}sys.tables tabs
+      INNER JOIN {dbname_sql}sys.schemas schemas ON
+      tabs.schema_id = schemas.schema_id")
+  )
+}
+
+get_names_table_postgres <- function(con) {
+  DBI::dbGetQuery(
+    con,
+    "SELECT table_schema as schema_name, table_name as table_name from information_schema.tables"
+  )
 }

@@ -19,6 +19,11 @@
 #' @param unique_table_names Deprecated.
 #' @param temporary Boolean variable, if `TRUE`, only temporary tables will be created.
 #'   These tables will vanish when disconnecting from the database.
+#' @param schema Name of schema to copy the `dm` to.
+#' If `schema` is provided, an error will be thrown if `temporary = FALSE` or
+#' `table_names` is not `NULL`.
+#'
+#' Not all DBMS are supported.
 #' @param table_names Desired names for the tables on `dest`; the names within the `dm` remain unchanged.
 #'   Can be `NULL`, a named character vector, a function or a one-sided formula.
 #'
@@ -83,7 +88,8 @@ copy_dm_to <- function(dest, dm, ...,
                        indexes = NULL, unique_indexes = NULL,
                        set_key_constraints = TRUE, unique_table_names = NULL,
                        table_names = NULL,
-                       temporary = TRUE) {
+                       temporary = TRUE,
+                       schema = NULL) {
   # for the time being, we will be focusing on MSSQL
   # we want to
   #   1. change `dm_get_src(dm)` to `dest`
@@ -128,13 +134,13 @@ copy_dm_to <- function(dest, dm, ...,
     # 2. are there any duplicated table names?
     # 3. is it a named character or ident_q vector with the correct names?
     if (is.null(table_names)) {
-      table_names_out <- repair_table_names_for_db(src_names, temporary, dest_con)
-
+      table_names_out <- repair_table_names_for_db(src_names, temporary, dest_con, schema)
       # https://github.com/tidyverse/dbplyr/issues/487
       if (is_mssql(dest)) {
         temporary <- FALSE
       }
     } else {
+      if (!is.null(schema)) abort_one_of_schema_table_names()
       if (is_function(table_names) || is_bare_formula(table_names)) {
         table_name_fun <- as_function(table_names)
         table_names_out <- set_names(table_name_fun(src_names), src_names)

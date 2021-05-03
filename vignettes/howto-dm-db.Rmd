@@ -84,7 +84,7 @@ Foreign keys act as cross references between tables.
 They specify the relationships that gives us the *relational* database.
 For more information on keys and a crash course on databases, see `vignette("howto-dm-theory")`.
 
-[^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/krlmlr/dm/issues/3).
+[^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/cynkra/dm/issues/3).
 
 The [model diagram](https://relational.fit.cvut.cz/assets/img/datasets-generated/financial.svg) provided by our test database loosely illustrates the intended relationships between tables.
 In the diagram we can see that the `loans` table should be linked to the `accounts` table.
@@ -174,14 +174,14 @@ You can learn more about zooming in the tutorial `vignette("tech-dm-zoom")`.
 We then use {[dplyr](https://dplyr.tidyverse.org/)} functions on the zoomed table to generate a new summary table.
 
 `summarize()` returns a temporary table with one row for each group created by the preceding `group_by()` function.
-The columns in the temporary table are constrained to the columns passed as arguments to the `group_by()` function and the column(s) created by the `summarize()` function.  
+The columns in the temporary table are constrained to the columns passed as arguments to the `group_by()` function and the column(s) created by the `summarize()` function.
 
 `dm_insert_zoomed("total_loans")` adds the temporary table created by `summarize()` to the data model under a new name, `total_loans`.
 Because the grouping variable `account_id` is a primary key, the new derived table is automatically linked to the `accounts` table.
 
 ```{r}
-my_dm_total %>% 
-  dm_set_colors(violet = total_loans) %>% 
+my_dm_total %>%
+  dm_set_colors(violet = total_loans) %>%
   dm_draw()
 ```
 
@@ -199,7 +199,7 @@ my_dm_total$total_loans %>%
 ``````
 
 Use `compute()` on a zoomed table to materialize it to a temporary table and avoid recomputing.
-See `vignette("howto-dm-copy")` for more details. 
+See `vignette("howto-dm-copy")` for more details.
 
 
 
@@ -242,7 +242,7 @@ deployed_dm
 my_dm_local
 ``````
 
-In the output you can observe that the `src` for `deployed_dm` is the SQLite database, while for `my_dm_local` the source is the local R environment. 
+In the output you can observe that the `src` for `deployed_dm` is the SQLite database, while for `my_dm_local` the source is the local R environment.
 
 Persisting tables are covered in more detail in `vignette("howto-dm-copy")`.
 
@@ -254,7 +254,7 @@ While loading a dm from most RDBMS currently requires you to manually set key re
 It is planned that future versions of dm will support automatic key creation for more RDBMS.
 
 The next step is to read `vignette("howto-dm-copy")`, where copying your tables to and from an RDBMS is covered.
-`vignette("howto-dm-rows")` discusses manipulation of individual rows in a database. 
+`vignette("howto-dm-rows")` discusses manipulation of individual rows in a database.
 
 
 ## Further reading

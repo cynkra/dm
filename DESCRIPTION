@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.1.9
-Date: 2020-11-18
+Version: 0.1.13
+Date: 2021-04-25
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -33,15 +33,15 @@ Description: Provides tools for working with multiple related
     tables (data and metadata) are stored in a compound object, which can
     then be manipulated with a pipe-friendly syntax.
 License: MIT + file LICENSE
-URL: https://krlmlr.github.io/dm/, https://github.com/krlmlr/dm
-BugReports: https://github.com/krlmlr/dm/issues
+URL: https://cynkra.github.io/dm/, https://github.com/cynkra/dm
+BugReports: https://github.com/cynkra/dm/issues
 Depends: 
     R (>= 3.3)
 Imports:
     backports,
-    cli (>= 2.0.0),
+    cli (>= 2.2.0),
     DBI,
-    dplyr (>= 1.0.0),
+    dplyr (>= 1.0.3),
     ellipsis,
     glue,
     igraph,
@@ -51,18 +51,20 @@ Imports:
     methods,
     pillar,
     purrr,
-    rlang (>= 0.4.0),
+    rlang (>= 0.4.10),
     tibble,
     tidyr (>= 1.0.0),
     tidyselect (>= 1.0.0),
     vctrs (>= 0.3.2)
 Suggests: 
     brio,
+    covr,
     crayon,
     dbplyr,
     DiagrammeR,
     DiagrammeRsvg,
     digest,
+    duckdb,
     fansi,
     keyring,
     knitr,
@@ -79,8 +81,9 @@ Suggests:
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",
     "namespace", "rd"))
 RoxygenNote: 7.1.1.9001
 Config/testthat/edition: 3
+Config/testthat/parallel: true
+Config/testthat/start-first: flatten, zzx-deprecated, dplyr, dm, filter-dm

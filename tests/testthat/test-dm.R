@@ -126,18 +126,24 @@ test_that("'collect.zoomed_dm()' collects tables, with message", {
 
 test_that("'compute.dm()' computes tables on DB", {
   skip_if_local_src()
+  skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
+
   def <-
     dm_for_filter() %>%
     dm_filter(tf_1, a > 3) %>%
-    { suppress_mssql_message(compute(.)) } %>%
+    {
+      suppress_mssql_message(compute(.))
+    } %>%
     dm_get_def()
 
-  remote_names <- map_chr(def$data, dbplyr::remote_name)
-  expect_true(all(remote_names != ""))
+  remote_names <- map(def$data, dbplyr::remote_name)
+  expect_equal(lengths(remote_names), rep_along(remote_names, 1))
 })
 
 test_that("'compute.zoomed_dm()' computes tables on DB", {
   skip_if_local_src()
+  skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
+
   zoomed_dm_for_compute <-
     dm_for_filter() %>%
     dm_zoom_to(tf_1) %>%
@@ -157,8 +163,8 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
     dm_update_zoomed() %>%
     dm_get_def()
 
-  remote_names <- map_chr(def$data, dbplyr::remote_name)
-  expect_true(all(remote_names != ""))
+  remote_names <- map(def$data, dbplyr::remote_name)
+  expect_equal(lengths(remote_names), rep_along(remote_names, 1))
 })
 
 test_that("some methods/functions for `zoomed_dm` work", {
@@ -425,17 +431,20 @@ test_that("dm_get_filters() works", {
   )
 })
 
-skip_if_not_installed("nycflights13")
 
-verify_output("out/output.txt", {
-  print(dm())
+test_that("output", {
+  skip_if_not_installed("nycflights13")
 
-  nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
-  nyc_flights_dm
+  expect_snapshot({
+    print(dm())
 
-  nyc_flights_dm %>%
-    format()
+    nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
+    nyc_flights_dm
 
-  nyc_flights_dm %>%
-    dm_filter(flights, origin == "EWR")
+    nyc_flights_dm %>%
+      format()
+
+    nyc_flights_dm %>%
+      dm_filter(flights, origin == "EWR")
+  })
 })

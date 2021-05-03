@@ -23,7 +23,7 @@ Once your data model is complete, you can deploy it to a range of DBMSs using dm
 
 ## Creating a dm object from data frames
 
-The example data set that we will be using is available through the [`nycflights13`](https://github.com/hadley/nycflights13) package.
+The example data set that we will be using is available through the [`nycflights13`](https://github.com/tidyverse/nycflights13) package.
 The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013:
 
 - `flights` represents the trips taken by planes
@@ -63,7 +63,7 @@ The `as_dm()` function is an alternative that works if you already have a list o
 
 ## A dm is a list
 
-dm objects behave like lists with a user- and console-friendly print format. 
+dm objects behave like lists with a user- and console-friendly print format.
 In fact, using a dm as a nicer list for organizing your data frames in your environment is an easy first step towards using dm and its data modeling functionality.
 
 Member referencing, by subscript and by name, and list and slice manipulation functions work just as you would expect on a dm object.
@@ -83,10 +83,10 @@ Primary keys and foreign keys are how relational database tables are linked with
 A primary key is a column that has a unique value for each row within a table.
 A foreign key is a column containing the primary key for a row in another table.[^compound]
 Foreign keys act as cross references between tables.
-They specify the relationships that gives us the *relational* database. 
+They specify the relationships that gives us the *relational* database.
 For more information on keys and a crash course on databases, see `vignette("howto-dm-theory")`.
 
-[^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/krlmlr/dm/issues/3).
+[^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/cynkra/dm/issues/3).
 
 ## Primary Keys
 

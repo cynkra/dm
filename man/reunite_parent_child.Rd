@@ -23,7 +23,7 @@ reunite_parent_child_from_list(list_of_parent_child_tables, id_column)
 A wide table produced by joining the two given tables.
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a>}}{\strong{Questioning}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
 Perform table fusion by combining two tables by a common (key) column, and then removing this column.
 

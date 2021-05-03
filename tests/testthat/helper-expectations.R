@@ -29,6 +29,10 @@ expect_dm_error <- function(expr, class) {
   expect_error(expr, class = dm_error(class))
 }
 
+expect_dm_warning <- function(expr, class) {
+  expect_warning(expr, class = dm_warning(class))
+}
+
 expect_name_repair_message <- function(expr) {
   expect_message(expr)
 }
@@ -43,8 +47,12 @@ arrange_if_no_list <- function(tbl) {
 
 # are two tables identical minus the `src`
 expect_equivalent_tbl <- function(tbl_1, tbl_2, ...) {
-  tbl_1_lcl <- collect(tbl_1) %>% mutate(...) %>% arrange_if_no_list()
-  tbl_2_lcl <- collect(tbl_2) %>% mutate(...) %>% arrange_if_no_list()
+  tbl_1_lcl <- collect(tbl_1) %>%
+    mutate(...) %>%
+    arrange_if_no_list()
+  tbl_2_lcl <- collect(tbl_2) %>%
+    mutate(...) %>%
+    arrange_if_no_list()
   expect_identical(tbl_1_lcl, tbl_2_lcl)
 }
 
@@ -52,4 +60,15 @@ expect_equivalent_tbl <- function(tbl_1, tbl_2, ...) {
 expect_equivalent_tbl_lists <- function(list_1, list_2) {
   expect_identical(names(list_1), names(list_2))
   walk2(list_1, list_2, expect_equivalent_tbl)
+}
+
+expect_snapshot_diagram <- function(diagram, name) {
+  dir <- withr::local_tempdir()
+  path <- file.path(dir, name)
+
+  diagram %>%
+    DiagrammeRsvg::export_svg() %>%
+    writeLines(path)
+
+  expect_snapshot_file(path, binary = FALSE)
 }

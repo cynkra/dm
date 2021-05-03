@@ -8,7 +8,7 @@ can handle both `dm` classes (`dm` and `zoomed_dm`) as an argument. A
 `zoomed_dm` behaves in most situations like a table and there are mostly
 no explicit functions available for this class, but rather methods (see
 vignette [“Zooming and manipulating
-tables”](https://krlmlr.github.io/dm/articles/tech-dm-zoom.html).
+tables”](https://cynkra.github.io/dm/articles/tech-dm-zoom.html).
 
 ## Prefixes
 

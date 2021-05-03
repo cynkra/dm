@@ -1,3 +1,0 @@
-> dm(x = tibble(a = c(1, 1))) %>% dm_add_pk(x, a, check = TRUE)
-Error: (`a`) not a unique key of `x`.
-

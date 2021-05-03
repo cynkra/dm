@@ -42,7 +42,6 @@ test_that("`dm_examine_constraints()` works", {
       new_dm_examine_constraints()
   )
 
-  skip_if_src("postgres")
   skip_if_not_installed("nycflights13")
 
   # case of some constraints, some violated:

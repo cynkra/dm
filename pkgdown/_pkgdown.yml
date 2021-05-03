@@ -1,4 +1,4 @@
-url: https://krlmlr.github.io/dm/
+url: https://cynkra.github.io/dm
 
 template:
   assets:
@@ -58,6 +58,13 @@ reference:
   - enum_fk_candidates
   - dm_is_referenced
   - dm_get_referencing_tables
+
+- title: Schema handling methods
+  contents:
+  - sql_schema_create
+  - sql_schema_drop
+  - sql_schema_exists
+  - sql_schema_list
 
 - title: Visualization
   contents:
@@ -189,7 +196,7 @@ navbar:
     href: news/index.html
   right:
   - icon: fa-github fa-lg
-    href: https://github.com/krlmlr/dm
+    href: https://github.com/cynkra/dm
 
 development:
   mode: auto
@@ -198,8 +205,8 @@ authors:
   Kirill Müller:
     href: http://krlmlr.info
   energie360° AG:
-    html: '<img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/>'
+    html: '<img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"/>'
     href: https://www.energie360.ch/de/
   cynkra GmbH:
-    html: '<img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/>'
+    html: '<img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"/>'
     href: https://www.cynkra.com
