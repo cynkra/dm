@@ -80,13 +80,11 @@ Even though we now have a `dm` object that contains all our data, we have not sp
 To do this we need to define primary keys and foreign keys on the tables.
 
 Primary keys and foreign keys are how relational database tables are linked with each other.
-A primary key is a column that has a unique value for each row within a table.
-A foreign key is a column containing the primary key for a row in another table.[^compound]
+A primary key is a column or column tuple that has a unique value for each row within a table.
+A foreign key is a column or column tuple containing the primary key for a row in another table.
 Foreign keys act as cross references between tables.
 They specify the relationships that gives us the *relational* database.
 For more information on keys and a crash course on databases, see `vignette("howto-dm-theory")`.
-
-[^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/cynkra/dm/issues/3).
 
 ## Primary Keys
 
