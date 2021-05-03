@@ -173,11 +173,9 @@ Some useful functions for managing primary key settings are:
 5.  `dm_enum_pk_candidates()`
 6.  `dm_get_all_pks()`
 
-Currently `dm` objects only support one-column primary keys. If your
-tables have unique compound keys, adding a surrogate key column might be
-helpful. If you created a `dm` object according to the examples in
-[“Examples of `dm` objects”](#ex_dm), your object does not yet have any
-primary keys set. So let’s add one.
+If you created a `dm` object according to the examples in [“Examples of
+`dm` objects”](#ex_dm), your object does not yet have any primary keys
+set. So let’s add one.
 
 `dm_add_pk()` has an option to check if the column of the table given by
 the user is a unique key; for performance reasons, the check will not be

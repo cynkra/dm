@@ -101,12 +101,13 @@ my_manual_dm
 ## Define Primary and Foreign Keys
 
 Primary keys and foreign keys are how relational database tables are
-linked with each other. A primary key is a column that has a unique
-value for each row within a table. A foreign key is a column containing
-the primary key for a row in another table.[1] Foreign keys act as cross
-references between tables. They specify the relationships that gives us
-the *relational* database. For more information on keys and a crash
-course on databases, see `vignette("howto-dm-theory")`.
+linked with each other. A primary key is a column or column tuple that
+has a unique value for each row within a table. A foreign key is a
+column or column tuple containing the primary key for a row in another
+table. Foreign keys act as cross references between tables. They specify
+the relationships that gives us the *relational* database. For more
+information on keys and a crash course on databases, see
+`vignette("howto-dm-theory")`.
 
 The [model
 diagram](https://relational.fit.cvut.cz/assets/img/datasets-generated/financial.svg)
@@ -417,6 +418,3 @@ model, and leveraging the power of dplyr to operate on your data model.
 very little about relational data models? This quick introduction will
 walk you through the key similarities and differences, and show you how
 to move from individual data frames to a relational data model.
-
-[1] Support for compound keys (consisting of multiple columns) is
-[planned](https://github.com/cynkra/dm/issues/3).

@@ -116,12 +116,13 @@ have not specified how our five tables are connected. To do this we need
 to define primary keys and foreign keys on the tables.
 
 Primary keys and foreign keys are how relational database tables are
-linked with each other. A primary key is a column that has a unique
-value for each row within a table. A foreign key is a column containing
-the primary key for a row in another table.[1] Foreign keys act as cross
-references between tables. They specify the relationships that gives us
-the *relational* database. For more information on keys and a crash
-course on databases, see `vignette("howto-dm-theory")`.
+linked with each other. A primary key is a column or column tuple that
+has a unique value for each row within a table. A foreign key is a
+column or column tuple containing the primary key for a row in another
+table. Foreign keys act as cross references between tables. They specify
+the relationships that gives us the *relational* database. For more
+information on keys and a crash course on databases, see
+`vignette("howto-dm-theory")`.
 
 ## Primary Keys
 
@@ -337,6 +338,3 @@ flights_dm_all_keys %>%
 #> 5 flights FK    carrier airlines  TRUE   ""                                
 #> 6 flights FK    origin  airports  TRUE   ""
 ```
-
-[1] Support for compound keys (consisting of multiple columns) is
-[planned](https://github.com/cynkra/dm/issues/3).

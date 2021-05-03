@@ -72,8 +72,8 @@ which can result in long and inflated pipe chains full of `left_join()`,
 `anti_join()` and other forms of data merging.
 
 In classical {dplyr} notation, you will need three `left_join()` calls
-to merge the `flights` table gradually to `airlines`, `planes` and
-`airports` tables to create one wide data frame.
+to merge the `flights` table gradually to `airlines`, `planes`,
+`airports` and `weather` tables to create one wide data frame.
 
 ``` r
 library(tidyverse)
@@ -107,27 +107,31 @@ library(nycflights13)
 flights %>%
   left_join(airlines, by = "carrier") %>%
   left_join(planes, by = "tailnum") %>%
-  left_join(airports, by = c("origin" = "faa"))
-#> # A tibble: 336,776 x 35
-#>    year.x month   day dep_time sched_dep_time dep_delay arr_time
-#>     <int> <int> <int>    <int>          <int>     <dbl>    <int>
-#>  1   2013     1     1      517            515         2      830
-#>  2   2013     1     1      533            529         4      850
-#>  3   2013     1     1      542            540         2      923
-#>  4   2013     1     1      544            545        -1     1004
-#>  5   2013     1     1      554            600        -6      812
-#>  6   2013     1     1      554            558        -4      740
-#>  7   2013     1     1      555            600        -5      913
-#>  8   2013     1     1      557            600        -3      709
-#>  9   2013     1     1      557            600        -3      838
-#> 10   2013     1     1      558            600        -2      753
-#> # … with 336,766 more rows, and 28 more variables: sched_arr_time <int>,
+  left_join(airports, by = c("origin" = "faa")) %>%
+  left_join(weather, by = c("origin", "time_hour"))
+#> # A tibble: 336,776 x 48
+#>    year.x month.x day.x dep_time sched_dep_time dep_delay arr_time
+#>     <int>   <int> <int>    <int>          <int>     <dbl>    <int>
+#>  1   2013       1     1      517            515         2      830
+#>  2   2013       1     1      533            529         4      850
+#>  3   2013       1     1      542            540         2      923
+#>  4   2013       1     1      544            545        -1     1004
+#>  5   2013       1     1      554            600        -6      812
+#>  6   2013       1     1      554            558        -4      740
+#>  7   2013       1     1      555            600        -5      913
+#>  8   2013       1     1      557            600        -3      709
+#>  9   2013       1     1      557            600        -3      838
+#> 10   2013       1     1      558            600        -2      753
+#> # … with 336,766 more rows, and 41 more variables: sched_arr_time <int>,
 #> #   arr_delay <dbl>, carrier <chr>, flight <int>, tailnum <chr>,
-#> #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
-#> #   minute <dbl>, time_hour <dttm>, name.x <chr>, year.y <int>,
-#> #   type <chr>, manufacturer <chr>, model <chr>, engines <int>,
-#> #   seats <int>, speed <int>, engine <chr>, name.y <chr>, lat <dbl>,
-#> #   lon <dbl>, alt <dbl>, tz <dbl>, dst <chr>, tzone <chr>
+#> #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>,
+#> #   hour.x <dbl>, minute <dbl>, time_hour <dttm>, name.x <chr>,
+#> #   year.y <int>, type <chr>, manufacturer <chr>, model <chr>,
+#> #   engines <int>, seats <int>, speed <int>, engine <chr>, name.y <chr>,
+#> #   lat <dbl>, lon <dbl>, alt <dbl>, tz <dbl>, dst <chr>, tzone <chr>,
+#> #   year <int>, month.y <int>, day.y <int>, hour.y <int>, temp <dbl>,
+#> #   dewp <dbl>, humid <dbl>, wind_dir <dbl>, wind_speed <dbl>,
+#> #   wind_gust <dbl>, precip <dbl>, pressure <dbl>, visib <dbl>
 ```
 
 {dm} offers a more elegant and shorter way to combine tables while
@@ -173,14 +177,15 @@ models](https://cynkra.github.io/dm/articles/tech-dm-draw.html).
 
 ## 3. Primary Keys
 
-In a relational data model, every table needs to have **one column or
-attribute that uniquely identifies a row**. This column is called the
-*primary key* (abbreviated with pk). A primary key can be either an
-existing column that satisfies the condition of being unique, or a new
-column that assigns an identifier.
+In a relational data model, each table should have **one or several
+columns that uniquely identifies a row**. These columns define the
+*primary key* (abbreviated with “pk”). If the key consists of a single
+column, it is called *simple key*. A key consisting of more than one
+column is called a *compound key*.
 
 Example: In the `airlines` table of `nycflights13` the column `carrier`
-is the primary key.
+is the primary key, a simple key. The `weather` table has the
+combination of `origin` and `time_hour` as primary key, a compound key.
 
 You can get all primary keys in a `dm` by calling `dm_get_all_pks()`:
 
@@ -196,9 +201,8 @@ dm %>%
 #> 4 weather  origin, time_hour
 ```
 
-If an attribute is suitable as a primary key, it can be checked with
-`dm_enum_pk_candidates()`. Which columns of the `airlines` table can
-serve as a primary key?
+`dm_enum_pk_candidates()` checks all columns if they are suitable as a
+simple primary key:
 
 ``` r
 dm %>%
@@ -224,15 +228,19 @@ keys](https://cynkra.github.io/dm/articles/tech-dm-class.html#pk).
 
 The **counterpart of a primary key in one table is the foreign key in
 another table**. In order to join two tables, the primary key of the
-first table needs to be available in the second table as well. This
-second column is called the *foreign key* (abbreviated with fk).
+first table needs to be referenced from the second table. This column or
+these columns are called the *foreign key* (abbreviated with “fk”).
 
 For example, if you want to link the `airlines` table to the `flights`
 table, the primary key in `airlines` needs to match the foreign key in
 `flights`. This condition is satisfied because the column `carrier` is
 present as a primary key in the `airlines` table as well as a foreign
-key in the `flights` table. You can find foreign key candidates with the
-function `dm_enum_fk_candidates()`, they are marked with `TRUE` in the
+key in the `flights` table. In the case of compound keys, the `origin`
+and `time_hour` columns (which form the primary key of the `weather`
+table) are also present in the `flights` table.
+
+You can find foreign key candidates for simple keys with the function
+`dm_enum_fk_candidates()`, they are marked with `TRUE` in the
 `candidate` column.
 
 ``` r
@@ -262,17 +270,6 @@ dm %>%
 #> 19 time_hour    FALSE     "Can't combine `value1` <datetime<America/New_Yo…
 ```
 
-After finding and assigning foreign keys, get the name of the set
-foreign key:
-
-``` r
-dm %>%
-  dm_get_fk(flights, airlines)
-#> <list_of<character>[1]>
-#> [[1]]
-#> [1] "carrier"
-```
-
 Further Reading: All {dm} functions for working with [foreign
 keys](https://cynkra.github.io/dm/articles/tech-dm-class.html#foreign-keys).
 
@@ -280,9 +277,9 @@ keys](https://cynkra.github.io/dm/articles/tech-dm-class.html#foreign-keys).
 
 A data set has referential integrity if all relations between tables are
 valid. That is, every foreign key holds a primary key that is present in
-the parent table. If a foreign key contains a parent table primary key
-that has been deleted that row is an orphan row and the database no
-longer has referential integrity.
+the parent table. If a foreign key contains a reference where the
+corresponding row in the parent table is not availabe, that row is an
+orphan row and the database no longer has referential integrity.
 
 {dm} allows checking referential integrity with the
 `dm_examine_constraints()` function. The following conditions are
