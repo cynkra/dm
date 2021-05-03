@@ -6,7 +6,7 @@ vignette: >
   %\VignetteIndexEntry{dm overview}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -19,9 +19,9 @@ fansi::set_knit_hooks(knitr::knit_hooks)
 options(crayon.enabled = TRUE, width = 75, cli.width = 75)
 
 knit_print.grViz <- function(x, ...) {
-  x %>% 
-    DiagrammeRsvg::export_svg() %>% 
-    c("`````{=html}\n", ., "\n`````\n") %>% 
+  x %>%
+    DiagrammeRsvg::export_svg() %>%
+    c("`````{=html}\n", ., "\n`````\n") %>%
     knitr::asis_output()
 }
 ```
@@ -32,7 +32,7 @@ Let's first have a look at the new class:
 
 ## Class `dm`
 
-The `dm` class contains a set of tables as well as information about their primary keys and the relations between the tables. You can have your `dm` object on different data sources, such as a local environment or a database. In the latter use case you need to have the package dbplyr installed. 
+The `dm` class contains a set of tables as well as information about their primary keys and the relations between the tables. You can have your `dm` object on different data sources, such as a local environment or a database. In the latter use case you need to have the package dbplyr installed.
 
 `dm` is a wrapper around two classes, which are independent from each other:
 
@@ -64,7 +64,7 @@ flights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 flights_dm
 ```
 
-Here we make use of the fact, that the function `dm(src, data_model = NULL)` includes all available tables on a source in the `dm` object, should the `data_model`-argument be left `NULL`. 
+Here we make use of the fact, that the function `dm(src, data_model = NULL)` includes all available tables on a source in the `dm` object, should the `data_model`-argument be left `NULL`.
 Thus you can use this for example on a postgres database that you access via `src_postgres()` (with the appropriate arguments `dbname`, `host`, `port`, ...), to produce a `dm` object with all the tables on the database.
 
 Another way of creating a `dm` object is calling `as_dm()` on a list of `tbls`:
@@ -89,7 +89,6 @@ Useful functions for managing primary key settings are:
 4. `dm_rm_pk()`
 5. `dm_enum_pk_candidates()`
 
-As of yet `dm` objects only support one-column primary keys. If your tables have unique compound keys, maybe consider adding a surrogate key column. 
 If you created a `dm` object according to the examples in ["Examples of `dm` objects"](#ex_dm), your object does not yet have any primary keys set.
 So let's add one.
 By default `dm_add_pk()` checks if the column of the table given by the user is a unique key.
@@ -110,7 +109,7 @@ dm_get_pk(flights_dm_with_key, airports)
 ```
 Remove a primary key by:
 ```{r}
-dm_rm_pk(flights_dm_with_key, airports) %>% 
+dm_rm_pk(flights_dm_with_key, airports) %>%
   dm_has_pk(airports)
 ```
 
@@ -171,14 +170,14 @@ flights_dm_with_fk %>% dm_get_fk(flights, airports)
 
 Remove foreign key relations with `dm_rm_fk()` (parameter `column = NULL` means removal of all relations):
 ```{r error=TRUE}
-flights_dm_with_fk %>% 
-  dm_rm_fk(table = flights, column = dest, ref_table = airports) %>% 
+flights_dm_with_fk %>%
+  dm_rm_fk(table = flights, column = dest, ref_table = airports) %>%
   dm_get_fk(flights, airports)
-flights_dm_with_fk %>% 
-  dm_rm_fk(flights, origin, airports) %>% 
+flights_dm_with_fk %>%
+  dm_rm_fk(flights, origin, airports) %>%
   dm_get_fk(flights, airports)
-flights_dm_with_fk %>% 
-  dm_rm_fk(flights, NULL, airports) %>% 
+flights_dm_with_fk %>%
+  dm_rm_fk(flights, NULL, airports) %>%
   dm_get_fk(flights, airports)
 ```
 
@@ -200,14 +199,14 @@ Once you have all primary keys set and all foreign key relations defined, it mig
 
 Let's first create a slightly more interconnected `dm` object from the {nycflights13} package tables:
 ```{r}
-flights_dm_w_many_keys <- 
-  flights_dm %>% 
-  dm_add_pk(planes, tailnum) %>% 
-  dm_add_pk(airports, faa) %>% 
-  dm_add_pk(airlines, carrier) %>% 
-  dm_add_fk(flights, origin, airports) %>% 
-  dm_add_fk(flights, carrier, airlines) %>% 
-  dm_add_fk(flights, tailnum, planes, check = FALSE) %>% 
+flights_dm_w_many_keys <-
+  flights_dm %>%
+  dm_add_pk(planes, tailnum) %>%
+  dm_add_pk(airports, faa) %>%
+  dm_add_pk(airlines, carrier) %>%
+  dm_add_fk(flights, origin, airports) %>%
+  dm_add_fk(flights, carrier, airlines) %>%
+  dm_add_fk(flights, tailnum, planes, check = FALSE) %>%
   dm_add_fk(flights, dest, airports, check = FALSE)
 flights_dm_w_many_keys
 ```
@@ -226,12 +225,12 @@ dm_get_available_colors()
 The assignment is carried out with `dm_set_colors()`, using a syntax similar to `switch()`.
 Any table you don't specifically assign will be displayed in the default color.
 
-Use `dm_set_colors()` to assign the respective colors. 
+Use `dm_set_colors()` to assign the respective colors.
 The result of `dm_set_colors()` is a `dm` object.
 The information about the color is stored in its `data_model`-part.
 ```{r}
 flights_dm_w_many_keys_and_colors <-
-  flights_dm_w_many_keys %>% 
+  flights_dm_w_many_keys %>%
   dm_set_colors(
     flights = "blue",
     airlines = ,
@@ -240,17 +239,17 @@ flights_dm_w_many_keys_and_colors <-
   )
 ```
 
-Draw the schema with `dm_draw()`. 
+Draw the schema with `dm_draw()`.
 ```{r}
 dm_draw(flights_dm_w_many_keys_and_colors)
 ```
 
-The colors can be queried with `dm_get_colors()`. 
+The colors can be queried with `dm_get_colors()`.
 ```{r}
 dm_get_colors(flights_dm_w_many_keys_and_colors)
 ```
 
-There are quite a few options for customization available. 
+There are quite a few options for customization available.
 Please read the documentation to find out more.
 One argument of the function we'd like to draw your attention to, though, is `table_names`.
 This argument accepts a character vector with the table names which are to be printed, in case you would like to only see a subset of the whole data model.

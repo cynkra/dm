@@ -65,7 +65,7 @@ The information is stored in five tables.
 
 Details like the full name of an airport are not available immediately; these can only be obtained by joining or merging the constituent tables, which can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other forms of data merging.
 
-In classical {dplyr} notation, you will need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide data frame.
+In classical {dplyr} notation, you will need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes`, `airports` and `weather` tables to create one wide data frame.
 
 ```{r}
 library(tidyverse)
@@ -75,7 +75,8 @@ library(nycflights13)
 flights %>%
   left_join(airlines, by = "carrier") %>%
   left_join(planes, by = "tailnum") %>%
-  left_join(airports, by = c("origin" = "faa"))
+  left_join(airports, by = c("origin" = "faa")) %>%
+  left_join(weather, by = c("origin", "time_hour"))
 ```
 
 {dm} offers a more elegant and shorter way to combine tables while augmenting {dplyr}/{dbplyr} workflows.
@@ -108,11 +109,13 @@ Further Reading: The {dm} methods for [visualizing data models](https://cynkra.g
 
 ## 3. Primary Keys {#pk}
 
-In a relational data model, every table needs to have **one column or attribute that uniquely identifies a row**.
-This column is called the *primary key* (abbreviated with pk).
-A primary key can be either an existing column that satisfies the condition of being unique, or a new column that assigns an identifier.
+In a relational data model, each table should have **one or several columns that uniquely identifies a row**.
+These columns define the *primary key* (abbreviated with "pk").
+If the key consists of a single column, it is called *simple key*.
+A key consisting of more than one column is called a *compound key*.
 
-Example: In the `airlines` table of `nycflights13` the column `carrier` is the primary key.
+Example: In the `airlines` table of `nycflights13` the column `carrier` is the primary key, a simple key.
+The `weather` table has the combination of `origin` and `time_hour` as primary key, a compound key.
 
 You can get all primary keys in a `dm` by calling `dm_get_all_pks()`:
 
@@ -121,8 +124,7 @@ dm %>%
   dm_get_all_pks()
 ```
 
-If an attribute is suitable as a primary key, it can be checked with `dm_enum_pk_candidates()`.
-Which columns of the `airlines` table can serve as a primary key?
+`dm_enum_pk_candidates()` checks all columns if they are suitable as a simple primary key:
 
 ```{r}
 dm %>%
@@ -134,25 +136,19 @@ Further Reading: The {dm} package offers several functions for dealing with [pri
 ## 4. Foreign Keys {#fk}
 
 The **counterpart of a primary key in one table is the foreign key in another table**.
-In order to join two tables, the primary key of the first table needs to be available in the second table as well.
-This second column is called the *foreign key* (abbreviated with fk).
+In order to join two tables, the primary key of the first table needs to be referenced from the second table.
+This column or these columns are called the *foreign key* (abbreviated with "fk").
 
 For example, if you want to link the `airlines` table to the `flights` table, the primary key in `airlines` needs to match the foreign key in `flights`.
 This condition is satisfied because the column `carrier` is present as a primary key in the `airlines` table as well as a foreign key in the `flights` table.
-You can find foreign key candidates with the function `dm_enum_fk_candidates()`, they are marked with `TRUE` in the `candidate` column.
+In the case of compound keys, the `origin` and `time_hour` columns (which form the primary key of the `weather` table) are also present in the `flights` table.
+
+You can find foreign key candidates for simple keys with the function `dm_enum_fk_candidates()`, they are marked with `TRUE` in the `candidate` column.
 
 ```{r}
 dm %>%
   dm_enum_fk_candidates(flights, airlines)
 ```
-
-After finding and assigning foreign keys, get the name of the set foreign key:
-
-```{r}
-dm %>%
-  dm_get_fk(flights, airlines)
-```
-
 
 Further Reading: All {dm} functions for working with [foreign keys](https://cynkra.github.io/dm/articles/tech-dm-class.html#foreign-keys).
 
@@ -160,7 +156,7 @@ Further Reading: All {dm} functions for working with [foreign keys](https://cynk
 
 A data set has referential integrity if all relations between tables are valid.
 That is, every foreign key holds a primary key that is present in the parent table.
-If a foreign key contains a parent table primary key that has been deleted that row is an orphan row and the database no longer has referential integrity.
+If a foreign key contains a reference where the corresponding row in the parent table is not availabe, that row is an orphan row and the database no longer has referential integrity.
 
 {dm} allows checking referential integrity with the `dm_examine_constraints()` function.
 The following conditions are checked:
