@@ -7,6 +7,7 @@
 #' and because the notion of a "source" seems to be getting phased out from dplyr.
 #' Use other ways to access the tables in a `dm`.
 #'
+#' @details
 #' Use [dm_get_con()] instead of `dm_get_src()` to get the DBI connetion for a
 #' `dm` object
 #'
