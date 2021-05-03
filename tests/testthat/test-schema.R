@@ -55,10 +55,13 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_true("test_schema_1" %in% sql_schema_table_list(con_db)$table_name)
   expect_true("test_schema_1" %in% sql_schema_table_list(src_db)$table_name)
 
-  remote_table_1 <- filter(sql_schema_table_list(src_db), table_name == "test_schema_1") %>%
+  remote_table_1 <-
+    src_db %>%
+    sql_schema_table_list() %>%
+    filter(table_name == "test_schema_1") %>%
     pull(remote_name)
   expect_identical(
-    tbl_impl(src_db, remote_table_1) %>% collect(),
+    tbl(src_db, remote_table_1) %>% collect(),
     tibble(a = 1:5)
   )
 
@@ -84,7 +87,7 @@ test_that("schema handling on MSSQL and Postgres works", {
   ) %>%
     pull(remote_name)
   expect_identical(
-    tbl_impl(src_db, remote_table_2) %>% collect(),
+    tbl(src_db, remote_table_2) %>% collect(),
     tibble(b = letters[1:5])
   )
 })
