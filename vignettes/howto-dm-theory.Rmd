@@ -76,7 +76,7 @@ flights %>%
   left_join(airlines, by = "carrier") %>%
   left_join(planes, by = "tailnum") %>%
   left_join(airports, by = c("origin" = "faa")) %>%
-  left_join(weather, by = c("origin", "time_hour")) %>%
+  left_join(weather, by = c("origin", "time_hour"))
 ```
 
 {dm} offers a more elegant and shorter way to combine tables while augmenting {dplyr}/{dbplyr} workflows.
