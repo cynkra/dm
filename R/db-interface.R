@@ -95,7 +95,7 @@ copy_dm_to <- function(dest, dm, ...,
                        schema = NULL) {
   # for the time being, we will be focusing on MSSQL
   # we want to
-  #   1. change `dm_get_src(dm)` to `dest`
+  #   1. change `dm_get_src_impl(dm)` to `dest`
   #   2. copy the tables to `dest`
   #   3. implement the key situation within our `dm` on the DB
 
@@ -245,7 +245,7 @@ dm_set_key_constraints <- function(dm) {
     left_join(db_table_names, by = c("parent_table" = "table_name")) %>%
     rename(db_parent_table = remote_name)
 
-  con <- con_from_src_or_con(dm_get_src(dm))
+  con <- con_from_src_or_con(dm_get_src_impl(dm))
   queries <- create_queries(con, fk_info)
   walk(queries, ~ dbExecute(con, .))
 

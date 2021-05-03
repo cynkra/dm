@@ -76,7 +76,7 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FAL
   # src: if `df` on a different src:
   # if `df_list` is on DB and `dest` is local, collect `df_list`
   # if `df_list` is local and `dest` is on DB, copy `df_list` to respective DB
-  dest_src <- dm_get_src(dest)
+  dest_src <- dm_get_src_impl(dest)
   if (is.null(dest_src)) {
     df <- as_tibble(collect(df))
   } else {

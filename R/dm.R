@@ -256,7 +256,8 @@ dm_get_src_impl <- function(x) {
 #'
 #' @export
 dm_get_con <- function(x) {
-  src <- dm_get_src(x)
+  check_not_zoomed(x)
+  src <- dm_get_src_impl(x)
   if (!inherits(src, "src_dbi")) abort_con_only_for_dbi()
   src$con
 }
@@ -413,7 +414,7 @@ show_dm <- function(x) {
     return()
   }
 
-  src <- dm_get_src(x)
+  src <- dm_get_src_impl(x)
   if (!is.null(src)) {
     cat_rule("Table source", col = "green")
     db_info <- NULL
@@ -719,7 +720,7 @@ all_same_source <- function(tables) {
   is.null(detect(tables[-1], ~ !same_src(., first_table)))
 }
 
-# creates an empty `dm`-object, `src` is defined by implementation of `dm_get_src()`.
+# creates an empty `dm`-object, `src` is defined by implementation of `dm_get_src_impl()`.
 empty_dm <- function() {
   new_dm3(
     tibble(

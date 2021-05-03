@@ -58,6 +58,8 @@ test_that("'copy_to.dm()' works", {
 })
 
 test_that("'copy_to.dm()' works (2)", {
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_dm_error(
     copy_to(dm(), mtcars, c("car_table", "another_table")),
     "one_name_for_copy_to"
@@ -387,6 +389,8 @@ test_that("as.list()-method works for local `zoomed_dm`", {
 # test getters: -----------------------------------------------------------
 
 test_that("dm_get_src() works", {
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_dm_error(
     dm_get_src(1),
     class = "is_not_dm"

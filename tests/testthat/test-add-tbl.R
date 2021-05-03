@@ -26,7 +26,7 @@ test_that("dm_add_tbl() works", {
 
   # we accept even weird table names, as long as they are unique
   expect_equivalent_tbl(
-    data_card_1() %>% dm_add_tbl(dm_for_filter(), .)[["."]],
+    dm_add_tbl(dm_for_filter(), . = data_card_1())[["."]],
     data_card_1()
   )
 
