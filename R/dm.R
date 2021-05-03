@@ -236,24 +236,6 @@ debug_validate_dm <- function(dm) {
   dm
 }
 
-#' Get source
-#'
-#' `dm_get_src()` returns the \pkg{dplyr} source for a `dm` object.
-#' All tables in a `dm` object must be from the same source,
-#' i.e. either they are all data frames, or they all are stored on the same
-#' database.
-#'
-#' @rdname dm
-#'
-#' @return For `dm_get_src()`: the \pkg{dplyr} source for a `dm` object,
-#'   or `NULL` if the `dm` objcet contains data frames.
-#'
-#' @export
-dm_get_src <- function(x) {
-  check_not_zoomed(x)
-  dm_get_src_impl(x)
-}
-
 dm_get_src_impl <- function(x) {
   tables <- dm_get_tables_impl(x)
   tbl_src(tables[1][[1]])
@@ -261,9 +243,12 @@ dm_get_src_impl <- function(x) {
 
 #' Get connection
 #'
-#' `dm_get_con()` returns the [`DBI::DBIConnection-class`] for `dm` objects.
+#' `dm_get_con()` returns the DBI connection for a `dm` object.
 #' This works only if the tables are stored on a database, otherwise an error
 #' is thrown.
+#'
+#' All lazy tables in a dm object must be stored on the same database server
+#' and accessed through the same connection.
 #'
 #' @rdname dm
 #'
@@ -271,7 +256,8 @@ dm_get_src_impl <- function(x) {
 #'
 #' @export
 dm_get_con <- function(x) {
-  src <- dm_get_src(x)
+  check_not_zoomed(x)
+  src <- dm_get_src_impl(x)
   if (!inherits(src, "src_dbi")) abort_con_only_for_dbi()
   src$con
 }
@@ -428,7 +414,7 @@ show_dm <- function(x) {
     return()
   }
 
-  src <- dm_get_src(x)
+  src <- dm_get_src_impl(x)
   if (!is.null(src)) {
     cat_rule("Table source", col = "green")
     db_info <- NULL
@@ -626,21 +612,6 @@ str.zoomed_dm <- function(object, ...) {
   str(object)
 }
 
-#' \pkg{dplyr} table retrieval, table info and DB interaction methods
-#'
-#' Use these methods without the '.dm' or '.zoomed_dm' suffix (see examples).
-#' @param src A `dm` object.
-#' @param from A length one character variable containing the name of the requested table
-#' @param ... See original function documentation
-#' @rdname dplyr_db
-#' @export
-tbl.dm <- function(src, from, ...) {
-  check_not_zoomed(src)
-
-  # The src argument here is a dm object
-  tbl_impl(src, from)
-}
-
 tbl_impl <- function(dm, from) {
   out <- dm_get_tables_impl(dm)[[from]]
 
@@ -651,9 +622,42 @@ tbl_impl <- function(dm, from) {
   out
 }
 
-#' @param x Either a `dm` or a `zoomed_dm`; the latter leads to an error for `src_tbls.dm()`
-#' @rdname dplyr_db
+src_tbls_impl <- function(dm) {
+  dm_get_def(dm)$table
+}
+
+#' Materialize
+#'
+#' `compute()` materializes all tables in a `dm` to new (temporary or permanent)
+#' tables on the database.
+#'
+#' @details
+#' Called on a `dm` object, these methods create a copy of all tables in the `dm`.
+#' Depending on the size of your data this may take a long time.
+#'
+#' @param x A `dm`.
+#' @param ... Passed on to [compute()].
+#' @return A `dm` object of the same structure as the input.
+#' @name materialize
 #' @export
+#' @examplesIf dm:::dm_has_financial()
+#' financial <- dm_financial_sqlite()
+#'
+#' financial %>%
+#'   pull_tbl(districts) %>%
+#'   dbplyr::remote_name()
+#'
+#' # compute() copies the data to new tables:
+#' financial %>%
+#'   compute() %>%
+#'   pull_tbl(districts) %>%
+#'   dbplyr::remote_name()
+#'
+#' # collect() returns a local dm:
+#' financial %>%
+#'   collect() %>%
+#'   pull_tbl(districts) %>%
+#'   class()
 compute.dm <- function(x, ...) { # for both dm and zoomed_dm
   dm_apply_filters(x) %>%
     dm_get_def() %>%
@@ -661,59 +665,11 @@ compute.dm <- function(x, ...) { # for both dm and zoomed_dm
     new_dm3()
 }
 
-#' @rdname dplyr_db
-#' @export
-compute.zoomed_dm <- function(x, ...) {
-  zoomed_df <-
-    get_zoomed_tbl(x) %>%
-    compute(...)
-  replace_zoomed_tbl(x, zoomed_df)
-}
-
-#' @rdname dplyr_db
-#' @export
-src_tbls.dm <- function(x, ...) {
-  check_not_zoomed(x)
-  src_tbls_impl(x)
-}
-
-src_tbls_impl <- function(dm) {
-  dm_get_def(dm)$table
-}
-
-#' @rdname dplyr_db
-#' @param dest For `copy_to.dm()`: The `dm` object to which a table should be copied.
-#' @param df For `copy_to.dm()`: A table (can be on a different `src`)
-#' @param name For `copy_to.dm()`: See [`dplyr::copy_to`]
-#' @param overwrite For `copy_to.dm()`: See [`dplyr::copy_to`]; `TRUE` leads to an error
-#' @param temporary For `copy_to.dm()`: If the `dm` is on a DB, the copied version of `df` will only be written temporarily to the DB.
-#' After the connection is reset it will no longer be available.
-#' @param repair,quiet Name repair options; cf. [`vctrs::vec_as_names`]
-#' @export
-copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
-  check_not_zoomed(dest)
-
-  if (!(inherits(df, "data.frame") || inherits(df, "tbl_dbi"))) abort_only_data_frames_supported()
-  if (overwrite) abort_no_overwrite()
-  if (length(name) != 1) abort_one_name_for_copy_to(name)
-  # src: if `df` on a different src:
-  # if `df_list` is on DB and `dest` is local, collect `df_list`
-  # if `df_list` is local and `dest` is on DB, copy `df_list` to respective DB
-  dest_src <- dm_get_src(dest)
-  if (is.null(dest_src)) {
-    df <- as_tibble(collect(df))
-  } else {
-    # FIXME: should we allow `overwrite` argument?
-    df <- copy_to(dest_src, df, unique_db_table_name(name), temporary = temporary, ...)
-  }
-  names_list <- repair_table_names(src_tbls_impl(dest), name, repair, quiet)
-  # rename old tables with potentially new names
-  dest <- dm_rename_tbl(dest, !!!names_list$new_old_names)
-  # `repair` argument is `unique` by default
-  dm_add_tbl_impl(dest, list(df), names_list$new_names)
-}
-
-#' @rdname dplyr_db
+#' Materialize
+#'
+#' `collect()` downloads the tables in a `dm` object as local [tibble]s.
+#'
+#' @rdname materialize
 #' @export
 collect.dm <- function(x, ...) { # for both dm and zoomed_dm
   x <- dm_apply_filters(x)
@@ -764,7 +720,7 @@ all_same_source <- function(tables) {
   is.null(detect(tables[-1], ~ !same_src(., first_table)))
 }
 
-# creates an empty `dm`-object, `src` is defined by implementation of `dm_get_src()`.
+# creates an empty `dm`-object, `src` is defined by implementation of `dm_get_src_impl()`.
 empty_dm <- function() {
   new_dm3(
     tibble(

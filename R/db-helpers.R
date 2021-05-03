@@ -170,7 +170,7 @@ is_db <- function(x) {
 }
 
 is_src_db <- function(dm) {
-  is_db(dm_get_src(dm))
+  is_db(dm_get_src_impl(dm))
 }
 
 is_mssql <- function(dest) {
