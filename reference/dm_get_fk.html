@@ -93,7 +93,7 @@ If no foreign key is set between the tables, an empty character vector is return
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -197,7 +197,7 @@ columns marked as foreign key of table <code>table</code> with respect to table 
 If no foreign key is set between the tables, an empty character vector is returned.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_get_fk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>ref_table</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>dm_get_fk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>ref_table</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -213,6 +213,10 @@ If no foreign key is set between the tables, an empty character vector is return
     <tr>
       <th>ref_table</th>
       <td><p>The table that is referenced from <code>table</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>These dots are for future extensions and must be empty.</p></td>
     </tr>
     </table>
 
@@ -237,14 +241,14 @@ Therefore the function may return vectors of length greater than one in the futu
 <code><a href='dm_has_fk.html'>dm_has_fk</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
   <span class='fu'>dm_get_fk</span><span class='op'>(</span><span class='va'>flights</span>, <span class='va'>airports</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;list_of&lt;character&gt;[1]&gt;
+</div><div class='co'>#&gt; &lt;list_of&lt;character&gt;[1]&gt;
 #&gt; [[1]]
 #&gt; [1] "origin"
-#&gt; </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>cycle <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+#&gt; </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>cycle <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
   <span class='fu'>dm_get_fk</span><span class='op'>(</span><span class='va'>flights</span>, <span class='va'>airports</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;list_of&lt;character&gt;[2]&gt;
+</div><div class='co'>#&gt; &lt;list_of&lt;character&gt;[2]&gt;
 #&gt; [[1]]
 #&gt; [1] "origin"
 #&gt; 

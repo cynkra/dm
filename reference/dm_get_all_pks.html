@@ -92,7 +92,7 @@ returns the tables, the respective primary key columns and their classes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -195,7 +195,7 @@ returns the tables, the respective primary key columns and their classes." />
 returns the tables, the respective primary key columns and their classes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_get_all_pks</span><span class='op'>(</span><span class='va'>dm</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>dm_get_all_pks</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,6 +203,10 @@ returns the tables, the respective primary key columns and their classes.</p>
     <tr>
       <th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>These dots are for future extensions and must be empty.</p></td>
     </tr>
     </table>
 
@@ -231,14 +235,15 @@ Therefore the <code>pk_cols</code> column may contain vectors of length greater 
 <code><a href='enum_pk_candidates.html'>enum_pk_candidates</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
   <span class='fu'>dm_get_all_pks</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 2</span><span>
-#&gt;   table    pk_col 
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> airlines carrier
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> airports faa    
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> planes   tailnum</div></span></pre>
+</div><div class='co'>#&gt; <span style='color: #949494;'># A tibble: 4 x 2</span>
+#&gt;   table    pk_col           
+#&gt;   <span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span>           </span>
+#&gt; <span style='color: #BCBCBC;'>1</span><span> airlines carrier          </span>
+#&gt; <span style='color: #BCBCBC;'>2</span><span> airports faa              </span>
+#&gt; <span style='color: #BCBCBC;'>3</span><span> planes   tailnum          </span>
+#&gt; <span style='color: #BCBCBC;'>4</span><span> weather  origin, time_hour</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

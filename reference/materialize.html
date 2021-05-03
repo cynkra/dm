@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Connection to SQL Financial Database — financial_db_con • dm</title>
+<title>Materialize — materialize • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,13 @@
 
 
 
-<meta property="og:title" content="Connection to SQL Financial Database — financial_db_con" />
-<meta property="og:description" content="Connects to relational.fit.cvut.cz unless the service is
-unavailable, in which case db-edu.pacha.dev is used as a fallback" />
-<meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
+<meta property="og:title" content="Materialize — materialize" />
+<meta property="og:description" content="compute() materializes all tables in a dm to new (temporary or permanent)
+tables on the database.
+collect() downloads the tables in a dm object as local tibbles." />
+<meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
+
+
 
 
 
@@ -65,9 +68,18 @@ unavailable, in which case db-edu.pacha.dev is used as a fallback" />
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -81,7 +93,7 @@ unavailable, in which case db-edu.pacha.dev is used as a fallback" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -156,8 +168,8 @@ unavailable, in which case db-edu.pacha.dev is used as a fallback" />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/krlmlr/dm">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/cynkra/dm">
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -174,23 +186,63 @@ unavailable, in which case db-edu.pacha.dev is used as a fallback" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Connection to SQL Financial Database</h1>
-    <small class="dont-index">Source: <a href='https://github.com/krlmlr/dm/blob/master/R/financial-db-con.R'><code>R/financial-db-con.R</code></a></small>
-    <div class="hidden name"><code>financial_db_con.Rd</code></div>
+    <h1>Materialize</h1>
+    <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/dm.R'><code>R/dm.R</code></a></small>
+    <div class="hidden name"><code>materialize.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Connects to relational.fit.cvut.cz unless the service is
-unavailable, in which case db-edu.pacha.dev is used as a fallback</p>
+    <p><code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute()</a></code> materializes all tables in a <code>dm</code> to new (temporary or permanent)
+tables on the database.</p>
+<p><code><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect()</a></code> downloads the tables in a <code>dm</code> object as local tibbles.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>financial_db_con</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='co'># S3 method for dm</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
+<span class='co'># S3 method for dm</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>A <code>dm</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Passed on to <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute()</a></code>.</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>MariaDBConnection</code> object</p>
+    <p>A <code>dm</code> object of the same structure as the input.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>Called on a <code>dm</code> object, these methods create a copy of all tables in the <code>dm</code>.
+Depending on the size of your data this may take a long time.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>financial</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm_financial.html'>dm_financial_sqlite</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='va'>financial</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='pull_tbl.html'>pull_tbl</a></span><span class='op'>(</span><span class='va'>districts</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'>dbplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_name</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='co'>#&gt; &lt;IDENT&gt; `districts`</div><div class='input'>
+<span class='co'># compute() copies the data to new tables:</span>
+<span class='va'>financial</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='pull_tbl.html'>pull_tbl</a></span><span class='op'>(</span><span class='va'>districts</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'>dbplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_name</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='co'>#&gt; NULL</div><div class='input'>
+<span class='co'># collect() returns a local dm:</span>
+<span class='va'>financial</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='pull_tbl.html'>pull_tbl</a></span><span class='op'>(</span><span class='va'>districts</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='co'>#&gt; [1] "tbl_df"     "tbl"        "data.frame"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -202,11 +254,11 @@ unavailable, in which case db-edu.pacha.dev is used as a fallback</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p><p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -214,6 +266,8 @@ unavailable, in which case db-edu.pacha.dev is used as a fallback</p>
 
   
 
+
+  
 
   </body>
 </html>

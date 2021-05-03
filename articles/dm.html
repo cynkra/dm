@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting started with dm</h1>
             
-            <h4 data-toc-skip class="date">2021-04-25</h4>
+            <h4 data-toc-skip class="date">2021-05-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/dm.Rmd" class="external-link"><code>vignettes/dm.Rmd</code></a></small>
       <div class="hidden name"><code>dm.Rmd</code></div>
@@ -189,7 +189,7 @@
 <span class="co">#&gt; [1] "accounts"  "cards"     "clients"   "disps"     "districts" "loans"    </span>
 <span class="co">#&gt; [7] "orders"    "tkeys"     "trans"</span>
 <span class="va">fin_dm</span><span class="op">$</span><span class="va">loans</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`loans`&gt; [?? x 7]</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`Financial_ijs`.`loans`&gt; [?? x 7]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span><span>
 #&gt;       id account_id date       amount duration payments status
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>      </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;date&gt;</span><span>      </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 
@@ -213,11 +213,11 @@
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;int64&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> 1</span><span style="text-decoration: underline;">056</span><span>320
 </span></code></pre>
-<p>At the same time, most <code>dm</code> functions are pipe-friendly and support tidy evaluation. We can use <code><a href="https://rdrr.io/r/base/Extract.html" class="external-link">[</a></code> or the <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> verb to derive a smaller dm with the <code>loans</code>, <code>accounts</code>, <code>districts</code> and <code>trans</code> tables:</p>
+<p>At the same time, most <code>dm</code> functions are pipe-friendly and support tidy evaluation. We can use <code>[</code> or the <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> verb to derive a smaller dm with the <code>loans</code>, <code>accounts</code>, <code>districts</code> and <code>trans</code> tables:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_small</span> <span class="op">&lt;-</span> <span class="va">fin_dm</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"loans"</span>, <span class="st">"accounts"</span>, <span class="st">"districts"</span>, <span class="st">"trans"</span><span class="op">)</span><span class="op">]</span>
 <span class="va">fin_dm_small</span> <span class="op">&lt;-</span>
-  <span class="va">fin_dm</span> <span class="op">%&gt;%</span>
+  <span class="va">fin_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">accounts</span>, <span class="va">districts</span>, <span class="va">trans</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="linking-tables-by-adding-keys" class="section level2">
@@ -227,13 +227,13 @@
 <p>In our data model, <code>id</code> columns uniquely identify records in the <code>accounts</code> and <code>loans</code> table, a primary key is added with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. Each loan is linked to one account via the <code>account_id</code> column in the <code>loans</code> table, the relationship is established with <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op">&lt;-</span>
-  <span class="va">fin_dm_small</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">accounts</span>, <span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">account_id</span>, <span class="va">accounts</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">trans</span>, <span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">trans</span>, <span class="va">account_id</span>, <span class="va">accounts</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">districts</span>, <span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="va">fin_dm_small</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">accounts</span>, <span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">account_id</span>, <span class="va">accounts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">trans</span>, <span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">trans</span>, <span class="va">account_id</span>, <span class="va">accounts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">districts</span>, <span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">accounts</span>, <span class="va">district_id</span>, <span class="va">districts</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="visualizing-a-data-model" class="section level2">
@@ -242,8 +242,8 @@
 <p>Having a diagram of the data model is the quickest way to verify we’re on the right track. We can display a visual summary of the dm at any time. The default is to display the table name, any defined keys and their links to other tables.</p>
 <p>Visualizing the dm in its current state we see the keys we have created and how they link the tables together. Color guides the eye.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_set_colors.html">dm_set_colors</a></span><span class="op">(</span>green <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">accounts</span><span class="op">)</span>, darkblue <span class="op">=</span> <span class="va">trans</span>, grey <span class="op">=</span> <span class="va">districts</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/dm_set_colors.html">dm_set_colors</a></span><span class="op">(</span>green <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">accounts</span><span class="op">)</span>, darkblue <span class="op">=</span> <span class="va">trans</span>, grey <span class="op">=</span> <span class="va">districts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="263pt" height="150pt" viewbox="0.00 0.00 263.00 150.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 146)"><title>%0</title>
@@ -251,11 +251,11 @@
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-146 259,-146 259,4 -4,4"></polygon></a>
 </g><!-- accounts --><g id="node1" class="node"><title>accounts</title>
 <polygon fill="#00ff00" stroke="transparent" points="104,-61 104,-81 164,-81 164,-61 104,-61"></polygon><text text-anchor="start" x="109.5105" y="-66.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">accounts</text><polygon fill="#ccffcc" stroke="transparent" points="104,-41 104,-61 164,-61 164,-41 104,-41"></polygon><text text-anchor="start" x="106" y="-47.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">id</text><polygon fill="#ccffcc" stroke="transparent" points="104,-21 104,-41 164,-41 164,-21 104,-21"></polygon><text text-anchor="start" x="105.6136" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#444444">district_id</text><polygon fill="none" stroke="#00aa00" stroke-opacity="0.666667" points="103,-20 103,-82 165,-82 165,-20 103,-20"></polygon></g><!-- districts --><g id="node2" class="node"><title>districts</title>
-<polygon fill="#bebebe" stroke="transparent" points="204,-41 204,-61 252,-61 252,-41 204,-41"></polygon><text text-anchor="start" x="205.8366" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#000000">districts</text><polygon fill="#f2f2f2" stroke="transparent" points="204,-21 204,-41 252,-41 252,-21 204,-21"></polygon><text text-anchor="start" x="206" y="-27.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">id</text><polygon fill="none" stroke="#7e7e7e" stroke-opacity="0.666667" points="203,-20 203,-62 253,-62 253,-20 203,-20"></polygon></g><!-- accounts&#45;&gt;districts --><g id="edge3" class="edge"><title>accounts:district_id-&gt;districts:id</title>
+<polygon fill="#bebebe" stroke="transparent" points="204,-41 204,-61 252,-61 252,-41 204,-41"></polygon><text text-anchor="start" x="205.8366" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#000000">districts</text><polygon fill="#f2f2f2" stroke="transparent" points="204,-21 204,-41 252,-41 252,-21 204,-21"></polygon><text text-anchor="start" x="206" y="-27.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">id</text><polygon fill="none" stroke="#7e7e7e" stroke-opacity="0.666667" points="203,-20 203,-62 253,-62 253,-20 203,-20"></polygon></g><!-- accounts&#45;&gt;districts --><g id="edge1" class="edge"><title>accounts:district_id-&gt;districts:id</title>
 <path fill="none" stroke="#555555" d="M164,-31C177.8889,-31 183.6398,-31 193.9683,-31"></path><polygon fill="#555555" stroke="#555555" points="194,-34.5001 204,-31 194,-27.5001 194,-34.5001"></polygon></g><!-- loans --><g id="node3" class="node"><title>loans</title>
-<polygon fill="#00ff00" stroke="transparent" points="1.5,-121 1.5,-141 66.5,-141 66.5,-121 1.5,-121"></polygon><text text-anchor="start" x="19.2251" y="-126.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">loans</text><polygon fill="#ccffcc" stroke="transparent" points="1.5,-101 1.5,-121 66.5,-121 66.5,-101 1.5,-101"></polygon><text text-anchor="start" x="3.5" y="-107.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">id</text><polygon fill="#ccffcc" stroke="transparent" points="1.5,-81 1.5,-101 66.5,-101 66.5,-81 1.5,-81"></polygon><text text-anchor="start" x="3.2875" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#444444">account_id</text><polygon fill="none" stroke="#00aa00" stroke-opacity="0.666667" points="0,-80 0,-142 67,-142 67,-80 0,-80"></polygon></g><!-- loans&#45;&gt;accounts --><g id="edge1" class="edge"><title>loans:account_id-&gt;accounts:id</title>
+<polygon fill="#00ff00" stroke="transparent" points="1.5,-121 1.5,-141 66.5,-141 66.5,-121 1.5,-121"></polygon><text text-anchor="start" x="19.2251" y="-126.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">loans</text><polygon fill="#ccffcc" stroke="transparent" points="1.5,-101 1.5,-121 66.5,-121 66.5,-101 1.5,-101"></polygon><text text-anchor="start" x="3.5" y="-107.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">id</text><polygon fill="#ccffcc" stroke="transparent" points="1.5,-81 1.5,-101 66.5,-101 66.5,-81 1.5,-81"></polygon><text text-anchor="start" x="3.2875" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#444444">account_id</text><polygon fill="none" stroke="#00aa00" stroke-opacity="0.666667" points="0,-80 0,-142 67,-142 67,-80 0,-80"></polygon></g><!-- loans&#45;&gt;accounts --><g id="edge2" class="edge"><title>loans:account_id-&gt;accounts:id</title>
 <path fill="none" stroke="#555555" d="M66.5,-91C86.6802,-91 82.4424,-63.5684 94.2289,-54.1387"></path><polygon fill="#555555" stroke="#555555" points="95.5496,-57.3907 104,-51 93.4087,-50.7261 95.5496,-57.3907"></polygon></g><!-- trans --><g id="node4" class="node"><title>trans</title>
-<polygon fill="#00008b" stroke="transparent" points="1.5,-41 1.5,-61 66.5,-61 66.5,-41 1.5,-41"></polygon><text text-anchor="start" x="20.3948" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">trans</text><polygon fill="#cccce7" stroke="transparent" points="1.5,-21 1.5,-41 66.5,-41 66.5,-21 1.5,-21"></polygon><text text-anchor="start" x="3.5" y="-27.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">id</text><polygon fill="#cccce7" stroke="transparent" points="1.5,-1 1.5,-21 66.5,-21 66.5,-1 1.5,-1"></polygon><text text-anchor="start" x="3.2875" y="-6.4" font-family="Times,serif" font-size="14.00" fill="#444444">account_id</text><polygon fill="none" stroke="#00005c" stroke-opacity="0.666667" points="0,0 0,-62 67,-62 67,0 0,0"></polygon></g><!-- trans&#45;&gt;accounts --><g id="edge2" class="edge"><title>trans:account_id-&gt;accounts:id</title>
+<polygon fill="#00008b" stroke="transparent" points="1.5,-41 1.5,-61 66.5,-61 66.5,-41 1.5,-41"></polygon><text text-anchor="start" x="20.3948" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">trans</text><polygon fill="#cccce7" stroke="transparent" points="1.5,-21 1.5,-41 66.5,-41 66.5,-21 1.5,-21"></polygon><text text-anchor="start" x="3.5" y="-27.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">id</text><polygon fill="#cccce7" stroke="transparent" points="1.5,-1 1.5,-21 66.5,-21 66.5,-1 1.5,-1"></polygon><text text-anchor="start" x="3.2875" y="-6.4" font-family="Times,serif" font-size="14.00" fill="#444444">account_id</text><polygon fill="none" stroke="#00005c" stroke-opacity="0.666667" points="0,0 0,-62 67,-62 67,0 0,0"></polygon></g><!-- trans&#45;&gt;accounts --><g id="edge3" class="edge"><title>trans:account_id-&gt;accounts:id</title>
 <path fill="none" stroke="#555555" d="M66.5,-11C86.6802,-11 82.4424,-38.4316 94.2289,-47.8613"></path><polygon fill="#555555" stroke="#555555" points="93.4087,-51.2739 104,-51 95.5496,-44.6093 93.4087,-51.2739"></polygon></g></g></svg>
 </div>
 <div id="accessing-a-data-model-as-a-table" class="section level2">
@@ -263,7 +263,7 @@
 <a href="#accessing-a-data-model-as-a-table" class="anchor" aria-hidden="true"></a>Accessing a data model as a table</h2>
 <p>If we want to perform modeling or analysis on this relational model we need to transform it into a tabular format that R functions can work with. <code><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl()</a></code> will automatically follow foreign keys across tables to gather all the available columns into a single table.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span>
 <span class="co">#&gt; Renamed columns:</span>
 <span class="co">#&gt; * date -&gt; loans.date, accounts.date</span></code></pre></div>
@@ -289,9 +289,9 @@
 <p>Apart from the rows printed above, no data has been fetched from the database. Use <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> to reduce the number of columns fetched, and <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> to retrieve the entire result for local processing.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">loans_df</span> <span class="op">&lt;-</span>
-  <span class="va">fin_dm_keys</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">amount</span>, <span class="va">duration</span>, <span class="va">A3</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">amount</span>, <span class="va">duration</span>, <span class="va">A3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Renamed columns:</span>
 <span class="co">#&gt; * date -&gt; loans.date, accounts.date</span>
@@ -318,11 +318,11 @@
 <p>To work with a particular table we use <code><a href="../reference/dm_zoom_to.html">dm_zoom_to()</a></code> to set the context to our chosen table. Then we can perform any of the operations we want.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_total</span> <span class="op">&lt;-</span>
-  <span class="va">fin_dm_keys</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">account_id</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total_amount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">amount</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">account_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total_amount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">amount</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"total_loans"</span><span class="op">)</span>
 
 <span class="va">fin_dm_total</span><span class="op">$</span><span class="va">total_loans</span></code></pre></div>
@@ -350,7 +350,7 @@
 <p>It’s always smart to check that your data model follows its specifications. When building our own model or changing existing models by adding tables or keys, it is even more important that the new model is validated.</p>
 <p><code>dm_examine_constrains()</code> checks all primary and foreign keys and reports if they violate their expected constraints.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fin_dm_total</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">fin_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
 </span></code></pre>

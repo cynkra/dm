@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Model verification - keys, constraints and normalization</h1>
             
-            <h4 data-toc-skip class="date">2021-04-25</h4>
+            <h4 data-toc-skip class="date">2021-05-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-low-level.Rmd" class="external-link"><code>vignettes/tech-dm-low-level.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-low-level.Rmd</code></div>
@@ -165,9 +165,9 @@
 <a href="#testing-key-constraints" class="anchor" aria-hidden="true"></a>Testing key constraints</h2>
 <p>This section contains information and examples about the following functions:</p>
 <ol style="list-style-type: decimal">
-<li><code><a href="../reference/check_key.html">check_key(.data, ...)</a></code></li>
-<li><code><a href="../reference/check_subset.html">check_subset(t1, c1, t2, c2)</a></code></li>
-<li><code><a href="../reference/check_set_equality.html">check_set_equality(t1, c1, t2, c2)</a></code></li>
+<li><code>check_key(.data, ...)</code></li>
+<li><code>check_subset(t1, c1, t2, c2)</code></li>
+<li><code>check_set_equality(t1, c1, t2, c2)</code></li>
 </ol>
 <p>When you have tables (data frames) that are connected by key relations, this package can help you to verify the assumed key relations and/or determine the existing key relations between the tables. For example, if you have tables:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -218,11 +218,11 @@
 <a href="#testing-cardinalities-between-two-tables" class="anchor" aria-hidden="true"></a>Testing cardinalities between two tables</h2>
 <p>This section contains information and examples for the functions</p>
 <ol style="list-style-type: decimal">
-<li><code><a href="../reference/examine_cardinality.html">check_cardinality_0_n(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
-<li><code><a href="../reference/examine_cardinality.html">check_cardinality_1_n(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
-<li><code><a href="../reference/examine_cardinality.html">check_cardinality_0_1(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
-<li><code><a href="../reference/examine_cardinality.html">check_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
-<li><code><a href="../reference/examine_cardinality.html">examine_cardinality(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
+<li><code>check_cardinality_0_n(parent_table, primary_key_column, child_table, foreign_key_column)</code></li>
+<li><code>check_cardinality_1_n(parent_table, primary_key_column, child_table, foreign_key_column)</code></li>
+<li><code>check_cardinality_0_1(parent_table, primary_key_column, child_table, foreign_key_column)</code></li>
+<li><code>check_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)</code></li>
+<li><code>examine_cardinality(parent_table, primary_key_column, child_table, foreign_key_column)</code></li>
 </ol>
 <p>The four functions for testing for a specific kind of cardinality of the relation all require a parent table and a child table as inputs. The functions first test if that requirement is fulfilled by checking if:</p>
 <ol style="list-style-type: decimal">
@@ -278,9 +278,9 @@
 <a href="#table-surgery" class="anchor" aria-hidden="true"></a>Table surgery</h2>
 <p>The relevant functions are:</p>
 <ol style="list-style-type: decimal">
-<li><code><a href="../reference/decompose_table.html">decompose_table(.data, new_id_column, ...)</a></code></li>
-<li><code><a href="../reference/reunite_parent_child.html">reunite_parent_child(child_table, parent_table, id_column)</a></code></li>
-<li><code><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list(list_of_parent_child_tables, id_column)</a></code></li>
+<li><code>decompose_table(.data, new_id_column, ...)</code></li>
+<li><code>reunite_parent_child(child_table, parent_table, id_column)</code></li>
+<li><code>reunite_parent_child_from_list(list_of_parent_child_tables, id_column)</code></li>
 </ol>
 <p>The first function implements table normalization. An existing table is split into a parent table (i.e. a lookup table) and a child table (containing the observations), linked by a key column (here: <code>new_id_column</code>). Basically, a foreign key relation would be created, pointing from the <code>new_id_column</code> of the child table to the parent table’s corresponding column, which can be seen as the parent table’s primary key column. The function <code><a href="../reference/decompose_table.html">decompose_table()</a></code> does that, as can be seen in the following example:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">

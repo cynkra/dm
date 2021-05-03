@@ -92,7 +92,7 @@ of column c2 of data frame t2." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -231,11 +231,11 @@ Otherwise an error is thrown and the reason for it is explained.</p>
 
 <span class='co'># this is failing:</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>check_subset</span><span class='op'>(</span><span class='va'>data_2</span>, <span class='va'>a</span>, <span class='va'>data_1</span>, <span class='va'>a</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span><span>
+</div><div class='co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span>
 #&gt;       a     b     c
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>     3     6     9
-#&gt; Error : Column `a` of table `data_2` contains values (see examples above) that are not present in column `a` of table `data_1`.</div></span></pre>
+#&gt;   <span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span><span>     3     6     9</span>
+#&gt; Error : Column `a` of table `data_2` contains values (see examples above) that are not present in column `a` of table `data_1`.</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

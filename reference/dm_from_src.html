@@ -94,7 +94,7 @@ are imported from the database." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -225,10 +225,10 @@ The default attempts to query and issues an informative message.</p></td>
       <th>...</th>
       <td><p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
 <p>Additional parameters for the schema learning query.</p><ul>
-<li><p><code>schema</code>: supported for MSSQL (default: <code>"dbo"</code>) and Postgres (default: <code>"public"</code>).
-Learn the tables in a specific schema.</p></li>
+<li><p><code>schema</code>: supported for MSSQL (default: <code>"dbo"</code>), Postgres (default: <code>"public"</code>), and MariaDB/MySQL
+(default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).</p></li>
 <li><p><code>dbname</code>: supported for MSSQL. Access different databases on the connected MSSQL-server;
-default: database addressed by <code>src</code>.</p></li>
+default: active database.</p></li>
 <li><p><code>table_type</code>: supported for Postgres (default: <code>"BASE TABLE"</code>). Specify the table type. Options are:</p><ol>
 <li><p><code>"BASE TABLE"</code> for a persistent table (normal table type)</p></li>
 <li><p><code>"VIEW"</code> for a view</p></li>
@@ -253,15 +253,15 @@ default: database addressed by <code>src</code>.</p></li>
 <span class='op'>)</span>
 
 <span class='fu'>dm_from_src</span><span class='op'>(</span><span class='va'>con</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span></div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
+</div><div class='co'>#&gt; Keys could not be queried, use `learn_keys = FALSE` to mute this message.</div><div class='co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span>
 #&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
-#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span><span>
+#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
 #&gt; Columns: 57
 #&gt; Primary keys: 0
 #&gt; Foreign keys: 0</div><div class='input'>
 <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span><span class='op'>(</span><span class='va'>con</span><span class='op'>)</span>
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
