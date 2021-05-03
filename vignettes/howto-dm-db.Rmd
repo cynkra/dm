@@ -68,8 +68,8 @@ Note that the tables arguments have to all be from the same source, in this case
 dbListTables(my_db)
 
 library(dbplyr)
-loans <- my_db$loans
-accounts <- my_db$accounts
+loans <- tbl(my_db, "loans")
+accounts <- tbl(my_db, "accounts")
 
 my_manual_dm <- dm(loans, accounts)
 my_manual_dm
@@ -116,7 +116,7 @@ Once you have instantiated a dm object you can continue to add tables to it.
 For tables from the original source for the dm, use `dm_add_tbl()`
 
 ``````{r }
-trans <- my_db$trans
+trans <- tbl(my_db, "trans")
 
 my_dm_keys %>%
   dm_add_tbl(trans)
