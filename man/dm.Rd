@@ -66,7 +66,7 @@ use \code{validate_dm()} to double-check the returned object.
 
 \code{validate_dm()} checks the internal consistency of a \code{dm} object.
 
-\code{dm_get_con()} returns the \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
+\code{dm_get_con()} returns the DBI connection for a \code{dm} object.
 This works only if the tables are stored on a database, otherwise an error
 is thrown.
 
@@ -80,9 +80,8 @@ To get a filtered table, use \code{dm_apply_filters_to_tbl()}, to apply filters 
 \code{as_dm()} coerces objects to the \code{dm} class
 }
 \details{
-All lazy tables in a dm objects must be stored on the same database
+All lazy tables in a dm object must be stored on the same database server
 and accessed through the same connection.
-In addition, all tables must be objects of the same class.
 }
 \examples{
 dm(trees, mtcars)

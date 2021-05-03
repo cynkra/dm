@@ -236,7 +236,19 @@ debug_validate_dm <- function(dm) {
   dm
 }
 
-#' @rdname dplyr_src
+#' dm as data source
+#'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These methods are deprecated because of their limited use,
+#' and because the notion of a "source" seems to be getting phased out from dplyr.
+#' Use other ways to access the tables in a `dm`.
+#'
+#' Use [dm_get_con()] instead of `dm_get_src()` to get the DBI connetion for a
+#' `dm` object
+#'
+#' @name dplyr_src
 #' @export
 #' @keywords internal
 dm_get_src <- function(x) {
@@ -253,13 +265,12 @@ dm_get_src_impl <- function(x) {
 
 #' Get connection
 #'
-#' `dm_get_con()` returns the [`DBI::DBIConnection-class`] for `dm` objects.
+#' `dm_get_con()` returns the DBI connection for a `dm` object.
 #' This works only if the tables are stored on a database, otherwise an error
 #' is thrown.
 #'
-#' All lazy tables in a dm objects must be stored on the same database
+#' All lazy tables in a dm object must be stored on the same database server
 #' and accessed through the same connection.
-#' In addition, all tables must be objects of the same class.
 #'
 #' @rdname dm
 #'
@@ -622,15 +633,8 @@ str.zoomed_dm <- function(object, ...) {
   str(object)
 }
 
-#' dm as data source
-#'
-#' @description
-#' `r lifecycle::badge("deprecated")`
-#'
-#' These methods are deprecated because of their limited use,
-#' and because the notion of a "source" seems to be getting phased out from dplyr.
-#' Use other ways to access the tables in a `dm`.
-#'
+#' @details
+#' Use [[[] instead of `tbl()` to access individual tables in a `dm` object.
 #' @param src A `dm` object.
 #' @param from A length one character variable containing the name of the requested table
 #' @param ... See original function documentation
@@ -695,6 +699,9 @@ compute.dm <- function(x, ...) { # for both dm and zoomed_dm
     new_dm3()
 }
 
+#' @details
+#' Get the names from [dm_get_tables()] instead of calling `dm_get_src()`
+#' to list the table names in a `dm` object.
 #' @rdname dplyr_src
 #' @keywords internal
 #' @export
@@ -710,6 +717,9 @@ src_tbls_impl <- function(dm) {
   dm_get_def(dm)$table
 }
 
+#' @details
+#' Use [copy_to()] on a table and then [dm_add_tbl()] instead of `copy_to()`
+#' on a `dm` object.
 #' @param dest For `copy_to.dm()`: The `dm` object to which a table should be copied.
 #' @param df For `copy_to.dm()`: A table (can be on a different `src`)
 #' @param name For `copy_to.dm()`: See [`dplyr::copy_to`]
