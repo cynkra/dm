@@ -621,6 +621,10 @@ tbl_impl <- function(dm, from) {
   out
 }
 
+src_tbls_impl <- function(dm) {
+  dm_get_def(dm)$table
+}
+
 #' Materialize
 #'
 #' `compute()` materializes all tables in a `dm` to new (temporary or permanent)
@@ -658,10 +662,6 @@ compute.dm <- function(x, ...) { # for both dm and zoomed_dm
     dm_get_def() %>%
     mutate(data = map(data, compute, ...)) %>%
     new_dm3()
-}
-
-src_tbls_impl <- function(dm) {
-  dm_get_def(dm)$table
 }
 
 #' Materialize
