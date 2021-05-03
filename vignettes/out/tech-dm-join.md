@@ -128,22 +128,20 @@ the `flights` table. The difference is the `name` column from the
 `airlines` table.
 
 ``` r
-dm %>% 
-  tbl("flights") %>% 
-  names()
+dm$flights %>% 
+  colnames()
 #>  [1] "year"           "month"          "day"            "dep_time"      
 #>  [5] "sched_dep_time" "dep_delay"      "arr_time"       "sched_arr_time"
 #>  [9] "arr_delay"      "carrier"        "flight"         "tailnum"       
 #> [13] "origin"         "dest"           "air_time"       "distance"      
 #> [17] "hour"           "minute"         "time_hour"
 
-dm %>% 
-  tbl("airlines") %>% 
-  names()
+dm$airlines %>% 
+  colnames()
 #> [1] "carrier" "name"
 
 dm_joined %>% 
-  names()
+  colnames()
 #>  [1] "year"           "month"          "day"            "dep_time"      
 #>  [5] "sched_dep_time" "dep_delay"      "arr_time"       "sched_arr_time"
 #>  [9] "arr_delay"      "carrier"        "flight"         "tailnum"       

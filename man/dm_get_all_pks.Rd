@@ -4,10 +4,12 @@
 \alias{dm_get_all_pks}
 \title{Get all primary keys of a \code{\link{dm}} object}
 \usage{
-dm_get_all_pks(dm)
+dm_get_all_pks(dm, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A tibble with the following columns:

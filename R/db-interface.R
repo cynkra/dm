@@ -3,8 +3,9 @@
 #' `copy_dm_to()` takes a [dplyr::src_dbi] object or a [`DBI::DBIConnection-class`] object as its first argument
 #' and a [`dm`] object as its second argument.
 #' The latter is copied to the former.
-#' By default, temporary tables will be created and the key constraints will be set
-#' (currently only on MSSQL and Postgres databases).
+#' The default is to create temporary tables, set `temporary = FALSE` to create permanent tables.
+#' Unless `set_key_constraints` is `FALSE`, primary key constraints are set on all databases,
+#' and in addition foreign key constraints are set on MSSQL and Postgres databases.
 #'
 #' No tables will be overwritten; passing `overwrite = TRUE` to the function will give an error.
 #' Types are determined separately for each table, setting the `types` argument will
@@ -94,7 +95,7 @@ copy_dm_to <- function(dest, dm, ...,
                        schema = NULL) {
   # for the time being, we will be focusing on MSSQL
   # we want to
-  #   1. change `dm_get_src(dm)` to `dest`
+  #   1. change `dm_get_src_impl(dm)` to `dest`
   #   2. copy the tables to `dest`
   #   3. implement the key situation within our `dm` on the DB
 
@@ -126,7 +127,7 @@ copy_dm_to <- function(dest, dm, ...,
   }
 
   dest <- src_from_src_or_con(dest)
-  src_names <- src_tbls(dm)
+  src_names <- src_tbls_impl(dm)
 
   if (is_db(dest)) {
     dest_con <- con_from_src_or_con(dest)
@@ -183,7 +184,7 @@ copy_dm_to <- function(dest, dm, ...,
     return(dm)
   }
 
-  copy_data <- build_copy_data(dm, dest, table_names_out, set_key_constraints)
+  copy_data <- build_copy_data(dm, dest, table_names_out, set_key_constraints, dest_con)
 
   new_tables <- copy_list_of_tables_to(
     dest,
@@ -206,9 +207,9 @@ copy_dm_to <- function(dest, dm, ...,
 
 #' Set key constraints on a DB for a `dm`-obj with keys
 #'
-#' @description `dm_set_key_constraints()` takes a `dm` object that is constructed from tables in a database
-#' (this is currently only implemented for MSSQL and Postgres databases), and mirrors the `dm` key constraints
-#' on the database.
+#' @description `dm_set_key_constraints()` takes a `dm` object that is constructed from tables in a database,
+#' and mirrors the foreign key constraints in the dm on the database.
+#' This is currently only implemented for MSSQL and Postgres databases.
 #'
 #' @inheritParams copy_dm_to
 #'
@@ -244,7 +245,7 @@ dm_set_key_constraints <- function(dm) {
     left_join(db_table_names, by = c("parent_table" = "table_name")) %>%
     rename(db_parent_table = remote_name)
 
-  con <- con_from_src_or_con(dm_get_src(dm))
+  con <- con_from_src_or_con(dm_get_src_impl(dm))
   queries <- create_queries(con, fk_info)
   walk(queries, ~ dbExecute(con, .))
 
@@ -253,10 +254,10 @@ dm_set_key_constraints <- function(dm) {
 
 get_db_table_names <- function(dm) {
   if (!is_src_db(dm)) {
-    return(tibble(table_name = src_tbls(dm), remote_name = src_tbls(dm)))
+    return(tibble(table_name = src_tbls_impl(dm), remote_name = src_tbls_impl(dm)))
   }
   tibble(
-    table_name = src_tbls(dm),
+    table_name = src_tbls_impl(dm),
     remote_name = map_chr(dm_get_tables_impl(dm), dbplyr::remote_name)
   )
 }

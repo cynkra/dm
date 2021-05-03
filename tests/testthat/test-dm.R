@@ -3,7 +3,7 @@ test_that("can access tables", {
 
   expect_identical(tbl(dm_nycflights13(), "airlines"), nycflights13::airlines)
   expect_dm_error(
-    tbl(dm_nycflights13(), "x"),
+    tbl_impl(dm_nycflights13(), "x"),
     class = "table_not_in_dm"
   )
 })
@@ -58,6 +58,8 @@ test_that("'copy_to.dm()' works", {
 })
 
 test_that("'copy_to.dm()' works (2)", {
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_dm_error(
     copy_to(dm(), mtcars, c("car_table", "another_table")),
     "one_name_for_copy_to"
@@ -196,7 +198,7 @@ test_that("some methods/functions for `zoomed_dm` work", {
 
 test_that("length and names for dm work", {
   expect_length(dm_for_filter(), 6L)
-  expect_identical(names(dm_for_filter()), src_tbls(dm_for_filter()))
+  expect_identical(names(dm_for_filter()), src_tbls_impl(dm_for_filter()))
 })
 
 test_that("validator is silent", {
@@ -387,6 +389,8 @@ test_that("as.list()-method works for local `zoomed_dm`", {
 # test getters: -----------------------------------------------------------
 
 test_that("dm_get_src() works", {
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_dm_error(
     dm_get_src(1),
     class = "is_not_dm"

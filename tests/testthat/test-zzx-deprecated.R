@@ -117,8 +117,9 @@ test_that("cdm_get_src() works", {
     class = "is_not_dm"
   )
 
+  skip_if_local_src()
   expect_identical(
-    class(dm_get_src(dm_for_filter())),
+    class(cdm_get_src(dm_for_filter())),
     class(my_test_src())
   )
 })
@@ -341,13 +342,13 @@ test_that("dm_select() and dm_rename() work", {
   local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_tbl(
-    cdm_select(dm_for_filter(), tf_1, a_new = a) %>% tbl("tf_1"),
-    dm_select(dm_for_filter(), tf_1, a_new = a) %>% tbl("tf_1")
+    cdm_select(dm_for_filter(), tf_1, a_new = a) %>% tbl_impl("tf_1"),
+    dm_select(dm_for_filter(), tf_1, a_new = a) %>% tbl_impl("tf_1")
   )
 
   expect_equivalent_tbl(
-    cdm_rename(dm_for_filter(), tf_1, a_new = a) %>% tbl("tf_1"),
-    dm_rename(dm_for_filter(), tf_1, a_new = a) %>% tbl("tf_1")
+    cdm_rename(dm_for_filter(), tf_1, a_new = a) %>% tbl_impl("tf_1"),
+    dm_rename(dm_for_filter(), tf_1, a_new = a) %>% tbl_impl("tf_1")
   )
 })
 

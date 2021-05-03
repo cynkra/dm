@@ -4,12 +4,14 @@
 \alias{dm_has_pk}
 \title{Check for primary key}
 \usage{
-dm_has_pk(dm, table)
+dm_has_pk(dm, table, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A logical value: \code{TRUE} if the given table has a primary key, \code{FALSE} otherwise.

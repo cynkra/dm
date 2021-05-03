@@ -60,7 +60,7 @@ Lazy tables defer downloading of table data until results are required for print
 A dm can also be constructed from individual tables or views.
 This is useful for when you want to work with a subset of a database's tables, perhaps from different schemas.
 
-Below we use the `tbl()` function from {dplyr} to extract two tables from the financial database.
+Below we use the `$` notation to extract two tables from the financial database.
 Then we create our dm by passing the tables in as arguments.
 Note that the tables arguments have to all be from the same source, in this case `my_db`.
 

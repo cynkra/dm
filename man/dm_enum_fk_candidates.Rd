@@ -5,9 +5,9 @@
 \alias{enum_fk_candidates}
 \title{Foreign key candidates}
 \usage{
-dm_enum_fk_candidates(dm, table, ref_table)
+dm_enum_fk_candidates(dm, table, ref_table, ...)
 
-enum_fk_candidates(zoomed_dm, ref_table)
+enum_fk_candidates(zoomed_dm, ref_table, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -15,6 +15,8 @@ enum_fk_candidates(zoomed_dm, ref_table)
 \item{table}{The table whose columns should be tested for suitability as foreign keys.}
 
 \item{ref_table}{A table with a primary key.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 
 \item{zoomed_dm}{A \code{dm} with a zoomed table.}
 }
