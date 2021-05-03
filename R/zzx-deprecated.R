@@ -59,7 +59,7 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
 #' @keywords internal
 #' @export
 cdm_get_src <- function(x) {
-  deprecate_soft("0.1.0", "dm::cdm_get_src()", "dm::dm_get_src()")
+  deprecate_soft("0.1.0", "dm::cdm_get_src()", "dm::dm_get_con()")
   check_not_zoomed(x)
   out <- dm_get_src_impl(x)
   if (is.null(out)) {
