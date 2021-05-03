@@ -43,7 +43,7 @@ financial \%>\%
   dbplyr::remote_name()
 
 # collect() returns a local dm:
-financial() \%>\%
+financial \%>\%
   collect() \%>\%
   pull_tbl(districts) \%>\%
   class()
