@@ -637,7 +637,7 @@ src_tbls_impl <- function(dm) {
 #' @param x A `dm`.
 #' @param ... Passed on to [compute()].
 #' @return A `dm` object of the same structure as the input.
-#' @rdname dplyr_db
+#' @name materialize
 #' @export
 #' @examplesIf dm:::dm_has_financial()
 #' financial <- dm_financial_sqlite()
@@ -668,7 +668,7 @@ compute.dm <- function(x, ...) { # for both dm and zoomed_dm
 #'
 #' `collect()` downloads the tables in a `dm` object as local [tibble]s.
 #'
-#' @rdname dplyr_db
+#' @rdname materialize
 #' @export
 collect.dm <- function(x, ...) { # for both dm and zoomed_dm
   x <- dm_apply_filters(x)
