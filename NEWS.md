@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.0
+
+- Same as previous version.
+
+
 # dm 0.1.99.9004
 
 - Deprecate `dm_get_src()` `tbl.dm()`, `src_tbls.dm()`, `copy_to.dm()`. These functions have better alternatives and use the notion of a "data source" which is being phased out of dplyr (#527).
