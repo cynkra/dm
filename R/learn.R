@@ -65,7 +65,7 @@ dm_learn_from_db <- function(dest, dbname = NULL, ...) {
     deframe()
 
   # FIXME: Use tbl_sql(vars = ...)
-  tables <- map(table_names, ~ tbl_impl(con, dbplyr::ident_q(.x)))
+  tables <- map(table_names, ~ tbl(con, dbplyr::ident_q(.x)))
 
   data_model <- get_datamodel_from_overview(overview)
 
