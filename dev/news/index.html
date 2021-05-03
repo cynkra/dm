@@ -334,7 +334,7 @@
 <a href="#breaking-changes" class="anchor" aria-hidden="true"></a>Breaking changes</h2>
 <ul>
 <li>
-<code><a href="../reference/dm.html">dm_get_src()</a></code> returns <code>NULL</code> for local data sources (<a href='https://github.com/cynkra/dm/issues/394'>#394</a>).</li>
+<code><a href="../reference/dplyr_src.html">dm_get_src()</a></code> returns <code>NULL</code> for local data sources (<a href='https://github.com/cynkra/dm/issues/394'>#394</a>).</li>
 <li>Local target in <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> gives a deprecation message (<a href='https://github.com/cynkra/dm/issues/395'>#395</a>).</li>
 </ul>
 </div>
@@ -501,7 +501,7 @@
 <li>
 <code>dm_from_src(schema = "...")</code> works on Postgres if <code>search_path</code> is not set on the connection.</li>
 <li>
-<code><a href="../reference/dplyr_db.html">compute.zoomed_dm()</a></code> no longer throws an error.</li>
+<code><a href="../reference/dplyr_table_manipulation.html">compute.zoomed_dm()</a></code> no longer throws an error.</li>
 <li>Remove unused DT import (<a href='https://github.com/cynkra/dm/issues/295'>#295</a>).</li>
 </ul>
 </div>
@@ -624,7 +624,7 @@
 <li>Add name repair argument for both <code><a href="../reference/deprecated.html">cdm_insert_zoomed_tbl()</a></code> and <code><a href="../reference/deprecated.html">cdm_add_tbl()</a></code>, defaulting to renaming of old and new tables when adding tables with duplicate names (<a href='https://github.com/cynkra/dm/issues/132'>#132</a>).</li>
 <li>Redesign constructors and validators: <code><a href="../reference/dm.html">dm()</a></code> is akin to <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble()</a></code>, <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> works like <code><a href="../reference/dm.html">dm()</a></code> did previously, <code><a href="../reference/dm.html">new_dm()</a></code> only accepts a list of tables and no longer validates, <code><a href="../reference/dm.html">validate_dm()</a></code> checks internal consistency (<a href='https://github.com/cynkra/dm/issues/69'>#69</a>).</li>
 <li>
-<code><a href="../reference/dplyr_db.html">compute.dm()</a></code> applies filters and calls <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> on all tables (<a href='https://github.com/cynkra/dm/issues/135'>#135</a>).</li>
+<code><a href="../reference/materialize.html">compute.dm()</a></code> applies filters and calls <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> on all tables (<a href='https://github.com/cynkra/dm/issues/135'>#135</a>).</li>
 </ul>
 </div>
 <div id="documentation-3" class="section level2">

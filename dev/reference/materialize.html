@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>dplyr table retrieval, table info and DB interaction methods — tbl.dm • dm</title>
+<title>Materialize — materialize • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,10 @@
 
 
 
-<meta property="og:title" content="dplyr table retrieval, table info and DB interaction methods — tbl.dm" />
-<meta property="og:description" content="Use these methods without the '.dm' or '.zoomed_dm' suffix (see examples)." />
+<meta property="og:title" content="Materialize — materialize" />
+<meta property="og:description" content="compute() materializes all tables in a dm to new (temporary or permanent)
+tables on the database.
+collect() downloads the tables in a dm object as local tibbles." />
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
@@ -65,6 +67,8 @@
 <![endif]-->
 
 
+
+<!-- dependencies from examples -->
 
 
   
@@ -182,38 +186,19 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1><span class="pkg">dplyr</span> table retrieval, table info and DB interaction methods</h1>
+    <h1>Materialize</h1>
     <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/dm.R'><code>R/dm.R</code></a></small>
-    <div class="hidden name"><code>dplyr_db.Rd</code></div>
+    <div class="hidden name"><code>materialize.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Use these methods without the '.dm' or '.zoomed_dm' suffix (see examples).</p>
+    <p><code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute()</a></code> materializes all tables in a <code>dm</code> to new (temporary or permanent)
+tables on the database.</p>
+<p><code><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect()</a></code> downloads the tables in a <code>dm</code> object as local tibbles.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for dm</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span><span class='op'>(</span><span class='va'>src</span>, <span class='va'>from</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for dm</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for zoomed_dm</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for dm</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_tbls.html'>src_tbls</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for dm</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>copy_to</a></span><span class='op'>(</span>
-  <span class='va'>dest</span>,
-  <span class='va'>df</span>,
-  name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span><span class='op'>)</span>,
-  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  temporary <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  repair <span class='op'>=</span> <span class='st'>"unique"</span>,
-  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span>
 
 <span class='co'># S3 method for dm</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
@@ -222,49 +207,42 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>src</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr>
-    <tr>
-      <th>from</th>
-      <td><p>A length one character variable containing the name of the requested table</p></td>
+      <th>x</th>
+      <td><p>A <code>dm</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>See original function documentation</p></td>
-    </tr>
-    <tr>
-      <th>x</th>
-      <td><p>Either a <code>dm</code> or a <code>zoomed_dm</code>; the latter leads to an error for <code><a href='dplyr_db.html'>src_tbls.dm()</a></code></p></td>
-    </tr>
-    <tr>
-      <th>dest</th>
-      <td><p>For <code><a href='dplyr_db.html'>copy_to.dm()</a></code>: The <code>dm</code> object to which a table should be copied.</p></td>
-    </tr>
-    <tr>
-      <th>df</th>
-      <td><p>For <code><a href='dplyr_db.html'>copy_to.dm()</a></code>: A table (can be on a different <code>src</code>)</p></td>
-    </tr>
-    <tr>
-      <th>name</th>
-      <td><p>For <code><a href='dplyr_db.html'>copy_to.dm()</a></code>: See <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to</a></code></p></td>
-    </tr>
-    <tr>
-      <th>overwrite</th>
-      <td><p>For <code><a href='dplyr_db.html'>copy_to.dm()</a></code>: See <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to</a></code>; <code>TRUE</code> leads to an error</p></td>
-    </tr>
-    <tr>
-      <th>temporary</th>
-      <td><p>For <code><a href='dplyr_db.html'>copy_to.dm()</a></code>: If the <code>dm</code> is on a DB, the copied version of <code>df</code> will only be written temporarily to the DB.
-After the connection is reset it will no longer be available.</p></td>
-    </tr>
-    <tr>
-      <th>repair, quiet</th>
-      <td><p>Name repair options; cf. <code><a href='https://vctrs.r-lib.org/reference/vec_as_names.html'>vctrs::vec_as_names</a></code></p></td>
+      <td><p>Passed on to <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute()</a></code>.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A <code>dm</code> object of the same structure as the input.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Called on a <code>dm</code> object, these methods create a copy of all tables in the <code>dm</code>.
+Depending on the size of your data this may take a long time.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>financial</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm_financial.html'>dm_financial_sqlite</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='va'>financial</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='pull_tbl.html'>pull_tbl</a></span><span class='op'>(</span><span class='va'>districts</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'>dbplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_name</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='co'>#&gt; &lt;IDENT&gt; `districts`</div><div class='input'>
+<span class='co'># compute() copies the data to new tables:</span>
+<span class='va'>financial</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='pull_tbl.html'>pull_tbl</a></span><span class='op'>(</span><span class='va'>districts</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'>dbplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_name</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='co'>#&gt; NULL</div><div class='input'>
+<span class='co'># collect() returns a local dm:</span>
+<span class='va'>financial</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='pull_tbl.html'>pull_tbl</a></span><span class='op'>(</span><span class='va'>districts</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='co'>#&gt; [1] "tbl_df"     "tbl"        "data.frame"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -270,6 +270,8 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to</a></span><span class="op">(</span><span class="va">deployed_dm</span>, <span class="va">loans_residuals</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">loans_residuals</span>, <span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">loans_residuals</span>, <span class="va">id</span>, <span class="va">loans</span><span class="op">)</span>
+<span class="co">#&gt; Warning: `copy_to.dm()` was deprecated in dm 0.2.0.</span>
+<span class="co">#&gt; Use `copy_to(dm_get_con(dm), ...)` and `dm_add_tbl()`.</span>
 
 <span class="va">my_dm_sqlite_resid</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_set_colors.html">dm_set_colors</a></span><span class="op">(</span>violet <span class="op">=</span> <span class="va">loans_residuals</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>

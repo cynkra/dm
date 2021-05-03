@@ -199,10 +199,10 @@
     <loc>https://cynkra.github.io/dm/reference/dm_zoom_to.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/reference/dplyr_db.html</loc>
+    <loc>https://cynkra.github.io/dm/reference/dplyr_join.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/reference/dplyr_join.html</loc>
+    <loc>https://cynkra.github.io/dm/reference/dplyr_src.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/dplyr_table_manipulation.html</loc>
@@ -215,6 +215,9 @@
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/dm/reference/materialize.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/pull_tbl.html</loc>

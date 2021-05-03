@@ -60,11 +60,7 @@ use validate_dm() to double-check the returned object.
 
 
 validate_dm() checks the internal consistency of a dm object.
-dm_get_src() returns the dplyr source for a dm object.
-All tables in a dm object must be from the same source,
-i.e. either they are all data frames, or they all are stored on the same
-database.
-dm_get_con() returns the DBI::DBIConnection for dm objects.
+dm_get_con() returns the DBI connection for a dm object.
 This works only if the tables are stored on a database, otherwise an error
 is thrown.
 dm_get_tables() returns a named list of dplyr tbl objects
@@ -228,11 +224,7 @@ use <code>validate_dm()</code> to double-check the returned object.</p></li>
 </ul>
 
 <p><code>validate_dm()</code> checks the internal consistency of a <code>dm</code> object.</p>
-<p><code>dm_get_src()</code> returns the <span class="pkg">dplyr</span> source for a <code>dm</code> object.
-All tables in a <code>dm</code> object must be from the same source,
-i.e. either they are all data frames, or they all are stored on the same
-database.</p>
-<p><code>dm_get_con()</code> returns the <code><a href='https://dbi.r-dbi.org/reference/DBIConnection-class.html'>DBI::DBIConnection</a></code> for <code>dm</code> objects.
+<p><code>dm_get_con()</code> returns the DBI connection for a <code>dm</code> object.
 This works only if the tables are stored on a database, otherwise an error
 is thrown.</p>
 <p><code>dm_get_tables()</code> returns a named list of <span class="pkg">dplyr</span> <a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a> objects
@@ -248,8 +240,6 @@ To get a filtered table, use <code><a href='dm_filter.html'>dm_apply_filters_to_
 <span class='fu'>new_dm</span><span class='op'>(</span>tables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='fu'>validate_dm</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-
-<span class='fu'>dm_get_src</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='fu'>dm_get_con</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
@@ -288,11 +278,13 @@ to be included in the <code>dm</code> object.</p></td>
 
     <p>For <code>dm()</code>, <code>new_dm()</code>, <code>as_dm()</code>: A <code>dm</code> object.</p>
 <p>For <code>validate_dm()</code>: Returns the <code>dm</code>, invisibly, after finishing all checks.</p>
-<p>For <code>dm_get_src()</code>: the <span class="pkg">dplyr</span> source for a <code>dm</code> object,
-or <code>NULL</code> if the <code>dm</code> objcet contains data frames.</p>
 <p>For <code>dm_get_con()</code>: The <code><a href='https://dbi.r-dbi.org/reference/DBIConnection-class.html'>DBI::DBIConnection</a></code> for <code>dm</code> objects.</p>
 <p>For <code>dm_get_tables()</code>: A named list with the tables constituting the <code>dm</code>.</p>
 <p>For <code>is_dm()</code>: Boolean, is this object a <code>dm</code>.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>All lazy tables in a dm object must be stored on the same database server
+and accessed through the same connection.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
@@ -330,7 +322,8 @@ and importing the primary and foreign keys</p></li>
 #&gt; Primary keys: 0
 #&gt; Foreign keys: 0</div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span><span class='op'>(</span><span class='st'>"airports"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; <span style='color: #949494;'># A tibble: 1,458 x 8</span>
+</div><div class='co'>#&gt; <span class='warning'>Warning: </span>`tbl.dm()` was deprecated in dm 0.2.0.
+#&gt; Use `dm[[table_name]]` instead to access a specific table.</div><div class='co'>#&gt; <span style='color: #949494;'># A tibble: 1,458 x 8</span>
 #&gt;    faa   name                       lat    lon   alt    tz dst   tzone          
 #&gt;    <span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span>
 #&gt; <span style='color: #BCBCBC;'> 1</span><span> 04G   Lansdowne Airport         41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…</span>
@@ -344,8 +337,10 @@ and importing the primary and foreign keys</p></li>
 #&gt; <span style='color: #BCBCBC;'> 9</span><span> 0P2   Shoestring Aviation Air…  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_Yo…</span>
 #&gt; <span style='color: #BCBCBC;'>10</span><span> 0S9   Jefferson County Intl     48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_An…</span>
 #&gt; <span style='color: #949494;'># … with 1,448 more rows</span></div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_tbls.html'>src_tbls</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather" </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>dm_get_src</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='co'>#&gt; NULL</div><div class='input'>
+</div><div class='co'>#&gt; <span class='warning'>Warning: </span>`src_tbls.dm()` was deprecated in dm 0.2.0.
+#&gt; Use `names(dm_get_tables(dm))` instead.</div><div class='co'>#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather" </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='dplyr_src.html'>dm_get_src</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='co'>#&gt; <span class='warning'>Warning: </span>`dm_get_src()` was deprecated in dm 0.2.0.
+#&gt; Use `dm_get_con(dm)` for databases, or `class(dm[[1]])` to get the class of a table.</div><div class='co'>#&gt; NULL</div><div class='input'>
 <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span><span class='op'>(</span>
   <span class='fu'>dbplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>src_memdb</a></span><span class='op'>(</span><span class='op'>)</span>,
   <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span>,
