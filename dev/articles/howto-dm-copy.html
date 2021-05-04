@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Copy tables to and from a database</h1>
                         <h4 data-toc-skip class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2021-05-03</h4>
+            <h4 data-toc-skip class="date">2021-05-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/howto-dm-copy.Rmd" class="external-link"><code>vignettes/howto-dm-copy.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-copy.Rmd</code></div>
@@ -216,7 +216,7 @@
   <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; &lt;SQL&gt; SELECT *</span>
 <span class="co">#&gt; FROM `dbplyr_001`</span></code></pre></div>
-<p>Note the differences in queries returned by <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render()</a></code>. <code>my_dm_total$total_loans</code> is still being lazily evaluated and the full query constructed from the chain of operations that generated it, and is required to run to access it, is still in place. Contrast that with <code>my_dm_total_computed$total_loans</code> where the query has been realized and accessing its rows requires a simple <code>SELECT *</code> statement. The table name, <code></code>, was automatically generated as the <code>name</code> argument was not supplied.</p>
+<p>Note the differences in queries returned by <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render()</a></code>. <code>my_dm_total$total_loans</code> is still being lazily evaluated and the full query constructed from the chain of operations that generated it, and is required to run to access it, is still in place. Contrast that with <code>my_dm_total_computed$total_loans</code> where the query has been realized and accessing its rows requires a simple <code>SELECT *</code> statement. The table name, <code>dbplyr_001</code>, was automatically generated as the <code>name</code> argument was not supplied to <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code>.</p>
 <p>The default is to create a temporary table. If you want results to persist across sessions in permanent tables, <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> must be called with the argument <code>temporary = FALSE</code> and a table name for the <code>name</code> argument. See <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">?compute</a></code> for more details.</p>
 <p>When called on a whole dm object (without zoom), <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> materializes all tables into new (temporary or persistent) tables by executing the associated SQL query and storing the full results. Depending on the size of your data this may take considerable time or be infeasible. It may be useful occasionally to create snapshots of data that is subject to change.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
