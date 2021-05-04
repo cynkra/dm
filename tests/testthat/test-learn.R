@@ -60,7 +60,8 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   dm_db_learned_no_keys <- expect_silent(dm_from_src(src_db, learn_keys = FALSE))
 
   # for learning from DB without learning the key relations
-  dm_for_filter_no_keys <- dm_for_filter()[order_of_deletion] %>%
+  dm_for_filter_no_keys <-
+    dm_for_filter()[order_of_deletion] %>%
     dm_get_def() %>%
     mutate(
       pks = vctrs::list_of(new_pk()),
@@ -127,10 +128,12 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
   )
 
   # learning without keys:
-  dm_db_learned_no_keys <- expect_silent(dm_from_src(src_db, schema = schema_name, learn_keys = FALSE)) %>%
+  dm_db_learned_no_keys <-
+    expect_silent(dm_from_src(src_db, schema = schema_name, learn_keys = FALSE)) %>%
     dm_select_tbl(!!!order_of_deletion)
 
-  dm_for_disambiguate_no_keys <- dm_for_disambiguate()[order_of_deletion] %>%
+  dm_for_disambiguate_no_keys <-
+    dm_for_disambiguate()[order_of_deletion] %>%
     dm_get_def() %>%
     mutate(
       pks = vctrs::list_of(new_pk()),

@@ -79,14 +79,16 @@ test_that("output for compound keys", {
   skip_if_remote_src()
 
   expect_snapshot({
-    unite_weather_dm <- nyc_comp() %>%
+    unite_weather_dm <-
+      nyc_comp() %>%
       dm_zoom_to(weather) %>%
       mutate(chr_col = "airport") %>%
       unite("new_col", origin, chr_col) %>%
       dm_update_zoomed()
     unite_weather_dm %>% get_all_keys("flights")
     unite_weather_dm %>% get_all_keys("weather")
-    unite_flights_dm <- nyc_comp() %>%
+    unite_flights_dm <-
+      nyc_comp() %>%
       dm_zoom_to(flights) %>%
       mutate(chr_col = "airport") %>%
       unite("new_col", origin, chr_col) %>%

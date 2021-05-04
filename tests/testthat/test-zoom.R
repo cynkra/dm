@@ -95,7 +95,8 @@ test_that("dm_insert_zoomed() works", {
 
 test_that("dm_update_tbl() works", {
   # setting table tf_7 as zoomed table for tf_6 and removing its primary key and foreign keys pointing to it
-  new_dm_for_filter <- dm_get_def(dm_for_filter()) %>%
+  new_dm_for_filter <-
+    dm_get_def(dm_for_filter()) %>%
     mutate(
       zoom = if_else(table == "tf_6", list(tf_7()), NULL)
     ) %>%
@@ -136,14 +137,16 @@ test_that("zoom output for compound keys", {
     nyc_comp() %>%
       dm_zoom_to(weather) %>%
       dm_update_zoomed()
-    nyc_comp_2 <- nyc_comp() %>%
+    nyc_comp_2 <-
+      nyc_comp() %>%
       dm_zoom_to(weather) %>%
       dm_insert_zoomed("weather_2")
     nyc_comp_2
     attr(igraph::E(create_graph_from_dm(nyc_comp_2)), "vnames")
     dm_get_pk(nyc_comp_2, weather_2)
 
-    nyc_comp_3 <- nyc_comp() %>%
+    nyc_comp_3 <-
+      nyc_comp() %>%
       dm_zoom_to(flights) %>%
       dm_insert_zoomed("flights_2")
     nyc_comp_3

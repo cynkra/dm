@@ -515,7 +515,8 @@ test_that("key tracking works", {
   )
 
   # FKs that point to a PK that vanished, should also vanish
-  pk_gone_dm <- zoomed_grouped_in_dm %>%
+  pk_gone_dm <-
+    zoomed_grouped_in_dm %>%
     select(g_new = g) %>%
     dm_update_zoomed()
 
@@ -700,13 +701,16 @@ test_that("output for compound keys", {
   # FIXME: COMPOUND: Need proper test
   skip_if_remote_src()
 
-  zoomed_comp_dm <- nyc_comp() %>%
+  zoomed_comp_dm <-
+    nyc_comp() %>%
     dm_zoom_to(weather)
   # grouped by one key col and one other col
-  grouped_zoomed_comp_dm_1 <- zoomed_comp_dm %>%
+  grouped_zoomed_comp_dm_1 <-
+    zoomed_comp_dm %>%
     group_by(time_hour, wind_dir)
   # grouped by the two key cols
-  grouped_zoomed_comp_dm_2 <- zoomed_comp_dm %>%
+  grouped_zoomed_comp_dm_2 <-
+    zoomed_comp_dm %>%
     group_by(time_hour, origin)
 
   expect_snapshot({

@@ -23,13 +23,15 @@ test_that("decompose_table() decomposes everything() to the original", {
 })
 
 test_that("decomposition works with {tidyselect}", {
-  pt_iris <- iris %>%
+  pt_iris <-
+    iris %>%
     select(starts_with("Sepal")) %>%
     distinct() %>%
     mutate(Sepal_id = row_number(Sepal.Length)) %>%
     select(Sepal_id, everything())
 
-  ct_iris <- left_join(iris, pt_iris, by = c("Sepal.Length", "Sepal.Width")) %>%
+  ct_iris <-
+    left_join(iris, pt_iris, by = c("Sepal.Length", "Sepal.Width")) %>%
     select(-Sepal.Length, -Sepal.Width)
 
   reference_flower_object <- list(

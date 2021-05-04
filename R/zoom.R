@@ -128,7 +128,8 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
   # filters need to be split: old_filters belong to the old table, new filters to the inserted table
   all_filters <- get_filter_for_table(dm, old_tbl_name)
   old_filters <- all_filters %>% filter(!zoomed)
-  new_filters <- all_filters %>%
+  new_filters <-
+    all_filters %>%
     filter(zoomed) %>%
     mutate(zoomed = FALSE)
 
@@ -203,7 +204,8 @@ dm_discard_zoomed <- function(dm) {
     return(dm)
   }
   old_tbl_name <- orig_name_zoomed(dm)
-  upd_filter <- get_filter_for_table(dm, old_tbl_name) %>%
+  upd_filter <-
+    get_filter_for_table(dm, old_tbl_name) %>%
     filter(zoomed == FALSE)
 
   new_dm3(
@@ -292,7 +294,8 @@ update_zoomed_outgoing <- function(fks, tbl_name, tracked_cols) {
 dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- get_tracked_cols(dm)
-  old_out_keys <- dm_get_all_fks_impl(dm) %>%
+  old_out_keys <-
+    dm_get_all_fks_impl(dm) %>%
     filter(child_table == !!old_tbl_name) %>%
     select(table = parent_table, column = child_fk_cols)
 

@@ -144,7 +144,8 @@ dm_paste_construct <- function(dm) {
 }
 
 dm_paste_select <- function(dm) {
-  tbl_select <- dm %>%
+  tbl_select <-
+    dm %>%
     dm_get_def() %>%
     mutate(cols = map(data, colnames)) %>%
     mutate(cols = map_chr(cols, ~ glue_collapse1(glue(", {tick_if_needed(.x)}")))) %>%

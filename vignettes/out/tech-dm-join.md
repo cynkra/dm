@@ -98,7 +98,8 @@ Let’s look at some examples:
 `flights` table.**
 
 ``` r
-dm_joined <- dm %>%
+dm_joined <-
+  dm %>%
   dm_join_to_tbl(flights, airlines, join = left_join)
 dm_joined
 #> # A tibble: 11,227 x 20

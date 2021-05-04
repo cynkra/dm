@@ -12,7 +12,8 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
   expect_not_pred(fc, c("tf_1", "tf_4_2"))
 
   # more complicated graph structure:
-  fc <- dm_more_complex() %>%
+  fc <-
+    dm_more_complex() %>%
     dm_filter(tf_6, TRUE) %>%
     dm_filter(tf_6_2, TRUE) %>%
     get_all_filtered_connected("tf_4")
@@ -20,13 +21,15 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
   expect_pred_chain(fc, c("tf_6_2", "tf_3", "tf_4"))
 
   # filter in an unconnected component:
-  fc <- dm_more_complex() %>%
+  fc <-
+    dm_more_complex() %>%
     dm_filter(tf_6, TRUE) %>%
     get_all_filtered_connected("a")
   expect_identical(fc$node, "a")
 
 
-  fc <- dm_more_complex() %>%
+  fc <-
+    dm_more_complex() %>%
     dm_filter(tf_5, TRUE) %>%
     get_all_filtered_connected("tf_3")
   expect_pred_chain(fc, c("tf_5", "tf_4", "tf_3"))

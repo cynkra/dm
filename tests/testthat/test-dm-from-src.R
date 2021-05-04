@@ -24,7 +24,8 @@ test_that("table identifiers are quoted", {
     )
   )
 
-  dm <- suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE)) %>%
+  dm <-
+    suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE)) %>%
     dm_select_tbl(!!!remote_tbl_names_copied)
 
   remote_tbl_names_learned <-

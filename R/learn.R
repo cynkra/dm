@@ -224,7 +224,8 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
   stopifnot(all(names(tables) %in% data_model_tables$table))
   stopifnot(all(data_model_tables$table %in% names(tables)))
 
-  pks <- columns %>%
+  pks <-
+    columns %>%
     select(column, table, key) %>%
     filter(key > 0) %>%
     select(-key)

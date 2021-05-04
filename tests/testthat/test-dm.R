@@ -72,7 +72,8 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
   expect_true(any(map_lgl(remote_names, is_null)))
 
   # with computing
-  def <- suppress_mssql_message(compute(zoomed_dm_for_compute)) %>%
+  def <-
+    suppress_mssql_message(compute(zoomed_dm_for_compute)) %>%
     dm_update_zoomed() %>%
     dm_get_def()
 

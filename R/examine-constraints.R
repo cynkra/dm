@@ -122,7 +122,8 @@ check_fk_constraints <- function(dm) {
   fks <- left_join(dm_get_all_fks_impl(dm), dm_get_all_pks_impl(dm), by = c("parent_table" = "table"))
   pts <- pull(fks, parent_table) %>% map(tbl_impl, dm = dm)
   cts <- pull(fks, child_table) %>% map(tbl_impl, dm = dm)
-  fks_tibble <- mutate(fks, t1 = cts, t2 = pts) %>%
+  fks_tibble <-
+    mutate(fks, t1 = cts, t2 = pts) %>%
     select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = pk_col)
   fks_tibble %>%
     mutate(
