@@ -93,26 +93,31 @@ test_that("we get filtered/unfiltered tables with respective funs", {
     filter(tf_1(), a > 4)
   )
 
-  expect_equivalent_tbl_lists(
-    dm_filter(dm_for_filter(), tf_1, a > 3, a < 8) %>% dm_apply_filters() %>% dm_get_tables(),
-    output_1()
-  )
+  expect_snapshot({
+    dm_filter(dm_for_filter(), tf_1, a > 3, a < 8) %>%
+      dm_apply_filters() %>%
+      dm_get_tables() %>%
+      map(harmonize_tbl)
+  })
 })
 
 test_that("dm_filter() works as intended for reversed dm", {
-  expect_equivalent_tbl_lists(
+  expect_snapshot({
     dm_filter(dm_for_filter_rev(), tf_1, a < 8, a > 3) %>%
       dm_apply_filters() %>%
-      dm_get_tables(),
-    rev(output_1())
-  )
+      dm_get_tables() %>%
+      map(harmonize_tbl)
+  })
 })
 
 test_that("dm_filter() works as intended for inbetween table", {
-  expect_equivalent_tbl_lists(
-    dm_filter(dm_for_filter(), tf_3, g == "five") %>% dm_apply_filters() %>% dm_get_tables(),
-    output_3()
-  )
+  expect_snapshot({
+    dm_for_filter() %>%
+      dm_filter(tf_3, g == "five") %>%
+      dm_apply_filters() %>%
+      dm_get_tables() %>%
+      map(harmonize_tbl)
+  })
 })
 
 test_that("dm_filter() works without primary keys", {

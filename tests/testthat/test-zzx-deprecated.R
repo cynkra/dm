@@ -71,10 +71,11 @@ test_that("cdm_filter() behaves correctly", {
   )
 
   skip_if_remote_src()
-  expect_equivalent_tbl_lists(
-    dm_filter(dm_for_filter(), tf_1, a > 3, a < 8) %>% cdm_apply_filters() %>% dm_get_tables(),
-    output_1()
-  )
+  expect_snapshot({
+    dm_filter(dm_for_filter(), tf_1, a > 3, a < 8) %>%
+      cdm_apply_filters() %>%
+      dm_get_tables()
+  })
 })
 
 test_that("cdm_nrow() works?", {
