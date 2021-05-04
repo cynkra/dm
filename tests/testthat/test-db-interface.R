@@ -175,7 +175,6 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
         dbplyr::ident_q()
     )
   )
-
 })
 
 test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
@@ -188,7 +187,8 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
       my_test_src(),
       local_dm,
       temporary = FALSE,
-      schema = "test"),
+      schema = "test"
+    ),
     "no_schemas_supported"
   )
 })

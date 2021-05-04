@@ -216,8 +216,7 @@ parent_child_table <- function(dm, table_1, table_2) {
   rel
 }
 
-check_flatten_to_tbl <- function(
-                                 join_name,
+check_flatten_to_tbl <- function(join_name,
                                  part_cond_abort_filters,
                                  any_not_reachable,
                                  g,

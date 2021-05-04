@@ -131,7 +131,6 @@ quote_ids <- function(x, con, schema = NULL) {
       ~ dbplyr::ident_q(schema_if(rep(schema, length(.x)), .x, con))
     )
   }
-
 }
 
 # Errors ------------------------------------------------------------------

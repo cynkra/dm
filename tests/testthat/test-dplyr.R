@@ -756,7 +756,9 @@ test_that("output for compound keys", {
       filter(pressure < 1020) %>%
       dm_update_zoomed()
     # pull()
-    zoomed_comp_dm %>% pull(origin) %>% unique()
+    zoomed_comp_dm %>%
+      pull(origin) %>%
+      unique()
     # slice()
     zoomed_comp_dm %>%
       slice(c(1:3, 5:3))
@@ -771,16 +773,28 @@ test_that("output for compound keys", {
     # JOINS
 
     # left_join()
-    zoomed_comp_dm %>% left_join(flights) %>% nrow()
+    zoomed_comp_dm %>%
+      left_join(flights) %>%
+      nrow()
     # right_join()
-    zoomed_comp_dm %>% right_join(flights) %>% nrow()
+    zoomed_comp_dm %>%
+      right_join(flights) %>%
+      nrow()
     # inner_join()
-    zoomed_comp_dm %>% inner_join(flights) %>% nrow()
+    zoomed_comp_dm %>%
+      inner_join(flights) %>%
+      nrow()
     # full_join()
-    zoomed_comp_dm %>% full_join(flights) %>% nrow()
+    zoomed_comp_dm %>%
+      full_join(flights) %>%
+      nrow()
     # semi_join()
-    zoomed_comp_dm %>% semi_join(flights) %>% nrow()
+    zoomed_comp_dm %>%
+      semi_join(flights) %>%
+      nrow()
     # anti_join()
-    zoomed_comp_dm %>% anti_join(flights) %>% nrow()
+    zoomed_comp_dm %>%
+      anti_join(flights) %>%
+      nrow()
   })
 })

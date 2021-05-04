@@ -68,10 +68,10 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
       unnest(c(column, type)) %>%
       left_join(pks_flat, by = c("source_name", "column")) %>%
       mutate(full_type = paste0(type, if_else(pk, " NOT NULL", "", ""))) %>%
-
+      #
       left_join(pks_clause, by = "source_name") %>%
       group_by(source_name) %>%
-
+      #
       # HACK: Append PRIMARY KEY clause to end, https://github.com/r-dbi/DBI/pull/351
       # So far this is the only reason to use `con` in this function
       mutate(full_type = paste0(full_type, if_else(
@@ -79,7 +79,7 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
         paste0(", PRIMARY KEY (", sql, ")"),
         ""
       ))) %>%
-
+      #
       summarize(types = list(deframe(tibble(column, full_type))))
 
     copy_data_unique_indexes <-

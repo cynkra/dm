@@ -635,7 +635,8 @@ error_txt_no_schemas_supported <- function(dbms, con) {
   } else if (!is.null(con)) {
     glue::glue(
       "Currently schemas are not supported for a connection ",
-      "of class {tick(class(con))}.")
+      "of class {tick(class(con))}."
+    )
   } else {
     # if local src, `con = NULL`
     "Schemas are not available locally."

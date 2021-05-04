@@ -216,7 +216,7 @@ sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ...) {
     "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
     dbplyr::sql_render(y),
     "\n)\n",
-
+    #
     "UPDATE ", p$name, "\n",
     "SET (", p$new_columns_qq, ") = (\n",
     "SELECT ", p$new_columns_qual_qq, "\n",
@@ -238,7 +238,7 @@ sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ...) {
     "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
     dbplyr::sql_render(y),
     "\n)\n",
-
+    #
     "UPDATE ", p$name, "\n",
     "SET\n",
     paste0(
@@ -282,13 +282,14 @@ sql_rows_update.tbl_PqConnection <- function(x, y, by, ...) {
     "WITH ", p$y_name, " AS (\n",
     dbplyr::sql_render(y),
     "\n)\n",
-
+    #
     "UPDATE ", p$name, "\n",
     "SET\n",
     paste0(
       "  ", unlist(p$new_columns_qq_list),
       " = ", unlist(p$new_columns_qual_qq_list),
-      collapse = ",\n"),
+      collapse = ",\n"
+    ),
     "\n",
     "FROM ", p$y_name, "\n",
     "WHERE ", p$compare_qual_qq

@@ -133,7 +133,9 @@ test_that("zoom output for compound keys", {
 
   expect_snapshot({
     nyc_comp() %>% dm_zoom_to(weather)
-    nyc_comp() %>% dm_zoom_to(weather) %>% dm_update_zoomed()
+    nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      dm_update_zoomed()
     nyc_comp_2 <- nyc_comp() %>%
       dm_zoom_to(weather) %>%
       dm_insert_zoomed("weather_2")
