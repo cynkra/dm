@@ -231,54 +231,6 @@ dm_for_filter %<-% {
 
 dm_for_filter_sqlite %<--% copy_dm_to(sqlite(), dm_for_filter())
 
-output_1 %<-% list(
-  tf_1 = tibble(a = c(4:7), b = LETTERS[4:7]),
-  tf_2 = tibble(c = c("seal", "worm", "dog", "cat"), d = 4:7, e = c("F", "G", "E", "F")),
-  tf_3 = tibble(f = LETTERS[5:7], g = c("four", "five", "six")),
-  tf_4 = tibble(h = letters[3:5], i = c("five", "six", "seven"), j = c("E", "F", "F")),
-  tf_5 = tibble(
-    k = 2:4,
-    l = letters[3:5],
-    m = c("tree", "streetlamp", "streetlamp")
-  ),
-  tf_6 = tibble(
-    n = c("tree", "streetlamp"),
-    o = c("f", "h")
-  )
-)
-
-output_3 %<-% list(
-  tf_1 = tibble::tribble(
-    ~a, ~b,
-    4L, "D",
-    7L, "G"
-  ),
-  tf_2 = tibble::tribble(
-    ~c, ~d, ~e,
-    "seal", 4L, "F",
-    "cat", 7L, "F"
-  ),
-  tf_3 = tibble::tribble(
-    ~f, ~g,
-    "F", "five"
-  ),
-  tf_4 = tibble::tribble(
-    ~h, ~i, ~j,
-    "d", "six", "F",
-    "e", "seven", "F"
-  ),
-  tf_5 = tibble::tribble(
-    ~k, ~l, ~m,
-    3L, "d", "streetlamp",
-    4L, "e", "streetlamp"
-  ),
-  tf_6 = tibble::tribble(
-    ~n, ~o,
-    "streetlamp", "h"
-  )
-)
-
-
 dm_for_filter_rev %<-% {
   def_dm_for_filter <- dm_get_def(dm_for_filter())
   new_dm3(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])
