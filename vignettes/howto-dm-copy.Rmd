@@ -91,14 +91,15 @@ my_dm_total_computed$total_loans %>%
 ``````
 
 ```{r echo = FALSE, eval = TRUE}
-remote_name_total_loans <- ""
-remote_name_total_loans <- remote_name(my_dm_total_computed$total_loans)
+# https://github.com/tidyverse/dbplyr/issues/639, https://github.com/tidyverse/dbplyr/pull/649
+remote_name_total_loans <- "dbplyr_001"
+stopifnot(grepl(remote_name_total_loans, sql_render(my_dm_total_computed$total_loans), fixed = TRUE))
 ```
 
 Note the differences in queries returned by `sql_render()`.
 `my_dm_total$total_loans` is still being lazily evaluated and the full query constructed from the chain of operations that generated it, and is required to run to access it, is still in place.
 Contrast that with `my_dm_total_computed$total_loans` where the query has been realized and accessing its rows requires a simple `SELECT *` statement.
-The table name, `` `r remote_name_total_loans` ``, was automatically generated as the `name` argument was not supplied.
+The table name, `` `r remote_name_total_loans` ``, was automatically generated as the `name` argument was not supplied to `compute()`.
 
 The default is to create a temporary table.
 If you want results to persist across sessions in permanent tables, `compute()` must be called with the argument `temporary = FALSE` and a table name for the `name` argument.
