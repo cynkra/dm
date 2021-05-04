@@ -101,8 +101,8 @@ test_src_frame <- function(...) {
     temporary <- TRUE
   }
 
-  copy_to(src, df, name = name, temporary = temporary)
-  tbl(src, name)
+  out <- copy_to(src, df, name = name, temporary = temporary)
+  out
 }
 
 # for examine_cardinality...() ----------------------------------------------
