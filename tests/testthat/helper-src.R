@@ -337,7 +337,8 @@ iris_3_dis %<-% {
 }
 
 dm_for_disambiguate %<-% {
-  as_dm(list(iris_1 = iris_1(), iris_2 = iris_2(), iris_3 = iris_3())) %>%
+  list(iris_1 = iris_1(), iris_2 = iris_2(), iris_3 = iris_3()) %>%
+    as_dm() %>%
     dm_add_pk(iris_1, key) %>%
     dm_add_fk(iris_2, key, iris_1)
 }
@@ -498,7 +499,8 @@ get_test_tables_from_postgres <- function() {
   src_postgres <- my_test_src()
   con_postgres <- src_postgres$con
 
-  dbGetQuery(con_postgres, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
+  con_postgres %>%
+    dbGetQuery("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
     as_tibble() %>%
     filter(grepl("^tf_[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+", table_name))
 }

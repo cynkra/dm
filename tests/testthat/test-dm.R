@@ -217,7 +217,8 @@ test_that("`pull_tbl()`-methods work", {
 
   skip_if_src("maria")
   expect_equivalent_tbl(
-    dm_zoom_to(dm_for_filter(), tf_3) %>%
+    dm_for_filter() %>%
+      dm_zoom_to(tf_3) %>%
       mutate(new_col = row_number(f) * 3) %>%
       pull_tbl(),
     mutate(tf_3(), new_col = row_number(f) * 3)
@@ -398,7 +399,8 @@ test_that("output for compound keys", {
       dm_zoom_to(weather) %>%
       collect()
     pull_tbl(nyc_comp(), weather)
-    dm_zoom_to(nyc_comp(), weather) %>%
+    nyc_comp() %>%
+      dm_zoom_to(weather) %>%
       pull_tbl()
   })
 })

@@ -97,7 +97,8 @@ test_that("we get filtered/unfiltered tables with respective funs", {
   )
 
   expect_snapshot({
-    dm_filter(dm_for_filter(), tf_1, a > 3, a < 8) %>%
+    dm_for_filter() %>%
+      dm_filter(tf_1, a > 3, a < 8) %>%
       dm_apply_filters() %>%
       dm_get_tables() %>%
       map(harmonize_tbl)
@@ -106,7 +107,8 @@ test_that("we get filtered/unfiltered tables with respective funs", {
 
 test_that("dm_filter() works as intended for reversed dm", {
   expect_snapshot({
-    dm_filter(dm_for_filter_rev(), tf_1, a < 8, a > 3) %>%
+    dm_for_filter_rev() %>%
+      dm_filter(tf_1, a < 8, a > 3) %>%
       dm_apply_filters() %>%
       dm_get_tables() %>%
       map(harmonize_tbl)

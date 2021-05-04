@@ -15,7 +15,8 @@ test_that("basic test: 'unite()'-methods work", {
 test_that("basic test: 'separate()'-methods work", {
   skip_if_remote_src()
   expect_equivalent_tbl(
-    unite(zoomed_dm(), "new_col", c, e) %>%
+    zoomed_dm() %>%
+      unite("new_col", c, e) %>%
       separate("new_col", c("c", "e")) %>%
       select(c, d, e) %>%
       get_zoomed_tbl(),

@@ -1,7 +1,8 @@
 test_that("dm_add_pk() works as intended?", {
   expect_silent(dm_add_pk(dm_test_obj(), dm_table_1, a))
   expect_silent(
-    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_1, a) %>%
       dm_add_pk(dm_table_1, b, force = TRUE)
   )
   expect_error(
@@ -31,7 +32,8 @@ test_that("dm_add_pk() works as intended?", {
 
 test_that("dm_rm_pk() works as intended?", {
   expect_silent(
-    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_1, a) %>%
       dm_rm_pk(dm_table_1)
   )
   expect_dm_error(
@@ -74,7 +76,8 @@ test_that("dm_has_pk() works as intended?", {
     dm_has_pk(dm_test_obj(), dm_table_2)
   )
   expect_true(
-    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_1, a) %>%
       dm_has_pk(dm_table_1)
   )
 })
@@ -85,7 +88,8 @@ test_that("dm_get_pk() works as intended?", {
     new_keys(character(0))
   )
   expect_identical(
-    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_1, a) %>%
       dm_get_pk(dm_table_1),
     new_keys("a")
   )
