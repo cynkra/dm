@@ -344,7 +344,8 @@ dm_get_zoom <- function(x) {
   zoom <- def$zoom
   where <- which(lengths(zoom) != 0)
   if (length(where) != 1) {
-    abort("Internal error: ")
+    # FIXME: Better error message?
+    abort_not_pulling_multiple_zoomed()
   }
   new_tibble(list(table = def$table[where], zoom = zoom[where]), nrow = 1)
 }
