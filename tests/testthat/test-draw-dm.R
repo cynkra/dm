@@ -121,49 +121,13 @@ test_that("get available colors", {
 })
 
 test_that("helpers", {
-  expect_identical(
-    dm_get_all_columns(dm_for_filter()),
-    tibble::tribble(
-      ~table, ~column, ~id,
-      "tf_1",     "a",  1L,
-      "tf_1",     "b",  2L,
-      "tf_2",     "c",  1L,
-      "tf_2",     "d",  2L,
-      "tf_2",     "e",  3L,
-      "tf_3",     "f",  1L,
-      "tf_3",     "g",  2L,
-      "tf_4",     "h",  1L,
-      "tf_4",     "i",  2L,
-      "tf_4",     "j",  3L,
-      "tf_5",     "k",  1L,
-      "tf_5",     "l",  2L,
-      "tf_5",     "m",  3L,
-      "tf_6",     "n",  1L,
-      "tf_6",     "o",  2L,
-    )
-  )
+  expect_snapshot({
+    dm_get_all_columns(dm_for_filter())
+  })
 
-  expect_identical(
-    dm_get_all_column_types(dm_for_filter()),
-    tibble::tribble(
-      ~table, ~column, ~id, ~type,
-      "tf_1",     "a",  1L, "int",
-      "tf_1",     "b",  2L, "chr",
-      "tf_2",     "c",  1L, "chr",
-      "tf_2",     "d",  2L, "int",
-      "tf_2",     "e",  3L, "chr",
-      "tf_3",     "f",  1L, "chr",
-      "tf_3",     "g",  2L, "chr",
-      "tf_4",     "h",  1L, "chr",
-      "tf_4",     "i",  2L, "chr",
-      "tf_4",     "j",  3L, "chr",
-      "tf_5",     "k",  1L, "int",
-      "tf_5",     "l",  2L, "chr",
-      "tf_5",     "m",  3L, "chr",
-      "tf_6",     "n",  1L, "chr",
-      "tf_6",     "o",  2L, "chr",
-    )
-  )
+  expect_snapshot({
+    dm_get_all_column_types(dm_for_filter())
+  })
 })
 
 test_that("output", {

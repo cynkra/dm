@@ -177,52 +177,18 @@ test_that("dm_enum_fk_candidates() works as intended?", {
 
   skip_if_not_installed("nycflights13")
 
-  nycflights_example <- tibble::tribble(
-    ~column,     ~candidate,       ~why,
-    "origin",          TRUE,         "",
-    "year",           FALSE, "<reason>",
-    "month",          FALSE, "<reason>",
-    "day",            FALSE, "<reason>",
-    "dep_time",       FALSE, "<reason>",
-    "sched_dep_time", FALSE, "<reason>",
-    "dep_delay",      FALSE, "<reason>",
-    "arr_time",       FALSE, "<reason>",
-    "sched_arr_time", FALSE, "<reason>",
-    "arr_delay",      FALSE, "<reason>",
-    "carrier",        FALSE, "<reason>",
-    "flight",         FALSE, "<reason>",
-    "tailnum",        FALSE, "<reason>",
-    "dest",           FALSE, "<reason>",
-    "air_time",       FALSE, "<reason>",
-    "distance",       FALSE, "<reason>",
-    "hour",           FALSE, "<reason>",
-    "minute",         FALSE, "<reason>",
-    "time_hour",      FALSE, "<reason>",
-  ) %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns))
-
-  expect_identical(
+  expect_snapshot({
     dm_enum_fk_candidates(dm_nycflights13(), flights, airports) %>%
-      mutate(why = if_else(why != "", "<reason>", "")),
-    nycflights_example
-  )
+      mutate(why = if_else(why != "", "<reason>", ""))
+  })
 })
 
 test_that("enum_fk_candidates() works properly", {
+  # FIXME: COMPOUND: Test for tf_2 -> tf_3 and other combinations too
   expect_silent(
     expect_equivalent_why(
-      enum_fk_candidates(zoomed_dm(), tf_3),
-      dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_3)
+      enum_fk_candidates(zoomed_dm(), tf_1),
+      dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1)
     )
   )
-})
-
-# tests for compound keys -------------------------------------------------
-
-test_that("dm_get_all_fks() with compound keys", {
-  expect_snapshot({
-    nyc_comp() %>%
-      dm_get_all_fks()
-  })
 })
