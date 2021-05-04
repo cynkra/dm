@@ -316,7 +316,8 @@ nest_compat <- function(.data, ...) {
       select(!!!keep) %>%
       mutate(!!new_col := !!nest)
   } else {
-    nest(.data, ...) %>%
+    .data %>%
+      nest(...) %>%
       mutate_at(vars(!!!new_col), vctrs::as_list_of)
   }
 }

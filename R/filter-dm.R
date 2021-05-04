@@ -81,7 +81,8 @@
 #' @export
 dm_filter <- function(dm, table, ...) {
   check_not_zoomed(dm)
-  dm_zoom_to(dm, {{ table }}) %>%
+  dm %>%
+    dm_zoom_to({{ table }}) %>%
     dm_filter_impl(..., set_filter = TRUE) %>%
     dm_update_zoomed()
 }

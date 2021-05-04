@@ -787,7 +787,8 @@ pull_tbl.zoomed_dm <- function(dm, table) {
   } else if (!(table_name %in% tbl_zoomed$table)) {
     abort_table_not_zoomed(table_name, tbl_zoomed$table)
   } else {
-    filter(tbl_zoomed, table == table_name) %>%
+    tbl_zoomed %>%
+      filter(table == table_name) %>%
       pull(zoom) %>%
       pluck(1)
   }
