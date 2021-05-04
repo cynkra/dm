@@ -200,14 +200,17 @@ test_that("validator speaks up when something's wrong", {
 
   # data column of un-zoomed dm contains non-tibble entries
   expect_dm_error(
-    dm_get_def(dm_for_filter()) %>% mutate(data = list(1, 2, 3, 4, 5, 6)) %>%
-      new_dm3() %>% validate_dm(),
+    dm_get_def(dm_for_filter()) %>%
+      mutate(data = list(1, 2, 3, 4, 5, 6)) %>%
+      new_dm3() %>%
+      validate_dm(),
     "dm_invalid"
   )
 
   # PK metadata wrong (colname doesn't exist)
   expect_dm_error(
-    dm_get_def(dm_for_filter()) %>% mutate(pks = if_else(table == "tf_1", vctrs::list_of(new_pk(list("z"))), pks)) %>%
+    dm_get_def(dm_for_filter()) %>%
+      mutate(pks = if_else(table == "tf_1", vctrs::list_of(new_pk(list("z"))), pks)) %>%
       new_dm3() %>%
       validate_dm(),
     "dm_invalid"
