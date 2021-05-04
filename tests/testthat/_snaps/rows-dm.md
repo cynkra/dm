@@ -61,6 +61,8 @@
     Output
       airlines airports  flights   planes  weather 
             16     1458     1761     3322      144 
+    Code
+      dbDisconnect(sqlite)
 
 # dm_rows_update()
 

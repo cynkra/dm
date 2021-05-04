@@ -74,6 +74,9 @@ test_that("dm_rows_insert()", {
     # Apply:
     dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
     print(dm_nrow(flights_sqlite))
+
+    # Disconnect
+    dbDisconnect(sqlite)
   })
 })
 

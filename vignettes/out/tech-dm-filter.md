@@ -7,7 +7,7 @@ This document introduces you to filtering functions, and shows how to
 apply them to the data that is separated into multiple tables.
 
 Our example data is drawn from the
-[{nycflights13}](https://github.com/hadley/nycflights13) package that
+[{nycflights13}](https://github.com/tidyverse/nycflights13) package that
 contains five inter-linked tables.
 
 First, we will load the packages that we need:
@@ -56,8 +56,8 @@ dm
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
-#> Primary keys: 3
-#> Foreign keys: 3
+#> Primary keys: 4
+#> Foreign keys: 4
 ```
 
 Now we know that there are five tables in our `dm` object. But how are
@@ -68,7 +68,7 @@ the entity-relationship model:
 dm_draw(dm)
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/tech-dm-filter_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/tech-dm-filter_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 You can look at a single table with `tbl`. To print the `airports`
 table, call
@@ -111,12 +111,12 @@ two ways in which a condition on one table could affect another table:
     tables that are connected to the requested table and have stored
     filter conditions associated with them are taken into account in the
     following way:
-      - filtering semi-joins are successively performed along the paths
+    -   filtering semi-joins are successively performed along the paths
         from each of the filtered tables to the requested table, each
         join reducing the left-hand side tables of the joins to only
         those of their rows with key values that have corresponding
         values in key columns of the right-hand side tables of the join.
-      - eventually the requested table is returned, containing only the
+    -   eventually the requested table is returned, containing only the
         the remaining rows after the filtering joins
 2.  Calling `dm_apply_filters()` or `compute()` methods for `dm` objects
     on a `dm`: this results in a new `dm` that contains the same tables
@@ -143,15 +143,15 @@ Let’s see filtering in action:
 Airport.**
 
 ``` r
-filtered_dm <- 
+filtered_dm <-
   dm %>%
   dm_filter(airports, name == "John F Kennedy Intl")
 filtered_dm
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
-#> Primary keys: 3
-#> Foreign keys: 3
+#> Primary keys: 4
+#> Foreign keys: 4
 #> ── Filters ────────────────────────────────────────────────────────────────
 #> airports: name == "John F Kennedy Intl"
 ```
@@ -163,20 +163,15 @@ doing that, you will need to apply the filters using
 `dm_apply_filters()`:
 
 ``` r
-rows_per_table <- 
-  filtered_dm %>% 
-  dm_apply_filters() %>% 
+rows_per_table <-
+  filtered_dm %>%
+  dm_apply_filters() %>%
   dm_nrow()
 rows_per_table
 #> airlines airports  flights   planes  weather 
-#>       10        1     3661      783      861
+#>       10        1     3661      783      228
 sum(rows_per_table)
-#> [1] 5316
-```
-
-``` r
-sum_nrow <- NA
-sum_nrow_filtered <- NA
+#> [1] 4683
 ```
 
 ``` r
@@ -184,7 +179,7 @@ sum_nrow <- sum(dm_nrow(dm))
 sum_nrow_filtered <- sum(dm_nrow(dm_apply_filters(filtered_dm)))
 ```
 
-The total number of rows in the `dm` drops from 16 884 to 5 316 (the
+The total number of rows in the `dm` drops from 16 884 to 4 683 (the
 only unaffected table is the disconnected `weather` table).
 
 Next example:
@@ -194,12 +189,12 @@ Dulles International Airport in Washington D.C., abbreviated with
 `IAD`.**
 
 ``` r
-dm %>% 
-  dm_filter(flights, dest == "IAD") %>% 
-  dm_apply_filters() %>% 
+dm %>%
+  dm_filter(flights, dest == "IAD") %>%
+  dm_apply_filters() %>%
   dm_nrow()
 #> airlines airports  flights   planes  weather 
-#>        4        3      191       95      861
+#>        4        3      191       95      178
 ```
 
 Chaining multiple filters on different tables is also supported.
@@ -218,17 +213,17 @@ dm_delta_may
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
-#> Primary keys: 3
-#> Foreign keys: 3
+#> Primary keys: 4
+#> Foreign keys: 4
 #> ── Filters ────────────────────────────────────────────────────────────────
 #> airlines: name == "Delta Air Lines Inc."
 #> airports: name != "John F Kennedy Intl"
 #> flights: month == 5
-dm_delta_may %>% 
-  dm_apply_filters() %>% 
+dm_delta_may %>%
+  dm_apply_filters() %>%
   dm_nrow()
 #> airlines airports  flights   planes  weather 
-#>        1        2       79       61      861
+#>        1        2       79       61       27
 ```
 
 You can inspect the filtered tables with `dm_apply_filters_to_tbl()`.
@@ -236,7 +231,7 @@ You can inspect the filtered tables with `dm_apply_filters_to_tbl()`.
 In the `airlines` table, Delta is the only remaining carrier:
 
 ``` r
-dm_delta_may %>% 
+dm_delta_may %>%
   dm_apply_filters_to_tbl("airlines")
 #> # A tibble: 1 x 2
 #>   carrier name                
@@ -247,7 +242,7 @@ dm_delta_may %>%
 Which planes were used to service these flights?
 
 ``` r
-dm_delta_may %>% 
+dm_delta_may %>%
   dm_apply_filters_to_tbl("planes")
 #> # A tibble: 61 x 9
 #>    tailnum  year type       manufacturer  model  engines seats speed engine
@@ -268,7 +263,7 @@ dm_delta_may %>%
 And indeed, all included flights departed in May (`month == 5`):
 
 ``` r
-dm_delta_may %>% 
+dm_delta_may %>%
   dm_apply_filters_to_tbl("flights")
 #> # A tibble: 79 x 19
 #>     year month   day dep_time sched_dep_time dep_delay arr_time
@@ -349,37 +344,37 @@ Then we filter the data, and print the corresponding SQL statement with
 ``` r
 dm %>%
   dm_select_tbl(flights, airlines, airports) %>%
-  dm_filter(flights, month == 5) %>% 
+  dm_filter(flights, month == 5) %>%
   copy_dm_to(dbplyr::src_memdb(), .) %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   dm_filter(airports, name != "John F Kennedy Intl") %>%
-  dm_apply_filters() %>% 
+  dm_apply_filters() %>%
   dm_get_tables() %>%
   map(dbplyr::sql_render)
 #> $flights
-#> <SQL> SELECT * FROM (SELECT * FROM `flights_2020_08_28_07_13_03_1` AS `LHS`
+#> <SQL> SELECT * FROM (SELECT * FROM `flights_2020_08_28_07_13_03_12345_1` AS `LHS`
 #> WHERE EXISTS (
 #>   SELECT 1 FROM (SELECT *
-#> FROM `airlines_2020_08_28_07_13_03_1`
+#> FROM `airlines_2020_08_28_07_13_03_12345_1`
 #> WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`
 #>   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)
 #> )) AS `LHS`
 #> WHERE EXISTS (
 #>   SELECT 1 FROM (SELECT *
-#> FROM `airports_2020_08_28_07_13_03_1`
+#> FROM `airports_2020_08_28_07_13_03_12345_1`
 #> WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`
 #>   WHERE (`LHS`.`origin` = `RHS`.`faa`)
 #> )
 #> 
 #> $airlines
 #> <SQL> SELECT * FROM (SELECT *
-#> FROM `airlines_2020_08_28_07_13_03_1`
+#> FROM `airlines_2020_08_28_07_13_03_12345_1`
 #> WHERE (`name` = 'Delta Air Lines Inc.')) AS `LHS`
 #> WHERE EXISTS (
-#>   SELECT 1 FROM (SELECT * FROM `flights_2020_08_28_07_13_03_1` AS `LHS`
+#>   SELECT 1 FROM (SELECT * FROM `flights_2020_08_28_07_13_03_12345_1` AS `LHS`
 #> WHERE EXISTS (
 #>   SELECT 1 FROM (SELECT *
-#> FROM `airports_2020_08_28_07_13_03_1`
+#> FROM `airports_2020_08_28_07_13_03_12345_1`
 #> WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`
 #>   WHERE (`LHS`.`origin` = `RHS`.`faa`)
 #> )) AS `RHS`
@@ -388,13 +383,13 @@ dm %>%
 #> 
 #> $airports
 #> <SQL> SELECT * FROM (SELECT *
-#> FROM `airports_2020_08_28_07_13_03_1`
+#> FROM `airports_2020_08_28_07_13_03_12345_1`
 #> WHERE (`name` != 'John F Kennedy Intl')) AS `LHS`
 #> WHERE EXISTS (
-#>   SELECT 1 FROM (SELECT * FROM `flights_2020_08_28_07_13_03_1` AS `LHS`
+#>   SELECT 1 FROM (SELECT * FROM `flights_2020_08_28_07_13_03_12345_1` AS `LHS`
 #> WHERE EXISTS (
 #>   SELECT 1 FROM (SELECT *
-#> FROM `airlines_2020_08_28_07_13_03_1`
+#> FROM `airlines_2020_08_28_07_13_03_12345_1`
 #> WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`
 #>   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)
 #> )) AS `RHS`

@@ -117,8 +117,9 @@ test_that("cdm_get_src() works", {
     class = "is_not_dm"
   )
 
+  skip_if_local_src()
   expect_identical(
-    class(dm_get_src(dm_for_filter())),
+    class(cdm_get_src(dm_for_filter())),
     class(my_test_src())
   )
 })

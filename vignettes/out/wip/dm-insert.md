@@ -17,16 +17,16 @@ object that is disconnected from the original.
 The operations are modeled after existing database statements, with the
 exception of the new “patch”.
 
-  - insert new rows — would error if keys already exist, similar to
+-   insert new rows — would error if keys already exist, similar to
     `tibble::add_row()`.
 
-  - update values — overrides existing values. (Similar to
+-   update values — overrides existing values. (Similar to
     <https://github.com/tidyverse/tidyr/issues/183>)
 
-  - patch values — like update, but only replaces missing values (Also
+-   patch values — like update, but only replaces missing values (Also
     similar to <https://github.com/tidyverse/tidyr/issues/183>)
 
-  - upsert — update or insert depending on presence/absence of keys
+-   upsert — update or insert depending on presence/absence of keys
 
 All operations would either take multiple named inputs or a single
 unnamed data frame. Additional restrictions and options may apply on
@@ -42,8 +42,8 @@ in the target and the input. If the table container knows its keys
 
 Both target table and source columns/table must be compatible:
 
-  - Source has no extra tables and columns.
-  - Key columns must be present in source.
+-   Source has no extra tables and columns.
+-   Key columns must be present in source.
 
 ### Mutable backends
 
@@ -57,9 +57,9 @@ operation before materializing.
 
 On these backends, the following additional operations are useful:
 
-  - delete — remove rows that match keys, a variant of `anti_join()`
+-   delete — remove rows that match keys, a variant of `anti_join()`
 
-  - truncate — remove all rows
+-   truncate — remove all rows
 
 Databases will require that the data is already on the database or ask
 the user to supply a `copy` argument.
@@ -69,7 +69,7 @@ the update was carried out in-place.
 
 Challenges:
 
-  - How to make compatible with `sql_render()`?
+-   How to make compatible with `sql_render()`?
 
 ## dm
 
@@ -79,24 +79,24 @@ they are lost.
 
 ### Design
 
-  - records from tables from a source dm are
+-   records from tables from a source dm are
     appended/updated/upserted/removed/replaced/… from the target dm
-  - both dm must be compatible
-      - same source
-      - source is a subset of target tables
-  - dry run supported: use transient operations instead of
+-   both dm must be compatible
+    -   same source
+    -   source is a subset of target tables
+-   dry run supported: use transient operations instead of
     materialization
-      - check integrity constraints are still valid after running
-      - compare before-after state
-  - transactions out of scope, caller can use `DBI::withTransaction()`
-  - some operations need top-down, others need bottom-up
-      - fixed set of operations, each op knows its “direction”
+    -   check integrity constraints are still valid after running
+    -   compare before-after state
+-   transactions out of scope, caller can use `DBI::withTransaction()`
+-   some operations need top-down, others need bottom-up
+    -   fixed set of operations, each op knows its “direction”
 
 ### Logic of operation
 
-  - check compatibility
-  - persist tables one by one, topologically sorted
-  - put back into dm if necessary
+-   check compatibility
+-   persist tables one by one, topologically sorted
+-   put back into dm if necessary
 
 ### API draft
 

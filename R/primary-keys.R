@@ -51,6 +51,7 @@
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
 #' )
 dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE) {
+  check_dots_empty()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
@@ -104,6 +105,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #'   dm_has_pk(planes)
 #' @export
 dm_has_pk <- function(dm, table, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   dm_has_pk_impl(dm, table_name)
@@ -145,6 +147,7 @@ dm_has_pk_impl <- function(dm, table) {
 #'   dm_get_pk(planes)
 #' @export
 dm_get_pk <- function(dm, table, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   new_keys(dm_get_pk_impl(dm, table_name))
@@ -183,6 +186,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' dm_nycflights13() %>%
 #'   dm_get_all_pks()
 dm_get_all_pks <- function(dm, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
   dm_get_all_pks_impl(dm)
 }
@@ -219,6 +223,7 @@ dm_get_all_pks_def_impl <- function(def) {
 #'   dm_draw()
 #' @export
 dm_rm_pk <- function(dm, table, ..., rm_referencing_fks = FALSE) {
+  check_dots_empty()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
@@ -273,6 +278,7 @@ dm_rm_pk_impl <- function(dm, table_name) {
 #' nycflights13::flights %>%tbl_zoomed
 #'   enum_pk_candidates()
 enum_pk_candidates <- function(table, ...) {
+  check_dots_empty()
   # a list of ayes and noes:
   if (is_dm(table) && is_zoomed(table)) {
     table <- tbl_zoomed(table)
@@ -297,6 +303,7 @@ enum_pk_candidates <- function(table, ...) {
 #' dm_nycflights13() %>%
 #'   dm_enum_pk_candidates(airports)
 dm_enum_pk_candidates <- function(dm, table, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`

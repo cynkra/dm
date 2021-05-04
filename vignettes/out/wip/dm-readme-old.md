@@ -19,12 +19,12 @@ Relational databases, on the other hand, do not keep all data together
 but split it into multiple smaller tables. That separation into
 sub-tables has several advantages:
 
-  - all information is stored only once, avoiding repetition and
+-   all information is stored only once, avoiding repetition and
     conserving memory
-  - all information is updated only once and in one place, improving
+-   all information is updated only once and in one place, improving
     consistency and avoiding errors that may result from updating the
     same value in multiple locations
-  - all information is organized by topic and segmented into smaller
+-   all information is organized by topic and segmented into smaller
     tables that are easier to handle
 
 Separation of data, thus, helps with data quality, and explains the

@@ -330,6 +330,15 @@ pull.zoomed_dm <- function(.data, var = -1, ...) {
   pull(tbl, var = {{ var }}, ...)
 }
 
+#' @rdname dplyr_table_manipulation
+#' @export
+compute.zoomed_dm <- function(x, ...) {
+  zoomed_df <-
+    tbl_zoomed(x) %>%
+    compute(...)
+  replace_zoomed_tbl(x, zoomed_df)
+}
+
 #' \pkg{dplyr} join methods for zoomed dm objects
 #'
 #' Use these methods without the '.zoomed_dm' suffix (see examples).

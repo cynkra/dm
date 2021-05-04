@@ -361,5 +361,5 @@ get_orig_in_fks <- function(zoomed_dm, orig_table) {
 }
 
 get_all_cols <- function(dm, table_name) {
-  set_names(colnames(tbl(dm, table_name)))
+  set_names(colnames(tbl_impl(dm, table_name)))
 }

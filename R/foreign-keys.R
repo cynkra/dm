@@ -46,6 +46,7 @@
 #'   dm_add_fk(flights, tailnum, planes) %>%
 #'   dm_draw()
 dm_add_fk <- function(dm, table, columns, ref_table, ..., check = FALSE) {
+  check_dots_empty()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
@@ -120,6 +121,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 #' dm_nycflights13() %>%
 #'   dm_has_fk(airports, flights)
 dm_has_fk <- function(dm, table, ref_table, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
@@ -157,6 +159,7 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
 #' dm_nycflights13(cycle = TRUE) %>%
 #'   dm_get_fk(flights, airports)
 dm_get_fk <- function(dm, table, ref_table, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
 
   table_name <- dm_tbl_name(dm, {{ table }})
@@ -201,6 +204,7 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #'   dm_get_all_fks()
 #' @export
 dm_get_all_fks <- function(dm, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
   dm_get_all_fks_impl(dm)
 }
@@ -237,6 +241,7 @@ dm_get_all_fks_impl <- function(dm) {
 #'   dm_rm_fk(flights, dest, airports) %>%
 #'   dm_draw()
 dm_rm_fk <- function(dm, table, columns, ref_table, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
 
   column_quo <- enquo(columns)
@@ -329,6 +334,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
 #'   enum_fk_candidates(airports)
 #' @export
 dm_enum_fk_candidates <- function(dm, table, ref_table, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
@@ -352,6 +358,7 @@ dm_enum_fk_candidates <- function(dm, table, ref_table, ...) {
 #' @param zoomed_dm A `dm` with a zoomed table.
 #' @export
 enum_fk_candidates <- function(zoomed_dm, ref_table, ...) {
+  check_dots_empty()
   check_zoomed(zoomed_dm)
   check_no_filter(zoomed_dm)
 

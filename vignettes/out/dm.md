@@ -61,7 +61,7 @@ names(fin_dm)
 #> [1] "accounts"  "cards"     "clients"   "disps"     "districts" "loans"    
 #> [7] "orders"    "tkeys"     "trans"
 fin_dm$loans
-#> # Source:   table<`loans`> [?? x 7]
+#> # Source:   table<`Financial_ijs`.`loans`> [?? x 7]
 #> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
 #>       id account_id date       amount duration payments status
 #>    <int>      <int> <date>      <dbl>    <int>    <dbl> <chr> 
@@ -133,7 +133,7 @@ fin_dm_keys %>%
   dm_draw()
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/dm_files/figure-gfm/visualize_keys-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/dm_files/figure-gfm/visualize_keys-1.png)<!-- -->
 
 ## Accessing a data model as a table
 
@@ -328,16 +328,16 @@ methods for normalization as you construct your data model.
 
 The {dm} package follows the tidyverse principles:
 
-  - `dm` objects are immutable (your data will never be overwritten in
+-   `dm` objects are immutable (your data will never be overwritten in
     place)
-  - most functions used on `dm` objects are pipeable (i.e., return new
+-   most functions used on `dm` objects are pipeable (i.e., return new
     `dm` or table objects)
-  - tidy evaluation is used (unquoted function parameters are supported)
+-   tidy evaluation is used (unquoted function parameters are supported)
 
 The {dm} package builds heavily upon the [{datamodelr}
 package](https://github.com/bergant/datamodelr), and upon the
 [tidyverse](https://www.tidyverse.org/). We’re looking forward to a good
-collaboration\!
+collaboration!
 
 The [{polyply} package](https://github.com/russHyde/polyply) has a
 similar intent with a slightly different interface.

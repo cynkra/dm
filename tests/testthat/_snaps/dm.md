@@ -30,6 +30,9 @@
 
     Code
       copy_to(nyc_comp(), mtcars, "car_table")
+    Warning <lifecycle_warning_deprecated>
+      `copy_to.dm()` was deprecated in dm 0.2.0.
+      Use `copy_to(dm_get_con(dm), ...)` and `dm_add_tbl()`.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `car_table`
