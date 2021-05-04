@@ -32,7 +32,7 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
     dm_get_tables_impl()
 
   copy_data_base <-
-    tibble(source_name = src_tbls(dm), name = table_names) %>%
+    tibble(source_name = src_tbls_impl(dm), name = table_names) %>%
     mutate(df = map(source_name, function(x) tbl(dm, x)))
 
   if (is_db(dest)) {

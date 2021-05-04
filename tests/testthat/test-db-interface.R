@@ -136,7 +136,7 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
       local_dm,
       schema = "copy_dm_to_schema",
       temporary = FALSE,
-      table_names = set_names(letters[1:6], src_tbls(local_dm))
+      table_names = set_names(letters[1:6], src_tbls_impl(local_dm))
     ),
     "one_of_schema_table_names"
   )

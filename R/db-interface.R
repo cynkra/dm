@@ -127,7 +127,7 @@ copy_dm_to <- function(dest, dm, ...,
   }
 
   dest <- src_from_src_or_con(dest)
-  src_names <- src_tbls(dm)
+  src_names <- src_tbls_impl(dm)
 
   if (is_db(dest)) {
     dest_con <- con_from_src_or_con(dest)
@@ -254,10 +254,10 @@ dm_set_key_constraints <- function(dm) {
 
 get_db_table_names <- function(dm) {
   if (!is_src_db(dm)) {
-    return(tibble(table_name = src_tbls(dm), remote_name = src_tbls(dm)))
+    return(tibble(table_name = src_tbls_impl(dm), remote_name = src_tbls_impl(dm)))
   }
   tibble(
-    table_name = src_tbls(dm),
+    table_name = src_tbls_impl(dm),
     remote_name = map_chr(dm_get_tables_impl(dm), dbplyr::remote_name)
   )
 }
