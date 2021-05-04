@@ -272,7 +272,7 @@ cdm_apply_filters_to_tbl <- function(dm, table) {
 #' @export
 cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   deprecate_soft("0.1.0", "dm::cdm_add_pk()", "dm::dm_add_pk()")
-  dm_add_pk(dm, {{ table }}, {{ column }}, check, force)
+  dm_add_pk(dm, {{ table }}, {{ column }}, check = check, force = force)
 }
 
 #' @rdname deprecated
@@ -280,7 +280,7 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
 #' @export
 cdm_add_fk <- function(dm, table, column, ref_table, check = FALSE) {
   deprecate_soft("0.1.0", "dm::cdm_add_fk()", "dm::dm_add_fk()")
-  dm_add_fk(dm, {{ table }}, {{ column }}, {{ ref_table }}, check)
+  dm_add_fk(dm, {{ table }}, {{ column }}, {{ ref_table }}, check = check)
 }
 
 #' @rdname deprecated
