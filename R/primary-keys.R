@@ -316,7 +316,7 @@ dm_enum_pk_candidates <- function(dm, table, ...) {
 }
 
 enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table))) {
-    tibble(column = new_keys(columns)) %>%
+  tibble(column = new_keys(columns)) %>%
     mutate(why = map_chr(column, ~ check_pk(table, .x))) %>%
     mutate(candidate = (why == "")) %>%
     select(column, candidate, why) %>%

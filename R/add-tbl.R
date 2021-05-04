@@ -117,11 +117,10 @@ check_new_tbls <- function(dm, tbls) {
 #' @param ... One or more tables to update in the `dm`.
 #'   Must be named.
 #'
+#' @export
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_mutate_tbl(flights = nycflights13::flights[1:3, ])
-#'
-#' @export
 dm_mutate_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
 

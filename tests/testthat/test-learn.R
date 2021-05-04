@@ -195,7 +195,7 @@ test_that("'schema_if()' works", {
     unclass(expect_s4_class(
       schema_if(schema = NA, table = "table", con = con_db),
       "SQL")
-      ),
+    ),
     "\"table\"|`table`"
   )
 })
