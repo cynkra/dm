@@ -120,7 +120,7 @@ test_that("all cols are tracked in zoomed table", {
     dm_nycflights_small() %>%
       dm_zoom_to(flights) %>%
       get_tracked_cols(),
-    set_names(colnames(tbl(dm_nycflights_small(), "flights")))
+    set_names(colnames(dm_nycflights_small()$flights))
   )
 })
 
