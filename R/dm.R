@@ -539,7 +539,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 #' @export
 `$.dm` <- function(x, name) { # for both dm and zoomed_dm
   table <- dm_tbl_name(x, {{ name }})
-  tbl(x, table)
+  tbl_impl(x, table)
 }
 
 #' @export
@@ -556,7 +556,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 #' @export
 `[[.dm` <- function(x, id) { # for both dm and zoomed_dm
   if (is.numeric(id)) id <- src_tbls_impl(x)[id] else id <- as_string(id)
-  tbl(x, id)
+  tbl_impl(x, id)
 }
 
 #' @export
@@ -645,10 +645,17 @@ tbl.dm <- function(src, from, ...) {
   check_not_zoomed(src)
 
   # The src argument here is a dm object
-  dm <- src
-  from <- dm_tbl_name(dm, !!from)
+  tbl_impl(src, from)
+}
 
-  dm_get_tables_impl(dm)[[from]]
+tbl_impl <- function(dm, from) {
+  out <- dm_get_tables_impl(dm)[[from]]
+
+  if (is.null(out)) {
+    abort_table_not_in_dm(from, src_tbls_impl(dm))
+  }
+
+  out
 }
 
 #' @param x Either a `dm` or a `zoomed_dm`; the latter leads to an error for `src_tbls.dm()`
@@ -811,7 +818,7 @@ pull_tbl.dm <- function(dm, table) { # for both dm and zoomed_dm
   # FIXME: shall we issue a special error in case someone tries sth. like: `pull_tbl(dm_for_filter, c(t4, t3))`?
   table_name <- as_string(enexpr(table))
   if (table_name == "") abort_no_table_provided()
-  tbl(dm, table_name)
+  tbl_impl(dm, table_name)
 }
 
 #' @export

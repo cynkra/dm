@@ -100,7 +100,7 @@ check_pk_constraints <- function(dm) {
   }
   table_names <- pull(pks, table)
 
-  tbls <- map(set_names(table_names), ~ tbl(dm, .))
+  tbls <- map(set_names(table_names), ~ tbl_impl(dm, .))
 
   tbl_is_pk <-
     tibble(table = table_names, tbls, column = pks$pk_col) %>%
