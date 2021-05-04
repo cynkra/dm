@@ -100,14 +100,18 @@ dm_get_data_model <- function(x, column_types) {
     stringsAsFactors = FALSE
   )
 
-  references_for_columns <- dm_get_data_model_fks(x)
+  references_for_columns <-
+    dm_get_all_fks_impl(x) %>%
+    transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_pk_cols))
 
   references <-
     references_for_columns %>%
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
   keys <-
-    dm_get_data_model_pks(x) %>%
+    dm_get_all_pks_impl(x) %>%
+    mutate(column = format(pk_col)) %>%
+    select(-pk_col) %>%
     mutate(key = 1L)
 
   if (column_types) {
@@ -118,9 +122,9 @@ dm_get_data_model <- function(x, column_types) {
 
   columns <-
     types %>%
-    left_join(keys, by = c("table", "column")) %>%
+    full_join(keys, by = c("table", "column")) %>%
+    full_join(references_for_columns, by = c("table", "column")) %>%
     mutate(key = coalesce(key, 0L)) %>%
-    left_join(references_for_columns, by = c("table", "column")) %>%
     # for compatibility with print method from {datamodelr}
     as.data.frame()
 
@@ -190,7 +194,7 @@ dm_set_colors <- function(dm, ...) {
   if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")
   cols <- names(quos)
   if (!all(cols[!is_hex_color(cols)] %in% dm_get_available_colors()) &&
-    all(cols %in% src_tbls(dm))) {
+    all(cols %in% src_tbls_impl(dm))) {
     abort_wrong_syntax_set_cols()
   }
 

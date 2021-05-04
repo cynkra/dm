@@ -16,12 +16,14 @@ look at the second way.
 
 ## Enabling {dplyr}-workflow within a `dm`
 
-Some general information about “zooming” to a table of a `dm`: - all
-information stored in the original `dm` is kept, including the
-originally zoomed table - an object of class `zoomed_dm` is produced,
-presenting a view of the table for transformations - you do not need to
-specify the table when calling `select()`, `mutate()` and other table
-manipulation functions
+“Zooming” to a table of a `dm` means:
+
+-   all information stored in the original `dm` is kept, including the
+    originally zoomed table
+-   an object of class `zoomed_dm` is produced, presenting a view of the
+    table for transformations
+-   you do not need to specify the table when calling `select()`,
+    `mutate()` and other table manipulation functions
 
 {dm} provides methods for many of the {dplyr}-verbs for a `zoomed_dm`
 which behave the way you are used to, affecting only the zoomed table
@@ -69,10 +71,10 @@ flights_dm
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
-#> Primary keys: 3
-#> Foreign keys: 3
-flights_zoomed <- 
-  flights_dm %>% 
+#> Primary keys: 4
+#> Foreign keys: 4
+flights_zoomed <-
+  flights_dm %>%
   dm_zoom_to(flights)
 # The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.
 flights_zoomed
@@ -95,9 +97,9 @@ flights_zoomed
 #> #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
 #> #   minute <dbl>, time_hour <dttm>
 
-flights_zoomed_mutate <- 
-  flights_zoomed %>% 
-  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>% 
+flights_zoomed_mutate <-
+  flights_zoomed %>%
+  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>%
   # in order to see our changes in the output we use `select()` for reordering the columns
   select(year:dep_time, am_pm_dep, everything())
 flights_zoomed_mutate
@@ -121,21 +123,21 @@ flights_zoomed_mutate
 #> #   minute <dbl>, time_hour <dttm>
 
 # To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:
-updated_flights_dm <- 
-  flights_zoomed_mutate %>% 
+updated_flights_dm <-
+  flights_zoomed_mutate %>%
   dm_update_zoomed()
 # The only difference in the `dm` print output is the increased number of columns
 updated_flights_dm
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 54
-#> Primary keys: 3
-#> Foreign keys: 3
+#> Primary keys: 4
+#> Foreign keys: 4
 # The schematic view of the data model remains unchanged
 dm_draw(updated_flights_dm)
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/tech-dm-zoom_files/figure-gfm/zoom-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/tech-dm-zoom_files/figure-gfm/zoom-1.png)<!-- -->
 
 ### Use case 2: Creation of a surrogate key
 
@@ -152,8 +154,8 @@ library(tidyr)
 #> The following object is masked from 'package:testthat':
 #> 
 #>     matches
-weather_zoomed <- 
-  flights_dm %>% 
+weather_zoomed <-
+  flights_dm %>%
   dm_zoom_to(weather)
 weather_zoomed
 #> # Zoomed table: weather
@@ -177,30 +179,30 @@ enum_pk_candidates(weather_zoomed)
 #> # A tibble: 15 x 3
 #>    columns    candidate why                                                
 #>    <keys>     <lgl>     <chr>                                              
-#>  1 day        FALSE     has duplicate values: 10                           
-#>  2 dewp       FALSE     has duplicate values: 5.00, 6.08, 6.98, 8.06, 8.96…
-#>  3 hour       FALSE     has duplicate values: 0, 1, 2, 3, 4, …             
-#>  4 humid      FALSE     has duplicate values: 32.53, 32.86, 34.41, 36.31, …
-#>  5 month      FALSE     has duplicate values: 1, 2, 3, 4, 5, …             
-#>  6 origin     FALSE     has duplicate values: EWR, JFK, LGA                
-#>  7 precip     FALSE     has duplicate values: 0.00, 0.01, 0.02, 0.03, 0.04…
-#>  8 pressure   FALSE     has duplicate values: 1009.4, 1009.7, 1009.8, 1009…
-#>  9 temp       FALSE     has duplicate values: 15.98, 17.06, 17.96, 19.04, …
-#> 10 time_hour  FALSE     has duplicate values: 2013-01-10 00:00:00, 2013-01…
-#> 11 visib      FALSE     has duplicate values: 0.25, 0.50, 2.00, 2.50, 3.00…
-#> 12 wind_dir   FALSE     has duplicate values: 0, 10, 20, 30, 40, …         
-#> 13 wind_gust  FALSE     has duplicate values: 16.11092, 17.26170, 18.41248…
-#> 14 wind_speed FALSE     has duplicate values: 0.00000, 3.45234, 4.60312, 5…
-#> 15 year       FALSE     has duplicate values: 2013
+#>  1 origin     FALSE     has duplicate values: EWR (287), JFK (287), LGA (2…
+#>  2 year       FALSE     has duplicate values: 2013 (861)                   
+#>  3 month      FALSE     has duplicate values: 1 (72), 2 (72), 4 (72), 5 (7…
+#>  4 day        FALSE     has duplicate values: 10 (861)                     
+#>  5 hour       FALSE     has duplicate values: 0 (36), 1 (36), 3 (36), 4 (3…
+#>  6 temp       FALSE     has duplicate values: 62.06 (24), 75.92 (23), 33.0…
+#>  7 dewp       FALSE     has duplicate values: 32.00 (53), 53.96 (47), 53.0…
+#>  8 humid      FALSE     has duplicate values: 72.33 (8), 89.86 (8), 70.08 …
+#>  9 wind_dir   FALSE     has duplicate values: 180 (39), 200 (39), 320 (39)…
+#> 10 wind_speed FALSE     has duplicate values: 6.90468 (82), 8.05546 (79), …
+#> 11 wind_gust  FALSE     has 718 missing values, and duplicate values: 23.0…
+#> 12 precip     FALSE     has duplicate values: 0.00 (791), 0.01 (16), 0.02 …
+#> 13 pressure   FALSE     has 92 missing values, and duplicate values: 1015.…
+#> 14 visib      FALSE     has duplicate values: 10 (698), 9 (45), 8 (38), 7 …
+#> 15 time_hour  FALSE     has duplicate values: 2013-01-10 00:00:00 (3), 201…
 # Seems we have to construct a column with unique values
-# This can be done by combining column `origin` with `time_hour`, if the latter 
+# This can be done by combining column `origin` with `time_hour`, if the latter
 # is converted to a single time zone first; all within the `dm`:
-weather_zoomed_mutate <- 
-  weather_zoomed %>% 
+weather_zoomed_mutate <-
+  weather_zoomed %>%
   # first convert all times to the same time zone:
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>% 
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   # paste together as character the airport code and the time
-  unite("origin_slot_id", origin, time_hour_fmt) %>% 
+  unite("origin_slot_id", origin, time_hour_fmt) %>%
   select(origin_slot_id, everything())
 # check if we the result is as expected:
 enum_pk_candidates(weather_zoomed_mutate) %>% filter(candidate)
@@ -208,9 +210,9 @@ enum_pk_candidates(weather_zoomed_mutate) %>% filter(candidate)
 #>   columns        candidate why  
 #>   <keys>         <lgl>     <chr>
 #> 1 origin_slot_id TRUE      ""
-flights_upd_weather_dm <- 
-  weather_zoomed_mutate %>% 
-  dm_update_zoomed() %>% 
+flights_upd_weather_dm <-
+  weather_zoomed_mutate %>%
+  dm_update_zoomed() %>%
   dm_add_pk(weather, origin_slot_id)
 flights_upd_weather_dm
 #> ── Metadata ───────────────────────────────────────────────────────────────
@@ -219,18 +221,18 @@ flights_upd_weather_dm
 #> Primary keys: 4
 #> Foreign keys: 3
 # creating the coveted FK relation between `flights` and `weather`
-extended_flights_dm <- 
-  flights_upd_weather_dm %>% 
-  dm_zoom_to(flights) %>% 
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>% 
+extended_flights_dm <-
+  flights_upd_weather_dm %>%
+  dm_zoom_to(flights) %>%
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   # need to keep `origin` as FK to airports, so `remove = FALSE`
-  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE) %>% 
-  dm_update_zoomed() %>% 
+  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE) %>%
+  dm_update_zoomed() %>%
   dm_add_fk(flights, origin_slot_id, weather)
 extended_flights_dm %>% dm_draw()
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/tech-dm-zoom_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/tech-dm-zoom_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 ### Use case 3: Disentangle `dm`
 
@@ -243,31 +245,31 @@ for the arrival airport.
 dm_draw(dm_nycflights13(cycle = TRUE))
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/tech-dm-zoom_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/tech-dm-zoom_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 In such cases it can be beneficial, to “disentangle” the `dm` by
 duplicating the referred table. One way to do this in the {dm}-framework
 is as follows:
 
 ``` r
-disentangled_flights_dm <- 
-  dm_nycflights13(cycle = TRUE) %>% 
+disentangled_flights_dm <-
+  dm_nycflights13(cycle = TRUE) %>%
   # zooming and immediately inserting essentially creates a copy of the original table
-  dm_zoom_to(airports) %>% 
+  dm_zoom_to(airports) %>%
   # reinserting the `airports` table under the name `destination`
-  dm_insert_zoomed("destination") %>% 
+  dm_insert_zoomed("destination") %>%
   # renaming the originally zoomed table
-  dm_rename_tbl(origin = airports) %>% 
+  dm_rename_tbl(origin = airports) %>%
   # Key relations are also duplicated, so the wrong ones need to be removed
-  dm_rm_fk(flights, dest, origin) %>% 
+  dm_rm_fk(flights, dest, origin) %>%
   dm_rm_fk(flights, origin, destination)
 dm_draw(disentangled_flights_dm)
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/tech-dm-zoom_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/tech-dm-zoom_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 In a future update we will provide a more convenient way to
-“disentangle” `dm` objects, so that the individual steps will be
-done automatically.
+“disentangle” `dm` objects, so that the individual steps will be done
+automatically.
 
 ### Use case 4: Add summary table to `dm`
 
@@ -275,15 +277,15 @@ Here is an example for adding a summary of a table as a new table to a
 `dm` (FK-relations are taken care of automatically):
 
 ``` r
-dm_with_summary <- 
-  flights_dm %>% 
-  dm_zoom_to(flights) %>% 
-  count(origin, carrier) %>% 
+dm_with_summary <-
+  flights_dm %>%
+  dm_zoom_to(flights) %>%
+  count(origin, carrier) %>%
   dm_insert_zoomed("dep_carrier_count")
 dm_draw(dm_with_summary)
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/tech-dm-zoom_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/tech-dm-zoom_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ### Use case 5: Joining tables
 
@@ -295,13 +297,13 @@ RHS-table you want to be included in the join. For the syntax please see
 the example below. The LHS-table of a join is always the zoomed table.
 
 ``` r
-joined_flights_dm <- 
-  flights_dm %>% 
-  dm_zoom_to(flights) %>% 
+joined_flights_dm <-
+  flights_dm %>%
+  dm_zoom_to(flights) %>%
   # let's first reduce the number of columns of flights
-  select(-dep_delay:-arr_delay, -air_time:-time_hour) %>% 
+  select(-dep_delay:-arr_delay, -air_time:-time_hour) %>%
   # in the {dm}-method for the joins you can specify which columns you want to add to the zoomed table
-  left_join(planes, select = c(tailnum, plane_type = type)) %>% 
+  left_join(planes, select = c(tailnum, plane_type = type)) %>%
   dm_insert_zoomed("flights_plane_type")
 # this is how the table looks now
 joined_flights_dm$flights_plane_type
@@ -324,7 +326,7 @@ joined_flights_dm$flights_plane_type
 dm_draw(joined_flights_dm)
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/tech-dm-zoom_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/tech-dm-zoom_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ### Tip: Accessing the zoomed table
 
@@ -332,10 +334,10 @@ At each point you can retrieve the zoomed table by calling `pull_tbl()`
 on a `zoomed_dm`. To use our last example once more:
 
 ``` r
-flights_dm %>% 
-  dm_zoom_to(flights) %>% 
-  select(-dep_delay:-arr_delay, -air_time:-time_hour) %>% 
-  left_join(planes, select = c(tailnum, plane_type = type)) %>% 
+flights_dm %>%
+  dm_zoom_to(flights) %>%
+  select(-dep_delay:-arr_delay, -air_time:-time_hour) %>%
+  left_join(planes, select = c(tailnum, plane_type = type)) %>%
   pull_tbl()
 #> # A tibble: 11,227 x 11
 #>     year month   day dep_time sched_dep_time carrier flight tailnum origin

@@ -29,7 +29,7 @@ dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
 
   check_new_tbls(dm, new_tables)
 
-  old_names <- src_tbls(dm)
+  old_names <- src_tbls_impl(dm)
   names_list <- repair_table_names(old_names, new_names, repair, quiet)
   # rename old tables in case name repair changed their names
 
@@ -125,7 +125,7 @@ check_new_tbls <- function(dm, tbls) {
 dm_mutate_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
 
-  old_names <- src_tbls(dm)
+  old_names <- src_tbls_impl(dm)
 
   new_tables <- list2(...)
   stopifnot(is_named(new_tables))

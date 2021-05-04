@@ -4,9 +4,9 @@ test_that("dm_add_pk() works as intended?", {
     dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
       dm_add_pk(dm_table_1, b, force = TRUE)
   )
-  expect_dm_error(
+  expect_error(
     dm_add_pk(dm_test_obj(), dm_table_1, qq),
-    class = "wrong_col_names"
+    class = "vctrs_error_subscript_oob"
   )
   expect_dm_error(
     dm_test_obj() %>%
@@ -99,37 +99,12 @@ test_that("dm_get_pk() works as intended?", {
 })
 
 test_that("dm_enum_pk_candidates() works properly?", {
-  candidates_table_1 <- tibble(column = c("a", "b"), candidate = c(TRUE, TRUE), why = c("", "")) %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns))
-  expect_identical(
-    dm_enum_pk_candidates(dm_test_obj(), dm_table_1),
-    candidates_table_1
-  )
-
-  candidates_table_2 <- tibble(column = c("c"), candidate = c(FALSE), why = "has duplicate values: 5") %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns))
-  expect_identical(
-    dm_enum_pk_candidates(dm_test_obj(), dm_table_2),
-    candidates_table_2
-  )
-
-  candidates_table_3 <- tibble(column = c("c"), candidate = c(FALSE), why = "has missing values") %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns))
-  expect_identical(
-    dm_enum_pk_candidates(dm_test_obj(), dm_table_5),
-    candidates_table_3
-  )
-
-  candidates_table_4 <- tibble(column = c("c"), candidate = c(FALSE), why = "has missing values, and duplicate values: 3") %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns))
-  expect_identical(
-    dm_enum_pk_candidates(dm_test_obj(), dm_table_6),
-    candidates_table_4
-  )
+  expect_snapshot({
+    dm_enum_pk_candidates(dm_test_obj(), dm_table_1)
+    dm_enum_pk_candidates(dm_test_obj(), dm_table_2)
+    dm_enum_pk_candidates(dm_test_obj(), dm_table_5)
+    dm_enum_pk_candidates(dm_test_obj(), dm_table_6)
+  })
 })
 
 test_that("enum_pk_candidates() works properly", {
@@ -145,5 +120,20 @@ test_that("output", {
   expect_snapshot(error = TRUE, {
     dm(x = tibble(a = c(1, 1))) %>%
       dm_add_pk(x, a, check = TRUE)
+  })
+})
+
+
+# tests for compound keys -------------------------------------------------
+
+test_that("dm_get_all_pks() with compound keys", {
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
+  expect_snapshot({
+    nyc_comp()
+
+    nyc_comp() %>%
+      dm_get_all_pks()
   })
 })

@@ -29,19 +29,11 @@ test_that("dm_select_tbl() can reorder the tables in a `dm`", {
 test_that("dm_select_tbl() remembers all FKs", {
   skip_if_not_installed("nycflights13")
 
-  reordered_dm_nycflights_small_cycle <-
-    dm_nycflights_small() %>%
-    dm_add_fk(flights, origin, airports) %>%
-    dm_get_def() %>%
-    filter(!(table %in% c("airlines", "planes"))) %>%
-    slice(2:1) %>%
-    new_dm3()
-
-  expect_equivalent_dm(
+  expect_snapshot({
     dm_add_fk(dm_nycflights_small(), flights, origin, airports) %>%
-      dm_select_tbl(airports, flights),
-    reordered_dm_nycflights_small_cycle
-  )
+      dm_select_tbl(airports, flights) %>%
+      dm_paste()
+  })
 })
 
 

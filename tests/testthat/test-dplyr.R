@@ -137,7 +137,7 @@ test_that("basic test: 'filter()'-methods work", {
     zoomed_dm() %>%
       filter(d > mean(d, na.rm = TRUE)) %>%
       dm_update_zoomed() %>%
-      tbl("tf_2"),
+      tbl_impl("tf_2"),
     tf_2() %>%
       filter(d > mean(d, na.rm = TRUE))
   )
@@ -152,7 +152,7 @@ test_that("basic test: 'filter()'-methods work (2)", {
 
 test_that("basic test: 'distinct()'-methods work", {
   expect_equivalent_tbl(
-    distinct(zoomed_dm(), d_new = d) %>% dm_update_zoomed() %>% tbl("tf_2"),
+    distinct(zoomed_dm(), d_new = d) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     distinct(tf_2(), d_new = d)
   )
 
@@ -191,8 +191,12 @@ test_that("basic test: 'slice()'-methods work", {
   # silent when no PK available
   expect_silent(
     expect_equivalent_tbl(
-      slice(dm_zoom_to(dm_for_disambiguate(), iris_3), 1:3) %>% get_zoomed_tbl(),
-      slice(iris_3(), 1:3)
+      dm_for_disambiguate() %>%
+        dm_zoom_to(iris_3) %>%
+        slice(1:3) %>%
+        get_zoomed_tbl(),
+      iris_3() %>%
+        slice(1:3)
     )
   )
 
@@ -216,23 +220,23 @@ test_that("basic test: 'slice()'-methods work", {
 
 test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   expect_equivalent_tbl(
-    left_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
+    left_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     left_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
   expect_equivalent_tbl(
-    inner_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
+    inner_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     inner_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
 
   expect_equivalent_tbl(
-    semi_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
+    semi_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     semi_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
   expect_equivalent_tbl(
-    anti_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
+    anti_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     anti_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
@@ -240,12 +244,12 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   skip_if_src("sqlite")
   skip_if_src("maria")
   expect_equivalent_tbl(
-    full_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
+    full_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     full_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
   expect_equivalent_tbl(
-    right_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
+    right_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     right_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 })
@@ -259,19 +263,19 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
 
   # works, if by is given
   expect_equivalent_tbl(
-    left_join(zoomed_dm(), tf_4, by = c("e" = "j")) %>% dm_update_zoomed() %>% tbl("tf_2"),
+    left_join(zoomed_dm(), tf_4, by = c("e" = "j")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     left_join(tf_2(), tf_4(), by = c("e" = "j"))
   )
 
   # explicitly select columns from RHS using argument `select`
   expect_equivalent_tbl(
-    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), e)) %>% dm_update_zoomed() %>% tbl("tf_3"),
+    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), e)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
     left_join(tf_3(), select(tf_2(), c, e), by = c("f" = "e"))
   )
 
   # explicitly select and rename columns from RHS using argument `select`
   expect_equivalent_tbl(
-    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), d_new = d, e)) %>% dm_update_zoomed() %>% tbl("tf_3"),
+    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), d_new = d, e)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
     left_join(tf_3(), select(tf_2(), c, d_new = d, e), by = c("f" = "e"))
   )
 
@@ -398,7 +402,10 @@ test_that("key tracking works", {
   # rename()
 
   expect_identical(
-    zoomed_grouped_out_dm %>% rename(c_new = c) %>% dm_update_zoomed() %>% dm_get_pk(tf_2),
+    zoomed_grouped_out_dm %>%
+      rename(c_new = c) %>%
+      dm_update_zoomed() %>%
+      dm_get_pk(tf_2),
     new_keys("c_new")
   )
 
@@ -409,7 +416,7 @@ test_that("key tracking works", {
       dm_get_all_fks_impl() %>%
       filter(child_table == "tf_2", parent_table == "tf_3") %>%
       pull(child_fk_cols),
-    "e_new"
+    new_keys("e_new")
   )
 
   expect_identical(
@@ -419,7 +426,9 @@ test_that("key tracking works", {
       dm_update_zoomed() %>%
       dm_get_all_fks_impl(),
     dm_for_filter() %>%
-      dm_get_all_fks_impl()
+      dm_get_all_fks_impl() %>%
+      # https://github.com/r-lib/vctrs/issues/1371
+      mutate(parent_pk_cols = new_keys(if_else(parent_pk_cols == new_keys("f"), list("f_new"), unclass(parent_pk_cols))))
   )
 
   # summarize()
@@ -430,7 +439,7 @@ test_that("key tracking works", {
       summarize(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names(c("c", "e"))
+    new_keys(c("c", "e"))
   )
 
   expect_identical(
@@ -439,7 +448,7 @@ test_that("key tracking works", {
       summarize(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names(character())
+    new_keys()
   )
 
   # transmute()
@@ -450,7 +459,7 @@ test_that("key tracking works", {
       transmute(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names(c("c", "e"))
+    new_keys(c("c", "e"))
   )
 
   expect_identical(
@@ -459,7 +468,7 @@ test_that("key tracking works", {
       transmute(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names(character())
+    new_keys()
   )
 
   # mutate()
@@ -470,7 +479,7 @@ test_that("key tracking works", {
       mutate(d_mean = mean(d), d = d * 2) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names(c("c", "e"))
+    new_keys(c("c", "e"))
   )
 
   expect_identical(
@@ -479,7 +488,7 @@ test_that("key tracking works", {
       mutate(f = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names(character())
+    new_keys()
   )
 
   expect_identical(
@@ -488,7 +497,7 @@ test_that("key tracking works", {
       mutate(g_new = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names("f")
+    new_keys("f")
   )
 
   # chain of renames & other transformations
@@ -502,7 +511,7 @@ test_that("key tracking works", {
       transmute(c = paste0(c, "_animal")) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names("e_new")
+    new_keys("e_new")
   )
 
   # FKs that point to a PK that vanished, should also vanish
@@ -523,26 +532,35 @@ test_that("key tracking works", {
   )
 
   expect_identical(
-    distinct(zoomed_dm(), d_new = d) %>% dm_update_zoomed() %>% dm_get_all_fks_impl(),
-    dm_get_all_fks_impl(dm_for_filter()) %>%
-      filter(child_fk_cols != "e") %>%
-      mutate(child_fk_cols = if_else(child_fk_cols == "d", "d_new", child_fk_cols))
+    zoomed_dm() %>%
+      distinct(d_new = d) %>%
+      dm_update_zoomed() %>%
+      dm_get_all_fks_impl(),
+    dm_for_filter() %>%
+      dm_get_all_fks_impl() %>%
+      filter(child_fk_cols != new_keys("e")) %>%
+      # https://github.com/r-lib/vctrs/issues/1371
+      mutate(child_fk_cols = new_keys(if_else(child_fk_cols == new_keys("d"), list("d_new"), unclass(child_fk_cols))))
   )
 
   expect_identical(
-    arrange(zoomed_dm(), e) %>% dm_update_zoomed() %>% dm_get_all_fks_impl(),
-    dm_get_all_fks_impl(dm_for_filter())
+    zoomed_dm() %>%
+      arrange(e) %>%
+      dm_update_zoomed() %>%
+      dm_get_all_fks_impl(),
+    dm_for_filter() %>%
+      dm_get_all_fks_impl()
   )
 
   expect_identical(
     dm_for_flatten() %>%
       dm_zoom_to(fact) %>%
-      select(dim_1_key, dim_3_key, dim_2_key) %>%
+      select(dim_1_key_1, dim_1_key_2, dim_3_key, dim_2_key) %>%
       dm_update_zoomed() %>%
       dm_get_all_fks_impl(),
     dm_for_flatten() %>%
       dm_get_all_fks_impl() %>%
-      filter(child_fk_cols != "dim_4_key")
+      filter(child_fk_cols != new_keys("dim_4_key"))
   )
 
   # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
@@ -565,28 +583,28 @@ test_that("key tracking works", {
     dm_zoom_to(dm_nycflights_small(), weather) %>%
       summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
       get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
+    tbl_impl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small(), weather) %>%
       transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
       get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
+    tbl_impl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
   )
 
   expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small(), weather) %>%
       summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
       get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
+    tbl_impl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small(), weather) %>%
       transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
       get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
+    tbl_impl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
   )
 
   # slice() doesn't work on DB and reformatting a datetime on a DB is
@@ -597,7 +615,7 @@ test_that("key tracking works", {
     dm_zoom_to(dm_nycflights_small(), weather) %>%
       mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
       get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
+    tbl_impl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
   )
 })
 
@@ -673,4 +691,96 @@ test_that("unique_prefix()", {
   expect_equal(unique_prefix(c("a", "bc", "ef")), "...")
   expect_equal(unique_prefix(c("a", "bcd", "ef")), "...")
   expect_equal(unique_prefix(c("a", "....", "ef")), "....")
+})
+
+
+# compound tests ----------------------------------------------------------
+
+test_that("output for compound keys", {
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
+  zoomed_comp_dm <- nyc_comp() %>%
+    dm_zoom_to(weather)
+  # grouped by one key col and one other col
+  grouped_zoomed_comp_dm_1 <- zoomed_comp_dm %>%
+    group_by(time_hour, wind_dir)
+  # grouped by the two key cols
+  grouped_zoomed_comp_dm_2 <- zoomed_comp_dm %>%
+    group_by(time_hour, origin)
+
+  expect_snapshot({
+    # TRANSFORMATION VERBS
+
+    # mutate()
+    grouped_zoomed_comp_dm_1 %>%
+      mutate(count = n()) %>%
+      get_tracked_cols()
+    grouped_zoomed_comp_dm_2 %>%
+      mutate(count = n()) %>%
+      get_tracked_cols()
+    # transmute()
+    grouped_zoomed_comp_dm_1 %>%
+      transmute(count = n()) %>%
+      dm_update_zoomed()
+    grouped_zoomed_comp_dm_2 %>%
+      transmute(count = n()) %>%
+      dm_update_zoomed()
+    # summarize()
+    grouped_zoomed_comp_dm_1 %>%
+      summarize(count = n()) %>%
+      dm_update_zoomed()
+    grouped_zoomed_comp_dm_2 %>%
+      summarize(count = n()) %>%
+      dm_update_zoomed()
+    # select()
+    zoomed_comp_dm %>%
+      select(time_hour, wind_dir) %>%
+      dm_update_zoomed()
+    zoomed_comp_dm %>%
+      select(time_hour, origin, wind_dir) %>%
+      dm_update_zoomed()
+    # rename()
+    zoomed_comp_dm %>%
+      rename(th = time_hour, wd = wind_dir) %>%
+      dm_update_zoomed()
+    # distinct()
+    zoomed_comp_dm %>%
+      distinct(origin, wind_dir) %>%
+      dm_update_zoomed()
+    zoomed_comp_dm %>%
+      distinct(origin, wind_dir, time_hour) %>%
+      dm_update_zoomed()
+    # filter() (cf. #437)
+    zoomed_comp_dm %>%
+      filter(pressure < 1020) %>%
+      dm_update_zoomed()
+    # pull()
+    zoomed_comp_dm %>% pull(origin) %>% unique()
+    # slice()
+    zoomed_comp_dm %>%
+      slice(c(1:3, 5:3))
+    zoomed_comp_dm %>%
+      slice(c(1:3, 5:3), .keep_pk = TRUE) %>%
+      get_tracked_cols()
+    # FIXME: COMPOUND:: .keep_pk = FALSE cannot deal with compound keys ATM
+    # zoomed_comp_dm %>%
+    #   slice(c(1:3, 5:3), .keep_pk = FALSE) %>%
+    #   get_tracked_cols()
+
+    # JOINS
+
+    # left_join()
+    zoomed_comp_dm %>% left_join(flights) %>% nrow()
+    # right_join()
+    zoomed_comp_dm %>% right_join(flights) %>% nrow()
+    # inner_join()
+    zoomed_comp_dm %>% inner_join(flights) %>% nrow()
+    # full_join()
+    zoomed_comp_dm %>% full_join(flights) %>% nrow()
+    # semi_join()
+    zoomed_comp_dm %>% semi_join(flights) %>% nrow()
+    # anti_join()
+    zoomed_comp_dm %>% anti_join(flights) %>% nrow()
+  })
 })

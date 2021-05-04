@@ -23,10 +23,10 @@ outdated function is being used. This can be repaired by:
     generated warnings to update the function calls.
 2.  or just by replacing all occurrences of `cdm` by `dm` in this
     script. This can e.g. be done in RStudio using “Find” or in the
-    terminal using `sed -e 's/cdm/dm/g' path-to-file` on Windows or `sed
-    -i '' -e 's/cdm/dm/g' path-to-file` on a Mac. If the script errors
-    after this step, you will need to check where exactly the error
-    happens and manually repair the damage.
+    terminal using `sed -e 's/cdm/dm/g' path-to-file` on Windows or
+    `sed -i '' -e 's/cdm/dm/g' path-to-file` on a Mac. If the script
+    errors after this step, you will need to check where exactly the
+    error happens and manually repair the damage.
 
 ### Be careful with methods for `dm`: `tbl`, `[[`, `$`
 

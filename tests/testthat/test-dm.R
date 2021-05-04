@@ -3,7 +3,7 @@ test_that("can access tables", {
 
   expect_identical(tbl(dm_nycflights13(), "airlines"), nycflights13::airlines)
   expect_dm_error(
-    tbl(dm_nycflights13(), "x"),
+    tbl_impl(dm_nycflights13(), "x"),
     class = "table_not_in_dm"
   )
 })
@@ -58,6 +58,8 @@ test_that("'copy_to.dm()' works", {
 })
 
 test_that("'copy_to.dm()' works (2)", {
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_dm_error(
     copy_to(dm(), mtcars, c("car_table", "another_table")),
     "one_name_for_copy_to"
@@ -196,7 +198,7 @@ test_that("some methods/functions for `zoomed_dm` work", {
 
 test_that("length and names for dm work", {
   expect_length(dm_for_filter(), 6L)
-  expect_identical(names(dm_for_filter()), src_tbls(dm_for_filter()))
+  expect_identical(names(dm_for_filter()), src_tbls_impl(dm_for_filter()))
 })
 
 test_that("validator is silent", {
@@ -387,6 +389,8 @@ test_that("as.list()-method works for local `zoomed_dm`", {
 # test getters: -----------------------------------------------------------
 
 test_that("dm_get_src() works", {
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_dm_error(
     dm_get_src(1),
     class = "is_not_dm"
@@ -438,13 +442,51 @@ test_that("output", {
   expect_snapshot({
     print(dm())
 
-    nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
-    nyc_flights_dm
+    nyc_flights_dm <- dm_nycflights_small()
+    collect(nyc_flights_dm)
 
     nyc_flights_dm %>%
       format()
 
     nyc_flights_dm %>%
-      dm_filter(flights, origin == "EWR")
+      dm_filter(flights, origin == "EWR") %>%
+      collect()
+  })
+})
+
+
+# Compound tests ----------------------------------------------------------
+
+
+test_that("output for compound keys", {
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
+  # Can't be inside the snapshot
+  car_table <- test_src_frame(!!!mtcars)
+
+  expect_snapshot({
+    copy_to(nyc_comp(), mtcars, "car_table")
+    dm_add_tbl(nyc_comp(), car_table)
+    nyc_comp() %>%
+      collect()
+    nyc_comp() %>%
+      dm_filter(flights, day == 10) %>%
+      compute() %>%
+      collect() %>%
+      dm_get_def()
+    nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      mutate(origin_new = paste0(origin, " airport")) %>%
+      compute() %>%
+      dm_update_zoomed() %>%
+      collect() %>%
+      dm_get_def()
+    nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      collect()
+    pull_tbl(nyc_comp(), weather)
+    dm_zoom_to(nyc_comp(), weather) %>%
+      pull_tbl()
   })
 })

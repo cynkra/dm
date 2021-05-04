@@ -3,25 +3,25 @@
 # Building data models from data frames with dm
 
 dm allows you to create your own relational data models from local data
-frames. Once your data model is complete, you can deploy it a range of
-DBMSs using dm.
+frames. Once your data model is complete, you can deploy it to a range
+of DBMSs using dm.
 
 ## Creating a dm object from data frames
 
 The example data set that we will be using is available through the
-[`nycflights13`](https://github.com/hadley/nycflights13) package. The
+[`nycflights13`](https://github.com/tidyverse/nycflights13) package. The
 five tables that we are working with contain information about all
 flights that departed from the airports of New York to other
 destinations in the United States in 2013:
 
-  - `flights` represents the trips taken by planes
-  - `airlines` includes
-      - the names of transport organizations (`name`)
-      - their abbreviated codes (`carrier`)
-  - `airports` indicates the ports of departure (`origin`) and of
+-   `flights` represents the trips taken by planes
+-   `airlines` includes
+    -   the names of transport organizations (`name`)
+    -   their abbreviated codes (`carrier`)
+-   `airports` indicates the ports of departure (`origin`) and of
     destination (`dest`)
-  - `weather` contains meteorological information at each hour
-  - `planes` describes characteristics of the aircraft
+-   `weather` contains meteorological information at each hour
+-   `planes` describes characteristics of the aircraft
 
 Once we’ve loaded {nycflights13}, the aforementioned tables are all in
 our work environment, ready to be accessed.
@@ -116,12 +116,13 @@ have not specified how our five tables are connected. To do this we need
 to define primary keys and foreign keys on the tables.
 
 Primary keys and foreign keys are how relational database tables are
-linked with each other. A primary key is a column that has a unique
-value for each row within a table. A foreign key is a column containing
-the primary key for a row in another table.\[1\] Foreign keys act as
-cross references between tables. They specify the relationships that
-gives us the *relational* database. For more information on keys and a
-crash course on databases, see `vignette("howto-dm-theory")`.
+linked with each other. A primary key is a column or column tuple that
+has a unique value for each row within a table. A foreign key is a
+column or column tuple containing the primary key for a row in another
+table. Foreign keys act as cross references between tables. They specify
+the relationships that gives us the *relational* database. For more
+information on keys and a crash course on databases, see
+`vignette("howto-dm-theory")`.
 
 ## Primary Keys
 
@@ -137,14 +138,14 @@ dm_enum_pk_candidates(
 #>   columns     candidate why                                                
 #>   <keys>      <lgl>     <chr>                                              
 #> 1 tailnum     TRUE      ""                                                 
-#> 2 engine      FALSE     "has duplicate values: 4 Cycle, Reciprocating, Tur…
-#> 3 engines     FALSE     "has duplicate values: 1, 2, 3, 4"                 
-#> 4 manufactur… FALSE     "has duplicate values: AIRBUS, AIRBUS INDUSTRIE, A…
-#> 5 model       FALSE     "has duplicate values: 717-200, 737-301, 737-3G7, …
-#> 6 seats       FALSE     "has duplicate values: 2, 4, 5, 6, 7, …"           
-#> 7 speed       FALSE     "has duplicate values: 90, 105, 162, 432, NA"      
-#> 8 type        FALSE     "has duplicate values: Fixed wing multi engine, Fi…
-#> 9 year        FALSE     "has duplicate values: 1959, 1963, 1975, 1976, 197…
+#> 2 year        FALSE     "has duplicate values: 2001 (284), 2000 (244), 200…
+#> 3 type        FALSE     "has duplicate values: Fixed wing multi engine (32…
+#> 4 manufactur… FALSE     "has duplicate values: BOEING (1630), AIRBUS INDUS…
+#> 5 model       FALSE     "has duplicate values: 737-7H4 (361), A320-232 (25…
+#> 6 engines     FALSE     "has duplicate values: 2 (3288), 1 (27), 4 (4), 3 …
+#> 7 seats       FALSE     "has duplicate values: 149 (452), 140 (411), 55 (3…
+#> 8 speed       FALSE     "has 3299 missing values, and duplicate values: 43…
+#> 9 engine      FALSE     "has duplicate values: Turbo-fan (2750), Turbo-jet…
 ```
 
 Now, we add the primary keys that we have identified:
@@ -183,24 +184,24 @@ dm_enum_fk_candidates(
 #>    columns      candidate why                                              
 #>    <keys>       <lgl>     <chr>                                            
 #>  1 carrier      TRUE      ""                                               
-#>  2 tailnum      FALSE     "334264 entries (99.3%) of `flights$tailnum` not…
-#>  3 dest         FALSE     "336776 entries (100%) of `flights$dest` not in …
-#>  4 origin       FALSE     "336776 entries (100%) of `flights$origin` not i…
-#>  5 air_time     FALSE     "Can't join on `x$value` x `y$value` because of …
-#>  6 arr_delay    FALSE     "Can't join on `x$value` x `y$value` because of …
-#>  7 arr_time     FALSE     "Can't join on `x$value` x `y$value` because of …
-#>  8 day          FALSE     "Can't join on `x$value` x `y$value` because of …
-#>  9 dep_delay    FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 10 dep_time     FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 11 distance     FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 12 flight       FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 13 hour         FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 14 minute       FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 15 month        FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 16 sched_arr_t… FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 17 sched_dep_t… FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 18 time_hour    FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 19 year         FALSE     "Can't join on `x$value` x `y$value` because of …
+#>  2 year         FALSE     "Can't combine `value1` <integer> and `value1` <…
+#>  3 month        FALSE     "Can't combine `value1` <integer> and `value1` <…
+#>  4 day          FALSE     "Can't combine `value1` <integer> and `value1` <…
+#>  5 dep_time     FALSE     "Can't combine `value1` <integer> and `value1` <…
+#>  6 sched_dep_t… FALSE     "Can't combine `value1` <integer> and `value1` <…
+#>  7 dep_delay    FALSE     "Can't combine `value1` <double> and `value1` <c…
+#>  8 arr_time     FALSE     "Can't combine `value1` <integer> and `value1` <…
+#>  9 sched_arr_t… FALSE     "Can't combine `value1` <integer> and `value1` <…
+#> 10 arr_delay    FALSE     "Can't combine `value1` <double> and `value1` <c…
+#> 11 flight       FALSE     "Can't combine `value1` <integer> and `value1` <…
+#> 12 tailnum      FALSE     "values of `flights$tailnum` not in `airlines$ca…
+#> 13 origin       FALSE     "values of `flights$origin` not in `airlines$car…
+#> 14 dest         FALSE     "values of `flights$dest` not in `airlines$carri…
+#> 15 air_time     FALSE     "Can't combine `value1` <double> and `value1` <c…
+#> 16 distance     FALSE     "Can't combine `value1` <double> and `value1` <c…
+#> 17 hour         FALSE     "Can't combine `value1` <double> and `value1` <c…
+#> 18 minute       FALSE     "Can't combine `value1` <double> and `value1` <c…
+#> 19 time_hour    FALSE     "Can't combine `value1` <datetime<America/New_Yo…
 ```
 
 Having chosen a column from the successful candidates provided by
@@ -239,33 +240,30 @@ flights_dm_no_keys %>%
   dm_draw(rankdir = "TB", view_type = "all")
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/howto-dm-df_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/howto-dm-df_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
-
 flights_dm_no_keys %>%
   dm_add_pk(airlines, carrier) %>%
   dm_draw()
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/howto-dm-df_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/howto-dm-df_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
 
 ``` r
-
 flights_dm_only_pks %>%
   dm_add_fk(flights, tailnum, planes) %>%
   dm_draw()
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/howto-dm-df_files/figure-gfm/unnamed-chunk-6-3.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/howto-dm-df_files/figure-gfm/unnamed-chunk-6-3.png)<!-- -->
 
 ``` r
-
 flights_dm_all_keys %>%
   dm_draw()
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/howto-dm-df_files/figure-gfm/unnamed-chunk-6-4.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/howto-dm-df_files/figure-gfm/unnamed-chunk-6-4.png)<!-- -->
 
 ## Integrity Checks
 
@@ -285,7 +283,7 @@ flights_dm_only_pks %>%
 flights_dm_all_keys %>%
   dm_examine_constraints()
 #> ! Unsatisfied constraints:
-#> ● Table `flights`: foreign key tailnum into table `planes`: 50094 entries (14.9%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), …
+#> ● Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), …
 ```
 
 The results are presented in a human-readable form, and available as a
@@ -333,13 +331,10 @@ flights_dm_all_keys %>%
 #> # A tibble: 6 x 6
 #>   table   kind  columns ref_table is_key problem                           
 #>   <chr>   <chr> <keys>  <chr>     <lgl>  <chr>                             
-#> 1 flights FK    tailnum planes    FALSE  "50094 entries (14.9%) of `flight…
+#> 1 flights FK    tailnum planes    FALSE  "values of `flights$tailnum` not …
 #> 2 airlin… PK    carrier <NA>      TRUE   ""                                
 #> 3 airpor… PK    faa     <NA>      TRUE   ""                                
 #> 4 planes  PK    tailnum <NA>      TRUE   ""                                
 #> 5 flights FK    carrier airlines  TRUE   ""                                
 #> 6 flights FK    origin  airports  TRUE   ""
 ```
-
-1.  Support for compound keys (consisting of multiple columns) is
-    [planned](https://github.com/cynkra/dm/issues/3).

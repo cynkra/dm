@@ -79,7 +79,7 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
 
 test_that("we get filtered/unfiltered tables with respective funs", {
   expect_equivalent_tbl(
-    dm_filter(dm_for_filter(), tf_1, a > 4) %>% tbl("tf_2"),
+    dm_filter(dm_for_filter(), tf_1, a > 4) %>% tbl_impl("tf_2"),
     tf_2()
   )
 
@@ -89,7 +89,7 @@ test_that("we get filtered/unfiltered tables with respective funs", {
   )
 
   expect_equivalent_tbl(
-    dm_filter(dm_for_filter(), tf_1, a > 4) %>% tbl("tf_1"),
+    dm_filter(dm_for_filter(), tf_1, a > 4) %>% tbl_impl("tf_1"),
     filter(tf_1(), a > 4)
   )
 
@@ -136,4 +136,20 @@ test_that("dm_filter() fails when no table name is provided", {
     dm_filter(dm_for_filter()),
     class = "table_missing"
   )
+})
+
+
+# tests for compound keys -------------------------------------------------
+
+test_that("dm_filter() output for compound keys", {
+  expect_snapshot({
+    nyc_comp() %>%
+      dm_filter(flights, sched_dep_time <= 1200) %>%
+      dm_apply_filters() %>%
+      dm_nrow()
+    nyc_comp() %>%
+      dm_filter(weather, pressure < 1020) %>%
+      dm_apply_filters() %>%
+      dm_nrow()
+  })
 })

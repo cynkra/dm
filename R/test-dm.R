@@ -52,15 +52,6 @@ check_dm <- function(dm) {
   if (!is_dm(dm)) abort_is_not_dm(class(dm))
 }
 
-# validates that the given column is indeed part of the table of the `dm` object
-check_col_input <- function(dm, table, column) {
-  tbl_colnames <- dm_get_tables_impl(dm) %>%
-    extract2(table) %>%
-    colnames()
-  if (!column %in% tbl_colnames) abort_wrong_col_names(table, tbl_colnames, column)
-}
-
-
 is_this_a_test <- function() {
   # Only run if the top level call is devtools::test() or testthat::test_check()
 

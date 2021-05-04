@@ -59,8 +59,9 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
 #' @keywords internal
 #' @export
 cdm_get_src <- function(x) {
-  deprecate_soft("0.1.0", "dm::cdm_get_src()", "dm::dm_get_src()")
-  out <- dm_get_src(x = x)
+  deprecate_soft("0.1.0", "dm::cdm_get_src()", "dm::dm_get_con()")
+  check_not_zoomed(x)
+  out <- dm_get_src_impl(x)
   if (is.null(out)) {
     out <- default_local_src()
   }
@@ -309,7 +310,9 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' @export
 cdm_get_all_fks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_fks()", "dm::dm_get_all_fks()")
-  dm_get_all_fks_impl(dm = dm)
+  dm_get_all_fks_impl(dm = dm) %>%
+    mutate(child_fk_cols = as.character(unclass(child_fk_cols))) %>%
+    mutate(parent_pk_cols = as.character(unclass(parent_pk_cols)))
 }
 
 #' @rdname deprecated
@@ -329,7 +332,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
     return(dm)
   }
   if (quo_is_null(column_quo)) {
-    cols <- fk_cols
+    cols <- get_key_cols(fk_cols)
   }
   else {
     cols <- as_name(ensym(columns))
@@ -339,7 +342,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
       )
     }
   }
-  dm_rm_fk_impl(dm, table_name, cols, ref_table_name)
+  dm_rm_fk_impl(dm, table_name, new_keys(cols), ref_table_name)
 }
 
 #' @rdname deprecated
@@ -353,8 +356,8 @@ cdm_enum_fk_candidates <- function(dm, table, ref_table) {
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
   ref_tbl_pk <- dm_get_pk_impl(dm, ref_table_name)
-  ref_tbl <- tbl(dm, ref_table_name)
-  tbl <- tbl(dm, table_name)
+  ref_tbl <- tbl_impl(dm, ref_table_name)
+  tbl <- tbl_impl(dm, table_name)
   enum_fk_candidates_impl(
     table_name, tbl, ref_table_name,
     ref_tbl, ref_tbl_pk
@@ -455,7 +458,8 @@ cdm_get_pk <- function(dm, table) {
 #' @export
 cdm_get_all_pks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_pks()", "dm::dm_get_all_pks()")
-  dm_get_all_pks_impl(dm = dm)
+  dm_get_all_pks_impl(dm = dm) %>%
+    mutate(pk_col = as.character(unclass(pk_col)))
 }
 
 #' @rdname deprecated
@@ -576,8 +580,8 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   new_filters <- all_filters %>%
     filter(zoomed) %>%
     mutate(zoomed = FALSE)
-  upd_pk <- update_zoomed_pk(dm)
-  upd_inc_fks <- update_zoomed_incoming_fks(dm)
+  upd_pk <- vctrs::list_of(update_zoomed_pk(dm))
+  upd_inc_fks <- vctrs::list_of(update_zoomed_incoming_fks(dm))
   dm_wo_outgoing_fks <-
     dm %>%
     update_filter(old_tbl_name, vctrs::list_of(old_filters)) %>%
@@ -590,7 +594,7 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
     new_dm3(zoomed = TRUE)
 
   dm_wo_outgoing_fks %>%
-    dm_update_zoomed_outgoing_fks(new_tbl_name_chr, is_upd = FALSE) %>%
+    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr) %>%
     dm_clean_zoomed()
 }
 

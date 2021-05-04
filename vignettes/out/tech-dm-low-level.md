@@ -7,30 +7,30 @@ and uniting tables.
 
 ``` r
 library(tidyverse)
-#> ── Attaching packages ────────────────────────────────── tidyverse 1.3.0 ──
-#> ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
-#> ✓ tibble  3.0.3     ✓ dplyr   1.0.0
-#> ✓ tidyr   1.1.0     ✓ stringr 1.4.0
-#> ✓ readr   1.3.1     ✓ forcats 0.5.0
+#> ── Attaching packages ────────────────────────────────── tidyverse 1.3.1 ──
+#> ✔ ggplot2 3.3.3     ✔ purrr   0.3.4
+#> ✔ tibble  3.1.1     ✔ dplyr   1.0.5
+#> ✔ tidyr   1.1.3     ✔ stringr 1.4.0
+#> ✔ readr   1.4.0     ✔ forcats 0.5.1
 #> ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
-#> x purrr::%@%()         masks dm::%@%()
-#> x purrr::as_function() masks dm::as_function()
-#> x tidyr::extract()     masks dm::extract()
-#> x dplyr::filter()      masks dm::filter(), stats::filter()
-#> x purrr::flatten()     masks dm::flatten()
-#> x purrr::flatten_chr() masks dm::flatten_chr()
-#> x purrr::flatten_dbl() masks dm::flatten_dbl()
-#> x purrr::flatten_int() masks dm::flatten_int()
-#> x purrr::flatten_lgl() masks dm::flatten_lgl()
-#> x purrr::flatten_raw() masks dm::flatten_raw()
-#> x purrr::invoke()      masks dm::invoke()
-#> x purrr::is_null()     masks dm::is_null(), testthat::is_null()
-#> x dplyr::lag()         masks dm::lag(), stats::lag()
-#> x purrr::list_along()  masks dm::list_along()
-#> x dplyr::matches()     masks tidyr::matches(), dm::matches(), testthat::matches()
-#> x purrr::modify()      masks dm::modify()
-#> x purrr::prepend()     masks dm::prepend()
-#> x purrr::splice()      masks dm::splice()
+#> ✖ purrr::%@%()         masks dm::%@%()
+#> ✖ purrr::as_function() masks dm::as_function()
+#> ✖ tidyr::extract()     masks dm::extract()
+#> ✖ dplyr::filter()      masks dm::filter(), stats::filter()
+#> ✖ purrr::flatten()     masks dm::flatten()
+#> ✖ purrr::flatten_chr() masks dm::flatten_chr()
+#> ✖ purrr::flatten_dbl() masks dm::flatten_dbl()
+#> ✖ purrr::flatten_int() masks dm::flatten_int()
+#> ✖ purrr::flatten_lgl() masks dm::flatten_lgl()
+#> ✖ purrr::flatten_raw() masks dm::flatten_raw()
+#> ✖ purrr::invoke()      masks dm::invoke()
+#> ✖ purrr::is_null()     masks dm::is_null(), testthat::is_null()
+#> ✖ dplyr::lag()         masks dm::lag(), stats::lag()
+#> ✖ purrr::list_along()  masks dm::list_along()
+#> ✖ dplyr::matches()     masks tidyr::matches(), dm::matches(), testthat::matches()
+#> ✖ purrr::modify()      masks dm::modify()
+#> ✖ purrr::prepend()     masks dm::prepend()
+#> ✖ purrr::splice()      masks dm::splice()
 library(dm)
 ```
 
@@ -86,7 +86,7 @@ check_subset(data_2, a, data_1, a)
 #>       a     b     c
 #>   <dbl> <dbl> <dbl>
 #> 1     3     6     9
-#> Error: Column `a` of table `data_2` contains values (see above) that are not present in column `a` of table `data_1`.
+#> Error: Column `a` of table `data_2` contains values (see examples above) that are not present in column `a` of table `data_1`.
 ```
 
 It should be kept in mind that `check_subset()` does not test if column
@@ -110,7 +110,7 @@ check_set_equality(data_1, a, data_2, a)
 #>       a     b     c
 #>   <dbl> <dbl> <dbl>
 #> 1     3     6     9
-#> Error: Column `a` of table `data_2` contains values (see above) that are not present in column `a` of table `data_1`..
+#> Error: Column `a` of table `data_2` contains values (see examples above) that are not present in column `a` of table `data_1`..
 ```
 
 Introducing one more table enables us to show how it looks when the test
@@ -130,16 +130,11 @@ be conveniently used in a pipe configuration.
 
 This section contains information and examples for the functions
 
-1.  `check_cardinality_0_n(parent_table, primary_key_column,
-    child_table, foreign_key_column)`
-2.  `check_cardinality_1_n(parent_table, primary_key_column,
-    child_table, foreign_key_column)`
-3.  `check_cardinality_0_1(parent_table, primary_key_column,
-    child_table, foreign_key_column)`
-4.  `check_cardinality_1_1(parent_table, primary_key_column,
-    child_table, foreign_key_column)`
-5.  `examine_cardinality(parent_table, primary_key_column, child_table,
-    foreign_key_column)`
+1.  `check_cardinality_0_n(parent_table, primary_key_column, child_table, foreign_key_column)`
+2.  `check_cardinality_1_n(parent_table, primary_key_column, child_table, foreign_key_column)`
+3.  `check_cardinality_0_1(parent_table, primary_key_column, child_table, foreign_key_column)`
+4.  `check_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)`
+5.  `examine_cardinality(parent_table, primary_key_column, child_table, foreign_key_column)`
 
 The four functions for testing for a specific kind of cardinality of the
 relation all require a parent table and a child table as inputs. The
@@ -233,8 +228,7 @@ The relevant functions are:
 
 1.  `decompose_table(.data, new_id_column, ...)`
 2.  `reunite_parent_child(child_table, parent_table, id_column)`
-3.  `reunite_parent_child_from_list(list_of_parent_child_tables,
-    id_column)`
+3.  `reunite_parent_child_from_list(list_of_parent_child_tables, id_column)`
 
 The first function implements table normalization. An existing table is
 split into a parent table (i.e. a lookup table) and a child table
@@ -268,31 +262,31 @@ decomposed_table
 #> # A tibble: 32 x 9
 #>      mpg   cyl  disp    hp  drat    wt  qsec    vs am_gear_carb_id
 #>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>           <int>
-#>  1  21       6  160    110  3.9   2.62  16.5     0               9
-#>  2  21       6  160    110  3.9   2.88  17.0     0               9
-#>  3  22.8     4  108     93  3.85  2.32  18.6     1               7
+#>  1  21       6  160    110  3.9   2.62  16.5     0               7
+#>  2  21       6  160    110  3.9   2.88  17.0     0               7
+#>  3  22.8     4  108     93  3.85  2.32  18.6     1               8
 #>  4  21.4     6  258    110  3.08  3.22  19.4     1               1
 #>  5  18.7     8  360    175  3.15  3.44  17.0     0               2
 #>  6  18.1     6  225    105  2.76  3.46  20.2     1               1
-#>  7  14.3     8  360    245  3.21  3.57  15.8     0               4
-#>  8  24.4     4  147.    62  3.69  3.19  20       1               5
-#>  9  22.8     4  141.    95  3.92  3.15  22.9     1               5
-#> 10  19.2     6  168.   123  3.92  3.44  18.3     1               6
+#>  7  14.3     8  360    245  3.21  3.57  15.8     0               3
+#>  8  24.4     4  147.    62  3.69  3.19  20       1               4
+#>  9  22.8     4  141.    95  3.92  3.15  22.9     1               4
+#> 10  19.2     6  168.   123  3.92  3.44  18.3     1               5
 #> # … with 22 more rows
 #> 
 #> $parent_table
 #> # A tibble: 13 x 4
 #>    am_gear_carb_id    am  gear  carb
 #>              <int> <dbl> <dbl> <dbl>
-#>  1               1     0     3     1
-#>  2               2     0     3     2
-#>  3               3     0     3     3
-#>  4               4     0     3     4
-#>  5               5     0     4     2
-#>  6               6     0     4     4
-#>  7               7     1     4     1
-#>  8               8     1     4     2
-#>  9               9     1     4     4
+#>  1               7     1     4     4
+#>  2               8     1     4     1
+#>  3               1     0     3     1
+#>  4               2     0     3     2
+#>  5               3     0     3     4
+#>  6               4     0     4     2
+#>  7               5     0     4     4
+#>  8               6     0     3     3
+#>  9               9     1     4     2
 #> 10              10     1     5     2
 #> 11              11     1     5     4
 #> 12              12     1     5     6

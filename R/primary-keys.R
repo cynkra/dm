@@ -16,6 +16,7 @@
 #' The syntax of these functions will be extended but will remain compatible
 #' with current semantics.
 #'
+#' @inheritParams ellipsis::dots_empty
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
 #' @param columns Table columns, unquoted.
@@ -49,13 +50,13 @@
 #'   nycflights_dm %>%
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
 #' )
-dm_add_pk <- function(dm, table, columns, check = FALSE, force = FALSE) {
+dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
-  col_expr <- ensym(columns)
-  col_name <- as_name(col_expr)
-  check_col_input(dm, table_name, col_name)
+  table <- dm_get_tables_impl(dm)[[table_name]]
+  col_expr <- enexpr(columns)
+  col_name <- names(eval_select_indices(col_expr, colnames(table)))
 
   if (check) {
     table_from_dm <- dm_get_filtered_table(dm, table_name)
@@ -102,7 +103,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #' dm_nycflights13() %>%
 #'   dm_has_pk(planes)
 #' @export
-dm_has_pk <- function(dm, table) {
+dm_has_pk <- function(dm, table, ...) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   dm_has_pk_impl(dm, table_name)
@@ -143,7 +144,7 @@ dm_has_pk_impl <- function(dm, table) {
 #' dm_nycflights13() %>%
 #'   dm_get_pk(planes)
 #' @export
-dm_get_pk <- function(dm, table) {
+dm_get_pk <- function(dm, table, ...) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   new_keys(dm_get_pk_impl(dm, table_name))
@@ -151,12 +152,9 @@ dm_get_pk <- function(dm, table) {
 
 dm_get_pk_impl <- function(dm, table_name) {
   # Optimized
-  dm %>%
-    dm_get_def() %>%
-    select(table, pks) %>%
-    filter(table == !!table_name) %>%
-    unnest_pks() %>%
-    pull(column)
+  def <- dm_get_def(dm)
+  pks <- def$pks[[which(def$table == table_name)]]
+  pks$column
 }
 
 #' Get all primary keys of a [`dm`] object
@@ -184,15 +182,22 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_get_all_pks()
-dm_get_all_pks <- function(dm) {
+dm_get_all_pks <- function(dm, ...) {
   check_not_zoomed(dm)
-  dm_get_all_pks_impl(dm) %>%
-    mutate(pk_col = new_keys(pk_col))
+  dm_get_all_pks_impl(dm)
 }
 
 dm_get_all_pks_impl <- function(dm) {
-  dm_get_data_model_pks(dm) %>%
-    select(table = table, pk_col = column)
+  dm_get_def(dm) %>%
+    dm_get_all_pks_def_impl()
+}
+
+dm_get_all_pks_def_impl <- function(def) {
+  def %>%
+    select(table, pks) %>%
+    unnest_pks() %>%
+    select(table = table, pk_col = column) %>%
+    mutate(pk_col = new_keys(pk_col))
 }
 
 
@@ -213,7 +218,7 @@ dm_get_all_pks_impl <- function(dm) {
 #'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
 #'   dm_draw()
 #' @export
-dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
+dm_rm_pk <- function(dm, table, ..., rm_referencing_fks = FALSE) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
@@ -267,7 +272,7 @@ dm_rm_pk_impl <- function(dm, table_name) {
 #' @examplesIf rlang::is_installed("nycflights13")
 #' nycflights13::flights %>%
 #'   enum_pk_candidates()
-enum_pk_candidates <- function(table) {
+enum_pk_candidates <- function(table, ...) {
   # a list of ayes and noes:
   if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)
 
@@ -289,7 +294,7 @@ enum_pk_candidates <- function(table) {
 #'
 #' dm_nycflights13() %>%
 #'   dm_enum_pk_candidates(airports)
-dm_enum_pk_candidates <- function(dm, table) {
+dm_enum_pk_candidates <- function(dm, table, ...) {
   check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
@@ -303,34 +308,39 @@ dm_enum_pk_candidates <- function(dm, table) {
     mutate(columns = new_keys(columns))
 }
 
-enum_pk_candidates_impl <- function(table, columns = colnames(table)) {
-  map_chr(set_names(columns), function(x) check_pk(table, {{ x }})) %>%
-    enframe("column", "why") %>%
+enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table))) {
+    tibble(column = new_keys(columns)) %>%
+    mutate(why = map_chr(column, ~ check_pk(table, .x))) %>%
     mutate(candidate = (why == "")) %>%
     select(column, candidate, why) %>%
     arrange(desc(candidate), column)
 }
 
-check_pk <- function(table, column) {
-  duplicate_values <- is_unique_key(table, {{ column }})
+check_pk <- function(table, columns) {
+  duplicate_values <- is_unique_key_se(table, columns)
   if (duplicate_values$unique) {
     return("")
   }
 
+  dup_data <- duplicate_values$data[[1]]
+
   fun <- ~ format(.x, trim = TRUE, justify = "none")
 
-  values <- duplicate_values$data[[1]]$value
+  values <- dup_data$value
+  n <- dup_data$n
   values_na <- is.na(values)
 
   if (any(values_na)) {
-    missing <- "missing values"
+    missing <- paste0(sum(n[values_na]), " missing values")
     values <- values[!values_na]
+    n <- n[!values_na]
   } else {
     missing <- NULL
   }
 
   if (length(values) > 0) {
-    values_text <- commas(values, capped = TRUE, fun = fun)
+    values_count <- paste0(values, " (", n[!values_na], ")")
+    values_text <- commas(values_count, capped = TRUE, fun = fun)
     duplicate <- paste0("duplicate values: ", values_text)
   } else {
     duplicate <- NULL

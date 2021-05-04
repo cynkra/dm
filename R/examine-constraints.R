@@ -90,20 +90,23 @@ check_pk_constraints <- function(dm) {
   pks <- dm_get_all_pks_impl(dm)
   if (nrow(pks) == 0) {
     return(tibble(
-      table = character(0),
-      kind = character(0),
-      column = character(0),
-      ref_table = NA_character_,
-      is_key = logical(0),
-      problem = character(0)
+      table = character(),
+      kind = character(),
+      column = new_keys(),
+      ref_table = character(),
+      is_key = logical(),
+      problem = character()
     ))
   }
   table_names <- pull(pks, table)
 
-  tbls <- map(set_names(table_names), ~ tbl(dm, .))
+  tbls <- map(set_names(table_names), ~ tbl_impl(dm, .))
 
-  tbl_is_pk <- map2_dfr(tbls, pks$pk_col, enum_pk_candidates_impl) %>%
-    mutate(table = table_names) %>%
+  tbl_is_pk <-
+    tibble(table = table_names, tbls, column = pks$pk_col) %>%
+    mutate(candidate = map2(tbls, column, ~ enum_pk_candidates_impl(.x, list(.y)))) %>%
+    select(-column, -tbls) %>%
+    unnest(candidate) %>%
     rename(is_key = candidate, problem = why)
 
   tibble(
@@ -117,15 +120,15 @@ check_pk_constraints <- function(dm) {
 
 check_fk_constraints <- function(dm) {
   fks <- left_join(dm_get_all_fks_impl(dm), dm_get_all_pks_impl(dm), by = c("parent_table" = "table"))
-  pts <- pull(fks, parent_table) %>% map(tbl, src = dm)
-  cts <- pull(fks, child_table) %>% map(tbl, src = dm)
+  pts <- pull(fks, parent_table) %>% map(tbl_impl, dm = dm)
+  cts <- pull(fks, child_table) %>% map(tbl_impl, dm = dm)
   fks_tibble <- mutate(fks, t1 = cts, t2 = pts) %>%
     select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = pk_col)
-  mutate(
-    fks_tibble,
-    problem = pmap_chr(fks_tibble, check_fk),
-    is_key = if_else(problem == "", TRUE, FALSE),
-    kind = "FK"
-  ) %>%
+  fks_tibble %>%
+    mutate(
+      problem = pmap_chr(fks_tibble, check_fk),
+      is_key = if_else(problem == "", TRUE, FALSE),
+      kind = "FK"
+    ) %>%
     select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
 }

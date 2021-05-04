@@ -27,6 +27,14 @@ tick <- function(x) {
   paste0("`", x, "`")
 }
 
+deparse_keys <- function(x) {
+  ticked <- map(x, tick_if_needed)
+  out <- map_chr(ticked, paste, collapse = ", ")
+  add_c <- lengths(ticked) != 1
+  out[add_c] <- paste0("c(", out[add_c], ")")
+  out
+}
+
 # next 2 are borrowed from {tibble}:
 tick_if_needed <- function(x) {
   needs_ticks <- !is_syntactic(x)

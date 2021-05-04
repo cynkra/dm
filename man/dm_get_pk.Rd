@@ -4,12 +4,14 @@
 \alias{dm_get_pk}
 \title{Primary key column names}
 \usage{
-dm_get_pk(dm, table)
+dm_get_pk(dm, table, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A list with character vectors with the column name(s) of the

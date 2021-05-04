@@ -5,9 +5,9 @@
 \alias{dm_rm_fk}
 \title{Add/remove foreign keys}
 \usage{
-dm_add_fk(dm, table, columns, ref_table, check = FALSE)
+dm_add_fk(dm, table, columns, ref_table, ..., check = FALSE)
 
-dm_rm_fk(dm, table, columns, ref_table)
+dm_rm_fk(dm, table, columns, ref_table, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -24,6 +24,8 @@ If \code{NULL}, all columns will be evaluated.}
 This table needs to have a primary key set.
 
 For \code{dm_rm_fk()}: The table that \code{table} is referencing.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 
 \item{check}{Boolean, if \code{TRUE}, a check will be performed to determine if the values of
 \code{column} are a subset of the values of the primary key column of \code{ref_table}.}
