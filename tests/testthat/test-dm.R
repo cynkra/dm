@@ -91,6 +91,11 @@ test_that("some methods/functions for `zoomed_dm` work", {
     2L
   )
 
+  expect_equivalent_tbl_lists(
+    as.list(dm_for_filter()),
+    dm_get_tables(dm_for_filter())
+  )
+
   skip_if_remote_src()
   expect_identical(
     dim(dm_zoom_to(dm_for_filter(), tf_1)),
@@ -99,11 +104,6 @@ test_that("some methods/functions for `zoomed_dm` work", {
   expect_identical(
     names(dm_zoom_to(dm_for_filter(), tf_2)),
     colnames(tf_2())
-  )
-  expect_length(dm_zoom_to(dm_for_filter(), tf_2), 3L)
-  expect_equivalent_tbl_lists(
-    as.list(dm_for_filter()),
-    dm_get_tables(dm_for_filter())
   )
 })
 

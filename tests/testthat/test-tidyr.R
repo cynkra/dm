@@ -31,21 +31,24 @@ test_that("basic test: 'separate()'-methods work", {
 test_that("key tracking works", {
   skip_if_remote_src()
   expect_identical(
-    unite(zoomed_dm(), "new_col", c, e) %>%
+    zoomed_dm() %>%
+      unite("new_col", c, e) %>%
       dm_update_zoomed() %>%
       get_all_keys("tf_2"),
     new_keys("d")
   )
 
   expect_identical(
-    unite(zoomed_dm(), "new_col", c, e, remove = FALSE) %>%
+    zoomed_dm() %>%
+      unite("new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
       get_all_keys("tf_2"),
     new_keys(c("c", "d", "e"))
   )
 
   expect_identical(
-    unite(zoomed_dm(), "new_col", c, e, remove = FALSE) %>%
+    zoomed_dm() %>%
+      unite("new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
       dm_add_fk(tf_2, new_col, tf_6) %>%
       dm_zoom_to(tf_2) %>%
@@ -56,7 +59,8 @@ test_that("key tracking works", {
   )
 
   expect_identical(
-    unite(zoomed_dm(), "new_col", c, e, remove = FALSE) %>%
+    zoomed_dm() %>%
+      unite("new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
       dm_add_fk(tf_2, new_col, tf_6) %>%
       dm_zoom_to(tf_2) %>%
