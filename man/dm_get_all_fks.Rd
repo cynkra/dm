@@ -4,10 +4,12 @@
 \alias{dm_get_all_fks}
 \title{Get foreign key constraints}
 \usage{
-dm_get_all_fks(dm)
+dm_get_all_fks(dm, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A tibble with the following columns:

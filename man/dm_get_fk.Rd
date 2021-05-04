@@ -4,7 +4,7 @@
 \alias{dm_get_fk}
 \title{Foreign key column names}
 \usage{
-dm_get_fk(dm, table, ref_table)
+dm_get_fk(dm, table, ref_table, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -12,6 +12,8 @@ dm_get_fk(dm, table, ref_table)
 \item{table}{A table in the \code{dm}.}
 
 \item{ref_table}{The table that is referenced from \code{table}.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A list of character vectors with the column name(s) of \code{table},

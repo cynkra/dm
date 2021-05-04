@@ -25,7 +25,7 @@ get_pid <- function() {
 }
 
 # Internal copy helper functions
-build_copy_data <- function(dm, dest, table_names, set_key_constraints) {
+build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
   source <-
     dm %>%
     dm_apply_filters() %>%
@@ -40,18 +40,22 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints) {
 
     pks <-
       dm_get_all_pks_impl(dm) %>%
-      transmute(source_name = table, column = pk_col, pk = TRUE)
+      select(source_name = table, pk_col)
 
-    # FIXME: COMPOUND: Need support for multiple primary keys, https://github.com/r-dbi/DBI/pull/351
-    # Discard primary keys of length > 1 for now
+    pks_clause <-
+      pks %>%
+      mutate(sql = map_chr(pk_col, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")))
+
     pks_flat <-
       pks %>%
-      filter(lengths(column) == 1) %>%
-      mutate(column = as.character(column))
+      # Expanding summarize()
+      group_by(source_name) %>%
+      summarize(column = as.character(unlist(pk_col)), pk = TRUE) %>%
+      ungroup()
 
     fks <-
       dm_get_all_fks_impl(dm) %>%
-      transmute(source_name = child_table, column = child_fk_cols, fk = TRUE)
+      select(source_name = child_table, child_fk_cols)
 
     # Need to supply NOT NULL modifiers for primary keys
     # because they are difficult to add to MSSQL after the fact
@@ -63,21 +67,32 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints) {
       select(-df) %>%
       unnest(c(column, type)) %>%
       left_join(pks_flat, by = c("source_name", "column")) %>%
-      mutate(full_type = paste0(type, if_else(pk, " NOT NULL PRIMARY KEY", "", ""))) %>%
+      mutate(full_type = paste0(type, if_else(pk, " NOT NULL", "", ""))) %>%
+
+      left_join(pks_clause, by = "source_name") %>%
       group_by(source_name) %>%
+
+      # HACK: Append PRIMARY KEY clause to end, https://github.com/r-dbi/DBI/pull/351
+      # So far this is the only reason to use `con` in this function
+      mutate(full_type = paste0(full_type, if_else(
+        !!set_key_constraints & !is.na(sql) & (row_number() == n()),
+        paste0(", PRIMARY KEY (", sql, ")"),
+        ""
+      ))) %>%
+
       summarize(types = list(deframe(tibble(column, full_type))))
 
     copy_data_unique_indexes <-
       pks %>%
       group_by(source_name) %>%
-      summarize(unique_indexes = list(column)) %>%
+      summarize(unique_indexes = list(pk_col)) %>%
       ungroup()
 
     copy_data_non_unique_indexes <-
       fks %>%
-      select(source_name, column) %>%
       group_by(source_name) %>%
-      summarize(indexes = list(column))
+      summarize(indexes = list(child_fk_cols)) %>%
+      ungroup()
 
     copy_data_indexes <-
       full_join(copy_data_unique_indexes, copy_data_non_unique_indexes, by = "source_name") %>%
@@ -170,6 +185,11 @@ is_postgres <- function(dest) {
     inherits(dest, "PqConnection")
 }
 
+is_mariadb <- function(dest) {
+  inherits(dest, "src_MariaDBConnection") ||
+    inherits(dest, "MariaDBConnection")
+}
+
 src_from_src_or_con <- function(dest) {
   if (is.src(dest)) dest else dbplyr::src_dbi(dest)
 }
@@ -202,13 +222,18 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
 }
 
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
-  if (!is_mssql(src) && !is_postgres(src)) {
-    warn_if_arg_not(schema)
+  if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
+    warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
     return(src_tbls(src))
   }
 
   con <- src$con
+
+  if (!is.null(schema)) {
+    check_param_class(schema, "character")
+    check_param_length(schema)
+  }
 
   if (is_mssql(src)) {
     # MSSQL
@@ -221,11 +246,16 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
     schema <- schema_postgres(con, schema)
     dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
     names_table <- get_names_table_postgres(con)
+  } else if (is_mariadb(src)) {
+    # MariaDB
+    schema <- schema_mariadb(con, schema)
+    dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
+    names_table <- get_names_table_mariadb(con)
   }
-  check_param_class(schema, "character")
-  check_param_length(schema)
+
   names_table %>%
     filter(schema_name == !!schema) %>%
+    collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
     mutate(remote_name = schema_if(schema_name, table_name, con, dbname)) %>%
     select(-schema_name) %>%
@@ -247,6 +277,13 @@ schema_postgres <- function(con, schema) {
   schema
 }
 
+schema_mariadb <- function(con, schema) {
+  if (is_null(schema)) {
+    schema <- sql("database()")
+  }
+  schema
+}
+
 dbname_mssql <- function(con, dbname) {
   if (is_null(dbname)) {
     dbname <- ""
@@ -260,18 +297,21 @@ dbname_mssql <- function(con, dbname) {
 
 
 get_names_table_mssql <- function(con, dbname_sql) {
-  DBI::dbGetQuery(
+  tbl(
     con,
-    glue::glue("SELECT tabs.name AS table_name, schemas.name AS schema_name
+    sql(glue::glue("SELECT tabs.name AS table_name, schemas.name AS schema_name
       FROM {dbname_sql}sys.tables tabs
       INNER JOIN {dbname_sql}sys.schemas schemas ON
-      tabs.schema_id = schemas.schema_id")
+      tabs.schema_id = schemas.schema_id"
+    ))
   )
 }
 
 get_names_table_postgres <- function(con) {
-  DBI::dbGetQuery(
+  tbl(
     con,
-    "SELECT table_schema as schema_name, table_name as table_name from information_schema.tables"
+    sql("SELECT table_schema as schema_name, table_name as table_name from information_schema.tables")
   )
 }
+
+get_names_table_mariadb <- get_names_table_postgres

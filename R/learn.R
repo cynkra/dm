@@ -8,12 +8,6 @@
 #' The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema.
 #'
 #' @param dest A `src`-object on a DB or a connection to a DB.
-#' @param ...
-#'   `r lifecycle::badge("experimental")`
-#'
-#'   Additional parameters for the schema learning query.
-#'   Currently supports `schema` (default: `"public"`)
-#'   and `table_type` (default: `"BASE TABLE"`) for Postgres databases.
 #'
 #' @family DB interaction functions
 #'
