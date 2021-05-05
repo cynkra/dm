@@ -288,7 +288,8 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
   # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
   expect_identical(
     expect_message(
-      left_join(zoomed_dm(), tf_3, select = c(d = g, f)) %>%
+      zoomed_dm() %>%
+        left_join(tf_3, select = c(d = g, f)) %>%
         dm_update_zoomed() %>%
         dm_get_fk(tf_2, tf_1)
     ),
@@ -304,7 +305,8 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
   skip_if_src("maria")
   # multi-column "by" argument
   out <- expect_message(
-    dm_zoom_to(dm_for_disambiguate(), iris_2) %>%
+    dm_for_disambiguate() %>%
+      dm_zoom_to(iris_2) %>%
       left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>%
       get_zoomed_tbl()
   )
@@ -321,7 +323,8 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
 test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
   # auto-added RHS-by argument
   expect_message(expect_message(
-    dm_zoom_to(dm_for_disambiguate(), iris_2) %>%
+    dm_for_disambiguate() %>%
+      dm_zoom_to(iris_2) %>%
       left_join(iris_2, by = c("key", "Sepal.Width", "other_col"), select = -key) %>%
       get_zoomed_tbl(),
     "Using `select = c(-key, key)`.",
@@ -515,7 +518,8 @@ test_that("key tracking works", {
   )
 
   # FKs that point to a PK that vanished, should also vanish
-  pk_gone_dm <- zoomed_grouped_in_dm %>%
+  pk_gone_dm <-
+    zoomed_grouped_in_dm %>%
     select(g_new = g) %>%
     dm_update_zoomed()
 
@@ -565,11 +569,13 @@ test_that("key tracking works", {
 
   # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
   expect_equivalent_dm(
-    dm_zoom_to(dm_for_filter(), tf_2) %>%
+    dm_for_filter() %>%
+      dm_zoom_to(tf_2) %>%
       filter(d < 6) %>%
       rename(c_new = c, d_new = d) %>%
       dm_update_zoomed(),
-    dm_filter(dm_for_filter(), tf_2, d < 6) %>%
+    dm_for_filter() %>%
+      dm_filter(tf_2, d < 6) %>%
       dm_rename(tf_2, c_new = c, d_new = d)
   )
 
@@ -580,28 +586,32 @@ test_that("key tracking works", {
   skip_if_not_installed("nycflights13")
 
   expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
+    dm_nycflights_small() %>%
+      dm_zoom_to(weather) %>%
       summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
       get_zoomed_tbl(),
     tbl_impl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
+    dm_nycflights_small() %>%
+      dm_zoom_to(weather) %>%
       transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
       get_zoomed_tbl(),
     tbl_impl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
   )
 
   expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
+    dm_nycflights_small() %>%
+      dm_zoom_to(weather) %>%
       summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
       get_zoomed_tbl(),
     tbl_impl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
+    dm_nycflights_small() %>%
+      dm_zoom_to(weather) %>%
       transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
       get_zoomed_tbl(),
     tbl_impl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
@@ -612,7 +622,8 @@ test_that("key tracking works", {
   skip_if_remote_src()
   # keys tracking when there are no keys to track
   expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
+    dm_nycflights_small() %>%
+      dm_zoom_to(weather) %>%
       mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
       get_zoomed_tbl(),
     tbl_impl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
@@ -700,13 +711,16 @@ test_that("output for compound keys", {
   # FIXME: COMPOUND: Need proper test
   skip_if_remote_src()
 
-  zoomed_comp_dm <- nyc_comp() %>%
+  zoomed_comp_dm <-
+    nyc_comp() %>%
     dm_zoom_to(weather)
   # grouped by one key col and one other col
-  grouped_zoomed_comp_dm_1 <- zoomed_comp_dm %>%
+  grouped_zoomed_comp_dm_1 <-
+    zoomed_comp_dm %>%
     group_by(time_hour, wind_dir)
   # grouped by the two key cols
-  grouped_zoomed_comp_dm_2 <- zoomed_comp_dm %>%
+  grouped_zoomed_comp_dm_2 <-
+    zoomed_comp_dm %>%
     group_by(time_hour, origin)
 
   expect_snapshot({
@@ -756,7 +770,9 @@ test_that("output for compound keys", {
       filter(pressure < 1020) %>%
       dm_update_zoomed()
     # pull()
-    zoomed_comp_dm %>% pull(origin) %>% unique()
+    zoomed_comp_dm %>%
+      pull(origin) %>%
+      unique()
     # slice()
     zoomed_comp_dm %>%
       slice(c(1:3, 5:3))
@@ -771,16 +787,28 @@ test_that("output for compound keys", {
     # JOINS
 
     # left_join()
-    zoomed_comp_dm %>% left_join(flights) %>% nrow()
+    zoomed_comp_dm %>%
+      left_join(flights) %>%
+      nrow()
     # right_join()
-    zoomed_comp_dm %>% right_join(flights) %>% nrow()
+    zoomed_comp_dm %>%
+      right_join(flights) %>%
+      nrow()
     # inner_join()
-    zoomed_comp_dm %>% inner_join(flights) %>% nrow()
+    zoomed_comp_dm %>%
+      inner_join(flights) %>%
+      nrow()
     # full_join()
-    zoomed_comp_dm %>% full_join(flights) %>% nrow()
+    zoomed_comp_dm %>%
+      full_join(flights) %>%
+      nrow()
     # semi_join()
-    zoomed_comp_dm %>% semi_join(flights) %>% nrow()
+    zoomed_comp_dm %>%
+      semi_join(flights) %>%
+      nrow()
     # anti_join()
-    zoomed_comp_dm %>% anti_join(flights) %>% nrow()
+    zoomed_comp_dm %>%
+      anti_join(flights) %>%
+      nrow()
   })
 })

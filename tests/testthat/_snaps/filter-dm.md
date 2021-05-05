@@ -1,7 +1,7 @@
 # we get filtered/unfiltered tables with respective funs
 
     Code
-      dm_filter(dm_for_filter(), tf_1, a > 3, a < 8) %>% dm_apply_filters() %>%
+      dm_for_filter() %>% dm_filter(tf_1, a > 3, a < 8) %>% dm_apply_filters() %>%
         dm_get_tables() %>% map(harmonize_tbl)
     Output
       $tf_1
@@ -57,7 +57,7 @@
 # dm_filter() works as intended for reversed dm
 
     Code
-      dm_filter(dm_for_filter_rev(), tf_1, a < 8, a > 3) %>% dm_apply_filters() %>%
+      dm_for_filter_rev() %>% dm_filter(tf_1, a < 8, a > 3) %>% dm_apply_filters() %>%
         dm_get_tables() %>% map(harmonize_tbl)
     Output
       $tf_6

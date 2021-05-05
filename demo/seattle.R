@@ -610,10 +610,10 @@ try({
   # Ensure referential integrity (FIXME: Better way):
   dm_flights_ref <-
     dm_flights %>%
-
+    #
     # FIXME: Can't use cycles for now.
     dm_rm_fk(flights, origin, airports) %>%
-
+    #
     # Fill bad links with NA values:
     dm_zoom_to(flights) %>%
     left_join(planes, select = c(tailnum, type)) %>%
@@ -623,7 +623,7 @@ try({
     ) %>%
     dm_update_zoomed() %>%
     dm_add_fk(flights, tailnum, planes) %>%
-
+    #
     # Insert synthetic rows:
     dm_zoom_to(flights) %>%
     count(dest) %>%

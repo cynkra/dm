@@ -209,13 +209,15 @@ validate_dm <- function(x) {
     abort_dm_invalid("`def` must not have inner names.")
   }
 
-  fks <- def$fks %>%
+  fks <-
+    def$fks %>%
     map_dfr(I) %>%
     unnest(column)
   check_fk_child_tables(fks$table, table_names)
   dm_col_names <- set_names(map(def$data, colnames), table_names)
   check_colnames(fks, dm_col_names, "FK")
-  pks <- select(def, table, pks) %>%
+  pks <-
+    select(def, table, pks) %>%
     unnest(pks) %>%
     unnest(column)
   check_colnames(pks, dm_col_names, "PK")
@@ -339,7 +341,8 @@ dm_get_filters <- function(x) {
 }
 
 dm_get_zoomed_tbl <- function(x) {
-  dm_get_def(x) %>%
+  x %>%
+    dm_get_def() %>%
     filter(!map_lgl(zoom, is_null)) %>%
     select(table, zoom)
 }
@@ -599,14 +602,16 @@ length.zoomed_dm <- function(x) {
 
 #' @export
 str.dm <- function(object, ...) { # for both dm and zoomed_dm
-  object <- dm_get_def(object) %>%
+  object <-
+    dm_get_def(object) %>%
     select(table, pks, fks, filters)
   str(object)
 }
 
 #' @export
 str.zoomed_dm <- function(object, ...) {
-  object <- dm_get_def(object) %>%
+  object <-
+    dm_get_def(object) %>%
     mutate(zoom = if_else(map_lgl(zoom, is_null), NA_character_, table)) %>%
     select(zoom, table, pks, fks, filters)
   str(object)
@@ -659,7 +664,8 @@ src_tbls_impl <- function(dm) {
 #'   pull_tbl(districts) %>%
 #'   class()
 compute.dm <- function(x, ...) { # for both dm and zoomed_dm
-  dm_apply_filters(x) %>%
+  x %>%
+    dm_apply_filters() %>%
     dm_get_def() %>%
     mutate(data = map(data, compute, ...)) %>%
     new_dm3()
@@ -783,7 +789,8 @@ pull_tbl.zoomed_dm <- function(dm, table) {
   } else if (!(table_name %in% tbl_zoomed$table)) {
     abort_table_not_zoomed(table_name, tbl_zoomed$table)
   } else {
-    filter(tbl_zoomed, table == table_name) %>%
+    tbl_zoomed %>%
+      filter(table == table_name) %>%
       pull(zoom) %>%
       pluck(1)
   }

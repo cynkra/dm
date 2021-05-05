@@ -1,7 +1,7 @@
 # dm_enum_fk_candidates() works as intended?
 
     Code
-      dm_enum_fk_candidates(dm_nycflights13(), flights, airports) %>% mutate(why = if_else(
+      dm_nycflights13() %>% dm_enum_fk_candidates(flights, airports) %>% mutate(why = if_else(
         why != "", "<reason>", ""))
     Output
       # A tibble: 19 x 3

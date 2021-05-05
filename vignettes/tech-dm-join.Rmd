@@ -85,7 +85,8 @@ Let's look at some examples:
 **Add a column with airline names from the `airlines` table to the `flights` table.**
 
 ```{r}
-dm_joined <- dm %>%
+dm_joined <-
+  dm %>%
   dm_join_to_tbl(flights, airlines, join = left_join)
 dm_joined
 ```

@@ -72,7 +72,8 @@ test_that("cdm_filter() behaves correctly", {
 
   skip_if_remote_src()
   expect_snapshot({
-    dm_filter(dm_for_filter(), tf_1, a > 3, a < 8) %>%
+    dm_for_filter() %>%
+      dm_filter(tf_1, a > 3, a < 8) %>%
       cdm_apply_filters() %>%
       dm_get_tables()
   })
@@ -104,7 +105,8 @@ test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` 
 
   expect_equivalent_tbl(
     cdm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3),
-    left_join(tf_5(), tf_4(), by = c("l" = "h")) %>%
+    tf_5() %>%
+      left_join(tf_4(), by = c("l" = "h")) %>%
       left_join(tf_3(), by = c("j" = "f"))
   )
 })
@@ -180,9 +182,11 @@ test_that("cdm_add_pk() and cdm_add_fk() work", {
   )
 
   expect_equivalent_dm(
-    dm_add_pk(dm_test_obj(), dm_table_4, c) %>%
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_4, c) %>%
       cdm_add_fk(dm_table_1, a, dm_table_4),
-    dm_add_pk(dm_test_obj(), dm_table_4, c) %>%
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4)
   )
 })
@@ -201,7 +205,8 @@ test_that("other FK functions work", {
   )
 
   expect_identical(
-    cdm_get_all_fks(dm_for_filter()) %>%
+    dm_for_filter() %>%
+      cdm_get_all_fks() %>%
       mutate(child_fk_cols = new_keys(child_fk_cols), parent_pk_cols = new_keys(parent_pk_cols)),
     dm_get_all_fks(dm_for_filter())
   )
@@ -213,9 +218,11 @@ test_that("other FK functions work", {
 
   skip_if_remote_src()
   expect_identical(
-    cdm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1) %>%
+    dm_for_filter() %>%
+      cdm_enum_fk_candidates(tf_2, tf_1) %>%
       mutate(why = if_else(why != "", "<reason>", "")),
-    dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1) %>%
+    dm_for_filter() %>%
+      dm_enum_fk_candidates(tf_2, tf_1) %>%
       mutate(why = if_else(why != "", "<reason>", ""))
   )
 })
@@ -305,7 +312,8 @@ test_that("other PK functions work", {
   )
 
   expect_identical(
-    cdm_get_all_pks(dm_for_filter()) %>%
+    dm_for_filter() %>%
+      cdm_get_all_pks() %>%
       mutate(pk_col = new_keys(pk_col)),
     dm_get_all_pks(dm_for_filter())
   )
@@ -316,7 +324,8 @@ test_that("other PK functions work", {
   )
 
   expect_identical(
-    cdm_enum_pk_candidates(dm_for_disambiguate(), iris_1) %>%
+    dm_for_disambiguate() %>%
+      cdm_enum_pk_candidates(iris_1) %>%
       rename(columns = column) %>%
       mutate(columns = new_keys(columns)),
     dm_enum_pk_candidates(dm_for_disambiguate(), iris_1)

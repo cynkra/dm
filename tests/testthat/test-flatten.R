@@ -179,7 +179,8 @@ test_that("`dm_squash_to_tbl()` does the right things", {
   # full_join:
   expect_equivalent_tbl(
     dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = full_join),
-    full_join(tf_5(), tf_4(), by = c("l" = "h")) %>%
+    tf_5() %>%
+      full_join(tf_4(), by = c("l" = "h")) %>%
       full_join(tf_3(), by = c("j" = "f"))
   )
 
@@ -208,11 +209,11 @@ test_that("prepare_dm_for_flatten() works", {
   prep_dm <-
     dm_for_flatten() %>%
     dm_select_tbl(fact, dim_1, dim_3) %>%
-
+    #
     dm_zoom_to(fact) %>%
     filter(dim_1_key_1 > 7, dim_1_key_2 > !!LETTERS[7]) %>%
     dm_update_zoomed() %>%
-
+    #
     dm_zoom_to(dim_1) %>%
     filter(dim_1_pk_1 > 7, dim_1_pk_2 > !!LETTERS[7]) %>%
     dm_update_zoomed()

@@ -21,7 +21,8 @@ get_datamodel_from_overview <- function(overview) {
 }
 
 datamodel_tables_from_overview <- function(overview) {
-  distinct(overview, table) %>%
+  overview %>%
+    distinct(table) %>%
     add_column(segment = NA_character_, display = NA_character_) %>%
     as.data.frame(stringsAsFactors = FALSE)
 }
