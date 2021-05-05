@@ -77,15 +77,14 @@ dm_zoom_to <- function(dm, table) {
   # for now only one table can be zoomed on
   zoom <- dm_tbl_name(dm, {{ table }})
 
-  cols <- list(get_all_cols(dm, zoom))
+  def <- dm_get_def(dm)
+  where <- which(def$table == zoom)
+  stopifnot(length(where) == 1)
 
-  dm %>%
-    dm_get_def() %>%
-    mutate(
-      zoom = if_else(table == !!zoom, data, list(NULL)),
-      col_tracker_zoom = if_else(table == !!zoom, cols, list(NULL))
-    ) %>%
-    new_dm3(zoomed = TRUE)
+  def$zoom[[where]] <- def$data[[where]]
+  def$col_tracker_zoom[[where]] <- get_all_cols(dm, zoom)
+
+  new_dm3(def, zoomed = TRUE)
 }
 
 is_zoomed <- function(dm) {
