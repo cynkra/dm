@@ -580,7 +580,7 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
   new_tbl_name_chr <- names_list$new_names
   old_tbl_name <- orig_name_zoomed(dm)
-  new_tbl <- list(get_zoomed_tbl(dm))
+  new_tbl <- list(tbl_zoomed(dm))
   all_filters <- get_filter_for_table(dm, old_tbl_name)
   old_filters <- all_filters %>% filter(!zoomed)
   new_filters <-

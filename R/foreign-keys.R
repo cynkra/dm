@@ -369,8 +369,7 @@ enum_fk_candidates <- function(zoomed_dm, ref_table, ...) {
   ref_tbl_pk <- dm_get_pk_impl(zoomed_dm, ref_table_name)
 
   ref_tbl <- dm_get_tables_impl(zoomed_dm)[[ref_table_name]]
-  table_name %>%
-    enum_fk_candidates_impl(get_zoomed_tbl(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk) %>%
+  enum_fk_candidates_impl(table_name, tbl_zoomed(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 }

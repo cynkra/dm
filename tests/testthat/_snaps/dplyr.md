@@ -1,7 +1,7 @@
 # output for compound keys
 
     Code
-      grouped_zoomed_comp_dm_1 %>% mutate(count = n()) %>% get_tracked_cols()
+      grouped_zoomed_comp_dm_1 %>% mutate(count = n()) %>% col_tracker_zoomed()
     Output
             origin         year        month          day         hour         temp 
           "origin"       "year"      "month"        "day"       "hour"       "temp" 
@@ -10,7 +10,7 @@
           pressure        visib    time_hour 
         "pressure"      "visib"  "time_hour" 
     Code
-      grouped_zoomed_comp_dm_2 %>% mutate(count = n()) %>% get_tracked_cols()
+      grouped_zoomed_comp_dm_2 %>% mutate(count = n()) %>% col_tracker_zoomed()
     Output
             origin         year        month          day         hour         temp 
           "origin"       "year"      "month"        "day"       "hour"       "temp" 
@@ -120,7 +120,7 @@
       # ... with 4 more variables: precip <dbl>, pressure <dbl>, visib <dbl>,
       #   time_hour <dttm>
     Code
-      zoomed_comp_dm %>% slice(c(1:3, 5:3), .keep_pk = TRUE) %>% get_tracked_cols()
+      zoomed_comp_dm %>% slice(c(1:3, 5:3), .keep_pk = TRUE) %>% col_tracker_zoomed()
     Output
             origin         year        month          day         hour         temp 
           "origin"       "year"      "month"        "day"       "hour"       "temp" 

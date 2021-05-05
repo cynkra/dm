@@ -281,7 +281,9 @@ dm_rm_pk_impl <- function(dm, table_name) {
 enum_pk_candidates <- function(table, ...) {
   check_dots_empty()
   # a list of ayes and noes:
-  if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)
+  if (is_dm(table) && is_zoomed(table)) {
+    table <- tbl_zoomed(table)
+  }
 
   table %>%
     enum_pk_candidates_impl() %>%

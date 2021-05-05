@@ -94,7 +94,7 @@ dm_filter_impl <- function(zoomed_dm, ..., set_filter) {
     return(zoomed_dm)
   }
 
-  tbl <- get_zoomed_tbl(zoomed_dm)
+  tbl <- tbl_zoomed(zoomed_dm)
   filtered_tbl <- filter(tbl, ...)
 
   # attribute filter expression to zoomed table. Needs to be flagged with `zoomed = TRUE`, since
