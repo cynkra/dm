@@ -276,7 +276,7 @@ dm_rm_pk_impl <- function(dm, table_name) {
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
-#' nycflights13::flights %>%tbl_zoomed
+#' nycflights13::flights %>%
 #'   enum_pk_candidates()
 enum_pk_candidates <- function(table, ...) {
   check_dots_empty()
