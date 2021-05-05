@@ -218,20 +218,22 @@ in separate steps.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_financial.html'>dm_financial</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_ptype</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='co'>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
-#&gt; Columns: 57
-#&gt; Primary keys: 8
-#&gt; Foreign keys: 7</div><div class='input'>
-<span class='fu'><a href='dm_financial.html'>dm_financial</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_ptype</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='co'>#&gt;  accounts     cards   clients     disps districts     loans    orders     tkeys 
-#&gt;         0         0         0         0         0         0         0         0 
-#&gt;     trans 
-#&gt;         0 </div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='dm_financial.html'>dm_financial</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_ptype</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Columns: 57</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Primary keys: 8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Foreign keys: 7</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='dm_financial.html'>dm_financial</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_ptype</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  accounts     cards   clients     disps districts     loans    orders     tkeys </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         0         0         0         0         0         0         0         0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     trans </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         0 </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -272,55 +272,59 @@ in order to present them in a cleaner interface.</p>
 the filter.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dm_nyc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>dm_nyc_filtered</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_filter</span><span class='op'>(</span><span class='va'>airports</span>, <span class='va'>name</span> <span class='op'>==</span> <span class='st'>"John F Kennedy Intl"</span><span class='op'>)</span>
-
-<span class='fu'>dm_apply_filters_to_tbl</span><span class='op'>(</span><span class='va'>dm_nyc_filtered</span>, <span class='va'>flights</span><span class='op'>)</span>
-</div><div class='co'>#&gt; <span style='color: #949494;'># A tibble: 3,661 x 19</span>
-#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-#&gt;    <span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437</span>
-#&gt; <span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359        17      447            444</span>
-#&gt; <span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531            540        -</span><span style='color: #BB0000;'>9</span><span>      832            850</span>
-#&gt; <span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535            540        -</span><span style='color: #BB0000;'>5</span><span>     </span><span style='text-decoration: underline;'>1</span><span>015           </span><span style='text-decoration: underline;'>1</span><span>017</span>
-#&gt; <span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      553            600        -</span><span style='color: #BB0000;'>7</span><span>      711            715</span>
-#&gt; <span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      557            600        -</span><span style='color: #BB0000;'>3</span><span>      855            912</span>
-#&gt; <span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      557            600        -</span><span style='color: #BB0000;'>3</span><span>      933            925</span>
-#&gt; <span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      558            600        -</span><span style='color: #BB0000;'>2</span><span>      844            906</span>
-#&gt; <span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      559            600        -</span><span style='color: #BB0000;'>1</span><span>      653            658</span>
-#&gt; <span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      607            601         6      932            918</span>
-#&gt; <span style='color: #949494;'># … with 3,651 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,</span>
-#&gt; <span style='color: #949494;'>#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></div><div class='input'>
-<span class='va'>dm_nyc_filtered</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_apply_filters</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='co'>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 4
-#&gt; Foreign keys: 4</div><div class='input'>
-<span class='co'># If you want to keep only those rows in the parent tables</span>
-<span class='co'># whose primary key values appear as foreign key values in</span>
-<span class='co'># `flights`, you can set a `TRUE` filter in `flights`:</span>
-<span class='va'>dm_nyc</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_filter</span><span class='op'>(</span><span class='va'>flights</span>, <span class='fl'>1</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_apply_filters</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='co'>#&gt; airlines airports  flights   planes  weather 
-#&gt;       16        3    11227     2345      640 </div><div class='input'><span class='co'># note that in this example, the only affected table is</span>
-<span class='co'># `airports` because the departure airports in `flights` are</span>
-<span class='co'># only the three New York airports.</span>
-
-<span class='va'>dm_nyc</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_filter</span><span class='op'>(</span><span class='va'>planes</span>, <span class='va'>engine</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Reciprocating"</span>, <span class='st'>"4 Cycle"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='co'>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 4
-#&gt; Foreign keys: 4</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>dm_nyc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dm_nyc_filtered</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_filter</span><span class='op'>(</span><span class='va'>airports</span>, <span class='va'>name</span> <span class='op'>==</span> <span class='st'>"John F Kennedy Intl"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>dm_apply_filters_to_tbl</span><span class='op'>(</span><span class='va'>dm_nyc_filtered</span>, <span class='va'>flights</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3,661 x 19</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359        17      447            444</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531            540        -</span><span style='color: #BB0000;'>9</span><span>      832            850</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535            540        -</span><span style='color: #BB0000;'>5</span><span>     </span><span style='text-decoration: underline;'>1</span><span>015           </span><span style='text-decoration: underline;'>1</span><span>017</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      553            600        -</span><span style='color: #BB0000;'>7</span><span>      711            715</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      557            600        -</span><span style='color: #BB0000;'>3</span><span>      855            912</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      557            600        -</span><span style='color: #BB0000;'>3</span><span>      933            925</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      558            600        -</span><span style='color: #BB0000;'>2</span><span>      844            906</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      559            600        -</span><span style='color: #BB0000;'>1</span><span>      653            658</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      607            601         6      932            918</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 3,651 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>dm_nyc_filtered</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_apply_filters</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Columns: 53</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Primary keys: 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Foreign keys: 4</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># If you want to keep only those rows in the parent tables</span></span>
+<span class='r-in'><span class='co'># whose primary key values appear as foreign key values in</span></span>
+<span class='r-in'><span class='co'># `flights`, you can set a `TRUE` filter in `flights`:</span></span>
+<span class='r-in'><span class='va'>dm_nyc</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_filter</span><span class='op'>(</span><span class='va'>flights</span>, <span class='fl'>1</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_apply_filters</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> airlines airports  flights   planes  weather </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       16        3    11227     2345      640 </span>
+<span class='r-in'><span class='co'># note that in this example, the only affected table is</span></span>
+<span class='r-in'><span class='co'># `airports` because the departure airports in `flights` are</span></span>
+<span class='r-in'><span class='co'># only the three New York airports.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>dm_nyc</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_filter</span><span class='op'>(</span><span class='va'>planes</span>, <span class='va'>engine</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Reciprocating"</span>, <span class='st'>"4 Cycle"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Columns: 53</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Primary keys: 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Foreign keys: 4</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

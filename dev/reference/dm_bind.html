@@ -238,14 +238,15 @@ messages.</p></td>
     <p>The <code>dm</code> objects have to share the same <code>src</code>. By default table names need to be unique.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dm_1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>dm_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span><span class='va'>mtcars</span>, <span class='va'>iris</span><span class='op'>)</span>
-<span class='fu'>dm_bind</span><span class='op'>(</span><span class='va'>dm_1</span>, <span class='va'>dm_2</span><span class='op'>)</span>
-</div><div class='co'>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, … (7 total)
-#&gt; Columns: 69
-#&gt; Primary keys: 4
-#&gt; Foreign keys: 4</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>dm_1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dm_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span><span class='va'>mtcars</span>, <span class='va'>iris</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>dm_bind</span><span class='op'>(</span><span class='va'>dm_1</span>, <span class='va'>dm_2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, … (7 total)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Columns: 69</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Primary keys: 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Foreign keys: 4</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

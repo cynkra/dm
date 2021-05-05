@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Joining in relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-05-04</h4>
+            <h4 data-toc-skip class="date">2021-05-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-join.Rmd" class="external-link"><code>vignettes/tech-dm-join.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-join.Rmd</code></div>
@@ -216,7 +216,8 @@
 <p>Let’s look at some examples:</p>
 <p><strong>Add a column with airline names from the <code>airlines</code> table to the <code>flights</code> table.</strong></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_joined</span> <span class="op">&lt;-</span> <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">dm_joined</span> <span class="op">&lt;-</span>
+  <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span>
 <span class="va">dm_joined</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 11,227 x 20</span><span>
