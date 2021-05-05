@@ -340,7 +340,7 @@ dm_get_filters <- function(x) {
     mutate(filter = unname(filter))
 }
 
-dm_get_zoom <- function(x, cols = c("table", "zoom", "col_tracker_zoom")) {
+dm_get_zoom <- function(x, cols = c("table", "zoom")) {
   # Performance
   def <- dm_get_def(x)
   zoom <- def$zoom
@@ -484,12 +484,12 @@ def_get_n_fks <- function(def) {
 }
 
 as_zoomed_df <- function(x) {
-  zoom <- dm_get_zoom(x)
+  zoomed <- dm_get_zoom(x)
 
   # for tests
   new_zoomed_df(
-    zoom$zoom[[1]],
-    name_df = zoom$table
+    zoomed$zoom[[1]],
+    name_df = zoomed$table
   )
 }
 
@@ -796,10 +796,7 @@ pull_tbl.zoomed_dm <- function(dm, table) {
   } else if (!(table_name %in% zoomed$table)) {
     abort_table_not_zoomed(table_name, zoomed$table)
   } else {
-    zoomed %>%
-      filter(table == table_name) %>%
-      pull(zoom) %>%
-      pluck(1)
+    zoomed$zoom[[1]]
   }
 }
 
