@@ -180,7 +180,8 @@ tf_2 %<-% tibble(
 tf_2_simple %<-% tibble(
   c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
   d = 2:7,
-  e = c(LETTERS[4:7], LETTERS[5:6])
+  e = c(LETTERS[4:7], LETTERS[5:6]),
+  e1 = c(4:7, 5:6),
 )
 
 tf_3_simple %<-% tibble(
@@ -189,14 +190,16 @@ tf_3_simple %<-% tibble(
 )
 
 tf_3 %<-% tibble(
-  f = LETTERS[2:11],
+  f = LETTERS[c(4, 4, 4:11)],
+  f1 = c(2:6, 6L, 6L, 9:11),
   g = c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
 )
 
 tf_4 %<-% tibble(
   h = letters[1:5],
   i = c("three", "four", "five", "six", "seven"),
-  j = c(LETTERS[3:6], LETTERS[6])
+  j = c(LETTERS[3:6], LETTERS[6]),
+  j1 = c(3:6, 6L),
 )
 
 tf_5 %<-% tibble(
@@ -220,14 +223,14 @@ dm_for_filter_w_cycle %<-% {
     tf_1 = tf_1(), tf_2 = tf_2(), tf_3 = tf_3(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6(), tf_7 = tf_7()
   ) %>%
     dm_add_pk(tf_1, a) %>%
-    dm_add_pk(tf_3, f) %>%
+    dm_add_pk(tf_3, c(f, f1)) %>%
 
     dm_add_pk(tf_2, c) %>%
     dm_add_fk(tf_2, d, tf_1) %>%
-    dm_add_fk(tf_2, e, tf_3) %>%
+    dm_add_fk(tf_2, c(e, e1), tf_3) %>%
 
     dm_add_pk(tf_4, h) %>%
-    dm_add_fk(tf_4, j, tf_3) %>%
+    dm_add_fk(tf_4, c(j, j1), tf_3) %>%
 
     dm_add_pk(tf_7, p) %>%
     dm_add_fk(tf_7, q, tf_2) %>%
