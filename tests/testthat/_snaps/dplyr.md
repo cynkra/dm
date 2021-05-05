@@ -1,3 +1,111 @@
+# key tracking works
+
+    Code
+      # summarize()
+      zoomed_grouped_out_dm %>% summarize(d_mean = mean(d)) %>% dm_insert_zoomed(
+        "new_tbl") %>% get_all_keys("new_tbl")
+    Output
+      $pk
+      $pk[[1]]
+      [1] "c"
+      
+      
+      $fks
+      <list_of<character>[1]>
+      [[1]]
+      [1] "e"
+      
+      
+    Code
+      zoomed_grouped_in_dm %>% summarize(g_list = list(g)) %>% dm_insert_zoomed(
+        "new_tbl") %>% get_all_keys("new_tbl")
+    Output
+      $pk
+      list()
+      
+      $fks
+      <list_of<character>[0]>
+      
+    Code
+      # transmute()
+      zoomed_grouped_out_dm %>% transmute(d_mean = mean(d)) %>% dm_insert_zoomed(
+        "new_tbl") %>% get_all_keys("new_tbl")
+    Output
+      $pk
+      $pk[[1]]
+      [1] "c"
+      
+      
+      $fks
+      <list_of<character>[1]>
+      [[1]]
+      [1] "e"
+      
+      
+    Code
+      zoomed_grouped_in_dm %>% transmute(g_list = list(g)) %>% dm_insert_zoomed(
+        "new_tbl") %>% get_all_keys("new_tbl")
+    Output
+      $pk
+      list()
+      
+      $fks
+      <list_of<character>[0]>
+      
+    Code
+      # mutate()
+      zoomed_grouped_out_dm %>% mutate(d_mean = mean(d), d = d * 2) %>%
+        dm_insert_zoomed("new_tbl") %>% get_all_keys("new_tbl")
+    Output
+      $pk
+      $pk[[1]]
+      [1] "c"
+      
+      
+      $fks
+      <list_of<character>[1]>
+      [[1]]
+      [1] "e"
+      
+      
+    Code
+      zoomed_grouped_in_dm %>% mutate(f = list(g)) %>% dm_insert_zoomed("new_tbl") %>%
+        get_all_keys("new_tbl")
+    Output
+      $pk
+      list()
+      
+      $fks
+      <list_of<character>[0]>
+      
+    Code
+      zoomed_grouped_in_dm %>% mutate(g_new = list(g)) %>% dm_insert_zoomed("new_tbl") %>%
+        get_all_keys("new_tbl")
+    Output
+      $pk
+      $pk[[1]]
+      [1] "f"
+      
+      
+      $fks
+      <list_of<character>[0]>
+      
+    Code
+      # chain of renames & other transformations
+      zoomed_grouped_out_dm %>% summarize(d_mean = mean(d)) %>% ungroup() %>% rename(
+        e_new = e) %>% group_by(e_new) %>% transmute(c = paste0(c, "_animal")) %>%
+        dm_insert_zoomed("new_tbl") %>% get_all_keys("new_tbl")
+    Output
+      $pk
+      list()
+      
+      $fks
+      <list_of<character>[1]>
+      [[1]]
+      [1] "e_new"
+      
+      
+
 # output for compound keys
 
     Code

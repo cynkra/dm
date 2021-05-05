@@ -31,23 +31,17 @@ test_that("basic test: 'separate()'-methods work", {
 
 test_that("key tracking works", {
   skip_if_remote_src()
-  expect_identical(
+  expect_snapshot({
     zoomed_dm() %>%
       unite("new_col", c, e) %>%
       dm_update_zoomed() %>%
-      get_all_keys("tf_2"),
-    new_keys("d")
-  )
+      get_all_keys("tf_2")
 
-  expect_identical(
     zoomed_dm() %>%
       unite("new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
-      get_all_keys("tf_2"),
-    new_keys(c("c", "d", "e"))
-  )
+      get_all_keys("tf_2")
 
-  expect_identical(
     zoomed_dm() %>%
       unite("new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
@@ -55,11 +49,8 @@ test_that("key tracking works", {
       dm_zoom_to(tf_2) %>%
       separate(new_col, c("c", "e"), remove = TRUE) %>%
       dm_update_zoomed() %>%
-      get_all_keys("tf_2"),
-    new_keys(c("c", "d", "e"))
-  )
+      get_all_keys("tf_2")
 
-  expect_identical(
     zoomed_dm() %>%
       unite("new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
@@ -67,9 +58,8 @@ test_that("key tracking works", {
       dm_zoom_to(tf_2) %>%
       separate(new_col, c("c", "e"), remove = FALSE) %>%
       dm_update_zoomed() %>%
-      get_all_keys("tf_2"),
-    new_keys(c("c", "d", "e", "new_col"))
-  )
+      get_all_keys("tf_2")
+  })
 })
 
 

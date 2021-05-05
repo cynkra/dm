@@ -434,78 +434,57 @@ test_that("key tracking works", {
       mutate(parent_pk_cols = new_keys(if_else(parent_pk_cols == new_keys("f"), list("f_new"), unclass(parent_pk_cols))))
   )
 
-  # summarize()
+  expect_snapshot({
+    "summarize()"
 
-  expect_identical(
     # grouped by two key cols: "c" and "e" -> these two remain
     zoomed_grouped_out_dm %>%
       summarize(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys(c("c", "e"))
-  )
+      get_all_keys("new_tbl")
 
-  expect_identical(
     # grouped_by non-key col means, that no keys remain
     zoomed_grouped_in_dm %>%
       summarize(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys()
-  )
+      get_all_keys("new_tbl")
 
-  # transmute()
+    "transmute()"
 
-  expect_identical(
     # grouped by two key cols: "c" and "e" -> these two remain
     zoomed_grouped_out_dm %>%
       transmute(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys(c("c", "e"))
-  )
+      get_all_keys("new_tbl")
 
-  expect_identical(
     # grouped_by non-key col means, that no keys remain
     zoomed_grouped_in_dm %>%
       transmute(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys()
-  )
+      get_all_keys("new_tbl")
 
-  # mutate()
+    "mutate()"
 
-  expect_identical(
     # grouped by two key cols: "c" and "e" -> these two remain
     zoomed_grouped_out_dm %>%
       mutate(d_mean = mean(d), d = d * 2) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys(c("c", "e"))
-  )
+      get_all_keys("new_tbl")
 
-  expect_identical(
     # grouped_by non-key col means, that only key-columns that are not touched remain for mutate()
     zoomed_grouped_in_dm %>%
       mutate(f = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys()
-  )
+      get_all_keys("new_tbl")
 
-  expect_identical(
     # grouped_by non-key col means, that only key-columns that are not touched remain for
     zoomed_grouped_in_dm %>%
       mutate(g_new = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys("f")
-  )
+      get_all_keys("new_tbl")
 
-  # chain of renames & other transformations
+    "chain of renames & other transformations"
 
-  expect_identical(
     zoomed_grouped_out_dm %>%
       summarize(d_mean = mean(d)) %>%
       ungroup() %>%
@@ -513,9 +492,8 @@ test_that("key tracking works", {
       group_by(e_new) %>%
       transmute(c = paste0(c, "_animal")) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys("e_new")
-  )
+      get_all_keys("new_tbl")
+  })
 
   # FKs that point to a PK that vanished, should also vanish
   pk_gone_dm <-
