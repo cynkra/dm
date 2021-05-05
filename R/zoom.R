@@ -222,11 +222,10 @@ dm_clean_zoomed <- function(dm) {
 }
 
 clean_zoom <- function(def) {
-  def %>%
-    mutate(
-      zoom = list(NULL),
-      col_tracker_zoom = list(NULL)
-    )
+  empty <- rep(list(NULL), length(def$data))
+  def$zoom <- empty
+  def$col_tracker_zoom <- empty
+  def
 }
 
 update_zoomed_pk <- function(dm) {
