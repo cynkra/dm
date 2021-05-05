@@ -168,7 +168,7 @@ dm_update_zoomed <- function(dm) {
   upd_keys <- !all(orig_colnames %in% tracked_cols) || !all(names(tracked_cols) == tracked_cols)
 
   upd_filter <-
-    get_filter_for_table(dm, table_name) %>%
+    filters_zoomed(dm) %>%
     mutate(zoomed = FALSE)
 
   new_def <- def
@@ -199,7 +199,7 @@ dm_discard_zoomed <- function(dm) {
   }
   old_tbl_name <- orig_name_zoomed(dm)
   upd_filter <-
-    get_filter_for_table(dm, old_tbl_name) %>%
+    filters_zoomed(dm) %>%
     filter(zoomed == FALSE)
 
   dm %>%
