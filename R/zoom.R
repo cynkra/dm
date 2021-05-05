@@ -317,6 +317,10 @@ orig_name_zoomed <- function(dm) {
   dm_get_zoom(dm, "table")[[1]]
 }
 
+filters_zoomed <- function(dm) {
+  dm_get_zoom(dm, "filters")[[1]][[1]]
+}
+
 replace_zoomed_tbl <- function(dm, new_zoomed_tbl, tracked_cols = NULL) {
   table <- orig_name_zoomed(dm)
   def <- dm_get_def(dm)
