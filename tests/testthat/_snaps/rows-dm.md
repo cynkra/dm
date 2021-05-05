@@ -1,8 +1,7 @@
 # dm_rows_insert()
 
     Code
-      flights_init <-
-        dm_nycflights13() %>% dm_zoom_to(flights) %>% filter(FALSE) %>%
+      flights_init <- dm_nycflights13() %>% dm_zoom_to(flights) %>% filter(FALSE) %>%
         dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(FALSE) %>%
         dm_update_zoomed()
       sqlite <- dbConnect(RSQLite::SQLite())
@@ -12,8 +11,7 @@
       airlines airports  flights   planes  weather 
             16     1458        0     3322        0 
     Code
-      flights_jan <-
-        dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
+      flights_jan <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
         dm_zoom_to(flights) %>% filter(month == 1) %>% dm_update_zoomed() %>%
         dm_zoom_to(weather) %>% filter(month == 1) %>% dm_update_zoomed()
       print(dm_nrow(flights_jan))
@@ -37,8 +35,7 @@
       airlines airports  flights   planes  weather 
             16     1458      932     3322       72 
     Code
-      flights_feb <-
-        dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
+      flights_feb <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
         dm_zoom_to(flights) %>% filter(month == 2) %>% dm_update_zoomed() %>%
         dm_zoom_to(weather) %>% filter(month == 2) %>% dm_update_zoomed()
       flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb)

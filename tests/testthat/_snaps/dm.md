@@ -119,7 +119,7 @@
       # ... with 851 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
       #   pressure <dbl>, visib <dbl>, time_hour <dttm>
     Code
-      dm_zoom_to(nyc_comp(), weather) %>% pull_tbl()
+      nyc_comp() %>% dm_zoom_to(weather) %>% pull_tbl()
     Output
       # A tibble: 861 x 15
          origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
