@@ -154,7 +154,8 @@ test_that("Learning from SQLite works (#288)?", {
   copy_to(src_sqlite(), tibble(a = 1:3), name = "test")
 
   expect_equivalent_dm(
-    dm_from_src(src_sqlite()) %>%
+    src_sqlite() %>%
+      dm_from_src() %>%
       dm_select_tbl(test) %>%
       collect(),
     dm(test = tibble(a = 1:3))

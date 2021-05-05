@@ -129,7 +129,8 @@ test_that("validator speaks up (sqlite())", {
   skip_if_not_installed("dbplyr")
 
   expect_dm_error(
-    dm_get_def(dm_for_filter()) %>%
+    dm_for_filter() %>%
+      dm_get_def() %>%
       mutate(data = if_else(table == "tf_1", list(dm_for_filter_sqlite()$tf_1), data)) %>%
       new_dm3() %>%
       validate_dm(),
@@ -140,7 +141,8 @@ test_that("validator speaks up (sqlite())", {
 test_that("validator speaks up when something's wrong", {
   # col tracker of non-zoomed dm contains entries
   expect_dm_error(
-    dm_get_def(dm_for_filter()) %>%
+    dm_for_filter() %>%
+      dm_get_def() %>%
       mutate(col_tracker_zoom = list(1)) %>%
       new_dm3() %>%
       validate_dm(),
@@ -149,7 +151,8 @@ test_that("validator speaks up when something's wrong", {
 
   # zoom column of `zoomed_dm` is empty
   expect_dm_error(
-    dm_get_def(dm_for_filter() %>% dm_zoom_to(tf_1)) %>%
+    dm_for_filter() %>% dm_zoom_to(tf_1) %>%
+      dm_get_def() %>%
       mutate(zoom = list(NULL)) %>%
       new_dm3(zoomed = TRUE) %>%
       validate_dm(),
@@ -158,7 +161,8 @@ test_that("validator speaks up when something's wrong", {
 
   # col tracker of zoomed dm is empty
   expect_dm_error(
-    dm_get_def(dm_for_filter() %>% dm_zoom_to(tf_1)) %>%
+    dm_for_filter() %>% dm_zoom_to(tf_1) %>%
+      dm_get_def() %>%
       mutate(col_tracker_zoom = list(NULL)) %>%
       new_dm3(zoomed = TRUE) %>%
       validate_dm(),
@@ -167,7 +171,8 @@ test_that("validator speaks up when something's wrong", {
 
   # table name is missing
   expect_dm_error(
-    dm_get_def(dm_for_filter()) %>%
+    dm_for_filter() %>%
+      dm_get_def() %>%
       mutate(table = "") %>%
       new_dm3() %>%
       validate_dm(),
@@ -204,7 +209,8 @@ test_that("validator speaks up when something's wrong", {
 
   # data column of un-zoomed dm contains non-tibble entries
   expect_dm_error(
-    dm_get_def(dm_for_filter()) %>%
+    dm_for_filter() %>%
+      dm_get_def() %>%
       mutate(data = list(1, 2, 3, 4, 5, 6)) %>%
       new_dm3() %>%
       validate_dm(),
@@ -213,7 +219,8 @@ test_that("validator speaks up when something's wrong", {
 
   # PK metadata wrong (colname doesn't exist)
   expect_dm_error(
-    dm_get_def(dm_for_filter()) %>%
+    dm_for_filter() %>%
+      dm_get_def() %>%
       mutate(pks = if_else(table == "tf_1", vctrs::list_of(new_pk(list("z"))), pks)) %>%
       new_dm3() %>%
       validate_dm(),
@@ -222,7 +229,8 @@ test_that("validator speaks up when something's wrong", {
 
   # FK metadata wrong (table doesn't exist)
   expect_dm_error(
-    dm_get_def(dm_for_filter()) %>%
+    dm_for_filter() %>%
+      dm_get_def() %>%
       mutate(fks = if_else(table == "tf_3", vctrs::list_of(new_fk(table = "tf_8", list("z"))), fks)) %>%
       new_dm3() %>%
       validate_dm(),
@@ -263,7 +271,8 @@ test_that("`pull_tbl()`-methods work (2)", {
   )
 
   expect_dm_error(
-    dm_get_def(dm_for_filter()) %>%
+    dm_for_filter() %>%
+      dm_get_def() %>%
       mutate(zoom = list(tf_1)) %>%
       new_dm3(zoomed = TRUE) %>%
       pull_tbl(),
