@@ -151,7 +151,8 @@ test_that("validator speaks up when something's wrong", {
 
   # zoom column of `zoomed_dm` is empty
   expect_dm_error(
-    dm_for_filter() %>% dm_zoom_to(tf_1) %>%
+    dm_for_filter() %>%
+      dm_zoom_to(tf_1) %>%
       dm_get_def() %>%
       mutate(zoom = list(NULL)) %>%
       new_dm3(zoomed = TRUE) %>%
@@ -161,7 +162,8 @@ test_that("validator speaks up when something's wrong", {
 
   # col tracker of zoomed dm is empty
   expect_dm_error(
-    dm_for_filter() %>% dm_zoom_to(tf_1) %>%
+    dm_for_filter() %>%
+      dm_zoom_to(tf_1) %>%
       dm_get_def() %>%
       mutate(col_tracker_zoom = list(NULL)) %>%
       new_dm3(zoomed = TRUE) %>%
