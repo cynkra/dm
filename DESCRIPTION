@@ -75,7 +75,7 @@ Suggests:
     rmarkdown,
     RPostgres,
     RSQLite,
-    testthat (>= 2.1.0),
+    testthat (>= 3.0.2),
     tidyverse,
     withr
 VignetteBuilder: 
