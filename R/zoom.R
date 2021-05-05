@@ -195,20 +195,18 @@ dm_discard_zoomed <- function(dm) {
   if (!is_zoomed(dm)) {
     return(dm)
   }
-  old_tbl_name <- orig_name_zoomed(dm)
+
+  def <- dm_get_def(dm)
+
+  where <- which(lengths(def$zoom) != 0)
+  old_tbl_name <- def$table[[where]]
   upd_filter <-
-    filters_zoomed(dm) %>%
+    def$filters[[where]] %>%
     filter(zoomed == FALSE)
 
-  dm %>%
-    dm_get_def() %>%
-    mutate(
-      filters = if_else(
-        table == old_tbl_name,
-        vctrs::list_of(upd_filter),
-        filters
-      )
-    ) %>%
+  def$filters[[where]] <- upd_filter
+
+  def %>%
     clean_zoom() %>%
     new_dm3()
 }
