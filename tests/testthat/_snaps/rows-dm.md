@@ -67,8 +67,7 @@
 # dm_rows_update()
 
     Code
-      dm_filter_rearranged <-
-        dm_for_filter() %>% dm_select(tf_2, d, everything()) %>%
+      dm_filter_rearranged <- dm_for_filter() %>% dm_select(tf_2, d, everything()) %>%
         dm_select(tf_4, i, everything()) %>% dm_select(tf_5, l, m, everything())
       suppressMessages(dm_copy <- copy_dm_to(my_test_src(), dm_filter_rearranged))
       dm_update_local <- dm(tf_1 = tibble(a = 2L, b = "q"), tf_2 = tibble(c = c(
