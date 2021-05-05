@@ -266,11 +266,3 @@ check_no_filter <- function(dm) {
   fun_name <- as_string(sys.call(-1)[[1]])
   abort_only_possible_wo_filters(fun_name)
 }
-
-get_filter_for_table <- function(dm, table_name) {
-  dm %>%
-    dm_get_def() %>%
-    filter(table == table_name) %>%
-    pull(filters) %>%
-    pluck(1)
-}

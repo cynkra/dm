@@ -119,11 +119,11 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
   dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
 
   new_tbl_name_chr <- names_list$new_names
-  zoomed <- dm_get_zoom(dm)
+  zoomed <- dm_get_zoom(dm, c("table", "zoom", "filters"))
   old_tbl_name <- zoomed$table
   new_tbl <- zoomed$zoom
   # filters need to be split: old_filters belong to the old table, new filters to the inserted table
-  all_filters <- get_filter_for_table(dm, old_tbl_name)
+  all_filters <- zoomed$filters[[1]]
   old_filters <- all_filters %>% filter(!zoomed)
   new_filters <-
     all_filters %>%
