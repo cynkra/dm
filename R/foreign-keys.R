@@ -347,7 +347,8 @@ dm_enum_fk_candidates <- function(dm, table, ref_table, ...) {
   ref_tbl <- tbl_impl(dm, ref_table_name)
   tbl <- tbl_impl(dm, table_name)
 
-  enum_fk_candidates_impl(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk) %>%
+  table_name %>%
+    enum_fk_candidates_impl(tbl, ref_table_name, ref_tbl, ref_tbl_pk) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 }

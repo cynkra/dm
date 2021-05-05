@@ -150,7 +150,8 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     mutate(columns = new_keys(columns))
 
   expect_identical(
-    dm_add_pk(dm_test_obj_2(), dm_table_4, c) %>%
+    dm_test_obj_2() %>%
+      dm_add_pk(dm_table_4, c) %>%
       dm_enum_fk_candidates(dm_table_3, dm_table_4) %>%
       mutate(why = if_else(why != "", "<reason>", "")),
     tbl_tf_3_tf_4
@@ -178,7 +179,8 @@ test_that("dm_enum_fk_candidates() works as intended?", {
   skip_if_not_installed("nycflights13")
 
   expect_snapshot({
-    dm_enum_fk_candidates(dm_nycflights13(), flights, airports) %>%
+    dm_nycflights13() %>%
+      dm_enum_fk_candidates(flights, airports) %>%
       mutate(why = if_else(why != "", "<reason>", ""))
   })
 })

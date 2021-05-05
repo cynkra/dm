@@ -1,7 +1,7 @@
 # dm_rename() works for replacing pk
 
     Code
-      dm_rename(dm_for_filter(), tf_3, new_f = f) %>% dm_get_all_pks_impl()
+      dm_for_filter() %>% dm_rename(tf_3, new_f = f) %>% dm_get_all_pks_impl()
     Output
       # A tibble: 6 x 2
         table pk_col
@@ -16,7 +16,8 @@
 # dm_rename() works for replacing fks
 
     Code
-      dm_rename(dm_for_filter(), tf_2, new_d = d, new_e = e) %>% dm_get_all_fks_impl()
+      dm_for_filter() %>% dm_rename(tf_2, new_d = d, new_e = e) %>%
+        dm_get_all_fks_impl()
     Output
       # A tibble: 5 x 4
         child_table child_fk_cols parent_table parent_pk_cols
@@ -30,7 +31,7 @@
 # dm_select() works for replacing pk
 
     Code
-      dm_select(dm_for_filter(), tf_3, new_f = f) %>% dm_get_all_pks_impl()
+      dm_for_filter() %>% dm_select(tf_3, new_f = f) %>% dm_get_all_pks_impl()
     Output
       # A tibble: 6 x 2
         table pk_col
@@ -45,7 +46,7 @@
 # dm_select() works for replacing fks, and removes missing ones
 
     Code
-      dm_select(dm_for_filter(), tf_2, new_d = d) %>% dm_get_all_fks_impl()
+      dm_for_filter() %>% dm_select(tf_2, new_d = d) %>% dm_get_all_fks_impl()
     Output
       # A tibble: 4 x 4
         child_table child_fk_cols parent_table parent_pk_cols

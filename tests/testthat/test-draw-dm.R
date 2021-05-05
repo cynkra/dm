@@ -22,7 +22,7 @@ test_that("`dm_set_colors()` works", {
         blue = starts_with("air"),
         green = contains("h")
       ) %>%
-        dm_get_colors()
+      dm_get_colors()
   })
 
   colset <- c(blue = "flights", green = "airports")

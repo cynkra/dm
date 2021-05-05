@@ -136,7 +136,8 @@ dm_get_data_model <- function(x, column_types) {
 }
 
 dm_get_all_columns <- function(x) {
-  dm_get_tables_impl(x) %>%
+  x %>%
+    dm_get_tables_impl() %>%
     map(colnames) %>%
     map(~ enframe(., "id", "column")) %>%
     enframe("table") %>%
@@ -145,7 +146,8 @@ dm_get_all_columns <- function(x) {
 }
 
 dm_get_all_column_types <- function(x) {
-  dm_get_tables_impl(x) %>%
+  x %>%
+    dm_get_tables_impl() %>%
     map(
       ~ mutate(
         enframe(as.list(collect(head(.x, 0))), "column"),
@@ -242,7 +244,8 @@ color_quos_to_display <- function(...) {
 #' @rdname dm_set_colors
 #' @export
 dm_get_colors <- function(dm) {
-  dm_get_def(dm) %>%
+  dm %>%
+    dm_get_def() %>%
     select(table, display) %>%
     select(display, table) %>%
     mutate(display = coalesce(display, "default")) %>%

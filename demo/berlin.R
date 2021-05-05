@@ -207,7 +207,8 @@ dm_nyc_filtered %>%
   dm_apply_filters()
 
 # If a filter condition is phrased wrongly it will only fail, once the filter is being applied
-(dm_nyc_fail <- dm_nycflights13() %>%
+(dm_nyc_fail <-
+  dm_nycflights13() %>%
   dm_filter(airports, origin == "EWR"))
 try(
   tbl(dm_nyc_fail, "flights")

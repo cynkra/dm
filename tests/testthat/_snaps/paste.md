@@ -197,7 +197,7 @@
       dm::dm()
     Code
       # error for bad option
-      writeLines(conditionMessage(expect_error(dm() %>% dm_paste(options = c("bogus",
+      writeLines(conditionMessage(expect_error(dm_paste(dm(), options = c("bogus",
         "all", "mad")))))
     Output
       Option unknown: "bogus", "mad". Must be one of "all", "tables", "keys", "select", "color".

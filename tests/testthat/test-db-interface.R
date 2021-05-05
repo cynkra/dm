@@ -169,13 +169,13 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
   expect_identical(
     sort(deframe(table_tibble)),
     sort(
-      dm_get_tables(remote_dm) %>%
+      remote_dm %>%
+        dm_get_tables() %>%
         map(dbplyr::remote_name) %>%
         flatten_chr() %>%
         dbplyr::ident_q()
     )
   )
-
 })
 
 test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
@@ -188,7 +188,8 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
       my_test_src(),
       local_dm,
       temporary = FALSE,
-      schema = "test"),
+      schema = "test"
+    ),
     "no_schemas_supported"
   )
 })

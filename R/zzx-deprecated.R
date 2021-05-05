@@ -193,7 +193,8 @@ cdm_get_available_colors <- function() {
 #' @export
 cdm_filter <- function(dm, table, ...) {
   deprecate_soft("0.1.0", "dm::cdm_filter()", "dm::dm_filter()")
-  dm_zoom_to(dm, {{ table }}) %>%
+  dm %>%
+    dm_zoom_to({{ table }}) %>%
     dm_filter_impl(..., set_filter = TRUE) %>%
     dm_update_zoomed()
 }
@@ -310,7 +311,8 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' @export
 cdm_get_all_fks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_fks()", "dm::dm_get_all_fks()")
-  dm_get_all_fks_impl(dm = dm) %>%
+  dm %>%
+    dm_get_all_fks_impl() %>%
     mutate(child_fk_cols = as.character(unclass(child_fk_cols))) %>%
     mutate(parent_pk_cols = as.character(unclass(parent_pk_cols)))
 }
@@ -458,7 +460,8 @@ cdm_get_pk <- function(dm, table) {
 #' @export
 cdm_get_all_pks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_pks()", "dm::dm_get_all_pks()")
-  dm_get_all_pks_impl(dm = dm) %>%
+  dm %>%
+    dm_get_all_pks_impl() %>%
     mutate(pk_col = as.character(unclass(pk_col)))
 }
 
@@ -516,7 +519,8 @@ cdm_select <- function(dm, table, ...) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
-  dm_zoom_to(dm, !!table_name) %>%
+  dm %>%
+    dm_zoom_to(!!table_name) %>%
     select(...) %>%
     dm_update_zoomed()
 }
@@ -529,7 +533,8 @@ cdm_rename <- function(dm, table, ...) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
-  dm_zoom_to(dm, !!table_name) %>%
+  dm %>%
+    dm_zoom_to(!!table_name) %>%
     rename(...) %>%
     dm_update_zoomed()
 }
@@ -543,7 +548,8 @@ cdm_zoom_to_tbl <- function(dm, table) {
   zoom <- dm_tbl_name(dm, {{ table }})
 
   cols <- list(get_all_cols(dm, zoom))
-  dm_get_def(dm) %>%
+  dm %>%
+    dm_get_def() %>%
     mutate(
       zoom = if_else(table == !!zoom, data, list(NULL)),
       col_tracker_zoom = if_else(table == !!zoom, cols, list(NULL))
@@ -577,7 +583,8 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   new_tbl <- list(tbl_zoomed(dm))
   all_filters <- get_filter_for_table(dm, old_tbl_name)
   old_filters <- all_filters %>% filter(!zoomed)
-  new_filters <- all_filters %>%
+  new_filters <-
+    all_filters %>%
     filter(zoomed) %>%
     mutate(zoomed = FALSE)
   upd_pk <- vctrs::list_of(update_zoomed_pk(dm))

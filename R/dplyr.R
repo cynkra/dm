@@ -496,10 +496,12 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".")
     explain_col_rename(recipe)
 
-    x_renames <- recipe %>%
+    x_renames <-
+      recipe %>%
       filter(table == x_disambig_name) %>%
       pull(renames)
-    y_renames <- recipe %>%
+    y_renames <-
+      recipe %>%
       filter(table == y_disambig_name) %>%
       pull(renames)
 
