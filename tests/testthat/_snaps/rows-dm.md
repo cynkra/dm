@@ -76,50 +76,50 @@
       dm_update_copy <- suppressMessages(copy_dm_to(my_test_src(), dm_update_local))
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
-            d c        e    
-        <int> <chr>    <chr>
-      1     2 elephant D    
-      2     3 lion     E    
-      3     4 seal     F    
-      4     5 worm     G    
-      5     6 dog      E    
-      6     7 cat      F    
+            d c        e        e1
+        <int> <chr>    <chr> <int>
+      1     2 elephant D         4
+      2     3 lion     E         5
+      3     4 seal     F         6
+      4     5 worm     G         7
+      5     6 dog      E         5
+      6     7 cat      F         6
     Code
       dm_copy %>% dm_rows_update(dm_update_copy) %>% pull_tbl(tf_2) %>% arrange_all()
     Message <simpleMessage>
       Not persisting, use `in_place = FALSE` to turn off this message.
     Output
-            d c        e    
-        <int> <chr>    <chr>
-      1     2 elephant D    
-      2     3 lion     E    
-      3     4 seal     F    
-      4     6 dog      E    
-      5     7 cat      F    
-      6    10 worm     G    
+            d c        e        e1
+        <int> <chr>    <chr> <int>
+      1     2 elephant D         4
+      2     3 lion     E         5
+      3     4 seal     F         6
+      4     6 dog      E         5
+      5     7 cat      F         6
+      6    10 worm     G         7
     Code
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
-            d c        e    
-        <int> <chr>    <chr>
-      1     2 elephant D    
-      2     3 lion     E    
-      3     4 seal     F    
-      4     5 worm     G    
-      5     6 dog      E    
-      6     7 cat      F    
+            d c        e        e1
+        <int> <chr>    <chr> <int>
+      1     2 elephant D         4
+      2     3 lion     E         5
+      3     4 seal     F         6
+      4     5 worm     G         7
+      5     6 dog      E         5
+      6     7 cat      F         6
     Code
       dm_copy %>% dm_rows_update(dm_update_copy, in_place = FALSE) %>% pull_tbl(tf_2) %>%
         arrange_all()
     Output
-            d c        e    
-        <int> <chr>    <chr>
-      1     2 elephant D    
-      2     3 lion     E    
-      3     4 seal     F    
-      4     6 dog      E    
-      5     7 cat      F    
-      6    10 worm     G    
+            d c        e        e1
+        <int> <chr>    <chr> <int>
+      1     2 elephant D         4
+      2     3 lion     E         5
+      3     4 seal     F         6
+      4     6 dog      E         5
+      5     7 cat      F         6
+      6    10 worm     G         7
     Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
@@ -138,37 +138,37 @@
       10    10 J    
       
       $tf_2
-            d c        e    
-        <int> <chr>    <chr>
-      1     2 elephant D    
-      2     3 lion     E    
-      3     4 seal     F    
-      4     5 worm     G    
-      5     6 dog      E    
-      6     7 cat      F    
+            d c        e        e1
+        <int> <chr>    <chr> <int>
+      1     2 elephant D         4
+      2     3 lion     E         5
+      3     4 seal     F         6
+      4     5 worm     G         7
+      5     6 dog      E         5
+      6     7 cat      F         6
       
       $tf_3
-         f     g    
-         <chr> <chr>
-       1 B     one  
-       2 C     two  
-       3 D     three
-       4 E     four 
-       5 F     five 
-       6 G     six  
-       7 H     seven
-       8 I     eight
-       9 J     nine 
-      10 K     ten  
+         f        f1 g    
+         <chr> <int> <chr>
+       1 C         2 one  
+       2 C         3 two  
+       3 D         4 three
+       4 E         5 four 
+       5 F         6 five 
+       6 G         7 six  
+       7 H         7 seven
+       8 I         7 eight
+       9 J        10 nine 
+      10 K        11 ten  
       
       $tf_4
-        i     h     j    
-        <chr> <chr> <chr>
-      1 five  c     E    
-      2 four  b     D    
-      3 seven e     F    
-      4 six   d     F    
-      5 three a     C    
+        i     h     j        j1
+        <chr> <chr> <chr> <int>
+      1 five  c     E         5
+      2 four  b     D         4
+      3 seven e     F         6
+      4 six   d     F         6
+      5 three a     C         3
       
       $tf_5
         l     m              k
@@ -206,37 +206,37 @@
       10    10 J    
       
       $tf_2
-            d c        e    
-        <int> <chr>    <chr>
-      1     2 elephant D    
-      2     3 lion     E    
-      3     4 seal     F    
-      4     6 dog      E    
-      5     7 cat      F    
-      6    10 worm     G    
+            d c        e        e1
+        <int> <chr>    <chr> <int>
+      1     2 elephant D         4
+      2     3 lion     E         5
+      3     4 seal     F         6
+      4     6 dog      E         5
+      5     7 cat      F         6
+      6    10 worm     G         7
       
       $tf_3
-         f     g    
-         <chr> <chr>
-       1 B     one  
-       2 C     two  
-       3 D     three
-       4 E     four 
-       5 F     five 
-       6 G     six  
-       7 H     seven
-       8 I     eight
-       9 J     nine 
-      10 K     ten  
+         f        f1 g    
+         <chr> <int> <chr>
+       1 C         2 one  
+       2 C         3 two  
+       3 D         4 three
+       4 E         5 four 
+       5 F         6 five 
+       6 G         7 six  
+       7 H         7 seven
+       8 I         7 eight
+       9 J        10 nine 
+      10 K        11 ten  
       
       $tf_4
-        i      h     j    
-        <chr>  <chr> <chr>
-      1 five   c     E    
-      2 four   b     D    
-      3 sieben e     F    
-      4 six    d     F    
-      5 three  a     C    
+        i      h     j        j1
+        <chr>  <chr> <chr> <int>
+      1 five   c     E         5
+      2 four   b     D         4
+      3 sieben e     F         6
+      4 six    d     F         6
+      5 three  a     C         3
       
       $tf_5
         l     m              k
@@ -266,37 +266,37 @@
       dm_truncate_local))
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
-        c            d e    
-        <chr>    <int> <chr>
-      1 cat          7 F    
-      2 dog          6 E    
-      3 elephant     2 D    
-      4 lion         3 E    
-      5 seal         4 F    
-      6 worm         5 G    
+        c            d e        e1
+        <chr>    <int> <chr> <int>
+      1 cat          7 F         6
+      2 dog          6 E         5
+      3 elephant     2 D         4
+      4 lion         3 E         5
+      5 seal         4 F         6
+      6 worm         5 G         7
     Code
       dm_copy %>% dm_rows_truncate(dm_truncate_copy) %>% pull_tbl(tf_2) %>%
         arrange_all()
     Message <simpleMessage>
       Not persisting, use `in_place = FALSE` to turn off this message.
     Output
-      # ... with 3 variables: c <chr>, d <int>, e <chr>
+      # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
     Code
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
-        c            d e    
-        <chr>    <int> <chr>
-      1 cat          7 F    
-      2 dog          6 E    
-      3 elephant     2 D    
-      4 lion         3 E    
-      5 seal         4 F    
-      6 worm         5 G    
+        c            d e        e1
+        <chr>    <int> <chr> <int>
+      1 cat          7 F         6
+      2 dog          6 E         5
+      3 elephant     2 D         4
+      4 lion         3 E         5
+      5 seal         4 F         6
+      6 worm         5 G         7
     Code
       dm_copy %>% dm_rows_truncate(dm_truncate_copy, in_place = FALSE) %>% pull_tbl(
         tf_2) %>% arrange_all()
     Output
-      # ... with 3 variables: c <chr>, d <int>, e <chr>
+      # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
     Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
@@ -315,37 +315,37 @@
       10    10 J    
       
       $tf_2
-        c            d e    
-        <chr>    <int> <chr>
-      1 cat          7 F    
-      2 dog          6 E    
-      3 elephant     2 D    
-      4 lion         3 E    
-      5 seal         4 F    
-      6 worm         5 G    
+        c            d e        e1
+        <chr>    <int> <chr> <int>
+      1 cat          7 F         6
+      2 dog          6 E         5
+      3 elephant     2 D         4
+      4 lion         3 E         5
+      5 seal         4 F         6
+      6 worm         5 G         7
       
       $tf_3
-         f     g    
-         <chr> <chr>
-       1 B     one  
-       2 C     two  
-       3 D     three
-       4 E     four 
-       5 F     five 
-       6 G     six  
-       7 H     seven
-       8 I     eight
-       9 J     nine 
-      10 K     ten  
+         f        f1 g    
+         <chr> <int> <chr>
+       1 C         2 one  
+       2 C         3 two  
+       3 D         4 three
+       4 E         5 four 
+       5 F         6 five 
+       6 G         7 six  
+       7 H         7 seven
+       8 I         7 eight
+       9 J        10 nine 
+      10 K        11 ten  
       
       $tf_4
-        h     i     j    
-        <chr> <chr> <chr>
-      1 a     three C    
-      2 b     four  D    
-      3 c     five  E    
-      4 d     six   F    
-      5 e     seven F    
+        h     i     j        j1
+        <chr> <chr> <chr> <int>
+      1 a     three C         3
+      2 b     four  D         4
+      3 c     five  E         5
+      4 d     six   F         6
+      5 e     seven F         6
       
       $tf_5
             k l     m         
@@ -383,30 +383,30 @@
       10    10 J    
       
       $tf_2
-      # ... with 3 variables: c <chr>, d <int>, e <chr>
+      # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
       
       $tf_3
-         f     g    
-         <chr> <chr>
-       1 B     one  
-       2 C     two  
-       3 D     three
-       4 E     four 
-       5 F     five 
-       6 G     six  
-       7 H     seven
-       8 I     eight
-       9 J     nine 
-      10 K     ten  
+         f        f1 g    
+         <chr> <int> <chr>
+       1 C         2 one  
+       2 C         3 two  
+       3 D         4 three
+       4 E         5 four 
+       5 F         6 five 
+       6 G         7 six  
+       7 H         7 seven
+       8 I         7 eight
+       9 J        10 nine 
+      10 K        11 ten  
       
       $tf_4
-        h     i     j    
-        <chr> <chr> <chr>
-      1 a     three C    
-      2 b     four  D    
-      3 c     five  E    
-      4 d     six   F    
-      5 e     seven F    
+        h     i     j        j1
+        <chr> <chr> <chr> <int>
+      1 a     three C         3
+      2 b     four  D         4
+      3 c     five  E         5
+      4 d     six   F         6
+      5 e     seven F         6
       
       $tf_5
       # ... with 3 variables: k <int>, l <chr>, m <chr>
