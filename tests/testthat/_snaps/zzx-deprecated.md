@@ -1,7 +1,7 @@
 # cdm_filter() behaves correctly
 
     Code
-      dm_for_filter() %>% dm_filter(tf_1, a > 3, a < 8) %>% cdm_apply_filters() %>%
+      dm_for_filter_simple() %>% dm_filter(tf_1, a > 3, a < 8) %>% cdm_apply_filters() %>%
         dm_get_tables()
     Output
       $tf_1
