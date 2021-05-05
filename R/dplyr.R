@@ -454,8 +454,10 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   if (!is_null(suffix)) message("Column names are disambiguated if necessary, `suffix` ignored.")
   if (!is_null(copy)) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
 
-  x_tbl <- tbl_zoomed(x)
-  x_orig_name <- orig_name_zoomed(x)
+  zoomed <- dm_get_zoom(x)
+
+  x_tbl <- zoomed$zoom[[1]]
+  x_orig_name <- zoomed$table
   y_tbl <- dm_get_tables_impl(x)[[y_name]]
   all_cols_y <- colnames(y_tbl)
 
@@ -469,7 +471,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     by <- get_by(x, x_orig_name, y_name)
 
     # If the original FK-relation between original `x` and `y` got lost, `by` needs to be provided explicitly
-    if (!all(names(by) %in% col_tracker_zoomed(x))) abort_fk_not_tracked(x_orig_name, y_name)
+    if (!all(names(by) %in% zoomed$col_tracker_zoom[[1]])) abort_fk_not_tracked(x_orig_name, y_name)
   }
 
   by <- repair_by(by)
@@ -477,7 +479,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   # selection without RHS `by`; only this is needed for disambiguation and by-columns are added later on for all join-types
   selected_wo_by <- selected[selected %in% setdiff(selected, by)]
 
-  new_col_names <- col_tracker_zoomed(x)
+  new_col_names <- zoomed$col_tracker_zoom[[1]]
 
   if (disambiguate) {
     x_disambig_name <- x_orig_name
