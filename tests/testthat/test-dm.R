@@ -140,7 +140,8 @@ test_that("validator speaks up (sqlite())", {
 test_that("validator speaks up when something's wrong", {
   # col tracker of non-zoomed dm contains entries
   expect_dm_error(
-    dm_get_def(dm_for_filter()) %>% mutate(col_tracker_zoom = list(1)) %>%
+    dm_get_def(dm_for_filter()) %>%
+      mutate(col_tracker_zoom = list(1)) %>%
       new_dm3() %>%
       validate_dm(),
     "dm_invalid"
@@ -148,7 +149,8 @@ test_that("validator speaks up when something's wrong", {
 
   # zoom column of `zoomed_dm` is empty
   expect_dm_error(
-    dm_get_def(dm_for_filter() %>% dm_zoom_to(tf_1)) %>% mutate(zoom = list(NULL)) %>%
+    dm_get_def(dm_for_filter() %>% dm_zoom_to(tf_1)) %>%
+      mutate(zoom = list(NULL)) %>%
       new_dm3(zoomed = TRUE) %>%
       validate_dm(),
     "dm_invalid"
@@ -156,7 +158,8 @@ test_that("validator speaks up when something's wrong", {
 
   # col tracker of zoomed dm is empty
   expect_dm_error(
-    dm_get_def(dm_for_filter() %>% dm_zoom_to(tf_1)) %>% mutate(col_tracker_zoom = list(NULL)) %>%
+    dm_get_def(dm_for_filter() %>% dm_zoom_to(tf_1)) %>%
+      mutate(col_tracker_zoom = list(NULL)) %>%
       new_dm3(zoomed = TRUE) %>%
       validate_dm(),
     "dm_invalid"
@@ -164,7 +167,8 @@ test_that("validator speaks up when something's wrong", {
 
   # table name is missing
   expect_dm_error(
-    dm_get_def(dm_for_filter()) %>% mutate(table = "") %>%
+    dm_get_def(dm_for_filter()) %>%
+      mutate(table = "") %>%
       new_dm3() %>%
       validate_dm(),
     "dm_invalid"
