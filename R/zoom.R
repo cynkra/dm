@@ -185,19 +185,9 @@ dm_update_zoomed <- function(dm) {
     new_def$fks <- map(new_def$fks, update_zoomed_outgoing, table_name, tracked_cols)
   }
 
-  # After updating keys:
-  empty <- rep(list(NULL), length(new_def$data))
-  new_def$zoom <- empty
-  new_def$col_tracker_zoom <- empty
-
-  new_dm3(new_def)
-}
-
-dm_update_zoomed_outgoing_fks <- function(dm) {
-  def <- dm_get_def(dm)
-
-  tbl_name <- orig_name_zoomed(dm)
-  new_dm3(def)
+  new_def %>%
+    clean_zoom() %>%
+    new_dm3()
 }
 
 #' @rdname dm_zoom_to
