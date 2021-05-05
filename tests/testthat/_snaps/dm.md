@@ -25,6 +25,157 @@
       Columns: 53
       Primary keys: 3
       Foreign keys: 3
+    Code
+      dm_for_filter() %>% str()
+    Output
+      tibble [6 x 4] (S3: tbl_df/tbl/data.frame)
+       $ table  : chr [1:6] "tf_1" "tf_2" "tf_3" "tf_4" ...
+       $ pks    : list<tibble[,1]> [1:6] 
+        ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "a"
+        ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "c"
+        ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "f"
+        ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "h"
+        ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "k"
+        ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "n"
+        ..@ ptype: tibble [0 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column: list()
+       $ fks    : list<tibble[,2]> [1:6] 
+        ..$ : tibble [1 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr "tf_2"
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "d"
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr(0) 
+        .. ..$ column: list()
+        ..$ : tibble [2 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr [1:2] "tf_2" "tf_4"
+        .. ..$ column:List of 2
+        .. .. ..$ : chr "e"
+        .. .. ..$ : chr "j"
+        ..$ : tibble [1 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr "tf_5"
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "l"
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr(0) 
+        .. ..$ column: list()
+        ..$ : tibble [1 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr "tf_5"
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "m"
+        ..@ ptype: tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr(0) 
+        .. ..$ column: list()
+       $ filters: list<tibble[,2]> [1:6] 
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
+        ..@ ptype: tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
+    Code
+      dm_for_filter() %>% dm_zoom_to(tf_2) %>% str()
+    Output
+      tibble [6 x 5] (S3: tbl_df/tbl/data.frame)
+       $ zoom   : chr [1:6] NA "tf_2" NA NA ...
+       $ table  : chr [1:6] "tf_1" "tf_2" "tf_3" "tf_4" ...
+       $ pks    : list<tibble[,1]> [1:6] 
+        ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "a"
+        ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "c"
+        ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "f"
+        ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "h"
+        ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "k"
+        ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "n"
+        ..@ ptype: tibble [0 x 1] (S3: tbl_df/tbl/data.frame)
+        .. ..$ column: list()
+       $ fks    : list<tibble[,2]> [1:6] 
+        ..$ : tibble [1 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr "tf_2"
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "d"
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr(0) 
+        .. ..$ column: list()
+        ..$ : tibble [2 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr [1:2] "tf_2" "tf_4"
+        .. ..$ column:List of 2
+        .. .. ..$ : chr "e"
+        .. .. ..$ : chr "j"
+        ..$ : tibble [1 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr "tf_5"
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "l"
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr(0) 
+        .. ..$ column: list()
+        ..$ : tibble [1 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr "tf_5"
+        .. ..$ column:List of 1
+        .. .. ..$ : chr "m"
+        ..@ ptype: tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ table : chr(0) 
+        .. ..$ column: list()
+       $ filters: list<tibble[,2]> [1:6] 
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
+        ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
+        ..@ ptype: tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+        .. ..$ filter_expr: list()
+        .. ..$ zoomed     : logi(0) 
 
 # output for compound keys
 

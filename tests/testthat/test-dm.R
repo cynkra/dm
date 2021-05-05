@@ -396,6 +396,13 @@ test_that("output", {
     nyc_flights_dm %>%
       dm_filter(flights, origin == "EWR") %>%
       collect()
+
+    dm_for_filter() %>%
+      str()
+
+    dm_for_filter() %>%
+      dm_zoom_to(tf_2) %>%
+      str()
   })
 })
 
