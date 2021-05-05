@@ -117,9 +117,11 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
   )
   # rename dm in case of name repair
   dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
+
   new_tbl_name_chr <- names_list$new_names
-  old_tbl_name <- orig_name_zoomed(dm)
-  new_tbl <- list(tbl_zoomed(dm))
+  zoomed <- dm_get_zoom(dm)
+  old_tbl_name <- zoomed$table
+  new_tbl <- zoomed$zoom
   # filters need to be split: old_filters belong to the old table, new filters to the inserted table
   all_filters <- get_filter_for_table(dm, old_tbl_name)
   old_filters <- all_filters %>% filter(!zoomed)
@@ -128,24 +130,21 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
     filter(zoomed) %>%
     mutate(zoomed = FALSE)
 
-  # PK: either the same primary key as in the old table, renamed in the new table, or no primary key if none available
-  upd_pk <- vctrs::list_of(update_zoomed_pk(dm))
-
-  # incoming FKs: in the new row, based on the old table;
-  # if PK available, foreign key relations can be copied from the old table
-  # if PK vanished, the entry will be empty
-  upd_inc_fks <- vctrs::list_of(update_zoomed_incoming_fks(dm))
-
   dm_wo_outgoing_fks <-
     dm %>%
     update_filter(old_tbl_name, vctrs::list_of(old_filters)) %>%
-    dm_add_tbl_impl(new_tbl, new_tbl_name_chr, vctrs::list_of(new_filters)) %>%
-    dm_get_def() %>%
-    mutate(
-      pks = if_else(table == new_tbl_name_chr, !!upd_pk, pks),
-      fks = if_else(table == new_tbl_name_chr, !!upd_inc_fks, fks)
-    ) %>%
-    new_dm3(zoomed = TRUE)
+    dm_add_tbl_impl(
+      new_tbl, new_tbl_name_chr,
+      filters = vctrs::list_of(new_filters),
+
+      # PK: either the same primary key as in the old table, renamed in the new table, or no primary key if none available
+      pks = vctrs::list_of(update_zoomed_pk(dm)),
+
+      # incoming FKs: in the new row, based on the old table;
+      # if PK available, foreign key relations can be copied from the old table
+      # if PK vanished, the entry will be empty
+      fks = vctrs::list_of(update_zoomed_incoming_fks(dm))
+    )
 
   # outgoing FKs: potentially in several rows, based on the old table;
   # renamed(?) FK columns if they still exist
