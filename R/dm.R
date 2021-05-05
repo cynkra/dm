@@ -340,7 +340,7 @@ dm_get_filters <- function(x) {
     mutate(filter = unname(filter))
 }
 
-dm_get_zoom <- function(x, cols = c("table", "zoom", "col_tracker_zoom")) {
+dm_get_zoom <- function(x, cols = c("table", "zoom")) {
   # Performance
   def <- dm_get_def(x)
   zoom <- def$zoom

@@ -454,7 +454,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   if (!is_null(suffix)) message("Column names are disambiguated if necessary, `suffix` ignored.")
   if (!is_null(copy)) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
 
-  zoomed <- dm_get_zoom(x)
+  zoomed <- dm_get_zoom(x, c("table", "zoom", "col_tracker_zoom"))
 
   x_tbl <- zoomed$zoom[[1]]
   x_orig_name <- zoomed$table
