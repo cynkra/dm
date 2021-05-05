@@ -340,7 +340,7 @@ dm_get_filters <- function(x) {
     mutate(filter = unname(filter))
 }
 
-dm_get_zoom <- function(x) {
+dm_get_zoom <- function(x, cols = c("table", "zoom", "col_tracker_zoom")) {
   # Performance
   def <- dm_get_def(x)
   zoom <- def$zoom
@@ -349,7 +349,7 @@ dm_get_zoom <- function(x) {
     # FIXME: Better error message?
     abort_not_pulling_multiple_zoomed()
   }
-  new_tibble(list(table = def$table[where], zoom = zoom[where]), nrow = 1)
+  def[where, cols]
 }
 
 #' Check class
