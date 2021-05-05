@@ -381,6 +381,20 @@ test_that("dm_get_filters() works", {
 })
 
 
+test_that("str()", {
+  # https://github.com/cynkra/dm/pull/542/checks?check_run_id=2506393322#step:11:88
+  skip("FIXME: Unstable on GHA?")
+
+  expect_snapshot({
+    dm_for_filter() %>%
+      str()
+
+    dm_for_filter() %>%
+      dm_zoom_to(tf_2) %>%
+      str()
+  })
+})
+
 test_that("output", {
   skip_if_not_installed("nycflights13")
 
@@ -396,13 +410,6 @@ test_that("output", {
     nyc_flights_dm %>%
       dm_filter(flights, origin == "EWR") %>%
       collect()
-
-    dm_for_filter() %>%
-      str()
-
-    dm_for_filter() %>%
-      dm_zoom_to(tf_2) %>%
-      str()
   })
 })
 
