@@ -11,7 +11,7 @@
         dm::dm_select(tf_5, k, l, m) %>%
         dm::dm_select(tf_6, n, o) %>%
         dm::dm_select(tf_7, p, q) %>%
-        dm::dm_select(tf_6_2, p, f) %>%
+        dm::dm_select(tf_6_2, p, f, f1) %>%
         dm::dm_select(tf_4_2, r, s, t) %>%
         dm::dm_select(a, a_1, a_2) %>%
         dm::dm_select(b, b_1, b_2, b_3) %>%
@@ -20,7 +20,7 @@
         dm::dm_select(e, e_1, b_1) %>%
         dm::dm_add_pk(tf_1, a) %>%
         dm::dm_add_pk(tf_2, c) %>%
-        dm::dm_add_pk(tf_3, f) %>%
+        dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, n) %>%
@@ -36,12 +36,12 @@
         dm::dm_add_fk(d, b_1, b) %>%
         dm::dm_add_fk(e, b_1, b) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
-        dm::dm_add_fk(tf_2, e, tf_3) %>%
-        dm::dm_add_fk(tf_4, j, tf_3) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
         dm::dm_add_fk(tf_5, l, tf_4) %>%
         dm::dm_add_fk(tf_5, l, tf_4_2) %>%
         dm::dm_add_fk(tf_5, m, tf_6) %>%
-        dm::dm_add_fk(tf_6_2, f, tf_3)
+        dm::dm_add_fk(tf_6_2, c(f, f1), tf_3)
 
 # we get filtered/unfiltered tables with respective funs
 

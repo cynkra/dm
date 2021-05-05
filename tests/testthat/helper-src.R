@@ -224,20 +224,20 @@ dm_for_filter_w_cycle %<-% {
   ) %>%
     dm_add_pk(tf_1, a) %>%
     dm_add_pk(tf_3, c(f, f1)) %>%
-
+    #
     dm_add_pk(tf_2, c) %>%
     dm_add_fk(tf_2, d, tf_1) %>%
     dm_add_fk(tf_2, c(e, e1), tf_3) %>%
-
+    #
     dm_add_pk(tf_4, h) %>%
     dm_add_fk(tf_4, c(j, j1), tf_3) %>%
-
+    #
     dm_add_pk(tf_7, p) %>%
     dm_add_fk(tf_7, q, tf_2) %>%
-
+    #
     dm_add_pk(tf_6, n) %>%
     dm_add_fk(tf_6, o, tf_7) %>%
-
+    #
     dm_add_pk(tf_5, k) %>%
     dm_add_fk(tf_5, l, tf_4) %>%
     dm_add_fk(tf_5, m, tf_6)
@@ -262,16 +262,16 @@ dm_for_filter_simple %<-% {
   ) %>%
     dm_add_pk(tf_1, a) %>%
     dm_add_pk(tf_3, f) %>%
-
+    #
     dm_add_pk(tf_2, c) %>%
     dm_add_fk(tf_2, d, tf_1) %>%
     dm_add_fk(tf_2, e, tf_3) %>%
-
+    #
     dm_add_pk(tf_4, h) %>%
     dm_add_fk(tf_4, j, tf_3) %>%
-
+    #
     dm_add_pk(tf_6, n) %>%
-
+    #
     dm_add_pk(tf_5, k) %>%
     dm_add_fk(tf_5, l, tf_4) %>%
     dm_add_fk(tf_5, m, tf_6)
@@ -303,7 +303,7 @@ rows_dm_obj <- 36L
 
 dm_more_complex_part %<-% {
   dm(
-    tf_6_2 = tibble(p = letters[1:6], f = LETTERS[6:11]),
+    tf_6_2 = tibble(p = letters[1:6], f = LETTERS[6:11], f1 = c(6:7, 7L, 7L, 10:11)),
     tf_4_2 = tibble(
       r = letters[2:6],
       s = c("three", "five", "six", "seven", "eight"),
@@ -324,7 +324,7 @@ dm_more_complex %<-% {
   ) %>%
     dm_add_pk(tf_1, a) %>%
     dm_add_pk(tf_2, c) %>%
-    dm_add_pk(tf_3, f) %>%
+    dm_add_pk(tf_3, c(f, f1)) %>%
     dm_add_pk(tf_4, h) %>%
     dm_add_pk(tf_4_2, r) %>%
     dm_add_pk(tf_5, k) %>%
@@ -336,12 +336,12 @@ dm_more_complex %<-% {
     dm_add_pk(d, d_1) %>%
     dm_add_pk(e, e_1) %>%
     dm_add_fk(tf_2, d, tf_1) %>%
-    dm_add_fk(tf_2, e, tf_3) %>%
-    dm_add_fk(tf_4, j, tf_3) %>%
+    dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+    dm_add_fk(tf_4, c(j, j1), tf_3) %>%
     dm_add_fk(tf_5, l, tf_4) %>%
     dm_add_fk(tf_5, l, tf_4_2) %>%
     dm_add_fk(tf_5, m, tf_6) %>%
-    dm_add_fk(tf_6_2, f, tf_3) %>%
+    dm_add_fk(tf_6_2, c(f, f1), tf_3) %>%
     dm_add_fk(b, b_2, a) %>%
     dm_add_fk(b, b_3, c) %>%
     dm_add_fk(d, b_1, b) %>%

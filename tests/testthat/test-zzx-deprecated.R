@@ -102,13 +102,6 @@ test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` 
     expect_message(cdm_join_to_tbl(dm_for_flatten(), fact, dim_3)),
     select(result_from_flatten(), fact:fact.something, dim_3.something)
   )
-
-  expect_equivalent_tbl(
-    cdm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3),
-    tf_5() %>%
-      left_join(tf_4(), by = c("l" = "h")) %>%
-      left_join(tf_3(), by = c("j" = "f"))
-  )
 })
 
 test_that("cdm_get_src() works", {
