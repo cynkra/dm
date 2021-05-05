@@ -18,10 +18,9 @@ test_that("basic test: 'separate()'-methods work", {
     zoomed_dm() %>%
       unite("new_col", c, e) %>%
       separate("new_col", c("c", "e")) %>%
-      select(c, d, e) %>%
+      select(c, d, e, e1) %>%
       tbl_zoomed(),
-    tf_2() %>%
-      select(-e1)
+    tf_2()
   )
 
   expect_dm_error(

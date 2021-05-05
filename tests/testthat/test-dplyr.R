@@ -267,6 +267,11 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
     left_join(tf_2(), tf_4(), by = c("e" = "j"))
   )
 
+  expect_equivalent_tbl(
+    left_join(zoomed_dm(), tf_4, by = c("e" = "j", "e1" = "j1")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"))
+  )
+
   # explicitly select columns from RHS using argument `select`
   expect_equivalent_tbl(
     left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), e)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
