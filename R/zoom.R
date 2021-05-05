@@ -77,15 +77,14 @@ dm_zoom_to <- function(dm, table) {
   # for now only one table can be zoomed on
   zoom <- dm_tbl_name(dm, {{ table }})
 
-  cols <- list(get_all_cols(dm, zoom))
+  def <- dm_get_def(dm)
+  where <- which(def$table == zoom)
+  stopifnot(length(where) == 1)
 
-  dm %>%
-    dm_get_def() %>%
-    mutate(
-      zoom = if_else(table == !!zoom, data, list(NULL)),
-      col_tracker_zoom = if_else(table == !!zoom, cols, list(NULL))
-    ) %>%
-    new_dm3(zoomed = TRUE)
+  def$zoom[[where]] <- def$data[[where]]
+  def$col_tracker_zoom[[where]] <- get_all_cols(dm, zoom)
+
+  new_dm3(def, zoomed = TRUE)
 }
 
 is_zoomed <- function(dm) {
@@ -185,19 +184,9 @@ dm_update_zoomed <- function(dm) {
     new_def$fks <- map(new_def$fks, update_zoomed_outgoing, table_name, tracked_cols)
   }
 
-  # After updating keys:
-  empty <- rep(list(NULL), length(new_def$data))
-  new_def$zoom <- empty
-  new_def$col_tracker_zoom <- empty
-
-  new_dm3(new_def)
-}
-
-dm_update_zoomed_outgoing_fks <- function(dm) {
-  def <- dm_get_def(dm)
-
-  tbl_name <- orig_name_zoomed(dm)
-  new_dm3(def)
+  new_def %>%
+    clean_zoom() %>%
+    new_dm3()
 }
 
 #' @rdname dm_zoom_to
@@ -206,20 +195,18 @@ dm_discard_zoomed <- function(dm) {
   if (!is_zoomed(dm)) {
     return(dm)
   }
-  old_tbl_name <- orig_name_zoomed(dm)
+
+  def <- dm_get_def(dm)
+
+  where <- which(lengths(def$zoom) != 0)
+  old_tbl_name <- def$table[[where]]
   upd_filter <-
-    filters_zoomed(dm) %>%
+    def$filters[[where]] %>%
     filter(zoomed == FALSE)
 
-  dm %>%
-    dm_get_def() %>%
-    mutate(
-      filters = if_else(
-        table == old_tbl_name,
-        vctrs::list_of(upd_filter),
-        filters
-      )
-    ) %>%
+  def$filters[[where]] <- upd_filter
+
+  def %>%
     clean_zoom() %>%
     new_dm3()
 }
@@ -232,11 +219,10 @@ dm_clean_zoomed <- function(dm) {
 }
 
 clean_zoom <- function(def) {
-  def %>%
-    mutate(
-      zoom = list(NULL),
-      col_tracker_zoom = list(NULL)
-    )
+  empty <- rep(list(NULL), length(def$data))
+  def$zoom <- empty
+  def$col_tracker_zoom <- empty
+  def
 }
 
 update_zoomed_pk <- function(dm) {

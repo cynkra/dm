@@ -129,7 +129,7 @@ check_fk_constraints <- function(dm) {
   fks_tibble %>%
     mutate(
       problem = pmap_chr(fks_tibble, check_fk),
-      is_key = if_else(problem == "", TRUE, FALSE),
+      is_key = (problem == ""),
       kind = "FK"
     ) %>%
     select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
