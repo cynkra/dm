@@ -313,11 +313,11 @@ get_tracked_cols <- function(dm) {
 }
 
 tbl_zoomed <- function(dm) {
-  dm_get_zoom(dm)$zoom[[1]]
+  dm_get_zoom(dm, "zoom")[[1]][[1]]
 }
 
 orig_name_zoomed <- function(dm) {
-  dm_get_zoom(dm)$table
+  dm_get_zoom(dm, "table")[[1]]
 }
 
 replace_zoomed_tbl <- function(dm, new_zoomed_tbl, tracked_cols = NULL) {
