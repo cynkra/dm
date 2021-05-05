@@ -192,7 +192,8 @@ dm_get_all_pks <- function(dm, ...) {
 }
 
 dm_get_all_pks_impl <- function(dm) {
-  dm_get_def(dm) %>%
+  dm %>%
+    dm_get_def() %>%
     dm_get_all_pks_def_impl()
 }
 
@@ -282,7 +283,8 @@ enum_pk_candidates <- function(table, ...) {
   # a list of ayes and noes:
   if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)
 
-  enum_pk_candidates_impl(table) %>%
+  table %>%
+    enum_pk_candidates_impl() %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 }
@@ -310,7 +312,8 @@ dm_enum_pk_candidates <- function(dm, table, ...) {
   table_name <- dm_tbl_name(dm, {{ table }})
 
   table <- dm_get_tables_impl(dm)[[table_name]]
-  enum_pk_candidates_impl(table) %>%
+  table %>%
+    enum_pk_candidates_impl() %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 }

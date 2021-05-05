@@ -311,7 +311,8 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' @export
 cdm_get_all_fks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_fks()", "dm::dm_get_all_fks()")
-  dm_get_all_fks_impl(dm = dm) %>%
+  dm %>%
+    dm_get_all_fks_impl() %>%
     mutate(child_fk_cols = as.character(unclass(child_fk_cols))) %>%
     mutate(parent_pk_cols = as.character(unclass(parent_pk_cols)))
 }
@@ -459,7 +460,8 @@ cdm_get_pk <- function(dm, table) {
 #' @export
 cdm_get_all_pks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_pks()", "dm::dm_get_all_pks()")
-  dm_get_all_pks_impl(dm = dm) %>%
+  dm %>%
+    dm_get_all_pks_impl() %>%
     mutate(pk_col = as.character(unclass(pk_col)))
 }
 
@@ -546,7 +548,8 @@ cdm_zoom_to_tbl <- function(dm, table) {
   zoom <- dm_tbl_name(dm, {{ table }})
 
   cols <- list(get_all_cols(dm, zoom))
-  dm_get_def(dm) %>%
+  dm %>%
+    dm_get_def() %>%
     mutate(
       zoom = if_else(table == !!zoom, data, list(NULL)),
       col_tracker_zoom = if_else(table == !!zoom, cols, list(NULL))

@@ -341,7 +341,8 @@ dm_get_filters <- function(x) {
 }
 
 dm_get_zoomed_tbl <- function(x) {
-  dm_get_def(x) %>%
+  x %>%
+    dm_get_def() %>%
     filter(!map_lgl(zoom, is_null)) %>%
     select(table, zoom)
 }
@@ -663,7 +664,8 @@ src_tbls_impl <- function(dm) {
 #'   pull_tbl(districts) %>%
 #'   class()
 compute.dm <- function(x, ...) { # for both dm and zoomed_dm
-  dm_apply_filters(x) %>%
+  x %>%
+    dm_apply_filters() %>%
     dm_get_def() %>%
     mutate(data = map(data, compute, ...)) %>%
     new_dm3()

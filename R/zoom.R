@@ -79,7 +79,8 @@ dm_zoom_to <- function(dm, table) {
 
   cols <- list(get_all_cols(dm, zoom))
 
-  dm_get_def(dm) %>%
+  dm %>%
+    dm_get_def() %>%
     mutate(
       zoom = if_else(table == !!zoom, data, list(NULL)),
       col_tracker_zoom = if_else(table == !!zoom, cols, list(NULL))
@@ -92,7 +93,8 @@ is_zoomed <- function(dm) {
 }
 
 get_zoomed_tbl <- function(dm) {
-  dm_get_zoomed_tbl(dm) %>%
+  dm %>%
+    dm_get_zoomed_tbl() %>%
     pull(zoom) %>%
     pluck(1)
 }
@@ -208,17 +210,17 @@ dm_discard_zoomed <- function(dm) {
     get_filter_for_table(dm, old_tbl_name) %>%
     filter(zoomed == FALSE)
 
-  new_dm3(
-    dm_get_def(dm) %>%
-      mutate(
-        filters = if_else(
-          table == old_tbl_name,
-          vctrs::list_of(upd_filter),
-          filters
-        )
-      ) %>%
-      clean_zoom()
-  )
+  dm %>%
+    dm_get_def() %>%
+    mutate(
+      filters = if_else(
+        table == old_tbl_name,
+        vctrs::list_of(upd_filter),
+        filters
+      )
+    ) %>%
+    clean_zoom() %>%
+    new_dm3()
 }
 
 dm_clean_zoomed <- function(dm) {
@@ -360,7 +362,8 @@ check_not_zoomed <- function(dm) {
 # For `nest.zoomed_dm()`, we need the incoming foreign keys of the originally zoomed table
 get_orig_in_fks <- function(zoomed_dm, orig_table) {
   # FIXME: maybe there is a more efficient implementation possible?
-  dm_get_all_fks_impl(zoomed_dm) %>%
+  zoomed_dm %>%
+    dm_get_all_fks_impl() %>%
     filter(parent_table == orig_table) %>%
     select(-parent_table)
 }

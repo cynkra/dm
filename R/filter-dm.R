@@ -268,7 +268,8 @@ check_no_filter <- function(dm) {
 }
 
 get_filter_for_table <- function(dm, table_name) {
-  dm_get_def(dm) %>%
+  dm %>%
+    dm_get_def() %>%
     filter(table == table_name) %>%
     pull(filters) %>%
     pluck(1)

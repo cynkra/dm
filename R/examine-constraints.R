@@ -27,7 +27,8 @@
 #'   dm_examine_constraints()
 dm_examine_constraints <- function(dm) {
   check_not_zoomed(dm)
-  dm_examine_constraints_impl(dm) %>%
+  dm %>%
+    dm_examine_constraints_impl() %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns)) %>%
     new_dm_examine_constraints()
