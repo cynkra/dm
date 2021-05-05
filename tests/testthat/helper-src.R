@@ -171,13 +171,13 @@ tf_1 %<-% tibble(
   b = LETTERS[1:10]
 )
 
-tf_2 %<-% tibble(
+tf_2_simple %<-% tibble(
   c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
   d = 2:7,
   e = c(LETTERS[4:7], LETTERS[5:6])
 )
 
-tf_2_simple %<-% tibble(
+tf_2 %<-% tibble(
   c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
   d = 2:7,
   e = c(LETTERS[4:7], LETTERS[5:6]),
@@ -190,8 +190,8 @@ tf_3_simple %<-% tibble(
 )
 
 tf_3 %<-% tibble(
-  f = LETTERS[c(4, 4, 4:11)],
-  f1 = c(2:6, 6L, 6L, 9:11),
+  f = LETTERS[c(3, 3:11)],
+  f1 = c(2:7, 7L, 7L, 10:11),
   g = c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
 )
 
@@ -351,8 +351,7 @@ dm_more_complex %<-% {
 # for testing `dm_disambiguate_cols()` ----------------------------------------
 
 iris_1 %<-% {
-  iris %>%
-    as_tibble() %>%
+  as_tibble(iris) %>%
     mutate(key = row_number()) %>%
     select(key, everything())
 }

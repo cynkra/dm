@@ -62,12 +62,12 @@ test_that("cdm_filter() behaves correctly", {
 
   expect_equivalent_tbl(
     cdm_filter(dm_for_filter_simple(), tf_1, a > 4) %>% dm_apply_filters_to_tbl(tf_2),
-    filter(tf_2(), d > 4)
+    tf_2_simple() %>% filter(d > 4)
   )
 
   expect_equivalent_tbl(
     dm_filter(dm_for_filter_simple(), tf_1, a > 4) %>% cdm_apply_filters_to_tbl(tf_2),
-    filter(tf_2(), d > 4)
+    tf_2_simple() %>% filter(d > 4)
   )
 
   skip_if_remote_src()

@@ -109,7 +109,7 @@ test_that("datamodel-code for drawing", {
 
   expect_identical(
     map(data_model_for_filter, nrow),
-    list(tables = 6L, columns = 15L, references = 5L)
+    list(tables = 6L, columns = 21L, references = 5L)
   )
 })
 

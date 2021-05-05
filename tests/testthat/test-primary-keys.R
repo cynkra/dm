@@ -65,8 +65,8 @@ test_that("dm_rm_pk() works as intended?", {
   expect_equivalent_dm(
     dm_rm_pk(dm_for_filter(), tf_3, rm_referencing_fks = TRUE),
     dm_for_filter() %>%
-      dm_rm_fk(tf_4, j, tf_3) %>%
-      dm_rm_fk(tf_2, e, tf_3) %>%
+      dm_rm_fk(tf_4, c(j, j1), tf_3) %>%
+      dm_rm_fk(tf_2, c(e, e1), tf_3) %>%
       dm_rm_pk(tf_3)
   )
 })

@@ -31,12 +31,12 @@
       3 G     six  
       
       $tf_4
-      # A tibble: 3 x 3
-        h     i     j    
-        <chr> <chr> <chr>
-      1 c     five  E    
-      2 d     six   F    
-      3 e     seven F    
+      # A tibble: 3 x 4
+        h     i     j        j1
+        <chr> <chr> <chr> <int>
+      1 c     five  E         5
+      2 d     six   F         6
+      3 e     seven F         6
       
       $tf_5
       # A tibble: 3 x 3

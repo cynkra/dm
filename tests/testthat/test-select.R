@@ -25,12 +25,21 @@ test_that("dm_select() works for replacing pk", {
 test_that("dm_select() keeps pks up to date", {
   expect_identical(
     dm_for_filter() %>%
-      dm_select(tf_3, new_f = f) %>%
+      dm_select(tf_3, f) %>%
+      dm_get_all_pks_impl(),
+    dm_for_filter() %>%
+      dm_get_all_pks_impl() %>%
+      filter(table != "tf_3")
+  )
+
+  expect_identical(
+    dm_for_filter() %>%
+      dm_select(tf_3, new_f = f, f1) %>%
       dm_get_all_pks_impl(),
     dm_for_filter() %>%
       dm_get_all_pks_impl() %>%
       # https://github.com/r-lib/vctrs/issues/1371
-      mutate(pk_col = new_keys(if_else(table == "tf_3", list("new_f"), unclass(pk_col))))
+      mutate(pk_col = new_keys(if_else(table == "tf_3", list(c("new_f", "f1")), unclass(pk_col))))
   )
 })
 
@@ -45,11 +54,30 @@ test_that("dm_select() works for replacing fks, and removes missing ones", {
 test_that("dm_select() removes fks if not in selection", {
   expect_equal(
     dm_for_filter() %>%
+      dm_select(tf_2, c, e, e1) %>%
+      dm_get_all_fks_impl(),
+    dm_for_filter() %>%
+      dm_get_all_fks_impl() %>%
+      filter(child_table != "tf_2" | parent_table != "tf_1")
+  )
+
+  expect_equal(
+    dm_for_filter() %>%
+      dm_select(tf_2, c, e, ex = e1) %>%
+      dm_get_all_fks_impl(),
+    dm_for_filter() %>%
+      dm_get_all_fks_impl() %>%
+      filter(child_table != "tf_2" | parent_table != "tf_1") %>%
+      mutate(child_fk_cols = new_keys(map(child_fk_cols, ~ gsub("e1", "ex", .x))))
+  )
+
+  expect_equal(
+    dm_for_filter() %>%
       dm_select(tf_2, c, e) %>%
       dm_get_all_fks_impl(),
     dm_for_filter() %>%
       dm_get_all_fks_impl() %>%
-      filter(child_fk_cols != new_keys("d"))
+      filter(child_table != "tf_2")
   )
 })
 

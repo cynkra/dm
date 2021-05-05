@@ -12,13 +12,13 @@
       dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
         dm::dm_add_pk(tf_1, a) %>%
         dm::dm_add_pk(tf_2, c) %>%
-        dm::dm_add_pk(tf_3, f) %>%
+        dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, n) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
-        dm::dm_add_fk(tf_2, e, tf_3) %>%
-        dm::dm_add_fk(tf_4, j, tf_3) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
         dm::dm_add_fk(tf_5, l, tf_4) %>%
         dm::dm_add_fk(tf_5, m, tf_6)
     Code
@@ -28,13 +28,13 @@
       dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
           dm::dm_add_pk(tf_1, a) %>%
           dm::dm_add_pk(tf_2, c) %>%
-          dm::dm_add_pk(tf_3, f) %>%
+          dm::dm_add_pk(tf_3, c(f, f1)) %>%
           dm::dm_add_pk(tf_4, h) %>%
           dm::dm_add_pk(tf_5, k) %>%
           dm::dm_add_pk(tf_6, n) %>%
           dm::dm_add_fk(tf_2, d, tf_1) %>%
-          dm::dm_add_fk(tf_2, e, tf_3) %>%
-          dm::dm_add_fk(tf_4, j, tf_3) %>%
+          dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+          dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
           dm::dm_add_fk(tf_5, l, tf_4) %>%
           dm::dm_add_fk(tf_5, m, tf_6)
     Code
@@ -44,13 +44,13 @@
       dm::dm(tf_1_new, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
         dm::dm_add_pk(tf_1_new, a) %>%
         dm::dm_add_pk(tf_2, c) %>%
-        dm::dm_add_pk(tf_3, f) %>%
+        dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, n) %>%
         dm::dm_add_fk(tf_2, d, tf_1_new) %>%
-        dm::dm_add_fk(tf_2, e, tf_3) %>%
-        dm::dm_add_fk(tf_4, j, tf_3) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
         dm::dm_add_fk(tf_5, l, tf_4) %>%
         dm::dm_add_fk(tf_5, m, tf_6)
     Code
@@ -60,9 +60,9 @@
     Message <cliMessage>
       dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6, x) %>%
         dm::dm_select(tf_1, a) %>%
-        dm::dm_select(tf_2, c, d, e) %>%
-        dm::dm_select(tf_3, f, g) %>%
-        dm::dm_select(tf_4, h, i, j) %>%
+        dm::dm_select(tf_2, c, d, e, e1) %>%
+        dm::dm_select(tf_3, f, f1, g) %>%
+        dm::dm_select(tf_4, h, i, j, j1) %>%
         dm::dm_select(tf_5, k, m) %>%
         dm::dm_select(tf_6, n, o) %>%
         dm::dm_select(x, q)
@@ -74,13 +74,13 @@
       dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
         dm::dm_add_pk(tf_1, a) %>%
         dm::dm_add_pk(tf_2, c) %>%
-        dm::dm_add_pk(tf_3, f) %>%
+        dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, n) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
-        dm::dm_add_fk(tf_2, e, tf_3) %>%
-        dm::dm_add_fk(tf_4, j, tf_3) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
         dm::dm_add_fk(tf_5, l, tf_4) %>%
         dm::dm_add_fk(tf_5, m, tf_6) %>%
         dm::dm_set_colors(`#FFA500FF` = tf_1) %>%

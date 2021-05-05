@@ -69,7 +69,7 @@ test_that("dm_insert_zoomed() works", {
     dm_for_filter() %>%
       dm_add_tbl(tf_4_new = tf_4()) %>%
       dm_add_pk(tf_4_new, h) %>%
-      dm_add_fk(tf_4_new, j, tf_3) %>%
+      dm_add_fk(tf_4_new, c(j, j1), tf_3) %>%
       dm_add_fk(tf_5, l, tf_4_new)
   )
 
@@ -89,7 +89,7 @@ test_that("dm_insert_zoomed() works", {
       dm_rename_tbl(tf_4...4 = tf_4) %>%
       dm_add_tbl(tf_4...7 = tf_4()) %>%
       dm_add_pk(tf_4...7, h) %>%
-      dm_add_fk(tf_4...7, j, tf_3) %>%
+      dm_add_fk(tf_4...7, c(j, j1), tf_3) %>%
       dm_add_fk(tf_5, l, tf_4...7)
   )
 })

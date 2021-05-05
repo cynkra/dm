@@ -1,6 +1,55 @@
 # key tracking works
 
     Code
+      # rename()
+      zoomed_grouped_out_dm %>% rename(c_new = c) %>% dm_update_zoomed() %>%
+        get_all_keys("tf_2")
+    Output
+      $pk
+      $pk[[1]]
+      [1] "c_new"
+      
+      
+      $fks
+      <list_of<character>[2]>
+      [[1]]
+      [1] "d"
+      
+      [[2]]
+      [1] "e"  "e1"
+      
+      
+    Code
+      zoomed_grouped_out_dm %>% rename(e_new = e) %>% dm_update_zoomed() %>%
+        get_all_keys("tf_2")
+    Output
+      $pk
+      $pk[[1]]
+      [1] "c"
+      
+      
+      $fks
+      <list_of<character>[2]>
+      [[1]]
+      [1] "d"
+      
+      [[2]]
+      [1] "e_new" "e1"   
+      
+      
+    Code
+      zoomed_grouped_in_dm %>% rename(f_new = f) %>% dm_update_zoomed() %>%
+        get_all_keys("tf_3")
+    Output
+      $pk
+      $pk[[1]]
+      [1] "f_new" "f1"   
+      
+      
+      $fks
+      <list_of<character>[0]>
+      
+    Code
       # summarize()
       zoomed_grouped_out_dm %>% summarize(d_mean = mean(d)) %>% dm_insert_zoomed(
         "new_tbl") %>% get_all_keys("new_tbl")
@@ -13,7 +62,7 @@
       $fks
       <list_of<character>[1]>
       [[1]]
-      [1] "e"
+      [1] "e"  "e1"
       
       
     Code
@@ -39,7 +88,7 @@
       $fks
       <list_of<character>[1]>
       [[1]]
-      [1] "e"
+      [1] "e"  "e1"
       
       
     Code
@@ -65,7 +114,7 @@
       $fks
       <list_of<character>[1]>
       [[1]]
-      [1] "e"
+      [1] "e"  "e1"
       
       
     Code
@@ -84,7 +133,7 @@
     Output
       $pk
       $pk[[1]]
-      [1] "f"
+      [1] "f"  "f1"
       
       
       $fks
@@ -93,7 +142,7 @@
     Code
       # chain of renames & other transformations
       zoomed_grouped_out_dm %>% summarize(d_mean = mean(d)) %>% ungroup() %>% rename(
-        e_new = e) %>% group_by(e_new) %>% transmute(c = paste0(c, "_animal")) %>%
+        e_new = e) %>% group_by(e_new, e1) %>% transmute(c = paste0(c, "_animal")) %>%
         dm_insert_zoomed("new_tbl") %>% get_all_keys("new_tbl")
     Output
       $pk
@@ -102,7 +151,7 @@
       $fks
       <list_of<character>[1]>
       [[1]]
-      [1] "e_new"
+      [1] "e_new" "e1"   
       
       
 

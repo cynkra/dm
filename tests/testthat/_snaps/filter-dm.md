@@ -14,29 +14,29 @@
       4     7 G    
       
       $tf_2
-      # A tibble: 4 x 3
-        c         d e    
-        <chr> <int> <chr>
-      1 cat       7 F    
-      2 dog       6 E    
-      3 seal      4 F    
-      4 worm      5 G    
+      # A tibble: 4 x 4
+        c         d e        e1
+        <chr> <int> <chr> <int>
+      1 cat       7 F         6
+      2 dog       6 E         5
+      3 seal      4 F         6
+      4 worm      5 G         7
       
       $tf_3
-      # A tibble: 3 x 2
-        f     g    
-        <chr> <chr>
-      1 E     four 
-      2 F     five 
-      3 G     six  
+      # A tibble: 3 x 3
+        f        f1 g    
+        <chr> <int> <chr>
+      1 E         5 four 
+      2 F         6 five 
+      3 G         7 six  
       
       $tf_4
-      # A tibble: 3 x 3
-        h     i     j    
-        <chr> <chr> <chr>
-      1 c     five  E    
-      2 d     six   F    
-      3 e     seven F    
+      # A tibble: 3 x 4
+        h     i     j        j1
+        <chr> <chr> <chr> <int>
+      1 c     five  E         5
+      2 d     six   F         6
+      3 e     seven F         6
       
       $tf_5
       # A tibble: 3 x 3
@@ -76,29 +76,29 @@
       3     4 e     streetlamp
       
       $tf_4
-      # A tibble: 3 x 3
-        h     i     j    
-        <chr> <chr> <chr>
-      1 c     five  E    
-      2 d     six   F    
-      3 e     seven F    
+      # A tibble: 3 x 4
+        h     i     j        j1
+        <chr> <chr> <chr> <int>
+      1 c     five  E         5
+      2 d     six   F         6
+      3 e     seven F         6
       
       $tf_3
-      # A tibble: 3 x 2
-        f     g    
-        <chr> <chr>
-      1 E     four 
-      2 F     five 
-      3 G     six  
+      # A tibble: 3 x 3
+        f        f1 g    
+        <chr> <int> <chr>
+      1 E         5 four 
+      2 F         6 five 
+      3 G         7 six  
       
       $tf_2
-      # A tibble: 4 x 3
-        c         d e    
-        <chr> <int> <chr>
-      1 cat       7 F    
-      2 dog       6 E    
-      3 seal      4 F    
-      4 worm      5 G    
+      # A tibble: 4 x 4
+        c         d e        e1
+        <chr> <int> <chr> <int>
+      1 cat       7 F         6
+      2 dog       6 E         5
+      3 seal      4 F         6
+      4 worm      5 G         7
       
       $tf_1
       # A tibble: 4 x 2
@@ -124,24 +124,24 @@
       2     7 G    
       
       $tf_2
-      # A tibble: 2 x 3
-        c         d e    
-        <chr> <int> <chr>
-      1 cat       7 F    
-      2 seal      4 F    
+      # A tibble: 2 x 4
+        c         d e        e1
+        <chr> <int> <chr> <int>
+      1 cat       7 F         6
+      2 seal      4 F         6
       
       $tf_3
-      # A tibble: 1 x 2
-        f     g    
-        <chr> <chr>
-      1 F     five 
+      # A tibble: 1 x 3
+        f        f1 g    
+        <chr> <int> <chr>
+      1 F         6 five 
       
       $tf_4
-      # A tibble: 2 x 3
-        h     i     j    
-        <chr> <chr> <chr>
-      1 d     six   F    
-      2 e     seven F    
+      # A tibble: 2 x 4
+        h     i     j        j1
+        <chr> <chr> <chr> <int>
+      1 d     six   F         6
+      2 e     seven F         6
       
       $tf_5
       # A tibble: 2 x 3

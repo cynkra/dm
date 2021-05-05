@@ -20,7 +20,8 @@ test_that("basic test: 'separate()'-methods work", {
       separate("new_col", c("c", "e")) %>%
       select(c, d, e) %>%
       tbl_zoomed(),
-    tf_2()
+    tf_2() %>%
+      select(-e1)
   )
 
   expect_dm_error(
