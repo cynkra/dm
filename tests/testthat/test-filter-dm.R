@@ -1,3 +1,10 @@
+test_that("data structure", {
+  expect_snapshot({
+    dm_more_complex() %>%
+      dm_paste(options = c("select", "keys"))
+  })
+})
+
 test_that("get_all_filtered_connected() calculates the paths correctly", {
   # Only need to run for local sources
   skip_if_remote_src()

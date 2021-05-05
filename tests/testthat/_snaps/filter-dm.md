@@ -1,3 +1,48 @@
+# data structure
+
+    Code
+      dm_more_complex() %>% dm_paste(options = c("select", "keys"))
+    Message <cliMessage>
+      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6, tf_7, tf_6_2, tf_4_2, a, b, c, d, e) %>%
+        dm::dm_select(tf_1, a, b) %>%
+        dm::dm_select(tf_2, c, d, e, e1) %>%
+        dm::dm_select(tf_3, f, f1, g) %>%
+        dm::dm_select(tf_4, h, i, j, j1) %>%
+        dm::dm_select(tf_5, k, l, m) %>%
+        dm::dm_select(tf_6, n, o) %>%
+        dm::dm_select(tf_7, p, q) %>%
+        dm::dm_select(tf_6_2, p, f) %>%
+        dm::dm_select(tf_4_2, r, s, t) %>%
+        dm::dm_select(a, a_1, a_2) %>%
+        dm::dm_select(b, b_1, b_2, b_3) %>%
+        dm::dm_select(c, c_1) %>%
+        dm::dm_select(d, d_1, b_1) %>%
+        dm::dm_select(e, e_1, b_1) %>%
+        dm::dm_add_pk(tf_1, a) %>%
+        dm::dm_add_pk(tf_2, c) %>%
+        dm::dm_add_pk(tf_3, f) %>%
+        dm::dm_add_pk(tf_4, h) %>%
+        dm::dm_add_pk(tf_5, k) %>%
+        dm::dm_add_pk(tf_6, n) %>%
+        dm::dm_add_pk(tf_6_2, p) %>%
+        dm::dm_add_pk(tf_4_2, r) %>%
+        dm::dm_add_pk(a, a_1) %>%
+        dm::dm_add_pk(b, b_1) %>%
+        dm::dm_add_pk(c, c_1) %>%
+        dm::dm_add_pk(d, d_1) %>%
+        dm::dm_add_pk(e, e_1) %>%
+        dm::dm_add_fk(b, b_2, a) %>%
+        dm::dm_add_fk(b, b_3, c) %>%
+        dm::dm_add_fk(d, b_1, b) %>%
+        dm::dm_add_fk(e, b_1, b) %>%
+        dm::dm_add_fk(tf_2, d, tf_1) %>%
+        dm::dm_add_fk(tf_2, e, tf_3) %>%
+        dm::dm_add_fk(tf_4, j, tf_3) %>%
+        dm::dm_add_fk(tf_5, l, tf_4) %>%
+        dm::dm_add_fk(tf_5, l, tf_4_2) %>%
+        dm::dm_add_fk(tf_5, m, tf_6) %>%
+        dm::dm_add_fk(tf_6_2, f, tf_3)
+
 # we get filtered/unfiltered tables with respective funs
 
     Code
