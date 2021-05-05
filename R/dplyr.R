@@ -39,7 +39,7 @@ mutate.zoomed_dm <- function(.data, ...) {
   mutated_tbl <- mutate(tbl, !!!quos)
   # all columns that are not touched count as "selected"; names of "selected" are identical to "selected"
   # in case no keys are tracked, `set_names(NULL)` would throw an error
-  selected <- set_names(setdiff(names2(get_tracked_cols(.data)), names(quos)))
+  selected <- set_names(setdiff(names2(col_tracker_zoomed(.data)), names(quos)))
   new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
   replace_zoomed_tbl(.data, mutated_tbl, new_tracked_cols_zoom)
 }
@@ -145,7 +145,7 @@ slice.dm <- function(.data, ...) {
 slice.zoomed_dm <- function(.data, ..., .keep_pk = NULL) {
   sliced_tbl <- slice(tbl_zoomed(.data), ...)
   orig_pk <- dm_get_pk_impl(.data, orig_name_zoomed(.data))
-  tracked_cols <- get_tracked_cols(.data)
+  tracked_cols <- col_tracker_zoomed(.data)
   if (is_null(.keep_pk)) {
     if (has_length(orig_pk) && any(unlist(orig_pk) %in% tracked_cols)) {
       message(
@@ -469,7 +469,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     by <- get_by(x, x_orig_name, y_name)
 
     # If the original FK-relation between original `x` and `y` got lost, `by` needs to be provided explicitly
-    if (!all(names(by) %in% get_tracked_cols(x))) abort_fk_not_tracked(x_orig_name, y_name)
+    if (!all(names(by) %in% col_tracker_zoomed(x))) abort_fk_not_tracked(x_orig_name, y_name)
   }
 
   by <- repair_by(by)
@@ -477,7 +477,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   # selection without RHS `by`; only this is needed for disambiguation and by-columns are added later on for all join-types
   selected_wo_by <- selected[selected %in% setdiff(selected, by)]
 
-  new_col_names <- get_tracked_cols(x)
+  new_col_names <- col_tracker_zoomed(x)
 
   if (disambiguate) {
     x_disambig_name <- x_orig_name
@@ -579,7 +579,7 @@ safe_count <- function(x, ..., wt = NULL, sort = FALSE, name = NULL, .drop = gro
 }
 
 new_tracked_cols <- function(dm, selected) {
-  tracked_cols <- get_tracked_cols(dm)
+  tracked_cols <- col_tracker_zoomed(dm)
   old_tracked_names <- names(tracked_cols)
   # the new tracked keys need to be the remaining original column names
   # and their name needs to be the newest one (tidyselect-syntax)

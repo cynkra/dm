@@ -16,7 +16,7 @@ nest_join_zoomed_dm <- function(x, ...) {
   }
 
   orig_pk <- dm_get_pk_impl(zoomed_dm, orig_table)
-  keys <- get_tracked_cols(zoomed_dm)
+  keys <- col_tracker_zoomed(zoomed_dm)
   if (!(orig_pk %in% keys)) {
     abort_pk_not_tracked(orig_table, orig_pk)
   }

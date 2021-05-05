@@ -121,7 +121,7 @@ test_that("all cols are tracked in zoomed table", {
   expect_identical(
     dm_nycflights_small() %>%
       dm_zoom_to(flights) %>%
-      get_tracked_cols(),
+      col_tracker_zoomed(),
     set_names(colnames(dm_nycflights_small()$flights))
   )
 })

@@ -633,12 +633,12 @@ test_that("key tracking works", {
 
 test_that("key tracking works for slice()", {
   skip_if_remote_src()
-  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_tracked_cols(), set_names(c("d", "e")))
+  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% col_tracker_zoomed(), set_names(c("d", "e")))
   expect_message(
-    expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2)) %>% get_tracked_cols(), set_names(c("c", "d", "e"))),
+    expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2)) %>% col_tracker_zoomed(), set_names(c("c", "d", "e"))),
     "Keeping PK"
   )
-  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% get_tracked_cols(), set_names(c("c", "d", "e")))
+  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% col_tracker_zoomed(), set_names(c("c", "d", "e")))
 })
 
 
@@ -729,10 +729,10 @@ test_that("output for compound keys", {
     # mutate()
     grouped_zoomed_comp_dm_1 %>%
       mutate(count = n()) %>%
-      get_tracked_cols()
+      col_tracker_zoomed()
     grouped_zoomed_comp_dm_2 %>%
       mutate(count = n()) %>%
-      get_tracked_cols()
+      col_tracker_zoomed()
     # transmute()
     grouped_zoomed_comp_dm_1 %>%
       transmute(count = n()) %>%
@@ -778,7 +778,7 @@ test_that("output for compound keys", {
       slice(c(1:3, 5:3))
     zoomed_comp_dm %>%
       slice(c(1:3, 5:3), .keep_pk = TRUE) %>%
-      get_tracked_cols()
+      col_tracker_zoomed()
     # FIXME: COMPOUND:: .keep_pk = FALSE cannot deal with compound keys ATM
     # zoomed_comp_dm %>%
     #   slice(c(1:3, 5:3), .keep_pk = FALSE) %>%
