@@ -467,19 +467,19 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
 
   selected <- eval_select_both(select_quo, colnames(y_tbl))$names
 
+  new_col_names <- zoomed$col_tracker_zoom[[1]]
+
   if (is_null(by)) {
     by <- get_by(x, x_orig_name, y_name)
 
     # If the original FK-relation between original `x` and `y` got lost, `by` needs to be provided explicitly
-    if (!all(names(by) %in% zoomed$col_tracker_zoom[[1]])) abort_fk_not_tracked(x_orig_name, y_name)
+    if (!all(names(by) %in% new_col_names)) abort_fk_not_tracked(x_orig_name, y_name)
   }
 
   by <- repair_by(by)
 
   # selection without RHS `by`; only this is needed for disambiguation and by-columns are added later on for all join-types
   selected_wo_by <- selected[selected %in% setdiff(selected, by)]
-
-  new_col_names <- zoomed$col_tracker_zoom[[1]]
 
   if (disambiguate) {
     x_disambig_name <- x_orig_name
