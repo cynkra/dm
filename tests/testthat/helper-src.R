@@ -171,21 +171,35 @@ tf_1 %<-% tibble(
   b = LETTERS[1:10]
 )
 
-tf_2 %<-% tibble(
+tf_2_simple %<-% tibble(
   c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
   d = 2:7,
   e = c(LETTERS[4:7], LETTERS[5:6])
 )
 
-tf_3 %<-% tibble(
+tf_2 %<-% tibble(
+  c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
+  d = 2:7,
+  e = c(LETTERS[4:7], LETTERS[5:6]),
+  e1 = c(4:7, 5:6),
+)
+
+tf_3_simple %<-% tibble(
   f = LETTERS[2:11],
+  g = c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
+)
+
+tf_3 %<-% tibble(
+  f = LETTERS[c(3, 3:11)],
+  f1 = c(2:7, 7L, 7L, 10:11),
   g = c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
 )
 
 tf_4 %<-% tibble(
   h = letters[1:5],
   i = c("three", "four", "five", "six", "seven"),
-  j = c(LETTERS[3:6], LETTERS[6])
+  j = c(LETTERS[3:6], LETTERS[6]),
+  j1 = c(3:6, 6L),
 )
 
 tf_5 %<-% tibble(
@@ -209,19 +223,24 @@ dm_for_filter_w_cycle %<-% {
     tf_1 = tf_1(), tf_2 = tf_2(), tf_3 = tf_3(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6(), tf_7 = tf_7()
   ) %>%
     dm_add_pk(tf_1, a) %>%
+    dm_add_pk(tf_3, c(f, f1)) %>%
+    #
     dm_add_pk(tf_2, c) %>%
-    dm_add_pk(tf_3, f) %>%
-    dm_add_pk(tf_4, h) %>%
-    dm_add_pk(tf_5, k) %>%
-    dm_add_pk(tf_6, n) %>%
-    dm_add_pk(tf_7, p) %>%
     dm_add_fk(tf_2, d, tf_1) %>%
-    dm_add_fk(tf_2, e, tf_3) %>%
-    dm_add_fk(tf_4, j, tf_3) %>%
-    dm_add_fk(tf_5, l, tf_4) %>%
-    dm_add_fk(tf_5, m, tf_6) %>%
+    dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+    #
+    dm_add_pk(tf_4, h) %>%
+    dm_add_fk(tf_4, c(j, j1), tf_3) %>%
+    #
+    dm_add_pk(tf_7, p) %>%
+    dm_add_fk(tf_7, q, tf_2) %>%
+    #
+    dm_add_pk(tf_6, n) %>%
     dm_add_fk(tf_6, o, tf_7) %>%
-    dm_add_fk(tf_7, q, tf_2)
+    #
+    dm_add_pk(tf_5, k) %>%
+    dm_add_fk(tf_5, l, tf_4) %>%
+    dm_add_fk(tf_5, m, tf_6)
 }
 
 dm_for_filter %<-% {
@@ -234,6 +253,28 @@ dm_for_filter_sqlite %<--% copy_dm_to(sqlite(), dm_for_filter())
 dm_for_filter_rev %<-% {
   def_dm_for_filter <- dm_get_def(dm_for_filter())
   new_dm3(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])
+}
+
+# Deprecated tests
+dm_for_filter_simple %<-% {
+  dm(
+    tf_1 = tf_1(), tf_2 = tf_2_simple(), tf_3 = tf_3_simple(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6()
+  ) %>%
+    dm_add_pk(tf_1, a) %>%
+    dm_add_pk(tf_3, f) %>%
+    #
+    dm_add_pk(tf_2, c) %>%
+    dm_add_fk(tf_2, d, tf_1) %>%
+    dm_add_fk(tf_2, e, tf_3) %>%
+    #
+    dm_add_pk(tf_4, h) %>%
+    dm_add_fk(tf_4, j, tf_3) %>%
+    #
+    dm_add_pk(tf_6, n) %>%
+    #
+    dm_add_pk(tf_5, k) %>%
+    dm_add_fk(tf_5, l, tf_4) %>%
+    dm_add_fk(tf_5, m, tf_6)
 }
 
 # for tests on `dm` objects: dm_add_pk(), dm_add_fk() ------------------------
@@ -262,7 +303,7 @@ rows_dm_obj <- 36L
 
 dm_more_complex_part %<-% {
   dm(
-    tf_6_2 = tibble(p = letters[1:6], f = LETTERS[6:11]),
+    tf_6_2 = tibble(p = letters[1:6], f = LETTERS[6:11], f1 = c(6:7, 7L, 7L, 10:11)),
     tf_4_2 = tibble(
       r = letters[2:6],
       s = c("three", "five", "six", "seven", "eight"),
@@ -283,7 +324,7 @@ dm_more_complex %<-% {
   ) %>%
     dm_add_pk(tf_1, a) %>%
     dm_add_pk(tf_2, c) %>%
-    dm_add_pk(tf_3, f) %>%
+    dm_add_pk(tf_3, c(f, f1)) %>%
     dm_add_pk(tf_4, h) %>%
     dm_add_pk(tf_4_2, r) %>%
     dm_add_pk(tf_5, k) %>%
@@ -295,12 +336,12 @@ dm_more_complex %<-% {
     dm_add_pk(d, d_1) %>%
     dm_add_pk(e, e_1) %>%
     dm_add_fk(tf_2, d, tf_1) %>%
-    dm_add_fk(tf_2, e, tf_3) %>%
-    dm_add_fk(tf_4, j, tf_3) %>%
+    dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+    dm_add_fk(tf_4, c(j, j1), tf_3) %>%
     dm_add_fk(tf_5, l, tf_4) %>%
     dm_add_fk(tf_5, l, tf_4_2) %>%
     dm_add_fk(tf_5, m, tf_6) %>%
-    dm_add_fk(tf_6_2, f, tf_3) %>%
+    dm_add_fk(tf_6_2, c(f, f1), tf_3) %>%
     dm_add_fk(b, b_2, a) %>%
     dm_add_fk(b, b_3, c) %>%
     dm_add_fk(d, b_1, b) %>%
@@ -310,8 +351,7 @@ dm_more_complex %<-% {
 # for testing `dm_disambiguate_cols()` ----------------------------------------
 
 iris_1 %<-% {
-  iris %>%
-    as_tibble() %>%
+  as_tibble(iris) %>%
     mutate(key = row_number()) %>%
     select(key, everything())
 }

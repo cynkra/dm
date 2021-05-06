@@ -1,7 +1,7 @@
 # cdm_filter() behaves correctly
 
     Code
-      dm_for_filter() %>% dm_filter(tf_1, a > 3, a < 8) %>% cdm_apply_filters() %>%
+      dm_for_filter_simple() %>% dm_filter(tf_1, a > 3, a < 8) %>% cdm_apply_filters() %>%
         dm_get_tables()
     Output
       $tf_1
@@ -31,12 +31,12 @@
       3 G     six  
       
       $tf_4
-      # A tibble: 3 x 3
-        h     i     j    
-        <chr> <chr> <chr>
-      1 c     five  E    
-      2 d     six   F    
-      3 e     seven F    
+      # A tibble: 3 x 4
+        h     i     j        j1
+        <chr> <chr> <chr> <int>
+      1 c     five  E         5
+      2 d     six   F         6
+      3 e     seven F         6
       
       $tf_5
       # A tibble: 3 x 3

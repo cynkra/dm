@@ -56,7 +56,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   # for flatten: columns from tf_5 + tf_4 + tf_4_2 + tf_6 are combined in one table, 8 cols in total
   expect_identical(
     ncol(dm_flatten_to_tbl(dm_more_complex(), tf_5)),
-    8L
+    9L
   )
 })
 
@@ -144,14 +144,14 @@ test_that("`dm_squash_to_tbl()` does the right things", {
     dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3),
     tf_5() %>%
       left_join(tf_4(), by = c("l" = "h")) %>%
-      left_join(tf_3(), by = c("j" = "f"))
+      left_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
   )
 
   # deeper hierarchy available and `auto_detect = TRUE`
-  # for flatten: columns from tf_5 + tf_4 + tf_3 + tf_4_2 + tf_6 are combined in one table, 9 cols in total
+  # for flatten: columns from tf_5 + tf_4 + tf_3 + tf_4_2 + tf_6 are combined in one table, 10 cols in total
   expect_identical(
     ncol(dm_squash_to_tbl(dm_more_complex(), tf_5)),
-    9L
+    10L
   )
 
 
@@ -181,7 +181,7 @@ test_that("`dm_squash_to_tbl()` does the right things", {
     dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = full_join),
     tf_5() %>%
       full_join(tf_4(), by = c("l" = "h")) %>%
-      full_join(tf_3(), by = c("j" = "f"))
+      full_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
   )
 
   # skipping inner_join, not gaining new info

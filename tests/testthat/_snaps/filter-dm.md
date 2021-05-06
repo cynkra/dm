@@ -1,3 +1,48 @@
+# data structure
+
+    Code
+      dm_more_complex() %>% dm_paste(options = c("select", "keys"))
+    Message <cliMessage>
+      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6, tf_7, tf_6_2, tf_4_2, a, b, c, d, e) %>%
+        dm::dm_select(tf_1, a, b) %>%
+        dm::dm_select(tf_2, c, d, e, e1) %>%
+        dm::dm_select(tf_3, f, f1, g) %>%
+        dm::dm_select(tf_4, h, i, j, j1) %>%
+        dm::dm_select(tf_5, k, l, m) %>%
+        dm::dm_select(tf_6, n, o) %>%
+        dm::dm_select(tf_7, p, q) %>%
+        dm::dm_select(tf_6_2, p, f, f1) %>%
+        dm::dm_select(tf_4_2, r, s, t) %>%
+        dm::dm_select(a, a_1, a_2) %>%
+        dm::dm_select(b, b_1, b_2, b_3) %>%
+        dm::dm_select(c, c_1) %>%
+        dm::dm_select(d, d_1, b_1) %>%
+        dm::dm_select(e, e_1, b_1) %>%
+        dm::dm_add_pk(tf_1, a) %>%
+        dm::dm_add_pk(tf_2, c) %>%
+        dm::dm_add_pk(tf_3, c(f, f1)) %>%
+        dm::dm_add_pk(tf_4, h) %>%
+        dm::dm_add_pk(tf_5, k) %>%
+        dm::dm_add_pk(tf_6, n) %>%
+        dm::dm_add_pk(tf_6_2, p) %>%
+        dm::dm_add_pk(tf_4_2, r) %>%
+        dm::dm_add_pk(a, a_1) %>%
+        dm::dm_add_pk(b, b_1) %>%
+        dm::dm_add_pk(c, c_1) %>%
+        dm::dm_add_pk(d, d_1) %>%
+        dm::dm_add_pk(e, e_1) %>%
+        dm::dm_add_fk(b, b_2, a) %>%
+        dm::dm_add_fk(b, b_3, c) %>%
+        dm::dm_add_fk(d, b_1, b) %>%
+        dm::dm_add_fk(e, b_1, b) %>%
+        dm::dm_add_fk(tf_2, d, tf_1) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
+        dm::dm_add_fk(tf_5, l, tf_4) %>%
+        dm::dm_add_fk(tf_5, l, tf_4_2) %>%
+        dm::dm_add_fk(tf_5, m, tf_6) %>%
+        dm::dm_add_fk(tf_6_2, c(f, f1), tf_3)
+
 # we get filtered/unfiltered tables with respective funs
 
     Code
@@ -14,29 +59,29 @@
       4     7 G    
       
       $tf_2
-      # A tibble: 4 x 3
-        c         d e    
-        <chr> <int> <chr>
-      1 cat       7 F    
-      2 dog       6 E    
-      3 seal      4 F    
-      4 worm      5 G    
+      # A tibble: 4 x 4
+        c         d e        e1
+        <chr> <int> <chr> <int>
+      1 cat       7 F         6
+      2 dog       6 E         5
+      3 seal      4 F         6
+      4 worm      5 G         7
       
       $tf_3
-      # A tibble: 3 x 2
-        f     g    
-        <chr> <chr>
-      1 E     four 
-      2 F     five 
-      3 G     six  
+      # A tibble: 3 x 3
+        f        f1 g    
+        <chr> <int> <chr>
+      1 E         5 four 
+      2 F         6 five 
+      3 G         7 six  
       
       $tf_4
-      # A tibble: 3 x 3
-        h     i     j    
-        <chr> <chr> <chr>
-      1 c     five  E    
-      2 d     six   F    
-      3 e     seven F    
+      # A tibble: 3 x 4
+        h     i     j        j1
+        <chr> <chr> <chr> <int>
+      1 c     five  E         5
+      2 d     six   F         6
+      3 e     seven F         6
       
       $tf_5
       # A tibble: 3 x 3
@@ -76,29 +121,29 @@
       3     4 e     streetlamp
       
       $tf_4
-      # A tibble: 3 x 3
-        h     i     j    
-        <chr> <chr> <chr>
-      1 c     five  E    
-      2 d     six   F    
-      3 e     seven F    
+      # A tibble: 3 x 4
+        h     i     j        j1
+        <chr> <chr> <chr> <int>
+      1 c     five  E         5
+      2 d     six   F         6
+      3 e     seven F         6
       
       $tf_3
-      # A tibble: 3 x 2
-        f     g    
-        <chr> <chr>
-      1 E     four 
-      2 F     five 
-      3 G     six  
+      # A tibble: 3 x 3
+        f        f1 g    
+        <chr> <int> <chr>
+      1 E         5 four 
+      2 F         6 five 
+      3 G         7 six  
       
       $tf_2
-      # A tibble: 4 x 3
-        c         d e    
-        <chr> <int> <chr>
-      1 cat       7 F    
-      2 dog       6 E    
-      3 seal      4 F    
-      4 worm      5 G    
+      # A tibble: 4 x 4
+        c         d e        e1
+        <chr> <int> <chr> <int>
+      1 cat       7 F         6
+      2 dog       6 E         5
+      3 seal      4 F         6
+      4 worm      5 G         7
       
       $tf_1
       # A tibble: 4 x 2
@@ -124,24 +169,24 @@
       2     7 G    
       
       $tf_2
-      # A tibble: 2 x 3
-        c         d e    
-        <chr> <int> <chr>
-      1 cat       7 F    
-      2 seal      4 F    
+      # A tibble: 2 x 4
+        c         d e        e1
+        <chr> <int> <chr> <int>
+      1 cat       7 F         6
+      2 seal      4 F         6
       
       $tf_3
-      # A tibble: 1 x 2
-        f     g    
-        <chr> <chr>
-      1 F     five 
+      # A tibble: 1 x 3
+        f        f1 g    
+        <chr> <int> <chr>
+      1 F         6 five 
       
       $tf_4
-      # A tibble: 2 x 3
-        h     i     j    
-        <chr> <chr> <chr>
-      1 d     six   F    
-      2 e     seven F    
+      # A tibble: 2 x 4
+        h     i     j        j1
+        <chr> <chr> <chr> <int>
+      1 d     six   F         6
+      2 e     seven F         6
       
       $tf_5
       # A tibble: 2 x 3

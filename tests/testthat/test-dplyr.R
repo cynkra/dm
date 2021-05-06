@@ -267,16 +267,21 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
     left_join(tf_2(), tf_4(), by = c("e" = "j"))
   )
 
+  expect_equivalent_tbl(
+    left_join(zoomed_dm(), tf_4, by = c("e" = "j", "e1" = "j1")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"))
+  )
+
   # explicitly select columns from RHS using argument `select`
   expect_equivalent_tbl(
     left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), e)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
-    left_join(tf_3(), select(tf_2(), c, e), by = c("f" = "e"))
+    left_join(tf_3(), select(tf_2(), c, e, e1), by = c("f" = "e", "f1" = "e1"))
   )
 
   # explicitly select and rename columns from RHS using argument `select`
   expect_equivalent_tbl(
     left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), d_new = d, e)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
-    left_join(tf_3(), select(tf_2(), c, d_new = d, e), by = c("f" = "e"))
+    left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"))
   )
 
   # a former FK-relation could not be tracked
@@ -395,127 +400,90 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
 # test key tracking for all methods ---------------------------------------
 
 # dm_for_filter(), zoomed to tf_2; PK: c; 2 outgoing FKs: d, e; no incoming FKS
-zoomed_grouped_out_dm <- dm_zoom_to(dm_for_filter(), tf_2) %>% group_by(c, e)
+zoomed_grouped_out_dm <- dm_zoom_to(dm_for_filter(), tf_2) %>% group_by(c, e, e1)
 
 # dm_for_filter(), zoomed to tf_3; PK: f; 2 incoming FKs: tf_4$j, tf_2$e; no outgoing FKS:
 zoomed_grouped_in_dm <- dm_zoom_to(dm_for_filter(), tf_3) %>% group_by(g)
 
 test_that("key tracking works", {
+  expect_snapshot({
+    "rename()"
 
-  # rename()
-
-  expect_identical(
     zoomed_grouped_out_dm %>%
       rename(c_new = c) %>%
       dm_update_zoomed() %>%
-      dm_get_pk(tf_2),
-    new_keys("c_new")
-  )
+      get_all_keys("tf_2")
 
-  expect_identical(
     zoomed_grouped_out_dm %>%
       rename(e_new = e) %>%
       dm_update_zoomed() %>%
-      dm_get_all_fks_impl() %>%
-      filter(child_table == "tf_2", parent_table == "tf_3") %>%
-      pull(child_fk_cols),
-    new_keys("e_new")
-  )
+      get_all_keys("tf_2")
 
-  expect_identical(
     # FKs should not be dropped when renaming the PK they are pointing to; tibble from `dm_get_all_fks()` shouldn't change
     zoomed_grouped_in_dm %>%
       rename(f_new = f) %>%
       dm_update_zoomed() %>%
-      dm_get_all_fks_impl(),
-    dm_for_filter() %>%
-      dm_get_all_fks_impl() %>%
-      # https://github.com/r-lib/vctrs/issues/1371
-      mutate(parent_pk_cols = new_keys(if_else(parent_pk_cols == new_keys("f"), list("f_new"), unclass(parent_pk_cols))))
-  )
+      get_all_keys("tf_3")
 
-  # summarize()
+    "summarize()"
 
-  expect_identical(
     # grouped by two key cols: "c" and "e" -> these two remain
     zoomed_grouped_out_dm %>%
       summarize(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys(c("c", "e"))
-  )
+      get_all_keys("new_tbl")
 
-  expect_identical(
     # grouped_by non-key col means, that no keys remain
     zoomed_grouped_in_dm %>%
       summarize(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys()
-  )
+      get_all_keys("new_tbl")
 
-  # transmute()
+    "transmute()"
 
-  expect_identical(
     # grouped by two key cols: "c" and "e" -> these two remain
     zoomed_grouped_out_dm %>%
       transmute(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys(c("c", "e"))
-  )
+      get_all_keys("new_tbl")
 
-  expect_identical(
     # grouped_by non-key col means, that no keys remain
     zoomed_grouped_in_dm %>%
       transmute(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys()
-  )
+      get_all_keys("new_tbl")
 
-  # mutate()
+    "mutate()"
 
-  expect_identical(
     # grouped by two key cols: "c" and "e" -> these two remain
     zoomed_grouped_out_dm %>%
       mutate(d_mean = mean(d), d = d * 2) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys(c("c", "e"))
-  )
+      get_all_keys("new_tbl")
 
-  expect_identical(
     # grouped_by non-key col means, that only key-columns that are not touched remain for mutate()
     zoomed_grouped_in_dm %>%
       mutate(f = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys()
-  )
+      get_all_keys("new_tbl")
 
-  expect_identical(
     # grouped_by non-key col means, that only key-columns that are not touched remain for
     zoomed_grouped_in_dm %>%
       mutate(g_new = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys("f")
-  )
+      get_all_keys("new_tbl")
 
-  # chain of renames & other transformations
+    "chain of renames & other transformations"
 
-  expect_identical(
     zoomed_grouped_out_dm %>%
       summarize(d_mean = mean(d)) %>%
       ungroup() %>%
       rename(e_new = e) %>%
-      group_by(e_new) %>%
+      group_by(e_new, e1) %>%
       transmute(c = paste0(c, "_animal")) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl"),
-    new_keys("e_new")
-  )
+      get_all_keys("new_tbl")
+  })
 
   # FKs that point to a PK that vanished, should also vanish
   pk_gone_dm <-
@@ -542,7 +510,7 @@ test_that("key tracking works", {
       dm_get_all_fks_impl(),
     dm_for_filter() %>%
       dm_get_all_fks_impl() %>%
-      filter(child_fk_cols != new_keys("e")) %>%
+      filter(child_table != "tf_2" | parent_table != "tf_3") %>%
       # https://github.com/r-lib/vctrs/issues/1371
       mutate(child_fk_cols = new_keys(if_else(child_fk_cols == new_keys("d"), list("d_new"), unclass(child_fk_cols))))
   )
@@ -633,12 +601,12 @@ test_that("key tracking works", {
 
 test_that("key tracking works for slice()", {
   skip_if_remote_src()
-  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% col_tracker_zoomed(), set_names(c("d", "e")))
+  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% col_tracker_zoomed(), set_names(c("d", "e", "e1")))
   expect_message(
-    expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2)) %>% col_tracker_zoomed(), set_names(c("c", "d", "e"))),
+    expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2)) %>% col_tracker_zoomed(), set_names(c("c", "d", "e", "e1"))),
     "Keeping PK"
   )
-  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% col_tracker_zoomed(), set_names(c("c", "d", "e")))
+  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% col_tracker_zoomed(), set_names(c("c", "d", "e", "e1")))
 })
 
 
