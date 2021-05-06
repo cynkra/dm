@@ -6,7 +6,7 @@ dm_upgrade <- function(dm) {
   is_v1 <- is_v1 || (!is_v2)
 
   if (is_v1) {
-    message("Upgrading dm object")
+    message("Upgrading dm object created with dm <= 0.2.0.")
     def <- unclass(dm)$def
     def$fks <- map2(def$fks, def$pks, ~ {
       list(.x)

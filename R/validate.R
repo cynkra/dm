@@ -11,59 +11,61 @@
 validate_dm <- function(x) {
   check_dm(x)
 
-  if (!identical(names(unclass(x)), "def")) abort_dm_invalid("A `dm` needs to be a list of one item named `def`.")
+  if (!identical(names(unclass(x)), "def")) {
+    abort_dm_invalid("A `dm` needs to be a list of one item named `def`.")
+  }
+
   def <- dm_get_def(x)
+
+  boilerplate <- dm_get_def(new_dm())
 
   table_names <- def$table
   if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
-  check_col_classes(def)
 
-  if (!all(map_lgl(def$data, ~ {
-    inherits(., "data.frame") || inherits(., "tbl_dbi")
-  }))) {
+  check_df_structure(def, boilerplate, "dm definition")
+
+  if (!all(map_lgl(def$data, ~ inherits(., "data.frame") || inherits(., "tbl_dbi")))) {
     abort_dm_invalid(
       "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `dm_get_tables()`."
     )
   }
-  if (!all_same_source(def$data)) abort_dm_invalid(error_txt_not_same_src())
-
-  if (nrow(def) == 0) {
-    return(invisible(x))
-  }
-  if (ncol(def) != 9) {
-    abort_dm_invalid(
-      glue(
-        "Number of columns of tibble defining `dm` is wrong: {as.character(ncol(def))} ",
-        "instead of 9."
-      )
-    )
+  if (!all_same_source(def$data)) {
+    abort_dm_invalid(error_txt_not_same_src())
   }
 
-  inner_names <- map(def, names)
-  if (!all(map_lgl(inner_names, is.null))) {
-    abort_dm_invalid("`def` must not have inner names.")
-  }
+  check_df_structure(c_list_of(def$pks), c_list_of(boilerplate$pks), "`pks` column")
+  check_df_structure(c_list_of(def$fks), c_list_of(boilerplate$fks), "`fks` column")
+  check_df_structure(c_list_of(def$filters), c_list_of(boilerplate$filters), "`filters` column")
 
-  fks <-
-    def$fks %>%
-    map_dfr(I) %>%
-    unnest(column)
-  check_fk_child_tables(fks$table, table_names)
   dm_col_names <- set_names(map(def$data, colnames), table_names)
-  check_colnames(fks, dm_col_names, "FK")
+
+  fks <- c_list_of(def$fks)
+  check_fk_child_tables(fks$table, table_names)
+
+  if (nrow(fks) > 0) {
+    fks %>%
+      unnest(column) %>%
+      check_colnames(dm_col_names, "FK")
+  }
+
   pks <-
-    select(def, table, pks) %>%
-    unnest(pks) %>%
-    unnest(column)
-  check_colnames(pks, dm_col_names, "PK")
+    def %>%
+    select(table, pks) %>%
+    unnest(pks)
+
+  if (nrow(pks) > 0) {
+    pks %>%
+      unnest(column) %>%
+      check_colnames(dm_col_names, "PK")
+  }
+
   check_one_zoom(def, is_zoomed(x))
-  if (!all(map_lgl(def$zoom, ~ {
-    inherits(., "data.frame") || inherits(., "tbl_dbi") || inherits(., "NULL")
-  }))) {
+  if (!all(map_lgl(compact(def$zoom), ~ inherits(., "data.frame") || inherits(., "tbl_dbi")))) {
     abort_dm_invalid(
       "Not all entries in `def$zoom` are of class `data.frame`, `tbl_dbi` or `NULL`."
     )
   }
+
   invisible(x)
 }
 
@@ -73,18 +75,38 @@ debug_validate_dm <- function(dm) {
   dm
 }
 
-check_col_classes <- function(def) {
-  # Called for its side effect of checking type compatibility
-  vctrs::vec_ptype2(def, dm_get_def(new_dm()))
+check_dm <- function(dm) {
+  if (!is_dm(dm)) {
+    abort_is_not_dm(class(dm))
+  }
+}
 
-  invisible()
+check_df_structure <- function(check, boilerplate, where) {
+  force(where)
+
+  if (!identical(names(check), names(boilerplate))) {
+    abort_dm_invalid(glue("Inconsistent column names in {where}: {commas(names(check), Inf)} vs. {commas(names(boilerplate), Inf)}."))
+  }
+
+  if (!identical(check[0, ], boilerplate[0, ])) {
+    abort_dm_invalid(glue("Inconsistent column types in {where}."))
+  }
+
+  inner_names <- map(check, vctrs::vec_names)
+  if (!all(map_lgl(inner_names, is.null))) {
+    abort_dm_invalid(glue("Inner names in {where}."))
+  }
 }
 
 check_fk_child_tables <- function(child_tables, dm_tables) {
-  if (!all(map_lgl(child_tables, ~ {
-    . %in% dm_tables
-  }))) {
+  if (!all(map_lgl(child_tables, ~ .x %in% dm_tables))) {
     abort_dm_invalid("FK child table names not in `dm` table names.")
+  }
+}
+
+check_colnames <- function(key_tibble, dm_col_names, which) {
+  if (!all(map2_lgl(key_tibble$table, key_tibble$column, ~ ..2 %in% dm_col_names[[..1]]))) {
+    abort_dm_invalid(glue("At least one {which} column name not in `dm` tables' column names."))
   }
 }
 

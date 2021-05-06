@@ -6,15 +6,15 @@ test_that("can upgrade from v1", {
 
   dm_v1 <- readRDS("dm/v1.rds")
   expect_message(def <- dm_get_def(dm_v1))
-  expect_silent(dm <- new_dm3(dm_v1))
-  expect_true(validate_dm(dm))
+  expect_silent(dm <- new_dm3(def))
+  expect_silent(validate_dm(dm))
   expect_false(is_zoomed(dm))
 })
 
 test_that("can upgrade zoomed from v1", {
   dm_v1_zoomed <- readRDS("dm/v1_zoomed.rds")
   expect_message(def <- dm_get_def(dm_v1_zoomed))
-  expect_silent(dm <- new_dm3(dm_v1_zoomed, zoomed = TRUE))
-  expect_true(validate_dm(dm))
+  expect_silent(dm <- new_dm3(def, zoomed = TRUE))
+  expect_silent(validate_dm(dm))
   expect_true(is_zoomed(dm))
 })

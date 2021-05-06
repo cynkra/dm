@@ -286,7 +286,7 @@ dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name) {
 
   structure(
     reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~ dm_add_fk_impl(..1, new_tbl_name, ..2, ..3), .init = dm),
-    class = c("zoomed_dm", "dm")
+    class = c("zoomed_dm", class(dm))
   )
 }
 

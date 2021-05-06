@@ -48,10 +48,6 @@ uncurly <- function(call) {
   call[[2]][[2]]
 }
 
-check_dm <- function(dm) {
-  if (!is_dm(dm)) abort_is_not_dm(class(dm))
-}
-
 is_this_a_test <- function() {
   # Only run if the top level call is devtools::test() or testthat::test_check()
 
@@ -67,14 +63,6 @@ is_this_a_test <- function() {
   is_testing <- rlang::is_installed("testthat") && testthat::is_testing()
 
   is_test_call || is_testing
-}
-
-check_colnames <- function(key_tibble, dm_col_names, which) {
-  if (!all(map2_lgl(key_tibble$table, key_tibble$column, ~ {
-    ..2 %in% dm_col_names[[..1]]
-  }))) {
-    abort_dm_invalid(glue("At least one {which} column name not in `dm` tables' column names."))
-  }
 }
 
 

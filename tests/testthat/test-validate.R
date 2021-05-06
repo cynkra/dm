@@ -8,6 +8,13 @@ test_that("validator is silent", {
     expect_silent(validate_dm(dm_for_filter_w_cycle())),
     dm_for_filter_w_cycle()
   )
+
+  # Corner case
+  expect_silent(
+    dm(a = tibble(x = 1)) %>%
+      dm_add_pk(a, x) %>%
+      validate_dm()
+  )
 })
 
 test_that("validator speaks up when something's wrong", {
