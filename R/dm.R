@@ -130,7 +130,7 @@ new_dm <- function(tables = list()) {
 new_dm3 <- function(def, zoomed = FALSE) {
   class <- c(
     if (zoomed) "zoomed_dm",
-    "dm_v1",
+    "dm_v2",
     "dm"
   )
   structure(list(def = def), class = class)
@@ -161,81 +161,6 @@ new_zoom <- function() {
 
 new_col_tracker_zoom <- function() {
   tibble(table = character(), col_tracker_zoom = list())
-}
-
-#' Validator
-#'
-#' `validate_dm()` checks the internal consistency of a `dm` object.
-#'
-#' @param x An object.
-#'
-#' @return For `validate_dm()`: Returns the `dm`, invisibly, after finishing all checks.
-#'
-#' @rdname dm
-#' @export
-validate_dm <- function(x) {
-  check_dm(x)
-
-  if (!identical(names(unclass(x)), "def")) abort_dm_invalid("A `dm` needs to be a list of one item named `def`.")
-  def <- dm_get_def(x)
-
-  table_names <- def$table
-  if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
-  check_col_classes(def)
-
-  if (!all(map_lgl(def$data, ~ {
-    inherits(., "data.frame") || inherits(., "tbl_dbi")
-  }))) {
-    abort_dm_invalid(
-      "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `dm_get_tables()`."
-    )
-  }
-  if (!all_same_source(def$data)) abort_dm_invalid(error_txt_not_same_src())
-
-  if (nrow(def) == 0) {
-    return(invisible(x))
-  }
-  if (ncol(def) != 9) {
-    abort_dm_invalid(
-      glue(
-        "Number of columns of tibble defining `dm` is wrong: {as.character(ncol(def))} ",
-        "instead of 9."
-      )
-    )
-  }
-
-  inner_names <- map(def, names)
-  if (!all(map_lgl(inner_names, is.null))) {
-    abort_dm_invalid("`def` must not have inner names.")
-  }
-
-  fks <-
-    def$fks %>%
-    map_dfr(I) %>%
-    unnest(column)
-  check_fk_child_tables(fks$table, table_names)
-  dm_col_names <- set_names(map(def$data, colnames), table_names)
-  check_colnames(fks, dm_col_names, "FK")
-  pks <-
-    select(def, table, pks) %>%
-    unnest(pks) %>%
-    unnest(column)
-  check_colnames(pks, dm_col_names, "PK")
-  check_one_zoom(def, is_zoomed(x))
-  if (!all(map_lgl(def$zoom, ~ {
-    inherits(., "data.frame") || inherits(., "tbl_dbi") || inherits(., "NULL")
-  }))) {
-    abort_dm_invalid(
-      "Not all entries in `def$zoom` are of class `data.frame`, `tbl_dbi` or `NULL`."
-    )
-  }
-  invisible(x)
-}
-
-debug_validate_dm <- function(dm) {
-  # Uncomment to enable validation for troubleshooting
-  # validate_dm(dm)
-  dm
 }
 
 dm_get_src_impl <- function(x) {
@@ -287,6 +212,9 @@ dm_get_tables_impl <- function(x) {
 }
 
 dm_get_def <- function(x) {
+  if (!inherits(x, "dm_v2")) {
+    x <- dm_upgrade(x)
+  }
   unclass(x)$def
 }
 
