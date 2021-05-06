@@ -1,12 +1,9 @@
 dm_upgrade <- function(dm) {
-  is_v1 <- inherits(dm, "dm_v1")
-  is_v2 <- inherits(dm, "dm_v2")
+  # Versioned dm objects introduced in dm 0.2.1, unversioned dm same as version 0
+  version <- attr(dm, "version") %||% 0L
 
-  # Versioned dm objects introduced in dm 0.2.0, unversioned dm same as dm_v1
-  is_v1 <- is_v1 || (!is_v2)
-
-  if (is_v1) {
-    message("Upgrading dm object created with dm <= 0.2.0.")
+  if (version < 1) {
+    message("Upgrading dm object created with dm <= 0.2.1.")
     def <- unclass(dm)$def
     def$fks <- map2(def$fks, def$pks, ~ {
       list(.x)
