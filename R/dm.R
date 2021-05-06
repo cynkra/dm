@@ -130,10 +130,16 @@ new_dm <- function(tables = list()) {
 new_dm3 <- function(def, zoomed = FALSE) {
   class <- c(
     if (zoomed) "zoomed_dm",
-    "dm_v2",
     "dm"
   )
-  structure(list(def = def), class = class)
+  structure(list(def = def), class = class, version = 1L)
+}
+
+dm_get_def <- function(x) {
+  if (!identical(attr(x, "version"), 1L)) {
+    x <- dm_upgrade(x)
+  }
+  unclass(x)$def
 }
 
 new_pk <- function(column = list()) {
@@ -209,13 +215,6 @@ dm_get_tables <- function(x) {
 dm_get_tables_impl <- function(x) {
   def <- dm_get_def(x)
   set_names(def$data, def$table)
-}
-
-dm_get_def <- function(x) {
-  if (!inherits(x, "dm_v2")) {
-    x <- dm_upgrade(x)
-  }
-  unclass(x)$def
 }
 
 unnest_pks <- function(def) {
