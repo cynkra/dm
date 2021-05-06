@@ -460,17 +460,6 @@ error_txt_only_for_local_src <- function(src_class) {
   glue("`nest_join.zoomed_dm()` works only for a local `src`, not on a database with `src`-class: {src_class}.")
 }
 
-# dm invalid --------------------------------------------------------------
-
-abort_dm_invalid <- function(why) {
-  abort(error_txt_dm_invalid(why), .subclass = dm_error_full("dm_invalid"))
-}
-
-error_txt_dm_invalid <- function(why) {
-  glue("This `dm` is invalid, reason: {why}")
-}
-
-
 # Errors for `pull_tbl.dm()` -----------------------------
 
 abort_no_table_provided <- function() {
