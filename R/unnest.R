@@ -37,3 +37,27 @@ unnest_list_of_df <- function(x, col) {
   out <- vec_cbind(out, c_list_of(col_data))
   out
 }
+
+unnest_df <- function(x, col, ptype) {
+  col_data <- x[[col]]
+
+  out <- x[rep(seq_len(nrow(x)), map_int(col_data, vec_size)), setdiff(names(x), col)]
+
+  if (length(col_data) > 0) {
+    col_data <- vec_rbind(!!!col_data)
+    if (!identical(col_data[0, ], ptype)) {
+      abort(paste0(
+        "Internal: unnest_df() ptype mismatch."
+        # "Internal: unnest_df() ptype mismatch, must be ",
+        # commas(map(ptype, class), Inf),
+        # ", not ",
+        # commas(map(col_data, class), Inf)
+      ))
+    }
+  } else {
+    col_data <- ptype
+  }
+
+  out <- vec_cbind(out, col_data)
+  out
+}

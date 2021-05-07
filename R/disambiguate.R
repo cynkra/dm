@@ -78,7 +78,7 @@ explain_col_rename <- function(recipe) {
   msg_core <-
     recipe %>%
     mutate(renames = map(renames, ~ enframe(., "new", "old"))) %>%
-    unnest(renames) %>%
+    unnest_df("renames", tibble(new = character(), old = character())) %>%
     nest(data = -old) %>%
     mutate(sub_text = map_chr(data, ~ paste0(.x$new, collapse = ", "))) %>%
     mutate(text = paste0("* ", old, " -> ", sub_text)) %>%
