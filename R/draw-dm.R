@@ -141,7 +141,7 @@ dm_get_all_columns <- function(x) {
     map(colnames) %>%
     map(~ enframe(., "id", "column")) %>%
     enframe("table") %>%
-    unnest(value) %>%
+    unnest_df("value", tibble(id = integer(), column = character())) %>%
     select(table, column, id)
 }
 
@@ -155,7 +155,7 @@ dm_get_all_column_types <- function(x) {
       )
     ) %>%
     enframe("table") %>%
-    unnest(value) %>%
+    unnest_df("value", tibble(column = character(), value = list(), id = integer())) %>%
     mutate(type = map_chr(value, vec_ptype_abbr), .keep = "unused")
 }
 
