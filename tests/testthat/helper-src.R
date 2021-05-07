@@ -498,9 +498,9 @@ bad_dm %<--% {
 }
 
 dm_nycflights_small_base %<-% {
-  airlines <- nycflights13::airlines
-  airports <- nycflights13::airports
-  planes <- nycflights13::planes
+  airlines <- airlines_subset()
+  airports <- airports_subset()
+  planes <- planes_subset()
   flights <- flights_subset()
   weather <- weather_subset()
 
