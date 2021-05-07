@@ -132,7 +132,10 @@ new_dm3 <- function(def, zoomed = FALSE) {
     if (zoomed) "zoomed_dm",
     "dm"
   )
-  structure(list(def = def), class = class, version = 1L)
+  out <- structure(list(def = def), class = class, version = 1L)
+  # Enable for strict tests:
+  # validate_dm(out)
+  out
 }
 
 dm_get_def <- function(x) {
