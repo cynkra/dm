@@ -310,7 +310,7 @@ nest_compat <- function(.data, ...) {
     remove <- eval_select_indices(quo(c(...)), colnames(.data))
     keep <- setdiff(seq_along(.data), remove)
 
-    nest <- vctrs::new_list_of(list(), ptype = .data %>% select(!!!remove))
+    nest <- new_list_of(list(), ptype = .data %>% select(!!!remove))
 
     .data %>%
       select(!!!keep) %>%

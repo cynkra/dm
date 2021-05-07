@@ -2,7 +2,8 @@
 #' @importFrom glue glue glue_sql
 #' @import rlang
 #' @importFrom vctrs vec_ptype2 vec_ptype_abbr vec_slice vec_cast vec_proxy_compare vec_data vec_c
-#' @importFrom vctrs vec_names vec_as_names vec_cbind vec_rbind list_of as_list_of vec_size vec_match
+#' @importFrom vctrs vec_names vec_as_names vec_cbind vec_rbind list_of as_list_of new_list_of
+#' @importFrom vctrs vec_size vec_match
 #' @import dplyr
 #' @import DBI
 #' @import tibble
