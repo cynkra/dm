@@ -262,7 +262,7 @@ dm_get_filters <- function(x) {
   filter_df <-
     dm_get_def(x) %>%
     select(table, filters) %>%
-    unnest(filters)
+    unnest_list_of_df("filters")
 
   # FIXME: Should work better with dplyr 0.9.0
   if (!("filter_expr" %in% names(filter_df))) {

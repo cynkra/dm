@@ -49,7 +49,7 @@ validate_dm <- function(x) {
   pks <-
     def %>%
     select(table, pks) %>%
-    unnest(pks)
+    unnest_list_of_df("pks")
 
   pks %>%
     unnest_col("column", character()) %>%
