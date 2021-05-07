@@ -92,7 +92,7 @@ check_df_structure <- function(check, boilerplate, where) {
     abort_dm_invalid(glue("Inconsistent column types in {where}."))
   }
 
-  inner_names <- map(check, vctrs::vec_names)
+  inner_names <- map(check, vec_names)
   if (!all(map_lgl(inner_names, is.null))) {
     abort_dm_invalid(glue("Inner names in {where}."))
   }
