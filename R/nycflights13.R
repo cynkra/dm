@@ -27,11 +27,12 @@
 #'   dm_draw()
 dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE) {
   if (subset) {
-    flights <- flights_subset()
-    weather <- weather_subset()
-    airlines <- airlines_subset()
-    airports <- airports_subset()
-    planes <- planes_subset()
+    data <- nycflights_subset()
+    flights <- data$flights
+    weather <- data$weather
+    airlines <- data$airlines
+    airports <- data$airports
+    planes <- data$planes
   } else {
     flights <- nycflights13::flights
     weather <- nycflights13::weather
@@ -75,31 +76,6 @@ dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE, compound
   dm
 }
 
-flights_subset <- function() {
-  nycflights13::flights %>%
-    filter(day == 10, month %in% c(1, 2))
-}
-
-weather_subset <- function() {
-  nycflights13::weather %>%
-    filter(day == 10, month %in% c(1, 2))
-}
-
-airlines_subset <- function() {
-  nycflights13::airlines %>%
-    semi_join(flights_subset(), by = "carrier")
-}
-
-airports_subset <- function() {
-  nycflights13::airports %>%
-    left_join(flights_subset() %>% select(origin, origin_day = day), by = c("faa" = "origin")) %>%
-    left_join(flights_subset() %>% select(dest, dest_day = day), by = c("faa" = "dest")) %>%
-    filter(!is.na(origin_day) | !is.na(dest_day)) %>%
-    select(-origin_day, -dest_day) %>%
-    distinct()
-}
-
-planes_subset <- function() {
-  nycflights13::planes %>%
-    semi_join(flights_subset(), by = "tailnum")
+nycflights_subset <- function() {
+  readRDS(system.file("extdata/nycflights13-small.rds", package = "dm"))
 }

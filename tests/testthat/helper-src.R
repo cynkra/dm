@@ -498,13 +498,7 @@ bad_dm %<--% {
 }
 
 dm_nycflights_small_base %<-% {
-  airlines <- airlines_subset()
-  airports <- airports_subset()
-  planes <- planes_subset()
-  flights <- flights_subset()
-  weather <- weather_subset()
-
-  dm(airlines, airports, flights, planes, weather)
+  dm(!!!dm_get_tables(dm_nycflights13()))
 }
 
 # Do not add PK and FK constraints to the database
