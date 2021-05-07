@@ -490,7 +490,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     }
 
     table_colnames <-
-      vctrs::vec_rbind(
+      vec_rbind(
         tibble(table = x_disambig_name, column = colnames(x_tbl)),
         tibble(table = y_disambig_name, column = names(selected_wo_by))
       )

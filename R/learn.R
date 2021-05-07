@@ -265,7 +265,7 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
       table = setdiff(table, pks$table),
       pks = vctrs::list_of(new_pk())
     ) %>%
-    vctrs::vec_rbind(pks)
+    vec_rbind(pks)
 
   # Legacy compatibility
   fks$column <- as.list(fks$column)
@@ -281,7 +281,7 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
       table = setdiff(table, fks$table),
       fks = vctrs::list_of(new_fk())
     ) %>%
-    vctrs::vec_rbind(fks)
+    vec_rbind(fks)
 
   # there are no filters at this stage
   filters <-

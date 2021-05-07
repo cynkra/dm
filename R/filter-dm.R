@@ -112,7 +112,7 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
   def <- dm_get_def(dm)
 
   i <- which(def$table == table)
-  def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(filter_exprs, zoomed))
+  def$filters[[i]] <- vec_rbind(def$filters[[i]], new_filter(filter_exprs, zoomed))
   new_dm3(def, zoomed = zoomed)
 }
 

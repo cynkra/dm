@@ -95,7 +95,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
     return(dm)
   }
 
-  def$fks[[i]] <- vctrs::vec_rbind(
+  def$fks[[i]] <- vec_rbind(
     fks,
     new_fk(table, list(column))
   )

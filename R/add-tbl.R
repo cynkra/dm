@@ -66,7 +66,7 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_f
   def_0$fks <- fks
   def_0$filters <- filters
 
-  new_dm3(vctrs::vec_rbind(def, def_0))
+  new_dm3(vec_rbind(def, def_0))
 }
 
 #' Remove tables
