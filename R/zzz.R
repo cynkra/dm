@@ -21,6 +21,7 @@
   # rigg(check_df_structure)
   # rigg(dm_insert_zoomed)
   # rigg(dm_select_tbl_impl)
+  # rigg(dm_insert_zoomed_outgoing_fks)
 }
 
 rigg <- function(fun) {
