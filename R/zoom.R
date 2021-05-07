@@ -273,29 +273,23 @@ update_zoomed_outgoing <- function(fks, tbl_name, tracked_cols) {
 dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- col_tracker_zoomed(dm)
-  old_out_keys <-
+
+  new_out_keys <-
     dm_get_all_fks_impl(dm) %>%
     filter(child_table == !!old_tbl_name) %>%
-    select(table = parent_table, column = child_fk_cols)
-
-  old_and_new_out_keys <-
-    old_out_keys %>%
-    filter(map_lgl(column, ~ all(.x %in% !!tracked_cols))) %>%
+    filter(map_lgl(child_fk_cols, ~ all(.x %in% !!tracked_cols))) %>%
     distinct() %>%
-    mutate(new_column = new_keys(map(column, ~ (!!names(tracked_cols))[match(.x, !!tracked_cols, nomatch = 0L)])))
+    mutate(child_fk_cols = new_keys(map(child_fk_cols, ~ (!!names(tracked_cols))[match(.x, !!tracked_cols, nomatch = 0L)])))
 
-  structure(
-    reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~ dm_add_fk_impl(..1, new_tbl_name, ..2, ..3), .init = dm),
-    class = c("zoomed_dm", class(dm))
-  )
+  dm_add_fk_impl(dm, rep_len(new_tbl_name, length(new_out_keys$child_fk_cols)), new_out_keys$child_fk_cols, new_out_keys$parent_table, new_out_keys$parent_pk_cols)
 }
 
 col_tracker_zoomed <- function(dm) {
   dm_get_zoom(dm, "col_tracker_zoom")[[1]][[1]]
 }
 
-tbl_zoomed <- function(dm) {
-  dm_get_zoom(dm, "zoom")[[1]][[1]]
+tbl_zoomed <- function(dm, quiet = FALSE) {
+  dm_get_zoom(dm, "zoom", quiet = quiet)[[1]][[1]]
 }
 
 orig_name_zoomed <- function(dm) {

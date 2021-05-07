@@ -138,9 +138,9 @@ new_dm3 <- function(def, zoomed = FALSE) {
   out
 }
 
-dm_get_def <- function(x) {
+dm_get_def <- function(x, quiet = FALSE) {
   if (!identical(attr(x, "version"), 1L)) {
-    x <- dm_upgrade(x)
+    x <- dm_upgrade(x, quiet)
   }
   unclass(x)$def
 }
@@ -150,9 +150,9 @@ new_pk <- function(column = list()) {
   tibble(column = column)
 }
 
-new_fk <- function(table = character(), column = list()) {
-  stopifnot(is.list(column))
-  tibble(table = table, column = column)
+new_fk <- function(ref_column = list(), table = character(), column = list()) {
+  stopifnot(is.list(column), is.list(ref_column), length(table) == length(column), length(table) == length(ref_column))
+  tibble(ref_column = ref_column, table = table, column = column)
 }
 
 new_filter <- function(quos = list(), zoomed = logical()) {
@@ -215,8 +215,8 @@ dm_get_tables <- function(x) {
   dm_get_tables_impl(x)
 }
 
-dm_get_tables_impl <- function(x) {
-  def <- dm_get_def(x)
+dm_get_tables_impl <- function(x, quiet = FALSE) {
+  def <- dm_get_def(x, quiet)
   set_names(def$data, def$table)
 }
 
@@ -270,9 +270,9 @@ dm_get_filters <- function(x) {
     mutate(filter = unname(filter))
 }
 
-dm_get_zoom <- function(x, cols = c("table", "zoom")) {
+dm_get_zoom <- function(x, cols = c("table", "zoom"), quiet = FALSE) {
   # Performance
-  def <- dm_get_def(x)
+  def <- dm_get_def(x, quiet)
   zoom <- def$zoom
   where <- which(lengths(zoom) != 0)
   if (length(where) != 1) {
@@ -475,12 +475,12 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 #' @export
 `[[.dm` <- function(x, id) { # for both dm and zoomed_dm
   if (is.numeric(id)) id <- src_tbls_impl(x)[id] else id <- as_string(id)
-  tbl_impl(x, id)
+  tbl_impl(x, id, quiet = TRUE)
 }
 
 #' @export
 `[[.zoomed_dm` <- function(x, id) {
-  `[[`(tbl_zoomed(x), id)
+  `[[`(tbl_zoomed(x, quiet = TRUE), id)
 }
 
 #' @export
@@ -508,12 +508,12 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 #' @export
 names.dm <- function(x) { # for both dm and zoomed_dm
-  src_tbls_impl(x)
+  src_tbls_impl(x, quiet = TRUE)
 }
 
 #' @export
 names.zoomed_dm <- function(x) {
-  names(tbl_zoomed(x))
+  names(tbl_zoomed(x, quiet = TRUE))
 }
 
 
@@ -524,12 +524,12 @@ names.zoomed_dm <- function(x) {
 
 #' @export
 length.dm <- function(x) { # for both dm and zoomed_dm
-  length(src_tbls_impl(x))
+  length(src_tbls_impl(x, quiet = TRUE))
 }
 
 #' @export
 length.zoomed_dm <- function(x) {
-  length(tbl_zoomed(x))
+  length(tbl_zoomed(x, quiet = TRUE))
 }
 
 #' @export
@@ -540,7 +540,7 @@ length.zoomed_dm <- function(x) {
 #' @export
 str.dm <- function(object, ...) { # for both dm and zoomed_dm
   object <-
-    dm_get_def(object) %>%
+    dm_get_def(object, quiet = TRUE) %>%
     select(table, pks, fks, filters)
   str(object)
 }
@@ -548,14 +548,14 @@ str.dm <- function(object, ...) { # for both dm and zoomed_dm
 #' @export
 str.zoomed_dm <- function(object, ...) {
   object <-
-    dm_get_def(object) %>%
+    dm_get_def(object, quiet = TRUE) %>%
     mutate(zoom = if_else(map_lgl(zoom, is_null), NA_character_, table)) %>%
     select(zoom, table, pks, fks, filters)
   str(object)
 }
 
-tbl_impl <- function(dm, from) {
-  out <- dm_get_tables_impl(dm)[[from]]
+tbl_impl <- function(dm, from, quiet = FALSE) {
+  out <- dm_get_tables_impl(dm, quiet)[[from]]
 
   if (is.null(out)) {
     abort_table_not_in_dm(from, src_tbls_impl(dm))
@@ -564,8 +564,8 @@ tbl_impl <- function(dm, from) {
   out
 }
 
-src_tbls_impl <- function(dm) {
-  dm_get_def(dm)$table
+src_tbls_impl <- function(dm, quiet = FALSE) {
+  dm_get_def(dm, quiet)$table
 }
 
 #' Materialize
@@ -633,7 +633,7 @@ collect.zoomed_dm <- function(x, ...) {
 # FIXME: what about 'dim.dm()'?
 #' @export
 dim.zoomed_dm <- function(x) { # dm method provided by base
-  dim(tbl_zoomed(x))
+  dim(tbl_zoomed(x, quiet = TRUE))
 }
 
 #' @export
