@@ -86,7 +86,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 
   fks <- def$fks[[i]]
 
-  existing <- fks$table == table & !is.na(vctrs::vec_match(fks$column, list(column)))
+  existing <- fks$table == table & !is.na(vec_match(fks$column, list(column)))
   if (any(existing)) {
     if (dm_is_strict_keys(dm)) {
       abort_fk_exists(table, column, ref_table)
@@ -274,7 +274,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
 
   fks <- def$fks[[i]]
 
-  ii <- fks$table != table_name | is.na(vctrs::vec_match(fks$column, unclass(cols)))
+  ii <- fks$table != table_name | is.na(vec_match(fks$column, unclass(cols)))
   if (all(ii)) {
     abort_is_not_fkc(table_name, cols, ref_table_name)
   }
