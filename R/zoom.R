@@ -81,8 +81,9 @@ dm_zoom_to <- function(dm, table) {
   where <- which(def$table == zoom)
   stopifnot(length(where) == 1)
 
-  def$zoom[[where]] <- def$data[[where]]
-  def$col_tracker_zoom[[where]] <- get_all_cols(dm, zoom)
+  zoomed_tbl <- def$data[[where]]
+  def$zoom[[where]] <- zoomed_tbl
+  def$col_tracker_zoom[[where]] <- set_names(colnames(zoomed_tbl))
 
   new_dm3(def, zoomed = TRUE)
 }
