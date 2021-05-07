@@ -45,18 +45,14 @@ get_table_colnames <- function(dm, tables = NULL) {
     def %>%
     mutate(column = map(data, colnames)) %>%
     select(table, column) %>%
-    unnest(column)
+    unnest_col("column", character())
 
   pks <- dm_get_all_pks_def_impl(def)
-
-  if (nrow(pks) == 0) {
-    return(table_colnames)
-  }
 
   keep_colnames <-
     pks %>%
     rename(column = pk_col) %>%
-    unnest(column)
+    unnest_col("column", character())
 
   table_colnames %>%
     # in case of flattening, the primary key columns will never be responsible for the name
