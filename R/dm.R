@@ -226,7 +226,7 @@ unnest_pks <- function(def) {
     table = rep(def$table, map_int(def$pks, nrow))
   )
 
-  pk_df <- vctrs::vec_cbind(pk_df, vec_rbind(!!!def$pks))
+  pk_df <- vec_cbind(pk_df, vec_rbind(!!!def$pks))
 
   # FIXME: Should work better with dplyr 0.9.0
   if (!("column" %in% names(pk_df))) {
