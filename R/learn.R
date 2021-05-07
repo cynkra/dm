@@ -263,9 +263,9 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
   pks <-
     tibble(
       table = setdiff(table, pks$table),
-      pks = vctrs::list_of(new_pk())
+      pks = list_of(new_pk())
     ) %>%
-    vctrs::vec_rbind(pks)
+    vec_rbind(pks)
 
   # Legacy compatibility
   fks$column <- as.list(fks$column)
@@ -279,15 +279,15 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
   fks <-
     tibble(
       table = setdiff(table, fks$table),
-      fks = vctrs::list_of(new_fk())
+      fks = list_of(new_fk())
     ) %>%
-    vctrs::vec_rbind(fks)
+    vec_rbind(fks)
 
   # there are no filters at this stage
   filters <-
     tibble(
       table = table,
-      filters = vctrs::list_of(new_filter())
+      filters = list_of(new_filter())
     )
 
   def <-
@@ -310,7 +310,7 @@ nest_compat <- function(.data, ...) {
     remove <- eval_select_indices(quo(c(...)), colnames(.data))
     keep <- setdiff(seq_along(.data), remove)
 
-    nest <- vctrs::new_list_of(list(), ptype = .data %>% select(!!!remove))
+    nest <- new_list_of(list(), ptype = .data %>% select(!!!remove))
 
     .data %>%
       select(!!!keep) %>%
@@ -318,6 +318,6 @@ nest_compat <- function(.data, ...) {
   } else {
     .data %>%
       nest(...) %>%
-      mutate_at(vars(!!!new_col), vctrs::as_list_of)
+      mutate_at(vars(!!!new_col), as_list_of)
   }
 }

@@ -69,7 +69,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
     }
   }
 
-  names(tbls) <- vctrs::vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
+  names(tbls) <- vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
   dm <- new_dm(tbls)
   validate_dm(dm)
   dm
@@ -101,19 +101,19 @@ new_dm <- function(tables = list()) {
   pks <-
     tibble(
       table = table,
-      pks = vctrs::list_of(new_pk())
+      pks = list_of(new_pk())
     )
 
   fks <-
     tibble(
       table = table,
-      fks = vctrs::list_of(new_fk())
+      fks = list_of(new_fk())
     )
 
   filters <-
     tibble(
       table = table,
-      filters = vctrs::list_of(new_filter())
+      filters = list_of(new_filter())
     )
 
   def <-
@@ -226,7 +226,7 @@ unnest_pks <- function(def) {
     table = rep(def$table, map_int(def$pks, nrow))
   )
 
-  pk_df <- vctrs::vec_cbind(pk_df, vctrs::vec_rbind(!!!def$pks))
+  pk_df <- vec_cbind(pk_df, vec_rbind(!!!def$pks))
 
   # FIXME: Should work better with dplyr 0.9.0
   if (!("column" %in% names(pk_df))) {
@@ -313,7 +313,7 @@ as_dm.default <- function(x) {
   }
 
   # Automatic name repair
-  names(x) <- vctrs::vec_as_names(names2(x), repair = "unique")
+  names(x) <- vec_as_names(names2(x), repair = "unique")
   dm <- new_dm(x)
   validate_dm(dm)
   dm
@@ -406,11 +406,11 @@ def_get_n_columns <- function(def) {
 }
 
 def_get_n_pks <- function(def) {
-  sum(map_int(def$pks, vctrs::vec_size))
+  sum(map_int(def$pks, vec_size))
 }
 
 def_get_n_fks <- function(def) {
-  sum(map_int(def$fks, vctrs::vec_size))
+  sum(map_int(def$fks, vec_size))
 }
 
 as_zoomed_df <- function(x) {
@@ -653,7 +653,7 @@ tbl_vars.zoomed_dm <- function(x) {
 
 dm_reset_all_filters <- function(dm) {
   def <- dm_get_def(dm)
-  def$filters <- vctrs::list_of(new_filter())
+  def$filters <- list_of(new_filter())
   new_dm3(def)
 }
 
@@ -671,9 +671,9 @@ empty_dm <- function() {
       data = list(),
       segment = character(),
       display = character(),
-      pks = vctrs::list_of(new_pk()),
-      fks = vctrs::list_of(new_fk()),
-      filters = vctrs::list_of(new_filter()),
+      pks = list_of(new_pk()),
+      fks = list_of(new_fk()),
+      filters = list_of(new_filter()),
       zoom = list(),
       col_tracker_zoom = list()
     )

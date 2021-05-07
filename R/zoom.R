@@ -131,18 +131,18 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
 
   dm_wo_outgoing_fks <-
     dm %>%
-    update_filter(old_tbl_name, vctrs::list_of(old_filters)) %>%
+    update_filter(old_tbl_name, list_of(old_filters)) %>%
     dm_add_tbl_impl(
       new_tbl, new_tbl_name_chr,
-      filters = vctrs::list_of(new_filters),
+      filters = list_of(new_filters),
 
       # PK: either the same primary key as in the old table, renamed in the new table, or no primary key if none available
-      pks = vctrs::list_of(update_zoomed_pk(dm)),
+      pks = list_of(update_zoomed_pk(dm)),
 
       # incoming FKs: in the new row, based on the old table;
       # if PK available, foreign key relations can be copied from the old table
       # if PK vanished, the entry will be empty
-      fks = vctrs::list_of(update_zoomed_incoming_fks(dm))
+      fks = list_of(update_zoomed_incoming_fks(dm))
     )
 
   # outgoing FKs: potentially in several rows, based on the old table;

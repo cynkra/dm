@@ -64,8 +64,8 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     dm_for_filter()[order_of_deletion] %>%
     dm_get_def() %>%
     mutate(
-      pks = vctrs::list_of(new_pk()),
-      fks = vctrs::list_of(new_fk())
+      pks = list_of(new_pk()),
+      fks = list_of(new_fk())
     ) %>%
     new_dm3()
 
@@ -136,8 +136,8 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     dm_for_disambiguate()[order_of_deletion] %>%
     dm_get_def() %>%
     mutate(
-      pks = vctrs::list_of(new_pk()),
-      fks = vctrs::list_of(new_fk())
+      pks = list_of(new_pk()),
+      fks = list_of(new_fk())
     ) %>%
     new_dm3()
 

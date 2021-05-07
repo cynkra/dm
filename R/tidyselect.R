@@ -48,7 +48,7 @@ eval_select_indices <- function(quo, names, unique = TRUE) {
     # Called for side effects.
     # Normally done by tidyselect if the `data` argument
     # to eval_select() is a data frame.
-    vctrs::vec_as_names(names(pos), repair = "check_unique")
+    vec_as_names(names(pos), repair = "check_unique")
   }
 
   pos
@@ -67,7 +67,7 @@ eval_rename_indices <- function(quo, names) {
   # Called for side effects.
   # Normally done by tidyselect if the `data` argument
   # to eval_rename() is a data frame.
-  vctrs::vec_as_names(names(pos), repair = "check_unique")
+  vec_as_names(names(pos), repair = "check_unique")
 
   pos
 }

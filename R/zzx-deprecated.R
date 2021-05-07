@@ -587,12 +587,12 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
     all_filters %>%
     filter(zoomed) %>%
     mutate(zoomed = FALSE)
-  upd_pk <- vctrs::list_of(update_zoomed_pk(dm))
-  upd_inc_fks <- vctrs::list_of(update_zoomed_incoming_fks(dm))
+  upd_pk <- list_of(update_zoomed_pk(dm))
+  upd_inc_fks <- list_of(update_zoomed_incoming_fks(dm))
   dm_wo_outgoing_fks <-
     dm %>%
-    update_filter(old_tbl_name, vctrs::list_of(old_filters)) %>%
-    dm_add_tbl_impl(new_tbl, new_tbl_name_chr, vctrs::list_of(new_filters)) %>%
+    update_filter(old_tbl_name, list_of(old_filters)) %>%
+    dm_add_tbl_impl(new_tbl, new_tbl_name_chr, list_of(new_filters)) %>%
     dm_get_def() %>%
     mutate(
       pks = if_else(table == new_tbl_name_chr, !!upd_pk, pks),

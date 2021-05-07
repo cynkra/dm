@@ -39,7 +39,7 @@ nest_join_zoomed_dm <- function(x, ...) {
       name = child_tables$child_table[i]
     ) %>%
       # FIXME: why does `nest_join()` not produce a `list_of`?
-      mutate(!!child_tables$child_table[i] := vctrs::as_list_of(!!sym(child_tables$child_table[i])))
+      mutate(!!child_tables$child_table[i] := as_list_of(!!sym(child_tables$child_table[i])))
   }
   replace_zoomed_tbl(zoomed_dm, x)
 }

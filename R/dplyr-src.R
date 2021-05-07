@@ -61,7 +61,7 @@ src_tbls.dm <- function(x, ...) {
 #' @param overwrite For `copy_to.dm()`: See [`dplyr::copy_to`]; `TRUE` leads to an error
 #' @param temporary For `copy_to.dm()`: If the `dm` is on a DB, the copied version of `df` will only be written temporarily to the DB.
 #' After the connection is reset it will no longer be available.
-#' @param repair,quiet Name repair options; cf. [`vctrs::vec_as_names`]
+#' @param repair,quiet Name repair options; cf. [vctrs::vec_as_names()]
 #' @export
 #' @rdname dplyr_src
 #' @keywords internal

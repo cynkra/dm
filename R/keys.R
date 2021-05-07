@@ -3,7 +3,7 @@ new_keys <- function(x = list()) {
   if (!is.list(x)) {
     x <- as.list(as.character(x))
   }
-  vctrs::new_list_of(x, character(), class = "dm_keys")
+  new_list_of(x, character(), class = "dm_keys")
 }
 
 #' @export
