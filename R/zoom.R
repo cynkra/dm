@@ -281,15 +281,15 @@ dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name) {
     distinct() %>%
     mutate(child_fk_cols = new_keys(map(child_fk_cols, ~ (!!names(tracked_cols))[match(.x, !!tracked_cols, nomatch = 0L)])))
 
-  dm_add_fk_impl(dm, rep_len(new_tbl_name, length(new_out_keys$child_fk_cols)), new_out_keys$child_fk_cols, new_out_keys$parent_table)
+  dm_add_fk_impl(dm, rep_len(new_tbl_name, length(new_out_keys$child_fk_cols)), new_out_keys$child_fk_cols, new_out_keys$parent_table, new_out_keys$parent_pk_cols)
 }
 
 col_tracker_zoomed <- function(dm) {
   dm_get_zoom(dm, "col_tracker_zoom")[[1]][[1]]
 }
 
-tbl_zoomed <- function(dm) {
-  dm_get_zoom(dm, "zoom")[[1]][[1]]
+tbl_zoomed <- function(dm, quiet = FALSE) {
+  dm_get_zoom(dm, "zoom", quiet = quiet)[[1]][[1]]
 }
 
 orig_name_zoomed <- function(dm) {
