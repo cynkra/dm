@@ -48,5 +48,5 @@ repair_by <- function(by) {
 update_filter <- function(dm, table_name, filters) {
   def <- dm_get_def(dm)
   def$filters[def$table == table_name] <- filters
-  new_dm3(def)
+  new_dm3(def, zoomed = TRUE)
 }

@@ -81,8 +81,9 @@ dm_zoom_to <- function(dm, table) {
   where <- which(def$table == zoom)
   stopifnot(length(where) == 1)
 
-  def$zoom[[where]] <- def$data[[where]]
-  def$col_tracker_zoom[[where]] <- get_all_cols(dm, zoom)
+  zoomed_tbl <- def$data[[where]]
+  def$zoom[[where]] <- zoomed_tbl
+  def$col_tracker_zoom[[where]] <- set_names(colnames(zoomed_tbl))
 
   new_dm3(def, zoomed = TRUE)
 }
@@ -110,15 +111,8 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
     }
     new_tbl_name_chr <- as_string(enexpr(new_tbl_name))
   }
-  names_list <- repair_table_names(
-    old_names = src_tbls_impl(dm),
-    new_names = new_tbl_name_chr, repair, quiet
-  )
-  # rename dm in case of name repair
-  dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
 
-  new_tbl_name_chr <- names_list$new_names
-  zoomed <- dm_get_zoom(dm, c("table", "zoom", "filters"))
+  zoomed <- dm_get_zoom(dm, c("table", "zoom", "filters", "col_tracker_zoom"))
   old_tbl_name <- zoomed$table
   new_tbl <- zoomed$zoom
   # filters need to be split: old_filters belong to the old table, new filters to the inserted table
@@ -129,9 +123,24 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
     filter(zoomed) %>%
     mutate(zoomed = FALSE)
 
-  dm_wo_outgoing_fks <-
+  # rename dm in case of name repair
+  names_list <- repair_table_names(
+    old_names = src_tbls_impl(dm),
+    new_names = new_tbl_name_chr,
+    repair, quiet
+  )
+
+  dm_unzoomed <-
     dm %>%
     update_filter(old_tbl_name, list_of(old_filters)) %>%
+    dm_clean_zoomed() %>%
+    dm_select_tbl_impl(names_list$new_old_names)
+
+  new_tbl_name_chr <- names_list$new_names
+  old_tbl_name <- names_list$old_new_names[[old_tbl_name]]
+
+  dm_wo_outgoing_fks <-
+    dm_unzoomed %>%
     dm_add_tbl_impl(
       new_tbl, new_tbl_name_chr,
       filters = list_of(new_filters),
@@ -148,8 +157,7 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
   # outgoing FKs: potentially in several rows, based on the old table;
   # renamed(?) FK columns if they still exist
   dm_wo_outgoing_fks %>%
-    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr) %>%
-    dm_clean_zoomed()
+    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr, old_tbl_name, zoomed$col_tracker_zoom[[1]])
 }
 
 #' @rdname dm_zoom_to
@@ -181,7 +189,7 @@ dm_update_zoomed <- function(dm) {
     new_def$fks[[where]] <- update_zoomed_incoming_fks(dm)
 
     tracked_cols <- new_def$col_tracker_zoom[[where]]
-    new_def$fks <- map(new_def$fks, update_zoomed_outgoing, table_name, tracked_cols)
+    new_def$fks <- as_list_of(map(new_def$fks, update_zoomed_outgoing, table_name, tracked_cols))
   }
 
   new_def %>%
@@ -270,10 +278,7 @@ update_zoomed_outgoing <- function(fks, tbl_name, tracked_cols) {
   fks
 }
 
-dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name) {
-  old_tbl_name <- orig_name_zoomed(dm)
-  tracked_cols <- col_tracker_zoomed(dm)
-
+dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name, old_tbl_name, tracked_cols) {
   new_out_keys <-
     dm_get_all_fks_impl(dm) %>%
     filter(child_table == !!old_tbl_name) %>%
@@ -281,7 +286,8 @@ dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name) {
     distinct() %>%
     mutate(child_fk_cols = new_keys(map(child_fk_cols, ~ (!!names(tracked_cols))[match(.x, !!tracked_cols, nomatch = 0L)])))
 
-  dm_add_fk_impl(dm, rep_len(new_tbl_name, length(new_out_keys$child_fk_cols)), new_out_keys$child_fk_cols, new_out_keys$parent_table, new_out_keys$parent_pk_cols)
+  dm %>%
+    dm_add_fk_impl(rep_len(new_tbl_name, length(new_out_keys$child_fk_cols)), new_out_keys$child_fk_cols, new_out_keys$parent_table, new_out_keys$parent_pk_cols)
 }
 
 col_tracker_zoomed <- function(dm) {

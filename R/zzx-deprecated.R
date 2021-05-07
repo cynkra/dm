@@ -601,7 +601,7 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
     new_dm3(zoomed = TRUE)
 
   dm_wo_outgoing_fks %>%
-    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr) %>%
+    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr, names_list$old_new_names[old_tbl_name], col_tracker_zoomed(dm)) %>%
     dm_clean_zoomed()
 }
 

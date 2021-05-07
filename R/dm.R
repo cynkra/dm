@@ -124,17 +124,21 @@ new_dm <- function(tables = list()) {
     left_join(zoom, by = "table") %>%
     left_join(col_tracker_zoom, by = "table")
 
-  new_dm3(def)
+  new_dm3(def, validate = FALSE)
 }
 
-new_dm3 <- function(def, zoomed = FALSE) {
+new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
   class <- c(
     if (zoomed) "zoomed_dm",
     "dm"
   )
   out <- structure(list(def = def), class = class, version = 1L)
+
   # Enable for strict tests:
-  # validate_dm(out)
+  # if (validate) {
+  #   validate_dm(out)
+  # }
+
   out
 }
 

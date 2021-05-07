@@ -48,11 +48,13 @@ repair_names_vec <- function(names, repair, quiet) {
 
 repair_table_names <- function(old_names, new_names, repair = "check_unique", quiet = FALSE) {
   all_names <- repair_names_vec(c(old_names, new_names), repair, quiet)
-  new_old_names <- set_names(old_names, all_names[seq_along(old_names)])
+  all_names_ordered <- all_names[seq_along(old_names)]
+  new_old_names <- set_names(old_names, all_names_ordered)
+  old_new_names <- set_names(all_names_ordered, old_names)
 
   new_names <-
     all_names[seq2(length(old_names) + 1, length(all_names))]
-  list(new_old_names = new_old_names, new_names = new_names)
+  list(new_old_names = new_old_names, new_names = new_names, old_new_names = old_new_names)
 }
 
 dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()),
@@ -61,7 +63,7 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()
 
   def_0 <- def[rep_along(table_name, NA_integer_), ]
   def_0$table <- table_name
-  def_0$data <- tbls
+  def_0$data <- unname(tbls)
   def_0$pks <- pks
   def_0$fks <- fks
   def_0$filters <- filters
@@ -140,6 +142,6 @@ dm_mutate_tbl <- function(dm, ...) {
   old_tables[new_names] <- new_tables
 
   def <- dm_get_def(dm)
-  def$data <- old_tables
+  def$data <- unname(old_tables)
   new_dm3(def)
 }
