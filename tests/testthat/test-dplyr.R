@@ -274,13 +274,13 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
 
   # explicitly select columns from RHS using argument `select`
   expect_equivalent_tbl(
-    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), e)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
+    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
     left_join(tf_3(), select(tf_2(), c, e, e1), by = c("f" = "e", "f1" = "e1"))
   )
 
   # explicitly select and rename columns from RHS using argument `select`
   expect_equivalent_tbl(
-    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), d_new = d, e)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
+    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
     left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"))
   )
 
@@ -294,7 +294,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
   expect_identical(
     expect_message(
       zoomed_dm() %>%
-        left_join(tf_3, select = c(d = g, f)) %>%
+        left_join(tf_3, select = c(d = g, f, f1)) %>%
         dm_update_zoomed() %>%
         dm_get_fk(tf_2, tf_1)
     ),
@@ -303,7 +303,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
 
   # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
   expect_identical(
-    semi_join(zoomed_dm(), tf_3, select = c(d = g, f)) %>% dm_update_zoomed() %>% dm_get_fk(tf_2, tf_1),
+    semi_join(zoomed_dm(), tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>% dm_get_fk(tf_2, tf_1),
     new_keys("d")
   )
 
