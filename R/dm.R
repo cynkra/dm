@@ -147,9 +147,9 @@ new_pk <- function(column = list()) {
   tibble(column = column)
 }
 
-new_fk <- function(table = character(), column = list()) {
-  stopifnot(is.list(column))
-  tibble(table = table, column = column)
+new_fk <- function(ref_column = list(), table = character(), column = list()) {
+  stopifnot(is.list(column), is.list(ref_column), length(table) == length(column), length(table) == length(ref_column))
+  tibble(ref_column = ref_column, table = table, column = column)
 }
 
 new_filter <- function(quos = list(), zoomed = logical()) {
