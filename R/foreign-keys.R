@@ -75,21 +75,42 @@ dm_add_fk <- function(dm, table, columns, ref_table, ..., check = FALSE) {
     }
   }
 
-  dm_add_fk_impl(dm, table_name, col_name, ref_table_name)
+  dm_add_fk_impl(dm, table_name, list(col_name), ref_table_name, list(ref_col_name))
 }
 
+dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
+  column <- unclass(column)
+  ref_column <- unclass(ref_column)
 
-dm_add_fk_impl <- function(dm, table, column, ref_table) {
+  loc <- which(!duplicated(ref_table))
+  if (length(loc) > 1) {
+    my_ref_table <- ref_table[[ loc[[length(loc)]] ]]
+
+    my <- ref_table == my_ref_table
+    where_other <- which(!my)
+    dm <- dm_add_fk_impl(dm, table[where_other], column[where_other], ref_table[where_other], ref_column[where_other])
+
+    table <- table[my]
+    column <- column[my]
+    ref_column <- ref_column[my]
+    # ref_table must be scalar, unlike the others
+    ref_table <- my_ref_table
+  } else if (length(loc) == 0) {
+    return(dm)
+  } else {
+    my_ref_table <- ref_table[[1]]
+  }
+
   def <- dm_get_def(dm)
 
   i <- which(def$table == ref_table)
 
   fks <- def$fks[[i]]
 
-  existing <- fks$table == table & !is.na(vctrs::vec_match(fks$column, list(column)))
+  existing <- fks$table == table & !is.na(vctrs::vec_match(fks$column, column))
   if (any(existing)) {
     if (dm_is_strict_keys(dm)) {
-      abort_fk_exists(table, column, ref_table)
+      abort_fk_exists(table[ which(existing)[[1]] ], column[ which(existing)[[1]] ], ref_table)
     }
 
     return(dm)
@@ -97,7 +118,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 
   def$fks[[i]] <- vctrs::vec_rbind(
     fks,
-    new_fk(table, list(column))
+    new_fk(ref_column, table, column)
   )
 
   new_dm3(def)
