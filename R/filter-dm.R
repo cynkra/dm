@@ -259,7 +259,7 @@ check_no_filter <- function(dm) {
   def <-
     dm_get_def(dm)
 
-  if (detect_index(def$filters, ~ vctrs::vec_size(.) > 0) == 0) {
+  if (detect_index(def$filters, ~ vec_size(.) > 0) == 0) {
     return()
   }
 

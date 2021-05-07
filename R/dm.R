@@ -406,11 +406,11 @@ def_get_n_columns <- function(def) {
 }
 
 def_get_n_pks <- function(def) {
-  sum(map_int(def$pks, vctrs::vec_size))
+  sum(map_int(def$pks, vec_size))
 }
 
 def_get_n_fks <- function(def) {
-  sum(map_int(def$fks, vctrs::vec_size))
+  sum(map_int(def$fks, vec_size))
 }
 
 as_zoomed_df <- function(x) {
