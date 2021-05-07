@@ -75,10 +75,10 @@ dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE, compound
 
 flights_subset <- function() {
   nycflights13::flights %>%
-    filter(day == 10)
+    filter(day == 10, month %in% c(1, 2))
 }
 
 weather_subset <- function() {
   nycflights13::weather %>%
-    filter(day == 10)
+    filter(day == 10, month %in% c(1, 2))
 }
