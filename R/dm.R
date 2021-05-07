@@ -69,7 +69,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
     }
   }
 
-  names(tbls) <- vctrs::vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
+  names(tbls) <- vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
   dm <- new_dm(tbls)
   validate_dm(dm)
   dm
@@ -313,7 +313,7 @@ as_dm.default <- function(x) {
   }
 
   # Automatic name repair
-  names(x) <- vctrs::vec_as_names(names2(x), repair = "unique")
+  names(x) <- vec_as_names(names2(x), repair = "unique")
   dm <- new_dm(x)
   validate_dm(dm)
   dm

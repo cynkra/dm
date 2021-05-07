@@ -39,7 +39,7 @@ dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
 
 repair_names_vec <- function(names, repair, quiet) {
   withCallingHandlers(
-    vctrs::vec_as_names(names, repair = repair, quiet = quiet),
+    vec_as_names(names, repair = repair, quiet = quiet),
     vctrs_error_names_must_be_unique = function(e) {
       abort_need_unique_names(names[duplicated(names)])
     }

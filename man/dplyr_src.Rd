@@ -43,7 +43,7 @@ dm_get_src(x)
 \item{temporary}{For \code{copy_to.dm()}: If the \code{dm} is on a DB, the copied version of \code{df} will only be written temporarily to the DB.
 After the connection is reset it will no longer be available.}
 
-\item{repair, quiet}{Name repair options; cf. \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names}}}
+\item{repair, quiet}{Name repair options; cf. \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
