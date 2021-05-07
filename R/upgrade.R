@@ -7,7 +7,6 @@ dm_upgrade <- function(dm, quiet) {
     # and this also produces a message. Don't emit message when calling str()?
     if (!quiet) {
       message("Upgrading dm object created with dm <= 0.2.1.")
-      print(rlang::trace_back())
     }
     def <- unclass(dm)$def
     def$fks <- vctrs::list_of(!!!map2(def$fks, def$pks, ~ {

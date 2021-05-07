@@ -351,7 +351,8 @@ dm_more_complex %<-% {
 # for testing `dm_disambiguate_cols()` ----------------------------------------
 
 iris_1 %<-% {
-  as_tibble(iris) %>%
+  datasets::iris %>%
+    as_tibble() %>%
     mutate(key = row_number()) %>%
     select(key, everything())
 }

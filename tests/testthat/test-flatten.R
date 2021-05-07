@@ -295,8 +295,6 @@ test_that("tests with 'bad_dm' work", {
   # can't create bad_dm() on Postgres due to strict constraint checks
   skip_if_src("postgres")
 
-  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
-
   # flatten bad_dm() (no referential integrity)
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3),
@@ -308,6 +306,8 @@ test_that("tests with 'bad_dm' work", {
   skip_if_src("maria")
 
   # filtered `dm`
+  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
+
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1),
     dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1)
