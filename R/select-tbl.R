@@ -61,7 +61,7 @@ dm_select_tbl_impl <- function(dm, selected, needs_repair = TRUE, repair = "uniq
 filter_recode_table_fks <- function(def, selected) {
   def$fks <-
     # as_list_of() is needed so that `fks` doesn't become a normal list
-    vctrs::as_list_of(map(
+    as_list_of(map(
       def$fks, filter_recode_fks_of_table,
       selected = selected
     ))
