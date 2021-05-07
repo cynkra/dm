@@ -25,4 +25,4 @@ planes <-
 data <- tibble::lst(flights, weather, airlines, airports, planes)
 
 dir.create("inst/extdata", showWarnings = FALSE)
-saveRDS(data, "inst/extdata/nycflights13-small.rds", compress = "gzip")
+saveRDS(data, "inst/extdata/nycflights13-small.rds", compress = "gzip", version = 2)
