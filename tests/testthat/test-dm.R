@@ -149,7 +149,7 @@ test_that("`pull_tbl()`-methods work (2)", {
     dm_for_filter() %>%
       dm_get_def() %>%
       mutate(zoom = list(tf_1)) %>%
-      new_dm3(zoomed = TRUE) %>%
+      new_dm3(zoomed = TRUE, validate = FALSE) %>%
       pull_tbl(),
     "not_pulling_multiple_zoomed"
   )

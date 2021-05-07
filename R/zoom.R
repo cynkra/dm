@@ -181,7 +181,7 @@ dm_update_zoomed <- function(dm) {
     new_def$fks[[where]] <- update_zoomed_incoming_fks(dm)
 
     tracked_cols <- new_def$col_tracker_zoom[[where]]
-    new_def$fks <- map(new_def$fks, update_zoomed_outgoing, table_name, tracked_cols)
+    new_def$fks <- as_list_of(map(new_def$fks, update_zoomed_outgoing, table_name, tracked_cols))
   }
 
   new_def %>%

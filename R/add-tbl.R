@@ -61,7 +61,7 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()
 
   def_0 <- def[rep_along(table_name, NA_integer_), ]
   def_0$table <- table_name
-  def_0$data <- tbls
+  def_0$data <- unname(tbls)
   def_0$pks <- pks
   def_0$fks <- fks
   def_0$filters <- filters
@@ -140,6 +140,6 @@ dm_mutate_tbl <- function(dm, ...) {
   old_tables[new_names] <- new_tables
 
   def <- dm_get_def(dm)
-  def$data <- old_tables
+  def$data <- unname(old_tables)
   new_dm3(def)
 }
