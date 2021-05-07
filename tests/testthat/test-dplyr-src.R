@@ -3,7 +3,7 @@ test_that("can access tables", {
 
   skip_if_not_installed("nycflights13")
 
-  expect_identical(tbl(dm_nycflights13(), "airlines"), nycflights13::airlines)
+  expect_identical(tbl(dm_nycflights13(), "airlines"), airlines_subset())
   expect_dm_error(
     tbl_impl(dm_nycflights13(), "x"),
     class = "table_not_in_dm"
