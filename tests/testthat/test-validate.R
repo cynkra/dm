@@ -106,7 +106,7 @@ test_that("validator speaks up when something's wrong", {
   expect_dm_error(
     dm_for_filter() %>%
       dm_get_def() %>%
-      mutate(pks = if_else(table == "tf_1", vctrs::list_of(new_pk(list("z"))), pks)) %>%
+      mutate(pks = if_else(table == "tf_1", list_of(new_pk(list("z"))), pks)) %>%
       new_dm3() %>%
       validate_dm(),
     "dm_invalid"
@@ -116,7 +116,7 @@ test_that("validator speaks up when something's wrong", {
   expect_dm_error(
     dm_for_filter() %>%
       dm_get_def() %>%
-      mutate(fks = if_else(table == "tf_3", vctrs::list_of(new_fk(table = "tf_8", list("z"))), fks)) %>%
+      mutate(fks = if_else(table == "tf_3", list_of(new_fk(table = "tf_8", list("z"))), fks)) %>%
       new_dm3() %>%
       validate_dm(),
     "dm_invalid"

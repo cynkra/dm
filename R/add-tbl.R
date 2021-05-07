@@ -55,8 +55,8 @@ repair_table_names <- function(old_names, new_names, repair = "check_unique", qu
   list(new_old_names = new_old_names, new_names = new_names)
 }
 
-dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_filter()),
-                            pks = vctrs::list_of(new_pk()), fks = vctrs::list_of(new_fk())) {
+dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()),
+                            pks = list_of(new_pk()), fks = list_of(new_fk())) {
   def <- dm_get_def(dm)
 
   def_0 <- def[rep_along(table_name, NA_integer_), ]

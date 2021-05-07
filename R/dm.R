@@ -101,19 +101,19 @@ new_dm <- function(tables = list()) {
   pks <-
     tibble(
       table = table,
-      pks = vctrs::list_of(new_pk())
+      pks = list_of(new_pk())
     )
 
   fks <-
     tibble(
       table = table,
-      fks = vctrs::list_of(new_fk())
+      fks = list_of(new_fk())
     )
 
   filters <-
     tibble(
       table = table,
-      filters = vctrs::list_of(new_filter())
+      filters = list_of(new_filter())
     )
 
   def <-
@@ -653,7 +653,7 @@ tbl_vars.zoomed_dm <- function(x) {
 
 dm_reset_all_filters <- function(dm) {
   def <- dm_get_def(dm)
-  def$filters <- vctrs::list_of(new_filter())
+  def$filters <- list_of(new_filter())
   new_dm3(def)
 }
 
@@ -671,9 +671,9 @@ empty_dm <- function() {
       data = list(),
       segment = character(),
       display = character(),
-      pks = vctrs::list_of(new_pk()),
-      fks = vctrs::list_of(new_fk()),
-      filters = vctrs::list_of(new_filter()),
+      pks = list_of(new_pk()),
+      fks = list_of(new_fk()),
+      filters = list_of(new_filter()),
       zoom = list(),
       col_tracker_zoom = list()
     )

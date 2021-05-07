@@ -263,7 +263,7 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
   pks <-
     tibble(
       table = setdiff(table, pks$table),
-      pks = vctrs::list_of(new_pk())
+      pks = list_of(new_pk())
     ) %>%
     vec_rbind(pks)
 
@@ -279,7 +279,7 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
   fks <-
     tibble(
       table = setdiff(table, fks$table),
-      fks = vctrs::list_of(new_fk())
+      fks = list_of(new_fk())
     ) %>%
     vec_rbind(fks)
 
@@ -287,7 +287,7 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
   filters <-
     tibble(
       table = table,
-      filters = vctrs::list_of(new_filter())
+      filters = list_of(new_filter())
     )
 
   def <-
