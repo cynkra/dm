@@ -57,13 +57,19 @@ get_table_colnames <- function(dm, tables = NULL) {
 }
 
 compute_disambiguate_cols_recipe <- function(table_colnames, sep) {
-  table_colnames %>%
-    add_count(column) %>%
-    filter(n > 1) %>%
-    mutate(new_name = paste0(table, sep, column)) %>%
-    select(table, new_name, column) %>%
-    nest(renames = -table) %>%
-    mutate(renames = map(renames, deframe))
+  dupes <- vec_duplicate_detect(table_colnames$column)
+  dup_colnames <- table_colnames[dupes, ]
+
+  dup_colnames$new_name <- paste0(dup_colnames$table, sep, dup_colnames$column)
+  dup_data <- dup_colnames[c("new_name", "column")]
+  dup_data$column <- syms(dup_data$column)
+
+  dup_nested <-
+    vec_split(dup_data, dup_colnames$table) %>%
+    set_names("table", "renames")
+
+  dup_nested$renames <- map(dup_nested$renames, deframe)
+  as_tibble(dup_nested)
 }
 
 explain_col_rename <- function(recipe) {
@@ -74,7 +80,7 @@ explain_col_rename <- function(recipe) {
   msg_base <-
     recipe %>%
     mutate(renames = map(renames, ~ enframe(., "new", "old"))) %>%
-    unnest_df("renames", tibble(new = character(), old = character())) %>%
+    unnest_df("renames", tibble(new = character(), old = syms(character()))) %>%
     nest(data = -old)
 
   sub_text <- map_chr(msg_base$data, ~ paste0(.x$new, collapse = ", "))
