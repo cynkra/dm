@@ -71,14 +71,14 @@ explain_col_rename <- function(recipe) {
     return()
   }
 
-  msg_core <-
+  msg_base <-
     recipe %>%
     mutate(renames = map(renames, ~ enframe(., "new", "old"))) %>%
     unnest_df("renames", tibble(new = character(), old = character())) %>%
-    nest(data = -old) %>%
-    mutate(sub_text = map_chr(data, ~ paste0(.x$new, collapse = ", "))) %>%
-    mutate(text = paste0("* ", old, " -> ", sub_text)) %>%
-    pull()
+    nest(data = -old)
+
+  sub_text <- map_chr(msg_base$data, ~ paste0(.x$new, collapse = ", "))
+  msg_core <- paste0("* ", msg_base$old, " -> ", sub_text)
 
   message("Renamed columns:\n", paste(msg_core, collapse = "\n"))
 }
