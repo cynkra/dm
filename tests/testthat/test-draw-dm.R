@@ -163,4 +163,11 @@ test_that("output", {
       dm_draw(),
     "nycflight-dm-copy.svg"
   )
+
+  # Non-default fk (#402)
+  expect_snapshot_diagram(
+    dm_for_filter() %>%
+      dm_draw(),
+    "dm-for-filter.svg"
+  )
 })
