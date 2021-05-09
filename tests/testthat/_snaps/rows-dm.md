@@ -9,7 +9,7 @@
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
-            16     1458        0     3322        0 
+            15       86        0      945        0 
     Code
       flights_jan <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
         dm_zoom_to(flights) %>% filter(month == 1) %>% dm_update_zoomed() %>%
@@ -27,13 +27,13 @@
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
-            16     1458        0     3322        0 
+            15       86        0      945        0 
     Code
       dm_rows_insert(flights_sqlite, flights_jan_sqlite, in_place = TRUE)
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
-            16     1458      932     3322       72 
+            15       86      932      945       72 
     Code
       flights_feb <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
         dm_zoom_to(flights) %>% filter(month == 2) %>% dm_update_zoomed() %>%
@@ -43,12 +43,12 @@
       print(dm_nrow(flights_new))
     Output
       airlines airports  flights   planes  weather 
-            16     1458     1761     3322      144 
+            15       86     1761      945      144 
     Code
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
-            16     1458      932     3322       72 
+            15       86      932      945       72 
     Code
       flights_new %>% dm_examine_constraints()
     Message <cliMessage>
@@ -60,7 +60,7 @@
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
-            16     1458     1761     3322      144 
+            15       86     1761      945      144 
     Code
       dbDisconnect(sqlite)
 

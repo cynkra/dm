@@ -209,11 +209,11 @@
         dm_nrow()
     Output
       airlines airports  flights   planes  weather 
-            15       77     4426     1745      285 
+            14       63      672      502       47 
     Code
       nyc_comp() %>% dm_filter(weather, pressure < 1020) %>% dm_apply_filters() %>%
         dm_nrow()
     Output
       airlines airports  flights   planes  weather 
-            16       91     5869     1881      450 
+             0        0        0        0        0 
 

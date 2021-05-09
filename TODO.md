@@ -5,4 +5,5 @@
 
 # Later
 
+- Abolish `skip_if_local_src()`: all tests that run only remotely always run at least with SQLite, to avoid hassle with distorted snapshots and late failures
 - Add "strict mode" to GitHub Actions: validation in `new_dm3()`

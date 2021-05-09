@@ -6,8 +6,7 @@
     dm_financial_sqlite <<- memoise::memoise(dm_financial_sqlite, cache = cache_attach())
   }
 
-  flights_subset <<- memoise::memoise(flights_subset, cache = cache_attach())
-  weather_subset <<- memoise::memoise(weather_subset, cache = cache_attach())
+  nycflights_subset <<- memoise::memoise(nycflights_subset, cache = cache_attach())
 
   dm_has_financial <<- memoise::memoise(dm_has_financial, cache = cache_attach())
 

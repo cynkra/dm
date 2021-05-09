@@ -294,7 +294,7 @@
       * day -> weather.day, flights.day
       * hour -> weather.hour, flights.hour
     Output
-      [1] 11448
+      [1] 1800
     Code
       zoomed_comp_dm %>% right_join(flights) %>% nrow()
     Message <simpleMessage>
@@ -304,7 +304,7 @@
       * day -> weather.day, flights.day
       * hour -> weather.hour, flights.hour
     Output
-      [1] 11227
+      [1] 1761
     Code
       zoomed_comp_dm %>% inner_join(flights) %>% nrow()
     Message <simpleMessage>
@@ -314,7 +314,7 @@
       * day -> weather.day, flights.day
       * hour -> weather.hour, flights.hour
     Output
-      [1] 11227
+      [1] 1761
     Code
       zoomed_comp_dm %>% full_join(flights) %>% nrow()
     Message <simpleMessage>
@@ -324,13 +324,13 @@
       * day -> weather.day, flights.day
       * hour -> weather.hour, flights.hour
     Output
-      [1] 11448
+      [1] 1800
     Code
       zoomed_comp_dm %>% semi_join(flights) %>% nrow()
     Output
-      [1] 640
+      [1] 105
     Code
       zoomed_comp_dm %>% anti_join(flights) %>% nrow()
     Output
-      [1] 221
+      [1] 39
 
