@@ -15,21 +15,13 @@ dm_get_all_fks(dm, ...)
 A tibble with the following columns:
 \describe{
 \item{\code{child_table}}{child table,}
-\item{\code{child_fk_cols}}{foreign key column in child table,}
+\item{\code{child_fk_cols}}{foreign key column in child table as list of character vectors,}
 \item{\code{parent_table}}{parent table.}
 }
 }
 \description{
 Get a summary of all foreign key relations in a \code{\link{dm}}.
 }
-\section{Compound keys}{
-
-
-Currently, keys consisting of more than one column are not supported.
-\href{https://github.com/cynkra/dm/issues/3}{This feature} is planned for dm 0.2.0.
-Therefore the \code{child_fk_cols} column may contain vectors of length greater than one.
-}
-
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%

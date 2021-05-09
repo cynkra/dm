@@ -18,7 +18,9 @@ dm_rm_fk(dm, table, columns, ref_table, ...)
 reference the primary key of \code{ref_table}.
 
 For \code{dm_rm_fk()}: The columns of \code{table} that should no longer be referencing the primary key of \code{ref_table}.
-If \code{NULL}, all columns will be evaluated.}
+If \code{NULL}, all columns will be evaluated.
+
+To define a compound key, use \code{c(col1, col2)}.}
 
 \item{ref_table}{For \code{dm_add_fk()}: The table which \code{table} will be referencing.
 This table needs to have a primary key set.
@@ -44,29 +46,31 @@ of the values of the primary key in table \code{ref_table}.
 \code{dm_rm_fk()} can remove either one reference between two tables, or all references at once, if argument \code{columns = NULL}.
 All arguments may be provided quoted or unquoted.
 }
-\section{Compound keys}{
-
-
-Currently, keys consisting of more than one column are not supported.
-\href{https://github.com/cynkra/dm/issues/3}{This feature} is planned for dm 0.2.0.
-The syntax of these functions will be extended but will remain compatible
-with current semantics.
-}
-
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 nycflights_dm <- dm(
   planes = nycflights13::planes,
-  flights = nycflights13::flights
+  flights = nycflights13::flights,
+  weather = nycflights13::weather
 )
 
 nycflights_dm \%>\%
   dm_draw()
 
+# Create foreign keys:
 nycflights_dm \%>\%
   dm_add_pk(planes, tailnum) \%>\%
   dm_add_fk(flights, tailnum, planes) \%>\%
+  dm_add_pk(weather, c(origin, time_hour)) \%>\%
+  dm_add_fk(flights, c(origin, time_hour), weather) \%>\%
   dm_draw()
+
+# Keys can be checked during creation:
+try(
+  nycflights_dm \%>\%
+    dm_add_pk(planes, tailnum) \%>\%
+    dm_add_fk(flights, tailnum, planes, check = TRUE)
+)
 \dontshow{\}) # examplesIf}
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13(cycle = TRUE) \%>\%

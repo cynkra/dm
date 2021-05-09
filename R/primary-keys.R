@@ -1,6 +1,7 @@
 #' Add/remove a primary key
 #'
-#' @description `dm_add_pk()` marks the specified columns as the primary key of the specified table.
+#' @description
+#' `dm_add_pk()` marks the specified columns as the primary key of the specified table.
 #' If `check == TRUE`, then it will first check if
 #' the given combination of columns is a unique key of the table.
 #' If `force == TRUE`, the function will replace an already
@@ -9,17 +10,12 @@
 #' `dm_rm_pk()` removes a primary key from a table and leaves the [`dm`] object otherwise unaltered.
 #' Foreign keys that point to the table from other tables, can be optionally removed as well.
 #'
-#' @section Compound keys:
-#'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
-#' The syntax of these functions will be extended but will remain compatible
-#' with current semantics.
-#'
+#' 
 #' @inheritParams ellipsis::dots_empty
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
 #' @param columns Table columns, unquoted.
+#'   To define a compound key, use `c(col1, col2)`.
 #' @param check Boolean, if `TRUE`, a check is made if the combination of columns is a unique key of the table.
 #' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key
 #'   set for this table.
@@ -33,19 +29,21 @@
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' nycflights_dm <- dm(
 #'   planes = nycflights13::planes,
-#'   airports = nycflights13::airports
+#'   airports = nycflights13::airports,
+#'   weather = nycflights13::weather
 #' )
 #'
 #' nycflights_dm %>%
 #'   dm_draw()
 #'
-#' # the following works
+#' # Create primary keys:
 #' nycflights_dm %>%
 #'   dm_add_pk(planes, tailnum) %>%
 #'   dm_add_pk(airports, faa, check = TRUE) %>%
+#'   dm_add_pk(weather, c(origin, time_hour)) %>%
 #'   dm_draw()
 #'
-#' # the following throws an error:
+#' # Keys can be checked during creation:
 #' try(
 #'   nycflights_dm %>%
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
@@ -122,21 +120,17 @@ dm_has_pk_impl <- function(dm, table) {
 #' If no primary key is
 #' set for the table, an empty character vector is returned.
 #'
-#' @section Compound keys and multiple primary keys:
+#' @section Multiple primary keys:
 #'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
-#' Therefore the function may return vectors of length greater than one in the future.
-#'
-#' Similarly, each table currently can have only one primary key.
-#' This restriction may be lifted in the future.
-#' For this reason, and for symmetry with `dm_get_fk()`,
-#' this function returns a slit of character vectors.
+#' Each table can have only one primary key.
+#' For symmetry with `dm_get_fk()`,
+#' this function still returns a list of character vectors.
 #'
 #' @family primary key functions
 #'
 #' @return A list with character vectors with the column name(s) of the
 #'   primary keys of `table`.
+#'   The contained character vectors have length greater than one for compound keys.
 #'
 #' @inheritParams dm_add_pk
 #'
@@ -165,12 +159,6 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @description `dm_get_all_pks()` checks the `dm` object for set primary keys and
 #' returns the tables, the respective primary key columns and their classes.
 #'
-#' @section Compound keys:
-#'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
-#' Therefore the `pk_cols` column may contain vectors of length greater than one.
-#'
 #' @family primary key functions
 #'
 #' @inheritParams dm_add_pk
@@ -178,7 +166,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`table`}{table name,}
-#'     \item{`pk_cols`}{column name(s) of primary key.}
+#'     \item{`pk_cols`}{column name(s) of primary key, as list of character vectors.}
 #'   }
 #'
 #' @export

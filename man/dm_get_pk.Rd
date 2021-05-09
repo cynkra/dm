@@ -16,6 +16,7 @@ dm_get_pk(dm, table, ...)
 \value{
 A list with character vectors with the column name(s) of the
 primary keys of \code{table}.
+The contained character vectors have length greater than one for compound keys.
 }
 \description{
 \code{dm_get_pk()} returns the names of the
@@ -23,17 +24,12 @@ columns marked as primary key of a table of a \code{\link{dm}} object.
 If no primary key is
 set for the table, an empty character vector is returned.
 }
-\section{Compound keys and multiple primary keys}{
+\section{Multiple primary keys}{
 
 
-Currently, keys consisting of more than one column are not supported.
-\href{https://github.com/cynkra/dm/issues/3}{This feature} is planned for dm 0.2.0.
-Therefore the function may return vectors of length greater than one in the future.
-
-Similarly, each table currently can have only one primary key.
-This restriction may be lifted in the future.
-For this reason, and for symmetry with \code{dm_get_fk()},
-this function returns a slit of character vectors.
+Each table can have only one primary key.
+For symmetry with \code{dm_get_fk()},
+this function still returns a list of character vectors.
 }
 
 \examples{

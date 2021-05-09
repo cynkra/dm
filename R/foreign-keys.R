@@ -5,19 +5,14 @@
 #' If `check == TRUE`, then it will first check if the values in columns `columns` are a subset
 #' of the values of the primary key in table `ref_table`.
 #'
-#' @section Compound keys:
-#'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
-#' The syntax of these functions will be extended but will remain compatible
-#' with current semantics.
-#'
 #' @inheritParams dm_add_pk
 #' @param columns For `dm_add_fk()`: The columns of `table` which are to become the foreign key columns that
 #'   reference the primary key of `ref_table`.
 #'
 #'   For `dm_rm_fk()`: The columns of `table` that should no longer be referencing the primary key of `ref_table`.
 #'   If `NULL`, all columns will be evaluated.
+#'
+#'   To define a compound key, use `c(col1, col2)`.
 #' @param ref_table For `dm_add_fk()`: The table which `table` will be referencing.
 #'   This table needs to have a primary key set.
 #'
@@ -35,16 +30,27 @@
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' nycflights_dm <- dm(
 #'   planes = nycflights13::planes,
-#'   flights = nycflights13::flights
+#'   flights = nycflights13::flights,
+#'   weather = nycflights13::weather
 #' )
 #'
 #' nycflights_dm %>%
 #'   dm_draw()
 #'
+#' # Create foreign keys:
 #' nycflights_dm %>%
 #'   dm_add_pk(planes, tailnum) %>%
 #'   dm_add_fk(flights, tailnum, planes) %>%
+#'   dm_add_pk(weather, c(origin, time_hour)) %>%
+#'   dm_add_fk(flights, c(origin, time_hour), weather) %>%
 #'   dm_draw()
+#'
+#' # Keys can be checked during creation:
+#' try(
+#'   nycflights_dm %>%
+#'     dm_add_pk(planes, tailnum) %>%
+#'     dm_add_fk(flights, tailnum, planes, check = TRUE)
+#' )
 dm_add_fk <- function(dm, table, columns, ref_table, ..., check = FALSE) {
   check_dots_empty()
   check_not_zoomed(dm)
@@ -159,19 +165,14 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
 #' columns marked as foreign key of table `table` with respect to table `ref_table` within a [`dm`] object.
 #' If no foreign key is set between the tables, an empty character vector is returned.
 #'
-#' @section Compound keys:
-#'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
-#' Therefore the function may return vectors of length greater than one in the future.
-#'
 #' @inheritParams dm_has_fk
 #' @param ref_table The table that is referenced from `table`.
 #'
 #' @family foreign key functions
 #'
 #' @return A list of character vectors with the column name(s) of `table`,
-#' pointing to the primary key of `ref_table`.
+#'   pointing to the primary key of `ref_table`.
+#'   The contained character vectors have length greater than one for compound keys.
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
@@ -201,16 +202,10 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #'
 #' Get a summary of all foreign key relations in a [`dm`].
 #'
-#' @section Compound keys:
-#'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
-#' Therefore the `child_fk_cols` column may contain vectors of length greater than one.
-#'
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`child_table`}{child table,}
-#'     \item{`child_fk_cols`}{foreign key column in child table,}
+#'     \item{`child_fk_cols`}{foreign key column in child table as list of character vectors,}
 #'     \item{`parent_table`}{parent table.}
 #'   }
 #'
