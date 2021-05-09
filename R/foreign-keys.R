@@ -17,6 +17,12 @@
 #'   This table needs to have a primary key set.
 #'
 #'   For `dm_rm_fk()`: The table that `table` is referencing.
+#' @param ref_columns For `dm_add_fk()`: The columns of `table` which are to become the referenced columns in `ref_table`.
+#'   By default, the primary key is used.
+#'
+#'   For `dm_rm_fk()`: The columns of `table` that should no longer be referencing the primary key of `ref_table`.
+#'
+#'   To define a compound key, use `c(col1, col2)`.
 #' @param check Boolean, if `TRUE`, a check will be performed to determine if the values of
 #'   `column` are a subset of the values of the primary key column of `ref_table`.
 #'
@@ -51,32 +57,35 @@
 #'     dm_add_pk(planes, tailnum) %>%
 #'     dm_add_fk(flights, tailnum, planes, check = TRUE)
 #' )
-dm_add_fk <- function(dm, table, columns, ref_table, ..., check = FALSE) {
+dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ..., check = FALSE) {
   check_dots_empty()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
-  table <- dm_get_tables_impl(dm)[[table_name]]
+  table_obj <- tbl_impl(dm, table_name)
   col_expr <- enexpr(columns)
-  col_name <- names(eval_select_indices(col_expr, colnames(table)))
+  col_name <- names(eval_select_indices(col_expr, colnames(table_obj)))
 
-  ref_key <- dm_get_pk_impl(dm, ref_table_name)
+  ref_table_obj <- tbl_impl(dm, ref_table_name)
+  ref_col_expr <- enexpr(ref_columns)
+  if (is.null(ref_col_expr)) {
+    ref_key <- dm_get_pk_impl(dm, ref_table_name)
 
-  if (is_empty(ref_key)) {
-    abort_ref_tbl_has_no_pk(ref_table_name)
+    if (is_empty(ref_key)) {
+      abort_ref_tbl_has_no_pk(ref_table_name)
+    }
+
+    ref_col_name <- get_key_cols(ref_key)
+  } else {
+    ref_col_name <- names(eval_select_indices(ref_col_expr, colnames(ref_table_obj)))
   }
-
-  ref_col_name <- get_key_cols(ref_key)
 
   # FIXME: COMPOUND:: Clean check with proper error message
   stopifnot(length(ref_col_name) == length(col_name))
 
   if (check) {
-    tbl_obj <- dm_get_tables(dm)[[table_name]]
-    ref_tbl_obj <- dm_get_tables(dm)[[ref_table_name]]
-
-    if (!is_subset(tbl_obj, !!col_name, ref_tbl_obj, !!ref_col_name)) {
+    if (!is_subset(table_obj, !!col_name, ref_table_obj, !!ref_col_name)) {
       abort_not_subset_of(table_name, col_name, ref_table_name, ref_col_name)
     }
   }

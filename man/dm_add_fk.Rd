@@ -5,7 +5,15 @@
 \alias{dm_rm_fk}
 \title{Add/remove foreign keys}
 \usage{
-dm_add_fk(dm, table, columns, ref_table, ..., check = FALSE)
+dm_add_fk(
+  dm,
+  table,
+  columns,
+  ref_table,
+  ref_columns = NULL,
+  ...,
+  check = FALSE
+)
 
 dm_rm_fk(dm, table, columns, ref_table, ...)
 }
@@ -26,6 +34,13 @@ To define a compound key, use \code{c(col1, col2)}.}
 This table needs to have a primary key set.
 
 For \code{dm_rm_fk()}: The table that \code{table} is referencing.}
+
+\item{ref_columns}{For \code{dm_add_fk()}: The columns of \code{table} which are to become the referenced columns in \code{ref_table}.
+By default, the primary key is used.
+
+For \code{dm_rm_fk()}: The columns of \code{table} that should no longer be referencing the primary key of \code{ref_table}.
+
+To define a compound key, use \code{c(col1, col2)}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 

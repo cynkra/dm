@@ -1,7 +1,11 @@
 # FIXME NEXT
 
-- continue with stashes, goal: expose optional `ref_column` in `dm_add_fk()` and `dm_rm_fk()`
-- optional arguments in `dm_rm_*()`?
+- expose optional `ref_column` in `dm_add_fk()`
+- expose optional `ref_column` in `dm_rm_fk()`
+    - optional arguments in `dm_rm_*()`, set `NULL` defaults
+    - show message what is removed, as piped code
+    - throw error if no constraints matched
+- optional argument in `dm_rm_pk()`, set `NULL` defaults?
 
 # Later
 
