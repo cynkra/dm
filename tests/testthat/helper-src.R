@@ -235,12 +235,12 @@ dm_for_filter_w_cycle %<-% {
     dm_add_pk(tf_7, p) %>%
     dm_add_fk(tf_7, q, tf_2) %>%
     #
-    dm_add_pk(tf_6, n) %>%
+    dm_add_pk(tf_6, o) %>%
     dm_add_fk(tf_6, o, tf_7) %>%
     #
     dm_add_pk(tf_5, k) %>%
     dm_add_fk(tf_5, l, tf_4) %>%
-    dm_add_fk(tf_5, m, tf_6)
+    dm_add_fk(tf_5, m, tf_6, n)
 }
 
 dm_for_filter %<-% {

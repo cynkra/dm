@@ -11,7 +11,7 @@
       3 tf_3  new_f, f1
       4 tf_4  h        
       5 tf_5  k        
-      6 tf_6  n        
+      6 tf_6  o        
 
 # dm_rename() works for replacing fks
 
@@ -40,7 +40,7 @@
       2 tf_2  c     
       3 tf_4  h     
       4 tf_5  k     
-      5 tf_6  n     
+      5 tf_6  o     
 
 # dm_select() works for replacing fks, and removes missing ones
 

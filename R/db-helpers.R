@@ -44,7 +44,31 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
 
     pks_clause <-
       pks %>%
-      mutate(sql = map_chr(pk_col, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")))
+      mutate(
+        cols = map_chr(pk_col, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
+        constraint = "PRIMARY KEY"
+      )
+
+    fks <-
+      dm_get_all_fks_impl(dm) %>%
+      rename(source_name = child_table)
+
+    unique_clause <-
+      fks %>%
+      select(source_name = parent_table, pk_col = parent_pk_cols) %>%
+      anti_join(pks, by = c("source_name", "pk_col")) %>%
+      distinct() %>%
+      mutate(
+        cols = map_chr(pk_col, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
+        constraint = "UNIQUE"
+      )
+
+    clause <-
+      bind_rows(pks_clause, unique_clause) %>%
+      mutate(sql = paste0(",\n", constraint, " (", cols, ")")) %>%
+      group_by(source_name) %>%
+      summarize(sql = paste(sql, collapse = "")) %>%
+      ungroup()
 
     pks_flat <-
       pks %>%
@@ -52,10 +76,6 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
       group_by(source_name) %>%
       summarize(column = as.character(unlist(pk_col)), pk = TRUE) %>%
       ungroup()
-
-    fks <-
-      dm_get_all_fks_impl(dm) %>%
-      select(source_name = child_table, child_fk_cols)
 
     # Need to supply NOT NULL modifiers for primary keys
     # because they are difficult to add to MSSQL after the fact
@@ -69,14 +89,14 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
       left_join(pks_flat, by = c("source_name", "column")) %>%
       mutate(full_type = paste0(type, if_else(pk, " NOT NULL", "", ""))) %>%
       #
-      left_join(pks_clause, by = "source_name") %>%
+      left_join(clause, by = "source_name") %>%
       group_by(source_name) %>%
       #
       # HACK: Append PRIMARY KEY clause to end, https://github.com/r-dbi/DBI/pull/351
       # So far this is the only reason to use `con` in this function
       mutate(full_type = paste0(full_type, if_else(
         !!set_key_constraints & !is.na(sql) & (row_number() == n()),
-        paste0(", PRIMARY KEY (", sql, ")"),
+        sql,
         ""
       ))) %>%
       #

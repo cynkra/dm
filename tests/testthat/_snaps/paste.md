@@ -15,12 +15,12 @@
         dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
-        dm::dm_add_pk(tf_6, n) %>%
+        dm::dm_add_pk(tf_6, o) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
         dm::dm_add_fk(tf_5, l, tf_4) %>%
-        dm::dm_add_fk(tf_5, m, tf_6)
+        dm::dm_add_fk(tf_5, m, tf_6, n)
     Code
       # changing the tab width
       dm_for_filter() %>% dm_paste(tab_width = 4)
@@ -31,12 +31,12 @@
           dm::dm_add_pk(tf_3, c(f, f1)) %>%
           dm::dm_add_pk(tf_4, h) %>%
           dm::dm_add_pk(tf_5, k) %>%
-          dm::dm_add_pk(tf_6, n) %>%
+          dm::dm_add_pk(tf_6, o) %>%
           dm::dm_add_fk(tf_2, d, tf_1) %>%
           dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
           dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
           dm::dm_add_fk(tf_5, l, tf_4) %>%
-          dm::dm_add_fk(tf_5, m, tf_6)
+          dm::dm_add_fk(tf_5, m, tf_6, n)
     Code
       # we don't care if the tables really exist
       dm_for_filter() %>% dm_rename_tbl(tf_1_new = tf_1) %>% dm_paste()
@@ -47,12 +47,12 @@
         dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
-        dm::dm_add_pk(tf_6, n) %>%
+        dm::dm_add_pk(tf_6, o) %>%
         dm::dm_add_fk(tf_2, d, tf_1_new) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
         dm::dm_add_fk(tf_5, l, tf_4) %>%
-        dm::dm_add_fk(tf_5, m, tf_6)
+        dm::dm_add_fk(tf_5, m, tf_6, n)
     Code
       # produce `dm_select()` statements in addition to the rest
       dm_for_filter() %>% dm_select(tf_5, k = k, m) %>% dm_select(tf_1, a) %>%
@@ -77,12 +77,12 @@
         dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
-        dm::dm_add_pk(tf_6, n) %>%
+        dm::dm_add_pk(tf_6, o) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
         dm::dm_add_fk(tf_5, l, tf_4) %>%
-        dm::dm_add_fk(tf_5, m, tf_6) %>%
+        dm::dm_add_fk(tf_5, m, tf_6, n) %>%
         dm::dm_set_colors(`#FFA500FF` = tf_1) %>%
         dm::dm_set_colors(`#FFA500FF` = tf_2) %>%
         dm::dm_set_colors(`#FFA500FF` = tf_3) %>%
