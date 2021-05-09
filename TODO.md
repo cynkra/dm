@@ -3,7 +3,7 @@
 - finish PR
 - expose optional `ref_column` in `dm_rm_fk()`
     - optional arguments in `dm_rm_*()`, set `NULL` defaults
-    - show message what is removed, as piped code
+    - show message what is removed if ambiguous, as piped code
     - throw error if no constraints matched
 - optional argument in `dm_rm_pk()`, set `NULL` defaults?
 - un-skip tests

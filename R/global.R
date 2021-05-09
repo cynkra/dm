@@ -28,6 +28,7 @@ utils::globalVariables(c(
   "cols",
   "column",
   "columns",
+  "constraint",
   "day",
   "dest",
   "df",
