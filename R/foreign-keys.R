@@ -207,6 +207,15 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
   fks$column[fks$table == table_name]
 }
 
+dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
+  # FIXME: Revisit instances of dm_get_fk_impl()
+  def <- dm_get_def(dm)
+  i <- which(def$table == ref_table_name)
+
+  fks <- def$fks[[i]]
+  fks[fks$table == table_name, c("column", "ref_column")]
+}
+
 #' Get foreign key constraints
 #'
 #' Get a summary of all foreign key relations in a [`dm`].
