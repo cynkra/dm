@@ -198,11 +198,14 @@ dm_get_all_pks_impl <- function(dm) {
 }
 
 dm_get_all_pks_def_impl <- function(def) {
-  def %>%
-    select(table, pks) %>%
-    unnest_pks() %>%
-    select(table = table, pk_col = column) %>%
-    mutate(pk_col = new_keys(pk_col))
+  # Optimized for speed
+  out <-
+    def[c("table", "pks")] %>%
+    unnest_df("pks", tibble(column = list())) %>%
+    set_names(c("table", "pk_col"))
+
+  out$pk_col <- new_keys(out$pk_col)
+  out
 }
 
 
