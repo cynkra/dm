@@ -15,21 +15,13 @@ dm_get_all_pks(dm, ...)
 A tibble with the following columns:
 \describe{
 \item{\code{table}}{table name,}
-\item{\code{pk_cols}}{column name(s) of primary key.}
+\item{\code{pk_cols}}{column name(s) of primary key, as list of character vectors.}
 }
 }
 \description{
 \code{dm_get_all_pks()} checks the \code{dm} object for set primary keys and
 returns the tables, the respective primary key columns and their classes.
 }
-\section{Compound keys}{
-
-
-Currently, keys consisting of more than one column are not supported.
-\href{https://github.com/cynkra/dm/issues/3}{This feature} is planned for dm 0.2.0.
-Therefore the \code{pk_cols} column may contain vectors of length greater than one.
-}
-
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%

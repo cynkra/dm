@@ -18,20 +18,13 @@ dm_get_fk(dm, table, ref_table, ...)
 \value{
 A list of character vectors with the column name(s) of \code{table},
 pointing to the primary key of \code{ref_table}.
+The contained character vectors have length greater than one for compound keys.
 }
 \description{
 \code{dm_get_fk()} returns the names of the
 columns marked as foreign key of table \code{table} with respect to table \code{ref_table} within a \code{\link{dm}} object.
 If no foreign key is set between the tables, an empty character vector is returned.
 }
-\section{Compound keys}{
-
-
-Currently, keys consisting of more than one column are not supported.
-\href{https://github.com/cynkra/dm/issues/3}{This feature} is planned for dm 0.2.0.
-Therefore the function may return vectors of length greater than one in the future.
-}
-
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%

@@ -14,7 +14,8 @@ dm_rm_pk(dm, table, ..., rm_referencing_fks = FALSE)
 
 \item{table}{A table in the \code{dm}.}
 
-\item{columns}{Table columns, unquoted.}
+\item{columns}{Table columns, unquoted.
+To define a compound key, use \code{c(col1, col2)}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
@@ -45,32 +46,25 @@ set key.
 \code{dm_rm_pk()} removes a primary key from a table and leaves the \code{\link{dm}} object otherwise unaltered.
 Foreign keys that point to the table from other tables, can be optionally removed as well.
 }
-\section{Compound keys}{
-
-
-Currently, keys consisting of more than one column are not supported.
-\href{https://github.com/cynkra/dm/issues/3}{This feature} is planned for dm 0.2.0.
-The syntax of these functions will be extended but will remain compatible
-with current semantics.
-}
-
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 nycflights_dm <- dm(
   planes = nycflights13::planes,
-  airports = nycflights13::airports
+  airports = nycflights13::airports,
+  weather = nycflights13::weather
 )
 
 nycflights_dm \%>\%
   dm_draw()
 
-# the following works
+# Create primary keys:
 nycflights_dm \%>\%
   dm_add_pk(planes, tailnum) \%>\%
   dm_add_pk(airports, faa, check = TRUE) \%>\%
+  dm_add_pk(weather, c(origin, time_hour)) \%>\%
   dm_draw()
 
-# the following throws an error:
+# Keys can be checked during creation:
 try(
   nycflights_dm \%>\%
     dm_add_pk(planes, manufacturer, check = TRUE)
