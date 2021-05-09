@@ -221,19 +221,16 @@ set for the table, an empty character vector is returned.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list with character vectors with the column name(s) of the
-primary keys of <code>table</code>.</p>
-    <h2 class="hasAnchor" id="compound-keys-and-multiple-primary-keys"><a class="anchor" href="#compound-keys-and-multiple-primary-keys"></a>Compound keys and multiple primary keys</h2>
+primary keys of <code>table</code>.
+The contained character vectors have length greater than one for compound keys.</p>
+    <h2 class="hasAnchor" id="multiple-primary-keys"><a class="anchor" href="#multiple-primary-keys"></a>Multiple primary keys</h2>
 
     
 
 
-<p>Currently, keys consisting of more than one column are not supported.
-<a href='https://github.com/cynkra/dm/issues/3'>This feature</a> is planned for dm 0.2.0.
-Therefore the function may return vectors of length greater than one in the future.</p>
-<p>Similarly, each table currently can have only one primary key.
-This restriction may be lifted in the future.
-For this reason, and for symmetry with <code><a href='dm_get_fk.html'>dm_get_fk()</a></code>,
-this function returns a slit of character vectors.</p>
+<p>Each table can have only one primary key.
+For symmetry with <code><a href='dm_get_fk.html'>dm_get_fk()</a></code>,
+this function still returns a list of character vectors.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other primary key functions: 

@@ -212,19 +212,11 @@
 
     <p>A tibble with the following columns:</p><dl>
 <dt><code>child_table</code></dt><dd><p>child table,</p></dd>
-<dt><code>child_fk_cols</code></dt><dd><p>foreign key column in child table,</p></dd>
+<dt><code>child_fk_cols</code></dt><dd><p>foreign key column in child table as list of character vectors,</p></dd>
 <dt><code>parent_table</code></dt><dd><p>parent table.</p></dd>
 
 </dl>
 
-    <h2 class="hasAnchor" id="compound-keys"><a class="anchor" href="#compound-keys"></a>Compound keys</h2>
-
-    
-
-
-<p>Currently, keys consisting of more than one column are not supported.
-<a href='https://github.com/cynkra/dm/issues/3'>This feature</a> is planned for dm 0.2.0.
-Therefore the <code>child_fk_cols</code> column may contain vectors of length greater than one.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other foreign key functions: 
