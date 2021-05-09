@@ -194,9 +194,7 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
   i <- which(def$table == ref_table_name)
 
   fks <- def$fks[[i]]
-  fks %>%
-    filter(table == !!table_name) %>%
-    pull(column)
+  fks$column[fks$table == table_name]
 }
 
 #' Get foreign key constraints
