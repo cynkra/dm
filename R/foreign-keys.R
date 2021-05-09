@@ -223,8 +223,9 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`child_table`}{child table,}
-#'     \item{`child_fk_cols`}{foreign key column in child table as list of character vectors,}
-#'     \item{`parent_table`}{parent table.}
+#'     \item{`child_fk_cols`}{foreign key column(s) in child table as list of character vectors,}
+#'     \item{`parent_table`}{parent table,}
+#'     \item{`parent_pk_cols`}{key column(s) in parent table as list of character vectors.}
 #'   }
 #'
 #' @inheritParams dm_has_fk
