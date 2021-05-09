@@ -80,8 +80,9 @@ filter_recode_table_def <- function(data, selected) {
 filter_recode_fks_of_table <- function(data, selected) {
   # data$table can have multiple entries, we don't care about the order
   idx <- data$table %in% selected
-  data[idx, ] %>%
-    mutate(table = recode(table, !!!prep_recode(selected)))
+  out <- data[idx, ]
+  out$table <- recode(out$table, !!!prep_recode(selected))
+  out
 }
 
 prep_recode <- function(x) {

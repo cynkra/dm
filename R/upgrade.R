@@ -9,7 +9,7 @@ dm_upgrade <- function(dm, quiet) {
       message("Upgrading dm object created with dm <= 0.2.1.")
     }
     def <- unclass(dm)$def
-    def$fks <- vctrs::list_of(!!!map2(def$fks, def$pks, ~ {
+    def$fks <- list_of(!!!map2(def$fks, def$pks, ~ {
       .x[["ref_column"]] <- .y[["column"]]
       .x <- .x[c("ref_column", "table", "column")]
       .x

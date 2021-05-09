@@ -36,22 +36,18 @@ get_table_colnames <- function(dm, tables = NULL) {
   def <- dm_get_def(dm)
 
   if (!is.null(tables)) {
-    def <-
-      def %>%
-      filter(table %in% !!tables)
+    def <- def[def$table %in% tables, ]
   }
 
   table_colnames <-
-    def %>%
-    mutate(column = map(data, colnames)) %>%
-    select(table, column) %>%
+    tibble(table = def$table, column = map(def$data, colnames)) %>%
     unnest_col("column", character())
 
   pks <- dm_get_all_pks_def_impl(def)
 
   keep_colnames <-
-    pks %>%
-    rename(column = pk_col) %>%
+    pks[c("table", "pk_col")] %>%
+    set_names(c("table", "column")) %>%
     unnest_col("column", character())
 
   table_colnames %>%
@@ -61,13 +57,19 @@ get_table_colnames <- function(dm, tables = NULL) {
 }
 
 compute_disambiguate_cols_recipe <- function(table_colnames, sep) {
-  table_colnames %>%
-    add_count(column) %>%
-    filter(n > 1) %>%
-    mutate(new_name = paste0(table, sep, column)) %>%
-    select(table, new_name, column) %>%
-    nest(renames = -table) %>%
-    mutate(renames = map(renames, deframe))
+  dupes <- vec_duplicate_detect(table_colnames$column)
+  dup_colnames <- table_colnames[dupes, ]
+
+  dup_colnames$new_name <- paste0(dup_colnames$table, sep, dup_colnames$column)
+  dup_data <- dup_colnames[c("new_name", "column")]
+  dup_data$column <- syms(dup_data$column)
+
+  dup_nested <-
+    vec_split(dup_data, dup_colnames$table) %>%
+    set_names("table", "renames")
+
+  dup_nested$renames <- map(dup_nested$renames, deframe)
+  as_tibble(dup_nested)
 }
 
 explain_col_rename <- function(recipe) {
@@ -75,14 +77,14 @@ explain_col_rename <- function(recipe) {
     return()
   }
 
-  msg_core <-
+  msg_base <-
     recipe %>%
     mutate(renames = map(renames, ~ enframe(., "new", "old"))) %>%
-    unnest_df("renames", tibble(new = character(), old = character())) %>%
-    nest(data = -old) %>%
-    mutate(sub_text = map_chr(data, ~ paste0(.x$new, collapse = ", "))) %>%
-    mutate(text = paste0("* ", old, " -> ", sub_text)) %>%
-    pull()
+    unnest_df("renames", tibble(new = character(), old = syms(character()))) %>%
+    nest(data = -old)
+
+  sub_text <- map_chr(msg_base$data, ~ paste0(.x$new, collapse = ", "))
+  msg_core <- paste0("* ", msg_base$old, " -> ", sub_text)
 
   message("Renamed columns:\n", paste(msg_core, collapse = "\n"))
 }

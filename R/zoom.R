@@ -176,9 +176,8 @@ dm_update_zoomed <- function(dm) {
   # Test if keys need to be updated (TRUE, if at least one column was renamed or lost)
   upd_keys <- !all(orig_colnames %in% tracked_cols) || !all(names(tracked_cols) == tracked_cols)
 
-  upd_filter <-
-    def$filters[[where]] %>%
-    mutate(zoomed = FALSE)
+  upd_filter <- def$filters[[where]]
+  upd_filter$zoomed <- FALSE
 
   new_def <- def
   new_def$data[[where]] <- new_def$zoom[[where]]
