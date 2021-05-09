@@ -161,10 +161,23 @@ dm_paste_pks <- function(dm) {
 }
 
 dm_paste_fks <- function(dm) {
-  dm %>%
-    dm_get_all_fks_impl() %>%
-    mutate(code = glue("dm::dm_add_fk({tick_if_needed(child_table)}, {deparse_keys(child_fk_cols)}, {tick_if_needed(parent_table)})")) %>%
-    pull()
+  pks <-
+    dm %>%
+    dm_get_all_pks_impl() %>%
+    set_names(c("parent_table", "parent_default_pk_cols"))
+
+  fks <-
+    dm %>%
+    dm_get_all_fks_impl()
+
+  fpks <-
+    left_join(fks, pks, by = "parent_table")
+
+  need_non_default <- !map2_lgl(fpks$parent_pk_cols, fpks$parent_default_pk_cols, identical)
+  fpks$non_default_parent_pk_cols <- ""
+  fpks$non_default_parent_pk_cols[need_non_default] <- paste0(", ", deparse_keys(fpks$parent_pk_cols[need_non_default]))
+
+  glue("dm::dm_add_fk({tick_if_needed(fpks$child_table)}, {deparse_keys(fpks$child_fk_cols)}, {tick_if_needed(fpks$parent_table)}{fpks$non_default_parent_pk_cols})")
 }
 
 dm_paste_color <- function(dm) {

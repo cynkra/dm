@@ -484,7 +484,9 @@ test_that("key tracking works", {
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl")
   })
+})
 
+test_that("key tracking works (2)", {
   # FKs that point to a PK that vanished, should also vanish
   pk_gone_dm <-
     zoomed_grouped_in_dm %>%

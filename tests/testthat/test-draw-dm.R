@@ -100,17 +100,11 @@ test_that("getter", {
 })
 
 test_that("datamodel-code for drawing", {
-  data_model_for_filter <- dm_get_data_model(dm_for_filter(), column_types = TRUE)
+  local_options(max.print = 10000)
 
-  expect_s3_class(
-    data_model_for_filter,
-    "data_model"
-  )
-
-  expect_identical(
-    map(data_model_for_filter, nrow),
-    list(tables = 6L, columns = 21L, references = 5L)
-  )
+  expect_snapshot({
+    dm_get_data_model(dm_for_filter(), column_types = TRUE)
+  })
 })
 
 test_that("get available colors", {
@@ -162,5 +156,12 @@ test_that("output", {
       dm_insert_zoomed("planes_copy") %>%
       dm_draw(),
     "nycflight-dm-copy.svg"
+  )
+
+  # Non-default fk (#402)
+  expect_snapshot_diagram(
+    dm_for_filter() %>%
+      dm_draw(),
+    "dm-for-filter.svg"
   )
 })

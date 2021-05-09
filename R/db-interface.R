@@ -235,11 +235,8 @@ dm_set_key_constraints <- function(dm) {
   if (!is_src_db(dm) && !is_this_a_test()) abort_key_constraints_need_db()
   db_table_names <- get_db_table_names(dm)
 
-  tables_w_pk <- dm_get_all_pks(dm)
-
   fk_info <-
     dm_get_all_fks(dm) %>%
-    left_join(tables_w_pk, by = c("parent_table" = "table")) %>%
     left_join(db_table_names, by = c("child_table" = "table_name")) %>%
     rename(db_child_table = remote_name) %>%
     left_join(db_table_names, by = c("parent_table" = "table_name")) %>%
