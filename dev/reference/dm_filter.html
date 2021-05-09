@@ -278,7 +278,7 @@ the filter.</p>
 <span class='r-in'>  <span class='fu'>dm_filter</span><span class='op'>(</span><span class='va'>airports</span>, <span class='va'>name</span> <span class='op'>==</span> <span class='st'>"John F Kennedy Intl"</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'>dm_apply_filters_to_tbl</span><span class='op'>(</span><span class='va'>dm_nyc_filtered</span>, <span class='va'>flights</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3,661 x 19</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 602 x 19</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437</span></span>
@@ -291,9 +291,9 @@ the filter.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      558            600        -</span><span style='color: #BB0000;'>2</span><span>      844            906</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      559            600        -</span><span style='color: #BB0000;'>1</span><span>      653            658</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      607            601         6      932            918</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 3,651 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 592 more rows, and 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>dm_nyc_filtered</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>dm_apply_filters</span><span class='op'>(</span><span class='op'>)</span></span>
@@ -311,7 +311,7 @@ the filter.</p>
 <span class='r-in'>  <span class='fu'>dm_apply_filters</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> airlines airports  flights   planes  weather </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       16        3    11227     2345      640 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       15        3     1761      945      105 </span>
 <span class='r-in'><span class='co'># note that in this example, the only affected table is</span></span>
 <span class='r-in'><span class='co'># `airports` because the departure airports in `flights` are</span></span>
 <span class='r-in'><span class='co'># only the three New York airports.</span></span>

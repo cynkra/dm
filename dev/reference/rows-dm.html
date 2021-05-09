@@ -312,7 +312,7 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='r-in'><span class='va'>flights_sqlite</span> <span class='op'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span><span class='op'>(</span><span class='va'>sqlite</span>, <span class='va'>flights_init</span>, temporary <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_sqlite</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> airlines airports  flights   planes  weather </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       16     1458        0     3322        0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       15       86        0      945        0 </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># First update:</span></span>
 <span class='r-in'><span class='va'>flights_jan</span> <span class='op'>&lt;-</span></span>
@@ -343,13 +343,13 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Foreign keys: 4</span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_sqlite</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> airlines airports  flights   planes  weather </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       16     1458        0     3322        0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       15       86        0      945        0 </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Explicitly request persistence:</span></span>
 <span class='r-in'><span class='fu'>dm_rows_insert</span><span class='op'>(</span><span class='va'>flights_sqlite</span>, <span class='va'>flights_jan_sqlite</span>, in_place <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_sqlite</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> airlines airports  flights   planes  weather </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       16     1458      932     3322       72 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       15       86      932      945       72 </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Second update:</span></span>
 <span class='r-in'><span class='va'>flights_feb</span> <span class='op'>&lt;-</span></span>
@@ -373,10 +373,10 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_new</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> airlines airports  flights   planes  weather </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       16     1458     1761     3322      144 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       15       86     1761      945      144 </span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_sqlite</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> airlines airports  flights   planes  weather </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       16     1458      932     3322       72 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       15       86      932      945       72 </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Check for consistency before applying:</span></span>
 <span class='r-in'><span class='va'>flights_new</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
@@ -388,7 +388,7 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='r-in'><span class='fu'>dm_rows_insert</span><span class='op'>(</span><span class='va'>flights_sqlite</span>, <span class='va'>flights_feb_sqlite</span>, in_place <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_sqlite</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> airlines airports  flights   planes  weather </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       16     1458     1761     3322      144 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       15       86     1761      945      144 </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span><span class='op'>(</span><span class='va'>sqlite</span><span class='op'>)</span></span>
 </pre>

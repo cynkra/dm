@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Filtering in relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-05-07</h4>
+            <h4 data-toc-skip class="date">2021-05-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-filter.Rmd" class="external-link"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-filter.Rmd</code></div>
@@ -195,20 +195,20 @@
 <code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">dm</span>, <span class="st">"airports"</span><span class="op">)</span>
 <span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span>
 <span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,458 x 8</span><span>
-#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
-#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        
-#&gt; </span><span style="color: #555555;"> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style="color: #BB0000;">80.6</span><span>  </span><span style="text-decoration: underline;">1</span><span>044    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
-#&gt; </span><span style="color: #555555;"> 2</span><span> 06A   Moton Field Municipa…  32.5  -</span><span style="color: #BB0000;">85.7</span><span>   264    -</span><span style="color: #BB0000;">6</span><span> A     America/Chic…
-#&gt; </span><span style="color: #555555;"> 3</span><span> 06C   Schaumburg Regional    42.0  -</span><span style="color: #BB0000;">88.1</span><span>   801    -</span><span style="color: #BB0000;">6</span><span> A     America/Chic…
-#&gt; </span><span style="color: #555555;"> 4</span><span> 06N   Randall Airport        41.4  -</span><span style="color: #BB0000;">74.4</span><span>   523    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
-#&gt; </span><span style="color: #555555;"> 5</span><span> 09J   Jekyll Island Airport  31.1  -</span><span style="color: #BB0000;">81.4</span><span>    11    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
-#&gt; </span><span style="color: #555555;"> 6</span><span> 0A9   Elizabethton Municip…  36.4  -</span><span style="color: #BB0000;">82.2</span><span>  </span><span style="text-decoration: underline;">1</span><span>593    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
-#&gt; </span><span style="color: #555555;"> 7</span><span> 0G6   Williams County Airp…  41.5  -</span><span style="color: #BB0000;">84.5</span><span>   730    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
-#&gt; </span><span style="color: #555555;"> 8</span><span> 0G7   Finger Lakes Regiona…  42.9  -</span><span style="color: #BB0000;">76.8</span><span>   492    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
-#&gt; </span><span style="color: #555555;"> 9</span><span> 0P2   Shoestring Aviation …  39.8  -</span><span style="color: #BB0000;">76.6</span><span>  </span><span style="text-decoration: underline;">1</span><span>000    -</span><span style="color: #BB0000;">5</span><span> U     America/New_…
-#&gt; </span><span style="color: #555555;">10</span><span> 0S9   Jefferson County Intl  48.1 -</span><span style="color: #BB0000;">123.</span><span>    108    -</span><span style="color: #BB0000;">8</span><span> A     America/Los_…
-#&gt; </span><span style="color: #555555;"># … with 1,448 more rows</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 86 x 8</span><span>
+#&gt;    faa   name                     lat    lon   alt    tz dst   tzone       
+#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       
+#&gt; </span><span style="color: #555555;"> 1</span><span> ALB   Albany Intl             42.7  -</span><span style="color: #BB0000;">73.8</span><span>   285    -</span><span style="color: #BB0000;">5</span><span> A     America/New…
+#&gt; </span><span style="color: #555555;"> 2</span><span> ATL   Hartsfield Jackson At…  33.6  -</span><span style="color: #BB0000;">84.4</span><span>  </span><span style="text-decoration: underline;">1</span><span>026    -</span><span style="color: #BB0000;">5</span><span> A     America/New…
+#&gt; </span><span style="color: #555555;"> 3</span><span> AUS   Austin Bergstrom Intl   30.2  -</span><span style="color: #BB0000;">97.7</span><span>   542    -</span><span style="color: #BB0000;">6</span><span> A     America/Chi…
+#&gt; </span><span style="color: #555555;"> 4</span><span> BDL   Bradley Intl            41.9  -</span><span style="color: #BB0000;">72.7</span><span>   173    -</span><span style="color: #BB0000;">5</span><span> A     America/New…
+#&gt; </span><span style="color: #555555;"> 5</span><span> BHM   Birmingham Intl         33.6  -</span><span style="color: #BB0000;">86.8</span><span>   644    -</span><span style="color: #BB0000;">6</span><span> A     America/Chi…
+#&gt; </span><span style="color: #555555;"> 6</span><span> BNA   Nashville Intl          36.1  -</span><span style="color: #BB0000;">86.7</span><span>   599    -</span><span style="color: #BB0000;">6</span><span> A     America/Chi…
+#&gt; </span><span style="color: #555555;"> 7</span><span> BOS   General Edward Lawren…  42.4  -</span><span style="color: #BB0000;">71.0</span><span>    19    -</span><span style="color: #BB0000;">5</span><span> A     America/New…
+#&gt; </span><span style="color: #555555;"> 8</span><span> BTV   Burlington Intl         44.5  -</span><span style="color: #BB0000;">73.2</span><span>   335    -</span><span style="color: #BB0000;">5</span><span> A     America/New…
+#&gt; </span><span style="color: #555555;"> 9</span><span> BUF   Buffalo Niagara Intl    42.9  -</span><span style="color: #BB0000;">78.7</span><span>   724    -</span><span style="color: #BB0000;">5</span><span> A     America/New…
+#&gt; </span><span style="color: #555555;">10</span><span> BUR   Bob Hope                34.2 -</span><span style="color: #BB0000;">118.</span><span>    778    -</span><span style="color: #BB0000;">8</span><span> A     America/Los…
+#&gt; </span><span style="color: #555555;"># … with 76 more rows</span><span>
 </span></code></pre>
 </div>
 <div id="filter" class="section level2">
@@ -259,13 +259,13 @@
   <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">rows_per_table</span>
 <span class="co">#&gt; airlines airports  flights   planes  weather </span>
-<span class="co">#&gt;       10        1     3661      783      228</span>
+<span class="co">#&gt;       10        1      602      336       38</span>
 <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">rows_per_table</span><span class="op">)</span>
-<span class="co">#&gt; [1] 4683</span></code></pre></div>
+<span class="co">#&gt; [1] 987</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sum_nrow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span><span class="op">)</span>
 <span class="va">sum_nrow_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="va">filtered_dm</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>The total number of rows in the <code>dm</code> drops from 16 884 to 4 683 (the only unaffected table is the disconnected <code>weather</code> table).</p>
+<p>The total number of rows in the <code>dm</code> drops from 2 951 to 987 (the only unaffected table is the disconnected <code>weather</code> table).</p>
 <p>Next example:</p>
 <p><strong>Get a <code>dm</code> object containing data for flights from New York to the Dulles International Airport in Washington D.C., abbreviated with <code>IAD</code>.</strong></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -274,7 +274,7 @@
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; airlines airports  flights   planes  weather </span>
-<span class="co">#&gt;        4        3      191       95      178</span></code></pre></div>
+<span class="co">#&gt;        4        3       32       28       30</span></code></pre></div>
 <p>Chaining multiple filters on different tables is also supported.</p>
 <p>An example:</p>
 <p><strong>Get all flights from Delta Air Lines which didn’t depart from John F. Kennedy International Airport in May 2013.</strong></p>
@@ -300,57 +300,34 @@
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; airlines airports  flights   planes  weather </span>
-<span class="co">#&gt;        1        2       79       61       27</span></code></pre></div>
+<span class="co">#&gt;        0        0        0        0        0</span></code></pre></div>
 <p>You can inspect the filtered tables with <code><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl()</a></code>.</p>
 <p>In the <code>airlines</code> table, Delta is the only remaining carrier:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"airlines"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span><span>
-#&gt;   carrier name                
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>               
-#&gt; </span><span style="color: #555555;">1</span><span> DL      Delta Air Lines Inc.
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 2</span><span>
+#&gt; </span><span style="color: #555555;"># … with 2 variables: carrier &lt;chr&gt;, name &lt;chr&gt;</span><span>
 </span></code></pre>
 <p>Which planes were used to service these flights?</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"planes"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 61 x 9</span><span>
-#&gt;    tailnum  year type       manufacturer  model  engines seats speed engine
-#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>      </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>         </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 
-#&gt; </span><span style="color: #555555;"> 1</span><span> N305DQ   </span><span style="text-decoration: underline;">2</span><span>008 Fixed win… BOEING        737-7…       2   149    </span><span style="color: #BB0000;">NA</span><span> Turbo…
-#&gt; </span><span style="color: #555555;"> 2</span><span> N310DE   </span><span style="text-decoration: underline;">2</span><span>009 Fixed win… BOEING        737-7…       2   149    </span><span style="color: #BB0000;">NA</span><span> Turbo…
-#&gt; </span><span style="color: #555555;"> 3</span><span> N312US   </span><span style="text-decoration: underline;">1</span><span>990 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style="color: #BB0000;">NA</span><span> Turbo…
-#&gt; </span><span style="color: #555555;"> 4</span><span> N313US   </span><span style="text-decoration: underline;">1</span><span>990 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style="color: #BB0000;">NA</span><span> Turbo…
-#&gt; </span><span style="color: #555555;"> 5</span><span> N314US   </span><span style="text-decoration: underline;">1</span><span>991 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style="color: #BB0000;">NA</span><span> Turbo…
-#&gt; </span><span style="color: #555555;"> 6</span><span> N318NB   </span><span style="text-decoration: underline;">2</span><span>000 Fixed win… AIRBUS INDUS… A319-…       2   145    </span><span style="color: #BB0000;">NA</span><span> Turbo…
-#&gt; </span><span style="color: #555555;"> 7</span><span> N322NB   </span><span style="text-decoration: underline;">2</span><span>001 Fixed win… AIRBUS INDUS… A319-…       2   145    </span><span style="color: #BB0000;">NA</span><span> Turbo…
-#&gt; </span><span style="color: #555555;"> 8</span><span> N325NB   </span><span style="text-decoration: underline;">2</span><span>001 Fixed win… AIRBUS INDUS… A319-…       2   145    </span><span style="color: #BB0000;">NA</span><span> Turbo…
-#&gt; </span><span style="color: #555555;"> 9</span><span> N329NW   </span><span style="text-decoration: underline;">1</span><span>992 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style="color: #BB0000;">NA</span><span> Turbo…
-#&gt; </span><span style="color: #555555;">10</span><span> N332NW   </span><span style="text-decoration: underline;">1</span><span>992 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style="color: #BB0000;">NA</span><span> Turbo…
-#&gt; </span><span style="color: #555555;"># … with 51 more rows</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 9</span><span>
+#&gt; </span><span style="color: #555555;"># … with 9 variables: tailnum &lt;chr&gt;, year &lt;int&gt;, type &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   speed &lt;int&gt;, engine &lt;chr&gt;</span><span>
 </span></code></pre>
 <p>And indeed, all included flights departed in May (<code>month == 5</code>):</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"flights"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 79 x 19</span><span>
-#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
-#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
-#&gt; </span><span style="color: #555555;"> 1</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      554            600        -</span><span style="color: #BB0000;">6</span><span>      739
-#&gt; </span><span style="color: #555555;"> 2</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      556            600        -</span><span style="color: #BB0000;">4</span><span>      825
-#&gt; </span><span style="color: #555555;"> 3</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      606            610        -</span><span style="color: #BB0000;">4</span><span>      743
-#&gt; </span><span style="color: #555555;"> 4</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      625            630        -</span><span style="color: #BB0000;">5</span><span>      843
-#&gt; </span><span style="color: #555555;"> 5</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      653            700        -</span><span style="color: #BB0000;">7</span><span>      923
-#&gt; </span><span style="color: #555555;"> 6</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      656            700        -</span><span style="color: #BB0000;">4</span><span>      911
-#&gt; </span><span style="color: #555555;"> 7</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      700            700         0      958
-#&gt; </span><span style="color: #555555;"> 8</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      701            705        -</span><span style="color: #BB0000;">4</span><span>      952
-#&gt; </span><span style="color: #555555;"> 9</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      714            715        -</span><span style="color: #BB0000;">1</span><span>      908
-#&gt; </span><span style="color: #555555;">10</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      743            745        -</span><span style="color: #BB0000;">2</span><span>      956
-#&gt; </span><span style="color: #555555;"># … with 69 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span><span>
-#&gt; </span><span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span><span>
-#&gt; </span><span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span><span>
-#&gt; </span><span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 19</span><span>
+#&gt; </span><span style="color: #555555;"># … with 19 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span><span>
 </span></code></pre>
 <p>For comparison, let’s review the equivalent manual query for <code>flights</code> in <code>dplyr</code> syntax:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
