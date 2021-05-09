@@ -108,11 +108,17 @@ dm_get_data_model <- function(x, column_types) {
     references_for_columns %>%
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
-  keys <-
+  keys_pk <-
     dm_get_all_pks_impl(x) %>%
     mutate(column = format(pk_col)) %>%
-    select(-pk_col) %>%
+    select(table, column) %>%
     mutate(key = 1L)
+
+  keys_fk <-
+    dm_get_all_fks_impl(x) %>%
+    mutate(column = format(parent_pk_cols)) %>%
+    select(table = parent_table, column) %>%
+    mutate(key_fk = 2L)
 
   if (column_types) {
     types <- dm_get_all_column_types(x)
@@ -122,9 +128,14 @@ dm_get_data_model <- function(x, column_types) {
 
   columns <-
     types %>%
-    full_join(keys, by = c("table", "column")) %>%
+    full_join(keys_pk, by = c("table", "column")) %>%
+    full_join(keys_fk, by = c("table", "column")) %>%
     full_join(references_for_columns, by = c("table", "column")) %>%
-    mutate(key = coalesce(key, 0L)) %>%
+    # Order matters: key == 2 if foreign key points to non-default primary key
+    mutate(key = coalesce(key, key_fk, 0L)) %>%
+    select(-key_fk) %>%
+    # I don't understand why this is necessary
+    distinct() %>%
     # for compatibility with print method from {datamodelr}
     as.data.frame()
 
