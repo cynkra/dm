@@ -36,22 +36,18 @@ get_table_colnames <- function(dm, tables = NULL) {
   def <- dm_get_def(dm)
 
   if (!is.null(tables)) {
-    def <-
-      def %>%
-      filter(table %in% !!tables)
+    def <- def[def$table %in% tables, ]
   }
 
   table_colnames <-
-    def %>%
-    mutate(column = map(data, colnames)) %>%
-    select(table, column) %>%
+    tibble(table = def$table, column = map(def$data, colnames)) %>%
     unnest_col("column", character())
 
   pks <- dm_get_all_pks_def_impl(def)
 
   keep_colnames <-
-    pks %>%
-    rename(column = pk_col) %>%
+    pks[c("table", "pk_col")] %>%
+    set_names(c("table", "column")) %>%
     unnest_col("column", character())
 
   table_colnames %>%
