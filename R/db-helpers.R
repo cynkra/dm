@@ -136,7 +136,7 @@ queries_set_fk_relations <- function(dest, fk_information) {
   db_child_tables <- fk_information$db_child_table
   child_fk_cols <- fk_information$child_fk_cols
   db_parent_tables <- fk_information$db_parent_table
-  parent_pk_col <- fk_information$pk_col
+  parent_pk_col <- fk_information$parent_pk_cols
 
   if (is_mssql(dest) || is_postgres(dest)) {
     pmap_chr(
