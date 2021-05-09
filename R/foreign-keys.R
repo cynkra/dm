@@ -224,15 +224,10 @@ dm_get_all_fks <- function(dm, ...) {
 }
 
 dm_get_all_fks_impl <- function(dm) {
-  fk_df <-
-    dm_get_def(dm) %>%
-    select(parent_table = table, fks, pks) %>%
-    unnest_list_of_df("pks") %>%
-    rename(parent_pk_cols = column)
-
-  fk_df %>%
+  dm_get_def(dm) %>%
+    select(parent_table = table, fks) %>%
     unnest_list_of_df("fks") %>%
-    select(child_table = table, child_fk_cols = column, parent_table, parent_pk_cols) %>%
+    select(child_table = table, child_fk_cols = column, parent_table, parent_pk_cols = ref_column) %>%
     mutate(child_fk_cols = new_keys(child_fk_cols), parent_pk_cols = new_keys(parent_pk_cols)) %>%
     arrange(child_table, child_fk_cols)
 }
