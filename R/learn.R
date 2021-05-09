@@ -235,12 +235,12 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
       table = character(),
       column = character(),
       ref = character(),
-      ref_col = character()
+      ref_column = character()
     )
   } else {
     fks <-
       data_model$references %>%
-      select(table, column, ref, ref_col) %>%
+      select(table, column, ref, ref_column = ref_col) %>%
       as_tibble()
   }
 
@@ -269,10 +269,10 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
 
   # Legacy compatibility
   fks$column <- as.list(fks$column)
+  fks$ref_column <- as.list(fks$ref_column)
 
   fks <-
     fks %>%
-    select(-ref_col) %>%
     nest_compat(fks = -ref) %>%
     rename(table = ref)
 
