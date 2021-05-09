@@ -48,8 +48,8 @@
       14  tf_5      k  1  int   1 <NA>    <NA>
       15  tf_5      l  2  chr   0 tf_4       h
       16  tf_5      m  3  chr   0 tf_6       n
-      17  tf_6      n  1  chr   1 <NA>    <NA>
-      18  tf_6      o  2  chr   0 <NA>    <NA>
+      17  tf_6      n  1  chr   2 <NA>    <NA>
+      18  tf_6      o  2  chr   1 <NA>    <NA>
       19  tf_3  f, f1 NA <NA>   1 <NA>    <NA>
       20  tf_2  e, e1 NA <NA>   0 tf_3   f, f1
       21  tf_4  j, j1 NA <NA>   0 tf_3   f, f1
