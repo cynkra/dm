@@ -11,16 +11,17 @@
       airlines airports  flights   planes  weather 
             15       86        0      945        0 
     Code
-      flights_jan <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
-        dm_zoom_to(flights) %>% filter(month == 1) %>% dm_update_zoomed() %>%
-        dm_zoom_to(weather) %>% filter(month == 1) %>% dm_update_zoomed()
-      print(dm_nrow(flights_jan))
+      flights_hour10 <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
+        dm_zoom_to(flights) %>% filter(month == 1, day == 10, hour == 10) %>%
+        dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(month == 1, day == 10,
+      hour == 10) %>% dm_update_zoomed()
+      print(dm_nrow(flights_hour10))
     Output
       flights weather 
-          932      72 
+           43       3 
     Code
-      flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan)
-      out <- dm_rows_insert(flights_sqlite, flights_jan_sqlite)
+      flights_hour10_sqlite <- copy_dm_to(sqlite, flights_hour10)
+      out <- dm_rows_insert(flights_sqlite, flights_hour10_sqlite)
     Message <simpleMessage>
       Not persisting, use `in_place = FALSE` to turn off this message.
     Code
@@ -29,38 +30,39 @@
       airlines airports  flights   planes  weather 
             15       86        0      945        0 
     Code
-      dm_rows_insert(flights_sqlite, flights_jan_sqlite, in_place = TRUE)
+      dm_rows_insert(flights_sqlite, flights_hour10_sqlite, in_place = TRUE)
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
-            15       86      932      945       72 
+            15       86       43      945        3 
     Code
-      flights_feb <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
-        dm_zoom_to(flights) %>% filter(month == 2) %>% dm_update_zoomed() %>%
-        dm_zoom_to(weather) %>% filter(month == 2) %>% dm_update_zoomed()
-      flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb)
-      flights_new <- dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = FALSE)
+      flights_hour11 <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
+        dm_zoom_to(flights) %>% filter(month == 1, day == 10, hour == 11) %>%
+        dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(month == 1, day == 10,
+      hour == 11) %>% dm_update_zoomed()
+      flights_hour11_sqlite <- copy_dm_to(sqlite, flights_hour11)
+      flights_new <- dm_rows_insert(flights_sqlite, flights_hour11_sqlite, in_place = FALSE)
       print(dm_nrow(flights_new))
     Output
       airlines airports  flights   planes  weather 
-            15       86     1761      945      144 
+            15       86       88      945        6 
     Code
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
-            15       86      932      945       72 
+            15       86       43      945        3 
     Code
       flights_new %>% dm_examine_constraints()
     Message <cliMessage>
       ! Unsatisfied constraints:
     Output
-      * Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
+      * Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N0EGMQ (1), N3BCAA (1), N3CCAA (1), N3CFAA (1), N3EHAA (1), ...
     Code
-      dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
+      dm_rows_insert(flights_sqlite, flights_hour11_sqlite, in_place = TRUE)
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
-            15       86     1761      945      144 
+            15       86       88      945        6 
     Code
       dbDisconnect(sqlite)
 

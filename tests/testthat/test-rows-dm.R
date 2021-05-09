@@ -22,46 +22,46 @@ test_that("dm_rows_insert()", {
     print(dm_nrow(flights_sqlite))
 
     # First update:
-    flights_jan <-
+    flights_hour10 <-
       dm_nycflights13() %>%
       dm_select_tbl(flights, weather) %>%
       dm_zoom_to(flights) %>%
-      filter(month == 1) %>%
+      filter(month == 1, day == 10, hour == 10) %>%
       dm_update_zoomed() %>%
       dm_zoom_to(weather) %>%
-      filter(month == 1) %>%
+      filter(month == 1, day == 10, hour == 10) %>%
       dm_update_zoomed()
-    print(dm_nrow(flights_jan))
+    print(dm_nrow(flights_hour10))
 
     # Copy to temporary tables on the target database:
-    flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan)
+    flights_hour10_sqlite <- copy_dm_to(sqlite, flights_hour10)
 
     # Dry run by default:
-    out <- dm_rows_insert(flights_sqlite, flights_jan_sqlite)
+    out <- dm_rows_insert(flights_sqlite, flights_hour10_sqlite)
     print(dm_nrow(flights_sqlite))
 
     # Explicitly request persistence:
-    dm_rows_insert(flights_sqlite, flights_jan_sqlite, in_place = TRUE)
+    dm_rows_insert(flights_sqlite, flights_hour10_sqlite, in_place = TRUE)
     print(dm_nrow(flights_sqlite))
 
     # Second update:
-    flights_feb <-
+    flights_hour11 <-
       dm_nycflights13() %>%
       dm_select_tbl(flights, weather) %>%
       dm_zoom_to(flights) %>%
-      filter(month == 2) %>%
+      filter(month == 1, day == 10, hour == 11) %>%
       dm_update_zoomed() %>%
       dm_zoom_to(weather) %>%
-      filter(month == 2) %>%
+      filter(month == 1, day == 10, hour == 11) %>%
       dm_update_zoomed()
 
     # Copy to temporary tables on the target database:
-    flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb)
+    flights_hour11_sqlite <- copy_dm_to(sqlite, flights_hour11)
 
     # Explicit dry run:
     flights_new <- dm_rows_insert(
       flights_sqlite,
-      flights_feb_sqlite,
+      flights_hour11_sqlite,
       in_place = FALSE
     )
     print(dm_nrow(flights_new))
@@ -72,7 +72,7 @@ test_that("dm_rows_insert()", {
       dm_examine_constraints()
 
     # Apply:
-    dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
+    dm_rows_insert(flights_sqlite, flights_hour11_sqlite, in_place = TRUE)
     print(dm_nrow(flights_sqlite))
 
     # Disconnect
@@ -198,8 +198,6 @@ test_that("dm_rows_truncate()", {
 
 
 # tests for compound keys -------------------------------------------------
-
-# TODO: #335 ASAP mergen, tweeten, bumpen, Mattias vorbereiten, Cleanup
 
 test_that("output for compound keys", {
   skip("COMPOUND")
