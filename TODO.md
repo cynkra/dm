@@ -1,6 +1,5 @@
 # FIXME NEXT
 
-- expose optional `ref_column` in `dm_add_fk()`
 - expose optional `ref_column` in `dm_rm_fk()`
     - optional arguments in `dm_rm_*()`, set `NULL` defaults
     - show message what is removed, as piped code
