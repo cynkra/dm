@@ -62,6 +62,9 @@
         dm::dm_add_fk(tf_5, m, tf_6, n)
     Code
       dm_for_filter() %>% dm_rm_pk(columns = c) %>% dm_paste()
+    Message <simpleMessage>
+      Removing primary keys: %>%
+        dm_rm_pk(tf_2)
     Message <cliMessage>
       dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
         dm::dm_add_pk(tf_1, a) %>%
@@ -76,6 +79,14 @@
         dm::dm_add_fk(tf_5, m, tf_6, n)
     Code
       dm_for_filter() %>% dm_rm_pk(fail_fk = FALSE) %>% dm_paste()
+    Message <simpleMessage>
+      Removing primary keys: %>%
+        dm_rm_pk(tf_1) %>%
+        dm_rm_pk(tf_2) %>%
+        dm_rm_pk(tf_3) %>%
+        dm_rm_pk(tf_4) %>%
+        dm_rm_pk(tf_5) %>%
+        dm_rm_pk(tf_6)
     Message <cliMessage>
       dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
         dm::dm_add_fk(tf_2, d, tf_1, a) %>%

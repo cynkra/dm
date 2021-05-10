@@ -168,6 +168,12 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
     }
   })
 
+  # Talk about it
+  if (is.null(table_name)) {
+    message("Removing primary keys: %>%")
+    message("  ", glue_collapse(glue("dm_rm_pk({tick_if_needed(def$table[i])})"), " %>%\n  "))
+  }
+
   # Execute
   def$pks[i] <- list_of(new_pk())
 
