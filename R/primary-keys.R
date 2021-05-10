@@ -10,7 +10,7 @@
 #' `dm_rm_pk()` removes a primary key from a table and leaves the [`dm`] object otherwise unaltered.
 #' Foreign keys that point to the table from other tables, can be optionally removed as well.
 #'
-#' 
+#'
 #' @inheritParams ellipsis::dots_empty
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
@@ -82,6 +82,51 @@ dm_add_pk_impl <- function(dm, table, column, force) {
   }
 
   def$pks[[which(def$table == table)]] <- tibble(column = !!list(column))
+
+  new_dm3(def)
+}
+
+#' Remove a primary key from a table in a [`dm`] object
+#'
+#' @rdname dm_add_pk
+#'
+#' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error if
+#'   there are foreign keys addressing the primary key that is to be removed.
+#'   If `TRUE`, the function will
+#'   remove, in addition to the primary key of the `table` argument, also all foreign key constraints
+#'   that are pointing to it.
+#'
+#' @return For `dm_rm_pk()`: An updated `dm` without the indicated primary key.
+#'
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' dm_nycflights13() %>%
+#'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
+#'   dm_draw()
+#' @export
+dm_rm_pk <- function(dm, table, ..., rm_referencing_fks = FALSE) {
+  check_dots_empty()
+  check_not_zoomed(dm)
+  table_name <- dm_tbl_name(dm, {{ table }})
+
+  if (!rm_referencing_fks && dm_is_referenced(dm, !!table_name)) {
+    affected <- dm_get_referencing_tables(dm, !!table_name)
+    abort_first_rm_fks(table_name, affected)
+  }
+
+  dm_rm_pk_impl(dm, table_name)
+}
+
+dm_rm_pk_impl <- function(dm, table_name) {
+  def <- dm_get_def(dm)
+
+  i <- which(def$table == table_name)
+
+  if (nrow(def$pks[[i]]) == 0 && dm_is_strict_keys(dm)) {
+    abort_pk_not_defined(table_name)
+  }
+
+  def$pks[[i]] <- new_pk()
+  def$fks[[i]] <- new_fk()
 
   new_dm3(def)
 }
@@ -194,52 +239,6 @@ dm_get_all_pks_def_impl <- function(def) {
 
   out$pk_col <- new_keys(out$pk_col)
   out
-}
-
-
-#' Remove a primary key from a table in a [`dm`] object
-#'
-#' @rdname dm_add_pk
-#'
-#' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error if
-#'   there are foreign keys addressing the primary key that is to be removed.
-#'   If `TRUE`, the function will
-#'   remove, in addition to the primary key of the `table` argument, also all foreign key constraints
-#'   that are pointing to it.
-#'
-#' @return For `dm_rm_pk()`: An updated `dm` without the indicated primary key.
-#'
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
-#' dm_nycflights13() %>%
-#'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
-#'   dm_draw()
-#' @export
-dm_rm_pk <- function(dm, table, ..., rm_referencing_fks = FALSE) {
-  check_dots_empty()
-  check_not_zoomed(dm)
-  table_name <- dm_tbl_name(dm, {{ table }})
-
-  if (!rm_referencing_fks && dm_is_referenced(dm, !!table_name)) {
-    affected <- dm_get_referencing_tables(dm, !!table_name)
-    abort_first_rm_fks(table_name, affected)
-  }
-
-  dm_rm_pk_impl(dm, table_name)
-}
-
-dm_rm_pk_impl <- function(dm, table_name) {
-  def <- dm_get_def(dm)
-
-  i <- which(def$table == table_name)
-
-  if (nrow(def$pks[[i]]) == 0 && dm_is_strict_keys(dm)) {
-    abort_pk_not_defined(table_name)
-  }
-
-  def$pks[[i]] <- new_pk()
-  def$fks[[i]] <- new_fk()
-
-  new_dm3(def)
 }
 
 
