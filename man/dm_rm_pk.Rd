@@ -10,11 +10,11 @@ dm_rm_pk(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE)
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.
-Pass \code{NULL} to remove all matching primary keys.}
+Pass \code{NULL} to remove all matching keys.}
 
 \item{columns}{Table columns, unquoted.
 To refer to a compound key, use \code{c(col1, col2)}.
-Pass \code{NULL} (the default) to remove all matching primary keys.}
+Pass \code{NULL} (the default) to remove all matching keys.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 

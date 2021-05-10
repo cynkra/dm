@@ -202,10 +202,10 @@ dm_get_all_pks_def_impl <- function(def) {
 #'
 #' @inheritParams dm_add_pk
 #' @param table A table in the `dm`.
-#'   Pass `NULL` to remove all matching primary keys.
+#'   Pass `NULL` to remove all matching keys.
 #' @param columns Table columns, unquoted.
 #'   To refer to a compound key, use `c(col1, col2)`.
-#'   Pass `NULL` (the default) to remove all matching primary keys.
+#'   Pass `NULL` (the default) to remove all matching keys.
 #' @param fail_fk
 #'   Boolean: if `TRUE` (default), will throw an error
 #'   if there are foreign keys addressing the primary key that is to be removed.
