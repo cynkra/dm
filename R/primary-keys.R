@@ -210,6 +210,8 @@ dm_get_all_pks_def_impl <- function(def) {
 #'   Boolean: if `TRUE` (default), will throw an error
 #'   if there are foreign keys addressing the primary key that is to be removed.
 #'
+#' @family primary key functions
+#'
 #' @return An updated `dm` without the indicated primary key(s).
 #'
 #' @export
