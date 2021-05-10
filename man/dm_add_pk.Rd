@@ -7,7 +7,7 @@
 \usage{
 dm_add_pk(dm, table, columns, ..., check = FALSE, force = FALSE)
 
-dm_rm_pk(dm, table, ..., rm_referencing_fks = FALSE)
+dm_rm_pk(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -25,26 +25,23 @@ To define a compound key, use \code{c(col1, col2)}.}
 set for this table.
 If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 
-\item{rm_referencing_fks}{Boolean: if \code{FALSE} (default), will throw an error if
-there are foreign keys addressing the primary key that is to be removed.
-If \code{TRUE}, the function will
-remove, in addition to the primary key of the \code{table} argument, also all foreign key constraints
-that are pointing to it.}
+\item{fail_fk}{Boolean: if \code{TRUE} (default), will throw an error
+if there are foreign keys addressing the primary key that is to be removed.}
 }
 \value{
 For \code{dm_add_pk()}: An updated \code{dm} with an additional primary key.
 
-For \code{dm_rm_pk()}: An updated \code{dm} without the indicated primary key.
+For \code{dm_rm_pk()}: An updated \code{dm} without the indicated primary key(s).
 }
 \description{
 \code{dm_add_pk()} marks the specified columns as the primary key of the specified table.
 If \code{check == TRUE}, then it will first check if
 the given combination of columns is a unique key of the table.
 If \code{force == TRUE}, the function will replace an already
-set key.
+set key, without altering foreign keys previously pointing to that primary key.
 
-\code{dm_rm_pk()} removes a primary key from a table and leaves the \code{\link{dm}} object otherwise unaltered.
-Foreign keys that point to the table from other tables, can be optionally removed as well.
+\code{dm_rm_pk()} removes one or more primary keys from a table and leaves the \code{\link{dm}} object otherwise unaltered.
+Foreign keys are never removed.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -71,6 +68,7 @@ try(
 )
 \dontshow{\}) # examplesIf}
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+
 dm_nycflights13() \%>\%
   dm_rm_pk(airports, rm_referencing_fks = TRUE) \%>\%
   dm_draw()

@@ -5,11 +5,7 @@
 #' If `check == TRUE`, then it will first check if
 #' the given combination of columns is a unique key of the table.
 #' If `force == TRUE`, the function will replace an already
-#' set key.
-#'
-#' `dm_rm_pk()` removes a primary key from a table and leaves the [`dm`] object otherwise unaltered.
-#' Foreign keys that point to the table from other tables, can be optionally removed as well.
-#'
+#' set key, without altering foreign keys previously pointing to that primary key.
 #'
 #' @inheritParams ellipsis::dots_empty
 #' @param dm A `dm` object.
@@ -88,21 +84,23 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 
 #' Remove a primary key from a table in a [`dm`] object
 #'
+#' `dm_rm_pk()` removes one or more primary keys from a table and leaves the [`dm`] object otherwise unaltered.
+#' Foreign keys are never removed.
+#'
 #' @rdname dm_add_pk
 #'
-#' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error if
-#'   there are foreign keys addressing the primary key that is to be removed.
-#'   If `TRUE`, the function will
-#'   remove, in addition to the primary key of the `table` argument, also all foreign key constraints
-#'   that are pointing to it.
+#' @param fail_fk
+#'   Boolean: if `TRUE` (default), will throw an error
+#'   if there are foreign keys addressing the primary key that is to be removed.
 #'
-#' @return For `dm_rm_pk()`: An updated `dm` without the indicated primary key.
+#' @return For `dm_rm_pk()`: An updated `dm` without the indicated primary key(s).
 #'
+#' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#'
 #' dm_nycflights13() %>%
 #'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
 #'   dm_draw()
-#' @export
 dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE) {
   if (missing(fail_fk)) {
     fail_fk <- NULL
