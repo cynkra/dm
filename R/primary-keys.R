@@ -77,7 +77,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
     abort_key_set_force_false(table)
   }
 
-  def$pks[[which(def$table == table)]] <- tibble(column = !!list(column))
+  def$pks[[i]] <- tibble(column = !!list(column))
 
   new_dm3(def)
 }
