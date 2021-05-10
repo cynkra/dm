@@ -2,12 +2,9 @@
 % Please edit documentation in R/primary-keys.R
 \name{dm_add_pk}
 \alias{dm_add_pk}
-\alias{dm_rm_pk}
-\title{Add/remove a primary key}
+\title{Add a primary key}
 \usage{
 dm_add_pk(dm, table, columns, ..., check = FALSE, force = FALSE)
-
-dm_rm_pk(dm, table, ..., rm_referencing_fks = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -24,27 +21,16 @@ To define a compound key, use \code{c(col1, col2)}.}
 \item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key
 set for this table.
 If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
-
-\item{rm_referencing_fks}{Boolean: if \code{FALSE} (default), will throw an error if
-there are foreign keys addressing the primary key that is to be removed.
-If \code{TRUE}, the function will
-remove, in addition to the primary key of the \code{table} argument, also all foreign key constraints
-that are pointing to it.}
 }
 \value{
-For \code{dm_add_pk()}: An updated \code{dm} with an additional primary key.
-
-For \code{dm_rm_pk()}: An updated \code{dm} without the indicated primary key.
+An updated \code{dm} with an additional primary key.
 }
 \description{
 \code{dm_add_pk()} marks the specified columns as the primary key of the specified table.
 If \code{check == TRUE}, then it will first check if
 the given combination of columns is a unique key of the table.
 If \code{force == TRUE}, the function will replace an already
-set key.
-
-\code{dm_rm_pk()} removes a primary key from a table and leaves the \code{\link{dm}} object otherwise unaltered.
-Foreign keys that point to the table from other tables, can be optionally removed as well.
+set key, without altering foreign keys previously pointing to that primary key.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -70,17 +56,13 @@ try(
     dm_add_pk(planes, manufacturer, check = TRUE)
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-dm_nycflights13() \%>\%
-  dm_rm_pk(airports, rm_referencing_fks = TRUE) \%>\%
-  dm_draw()
-\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other primary key functions: 
 \code{\link{dm_get_all_pks}()},
 \code{\link{dm_get_pk}()},
 \code{\link{dm_has_pk}()},
+\code{\link{dm_rm_pk}()},
 \code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}
