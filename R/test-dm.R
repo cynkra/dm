@@ -42,6 +42,23 @@ dm_tbl_name <- function(dm, table) {
   table_name
 }
 
+dm_tbl_name_null <- function(dm, table) {
+  table_expr <- enexpr(table)
+
+  # Missing argument?
+  if (quo_is_null(table_expr)) {
+    return(NULL)
+  }
+
+  table_name <- as_name(table_expr)
+
+  if (!(table_name %in% src_tbls_impl(dm))) {
+    abort_table_not_in_dm(table_name, src_tbls_impl(dm))
+  }
+
+  table_name
+}
+
 uncurly <- function(call) {
   # Transforms {{ x }} to x
   # Doesn't work for other expression patterns

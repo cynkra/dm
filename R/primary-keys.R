@@ -103,30 +103,75 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
 #'   dm_draw()
 #' @export
-dm_rm_pk <- function(dm, table, ..., rm_referencing_fks = FALSE) {
-  check_dots_empty()
-  check_not_zoomed(dm)
-  table_name <- dm_tbl_name(dm, {{ table }})
-
-  if (!rm_referencing_fks && dm_is_referenced(dm, !!table_name)) {
-    affected <- dm_get_referencing_tables(dm, !!table_name)
-    abort_first_rm_fks(table_name, affected)
+dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE) {
+  if (missing(fail_fk)) {
+    fail_fk <- NULL
   }
-
-  dm_rm_pk_impl(dm, table_name)
+  dm_rm_pk_(dm, {{ table }}, {{ columns }}, ..., fail_fk = fail_fk)
 }
 
-dm_rm_pk_impl <- function(dm, table_name) {
-  def <- dm_get_def(dm)
+dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL, fail_fk = NULL) {
+  check_dots_empty()
+  check_not_zoomed(dm)
 
-  i <- which(def$table == table_name)
-
-  if (nrow(def$pks[[i]]) == 0 && dm_is_strict_keys(dm)) {
-    abort_pk_not_defined(table_name)
+  if (!is.null(rm_referencing_fks)) {
+    deprecate_soft("0.2.1", "dm::dm_rm_pk(rm_referencing_fks = )", "dm::dm_rm_pk(fail_fk = )",
+                   details = "Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed."
+    )
+    if (is.null(fail_fk)) {
+      fail_fk <- !rm_referencing_fks
+    }
   }
 
-  def$pks[[i]] <- new_pk()
-  def$fks[[i]] <- new_fk()
+  if (is.null(fail_fk)) {
+    fail_fk <- TRUE
+  }
+
+  table_name <- dm_tbl_name_null(dm, {{ table }})
+  columns <- enexpr(columns)
+
+  dm_rm_pk_impl(dm, table_name, columns, fail_fk)
+}
+
+dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
+  def <- dm_get_def(dm)
+
+  if (is.null(table_name)) {
+    i <- which(map_int(def$pks, vec_size) > 0)
+  } else {
+    i <- which(def$table == table_name)
+    if (nrow(def$pks[[i]]) == 0) {
+      i <- integer()
+    }
+  }
+
+  if (!quo_is_null(columns)) {
+    ii <- map2_lgl(def$data[i], def$pks[i], ~ tryCatch(
+      {
+        vars <- eval_select_indices(columns, colnames(.x))
+        identical(names(vars), .y$column[[1]])
+      },
+      error = function(e) {
+        FALSE
+      }
+    ))
+
+    i <- i[ii]
+  }
+
+  if (length(i) == 0 && dm_is_strict_keys(dm)) {
+    abort_pk_not_defined()
+  }
+
+  pwalk(list(def$fks[i], def$pks[i], def$table[i]),  ~ {
+    is_match <- !is.na(vec_match(..1$ref_column, ..2$column))
+    if (fail_fk && any(is_match)) {
+      abort_first_rm_fks(..3, ..1$table[is_match])
+    }
+  })
+
+  # Execute
+  def$pks[i] <- list_of(new_pk())
 
   new_dm3(def)
 }
@@ -355,12 +400,12 @@ check_pk <- function(table, columns) {
 
 # Error -------------------------------------------------------------------
 
-abort_pk_not_defined <- function(table) {
-  abort(error_txt_pk_not_defined(table), .subclass = dm_error_full("pk_not_defined"))
+abort_pk_not_defined <- function() {
+  abort(error_txt_pk_not_defined(), .subclass = dm_error_full("pk_not_defined"))
 }
 
-error_txt_pk_not_defined <- function(table) {
-  glue("Table {tick(table)} does not have a primary key.")
+error_txt_pk_not_defined <- function() {
+  glue("No primary keys to remove.")
 }
 
 abort_key_set_force_false <- function(table) {
@@ -378,6 +423,6 @@ abort_first_rm_fks <- function(table, fk_tables) {
 error_txt_first_rm_fks <- function(table, fk_tables) {
   glue(
     "There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {tick(table)}. ",
-    "First remove those or set `rm_referencing_fks = TRUE`."
+    "First remove those, or set `fail_fk = FALSE`."
   )
 }
