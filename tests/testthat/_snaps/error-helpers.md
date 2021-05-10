@@ -95,9 +95,9 @@
     Error <dm_error_key_constraints_need_db>
       Setting key constraints only works if the tables of the `dm` are on a database.
     Code
-      abort_pk_not_defined("table")
+      abort_pk_not_defined()
     Error <dm_error_pk_not_defined>
-      Table `table` does not have a primary key.
+      No primary keys to remove.
     Code
       abort_fk_exists("child", c("child_1", "child_2"), "parent")
     Error <dm_error_fk_exists>
@@ -105,7 +105,7 @@
     Code
       abort_first_rm_fks("parent", c("child_1", "child_2"))
     Error <dm_error_first_rm_fks>
-      There are foreign keys pointing from table(s) `child_1`, `child_2` to table `parent`. First remove those or set `rm_referencing_fks = TRUE`.
+      There are foreign keys pointing from table(s) `child_1`, `child_2` to table `parent`. First remove those, or set `fail_fk = FALSE`.
     Code
       abort_no_src_or_con()
     Error <dm_error_no_src_or_con>

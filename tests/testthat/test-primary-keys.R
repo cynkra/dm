@@ -50,25 +50,57 @@ test_that("dm_rm_pk() works as intended?", {
 
   # test if error is thrown if FK points to PK that is about to be removed
   expect_dm_error(
-    dm_rm_pk(dm_for_filter(), tf_4),
+    dm_for_filter() %>%
+      dm_rm_pk(tf_4),
     "first_rm_fks"
   )
 
-  # test logic if argument `rm_referencing_fks = TRUE`
-  expect_equivalent_dm(
-    dm_rm_pk(dm_for_filter(), tf_4, rm_referencing_fks = TRUE),
+  # test if error is thrown if col not found
+  expect_dm_error(
     dm_for_filter() %>%
-      dm_rm_fk(tf_5, l, tf_4) %>%
-      dm_rm_pk(tf_4)
+      dm_rm_pk(tf_5, x),
+    "pk_not_defined"
   )
 
-  expect_equivalent_dm(
-    dm_rm_pk(dm_for_filter(), tf_3, rm_referencing_fks = TRUE),
+  # test if error is thrown if any col not found
+  expect_dm_error(
     dm_for_filter() %>%
-      dm_rm_fk(tf_4, c(j, j1), tf_3) %>%
-      dm_rm_fk(tf_2, c(e, e1), tf_3) %>%
-      dm_rm_pk(tf_3)
+      dm_rm_pk(columns = x),
+    "pk_not_defined"
   )
+})
+
+test_that("dm_rm_pk() supports partial filters", {
+  expect_snapshot({
+    # test logic if argument `fail_fk = FALSE`
+    dm_for_filter() %>%
+      dm_rm_pk(tf_4, fail_fk = FALSE) %>%
+      dm_paste()
+
+    dm_for_filter() %>%
+      dm_rm_pk(tf_3, fail_fk = FALSE) %>%
+      dm_paste()
+
+    # no failure if pk not used in relationship
+    dm_for_filter() %>%
+      dm_rm_pk(tf_6) %>%
+      dm_paste()
+
+    # dprecated argument name
+    dm_for_filter() %>%
+      dm_rm_pk(tf_4, rm_referencing_fks = TRUE) %>%
+      dm_paste()
+
+    # partial match for column
+    dm_for_filter() %>%
+      dm_rm_pk(columns = c) %>%
+      dm_paste()
+
+    # partial match for all tables
+    dm_for_filter() %>%
+      dm_rm_pk(fail_fk = FALSE) %>%
+      dm_paste()
+  })
 })
 
 test_that("dm_has_pk() works as intended?", {

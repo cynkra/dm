@@ -1,3 +1,89 @@
+# dm_rm_pk() supports partial filters
+
+    Code
+      dm_for_filter() %>% dm_rm_pk(tf_4, fail_fk = FALSE) %>% dm_paste()
+    Message <cliMessage>
+      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+        dm::dm_add_pk(tf_1, a) %>%
+        dm::dm_add_pk(tf_2, c) %>%
+        dm::dm_add_pk(tf_3, c(f, f1)) %>%
+        dm::dm_add_pk(tf_5, k) %>%
+        dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_fk(tf_2, d, tf_1) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
+        dm::dm_add_fk(tf_5, l, tf_4, h) %>%
+        dm::dm_add_fk(tf_5, m, tf_6, n)
+    Code
+      dm_for_filter() %>% dm_rm_pk(tf_3, fail_fk = FALSE) %>% dm_paste()
+    Message <cliMessage>
+      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+        dm::dm_add_pk(tf_1, a) %>%
+        dm::dm_add_pk(tf_2, c) %>%
+        dm::dm_add_pk(tf_4, h) %>%
+        dm::dm_add_pk(tf_5, k) %>%
+        dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_fk(tf_2, d, tf_1) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3, c(f, f1)) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3, c(f, f1)) %>%
+        dm::dm_add_fk(tf_5, l, tf_4) %>%
+        dm::dm_add_fk(tf_5, m, tf_6, n)
+    Code
+      dm_for_filter() %>% dm_rm_pk(tf_6) %>% dm_paste()
+    Message <cliMessage>
+      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+        dm::dm_add_pk(tf_1, a) %>%
+        dm::dm_add_pk(tf_2, c) %>%
+        dm::dm_add_pk(tf_3, c(f, f1)) %>%
+        dm::dm_add_pk(tf_4, h) %>%
+        dm::dm_add_pk(tf_5, k) %>%
+        dm::dm_add_fk(tf_2, d, tf_1) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
+        dm::dm_add_fk(tf_5, l, tf_4) %>%
+        dm::dm_add_fk(tf_5, m, tf_6, n)
+    Code
+      dm_for_filter() %>% dm_rm_pk(tf_4, rm_referencing_fks = TRUE) %>% dm_paste()
+    Warning <lifecycle_warning_deprecated>
+      The `rm_referencing_fks` argument of `dm_rm_pk()` is deprecated as of dm 0.2.1.
+      Please use the `fail_fk` argument instead.
+      Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed.
+    Message <cliMessage>
+      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+        dm::dm_add_pk(tf_1, a) %>%
+        dm::dm_add_pk(tf_2, c) %>%
+        dm::dm_add_pk(tf_3, c(f, f1)) %>%
+        dm::dm_add_pk(tf_5, k) %>%
+        dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_fk(tf_2, d, tf_1) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
+        dm::dm_add_fk(tf_5, l, tf_4, h) %>%
+        dm::dm_add_fk(tf_5, m, tf_6, n)
+    Code
+      dm_for_filter() %>% dm_rm_pk(columns = c) %>% dm_paste()
+    Message <cliMessage>
+      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+        dm::dm_add_pk(tf_1, a) %>%
+        dm::dm_add_pk(tf_3, c(f, f1)) %>%
+        dm::dm_add_pk(tf_4, h) %>%
+        dm::dm_add_pk(tf_5, k) %>%
+        dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_fk(tf_2, d, tf_1) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
+        dm::dm_add_fk(tf_5, l, tf_4) %>%
+        dm::dm_add_fk(tf_5, m, tf_6, n)
+    Code
+      dm_for_filter() %>% dm_rm_pk(fail_fk = FALSE) %>% dm_paste()
+    Message <cliMessage>
+      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+        dm::dm_add_fk(tf_2, d, tf_1, a) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3, c(f, f1)) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3, c(f, f1)) %>%
+        dm::dm_add_fk(tf_5, l, tf_4, h) %>%
+        dm::dm_add_fk(tf_5, m, tf_6, n)
+
 # dm_enum_pk_candidates() works properly?
 
     Code

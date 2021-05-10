@@ -24,7 +24,7 @@ test_that("output", {
     abort_no_indexes()
     abort_no_unique_indexes()
     abort_key_constraints_need_db()
-    abort_pk_not_defined("table")
+    abort_pk_not_defined()
     abort_fk_exists("child", c("child_1", "child_2"), "parent")
     abort_first_rm_fks("parent", c("child_1", "child_2"))
     abort_no_src_or_con()
