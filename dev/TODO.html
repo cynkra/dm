@@ -188,7 +188,6 @@
 <div id="fixme-next" class="section level1">
 
 <ul>
-<li>finish PR</li>
 <li>expose optional <code>ref_column</code> in <code><a href="reference/dm_add_fk.html">dm_rm_fk()</a></code>
 <ul>
 <li>optional arguments in <code>dm_rm_*()</code>, set <code>NULL</code> defaults</li>
@@ -196,7 +195,6 @@
 <li>throw error if no constraints matched</li>
 </ul>
 </li>
-<li>optional argument in <code><a href="reference/dm_add_pk.html">dm_rm_pk()</a></code>, set <code>NULL</code> defaults?</li>
 <li>un-skip tests</li>
 <li>rename <code>parent_pk_cols</code> to something more suitable</li>
 </ul>
@@ -205,10 +203,14 @@
 <h1 class="hasAnchor">
 <a href="#later" class="anchor" aria-hidden="true"></a>Later</h1>
 <ul>
+<li>Store <code>keys</code> objects in dm, much easier for debugging</li>
 <li>Abolish <code>skip_if_local_src()</code>: all tests that run only remotely always run at least with SQLite, to avoid hassle with distorted snapshots and late failures</li>
 <li>Add “strict mode” to GitHub Actions: validation in <code>new_dm3()</code>
 </li>
 <li>Named PK and unique constraints: <a href="https://github.com/r-dbi/DBI/pull/351#issuecomment-833438890" class="external-link uri">https://github.com/r-dbi/DBI/pull/351#issuecomment-833438890</a>
+</li>
+<li>
+<code><a href="reference/dm_paste.html">dm_paste()</a></code>: remove <code>select</code> argument from documentation, via <code>_impl()</code> function that takes dots and this argument, like <code><a href="reference/dm_rm_pk.html">dm_rm_pk()</a></code>
 </li>
 </ul>
 </div>
