@@ -82,109 +82,6 @@ dm_add_pk_impl <- function(dm, table, column, force) {
   new_dm3(def)
 }
 
-#' Remove a primary key
-#'
-#' `dm_rm_pk()` removes one or more primary keys from a table and leaves the [`dm`] object otherwise unaltered.
-#' An error is thrown if no private key matches the selection criteria.
-#' If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
-#' Foreign keys are never removed.
-#'
-#' @inheritParams dm_add_pk
-#' @param table A table in the `dm`.
-#'   Pass `NULL` to remove all matching primary keys.
-#' @param columns Table columns, unquoted.
-#'   To refer to a compound key, use `c(col1, col2)`.
-#'   Pass `NULL` (the default) to remove all matching primary keys.
-#' @param fail_fk
-#'   Boolean: if `TRUE` (default), will throw an error
-#'   if there are foreign keys addressing the primary key that is to be removed.
-#'
-#' @return An updated `dm` without the indicated primary key(s).
-#'
-#' @export
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
-#' dm_nycflights13() %>%
-#'   dm_rm_pk(airports, fail_fk = FALSE) %>%
-#'   dm_draw()
-dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE) {
-  if (missing(fail_fk)) {
-    fail_fk <- NULL
-  }
-  dm_rm_pk_(dm, {{ table }}, {{ columns }}, ..., fail_fk = fail_fk)
-}
-
-dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL, fail_fk = NULL) {
-  check_dots_empty()
-  check_not_zoomed(dm)
-
-  if (!is.null(rm_referencing_fks)) {
-    deprecate_soft("0.2.1", "dm::dm_rm_pk(rm_referencing_fks = )", "dm::dm_rm_pk(fail_fk = )",
-                   details = "Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed."
-    )
-    if (is.null(fail_fk)) {
-      fail_fk <- !rm_referencing_fks
-    }
-  }
-
-  if (is.null(fail_fk)) {
-    fail_fk <- TRUE
-  }
-
-  table_name <- dm_tbl_name_null(dm, {{ table }})
-  columns <- enexpr(columns)
-
-  dm_rm_pk_impl(dm, table_name, columns, fail_fk)
-}
-
-dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
-  def <- dm_get_def(dm)
-
-  if (is.null(table_name)) {
-    i <- which(map_int(def$pks, vec_size) > 0)
-  } else {
-    i <- which(def$table == table_name)
-    if (nrow(def$pks[[i]]) == 0) {
-      i <- integer()
-    }
-  }
-
-  if (!quo_is_null(columns)) {
-    ii <- map2_lgl(def$data[i], def$pks[i], ~ tryCatch(
-      {
-        vars <- eval_select_indices(columns, colnames(.x))
-        identical(names(vars), .y$column[[1]])
-      },
-      error = function(e) {
-        FALSE
-      }
-    ))
-
-    i <- i[ii]
-  }
-
-  if (length(i) == 0 && dm_is_strict_keys(dm)) {
-    abort_pk_not_defined()
-  }
-
-  pwalk(list(def$fks[i], def$pks[i], def$table[i]),  ~ {
-    is_match <- !is.na(vec_match(..1$ref_column, ..2$column))
-    if (fail_fk && any(is_match)) {
-      abort_first_rm_fks(..3, ..1$table[is_match])
-    }
-  })
-
-  # Talk about it
-  if (is.null(table_name)) {
-    message("Removing primary keys: %>%")
-    message("  ", glue_collapse(glue("dm_rm_pk({tick_if_needed(def$table[i])})"), " %>%\n  "))
-  }
-
-  # Execute
-  def$pks[i] <- list_of(new_pk())
-
-  new_dm3(def)
-}
-
 #' Check for primary key
 #'
 #' @description `dm_has_pk()` checks if a given table has columns marked as its primary key.
@@ -293,6 +190,110 @@ dm_get_all_pks_def_impl <- function(def) {
 
   out$pk_col <- new_keys(out$pk_col)
   out
+}
+
+
+#' Remove a primary key
+#'
+#' `dm_rm_pk()` removes one or more primary keys from a table and leaves the [`dm`] object otherwise unaltered.
+#' An error is thrown if no private key matches the selection criteria.
+#' If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
+#' Foreign keys are never removed.
+#'
+#' @inheritParams dm_add_pk
+#' @param table A table in the `dm`.
+#'   Pass `NULL` to remove all matching primary keys.
+#' @param columns Table columns, unquoted.
+#'   To refer to a compound key, use `c(col1, col2)`.
+#'   Pass `NULL` (the default) to remove all matching primary keys.
+#' @param fail_fk
+#'   Boolean: if `TRUE` (default), will throw an error
+#'   if there are foreign keys addressing the primary key that is to be removed.
+#'
+#' @return An updated `dm` without the indicated primary key(s).
+#'
+#' @export
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' dm_nycflights13() %>%
+#'   dm_rm_pk(airports, fail_fk = FALSE) %>%
+#'   dm_draw()
+dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE) {
+  if (missing(fail_fk)) {
+    fail_fk <- NULL
+  }
+  dm_rm_pk_(dm, {{ table }}, {{ columns }}, ..., fail_fk = fail_fk)
+}
+
+dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL, fail_fk = NULL) {
+  check_dots_empty()
+  check_not_zoomed(dm)
+
+  if (!is.null(rm_referencing_fks)) {
+    deprecate_soft("0.2.1", "dm::dm_rm_pk(rm_referencing_fks = )", "dm::dm_rm_pk(fail_fk = )",
+                   details = "Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed."
+    )
+    if (is.null(fail_fk)) {
+      fail_fk <- !rm_referencing_fks
+    }
+  }
+
+  if (is.null(fail_fk)) {
+    fail_fk <- TRUE
+  }
+
+  table_name <- dm_tbl_name_null(dm, {{ table }})
+  columns <- enexpr(columns)
+
+  dm_rm_pk_impl(dm, table_name, columns, fail_fk)
+}
+
+dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
+  def <- dm_get_def(dm)
+
+  if (is.null(table_name)) {
+    i <- which(map_int(def$pks, vec_size) > 0)
+  } else {
+    i <- which(def$table == table_name)
+    if (nrow(def$pks[[i]]) == 0) {
+      i <- integer()
+    }
+  }
+
+  if (!quo_is_null(columns)) {
+    ii <- map2_lgl(def$data[i], def$pks[i], ~ tryCatch(
+      {
+        vars <- eval_select_indices(columns, colnames(.x))
+        identical(names(vars), .y$column[[1]])
+      },
+      error = function(e) {
+        FALSE
+      }
+    ))
+
+    i <- i[ii]
+  }
+
+  if (length(i) == 0 && dm_is_strict_keys(dm)) {
+    abort_pk_not_defined()
+  }
+
+  pwalk(list(def$fks[i], def$pks[i], def$table[i]),  ~ {
+    is_match <- !is.na(vec_match(..1$ref_column, ..2$column))
+    if (fail_fk && any(is_match)) {
+      abort_first_rm_fks(..3, ..1$table[is_match])
+    }
+  })
+
+  # Talk about it
+  if (is.null(table_name)) {
+    message("Removing primary keys: %>%")
+    message("  ", glue_collapse(glue("dm_rm_pk({tick_if_needed(def$table[i])})"), " %>%\n  "))
+  }
+
+  # Execute
+  def$pks[i] <- list_of(new_pk())
+
+  new_dm3(def)
 }
 
 
