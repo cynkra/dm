@@ -1,4 +1,4 @@
-#' Add/remove a primary key
+#' Add a primary key
 #'
 #' @description
 #' `dm_add_pk()` marks the specified columns as the primary key of the specified table.
@@ -19,7 +19,7 @@
 #'
 #' @family primary key functions
 #'
-#' @return For `dm_add_pk()`: An updated `dm` with an additional primary key.
+#' @return An updated `dm` with an additional primary key.
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
@@ -82,24 +82,29 @@ dm_add_pk_impl <- function(dm, table, column, force) {
   new_dm3(def)
 }
 
-#' Remove a primary key from a table in a [`dm`] object
+#' Remove a primary key
 #'
 #' `dm_rm_pk()` removes one or more primary keys from a table and leaves the [`dm`] object otherwise unaltered.
+#' An error is thrown if no private key matches the selection criteria.
+#' If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
 #' Foreign keys are never removed.
 #'
-#' @rdname dm_add_pk
-#'
+#' @inheritParams dm_add_pk
+#' @param table A table in the `dm`.
+#'   Pass `NULL` to remove all matching primary keys.
+#' @param columns Table columns, unquoted.
+#'   To refer to a compound key, use `c(col1, col2)`.
+#'   Pass `NULL` (the default) to remove all matching primary keys.
 #' @param fail_fk
 #'   Boolean: if `TRUE` (default), will throw an error
 #'   if there are foreign keys addressing the primary key that is to be removed.
 #'
-#' @return For `dm_rm_pk()`: An updated `dm` without the indicated primary key(s).
+#' @return An updated `dm` without the indicated primary key(s).
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
-#'
 #' dm_nycflights13() %>%
-#'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
+#'   dm_rm_pk(airports, fail_fk = FALSE) %>%
 #'   dm_draw()
 dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE) {
   if (missing(fail_fk)) {
