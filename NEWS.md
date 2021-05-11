@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.0.9002
+
+- Breaking: `dm_get_all_fks()` returns a data frame with a  `parent_key_cols` instead of a `parent_pk_cols` column, to reflect the fact that a foreign key no longer necessarily points to a primary key (#562).
+- `dm_get_pk()` is deprecated in favor of `dm_get_all_pks()` (#561).
+- `dm_has_fk()` and `dm_get_fk()` are deprecated in favor of `dm_get_all_fks()` (#561).
+
+
 # dm 0.2.0.9001
 
 - `dm_get_all_pks()` gains `table` argument for filtering the returned primary keys (#560).
