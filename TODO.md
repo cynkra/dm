@@ -1,9 +1,7 @@
 # FIXME NEXT
 
-- expose optional `ref_column` in `dm_rm_fk()`
-    - optional arguments in `dm_rm_*()`, set `NULL` defaults
-    - show message what is removed if ambiguous, as piped code
-    - throw error if no constraints matched
+- enhance `dm_has_fk()`
+- add `dm_get_fk_in_parent()`
 - un-skip tests
 - rename `parent_pk_cols` to something more suitable
 

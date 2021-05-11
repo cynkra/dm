@@ -46,6 +46,7 @@ utils::globalVariables(c(
   "kind",
   "mismatch_or_null",
   "name",
+  "need_ref",
   "new_display",
   "new_name",
   "old",

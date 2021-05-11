@@ -66,49 +66,40 @@ test_that("dm_has_fk() and dm_get_fk() work as intended?", {
 })
 
 test_that("dm_rm_fk() works as intended?", {
-  expect_true(
+  expect_silent(expect_true(
     dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
       dm_rm_fk(dm_table_2, c, dm_table_4) %>%
       dm_has_fk(dm_table_1, dm_table_4)
-  )
+  ))
 
-  expect_false(
+  expect_silent(expect_false(
     dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
       dm_rm_fk(dm_table_2, c, dm_table_4) %>%
       dm_has_fk(dm_table_2, dm_table_4)
-  )
+  ))
 
-  expect_false(
+  expect_message(expect_false(
     dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
       dm_rm_fk(dm_table_2, NULL, dm_table_4) %>%
       dm_has_fk(dm_table_2, dm_table_4)
-  )
+  ))
 
   expect_dm_error(
     dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
-      dm_rm_fk(table = dm_table_2, ref_table = dm_table_4),
-    class = "rm_fk_col_missing"
-  )
-
-  expect_error(
-    dm_test_obj() %>%
-      dm_add_pk(dm_table_4, c) %>%
-      dm_add_fk(dm_table_1, a, dm_table_4) %>%
-      dm_add_fk(dm_table_2, c, dm_table_4) %>%
       dm_rm_fk(dm_table_2, z, dm_table_4),
-    class = "vctrs_error_subscript_oob"
+    class = "is_not_fkc"
   )
 
   expect_dm_error(
@@ -119,6 +110,66 @@ test_that("dm_rm_fk() works as intended?", {
       dm_rm_fk(dm_table_2, c, dm_table_4),
     class = "is_not_fkc"
   )
+
+  # Bad input
+  expect_dm_error(
+    dm_for_filter() %>%
+      dm_rm_fk(tf_x),
+    class = "table_not_in_dm"
+  )
+
+  expect_dm_error(
+    dm_for_filter() %>%
+      dm_rm_fk(columns = x),
+    class = "is_not_fkc"
+  )
+
+  expect_dm_error(
+    dm_for_filter() %>%
+      dm_rm_fk(ref_table = tf_x),
+    class = "table_not_in_dm"
+  )
+
+  expect_dm_error(
+    dm_for_filter() %>%
+      dm_rm_fk(ref_columns = x),
+    class = "is_not_fkc"
+  )
+})
+
+
+test_that("dm_rm_fk() works with partial matching", {
+  expect_snapshot({
+    # Only table
+    dm_for_filter() %>%
+      dm_rm_fk(tf_5) %>%
+      dm_paste()
+
+    # Only columns
+    dm_for_filter() %>%
+      dm_rm_fk(columns = l) %>%
+      dm_paste()
+
+    # Only columns, compound
+    dm_for_filter() %>%
+      dm_rm_fk(columns = c(e, e1)) %>%
+      dm_paste()
+
+    # Only ref_table
+    dm_for_filter() %>%
+      dm_rm_fk(ref_table = tf_3) %>%
+      dm_paste()
+
+    # Only ref_columns, compound
+    dm_for_filter() %>%
+      dm_rm_fk(ref_columns = c(f, f1)) %>%
+      dm_paste()
+
+    # All foreign keys
+    dm_for_filter() %>%
+      dm_rm_fk() %>%
+      dm_paste()
+  })
 })
 
 

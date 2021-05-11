@@ -91,9 +91,14 @@ test_that("dm_rm_pk() supports partial filters", {
       dm_rm_pk(tf_4, rm_referencing_fks = TRUE) %>%
       dm_paste()
 
-    # partial match for column
+    # partial match for columns
     dm_for_filter() %>%
       dm_rm_pk(columns = c) %>%
+      dm_paste()
+
+    # partial match for columns, with compound key
+    dm_for_filter() %>%
+      dm_rm_pk(columns = c(f, f1), fail_fk = FALSE) %>%
       dm_paste()
 
     # partial match for all tables

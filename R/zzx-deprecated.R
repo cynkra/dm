@@ -339,12 +339,10 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
   else {
     cols <- as_name(ensym(columns))
     if (!all(cols %in% fk_cols)) {
-      abort_is_not_fkc(
-        table_name, cols, ref_table_name
-      )
+      abort_is_not_fkc()
     }
   }
-  dm_rm_fk_impl(dm, table_name, new_keys(cols), ref_table_name)
+  dm_rm_fk_impl(dm, table_name, cols, ref_table_name, NULL)
 }
 
 #' @rdname deprecated
@@ -619,4 +617,13 @@ cdm_update_zoomed_tbl <- function(dm) {
 cdm_zoom_out <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_zoom_out()", "dm::dm_discard_zoomed()")
   dm_discard_zoomed(dm = dm)
+}
+
+
+abort_rm_fk_col_missing <- function() {
+  abort(error_txt_rm_fk_col_missing(), .subclass = dm_error_full("rm_fk_col_missing"))
+}
+
+error_txt_rm_fk_col_missing <- function() {
+  "Parameter `columns` has to be set. Pass `NULL` for removing all references."
 }
