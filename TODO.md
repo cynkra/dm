@@ -1,7 +1,6 @@
 # FIXME NEXT
 
-- enhance `dm_has_fk()`
-- add `dm_get_fk_in_parent()`
+- deprecate
 - un-skip tests
 - rename `parent_pk_cols` to something more suitable
 
