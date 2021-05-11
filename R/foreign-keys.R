@@ -1,36 +1,28 @@
-#' Add/remove foreign keys
+#' Add foreign keys
 #'
-#' @description `dm_add_fk()` marks the specified columns as the foreign key of table `table` with
-#' respect to the primary key of table `ref_table`.
-#' If `check == TRUE`, then it will first check if the values in columns `columns` are a subset
-#' of the values of the primary key in table `ref_table`.
+#' `dm_add_fk()` marks the specified `columns` as the foreign key of table `table` with
+#' respect to a key of table `ref_table`.
+#' Usually the referenced columns are a primary key in `ref_table`,
+#' it is also possible to specify other columns via the `ref_columns` argument.
+#' If `check == TRUE`, then it will first check if the values in `columns` are a subset
+#' of the values of the key in table `ref_table`.
 #'
 #' @inheritParams dm_add_pk
-#' @param columns For `dm_add_fk()`: The columns of `table` which are to become the foreign key columns that
-#'   reference the primary key of `ref_table`.
-#'
-#'   For `dm_rm_fk()`: The columns of `table` that should no longer be referencing the primary key of `ref_table`.
-#'   If `NULL`, all columns will be evaluated.
-#'
+#' @param columns The columns of `table` which are to become the foreign key columns that
+#'   reference `ref_table`.
 #'   To define a compound key, use `c(col1, col2)`.
-#' @param ref_table For `dm_add_fk()`: The table which `table` will be referencing.
-#'   This table needs to have a primary key set.
-#'
-#'   For `dm_rm_fk()`: The table that `table` is referencing.
-#' @param ref_columns For `dm_add_fk()`: The columns of `table` which are to become the referenced columns in `ref_table`.
+#' @param ref_table The table which `table` will be referencing.
+#' @param ref_columns The column(s) of `table` which are to become the referenced column(s) in `ref_table`.
 #'   By default, the primary key is used.
-#'
-#'   For `dm_rm_fk()`: The columns of `table` that should no longer be referencing the primary key of `ref_table`.
-#'
 #'   To define a compound key, use `c(col1, col2)`.
 #' @param check Boolean, if `TRUE`, a check will be performed to determine if the values of
-#'   `column` are a subset of the values of the primary key column of `ref_table`.
+#'   `columns` are a subset of the values of the key column(s) of `ref_table`.
 #'
 #' @family foreign key functions
 #'
 #' @rdname dm_add_fk
 #'
-#' @return For `dm_add_fk()`: An updated `dm` with an additional foreign key relation.
+#' @return An updated `dm` with an additional foreign key relation.
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
@@ -251,16 +243,20 @@ dm_get_all_fks_impl <- function(dm) {
     arrange(child_table, child_fk_cols)
 }
 
-#' Remove the reference(s) from one [`dm`] table to another
+#' Remove foreign keys
 #'
-#' @description `dm_rm_fk()` can remove either one reference between two tables, or all references at once, if argument `columns = NULL`.
-#' All arguments may be provided quoted or unquoted.
-#'
-#' @rdname dm_add_fk
+#' `dm_rm_fk()` can remove either one reference between two tables, or multiple references at once (with a message).
+#' An error is thrown if no matching foreign key is found.
 #'
 #' @family foreign key functions
 #'
-#' @return For `dm_rm_fk()`: An updated `dm` without the given foreign key relation.
+#' @inheritParams dm_rm_pk
+#' @param ref_table The table referenced by the `table` argument.
+#'   Pass `NULL` to remove all matching keys.
+#' @param ref_columns The columns of `table` that should no longer be referencing the primary key of `ref_table`.
+#'   To refer to a compound key, use `c(col1, col2)`.
+#'
+#' @return An updated `dm` without the matching foreign key relation(s).
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
