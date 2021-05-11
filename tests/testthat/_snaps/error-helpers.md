@@ -39,10 +39,9 @@
     Error <dm_error_ref_tbl_has_no_pk>
       ref_table `parent_table` needs a primary key first. Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key.
     Code
-      abort_is_not_fkc("child_table_name", c("wrong_fk_colname", "and_one_more"),
-      "parent_table_name")
+      abort_is_not_fkc()
     Error <dm_error_is_not_fkc>
-      (`wrong_fk_colname`, `and_one_more`) is not a foreign key of table `child_table_name` into table `parent_table_name`.
+      No foreign keys to remove.
     Code
       abort_rm_fk_col_missing()
     Error <dm_error_rm_fk_col_missing>

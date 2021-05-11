@@ -263,47 +263,130 @@ dm_get_all_fks_impl <- function(dm) {
 #' dm_nycflights13(cycle = TRUE) %>%
 #'   dm_rm_fk(flights, dest, airports) %>%
 #'   dm_draw()
-dm_rm_fk <- function(dm, table, columns, ref_table, ...) {
+dm_rm_fk <- function(dm, table = NULL, columns = NULL, ref_table = NULL, ref_columns = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
 
-  column_quo <- enquo(columns)
+  table_name <- dm_tbl_name_null(dm, {{ table }})
+  column_expr <- enexpr(columns)
+  ref_table_name <- dm_tbl_name_null(dm, {{ ref_table }})
+  ref_column_expr <- enexpr(ref_columns)
 
-  if (quo_is_missing(column_quo)) {
-    abort_rm_fk_col_missing()
-  }
-  table_name <- dm_tbl_name(dm, {{ table }})
-  ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
-
-  fk_cols <- dm_get_fk_impl(dm, table_name, ref_table_name)
-  if (is_empty(fk_cols)) {
-    # FIXME: Simplify, check is already done in dm_rm_fk_impl()
-    abort_is_not_fkc(table_name, fk_cols, ref_table_name)
-  }
-
-  if (quo_is_null(column_quo)) {
-    cols <- fk_cols
-  } else {
-    col_idx <- eval_select_indices(column_quo, colnames(dm_get_tables(dm)[[table_name]]))
-    cols <- list(names(col_idx))
-  }
-
-  dm_rm_fk_impl(dm, table_name, cols, ref_table_name)
+  dm_rm_fk_impl(dm, table_name, column_expr, ref_table_name, ref_column_expr)
 }
 
-dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
+dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
   def <- dm_get_def(dm)
-  i <- which(def$table == ref_table_name)
 
-  fks <- def$fks[[i]]
+  # Filter by each argument if given:
 
-  ii <- fks$table != table_name | is.na(vec_match(fks$column, unclass(cols)))
-  if (all(ii)) {
-    abort_is_not_fkc(table_name, cols, ref_table_name)
+  # ref_table_name: keyed by def$table, simplest
+  if (is.null(ref_table_name)) {
+    idx <- seq_along(def$table)
+  } else {
+    idx <- which(def$table == ref_table_name)
   }
 
-  fks <- fks[ii, ]
-  def$fks[[i]] <- fks
+  # other args: inside def$fks, maintaining list of indexes
+  idx_fk <- map(def$fks[idx], ~ seq_len(nrow(.x)))
+
+  # table_name: keep FK entries pointing to the other table
+  if (!is.null(table_name)) {
+    idx_fk <- map2(def$fks[idx], idx_fk, ~ {
+      ii <- (.x$table[.y] == table_name)
+      .y[ii]
+    })
+
+    # Prune after each step (this also ensures that negative selection works further below)
+    keep <- (lengths(idx_fk) > 0)
+    idx <- idx[keep]
+    idx_fk <- idx_fk[keep]
+  }
+
+  # ref_cols: find column names once for each ref_table
+  if (!is.null(ref_cols)) {
+    idx_fk <- pmap(list(def$fks[idx], idx_fk, def$data[idx]), ~ {
+      ii <- tryCatch(
+        {
+          names_vars <- names(eval_select_indices(ref_cols, colnames(..3)))
+          map_lgl(.x$ref_column[.y], identical, names_vars)
+        },
+        error = function(e) {
+          0
+        }
+      )
+      .y[ii]
+    })
+
+    # Prune after each step (this also ensures that negative selection works further below)
+    keep <- (lengths(idx_fk) > 0)
+    idx <- idx[keep]
+    idx_fk <- idx_fk[keep]
+  }
+
+  # cols: find column inside each fks entry
+  if (!is.null(cols)) {
+    all_tables <- set_names(def$data, def$table)
+
+    idx_fk <- map2(def$fks[idx], idx_fk, ~ {
+      ii <- map2_lgl(.x$table[.y], .x$column[.y], ~ {
+        tryCatch(
+          {
+            names_vars <- names(eval_select_indices(cols, colnames(all_tables[[.x]])))
+            identical(.y, names_vars)
+          },
+          error = function(e) {
+            FALSE
+          }
+        )
+      })
+      .y[ii]
+    })
+
+    # Prune after each step (this also ensures that negative selection works further below)
+    keep <- (lengths(idx_fk) > 0)
+    idx <- idx[keep]
+    idx_fk <- idx_fk[keep]
+  }
+
+  # Check if empty
+  if (length(idx) == 0) {
+    abort_is_not_fkc()
+  }
+
+  # Talk about it
+  if (is.null(table_name) || is.null(cols) || is.null(ref_table_name)) {
+    show_disambiguation <- TRUE
+  } else if (!is.null(ref_cols)) {
+    show_disambiguation <- FALSE
+  } else {
+    # Check if all FKs point to the primary key
+    show_disambiguation <- !all(map2_lgl(def$fks[idx], def$pks[idx], ~ {
+      all(map_lgl(.x$ref_column, identical, .y$column[[1]]))
+    }))
+  }
+
+  if (show_disambiguation) {
+    def_rm <- def[idx, c("table", "pks", "fks")]
+    def_rm$fks <- map2(def_rm$fks, idx_fk, vec_slice)
+    def_rm$fks <- map2(def_rm$fks, def_rm$pks, ~ {
+      .x$need_ref <- !map_lgl(.x$ref_column, identical, .y$column[[1]])
+      .x
+    })
+
+    disambiguation <-
+      def_rm %>%
+      select(ref_table = table, fks) %>%
+      unnest(-ref_table) %>%
+      mutate(ref_col_text = if_else(need_ref, glue(", {deparse_keys(ref_column)})"), "")) %>%
+      mutate(text = glue("dm_rm_fk({tick_if_needed(table)}, {deparse_keys(column)}, {tick_if_needed(ref_table)}{ref_col_text})")) %>%
+      pull()
+
+    message("Removing foreign keys: %>%\n  ", glue_collapse(disambiguation, " %>%\n  "))
+  }
+
+  # Execute
+  def$fks[idx] <- map2(def$fks[idx], idx_fk, ~ .x[-.y, ])
 
   new_dm3(def)
 }
@@ -488,28 +571,13 @@ error_txt_fk_exists <- function(child_table_name, colnames, parent_table_name) {
   )
 }
 
-abort_is_not_fkc <- function(child_table_name, colnames,
-                             parent_table_name) {
+abort_is_not_fkc <- function() {
   abort(
-    error_txt_is_not_fkc(
-      child_table_name, colnames, parent_table_name
-    ),
+    error_txt_is_not_fkc(),
     .subclass = dm_error_full("is_not_fkc")
   )
 }
 
-error_txt_is_not_fkc <- function(child_table_name, colnames,
-                                 parent_table_name) {
-  glue(
-    "({commas(tick(colnames))}) is not a foreign key of table ",
-    "{tick(child_table_name)} into table {tick(parent_table_name)}."
-  )
-}
-
-abort_rm_fk_col_missing <- function() {
-  abort(error_txt_rm_fk_col_missing(), .subclass = dm_error_full("rm_fk_col_missing"))
-}
-
-error_txt_rm_fk_col_missing <- function() {
-  "Parameter `columns` has to be set. Pass `NULL` for removing all references."
+error_txt_is_not_fkc <- function() {
+  "No foreign keys to remove."
 }

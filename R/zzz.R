@@ -22,6 +22,8 @@
   # rigg(dm_select_tbl_impl)
   # rigg(dm_insert_zoomed_outgoing_fks)
   # rigg(dm_rm_pk_impl)
+  # rigg(dm_rm_fk_impl)
+  # rigg(cdm_rm_fk)
 }
 
 rigg <- function(fun) {
