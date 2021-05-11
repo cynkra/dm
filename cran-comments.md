@@ -1,4 +1,4 @@
-dm 0.2.0
+dm 0.2.1
 
 ## Cran Repository Policy
 
@@ -12,4 +12,4 @@ dm 0.2.0
 
 ## Current CRAN check results
 
-- [x] Checked on 2021-05-03, no problems found.
+- [x] Checked on 2021-05-11, no problems found.
