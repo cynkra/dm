@@ -46,46 +46,64 @@
     Code
       nyc_comp_2 <- nyc_comp() %>% dm_zoom_to(weather) %>% dm_insert_zoomed(
         "weather_2")
-      nyc_comp_2
+      nyc_comp_2 %>% get_all_keys()
     Output
-      -- Metadata --------------------------------------------------------------------
-      Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `weather_2`
-      Columns: 68
-      Primary keys: 5
-      Foreign keys: 5
+      $pks
+      # A tibble: 5 x 2
+        table     pk_col           
+        <chr>     <keys>           
+      1 airlines  carrier          
+      2 airports  faa              
+      3 planes    tailnum          
+      4 weather   origin, time_hour
+      5 weather_2 origin, time_hour
+      
+      $fks
+      # A tibble: 5 x 4
+        child_table child_fk_cols     parent_table parent_pk_cols   
+        <chr>       <keys>            <chr>        <keys>           
+      1 flights     carrier           airlines     carrier          
+      2 flights     dest              airports     faa              
+      3 flights     tailnum           planes       tailnum          
+      4 flights     origin, time_hour weather      origin, time_hour
+      5 flights     origin, time_hour weather_2    origin, time_hour
+      
     Code
       attr(igraph::E(create_graph_from_dm(nyc_comp_2)), "vnames")
     Output
       [1] "airlines|flights"  "airports|flights"  "flights|planes"   
       [4] "flights|weather"   "flights|weather_2"
     Code
-      dm_get_pk(nyc_comp_2, weather_2)
-    Output
-      <list_of<character>[1]>
-      [[1]]
-      [1] "origin"    "time_hour"
-      
-    Code
       nyc_comp_3 <- nyc_comp() %>% dm_zoom_to(flights) %>% dm_insert_zoomed(
         "flights_2")
-      nyc_comp_3
+      nyc_comp_3 %>% get_all_keys()
     Output
-      -- Metadata --------------------------------------------------------------------
-      Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `flights_2`
-      Columns: 72
-      Primary keys: 4
-      Foreign keys: 8
+      $pks
+      # A tibble: 4 x 2
+        table    pk_col           
+        <chr>    <keys>           
+      1 airlines carrier          
+      2 airports faa              
+      3 planes   tailnum          
+      4 weather  origin, time_hour
+      
+      $fks
+      # A tibble: 8 x 4
+        child_table child_fk_cols     parent_table parent_pk_cols   
+        <chr>       <keys>            <chr>        <keys>           
+      1 flights     carrier           airlines     carrier          
+      2 flights_2   carrier           airlines     carrier          
+      3 flights     dest              airports     faa              
+      4 flights_2   dest              airports     faa              
+      5 flights     tailnum           planes       tailnum          
+      6 flights_2   tailnum           planes       tailnum          
+      7 flights     origin, time_hour weather      origin, time_hour
+      8 flights_2   origin, time_hour weather      origin, time_hour
+      
     Code
       attr(igraph::E(create_graph_from_dm(nyc_comp_3)), "vnames")
     Output
       [1] "airlines|flights"   "airlines|flights_2" "airports|flights"  
       [4] "airports|flights_2" "flights|planes"     "planes|flights_2"  
       [7] "flights|weather"    "weather|flights_2" 
-    Code
-      dm_get_fk(nyc_comp_3, flights_2, weather)
-    Output
-      <list_of<character>[1]>
-      [[1]]
-      [1] "origin"    "time_hour"
-      
 
