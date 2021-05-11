@@ -47,10 +47,10 @@
 
 
 <meta property="og:title" content="Primary key column names — dm_get_pk" />
-<meta property="og:description" content="dm_get_pk() returns the names of the
-columns marked as primary key of a table of a dm object.
-If no primary key is
-set for the table, an empty character vector is returned." />
+<meta property="og:description" content="
+This function is deprecated because of its limited use
+and its unintuitive return value.
+Use dm_get_all_pks() instead." />
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
@@ -68,8 +68,6 @@ set for the table, an empty character vector is returned." />
 <![endif]-->
 
 
-
-<!-- dependencies from examples -->
 
 
   
@@ -94,7 +92,7 @@ set for the table, an empty character vector is returned." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.0.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.1.9000</span>
       </span>
     </div>
 
@@ -193,64 +191,16 @@ set for the table, an empty character vector is returned." />
     </div>
 
     <div class="ref-description">
-    <p><code>dm_get_pk()</code> returns the names of the
-columns marked as primary key of a table of a <code><a href='dm.html'>dm</a></code> object.
-If no primary key is
-set for the table, an empty character vector is returned.</p>
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#deprecated'><img src='figures/lifecycle-deprecated.svg' alt='[Deprecated]' /></a></p>
+<p>This function is deprecated because of its limited use
+and its unintuitive return value.
+Use <code><a href='dm_get_all_pks.html'>dm_get_all_pks()</a></code> instead.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dm_get_pk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr>
-    <tr>
-      <th>table</th>
-      <td><p>A table in the <code>dm</code>.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
-    </tr>
-    </table>
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A list with character vectors with the column name(s) of the
-primary keys of <code>table</code>.
-The contained character vectors have length greater than one for compound keys.</p>
-    <h2 class="hasAnchor" id="multiple-primary-keys"><a class="anchor" href="#multiple-primary-keys"></a>Multiple primary keys</h2>
-
-    
 
 
-<p>Each table can have only one primary key.
-For symmetry with <code><a href='dm_get_fk.html'>dm_get_fk()</a></code>,
-this function still returns a list of character vectors.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other primary key functions: 
-<code><a href='dm_add_pk.html'>dm_add_pk</a>()</code>,
-<code><a href='dm_get_all_pks.html'>dm_get_all_pks</a>()</code>,
-<code><a href='dm_has_pk.html'>dm_has_pk</a>()</code>,
-<code><a href='dm_rm_pk.html'>dm_rm_pk</a>()</code>,
-<code><a href='enum_pk_candidates.html'>enum_pk_candidates</a>()</code></p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>dm_get_pk</span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;list_of&lt;character&gt;[0]&gt;</span>
-<span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>dm_get_pk</span><span class='op'>(</span><span class='va'>planes</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;list_of&lt;character&gt;[1]&gt;</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "tailnum"</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

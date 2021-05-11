@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.0.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.1.9000</span>
       </span>
     </div>
 
@@ -233,7 +233,7 @@
 <span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">sqlite_src</span><span class="op">)</span>
 <span class="va">flights_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.35.5 [/tmp/RtmpEJu13j/nycflights13.sqlite]
+#&gt; src:  sqlite 3.35.5 [/tmp/Rtmp2VbVYe/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -270,7 +270,7 @@
 <span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span>
 <span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`airports`&gt; [?? x 8]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.35.5 [/tmp/RtmpEJu13j/nycflights13.sqlite]</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.35.5 [/tmp/Rtmp2VbVYe/nycflights13.sqlite]</span><span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        
 #&gt; </span><span style="color: #555555;"> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style="color: #BB0000;">80.6</span><span>  </span><span style="text-decoration: underline;">1</span><span>044    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
@@ -293,37 +293,37 @@
 <p>Some useful functions for managing primary key settings are:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code></li>
-<li><code><a href="../reference/dm_has_pk.html">dm_has_pk()</a></code></li>
-<li><code><a href="../reference/dm_get_pk.html">dm_get_pk()</a></code></li>
+<li><code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code></li>
 <li><code><a href="../reference/dm_rm_pk.html">dm_rm_pk()</a></code></li>
 <li><code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code></li>
-<li><code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code></li>
 </ol>
 <p>If you created a <code>dm</code> object according to the examples in <a href="#ex_dm">“Examples of <code>dm</code> objects”</a>, your object does not yet have any primary keys set. So let’s add one.</p>
-<p><code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> has an option to check if the column of the table given by the user is a unique key; for performance reasons, the check will not be executed unless requested. We use the <code>nycflights13</code> tables, i.e. <code>flights_dm</code> from above.</p>
+<p>We use the <code>nycflights13</code> tables, i.e. <code>flights_dm</code> from above.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_has_pk.html">dm_has_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span><span class="op">)</span>
 <span class="co">#&gt; [1] FALSE</span>
 <span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span>
 <span class="va">flights_dm_with_key</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.35.5 [/tmp/RtmpEJu13j/nycflights13.sqlite]
+#&gt; src:  sqlite 3.35.5 [/tmp/Rtmp2VbVYe/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
 #&gt; Primary keys: 1
 #&gt; Foreign keys: 0
 </span></code></pre>
-<p>The <code>dm</code> now has a primary key. Let’s check:</p>
+<p>The <code>dm</code> now has a primary key:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_has_pk.html">dm_has_pk</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">airports</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
-<p>Get the name of the column that is marked as primary key of the table:</p>
+<p>To get an overview over all tables with primary keys, use <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_get_pk.html">dm_get_pk</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">airports</span><span class="op">)</span>
-<span class="co">#&gt; &lt;list_of&lt;character&gt;[1]&gt;</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "faa"</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span><span>
+#&gt;   table    pk_col
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>
+#&gt; </span><span style="color: #555555;">1</span><span> airports faa
+</span></code></pre>
 <p>Remove a primary key:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_rm_pk.html">dm_rm_pk</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -352,18 +352,10 @@
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> FALSE        19
 </span></code></pre>
-<p>To get an overview over all tables with primary keys, use <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
+<p><code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> has a <code>check</code> argument. If set to <code>TRUE</code>, the function checks if the column of the table given by the user is unique. For performance reasons, the default is <code>check = FALSE</code>. See also [dm_examine_constraints()] for checking all constraints in a <code>dm</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 2</span><span>
-#&gt;   table    pk_col           
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>           
-#&gt; </span><span style="color: #555555;">1</span><span> airlines carrier          
-#&gt; </span><span style="color: #555555;">2</span><span> airports faa              
-#&gt; </span><span style="color: #555555;">3</span><span> planes   tailnum          
-#&gt; </span><span style="color: #555555;">4</span><span> weather  origin, time_hour
-</span></code></pre>
-<p>Here we used the prepared <code>dm</code> object <code>dm_nycflights13(cycle = TRUE)</code> as an example. This object already has all keys pre-set.</p>
+<code class="sourceCode R"><span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">tzone</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; Error: (`tzone`) not a unique key of `airports`.</span></code></pre></div>
 </div>
 <div id="foreign-keys" class="section level2">
 <h2 class="hasAnchor">
@@ -371,18 +363,16 @@
 <p>Useful functions for managing foreign key relations include:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code></li>
-<li><code><a href="../reference/dm_has_fk.html">dm_has_fk()</a></code></li>
-<li><code><a href="../reference/dm_get_fk.html">dm_get_fk()</a></code></li>
+<li><code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code></li>
 <li><code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code></li>
 <li><code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code></li>
-<li><code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code></li>
 </ol>
 <p>Now it gets (even more) interesting: we want to define relations between different tables. With the <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> function you can define which column of which table points to another table’s column.</p>
 <p>This is done by choosing a foreign key from one table that will point to a primary key of another table. The primary key of the referred table must be set with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_key</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.35.5 [/tmp/RtmpEJu13j/nycflights13.sqlite]
+#&gt; src:  sqlite 3.35.5 [/tmp/Rtmp2VbVYe/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -400,40 +390,42 @@
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">dest</span>, <span class="va">airports</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; Error: Column `dest` of table `flights` contains values (see examples above) that are not present in column `faa` of table `airports`.</span></code></pre></div>
-<p>As you can see, behind the scenes, checks are executed automatically (unless <code>check = FALSE</code>) by the functions of <code>dm</code> to prevent steps that would result in inconsistent representations.</p>
-<p>Use <code><a href="../reference/dm_has_fk.html">dm_has_fk()</a></code> for checking if a foreign key exists that is pointing from one table to another:</p>
+<p>Checks are opt-in and executed only if <code>check = TRUE</code>. You can still add a foreign key with the default <code>check = FALSE</code>. See also [dm_examine_constraints()] for checking all constraints in a <code>dm</code>.</p>
+<p>Get an overview of all foreign key relations with<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_has_fk.html">dm_has_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">planes</span><span class="op">)</span>
-<span class="co">#&gt; [1] FALSE</span>
-<span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_has_fk.html">dm_has_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span>
-<span class="co">#&gt; [1] TRUE</span></code></pre></div>
-<p>If you want to access the name of the column which acts as a foreign key of one table to another table’s column, use <code><a href="../reference/dm_get_fk.html">dm_get_fk()</a></code>:</p>
+<code class="sourceCode R"><span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 5 x 4</span><span>
+#&gt;   child_table child_fk_cols     parent_table parent_key_cols  
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>            </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>           
+#&gt; </span><span style="color: #555555;">1</span><span> flights     carrier           airlines     carrier          
+#&gt; </span><span style="color: #555555;">2</span><span> flights     origin            airports     faa              
+#&gt; </span><span style="color: #555555;">3</span><span> flights     dest              airports     faa              
+#&gt; </span><span style="color: #555555;">4</span><span> flights     tailnum           planes       tailnum          
+#&gt; </span><span style="color: #555555;">5</span><span> flights     origin, time_hour weather      origin, time_hour
+</span></code></pre>
+<p>Remove foreign key relations with <code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code> (parameter <code>columns = NULL</code> means that all relations will be removed, with a message):</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">planes</span><span class="op">)</span>
-<span class="co">#&gt; &lt;list_of&lt;character&gt;[0]&gt;</span>
-<span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span>
-<span class="co">#&gt; &lt;list_of&lt;character&gt;[1]&gt;</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "origin"</span></code></pre></div>
-<p>Remove foreign key relations with <code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code> (parameter <code>column = NULL</code> means that all relations will be removed):</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">flights</span>, column <span class="op">=</span> <span class="va">dest</span>, ref_table <span class="op">=</span> <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/dm_has_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span>
 <span class="co">#&gt; Error: No foreign keys to remove.</span>
 <span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/dm_has_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span>
+<span class="co">#&gt; Warning: `dm_get_fk()` was deprecated in dm 0.2.1.</span>
+<span class="co">#&gt; Please use `dm_get_all_fks()` instead.</span>
 <span class="co">#&gt; &lt;list_of&lt;character&gt;[0]&gt;</span>
 <span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="cn">NULL</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, columns <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/dm_has_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span>
 <span class="co">#&gt; Removing foreign keys: %&gt;%</span>
 <span class="co">#&gt;   dm_rm_fk(flights, origin, airports)</span>
+<span class="co">#&gt; Warning: `dm_get_fk()` was deprecated in dm 0.2.1.</span>
+<span class="co">#&gt; Please use `dm_get_all_fks()` instead.</span>
 <span class="co">#&gt; &lt;list_of&lt;character&gt;[0]&gt;</span></code></pre></div>
-<p>Since the primary keys are defined in the <code>dm</code> object, you do not need to provide the referenced column name of <code>ref_table</code>. This is always the primary key column of the table.</p>
+<p>Since the primary keys are defined in the <code>dm</code> object, you do not usually need to provide the referenced column name of <code>ref_table</code>.</p>
 <p>Another function for getting to know your data better (cf. <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> in <a href="#pk">“Primary keys of <code>dm</code> objects”</a>) is <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>. Use it to get an overview over foreign key candidates that point from one table to another:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">weather</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 x 3</span><span>
 #&gt;    columns    candidate why                                                
@@ -453,18 +445,6 @@
 #&gt; </span><span style="color: #555555;">13</span><span> pressure   FALSE     </span><span style="color: #555555;">"</span><span>values of `weather$pressure` not in `airports$faa…
 #&gt; </span><span style="color: #555555;">14</span><span> visib      FALSE     </span><span style="color: #555555;">"</span><span>values of `weather$visib` not in `airports$faa`: …
 #&gt; </span><span style="color: #555555;">15</span><span> time_hour  FALSE     </span><span style="color: #555555;">"</span><span>values of `weather$time_hour` not in `airports$fa…
-</span></code></pre>
-<p>Get an overview of all foreign key relations with<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 5 x 4</span><span>
-#&gt;   child_table child_fk_cols     parent_table parent_pk_cols   
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>            </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>           
-#&gt; </span><span style="color: #555555;">1</span><span> flights     carrier           airlines     carrier          
-#&gt; </span><span style="color: #555555;">2</span><span> flights     origin            airports     faa              
-#&gt; </span><span style="color: #555555;">3</span><span> flights     dest              airports     faa              
-#&gt; </span><span style="color: #555555;">4</span><span> flights     tailnum           planes       tailnum          
-#&gt; </span><span style="color: #555555;">5</span><span> flights     origin, time_hour weather      origin, time_hour
 </span></code></pre>
 </div>
   </div>
