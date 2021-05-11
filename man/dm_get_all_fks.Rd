@@ -4,10 +4,14 @@
 \alias{dm_get_all_fks}
 \title{Get foreign key constraints}
 \usage{
-dm_get_all_fks(dm, ...)
+dm_get_all_fks(dm, parent_table = NULL, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
+
+\item{parent_table}{One or more table names, as character vector,
+to return foreign key information for.
+The default \code{NULL} returns information for all tables.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }

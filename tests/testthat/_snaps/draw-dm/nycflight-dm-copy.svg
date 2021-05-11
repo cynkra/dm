@@ -82,7 +82,7 @@
 <polygon fill="none" stroke="#555555" points="153,-120 153,-162 228,-162 228,-120 153,-120"/>
 </g>
 <!-- flights&#45;&gt;planes_copy -->
-<g id="edge4" class="edge">
+<g id="edge5" class="edge">
 <title>flights:tailnum&#45;&gt;planes_copy:tailnum</title>
 <path fill="none" stroke="#555555" d="M102.5,-131C121.8194,-131 129.0265,-131 144.3716,-131"/>
 <polygon fill="#555555" stroke="#555555" points="144.5,-134.5001 154.5,-131 144.5,-127.5001 144.5,-134.5001"/>
@@ -97,7 +97,7 @@
 <polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="139,0 139,-42 242,-42 242,0 139,0"/>
 </g>
 <!-- flights&#45;&gt;weather -->
-<g id="edge5" class="edge">
+<g id="edge4" class="edge">
 <title>flights:origin, time_hour&#45;&gt;weather:origin, time_hour</title>
 <path fill="none" stroke="#555555" d="M102.5,-91C137.7113,-91 108.8369,-26.9851 130.5301,-13.482"/>
 <polygon fill="#555555" stroke="#555555" points="131.6417,-16.8121 140.5,-11 129.9506,-10.0195 131.6417,-16.8121"/>

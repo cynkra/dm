@@ -4,10 +4,14 @@
 \alias{dm_get_all_pks}
 \title{Get all primary keys of a \code{\link{dm}} object}
 \usage{
-dm_get_all_pks(dm, ...)
+dm_get_all_pks(dm, table = NULL, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
+
+\item{table}{One or more table names, as character vector,
+to return primary key information for.
+The default \code{NULL} returns information for all tables.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }

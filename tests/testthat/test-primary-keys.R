@@ -75,36 +75,36 @@ test_that("dm_rm_pk() supports partial filters", {
     # test logic if argument `fail_fk = FALSE`
     dm_for_filter() %>%
       dm_rm_pk(tf_4, fail_fk = FALSE) %>%
-      dm_paste()
+      get_all_keys()
 
     dm_for_filter() %>%
       dm_rm_pk(tf_3, fail_fk = FALSE) %>%
-      dm_paste()
+      get_all_keys()
 
     # no failure if pk not used in relationship
     dm_for_filter() %>%
       dm_rm_pk(tf_6) %>%
-      dm_paste()
+      get_all_keys()
 
     # dprecated argument name
     dm_for_filter() %>%
       dm_rm_pk(tf_4, rm_referencing_fks = TRUE) %>%
-      dm_paste()
+      get_all_keys()
 
     # partial match for columns
     dm_for_filter() %>%
       dm_rm_pk(columns = c) %>%
-      dm_paste()
+      get_all_keys()
 
     # partial match for columns, with compound key
     dm_for_filter() %>%
       dm_rm_pk(columns = c(f, f1), fail_fk = FALSE) %>%
-      dm_paste()
+      get_all_keys()
 
     # partial match for all tables
     dm_for_filter() %>%
       dm_rm_pk(fail_fk = FALSE) %>%
-      dm_paste()
+      get_all_keys()
   })
 })
 

@@ -143,32 +143,32 @@ test_that("dm_rm_fk() works with partial matching", {
     # Only table
     dm_for_filter() %>%
       dm_rm_fk(tf_5) %>%
-      dm_paste()
+      get_all_keys()
 
     # Only columns
     dm_for_filter() %>%
       dm_rm_fk(columns = l) %>%
-      dm_paste()
+      get_all_keys()
 
     # Only columns, compound
     dm_for_filter() %>%
       dm_rm_fk(columns = c(e, e1)) %>%
-      dm_paste()
+      get_all_keys()
 
     # Only ref_table
     dm_for_filter() %>%
       dm_rm_fk(ref_table = tf_3) %>%
-      dm_paste()
+      get_all_keys()
 
     # Only ref_columns, compound
     dm_for_filter() %>%
       dm_rm_fk(ref_columns = c(f, f1)) %>%
-      dm_paste()
+      get_all_keys()
 
     # All foreign keys
     dm_for_filter() %>%
       dm_rm_fk() %>%
-      dm_paste()
+      get_all_keys()
   })
 })
 

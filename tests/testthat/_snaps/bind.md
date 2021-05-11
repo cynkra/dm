@@ -123,15 +123,15 @@
         dm::dm_add_pk(dim_2, dim_2_pk) %>%
         dm::dm_add_pk(dim_3, dim_3_pk) %>%
         dm::dm_add_pk(dim_4, dim_4_pk) %>%
-        dm::dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1) %>%
-        dm::dm_add_fk(fact, dim_2_key, dim_2) %>%
-        dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
-        dm::dm_add_fk(fact, dim_4_key, dim_4) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
         dm::dm_add_fk(tf_5, l, tf_4) %>%
-        dm::dm_add_fk(tf_5, m, tf_6, n)
+        dm::dm_add_fk(tf_5, m, tf_6, n) %>%
+        dm::dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1) %>%
+        dm::dm_add_fk(fact, dim_2_key, dim_2) %>%
+        dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
+        dm::dm_add_fk(fact, dim_4_key, dim_4)
     Code
       dm_bind(dm_for_flatten(), dm_for_filter()) %>% dm_paste(options = c("select",
         "keys"))

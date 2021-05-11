@@ -31,17 +31,17 @@
         dm::dm_add_pk(c, c_1) %>%
         dm::dm_add_pk(d, d_1) %>%
         dm::dm_add_pk(e, e_1) %>%
-        dm::dm_add_fk(b, b_2, a) %>%
-        dm::dm_add_fk(b, b_3, c) %>%
-        dm::dm_add_fk(d, b_1, b) %>%
-        dm::dm_add_fk(e, b_1, b) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
+        dm::dm_add_fk(tf_6_2, c(f, f1), tf_3) %>%
         dm::dm_add_fk(tf_5, l, tf_4) %>%
-        dm::dm_add_fk(tf_5, l, tf_4_2) %>%
         dm::dm_add_fk(tf_5, m, tf_6) %>%
-        dm::dm_add_fk(tf_6_2, c(f, f1), tf_3)
+        dm::dm_add_fk(tf_5, l, tf_4_2) %>%
+        dm::dm_add_fk(b, b_2, a) %>%
+        dm::dm_add_fk(d, b_1, b) %>%
+        dm::dm_add_fk(e, b_1, b) %>%
+        dm::dm_add_fk(b, b_3, c)
 
 # we get filtered/unfiltered tables with respective funs
 
