@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
       <h1 data-toc-skip>Joining in relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-05-04</h4>
+            <h4 data-toc-skip class="date">2021-05-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-join.Rmd" class="external-link"><code>vignettes/tech-dm-join.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-join.Rmd</code></div>
@@ -201,7 +201,7 @@
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 4</span><span>
-#&gt;   child_table child_fk_cols     parent_table parent_pk_cols   
+#&gt;   child_table child_fk_cols     parent_table parent_key_cols  
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>            </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>           
 #&gt; </span><span style="color: #555555;">1</span><span> flights     carrier           airlines     carrier          
 #&gt; </span><span style="color: #555555;">2</span><span> flights     origin            airports     faa              
@@ -215,10 +215,11 @@
 <p>Let’s look at some examples:</p>
 <p><strong>Add a column with airline names from the <code>airlines</code> table to the <code>flights</code> table.</strong></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_joined</span> <span class="op">&lt;-</span> <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">dm_joined</span> <span class="op">&lt;-</span>
+  <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span>
 <span class="va">dm_joined</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 11,227 x 20</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,761 x 20</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
 #&gt; </span><span style="color: #555555;"> 1</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10        3           </span><span style="text-decoration: underline;">2</span><span>359         4      426
@@ -231,7 +232,7 @@
 #&gt; </span><span style="color: #555555;"> 8</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      546            600       -</span><span style="color: #BB0000;">14</span><span>      645
 #&gt; </span><span style="color: #555555;"> 9</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      549            600       -</span><span style="color: #BB0000;">11</span><span>      652
 #&gt; </span><span style="color: #555555;">10</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      550            600       -</span><span style="color: #BB0000;">10</span><span>      649
-#&gt; </span><span style="color: #555555;"># … with 11,217 more rows, and 13 more variables: sched_arr_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;"># … with 1,751 more rows, and 13 more variables: sched_arr_time &lt;int&gt;,</span><span>
 #&gt; </span><span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span><span>
 #&gt; </span><span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span><span>
 #&gt; </span><span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, name &lt;chr&gt;</span><span>
@@ -290,24 +291,14 @@
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 136 x 26</span><span>
-#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
-#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
-#&gt; </span><span style="color: #555555;"> 1</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      554            600        -</span><span style="color: #BB0000;">6</span><span>      739
-#&gt; </span><span style="color: #555555;"> 2</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      556            600        -</span><span style="color: #BB0000;">4</span><span>      825
-#&gt; </span><span style="color: #555555;"> 3</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      606            610        -</span><span style="color: #BB0000;">4</span><span>      743
-#&gt; </span><span style="color: #555555;"> 4</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      625            630        -</span><span style="color: #BB0000;">5</span><span>      843
-#&gt; </span><span style="color: #555555;"> 5</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      632            635        -</span><span style="color: #BB0000;">3</span><span>      847
-#&gt; </span><span style="color: #555555;"> 6</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      653            700        -</span><span style="color: #BB0000;">7</span><span>      923
-#&gt; </span><span style="color: #555555;"> 7</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      654            700        -</span><span style="color: #BB0000;">6</span><span>     </span><span style="text-decoration: underline;">1</span><span>001
-#&gt; </span><span style="color: #555555;"> 8</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      656            700        -</span><span style="color: #BB0000;">4</span><span>     </span><span style="text-decoration: underline;">1</span><span>008
-#&gt; </span><span style="color: #555555;"> 9</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      656            700        -</span><span style="color: #BB0000;">4</span><span>      911
-#&gt; </span><span style="color: #555555;">10</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      657            700        -</span><span style="color: #BB0000;">3</span><span>     </span><span style="text-decoration: underline;">1</span><span>006
-#&gt; </span><span style="color: #555555;"># … with 126 more rows, and 19 more variables: sched_arr_time &lt;int&gt;,</span><span>
-#&gt; </span><span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span><span>
-#&gt; </span><span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span><span>
-#&gt; </span><span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, name &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;,</span><span>
-#&gt; </span><span style="color: #555555;">#   alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 26</span><span>
+#&gt; </span><span style="color: #555555;"># … with 26 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   name &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   tzone &lt;chr&gt;</span><span>
 </span></code></pre>
 <p>A last example:</p>
 <p><strong>Merge all tables into one big table.</strong></p>
@@ -319,7 +310,7 @@
 <span class="co">#&gt; Renamed columns:</span>
 <span class="co">#&gt; * year -&gt; flights.year, planes.year</span>
 <span class="co">#&gt; * name -&gt; airlines.name, airports.name</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 11,227 x 35</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,761 x 35</span><span>
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
 #&gt; </span><span style="color: #555555;"> 1</span><span>         </span><span style="text-decoration: underline;">2</span><span>013     1    10        3           </span><span style="text-decoration: underline;">2</span><span>359         4      426
@@ -332,7 +323,7 @@
 #&gt; </span><span style="color: #555555;"> 8</span><span>         </span><span style="text-decoration: underline;">2</span><span>013     1    10      546            600       -</span><span style="color: #BB0000;">14</span><span>      645
 #&gt; </span><span style="color: #555555;"> 9</span><span>         </span><span style="text-decoration: underline;">2</span><span>013     1    10      549            600       -</span><span style="color: #BB0000;">11</span><span>      652
 #&gt; </span><span style="color: #555555;">10</span><span>         </span><span style="text-decoration: underline;">2</span><span>013     1    10      550            600       -</span><span style="color: #BB0000;">10</span><span>      649
-#&gt; </span><span style="color: #555555;"># … with 11,217 more rows, and 28 more variables: sched_arr_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;"># … with 1,751 more rows, and 28 more variables: sched_arr_time &lt;int&gt;,</span><span>
 #&gt; </span><span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span><span>
 #&gt; </span><span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span><span>
 #&gt; </span><span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, airlines.name &lt;chr&gt;,</span><span>

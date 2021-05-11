@@ -47,7 +47,10 @@
 
 
 <meta property="og:title" content="Check if foreign keys exists — dm_has_fk" />
-<meta property="og:description" content="dm_has_fk() checks if a foreign key reference exists between two tables in a dm." />
+<meta property="og:description" content="
+These functions are deprecated because of their limited use
+since the introduction of foreign keys to arbitrary columns in dm 0.2.1.
+Use dm_get_all_fks() with table manipulation functions instead." />
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
@@ -65,8 +68,6 @@
 <![endif]-->
 
 
-
-<!-- dependencies from examples -->
 
 
   
@@ -91,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -190,10 +191,15 @@
     </div>
 
     <div class="ref-description">
-    <p><code>dm_has_fk()</code> checks if a foreign key reference exists between two tables in a <code>dm</code>.</p>
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#deprecated'><img src='figures/lifecycle-deprecated.svg' alt='[Deprecated]' /></a></p>
+<p>These functions are deprecated because of their limited use
+since the introduction of foreign keys to arbitrary columns in dm 0.2.1.
+Use <code><a href='dm_get_all_fks.html'>dm_get_all_fks()</a></code> with table manipulation functions instead.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_has_fk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>ref_table</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>dm_has_fk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>ref_table</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>dm_get_fk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>ref_table</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -208,7 +214,7 @@
     </tr>
     <tr>
       <th>ref_table</th>
-      <td><p>The table to be checked if it is referred to.</p></td>
+      <td><p>The table which <code>table</code> will be referencing.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -216,23 +222,7 @@
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A boolean value: <code>TRUE</code> if a reference from <code>table</code> to <code>ref_table</code> exists, <code>FALSE</code> otherwise.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other foreign key functions: 
-<code><a href='dm_add_fk.html'>dm_add_fk</a>()</code>,
-<code><a href='dm_enum_fk_candidates.html'>dm_enum_fk_candidates</a>()</code>,
-<code><a href='dm_get_all_fks.html'>dm_get_all_fks</a>()</code>,
-<code><a href='dm_get_fk.html'>dm_get_fk</a>()</code></p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_has_fk</span><span class='op'>(</span><span class='va'>flights</span>, <span class='va'>airports</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_has_fk</span><span class='op'>(</span><span class='va'>airports</span>, <span class='va'>flights</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -94,7 +94,7 @@ This restriction may be levied optionally in the future." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -220,13 +220,14 @@ Must be named.</p></td>
     <div class='dont-index'><p><code><a href='dm_add_tbl.html'>dm_add_tbl()</a></code>, <code><a href='dm_rm_tbl.html'>dm_rm_tbl()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_mutate_tbl</span><span class='op'>(</span>flights <span class='op'>=</span> <span class='fu'>nycflights13</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/nycflights13/man/flights.html'>flights</a></span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='op'>]</span><span class='op'>)</span>
-</div><div class='co'>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 4
-#&gt; Foreign keys: 4</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_mutate_tbl</span><span class='op'>(</span>flights <span class='op'>=</span> <span class='fu'>nycflights13</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/nycflights13/man/flights.html'>flights</a></span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Columns: 53</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Primary keys: 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Foreign keys: 4</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

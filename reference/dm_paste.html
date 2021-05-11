@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -245,33 +245,36 @@ table definitions.
 Data in the tables is never included, see <code><a href='dm_ptype.html'>dm_ptype()</a></code> for the underlying logic.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_paste</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='co'>#&gt; dm::dm()</div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_paste</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='co'>#&gt; dm::dm(airlines, airports, flights, planes, weather) %&gt;%
-#&gt;   dm::dm_add_pk(airlines, carrier) %&gt;%
-#&gt;   dm::dm_add_pk(airports, faa) %&gt;%
-#&gt;   dm::dm_add_pk(planes, tailnum) %&gt;%
-#&gt;   dm::dm_add_pk(weather, c(origin, time_hour)) %&gt;%
-#&gt;   dm::dm_add_fk(flights, carrier, airlines) %&gt;%
-#&gt;   dm::dm_add_fk(flights, origin, airports) %&gt;%
-#&gt;   dm::dm_add_fk(flights, tailnum, planes) %&gt;%
-#&gt;   dm::dm_add_fk(flights, c(origin, time_hour), weather) %&gt;%
-#&gt;   dm::dm_set_colors(`#ED7D31FF` = airlines) %&gt;%
-#&gt;   dm::dm_set_colors(`#ED7D31FF` = airports) %&gt;%
-#&gt;   dm::dm_set_colors(`#5B9BD5FF` = flights) %&gt;%
-#&gt;   dm::dm_set_colors(`#ED7D31FF` = planes) %&gt;%
-#&gt;   dm::dm_set_colors(`#70AD47FF` = weather)</div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_paste</span><span class='op'>(</span>options <span class='op'>=</span> <span class='st'>"select"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; dm::dm(airlines, airports, flights, planes, weather) %&gt;%
-#&gt;   dm::dm_select(airlines, carrier, name) %&gt;%
-#&gt;   dm::dm_select(airports, faa, name, lat, lon, alt, tz, dst, tzone) %&gt;%
-#&gt;   dm::dm_select(flights, year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour) %&gt;%
-#&gt;   dm::dm_select(planes, tailnum, year, type, manufacturer, model, engines, seats, speed, engine) %&gt;%
-#&gt;   dm::dm_select(weather, origin, year, month, day, hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib, time_hour)</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_paste</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> dm::dm()</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_paste</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_add_pk(airlines, carrier) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_add_pk(airports, faa) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_add_pk(planes, tailnum) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_add_pk(weather, c(origin, time_hour)) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_add_fk(flights, carrier, airlines) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_add_fk(flights, origin, airports) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_add_fk(flights, tailnum, planes) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_add_fk(flights, c(origin, time_hour), weather) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_set_colors(`#ED7D31FF` = airlines) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_set_colors(`#ED7D31FF` = airports) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_set_colors(`#5B9BD5FF` = flights) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_set_colors(`#ED7D31FF` = planes) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_set_colors(`#70AD47FF` = weather)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_paste</span><span class='op'>(</span>options <span class='op'>=</span> <span class='st'>"select"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_select(airlines, carrier, name) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_select(airports, faa, name, lat, lon, alt, tz, dst, tzone) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_select(flights, year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_select(planes, tailnum, year, type, manufacturer, model, engines, seats, speed, engine) %&gt;%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_select(weather, origin, year, month, day, hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib, time_hour)</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

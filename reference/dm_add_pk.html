@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add/remove a primary key — dm_add_pk • dm</title>
+<title>Add a primary key — dm_add_pk • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,14 +46,12 @@
 
 
 
-<meta property="og:title" content="Add/remove a primary key — dm_add_pk" />
+<meta property="og:title" content="Add a primary key — dm_add_pk" />
 <meta property="og:description" content="dm_add_pk() marks the specified columns as the primary key of the specified table.
 If check == TRUE, then it will first check if
 the given combination of columns is a unique key of the table.
 If force == TRUE, the function will replace an already
-set key.
-dm_rm_pk() removes a primary key from a table and leaves the dm object otherwise unaltered.
-Foreign keys that point to the table from other tables, can be optionally removed as well." />
+set key, without altering foreign keys previously pointing to that primary key." />
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
@@ -97,7 +95,7 @@ Foreign keys that point to the table from other tables, can be optionally remove
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -190,7 +188,7 @@ Foreign keys that point to the table from other tables, can be optionally remove
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add/remove a primary key</h1>
+    <h1>Add a primary key</h1>
     <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/primary-keys.R'><code>R/primary-keys.R</code></a></small>
     <div class="hidden name"><code>dm_add_pk.Rd</code></div>
     </div>
@@ -200,14 +198,10 @@ Foreign keys that point to the table from other tables, can be optionally remove
 If <code>check == TRUE</code>, then it will first check if
 the given combination of columns is a unique key of the table.
 If <code>force == TRUE</code>, the function will replace an already
-set key.</p>
-<p><code>dm_rm_pk()</code> removes a primary key from a table and leaves the <code><a href='dm.html'>dm</a></code> object otherwise unaltered.
-Foreign keys that point to the table from other tables, can be optionally removed as well.</p>
+set key, without altering foreign keys previously pointing to that primary key.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>columns</span>, <span class='va'>...</span>, check <span class='op'>=</span> <span class='cn'>FALSE</span>, force <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-
-<span class='fu'>dm_rm_pk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>...</span>, rm_referencing_fks <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>columns</span>, <span class='va'>...</span>, check <span class='op'>=</span> <span class='cn'>FALSE</span>, force <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -222,7 +216,8 @@ Foreign keys that point to the table from other tables, can be optionally remove
     </tr>
     <tr>
       <th>columns</th>
-      <td><p>Table columns, unquoted.</p></td>
+      <td><p>Table columns, unquoted.
+To define a compound key, use <code>c(col1, col2)</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -238,205 +233,122 @@ Foreign keys that point to the table from other tables, can be optionally remove
 set for this table.
 If <code>TRUE</code>, a potential old <code>pk</code> is deleted before setting a new one.</p></td>
     </tr>
-    <tr>
-      <th>rm_referencing_fks</th>
-      <td><p>Boolean: if <code>FALSE</code> (default), will throw an error if
-there are foreign keys addressing the primary key that is to be removed.
-If <code>TRUE</code>, the function will
-remove, in addition to the primary key of the <code>table</code> argument, also all foreign key constraints
-that are pointing to it.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>For <code>dm_add_pk()</code>: An updated <code>dm</code> with an additional primary key.</p>
-<p>For <code>dm_rm_pk()</code>: An updated <code>dm</code> without the indicated primary key.</p>
-    <h2 class="hasAnchor" id="compound-keys"><a class="anchor" href="#compound-keys"></a>Compound keys</h2>
-
-    
-
-
-<p>Currently, keys consisting of more than one column are not supported.
-<a href='https://github.com/cynkra/dm/issues/3'>This feature</a> is planned for dm 0.2.0.
-The syntax of these functions will be extended but will remain compatible
-with current semantics.</p>
+    <p>An updated <code>dm</code> with an additional primary key.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other primary key functions: 
 <code><a href='dm_get_all_pks.html'>dm_get_all_pks</a>()</code>,
-<code><a href='dm_get_pk.html'>dm_get_pk</a>()</code>,
 <code><a href='dm_has_pk.html'>dm_has_pk</a>()</code>,
+<code><a href='dm_rm_pk.html'>dm_rm_pk</a>()</code>,
 <code><a href='enum_pk_candidates.html'>enum_pk_candidates</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>nycflights_dm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span>
-  planes <span class='op'>=</span> <span class='fu'>nycflights13</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/nycflights13/man/planes.html'>planes</a></span>,
-  airports <span class='op'>=</span> <span class='fu'>nycflights13</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/nycflights13/man/airports.html'>airports</a></span>
-<span class='op'>)</span>
-
-<span class='va'>nycflights_dm</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <pre class="examples"><span class='r-in'><span class='va'>nycflights_dm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span></span>
+<span class='r-in'>  planes <span class='op'>=</span> <span class='fu'>nycflights13</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/nycflights13/man/planes.html'>planes</a></span>,</span>
+<span class='r-in'>  airports <span class='op'>=</span> <span class='fu'>nycflights13</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/nycflights13/man/airports.html'>airports</a></span>,</span>
+<span class='r-in'>  weather <span class='op'>=</span> <span class='fu'>nycflights13</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/nycflights13/man/weather.html'>weather</a></span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>nycflights_dm</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
  -->
 <!-- Title: %0 Pages: 1 -->
-<svg width="62pt" height="104pt"
- viewBox="0.00 0.00 62.00 104.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 100)">
+<svg width="140pt" height="110pt"
+ viewBox="0.00 0.00 140.00 110.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 106)">
 <title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-100 58,-100 58,4 -4,4"/>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-106 136,-106 136,4 -4,4"/>
 </a>
 </g>
 <!-- airports -->
 <g id="node1" class="node">
 <title>airports</title>
-<polygon fill="#efebdd" stroke="transparent" points="4,-8 4,-28 50,-28 50,-8 4,-8"/>
-<text text-anchor="start" x="5.6192" y="-13.4" font-family="Times,serif" font-size="14.00" fill="#000000">airports</text>
-<polygon fill="none" stroke="#555555" points="3,-7 3,-29 51,-29 51,-7 3,-7"/>
+<polygon fill="#efebdd" stroke="transparent" points="82,-8 82,-28 128,-28 128,-8 82,-8"/>
+<text text-anchor="start" x="83.6192" y="-13.4" font-family="Times,serif" font-size="14.00" fill="#000000">airports</text>
+<polygon fill="none" stroke="#555555" points="81,-7 81,-29 129,-29 129,-7 81,-7"/>
 </g>
 <!-- planes -->
 <g id="node2" class="node">
 <title>planes</title>
-<polygon fill="#efebdd" stroke="transparent" points="8,-68 8,-88 47,-88 47,-68 8,-68"/>
-<text text-anchor="start" x="9.6178" y="-73.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text>
-<polygon fill="none" stroke="#555555" points="6.5,-67 6.5,-89 47.5,-89 47.5,-67 6.5,-67"/>
-</g>
-</g>
-</svg>
-<div class='input'>
-<span class='co'># the following works</span>
-<span class='va'>nycflights_dm</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>planes</span>, <span class='va'>tailnum</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>airports</span>, <span class='va'>faa</span>, check <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Generated by graphviz version 2.40.1 (20161225.0304)
- -->
-<!-- Title: %0 Pages: 1 -->
-<svg width="62pt" height="113pt"
- viewBox="0.00 0.00 62.00 113.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 109)">
-<title>%0</title>
-<g id="a_graph0"><a xlink:title="Data Model">
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-109 58,-109 58,4 -4,4"/>
-</a>
-</g>
-<!-- airports -->
-<g id="node1" class="node">
-<title>airports</title>
-<polygon fill="#efebdd" stroke="transparent" points="4,-21 4,-41 50,-41 50,-21 4,-21"/>
-<text text-anchor="start" x="5.6192" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">airports</text>
-<polygon fill="#ffffff" stroke="transparent" points="4,-1 4,-21 50,-21 50,-1 4,-1"/>
-<text text-anchor="start" x="6" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">faa</text>
-<polygon fill="none" stroke="#555555" points="3,0 3,-42 51,-42 51,0 3,0"/>
-</g>
-<!-- planes -->
-<g id="node2" class="node">
-<title>planes</title>
-<polygon fill="#efebdd" stroke="transparent" points="4,-84 4,-104 50,-104 50,-84 4,-84"/>
-<text text-anchor="start" x="9.1178" y="-89.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text>
-<polygon fill="#ffffff" stroke="transparent" points="4,-64 4,-84 50,-84 50,-64 4,-64"/>
-<text text-anchor="start" x="5.6115" y="-70.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text>
-<polygon fill="none" stroke="#555555" points="3,-63 3,-105 51,-105 51,-63 3,-63"/>
-</g>
-</g>
-</svg>
-<div class='input'>
-<span class='co'># the following throws an error:</span>
-<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span>
-  <span class='va'>nycflights_dm</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-    <span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>planes</span>, <span class='va'>manufacturer</span>, check <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='co'>#&gt; Error : (`manufacturer`) not a unique key of `planes`.</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'>dm_rm_pk</span><span class='op'>(</span><span class='va'>airports</span>, rm_referencing_fks <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Generated by graphviz version 2.40.1 (20161225.0304)
- -->
-<!-- Title: %0 Pages: 1 -->
-<svg width="250pt" height="197pt"
- viewBox="0.00 0.00 250.00 197.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 193)">
-<title>%0</title>
-<g id="a_graph0"><a xlink:title="Data Model">
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-193 246,-193 246,4 -4,4"/>
-</a>
-</g>
-<!-- airlines -->
-<g id="node1" class="node">
-<title>airlines</title>
-<polygon fill="#ed7d31" stroke="transparent" points="168.5,-141 168.5,-161 213.5,-161 213.5,-141 168.5,-141"/>
-<text text-anchor="start" x="170.3969" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airlines</text>
-<polygon fill="#fbe5d5" stroke="transparent" points="168.5,-121 168.5,-141 213.5,-141 213.5,-121 168.5,-121"/>
-<text text-anchor="start" x="170.5" y="-127.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">carrier</text>
-<polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="167,-120 167,-162 214,-162 214,-120 167,-120"/>
-</g>
-<!-- airports -->
-<g id="node2" class="node">
-<title>airports</title>
-<polygon fill="#ed7d31" stroke="transparent" points="73,-161 73,-181 119,-181 119,-161 73,-161"/>
-<text text-anchor="start" x="74.6192" y="-166.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airports</text>
-<polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="72,-160 72,-182 120,-182 120,-160 72,-160"/>
-</g>
-<!-- flights -->
-<g id="node3" class="node">
-<title>flights</title>
-<polygon fill="#5b9bd5" stroke="transparent" points="1.5,-101 1.5,-121 102.5,-121 102.5,-101 1.5,-101"/>
-<text text-anchor="start" x="34.1115" y="-106.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">flights</text>
-<polygon fill="#deebf6" stroke="transparent" points="1.5,-81 1.5,-101 102.5,-101 102.5,-81 1.5,-81"/>
-<text text-anchor="start" x="3.5" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#444444">carrier</text>
-<polygon fill="#deebf6" stroke="transparent" points="1.5,-61 1.5,-81 102.5,-81 102.5,-61 1.5,-61"/>
-<text text-anchor="start" x="3.5" y="-66.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text>
-<polygon fill="#deebf6" stroke="transparent" points="1.5,-41 1.5,-61 102.5,-61 102.5,-41 1.5,-41"/>
-<text text-anchor="start" x="3.0056" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin, time_hour</text>
-<polygon fill="none" stroke="#3c678e" stroke-opacity="0.666667" points="0,-40 0,-122 103,-122 103,-40 0,-40"/>
-</g>
-<!-- flights&#45;&gt;airlines -->
-<g id="edge1" class="edge">
-<title>flights:carrier&#45;&gt;airlines:carrier</title>
-<path fill="none" stroke="#555555" d="M102.5,-91C133.0485,-91 134.3273,-122.7285 158.473,-129.6691"/>
-<polygon fill="#555555" stroke="#555555" points="158.1264,-133.1537 168.5,-131 159.0475,-126.2146 158.1264,-133.1537"/>
-</g>
-<!-- planes -->
-<g id="node4" class="node">
-<title>planes</title>
-<polygon fill="#ed7d31" stroke="transparent" points="167.5,-81 167.5,-101 213.5,-101 213.5,-81 167.5,-81"/>
-<text text-anchor="start" x="172.6178" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text>
-<polygon fill="#fbe5d5" stroke="transparent" points="167.5,-61 167.5,-81 213.5,-81 213.5,-61 167.5,-61"/>
-<text text-anchor="start" x="169.1115" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text>
-<polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="166.5,-60 166.5,-102 214.5,-102 214.5,-60 166.5,-60"/>
-</g>
-<!-- flights&#45;&gt;planes -->
-<g id="edge2" class="edge">
-<title>flights:tailnum&#45;&gt;planes:tailnum</title>
-<path fill="none" stroke="#555555" d="M102.5,-71C127.6649,-71 136.3891,-71 157.3154,-71"/>
-<polygon fill="#555555" stroke="#555555" points="157.5,-74.5001 167.5,-71 157.5,-67.5001 157.5,-74.5001"/>
+<polygon fill="#efebdd" stroke="transparent" points="86,-68 86,-88 125,-88 125,-68 86,-68"/>
+<text text-anchor="start" x="87.6178" y="-73.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text>
+<polygon fill="none" stroke="#555555" points="84.5,-67 84.5,-89 125.5,-89 125.5,-67 84.5,-67"/>
 </g>
 <!-- weather -->
-<g id="node5" class="node">
+<g id="node3" class="node">
 <title>weather</title>
-<polygon fill="#70ad47" stroke="transparent" points="140.5,-21 140.5,-41 241.5,-41 241.5,-21 140.5,-21"/>
-<text text-anchor="start" x="168.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text>
-<polygon fill="#e2eeda" stroke="transparent" points="140.5,-1 140.5,-21 241.5,-21 241.5,-1 140.5,-1"/>
-<text text-anchor="start" x="142.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text>
-<polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="139,0 139,-42 242,-42 242,0 139,0"/>
-</g>
-<!-- flights&#45;&gt;weather -->
-<g id="edge3" class="edge">
-<title>flights:origin, time_hour&#45;&gt;weather:origin, time_hour</title>
-<path fill="none" stroke="#555555" d="M102.5,-51C122.8065,-51 118.7241,-23.5684 130.6469,-14.1387"/>
-<polygon fill="#555555" stroke="#555555" points="132.0341,-17.3702 140.5,-11 129.9094,-10.7004 132.0341,-17.3702"/>
+<polygon fill="#efebdd" stroke="transparent" points="3,-74 3,-94 51,-94 51,-74 3,-74"/>
+<text text-anchor="start" x="4.8492" y="-79.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text>
+<polygon fill="none" stroke="#555555" points="2,-73 2,-95 52,-95 52,-73 2,-73"/>
 </g>
 </g>
 </svg>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Create primary keys:</span></span>
+<span class='r-in'><span class='va'>nycflights_dm</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>planes</span>, <span class='va'>tailnum</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>airports</span>, <span class='va'>faa</span>, check <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>weather</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>origin</span>, <span class='va'>time_hour</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: %0 Pages: 1 -->
+<svg width="160pt" height="120pt"
+ viewBox="0.00 0.00 160.00 120.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 116)">
+<title>%0</title>
+<g id="a_graph0"><a xlink:title="Data Model">
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-116 156,-116 156,4 -4,4"/>
+</a>
+</g>
+<!-- airports -->
+<g id="node1" class="node">
+<title>airports</title>
+<polygon fill="#efebdd" stroke="transparent" points="4,-91 4,-111 50,-111 50,-91 4,-91"/>
+<text text-anchor="start" x="5.6192" y="-96.4" font-family="Times,serif" font-size="14.00" fill="#000000">airports</text>
+<polygon fill="#ffffff" stroke="transparent" points="4,-71 4,-91 50,-91 50,-71 4,-71"/>
+<text text-anchor="start" x="6" y="-77.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">faa</text>
+<polygon fill="none" stroke="#555555" points="3,-70 3,-112 51,-112 51,-70 3,-70"/>
+</g>
+<!-- planes -->
+<g id="node2" class="node">
+<title>planes</title>
+<polygon fill="#efebdd" stroke="transparent" points="81,-84 81,-104 127,-104 127,-84 81,-84"/>
+<text text-anchor="start" x="86.1178" y="-89.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text>
+<polygon fill="#ffffff" stroke="transparent" points="81,-64 81,-84 127,-84 127,-64 81,-64"/>
+<text text-anchor="start" x="82.6115" y="-70.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text>
+<polygon fill="none" stroke="#555555" points="80,-63 80,-105 128,-105 128,-63 80,-63"/>
+</g>
+<!-- weather -->
+<g id="node3" class="node">
+<title>weather</title>
+<polygon fill="#efebdd" stroke="transparent" points="50.5,-21 50.5,-41 151.5,-41 151.5,-21 50.5,-21"/>
+<text text-anchor="start" x="78.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text>
+<polygon fill="#ffffff" stroke="transparent" points="50.5,-1 50.5,-21 151.5,-21 151.5,-1 50.5,-1"/>
+<text text-anchor="start" x="52.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text>
+<polygon fill="none" stroke="#555555" points="49,0 49,-42 152,-42 152,0 49,0"/>
+</g>
+</g>
+</svg>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Keys can be checked during creation:</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>nycflights_dm</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>planes</span>, <span class='va'>manufacturer</span>, check <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error : (`manufacturer`) not a unique key of `planes`.</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Creates a dm object for the nycflights13 data — dm_nycflights13 • dm</title>
+<title>Remove foreign keys — dm_rm_fk • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,13 +46,9 @@
 
 
 
-<meta property="og:title" content="Creates a dm object for the nycflights13 data — dm_nycflights13" />
-<meta property="og:description" content="Creates an example dm object from the tables in nycflights13,
-along with the references.
-See nycflights13::flights for a description of the data.
-As described in nycflights13::planes, the relationship
-between the flights table and the planes tables is &quot;weak&quot;, it does not satisfy
-data integrity constraints." />
+<meta property="og:title" content="Remove foreign keys — dm_rm_fk" />
+<meta property="og:description" content="dm_rm_fk() can remove either one reference between two tables, or multiple references at once (with a message).
+An error is thrown if no matching foreign key is found." />
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
@@ -189,56 +185,72 @@ data integrity constraints." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Creates a dm object for the <span class="pkg">nycflights13</span> data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/nycflights13.R'><code>R/nycflights13.R</code></a></small>
-    <div class="hidden name"><code>dm_nycflights13.Rd</code></div>
+    <h1>Remove foreign keys</h1>
+    <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/foreign-keys.R'><code>R/foreign-keys.R</code></a></small>
+    <div class="hidden name"><code>dm_rm_fk.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Creates an example <code><a href='dm.html'>dm</a></code> object from the tables in <span class="pkg">nycflights13</span>,
-along with the references.
-See <a href='https://rdrr.io/pkg/nycflights13/man/flights.html'>nycflights13::flights</a> for a description of the data.
-As described in <a href='https://rdrr.io/pkg/nycflights13/man/planes.html'>nycflights13::planes</a>, the relationship
-between the <code>flights</code> table and the <code>planes</code> tables is "weak", it does not satisfy
-data integrity constraints.</p>
+    <p><code>dm_rm_fk()</code> can remove either one reference between two tables, or multiple references at once (with a message).
+An error is thrown if no matching foreign key is found.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_nycflights13</span><span class='op'>(</span>cycle <span class='op'>=</span> <span class='cn'>FALSE</span>, color <span class='op'>=</span> <span class='cn'>TRUE</span>, subset <span class='op'>=</span> <span class='cn'>TRUE</span>, compound <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>dm_rm_fk</span><span class='op'>(</span>
+  <span class='va'>dm</span>,
+  table <span class='op'>=</span> <span class='cn'>NULL</span>,
+  columns <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ref_table <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ref_columns <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>cycle</th>
-      <td><p>Boolean.
-If <code>FALSE</code> (default), only one foreign key relation
-(from <code>flights$origin</code> to <code>airports$faa</code>) between the <code>flights</code> table and the <code>airports</code> table is
-established.
-If <code>TRUE</code>, a <code>dm</code> object with a double reference
-between those tables will be produced.</p></td>
+      <th>dm</th>
+      <td><p>A <code>dm</code> object.</p></td>
     </tr>
     <tr>
-      <th>color</th>
-      <td><p>Boolean, if <code>TRUE</code> (default), the resulting <code>dm</code> object will have
-colors assigned to different tables for visualization with <code><a href='dm_draw.html'>dm_draw()</a></code>.</p></td>
+      <th>table</th>
+      <td><p>A table in the <code>dm</code>.
+Pass <code>NULL</code> to remove all matching keys.</p></td>
     </tr>
     <tr>
-      <th>subset</th>
-      <td><p>Boolean, if <code>TRUE</code> (default), the <code>flights</code> table is reduced to flights with column <code>day</code> equal to 10.</p></td>
+      <th>columns</th>
+      <td><p>Table columns, unquoted.
+To refer to a compound key, use <code>c(col1, col2)</code>.
+Pass <code>NULL</code> (the default) to remove all matching keys.</p></td>
     </tr>
     <tr>
-      <th>compound</th>
-      <td><p>Boolean, if <code>FALSE</code>, no link will be established between tables <code>flights</code> and <code>weather</code>,
-because this requires compound keys.</p></td>
+      <th>ref_table</th>
+      <td><p>The table referenced by the <code>table</code> argument.
+Pass <code>NULL</code> to remove all matching keys.</p></td>
+    </tr>
+    <tr>
+      <th>ref_columns</th>
+      <td><p>The columns of <code>table</code> that should no longer be referencing the primary key of <code>ref_table</code>.
+To refer to a compound key, use <code>c(col1, col2)</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>These dots are for future extensions and must be empty.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>dm</code> object consisting of nycflights13 tables, complete with primary and foreign keys and optionally colored.</p>
+    <p>An updated <code>dm</code> without the matching foreign key relation(s).</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other foreign key functions: 
+<code><a href='dm_add_fk.html'>dm_add_fk</a>()</code>,
+<code><a href='dm_enum_fk_candidates.html'>dm_enum_fk_candidates</a>()</code>,
+<code><a href='dm_get_all_fks.html'>dm_get_all_fks</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'>dm_nycflights13</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>cycle <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dm_rm_fk</span><span class='op'>(</span><span class='va'>flights</span>, <span class='va'>dest</span>, <span class='va'>airports</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
