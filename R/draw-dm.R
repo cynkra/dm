@@ -102,17 +102,23 @@ dm_get_data_model <- function(x, column_types) {
 
   references_for_columns <-
     dm_get_all_fks_impl(x) %>%
-    transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_pk_cols))
+    transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_key_cols))
 
   references <-
     references_for_columns %>%
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
-  keys <-
+  keys_pk <-
     dm_get_all_pks_impl(x) %>%
     mutate(column = format(pk_col)) %>%
-    select(-pk_col) %>%
+    select(table, column) %>%
     mutate(key = 1L)
+
+  keys_fk <-
+    dm_get_all_fks_impl(x) %>%
+    mutate(column = format(parent_key_cols)) %>%
+    select(table = parent_table, column) %>%
+    mutate(key_fk = 2L)
 
   if (column_types) {
     types <- dm_get_all_column_types(x)
@@ -122,9 +128,14 @@ dm_get_data_model <- function(x, column_types) {
 
   columns <-
     types %>%
-    full_join(keys, by = c("table", "column")) %>%
+    full_join(keys_pk, by = c("table", "column")) %>%
+    full_join(keys_fk, by = c("table", "column")) %>%
     full_join(references_for_columns, by = c("table", "column")) %>%
-    mutate(key = coalesce(key, 0L)) %>%
+    # Order matters: key == 2 if foreign key points to non-default primary key
+    mutate(key = coalesce(key, key_fk, 0L)) %>%
+    select(-key_fk) %>%
+    # I don't understand why this is necessary
+    distinct() %>%
     # for compatibility with print method from {datamodelr}
     as.data.frame()
 
@@ -136,16 +147,18 @@ dm_get_data_model <- function(x, column_types) {
 }
 
 dm_get_all_columns <- function(x) {
-  dm_get_tables_impl(x) %>%
+  x %>%
+    dm_get_tables_impl() %>%
     map(colnames) %>%
     map(~ enframe(., "id", "column")) %>%
     enframe("table") %>%
-    unnest(value) %>%
+    unnest_df("value", tibble(id = integer(), column = character())) %>%
     select(table, column, id)
 }
 
 dm_get_all_column_types <- function(x) {
-  dm_get_tables_impl(x) %>%
+  x %>%
+    dm_get_tables_impl() %>%
     map(
       ~ mutate(
         enframe(as.list(collect(head(.x, 0))), "column"),
@@ -153,7 +166,7 @@ dm_get_all_column_types <- function(x) {
       )
     ) %>%
     enframe("table") %>%
-    unnest(value) %>%
+    unnest_df("value", tibble(column = character(), value = list(), id = integer())) %>%
     mutate(type = map_chr(value, vec_ptype_abbr), .keep = "unused")
 }
 
@@ -242,7 +255,8 @@ color_quos_to_display <- function(...) {
 #' @rdname dm_set_colors
 #' @export
 dm_get_colors <- function(dm) {
-  dm_get_def(dm) %>%
+  dm %>%
+    dm_get_def() %>%
     select(table, display) %>%
     select(display, table) %>%
     mutate(display = coalesce(display, "default")) %>%

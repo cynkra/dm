@@ -10,7 +10,7 @@
 #' This is useful for performing creation and population of a database
 #' in separate steps.
 #'
-#' @inheritParams dm_get_fk
+#' @inheritParams dm_has_fk
 #' @export
 #' @examplesIf dm:::dm_has_financial()
 #' dm_financial() %>%

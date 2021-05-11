@@ -1,33 +1,60 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
-# dm 0.1.99.9003
+# dm 0.2.1.9000
 
-- `dm_from_src()` supports the `schema` argument also for MariaDB and MySQL databases (#516).
-- dm objects now inherit from `"dm_v1"` in addition to `"dm"`, to allow backward-compatible changes of the internal format (#521).
-- Breaking: `*_pk()` and `*_fk()` functions gain an ellipsis argument that comes before `check`, `force` and `rm_referencing_fks` arguments (#520). 
-- Use hack to create compound primary keys (#522).
-- Fix creation of one-column PKs (#515).
+- Same as previous version.
 
 
-# dm 0.1.99.9002
+# dm 0.2.1
+
+- Same as previous version.
+
+
+# dm 0.2.0.9002
+
+- Breaking: `dm_get_all_fks()` returns a data frame with a  `parent_key_cols` instead of a `parent_pk_cols` column, to reflect the fact that a foreign key no longer necessarily points to a primary key (#562).
+- `dm_get_pk()` is deprecated in favor of `dm_get_all_pks()` (#561).
+- `dm_has_fk()` and `dm_get_fk()` are deprecated in favor of `dm_get_all_fks()` (#561).
+
+
+# dm 0.2.0.9001
+
+- `dm_get_all_pks()` gains `table` argument for filtering the returned primary keys (#560).
+- `dm_get_all_fks()` gains `parent_table` argument for filtering the returned foreign keys (#560). 
+- `dm_get_all_fks()` has been optimized for speed and no longer sorts the keys (#560).
+- `dm_rm_fk()` gains an optional `ref_columns` argument. This function now supports removal of multiple foreign keys filtered by parent or child table or columns, with a message (#559).
+- `dm_rm_pk()` gains `columns` argument and allows filtering by columns and by tables or removing all primary keys. The `rm_referencing_fks` argument has been deprecated in favor of the new `fail_fk` argument (#558).
+- `dm_add_fk()` gains `ref_columns` argument that supports creating foreign keys to non-primary keys (#402).
+- Add documentation for compound key syntax (#555).
+- dm operations are now slightly faster overall.
+- The internal data structure for a dm object has changed to accommodate foreign keys to other columns than the primary key. An upgrade message is shown when working with a dm object from an earlier version, e.g. if it was loaded from a cache or an `.rds` file (#402).
+- Dropped `"dm_v1"` class from dm objects again, this would have made every S3 dispatch more costly. Relying on an internal `"version"` attribute instead (#547).
+- `*_pk()` and `*_fk()` functions now verify that the dots are actually empty (#536).
+
+
+# dm 0.2.0.9000
+
+- Same as previous version.
+
+
+# dm 0.2.0
+
+## Breaking changes
+
+- Deprecate `dm_get_src()` `tbl.dm()`, `src_tbls.dm()`, `copy_to.dm()`. These functions have better alternatives and use the notion of a "data source" which is being phased out of dplyr (#527).
+- `*_pk()` and `*_fk()` functions gain an ellipsis argument that comes before `check`, `force` and `rm_referencing_fks` arguments (#520).
+
+## Features
 
 - `dm_add_pk()` and `dm_add_fk()` support compound keys via the `c()` notation, e.g. `dm_add_pk(dm, table, c(col1, col2))`. `dm_nycflights13()` returns a data model with compound keys by default. Use `compound = FALSE` to return the data model from dm v0.1.13 or earlier (#3).
 - `dm_get_all_fks()` includes `parent_pk_cols` column that describes the primary key columns of the parent table (#335).
+- `dm_from_src()` supports the `schema` argument also for MariaDB and MySQL databases (#516).
+- dm objects now inherit from `"dm_v1"` in addition to `"dm"`, to allow backward-compatible changes of the internal format (#521).
+- Use hack to create compound primary keys on the database (#522).
 - `dm_examine_constraints()` and other check functions count the number of rows that violate constraints for primary and foreign keys (#335).
 - `copy_dm_to(set_key_constraints = FALSE)` downgrades unique indexes to regular indexes (#335).
 - `rows_truncate()` implemented for data frames (#335).
 - `dm_enum_fk_candidates()` enumerates column in the order they apper in the table (#335).
-
-
-# dm 0.1.99.9001
-
-- Same as previous version.
-
-
-# dm 0.1.13.9000
-
-- Same as previous version.
-
 
 # dm 0.1.13
 

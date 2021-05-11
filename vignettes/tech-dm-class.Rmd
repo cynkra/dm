@@ -125,17 +125,13 @@ But how can we use {dm}-functions to manage the primary keys of the tables in a 
 Some useful functions for managing primary key settings are:
 
 1. `dm_add_pk()`
-2. `dm_has_pk()`
-3. `dm_get_pk()`
-4. `dm_rm_pk()`
-5. `dm_enum_pk_candidates()`
-6. `dm_get_all_pks()`
+1. `dm_get_all_pks()`
+1. `dm_rm_pk()`
+1. `dm_enum_pk_candidates()`
 
-Currently `dm` objects only support one-column primary keys. If your tables have unique compound keys, adding a surrogate key column might be helpful.
 If you created a `dm` object according to the examples in ["Examples of `dm` objects"](#ex_dm), your object does not yet have any primary keys set.
 So let's add one.
 
-`dm_add_pk()` has an option to check if the column of the table given by the user is a unique key; for performance reasons, the check will not be executed unless requested.
 We use the `nycflights13` tables, i.e. `flights_dm` from above.
 
 ```{r}
@@ -143,14 +139,19 @@ dm_has_pk(flights_dm, airports)
 flights_dm_with_key <- dm_add_pk(flights_dm, airports, faa)
 flights_dm_with_key
 ```
-The `dm` now has a primary key. Let's check:
+
+The `dm` now has a primary key:
+
 ```{r}
 dm_has_pk(flights_dm_with_key, airports)
 ```
-Get the name of the column that is marked as primary key of the table:
+
+To get an overview over all tables with primary keys, use `dm_get_all_pks()`:
+
 ```{r}
-dm_get_pk(flights_dm_with_key, airports)
+dm_get_all_pks(flights_dm_with_key)
 ```
+
 Remove a primary key:
 ```{r}
 dm_rm_pk(flights_dm_with_key, airports) %>%
@@ -166,25 +167,24 @@ The `flights` table does not have any one-column primary key candidates:
 dm_enum_pk_candidates(flights_dm_with_key, flights) %>% dplyr::count(candidate)
 ```
 
-To get an overview over all tables with primary keys, use `dm_get_all_pks()`:
+`dm_add_pk()` has a `check` argument.
+If set to `TRUE`, the function checks if the column of the table given by the user is unique.
+For performance reasons, the default is `check = FALSE`.
+See also [dm_examine_constraints()] for checking all constraints in a `dm`.
 
-```{r}
-dm_get_all_pks(dm_nycflights13(cycle = TRUE))
+```{r error = TRUE}
+dm_add_pk(flights_dm, airports, tzone, check = TRUE)
 ```
 
-Here we used the prepared `dm` object `dm_nycflights13(cycle = TRUE)` as an example.
-This object already has all keys pre-set.
 
 ## Foreign keys
 
 Useful functions for managing foreign key relations include:
 
 1. `dm_add_fk()`
-2. `dm_has_fk()`
-3. `dm_get_fk()`
-4. `dm_rm_fk()`
-5. `dm_enum_fk_candidates()`
-6. `dm_get_all_fks()`
+1. `dm_get_all_fks()`
+1. `dm_rm_fk()`
+1. `dm_enum_fk_candidates()`
 
 Now it gets (even more) interesting: we want to define relations between different tables.
 With the `dm_add_fk()` function you can define which column of which table points to another table's column.
@@ -208,21 +208,18 @@ What if we tried to add another foreign key relation from `flights` to `airports
 ```{r error=TRUE}
 flights_dm_with_fk %>% dm_add_fk(flights, dest, airports, check = TRUE)
 ```
-As you can see, behind the scenes, checks are executed automatically (unless `check = FALSE`) by the functions of `dm` to prevent steps that would result in inconsistent representations.
 
-Use `dm_has_fk()` for checking if a foreign key exists that is pointing from one table to another:
+Checks are opt-in and executed only if `check = TRUE`.
+You can still add a foreign key with the default `check = FALSE`.
+See also [dm_examine_constraints()] for checking all constraints in a `dm`.
+
+Get an overview of all foreign key relations with`dm_get_all_fks()`:
+
 ```{r}
-flights_dm_with_fk %>% dm_has_fk(flights, planes)
-flights_dm_with_fk %>% dm_has_fk(flights, airports)
+dm_get_all_fks(dm_nycflights13(cycle = TRUE))
 ```
 
-If you want to access the name of the column which acts as a foreign key of one table to another table's column, use `dm_get_fk()`:
-```{r}
-flights_dm_with_fk %>% dm_get_fk(flights, planes)
-flights_dm_with_fk %>% dm_get_fk(flights, airports)
-```
-
-Remove foreign key relations with `dm_rm_fk()` (parameter `column = NULL` means that all relations will be removed):
+Remove foreign key relations with `dm_rm_fk()` (parameter `columns = NULL` means that all relations will be removed, with a message):
 ```{r error=TRUE}
 flights_dm_with_fk %>%
   dm_rm_fk(table = flights, column = dest, ref_table = airports) %>%
@@ -231,21 +228,14 @@ flights_dm_with_fk %>%
   dm_rm_fk(flights, origin, airports) %>%
   dm_get_fk(flights, airports)
 flights_dm_with_fk %>%
-  dm_rm_fk(flights, NULL, airports) %>%
+  dm_rm_fk(flights, columns = NULL, airports) %>%
   dm_get_fk(flights, airports)
 ```
 
-Since the primary keys are defined in the `dm` object, you do not need to provide the referenced column name of `ref_table`.
-This is always the primary key column of the table.
+Since the primary keys are defined in the `dm` object, you do not usually need to provide the referenced column name of `ref_table`.
 
 Another function for getting to know your data better (cf. `dm_enum_pk_candidates()` in ["Primary keys of `dm` objects"](#pk)) is `dm_enum_fk_candidates()`. Use it to get an overview over foreign key candidates that point from one table to another:
 
 ```{r}
 dm_enum_fk_candidates(flights_dm_with_key, weather, airports)
-```
-
-Get an overview of all foreign key relations with`dm_get_all_fks()`:
-
-```{r}
-dm_get_all_fks(dm_nycflights13(cycle = TRUE))
 ```

@@ -81,7 +81,8 @@
 #' @export
 dm_filter <- function(dm, table, ...) {
   check_not_zoomed(dm)
-  dm_zoom_to(dm, {{ table }}) %>%
+  dm %>%
+    dm_zoom_to({{ table }}) %>%
     dm_filter_impl(..., set_filter = TRUE) %>%
     dm_update_zoomed()
 }
@@ -93,7 +94,7 @@ dm_filter_impl <- function(zoomed_dm, ..., set_filter) {
     return(zoomed_dm)
   }
 
-  tbl <- get_zoomed_tbl(zoomed_dm)
+  tbl <- tbl_zoomed(zoomed_dm)
   filtered_tbl <- filter(tbl, ...)
 
   # attribute filter expression to zoomed table. Needs to be flagged with `zoomed = TRUE`, since
@@ -111,7 +112,7 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
   def <- dm_get_def(dm)
 
   i <- which(def$table == table)
-  def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(filter_exprs, zoomed))
+  def$filters[[i]] <- vec_rbind(def$filters[[i]], new_filter(filter_exprs, zoomed))
   new_dm3(def, zoomed = zoomed)
 }
 
@@ -258,17 +259,10 @@ check_no_filter <- function(dm) {
   def <-
     dm_get_def(dm)
 
-  if (detect_index(def$filters, ~ vctrs::vec_size(.) > 0) == 0) {
+  if (detect_index(def$filters, ~ vec_size(.) > 0) == 0) {
     return()
   }
 
   fun_name <- as_string(sys.call(-1)[[1]])
   abort_only_possible_wo_filters(fun_name)
-}
-
-get_filter_for_table <- function(dm, table_name) {
-  dm_get_def(dm) %>%
-    filter(table == table_name) %>%
-    pull(filters) %>%
-    pluck(1)
 }

@@ -27,7 +27,8 @@
 #'   dm_examine_constraints()
 dm_examine_constraints <- function(dm) {
   check_not_zoomed(dm)
-  dm_examine_constraints_impl(dm) %>%
+  dm %>%
+    dm_examine_constraints_impl() %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns)) %>%
     new_dm_examine_constraints()
@@ -106,7 +107,7 @@ check_pk_constraints <- function(dm) {
     tibble(table = table_names, tbls, column = pks$pk_col) %>%
     mutate(candidate = map2(tbls, column, ~ enum_pk_candidates_impl(.x, list(.y)))) %>%
     select(-column, -tbls) %>%
-    unnest(candidate) %>%
+    unnest_df("candidate", tibble(column = new_keys(), candidate = logical(), why = character())) %>%
     rename(is_key = candidate, problem = why)
 
   tibble(
@@ -119,15 +120,16 @@ check_pk_constraints <- function(dm) {
 }
 
 check_fk_constraints <- function(dm) {
-  fks <- left_join(dm_get_all_fks_impl(dm), dm_get_all_pks_impl(dm), by = c("parent_table" = "table"))
+  fks <- dm_get_all_fks_impl(dm)
   pts <- pull(fks, parent_table) %>% map(tbl_impl, dm = dm)
   cts <- pull(fks, child_table) %>% map(tbl_impl, dm = dm)
-  fks_tibble <- mutate(fks, t1 = cts, t2 = pts) %>%
-    select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = pk_col)
+  fks_tibble <-
+    mutate(fks, t1 = cts, t2 = pts) %>%
+    select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = parent_key_cols)
   fks_tibble %>%
     mutate(
       problem = pmap_chr(fks_tibble, check_fk),
-      is_key = if_else(problem == "", TRUE, FALSE),
+      is_key = (problem == ""),
       kind = "FK"
     ) %>%
     select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)

@@ -11,11 +11,11 @@ Let’s take a look at the `dm` class.
 The `dm` class consists of a collection of tables and metadata about the
 tables, such as
 
-  - the names of the tables
-  - the names of the columns of the tables
-  - the primary and foreign keys of the tables to link the tables
+-   the names of the tables
+-   the names of the columns of the tables
+-   the primary and foreign keys of the tables to link the tables
     together
-  - the data (either as data frames or as references to database tables)
+-   the data (either as data frames or as references to database tables)
 
 All tables in a `dm` must be obtained from the same data source; csv
 files and spreadsheets would need to be imported to data frames in R.
@@ -60,7 +60,7 @@ library(dm)
 empty_dm <- dm()
 empty_dm
 #> dm()
-dm_add_tbl(empty_dm, airlines, airports, flights, planes, weather) 
+dm_add_tbl(empty_dm, airlines, airports, flights, planes, weather)
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
@@ -73,10 +73,10 @@ dm_add_tbl(empty_dm, airlines, airports, flights, planes, weather)
 Turn a named list of tables into a `dm` with `as_dm()`:
 
 ``` r
-as_dm(list(airlines = airlines, 
-           airports = airports, 
-           flights = flights, 
-           planes = planes, 
+as_dm(list(airlines = airlines,
+           airports = airports,
+           flights = flights,
+           planes = planes,
            weather = weather))
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -96,7 +96,7 @@ sqlite_src <- dbplyr::nycflights13_sqlite()
 flights_dm <- dm_from_src(sqlite_src)
 flights_dm
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.30.1 [/tmp/RtmpGalley/nycflights13.sqlite]
+#> src:  sqlite 3.35.5 [/tmp/RtmpGalley/nycflights13.sqlite]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #> Columns: 62
@@ -143,7 +143,7 @@ In order to pull a specific table from a `dm`, use:
 ``` r
 tbl(flights_dm, "airports")
 #> # Source:   table<`airports`> [?? x 8]
-#> # Database: sqlite 3.30.1 [/tmp/RtmpGalley/nycflights13.sqlite]
+#> # Database: sqlite 3.35.5 [/tmp/RtmpGalley/nycflights13.sqlite]
 #>    faa   name                    lat    lon   alt    tz dst   tzone        
 #>    <chr> <chr>                 <dbl>  <dbl> <dbl> <dbl> <chr> <chr>        
 #>  1 04G   Lansdowne Airport      41.1  -80.6  1044    -5 A     America/New_…
@@ -173,11 +173,9 @@ Some useful functions for managing primary key settings are:
 5.  `dm_enum_pk_candidates()`
 6.  `dm_get_all_pks()`
 
-Currently `dm` objects only support one-column primary keys. If your
-tables have unique compound keys, adding a surrogate key column might be
-helpful. If you created a `dm` object according to the examples in
-[“Examples of `dm` objects”](#ex_dm), your object does not yet have
-any primary keys set. So let’s add one.
+If you created a `dm` object according to the examples in [“Examples of
+`dm` objects”](#ex_dm), your object does not yet have any primary keys
+set. So let’s add one.
 
 `dm_add_pk()` has an option to check if the column of the table given by
 the user is a unique key; for performance reasons, the check will not be
@@ -190,7 +188,7 @@ dm_has_pk(flights_dm, airports)
 flights_dm_with_key <- dm_add_pk(flights_dm, airports, faa)
 flights_dm_with_key
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.30.1 [/tmp/RtmpGalley/nycflights13.sqlite]
+#> src:  sqlite 3.35.5 [/tmp/RtmpGalley/nycflights13.sqlite]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #> Columns: 62
@@ -217,7 +215,7 @@ dm_get_pk(flights_dm_with_key, airports)
 Remove a primary key:
 
 ``` r
-dm_rm_pk(flights_dm_with_key, airports) %>% 
+dm_rm_pk(flights_dm_with_key, airports) %>%
   dm_has_pk(airports)
 #> [1] FALSE
 ```
@@ -234,12 +232,12 @@ dm_enum_pk_candidates(flights_dm_with_key, airports)
 #>   <keys>  <lgl>     <chr>                                                  
 #> 1 faa     TRUE      ""                                                     
 #> 2 lon     TRUE      ""                                                     
-#> 3 alt     FALSE     "has duplicate values: 0, 1, 3, 4, 5, …"               
-#> 4 dst     FALSE     "has duplicate values: A, N, U"                        
-#> 5 lat     FALSE     "has duplicate values: 38.88944, 40.63975"             
-#> 6 name    FALSE     "has duplicate values: All Airports, Capital City Airp…
-#> 7 tz      FALSE     "has duplicate values: -10, -9, -8, -7, -6, …"         
-#> 8 tzone   FALSE     "has duplicate values: NA, America/Anchorage, America/…
+#> 3 name    FALSE     "has duplicate values: Municipal Airport (5), All Airp…
+#> 4 lat     FALSE     "has duplicate values: 38.88944 (2), 40.63975 (2)"     
+#> 5 alt     FALSE     "has duplicate values: 0 (51), 13 (13), 14 (12), 15 (1…
+#> 6 tz      FALSE     "has duplicate values: -5 (521), -6 (342), -9 (240), -…
+#> 7 dst     FALSE     "has duplicate values: A (1388), U (47), N (23)"       
+#> 8 tzone   FALSE     "has duplicate values: America/New_York (519), America…
 ```
 
 The `flights` table does not have any one-column primary key candidates:
@@ -257,12 +255,13 @@ To get an overview over all tables with primary keys, use
 
 ``` r
 dm_get_all_pks(dm_nycflights13(cycle = TRUE))
-#> # A tibble: 3 x 2
-#>   table    pk_col 
-#>   <chr>    <keys> 
-#> 1 airlines carrier
-#> 2 airports faa    
-#> 3 planes   tailnum
+#> # A tibble: 4 x 2
+#>   table    pk_col           
+#>   <chr>    <keys>           
+#> 1 airlines carrier          
+#> 2 airports faa              
+#> 3 planes   tailnum          
+#> 4 weather  origin, time_hour
 ```
 
 Here we used the prepared `dm` object `dm_nycflights13(cycle = TRUE)` as
@@ -292,7 +291,7 @@ of the child table point to it.
 ``` r
 flights_dm_with_key %>% dm_add_fk(flights, origin, airports)
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.30.1 [/tmp/RtmpGalley/nycflights13.sqlite]
+#> src:  sqlite 3.35.5 [/tmp/RtmpGalley/nycflights13.sqlite]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #> Columns: 62
@@ -320,7 +319,7 @@ contains airport codes:
 
 ``` r
 flights_dm_with_fk %>% dm_add_fk(flights, dest, airports, check = TRUE)
-#> Error: Column `dest` of table `flights` contains values (see above) that are not present in column `faa` of table `airports`.
+#> Error: Column `dest` of table `flights` contains values (see examples above) that are not present in column `faa` of table `airports`.
 ```
 
 As you can see, behind the scenes, checks are executed automatically
@@ -349,20 +348,20 @@ flights_dm_with_fk %>% dm_get_fk(flights, airports)
 #> [1] "origin"
 ```
 
-Remove foreign key relations with `dm_rm_fk()` (parameter `column =
-NULL` means that all relations will be removed):
+Remove foreign key relations with `dm_rm_fk()` (parameter
+`column = NULL` means that all relations will be removed):
 
 ``` r
-flights_dm_with_fk %>% 
-  dm_rm_fk(table = flights, column = dest, ref_table = airports) %>% 
+flights_dm_with_fk %>%
+  dm_rm_fk(table = flights, column = dest, ref_table = airports) %>%
   dm_get_fk(flights, airports)
 #> Error: (`dest`) is not a foreign key of table `flights` into table `airports`.
-flights_dm_with_fk %>% 
-  dm_rm_fk(flights, origin, airports) %>% 
+flights_dm_with_fk %>%
+  dm_rm_fk(flights, origin, airports) %>%
   dm_get_fk(flights, airports)
 #> <list_of<character>[0]>
-flights_dm_with_fk %>% 
-  dm_rm_fk(flights, NULL, airports) %>% 
+flights_dm_with_fk %>%
+  dm_rm_fk(flights, NULL, airports) %>%
   dm_get_fk(flights, airports)
 #> <list_of<character>[0]>
 ```
@@ -372,10 +371,9 @@ to provide the referenced column name of `ref_table`. This is always the
 primary key column of the table.
 
 Another function for getting to know your data better
-(cf. `dm_enum_pk_candidates()` in [“Primary keys of `dm`
-objects”](#pk)) is `dm_enum_fk_candidates()`. Use it to get an
-overview over foreign key candidates that point from one table to
-another:
+(cf. `dm_enum_pk_candidates()` in [“Primary keys of `dm` objects”](#pk))
+is `dm_enum_fk_candidates()`. Use it to get an overview over foreign key
+candidates that point from one table to another:
 
 ``` r
 dm_enum_fk_candidates(flights_dm_with_key, weather, airports)
@@ -383,31 +381,32 @@ dm_enum_fk_candidates(flights_dm_with_key, weather, airports)
 #>    columns    candidate why                                                
 #>    <keys>     <lgl>     <chr>                                              
 #>  1 origin     TRUE      ""                                                 
-#>  2 wind_gust  FALSE     "5337 entries (20.4%) of `weather$wind_gust` not i…
-#>  3 pressure   FALSE     "23386 entries (89.6%) of `weather$pressure` not i…
-#>  4 wind_dir   FALSE     "25655 entries (98.2%) of `weather$wind_dir` not i…
-#>  5 wind_speed FALSE     "26111 entries (100%) of `weather$wind_speed` not …
-#>  6 dewp       FALSE     "26114 entries (100%) of `weather$dewp` not in `ai…
-#>  7 humid      FALSE     "26114 entries (100%) of `weather$humid` not in `a…
-#>  8 temp       FALSE     "26114 entries (100%) of `weather$temp` not in `ai…
-#>  9 day        FALSE     "26115 entries (100%) of `weather$day` not in `air…
-#> 10 hour       FALSE     "26115 entries (100%) of `weather$hour` not in `ai…
-#> 11 month      FALSE     "26115 entries (100%) of `weather$month` not in `a…
-#> 12 precip     FALSE     "26115 entries (100%) of `weather$precip` not in `…
-#> 13 time_hour  FALSE     "26115 entries (100%) of `weather$time_hour` not i…
-#> 14 visib      FALSE     "26115 entries (100%) of `weather$visib` not in `a…
-#> 15 year       FALSE     "26115 entries (100%) of `weather$year` not in `ai…
+#>  2 year       FALSE     "values of `weather$year` not in `airports$faa`: 2…
+#>  3 month      FALSE     "values of `weather$month` not in `airports$faa`: …
+#>  4 day        FALSE     "values of `weather$day` not in `airports$faa`: 3 …
+#>  5 hour       FALSE     "values of `weather$hour` not in `airports$faa`: 1…
+#>  6 temp       FALSE     "values of `weather$temp` not in `airports$faa`: 3…
+#>  7 dewp       FALSE     "values of `weather$dewp` not in `airports$faa`: 2…
+#>  8 humid      FALSE     "values of `weather$humid` not in `airports$faa`: …
+#>  9 wind_dir   FALSE     "values of `weather$wind_dir` not in `airports$faa…
+#> 10 wind_speed FALSE     "values of `weather$wind_speed` not in `airports$f…
+#> 11 wind_gust  FALSE     "values of `weather$wind_gust` not in `airports$fa…
+#> 12 precip     FALSE     "values of `weather$precip` not in `airports$faa`:…
+#> 13 pressure   FALSE     "values of `weather$pressure` not in `airports$faa…
+#> 14 visib      FALSE     "values of `weather$visib` not in `airports$faa`: …
+#> 15 time_hour  FALSE     "values of `weather$time_hour` not in `airports$fa…
 ```
 
 Get an overview of all foreign key relations with`dm_get_all_fks()`:
 
 ``` r
 dm_get_all_fks(dm_nycflights13(cycle = TRUE))
-#> # A tibble: 4 x 3
-#>   child_table child_fk_cols parent_table
-#>   <chr>       <keys>        <chr>       
-#> 1 flights     carrier       airlines    
-#> 2 flights     dest          airports    
-#> 3 flights     origin        airports    
-#> 4 flights     tailnum       planes
+#> # A tibble: 5 x 4
+#>   child_table child_fk_cols     parent_table parent_key_cols   
+#>   <chr>       <keys>            <chr>        <keys>           
+#> 1 flights     carrier           airlines     carrier          
+#> 2 flights     origin            airports     faa              
+#> 3 flights     dest              airports     faa              
+#> 4 flights     tailnum           planes       tailnum          
+#> 5 flights     origin, time_hour weather      origin, time_hour
 ```

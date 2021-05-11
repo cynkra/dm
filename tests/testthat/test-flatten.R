@@ -56,7 +56,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   # for flatten: columns from tf_5 + tf_4 + tf_4_2 + tf_6 are combined in one table, 8 cols in total
   expect_identical(
     ncol(dm_flatten_to_tbl(dm_more_complex(), tf_5)),
-    8L
+    9L
   )
 })
 
@@ -144,14 +144,14 @@ test_that("`dm_squash_to_tbl()` does the right things", {
     dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3),
     tf_5() %>%
       left_join(tf_4(), by = c("l" = "h")) %>%
-      left_join(tf_3(), by = c("j" = "f"))
+      left_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
   )
 
   # deeper hierarchy available and `auto_detect = TRUE`
-  # for flatten: columns from tf_5 + tf_4 + tf_3 + tf_4_2 + tf_6 are combined in one table, 9 cols in total
+  # for flatten: columns from tf_5 + tf_4 + tf_3 + tf_4_2 + tf_6 are combined in one table, 10 cols in total
   expect_identical(
     ncol(dm_squash_to_tbl(dm_more_complex(), tf_5)),
-    9L
+    10L
   )
 
 
@@ -179,8 +179,9 @@ test_that("`dm_squash_to_tbl()` does the right things", {
   # full_join:
   expect_equivalent_tbl(
     dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = full_join),
-    full_join(tf_5(), tf_4(), by = c("l" = "h")) %>%
-      full_join(tf_3(), by = c("j" = "f"))
+    tf_5() %>%
+      full_join(tf_4(), by = c("l" = "h")) %>%
+      full_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
   )
 
   # skipping inner_join, not gaining new info
@@ -208,11 +209,11 @@ test_that("prepare_dm_for_flatten() works", {
   prep_dm <-
     dm_for_flatten() %>%
     dm_select_tbl(fact, dim_1, dim_3) %>%
-
+    #
     dm_zoom_to(fact) %>%
     filter(dim_1_key_1 > 7, dim_1_key_2 > !!LETTERS[7]) %>%
     dm_update_zoomed() %>%
-
+    #
     dm_zoom_to(dim_1) %>%
     filter(dim_1_pk_1 > 7, dim_1_pk_2 > !!LETTERS[7]) %>%
     dm_update_zoomed()
@@ -294,8 +295,6 @@ test_that("tests with 'bad_dm' work", {
   # can't create bad_dm() on Postgres due to strict constraint checks
   skip_if_src("postgres")
 
-  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
-
   # flatten bad_dm() (no referential integrity)
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3),
@@ -307,6 +306,8 @@ test_that("tests with 'bad_dm' work", {
   skip_if_src("maria")
 
   # filtered `dm`
+  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
+
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1),
     dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1)

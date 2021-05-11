@@ -14,6 +14,6 @@ register_if_dbplyr_hasnt <- function(...) {
   classes <- sub("^[^.]*.", "", names(methods))
   fun <- sub("[.].*$", "", names(methods)[[1]])
 
-  map2(classes, methods, vctrs::s3_register, generic = paste0("dm::", fun))
+  map2(classes, methods, s3_register, generic = paste0("dm::", fun))
   invisible()
 }

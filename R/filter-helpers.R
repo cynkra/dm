@@ -22,20 +22,21 @@ dm_nrow <- function(dm) {
 
 get_by <- function(dm, lhs_name, rhs_name) {
   if (dm_has_fk_impl(dm, lhs_name, rhs_name)) {
-    lhs_col <- dm_get_fk_impl(dm, lhs_name, rhs_name)
-    rhs_col <- dm_get_pk_impl(dm, rhs_name)
+    cols <- dm_get_fk2_impl(dm, lhs_name, rhs_name)
   } else if (dm_has_fk_impl(dm, rhs_name, lhs_name)) {
-    lhs_col <- dm_get_pk_impl(dm, lhs_name)
-    rhs_col <- dm_get_fk_impl(dm, rhs_name, lhs_name)
+    cols <- dm_get_fk2_impl(dm, rhs_name, lhs_name)[2:1]
   } else {
     abort_tables_not_neighbors(lhs_name, rhs_name)
   }
 
-  if (length(lhs_col) > 1 || length(rhs_col) > 1) abort_no_cycles(create_graph_from_dm(dm))
+  if (nrow(cols) > 1) {
+    abort_no_cycles(create_graph_from_dm(dm))
+  }
+
   # Construct a `by` argument of the form `c("lhs_col[1]" = "rhs_col[1]", ...)`
   # as required by `*_join()`
-  by <- get_key_cols(rhs_col)
-  names(by) <- get_key_cols(lhs_col)
+  by <- get_key_cols(cols[[2]])
+  names(by) <- get_key_cols(cols[[1]])
   by
 }
 
@@ -48,5 +49,5 @@ repair_by <- function(by) {
 update_filter <- function(dm, table_name, filters) {
   def <- dm_get_def(dm)
   def$filters[def$table == table_name] <- filters
-  new_dm3(def)
+  new_dm3(def, zoomed = TRUE)
 }

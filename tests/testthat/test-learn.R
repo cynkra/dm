@@ -60,11 +60,12 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   dm_db_learned_no_keys <- expect_silent(dm_from_src(src_db, learn_keys = FALSE))
 
   # for learning from DB without learning the key relations
-  dm_for_filter_no_keys <- dm_for_filter()[order_of_deletion] %>%
+  dm_for_filter_no_keys <-
+    dm_for_filter()[order_of_deletion] %>%
     dm_get_def() %>%
     mutate(
-      pks = vctrs::list_of(new_pk()),
-      fks = vctrs::list_of(new_fk())
+      pks = list_of(new_pk()),
+      fks = list_of(new_fk())
     ) %>%
     new_dm3()
 
@@ -127,14 +128,16 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
   )
 
   # learning without keys:
-  dm_db_learned_no_keys <- expect_silent(dm_from_src(src_db, schema = schema_name, learn_keys = FALSE)) %>%
+  dm_db_learned_no_keys <-
+    expect_silent(dm_from_src(src_db, schema = schema_name, learn_keys = FALSE)) %>%
     dm_select_tbl(!!!order_of_deletion)
 
-  dm_for_disambiguate_no_keys <- dm_for_disambiguate()[order_of_deletion] %>%
+  dm_for_disambiguate_no_keys <-
+    dm_for_disambiguate()[order_of_deletion] %>%
     dm_get_def() %>%
     mutate(
-      pks = vctrs::list_of(new_pk()),
-      fks = vctrs::list_of(new_fk())
+      pks = list_of(new_pk()),
+      fks = list_of(new_fk())
     ) %>%
     new_dm3()
 
@@ -151,7 +154,8 @@ test_that("Learning from SQLite works (#288)?", {
   copy_to(src_sqlite(), tibble(a = 1:3), name = "test")
 
   expect_equivalent_dm(
-    dm_from_src(src_sqlite()) %>%
+    src_sqlite() %>%
+      dm_from_src() %>%
       dm_select_tbl(test) %>%
       collect(),
     dm(test = tibble(a = 1:3))
@@ -165,27 +169,31 @@ test_that("'schema_if()' works", {
   con_db <- my_test_src()$con
 
   # all 3 naming parameters set ('table' is required)
-  expect_match(unclass(expect_s4_class(
-    schema_if(
-      schema = "schema",
-      table = "table",
-      con = con_db,
-      dbname = "db"
-    ),
-    "SQL"
-  )),
-  "\"db\".\"schema\".\"table\"|`db`.`schema`.`table`")
+  expect_match(
+    unclass(expect_s4_class(
+      schema_if(
+        schema = "schema",
+        table = "table",
+        con = con_db,
+        dbname = "db"
+      ),
+      "SQL"
+    )),
+    "\"db\".\"schema\".\"table\"|`db`.`schema`.`table`"
+  )
 
   # schema and table set
-  expect_match(unclass(expect_s4_class(
-    schema_if(
-      schema = "schema",
-      table = "table",
-      con = con_db
-    ),
-    "SQL"
-  )),
-  "\"schema\".\"table\"|`schema`.`table`")
+  expect_match(
+    unclass(expect_s4_class(
+      schema_if(
+        schema = "schema",
+        table = "table",
+        con = con_db
+      ),
+      "SQL"
+    )),
+    "\"schema\".\"table\"|`schema`.`table`"
+  )
 
   # dbname and table set
   expect_error(schema_if(schema = NA, con = con_db, table = "table", dbname = "db"))
@@ -194,8 +202,8 @@ test_that("'schema_if()' works", {
   expect_match(
     unclass(expect_s4_class(
       schema_if(schema = NA, table = "table", con = con_db),
-      "SQL")
-      ),
+      "SQL"
+    )),
     "\"table\"|`table`"
   )
 })

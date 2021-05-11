@@ -133,7 +133,8 @@ error_txt_last_col_missing <- function() {
 # errors in graph-functions -----------------------------------------------
 
 abort_no_cycles <- function(g) {
-  shortest_cycle <- igraph::girth(g) %>%
+  shortest_cycle <-
+    igraph::girth(g) %>%
     pluck("circle") %>%
     names()
   # add the first element after the last element, so it's more clear that it's a cycle
@@ -459,17 +460,6 @@ error_txt_only_for_local_src <- function(src_class) {
   glue("`nest_join.zoomed_dm()` works only for a local `src`, not on a database with `src`-class: {src_class}.")
 }
 
-# dm invalid --------------------------------------------------------------
-
-abort_dm_invalid <- function(why) {
-  abort(error_txt_dm_invalid(why), .subclass = dm_error_full("dm_invalid"))
-}
-
-error_txt_dm_invalid <- function(why) {
-  glue("This `dm` is invalid, reason: {why}")
-}
-
-
 # Errors for `pull_tbl.dm()` -----------------------------
 
 abort_no_table_provided <- function() {
@@ -635,7 +625,8 @@ error_txt_no_schemas_supported <- function(dbms, con) {
   } else if (!is.null(con)) {
     glue::glue(
       "Currently schemas are not supported for a connection ",
-      "of class {tick(class(con))}.")
+      "of class {tick(class(con))}."
+    )
   } else {
     # if local src, `con = NULL`
     "Schemas are not available locally."

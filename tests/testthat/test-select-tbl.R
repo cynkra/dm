@@ -30,7 +30,8 @@ test_that("dm_select_tbl() remembers all FKs", {
   skip_if_not_installed("nycflights13")
 
   expect_snapshot({
-    dm_add_fk(dm_nycflights_small(), flights, origin, airports) %>%
+    dm_nycflights_small() %>%
+      dm_add_fk(flights, origin, airports) %>%
       dm_select_tbl(airports, flights) %>%
       dm_paste()
   })
