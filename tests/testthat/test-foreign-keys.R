@@ -1,14 +1,8 @@
 test_that("dm_add_fk() works as intended?", {
   expect_dm_error(
-    dm_add_fk(dm_test_obj(), dm_table_1, a, dm_table_4),
-    class = "ref_tbl_has_no_pk"
-  )
-
-  expect_true(
     dm_test_obj() %>%
-      dm_add_pk(dm_table_4, c) %>%
-      dm_add_fk(dm_table_1, a, dm_table_4) %>%
-      dm_has_fk(dm_table_1, dm_table_4)
+      dm_add_fk(dm_table_1, a, dm_table_4),
+    class = "ref_tbl_has_no_pk"
   )
 
   expect_dm_error(
@@ -18,9 +12,18 @@ test_that("dm_add_fk() works as intended?", {
       dm_add_fk(dm_table_1, a, dm_table_4),
     class = "fk_exists"
   )
+
+  expect_snapshot({
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      get_all_keys()
+  })
 })
 
 test_that("dm_has_fk() and dm_get_fk() work as intended?", {
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_identical(
     dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%

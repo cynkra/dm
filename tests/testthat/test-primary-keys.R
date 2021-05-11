@@ -1,10 +1,21 @@
 test_that("dm_add_pk() works as intended?", {
-  expect_silent(dm_add_pk(dm_test_obj(), dm_table_1, a))
   expect_silent(
     dm_test_obj() %>%
-      dm_add_pk(dm_table_1, a) %>%
-      dm_add_pk(dm_table_1, b, force = TRUE)
+      dm_add_pk(dm_table_1, a))
+
+  expect_silent(
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_2, c)
   )
+
+  expect_silent(expect_equivalent_dm(
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_1, a) %>%
+      dm_add_pk(dm_table_1, b, force = TRUE),
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_1, b)
+  ))
+
   expect_error(
     dm_add_pk(dm_test_obj(), dm_table_1, qq),
     class = "vctrs_error_subscript_oob"
@@ -24,9 +35,6 @@ test_that("dm_add_pk() works as intended?", {
   expect_dm_error(
     dm_add_pk(dm_test_obj(), dm_table_2, c, check = TRUE),
     class = "not_unique_key"
-  )
-  expect_silent(
-    dm_add_pk(dm_test_obj(), dm_table_2, c)
   )
 })
 
@@ -120,6 +128,8 @@ test_that("dm_has_pk() works as intended?", {
 })
 
 test_that("dm_get_pk() works as intended?", {
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_identical(
     dm_get_pk(dm_test_obj(), dm_table_1),
     new_keys(character(0))
@@ -129,13 +139,6 @@ test_that("dm_get_pk() works as intended?", {
       dm_add_pk(dm_table_1, a) %>%
       dm_get_pk(dm_table_1),
     new_keys("a")
-  )
-  expect_equivalent_dm(
-    dm_test_obj() %>%
-      dm_add_pk(dm_table_1, a) %>%
-      dm_add_pk(dm_table_1, b, force = TRUE),
-    dm_test_obj() %>%
-      dm_add_pk(dm_table_1, b)
   )
 })
 
