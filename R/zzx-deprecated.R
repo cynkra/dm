@@ -339,9 +339,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
   else {
     cols <- as_name(ensym(columns))
     if (!all(cols %in% fk_cols)) {
-      abort_is_not_fkc(
-        table_name, cols, ref_table_name
-      )
+      abort_is_not_fkc()
     }
   }
   dm_rm_fk_impl(dm, table_name, cols, ref_table_name, NULL)
