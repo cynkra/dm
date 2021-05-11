@@ -4,73 +4,69 @@
       zoomed_dm() %>% unite("new_col", c, e) %>% dm_update_zoomed() %>% get_all_keys(
         "tf_2")
     Output
-      $pk
-      list()
+      $pks
+      # A tibble: 0 x 2
+      # ... with 2 variables: table <chr>, pk_col <keys>
       
       $fks
-      <list_of<character>[1]>
-      [[1]]
-      [1] "d"
-      
+      # A tibble: 1 x 3
+        child_fk_cols parent_table parent_pk_cols
+        <keys>        <chr>        <keys>        
+      1 d             tf_1         a             
       
     Code
       zoomed_dm() %>% unite("new_col", c, e, remove = FALSE) %>% dm_update_zoomed() %>%
         get_all_keys("tf_2")
     Output
-      $pk
-      $pk[[1]]
-      [1] "c"
-      
+      $pks
+      # A tibble: 1 x 2
+        table pk_col
+        <chr> <keys>
+      1 tf_2  c     
       
       $fks
-      <list_of<character>[2]>
-      [[1]]
-      [1] "d"
-      
-      [[2]]
-      [1] "e"  "e1"
-      
+      # A tibble: 2 x 3
+        child_fk_cols parent_table parent_pk_cols
+        <keys>        <chr>        <keys>        
+      1 d             tf_1         a             
+      2 e, e1         tf_3         f, f1         
       
     Code
       zoomed_dm() %>% unite("new_col", c, e, remove = FALSE) %>% dm_update_zoomed() %>%
         dm_add_fk(tf_2, new_col, tf_6) %>% dm_zoom_to(tf_2) %>% separate(new_col, c(
         "c", "e"), remove = TRUE) %>% dm_update_zoomed() %>% get_all_keys("tf_2")
     Output
-      $pk
-      $pk[[1]]
-      [1] "c"
-      
+      $pks
+      # A tibble: 1 x 2
+        table pk_col
+        <chr> <keys>
+      1 tf_2  c     
       
       $fks
-      <list_of<character>[2]>
-      [[1]]
-      [1] "d"
-      
-      [[2]]
-      [1] "e"  "e1"
-      
+      # A tibble: 2 x 3
+        child_fk_cols parent_table parent_pk_cols
+        <keys>        <chr>        <keys>        
+      1 d             tf_1         a             
+      2 e, e1         tf_3         f, f1         
       
     Code
       zoomed_dm() %>% unite("new_col", c, e, remove = FALSE) %>% dm_update_zoomed() %>%
         dm_add_fk(tf_2, new_col, tf_6) %>% dm_zoom_to(tf_2) %>% separate(new_col, c(
         "c", "e"), remove = FALSE) %>% dm_update_zoomed() %>% get_all_keys("tf_2")
     Output
-      $pk
-      $pk[[1]]
-      [1] "c"
-      
+      $pks
+      # A tibble: 1 x 2
+        table pk_col
+        <chr> <keys>
+      1 tf_2  c     
       
       $fks
-      <list_of<character>[3]>
-      [[1]]
-      [1] "d"
-      
-      [[2]]
-      [1] "e"  "e1"
-      
-      [[3]]
-      [1] "new_col"
-      
+      # A tibble: 3 x 3
+        child_fk_cols parent_table parent_pk_cols
+        <keys>        <chr>        <keys>        
+      1 d             tf_1         a             
+      2 e, e1         tf_3         f, f1         
+      3 new_col       tf_6         o             
       
 
 # output for compound keys
@@ -80,60 +76,60 @@
         unite("new_col", origin, chr_col) %>% dm_update_zoomed()
       unite_weather_dm %>% get_all_keys("flights")
     Output
-      $pk
-      list()
+      $pks
+      # A tibble: 0 x 2
+      # ... with 2 variables: table <chr>, pk_col <keys>
       
       $fks
-      <list_of<character>[3]>
-      [[1]]
-      [1] "carrier"
-      
-      [[2]]
-      [1] "dest"
-      
-      [[3]]
-      [1] "tailnum"
-      
+      # A tibble: 3 x 3
+        child_fk_cols parent_table parent_pk_cols
+        <keys>        <chr>        <keys>        
+      1 carrier       airlines     carrier       
+      2 dest          airports     faa           
+      3 tailnum       planes       tailnum       
       
     Code
       unite_weather_dm %>% get_all_keys("weather")
     Output
-      $pk
-      list()
+      $pks
+      # A tibble: 0 x 2
+      # ... with 2 variables: table <chr>, pk_col <keys>
       
       $fks
-      <list_of<character>[0]>
+      # A tibble: 0 x 3
+      # ... with 3 variables: child_fk_cols <keys>, parent_table <chr>,
+      #   parent_pk_cols <keys>
       
     Code
       unite_flights_dm <- nyc_comp() %>% dm_zoom_to(flights) %>% mutate(chr_col = "airport") %>%
         unite("new_col", origin, chr_col) %>% dm_update_zoomed()
       unite_flights_dm %>% get_all_keys("flights")
     Output
-      $pk
-      list()
+      $pks
+      # A tibble: 0 x 2
+      # ... with 2 variables: table <chr>, pk_col <keys>
       
       $fks
-      <list_of<character>[3]>
-      [[1]]
-      [1] "carrier"
-      
-      [[2]]
-      [1] "dest"
-      
-      [[3]]
-      [1] "tailnum"
-      
+      # A tibble: 3 x 3
+        child_fk_cols parent_table parent_pk_cols
+        <keys>        <chr>        <keys>        
+      1 carrier       airlines     carrier       
+      2 dest          airports     faa           
+      3 tailnum       planes       tailnum       
       
     Code
       unite_flights_dm %>% get_all_keys("weather")
     Output
-      $pk
-      $pk[[1]]
-      [1] "origin"    "time_hour"
-      
+      $pks
+      # A tibble: 1 x 2
+        table   pk_col           
+        <chr>   <keys>           
+      1 weather origin, time_hour
       
       $fks
-      <list_of<character>[0]>
+      # A tibble: 0 x 3
+      # ... with 3 variables: child_fk_cols <keys>, parent_table <chr>,
+      #   parent_pk_cols <keys>
       
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% separate(origin, c("o1", "o2"), sep = "^..",

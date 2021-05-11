@@ -3,13 +3,14 @@
 get_all_keys <- function(dm, table_name) {
   fks <-
     dm_get_all_fks_impl(dm) %>%
-    filter(child_table == table_name) %>%
-    # FIXME: Account for multi-pk, #402
-    pull(child_fk_cols)
-  pk <- dm_get_pk_impl(dm, table_name)
+    filter(child_table %in% table_name) %>%
+    select(child_fk_cols, parent_table, parent_pk_cols)
+  pks <-
+    dm_get_all_pks_impl(dm) %>%
+    filter(table %in% table_name)
 
   list(
-    pk = pk,
+    pks = pks,
     fks = fks
   )
 }
