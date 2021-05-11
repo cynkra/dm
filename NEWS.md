@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.1
+
+- Same as previous version.
+
+
 # dm 0.2.0.9002
 
 - Breaking: `dm_get_all_fks()` returns a data frame with a  `parent_key_cols` instead of a `parent_pk_cols` column, to reflect the fact that a foreign key no longer necessarily points to a primary key (#562).
