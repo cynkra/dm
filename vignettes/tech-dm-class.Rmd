@@ -172,7 +172,7 @@ If set to `TRUE`, the function checks if the column of the table given by the us
 For performance reasons, the default is `check = FALSE`.
 See also [dm_examine_constraints()] for checking all constraints in a `dm`.
 
-```{r error = FALSE}
+```{r error = TRUE}
 dm_add_pk(flights_dm, airports, tzone, check = TRUE)
 ```
 
