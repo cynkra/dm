@@ -1,6 +1,7 @@
 # FIXME NEXT
 
 - deprecate
+    - fix all test warnings
 - un-skip tests
 - rename `parent_pk_cols` to something more suitable
 
