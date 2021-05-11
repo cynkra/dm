@@ -1,3 +1,22 @@
+# dm_add_fk() works as intended?
+
+    Code
+      dm_test_obj() %>% dm_add_pk(dm_table_4, c) %>% dm_add_fk(dm_table_1, a,
+        dm_table_4) %>% get_all_keys()
+    Output
+      $pks
+      # A tibble: 1 x 2
+        table      pk_col
+        <chr>      <keys>
+      1 dm_table_4 c     
+      
+      $fks
+      # A tibble: 1 x 4
+        child_table child_fk_cols parent_table parent_pk_cols
+        <chr>       <keys>        <chr>        <keys>        
+      1 dm_table_1  a             dm_table_4   c             
+      
+
 # dm_rm_fk() works with partial matching
 
     Code

@@ -1,3 +1,61 @@
+# basic test: 'join()'-methods for `zoomed.dm` work (2)
+
+    Code
+      # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
+      zoomed_dm() %>% left_join(tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>%
+        get_all_keys()
+    Message <simpleMessage>
+      Renamed columns:
+      * d -> tf_2.d, tf_3.d
+    Output
+      $pks
+      # A tibble: 6 x 2
+        table pk_col
+        <chr> <keys>
+      1 tf_1  a     
+      2 tf_2  c     
+      3 tf_3  f, f1 
+      4 tf_4  h     
+      5 tf_5  k     
+      6 tf_6  o     
+      
+      $fks
+      # A tibble: 5 x 4
+        child_table child_fk_cols parent_table parent_pk_cols
+        <chr>       <keys>        <chr>        <keys>        
+      1 tf_2        tf_2.d        tf_1         a             
+      2 tf_2        e, e1         tf_3         f, f1         
+      3 tf_4        j, j1         tf_3         f, f1         
+      4 tf_5        l             tf_4         h             
+      5 tf_5        m             tf_6         n             
+      
+    Code
+      # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
+      zoomed_dm() %>% semi_join(tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>%
+        get_all_keys()
+    Output
+      $pks
+      # A tibble: 6 x 2
+        table pk_col
+        <chr> <keys>
+      1 tf_1  a     
+      2 tf_2  c     
+      3 tf_3  f, f1 
+      4 tf_4  h     
+      5 tf_5  k     
+      6 tf_6  o     
+      
+      $fks
+      # A tibble: 5 x 4
+        child_table child_fk_cols parent_table parent_pk_cols
+        <chr>       <keys>        <chr>        <keys>        
+      1 tf_2        d             tf_1         a             
+      2 tf_2        e, e1         tf_3         f, f1         
+      3 tf_4        j, j1         tf_3         f, f1         
+      4 tf_5        l             tf_4         h             
+      5 tf_5        m             tf_6         n             
+      
+
 # key tracking works
 
     Code
@@ -290,6 +348,25 @@
       4 new_tbl     e_new, e1     tf_3         f, f1         
       5 tf_5        l             tf_4         h             
       6 tf_5        m             tf_6         n             
+      
+
+# key tracking works (2)
+
+    Code
+      zoomed_grouped_in_dm %>% select(g_new = g) %>% get_all_keys("tf_3")
+    Output
+      $pks
+      # A tibble: 1 x 2
+        table pk_col
+        <chr> <keys>
+      1 tf_3  f, f1 
+      
+      $fks
+      # A tibble: 2 x 4
+        child_table child_fk_cols parent_table parent_pk_cols
+        <chr>       <keys>        <chr>        <keys>        
+      1 tf_2        e, e1         tf_3         f, f1         
+      2 tf_4        j, j1         tf_3         f, f1         
       
 
 # output for compound keys

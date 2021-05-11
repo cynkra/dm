@@ -290,23 +290,22 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
     "fk_not_tracked"
   )
 
-  # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
-  expect_identical(
-    expect_message(
-      zoomed_dm() %>%
-        left_join(tf_3, select = c(d = g, f, f1)) %>%
-        dm_update_zoomed() %>%
-        dm_get_fk(tf_2, tf_1)
-    ),
-    new_keys("tf_2.d")
-  )
+  expect_snapshot({
+    "keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'"
+    zoomed_dm() %>%
+      left_join(tf_3, select = c(d = g, f, f1)) %>%
+      dm_update_zoomed() %>%
+      get_all_keys()
 
-  # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
-  expect_identical(
-    semi_join(zoomed_dm(), tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>% dm_get_fk(tf_2, tf_1),
-    new_keys("d")
-  )
+    "keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'"
+    zoomed_dm() %>%
+      semi_join(tf_3, select = c(d = g, f, f1)) %>%
+      dm_update_zoomed() %>%
+      get_all_keys()
+  })
+})
 
+test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
   skip_if_src("maria")
   # multi-column "by" argument
   out <- expect_message(
@@ -488,23 +487,14 @@ test_that("key tracking works", {
 
 test_that("key tracking works (2)", {
   # FKs that point to a PK that vanished, should also vanish
-  pk_gone_dm <-
+  expect_snapshot({
     zoomed_grouped_in_dm %>%
-    select(g_new = g) %>%
-    dm_update_zoomed()
+      select(g_new = g) %>%
+      get_all_keys("tf_3")
+  })
+})
 
-  expect_identical(
-    pk_gone_dm %>%
-      dm_get_fk(tf_2, tf_3),
-    new_keys(character())
-  )
-
-  expect_identical(
-    pk_gone_dm %>%
-      dm_get_fk(tf_4, tf_3),
-    new_keys(character())
-  )
-
+test_that("key tracking works (3)", {
   expect_identical(
     zoomed_dm() %>%
       distinct(d_new = d) %>%
