@@ -193,57 +193,55 @@
     <div id="dm-021" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.1">
 <a href="#dm-021" class="anchor" aria-hidden="true"></a>dm 0.2.1<small> Unreleased </small></h1>
-<ul><li>Same as previous version.</li>
-</ul></div>
-    <div id="dm-0209002" class="section level1">
-<h1 class="page-header" data-toc-text="0.2.0.9002">
-<a href="#dm-0209002" class="anchor" aria-hidden="true"></a>dm 0.2.0.9002<small> Unreleased </small></h1>
-<ul><li>Breaking: <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code> returns a data frame with a <code>parent_key_cols</code> instead of a <code>parent_pk_cols</code> column, to reflect the fact that a foreign key no longer necessarily points to a primary key (<a href='https://github.com/cynkra/dm/issues/562'>#562</a>).</li>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor" aria-hidden="true"></a>Breaking changes</h2>
+<ul><li>
+<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code> returns a data frame with a <code>parent_key_cols</code> instead of a <code>parent_pk_cols</code> column (introduced in dm 0.2.0), to reflect the fact that a foreign key no longer necessarily points to a primary key (<a href='https://github.com/cynkra/dm/issues/562'>#562</a>).</li>
+<li>
+<code>*_pk()</code> and <code>*_fk()</code> functions now verify that the dots are actually empty (<a href='https://github.com/cynkra/dm/issues/536'>#536</a>).</li>
 <li>
 <code><a href="../reference/dm_get_pk.html">dm_get_pk()</a></code> is deprecated in favor of <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code> (<a href='https://github.com/cynkra/dm/issues/561'>#561</a>).</li>
 <li>
 <code><a href="../reference/dm_has_fk.html">dm_has_fk()</a></code> and <code><a href="../reference/dm_has_fk.html">dm_get_fk()</a></code> are deprecated in favor of <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code> (<a href='https://github.com/cynkra/dm/issues/561'>#561</a>).</li>
 </ul></div>
-    <div id="dm-0209001" class="section level1">
-<h1 class="page-header" data-toc-text="0.2.0.9001">
-<a href="#dm-0209001" class="anchor" aria-hidden="true"></a>dm 0.2.0.9001<small> Unreleased </small></h1>
+<div id="features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#features" class="anchor" aria-hidden="true"></a>Features</h2>
 <ul><li>
+<code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> gains <code>ref_columns</code> argument that supports creating foreign keys to non-primary keys (<a href='https://github.com/cynkra/dm/issues/402'>#402</a>).</li>
+<li>
 <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code> gains <code>table</code> argument for filtering the returned primary keys (<a href='https://github.com/cynkra/dm/issues/560'>#560</a>).</li>
 <li>
 <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code> gains <code>parent_table</code> argument for filtering the returned foreign keys (<a href='https://github.com/cynkra/dm/issues/560'>#560</a>).</li>
-<li>
-<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code> has been optimized for speed and no longer sorts the keys (<a href='https://github.com/cynkra/dm/issues/560'>#560</a>).</li>
 <li>
 <code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code> gains an optional <code>ref_columns</code> argument. This function now supports removal of multiple foreign keys filtered by parent or child table or columns, with a message (<a href='https://github.com/cynkra/dm/issues/559'>#559</a>).</li>
 <li>
 <code><a href="../reference/dm_rm_pk.html">dm_rm_pk()</a></code> gains <code>columns</code> argument and allows filtering by columns and by tables or removing all primary keys. The <code>rm_referencing_fks</code> argument has been deprecated in favor of the new <code>fail_fk</code> argument (<a href='https://github.com/cynkra/dm/issues/558'>#558</a>).</li>
 <li>
-<code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> gains <code>ref_columns</code> argument that supports creating foreign keys to non-primary keys (<a href='https://github.com/cynkra/dm/issues/402'>#402</a>).</li>
-<li>Add documentation for compound key syntax (<a href='https://github.com/cynkra/dm/issues/555'>#555</a>).</li>
+<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code> has been optimized for speed and no longer sorts the keys (<a href='https://github.com/cynkra/dm/issues/560'>#560</a>).</li>
 <li>dm operations are now slightly faster overall.</li>
-<li>The internal data structure for a dm object has changed to accommodate foreign keys to other columns than the primary key. An upgrade message is shown when working with a dm object from an earlier version, e.g. if it was loaded from a cache or an <code>.rds</code> file (<a href='https://github.com/cynkra/dm/issues/402'>#402</a>).</li>
-<li>Dropped <code>"dm_v1"</code> class from dm objects again, this would have made every S3 dispatch more costly. Relying on an internal <code>"version"</code> attribute instead (<a href='https://github.com/cynkra/dm/issues/547'>#547</a>).</li>
-<li>
-<code>*_pk()</code> and <code>*_fk()</code> functions now verify that the dots are actually empty (<a href='https://github.com/cynkra/dm/issues/536'>#536</a>).</li>
 </ul></div>
-    <div id="dm-0209000" class="section level1">
-<h1 class="page-header" data-toc-text="0.2.0.9000">
-<a href="#dm-0209000" class="anchor" aria-hidden="true"></a>dm 0.2.0.9000<small> Unreleased </small></h1>
-<ul><li>Same as previous version.</li>
+<div id="internal" class="section level2">
+<h2 class="hasAnchor">
+<a href="#internal" class="anchor" aria-hidden="true"></a>Internal</h2>
+<ul><li>The internal data structure for a dm object has changed to accommodate foreign keys to other columns than the primary key. An upgrade message is shown when working with a dm object from an earlier version, e.g. if it was loaded from a cache or an <code>.rds</code> file (<a href='https://github.com/cynkra/dm/issues/402'>#402</a>).</li>
+<li>Drop <code>"dm_v1"</code> class from dm objects again, this would have made every S3 dispatch more costly. Relying on an internal <code>"version"</code> attribute instead (<a href='https://github.com/cynkra/dm/issues/547'>#547</a>).</li>
 </ul></div>
+</div>
     <div id="dm-020" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.0">
 <a href="#dm-020" class="anchor" aria-hidden="true"></a>dm 0.2.0<small> 2021-05-03 </small></h1>
-<div id="breaking-changes" class="section level2">
+<div id="breaking-changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes" class="anchor" aria-hidden="true"></a>Breaking changes</h2>
+<a href="#breaking-changes-1" class="anchor" aria-hidden="true"></a>Breaking changes</h2>
 <ul><li>Deprecate <code><a href="../reference/dplyr_src.html">dm_get_src()</a></code> <code><a href="../reference/dplyr_src.html">tbl.dm()</a></code>, <code><a href="../reference/dplyr_src.html">src_tbls.dm()</a></code>, <code><a href="../reference/dplyr_src.html">copy_to.dm()</a></code>. These functions have better alternatives and use the notion of a “data source” which is being phased out of dplyr (<a href='https://github.com/cynkra/dm/issues/527'>#527</a>).</li>
 <li>
 <code>*_pk()</code> and <code>*_fk()</code> functions gain an ellipsis argument that comes before <code>check</code>, <code>force</code> and <code>rm_referencing_fks</code> arguments (<a href='https://github.com/cynkra/dm/issues/520'>#520</a>).</li>
 </ul></div>
-<div id="features" class="section level2">
+<div id="features-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features" class="anchor" aria-hidden="true"></a>Features</h2>
+<a href="#features-1" class="anchor" aria-hidden="true"></a>Features</h2>
 <ul><li>
 <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> and <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> support compound keys via the <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> notation, e.g. <code>dm_add_pk(dm, table, c(col1, col2))</code>. <code><a href="../reference/dm_nycflights13.html">dm_nycflights13()</a></code> returns a data model with compound keys by default. Use <code>compound = FALSE</code> to return the data model from dm v0.1.13 or earlier (<a href='https://github.com/cynkra/dm/issues/3'>#3</a>).</li>
 <li>
@@ -265,9 +263,9 @@
     <div id="dm-0113" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.13">
 <a href="#dm-0113" class="anchor" aria-hidden="true"></a>dm 0.1.13<small> 2021-04-25 </small></h1>
-<div id="features-1" class="section level2">
+<div id="features-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-1" class="anchor" aria-hidden="true"></a>Features</h2>
+<a href="#features-2" class="anchor" aria-hidden="true"></a>Features</h2>
 <ul><li>
 <code><a href="../reference/dm_draw.html">dm_draw()</a></code> gains <code>column_types</code> argument, if <code>TRUE</code> the column type is shown for each displayed column (<a href='https://github.com/cynkra/dm/issues/444'>#444</a>, <a href='https://github.com/samssann'>@samssann</a>).</li>
 <li>
@@ -291,9 +289,9 @@
 <a href="#documentation" class="anchor" aria-hidden="true"></a>Documentation</h2>
 <ul><li>Fix description of filtering behavior in <code><a href="../reference/dm_zoom_to.html">?dm_zoom_to</a></code> (<a href='https://github.com/cynkra/dm/issues/403'>#403</a>).</li>
 </ul></div>
-<div id="internal" class="section level2">
+<div id="internal-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-1" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li>Move repository to <a href="https://github.com/cynkra/dm" class="external-link uri">https://github.com/cynkra/dm</a> (<a href='https://github.com/cynkra/dm/issues/500'>#500</a>).</li>
 <li>Enable more Postgres tests (<a href='https://github.com/cynkra/dm/issues/497'>#497</a>).</li>
 <li>Test DuckDB on GitHub Actions (<a href='https://github.com/cynkra/dm/issues/498'>#498</a>).</li>
@@ -334,16 +332,16 @@
     <div id="dm-016" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.6">
 <a href="#dm-016" class="anchor" aria-hidden="true"></a>dm 0.1.6<small> 2020-07-29 </small></h1>
-<div id="breaking-changes-1" class="section level2">
+<div id="breaking-changes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes-1" class="anchor" aria-hidden="true"></a>Breaking changes</h2>
+<a href="#breaking-changes-2" class="anchor" aria-hidden="true"></a>Breaking changes</h2>
 <ul><li>
 <code><a href="../reference/dplyr_src.html">dm_get_src()</a></code> returns <code>NULL</code> for local data sources (<a href='https://github.com/cynkra/dm/issues/394'>#394</a>).</li>
 <li>Local target in <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> gives a deprecation message (<a href='https://github.com/cynkra/dm/issues/395'>#395</a>).</li>
 </ul></div>
-<div id="features-2" class="section level2">
+<div id="features-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-2" class="anchor" aria-hidden="true"></a>Features</h2>
+<a href="#features-3" class="anchor" aria-hidden="true"></a>Features</h2>
 <ul><li>
 <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> gives a better error message for bad <code>table_names</code> (<a href='https://github.com/cynkra/dm/issues/397'>#397</a>).</li>
 <li>
@@ -360,9 +358,9 @@
 <li>
 <code><a href="../reference/rows-dm.html">dm_rows_update()</a></code> and related functions now use the primary keys defined in <code>x</code> for establishing matching rows.</li>
 </ul></div>
-<div id="internal-1" class="section level2">
+<div id="internal-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-1" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-2" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li>Use <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code> where appropriate (<a href='https://github.com/cynkra/dm/issues/422'>#422</a>).</li>
 <li>Consistent definition of <code>.dm</code> and <code>.zoomed_dm</code> methods (<a href='https://github.com/cynkra/dm/issues/300'>#300</a>).</li>
 <li>Examples involving <code><a href="../reference/dm_financial.html">dm_financial()</a></code> are not run if connection can’t be established (<a href='https://github.com/cynkra/dm/issues/418'>#418</a>).</li>
@@ -372,9 +370,9 @@
     <div id="dm-015" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.5">
 <a href="#dm-015" class="anchor" aria-hidden="true"></a>dm 0.1.5<small> 2020-07-03 </small></h1>
-<div id="features-3" class="section level2">
+<div id="features-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-3" class="anchor" aria-hidden="true"></a>Features</h2>
+<a href="#features-4" class="anchor" aria-hidden="true"></a>Features</h2>
 <ul><li>
 <code><a href="../reference/dm_paste.html">dm_paste()</a></code> generates self-contained code (<a href='https://github.com/cynkra/dm/issues/401'>#401</a>).</li>
 <li>Errors regarding cycles in the relationship graph now show the shortest cycle (<a href='https://github.com/cynkra/dm/issues/405'>#405</a>).</li>
@@ -393,9 +391,9 @@
 <li>Cycles in other connected components don’t affect filtering in a cycle-free component.</li>
 <li>Avoid <code><a href="https://dplyr.tidyverse.org/reference/src_dbi.html" class="external-link">src_sqlite()</a></code> in examples (<a href='https://github.com/cynkra/dm/issues/372'>#372</a>).</li>
 </ul></div>
-<div id="internal-2" class="section level2">
+<div id="internal-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-2" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-3" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li>Testing SQLite, Postgres and SQL Server on GitHub Actions (<a href='https://github.com/cynkra/dm/issues/408'>#408</a>, <a href='https://github.com/pat-s'>@pat-s</a>).</li>
 <li>Testing packages with all “Suggests” uninstalled.</li>
 </ul></div>
@@ -403,9 +401,9 @@
     <div id="dm-014" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.4">
 <a href="#dm-014" class="anchor" aria-hidden="true"></a>dm 0.1.4<small> 2020-06-07 </small></h1>
-<div id="features-4" class="section level2">
+<div id="features-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-4" class="anchor" aria-hidden="true"></a>Features</h2>
+<a href="#features-5" class="anchor" aria-hidden="true"></a>Features</h2>
 <ul><li><p>New <code><a href="../reference/rows-dm.html">dm_rows_insert()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_update()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_patch()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_upsert()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_delete()</a></code> and <code><a href="../reference/rows-dm.html">dm_rows_truncate()</a></code>, calling the corresponding <code>rows_*()</code> method for every table (<a href='https://github.com/cynkra/dm/issues/319'>#319</a>).</p></li>
 <li><p>New <code><a href="../reference/rows_truncate.html">rows_truncate()</a></code> (<a href='https://github.com/cynkra/dm/issues/319'>#319</a>).</p></li>
 <li><p>Added <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update()</a></code> methods for SQLite, Postgres, MariaDB and MSSQL (<a href='https://github.com/cynkra/dm/issues/319'>#319</a>).</p></li>
@@ -419,9 +417,9 @@
 <ul><li><p>Add TL;DR to README (<a href='https://github.com/cynkra/dm/issues/377'>#377</a>, <a href='https://github.com/jawond'>@jawond</a>).</p></li>
 <li><p>Add content from old README to <code>howto-dm-theory.Rmd</code> (<a href='https://github.com/cynkra/dm/issues/378'>#378</a>, <a href='https://github.com/jawond'>@jawond</a>).</p></li>
 </ul></div>
-<div id="internal-3" class="section level2">
+<div id="internal-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-3" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-4" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li><p>Require dplyr &gt;= 1.0.0.</p></li>
 <li><p>Use GitHub Actions (<a href='https://github.com/cynkra/dm/issues/369'>#369</a>, <a href='https://github.com/pat-s'>@pat-s</a>).</p></li>
 </ul></div>
@@ -439,9 +437,9 @@
     <div id="dm-012" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.2">
 <a href="#dm-012" class="anchor" aria-hidden="true"></a>dm 0.1.2<small> 2020-05-04 </small></h1>
-<div id="features-5" class="section level2">
+<div id="features-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-5" class="anchor" aria-hidden="true"></a>Features</h2>
+<a href="#features-6" class="anchor" aria-hidden="true"></a>Features</h2>
 <ul><li>
 <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> now works for databases other than Postgres and MSSQL (<a href='https://github.com/cynkra/dm/issues/288'>#288</a>), gives a warning if tables cannot be accessed with <code>table_name = NULL</code> (<a href='https://github.com/cynkra/dm/issues/348'>#348</a>), and gains <code>learn_keys</code> argument to control querying of primary and foreign keys from the database (<a href='https://github.com/cynkra/dm/issues/340'>#340</a>).</li>
 <li>
@@ -493,9 +491,9 @@
 <code><a href="../reference/dm_draw.html">dm_draw()</a></code> output is shown in examples (<a href='https://github.com/cynkra/dm/issues/251'>#251</a>).</li>
 <li>New article “{dm} and databases” (<a href='https://github.com/cynkra/dm/issues/309'>#309</a>, <a href='https://github.com/jawond'>@jawond</a>).</li>
 </ul></div>
-<div id="internal-4" class="section level2">
+<div id="internal-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-4" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-5" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li>Testing on local data frames (by default), optionally also SQLite, Postgres, RMariaDB, and SQL Server. Currently requires development versions and various pull requests (<a href='https://github.com/cynkra/dm/issues/334'>#334</a>, <a href='https://github.com/cynkra/dm/issues/327'>#327</a>, <a href='https://github.com/cynkra/dm/issues/312'>#312</a>, <a href='https://github.com/cynkra/dm/issues/76'>#76</a>).</li>
 <li>
 <code>dm_nycflights13(subset = TRUE)</code> memoizes subset and also reduces the size of the <code>weather</code> table.</li>
@@ -565,9 +563,9 @@
     <div id="dm-005" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.5">
 <a href="#dm-005" class="anchor" aria-hidden="true"></a>dm 0.0.5<small> Unreleased </small></h1>
-<div id="features-6" class="section level2">
+<div id="features-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-6" class="anchor" aria-hidden="true"></a>Features</h2>
+<a href="#features-7" class="anchor" aria-hidden="true"></a>Features</h2>
 <ul><li>
 <code><a href="../reference/deprecated.html">cdm_filter()</a></code> and <code><a href="../reference/dplyr_table_manipulation.html">filter.zoomed_dm()</a></code> apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in <code><a href="../reference/deprecated.html">cdm_apply_filters()</a></code>. This now allows using a variety of operations on filtered <code>dm</code> objects (<a href='https://github.com/cynkra/dm/issues/124'>#124</a>).</li>
 <li>
@@ -681,9 +679,9 @@
     <div id="dm-002" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.2">
 <a href="#dm-002" class="anchor" aria-hidden="true"></a>dm 0.0.2<small> Unreleased </small></h1>
-<div id="breaking-changes-2" class="section level2">
+<div id="breaking-changes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes-2" class="anchor" aria-hidden="true"></a>Breaking changes</h2>
+<a href="#breaking-changes-3" class="anchor" aria-hidden="true"></a>Breaking changes</h2>
 <ul><li>Requires tidyr &gt;= 1.0.0.</li>
 <li>
 <code><a href="../reference/deprecated.html">cdm_nrow()</a></code> returns named list (<a href='https://github.com/cynkra/dm/issues/49'>#49</a>).</li>
@@ -737,9 +735,9 @@
 <a href="#documentation-4" class="anchor" aria-hidden="true"></a>Documentation</h2>
 <ul><li>Add setup article (<a href='https://github.com/cynkra/dm/issues/7'>#7</a>).</li>
 </ul></div>
-<div id="internal-5" class="section level2">
+<div id="internal-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-5" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-6" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li>Using simpler internal data structure to store primary and foreign key relations (<a href='https://github.com/cynkra/dm/issues/26'>#26</a>).</li>
 <li>New <code>nse_function()</code> replaces <code>h()</code> for marking functions as NSE to avoid R CMD check warnings.</li>
 <li>Simplified internal data structure so that creation of new operations that update a dm becomes easier.</li>
