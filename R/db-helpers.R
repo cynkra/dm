@@ -55,7 +55,7 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
 
     unique_clause <-
       fks %>%
-      select(source_name = parent_table, pk_col = parent_pk_cols) %>%
+      select(source_name = parent_table, pk_col = parent_key_cols) %>%
       anti_join(pks, by = c("source_name", "pk_col")) %>%
       distinct() %>%
       mutate(
@@ -156,7 +156,7 @@ queries_set_fk_relations <- function(dest, fk_information) {
   db_child_tables <- fk_information$db_child_table
   child_fk_cols <- fk_information$child_fk_cols
   db_parent_tables <- fk_information$db_parent_table
-  parent_pk_col <- fk_information$parent_pk_cols
+  parent_pk_col <- fk_information$parent_key_cols
 
   if (is_mssql(dest) || is_postgres(dest)) {
     pmap_chr(

@@ -15,12 +15,12 @@
       
       $fks
       # A tibble: 4 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 tf_2        d             tf_1         a             
-      2 tf_4        j, j1         tf_3         f, f1         
-      3 tf_5        l             tf_4         h             
-      4 tf_5        m             tf_6         n             
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 tf_2        d             tf_1         a              
+      2 tf_4        j, j1         tf_3         f, f1          
+      3 tf_5        l             tf_4         h              
+      4 tf_5        m             tf_6         n              
       
     Code
       zoomed_dm() %>% unite("new_col", c, e, remove = FALSE) %>% dm_update_zoomed() %>%
@@ -39,13 +39,13 @@
       
       $fks
       # A tibble: 5 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 tf_2        d             tf_1         a             
-      2 tf_2        e, e1         tf_3         f, f1         
-      3 tf_4        j, j1         tf_3         f, f1         
-      4 tf_5        l             tf_4         h             
-      5 tf_5        m             tf_6         n             
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 tf_2        d             tf_1         a              
+      2 tf_2        e, e1         tf_3         f, f1          
+      3 tf_4        j, j1         tf_3         f, f1          
+      4 tf_5        l             tf_4         h              
+      5 tf_5        m             tf_6         n              
       
     Code
       zoomed_dm() %>% unite("new_col", c, e, remove = FALSE) %>% dm_update_zoomed() %>%
@@ -65,13 +65,13 @@
       
       $fks
       # A tibble: 5 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 tf_2        d             tf_1         a             
-      2 tf_2        e, e1         tf_3         f, f1         
-      3 tf_4        j, j1         tf_3         f, f1         
-      4 tf_5        l             tf_4         h             
-      5 tf_5        m             tf_6         n             
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 tf_2        d             tf_1         a              
+      2 tf_2        e, e1         tf_3         f, f1          
+      3 tf_4        j, j1         tf_3         f, f1          
+      4 tf_5        l             tf_4         h              
+      5 tf_5        m             tf_6         n              
       
     Code
       zoomed_dm() %>% unite("new_col", c, e, remove = FALSE) %>% dm_update_zoomed() %>%
@@ -91,14 +91,14 @@
       
       $fks
       # A tibble: 6 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 tf_2        d             tf_1         a             
-      2 tf_2        e, e1         tf_3         f, f1         
-      3 tf_4        j, j1         tf_3         f, f1         
-      4 tf_5        l             tf_4         h             
-      5 tf_5        m             tf_6         n             
-      6 tf_2        new_col       tf_6         o             
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 tf_2        d             tf_1         a              
+      2 tf_2        e, e1         tf_3         f, f1          
+      3 tf_4        j, j1         tf_3         f, f1          
+      4 tf_5        l             tf_4         h              
+      5 tf_5        m             tf_6         n              
+      6 tf_2        new_col       tf_6         o              
       
 
 # output for compound keys
@@ -118,11 +118,11 @@
       
       $fks
       # A tibble: 3 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 flights     carrier       airlines     carrier       
-      2 flights     dest          airports     faa           
-      3 flights     tailnum       planes       tailnum       
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 flights     carrier       airlines     carrier        
+      2 flights     dest          airports     faa            
+      3 flights     tailnum       planes       tailnum        
       
     Code
       unite_weather_dm %>% get_all_keys()
@@ -137,11 +137,11 @@
       
       $fks
       # A tibble: 3 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 flights     carrier       airlines     carrier       
-      2 flights     dest          airports     faa           
-      3 flights     tailnum       planes       tailnum       
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 flights     carrier       airlines     carrier        
+      2 flights     dest          airports     faa            
+      3 flights     tailnum       planes       tailnum        
       
     Code
       unite_flights_dm <- nyc_comp() %>% dm_zoom_to(flights) %>% mutate(chr_col = "airport") %>%
@@ -159,11 +159,11 @@
       
       $fks
       # A tibble: 3 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 flights     carrier       airlines     carrier       
-      2 flights     dest          airports     faa           
-      3 flights     tailnum       planes       tailnum       
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 flights     carrier       airlines     carrier        
+      2 flights     dest          airports     faa            
+      3 flights     tailnum       planes       tailnum        
       
     Code
       unite_flights_dm %>% get_all_keys()
@@ -179,11 +179,11 @@
       
       $fks
       # A tibble: 3 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 flights     carrier       airlines     carrier       
-      2 flights     dest          airports     faa           
-      3 flights     tailnum       planes       tailnum       
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 flights     carrier       airlines     carrier        
+      2 flights     dest          airports     faa            
+      3 flights     tailnum       planes       tailnum        
       
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% separate(origin, c("o1", "o2"), sep = "^..",

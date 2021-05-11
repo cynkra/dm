@@ -60,7 +60,7 @@
       
       $fks
       # A tibble: 5 x 4
-        child_table child_fk_cols     parent_table parent_pk_cols   
+        child_table child_fk_cols     parent_table parent_key_cols  
         <chr>       <keys>            <chr>        <keys>           
       1 flights     carrier           airlines     carrier          
       2 flights     dest              airports     faa              
@@ -89,7 +89,7 @@
       
       $fks
       # A tibble: 8 x 4
-        child_table child_fk_cols     parent_table parent_pk_cols   
+        child_table child_fk_cols     parent_table parent_key_cols  
         <chr>       <keys>            <chr>        <keys>           
       1 flights     carrier           airlines     carrier          
       2 flights_2   carrier           airlines     carrier          

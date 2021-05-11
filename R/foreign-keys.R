@@ -198,7 +198,7 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 #'     \item{`child_table`}{child table,}
 #'     \item{`child_fk_cols`}{foreign key column(s) in child table as list of character vectors,}
 #'     \item{`parent_table`}{parent table,}
-#'     \item{`parent_pk_cols`}{key column(s) in parent table as list of character vectors.}
+#'     \item{`parent_key_cols`}{key column(s) in parent table as list of character vectors.}
 #'   }
 #'
 #' @inheritParams dm_has_fk
@@ -230,7 +230,7 @@ dm_get_all_fks_impl <- function(dm, parent_table = NULL) {
 
   flat <- unnest_list_of_df(sub_def, "fks")
 
-  names(flat) <- c("parent_table", "parent_pk_cols", "child_table", "child_fk_cols")
+  names(flat) <- c("parent_table", "parent_key_cols", "child_table", "child_fk_cols")
   flat[[2]] <- new_keys(flat[[2]])
   flat[[4]] <- new_keys(flat[[4]])
   flat[c(3:4, 1:2)]

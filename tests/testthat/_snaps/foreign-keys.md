@@ -12,9 +12,9 @@
       
       $fks
       # A tibble: 1 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 dm_table_1  a             dm_table_4   c             
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 dm_table_1  a             dm_table_4   c              
       
 
 # dm_rm_fk() works with partial matching
@@ -39,11 +39,11 @@
       
       $fks
       # A tibble: 3 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 tf_2        d             tf_1         a             
-      2 tf_2        e, e1         tf_3         f, f1         
-      3 tf_4        j, j1         tf_3         f, f1         
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 tf_2        d             tf_1         a              
+      2 tf_2        e, e1         tf_3         f, f1          
+      3 tf_4        j, j1         tf_3         f, f1          
       
     Code
       dm_for_filter() %>% dm_rm_fk(columns = l) %>% get_all_keys()
@@ -64,12 +64,12 @@
       
       $fks
       # A tibble: 4 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 tf_2        d             tf_1         a             
-      2 tf_2        e, e1         tf_3         f, f1         
-      3 tf_4        j, j1         tf_3         f, f1         
-      4 tf_5        m             tf_6         n             
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 tf_2        d             tf_1         a              
+      2 tf_2        e, e1         tf_3         f, f1          
+      3 tf_4        j, j1         tf_3         f, f1          
+      4 tf_5        m             tf_6         n              
       
     Code
       dm_for_filter() %>% dm_rm_fk(columns = c(e, e1)) %>% get_all_keys()
@@ -90,12 +90,12 @@
       
       $fks
       # A tibble: 4 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 tf_2        d             tf_1         a             
-      2 tf_4        j, j1         tf_3         f, f1         
-      3 tf_5        l             tf_4         h             
-      4 tf_5        m             tf_6         n             
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 tf_2        d             tf_1         a              
+      2 tf_4        j, j1         tf_3         f, f1          
+      3 tf_5        l             tf_4         h              
+      4 tf_5        m             tf_6         n              
       
     Code
       dm_for_filter() %>% dm_rm_fk(ref_table = tf_3) %>% get_all_keys()
@@ -117,11 +117,11 @@
       
       $fks
       # A tibble: 3 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 tf_2        d             tf_1         a             
-      2 tf_5        l             tf_4         h             
-      3 tf_5        m             tf_6         n             
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 tf_2        d             tf_1         a              
+      2 tf_5        l             tf_4         h              
+      3 tf_5        m             tf_6         n              
       
     Code
       dm_for_filter() %>% dm_rm_fk(ref_columns = c(f, f1)) %>% get_all_keys()
@@ -143,11 +143,11 @@
       
       $fks
       # A tibble: 3 x 4
-        child_table child_fk_cols parent_table parent_pk_cols
-        <chr>       <keys>        <chr>        <keys>        
-      1 tf_2        d             tf_1         a             
-      2 tf_5        l             tf_4         h             
-      3 tf_5        m             tf_6         n             
+        child_table child_fk_cols parent_table parent_key_cols
+        <chr>       <keys>        <chr>        <keys>         
+      1 tf_2        d             tf_1         a              
+      2 tf_5        l             tf_4         h              
+      3 tf_5        m             tf_6         n              
       
     Code
       dm_for_filter() %>% dm_rm_fk() %>% get_all_keys()
@@ -173,7 +173,7 @@
       $fks
       # A tibble: 0 x 4
       # ... with 4 variables: child_table <chr>, child_fk_cols <keys>,
-      #   parent_table <chr>, parent_pk_cols <keys>
+      #   parent_table <chr>, parent_key_cols <keys>
       
 
 # dm_enum_fk_candidates() works as intended?

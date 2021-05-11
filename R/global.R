@@ -52,7 +52,7 @@ utils::globalVariables(c(
   "old",
   "origin",
   "parent",
-  "parent_pk_cols",
+  "parent_key_cols",
   "parent_table",
   "pk",
   "pk_col",

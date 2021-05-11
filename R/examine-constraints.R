@@ -125,7 +125,7 @@ check_fk_constraints <- function(dm) {
   cts <- pull(fks, child_table) %>% map(tbl_impl, dm = dm)
   fks_tibble <-
     mutate(fks, t1 = cts, t2 = pts) %>%
-    select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = parent_pk_cols)
+    select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = parent_key_cols)
   fks_tibble %>%
     mutate(
       problem = pmap_chr(fks_tibble, check_fk),
