@@ -133,24 +133,22 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
 
 #' Check if foreign keys exists
 #'
-#' `dm_has_fk()` checks if a foreign key reference exists between two tables in a `dm`.
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These functions are deprecated because of their limited use
+#' since the introduction of foreign keys to arbitrary columns in dm 0.2.1.
+#' Use [dm_get_all_fks()] with table manipulation functions instead.
 #'
 #' @inheritParams dm_add_fk
-#' @param ref_table The table to be checked if it is referred to.
-#'
-#' @return A boolean value: `TRUE` if a reference from `table` to `ref_table` exists, `FALSE` otherwise.
-#'
-#' @family foreign key functions
-#'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_has_fk(flights, airports)
-#' dm_nycflights13() %>%
-#'   dm_has_fk(airports, flights)
+#' @keywords internal
 dm_has_fk <- function(dm, table, ref_table, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
+
+  deprecate_soft("0.2.1", "dm::dm_has_fk()", "dm::dm_get_all_fks()")
+
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
   dm_has_fk_impl(dm, table_name, ref_table_name)
@@ -160,30 +158,13 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
   has_length(dm_get_fk_impl(dm, table_name, ref_table_name))
 }
 
-#' Foreign key column names
-#'
-#' @description `dm_get_fk()` returns the names of the
-#' columns marked as foreign key of table `table` with respect to table `ref_table` within a [`dm`] object.
-#' If no foreign key is set between the tables, an empty character vector is returned.
-#'
-#' @inheritParams dm_has_fk
-#' @param ref_table The table that is referenced from `table`.
-#'
-#' @family foreign key functions
-#'
-#' @return A list of character vectors with the column name(s) of `table`,
-#'   pointing to the primary key of `ref_table`.
-#'   The contained character vectors have length greater than one for compound keys.
-#'
+#' @rdname dm_has_fk
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_get_fk(flights, airports)
-#' dm_nycflights13(cycle = TRUE) %>%
-#'   dm_get_fk(flights, airports)
 dm_get_fk <- function(dm, table, ref_table, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
+
+  deprecate_soft("0.2.1", "dm::dm_get_fk()", "dm::dm_get_all_fks()")
 
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})

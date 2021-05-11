@@ -72,7 +72,7 @@ test_that("dm_rm_fk() works as intended?", {
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
       dm_rm_fk(dm_table_2, c, dm_table_4) %>%
-      dm_has_fk(dm_table_1, dm_table_4)
+      dm_has_fk_impl("dm_table_1", "dm_table_4")
   ))
 
   expect_silent(expect_false(
@@ -81,7 +81,7 @@ test_that("dm_rm_fk() works as intended?", {
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
       dm_rm_fk(dm_table_2, c, dm_table_4) %>%
-      dm_has_fk(dm_table_2, dm_table_4)
+      dm_has_fk_impl("dm_table_2", "dm_table_4")
   ))
 
   expect_message(expect_false(
@@ -90,7 +90,7 @@ test_that("dm_rm_fk() works as intended?", {
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
       dm_rm_fk(dm_table_2, NULL, dm_table_4) %>%
-      dm_has_fk(dm_table_2, dm_table_4)
+      dm_has_fk_impl("dm_table_2", "dm_table_4")
   ))
 
   expect_dm_error(

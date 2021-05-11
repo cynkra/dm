@@ -111,34 +111,21 @@ dm_has_pk_impl <- function(dm, table) {
 
 #' Primary key column names
 #'
-#' @description `dm_get_pk()` returns the names of the
-#' columns marked as primary key of a table of a [`dm`] object.
-#' If no primary key is
-#' set for the table, an empty character vector is returned.
+#' @description
+#' `r lifecycle::badge("deprecated")`
 #'
-#' @section Multiple primary keys:
+#' This function is deprecated because of its limited use
+#' and its unintuitive return value.
+#' Use [dm_get_all_pks()] instead.
 #'
-#' Each table can have only one primary key.
-#' For symmetry with `dm_get_fk()`,
-#' this function still returns a list of character vectors.
-#'
-#' @family primary key functions
-#'
-#' @return A list with character vectors with the column name(s) of the
-#'   primary keys of `table`.
-#'   The contained character vectors have length greater than one for compound keys.
-#'
-#' @inheritParams dm_add_pk
-#'
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_get_pk(flights)
-#' dm_nycflights13() %>%
-#'   dm_get_pk(planes)
 #' @export
+#' @keywords internal
 dm_get_pk <- function(dm, table, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
+
+  deprecate_soft("0.2.1", "dm::dm_get_pk()", "dm::dm_get_all_pks()")
+
   table_name <- dm_tbl_name(dm, {{ table }})
   new_keys(dm_get_pk_impl(dm, table_name))
 }
