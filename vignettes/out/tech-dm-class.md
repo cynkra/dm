@@ -402,7 +402,7 @@ Get an overview of all foreign key relations with`dm_get_all_fks()`:
 ``` r
 dm_get_all_fks(dm_nycflights13(cycle = TRUE))
 #> # A tibble: 5 x 4
-#>   child_table child_fk_cols     parent_table parent_pk_cols   
+#>   child_table child_fk_cols     parent_table parent_key_cols   
 #>   <chr>       <keys>            <chr>        <keys>           
 #> 1 flights     carrier           airlines     carrier          
 #> 2 flights     origin            airports     faa              

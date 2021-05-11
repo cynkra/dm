@@ -1,7 +1,6 @@
 # FIXME NEXT
 
 - un-skip tests
-- rename `parent_pk_cols` to something more suitable
 
 # Later
 

@@ -314,7 +314,7 @@ cdm_get_all_fks <- function(dm) {
   dm %>%
     dm_get_all_fks_impl() %>%
     mutate(child_fk_cols = as.character(unclass(child_fk_cols))) %>%
-    mutate(parent_pk_cols = as.character(unclass(parent_pk_cols)))
+    mutate(parent_key_cols = as.character(unclass(parent_key_cols)))
 }
 
 #' @rdname deprecated
