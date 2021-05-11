@@ -35,12 +35,12 @@ test_that("key tracking works", {
     zoomed_dm() %>%
       unite("new_col", c, e) %>%
       dm_update_zoomed() %>%
-      get_all_keys("tf_2")
+      get_all_keys()
 
     zoomed_dm() %>%
       unite("new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
-      get_all_keys("tf_2")
+      get_all_keys()
 
     zoomed_dm() %>%
       unite("new_col", c, e, remove = FALSE) %>%
@@ -49,7 +49,7 @@ test_that("key tracking works", {
       dm_zoom_to(tf_2) %>%
       separate(new_col, c("c", "e"), remove = TRUE) %>%
       dm_update_zoomed() %>%
-      get_all_keys("tf_2")
+      get_all_keys()
 
     zoomed_dm() %>%
       unite("new_col", c, e, remove = FALSE) %>%
@@ -58,7 +58,7 @@ test_that("key tracking works", {
       dm_zoom_to(tf_2) %>%
       separate(new_col, c("c", "e"), remove = FALSE) %>%
       dm_update_zoomed() %>%
-      get_all_keys("tf_2")
+      get_all_keys()
   })
 })
 
@@ -76,16 +76,16 @@ test_that("output for compound keys", {
       mutate(chr_col = "airport") %>%
       unite("new_col", origin, chr_col) %>%
       dm_update_zoomed()
-    unite_weather_dm %>% get_all_keys("flights")
-    unite_weather_dm %>% get_all_keys("weather")
+    unite_weather_dm %>% get_all_keys()
+    unite_weather_dm %>% get_all_keys()
     unite_flights_dm <-
       nyc_comp() %>%
       dm_zoom_to(flights) %>%
       mutate(chr_col = "airport") %>%
       unite("new_col", origin, chr_col) %>%
       dm_update_zoomed()
-    unite_flights_dm %>% get_all_keys("flights")
-    unite_flights_dm %>% get_all_keys("weather")
+    unite_flights_dm %>% get_all_keys()
+    unite_flights_dm %>% get_all_keys()
     nyc_comp() %>%
       dm_zoom_to(weather) %>%
       separate(origin, c("o1", "o2"), sep = "^..", remove = TRUE) %>%

@@ -3,173 +3,293 @@
     Code
       # rename()
       zoomed_grouped_out_dm %>% rename(c_new = c) %>% dm_update_zoomed() %>%
-        get_all_keys("tf_2")
+        get_all_keys()
     Output
       $pks
-      # A tibble: 1 x 2
+      # A tibble: 6 x 2
         table pk_col
         <chr> <keys>
-      1 tf_2  c_new 
+      1 tf_1  a     
+      2 tf_2  c_new 
+      3 tf_3  f, f1 
+      4 tf_4  h     
+      5 tf_5  k     
+      6 tf_6  o     
       
       $fks
-      # A tibble: 2 x 3
+      # A tibble: 5 x 3
         child_fk_cols parent_table parent_pk_cols
         <keys>        <chr>        <keys>        
       1 d             tf_1         a             
       2 e, e1         tf_3         f, f1         
+      3 j, j1         tf_3         f, f1         
+      4 l             tf_4         h             
+      5 m             tf_6         n             
       
     Code
       zoomed_grouped_out_dm %>% rename(e_new = e) %>% dm_update_zoomed() %>%
-        get_all_keys("tf_2")
+        get_all_keys()
     Output
       $pks
-      # A tibble: 1 x 2
+      # A tibble: 6 x 2
         table pk_col
         <chr> <keys>
-      1 tf_2  c     
+      1 tf_1  a     
+      2 tf_2  c     
+      3 tf_3  f, f1 
+      4 tf_4  h     
+      5 tf_5  k     
+      6 tf_6  o     
       
       $fks
-      # A tibble: 2 x 3
+      # A tibble: 5 x 3
         child_fk_cols parent_table parent_pk_cols
         <keys>        <chr>        <keys>        
       1 d             tf_1         a             
       2 e_new, e1     tf_3         f, f1         
+      3 j, j1         tf_3         f, f1         
+      4 l             tf_4         h             
+      5 m             tf_6         n             
       
     Code
       zoomed_grouped_in_dm %>% rename(f_new = f) %>% dm_update_zoomed() %>%
-        get_all_keys("tf_3")
+        get_all_keys()
     Output
       $pks
-      # A tibble: 1 x 2
+      # A tibble: 6 x 2
         table pk_col   
         <chr> <keys>   
-      1 tf_3  f_new, f1
+      1 tf_1  a        
+      2 tf_2  c        
+      3 tf_3  f_new, f1
+      4 tf_4  h        
+      5 tf_5  k        
+      6 tf_6  o        
       
       $fks
-      # A tibble: 0 x 3
-      # ... with 3 variables: child_fk_cols <keys>, parent_table <chr>,
-      #   parent_pk_cols <keys>
+      # A tibble: 5 x 3
+        child_fk_cols parent_table parent_pk_cols
+        <keys>        <chr>        <keys>        
+      1 d             tf_1         a             
+      2 e, e1         tf_3         f, f1         
+      3 j, j1         tf_3         f, f1         
+      4 l             tf_4         h             
+      5 m             tf_6         n             
       
     Code
       # summarize()
       zoomed_grouped_out_dm %>% summarize(d_mean = mean(d)) %>% dm_insert_zoomed(
-        "new_tbl") %>% get_all_keys("new_tbl")
+        "new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 1 x 2
+      # A tibble: 7 x 2
         table   pk_col
         <chr>   <keys>
-      1 new_tbl c     
+      1 tf_1    a     
+      2 tf_2    c     
+      3 tf_3    f, f1 
+      4 tf_4    h     
+      5 tf_5    k     
+      6 tf_6    o     
+      7 new_tbl c     
       
       $fks
-      # A tibble: 1 x 3
+      # A tibble: 6 x 3
         child_fk_cols parent_table parent_pk_cols
         <keys>        <chr>        <keys>        
-      1 e, e1         tf_3         f, f1         
+      1 d             tf_1         a             
+      2 e, e1         tf_3         f, f1         
+      3 j, j1         tf_3         f, f1         
+      4 e, e1         tf_3         f, f1         
+      5 l             tf_4         h             
+      6 m             tf_6         n             
       
     Code
       zoomed_grouped_in_dm %>% summarize(g_list = list(g)) %>% dm_insert_zoomed(
-        "new_tbl") %>% get_all_keys("new_tbl")
+        "new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 0 x 2
-      # ... with 2 variables: table <chr>, pk_col <keys>
+      # A tibble: 6 x 2
+        table pk_col
+        <chr> <keys>
+      1 tf_1  a     
+      2 tf_2  c     
+      3 tf_3  f, f1 
+      4 tf_4  h     
+      5 tf_5  k     
+      6 tf_6  o     
       
       $fks
-      # A tibble: 0 x 3
-      # ... with 3 variables: child_fk_cols <keys>, parent_table <chr>,
-      #   parent_pk_cols <keys>
+      # A tibble: 5 x 3
+        child_fk_cols parent_table parent_pk_cols
+        <keys>        <chr>        <keys>        
+      1 d             tf_1         a             
+      2 e, e1         tf_3         f, f1         
+      3 j, j1         tf_3         f, f1         
+      4 l             tf_4         h             
+      5 m             tf_6         n             
       
     Code
       # transmute()
       zoomed_grouped_out_dm %>% transmute(d_mean = mean(d)) %>% dm_insert_zoomed(
-        "new_tbl") %>% get_all_keys("new_tbl")
+        "new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 1 x 2
+      # A tibble: 7 x 2
         table   pk_col
         <chr>   <keys>
-      1 new_tbl c     
+      1 tf_1    a     
+      2 tf_2    c     
+      3 tf_3    f, f1 
+      4 tf_4    h     
+      5 tf_5    k     
+      6 tf_6    o     
+      7 new_tbl c     
       
       $fks
-      # A tibble: 1 x 3
+      # A tibble: 6 x 3
         child_fk_cols parent_table parent_pk_cols
         <keys>        <chr>        <keys>        
-      1 e, e1         tf_3         f, f1         
+      1 d             tf_1         a             
+      2 e, e1         tf_3         f, f1         
+      3 j, j1         tf_3         f, f1         
+      4 e, e1         tf_3         f, f1         
+      5 l             tf_4         h             
+      6 m             tf_6         n             
       
     Code
       zoomed_grouped_in_dm %>% transmute(g_list = list(g)) %>% dm_insert_zoomed(
-        "new_tbl") %>% get_all_keys("new_tbl")
+        "new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 0 x 2
-      # ... with 2 variables: table <chr>, pk_col <keys>
+      # A tibble: 6 x 2
+        table pk_col
+        <chr> <keys>
+      1 tf_1  a     
+      2 tf_2  c     
+      3 tf_3  f, f1 
+      4 tf_4  h     
+      5 tf_5  k     
+      6 tf_6  o     
       
       $fks
-      # A tibble: 0 x 3
-      # ... with 3 variables: child_fk_cols <keys>, parent_table <chr>,
-      #   parent_pk_cols <keys>
+      # A tibble: 5 x 3
+        child_fk_cols parent_table parent_pk_cols
+        <keys>        <chr>        <keys>        
+      1 d             tf_1         a             
+      2 e, e1         tf_3         f, f1         
+      3 j, j1         tf_3         f, f1         
+      4 l             tf_4         h             
+      5 m             tf_6         n             
       
     Code
       # mutate()
       zoomed_grouped_out_dm %>% mutate(d_mean = mean(d), d = d * 2) %>%
-        dm_insert_zoomed("new_tbl") %>% get_all_keys("new_tbl")
+        dm_insert_zoomed("new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 1 x 2
+      # A tibble: 7 x 2
         table   pk_col
         <chr>   <keys>
-      1 new_tbl c     
+      1 tf_1    a     
+      2 tf_2    c     
+      3 tf_3    f, f1 
+      4 tf_4    h     
+      5 tf_5    k     
+      6 tf_6    o     
+      7 new_tbl c     
       
       $fks
-      # A tibble: 1 x 3
+      # A tibble: 6 x 3
         child_fk_cols parent_table parent_pk_cols
         <keys>        <chr>        <keys>        
-      1 e, e1         tf_3         f, f1         
+      1 d             tf_1         a             
+      2 e, e1         tf_3         f, f1         
+      3 j, j1         tf_3         f, f1         
+      4 e, e1         tf_3         f, f1         
+      5 l             tf_4         h             
+      6 m             tf_6         n             
       
     Code
       zoomed_grouped_in_dm %>% mutate(f = list(g)) %>% dm_insert_zoomed("new_tbl") %>%
-        get_all_keys("new_tbl")
+        get_all_keys()
     Output
       $pks
-      # A tibble: 0 x 2
-      # ... with 2 variables: table <chr>, pk_col <keys>
+      # A tibble: 6 x 2
+        table pk_col
+        <chr> <keys>
+      1 tf_1  a     
+      2 tf_2  c     
+      3 tf_3  f, f1 
+      4 tf_4  h     
+      5 tf_5  k     
+      6 tf_6  o     
       
       $fks
-      # A tibble: 0 x 3
-      # ... with 3 variables: child_fk_cols <keys>, parent_table <chr>,
-      #   parent_pk_cols <keys>
+      # A tibble: 5 x 3
+        child_fk_cols parent_table parent_pk_cols
+        <keys>        <chr>        <keys>        
+      1 d             tf_1         a             
+      2 e, e1         tf_3         f, f1         
+      3 j, j1         tf_3         f, f1         
+      4 l             tf_4         h             
+      5 m             tf_6         n             
       
     Code
       zoomed_grouped_in_dm %>% mutate(g_new = list(g)) %>% dm_insert_zoomed("new_tbl") %>%
-        get_all_keys("new_tbl")
+        get_all_keys()
     Output
       $pks
-      # A tibble: 1 x 2
+      # A tibble: 7 x 2
         table   pk_col
         <chr>   <keys>
-      1 new_tbl f, f1 
+      1 tf_1    a     
+      2 tf_2    c     
+      3 tf_3    f, f1 
+      4 tf_4    h     
+      5 tf_5    k     
+      6 tf_6    o     
+      7 new_tbl f, f1 
       
       $fks
-      # A tibble: 0 x 3
-      # ... with 3 variables: child_fk_cols <keys>, parent_table <chr>,
-      #   parent_pk_cols <keys>
+      # A tibble: 7 x 3
+        child_fk_cols parent_table parent_pk_cols
+        <keys>        <chr>        <keys>        
+      1 d             tf_1         a             
+      2 e, e1         tf_3         f, f1         
+      3 j, j1         tf_3         f, f1         
+      4 l             tf_4         h             
+      5 m             tf_6         n             
+      6 e, e1         new_tbl      f, f1         
+      7 j, j1         new_tbl      f, f1         
       
     Code
       # chain of renames & other transformations
       zoomed_grouped_out_dm %>% summarize(d_mean = mean(d)) %>% ungroup() %>% rename(
         e_new = e) %>% group_by(e_new, e1) %>% transmute(c = paste0(c, "_animal")) %>%
-        dm_insert_zoomed("new_tbl") %>% get_all_keys("new_tbl")
+        dm_insert_zoomed("new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 0 x 2
-      # ... with 2 variables: table <chr>, pk_col <keys>
+      # A tibble: 6 x 2
+        table pk_col
+        <chr> <keys>
+      1 tf_1  a     
+      2 tf_2  c     
+      3 tf_3  f, f1 
+      4 tf_4  h     
+      5 tf_5  k     
+      6 tf_6  o     
       
       $fks
-      # A tibble: 1 x 3
+      # A tibble: 6 x 3
         child_fk_cols parent_table parent_pk_cols
         <keys>        <chr>        <keys>        
-      1 e_new, e1     tf_3         f, f1         
+      1 d             tf_1         a             
+      2 e, e1         tf_3         f, f1         
+      3 j, j1         tf_3         f, f1         
+      4 e_new, e1     tf_3         f, f1         
+      5 l             tf_4         h             
+      6 m             tf_6         n             
       
 
 # output for compound keys

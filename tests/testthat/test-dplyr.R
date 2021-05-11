@@ -412,18 +412,18 @@ test_that("key tracking works", {
     zoomed_grouped_out_dm %>%
       rename(c_new = c) %>%
       dm_update_zoomed() %>%
-      get_all_keys("tf_2")
+      get_all_keys()
 
     zoomed_grouped_out_dm %>%
       rename(e_new = e) %>%
       dm_update_zoomed() %>%
-      get_all_keys("tf_2")
+      get_all_keys()
 
     # FKs should not be dropped when renaming the PK they are pointing to; tibble from `dm_get_all_fks()` shouldn't change
     zoomed_grouped_in_dm %>%
       rename(f_new = f) %>%
       dm_update_zoomed() %>%
-      get_all_keys("tf_3")
+      get_all_keys()
 
     "summarize()"
 
@@ -431,13 +431,13 @@ test_that("key tracking works", {
     zoomed_grouped_out_dm %>%
       summarize(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl")
+      get_all_keys()
 
     # grouped_by non-key col means, that no keys remain
     zoomed_grouped_in_dm %>%
       summarize(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl")
+      get_all_keys()
 
     "transmute()"
 
@@ -445,13 +445,13 @@ test_that("key tracking works", {
     zoomed_grouped_out_dm %>%
       transmute(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl")
+      get_all_keys()
 
     # grouped_by non-key col means, that no keys remain
     zoomed_grouped_in_dm %>%
       transmute(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl")
+      get_all_keys()
 
     "mutate()"
 
@@ -459,19 +459,19 @@ test_that("key tracking works", {
     zoomed_grouped_out_dm %>%
       mutate(d_mean = mean(d), d = d * 2) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl")
+      get_all_keys()
 
     # grouped_by non-key col means, that only key-columns that are not touched remain for mutate()
     zoomed_grouped_in_dm %>%
       mutate(f = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl")
+      get_all_keys()
 
     # grouped_by non-key col means, that only key-columns that are not touched remain for
     zoomed_grouped_in_dm %>%
       mutate(g_new = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl")
+      get_all_keys()
 
     "chain of renames & other transformations"
 
@@ -482,7 +482,7 @@ test_that("key tracking works", {
       group_by(e_new, e1) %>%
       transmute(c = paste0(c, "_animal")) %>%
       dm_insert_zoomed("new_tbl") %>%
-      get_all_keys("new_tbl")
+      get_all_keys()
   })
 })
 
