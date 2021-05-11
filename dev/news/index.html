@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.0.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.0.9001</span>
       </span>
     </div>
 
@@ -185,6 +185,28 @@
       <small>Source: <a href='https://github.com/cynkra/dm/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="dm-0209001" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.0.9001">
+<a href="#dm-0209001" class="anchor" aria-hidden="true"></a>dm 0.2.0.9001<small> Unreleased </small></h1>
+<ul><li>
+<code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code> gains <code>table</code> argument for filtering the returned primary keys (<a href='https://github.com/cynkra/dm/issues/560'>#560</a>).</li>
+<li>
+<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code> gains <code>parent_table</code> argument for filtering the returned foreign keys (<a href='https://github.com/cynkra/dm/issues/560'>#560</a>).</li>
+<li>
+<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code> has been optimized for speed and no longer sorts the keys (<a href='https://github.com/cynkra/dm/issues/560'>#560</a>).</li>
+<li>
+<code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code> gains an optional <code>ref_columns</code> argument. This function now supports removal of multiple foreign keys filtered by parent or child table or columns, with a message (<a href='https://github.com/cynkra/dm/issues/559'>#559</a>).</li>
+<li>
+<code><a href="../reference/dm_rm_pk.html">dm_rm_pk()</a></code> gains <code>columns</code> argument and allows filtering by columns and by tables or removing all primary keys. The <code>rm_referencing_fks</code> argument has been deprecated in favor of the new <code>fail_fk</code> argument (<a href='https://github.com/cynkra/dm/issues/558'>#558</a>).</li>
+<li>
+<code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> gains <code>ref_columns</code> argument that supports creating foreign keys to non-primary keys (<a href='https://github.com/cynkra/dm/issues/402'>#402</a>).</li>
+<li>Add documentation for compound key syntax (<a href='https://github.com/cynkra/dm/issues/555'>#555</a>).</li>
+<li>dm operations are now slightly faster overall.</li>
+<li>The internal data structure for a dm object has changed to accommodate foreign keys to other columns than the primary key. An upgrade message is shown when working with a dm object from an earlier version, e.g. if it was loaded from a cache or an <code>.rds</code> file (<a href='https://github.com/cynkra/dm/issues/402'>#402</a>).</li>
+<li>Dropped <code>"dm_v1"</code> class from dm objects again, this would have made every S3 dispatch more costly. Relying on an internal <code>"version"</code> attribute instead (<a href='https://github.com/cynkra/dm/issues/547'>#547</a>).</li>
+<li>
+<code>*_pk()</code> and <code>*_fk()</code> functions now verify that the dots are actually empty (<a href='https://github.com/cynkra/dm/issues/536'>#536</a>).</li>
+</ul></div>
     <div id="dm-0209000" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.0.9000">
 <a href="#dm-0209000" class="anchor" aria-hidden="true"></a>dm 0.2.0.9000<small> Unreleased </small></h1>
