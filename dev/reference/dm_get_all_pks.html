@@ -195,7 +195,7 @@ returns the tables, the respective primary key columns and their classes." />
 returns the tables, the respective primary key columns and their classes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_get_all_pks</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>dm_get_all_pks</span><span class='op'>(</span><span class='va'>dm</span>, table <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,6 +203,12 @@ returns the tables, the respective primary key columns and their classes.</p>
     <tr>
       <th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>table</th>
+      <td><p>One or more table names, as character vector,
+to return primary key information for.
+The default <code>NULL</code> returns information for all tables.</p></td>
     </tr>
     <tr>
       <th>...</th>

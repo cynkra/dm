@@ -193,7 +193,7 @@
     <p>Get a summary of all foreign key relations in a <code><a href='dm.html'>dm</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_get_all_fks</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>dm_get_all_fks</span><span class='op'>(</span><span class='va'>dm</span>, parent_table <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -201,6 +201,12 @@
     <tr>
       <th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>parent_table</th>
+      <td><p>One or more table names, as character vector,
+to return foreign key information for.
+The default <code>NULL</code> returns information for all tables.</p></td>
     </tr>
     <tr>
       <th>...</th>
