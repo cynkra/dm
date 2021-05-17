@@ -146,7 +146,7 @@ jobs:
           options(crayon.enabled = TRUE)
           error_on <- "note"
           # Begin custom: rcmdcheck error_on
-          if (getRversion() < "3.5") {
+          if (getRversion() < "3.6") {
             # duckdb
             Sys.setenv("_R_CHECK_FORCE_SUGGESTS_" = FALSE)
             error_on <- "warning"
