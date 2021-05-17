@@ -67,8 +67,6 @@ Both functions perform a disambiguation of column names and a cascade of joins."
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -195,9 +193,9 @@ Both functions perform a disambiguation of column names and a cascade of joins."
 Both functions perform a disambiguation of column names and a cascade of joins.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_flatten_to_tbl</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>start</span>, <span class='va'>...</span>, join <span class='op'>=</span> <span class='va'>left_join</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_flatten_to_tbl</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>start</span>, <span class='va'>...</span>, join <span class='op'>=</span> <span class='va'>left_join</span><span class='op'>)</span>
 
-<span class='fu'>dm_squash_to_tbl</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>start</span>, <span class='va'>...</span>, join <span class='op'>=</span> <span class='va'>left_join</span><span class='op'>)</span></pre>
+<span class='fu'>dm_squash_to_tbl</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>start</span>, <span class='va'>...</span>, join <span class='op'>=</span> <span class='va'>left_join</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -267,7 +265,7 @@ each nested column entry would be a tibble of one row), an error will be thrown 
 <code><a href='dm_join_to_tbl.html'>dm_join_to_tbl</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>weather</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>dm_flatten_to_tbl</span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span></span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Renamed columns:</span>
@@ -293,7 +291,7 @@ each nested column entry would be a tibble of one row), an error will be thrown 
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;, planes.year &lt;int&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   speed &lt;int&gt;, engine &lt;chr&gt;</span></span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

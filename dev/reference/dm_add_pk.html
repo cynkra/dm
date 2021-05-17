@@ -70,8 +70,6 @@ set key, without altering foreign keys previously pointing to that primary key."
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -201,7 +199,7 @@ If <code>force == TRUE</code>, the function will replace an already
 set key, without altering foreign keys previously pointing to that primary key.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>columns</span>, <span class='va'>...</span>, check <span class='op'>=</span> <span class='cn'>FALSE</span>, force <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>columns</span>, <span class='va'>...</span>, check <span class='op'>=</span> <span class='cn'>FALSE</span>, force <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -247,7 +245,7 @@ If <code>TRUE</code>, a potential old <code>pk</code> is deleted before setting 
 <code><a href='enum_pk_candidates.html'>enum_pk_candidates</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='va'>nycflights_dm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>nycflights_dm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span></span>
 <span class='r-in'>  planes <span class='op'>=</span> <span class='fu'>nycflights13</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/nycflights13/man/planes.html'>planes</a></span>,</span>
 <span class='r-in'>  airports <span class='op'>=</span> <span class='fu'>nycflights13</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/nycflights13/man/airports.html'>airports</a></span>,</span>
 <span class='r-in'>  weather <span class='op'>=</span> <span class='fu'>nycflights13</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/nycflights13/man/weather.html'>weather</a></span></span>
@@ -349,7 +347,7 @@ If <code>TRUE</code>, a potential old <code>pk</code> is deleted before setting 
 <span class='r-in'>    <span class='fu'>dm_add_pk</span><span class='op'>(</span><span class='va'>planes</span>, <span class='va'>manufacturer</span>, check <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Error : (`manufacturer`) not a unique key of `planes`.</span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -71,8 +71,6 @@ and in addition foreign key constraints are set on MSSQL and Postgres databases.
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -203,7 +201,7 @@ Unless <code>set_key_constraints</code> is <code>FALSE</code>, primary key const
 and in addition foreign key constraints are set on MSSQL and Postgres databases.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>copy_dm_to</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>copy_dm_to</span><span class='op'>(</span>
   <span class='va'>dest</span>,
   <span class='va'>dm</span>,
   <span class='va'>...</span>,
@@ -216,7 +214,7 @@ and in addition foreign key constraints are set on MSSQL and Postgres databases.
   table_names <span class='op'>=</span> <span class='cn'>NULL</span>,
   temporary <span class='op'>=</span> <span class='cn'>TRUE</span>,
   schema <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -304,7 +302,7 @@ The arguments are included in the signature to avoid passing them via the
 <code>...</code> ellipsis.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='va'>con</span> <span class='op'>&lt;-</span> <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span><span class='op'>(</span><span class='fu'>RSQLite</span><span class='fu'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>con</span> <span class='op'>&lt;-</span> <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span><span class='op'>(</span><span class='fu'>RSQLite</span><span class='fu'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Copy to temporary tables, unique table names by default:</span></span>
 <span class='r-in'><span class='va'>temp_dm</span> <span class='op'>&lt;-</span> <span class='fu'>copy_dm_to</span><span class='op'>(</span></span>
@@ -324,7 +322,7 @@ The arguments are included in the signature to avoid passing them via the
 <span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;IDENT&gt; `flights_planes`</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span><span class='op'>(</span><span class='va'>con</span><span class='op'>)</span></span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

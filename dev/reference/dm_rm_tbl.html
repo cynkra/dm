@@ -66,8 +66,6 @@
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -193,7 +191,7 @@
     <p>Removes one or more tables from a <code><a href='dm.html'>dm</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_rm_tbl</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_rm_tbl</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -217,14 +215,14 @@
     <div class='dont-index'><p><code><a href='dm_add_tbl.html'>dm_add_tbl()</a></code>, <code><a href='dm_select_tbl.html'>dm_select_tbl()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>dm_rm_tbl</span><span class='op'>(</span><span class='va'>airports</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Tables: `airlines`, `flights`, `planes`, `weather`</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Columns: 45</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Primary keys: 3</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Foreign keys: 3</span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

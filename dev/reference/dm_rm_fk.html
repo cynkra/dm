@@ -67,8 +67,6 @@ An error is thrown if no matching foreign key is found." />
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -195,14 +193,14 @@ An error is thrown if no matching foreign key is found." />
 An error is thrown if no matching foreign key is found.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_rm_fk</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_rm_fk</span><span class='op'>(</span>
   <span class='va'>dm</span>,
   table <span class='op'>=</span> <span class='cn'>NULL</span>,
   columns <span class='op'>=</span> <span class='cn'>NULL</span>,
   ref_table <span class='op'>=</span> <span class='cn'>NULL</span>,
   ref_columns <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -249,7 +247,7 @@ To refer to a compound key, use <code>c(col1, col2)</code>.</p></td>
 <code><a href='dm_get_all_fks.html'>dm_get_all_fks</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>cycle <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>cycle <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>dm_rm_fk</span><span class='op'>(</span><span class='va'>flights</span>, <span class='va'>dest</span>, <span class='va'>airports</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -343,7 +341,7 @@ To refer to a compound key, use <code>c(col1, col2)</code>.</p></td>
 </g>
 </g>
 </svg>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

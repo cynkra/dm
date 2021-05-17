@@ -72,8 +72,6 @@ columns from the original table, which is now called the 'child table, and adds 
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -205,7 +203,7 @@ Then it removes those
 columns from the original table, which is now called the 'child table, and adds the 'ID column'.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>decompose_table</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>new_id_column</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>decompose_table</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>new_id_column</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -252,7 +250,7 @@ when applied to a table in a dm object.</p>
 <code><a href='reunite_parent_child.html'>reunite_parent_child</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='va'>decomposed_table</span> <span class='op'>&lt;-</span> <span class='fu'>decompose_table</span><span class='op'>(</span><span class='va'>mtcars</span>, <span class='va'>new_id</span>, <span class='va'>am</span>, <span class='va'>gear</span>, <span class='va'>carb</span><span class='op'>)</span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>decomposed_table</span> <span class='op'>&lt;-</span> <span class='fu'>decompose_table</span><span class='op'>(</span><span class='va'>mtcars</span>, <span class='va'>new_id</span>, <span class='va'>am</span>, <span class='va'>gear</span>, <span class='va'>carb</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>decomposed_table</span><span class='op'>$</span><span class='va'>child_table</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     mpg cyl  disp  hp drat    wt  qsec vs new_id</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 1  21.0   6 160.0 110 3.90 2.620 16.46  0      7</span>
@@ -302,7 +300,7 @@ when applied to a table in a dm object.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Ford Pantera L        11  1    5    4</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Ferrari Dino          12  1    5    6</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Maserati Bora         13  1    5    8</span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

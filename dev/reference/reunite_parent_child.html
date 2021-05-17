@@ -74,8 +74,6 @@ of the columns is not retained, and the original row names are lost)." />
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -209,9 +207,9 @@ by the column <code>id_column</code>, <code>id_column</code> is removed.</p>
 of the columns is not retained, and the original row names are lost).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>reunite_parent_child</span><span class='op'>(</span><span class='va'>child_table</span>, <span class='va'>parent_table</span>, <span class='va'>id_column</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>reunite_parent_child</span><span class='op'>(</span><span class='va'>child_table</span>, <span class='va'>parent_table</span>, <span class='va'>id_column</span><span class='op'>)</span>
 
-<span class='fu'>reunite_parent_child_from_list</span><span class='op'>(</span><span class='va'>list_of_parent_child_tables</span>, <span class='va'>id_column</span><span class='op'>)</span></pre>
+<span class='fu'>reunite_parent_child_from_list</span><span class='op'>(</span><span class='va'>list_of_parent_child_tables</span>, <span class='va'>id_column</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -250,7 +248,7 @@ when applied to a table in a dm object.</p>
 <code><a href='decompose_table.html'>decompose_table</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='va'>decomposed_table</span> <span class='op'>&lt;-</span> <span class='fu'><a href='decompose_table.html'>decompose_table</a></span><span class='op'>(</span><span class='va'>mtcars</span>, <span class='va'>new_id</span>, <span class='va'>am</span>, <span class='va'>gear</span>, <span class='va'>carb</span><span class='op'>)</span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>decomposed_table</span> <span class='op'>&lt;-</span> <span class='fu'><a href='decompose_table.html'>decompose_table</a></span><span class='op'>(</span><span class='va'>mtcars</span>, <span class='va'>new_id</span>, <span class='va'>am</span>, <span class='va'>gear</span>, <span class='va'>carb</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>ct</span> <span class='op'>&lt;-</span> <span class='va'>decomposed_table</span><span class='op'>$</span><span class='va'>child_table</span></span>
 <span class='r-in'><span class='va'>pt</span> <span class='op'>&lt;-</span> <span class='va'>decomposed_table</span><span class='op'>$</span><span class='va'>parent_table</span></span>
 <span class='r-in'></span>
@@ -322,7 +320,7 @@ when applied to a table in a dm object.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 30 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 31 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 32 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
