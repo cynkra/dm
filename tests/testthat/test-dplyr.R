@@ -308,7 +308,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
 test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
   skip_if_src("maria")
   # multi-column "by" argument
-  out <- expect_message(
+  out <- expect_message_obj(
     dm_for_disambiguate() %>%
       dm_zoom_to(iris_2) %>%
       left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>%
