@@ -100,13 +100,20 @@ check_pk_constraints <- function(dm) {
     ))
   }
   table_names <- pull(pks, table)
+  columns     <- pull(pks, pk_col)
 
-  tbls <- map(set_names(table_names), ~ tbl_impl(dm, .))
+  pb <- progress::progress_bar$new(
+    format = "  checking pk constraints [:bar] :percent in :elapsed",
+    total = length(table_names), clear = FALSE, width= 60)
+
+  candidates <- map2(set_names(table_names), columns, ~ {
+    pb$tick()
+    tbl <- tbl_impl(dm, .x)
+    enum_pk_candidates_impl(tbl, list(.y))
+  })
 
   tbl_is_pk <-
-    tibble(table = table_names, tbls, column = pks$pk_col) %>%
-    mutate(candidate = map2(tbls, column, ~ enum_pk_candidates_impl(.x, list(.y)))) %>%
-    select(-column, -tbls) %>%
+    tibble(table = table_names, candidate = candidates) %>%
     unnest_df("candidate", tibble(column = new_keys(), candidate = logical(), why = character())) %>%
     rename(is_key = candidate, problem = why)
 
@@ -126,9 +133,17 @@ check_fk_constraints <- function(dm) {
   fks_tibble <-
     mutate(fks, t1 = cts, t2 = pts) %>%
     select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = parent_key_cols)
+
+  pb <- progress::progress_bar$new(
+    format = "  checking fk constraints [:bar] :percent in :elapsed",
+    total = nrow(fks_tibble), clear = FALSE, width= 60)
+
   fks_tibble %>%
     mutate(
-      problem = pmap_chr(fks_tibble, check_fk),
+      problem = pmap_chr(fks_tibble, ~ {
+        pb$tick()
+        check_fk(...)
+      }),
       is_key = (problem == ""),
       kind = "FK"
     ) %>%
