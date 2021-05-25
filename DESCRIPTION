@@ -49,6 +49,7 @@ Imports:
     magrittr,
     memoise,
     methods,
+    progress,
     pillar,
     purrr,
     rlang (>= 0.4.10),
