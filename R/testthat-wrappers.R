@@ -1,7 +1,7 @@
 expect_error_obj <- function(object, regexp = NULL, class = NULL, ...,
-                               info = NULL, label = NULL) {
+                             info = NULL, label = NULL) {
   testthat::expect_error(
-    obj <- rlang::eval_tidy({{object}}),
+    obj <- rlang::eval_tidy({{ object }}),
     regexp = regexp,
     class = class,
     ...,
@@ -14,7 +14,7 @@ expect_error_obj <- function(object, regexp = NULL, class = NULL, ...,
 expect_warning_obj <- function(object, regexp = NULL, class = NULL, ...,
                                info = NULL, label = NULL) {
   testthat::expect_warning(
-    obj <- rlang::eval_tidy({{object}}),
+    obj <- rlang::eval_tidy({{ object }}),
     regexp = regexp,
     class = class,
     ...,
@@ -26,7 +26,7 @@ expect_warning_obj <- function(object, regexp = NULL, class = NULL, ...,
 expect_message_obj <- function(object, regexp = NULL, class = NULL, ...,
                                info = NULL, label = NULL) {
   testthat::expect_message(
-    obj <- rlang::eval_tidy({{object}}),
+    obj <- rlang::eval_tidy({{ object }}),
     regexp = regexp,
     class = class,
     ...,
@@ -36,9 +36,9 @@ expect_message_obj <- function(object, regexp = NULL, class = NULL, ...,
 }
 
 expect_condition_obj <- function(object, regexp = NULL, class = NULL, ...,
-                               info = NULL, label = NULL) {
+                                 info = NULL, label = NULL) {
   testthat::expect_condition(
-    obj <- rlang::eval_tidy({{object}}),
+    obj <- rlang::eval_tidy({{ object }}),
     regexp = regexp,
     class = class,
     ...,
@@ -46,4 +46,3 @@ expect_condition_obj <- function(object, regexp = NULL, class = NULL, ...,
     label = label)
   invisible(obj)
 }
-
