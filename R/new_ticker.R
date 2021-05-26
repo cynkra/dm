@@ -12,7 +12,7 @@ new_ticker <- function(label, n, progress = NA) {
 
   if (!progress) return(identity)
 
-  if (!requireNamespace("progress")) {
+  if (!is_installed("progress")) {
     stop("The 'progress' package must be installed in order to display progress bars.")
   }
 
