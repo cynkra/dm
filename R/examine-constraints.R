@@ -105,7 +105,7 @@ check_pk_constraints <- function(dm, progress = NA) {
   table_names <- pks$table
   columns     <- pks$pk_col
 
-  ticker <- new_ticker("checking pk constraints", length(table_names))
+  ticker <- new_ticker("checking pk constraints", length(table_names), progress = progress)
   candidates <- map2(set_names(table_names), columns, ticker(~ {
     tbl <- tbl_impl(dm, .x)
     enum_pk_candidates_impl(tbl, list(.y))
