@@ -102,8 +102,8 @@ check_pk_constraints <- function(dm, progress = NA) {
       problem = character()
     ))
   }
-  table_names <- pull(pks, table)
-  columns     <- pull(pks, pk_col)
+  table_names <- pks$table
+  columns     <- pks$pk_col
 
   ticker <- new_ticker("checking pk constraints", length(table_names))
   candidates <- map2(set_names(table_names), columns, ticker(~ {
