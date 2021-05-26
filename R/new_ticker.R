@@ -3,9 +3,9 @@ new_ticker <- function(label, n, progress = NA) {
   # message or fail depending on `progress`
 
   if (is.na(progress)) {
-    progress <- interactive()
-    if (progress && !requireNamespace("progress")) {
-      message("The 'progress' package must be installed in order to display progress bars.")
+    progress <- is_interactive()
+    if (progress && !is_installed("progress")) {
+      inform("The 'progress' package must be installed in order to display progress bars.")
       return(identity)
     }
   }
