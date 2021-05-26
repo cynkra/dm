@@ -6,6 +6,9 @@
 #' to print as a regular tibble.
 #'
 #' @inheritParams dm_add_pk
+#' @param progress Whether to display a progress bar, if `NA` (the default)
+#'   hide in non-interactive mode, show in interactive mode. Requires the
+#'   'progress' package.
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
