@@ -234,6 +234,13 @@ In `dup_dm` the table is backed by the table `dup_accounts` in the RDBMS.
 Managing tables in the RDBMS is outside the scope of `dm`.
 If you find you need to remove tables or perform operations directly on the RDBMS, see the {[DBI](https://dbi.r-dbi.org/)} package.
 
+When done, do not forget to disconnect:
+
+``````{r disconnect}
+dbDisconnect(destination_db)
+dbDisconnect(local_db)
+``````
+
 ## Conclusion
 
 `dm` makes it straightforward to deploy your complete relational model to an RDBMS using the `copy_dm_to()` function.

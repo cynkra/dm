@@ -39,13 +39,11 @@
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
 #'
 #' dm_nycflights13() %>% tbl("airports")
-#' dm_nycflights13() %>% src_tbls()
-#' dm_nycflights13() %>% dm_get_src()
+#' dm_nycflights13() %>% names()
 #'
 #' copy_dm_to(
 #'   dbplyr::src_memdb(),
-#'   dm_nycflights13(),
-#'   unique_table_names = TRUE
+#'   dm_nycflights13()
 #' ) %>%
 #'   dm_get_con()
 #'
