@@ -25,18 +25,18 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_constraints()
-dm_examine_constraints <- function(dm) {
+dm_examine_constraints <- function(dm, progress = NA) {
   check_not_zoomed(dm)
   dm %>%
-    dm_examine_constraints_impl() %>%
+    dm_examine_constraints_impl(progress = progress) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns)) %>%
     new_dm_examine_constraints()
 }
 
-dm_examine_constraints_impl <- function(dm) {
-  pk_results <- check_pk_constraints(dm)
-  fk_results <- check_fk_constraints(dm)
+dm_examine_constraints_impl <- function(dm, progress = NA) {
+  pk_results <- check_pk_constraints(dm, progress)
+  fk_results <- check_fk_constraints(dm, progress)
   bind_rows(
     pk_results,
     fk_results
@@ -87,7 +87,7 @@ kind_to_long <- function(kind) {
   if_else(kind == "PK", "primary key", "foreign key")
 }
 
-check_pk_constraints <- function(dm) {
+check_pk_constraints <- function(dm, progress = NA) {
   pks <- dm_get_all_pks_impl(dm)
   if (nrow(pks) == 0) {
     return(tibble(
@@ -122,7 +122,7 @@ check_pk_constraints <- function(dm) {
     left_join(tbl_is_pk, by = c("table", "column"))
 }
 
-check_fk_constraints <- function(dm) {
+check_fk_constraints <- function(dm, progress = NA) {
   fks <- dm_get_all_fks_impl(dm)
   pts <- pull(fks, parent_table) %>% map(tbl_impl, dm = dm)
   cts <- pull(fks, child_table) %>% map(tbl_impl, dm = dm)
