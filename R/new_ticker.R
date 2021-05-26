@@ -2,7 +2,7 @@ new_ticker <- function(label, n, progress = NA) {
   # if progress bar should'nt be shown, return identity
   # message or fail depending on `progress`
 
-  if(is.na(progress)) {
+  if (is.na(progress)) {
     progress <- interactive()
     if (progress && !requireNamespace("progress")) {
       message("The 'progress' package must be installed in order to display progress bars.")
@@ -10,7 +10,7 @@ new_ticker <- function(label, n, progress = NA) {
     }
   }
 
-  if(!progress) return(identity)
+  if (!progress) return(identity)
 
   if (!requireNamespace("progress")) {
     stop("The 'progress' package must be installed in order to display progress bars.")
