@@ -133,7 +133,7 @@ check_fk_constraints <- function(dm, progress = NA) {
     mutate(fks, t1 = cts, t2 = pts) %>%
     select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = parent_key_cols)
 
-  ticker <- new_ticker("checking pk constraints", nrow(fks_tibble))
+  ticker <- new_ticker("checking pk constraints", nrow(fks_tibble), progress = progress)
 
   fks_tibble %>%
     mutate(
