@@ -507,8 +507,11 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     count(!!!t2_vals) %>%
     ungroup()
 
-  # FIXME: Build expression instead of paste() + parse()
-  any_value_na_expr <- parse(text = paste0("is.na(", val_names, ")", collapse = " | "))[[1]]
+  any_value_na_expr <- reduce(
+    syms(val_names[-1]),
+    ~ call("|", .x, call("is.na", .y)),
+    .init = call("is.na", sym(val_names[[1]]))
+  )
 
   res_tbl <- tryCatch(
     t1_join %>%
