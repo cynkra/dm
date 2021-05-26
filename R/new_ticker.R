@@ -1,20 +1,9 @@
 new_ticker <- function(label, n, progress = NA) {
-  # if progress bar should'nt be shown, return identity
-  # message or fail depending on `progress`
-
-  if (is.na(progress)) {
-    progress <- is_interactive()
-    if (progress && !is_installed("progress")) {
-      inform("The 'progress' package must be installed in order to display progress bars.")
-      return(identity)
-    }
-  }
-
-  if (!progress) return(identity)
-
-  if (!is_installed("progress")) {
-    stop("The 'progress' package must be installed in order to display progress bars.")
-  }
+  suggested <- check_suggested(
+    package = "progress",
+    message = "The 'progress' package must be installed in order to display progress bars.",
+    use = progress)
+  if(!suggested) return(identity)
 
   # pb to be updated by reference by output function
   pb <- progress::progress_bar$new(
