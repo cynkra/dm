@@ -248,8 +248,8 @@ Persisting tables are covered in more detail in `vignette("howto-dm-copy")`.
 When done, do not forget to disconnect:
 
 ``````{r disconnect}
-dbDisconnect(destination_db)
-dbDisconnect(my_db)
+DBI::dbDisconnect(destination_db)
+DBI::dbDisconnect(my_db)
 ``````
 
 ## Conclusion
