@@ -91,7 +91,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
 
   loc <- which(!duplicated(ref_table))
   if (length(loc) > 1) {
-    my_ref_table <- ref_table[[ loc[[length(loc)]] ]]
+    my_ref_table <- ref_table[[loc[[length(loc)]]]]
 
     my <- ref_table == my_ref_table
     where_other <- which(!my)
@@ -117,7 +117,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
   existing <- fks$table == table & !is.na(vec_match(fks$column, column))
   if (any(existing)) {
     if (dm_is_strict_keys(dm)) {
-      abort_fk_exists(table[ which(existing)[[1]] ], column[ which(existing)[[1]] ], ref_table)
+      abort_fk_exists(table[which(existing)[[1]]], column[which(existing)[[1]]], ref_table)
     }
 
     return(dm)
@@ -536,7 +536,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   res_tbl$value <- exec(paste0, !!!res_tbl[val_names])
 
   vals_formatted <- commas(
-    glue('{res_tbl$value} ({res_tbl$n})'),
+    glue("{res_tbl$value} ({res_tbl$n})"),
     capped = TRUE
   )
   glue(

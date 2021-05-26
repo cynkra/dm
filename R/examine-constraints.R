@@ -104,7 +104,7 @@ check_pk_constraints <- function(dm) {
 
   pb <- progress::progress_bar$new(
     format = "  checking pk constraints [:bar] :percent in :elapsed",
-    total = length(table_names), clear = FALSE, width= 60)
+    total = length(table_names), clear = FALSE, width = 60)
 
   candidates <- map2(set_names(table_names), columns, ~ {
     pb$tick()
@@ -136,7 +136,7 @@ check_fk_constraints <- function(dm) {
 
   pb <- progress::progress_bar$new(
     format = "  checking fk constraints [:bar] :percent in :elapsed",
-    total = nrow(fks_tibble), clear = FALSE, width= 60)
+    total = nrow(fks_tibble), clear = FALSE, width = 60)
 
   fks_tibble %>%
     mutate(
