@@ -254,7 +254,7 @@ demo_sql$child
 When done, do not forget to disconnect:
 
 ``````{r disconnect}
-dbDisconnect(sqlite_db)
+DBI::dbDisconnect(sqlite_db)
 ``````
 
 ## Conclusion {#conclusion}

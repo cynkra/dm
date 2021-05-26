@@ -237,8 +237,8 @@ If you find you need to remove tables or perform operations directly on the RDBM
 When done, do not forget to disconnect:
 
 ``````{r disconnect}
-dbDisconnect(destination_db)
-dbDisconnect(local_db)
+DBI::dbDisconnect(destination_db)
+DBI::dbDisconnect(local_db)
 ``````
 
 ## Conclusion
