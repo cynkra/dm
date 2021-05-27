@@ -45,7 +45,11 @@ dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
   options <- check_paste_options(options, select, caller_env())
 
   if (!is.null(path)) {
-    stopifnot(rlang::is_installed("brio"))
+    check_suggested(
+      "brio",
+      use = TRUE,
+      message = "brio package needed for this function to work. Please install it."
+    )
   }
 
   code <- dm_paste_impl(dm = dm, options, tab_width = tab_width)
