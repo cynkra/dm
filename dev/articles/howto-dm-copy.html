@@ -385,6 +385,10 @@
 <span class="co">#&gt; &lt;IDENT&gt; `accounts`</span></code></pre></div>
 <p>Note the different table names for <code>dup_dm$accounts</code> and <code>deployed_dm$accounts</code>. For both, the table name is <code>accounts</code> in the dm, but they link to different tables on the database. In <code>dup_dm</code> the table is backed by the table <code>dup_accounts</code> in the RDBMS. <code>dm_deployed$accounts</code> shows us that this table is still backed by the <code>accounts</code> table from the <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> operation we performed in the preceding example.</p>
 <p>Managing tables in the RDBMS is outside the scope of <code>dm</code>. If you find you need to remove tables or perform operations directly on the RDBMS, see the {<a href="https://dbi.r-dbi.org/" class="external-link">DBI</a>} package.</p>
+<p>When done, do not forget to disconnect:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">destination_db</span><span class="op">)</span>
+<span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">local_db</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">

@@ -543,6 +543,9 @@
 #&gt; <span style="color: #555555;"># Database: sqlite 3.35.5 []</span>
 #&gt; <span style="color: #555555;"># … with 3 variables: value &lt;chr&gt;, pk &lt;int&gt;, fk &lt;dbl&gt;</span>
 </code></pre>
+<p>When done, do not forget to disconnect:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">sqlite_db</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">

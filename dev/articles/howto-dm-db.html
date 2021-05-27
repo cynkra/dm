@@ -427,6 +427,10 @@
 </code></pre>
 <p>In the output you can observe that the <code>src</code> for <code>deployed_dm</code> is the SQLite database, while for <code>my_dm_local</code> the source is the local R environment.</p>
 <p>Persisting tables are covered in more detail in <code><a href="../articles/howto-dm-copy.html">vignette("howto-dm-copy")</a></code>.</p>
+<p>When done, do not forget to disconnect:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">destination_db</span><span class="op">)</span>
+<span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">my_db</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">
