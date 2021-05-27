@@ -38,7 +38,7 @@
 #' as_dm(list(trees = trees, mtcars = mtcars))
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
 #'
-#' dm_nycflights13() %>% tbl("airports")
+#' dm_nycflights13()$airports
 #' dm_nycflights13() %>% names()
 #'
 #' copy_dm_to(
