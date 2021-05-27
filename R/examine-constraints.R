@@ -33,13 +33,13 @@ dm_examine_constraints <- function(dm, progress = NA) {
   dm %>%
     dm_examine_constraints_impl(progress = progress) %>%
     rename(columns = column) %>%
-    mutate(columns = new_keys(columns)) %>%
+    mutate(columns = new_keys(columns), repair_plan = NULL) %>%
     new_dm_examine_constraints()
 }
 
-dm_examine_constraints_impl <- function(dm, progress = NA) {
+dm_examine_constraints_impl <- function(dm, progress = NA, fk_repair = "none") {
   pk_results <- check_pk_constraints(dm, progress)
-  fk_results <- check_fk_constraints(dm, progress)
+  fk_results <- check_fk_constraints(dm, progress, fk_repair)
   bind_rows(
     pk_results,
     fk_results
@@ -125,7 +125,7 @@ check_pk_constraints <- function(dm, progress = NA) {
     left_join(tbl_is_pk, by = c("table", "column"))
 }
 
-check_fk_constraints <- function(dm, progress = NA) {
+check_fk_constraints <- function(dm, progress = NA, fk_repair = "none") {
   fks <- dm_get_all_fks_impl(dm)
   pts <- pull(fks, parent_table) %>% map(tbl_impl, dm = dm)
   cts <- pull(fks, child_table) %>% map(tbl_impl, dm = dm)
@@ -135,11 +135,20 @@ check_fk_constraints <- function(dm, progress = NA) {
 
   ticker <- new_ticker("checking pk constraints", nrow(fks_tibble), progress = progress)
 
+  problems <-
+    pmap(fks_tibble, ticker(check_fk), fk_repair = fk_repair) %>%
+    transpose()
+
+  if (!length(problems)) {
+    problems <- list(label = character(), repair_plan = list(NULL))
+  }
+
   fks_tibble %>%
     mutate(
-      problem = pmap_chr(fks_tibble, ticker(check_fk)),
+      problem = as.character(problems$label),
+      repair_plan = problems$repair_plan,
       is_key = (problem == ""),
       kind = "FK"
     ) %>%
-    select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
+    select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem, repair_plan)
 }

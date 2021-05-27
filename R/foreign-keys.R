@@ -484,14 +484,14 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
   tbl_colnames <- colnames(tbl)
   tibble(
     column = tbl_colnames,
-    why = map_chr(column, ~ check_fk(tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_cols))
+    why = map_chr(column, ~ check_fk(tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_cols, fk_repair = "none")$label)
   ) %>%
     mutate(candidate = ifelse(why == "", TRUE, FALSE)) %>%
     select(column, candidate, why) %>%
     arrange(desc(candidate))
 }
 
-check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
+check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = "none") {
   stopifnot(length(colname) == length(pk))
 
   val_names <- paste0("value", seq_along(colname))
@@ -520,34 +520,63 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
       # if value* is NULL, this also counts as a match -- consistent with fk semantics
       filter(!(!!any_value_na_expr)) %>%
       anti_join(t2_join, by = val_names) %>%
-      arrange(desc(n), !!!syms(val_names)) %>%
-      head(MAX_COMMAS + 1L) %>%
-      collect(),
+      arrange(desc(n), !!!syms(val_names)),
     error = identity
   )
 
   # return error message if error occurred (possibly types didn't match etc.)
   if (is_condition(res_tbl)) {
-    return(conditionMessage(res_tbl))
+    return(list(repair_plan = NULL, label = conditionMessage(res_tbl)))
   }
+
+  if(fk_repair == "none") {
+    # since we don't repair, we don't fetch all and leave head() before collect()
+    res_tbl <- res_tbl %>%
+      head(MAX_COMMAS + 1L) %>%
+      collect()
+    res_tbl_short <- res_tbl
+  } else {
+    res_tbl <- res_tbl %>%
+      collect()
+    res_tbl_short <- head(res_tbl, MAX_COMMAS + 1L)
+  }
+  res_tbl <- select(res_tbl, -n)
 
   # return empty character if candidate
   if (nrow(res_tbl) == 0) {
-    return("")
+    return(list(repair_plan = NULL, label = ""))
   }
 
-  res_tbl[val_names] <- map(res_tbl[val_names], format, trim = TRUE, justify = "none")
-  res_tbl[val_names[-1]] <- map(res_tbl[val_names[-1]], ~ paste0(", ", .x))
-  res_tbl$value <- exec(paste0, !!!res_tbl[val_names])
+  if(fk_repair == "none") {
+    repair_plan <- new_repair_plan()
+  } else {
+    # build parent table addendum with problematic values and wrap in named list
+    dm_arg <- res_tbl  %>%
+      set_names(pk) %>%
+      #bind_rows(t2[0,], .) %>%
+      list() %>%
+      set_names(t2_name)
+
+    if(fk_repair == "add") {
+      repair_plan <- new_repair_plan(insert = dm(!!!dm_arg))
+    } else {
+      repair_plan <- new_repair_plan(delete = dm(!!!dm_arg))
+    }
+  }
+
+  res_tbl_short[val_names] <- map(res_tbl_short[val_names], format, trim = TRUE, justify = "none")
+  res_tbl_short[val_names[-1]] <- map(res_tbl_short[val_names[-1]], ~ paste0(", ", .x))
+  res_tbl_short$value <- exec(paste0, !!!res_tbl_short[val_names])
 
   vals_formatted <- commas(
-    glue("{res_tbl$value} ({res_tbl$n})"),
+    glue("{res_tbl_short$value} ({res_tbl_short$n})"),
     capped = TRUE
   )
-  glue(
+  label <- glue(
     "values of ",
     "{commas(tick(glue('{t1_name}${colname}')), Inf)} not in {commas(tick(glue('{t2_name}${pk}')), Inf)}: {vals_formatted}"
   )
+  lst(repair_plan, label)
 }
 
 
