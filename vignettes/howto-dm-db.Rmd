@@ -245,6 +245,13 @@ In the output you can observe that the `src` for `deployed_dm` is the SQLite dat
 Persisting tables are covered in more detail in `vignette("howto-dm-copy")`.
 
 
+When done, do not forget to disconnect:
+
+``````{r disconnect}
+DBI::dbDisconnect(destination_db)
+DBI::dbDisconnect(my_db)
+``````
+
 ## Conclusion
 
 In this tutorial we have demonstrated how simple it is to load a database into a dm object and begin working with it.

@@ -175,6 +175,10 @@ fin_dm_total %>%
 
 For more on constraint checking, including cardinality, finding candidate columns for keys, and normalization, see `vignette("tech-dm-low-level")`.
 
+``````{r disconnect, echo = FALSE, results = "hide"}
+dbDisconnect(fin_db)
+``````
+
 ## Next Steps
 
 Now that you have been introduced to the basic operation of dm, the next step is to learn more about the dm methods that your particular use case requires.
