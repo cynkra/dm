@@ -197,7 +197,7 @@ The printing for this object is special, use <code>as_tibble()</code>
 to print as a regular tibble.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_examine_constraints</span><span class='op'>(</span><span class='va'>dm</span><span class='op'>)</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_examine_constraints</span><span class='op'>(</span><span class='va'>dm</span>, progress <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -205,6 +205,12 @@ to print as a regular tibble.</p>
     <tr>
       <th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>progress</th>
+      <td><p>Whether to display a progress bar, if <code>NA</code> (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.</p></td>
     </tr>
     </table>
 
