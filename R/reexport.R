@@ -1,5 +1,5 @@
 #' @export
-dplyr::`|>`
+dplyr::`%>%`
 
 #' @export
 dplyr::filter
