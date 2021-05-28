@@ -85,7 +85,7 @@ is_unique_key_se <- function(.data, colname) {
   res_tbl$value <- if_else(res_tbl$any_na != 0, NA_character_, exec(paste0, !!!res_tbl[val_names]))
 
   duplicate_rows <-
-    res_tbl |>
+    res_tbl %>%
     {
       # https://github.com/tidyverse/tidyr/issues/734
       tibble(data = list(.))
