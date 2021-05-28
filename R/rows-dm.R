@@ -20,6 +20,7 @@
 #'
 #' @inheritParams ellipsis::dots_empty
 #' @inheritParams dplyr::rows_insert
+#' @inheritParams dm_examine_constraints
 #' @param x Target `dm` object.
 #' @param y `dm` object with new data.
 #'
@@ -113,10 +114,10 @@ NULL
 #' Use `in_place = FALSE` and apply [dm_examine_constraints()] to check beforehand.
 #' @rdname rows-dm
 #' @export
-dm_rows_insert <- function(x, y, ..., in_place = NULL) {
+dm_rows_insert <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_insert, top_down = TRUE, in_place, require_keys = FALSE)
+  dm_rows(x, y, rows_insert, top_down = TRUE, in_place, require_keys = FALSE, progress = progress)
 }
 
 #' dm_rows_update
@@ -126,10 +127,10 @@ dm_rows_insert <- function(x, y, ..., in_place = NULL) {
 #'
 #' @rdname rows-dm
 #' @export
-dm_rows_update <- function(x, y, ..., in_place = NULL) {
+dm_rows_update <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_update, top_down = TRUE, in_place, require_keys = TRUE)
+  dm_rows(x, y, rows_update, top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
 }
 
 #' dm_rows_patch
@@ -140,10 +141,10 @@ dm_rows_update <- function(x, y, ..., in_place = NULL) {
 #'
 #' @rdname rows-dm
 #' @export
-dm_rows_patch <- function(x, y, ..., in_place = NULL) {
+dm_rows_patch <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_patch, top_down = TRUE, in_place, require_keys = TRUE)
+  dm_rows(x, y, rows_patch, top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
 }
 
 #' dm_rows_upsert
@@ -153,10 +154,10 @@ dm_rows_patch <- function(x, y, ..., in_place = NULL) {
 #'
 #' @rdname rows-dm
 #' @export
-dm_rows_upsert <- function(x, y, ..., in_place = NULL) {
+dm_rows_upsert <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_upsert, top_down = TRUE, in_place, require_keys = TRUE)
+  dm_rows(x, y, rows_upsert, top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
 }
 
 #' dm_rows_delete
@@ -167,10 +168,10 @@ dm_rows_upsert <- function(x, y, ..., in_place = NULL) {
 #'
 #' @rdname rows-dm
 #' @export
-dm_rows_delete <- function(x, y, ..., in_place = NULL) {
+dm_rows_delete <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_delete, top_down = FALSE, in_place, require_keys = TRUE)
+  dm_rows(x, y, rows_delete, top_down = FALSE, in_place, require_keys = TRUE, progress = progress)
 }
 
 #' dm_rows_truncate
@@ -181,13 +182,13 @@ dm_rows_delete <- function(x, y, ..., in_place = NULL) {
 #'
 #' @rdname rows-dm
 #' @export
-dm_rows_truncate <- function(x, y, ..., in_place = NULL) {
+dm_rows_truncate <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_truncate, top_down = FALSE, in_place, require_keys = FALSE)
+  dm_rows(x, y, rows_truncate, top_down = FALSE, in_place, require_keys = FALSE, progress = progress)
 }
 
-dm_rows <- function(x, y, operation, top_down, in_place, require_keys) {
+dm_rows <- function(x, y, operation, top_down, in_place, require_keys, progress = NA) {
   dm_rows_check(x, y)
 
   if (is_null(in_place)) {
@@ -195,7 +196,7 @@ dm_rows <- function(x, y, operation, top_down, in_place, require_keys) {
     in_place <- FALSE
   }
 
-  dm_rows_run(x, y, operation, top_down, in_place, require_keys)
+  dm_rows_run(x, y, operation, top_down, in_place, require_keys, progress = progress)
 }
 
 dm_rows_check <- function(x, y) {
@@ -236,7 +237,7 @@ check_keys_compatible <- function(x, y) {
 
 
 
-dm_rows_run <- function(x, y, rows_op, top_down, in_place, require_keys) {
+dm_rows_run <- function(x, y, rows_op, top_down, in_place, require_keys, progress = NA) {
   # topologically sort tables
   graph <- create_graph_from_dm(x, directed = TRUE)
   topo <- igraph::topo_sort(graph, mode = if (top_down) "in" else "out")
@@ -255,10 +256,11 @@ dm_rows_run <- function(x, y, rows_op, top_down, in_place, require_keys) {
 
   # FIXME: Use keyholder?
 
+  ticker <- new_ticker("", length(tables), progress)
   # run operation(target_tbl, source_tbl, in_place = in_place) for each table
   op_results <- pmap(
     list(x = target_tbls, y = tbls, by = keys),
-    rows_op,
+    ticker(rows_op),
     in_place = in_place
   )
 
