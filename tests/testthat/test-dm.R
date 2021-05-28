@@ -43,7 +43,7 @@ test_that("'compute.dm()' computes tables on DB", {
 
   def <-
     dm_for_filter() |>
-    dm_filter(tf_1, a > 3) |>
+    dm_filter(tf_1, a > 3) %>%
     {
       suppress_mssql_message(compute(.))
     } |>
