@@ -61,20 +61,20 @@ test_that("cdm_filter() behaves correctly", {
   local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_tbl(
-    cdm_filter(dm_for_filter_simple(), tf_1, a > 4) %>% dm_apply_filters_to_tbl(tf_2),
-    tf_2_simple() %>% filter(d > 4)
+    cdm_filter(dm_for_filter_simple(), tf_1, a > 4) |> dm_apply_filters_to_tbl(tf_2),
+    tf_2_simple() |> filter(d > 4)
   )
 
   expect_equivalent_tbl(
-    dm_filter(dm_for_filter_simple(), tf_1, a > 4) %>% cdm_apply_filters_to_tbl(tf_2),
-    tf_2_simple() %>% filter(d > 4)
+    dm_filter(dm_for_filter_simple(), tf_1, a > 4) |> cdm_apply_filters_to_tbl(tf_2),
+    tf_2_simple() |> filter(d > 4)
   )
 
   skip_if_remote_src()
   expect_snapshot({
-    dm_for_filter_simple() %>%
-      dm_filter(tf_1, a > 3, a < 8) %>%
-      cdm_apply_filters() %>%
+    dm_for_filter_simple() |>
+      dm_filter(tf_1, a > 3, a < 8) |>
+      cdm_apply_filters() |>
       dm_get_tables()
   })
 })
@@ -175,11 +175,11 @@ test_that("cdm_add_pk() and cdm_add_fk() work", {
   )
 
   expect_equivalent_dm(
-    dm_test_obj() %>%
-      dm_add_pk(dm_table_4, c) %>%
+    dm_test_obj() |>
+      dm_add_pk(dm_table_4, c) |>
       cdm_add_fk(dm_table_1, a, dm_table_4),
-    dm_test_obj() %>%
-      dm_add_pk(dm_table_4, c) %>%
+    dm_test_obj() |>
+      dm_add_pk(dm_table_4, c) |>
       dm_add_fk(dm_table_1, a, dm_table_4)
   )
 })
@@ -198,8 +198,8 @@ test_that("other FK functions work", {
   )
 
   expect_identical(
-    dm_for_filter_simple() %>%
-      cdm_get_all_fks() %>%
+    dm_for_filter_simple() |>
+      cdm_get_all_fks() |>
       mutate(child_fk_cols = new_keys(child_fk_cols), parent_key_cols = new_keys(parent_key_cols)),
     dm_get_all_fks(dm_for_filter_simple())
   )
@@ -211,11 +211,11 @@ test_that("other FK functions work", {
 
   skip_if_remote_src()
   expect_identical(
-    dm_for_filter_simple() %>%
-      cdm_enum_fk_candidates(tf_2, tf_1) %>%
+    dm_for_filter_simple() |>
+      cdm_enum_fk_candidates(tf_2, tf_1) |>
       mutate(why = if_else(why != "", "<reason>", "")),
-    dm_for_filter_simple() %>%
-      dm_enum_fk_candidates(tf_2, tf_1) %>%
+    dm_for_filter_simple() |>
+      dm_enum_fk_candidates(tf_2, tf_1) |>
       mutate(why = if_else(why != "", "<reason>", ""))
   )
 })
@@ -281,10 +281,10 @@ test_that("cdm_paste() works", {
   expect_output(
     cdm_paste(dm_for_filter_simple(), FALSE, 4),
     paste0(
-      "dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%\n    dm::dm_add_pk(tf_1, a) %>%\n    dm::dm_add_pk(tf_2, c) %>%",
-      "\n    dm::dm_add_pk(tf_3, f) %>%\n    dm::dm_add_pk(tf_4, h) %>%\n    dm::dm_add_pk(tf_5, k) %>%\n    ",
-      "dm::dm_add_pk(tf_6, n) %>%\n    dm::dm_add_fk(tf_2, d, tf_1) %>%\n    dm::dm_add_fk(tf_2, e, tf_3) %>%\n    ",
-      "dm::dm_add_fk(tf_4, j, tf_3) %>%\n    dm::dm_add_fk(tf_5, l, tf_4) %>%\n    dm::dm_add_fk(tf_5, m, tf_6)"
+      "dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) |>\n    dm::dm_add_pk(tf_1, a) |>\n    dm::dm_add_pk(tf_2, c) |>",
+      "\n    dm::dm_add_pk(tf_3, f) |>\n    dm::dm_add_pk(tf_4, h) |>\n    dm::dm_add_pk(tf_5, k) |>\n    ",
+      "dm::dm_add_pk(tf_6, n) |>\n    dm::dm_add_fk(tf_2, d, tf_1) |>\n    dm::dm_add_fk(tf_2, e, tf_3) |>\n    ",
+      "dm::dm_add_fk(tf_4, j, tf_3) |>\n    dm::dm_add_fk(tf_5, l, tf_4) |>\n    dm::dm_add_fk(tf_5, m, tf_6)"
     ),
     fixed = TRUE
   )
@@ -305,8 +305,8 @@ test_that("other PK functions work", {
   )
 
   expect_identical(
-    dm_for_filter_simple() %>%
-      cdm_get_all_pks() %>%
+    dm_for_filter_simple() |>
+      cdm_get_all_pks() |>
       mutate(pk_col = new_keys(pk_col)),
     dm_get_all_pks(dm_for_filter_simple())
   )
@@ -317,9 +317,9 @@ test_that("other PK functions work", {
   )
 
   expect_identical(
-    dm_for_disambiguate() %>%
-      cdm_enum_pk_candidates(iris_1) %>%
-      rename(columns = column) %>%
+    dm_for_disambiguate() |>
+      cdm_enum_pk_candidates(iris_1) |>
+      rename(columns = column) |>
       mutate(columns = new_keys(columns)),
     dm_enum_pk_candidates(dm_for_disambiguate(), iris_1)
   )
@@ -345,13 +345,13 @@ test_that("dm_select() and dm_rename() work", {
   local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_tbl(
-    cdm_select(dm_for_filter_simple(), tf_1, a_new = a) %>% tbl_impl("tf_1"),
-    dm_select(dm_for_filter_simple(), tf_1, a_new = a) %>% tbl_impl("tf_1")
+    cdm_select(dm_for_filter_simple(), tf_1, a_new = a) |> tbl_impl("tf_1"),
+    dm_select(dm_for_filter_simple(), tf_1, a_new = a) |> tbl_impl("tf_1")
   )
 
   expect_equivalent_tbl(
-    cdm_rename(dm_for_filter_simple(), tf_1, a_new = a) %>% tbl_impl("tf_1"),
-    dm_rename(dm_for_filter_simple(), tf_1, a_new = a) %>% tbl_impl("tf_1")
+    cdm_rename(dm_for_filter_simple(), tf_1, a_new = a) |> tbl_impl("tf_1"),
+    dm_rename(dm_for_filter_simple(), tf_1, a_new = a) |> tbl_impl("tf_1")
   )
 })
 
@@ -365,18 +365,18 @@ test_that("dm_zoom_to() and related functions work", {
   )
 
   expect_equivalent_dm(
-    dm_zoom_to(dm_for_filter_simple(), tf_1) %>% cdm_insert_zoomed_tbl("another_name"),
-    dm_zoom_to(dm_for_filter_simple(), tf_1) %>% dm_insert_zoomed("another_name")
+    dm_zoom_to(dm_for_filter_simple(), tf_1) |> cdm_insert_zoomed_tbl("another_name"),
+    dm_zoom_to(dm_for_filter_simple(), tf_1) |> dm_insert_zoomed("another_name")
   )
 
   expect_equivalent_dm(
-    dm_zoom_to(dm_for_filter_simple(), tf_1) %>% cdm_update_zoomed_tbl(),
-    dm_zoom_to(dm_for_filter_simple(), tf_1) %>% dm_update_zoomed()
+    dm_zoom_to(dm_for_filter_simple(), tf_1) |> cdm_update_zoomed_tbl(),
+    dm_zoom_to(dm_for_filter_simple(), tf_1) |> dm_update_zoomed()
   )
 
   expect_equivalent_dm(
-    dm_zoom_to(dm_for_filter_simple(), tf_1) %>% cdm_zoom_out(),
-    dm_zoom_to(dm_for_filter_simple(), tf_1) %>% dm_discard_zoomed()
+    dm_zoom_to(dm_for_filter_simple(), tf_1) |> cdm_zoom_out(),
+    dm_zoom_to(dm_for_filter_simple(), tf_1) |> dm_discard_zoomed()
   )
 })
 

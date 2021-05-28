@@ -81,7 +81,7 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
       }
       tbls_req <- intersect(tbls_in_dm, table_names)
 
-      return(dm_learned %>% dm_select_tbl(!!!tbls_req))
+      return(dm_learned |> dm_select_tbl(!!!tbls_req))
     }
   }
 
@@ -93,13 +93,13 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
 
   if (inherits(src_tbl_names, "SQL")) {
     tbls <-
-      src_tbl_names %>%
-      map(dbplyr::ident_q) %>%
+      src_tbl_names |>
+      map(dbplyr::ident_q) |>
       map(possibly(tbl, NULL), src = src)
   } else {
     tbls <-
-      set_names(src_tbl_names) %>%
-      quote_ids(con) %>%
+      set_names(src_tbl_names) |>
+      quote_ids(con) |>
       map(possibly(tbl, NULL), src = src)
   }
 

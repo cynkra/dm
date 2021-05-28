@@ -10,7 +10,7 @@ test_that("`dm_examine_constraints()` works", {
       ref_table = character(),
       is_key = logical(),
       problem = character()
-    ) %>%
+    ) |>
       new_dm_examine_constraints()
   )
 
@@ -26,7 +26,7 @@ test_that("`dm_examine_constraints()` works", {
       ref_table = c(NA, "iris_1"),
       is_key = TRUE,
       problem = ""
-    ) %>%
+    ) |>
       new_dm_examine_constraints()
   )
 })
@@ -35,16 +35,16 @@ test_that("output", {
   skip_if_not_installed("nycflights13")
 
   expect_snapshot({
-    dm() %>% dm_examine_constraints()
+    dm() |> dm_examine_constraints()
 
-    dm_nycflights_small() %>% dm_examine_constraints()
-    dm_nycflights_small_cycle() %>% dm_examine_constraints()
-    dm_nycflights_small_cycle() %>%
-      dm_select_tbl(-flights) %>%
+    dm_nycflights_small() |> dm_examine_constraints()
+    dm_nycflights_small_cycle() |> dm_examine_constraints()
+    dm_nycflights_small_cycle() |>
+      dm_select_tbl(-flights) |>
       dm_examine_constraints()
 
     "n column"
-    dm_for_filter_w_cycle() %>%
+    dm_for_filter_w_cycle() |>
       dm_examine_constraints()
   })
 })
@@ -53,8 +53,8 @@ test_that("output as tibble", {
   skip_if_not_installed("nycflights13")
 
   expect_snapshot({
-    dm_nycflights_small_cycle() %>%
-      dm_examine_constraints() %>%
+    dm_nycflights_small_cycle() |>
+      dm_examine_constraints() |>
       as_tibble()
   })
 })
@@ -67,7 +67,7 @@ test_that("output for compound keys", {
   skip_if_remote_src()
 
   expect_snapshot({
-    bad_dm() %>%
+    bad_dm() |>
       dm_examine_constraints()
   })
 })

@@ -13,20 +13,20 @@
 #' @inheritParams dm_has_fk
 #' @export
 #' @examplesIf dm:::dm_has_financial()
-#' dm_financial() %>%
+#' dm_financial() |>
 #'   dm_ptype()
 #'
-#' dm_financial() %>%
-#'   dm_ptype() %>%
+#' dm_financial() |>
+#'   dm_ptype() |>
 #'   dm_nrow()
 dm_ptype <- function(dm) {
   check_not_zoomed(dm)
 
   # collect() doesn't support n argument for data frames
   # collect() requires n > 0: https://github.com/tidyverse/dbplyr/issues/415
-  dm %>%
-    dm_get_def() %>%
-    mutate(data = map(data, ~ head(.x, 0))) %>%
-    new_dm3() %>%
+  dm |>
+    dm_get_def() |>
+    mutate(data = map(data, ~ head(.x, 0))) |>
+    new_dm3() |>
     collect()
 }

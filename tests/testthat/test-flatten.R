@@ -7,8 +7,8 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
 
   # a one-table-dm
   expect_equivalent_tbl(
-    dm_for_flatten() %>%
-      dm_select_tbl(fact) %>%
+    dm_for_flatten() |>
+      dm_select_tbl(fact) |>
       dm_flatten_to_tbl(fact),
     fact()
   )
@@ -23,7 +23,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
       fact_clean(),
       dim_1_clean(),
       by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
-    ) %>%
+    ) |>
       left_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk"))
   )
 
@@ -36,7 +36,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
     left_join(
       fact_clean(), dim_2_clean(),
       by = c("dim_2_key" = "dim_2_pk")
-    ) %>%
+    ) |>
       left_join(dim_1_clean(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2"))
   )
 
@@ -77,10 +77,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
   ))
   expect_equivalent_tbl(
     out,
-    fact_clean() %>%
-      full_join(dim_1_clean(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
-      full_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) %>%
-      full_join(dim_3_clean(), by = c("dim_3_key" = "dim_3_pk")) %>%
+    fact_clean() |>
+      full_join(dim_1_clean(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) |>
+      full_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) |>
+      full_join(dim_3_clean(), by = c("dim_3_key" = "dim_3_pk")) |>
       full_join(dim_4_clean(), by = c("dim_4_key" = "dim_4_pk"))
   )
 })
@@ -95,7 +95,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'semi_join()'", {
 test_that("`dm_flatten_to_tbl()` does the right things for 'anti_join()'", {
   expect_equivalent_tbl(
     dm_flatten_to_tbl(dm_for_flatten(), fact, join = anti_join),
-    fact() %>% filter(1 == 0)
+    fact() |> filter(1 == 0)
   )
 })
 
@@ -114,10 +114,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
       dm_flatten_to_tbl(dm_for_flatten(), fact, join = right_join),
       "right_join"
     )),
-    fact_clean() %>%
-      right_join(dim_1_clean(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
-      right_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) %>%
-      right_join(dim_3_clean(), by = c("dim_3_key" = "dim_3_pk")) %>%
+    fact_clean() |>
+      right_join(dim_1_clean(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) |>
+      right_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) |>
+      right_join(dim_3_clean(), by = c("dim_3_key" = "dim_3_pk")) |>
       right_join(dim_4_clean(), by = c("dim_4_key" = "dim_4_pk"))
   )
 
@@ -132,7 +132,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
       fact_clean(),
       dim_2_clean(),
       by = c("dim_2_key" = "dim_2_pk")
-    ) %>%
+    ) |>
       right_join(dim_1_clean(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2"))
   )
 })
@@ -142,8 +142,8 @@ test_that("`dm_squash_to_tbl()` does the right things", {
   # left_join:
   expect_equivalent_tbl(
     dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3),
-    tf_5() %>%
-      left_join(tf_4(), by = c("l" = "h")) %>%
+    tf_5() |>
+      left_join(tf_4(), by = c("l" = "h")) |>
       left_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
   )
 
@@ -179,8 +179,8 @@ test_that("`dm_squash_to_tbl()` does the right things", {
   # full_join:
   expect_equivalent_tbl(
     dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = full_join),
-    tf_5() %>%
-      full_join(tf_4(), by = c("l" = "h")) %>%
+    tf_5() |>
+      full_join(tf_4(), by = c("l" = "h")) |>
       full_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
   )
 
@@ -202,20 +202,20 @@ test_that("prepare_dm_for_flatten() works", {
   ))
   expect_equivalent_dm(
     out,
-    dm_select_tbl(dm_for_flatten(), fact, dim_1, dim_3) %>% dm_disambiguate_cols(quiet = TRUE)
+    dm_select_tbl(dm_for_flatten(), fact, dim_1, dim_3) |> dm_disambiguate_cols(quiet = TRUE)
   )
 
   # filtered with rename
   prep_dm <-
-    dm_for_flatten() %>%
-    dm_select_tbl(fact, dim_1, dim_3) %>%
+    dm_for_flatten() |>
+    dm_select_tbl(fact, dim_1, dim_3) |>
     #
-    dm_zoom_to(fact) %>%
-    filter(dim_1_key_1 > 7, dim_1_key_2 > !!LETTERS[7]) %>%
-    dm_update_zoomed() %>%
+    dm_zoom_to(fact) |>
+    filter(dim_1_key_1 > 7, dim_1_key_2 > !!LETTERS[7]) |>
+    dm_update_zoomed() |>
     #
-    dm_zoom_to(dim_1) %>%
-    filter(dim_1_pk_1 > 7, dim_1_pk_2 > !!LETTERS[7]) %>%
+    dm_zoom_to(dim_1) |>
+    filter(dim_1_pk_1 > 7, dim_1_pk_2 > !!LETTERS[7]) |>
     dm_update_zoomed()
 
   prep_dm_renamed <- dm_disambiguate_cols(prep_dm, quiet = TRUE)
@@ -298,8 +298,8 @@ test_that("tests with 'bad_dm' work", {
   # flatten bad_dm() (no referential integrity)
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3),
-    tbl_1() %>%
-      left_join(tbl_2(), by = c("a" = "id", "x")) %>%
+    tbl_1() |>
+      left_join(tbl_2(), by = c("a" = "id", "x")) |>
       left_join(tbl_3(), by = c("b" = "id"))
   )
 
@@ -310,22 +310,22 @@ test_that("tests with 'bad_dm' work", {
 
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1),
-    dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1)
+    dm_apply_filters(bad_filtered_dm) |> dm_flatten_to_tbl(tbl_1)
   )
 
 
   # filtered `dm`
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = semi_join),
-    dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = semi_join)
+    dm_apply_filters(bad_filtered_dm) |> dm_flatten_to_tbl(tbl_1, join = semi_join)
   )
 
   skip_if_not_installed("nycflights13")
 
   # fails when there is a cycle
   expect_dm_error(
-    dm_nycflights_small() %>%
-      dm_add_fk(flights, origin, airports) %>%
+    dm_nycflights_small() |>
+      dm_add_fk(flights, origin, airports) |>
       dm_flatten_to_tbl(flights),
     "no_cycles"
   )
@@ -343,8 +343,8 @@ test_that("tests with 'bad_dm' work (2)", {
   # flatten bad_dm() (no referential integrity)
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, join = full_join),
-    tbl_1() %>%
-      full_join(tbl_2(), by = c("a" = "id", "x")) %>%
+    tbl_1() |>
+      full_join(tbl_2(), by = c("a" = "id", "x")) |>
       full_join(tbl_3(), by = c("b" = "id"))
   )
 
@@ -357,16 +357,16 @@ test_that("tests with 'bad_dm' work (2)", {
   # flatten bad_dm() (no referential integrity)
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, join = right_join),
-    tbl_1() %>%
-      right_join(tbl_2(), by = c("a" = "id", "x")) %>%
+    tbl_1() |>
+      right_join(tbl_2(), by = c("a" = "id", "x")) |>
       right_join(tbl_3(), by = c("b" = "id"))
   )
 
   # flatten bad_dm() (no referential integrity); different order
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_3, tbl_2, join = right_join),
-    tbl_1() %>%
-      right_join(tbl_3(), by = c("b" = "id")) %>%
+    tbl_1() |>
+      right_join(tbl_3(), by = c("b" = "id")) |>
       right_join(tbl_2(), by = c("a" = "id", "x"))
   )
 

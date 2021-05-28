@@ -17,11 +17,11 @@ test_that("`dm_set_colors()` works", {
   skip_if_not_installed("nycflights13")
 
   expect_snapshot({
-    dm_nycflights_small() %>%
+    dm_nycflights_small() |>
       dm_set_colors(
         blue = starts_with("air"),
         green = contains("h")
-      ) %>%
+      ) |>
       dm_get_colors()
   })
 
@@ -29,8 +29,8 @@ test_that("`dm_set_colors()` works", {
 
   # test splicing
   expect_snapshot({
-    dm_nycflights_small() %>%
-      dm_set_colors(!!!colset) %>%
+    dm_nycflights_small() |>
+      dm_set_colors(!!!colset) |>
       dm_get_colors()
   })
 })
@@ -130,37 +130,37 @@ test_that("output", {
 
   # Loose table
   expect_snapshot_diagram(
-    dm_nycflights13(compound = FALSE) %>%
+    dm_nycflights13(compound = FALSE) |>
       dm_draw(),
     "nycflight-dm-loose.svg"
   )
 
   # Default view
   expect_snapshot_diagram(
-    dm_nycflights13() %>%
+    dm_nycflights13() |>
       dm_draw(),
     "nycflight-dm.svg"
   )
 
   # 444: types
   expect_snapshot_diagram(
-    dm_nycflights13() %>%
+    dm_nycflights13() |>
       dm_draw(column_types = TRUE),
     "nycflight-dm-types.svg"
   )
 
   # Multi-fk (#37)
   expect_snapshot_diagram(
-    dm_nycflights13() %>%
-      dm_zoom_to(planes) %>%
-      dm_insert_zoomed("planes_copy") %>%
+    dm_nycflights13() |>
+      dm_zoom_to(planes) |>
+      dm_insert_zoomed("planes_copy") |>
       dm_draw(),
     "nycflight-dm-copy.svg"
   )
 
   # Non-default fk (#402)
   expect_snapshot_diagram(
-    dm_for_filter() %>%
+    dm_for_filter() |>
       dm_draw(),
     "dm-for-filter.svg"
   )

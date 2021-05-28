@@ -11,9 +11,9 @@
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_is_referenced(airports)
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_is_referenced(flights)
 dm_is_referenced <- function(dm, table) {
   check_not_zoomed(dm)
@@ -33,9 +33,9 @@ dm_is_referenced <- function(dm, table) {
 #' @family functions utilizing foreign key relations
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_get_referencing_tables(airports)
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_get_referencing_tables(flights)
 #' @export
 dm_get_referencing_tables <- function(dm, table) {
@@ -49,10 +49,10 @@ dm_get_referencing_tables <- function(dm, table) {
 
 create_graph_from_dm <- function(dm, directed = FALSE) {
   def <- dm_get_def(dm)
-  def %>%
-    select(ref_table = table, fks) %>%
-    unnest_list_of_df("fks") %>%
-    select(table, ref_table) %>%
+  def |>
+    select(ref_table = table, fks) |>
+    unnest_list_of_df("fks") |>
+    select(table, ref_table) |>
     igraph::graph_from_data_frame(directed = directed, vertices = def$table)
 }
 
@@ -60,9 +60,9 @@ get_names_of_connected <- function(g, start, squash) {
   dfs <- igraph::dfs(g, start, unreachable = FALSE, dist = TRUE)
   # `purrr::discard()` in case `list_of_pts` is `NA`
   if (squash) {
-    setdiff(names(dfs[["order"]]), start) %>% discard(is.na)
+    setdiff(names(dfs[["order"]]), start) |> discard(is.na)
   } else {
     # FIXME: Enumerate outgoing edges
-    setdiff(names(dfs[["order"]]), c(start, names(dfs$dist[dfs$dist > 1]))) %>% discard(is.na)
+    setdiff(names(dfs[["order"]]), c(start, names(dfs$dist[dfs$dist > 1]))) |> discard(is.na)
   }
 }

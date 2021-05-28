@@ -26,16 +26,16 @@
 #' when printed, produces the output seen in the viewer as a side effect.
 #'
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_draw()
 #'
-#' dm_nycflights13(cycle = TRUE) %>%
+#' dm_nycflights13(cycle = TRUE) |>
 #'   dm_draw(view_type = "title_only")
 #'
 #' head(dm_get_available_colors())
 #' length(dm_get_available_colors())
 #'
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_get_colors()
 dm_draw <- function(dm,
                     rankdir = "LR",
@@ -101,23 +101,23 @@ dm_get_data_model <- function(x, column_types) {
   )
 
   references_for_columns <-
-    dm_get_all_fks_impl(x) %>%
+    dm_get_all_fks_impl(x) |>
     transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_key_cols))
 
   references <-
-    references_for_columns %>%
+    references_for_columns |>
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
   keys_pk <-
-    dm_get_all_pks_impl(x) %>%
-    mutate(column = format(pk_col)) %>%
-    select(table, column) %>%
+    dm_get_all_pks_impl(x) |>
+    mutate(column = format(pk_col)) |>
+    select(table, column) |>
     mutate(key = 1L)
 
   keys_fk <-
-    dm_get_all_fks_impl(x) %>%
-    mutate(column = format(parent_key_cols)) %>%
-    select(table = parent_table, column) %>%
+    dm_get_all_fks_impl(x) |>
+    mutate(column = format(parent_key_cols)) |>
+    select(table = parent_table, column) |>
     mutate(key_fk = 2L)
 
   if (column_types) {
@@ -127,15 +127,15 @@ dm_get_data_model <- function(x, column_types) {
   }
 
   columns <-
-    types %>%
-    full_join(keys_pk, by = c("table", "column")) %>%
-    full_join(keys_fk, by = c("table", "column")) %>%
-    full_join(references_for_columns, by = c("table", "column")) %>%
+    types |>
+    full_join(keys_pk, by = c("table", "column")) |>
+    full_join(keys_fk, by = c("table", "column")) |>
+    full_join(references_for_columns, by = c("table", "column")) |>
     # Order matters: key == 2 if foreign key points to non-default primary key
-    mutate(key = coalesce(key, key_fk, 0L)) %>%
-    select(-key_fk) %>%
+    mutate(key = coalesce(key, key_fk, 0L)) |>
+    select(-key_fk) |>
     # I don't understand why this is necessary
-    distinct() %>%
+    distinct() |>
     # for compatibility with print method from {datamodelr}
     as.data.frame()
 
@@ -147,26 +147,26 @@ dm_get_data_model <- function(x, column_types) {
 }
 
 dm_get_all_columns <- function(x) {
-  x %>%
-    dm_get_tables_impl() %>%
-    map(colnames) %>%
-    map(~ enframe(., "id", "column")) %>%
-    enframe("table") %>%
-    unnest_df("value", tibble(id = integer(), column = character())) %>%
+  x |>
+    dm_get_tables_impl() |>
+    map(colnames) |>
+    map(~ enframe(., "id", "column")) |>
+    enframe("table") |>
+    unnest_df("value", tibble(id = integer(), column = character())) |>
     select(table, column, id)
 }
 
 dm_get_all_column_types <- function(x) {
-  x %>%
-    dm_get_tables_impl() %>%
+  x |>
+    dm_get_tables_impl() |>
     map(
       ~ mutate(
         enframe(as.list(collect(head(.x, 0))), "column"),
         id = row_number()
       )
-    ) %>%
-    enframe("table") %>%
-    unnest_df("value", tibble(column = character(), value = list(), id = integer())) %>%
+    ) |>
+    enframe("table") |>
+    unnest_df("value", tibble(column = character(), value = list(), id = integer())) |>
     mutate(type = map_chr(value, vec_ptype_abbr), .keep = "unused")
 }
 
@@ -186,21 +186,21 @@ dm_get_all_column_types <- function(x) {
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
-#' dm_nycflights13(color = FALSE) %>%
+#' dm_nycflights13(color = FALSE) |>
 #'   dm_set_colors(
 #'     darkblue = starts_with("air"),
 #'     "#5986C4" = flights
-#'   ) %>%
+#'   ) |>
 #'   dm_draw()
 #'
 #' # Splicing is supported:
 #' nyc_cols <-
-#'   dm_nycflights13() %>%
+#'   dm_nycflights13() |>
 #'   dm_get_colors()
 #' nyc_cols
 #'
-#' dm_nycflights13(color = FALSE) %>%
-#'   dm_set_colors(!!!nyc_cols) %>%
+#' dm_nycflights13(color = FALSE) |>
+#'   dm_set_colors(!!!nyc_cols) |>
 #'   dm_draw()
 dm_set_colors <- function(dm, ...) {
   quos <- enquos(...)
@@ -219,15 +219,15 @@ dm_set_colors <- function(dm, ...) {
   names(selected_tables) <- col_to_hex(names(selected_tables))
 
   display_df <-
-    selected_tables %>%
-    enframe(name = "new_display", value = "table") %>%
+    selected_tables |>
+    enframe(name = "new_display", value = "table") |>
     # needs to be done like this, `distinct()` would keep the first one
     filter(!duplicated(table, fromLast = TRUE))
 
   def <-
-    dm_get_def(dm) %>%
-    left_join(display_df, by = "table") %>%
-    mutate(display = coalesce(new_display, display)) %>%
+    dm_get_def(dm) |>
+    left_join(display_df, by = "table") |>
+    mutate(display = coalesce(new_display, display)) |>
     select(-new_display)
 
   new_dm3(def)
@@ -255,11 +255,11 @@ color_quos_to_display <- function(...) {
 #' @rdname dm_set_colors
 #' @export
 dm_get_colors <- function(dm) {
-  dm %>%
-    dm_get_def() %>%
-    select(table, display) %>%
-    select(display, table) %>%
-    mutate(display = coalesce(display, "default")) %>%
+  dm |>
+    dm_get_def() |>
+    select(table, display) |>
+    select(display, table) |>
+    mutate(display = coalesce(display, "default")) |>
     deframe()
 }
 

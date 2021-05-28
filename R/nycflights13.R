@@ -23,7 +23,7 @@
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_draw()
 dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE) {
   if (subset) {
@@ -42,24 +42,24 @@ dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE, compound
   }
 
   dm <-
-    dm(airlines, airports, flights, planes, weather) %>%
-    dm_add_pk(planes, tailnum) %>%
-    dm_add_pk(airlines, carrier) %>%
-    dm_add_pk(airports, faa) %>%
-    dm_add_fk(flights, tailnum, planes) %>%
-    dm_add_fk(flights, carrier, airlines) %>%
+    dm(airlines, airports, flights, planes, weather) |>
+    dm_add_pk(planes, tailnum) |>
+    dm_add_pk(airlines, carrier) |>
+    dm_add_pk(airports, faa) |>
+    dm_add_fk(flights, tailnum, planes) |>
+    dm_add_fk(flights, carrier, airlines) |>
     dm_add_fk(flights, origin, airports)
 
   if (compound) {
     dm <-
-      dm %>%
-      dm_add_pk(weather, c(origin, time_hour)) %>%
+      dm |>
+      dm_add_pk(weather, c(origin, time_hour)) |>
       dm_add_fk(flights, c(origin, time_hour), weather)
   }
 
   if (color) {
     dm <-
-      dm %>%
+      dm |>
       dm_set_colors(
         "#5B9BD5" = flights,
         "#ED7D31" = c(starts_with("air"), planes),
@@ -69,7 +69,7 @@ dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE, compound
 
   if (cycle) {
     dm <-
-      dm %>%
+      dm |>
       dm_add_fk(flights, dest, airports, check = FALSE)
   }
 

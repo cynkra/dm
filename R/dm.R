@@ -39,17 +39,17 @@
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
 #'
 #' dm_nycflights13()$airports
-#' dm_nycflights13() %>% names()
+#' dm_nycflights13() |> names()
 #'
 #' copy_dm_to(
 #'   dbplyr::src_memdb(),
 #'   dm_nycflights13()
-#' ) %>%
+#' ) |>
 #'   dm_get_con()
 #'
-#' dm_nycflights13() %>% dm_get_tables()
-#' dm_nycflights13() %>% dm_get_filters()
-#' dm_nycflights13() %>% validate_dm()
+#' dm_nycflights13() |> dm_get_tables()
+#' dm_nycflights13() |> dm_get_filters()
+#' dm_nycflights13() |> validate_dm()
 #' is_dm(dm_nycflights13())
 #' dm_nycflights13()["airports"]
 #' dm_nycflights13()[["airports"]]
@@ -115,11 +115,11 @@ new_dm <- function(tables = list()) {
     )
 
   def <-
-    tibble(table, data, segment = NA_character_, display = NA_character_) %>%
-    left_join(pks, by = "table") %>%
-    left_join(fks, by = "table") %>%
-    left_join(filters, by = "table") %>%
-    left_join(zoom, by = "table") %>%
+    tibble(table, data, segment = NA_character_, display = NA_character_) |>
+    left_join(pks, by = "table") |>
+    left_join(fks, by = "table") |>
+    left_join(filters, by = "table") |>
+    left_join(zoom, by = "table") |>
     left_join(col_tracker_zoom, by = "table")
 
   new_dm3(def, validate = FALSE)
@@ -258,8 +258,8 @@ dm_get_filters <- function(x) {
   check_not_zoomed(x)
 
   filter_df <-
-    dm_get_def(x) %>%
-    select(table, filters) %>%
+    dm_get_def(x) |>
+    select(table, filters) |>
     unnest_list_of_df("filters")
 
   # FIXME: Should work better with dplyr 0.9.0
@@ -267,8 +267,8 @@ dm_get_filters <- function(x) {
     filter_df$filter_expr <- list()
   }
 
-  filter_df %>%
-    rename(filter = filter_expr) %>%
+  filter_df |>
+    rename(filter = filter_expr) |>
     mutate(filter = unname(filter))
 }
 
@@ -542,7 +542,7 @@ length.zoomed_dm <- function(x) {
 #' @export
 str.dm <- function(object, ...) { # for both dm and zoomed_dm
   object <-
-    dm_get_def(object, quiet = TRUE) %>%
+    dm_get_def(object, quiet = TRUE) |>
     select(table, pks, fks, filters)
   str(object)
 }
@@ -550,8 +550,8 @@ str.dm <- function(object, ...) { # for both dm and zoomed_dm
 #' @export
 str.zoomed_dm <- function(object, ...) {
   object <-
-    dm_get_def(object, quiet = TRUE) %>%
-    mutate(zoom = if_else(map_lgl(zoom, is_null), NA_character_, table)) %>%
+    dm_get_def(object, quiet = TRUE) |>
+    mutate(zoom = if_else(map_lgl(zoom, is_null), NA_character_, table)) |>
     select(zoom, table, pks, fks, filters)
   str(object)
 }
@@ -587,26 +587,26 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 #' @examplesIf dm:::dm_has_financial()
 #' financial <- dm_financial_sqlite()
 #'
-#' financial %>%
-#'   pull_tbl(districts) %>%
+#' financial |>
+#'   pull_tbl(districts) |>
 #'   dbplyr::remote_name()
 #'
 #' # compute() copies the data to new tables:
-#' financial %>%
-#'   compute() %>%
-#'   pull_tbl(districts) %>%
+#' financial |>
+#'   compute() |>
+#'   pull_tbl(districts) |>
 #'   dbplyr::remote_name()
 #'
 #' # collect() returns a local dm:
-#' financial %>%
-#'   collect() %>%
-#'   pull_tbl(districts) %>%
+#' financial |>
+#'   collect() |>
+#'   pull_tbl(districts) |>
 #'   class()
 compute.dm <- function(x, ...) { # for both dm and zoomed_dm
-  x %>%
-    dm_apply_filters() %>%
-    dm_get_def() %>%
-    mutate(data = map(data, compute, ...)) %>%
+  x |>
+    dm_apply_filters() |>
+    dm_get_def() |>
+    mutate(data = map(data, compute, ...)) |>
     new_dm3()
 }
 
@@ -695,12 +695,12 @@ empty_dm <- function() {
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
 #' # For an unzoomed dm you need to specify the table to pull:
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   pull_tbl(airports)
 #'
 #' # If zoomed, pulling detaches the zoomed table from the dm:
-#' dm_nycflights13() %>%
-#'   dm_zoom_to(airports) %>%
+#' dm_nycflights13() |>
+#'   dm_zoom_to(airports) |>
 #'   pull_tbl()
 #' @export
 pull_tbl <- function(dm, table) {

@@ -3,8 +3,8 @@ expect_identical_graph <- function(g1, g2) {
 }
 
 expect_equivalent_dm <- function(dm1, dm2) {
-  tables1 <- dm_get_tables_impl(dm1) %>% map(collect)
-  tables2 <- dm_get_tables_impl(dm2) %>% map(collect)
+  tables1 <- dm_get_tables_impl(dm1) |> map(collect)
+  tables2 <- dm_get_tables_impl(dm2) |> map(collect)
 
   expect_equivalent_tbl_lists(tables1, tables2)
 
@@ -15,10 +15,10 @@ expect_equivalent_dm <- function(dm1, dm2) {
 expect_equivalent_why <- function(ex1, ex2) {
   if (inherits(my_test_src(), "src_dbi")) {
     ex1 <-
-      ex1 %>%
+      ex1 |>
       mutate(why = (why != ""))
     ex2 <-
-      ex2 %>%
+      ex2 |>
       mutate(why = (why != ""))
   }
 
@@ -46,9 +46,9 @@ arrange_if_no_list <- function(tbl) {
 }
 
 harmonize_tbl <- function(tbl, ...) {
-  tbl %>%
-    collect() %>%
-    mutate(...) %>%
+  tbl |>
+    collect() |>
+    mutate(...) |>
     arrange_if_no_list()
 }
 
@@ -69,8 +69,8 @@ expect_snapshot_diagram <- function(diagram, name) {
   dir <- withr::local_tempdir()
   path <- file.path(dir, name)
 
-  diagram %>%
-    DiagrammeRsvg::export_svg() %>%
+  diagram |>
+    DiagrammeRsvg::export_svg() |>
     writeLines(path)
 
   expect_snapshot_file(path, binary = FALSE)

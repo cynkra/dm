@@ -72,7 +72,7 @@ test_that("'copy_to.dm()' works (2)", {
 
   # throw error if duplicate table names and `repair = check_unique`
   expect_dm_error(
-    dm(mtcars) %>% copy_to(mtcars, repair = "check_unique"),
+    dm(mtcars) |> copy_to(mtcars, repair = "check_unique"),
     "need_unique_names"
   )
 

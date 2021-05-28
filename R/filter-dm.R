@@ -60,20 +60,20 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nyc <- dm_nycflights13()
 #' dm_nyc_filtered <-
-#'   dm_nycflights13() %>%
+#'   dm_nycflights13() |>
 #'   dm_filter(airports, name == "John F Kennedy Intl")
 #'
 #' dm_apply_filters_to_tbl(dm_nyc_filtered, flights)
 #'
-#' dm_nyc_filtered %>%
+#' dm_nyc_filtered |>
 #'   dm_apply_filters()
 #'
 #' # If you want to keep only those rows in the parent tables
 #' # whose primary key values appear as foreign key values in
 #' # `flights`, you can set a `TRUE` filter in `flights`:
-#' dm_nyc %>%
-#'   dm_filter(flights, 1 == 1) %>%
-#'   dm_apply_filters() %>%
+#' dm_nyc |>
+#'   dm_filter(flights, 1 == 1) |>
+#'   dm_apply_filters() |>
 #'   dm_nrow()
 #' # note that in this example, the only affected table is
 #' # `airports` because the departure airports in `flights` are
@@ -81,9 +81,9 @@
 #' @export
 dm_filter <- function(dm, table, ...) {
   check_not_zoomed(dm)
-  dm %>%
-    dm_zoom_to({{ table }}) %>%
-    dm_filter_impl(..., set_filter = TRUE) %>%
+  dm |>
+    dm_zoom_to({{ table }}) |>
+    dm_filter_impl(..., set_filter = TRUE) |>
     dm_update_zoomed()
 }
 
@@ -101,7 +101,7 @@ dm_filter_impl <- function(zoomed_dm, ..., set_filter) {
   # in case of `dm_insert_zoomed()` the filter exprs needs to be transferred
   if (set_filter) {
     zoomed_dm <-
-      zoomed_dm %>%
+      zoomed_dm |>
       set_filter_for_table(orig_name_zoomed(zoomed_dm), map(filter_quos, quo_get_expr), TRUE)
   }
 
@@ -125,8 +125,8 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
 #'
-#' dm_nyc %>%
-#'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
+#' dm_nyc |>
+#'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) |>
 #'   compute()
 #' @export
 dm_apply_filters <- function(dm) {
@@ -164,15 +164,15 @@ dm_get_filtered_table <- function(dm, from) {
   fc <- get_all_filtered_connected(dm, from)
 
   fc_children <-
-    fc %>%
-    filter(node != parent) %>%
-    select(-distance) %>%
-    nest(semi_join = -parent) %>%
+    fc |>
+    filter(node != parent) |>
+    select(-distance) |>
+    nest(semi_join = -parent) |>
     rename(table = parent)
 
   recipe <-
-    fc %>%
-    select(table = node) %>%
+    fc |>
+    select(table = node) |>
     left_join(fc_children, by = "table")
 
   list_of_tables <- dm_get_tables(dm)
@@ -235,7 +235,7 @@ get_all_filtered_connected <- function(dm, table) {
   # Edges of interest, will be grown until source node `table` is reachable
   # from all nodes
   edges <-
-    all_edges %>%
+    all_edges |>
     filter(node %in% !!c(filtered_tables, table))
   # Recursive join
   repeat {
@@ -247,7 +247,7 @@ get_all_filtered_connected <- function(dm, table) {
 
   # Keeping the sentinel row (node == parent) to simplify further processing
   # and testing
-  edges %>%
+  edges |>
     arrange(-distance)
 }
 

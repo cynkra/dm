@@ -33,7 +33,7 @@ test_that("dm_add_tbl() works", {
   # do I avoid the warning when piping the table but setting the name?
   expect_silent(
     expect_equivalent_tbl(
-      dm_for_filter() %>% dm_add_tbl(new_name = data_card_1()) %>% pull_tbl(new_name),
+      dm_for_filter() |> dm_add_tbl(new_name = data_card_1()) |> pull_tbl(new_name),
       data_card_1()
     )
   )
@@ -59,22 +59,22 @@ test_that("dm_add_tbl() works", {
 
   # are in the default case (`repair = 'unique'`) the tables renamed (old table AND new table) according to "unique" default setting
   expect_identical(
-    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), quiet = TRUE) %>% src_tbls_impl(),
+    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), quiet = TRUE) |> src_tbls_impl(),
     c("tf_1...1", "tf_2", "tf_3", "tf_4", "tf_5", "tf_6", "tf_1...7")
   )
 
   expect_name_repair_message(
     expect_equivalent_dm(
       dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "unique"),
-      dm_for_filter() %>%
-        dm_rename_tbl(tf_1...1 = tf_1) %>%
+      dm_for_filter() |>
+        dm_rename_tbl(tf_1...1 = tf_1) |>
         dm_add_tbl(tf_1...7 = data_card_1())
     )
   )
 
   # can I use dm_select_tbl(), selecting among others the new table?
   expect_silent(
-    dm_add_tbl(dm_for_filter(), tf_7_new = tf_7()) %>% dm_select_tbl(tf_1, tf_7_new, everything())
+    dm_add_tbl(dm_for_filter(), tf_7_new = tf_7()) |> dm_select_tbl(tf_1, tf_7_new, everything())
   )
 
   skip_if_not_installed("dbplyr")
@@ -126,27 +126,27 @@ test_that("dm_rm_tbl() works", {
 
 test_that("dm_add_tbl() and dm_rm_tbl() for compound keys", {
   expect_snapshot({
-    dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(options = c("select", "keys"))
-    dm_rm_tbl(dm_for_flatten(), dim_1) %>% dm_paste(options = c("select", "keys"))
-    dm_rm_tbl(dm_for_flatten(), fact) %>% dm_paste(options = c("select", "keys"))
+    dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) |> dm_paste(options = c("select", "keys"))
+    dm_rm_tbl(dm_for_flatten(), dim_1) |> dm_paste(options = c("select", "keys"))
+    dm_rm_tbl(dm_for_flatten(), fact) |> dm_paste(options = c("select", "keys"))
   })
 })
 
 test_that("dm_mutate_tbl() works", {
   expect_equivalent_dm(
-    dm_for_filter_w_cycle() %>%
+    dm_for_filter_w_cycle() |>
       dm_mutate_tbl(
         tf_1 = dm_for_filter_w_cycle()$tf_1,
-        tf_7 = dm_for_filter_w_cycle()$tf_7 %>%
+        tf_7 = dm_for_filter_w_cycle()$tf_7 |>
           filter(0L == 1L)
       ),
-    dm_for_filter_w_cycle() %>%
+    dm_for_filter_w_cycle() |>
       dm_filter(tf_7, 0L == 1L)
   )
 
   # Table doesn't exist yet
   expect_error(
-    dm_for_filter_w_cycle() %>%
+    dm_for_filter_w_cycle() |>
       dm_mutate_tbl(
         tf_99 = dm_for_filter_w_cycle()$tf_7
       )
@@ -154,7 +154,7 @@ test_that("dm_mutate_tbl() works", {
 
   # Wrong column structure
   expect_error(
-    dm_for_filter_w_cycle() %>%
+    dm_for_filter_w_cycle() |>
       dm_mutate_tbl(
         tf_1 = dm_for_filter_w_cycle()$tf_7
       )

@@ -5,10 +5,10 @@
 #' @param ... see corresponding function in package \pkg{dplyr} or \pkg{tidyr}
 #' @name dplyr_table_manipulation
 #' @examplesIf rlang::is_installed("nycflights13")
-#' zoomed <- dm_nycflights13() %>%
-#'   dm_zoom_to(flights) %>%
-#'   group_by(month) %>%
-#'   arrange(desc(day)) %>%
+#' zoomed <- dm_nycflights13() |>
+#'   dm_zoom_to(flights) |>
+#'   group_by(month) |>
+#'   arrange(desc(day)) |>
 #'   summarize(avg_air_time = mean(air_time, na.rm = TRUE))
 #' zoomed
 #' dm_insert_zoomed(zoomed, new_tbl_name = "avg_air_time_per_month")
@@ -22,7 +22,7 @@ filter.dm <- function(.data, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 filter.zoomed_dm <- function(.data, ...) {
-  .data %>%
+  .data |>
     dm_filter_impl(..., set_filter = FALSE)
 }
 
@@ -334,7 +334,7 @@ pull.zoomed_dm <- function(.data, var = -1, ...) {
 #' @export
 compute.zoomed_dm <- function(x, ...) {
   zoomed_df <-
-    tbl_zoomed(x) %>%
+    tbl_zoomed(x) |>
     compute(...)
   replace_zoomed_tbl(x, zoomed_df)
 }
@@ -355,11 +355,11 @@ compute.zoomed_dm <- function(x, ...) {
 #' @param ... see [`dplyr::join`]
 #' @examplesIf rlang::is_installed("nycflights13")
 #' flights_dm <- dm_nycflights13()
-#' dm_zoom_to(flights_dm, flights) %>%
+#' dm_zoom_to(flights_dm, flights) |>
 #'   left_join(airports, select = c(faa, name))
 #'
 #' # this should illustrate that tables don't necessarily need to be connected
-#' dm_zoom_to(flights_dm, airports) %>%
+#' dm_zoom_to(flights_dm, airports) |>
 #'   semi_join(airlines, by = "name")
 NULL
 
@@ -499,16 +499,16 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     explain_col_rename(recipe)
 
     x_renames <-
-      recipe %>%
-      filter(table == x_disambig_name) %>%
+      recipe |>
+      filter(table == x_disambig_name) |>
       pull(renames)
     y_renames <-
-      recipe %>%
-      filter(table == y_disambig_name) %>%
+      recipe |>
+      filter(table == y_disambig_name) |>
       pull(renames)
 
     if (has_length(x_renames)) {
-      x_tbl <- x_tbl %>% rename(!!!x_renames[[1]])
+      x_tbl <- x_tbl |> rename(!!!x_renames[[1]])
       names(by) <- recode(names2(by), !!!prep_recode(x_renames[[1]]))
       names(new_col_names) <- recode(names(new_col_names), !!!prep_recode(x_renames[[1]]))
     }

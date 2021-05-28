@@ -1,7 +1,7 @@
 test_that("can upgrade from v1", {
   if (FALSE) {
     saveRDS(dm_for_filter(), "tests/testthat/dm/v1.rds", version = 2)
-    saveRDS(dm_for_filter() %>% dm_zoom_to(tf_2), "tests/testthat/dm/v1_zoomed.rds", version = 2)
+    saveRDS(dm_for_filter() |> dm_zoom_to(tf_2), "tests/testthat/dm/v1_zoomed.rds", version = 2)
   }
 
   dm_v1 <- readRDS(test_path("dm/v1.rds"))

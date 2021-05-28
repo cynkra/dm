@@ -32,21 +32,21 @@
 #'   weather = nycflights13::weather
 #' )
 #'
-#' nycflights_dm %>%
+#' nycflights_dm |>
 #'   dm_draw()
 #'
 #' # Create foreign keys:
-#' nycflights_dm %>%
-#'   dm_add_pk(planes, tailnum) %>%
-#'   dm_add_fk(flights, tailnum, planes) %>%
-#'   dm_add_pk(weather, c(origin, time_hour)) %>%
-#'   dm_add_fk(flights, c(origin, time_hour), weather) %>%
+#' nycflights_dm |>
+#'   dm_add_pk(planes, tailnum) |>
+#'   dm_add_fk(flights, tailnum, planes) |>
+#'   dm_add_pk(weather, c(origin, time_hour)) |>
+#'   dm_add_fk(flights, c(origin, time_hour), weather) |>
 #'   dm_draw()
 #'
 #' # Keys can be checked during creation:
 #' try(
-#'   nycflights_dm %>%
-#'     dm_add_pk(planes, tailnum) %>%
+#'   nycflights_dm |>
+#'     dm_add_pk(planes, tailnum) |>
 #'     dm_add_fk(flights, tailnum, planes, check = TRUE)
 #' )
 dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ..., check = FALSE) {
@@ -211,7 +211,7 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 #' @family foreign key functions
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_get_all_fks()
 #' @export
 dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
@@ -255,8 +255,8 @@ dm_get_all_fks_impl <- function(dm, parent_table = NULL) {
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
-#' dm_nycflights13(cycle = TRUE) %>%
-#'   dm_rm_fk(flights, dest, airports) %>%
+#' dm_nycflights13(cycle = TRUE) |>
+#'   dm_rm_fk(flights, dest, airports) |>
 #'   dm_draw()
 dm_rm_fk <- function(dm, table = NULL, columns = NULL, ref_table = NULL, ref_columns = NULL, ...) {
   check_dots_empty()
@@ -370,14 +370,14 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
     })
 
     disambiguation <-
-      def_rm %>%
-      select(ref_table = table, fks) %>%
-      unnest(-ref_table) %>%
-      mutate(ref_col_text = if_else(need_ref, glue(", {deparse_keys(ref_column)})"), "")) %>%
-      mutate(text = glue("dm_rm_fk({tick_if_needed(table)}, {deparse_keys(column)}, {tick_if_needed(ref_table)}{ref_col_text})")) %>%
+      def_rm |>
+      select(ref_table = table, fks) |>
+      unnest(-ref_table) |>
+      mutate(ref_col_text = if_else(need_ref, glue(", {deparse_keys(ref_column)})"), "")) |>
+      mutate(text = glue("dm_rm_fk({tick_if_needed(table)}, {deparse_keys(column)}, {tick_if_needed(ref_table)}{ref_col_text})")) |>
       pull()
 
-    message("Removing foreign keys: %>%\n  ", glue_collapse(disambiguation, " %>%\n  "))
+    message("Removing foreign keys: |>\n  ", glue_collapse(disambiguation, " |>\n  "))
   }
 
   # Execute
@@ -427,11 +427,11 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
 #' @family foreign key functions
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_enum_fk_candidates(flights, airports)
 #'
-#' dm_nycflights13() %>%
-#'   dm_zoom_to(flights) %>%
+#' dm_nycflights13() |>
+#'   dm_zoom_to(flights) |>
 #'   enum_fk_candidates(airports)
 #' @export
 dm_enum_fk_candidates <- function(dm, table, ref_table, ...) {
@@ -448,9 +448,9 @@ dm_enum_fk_candidates <- function(dm, table, ref_table, ...) {
   ref_tbl <- tbl_impl(dm, ref_table_name)
   tbl <- tbl_impl(dm, table_name)
 
-  table_name %>%
-    enum_fk_candidates_impl(tbl, ref_table_name, ref_tbl, ref_tbl_pk) %>%
-    rename(columns = column) %>%
+  table_name |>
+    enum_fk_candidates_impl(tbl, ref_table_name, ref_tbl, ref_tbl_pk) |>
+    rename(columns = column) |>
     mutate(columns = new_keys(columns))
 }
 
@@ -470,8 +470,8 @@ enum_fk_candidates <- function(zoomed_dm, ref_table, ...) {
   ref_tbl_pk <- dm_get_pk_impl(zoomed_dm, ref_table_name)
 
   ref_tbl <- dm_get_tables_impl(zoomed_dm)[[ref_table_name]]
-  enum_fk_candidates_impl(table_name, tbl_zoomed(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk) %>%
-    rename(columns = column) %>%
+  enum_fk_candidates_impl(table_name, tbl_zoomed(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk) |>
+    rename(columns = column) |>
     mutate(columns = new_keys(columns))
 }
 
@@ -485,9 +485,9 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
   tibble(
     column = tbl_colnames,
     why = map_chr(column, ~ check_fk(tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_cols))
-  ) %>%
-    mutate(candidate = ifelse(why == "", TRUE, FALSE)) %>%
-    select(column, candidate, why) %>%
+  ) |>
+    mutate(candidate = ifelse(why == "", TRUE, FALSE)) |>
+    select(column, candidate, why) |>
     arrange(desc(candidate))
 }
 
@@ -501,12 +501,12 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   names(t2_vals) <- val_names
 
   t1_join <-
-    t1 %>%
-    count(!!!t1_vals) %>%
+    t1 |>
+    count(!!!t1_vals) |>
     ungroup()
   t2_join <-
-    t2 %>%
-    count(!!!t2_vals) %>%
+    t2 |>
+    count(!!!t2_vals) |>
     ungroup()
 
   any_value_na_expr <- reduce(
@@ -516,12 +516,12 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   )
 
   res_tbl <- tryCatch(
-    t1_join %>%
+    t1_join |>
       # if value* is NULL, this also counts as a match -- consistent with fk semantics
-      filter(!(!!any_value_na_expr)) %>%
-      anti_join(t2_join, by = val_names) %>%
-      arrange(desc(n), !!!syms(val_names)) %>%
-      head(MAX_COMMAS + 1L) %>%
+      filter(!(!!any_value_na_expr)) |>
+      anti_join(t2_join, by = val_names) |>
+      arrange(desc(n), !!!syms(val_names)) |>
+      head(MAX_COMMAS + 1L) |>
       collect(),
     error = identity
   )

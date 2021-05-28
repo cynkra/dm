@@ -53,8 +53,8 @@
 #' @return A single table that results from consecutively joining all affected tables to the `start` table.
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_select_tbl(-weather) %>%
+#' dm_nycflights13() |>
+#'   dm_select_tbl(-weather) |>
 #'   dm_flatten_to_tbl(flights)
 #' @export
 dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
@@ -90,7 +90,7 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # early returns for some of the possible joins would be possible for "perfect" key relations,
   # but since it is generally possible to have imperfect FK relations, `semi_join` and `anti_join` might
   # produce results, that are of interest, e.g.
-  # dm_flatten_to_tbl(dm_nycflights13(cycle = TRUE) %>% dm_rm_fk(flights, origin, airports), flights, airports, join = anti_join)
+  # dm_flatten_to_tbl(dm_nycflights13(cycle = TRUE) |> dm_rm_fk(flights, origin, airports), flights, airports, join = anti_join)
 
   # need to work with directed graph here, since we only want to go in the direction
   # the foreign key is pointing to
@@ -140,8 +140,8 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 
   # list of join partners
   ordered_table_list <-
-    prep_dm %>%
-    dm_get_tables() %>%
+    prep_dm |>
+    dm_get_tables() |>
     extract(order_df$name)
   by <- map2(order_df$pred, order_df$name, ~ get_by(prep_dm, .x, .y))
 
@@ -167,16 +167,16 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_join_to_tbl(airports, flights)
 #'
 #' # same result is achieved with:
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_join_to_tbl(flights, airports)
 #'
 #' # this gives an error, because the tables are not directly linked to each other:
 #' try(
-#'   dm_nycflights13() %>%
+#'   dm_nycflights13() |>
 #'     dm_join_to_tbl(airlines, airports)
 #' )
 dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
@@ -200,7 +200,7 @@ parent_child_table <- function(dm, table_1, table_2) {
   t2_name <- dm_tbl_name(dm, {{ table_2 }})
 
   rel <-
-    dm_get_all_fks(dm) %>%
+    dm_get_all_fks(dm) |>
     filter(
       (child_table == t1_name & parent_table == t2_name) |
         (child_table == t2_name & parent_table == t1_name)
@@ -263,7 +263,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
   # filters need to be empty, for the disambiguation to work
   # renaming will be minimized if we reduce the `dm` to the necessary tables here
   red_dm <-
-    dm_reset_all_filters(dm) %>%
+    dm_reset_all_filters(dm) |>
     dm_select_tbl(!!!tables)
   # Only need to compute `tbl(dm, start)`, `dm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, because of possible filter conditions.
@@ -280,7 +280,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
     # therefore we need a named variable containing the new and old names
     renames <-
       pluck(recipe$renames[recipe$table == start], 1)
-    start_tbl <- start_tbl %>% rename(!!!renames)
+    start_tbl <- start_tbl |> rename(!!!renames)
   } else {
     # for `anti_join()` and `semi_join()` no renaming necessary
     clean_dm <- red_dm

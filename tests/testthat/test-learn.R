@@ -48,7 +48,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 
   # in case there happen to be other tables in schema "dbo" or "public"
   dm_db_learned <-
-    dm_db_learned_all %>%
+    dm_db_learned_all |>
     dm_select_tbl(!!!remote_tbl_names)
 
   expect_equivalent_dm(
@@ -61,17 +61,17 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 
   # for learning from DB without learning the key relations
   dm_for_filter_no_keys <-
-    dm_for_filter()[order_of_deletion] %>%
-    dm_get_def() %>%
+    dm_for_filter()[order_of_deletion] |>
+    dm_get_def() |>
     mutate(
       pks = list_of(new_pk()),
       fks = list_of(new_fk())
-    ) %>%
+    ) |>
     new_dm3()
 
   # in case there happen to be other tables in schema "dbo" or "public"
   dm_db_learned_no_keys <-
-    dm_db_learned_no_keys %>%
+    dm_db_learned_no_keys |>
     dm_select_tbl(!!!remote_tbl_names)
 
   expect_equivalent_dm(
@@ -119,7 +119,7 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
 
   # learning with keys:
   dm_db_learned <-
-    dm_from_src(src_db, schema = schema_name, learn_keys = TRUE) %>%
+    dm_from_src(src_db, schema = schema_name, learn_keys = TRUE) |>
     dm_select_tbl(!!!order_of_deletion)
 
   expect_equivalent_dm(
@@ -129,16 +129,16 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
 
   # learning without keys:
   dm_db_learned_no_keys <-
-    expect_silent(dm_from_src(src_db, schema = schema_name, learn_keys = FALSE)) %>%
+    expect_silent(dm_from_src(src_db, schema = schema_name, learn_keys = FALSE)) |>
     dm_select_tbl(!!!order_of_deletion)
 
   dm_for_disambiguate_no_keys <-
-    dm_for_disambiguate()[order_of_deletion] %>%
-    dm_get_def() %>%
+    dm_for_disambiguate()[order_of_deletion] |>
+    dm_get_def() |>
     mutate(
       pks = list_of(new_pk()),
       fks = list_of(new_fk())
-    ) %>%
+    ) |>
     new_dm3()
 
   expect_equivalent_dm(
@@ -154,9 +154,9 @@ test_that("Learning from SQLite works (#288)?", {
   copy_to(src_sqlite(), tibble(a = 1:3), name = "test")
 
   expect_equivalent_dm(
-    src_sqlite() %>%
-      dm_from_src() %>%
-      dm_select_tbl(test) %>%
+    src_sqlite() |>
+      dm_from_src() |>
+      dm_select_tbl(test) |>
       collect(),
     dm(test = tibble(a = 1:3))
   )
@@ -259,11 +259,11 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
   )
 
   dm_db_learned <- expect_message(dm_from_src(src_db, dbname = "test_database_dm"))
-  dm_learned <- dm_db_learned %>% collect()
+  dm_learned <- dm_db_learned |> collect()
   expect_equivalent_dm(
     dm_learned,
-    dm_local_no_keys %>%
-      dm_add_pk(test_1, b) %>%
+    dm_local_no_keys |>
+      dm_add_pk(test_1, b) |>
       dm_add_fk(test_2, c, test_1)
   )
 
@@ -273,7 +273,7 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
       src_db,
       dbname = "test_database_dm",
       learn_keys = FALSE
-    ) %>%
+    ) |>
       collect()
   )
   expect_equivalent_dm(
@@ -343,11 +343,11 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
   )
 
   dm_db_learned <- expect_message(dm_from_src(src_db, schema = "dm_test", dbname = "test_database_dm"))
-  dm_learned <- dm_db_learned %>% collect()
+  dm_learned <- dm_db_learned |> collect()
   expect_equivalent_dm(
     dm_learned,
-    dm_local_no_keys %>%
-      dm_add_pk(test_1, b) %>%
+    dm_local_no_keys |>
+      dm_add_pk(test_1, b) |>
       dm_add_fk(test_2, c, test_1)
   )
 
@@ -358,7 +358,7 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
       schema = "dm_test",
       dbname = "test_database_dm",
       learn_keys = FALSE
-    ) %>%
+    ) |>
       collect()
   )
   expect_equivalent_dm(

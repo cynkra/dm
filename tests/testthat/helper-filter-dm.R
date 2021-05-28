@@ -3,7 +3,7 @@ expect_pred_chain <- function(fc, chain) {
   expect_true(identical(fc$node, unique(fc$node)))
 
   filtered_fc <-
-    fc %>%
+    fc |>
     filter(node %in% !!chain)
 
   # Beware of https://github.com/r-lib/testthat/issues/929

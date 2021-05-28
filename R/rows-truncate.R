@@ -30,7 +30,7 @@ rows_truncate.tbl_sql <- function(x, ...,
     dbExecute(con, sql, immediate = TRUE)
     invisible(x)
   } else {
-    x %>%
+    x |>
       filter(0L == 1L)
   }
 }

@@ -25,12 +25,12 @@ test_that("table identifiers are quoted", {
   )
 
   dm <-
-    suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE)) %>%
+    suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE)) |>
     dm_select_tbl(!!!remote_tbl_names_copied)
 
   remote_tbl_names_learned <-
-    dm %>%
-    dm_get_tables() %>%
+    dm |>
+    dm_get_tables() |>
     map_chr(dbplyr::remote_name)
 
   con <- dm_get_con(dm)
@@ -65,8 +65,8 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
 
   dm <- suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE))
   remote_names <-
-    dm %>%
-    dm_get_tables() %>%
+    dm |>
+    dm_get_tables() |>
     map_chr(dbplyr::remote_name)
 
   con <- dm_get_con(dm)

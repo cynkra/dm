@@ -35,12 +35,12 @@
 #' # Entire dataset with all dimension tables populated
 #' # with flights and weather data truncated:
 #' flights_init <-
-#'   dm_nycflights13() %>%
-#'   dm_zoom_to(flights) %>%
-#'   filter(FALSE) %>%
-#'   dm_update_zoomed() %>%
-#'   dm_zoom_to(weather) %>%
-#'   filter(FALSE) %>%
+#'   dm_nycflights13() |>
+#'   dm_zoom_to(flights) |>
+#'   filter(FALSE) |>
+#'   dm_update_zoomed() |>
+#'   dm_zoom_to(weather) |>
+#'   filter(FALSE) |>
 #'   dm_update_zoomed()
 #'
 #' # Target database:
@@ -49,13 +49,13 @@
 #'
 #' # First update:
 #' flights_jan <-
-#'   dm_nycflights13() %>%
-#'   dm_select_tbl(flights, weather) %>%
-#'   dm_zoom_to(flights) %>%
-#'   filter(month == 1) %>%
-#'   dm_update_zoomed() %>%
-#'   dm_zoom_to(weather) %>%
-#'   filter(month == 1) %>%
+#'   dm_nycflights13() |>
+#'   dm_select_tbl(flights, weather) |>
+#'   dm_zoom_to(flights) |>
+#'   filter(month == 1) |>
+#'   dm_update_zoomed() |>
+#'   dm_zoom_to(weather) |>
+#'   filter(month == 1) |>
 #'   dm_update_zoomed()
 #' print(dm_nrow(flights_jan))
 #'
@@ -72,13 +72,13 @@
 #'
 #' # Second update:
 #' flights_feb <-
-#'   dm_nycflights13() %>%
-#'   dm_select_tbl(flights, weather) %>%
-#'   dm_zoom_to(flights) %>%
-#'   filter(month == 2) %>%
-#'   dm_update_zoomed() %>%
-#'   dm_zoom_to(weather) %>%
-#'   filter(month == 2) %>%
+#'   dm_nycflights13() |>
+#'   dm_select_tbl(flights, weather) |>
+#'   dm_zoom_to(flights) |>
+#'   filter(month == 2) |>
+#'   dm_update_zoomed() |>
+#'   dm_zoom_to(weather) |>
+#'   filter(month == 2) |>
 #'   dm_update_zoomed()
 #'
 #' # Copy to temporary tables on the target database:
@@ -94,7 +94,7 @@
 #' print(dm_nrow(flights_sqlite))
 #'
 #' # Check for consistency before applying:
-#' flights_new %>%
+#' flights_new |>
 #'   dm_examine_constraints()
 #'
 #' # Apply:
@@ -266,7 +266,7 @@ dm_rows_run <- function(x, y, rows_op, top_down, in_place, require_keys) {
     out <- x
   } else {
     out <-
-      x %>%
+      x |>
       dm_patch_tbl(!!!op_results)
   }
 

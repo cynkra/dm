@@ -1,7 +1,7 @@
 # dm_rename() works for replacing pk
 
     Code
-      dm_for_filter() %>% dm_rename(tf_3, new_f = f) %>% dm_get_all_pks_impl()
+      dm_for_filter() |> dm_rename(tf_3, new_f = f) |> dm_get_all_pks_impl()
     Output
       # A tibble: 6 x 2
         table pk_col   
@@ -16,7 +16,7 @@
 # dm_rename() works for replacing fks
 
     Code
-      dm_for_filter() %>% dm_rename(tf_2, new_d = d, new_e = e) %>%
+      dm_for_filter() |> dm_rename(tf_2, new_d = d, new_e = e) |>
         dm_get_all_fks_impl()
     Output
       # A tibble: 5 x 4
@@ -31,7 +31,7 @@
 # dm_select() works for replacing pk
 
     Code
-      dm_for_filter() %>% dm_select(tf_3, new_f = f) %>% dm_get_all_pks_impl()
+      dm_for_filter() |> dm_select(tf_3, new_f = f) |> dm_get_all_pks_impl()
     Output
       # A tibble: 5 x 2
         table pk_col
@@ -45,7 +45,7 @@
 # dm_select() works for replacing fks, and removes missing ones
 
     Code
-      dm_for_filter() %>% dm_select(tf_2, new_d = d) %>% dm_get_all_fks_impl()
+      dm_for_filter() |> dm_select(tf_2, new_d = d) |> dm_get_all_fks_impl()
     Output
       # A tibble: 4 x 4
         child_table child_fk_cols parent_table parent_key_cols
@@ -58,69 +58,69 @@
 # output for compound keys
 
     Code
-      dm_select(dm_for_flatten(), fact, dim_1_key_1, dim_1_key_2) %>% dm_paste(
+      dm_select(dm_for_flatten(), fact, dim_1_key_1, dim_1_key_2) |> dm_paste(
         options = c("select", "keys"))
     Message <cliMessage>
-      dm::dm(fact, dim_1, dim_2, dim_3, dim_4) %>%
-        dm::dm_select(fact, dim_1_key_1, dim_1_key_2) %>%
-        dm::dm_select(dim_1, dim_1_pk_1, dim_1_pk_2, something) %>%
-        dm::dm_select(dim_2, dim_2_pk, something) %>%
-        dm::dm_select(dim_3, dim_3_pk, something) %>%
-        dm::dm_select(dim_4, dim_4_pk, something) %>%
-        dm::dm_add_pk(dim_1, c(dim_1_pk_1, dim_1_pk_2)) %>%
-        dm::dm_add_pk(dim_2, dim_2_pk) %>%
-        dm::dm_add_pk(dim_3, dim_3_pk) %>%
-        dm::dm_add_pk(dim_4, dim_4_pk) %>%
+      dm::dm(fact, dim_1, dim_2, dim_3, dim_4) |>
+        dm::dm_select(fact, dim_1_key_1, dim_1_key_2) |>
+        dm::dm_select(dim_1, dim_1_pk_1, dim_1_pk_2, something) |>
+        dm::dm_select(dim_2, dim_2_pk, something) |>
+        dm::dm_select(dim_3, dim_3_pk, something) |>
+        dm::dm_select(dim_4, dim_4_pk, something) |>
+        dm::dm_add_pk(dim_1, c(dim_1_pk_1, dim_1_pk_2)) |>
+        dm::dm_add_pk(dim_2, dim_2_pk) |>
+        dm::dm_add_pk(dim_3, dim_3_pk) |>
+        dm::dm_add_pk(dim_4, dim_4_pk) |>
         dm::dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1)
     Code
-      dm_select(dm_for_flatten(), dim_1, dim_1_pk_1, dim_1_pk_2) %>% dm_paste(
+      dm_select(dm_for_flatten(), dim_1, dim_1_pk_1, dim_1_pk_2) |> dm_paste(
         options = c("select", "keys"))
     Message <cliMessage>
-      dm::dm(fact, dim_1, dim_2, dim_3, dim_4) %>%
-        dm::dm_select(fact, fact, dim_1_key_1, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) %>%
-        dm::dm_select(dim_1, dim_1_pk_1, dim_1_pk_2) %>%
-        dm::dm_select(dim_2, dim_2_pk, something) %>%
-        dm::dm_select(dim_3, dim_3_pk, something) %>%
-        dm::dm_select(dim_4, dim_4_pk, something) %>%
-        dm::dm_add_pk(dim_1, c(dim_1_pk_1, dim_1_pk_2)) %>%
-        dm::dm_add_pk(dim_2, dim_2_pk) %>%
-        dm::dm_add_pk(dim_3, dim_3_pk) %>%
-        dm::dm_add_pk(dim_4, dim_4_pk) %>%
-        dm::dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1) %>%
-        dm::dm_add_fk(fact, dim_2_key, dim_2) %>%
-        dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
+      dm::dm(fact, dim_1, dim_2, dim_3, dim_4) |>
+        dm::dm_select(fact, fact, dim_1_key_1, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) |>
+        dm::dm_select(dim_1, dim_1_pk_1, dim_1_pk_2) |>
+        dm::dm_select(dim_2, dim_2_pk, something) |>
+        dm::dm_select(dim_3, dim_3_pk, something) |>
+        dm::dm_select(dim_4, dim_4_pk, something) |>
+        dm::dm_add_pk(dim_1, c(dim_1_pk_1, dim_1_pk_2)) |>
+        dm::dm_add_pk(dim_2, dim_2_pk) |>
+        dm::dm_add_pk(dim_3, dim_3_pk) |>
+        dm::dm_add_pk(dim_4, dim_4_pk) |>
+        dm::dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1) |>
+        dm::dm_add_fk(fact, dim_2_key, dim_2) |>
+        dm::dm_add_fk(fact, dim_3_key, dim_3) |>
         dm::dm_add_fk(fact, dim_4_key, dim_4)
     Code
-      dm_select(dm_for_flatten(), fact, -dim_1_key_1) %>% dm_paste(options = c(
+      dm_select(dm_for_flatten(), fact, -dim_1_key_1) |> dm_paste(options = c(
         "select", "keys"))
     Message <cliMessage>
-      dm::dm(fact, dim_1, dim_2, dim_3, dim_4) %>%
-        dm::dm_select(fact, fact, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) %>%
-        dm::dm_select(dim_1, dim_1_pk_1, dim_1_pk_2, something) %>%
-        dm::dm_select(dim_2, dim_2_pk, something) %>%
-        dm::dm_select(dim_3, dim_3_pk, something) %>%
-        dm::dm_select(dim_4, dim_4_pk, something) %>%
-        dm::dm_add_pk(dim_1, c(dim_1_pk_1, dim_1_pk_2)) %>%
-        dm::dm_add_pk(dim_2, dim_2_pk) %>%
-        dm::dm_add_pk(dim_3, dim_3_pk) %>%
-        dm::dm_add_pk(dim_4, dim_4_pk) %>%
-        dm::dm_add_fk(fact, dim_2_key, dim_2) %>%
-        dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
+      dm::dm(fact, dim_1, dim_2, dim_3, dim_4) |>
+        dm::dm_select(fact, fact, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) |>
+        dm::dm_select(dim_1, dim_1_pk_1, dim_1_pk_2, something) |>
+        dm::dm_select(dim_2, dim_2_pk, something) |>
+        dm::dm_select(dim_3, dim_3_pk, something) |>
+        dm::dm_select(dim_4, dim_4_pk, something) |>
+        dm::dm_add_pk(dim_1, c(dim_1_pk_1, dim_1_pk_2)) |>
+        dm::dm_add_pk(dim_2, dim_2_pk) |>
+        dm::dm_add_pk(dim_3, dim_3_pk) |>
+        dm::dm_add_pk(dim_4, dim_4_pk) |>
+        dm::dm_add_fk(fact, dim_2_key, dim_2) |>
+        dm::dm_add_fk(fact, dim_3_key, dim_3) |>
         dm::dm_add_fk(fact, dim_4_key, dim_4)
     Code
-      dm_select(dm_for_flatten(), dim_1, -dim_1_pk_1) %>% dm_paste(options = c(
+      dm_select(dm_for_flatten(), dim_1, -dim_1_pk_1) |> dm_paste(options = c(
         "select", "keys"))
     Message <cliMessage>
-      dm::dm(fact, dim_1, dim_2, dim_3, dim_4) %>%
-        dm::dm_select(fact, fact, dim_1_key_1, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) %>%
-        dm::dm_select(dim_1, dim_1_pk_2, something) %>%
-        dm::dm_select(dim_2, dim_2_pk, something) %>%
-        dm::dm_select(dim_3, dim_3_pk, something) %>%
-        dm::dm_select(dim_4, dim_4_pk, something) %>%
-        dm::dm_add_pk(dim_2, dim_2_pk) %>%
-        dm::dm_add_pk(dim_3, dim_3_pk) %>%
-        dm::dm_add_pk(dim_4, dim_4_pk) %>%
-        dm::dm_add_fk(fact, dim_2_key, dim_2) %>%
-        dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
+      dm::dm(fact, dim_1, dim_2, dim_3, dim_4) |>
+        dm::dm_select(fact, fact, dim_1_key_1, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) |>
+        dm::dm_select(dim_1, dim_1_pk_2, something) |>
+        dm::dm_select(dim_2, dim_2_pk, something) |>
+        dm::dm_select(dim_3, dim_3_pk, something) |>
+        dm::dm_select(dim_4, dim_4_pk, something) |>
+        dm::dm_add_pk(dim_2, dim_2_pk) |>
+        dm::dm_add_pk(dim_3, dim_3_pk) |>
+        dm::dm_add_pk(dim_4, dim_4_pk) |>
+        dm::dm_add_fk(fact, dim_2_key, dim_2) |>
+        dm::dm_add_fk(fact, dim_3_key, dim_3) |>
         dm::dm_add_fk(fact, dim_4_key, dim_4)
 

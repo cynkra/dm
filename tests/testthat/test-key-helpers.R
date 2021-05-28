@@ -36,8 +36,8 @@ test_that("check_key() checks primary key properly?", {
 
   skip("Need to think about it")
   expect_silent(
-    dm_nycflights_small() %>%
-      dm_zoom_to(airlines) %>%
+    dm_nycflights_small() |>
+      dm_zoom_to(airlines) |>
       check_key(carrier)
   )
 })

@@ -1,7 +1,7 @@
 # print() and format() methods for subclass `zoomed_dm` work
 
     Code
-      dm_for_filter() %>% dm_zoom_to(tf_5) %>% as_zoomed_df() %>% tbl_sum()
+      dm_for_filter() |> dm_zoom_to(tf_5) |> as_zoomed_df() |> tbl_sum()
     Output
       Zoomed table 
             "tf_5" 
@@ -9,7 +9,7 @@
 ---
 
     Code
-      dm_for_filter() %>% dm_zoom_to(tf_2) %>% as_zoomed_df() %>% tbl_sum()
+      dm_for_filter() |> dm_zoom_to(tf_2) |> as_zoomed_df() |> tbl_sum()
     Output
       Zoomed table 
             "tf_2" 
@@ -17,7 +17,7 @@
 # zoom output for compound keys
 
     Code
-      nyc_comp() %>% dm_zoom_to(weather)
+      nyc_comp() |> dm_zoom_to(weather)
     Output
       # Zoomed table: weather
       # A tibble:     144 x 15
@@ -36,7 +36,7 @@
       # ... with 134 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
       #   pressure <dbl>, visib <dbl>, time_hour <dttm>
     Code
-      nyc_comp() %>% dm_zoom_to(weather) %>% dm_update_zoomed()
+      nyc_comp() |> dm_zoom_to(weather) |> dm_update_zoomed()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -44,9 +44,9 @@
       Primary keys: 4
       Foreign keys: 4
     Code
-      nyc_comp_2 <- nyc_comp() %>% dm_zoom_to(weather) %>% dm_insert_zoomed(
+      nyc_comp_2 <- nyc_comp() |> dm_zoom_to(weather) |> dm_insert_zoomed(
         "weather_2")
-      nyc_comp_2 %>% get_all_keys()
+      nyc_comp_2 |> get_all_keys()
     Output
       $pks
       # A tibble: 5 x 2
@@ -74,9 +74,9 @@
       [1] "airlines|flights"  "airports|flights"  "flights|planes"   
       [4] "flights|weather"   "flights|weather_2"
     Code
-      nyc_comp_3 <- nyc_comp() %>% dm_zoom_to(flights) %>% dm_insert_zoomed(
+      nyc_comp_3 <- nyc_comp() |> dm_zoom_to(flights) |> dm_insert_zoomed(
         "flights_2")
-      nyc_comp_3 %>% get_all_keys()
+      nyc_comp_3 |> get_all_keys()
     Output
       $pks
       # A tibble: 4 x 2

@@ -14,11 +14,11 @@
 #' @inheritParams vctrs::vec_as_names
 #'
 #' @examples
-#' dm() %>%
+#' dm() |>
 #'   dm_add_tbl(mtcars, flowers = iris)
 #'
 #' # renaming table names if necessary (depending on the `repair` argument)
-#' dm() %>%
+#' dm() |>
 #'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 #' @export
 dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
@@ -86,7 +86,7 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_rm_tbl(airports)
 dm_rm_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
@@ -122,7 +122,7 @@ check_new_tbls <- function(dm, tbls) {
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_mutate_tbl(flights = nycflights13::flights[1:3, ])
 dm_mutate_tbl <- function(dm, ...) {
   check_not_zoomed(dm)

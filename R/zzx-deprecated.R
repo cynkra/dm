@@ -193,9 +193,9 @@ cdm_get_available_colors <- function() {
 #' @export
 cdm_filter <- function(dm, table, ...) {
   deprecate_soft("0.1.0", "dm::cdm_filter()", "dm::dm_filter()")
-  dm %>%
-    dm_zoom_to({{ table }}) %>%
-    dm_filter_impl(..., set_filter = TRUE) %>%
+  dm |>
+    dm_zoom_to({{ table }}) |>
+    dm_filter_impl(..., set_filter = TRUE) |>
     dm_update_zoomed()
 }
 
@@ -311,9 +311,9 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' @export
 cdm_get_all_fks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_fks()", "dm::dm_get_all_fks()")
-  dm %>%
-    dm_get_all_fks_impl() %>%
-    mutate(child_fk_cols = as.character(unclass(child_fk_cols))) %>%
+  dm |>
+    dm_get_all_fks_impl() |>
+    mutate(child_fk_cols = as.character(unclass(child_fk_cols))) |>
     mutate(parent_key_cols = as.character(unclass(parent_key_cols)))
 }
 
@@ -361,8 +361,8 @@ cdm_enum_fk_candidates <- function(dm, table, ref_table) {
   enum_fk_candidates_impl(
     table_name, tbl, ref_table_name,
     ref_tbl, ref_tbl_pk
-  ) %>%
-    rename(columns = column) %>%
+  ) |>
+    rename(columns = column) |>
     mutate(columns = new_keys(columns))
 }
 
@@ -458,8 +458,8 @@ cdm_get_pk <- function(dm, table) {
 #' @export
 cdm_get_all_pks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_pks()", "dm::dm_get_all_pks()")
-  dm %>%
-    dm_get_all_pks_impl() %>%
+  dm |>
+    dm_get_all_pks_impl() |>
     mutate(pk_col = as.character(unclass(pk_col)))
 }
 
@@ -517,9 +517,9 @@ cdm_select <- function(dm, table, ...) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
-  dm %>%
-    dm_zoom_to(!!table_name) %>%
-    select(...) %>%
+  dm |>
+    dm_zoom_to(!!table_name) |>
+    select(...) |>
     dm_update_zoomed()
 }
 
@@ -531,9 +531,9 @@ cdm_rename <- function(dm, table, ...) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
-  dm %>%
-    dm_zoom_to(!!table_name) %>%
-    rename(...) %>%
+  dm |>
+    dm_zoom_to(!!table_name) |>
+    rename(...) |>
     dm_update_zoomed()
 }
 
@@ -546,12 +546,12 @@ cdm_zoom_to_tbl <- function(dm, table) {
   zoom <- dm_tbl_name(dm, {{ table }})
 
   cols <- list(get_all_cols(dm, zoom))
-  dm %>%
-    dm_get_def() %>%
+  dm |>
+    dm_get_def() |>
     mutate(
       zoom = if_else(table == !!zoom, data, list(NULL)),
       col_tracker_zoom = if_else(table == !!zoom, cols, list(NULL))
-    ) %>%
+    ) |>
     new_dm3(zoomed = TRUE)
 }
 
@@ -580,26 +580,26 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   old_tbl_name <- orig_name_zoomed(dm)
   new_tbl <- list(tbl_zoomed(dm))
   all_filters <- filters_zoomed(dm)
-  old_filters <- all_filters %>% filter(!zoomed)
+  old_filters <- all_filters |> filter(!zoomed)
   new_filters <-
-    all_filters %>%
-    filter(zoomed) %>%
+    all_filters |>
+    filter(zoomed) |>
     mutate(zoomed = FALSE)
   upd_pk <- list_of(update_zoomed_pk(dm))
   upd_inc_fks <- list_of(update_zoomed_incoming_fks(dm))
   dm_wo_outgoing_fks <-
-    dm %>%
-    update_filter(old_tbl_name, list_of(old_filters)) %>%
-    dm_add_tbl_impl(new_tbl, new_tbl_name_chr, list_of(new_filters)) %>%
-    dm_get_def() %>%
+    dm |>
+    update_filter(old_tbl_name, list_of(old_filters)) |>
+    dm_add_tbl_impl(new_tbl, new_tbl_name_chr, list_of(new_filters)) |>
+    dm_get_def() |>
     mutate(
       pks = if_else(table == new_tbl_name_chr, !!upd_pk, pks),
       fks = if_else(table == new_tbl_name_chr, !!upd_inc_fks, fks)
-    ) %>%
+    ) |>
     new_dm3(zoomed = TRUE)
 
-  dm_wo_outgoing_fks %>%
-    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr, names_list$old_new_names[old_tbl_name], col_tracker_zoomed(dm)) %>%
+  dm_wo_outgoing_fks |>
+    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr, names_list$old_new_names[old_tbl_name], col_tracker_zoomed(dm)) |>
     dm_clean_zoomed()
 }
 

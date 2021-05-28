@@ -1,7 +1,7 @@
 # dm_rm_pk() supports partial filters
 
     Code
-      dm_for_filter() %>% dm_rm_pk(tf_4, fail_fk = FALSE) %>% get_all_keys()
+      dm_for_filter() |> dm_rm_pk(tf_4, fail_fk = FALSE) |> get_all_keys()
     Output
       $pks
       # A tibble: 5 x 2
@@ -24,7 +24,7 @@
       5 tf_5        m             tf_6         n              
       
     Code
-      dm_for_filter() %>% dm_rm_pk(tf_3, fail_fk = FALSE) %>% get_all_keys()
+      dm_for_filter() |> dm_rm_pk(tf_3, fail_fk = FALSE) |> get_all_keys()
     Output
       $pks
       # A tibble: 5 x 2
@@ -47,7 +47,7 @@
       5 tf_5        m             tf_6         n              
       
     Code
-      dm_for_filter() %>% dm_rm_pk(tf_6) %>% get_all_keys()
+      dm_for_filter() |> dm_rm_pk(tf_6) |> get_all_keys()
     Output
       $pks
       # A tibble: 5 x 2
@@ -70,7 +70,7 @@
       5 tf_5        m             tf_6         n              
       
     Code
-      dm_for_filter() %>% dm_rm_pk(tf_4, rm_referencing_fks = TRUE) %>% get_all_keys()
+      dm_for_filter() |> dm_rm_pk(tf_4, rm_referencing_fks = TRUE) |> get_all_keys()
     Warning <lifecycle_warning_deprecated>
       The `rm_referencing_fks` argument of `dm_rm_pk()` is deprecated as of dm 0.2.1.
       Please use the `fail_fk` argument instead.
@@ -97,9 +97,9 @@
       5 tf_5        m             tf_6         n              
       
     Code
-      dm_for_filter() %>% dm_rm_pk(columns = c) %>% get_all_keys()
+      dm_for_filter() |> dm_rm_pk(columns = c) |> get_all_keys()
     Message <simpleMessage>
-      Removing primary keys: %>%
+      Removing primary keys: |>
         dm_rm_pk(tf_2)
     Output
       $pks
@@ -123,10 +123,10 @@
       5 tf_5        m             tf_6         n              
       
     Code
-      dm_for_filter() %>% dm_rm_pk(columns = c(f, f1), fail_fk = FALSE) %>%
+      dm_for_filter() |> dm_rm_pk(columns = c(f, f1), fail_fk = FALSE) |>
         get_all_keys()
     Message <simpleMessage>
-      Removing primary keys: %>%
+      Removing primary keys: |>
         dm_rm_pk(tf_3)
     Output
       $pks
@@ -150,14 +150,14 @@
       5 tf_5        m             tf_6         n              
       
     Code
-      dm_for_filter() %>% dm_rm_pk(fail_fk = FALSE) %>% get_all_keys()
+      dm_for_filter() |> dm_rm_pk(fail_fk = FALSE) |> get_all_keys()
     Message <simpleMessage>
-      Removing primary keys: %>%
-        dm_rm_pk(tf_1) %>%
-        dm_rm_pk(tf_2) %>%
-        dm_rm_pk(tf_3) %>%
-        dm_rm_pk(tf_4) %>%
-        dm_rm_pk(tf_5) %>%
+      Removing primary keys: |>
+        dm_rm_pk(tf_1) |>
+        dm_rm_pk(tf_2) |>
+        dm_rm_pk(tf_3) |>
+        dm_rm_pk(tf_4) |>
+        dm_rm_pk(tf_5) |>
         dm_rm_pk(tf_6)
     Output
       $pks
@@ -210,7 +210,7 @@
 # output
 
     Code
-      dm(x = tibble(a = c(1, 1))) %>% dm_add_pk(x, a, check = TRUE)
+      dm(x = tibble(a = c(1, 1))) |> dm_add_pk(x, a, check = TRUE)
     Error <dm_error_not_unique_key>
       (`a`) not a unique key of `x`.
 
@@ -225,7 +225,7 @@
       Primary keys: 4
       Foreign keys: 4
     Code
-      nyc_comp() %>% dm_get_all_pks()
+      nyc_comp() |> dm_get_all_pks()
     Output
       # A tibble: 4 x 2
         table    pk_col           

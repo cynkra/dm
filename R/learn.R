@@ -47,7 +47,7 @@ dm_learn_from_db <- function(dest, dbname = NULL, ...) {
   }
 
   overview <-
-    dbGetQuery(con, sql) %>%
+    dbGetQuery(con, sql) |>
     as_tibble()
 
   if (nrow(overview) == 0) {
@@ -55,13 +55,13 @@ dm_learn_from_db <- function(dest, dbname = NULL, ...) {
   }
 
   table_names <-
-    overview %>%
-    arrange(table) %>%
-    distinct(schema, table) %>%
+    overview |>
+    arrange(table) |>
+    distinct(schema, table) |>
     transmute(
       name = table,
       value = schema_if(schema = schema, table = table, con = con, dbname = dbname)
-    ) %>%
+    ) |>
     deframe()
 
   # FIXME: Use tbl_sql(vars = ...)
@@ -225,9 +225,9 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
   stopifnot(all(data_model_tables$table %in% names(tables)))
 
   pks <-
-    columns %>%
-    select(column, table, key) %>%
-    filter(key > 0) %>%
+    columns |>
+    select(column, table, key) |>
+    filter(key > 0) |>
     select(-key)
 
   if (is.null(data_model$references) || nrow(data_model$references) == 0) {
@@ -239,8 +239,8 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
     )
   } else {
     fks <-
-      data_model$references %>%
-      select(table, column, ref, ref_column = ref_col) %>%
+      data_model$references |>
+      select(table, column, ref, ref_column = ref_col) |>
       as_tibble()
   }
 
@@ -255,16 +255,16 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
   col_tracker_zoom <- new_col_tracker_zoom()
 
   pks <-
-    pks %>%
+    pks |>
     # Legacy compatibility
-    mutate(column = as.list(column, list())) %>%
+    mutate(column = as.list(column, list())) |>
     nest_compat(pks = -table)
 
   pks <-
     tibble(
       table = setdiff(table, pks$table),
       pks = list_of(new_pk())
-    ) %>%
+    ) |>
     vec_rbind(pks)
 
   # Legacy compatibility
@@ -272,15 +272,15 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
   fks$ref_column <- as.list(fks$ref_column)
 
   fks <-
-    fks %>%
-    nest_compat(fks = -ref) %>%
+    fks |>
+    nest_compat(fks = -ref) |>
     rename(table = ref)
 
   fks <-
     tibble(
       table = setdiff(table, fks$table),
       fks = list_of(new_fk())
-    ) %>%
+    ) |>
     vec_rbind(fks)
 
   # there are no filters at this stage
@@ -291,11 +291,11 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
     )
 
   def <-
-    tibble(table, data, segment, display) %>%
-    left_join(pks, by = "table") %>%
-    left_join(fks, by = "table") %>%
-    left_join(filters, by = "table") %>%
-    left_join(zoom, by = "table") %>%
+    tibble(table, data, segment, display) |>
+    left_join(pks, by = "table") |>
+    left_join(fks, by = "table") |>
+    left_join(filters, by = "table") |>
+    left_join(zoom, by = "table") |>
     left_join(col_tracker_zoom, by = "table")
 
   new_dm3(def)
@@ -310,14 +310,14 @@ nest_compat <- function(.data, ...) {
     remove <- eval_select_indices(quo(c(...)), colnames(.data))
     keep <- setdiff(seq_along(.data), remove)
 
-    nest <- new_list_of(list(), ptype = .data %>% select(!!!remove))
+    nest <- new_list_of(list(), ptype = .data |> select(!!!remove))
 
-    .data %>%
-      select(!!!keep) %>%
+    .data |>
+      select(!!!keep) |>
       mutate(!!new_col := !!nest)
   } else {
-    .data %>%
-      nest(...) %>%
+    .data |>
+      nest(...) |>
       mutate_at(vars(!!!new_col), as_list_of)
   }
 }

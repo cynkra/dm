@@ -1,38 +1,38 @@
 # output
 
     Code
-      dm() %>% dm_examine_constraints()
+      dm() |> dm_examine_constraints()
     Message <cliMessage>
       i No constraints defined.
     Code
-      dm_nycflights_small() %>% dm_examine_constraints()
+      dm_nycflights_small() |> dm_examine_constraints()
     Message <cliMessage>
       ! Unsatisfied constraints:
     Output
       * Table `flights`: foreign key dest into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (30), BQN (6), STT (4), PSE (2)
       * Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
     Code
-      dm_nycflights_small_cycle() %>% dm_examine_constraints()
+      dm_nycflights_small_cycle() |> dm_examine_constraints()
     Message <cliMessage>
       ! Unsatisfied constraints:
     Output
       * Table `flights`: foreign key dest into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (30), BQN (6), STT (4), PSE (2)
       * Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
     Code
-      dm_nycflights_small_cycle() %>% dm_select_tbl(-flights) %>%
+      dm_nycflights_small_cycle() |> dm_select_tbl(-flights) |>
         dm_examine_constraints()
     Message <cliMessage>
       i All constraints satisfied.
     Code
       # n column
-      dm_for_filter_w_cycle() %>% dm_examine_constraints()
+      dm_for_filter_w_cycle() |> dm_examine_constraints()
     Message <cliMessage>
       i All constraints satisfied.
 
 # output as tibble
 
     Code
-      dm_nycflights_small_cycle() %>% dm_examine_constraints() %>% as_tibble()
+      dm_nycflights_small_cycle() |> dm_examine_constraints() |> as_tibble()
     Output
       # A tibble: 7 x 6
         table   kind  columns ref_table is_key problem                                
@@ -48,7 +48,7 @@
 # output for compound keys
 
     Code
-      bad_dm() %>% dm_examine_constraints()
+      bad_dm() |> dm_examine_constraints()
     Message <cliMessage>
       ! Unsatisfied constraints:
     Output

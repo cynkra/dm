@@ -14,11 +14,11 @@
       Primary keys: 3
       Foreign keys: 3
     Code
-      nyc_flights_dm %>% format()
+      nyc_flights_dm |> format()
     Output
       dm: 5 tables, 53 columns, 3 primary keys, 3 foreign keys
     Code
-      nyc_flights_dm %>% dm_filter(flights, origin == "EWR") %>% collect()
+      nyc_flights_dm |> dm_filter(flights, origin == "EWR") |> collect()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -48,7 +48,7 @@
       Primary keys: 4
       Foreign keys: 4
     Code
-      nyc_comp() %>% collect()
+      nyc_comp() |> collect()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -56,7 +56,7 @@
       Primary keys: 4
       Foreign keys: 4
     Code
-      nyc_comp() %>% dm_filter(flights, day == 10) %>% compute() %>% collect() %>%
+      nyc_comp() |> dm_filter(flights, day == 10) |> compute() |> collect() |>
         dm_get_def()
     Output
       # A tibble: 5 x 9
@@ -68,8 +68,8 @@
       4 planes <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
       5 weath~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
     Code
-      nyc_comp() %>% dm_zoom_to(weather) %>% mutate(origin_new = paste0(origin,
-        " airport")) %>% compute() %>% dm_update_zoomed() %>% collect() %>%
+      nyc_comp() |> dm_zoom_to(weather) |> mutate(origin_new = paste0(origin,
+        " airport")) |> compute() |> dm_update_zoomed() |> collect() |>
         dm_get_def()
     Output
       # A tibble: 5 x 9
@@ -81,7 +81,7 @@
       4 planes <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
       5 weath~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
     Code
-      nyc_comp() %>% dm_zoom_to(weather) %>% collect()
+      nyc_comp() |> dm_zoom_to(weather) |> collect()
     Message <simpleMessage>
       Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.
     Output
@@ -119,7 +119,7 @@
       # ... with 134 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
       #   pressure <dbl>, visib <dbl>, time_hour <dttm>
     Code
-      nyc_comp() %>% dm_zoom_to(weather) %>% pull_tbl()
+      nyc_comp() |> dm_zoom_to(weather) |> pull_tbl()
     Output
       # A tibble: 144 x 15
          origin  year month   day  hour  temp  dewp humid wind_dir wind_speed

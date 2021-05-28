@@ -53,7 +53,7 @@ sql_schema_list.src_dbi <- function(dest, include_default = TRUE, ...) {
     INNER JOIN {dbname_sql}sys.sysusers u
     ON u.uid = s.principal_id
     WHERE u.issqluser = 1
-    AND u.name NOT IN ('sys', 'guest', 'INFORMATION_SCHEMA'){default_if_true}")) %>%
+    AND u.name NOT IN ('sys', 'guest', 'INFORMATION_SCHEMA'){default_if_true}")) |>
     as_tibble()
 }
 
@@ -64,7 +64,7 @@ sql_schema_list.PqConnection <- function(dest, include_default = TRUE, ...) {
     schema_name NOT IN ('information_schema', 'pg_catalog'{default_if_true})
     AND schema_name NOT LIKE 'pg_toast%'
     AND schema_name NOT LIKE 'pg_temp_%'
-    ORDER BY schema_name")) %>%
+    ORDER BY schema_name")) |>
     as_tibble()
 }
 
@@ -242,7 +242,7 @@ sql_schema_table_list_mssql <- function(dest, schema = NULL, dbname = NULL) {
     get_src_tbl_names(src, schema = sql_to_character(src$con, schema), dbname = dbname),
     name = "table_name",
     value = "remote_name"
-  ) %>%
+  ) |>
     # FIXME: maybe better a DBI identifier?
     mutate(remote_name = dbplyr::ident_q(remote_name))
 }
@@ -261,7 +261,7 @@ sql_schema_table_list_postgres <- function(dest, schema = NULL) {
     get_src_tbl_names(src, schema = sql_to_character(src$con, schema)),
     name = "table_name",
     value = "remote_name"
-  ) %>%
+  ) |>
     # FIXME: maybe better a DBI identifier?
     mutate(remote_name = dbplyr::ident_q(remote_name))
 }
@@ -361,7 +361,7 @@ sql_to_character <- function(con, sql_or_char) {
   if (inherits(sql_or_char, "SQL")) {
     sql_or_char <- map_chr(
       sql_or_char,
-      ~ DBI::dbUnquoteIdentifier(con, .x)[[1]] %>% pluck("name")
+      ~ DBI::dbUnquoteIdentifier(con, .x)[[1]] |> pluck("name")
     )
   }
   sql_or_char

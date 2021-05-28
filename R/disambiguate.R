@@ -17,7 +17,7 @@
 #' @return A `dm` whose column names are unambiguous.
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_disambiguate_cols()
 #' @export
 dm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
@@ -40,17 +40,17 @@ get_table_colnames <- function(dm, tables = NULL) {
   }
 
   table_colnames <-
-    tibble(table = def$table, column = map(def$data, colnames)) %>%
+    tibble(table = def$table, column = map(def$data, colnames)) |>
     unnest_col("column", character())
 
   pks <- dm_get_all_pks_def_impl(def)
 
   keep_colnames <-
-    pks[c("table", "pk_col")] %>%
-    set_names(c("table", "column")) %>%
+    pks[c("table", "pk_col")] |>
+    set_names(c("table", "column")) |>
     unnest_col("column", character())
 
-  table_colnames %>%
+  table_colnames |>
     # in case of flattening, the primary key columns will never be responsible for the name
     # of the resulting column in the end, so they do not need to be disambiguated
     anti_join(keep_colnames, by = c("table", "column"))
@@ -65,7 +65,7 @@ compute_disambiguate_cols_recipe <- function(table_colnames, sep) {
   dup_data$column <- syms(dup_data$column)
 
   dup_nested <-
-    vec_split(dup_data, dup_colnames$table) %>%
+    vec_split(dup_data, dup_colnames$table) |>
     set_names("table", "renames")
 
   dup_nested$renames <- map(dup_nested$renames, deframe)
@@ -78,9 +78,9 @@ explain_col_rename <- function(recipe) {
   }
 
   msg_base <-
-    recipe %>%
-    mutate(renames = map(renames, ~ enframe(., "new", "old"))) %>%
-    unnest_df("renames", tibble(new = character(), old = syms(character()))) %>%
+    recipe |>
+    mutate(renames = map(renames, ~ enframe(., "new", "old"))) |>
+    unnest_df("renames", tibble(new = character(), old = syms(character()))) |>
     nest(data = -old)
 
   sub_text <- map_chr(msg_base$data, ~ paste0(.x$new, collapse = ", "))

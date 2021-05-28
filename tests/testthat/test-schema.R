@@ -27,9 +27,9 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_message(sql_schema_create(con_db, "1-dm_schema_TEST"), "created")
   expect_dm_error(sql_schema_create(con_db, "1-dm_schema_TEST"), "schema_exists")
   expect_identical(
-    con_db %>%
-      sql_schema_list(include_default = FALSE) %>%
-      filter(schema_name == "1-dm_schema_TEST") %>%
+    con_db |>
+      sql_schema_list(include_default = FALSE) |>
+      filter(schema_name == "1-dm_schema_TEST") |>
       pull(schema_name),
     "1-dm_schema_TEST"
   )
@@ -57,12 +57,12 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_true("test_schema_1" %in% sql_schema_table_list(src_db)$table_name)
 
   remote_table_1 <-
-    src_db %>%
-    sql_schema_table_list() %>%
-    filter(table_name == "test_schema_1") %>%
+    src_db |>
+    sql_schema_table_list() |>
+    filter(table_name == "test_schema_1") |>
     pull(remote_name)
   expect_identical(
-    tbl(src_db, remote_table_1) %>% collect(),
+    tbl(src_db, remote_table_1) |> collect(),
     tibble(a = 1:5)
   )
 
@@ -85,10 +85,10 @@ test_that("schema handling on MSSQL and Postgres works", {
   remote_table_2 <- filter(
     sql_schema_table_list(src_db, schema = "1-dm_schema_TEST"),
     table_name == "test_schema_2"
-  ) %>%
+  ) |>
     pull(remote_name)
   expect_identical(
-    tbl(src_db, remote_table_2) %>% collect(),
+    tbl(src_db, remote_table_2) |> collect(),
     tibble(b = letters[1:5])
   )
 })
@@ -111,7 +111,7 @@ test_that("schema handling on Postgres works", {
       filter(
         sql_schema_list(con_db, include_default = TRUE),
         schema_name == "public" | schema_name == "2-dm_schema_TEST"
-      ) %>%
+      ) |>
         pull(schema_name)
     ),
     c("2-dm_schema_TEST", "public")

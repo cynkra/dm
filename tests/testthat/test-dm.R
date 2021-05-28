@@ -14,9 +14,9 @@ test_that("creation of empty `dm` works", {
 
 test_that("'collect.dm()' collects tables on DB", {
   def <-
-    dm_for_filter() %>%
-    dm_filter(tf_1, a > 3) %>%
-    collect() %>%
+    dm_for_filter() |>
+    dm_filter(tf_1, a > 3) |>
+    collect() |>
     dm_get_def()
 
   is_df <- map_lgl(def$data, is.data.frame)
@@ -25,12 +25,12 @@ test_that("'collect.dm()' collects tables on DB", {
 
 test_that("'collect.zoomed_dm()' collects tables, with message", {
   zoomed_dm_for_collect <-
-    dm_for_filter() %>%
-    dm_zoom_to(tf_1) %>%
+    dm_for_filter() |>
+    dm_zoom_to(tf_1) |>
     mutate(c = a + 1)
 
   expect_message(
-    out <- zoomed_dm_for_collect %>% collect(),
+    out <- zoomed_dm_for_collect |> collect(),
     "pull_tbl"
   )
 
@@ -42,11 +42,11 @@ test_that("'compute.dm()' computes tables on DB", {
   skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
 
   def <-
-    dm_for_filter() %>%
-    dm_filter(tf_1, a > 3) %>%
+    dm_for_filter() |>
+    dm_filter(tf_1, a > 3) |>
     {
       suppress_mssql_message(compute(.))
-    } %>%
+    } |>
     dm_get_def()
 
   remote_names <- map(def$data, dbplyr::remote_name)
@@ -58,14 +58,14 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
   skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
 
   zoomed_dm_for_compute <-
-    dm_for_filter() %>%
-    dm_zoom_to(tf_1) %>%
+    dm_for_filter() |>
+    dm_zoom_to(tf_1) |>
     mutate(c = a + 1)
 
   # without computing
   def <-
-    zoomed_dm_for_compute %>%
-    dm_update_zoomed() %>%
+    zoomed_dm_for_compute |>
+    dm_update_zoomed() |>
     dm_get_def()
 
   remote_names <- map(def$data, dbplyr::remote_name)
@@ -73,8 +73,8 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
 
   # with computing
   def <-
-    suppress_mssql_message(compute(zoomed_dm_for_compute)) %>%
-    dm_update_zoomed() %>%
+    suppress_mssql_message(compute(zoomed_dm_for_compute)) |>
+    dm_update_zoomed() |>
     dm_get_def()
 
   remote_names <- map(def$data, dbplyr::remote_name)
@@ -121,9 +121,9 @@ test_that("`pull_tbl()`-methods work", {
 
   skip_if_src("maria")
   expect_equivalent_tbl(
-    dm_for_filter() %>%
-      dm_zoom_to(tf_3) %>%
-      mutate(new_col = row_number(f) * 3) %>%
+    dm_for_filter() |>
+      dm_zoom_to(tf_3) |>
+      mutate(new_col = row_number(f) * 3) |>
       pull_tbl(),
     mutate(tf_3(), new_col = row_number(f) * 3)
   )
@@ -131,12 +131,12 @@ test_that("`pull_tbl()`-methods work", {
 
 test_that("`pull_tbl()`-methods work (2)", {
   expect_equivalent_tbl(
-    dm_zoom_to(dm_for_filter(), tf_1) %>% pull_tbl(tf_1),
+    dm_zoom_to(dm_for_filter(), tf_1) |> pull_tbl(tf_1),
     tf_1()
   )
 
   expect_dm_error(
-    dm_zoom_to(dm_for_filter(), tf_1) %>% pull_tbl(tf_2),
+    dm_zoom_to(dm_for_filter(), tf_1) |> pull_tbl(tf_2),
     "table_not_zoomed"
   )
 
@@ -146,10 +146,10 @@ test_that("`pull_tbl()`-methods work (2)", {
   )
 
   expect_dm_error(
-    dm_for_filter() %>%
-      dm_get_def() %>%
-      mutate(zoom = list(tf_1)) %>%
-      new_dm3(zoomed = TRUE, validate = FALSE) %>%
+    dm_for_filter() |>
+      dm_get_def() |>
+      mutate(zoom = list(tf_1)) |>
+      new_dm3(zoomed = TRUE, validate = FALSE) |>
       pull_tbl(),
     "not_pulling_multiple_zoomed"
   )
@@ -199,7 +199,7 @@ test_that("subsetting `zoomed_dm` works", {
 test_that("as.list()-method works for local `zoomed_dm`", {
   skip_if_remote_src()
   expect_identical(
-    as.list(dm_for_filter() %>% dm_zoom_to(tf_4)),
+    as.list(dm_for_filter() |> dm_zoom_to(tf_4)),
     as.list(tf_4())
   )
 })
@@ -259,11 +259,11 @@ test_that("str()", {
   skip("FIXME: Unstable on GHA?")
 
   expect_snapshot({
-    dm_for_filter() %>%
+    dm_for_filter() |>
       str()
 
-    dm_for_filter() %>%
-      dm_zoom_to(tf_2) %>%
+    dm_for_filter() |>
+      dm_zoom_to(tf_2) |>
       str()
   })
 })
@@ -277,11 +277,11 @@ test_that("output", {
     nyc_flights_dm <- dm_nycflights_small()
     collect(nyc_flights_dm)
 
-    nyc_flights_dm %>%
+    nyc_flights_dm |>
       format()
 
-    nyc_flights_dm %>%
-      dm_filter(flights, origin == "EWR") %>%
+    nyc_flights_dm |>
+      dm_filter(flights, origin == "EWR") |>
       collect()
   })
 })
@@ -300,26 +300,26 @@ test_that("output for compound keys", {
   expect_snapshot({
     copy_to(nyc_comp(), mtcars, "car_table")
     dm_add_tbl(nyc_comp(), car_table)
-    nyc_comp() %>%
+    nyc_comp() |>
       collect()
-    nyc_comp() %>%
-      dm_filter(flights, day == 10) %>%
-      compute() %>%
-      collect() %>%
+    nyc_comp() |>
+      dm_filter(flights, day == 10) |>
+      compute() |>
+      collect() |>
       dm_get_def()
-    nyc_comp() %>%
-      dm_zoom_to(weather) %>%
-      mutate(origin_new = paste0(origin, " airport")) %>%
-      compute() %>%
-      dm_update_zoomed() %>%
-      collect() %>%
+    nyc_comp() |>
+      dm_zoom_to(weather) |>
+      mutate(origin_new = paste0(origin, " airport")) |>
+      compute() |>
+      dm_update_zoomed() |>
+      collect() |>
       dm_get_def()
-    nyc_comp() %>%
-      dm_zoom_to(weather) %>%
+    nyc_comp() |>
+      dm_zoom_to(weather) |>
       collect()
     pull_tbl(nyc_comp(), weather)
-    nyc_comp() %>%
-      dm_zoom_to(weather) %>%
+    nyc_comp() |>
+      dm_zoom_to(weather) |>
       pull_tbl()
   })
 })

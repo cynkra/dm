@@ -1,8 +1,8 @@
 # dm_rows_insert()
 
     Code
-      flights_init <- dm_nycflights13() %>% dm_zoom_to(flights) %>% filter(FALSE) %>%
-        dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(FALSE) %>%
+      flights_init <- dm_nycflights13() |> dm_zoom_to(flights) |> filter(FALSE) |>
+        dm_update_zoomed() |> dm_zoom_to(weather) |> filter(FALSE) |>
         dm_update_zoomed()
       sqlite <- dbConnect(RSQLite::SQLite())
       flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
@@ -11,10 +11,10 @@
       airlines airports  flights   planes  weather 
             15       86        0      945        0 
     Code
-      flights_hour10 <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
-        dm_zoom_to(flights) %>% filter(month == 1, day == 10, hour == 10) %>%
-        dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(month == 1, day == 10,
-      hour == 10) %>% dm_update_zoomed()
+      flights_hour10 <- dm_nycflights13() |> dm_select_tbl(flights, weather) |>
+        dm_zoom_to(flights) |> filter(month == 1, day == 10, hour == 10) |>
+        dm_update_zoomed() |> dm_zoom_to(weather) |> filter(month == 1, day == 10,
+      hour == 10) |> dm_update_zoomed()
       print(dm_nrow(flights_hour10))
     Output
       flights weather 
@@ -36,10 +36,10 @@
       airlines airports  flights   planes  weather 
             15       86       43      945        3 
     Code
-      flights_hour11 <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
-        dm_zoom_to(flights) %>% filter(month == 1, day == 10, hour == 11) %>%
-        dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(month == 1, day == 10,
-      hour == 11) %>% dm_update_zoomed()
+      flights_hour11 <- dm_nycflights13() |> dm_select_tbl(flights, weather) |>
+        dm_zoom_to(flights) |> filter(month == 1, day == 10, hour == 11) |>
+        dm_update_zoomed() |> dm_zoom_to(weather) |> filter(month == 1, day == 10,
+      hour == 11) |> dm_update_zoomed()
       flights_hour11_sqlite <- copy_dm_to(sqlite, flights_hour11)
       flights_new <- dm_rows_insert(flights_sqlite, flights_hour11_sqlite, in_place = FALSE)
       print(dm_nrow(flights_new))
@@ -52,7 +52,7 @@
       airlines airports  flights   planes  weather 
             15       86       43      945        3 
     Code
-      flights_new %>% dm_examine_constraints()
+      flights_new |> dm_examine_constraints()
     Message <cliMessage>
       ! Unsatisfied constraints:
     Output
@@ -69,14 +69,14 @@
 # dm_rows_update()
 
     Code
-      dm_filter_rearranged <- dm_for_filter() %>% dm_select(tf_2, d, everything()) %>%
-        dm_select(tf_4, i, everything()) %>% dm_select(tf_5, l, m, everything())
+      dm_filter_rearranged <- dm_for_filter() |> dm_select(tf_2, d, everything()) |>
+        dm_select(tf_4, i, everything()) |> dm_select(tf_5, l, m, everything())
       suppressMessages(dm_copy <- copy_dm_to(my_test_src(), dm_filter_rearranged))
       dm_update_local <- dm(tf_1 = tibble(a = 2L, b = "q"), tf_2 = tibble(c = c(
         "worm"), d = 10L, ), tf_4 = tibble(h = "e", i = "sieben", ), tf_5 = tibble(k = 3L,
         m = "tree", ), )
       dm_update_copy <- suppressMessages(copy_dm_to(my_test_src(), dm_update_local))
-      dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
+      dm_copy |> pull_tbl(tf_2) |> arrange_all()
     Output
             d c        e        e1
         <int> <chr>    <chr> <int>
@@ -87,7 +87,7 @@
       5     6 dog      E         5
       6     7 cat      F         6
     Code
-      dm_copy %>% dm_rows_update(dm_update_copy) %>% pull_tbl(tf_2) %>% arrange_all()
+      dm_copy |> dm_rows_update(dm_update_copy) |> pull_tbl(tf_2) |> arrange_all()
     Message <simpleMessage>
       Not persisting, use `in_place = FALSE` to turn off this message.
     Output
@@ -100,7 +100,7 @@
       5     7 cat      F         6
       6    10 worm     G         7
     Code
-      dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
+      dm_copy |> pull_tbl(tf_2) |> arrange_all()
     Output
             d c        e        e1
         <int> <chr>    <chr> <int>
@@ -111,7 +111,7 @@
       5     6 dog      E         5
       6     7 cat      F         6
     Code
-      dm_copy %>% dm_rows_update(dm_update_copy, in_place = FALSE) %>% pull_tbl(tf_2) %>%
+      dm_copy |> dm_rows_update(dm_update_copy, in_place = FALSE) |> pull_tbl(tf_2) |>
         arrange_all()
     Output
             d c        e        e1
@@ -123,7 +123,7 @@
       5     7 cat      F         6
       6    10 worm     G         7
     Code
-      dm_copy %>% dm_get_tables() %>% map(arrange_all)
+      dm_copy |> dm_get_tables() |> map(arrange_all)
     Output
       $tf_1
              a b    
@@ -190,8 +190,8 @@
       5 tree       f    
       
     Code
-      dm_copy %>% dm_rows_update(dm_update_copy, in_place = TRUE)
-      dm_copy %>% dm_get_tables() %>% map(arrange_all)
+      dm_copy |> dm_rows_update(dm_update_copy, in_place = TRUE)
+      dm_copy |> dm_get_tables() |> map(arrange_all)
     Output
       $tf_1
              a b    
@@ -266,7 +266,7 @@
         k = 3L, m = "tree", ), )
       dm_truncate_copy <- suppressMessages(copy_dm_to(my_test_src(),
       dm_truncate_local))
-      dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
+      dm_copy |> pull_tbl(tf_2) |> arrange_all()
     Output
         c            d e        e1
         <chr>    <int> <chr> <int>
@@ -277,14 +277,14 @@
       5 seal         4 F         6
       6 worm         5 G         7
     Code
-      dm_copy %>% dm_rows_truncate(dm_truncate_copy) %>% pull_tbl(tf_2) %>%
+      dm_copy |> dm_rows_truncate(dm_truncate_copy) |> pull_tbl(tf_2) |>
         arrange_all()
     Message <simpleMessage>
       Not persisting, use `in_place = FALSE` to turn off this message.
     Output
       # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
     Code
-      dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
+      dm_copy |> pull_tbl(tf_2) |> arrange_all()
     Output
         c            d e        e1
         <chr>    <int> <chr> <int>
@@ -295,12 +295,12 @@
       5 seal         4 F         6
       6 worm         5 G         7
     Code
-      dm_copy %>% dm_rows_truncate(dm_truncate_copy, in_place = FALSE) %>% pull_tbl(
-        tf_2) %>% arrange_all()
+      dm_copy |> dm_rows_truncate(dm_truncate_copy, in_place = FALSE) |> pull_tbl(
+        tf_2) |> arrange_all()
     Output
       # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
     Code
-      dm_copy %>% dm_get_tables() %>% map(arrange_all)
+      dm_copy |> dm_get_tables() |> map(arrange_all)
     Output
       $tf_1
              a b    
@@ -367,8 +367,8 @@
       5 tree       f    
       
     Code
-      dm_copy %>% dm_rows_truncate(dm_truncate_copy, in_place = TRUE)
-      dm_copy %>% dm_get_tables() %>% map(arrange_all)
+      dm_copy |> dm_rows_truncate(dm_truncate_copy, in_place = TRUE)
+      dm_copy |> dm_get_tables() |> map(arrange_all)
     Output
       $tf_1
              a b    

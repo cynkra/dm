@@ -236,10 +236,10 @@ dm_set_key_constraints <- function(dm) {
   db_table_names <- get_db_table_names(dm)
 
   fk_info <-
-    dm_get_all_fks(dm) %>%
-    left_join(db_table_names, by = c("child_table" = "table_name")) %>%
-    rename(db_child_table = remote_name) %>%
-    left_join(db_table_names, by = c("parent_table" = "table_name")) %>%
+    dm_get_all_fks(dm) |>
+    left_join(db_table_names, by = c("child_table" = "table_name")) |>
+    rename(db_child_table = remote_name) |>
+    left_join(db_table_names, by = c("parent_table" = "table_name")) |>
     rename(db_parent_table = remote_name)
 
   con <- con_from_src_or_con(dm_get_src_impl(dm))

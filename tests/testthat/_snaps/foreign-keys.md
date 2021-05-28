@@ -1,8 +1,8 @@
 # dm_add_fk() works as intended?
 
     Code
-      dm_test_obj() %>% dm_add_pk(dm_table_4, c) %>% dm_add_fk(dm_table_1, a,
-        dm_table_4) %>% get_all_keys()
+      dm_test_obj() |> dm_add_pk(dm_table_4, c) |> dm_add_fk(dm_table_1, a,
+        dm_table_4) |> get_all_keys()
     Output
       $pks
       # A tibble: 1 x 2
@@ -20,10 +20,10 @@
 # dm_rm_fk() works with partial matching
 
     Code
-      dm_for_filter() %>% dm_rm_fk(tf_5) %>% get_all_keys()
+      dm_for_filter() |> dm_rm_fk(tf_5) |> get_all_keys()
     Message <simpleMessage>
-      Removing foreign keys: %>%
-        dm_rm_fk(tf_5, l, tf_4) %>%
+      Removing foreign keys: |>
+        dm_rm_fk(tf_5, l, tf_4) |>
         dm_rm_fk(tf_5, m, tf_6, n))
     Output
       $pks
@@ -46,9 +46,9 @@
       3 tf_4        j, j1         tf_3         f, f1          
       
     Code
-      dm_for_filter() %>% dm_rm_fk(columns = l) %>% get_all_keys()
+      dm_for_filter() |> dm_rm_fk(columns = l) |> get_all_keys()
     Message <simpleMessage>
-      Removing foreign keys: %>%
+      Removing foreign keys: |>
         dm_rm_fk(tf_5, l, tf_4)
     Output
       $pks
@@ -72,9 +72,9 @@
       4 tf_5        m             tf_6         n              
       
     Code
-      dm_for_filter() %>% dm_rm_fk(columns = c(e, e1)) %>% get_all_keys()
+      dm_for_filter() |> dm_rm_fk(columns = c(e, e1)) |> get_all_keys()
     Message <simpleMessage>
-      Removing foreign keys: %>%
+      Removing foreign keys: |>
         dm_rm_fk(tf_2, c(e, e1), tf_3)
     Output
       $pks
@@ -98,10 +98,10 @@
       4 tf_5        m             tf_6         n              
       
     Code
-      dm_for_filter() %>% dm_rm_fk(ref_table = tf_3) %>% get_all_keys()
+      dm_for_filter() |> dm_rm_fk(ref_table = tf_3) |> get_all_keys()
     Message <simpleMessage>
-      Removing foreign keys: %>%
-        dm_rm_fk(tf_2, c(e, e1), tf_3) %>%
+      Removing foreign keys: |>
+        dm_rm_fk(tf_2, c(e, e1), tf_3) |>
         dm_rm_fk(tf_4, c(j, j1), tf_3)
     Output
       $pks
@@ -124,10 +124,10 @@
       3 tf_5        m             tf_6         n              
       
     Code
-      dm_for_filter() %>% dm_rm_fk(ref_columns = c(f, f1)) %>% get_all_keys()
+      dm_for_filter() |> dm_rm_fk(ref_columns = c(f, f1)) |> get_all_keys()
     Message <simpleMessage>
-      Removing foreign keys: %>%
-        dm_rm_fk(tf_2, c(e, e1), tf_3) %>%
+      Removing foreign keys: |>
+        dm_rm_fk(tf_2, c(e, e1), tf_3) |>
         dm_rm_fk(tf_4, c(j, j1), tf_3)
     Output
       $pks
@@ -150,13 +150,13 @@
       3 tf_5        m             tf_6         n              
       
     Code
-      dm_for_filter() %>% dm_rm_fk() %>% get_all_keys()
+      dm_for_filter() |> dm_rm_fk() |> get_all_keys()
     Message <simpleMessage>
-      Removing foreign keys: %>%
-        dm_rm_fk(tf_2, d, tf_1) %>%
-        dm_rm_fk(tf_2, c(e, e1), tf_3) %>%
-        dm_rm_fk(tf_4, c(j, j1), tf_3) %>%
-        dm_rm_fk(tf_5, l, tf_4) %>%
+      Removing foreign keys: |>
+        dm_rm_fk(tf_2, d, tf_1) |>
+        dm_rm_fk(tf_2, c(e, e1), tf_3) |>
+        dm_rm_fk(tf_4, c(j, j1), tf_3) |>
+        dm_rm_fk(tf_5, l, tf_4) |>
         dm_rm_fk(tf_5, m, tf_6, n))
     Output
       $pks
@@ -179,7 +179,7 @@
 # dm_enum_fk_candidates() works as intended?
 
     Code
-      dm_nycflights13() %>% dm_enum_fk_candidates(flights, airports) %>% mutate(why = if_else(
+      dm_nycflights13() |> dm_enum_fk_candidates(flights, airports) |> mutate(why = if_else(
         why != "", "<reason>", ""))
     Output
       # A tibble: 19 x 3

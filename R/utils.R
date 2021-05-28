@@ -13,8 +13,8 @@
 #' @details see manual for the corresponding functions in \pkg{utils}.
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
-#' zoomed <- dm_nycflights13() %>%
-#'   dm_zoom_to(flights) %>%
+#' zoomed <- dm_nycflights13() |>
+#'   dm_zoom_to(flights) |>
 #'   head(4)
 #' zoomed
 #' dm_insert_zoomed(zoomed, new_tbl_name = "head_flights")

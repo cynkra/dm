@@ -42,17 +42,17 @@ validate_dm <- function(x) {
   fks <- c_list_of(def$fks)
   check_fk_child_tables(fks$table, table_names)
 
-  fks %>%
-    unnest_col("column", character()) %>%
+  fks |>
+    unnest_col("column", character()) |>
     check_colnames(dm_col_names, "FK")
 
   pks <-
-    def %>%
-    select(table, pks) %>%
+    def |>
+    select(table, pks) |>
     unnest_list_of_df("pks")
 
-  pks %>%
-    unnest_col("column", character()) %>%
+  pks |>
+    unnest_col("column", character()) |>
     check_colnames(dm_col_names, "PK")
 
   check_one_zoom(def, is_zoomed(x))

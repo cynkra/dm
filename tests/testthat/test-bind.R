@@ -10,7 +10,7 @@ test_that("dm_bind() works?", {
       dm_get_def(dm_for_filter()),
       dm_get_def(dm_for_flatten()),
       dm_get_def(dm_for_disambiguate())
-    ) %>%
+    ) |>
       new_dm3()
   )
 })
@@ -65,7 +65,7 @@ test_that("auto-renaming works", {
         tf_5...16 = tf_5,
         tf_6...17 = tf_6
       ))
-    ) %>%
+    ) |>
       new_dm3()
   )
 
@@ -88,9 +88,9 @@ test_that("output", {
   expect_snapshot({
     dm_bind()
     dm_bind(empty_dm())
-    dm_bind(dm_for_filter()) %>% collect()
-    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique") %>% collect()
-    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique", quiet = TRUE) %>% collect()
+    dm_bind(dm_for_filter()) |> collect()
+    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique") |> collect()
+    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique", quiet = TRUE) |> collect()
     writeLines(conditionMessage(expect_error(
       dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter())
     )))
@@ -99,8 +99,8 @@ test_that("output", {
 
 test_that("output for compound keys", {
   expect_snapshot({
-    dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>% dm_paste(options = c("select", "keys"))
-    dm_bind(dm_for_filter(), dm_for_flatten()) %>% dm_paste(options = c("select", "keys"))
-    dm_bind(dm_for_flatten(), dm_for_filter()) %>% dm_paste(options = c("select", "keys"))
+    dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") |> dm_paste(options = c("select", "keys"))
+    dm_bind(dm_for_filter(), dm_for_flatten()) |> dm_paste(options = c("select", "keys"))
+    dm_bind(dm_for_flatten(), dm_for_filter()) |> dm_paste(options = c("select", "keys"))
   })
 })

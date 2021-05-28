@@ -17,21 +17,21 @@ test_that("decompose_table() decomposes tables nicely on chosen source", {
 test_that("decompose_table() decomposes everything() to the original", {
   out <- decompose_table(data_ts(), abcdef_id, everything())$parent_table
   expect_equivalent_tbl(
-    out %>% select(-abcdef_id),
+    out |> select(-abcdef_id),
     data_ts()
   )
 })
 
 test_that("decomposition works with {tidyselect}", {
   pt_iris <-
-    iris %>%
-    select(starts_with("Sepal")) %>%
-    distinct() %>%
-    mutate(Sepal_id = row_number(Sepal.Length)) %>%
+    iris |>
+    select(starts_with("Sepal")) |>
+    distinct() |>
+    mutate(Sepal_id = row_number(Sepal.Length)) |>
     select(Sepal_id, everything())
 
   ct_iris <-
-    left_join(iris, pt_iris, by = c("Sepal.Length", "Sepal.Width")) %>%
+    left_join(iris, pt_iris, by = c("Sepal.Length", "Sepal.Width")) |>
     select(-Sepal.Length, -Sepal.Width)
 
   reference_flower_object <- list(
@@ -61,7 +61,7 @@ test_that("reunite_parent_child() reunites parent and child nicely on chosen sou
       list_of_data_ts_parent_and_child()$child_table,
       list_of_data_ts_parent_and_child()$parent_table,
       by = "aef_id"
-    ) %>%
+    ) |>
     select(-aef_id)
 
   expect_equivalent_tbl(out, ref)
@@ -76,7 +76,7 @@ test_that("reunite_parent_child_from_list() reunites parent and child nicely on 
       list_of_data_ts_parent_and_child()$child_table,
       list_of_data_ts_parent_and_child()$parent_table,
       by = "aef_id"
-    ) %>%
+    ) |>
     select(-aef_id)
 
   expect_equivalent_tbl(out, ref)

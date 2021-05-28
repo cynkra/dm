@@ -21,12 +21,12 @@
 #' @param into see [`tidyr::separate`]
 #' @name tidyr_table_manipulation
 #' @examplesIf rlang::is_installed("nycflights13")
-#' zoom_united <- dm_nycflights13() %>%
-#'   dm_zoom_to(flights) %>%
-#'   select(year, month, day) %>%
+#' zoom_united <- dm_nycflights13() |>
+#'   dm_zoom_to(flights) |>
+#'   select(year, month, day) |>
 #'   unite("month_day", month, day)
 #' zoom_united
-#' zoom_united %>%
+#' zoom_united |>
 #'   separate(month_day, c("month", "day"))
 NULL
 #' @export

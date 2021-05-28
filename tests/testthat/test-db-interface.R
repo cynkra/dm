@@ -103,8 +103,8 @@ test_that("table identifiers are quoted", {
   # Implicitly created with copy_dm_to()
   dm <- dm_test_obj()
   remote_names <-
-    dm %>%
-    dm_get_tables() %>%
+    dm |>
+    dm_get_tables() |>
     map_chr(dbplyr::remote_name)
 
   con <- dm_get_con(dm)
@@ -116,7 +116,7 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
   skip_if_src_not(c("mssql", "postgres"))
 
   src_db <- my_test_src()
-  local_dm <- dm_for_filter() %>% collect()
+  local_dm <- dm_for_filter() |> collect()
 
   expect_dm_error(
     copy_dm_to(src_db, local_dm, schema = "copy_dm_to_schema", temporary = FALSE),
@@ -169,10 +169,10 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
   expect_identical(
     sort(deframe(table_tibble)),
     sort(
-      remote_dm %>%
-        dm_get_tables() %>%
-        map(dbplyr::remote_name) %>%
-        flatten_chr() %>%
+      remote_dm |>
+        dm_get_tables() |>
+        map(dbplyr::remote_name) |>
+        flatten_chr() |>
         dbplyr::ident_q()
     )
   )
@@ -181,7 +181,7 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
 test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
   skip_if_src("mssql", "postgres")
 
-  local_dm <- dm_for_filter() %>% collect()
+  local_dm <- dm_for_filter() |> collect()
 
   expect_dm_error(
     copy_dm_to(

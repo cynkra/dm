@@ -2,7 +2,7 @@
 
     Code
       # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
-      zoomed_dm() %>% left_join(tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>%
+      zoomed_dm() |> left_join(tf_3, select = c(d = g, f, f1)) |> dm_update_zoomed() |>
         get_all_keys()
     Message <simpleMessage>
       Renamed columns:
@@ -31,7 +31,7 @@
       
     Code
       # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
-      zoomed_dm() %>% semi_join(tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>%
+      zoomed_dm() |> semi_join(tf_3, select = c(d = g, f, f1)) |> dm_update_zoomed() |>
         get_all_keys()
     Output
       $pks
@@ -60,7 +60,7 @@
 
     Code
       # rename()
-      zoomed_grouped_out_dm %>% rename(c_new = c) %>% dm_update_zoomed() %>%
+      zoomed_grouped_out_dm |> rename(c_new = c) |> dm_update_zoomed() |>
         get_all_keys()
     Output
       $pks
@@ -85,7 +85,7 @@
       5 tf_5        m             tf_6         n              
       
     Code
-      zoomed_grouped_out_dm %>% rename(e_new = e) %>% dm_update_zoomed() %>%
+      zoomed_grouped_out_dm |> rename(e_new = e) |> dm_update_zoomed() |>
         get_all_keys()
     Output
       $pks
@@ -110,7 +110,7 @@
       5 tf_5        m             tf_6         n              
       
     Code
-      zoomed_grouped_in_dm %>% rename(f_new = f) %>% dm_update_zoomed() %>%
+      zoomed_grouped_in_dm |> rename(f_new = f) |> dm_update_zoomed() |>
         get_all_keys()
     Output
       $pks
@@ -136,8 +136,8 @@
       
     Code
       # summarize()
-      zoomed_grouped_out_dm %>% summarize(d_mean = mean(d)) %>% dm_insert_zoomed(
-        "new_tbl") %>% get_all_keys()
+      zoomed_grouped_out_dm |> summarize(d_mean = mean(d)) |> dm_insert_zoomed(
+        "new_tbl") |> get_all_keys()
     Output
       $pks
       # A tibble: 7 x 2
@@ -163,8 +163,8 @@
       6 tf_5        m             tf_6         n              
       
     Code
-      zoomed_grouped_in_dm %>% summarize(g_list = list(g)) %>% dm_insert_zoomed(
-        "new_tbl") %>% get_all_keys()
+      zoomed_grouped_in_dm |> summarize(g_list = list(g)) |> dm_insert_zoomed(
+        "new_tbl") |> get_all_keys()
     Output
       $pks
       # A tibble: 6 x 2
@@ -189,8 +189,8 @@
       
     Code
       # transmute()
-      zoomed_grouped_out_dm %>% transmute(d_mean = mean(d)) %>% dm_insert_zoomed(
-        "new_tbl") %>% get_all_keys()
+      zoomed_grouped_out_dm |> transmute(d_mean = mean(d)) |> dm_insert_zoomed(
+        "new_tbl") |> get_all_keys()
     Output
       $pks
       # A tibble: 7 x 2
@@ -216,8 +216,8 @@
       6 tf_5        m             tf_6         n              
       
     Code
-      zoomed_grouped_in_dm %>% transmute(g_list = list(g)) %>% dm_insert_zoomed(
-        "new_tbl") %>% get_all_keys()
+      zoomed_grouped_in_dm |> transmute(g_list = list(g)) |> dm_insert_zoomed(
+        "new_tbl") |> get_all_keys()
     Output
       $pks
       # A tibble: 6 x 2
@@ -242,8 +242,8 @@
       
     Code
       # mutate()
-      zoomed_grouped_out_dm %>% mutate(d_mean = mean(d), d = d * 2) %>%
-        dm_insert_zoomed("new_tbl") %>% get_all_keys()
+      zoomed_grouped_out_dm |> mutate(d_mean = mean(d), d = d * 2) |>
+        dm_insert_zoomed("new_tbl") |> get_all_keys()
     Output
       $pks
       # A tibble: 7 x 2
@@ -269,7 +269,7 @@
       6 tf_5        m             tf_6         n              
       
     Code
-      zoomed_grouped_in_dm %>% mutate(f = list(g)) %>% dm_insert_zoomed("new_tbl") %>%
+      zoomed_grouped_in_dm |> mutate(f = list(g)) |> dm_insert_zoomed("new_tbl") |>
         get_all_keys()
     Output
       $pks
@@ -294,7 +294,7 @@
       5 tf_5        m             tf_6         n              
       
     Code
-      zoomed_grouped_in_dm %>% mutate(g_new = list(g)) %>% dm_insert_zoomed("new_tbl") %>%
+      zoomed_grouped_in_dm |> mutate(g_new = list(g)) |> dm_insert_zoomed("new_tbl") |>
         get_all_keys()
     Output
       $pks
@@ -323,9 +323,9 @@
       
     Code
       # chain of renames & other transformations
-      zoomed_grouped_out_dm %>% summarize(d_mean = mean(d)) %>% ungroup() %>% rename(
-        e_new = e) %>% group_by(e_new, e1) %>% transmute(c = paste0(c, "_animal")) %>%
-        dm_insert_zoomed("new_tbl") %>% get_all_keys()
+      zoomed_grouped_out_dm |> summarize(d_mean = mean(d)) |> ungroup() |> rename(
+        e_new = e) |> group_by(e_new, e1) |> transmute(c = paste0(c, "_animal")) |>
+        dm_insert_zoomed("new_tbl") |> get_all_keys()
     Output
       $pks
       # A tibble: 6 x 2
@@ -353,7 +353,7 @@
 # key tracking works (2)
 
     Code
-      zoomed_grouped_in_dm %>% select(g_new = g) %>% get_all_keys("tf_3")
+      zoomed_grouped_in_dm |> select(g_new = g) |> get_all_keys("tf_3")
     Output
       $pks
       # A tibble: 1 x 2
@@ -372,7 +372,7 @@
 # output for compound keys
 
     Code
-      grouped_zoomed_comp_dm_1 %>% mutate(count = n()) %>% col_tracker_zoomed()
+      grouped_zoomed_comp_dm_1 |> mutate(count = n()) |> col_tracker_zoomed()
     Output
             origin         year        month          day         hour         temp 
           "origin"       "year"      "month"        "day"       "hour"       "temp" 
@@ -381,7 +381,7 @@
           pressure        visib    time_hour 
         "pressure"      "visib"  "time_hour" 
     Code
-      grouped_zoomed_comp_dm_2 %>% mutate(count = n()) %>% col_tracker_zoomed()
+      grouped_zoomed_comp_dm_2 |> mutate(count = n()) |> col_tracker_zoomed()
     Output
             origin         year        month          day         hour         temp 
           "origin"       "year"      "month"        "day"       "hour"       "temp" 
@@ -390,7 +390,7 @@
           pressure        visib    time_hour 
         "pressure"      "visib"  "time_hour" 
     Code
-      grouped_zoomed_comp_dm_1 %>% transmute(count = n()) %>% dm_update_zoomed()
+      grouped_zoomed_comp_dm_1 |> transmute(count = n()) |> dm_update_zoomed()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -398,7 +398,7 @@
       Primary keys: 3
       Foreign keys: 3
     Code
-      grouped_zoomed_comp_dm_2 %>% transmute(count = n()) %>% dm_update_zoomed()
+      grouped_zoomed_comp_dm_2 |> transmute(count = n()) |> dm_update_zoomed()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -406,7 +406,7 @@
       Primary keys: 4
       Foreign keys: 4
     Code
-      grouped_zoomed_comp_dm_1 %>% summarize(count = n()) %>% dm_update_zoomed()
+      grouped_zoomed_comp_dm_1 |> summarize(count = n()) |> dm_update_zoomed()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -414,7 +414,7 @@
       Primary keys: 3
       Foreign keys: 3
     Code
-      grouped_zoomed_comp_dm_2 %>% summarize(count = n()) %>% dm_update_zoomed()
+      grouped_zoomed_comp_dm_2 |> summarize(count = n()) |> dm_update_zoomed()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -422,7 +422,7 @@
       Primary keys: 4
       Foreign keys: 4
     Code
-      zoomed_comp_dm %>% select(time_hour, wind_dir) %>% dm_update_zoomed()
+      zoomed_comp_dm |> select(time_hour, wind_dir) |> dm_update_zoomed()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -430,7 +430,7 @@
       Primary keys: 3
       Foreign keys: 3
     Code
-      zoomed_comp_dm %>% select(time_hour, origin, wind_dir) %>% dm_update_zoomed()
+      zoomed_comp_dm |> select(time_hour, origin, wind_dir) |> dm_update_zoomed()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -438,7 +438,7 @@
       Primary keys: 4
       Foreign keys: 4
     Code
-      zoomed_comp_dm %>% rename(th = time_hour, wd = wind_dir) %>% dm_update_zoomed()
+      zoomed_comp_dm |> rename(th = time_hour, wd = wind_dir) |> dm_update_zoomed()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -446,7 +446,7 @@
       Primary keys: 4
       Foreign keys: 4
     Code
-      zoomed_comp_dm %>% distinct(origin, wind_dir) %>% dm_update_zoomed()
+      zoomed_comp_dm |> distinct(origin, wind_dir) |> dm_update_zoomed()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -454,7 +454,7 @@
       Primary keys: 3
       Foreign keys: 3
     Code
-      zoomed_comp_dm %>% distinct(origin, wind_dir, time_hour) %>% dm_update_zoomed()
+      zoomed_comp_dm |> distinct(origin, wind_dir, time_hour) |> dm_update_zoomed()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -462,7 +462,7 @@
       Primary keys: 4
       Foreign keys: 4
     Code
-      zoomed_comp_dm %>% filter(pressure < 1020) %>% dm_update_zoomed()
+      zoomed_comp_dm |> filter(pressure < 1020) |> dm_update_zoomed()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -470,11 +470,11 @@
       Primary keys: 4
       Foreign keys: 4
     Code
-      zoomed_comp_dm %>% pull(origin) %>% unique()
+      zoomed_comp_dm |> pull(origin) |> unique()
     Output
       [1] "EWR" "JFK" "LGA"
     Code
-      zoomed_comp_dm %>% slice(c(1:3, 5:3))
+      zoomed_comp_dm |> slice(c(1:3, 5:3))
     Message <simpleMessage>
       Keeping PK column, but `slice.zoomed_dm()` can potentially damage the uniqueness of PK columns (duplicated indices). Set argument `.keep_pk` to `TRUE` or `FALSE` to ensure the behavior you intended.
     Output
@@ -491,7 +491,7 @@
       # ... with 4 more variables: precip <dbl>, pressure <dbl>, visib <dbl>,
       #   time_hour <dttm>
     Code
-      zoomed_comp_dm %>% slice(c(1:3, 5:3), .keep_pk = TRUE) %>% col_tracker_zoomed()
+      zoomed_comp_dm |> slice(c(1:3, 5:3), .keep_pk = TRUE) |> col_tracker_zoomed()
     Output
             origin         year        month          day         hour         temp 
           "origin"       "year"      "month"        "day"       "hour"       "temp" 
@@ -500,7 +500,7 @@
           pressure        visib    time_hour 
         "pressure"      "visib"  "time_hour" 
     Code
-      zoomed_comp_dm %>% left_join(flights) %>% nrow()
+      zoomed_comp_dm |> left_join(flights) |> nrow()
     Message <simpleMessage>
       Renamed columns:
       * year -> weather.year, flights.year
@@ -510,7 +510,7 @@
     Output
       [1] 1800
     Code
-      zoomed_comp_dm %>% right_join(flights) %>% nrow()
+      zoomed_comp_dm |> right_join(flights) |> nrow()
     Message <simpleMessage>
       Renamed columns:
       * year -> weather.year, flights.year
@@ -520,7 +520,7 @@
     Output
       [1] 1761
     Code
-      zoomed_comp_dm %>% inner_join(flights) %>% nrow()
+      zoomed_comp_dm |> inner_join(flights) |> nrow()
     Message <simpleMessage>
       Renamed columns:
       * year -> weather.year, flights.year
@@ -530,7 +530,7 @@
     Output
       [1] 1761
     Code
-      zoomed_comp_dm %>% full_join(flights) %>% nrow()
+      zoomed_comp_dm |> full_join(flights) |> nrow()
     Message <simpleMessage>
       Renamed columns:
       * year -> weather.year, flights.year
@@ -540,11 +540,11 @@
     Output
       [1] 1800
     Code
-      zoomed_comp_dm %>% semi_join(flights) %>% nrow()
+      zoomed_comp_dm |> semi_join(flights) |> nrow()
     Output
       [1] 105
     Code
-      zoomed_comp_dm %>% anti_join(flights) %>% nrow()
+      zoomed_comp_dm |> anti_join(flights) |> nrow()
     Output
       [1] 39
 

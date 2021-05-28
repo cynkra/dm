@@ -7,12 +7,12 @@ test_that("dm_rows_insert()", {
     # Entire dataset with all dimension tables populated
     # with flights and weather data truncated:
     flights_init <-
-      dm_nycflights13() %>%
-      dm_zoom_to(flights) %>%
-      filter(FALSE) %>%
-      dm_update_zoomed() %>%
-      dm_zoom_to(weather) %>%
-      filter(FALSE) %>%
+      dm_nycflights13() |>
+      dm_zoom_to(flights) |>
+      filter(FALSE) |>
+      dm_update_zoomed() |>
+      dm_zoom_to(weather) |>
+      filter(FALSE) |>
       dm_update_zoomed()
 
     sqlite <- dbConnect(RSQLite::SQLite())
@@ -23,13 +23,13 @@ test_that("dm_rows_insert()", {
 
     # First update:
     flights_hour10 <-
-      dm_nycflights13() %>%
-      dm_select_tbl(flights, weather) %>%
-      dm_zoom_to(flights) %>%
-      filter(month == 1, day == 10, hour == 10) %>%
-      dm_update_zoomed() %>%
-      dm_zoom_to(weather) %>%
-      filter(month == 1, day == 10, hour == 10) %>%
+      dm_nycflights13() |>
+      dm_select_tbl(flights, weather) |>
+      dm_zoom_to(flights) |>
+      filter(month == 1, day == 10, hour == 10) |>
+      dm_update_zoomed() |>
+      dm_zoom_to(weather) |>
+      filter(month == 1, day == 10, hour == 10) |>
       dm_update_zoomed()
     print(dm_nrow(flights_hour10))
 
@@ -46,13 +46,13 @@ test_that("dm_rows_insert()", {
 
     # Second update:
     flights_hour11 <-
-      dm_nycflights13() %>%
-      dm_select_tbl(flights, weather) %>%
-      dm_zoom_to(flights) %>%
-      filter(month == 1, day == 10, hour == 11) %>%
-      dm_update_zoomed() %>%
-      dm_zoom_to(weather) %>%
-      filter(month == 1, day == 10, hour == 11) %>%
+      dm_nycflights13() |>
+      dm_select_tbl(flights, weather) |>
+      dm_zoom_to(flights) |>
+      filter(month == 1, day == 10, hour == 11) |>
+      dm_update_zoomed() |>
+      dm_zoom_to(weather) |>
+      filter(month == 1, day == 10, hour == 11) |>
       dm_update_zoomed()
 
     # Copy to temporary tables on the target database:
@@ -68,7 +68,7 @@ test_that("dm_rows_insert()", {
     print(dm_nrow(flights_sqlite))
 
     # Check for consistency before applying:
-    flights_new %>%
+    flights_new |>
       dm_examine_constraints()
 
     # Apply:
@@ -87,9 +87,9 @@ test_that("dm_rows_update()", {
   expect_snapshot({
     # Test bad column order
     dm_filter_rearranged <-
-      dm_for_filter() %>%
-      dm_select(tf_2, d, everything()) %>%
-      dm_select(tf_4, i, everything()) %>%
+      dm_for_filter() |>
+      dm_select(tf_2, d, everything()) |>
+      dm_select(tf_4, i, everything()) |>
       dm_select(tf_5, l, m, everything())
 
     suppressMessages(dm_copy <- copy_dm_to(my_test_src(), dm_filter_rearranged))
@@ -115,33 +115,33 @@ test_that("dm_rows_update()", {
 
     dm_update_copy <- suppressMessages(copy_dm_to(my_test_src(), dm_update_local))
 
-    dm_copy %>%
-      pull_tbl(tf_2) %>%
+    dm_copy |>
+      pull_tbl(tf_2) |>
       arrange_all()
 
-    dm_copy %>%
-      dm_rows_update(dm_update_copy) %>%
-      pull_tbl(tf_2) %>%
+    dm_copy |>
+      dm_rows_update(dm_update_copy) |>
+      pull_tbl(tf_2) |>
       arrange_all()
 
-    dm_copy %>%
-      pull_tbl(tf_2) %>%
+    dm_copy |>
+      pull_tbl(tf_2) |>
       arrange_all()
 
-    dm_copy %>%
-      dm_rows_update(dm_update_copy, in_place = FALSE) %>%
-      pull_tbl(tf_2) %>%
+    dm_copy |>
+      dm_rows_update(dm_update_copy, in_place = FALSE) |>
+      pull_tbl(tf_2) |>
       arrange_all()
 
-    dm_copy %>%
-      dm_get_tables() %>%
+    dm_copy |>
+      dm_get_tables() |>
       map(arrange_all)
 
-    dm_copy %>%
+    dm_copy |>
       dm_rows_update(dm_update_copy, in_place = TRUE)
 
-    dm_copy %>%
-      dm_get_tables() %>%
+    dm_copy |>
+      dm_get_tables() |>
       map(arrange_all)
   })
 })
@@ -165,33 +165,33 @@ test_that("dm_rows_truncate()", {
 
     dm_truncate_copy <- suppressMessages(copy_dm_to(my_test_src(), dm_truncate_local))
 
-    dm_copy %>%
-      pull_tbl(tf_2) %>%
+    dm_copy |>
+      pull_tbl(tf_2) |>
       arrange_all()
 
-    dm_copy %>%
-      dm_rows_truncate(dm_truncate_copy) %>%
-      pull_tbl(tf_2) %>%
+    dm_copy |>
+      dm_rows_truncate(dm_truncate_copy) |>
+      pull_tbl(tf_2) |>
       arrange_all()
 
-    dm_copy %>%
-      pull_tbl(tf_2) %>%
+    dm_copy |>
+      pull_tbl(tf_2) |>
       arrange_all()
 
-    dm_copy %>%
-      dm_rows_truncate(dm_truncate_copy, in_place = FALSE) %>%
-      pull_tbl(tf_2) %>%
+    dm_copy |>
+      dm_rows_truncate(dm_truncate_copy, in_place = FALSE) |>
+      pull_tbl(tf_2) |>
       arrange_all()
 
-    dm_copy %>%
-      dm_get_tables() %>%
+    dm_copy |>
+      dm_get_tables() |>
       map(arrange_all)
 
-    dm_copy %>%
+    dm_copy |>
       dm_rows_truncate(dm_truncate_copy, in_place = TRUE)
 
-    dm_copy %>%
-      dm_get_tables() %>%
+    dm_copy |>
+      dm_get_tables() |>
       map(arrange_all)
   })
 })
@@ -203,10 +203,10 @@ test_that("output for compound keys", {
   skip("COMPOUND")
 
   expect_snapshot({
-    target_dm <- dm_filter(nyc_comp(), weather, pressure > 1010) %>% dm_apply_filters()
+    target_dm <- dm_filter(nyc_comp(), weather, pressure > 1010) |> dm_apply_filters()
     insert_dm <-
-      dm_filter(nyc_comp(), weather, pressure <= 1010) %>%
-      dm_apply_filters() %>%
+      dm_filter(nyc_comp(), weather, pressure <= 1010) |>
+      dm_apply_filters() |>
       dm_select_tbl(flights, weather)
     dm_rows_insert(target_dm, insert_dm, in_place = FALSE)
     dm_rows_truncate(nyc_comp(), insert_dm, in_place = FALSE)

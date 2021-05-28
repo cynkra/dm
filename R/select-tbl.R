@@ -13,7 +13,7 @@
 #' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_select_tbl(airports, fl = flights)
 #' @export
 dm_select_tbl <- function(dm, ...) {
@@ -32,7 +32,7 @@ dm_select_tbl <- function(dm, ...) {
 #' @rdname dm_select_tbl
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_rename_tbl(ap = airports, fl = flights)
 #' @export
 dm_rename_tbl <- function(dm, ...) {
@@ -51,8 +51,8 @@ dm_select_tbl_impl <- function(dm, selected, needs_repair = TRUE, repair = "uniq
   }
 
   def <-
-    dm_get_def(dm) %>%
-    filter_recode_table_def(selected) %>%
+    dm_get_def(dm) |>
+    filter_recode_table_def(selected) |>
     filter_recode_table_fks(selected)
 
   new_dm3(def)
@@ -73,7 +73,7 @@ filter_recode_table_def <- function(data, selected) {
   # data$table only contains unique values by definition.
   idx <- match(selected, data$table, nomatch = 0L)
 
-  data[idx, ] %>%
+  data[idx, ] |>
     mutate(table = recode(table, !!!prep_recode(selected)))
 }
 

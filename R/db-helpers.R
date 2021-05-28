@@ -27,70 +27,70 @@ get_pid <- function() {
 # Internal copy helper functions
 build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
   source <-
-    dm %>%
-    dm_apply_filters() %>%
+    dm |>
+    dm_apply_filters() |>
     dm_get_tables_impl()
 
   copy_data_base <-
-    tibble(source_name = src_tbls_impl(dm), name = table_names) %>%
+    tibble(source_name = src_tbls_impl(dm), name = table_names) |>
     mutate(df = map(source_name, function(x) tbl_impl(dm, x)))
 
   if (is_db(dest)) {
     dest_con <- con_from_src_or_con(dest)
 
     pks <-
-      dm_get_all_pks_impl(dm) %>%
+      dm_get_all_pks_impl(dm) |>
       select(source_name = table, pk_col)
 
     pks_clause <-
-      pks %>%
+      pks |>
       mutate(
         cols = map_chr(pk_col, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
         constraint = "PRIMARY KEY"
       )
 
     fks <-
-      dm_get_all_fks_impl(dm) %>%
+      dm_get_all_fks_impl(dm) |>
       rename(source_name = child_table)
 
     unique_clause <-
-      fks %>%
-      select(source_name = parent_table, pk_col = parent_key_cols) %>%
-      anti_join(pks, by = c("source_name", "pk_col")) %>%
-      distinct() %>%
+      fks |>
+      select(source_name = parent_table, pk_col = parent_key_cols) |>
+      anti_join(pks, by = c("source_name", "pk_col")) |>
+      distinct() |>
       mutate(
         cols = map_chr(pk_col, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
         constraint = "UNIQUE"
       )
 
     clause <-
-      bind_rows(pks_clause, unique_clause) %>%
-      mutate(sql = paste0(",\n", constraint, " (", cols, ")")) %>%
-      group_by(source_name) %>%
-      summarize(sql = paste(sql, collapse = "")) %>%
+      bind_rows(pks_clause, unique_clause) |>
+      mutate(sql = paste0(",\n", constraint, " (", cols, ")")) |>
+      group_by(source_name) |>
+      summarize(sql = paste(sql, collapse = "")) |>
       ungroup()
 
     pks_flat <-
-      pks %>%
+      pks |>
       # Expanding summarize()
-      group_by(source_name) %>%
-      summarize(column = as.character(unlist(pk_col)), pk = TRUE) %>%
+      group_by(source_name) |>
+      summarize(column = as.character(unlist(pk_col)), pk = TRUE) |>
       ungroup()
 
     # Need to supply NOT NULL modifiers for primary keys
     # because they are difficult to add to MSSQL after the fact
     copy_data_types <-
-      copy_data_base %>%
-      select(source_name, df) %>%
-      mutate(column = map(df, colnames)) %>%
-      mutate(type = map(df, ~ map_chr(., ~ DBI::dbDataType(dest_con, .)))) %>%
-      select(-df) %>%
-      unnest(c(column, type)) %>%
-      left_join(pks_flat, by = c("source_name", "column")) %>%
-      mutate(full_type = paste0(type, if_else(pk, " NOT NULL", "", ""))) %>%
+      copy_data_base |>
+      select(source_name, df) |>
+      mutate(column = map(df, colnames)) |>
+      mutate(type = map(df, ~ map_chr(., ~ DBI::dbDataType(dest_con, .)))) |>
+      select(-df) |>
+      unnest(c(column, type)) |>
+      left_join(pks_flat, by = c("source_name", "column")) |>
+      mutate(full_type = paste0(type, if_else(pk, " NOT NULL", "", ""))) |>
       #
-      left_join(clause, by = "source_name") %>%
-      group_by(source_name) %>%
+      left_join(clause, by = "source_name") |>
+      group_by(source_name) |>
       #
       # HACK: Append PRIMARY KEY clause to end, https://github.com/r-dbi/DBI/pull/351
       # So far this is the only reason to use `con` in this function
@@ -98,37 +98,37 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
         !!set_key_constraints & !is.na(sql) & (row_number() == n()),
         sql,
         ""
-      ))) %>%
+      ))) |>
       #
       summarize(types = list(deframe(tibble(column, full_type))))
 
     copy_data_unique_indexes <-
-      pks %>%
-      group_by(source_name) %>%
-      summarize(unique_indexes = list(pk_col)) %>%
+      pks |>
+      group_by(source_name) |>
+      summarize(unique_indexes = list(pk_col)) |>
       ungroup()
 
     copy_data_non_unique_indexes <-
-      fks %>%
-      group_by(source_name) %>%
-      summarize(indexes = list(child_fk_cols)) %>%
+      fks |>
+      group_by(source_name) |>
+      summarize(indexes = list(child_fk_cols)) |>
       ungroup()
 
     copy_data_indexes <-
-      full_join(copy_data_unique_indexes, copy_data_non_unique_indexes, by = "source_name") %>%
+      full_join(copy_data_unique_indexes, copy_data_non_unique_indexes, by = "source_name") |>
       mutate(indexes = map2(indexes, unique_indexes, setdiff))
 
     # Downgrade unique indexes to non-unique indexes
     if (!set_key_constraints) {
       copy_data_indexes <-
-        copy_data_indexes %>%
-        mutate(indexes = map2(indexes, unique_indexes, c)) %>%
+        copy_data_indexes |>
+        mutate(indexes = map2(indexes, unique_indexes, c)) |>
         mutate(unique_indexes = list(new_keys()))
     }
 
     copy_data <-
-      copy_data_base %>%
-      inner_join(copy_data_types, by = "source_name") %>%
+      copy_data_base |>
+      inner_join(copy_data_types, by = "source_name") |>
       left_join(copy_data_indexes, by = "source_name")
   } else {
     copy_data <-
@@ -273,12 +273,12 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
     names_table <- get_names_table_mariadb(con)
   }
 
-  names_table %>%
-    filter(schema_name == !!schema) %>%
-    collect() %>%
+  names_table |>
+    filter(schema_name == !!schema) |>
+    collect() |>
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
-    mutate(remote_name = schema_if(schema_name, table_name, con, dbname)) %>%
-    select(-schema_name) %>%
+    mutate(remote_name = schema_if(schema_name, table_name, con, dbname)) |>
+    select(-schema_name) |>
     deframe()
 }
 

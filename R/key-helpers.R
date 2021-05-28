@@ -40,12 +40,12 @@ check_key <- function(.data, ...) {
   names(cols_chosen) <- glue("...{seq_along(cols_chosen)}")
 
   duplicate_rows <-
-    .data %>%
-    select(!!!cols_chosen) %>%
-    safe_count(!!!syms(names(cols_chosen))) %>%
-    select(n) %>%
-    filter(n > 1) %>%
-    head(1) %>%
+    .data |>
+    select(!!!cols_chosen) |>
+    safe_count(!!!syms(names(cols_chosen))) |>
+    select(n) |>
+    filter(n > 1) |>
+    head(1) |>
     collect()
 
   if (nrow(duplicate_rows) != 0) {
@@ -72,12 +72,12 @@ is_unique_key_se <- function(.data, colname) {
   any_value_na_expr <- parse(text = paste0("is.na(", val_names, ")", collapse = " | "))[[1]]
 
   res_tbl <-
-    .data %>%
-    safe_count(!!!col_syms) %>%
-    mutate(any_na = if_else(!!any_value_na_expr, 1L, 0L)) %>%
-    filter(n != 1 | any_na != 0L) %>%
-    arrange(desc(n), !!!syms(val_names)) %>%
-    utils::head(MAX_COMMAS + 1) %>%
+    .data |>
+    safe_count(!!!col_syms) |>
+    mutate(any_na = if_else(!!any_value_na_expr, 1L, 0L)) |>
+    filter(n != 1 | any_na != 0L) |>
+    arrange(desc(n), !!!syms(val_names)) |>
+    utils::head(MAX_COMMAS + 1) |>
     collect()
 
   res_tbl[val_names] <- map(res_tbl[val_names], format, trim = TRUE, justify = "none")
@@ -85,11 +85,11 @@ is_unique_key_se <- function(.data, colname) {
   res_tbl$value <- if_else(res_tbl$any_na != 0, NA_character_, exec(paste0, !!!res_tbl[val_names]))
 
   duplicate_rows <-
-    res_tbl %>%
+    res_tbl |>
     {
       # https://github.com/tidyverse/tidyr/issues/734
       tibble(data = list(.))
-    } %>%
+    } |>
     mutate(unique = map_lgl(data, ~ nrow(.) == 0))
 
   duplicate_rows

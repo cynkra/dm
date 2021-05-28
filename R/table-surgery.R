@@ -55,21 +55,21 @@ decompose_table <- function(.data, new_id_column, ...) {
   sel_vars <- eval_select_both(quo(c(...)), avail_cols)
 
   parent_table <-
-    select(.data, !!!sel_vars$indices) %>%
-    distinct() %>%
+    select(.data, !!!sel_vars$indices) |>
+    distinct() |>
     # Without as.integer(), RPostgres creates integer64 column (#15)
-    mutate(!!id_col_q := as.integer(row_number(!!sym(names(sel_vars$indices)[[1]])))) %>%
+    mutate(!!id_col_q := as.integer(row_number(!!sym(names(sel_vars$indices)[[1]])))) |>
     select(!!id_col_q, everything())
 
   non_key_indices <-
     setdiff(seq_along(avail_cols), sel_vars$indices)
 
   child_table <-
-    .data %>%
+    .data |>
     left_join(
       parent_table,
       by = prep_recode(sel_vars$names)
-    ) %>%
+    ) |>
     select(!!!non_key_indices, !!id_col_q)
   # FIXME: Think about a good place for the target column,
   # perhaps if this operation is run in a data model?
@@ -116,8 +116,8 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
   id_col_chr <-
     as_name(id_col_q)
 
-  child_table %>%
-    left_join(parent_table, by = id_col_chr) %>%
+  child_table |>
+    left_join(parent_table, by = id_col_chr) |>
     select(-!!id_col_q)
 }
 
@@ -141,14 +141,14 @@ reunite_parent_child_from_list <- function(list_of_parent_child_tables, id_colum
     as_name(id_col_q)
 
   child_table <-
-    list_of_parent_child_tables %>%
+    list_of_parent_child_tables |>
     extract2("child_table")
 
   parent_table <-
-    list_of_parent_child_tables %>%
+    list_of_parent_child_tables |>
     extract2("parent_table")
 
-  child_table %>%
-    left_join(parent_table, by = id_col_chr) %>%
+  child_table |>
+    left_join(parent_table, by = id_col_chr) |>
     select(-!!id_col_q)
 }

@@ -21,24 +21,24 @@ get_datamodel_from_overview <- function(overview) {
 }
 
 datamodel_tables_from_overview <- function(overview) {
-  overview %>%
-    distinct(table) %>%
-    add_column(segment = NA_character_, display = NA_character_) %>%
+  overview |>
+    distinct(table) |>
+    add_column(segment = NA_character_, display = NA_character_) |>
     as.data.frame(stringsAsFactors = FALSE)
 }
 
 datamodel_columns_from_overview <- function(overview) {
-  overview %>%
-    select(column, type, table, key, ref, ref_col) %>%
-    mutate(key = as.numeric(key)) %>%
+  overview |>
+    select(column, type, table, key, ref, ref_col) |>
+    mutate(key = as.numeric(key)) |>
     as.data.frame(stringsAsFactors = FALSE)
 }
 
 datamodel_references_from_overview <- function(overview) {
-  overview %>%
-    filter(!is.na(ref)) %>%
-    select(table, column, ref, ref_col) %>%
-    mutate(ref_id = as.numeric(row_number())) %>%
-    add_column(ref_col_num = 1) %>%
+  overview |>
+    filter(!is.na(ref)) |>
+    select(table, column, ref, ref_col) |>
+    mutate(ref_id = as.numeric(row_number())) |>
+    add_column(ref_col_num = 1) |>
     as.data.frame(stringsAsFactors = FALSE)
 }

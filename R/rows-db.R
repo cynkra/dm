@@ -118,8 +118,8 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
 
     unchanged <- anti_join(x, y, by = by)
     updated <-
-      x %>%
-      select(!!!existing_columns) %>%
+      x |>
+      select(!!!existing_columns) |>
       inner_join(y, by = by)
 
     union_all(unchanged, updated)

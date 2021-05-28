@@ -12,7 +12,7 @@
 #'
 #' @export
 #' @examplesIf dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")
-#' dm_financial() %>%
+#' dm_financial() |>
 #'   dm_draw()
 dm_financial <- function() {
   stopifnot(rlang::is_installed("RMariaDB"))
@@ -20,22 +20,22 @@ dm_financial <- function() {
   my_db <- financial_db_con()
 
   my_dm <-
-    dm_from_src(my_db, learn_keys = FALSE) %>%
-    dm_add_pk(districts, id) %>%
-    dm_add_pk(accounts, id) %>%
-    dm_add_pk(clients, id) %>%
-    dm_add_pk(loans, id) %>%
-    dm_add_pk(orders, id) %>%
-    dm_add_pk(disps, id) %>%
-    dm_add_pk(cards, id) %>%
-    dm_add_pk(trans, id) %>%
-    dm_add_fk(loans, account_id, accounts) %>%
-    dm_add_fk(orders, account_id, accounts) %>%
-    dm_add_fk(disps, account_id, accounts) %>%
-    dm_add_fk(disps, client_id, clients) %>%
-    dm_add_fk(accounts, district_id, districts) %>%
-    dm_add_fk(cards, disp_id, disps) %>%
-    dm_add_fk(trans, account_id, accounts) %>%
+    dm_from_src(my_db, learn_keys = FALSE) |>
+    dm_add_pk(districts, id) |>
+    dm_add_pk(accounts, id) |>
+    dm_add_pk(clients, id) |>
+    dm_add_pk(loans, id) |>
+    dm_add_pk(orders, id) |>
+    dm_add_pk(disps, id) |>
+    dm_add_pk(cards, id) |>
+    dm_add_pk(trans, id) |>
+    dm_add_fk(loans, account_id, accounts) |>
+    dm_add_fk(orders, account_id, accounts) |>
+    dm_add_fk(disps, account_id, accounts) |>
+    dm_add_fk(disps, client_id, clients) |>
+    dm_add_fk(accounts, district_id, districts) |>
+    dm_add_fk(cards, disp_id, disps) |>
+    dm_add_fk(trans, account_id, accounts) |>
     dm_set_colors(darkgreen = loans)
 
   my_dm
@@ -67,7 +67,7 @@ dm_financial_sqlite <- function() {
   stopifnot(rlang::is_installed("RSQLite"))
 
   my_dm <-
-    dm_financial() %>%
+    dm_financial() |>
     dm_select_tbl(-trans)
 
   sqlite_db <- DBI::dbConnect(RSQLite::SQLite())

@@ -29,14 +29,14 @@
 #'
 #' @export
 #' @examples
-#' dm() %>%
+#' dm() |>
 #'   dm_paste()
 #' @examplesIf rlang::is_installed("nycflights13")
 #'
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_paste()
 #'
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_paste(options = "select")
 dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
                      options = NULL, path = NULL) {
@@ -120,7 +120,7 @@ dm_paste_impl <- function(dm, options, tab_width) {
       code_fks,
       code_color
     ),
-    sep = glue(" %>%\n{tab}", .trim = FALSE)
+    sep = glue(" |>\n{tab}", .trim = FALSE)
   )
 
   paste0(code_tables, code_dm)
@@ -130,8 +130,8 @@ dm_paste_tables <- function(dm, tab) {
   ptype <- dm_ptype(dm)
 
   tables <-
-    ptype %>%
-    dm_get_tables() %>%
+    ptype |>
+    dm_get_tables() |>
     map_chr(df_paste, tab)
 
   glue_collapse1(
@@ -145,29 +145,29 @@ dm_paste_construct <- function(dm) {
 
 dm_paste_select <- function(dm) {
   tbl_select <-
-    dm %>%
-    dm_get_def() %>%
-    mutate(cols = map(data, colnames)) %>%
-    mutate(cols = map_chr(cols, ~ glue_collapse1(glue(", {tick_if_needed(.x)}")))) %>%
-    mutate(code = glue("dm::dm_select({tick_if_needed(table)}{cols})")) %>%
+    dm |>
+    dm_get_def() |>
+    mutate(cols = map(data, colnames)) |>
+    mutate(cols = map_chr(cols, ~ glue_collapse1(glue(", {tick_if_needed(.x)}")))) |>
+    mutate(code = glue("dm::dm_select({tick_if_needed(table)}{cols})")) |>
     pull()
 }
 
 dm_paste_pks <- function(dm) {
-  dm %>%
-    dm_get_all_pks_impl() %>%
-    mutate(code = glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")) %>%
+  dm |>
+    dm_get_all_pks_impl() |>
+    mutate(code = glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")) |>
     pull()
 }
 
 dm_paste_fks <- function(dm) {
   pks <-
-    dm %>%
-    dm_get_all_pks_impl() %>%
+    dm |>
+    dm_get_all_pks_impl() |>
     set_names(c("parent_table", "parent_default_pk_cols"))
 
   fks <-
-    dm %>%
+    dm |>
     dm_get_all_fks_impl()
 
   fpks <-

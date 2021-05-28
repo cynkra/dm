@@ -29,19 +29,19 @@
 #'   weather = nycflights13::weather
 #' )
 #'
-#' nycflights_dm %>%
+#' nycflights_dm |>
 #'   dm_draw()
 #'
 #' # Create primary keys:
-#' nycflights_dm %>%
-#'   dm_add_pk(planes, tailnum) %>%
-#'   dm_add_pk(airports, faa, check = TRUE) %>%
-#'   dm_add_pk(weather, c(origin, time_hour)) %>%
+#' nycflights_dm |>
+#'   dm_add_pk(planes, tailnum) |>
+#'   dm_add_pk(airports, faa, check = TRUE) |>
+#'   dm_add_pk(weather, c(origin, time_hour)) |>
 #'   dm_draw()
 #'
 #' # Keys can be checked during creation:
 #' try(
-#'   nycflights_dm %>%
+#'   nycflights_dm |>
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
 #' )
 dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE) {
@@ -93,9 +93,9 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #' @return A logical value: `TRUE` if the given table has a primary key, `FALSE` otherwise.
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_has_pk(flights)
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_has_pk(planes)
 #' @export
 dm_has_pk <- function(dm, table, ...) {
@@ -157,7 +157,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_get_all_pks()
 dm_get_all_pks <- function(dm, table = NULL, ...) {
   check_dots_empty()
@@ -166,8 +166,8 @@ dm_get_all_pks <- function(dm, table = NULL, ...) {
 }
 
 dm_get_all_pks_impl <- function(dm, table = NULL) {
-  dm %>%
-    dm_get_def() %>%
+  dm |>
+    dm_get_def() |>
     dm_get_all_pks_def_impl(table)
 }
 
@@ -181,8 +181,8 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
   }
 
   out <-
-    def_sub %>%
-    unnest_df("pks", tibble(column = list())) %>%
+    def_sub |>
+    unnest_df("pks", tibble(column = list())) |>
     set_names(c("table", "pk_col"))
 
   out$pk_col <- new_keys(out$pk_col)
@@ -213,8 +213,8 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
-#' dm_nycflights13() %>%
-#'   dm_rm_pk(airports, fail_fk = FALSE) %>%
+#' dm_nycflights13() |>
+#'   dm_rm_pk(airports, fail_fk = FALSE) |>
 #'   dm_draw()
 dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE) {
   if (missing(fail_fk)) {
@@ -285,8 +285,8 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
 
   # Talk about it
   if (is.null(table_name)) {
-    message("Removing primary keys: %>%")
-    message("  ", glue_collapse(glue("dm_rm_pk({tick_if_needed(def$table[i])})"), " %>%\n  "))
+    message("Removing primary keys: |>")
+    message("  ", glue_collapse(glue("dm_rm_pk({tick_if_needed(def$table[i])})"), " |>\n  "))
   }
 
   # Execute
@@ -320,7 +320,7 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
-#' nycflights13::flights %>%
+#' nycflights13::flights |>
 #'   enum_pk_candidates()
 enum_pk_candidates <- function(table, ...) {
   check_dots_empty()
@@ -329,9 +329,9 @@ enum_pk_candidates <- function(table, ...) {
     table <- tbl_zoomed(table)
   }
 
-  table %>%
-    enum_pk_candidates_impl() %>%
-    rename(columns = column) %>%
+  table |>
+    enum_pk_candidates_impl() |>
+    rename(columns = column) |>
     mutate(columns = new_keys(columns))
 }
 
@@ -346,7 +346,7 @@ enum_pk_candidates <- function(table, ...) {
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
 #'
-#' dm_nycflights13() %>%
+#' dm_nycflights13() |>
 #'   dm_enum_pk_candidates(airports)
 dm_enum_pk_candidates <- function(dm, table, ...) {
   check_dots_empty()
@@ -358,17 +358,17 @@ dm_enum_pk_candidates <- function(dm, table, ...) {
   table_name <- dm_tbl_name(dm, {{ table }})
 
   table <- dm_get_tables_impl(dm)[[table_name]]
-  table %>%
-    enum_pk_candidates_impl() %>%
-    rename(columns = column) %>%
+  table |>
+    enum_pk_candidates_impl() |>
+    rename(columns = column) |>
     mutate(columns = new_keys(columns))
 }
 
 enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table))) {
-  tibble(column = new_keys(columns)) %>%
-    mutate(why = map_chr(column, ~ check_pk(table, .x))) %>%
-    mutate(candidate = (why == "")) %>%
-    select(column, candidate, why) %>%
+  tibble(column = new_keys(columns)) |>
+    mutate(why = map_chr(column, ~ check_pk(table, .x))) |>
+    mutate(candidate = (why == "")) |>
+    select(column, candidate, why) |>
     arrange(desc(candidate), column)
 }
 
