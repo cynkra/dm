@@ -559,7 +559,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sa
       set_names(pk) %>%
       list() %>%
       set_names(t2_name)
-    if (fk_repair == "add") {
+    if (fk_repair == "insert") {
       repair_plan <- new_repair_plan(insert = dm(!!!dm_arg))
     } else {
       # "delete"
