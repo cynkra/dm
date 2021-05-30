@@ -491,7 +491,7 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
     arrange(desc(candidate))
 }
 
-check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = "none") {
+check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sample = TRUE) {
   stopifnot(length(colname) == length(pk))
 
   val_names <- paste0("value", seq_along(colname))
@@ -515,7 +515,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = "none") 
     .init = call("is.na", sym(val_names[[1]]))
   )
 
-  res_tbl <- tryCatch(
+  counts_tbl <- tryCatch(
     t1_join %>%
       # if value* is NULL, this also counts as a match -- consistent with fk semantics
       filter(!(!!any_value_na_expr)) %>%
@@ -525,51 +525,56 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = "none") 
   )
 
   # return error message if error occurred (possibly types didn't match etc.)
-  if (is_condition(res_tbl)) {
-    return(list(repair_plan = NULL, label = conditionMessage(res_tbl)))
+  if (is_condition(counts_tbl)) {
+    return(list(repair_plan = NULL, label = conditionMessage(counts_tbl)))
   }
 
-  if(fk_repair == "none") {
-    # since we don't repair, we don't fetch all and leave head() before collect()
-    res_tbl <- res_tbl %>%
+  if (sample) {
+    count_tbl_for_label <-
+      counts_tbl %>%
       head(MAX_COMMAS + 1L) %>%
       collect()
-    res_tbl_short <- res_tbl
   } else {
-    res_tbl <- res_tbl %>%
-      collect()
-    res_tbl_short <- head(res_tbl, MAX_COMMAS + 1L)
+    count_tbl_for_label <- collect(counts_tbl)
   }
-  res_tbl <- select(res_tbl, -n)
 
-  # return empty character if candidate
-  if (nrow(res_tbl) == 0) {
+  # return early if no issue found
+  if (nrow(count_tbl_for_label) == 0) {
     return(list(repair_plan = NULL, label = ""))
   }
 
-  if(fk_repair == "none") {
-    repair_plan <- new_repair_plan()
+  if (is.null(fk_repair)) {
+    repair_plan <- NULL
   } else {
+    if (sample) {
+      tbl_for_repair <- counts_tbl %>%
+        select(-n) %>%
+        collect()
+    } else {
+      tbl_for_repair <- count_tbl_for_label %>% select(-n)
+    }
+
     # build parent table addendum with problematic values and wrap in named list
-    dm_arg <- res_tbl  %>%
+    dm_arg <- tbl_for_repair %>%
       set_names(pk) %>%
-      #bind_rows(t2[0,], .) %>%
       list() %>%
       set_names(t2_name)
-
-    if(fk_repair == "add") {
+    if (fk_repair == "add") {
       repair_plan <- new_repair_plan(insert = dm(!!!dm_arg))
     } else {
+      # "delete"
       repair_plan <- new_repair_plan(delete = dm(!!!dm_arg))
     }
   }
 
-  res_tbl_short[val_names] <- map(res_tbl_short[val_names], format, trim = TRUE, justify = "none")
-  res_tbl_short[val_names[-1]] <- map(res_tbl_short[val_names[-1]], ~ paste0(", ", .x))
-  res_tbl_short$value <- exec(paste0, !!!res_tbl_short[val_names])
+  count_tbl_for_label[val_names] <-
+    map(count_tbl_for_label[val_names], format, trim = TRUE, justify = "none")
+  count_tbl_for_label[val_names[-1]] <-
+    map(count_tbl_for_label[val_names[-1]], ~ paste0(", ", .x))
+  count_tbl_for_label$value <- exec(paste0, !!!count_tbl_for_label[val_names])
 
   vals_formatted <- commas(
-    glue("{res_tbl_short$value} ({res_tbl_short$n})"),
+    glue("{count_tbl_for_label$value} ({count_tbl_for_label$n})"),
     capped = TRUE
   )
   label <- glue(

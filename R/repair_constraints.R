@@ -35,7 +35,7 @@
 #'
 #'
 dm_repair_constraints <- function(dm,
-                                  fk_repair = c("add", "delete", "none"),
+                                  fk_repair = c("add", "delete"),
                                   progress = NA,
                                   in_place = NULL) {
   fk_repair <- match.arg(fk_repair)
