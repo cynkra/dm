@@ -546,23 +546,22 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sa
   if (is.null(fk_repair)) {
     repair_plan <- NULL
   } else {
-    if (sample) {
-      tbl_for_repair <- counts_tbl %>%
-        select(-n) %>%
-        collect()
-    } else {
-      tbl_for_repair <- count_tbl_for_label %>% select(-n)
-    }
+    tbl_for_repair <- select(counts_tbl, -n)
 
-    # build parent table addendum with problematic values and wrap in named list
-    dm_arg <- tbl_for_repair %>%
-      set_names(pk) %>%
-      list() %>%
-      set_names(t2_name)
     if (fk_repair == "insert") {
+      # build parent table addendum with problematic values and wrap in named list
+      dm_arg <- tbl_for_repair %>%
+        rename_all(~pk) %>%
+        list() %>%
+        set_names(t2_name)
       repair_plan <- new_repair_plan(insert = dm(!!!dm_arg))
     } else {
       # "delete"
+      # build subset with values to delete and wrap in named list
+      dm_arg <- tbl_for_repair %>%
+        rename_all(~colname) %>%
+        list() %>%
+        set_names(t1_name)
       repair_plan <- new_repair_plan(delete = dm(!!!dm_arg))
     }
   }

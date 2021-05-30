@@ -13,25 +13,30 @@
 #' @examples
 #' nycflights <- dm_nycflights13()
 #'
-#' repaired_add <-
+#' # The dm doesn't satisfy its constraints
+#' dm_examine_constraints(nycflights)
+#'
+#' repaired_insert <-
 #'   nycflights %>%
-#'   dm_repair_constraints("add")
+#'   dm_repair_constraints("insert")
 #'
 #' repaired_delete <-
 #'   nycflights %>%
 #'   dm_repair_constraints("delete")
 #'
+#' # both repaired dms satisfy all constraints
+#' dm_examine_constraints(repaired_insert)
+#' dm_examine_constraints(repaired_delete)
+#'
+#' # but we have more planes in repaired_insert and less flights in repaired_delete
 #' nrow(nycflights$planes)
 #' nrow(nycflights$flights)
 #'
-#' # we have more planes, and the same amount of flights
-#' nrow(repaired_add$planes)
-#' nrow(repaired_add$flights)
+#' nrow(repaired_insert$planes)
+#' nrow(repaired_insert$flights)
 #'
-#'
-#' # we (should) have the same amount of planes, and fewer flights
 #' nrow(repaired_delete$planes)
-#' nrow(repaired_delete$flights) # this is not right
+#' nrow(repaired_delete$flights)
 #'
 #'
 dm_repair_constraints <- function(dm,
@@ -53,6 +58,19 @@ new_repair_plan <- function(insert = NULL, update = NULL, delete = NULL) {
   structure(lst(insert, update, delete), class = "dm_repair_plan")
 }
 
+anti_join_in_place <- function(dm, tbl, tbl_nm) {
+  cond <- imap(collect(tbl), ~ map(.x, ~ call("==", sym(.y), .x), .y))
+  cond <- pmap(cond, ~ reduce(list(...), ~ call("(", call("&", .x, .y))))
+  cond <- reduce(cond, ~ call("|", .x, .y))
+  sql_cond <- dbplyr::translate_sql(!!cond)
+
+  con <- dm_get_con(dm)
+  query <- glue("DELETE FROM {tbl_nm} WHERE {sql_cond}")
+  n <- DBI::dbExecute(con, query)
+  # message(glue("{n} rows were removed"))
+  # synchronize dm
+  dm_mutate_tbl(dm, !!sym(tbl_nm) := tbl(con, tbl_nm))
+}
 
 dm_apply_repair_plan <- function(dm, plan, in_place = NULL) {
   # TODO : implement progress argument once dm_rows_* functions are given progress bars
@@ -63,21 +81,31 @@ dm_apply_repair_plan <- function(dm, plan, in_place = NULL) {
     message("Not persisting, use `in_place = FALSE` to turn off this message.")
     in_place <- FALSE
   }
-
   out <- dm
+
   if (!is.null(plan$insert)) {
     # TODO: find a way to remove "Matching, by =" message due to `dm_rows_run` and `rows_insert.tbl_dbi`
     suppressMessages(out <- dm_rows_insert(dm, plan$insert, in_place = in_place))
   }
-  if (!is.null(plan$update)) {
-    # not used atm
-    out <- dm_rows_update(dm, plan$update, in_place = in_place)
-  }
+
   if (!is.null(plan$delete)) {
     # primary keys must exist in order to delete rows
-    suppressMessages(out <- dm_rows_insert(dm, plan$delete, in_place = in_place))
+    # suppressMessages(out <- dm_rows_insert(dm, plan$delete, in_place = in_place))
     # I expected this to remove rows in linked fact tables, it doesn't
-    out <- dm_rows_delete(out, plan$delete, in_place = in_place)
+    tbl_nm <- names(plan$delete)
+    tbl <- plan$delete[[tbl_nm]]
+
+    src <- dm_get_src_impl(dm)
+    if (!is.null(src) & in_place)  {
+        # persistent anti join
+        out <- anti_join_in_place(dm, tbl, tbl_nm)
+      } else {
+        # non persistent anti join
+        out <- dm %>%
+          dm_mutate_tbl(!!sym(tbl_nm) := anti_join(.[[tbl_nm]], tbl, copy = TRUE, by = names(tbl)))
+      }
   }
-  if (in_place) out else invisible(out)
+  out
 }
+
+
