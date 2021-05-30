@@ -117,7 +117,7 @@ NULL
 dm_rows_insert <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_insert, top_down = TRUE, in_place, require_keys = FALSE, progress = progress)
+  dm_rows(x, y, "insert", top_down = TRUE, in_place, require_keys = FALSE, progress = progress)
 }
 
 #' dm_rows_update
@@ -130,7 +130,7 @@ dm_rows_insert <- function(x, y, ..., in_place = NULL, progress = NA) {
 dm_rows_update <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_update, top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
+  dm_rows(x, y, "update", top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
 }
 
 #' dm_rows_patch
@@ -144,7 +144,7 @@ dm_rows_update <- function(x, y, ..., in_place = NULL, progress = NA) {
 dm_rows_patch <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_patch, top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
+  dm_rows(x, y, "patch", top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
 }
 
 #' dm_rows_upsert
@@ -157,7 +157,7 @@ dm_rows_patch <- function(x, y, ..., in_place = NULL, progress = NA) {
 dm_rows_upsert <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_upsert, top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
+  dm_rows(x, y, "upsert", top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
 }
 
 #' dm_rows_delete
@@ -171,7 +171,7 @@ dm_rows_upsert <- function(x, y, ..., in_place = NULL, progress = NA) {
 dm_rows_delete <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_delete, top_down = FALSE, in_place, require_keys = TRUE, progress = progress)
+  dm_rows(x, y, "delete", top_down = FALSE, in_place, require_keys = TRUE, progress = progress)
 }
 
 #' dm_rows_truncate
@@ -185,10 +185,10 @@ dm_rows_delete <- function(x, y, ..., in_place = NULL, progress = NA) {
 dm_rows_truncate <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_truncate, top_down = FALSE, in_place, require_keys = FALSE, progress = progress)
+  dm_rows(x, y, "truncate", top_down = FALSE, in_place, require_keys = FALSE, progress = progress)
 }
 
-dm_rows <- function(x, y, operation, top_down, in_place, require_keys, progress = NA) {
+dm_rows <- function(x, y, operation_name, top_down, in_place, require_keys, progress = NA) {
   dm_rows_check(x, y)
 
   if (is_null(in_place)) {
@@ -196,7 +196,7 @@ dm_rows <- function(x, y, operation, top_down, in_place, require_keys, progress 
     in_place <- FALSE
   }
 
-  dm_rows_run(x, y, operation, top_down, in_place, require_keys, progress = progress)
+  dm_rows_run(x, y, operation_name, top_down, in_place, require_keys, progress = progress)
 }
 
 dm_rows_check <- function(x, y) {
@@ -235,9 +235,18 @@ check_keys_compatible <- function(x, y) {
   # FIXME
 }
 
+get_dm_rows_op <- function(operation_name) {
+  switch(operation_name,
+    "insert"   = c(fun = rows_insert, pb_label = "inserting rows"),
+    "update"   = c(fun = rows_update, pb_label = "updating rows"),
+    "patch"    = c(fun = rows_patch, pb_label = "patching rows"),
+    "upsert"   = c(fun = rows_upsert, pb_label = "upserting rows"),
+    "delete"   = c(fun = rows_delete, pb_label = "deleting rows"),
+    "truncate" = c(fun = rows_insert, pb_label = "truncating rows")
+  )
+}
 
-
-dm_rows_run <- function(x, y, rows_op, top_down, in_place, require_keys, progress = NA) {
+dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, progress = NA) {
   # topologically sort tables
   graph <- create_graph_from_dm(x, directed = TRUE)
   topo <- igraph::topo_sort(graph, mode = if (top_down) "in" else "out")
@@ -256,11 +265,12 @@ dm_rows_run <- function(x, y, rows_op, top_down, in_place, require_keys, progres
 
   # FIXME: Use keyholder?
 
-  ticker <- new_ticker("", length(tables), progress)
+  rows_op <- get_dm_rows_op(rows_op_name)
+  ticker <- new_ticker(rows_op$pb_label, length(tables), progress)
   # run operation(target_tbl, source_tbl, in_place = in_place) for each table
   op_results <- pmap(
     list(x = target_tbls, y = tbls, by = keys),
-    ticker(rows_op),
+    ticker(rows_op$fun),
     in_place = in_place
   )
 
