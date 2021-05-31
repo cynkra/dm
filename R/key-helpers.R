@@ -68,8 +68,11 @@ is_unique_key_se <- function(.data, colname) {
   col_syms <- syms(colname)
   names(col_syms) <- val_names
 
-  # FIXME: Build expression instead of paste() + parse()
-  any_value_na_expr <- parse(text = paste0("is.na(", val_names, ")", collapse = " | "))[[1]]
+  any_value_na_expr <- reduce(
+    syms(val_names[-1]),
+    ~ call("|", .x, call("is.na", .y)),
+    .init = call("is.na", sym(val_names[[1]]))
+  )
 
   res_tbl <-
     .data %>%
