@@ -41,20 +41,21 @@
 #'
 dm_repair_constraints <- function(dm,
                                   fk_repair = c("insert", "delete"),
+                                  pk_repair = TRUE,
                                   progress = NA,
                                   in_place = NULL) {
   fk_repair <- match.arg(fk_repair)
-  # TODO : pk_repair
+  # TODO : have different options for `pk_repair` to choose which duplicates to remove
   check_not_zoomed(dm)
   repeat {
     constraints <-
-      dm_examine_constraints_impl(dm, progress = progress, fk_repair = fk_repair) %>%
-      filter(problem != "")
+      dm_examine_constraints_impl(dm, progress = progress, fk_repair = fk_repair, pk_repair = pk_repair) %>%
+      filter(!is.na(repair))
 
     if(!nrow(constraints)) break
 
     dm <- constraints %>%
-      group_by(kind, repair_tbl_name, repair) %>%
+      group_by(repair_tbl_name, repair) %>%
       summarize(repair_tbl_obj = list(reduce(repair_tbl_obj, union)), .groups = "drop") %>%
       preduce(dm_apply_repair_plan, .init = dm, in_place = in_place)
   }
@@ -90,7 +91,7 @@ anti_join_in_place <- function(dm, tbl, tbl_nm) {
   dm_mutate_tbl(dm, !!sym(tbl_nm) := tbl(con, tbl_nm))
 }
 
-dm_apply_repair_plan <- function(dm, kind, repair_tbl_name, repair_tbl_obj, repair, in_place = NULL) {
+dm_apply_repair_plan <- function(dm, repair_tbl_name, repair_tbl_obj, repair, in_place = NULL) {
   # TODO : implement progress argument once dm_rows_* functions are given progress bars
   # progress <- check_progress(progress)
 
@@ -100,16 +101,15 @@ dm_apply_repair_plan <- function(dm, kind, repair_tbl_name, repair_tbl_obj, repa
     if(remote) message("Not persisting, use `in_place = FALSE` to turn off this message.")
     in_place <- FALSE
   }
-  out <- dm
 
-  if (repair == "insert") {
+  if (repair == "insert_new_pk") {
     # TODO: find a way to remove "Matching, by =" message due to `dm_rows_run` and `rows_insert.tbl_dbi`
     dm2 <- new_dm(lst(!!sym(repair_tbl_name) := repair_tbl_obj))
     suppressMessages(out <- dm_rows_insert(dm, dm2, in_place = in_place))
     return(out)
   }
 
-  if (repair == "delete") {
+  if (repair == "delete_orphans") {
     if (remote && in_place)  {
         # persistent anti join
         out <- anti_join_in_place(dm, repair_tbl_obj, repair_tbl_name)
@@ -122,8 +122,22 @@ dm_apply_repair_plan <- function(dm, kind, repair_tbl_name, repair_tbl_obj, repa
             copy = TRUE,
             by = names(repair_tbl_obj)))
       }
+    return(out)
   }
-  out
+
+  if (repair == "delete_missing_pk") {
+    # TODO: remove observations with missing pk
+    out <- dm
+    return(out)
+  }
+
+  if (repair == "delete_duplicate_pk") {
+    # TODO: remove observations with duplicate pk
+    out <- dm
+    return(out)
+  }
+
+  stop("Invalid `repair` value")
 }
 
 

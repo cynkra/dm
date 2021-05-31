@@ -565,9 +565,9 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sa
 
   tbl_for_repair <- select(counts_tbl, - `*n*`)
   if (fk_repair == "insert") {
-    new_repair_plan(label, t2_name, rename_all(tbl_for_repair, ~pk), "insert")
+    new_repair_plan(label, t2_name, rename_all(tbl_for_repair, ~pk), "insert_new_pk")
   } else {
-    new_repair_plan(label, t1_name, rename_all(tbl_for_repair, ~colname), "delete")
+    new_repair_plan(label, t1_name, rename_all(tbl_for_repair, ~colname), "delete_orphans")
   }
 }
 

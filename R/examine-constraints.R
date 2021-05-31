@@ -37,8 +37,8 @@ dm_examine_constraints <- function(dm, progress = NA, sample = TRUE) {
     new_dm_examine_constraints()
 }
 
-dm_examine_constraints_impl <- function(dm, progress = NA, fk_repair = NULL, sample = TRUE) {
-  pk_results <- check_pk_constraints(dm, progress)
+dm_examine_constraints_impl <- function(dm, progress = NA, fk_repair = NULL, pk_repair = NULL, sample = TRUE) {
+  pk_results <- check_pk_constraints(dm, progress, pk_repair)
   fk_results <- check_fk_constraints(dm, progress, fk_repair, sample)
   bind_rows(
     pk_results,
@@ -90,7 +90,7 @@ kind_to_long <- function(kind) {
   if_else(kind == "PK", "primary key", "foreign key")
 }
 
-check_pk_constraints <- function(dm, progress = NA) {
+check_pk_constraints <- function(dm, progress = NA, pk_repair = NULL) {
   pks <- dm_get_all_pks_impl(dm)
   if (nrow(pks) == 0) {
     return(tibble(
@@ -106,15 +106,18 @@ check_pk_constraints <- function(dm, progress = NA) {
   columns     <- pks$pk_col
 
   ticker <- new_ticker("checking pk constraints", length(table_names), progress = progress)
+
   candidates <- map2(set_names(table_names), columns, ticker(~ {
     tbl <- tbl_impl(dm, .x)
-    enum_pk_candidates_impl(tbl, list(.y))
+    enum_pk_candidates_impl(tbl, list(.y), pk_repair)
   }))
 
-  tbl_is_pk <-
-    tibble(table = table_names, candidate = candidates) %>%
-    unnest_df("candidate", tibble(column = new_keys(), candidate = logical(), why = character())) %>%
+  tbl_is_pk <- bind_rows(candidates, .id = "table") %>%
     rename(is_key = candidate, problem = why)
+
+  if(!is.null(pk_repair)) {
+    tbl_is_pk <- mutate(tbl_is_pk, repair_tbl_name = table)
+  }
 
   tibble(
     table = table_names,
