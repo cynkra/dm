@@ -6,7 +6,8 @@
 \usage{
 dm_repair_constraints(
   dm,
-  fk_repair = c("add", "delete", "none"),
+  fk_repair = c("insert", "delete"),
+  pk_repair = TRUE,
   progress = NA,
   in_place = NULL
 )
@@ -14,9 +15,12 @@ dm_repair_constraints(
 \arguments{
 \item{dm}{A dm object}
 
-\item{fk_repair}{Either \code{"add"} or \code{"delete"}, \code{"add"} will update
+\item{fk_repair}{Either \code{"insert"} or \code{"delete"}, \code{"insert"} will update
 the parent table by adding the missing primary keys while \code{"delete"}
 will remove from the child table the rows featuring the orphan foreign keys.}
+
+\item{pk_repair}{Primary key duplicate disambiguation strategy, WIP. defaults
+to \code{TRUE} so it's not \code{NULL}.}
 
 \item{progress}{Whether to display a progress bar, if \code{NA} (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
@@ -37,25 +41,30 @@ Repair a data model's constraints
 \examples{
 nycflights <- dm_nycflights13()
 
-repaired_add <-
+# The dm doesn't satisfy its constraints
+dm_examine_constraints(nycflights)
+
+repaired_insert <-
   nycflights \%>\%
-  dm_repair_constraints("add")
+  dm_repair_constraints("insert")
 
 repaired_delete <-
   nycflights \%>\%
   dm_repair_constraints("delete")
 
+# both repaired dms satisfy all constraints
+dm_examine_constraints(repaired_insert)
+dm_examine_constraints(repaired_delete)
+
+# but we have more planes in repaired_insert and less flights in repaired_delete
 nrow(nycflights$planes)
 nrow(nycflights$flights)
 
-# we have more planes, and the same amount of flights
-nrow(repaired_add$planes)
-nrow(repaired_add$flights)
+nrow(repaired_insert$planes)
+nrow(repaired_insert$flights)
 
-
-# we (should) have the same amount of planes, and fewer flights
 nrow(repaired_delete$planes)
-nrow(repaired_delete$flights) # this is not right
+nrow(repaired_delete$flights)
 
 
 }

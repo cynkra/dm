@@ -4,6 +4,8 @@
 #' @param fk_repair Either `"insert"` or `"delete"`, `"insert"` will update
 #'   the parent table by adding the missing primary keys while `"delete"`
 #'   will remove from the child table the rows featuring the orphan foreign keys.
+#' @param pk_repair Primary key duplicate disambiguation strategy, WIP. defaults
+#'   to `TRUE` so it's not `NULL`.
 #' @inheritParams dm_examine_constraints
 #' @inheritParams dplyr::rows_insert
 #'
