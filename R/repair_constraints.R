@@ -1,7 +1,7 @@
 #' Repair a data model's constraints
 #'
 #' @param dm A dm object
-#' @param fk_repair Either `"add"` or `"delete"`, `"add"` will update
+#' @param fk_repair Either `"insert"` or `"delete"`, `"insert"` will update
 #'   the parent table by adding the missing primary keys while `"delete"`
 #'   will remove from the child table the rows featuring the orphan foreign keys.
 #' @inheritParams dm_examine_constraints
