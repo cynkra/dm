@@ -120,7 +120,7 @@ dm_apply_repair_plan <- function(dm, repair_tbl_name, repair_tbl_obj, repair, in
             .[[repair_tbl_name]],
             repair_tbl_obj,
             copy = TRUE,
-            by = names(repair_tbl_obj)))
+            by = colnames(repair_tbl_obj)))
       }
     return(out)
   }
