@@ -46,13 +46,20 @@ dm_repair_constraints <- function(dm,
   fk_repair <- match.arg(fk_repair)
   # TODO : pk_repair
   check_not_zoomed(dm)
-  constraints <-
-    dm_examine_constraints_impl(dm, progress = progress, fk_repair = fk_repair) %>%
-    filter(problem != "") %>%
-    group_by(kind, repair_tbl_name, repair) %>%
-    summarize(repair_tbl_obj = list(reduce(repair_tbl_obj, union)), .groups = "drop")
+  repeat {
+    constraints <-
+      dm_examine_constraints_impl(dm, progress = progress, fk_repair = fk_repair) %>%
+      filter(problem != "")
 
-  preduce(constraints, dm_apply_repair_plan, .init = dm, in_place = in_place)
+    if(!nrow(constraints)) break
+
+    dm <- constraints %>%
+      group_by(kind, repair_tbl_name, repair) %>%
+      summarize(repair_tbl_obj = list(reduce(repair_tbl_obj, union)), .groups = "drop") %>%
+      preduce(dm_apply_repair_plan, .init = dm, in_place = in_place)
+  }
+
+  dm
 }
 
 new_repair_plan <- function(problem = "", repair_tbl_name = NA, repair_tbl_obj = tibble(), repair = NULL) {
