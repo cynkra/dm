@@ -4,7 +4,7 @@
 \alias{dm_examine_constraints}
 \title{Validate your data model}
 \usage{
-dm_examine_constraints(dm, progress = NA)
+dm_examine_constraints(dm, progress = NA, sample = TRUE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}

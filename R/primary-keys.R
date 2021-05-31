@@ -364,20 +364,26 @@ dm_enum_pk_candidates <- function(dm, table, ...) {
     mutate(columns = new_keys(columns))
 }
 
-enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table))) {
+enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table)), pk_repair = NULL) {
   tibble(column = new_keys(columns)) %>%
-    mutate(why = map_chr(column, ~ check_pk(table, .x))) %>%
+    mutate(why = map(column, ~ check_pk(table, .x, pk_repair))) %>%
+    unnest(why) %>%
+    rename(why = problem) %>%
     mutate(candidate = (why == "")) %>%
-    select(column, candidate, why) %>%
+    select(column, candidate, everything()) %>%
     arrange(desc(candidate), column)
 }
 
-check_pk <- function(table, columns) {
+check_pk <- function(table, columns, pk_repair = NULL) {
   duplicate_values <- is_unique_key_se(table, columns)
   if (duplicate_values$unique) {
-    return("")
+    if(is.null(pk_repair)) {
+      out <- new_repair_plan()
+    } else {
+      out <- new_repair_plan(repair = NA)
+    }
+    return(out)
   }
-
   dup_data <- duplicate_values$data[[1]]
 
   fun <- ~ format(.x, trim = TRUE, justify = "none")
@@ -387,7 +393,12 @@ check_pk <- function(table, columns) {
   values_na <- is.na(values)
 
   if (any(values_na)) {
-    missing <- paste0(sum(n[values_na]), " missing values")
+    problem <- paste0("has ", sum(n[values_na]), " missing values")
+    if(is.null(pk_repair)) {
+      missing <- new_repair_plan(problem)
+    } else {
+      missing <- new_repair_plan(problem, NA, table[0, columns], "delete_missing_pk")
+    }
     values <- values[!values_na]
     n <- n[!values_na]
   } else {
@@ -397,13 +408,18 @@ check_pk <- function(table, columns) {
   if (length(values) > 0) {
     values_count <- paste0(values, " (", n[!values_na], ")")
     values_text <- commas(values_count, capped = TRUE, fun = fun)
-    duplicate <- paste0("duplicate values: ", values_text)
+    problem <- paste0("has duplicate values: ", values_text)
+
+    if(is.null(pk_repair)) {
+      duplicate <- new_repair_plan(problem)
+    } else {
+      duplicate <- new_repair_plan(problem, NA, table[0, columns], "delete_duplicate_pk")
+    }
   } else {
     duplicate <- NULL
   }
 
-  problem <- glue_collapse(c(missing, duplicate), sep = "", last = ", and ")
-  paste0("has ", problem)
+  bind_rows(missing, duplicate)
 }
 
 

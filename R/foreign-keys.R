@@ -484,14 +484,14 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
   tbl_colnames <- colnames(tbl)
   tibble(
     column = tbl_colnames,
-    why = map_chr(column, ~ check_fk(tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_cols))
+    why = map_chr(column, ~ check_fk(tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_cols)$problem)
   ) %>%
     mutate(candidate = ifelse(why == "", TRUE, FALSE)) %>%
     select(column, candidate, why) %>%
     arrange(desc(candidate))
 }
 
-check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
+check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sample = TRUE) {
   stopifnot(length(colname) == length(pk))
 
   val_names <- paste0("value", seq_along(colname))
@@ -502,7 +502,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
 
   t1_join <-
     t1 %>%
-    count(!!!t1_vals) %>%
+    count(!!!t1_vals, name = "*n*") %>%
     ungroup()
   t2_join <-
     t2 %>%
@@ -515,39 +515,60 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     .init = call("is.na", sym(val_names[[1]]))
   )
 
-  res_tbl <- tryCatch(
+  counts_tbl <- tryCatch(
     t1_join %>%
       # if value* is NULL, this also counts as a match -- consistent with fk semantics
       filter(!(!!any_value_na_expr)) %>%
       anti_join(t2_join, by = val_names) %>%
-      arrange(desc(n), !!!syms(val_names)) %>%
-      head(MAX_COMMAS + 1L) %>%
-      collect(),
+      arrange(desc(`*n*`), !!!syms(val_names)),
     error = identity
   )
 
   # return error message if error occurred (possibly types didn't match etc.)
-  if (is_condition(res_tbl)) {
-    return(conditionMessage(res_tbl))
+  if (is_condition(counts_tbl)) {
+    return(new_repair_plan(conditionMessage(counts_tbl)))
   }
 
-  # return empty character if candidate
-  if (nrow(res_tbl) == 0) {
-    return("")
+  if (sample) {
+    count_tbl_for_label <-
+      counts_tbl %>%
+      head(MAX_COMMAS + 1L) %>%
+      collect()
+  } else {
+    count_tbl_for_label <- collect(counts_tbl)
   }
 
-  res_tbl[val_names] <- map(res_tbl[val_names], format, trim = TRUE, justify = "none")
-  res_tbl[val_names[-1]] <- map(res_tbl[val_names[-1]], ~ paste0(", ", .x))
-  res_tbl$value <- exec(paste0, !!!res_tbl[val_names])
+  # return early if no issue found
+  if (nrow(count_tbl_for_label) == 0) {
+    return(new_repair_plan())
+  }
+
+  count_tbl_for_label[val_names] <-
+    map(count_tbl_for_label[val_names], format, trim = TRUE, justify = "none")
+  count_tbl_for_label[val_names[-1]] <-
+    map(count_tbl_for_label[val_names[-1]], ~ paste0(", ", .x))
+  count_tbl_for_label$value <- exec(paste0, !!!count_tbl_for_label[val_names])
 
   vals_formatted <- commas(
-    glue("{res_tbl$value} ({res_tbl$n})"),
+    glue("{count_tbl_for_label$value} ({count_tbl_for_label$`*n*`})"),
     capped = TRUE
   )
-  glue(
+  label <- glue(
     "values of ",
     "{commas(tick(glue('{t1_name}${colname}')), Inf)} not in {commas(tick(glue('{t2_name}${pk}')), Inf)}: {vals_formatted}"
-  )
+  ) %>%
+    as.character()
+
+  if (is.null(fk_repair)) {
+    return(new_repair_plan(label))
+  }
+
+  tbl_for_repair <- select(counts_tbl, - `*n*`)
+  if (fk_repair == "insert") {
+    new_repair_plan(label, t2_name, rename_all(tbl_for_repair, ~pk), "insert_new_pk")
+  } else {
+    new_repair_plan(label, t1_name, rename_all(tbl_for_repair, ~colname), "delete_orphans")
+  }
 }
 
 
