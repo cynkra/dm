@@ -136,19 +136,18 @@ check_fk_constraints <- function(dm, progress = NA, fk_repair = NULL, sample = T
   ticker <- new_ticker("checking pk constraints", nrow(fks_tibble), progress = progress)
 
   problems <-
-    pmap(fks_tibble, ticker(check_fk), fk_repair = fk_repair, sample = sample) %>%
-    transpose()
+    pmap_dfr(fks_tibble, ticker(check_fk), fk_repair = fk_repair, sample = sample)
 
-  if (!length(problems)) {
-    problems <- list(label = character(), repair_plan = list(NULL))
+  if(!nrow(problems)) {
+    problems <- list(problem = character())
   }
 
   fks_tibble %>%
-    mutate(
-      problem = as.character(problems$label),
-      repair_plan = problems$repair_plan,
-      is_key = (problem == ""),
-      kind = "FK"
-    ) %>%
-    select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem, repair_plan)
+    transmute(
+      table = t1_name,
+      kind = "FK",
+      column = colname,
+      ref_table = t2_name,
+      !!!problems,
+      is_key = problem == "")
 }

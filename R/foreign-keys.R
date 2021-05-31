@@ -484,7 +484,7 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
   tbl_colnames <- colnames(tbl)
   tibble(
     column = tbl_colnames,
-    why = map_chr(column, ~ check_fk(tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_cols, fk_repair = "none")$label)
+    why = map_chr(column, ~ check_fk(tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_cols)$problem)
   ) %>%
     mutate(candidate = ifelse(why == "", TRUE, FALSE)) %>%
     select(column, candidate, why) %>%
@@ -526,7 +526,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sa
 
   # return error message if error occurred (possibly types didn't match etc.)
   if (is_condition(counts_tbl)) {
-    return(list(repair_plan = NULL, label = conditionMessage(counts_tbl)))
+    return(new_repair_plan(conditionMessage(counts_tbl)))
   }
 
   if (sample) {
@@ -540,30 +540,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sa
 
   # return early if no issue found
   if (nrow(count_tbl_for_label) == 0) {
-    return(list(repair_plan = NULL, label = ""))
-  }
-
-  if (is.null(fk_repair)) {
-    repair_plan <- NULL
-  } else {
-    tbl_for_repair <- select(counts_tbl, - `*n*`)
-
-    if (fk_repair == "insert") {
-      # build parent table addendum with problematic values and wrap in named list
-      dm_arg <- tbl_for_repair %>%
-        rename_all(~pk) %>%
-        list() %>%
-        set_names(t2_name)
-      repair_plan <- new_repair_plan(insert = dm(!!!dm_arg))
-    } else {
-      # "delete"
-      # build subset with values to delete and wrap in named list
-      dm_arg <- tbl_for_repair %>%
-        rename_all(~colname) %>%
-        list() %>%
-        set_names(t1_name)
-      repair_plan <- new_repair_plan(delete = dm(!!!dm_arg))
-    }
+    return(new_repair_plan())
   }
 
   count_tbl_for_label[val_names] <-
@@ -579,8 +556,19 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sa
   label <- glue(
     "values of ",
     "{commas(tick(glue('{t1_name}${colname}')), Inf)} not in {commas(tick(glue('{t2_name}${pk}')), Inf)}: {vals_formatted}"
-  )
-  lst(repair_plan, label)
+  ) %>%
+    as.character()
+
+  if (is.null(fk_repair)) {
+    return(new_repair_plan(label))
+  }
+
+  tbl_for_repair <- select(counts_tbl, - `*n*`)
+  if (fk_repair == "insert") {
+    new_repair_plan(label, t2_name, rename_all(tbl_for_repair, ~pk), "insert")
+  } else {
+    new_repair_plan(label, t1_name, rename_all(tbl_for_repair, ~colname), "delete")
+  }
 }
 
 

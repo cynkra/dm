@@ -47,15 +47,26 @@ dm_repair_constraints <- function(dm,
   # TODO : pk_repair
   check_not_zoomed(dm)
   constraints <-
-    dm_examine_constraints_impl(dm, progress = progress, fk_repair = fk_repair)
-  plans <- compact(constraints$repair_plan)
+    dm_examine_constraints_impl(dm, progress = progress, fk_repair = fk_repair) %>%
+    filter(problem != "") %>%
+    group_by(kind, repair_tbl_name, repair) %>%
+    summarize(repair_tbl_obj = list(reduce(repair_tbl_obj, union)), .groups = "drop")
 
-  reduce(plans, dm_apply_repair_plan, .init = dm, in_place = in_place)
+  preduce(constraints, dm_apply_repair_plan, .init = dm, in_place = in_place)
 }
 
-
-new_repair_plan <- function(insert = NULL, update = NULL, delete = NULL) {
-  structure(lst(insert, update, delete), class = "dm_repair_plan")
+new_repair_plan <- function(problem = "", repair_tbl_name = NA, repair_tbl_obj = tibble(), repair = NULL) {
+  if(is.null(repair)) {
+    out <- structure(
+      lst(problem),
+      class = c("dm_repair_plan", "tbl_df", "tbl", "data.frame"),
+      row.names = 0L)
+    return(out)
+  }
+  structure(
+    lst(problem, repair_tbl_name, repair_tbl_obj = list(repair_tbl_obj), repair),
+    class = c("dm_repair_plan", "tbl_df", "tbl", "data.frame"),
+    row.names = 0L)
 }
 
 anti_join_in_place <- function(dm, tbl, tbl_nm) {
@@ -72,37 +83,37 @@ anti_join_in_place <- function(dm, tbl, tbl_nm) {
   dm_mutate_tbl(dm, !!sym(tbl_nm) := tbl(con, tbl_nm))
 }
 
-dm_apply_repair_plan <- function(dm, plan, in_place = NULL) {
+dm_apply_repair_plan <- function(dm, kind, repair_tbl_name, repair_tbl_obj, repair, in_place = NULL) {
   # TODO : implement progress argument once dm_rows_* functions are given progress bars
   # progress <- check_progress(progress)
 
   # TODO : Emit message only once (also fix in the current implementation?)
+  remote <- !is.null(dm_get_src_impl(dm))
   if (is_null(in_place)) {
-    message("Not persisting, use `in_place = FALSE` to turn off this message.")
+    if(remote) message("Not persisting, use `in_place = FALSE` to turn off this message.")
     in_place <- FALSE
   }
   out <- dm
 
-  if (!is.null(plan$insert)) {
+  if (repair == "insert") {
     # TODO: find a way to remove "Matching, by =" message due to `dm_rows_run` and `rows_insert.tbl_dbi`
-    suppressMessages(out <- dm_rows_insert(dm, plan$insert, in_place = in_place))
+    dm2 <- new_dm(lst(!!sym(repair_tbl_name) := repair_tbl_obj))
+    suppressMessages(out <- dm_rows_insert(dm, dm2, in_place = in_place))
+    return(out)
   }
 
-  if (!is.null(plan$delete)) {
-    # primary keys must exist in order to delete rows
-    # suppressMessages(out <- dm_rows_insert(dm, plan$delete, in_place = in_place))
-    # I expected this to remove rows in linked fact tables, it doesn't
-    tbl_nm <- names(plan$delete)
-    tbl <- plan$delete[[tbl_nm]]
-
-    src <- dm_get_src_impl(dm)
-    if (!is.null(src) & in_place)  {
+  if (repair == "delete") {
+    if (remote && in_place)  {
         # persistent anti join
-        out <- anti_join_in_place(dm, tbl, tbl_nm)
+        out <- anti_join_in_place(dm, repair_tbl_obj, repair_tbl_name)
       } else {
         # non persistent anti join
         out <- dm %>%
-          dm_mutate_tbl(!!sym(tbl_nm) := anti_join(.[[tbl_nm]], tbl, copy = TRUE, by = names(tbl)))
+          dm_mutate_tbl(!!sym(repair_tbl_name) := anti_join(
+            .[[repair_tbl_name]],
+            repair_tbl_obj,
+            copy = TRUE,
+            by = names(repair_tbl_obj)))
       }
   }
   out
