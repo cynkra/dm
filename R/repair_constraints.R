@@ -52,7 +52,7 @@ dm_repair_constraints <- function(dm,
       dm_examine_constraints_impl(dm, progress = progress, fk_repair = fk_repair, pk_repair = pk_repair) %>%
       filter(!is.na(repair))
 
-    if(!nrow(constraints)) break
+    if (!nrow(constraints)) break
 
     dm <- constraints %>%
       group_by(repair_tbl_name, repair) %>%
@@ -64,17 +64,19 @@ dm_repair_constraints <- function(dm,
 }
 
 new_repair_plan <- function(problem = "", repair_tbl_name = NA, repair_tbl_obj = tibble(), repair = NULL) {
-  if(is.null(repair)) {
+  if (is.null(repair)) {
     out <- structure(
       lst(problem),
       class = c("dm_repair_plan", "tbl_df", "tbl", "data.frame"),
-      row.names = 0L)
+      row.names = 0L
+    )
     return(out)
   }
   structure(
     lst(problem, repair_tbl_name, repair_tbl_obj = list(repair_tbl_obj), repair),
     class = c("dm_repair_plan", "tbl_df", "tbl", "data.frame"),
-    row.names = 0L)
+    row.names = 0L
+  )
 }
 
 anti_join_in_place <- function(dm, tbl, tbl_nm) {
@@ -98,7 +100,7 @@ dm_apply_repair_plan <- function(dm, repair_tbl_name, repair_tbl_obj, repair, in
   # TODO : Emit message only once (also fix in the current implementation?)
   remote <- !is.null(dm_get_src_impl(dm))
   if (is_null(in_place)) {
-    if(remote) message("Not persisting, use `in_place = FALSE` to turn off this message.")
+    if (remote) message("Not persisting, use `in_place = FALSE` to turn off this message.")
     in_place <- FALSE
   }
 
@@ -110,18 +112,19 @@ dm_apply_repair_plan <- function(dm, repair_tbl_name, repair_tbl_obj, repair, in
   }
 
   if (repair == "delete_orphans") {
-    if (remote && in_place)  {
-        # persistent anti join
-        out <- anti_join_in_place(dm, repair_tbl_obj, repair_tbl_name)
-      } else {
-        # non persistent anti join
-        out <- dm %>%
-          dm_mutate_tbl(!!sym(repair_tbl_name) := anti_join(
-            .[[repair_tbl_name]],
-            repair_tbl_obj,
-            copy = TRUE,
-            by = colnames(repair_tbl_obj)))
-      }
+    if (remote && in_place) {
+      # persistent anti join
+      out <- anti_join_in_place(dm, repair_tbl_obj, repair_tbl_name)
+    } else {
+      # non persistent anti join
+      out <- dm %>%
+        dm_mutate_tbl(!!sym(repair_tbl_name) := anti_join(
+          .[[repair_tbl_name]],
+          repair_tbl_obj,
+          copy = TRUE,
+          by = colnames(repair_tbl_obj)
+        ))
+    }
     return(out)
   }
 
