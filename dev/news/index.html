@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.1.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.1.9001</span>
       </span>
     </div>
 
@@ -185,6 +185,15 @@
       <small>Source: <a href='https://github.com/cynkra/dm/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="dm-0219001" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.1.9001">
+<a href="#dm-0219001" class="anchor" aria-hidden="true"></a>dm 0.2.1.9001<small> Unreleased </small></h1>
+<ul><li>
+<code><a href="../reference/rows-dm.html">dm_rows_insert()</a></code> and related functions now show a progress bar in interactive mode if the progress package is installed. The <code>progress</code> argument controls this (<a href='https://github.com/cynkra/dm/issues/573'>#573</a>, <a href='https://github.com/moodymudskipper'>@moodymudskipper</a>).</li>
+<li>
+<code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> supports progress bars in interactive mode via the progress package. The new <code>progress = NA</code> argument controls the behavior (<a href='https://github.com/cynkra/dm/issues/262'>#262</a>, <a href='https://github.com/moodymudskipper'>@moodymudskipper</a>).</li>
+<li>Establish compatibility with testthat &gt; 3.0.2 (<a href='https://github.com/cynkra/dm/issues/566'>#566</a>, <a href='https://github.com/moodymudskipper'>@moodymudskipper</a>).</li>
+</ul></div>
     <div id="dm-0219000" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.1.9000">
 <a href="#dm-0219000" class="anchor" aria-hidden="true"></a>dm 0.2.1.9000<small> Unreleased </small></h1>

@@ -118,7 +118,7 @@ The order in which the tables are processed is reversed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.1.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.1.9001</span>
       </span>
     </div>
 
@@ -249,17 +249,17 @@ only for tables in <code>dm</code>.
 The order in which the tables are processed is reversed.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_rows_insert</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_rows_insert</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span>, progress <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>
 
-<span class='fu'>dm_rows_update</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='fu'>dm_rows_update</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span>, progress <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>
 
-<span class='fu'>dm_rows_patch</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='fu'>dm_rows_patch</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span>, progress <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>
 
-<span class='fu'>dm_rows_upsert</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='fu'>dm_rows_upsert</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span>, progress <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>
 
-<span class='fu'>dm_rows_delete</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='fu'>dm_rows_delete</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span>, progress <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>
 
-<span class='fu'>dm_rows_truncate</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></code></pre></div>
+<span class='fu'>dm_rows_truncate</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span>, progress <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -282,6 +282,12 @@ The order in which the tables are processed is reversed.</p>
 relevant for mutable backends (e.g. databases, data.tables).</p>
 <p>When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
 when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></td>
+    </tr>
+    <tr>
+      <th>progress</th>
+      <td><p>Whether to display a progress bar, if <code>NA</code> (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.</p></td>
     </tr>
     </table>
 
