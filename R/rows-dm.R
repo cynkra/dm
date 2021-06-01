@@ -248,7 +248,7 @@ dm_rows_run <- function(x, y, rows_op, top_down, in_place, require_keys) {
 
   if (require_keys) {
     # FIXME: Better error message if keys not found
-    keys <- deframe(dm_get_all_pks(x))[tables]
+    keys <- deframe(dm_get_all_pks(y))[tables]
   } else {
     keys <- rep_along(tables, list(NULL))
   }
