@@ -242,7 +242,7 @@ get_dm_rows_op <- function(operation_name) {
     "patch"    = list(fun = rows_patch, pb_label = "patching rows"),
     "upsert"   = list(fun = rows_upsert, pb_label = "upserting rows"),
     "delete"   = list(fun = rows_delete, pb_label = "deleting rows"),
-    "truncate" = list(fun = rows_insert, pb_label = "truncating rows")
+    "truncate" = list(fun = rows_truncate, pb_label = "truncating rows")
   )
 }
 
