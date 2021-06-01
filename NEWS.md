@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.1.9001
+
+- `dm_rows_insert()` and related functions now show a progress bar in interactive mode if the progress package is installed. The `progress` argument controls this (#573, @moodymudskipper).
+- `dm_examine_constraints()` supports progress bars in interactive mode via the progress package. The new `progress = NA` argument controls the behavior (#262, @moodymudskipper).
+- Establish compatibility with testthat > 3.0.2 (#566, @moodymudskipper).
+
+
 # dm 0.2.1.9000
 
 - Same as previous version.
