@@ -111,8 +111,7 @@ bdm_create_graph <- function(data_model,
 }
 
 bdm_render_graph <- function(graph, width = NULL, height = NULL) {
-  check_suggested(
-    "DiagrammeR",
+  check_suggested("DiagrammeR",
     use = TRUE,
     message = "DiagrammeR package needed for this function to work. Please install it."
   )

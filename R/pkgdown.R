@@ -12,8 +12,7 @@ register_pkgdown_methods <- function() {
     return()
   }
 
-  check_suggested(
-    c("DiagrammeR", "DiagrammeRsvg"),
+  check_suggested(c("DiagrammeR", "DiagrammeRsvg"),
     use = TRUE,
     message = "DiagrammeR and DiagrammeRsvg packages needed for this function to work. Please install it."
   )

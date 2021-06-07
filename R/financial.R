@@ -15,8 +15,7 @@
 #' dm_financial() %>%
 #'   dm_draw()
 dm_financial <- function() {
-  check_suggested(
-    "RMariaDB",
+  check_suggested("RMariaDB",
     use = TRUE,
     message = "RMariaDB package needed for this function to work. Please install it."
   )
@@ -68,8 +67,7 @@ dm_has_financial <- function() {
 #' @rdname dm_financial
 #' @export
 dm_financial_sqlite <- function() {
-  check_suggested(
-    "RSQLite",
+  check_suggested("RSQLite",
     use = TRUE,
     message = "RSQLite package needed for this function to work. Please install it."
   )

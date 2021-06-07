@@ -1,6 +1,5 @@
 new_ticker <- function(label, n, progress = NA) {
-  suggested <- check_suggested(
-    package = "progress",
+  suggested <- check_suggested("progress",
     message = "The 'progress' package must be installed in order to display progress bars.",
     use = progress)
   if(!suggested) return(identity)
