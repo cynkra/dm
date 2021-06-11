@@ -16,7 +16,8 @@ copy_dm_to(
   unique_table_names = NULL,
   table_names = NULL,
   temporary = TRUE,
-  schema = NULL
+  schema = NULL,
+  progress = NA
 )
 }
 \arguments{
@@ -75,6 +76,10 @@ If \code{schema} is provided, an error will be thrown if \code{temporary = FALSE
 \code{table_names} is not \code{NULL}.
 
 Not all DBMS are supported.}
+
+\item{progress}{Whether to display a progress bar, if \code{NA} (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.}
 }
 \value{
 A \code{dm} object on the given \code{src} with the same table names

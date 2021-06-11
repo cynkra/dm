@@ -13,6 +13,8 @@
 #' The arguments are included in the signature to avoid passing them via the
 #' `...` ellipsis.
 #'
+#' @inheritParams dm_examine_constraints
+#'
 #' @param dest An object of class `"src"` or `"DBIConnection"`.
 #' @param dm A `dm` object.
 #' @param overwrite,types,indexes,unique_indexes Must remain `NULL`.
@@ -92,7 +94,8 @@ copy_dm_to <- function(dest, dm, ...,
                        set_key_constraints = TRUE, unique_table_names = NULL,
                        table_names = NULL,
                        temporary = TRUE,
-                       schema = NULL) {
+                       schema = NULL,
+                       progress = NA) {
   # for the time being, we will be focusing on MSSQL
   # we want to
   #   1. change `dm_get_src_impl(dm)` to `dest`
@@ -177,7 +180,7 @@ copy_dm_to <- function(dest, dm, ...,
   # FIXME: if same_src(), can use compute() but need to set NOT NULL
   # constraints
 
-  dm <- collect(dm)
+  dm <- collect(dm, progress = progress)
 
   # Shortcut necessary to avoid copying into .GlobalEnv
   if (!is_db(dest)) {
@@ -186,9 +189,10 @@ copy_dm_to <- function(dest, dm, ...,
 
   copy_data <- build_copy_data(dm, dest, table_names_out, set_key_constraints, dest_con)
 
-  new_tables <- copy_list_of_tables_to(
-    dest,
-    copy_data = copy_data,
+  ticker <- new_ticker("uploading data", length(copy_data), progress = progress)
+  new_tables <- pmap(
+    copy_data, ticker(copy_to),
+    dest = dest,
     temporary = temporary,
     overwrite = FALSE,
     ...
