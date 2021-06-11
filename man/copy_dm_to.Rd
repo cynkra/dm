@@ -17,7 +17,8 @@ copy_dm_to(
   table_names = NULL,
   temporary = TRUE,
   schema = NULL,
-  progress = NA
+  progress = NA,
+  copy_to = NULL
 )
 }
 \arguments{
@@ -25,7 +26,8 @@ copy_dm_to(
 
 \item{dm}{A \code{dm} object.}
 
-\item{...}{Passed on to \code{\link[dplyr:copy_to]{dplyr::copy_to()}}, which is used on each table.}
+\item{...}{Passed on to \code{\link[dplyr:copy_to]{dplyr::copy_to()}} or to the function specified
+by the \code{copy_to} argument.}
 
 \item{overwrite, types, indexes, unique_indexes}{Must remain \code{NULL}.}
 
@@ -80,6 +82,12 @@ Not all DBMS are supported.}
 \item{progress}{Whether to display a progress bar, if \code{NA} (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.}
+
+\item{copy_to}{By default, \code{\link[dplyr:copy_to]{dplyr::copy_to()}} is called to upload the
+individual tables to the target data source.
+This argument allows overriding the standard behavior in cases
+when the default does not work as expected, such as spatial data frames
+or other tables with special data types.}
 }
 \value{
 A \code{dm} object on the given \code{src} with the same table names

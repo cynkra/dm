@@ -60,7 +60,13 @@
 #'
 #'   Use qualified names corresponding to your database's syntax
 #'   to specify e.g. database and schema for your tables.
-#' @param ... Passed on to [dplyr::copy_to()], which is used on each table.
+#' @param copy_to By default, [dplyr::copy_to()] is called to upload the
+#'   individual tables to the target data source.
+#'   This argument allows overriding the standard behavior in cases
+#'   when the default does not work as expected, such as spatial data frames
+#'   or other tables with special data types.
+#' @param ... Passed on to [dplyr::copy_to()] or to the function specified
+#'   by the `copy_to` argument.
 #'
 #' @family DB interaction functions
 #'
@@ -95,7 +101,8 @@ copy_dm_to <- function(dest, dm, ...,
                        table_names = NULL,
                        temporary = TRUE,
                        schema = NULL,
-                       progress = NA) {
+                       progress = NA,
+                       copy_to = NULL) {
   # for the time being, we will be focusing on MSSQL
   # we want to
   #   1. change `dm_get_src_impl(dm)` to `dest`
@@ -173,6 +180,12 @@ copy_dm_to <- function(dest, dm, ...,
       "dm::collect.dm()"
     )
     table_names_out <- set_names(src_names)
+  }
+
+  if (is.null(copy_to)) {
+    copy_to <- dplyr::copy_to
+  } else {
+    stopifnot(is.function(copy_to))
   }
 
   check_not_zoomed(dm)
