@@ -198,7 +198,7 @@ tables on the database.</p>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for dm</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, progress <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -210,6 +210,12 @@ tables on the database.</p>
     <tr>
       <th>...</th>
       <td><p>Passed on to <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>progress</th>
+      <td><p>Whether to display a progress bar, if <code>NA</code> (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.</p></td>
     </tr>
     </table>
 

@@ -212,7 +212,9 @@ and in addition foreign key constraints are set on MSSQL and Postgres databases.
   unique_table_names <span class='op'>=</span> <span class='cn'>NULL</span>,
   table_names <span class='op'>=</span> <span class='cn'>NULL</span>,
   temporary <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  schema <span class='op'>=</span> <span class='cn'>NULL</span>
+  schema <span class='op'>=</span> <span class='cn'>NULL</span>,
+  progress <span class='op'>=</span> <span class='cn'>NA</span>,
+  copy_to <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -228,7 +230,8 @@ and in addition foreign key constraints are set on MSSQL and Postgres databases.
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Passed on to <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to()</a></code>, which is used on each table.</p></td>
+      <td><p>Passed on to <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to()</a></code> or to the function specified
+by the <code>copy_to</code> argument.</p></td>
     </tr>
     <tr>
       <th>overwrite, types, indexes, unique_indexes</th>
@@ -285,6 +288,20 @@ These tables will vanish when disconnecting from the database.</p></td>
 If <code>schema</code> is provided, an error will be thrown if <code>temporary = FALSE</code> or
 <code>table_names</code> is not <code>NULL</code>.</p>
 <p>Not all DBMS are supported.</p></td>
+    </tr>
+    <tr>
+      <th>progress</th>
+      <td><p>Whether to display a progress bar, if <code>NA</code> (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.</p></td>
+    </tr>
+    <tr>
+      <th>copy_to</th>
+      <td><p>By default, <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to()</a></code> is called to upload the
+individual tables to the target data source.
+This argument allows overriding the standard behavior in cases
+when the default does not work as expected, such as spatial data frames
+or other tables with special data types.</p></td>
     </tr>
     </table>
 
