@@ -1,7 +1,7 @@
 test_that("dm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?", {
   def <-
     dm_for_filter() %>%
-    dm_rm_fk(tf_5, m, tf_6) %>%
+    dm_rm_fk(tf_5, m, tf_6, n) %>%
     dm_rm_fk(tf_2, d, tf_1) %>%
     dm_get_def()
 
