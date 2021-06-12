@@ -614,13 +614,17 @@ compute.dm <- function(x, ...) { # for both dm and zoomed_dm
 #'
 #' `collect()` downloads the tables in a `dm` object as local [tibble]s.
 #'
+#' @inheritParams dm_examine_constraints
+#'
 #' @rdname materialize
 #' @export
-collect.dm <- function(x, ...) { # for both dm and zoomed_dm
+collect.dm <- function(x, ..., progress = NA) { # for both dm and zoomed_dm
   x <- dm_apply_filters(x)
 
   def <- dm_get_def(x)
-  def$data <- map(def$data, collect, ...)
+
+  ticker <- new_ticker("downloading data", nrow(def), progress = progress)
+  def$data <- map(def$data, ticker(collect), ...)
   new_dm3(def, zoomed = is_zoomed(x))
 }
 
