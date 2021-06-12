@@ -16,14 +16,15 @@ defer_assign <- function(lhs, rhs, env) {
 
   value <- get0(lhs, cache)
   if (is.null(value)) {
-    # message("Deferring ", lhs)
+    message("Deferring ", lhs)
 
     # Enable this for eager assignment:
     # force(rhs)
 
     value <- function() {
       # message("Querying ", lhs)
-      rhs
+      out <- rhs
+      out
     }
     assign(lhs, value, cache)
   } else {
@@ -277,7 +278,7 @@ dm_for_filter %<-% {
     dm_select_tbl(-tf_7)
 }
 
-dm_for_filter_db %<-% {
+dm_for_filter_db %<--% {
   copy_dm_to(my_db_test_src(), dm_for_filter())
 }
 
@@ -310,7 +311,7 @@ dm_for_filter_simple %<-% {
     dm_add_fk(tf_5, m, tf_6)
 }
 
-dm_for_filter_simple_db %<-% {
+dm_for_filter_simple_db %<--% {
   copy_dm_to(my_db_test_src(), dm_for_filter_simple())
 }
 
@@ -549,7 +550,7 @@ dm_nycflights_small %<--% {
     dm_add_fk(flights, dest, airports)
 }
 
-dm_nycflights_small_db %<-% {
+dm_nycflights_small_db %<--% {
   copy_dm_to(my_db_test_src(), dm_nycflights_small())
 }
 
