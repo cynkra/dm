@@ -8,3 +8,7 @@
 - Add "strict mode" to GitHub Actions: validation in `new_dm3()`
 - Named PK and unique constraints: https://github.com/r-dbi/DBI/pull/351#issuecomment-833438890
 - `dm_paste()`: remove `select` argument from documentation, via `_impl()` function that takes dots and this argument, like `dm_rm_pk()`
+- Persistent test dm objects
+  - Use `copy_to(temporary = FALSE)`
+  - sqlite and duckdb: use file that can be discarded
+  - Requires schema support for all databases
