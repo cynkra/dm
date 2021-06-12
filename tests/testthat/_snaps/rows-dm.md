@@ -71,11 +71,11 @@
     Code
       dm_filter_rearranged <- dm_for_filter() %>% dm_select(tf_2, d, everything()) %>%
         dm_select(tf_4, i, everything()) %>% dm_select(tf_5, l, m, everything())
-      suppressMessages(dm_copy <- copy_dm_to(my_test_src(), dm_filter_rearranged))
+      suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_filter_rearranged))
       dm_update_local <- dm(tf_1 = tibble(a = 2L, b = "q"), tf_2 = tibble(c = c(
         "worm"), d = 10L, ), tf_4 = tibble(h = "e", i = "sieben", ), tf_5 = tibble(k = 3L,
         m = "tree", ), )
-      dm_update_copy <- suppressMessages(copy_dm_to(my_test_src(), dm_update_local))
+      dm_update_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_update_local))
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
             d c        e        e1
@@ -261,10 +261,10 @@
 # dm_rows_truncate()
 
     Code
-      suppressMessages(dm_copy <- copy_dm_to(my_test_src(), dm_for_filter()))
+      suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_for_filter()))
       dm_truncate_local <- dm(tf_2 = tibble(c = c("worm"), d = 10L, ), tf_5 = tibble(
         k = 3L, m = "tree", ), )
-      dm_truncate_copy <- suppressMessages(copy_dm_to(my_test_src(),
+      dm_truncate_copy <- suppressMessages(copy_dm_to(my_db_test_src(),
       dm_truncate_local))
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output

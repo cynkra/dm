@@ -11,17 +11,16 @@ skip_if_remote_src <- function(src = my_test_src()) {
   if (is_db(src)) skip("works only locally")
 }
 
-skip_if_local_src <- function(src = my_test_src()) {
-  if (!is_db(src)) skip("works only on a DB")
-  skip_if_not_installed("dbplyr")
-}
-
 skip_if_src <- function(...) {
-  if (my_test_src_name %in% c(...)) skip(glue::glue("does not work on {commas(tick(c(...)))}"))
+  if (my_test_src_name %in% c(...)) {
+    skip(glue::glue("does not work on {commas(tick(c(...)))}"))
+  }
 }
 
 skip_if_src_not <- function(...) {
-  if (!(my_test_src_name %in% c(...))) skip(paste0("does not work on ", my_test_src_name))
+  if (!(my_test_src_name %in% c(...))) {
+    skip(glue::glue("only works on {commas(tick(c(...)))}"))
+  }
 }
 
 suppress_mssql_message <- function(code) {
