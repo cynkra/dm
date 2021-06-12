@@ -550,10 +550,6 @@ dm_nycflights_small %<--% {
     dm_add_fk(flights, dest, airports)
 }
 
-dm_nycflights_small_db %<--% {
-  copy_dm_to(my_db_test_src(), dm_nycflights_small())
-}
-
 dm_nycflights_small_cycle %<--% {
   dm_nycflights_small() %>%
     dm_add_fk(flights, origin, airports)
