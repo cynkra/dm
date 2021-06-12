@@ -65,6 +65,7 @@
 #'   This argument allows overriding the standard behavior in cases
 #'   when the default does not work as expected, such as spatial data frames
 #'   or other tables with special data types.
+#'   If not `NULL`, this argument is processed with [rlang::as_function()].
 #' @param ... Passed on to [dplyr::copy_to()] or to the function specified
 #'   by the `copy_to` argument.
 #'
@@ -185,7 +186,7 @@ copy_dm_to <- function(dest, dm, ...,
   if (is.null(copy_to)) {
     copy_to <- dplyr::copy_to
   } else {
-    stopifnot(is.function(copy_to))
+    copy_to <- as_function(copy_to)
   }
 
   check_not_zoomed(dm)
