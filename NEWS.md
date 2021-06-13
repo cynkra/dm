@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.1.9002
+
+- Always run database tests on sqlite for df source.
+- `collect.dm()` gains `progress` argument (#582).
+- `copy_dm_to()` gains `progress` and `copy_to` arguments (#582).
+
+
 # dm 0.2.1.9001
 
 - `dm_rows_insert()` and related functions now show a progress bar in interactive mode if the progress package is installed. The `progress` argument controls this (#573, @moodymudskipper).
