@@ -1,4 +1,4 @@
-dm 0.2.1
+dm 0.2.2
 
 ## Cran Repository Policy
 
@@ -6,10 +6,12 @@ dm 0.2.1
 
 ## R CMD check results
 
-- [x] Checked locally, R 4.0.5
-- [x] Checked on CI system, R 4.0.5
-- [x] Checked on win-builder, R devel
+- [x] Checked locally, R 4.1.0
+- [ ] Checked on CI system, R 4.1.0
+- [ ] Checked on win-builder, R devel
+
+Check the boxes above after successful execution and remove this line. Then run `fledge::release()`.
 
 ## Current CRAN check results
 
-- [x] Checked on 2021-05-11, no problems found.
+- [x] Checked on 2021-06-13, no problems found.
