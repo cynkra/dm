@@ -1,4 +1,12 @@
+test_that("dumma", {
+  expect_snapshot({
+    "dummy"
+  })
+})
+
 test_that("dm_rows_insert()", {
+  skip_if_ide()
+
   skip_if_not_installed("nycflights13")
   skip_if_not_installed("RSQLite")
   scoped_options(lifecycle_verbosity = "quiet")
@@ -81,6 +89,8 @@ test_that("dm_rows_insert()", {
 })
 
 test_that("dm_rows_update()", {
+  skip_if_ide()
+
   # https://github.com/duckdb/duckdb/issues/1187
   skip_if_src("duckdb")
   expect_snapshot({
@@ -146,6 +156,8 @@ test_that("dm_rows_update()", {
 })
 
 test_that("dm_rows_truncate()", {
+  skip_if_ide()
+
   expect_snapshot({
     suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_for_filter()))
 
@@ -197,6 +209,8 @@ test_that("dm_rows_truncate()", {
 # tests for compound keys -------------------------------------------------
 
 test_that("output for compound keys", {
+  skip_if_ide()
+
   skip("COMPOUND")
 
   expect_snapshot({

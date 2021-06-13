@@ -23,6 +23,12 @@ skip_if_src_not <- function(...) {
   }
 }
 
+skip_if_ide <- function() {
+  if (Sys.getenv("RSTUDIO") != "") {
+    skip("Not running slow tests in IDE")
+  }
+}
+
 suppress_mssql_message <- function(code) {
   if (my_test_src_name == "mssql") {
     suppressMessages(code)

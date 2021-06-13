@@ -6,6 +6,8 @@ test_that("data source found", {
 skip_if_not_installed("dbplyr")
 
 test_that("copy_dm_to() copies data frames to databases", {
+  skip_if_ide()
+
   expect_equivalent_dm(
     copy_dm_to(my_db_test_src(), collect(dm_for_filter())),
     dm_for_filter()
