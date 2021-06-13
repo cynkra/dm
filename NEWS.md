@@ -1,11 +1,13 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
-# dm 0.2.2
+# dm 0.2.2.9000
 
 - Same as previous version.
 
 
-# dm 0.2.1.9002
+# dm 0.2.2
+
+## In
 
 - Always run database tests on sqlite for df source.
 - `collect.dm()` gains `progress` argument (#582).
