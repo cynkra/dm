@@ -23,6 +23,12 @@ skip_if_src_not <- function(...) {
   }
 }
 
+skip_if_ide <- function() {
+  if (!isTRUE(as.logical(Sys.getenv("CI")))) {
+    skip("Slow test. To run, set CI=true")
+  }
+}
+
 suppress_mssql_message <- function(code) {
   if (my_test_src_name == "mssql") {
     suppressMessages(code)

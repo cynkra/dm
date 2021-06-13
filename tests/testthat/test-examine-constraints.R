@@ -32,6 +32,8 @@ test_that("`dm_examine_constraints()` works", {
 })
 
 test_that("output", {
+  skip_if_ide()
+
   skip_if_not_installed("nycflights13")
 
   expect_snapshot({
@@ -50,6 +52,8 @@ test_that("output", {
 })
 
 test_that("output as tibble", {
+  skip_if_ide()
+
   skip_if_not_installed("nycflights13")
 
   expect_snapshot({
