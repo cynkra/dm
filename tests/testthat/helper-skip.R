@@ -24,8 +24,8 @@ skip_if_src_not <- function(...) {
 }
 
 skip_if_ide <- function() {
-  if (Sys.getenv("RSTUDIO") != "") {
-    skip("Not running slow tests in IDE")
+  if (!isTRUE(as.logical(Sys.getenv("CI")))) {
+    skip("Slow test. To run, set CI=true")
   }
 }
 
