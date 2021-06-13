@@ -65,6 +65,7 @@
 #'   This argument allows overriding the standard behavior in cases
 #'   when the default does not work as expected, such as spatial data frames
 #'   or other tables with special data types.
+#'   If not `NULL`, this argument is processed with [rlang::as_function()].
 #' @param ... Passed on to [dplyr::copy_to()] or to the function specified
 #'   by the `copy_to` argument.
 #'
@@ -185,7 +186,7 @@ copy_dm_to <- function(dest, dm, ...,
   if (is.null(copy_to)) {
     copy_to <- dplyr::copy_to
   } else {
-    stopifnot(is.function(copy_to))
+    copy_to <- as_function(copy_to)
   }
 
   check_not_zoomed(dm)
@@ -202,7 +203,7 @@ copy_dm_to <- function(dest, dm, ...,
 
   copy_data <- build_copy_data(dm, dest, table_names_out, set_key_constraints, dest_con)
 
-  ticker <- new_ticker("uploading data", length(copy_data), progress = progress)
+  ticker <- new_ticker("uploading data", nrow(copy_data), progress = progress)
   new_tables <- pmap(
     copy_data, ticker(copy_to),
     dest = dest,

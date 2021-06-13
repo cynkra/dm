@@ -87,7 +87,8 @@ hide in non-interactive mode, show in interactive mode. Requires the
 individual tables to the target data source.
 This argument allows overriding the standard behavior in cases
 when the default does not work as expected, such as spatial data frames
-or other tables with special data types.}
+or other tables with special data types.
+If not \code{NULL}, this argument is processed with \code{\link[rlang:as_function]{rlang::as_function()}}.}
 }
 \value{
 A \code{dm} object on the given \code{src} with the same table names
