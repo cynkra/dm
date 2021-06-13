@@ -301,7 +301,8 @@ hide in non-interactive mode, show in interactive mode. Requires the
 individual tables to the target data source.
 This argument allows overriding the standard behavior in cases
 when the default does not work as expected, such as spatial data frames
-or other tables with special data types.</p></td>
+or other tables with special data types.
+If not <code>NULL</code>, this argument is processed with <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::as_function()</a></code>.</p></td>
     </tr>
     </table>
 
