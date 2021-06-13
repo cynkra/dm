@@ -203,7 +203,7 @@ copy_dm_to <- function(dest, dm, ...,
 
   copy_data <- build_copy_data(dm, dest, table_names_out, set_key_constraints, dest_con)
 
-  ticker <- new_ticker("uploading data", length(copy_data), progress = progress)
+  ticker <- new_ticker("uploading data", nrow(copy_data), progress = progress)
   new_tables <- pmap(
     copy_data, ticker(copy_to),
     dest = dest,
