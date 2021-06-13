@@ -30,24 +30,6 @@ test_that("copy_dm_to() copies data frames from any source", {
   )
 })
 
-test_that("copy_dm_to() copies to SQLite", {
-  skip_if_not_installed("RSQLite")
-
-  expect_equivalent_dm(
-    copy_dm_to(test_src_sqlite(), dm_for_filter()),
-    dm_for_filter()
-  )
-})
-
-test_that("copy_dm_to() copies from SQLite", {
-  skip_if_not_installed("RSQLite")
-
-  expect_equivalent_dm(
-    copy_dm_to(my_db_test_src(), dm_for_filter_sqlite()),
-    dm_for_filter()
-  )
-})
-
 # FIXME: Add test that set_key_constraints = FALSE doesn't set key constraints,
 # in combination with dm_learn_from_db
 
@@ -105,7 +87,7 @@ test_that("table identifiers are quoted", {
     map_chr(dbplyr::remote_name)
 
   con <- dm_get_con(dm)
-  pattern <- unclass(DBI::dbQuoteIdentifier(con, "[a-z0-9_#]+"))
+  pattern <- paste0("^", unclass(DBI::dbQuoteIdentifier(con, "[a-z0-9_#]+")), "$")
   expect_true(all(grepl(pattern, remote_names)))
 })
 
