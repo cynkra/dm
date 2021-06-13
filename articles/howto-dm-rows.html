@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
       <h1 data-toc-skip>Insert, update or remove rows in a database dm</h1>
                         <h4 data-toc-skip class="author">James Wondrasek</h4>
             
-            <h4 data-toc-skip class="date">2021-05-11</h4>
+            <h4 data-toc-skip class="date">2021-06-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/howto-dm-rows.Rmd" class="external-link"><code>vignettes/howto-dm-rows.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-rows.Rmd</code></div>
@@ -221,38 +221,38 @@
 <p>To demonstrate the use of these table modifying methods we will create a simple dm object with two tables linked by a foreign key. Note the foreign key of <code>NA</code> in the <code>child</code> table.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Attaching packages</span><span> ────────────────────────────────── tidyverse 1.3.1 ──
-</span></code></pre>
-<pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">ggplot2</span><span> 3.3.3     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">purrr  </span><span> 0.3.4
-#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tibble </span><span> 3.1.1     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">dplyr  </span><span> 1.0.6
-#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tidyr  </span><span> 1.1.3     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">stringr</span><span> 1.4.0
-#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">readr  </span><span> 1.4.0     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">forcats</span><span> 0.5.1
-</span></code></pre>
-<pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Conflicts</span><span> ───────────────────────────────────── tidyverse_conflicts() ──
-#&gt; </span><span style="color: #BB0000;">✖</span><span> </span><span style="color: #0000BB;">dplyr</span><span>::</span><span style="color: #00BB00;">filter()</span><span> masks </span><span style="color: #0000BB;">dm</span><span>::filter(), </span><span style="color: #0000BB;">stats</span><span>::filter()
-#&gt; </span><span style="color: #BB0000;">✖</span><span> </span><span style="color: #0000BB;">dplyr</span><span>::</span><span style="color: #00BB00;">lag()</span><span>    masks </span><span style="color: #0000BB;">stats</span><span>::lag()
-</span></code></pre>
+<pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Attaching packages</span> ────────────────────────────────── tidyverse 1.3.1 ──
+</code></pre>
+<pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2</span> 3.3.3     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr  </span> 0.3.4
+#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tibble </span> 3.1.2     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr  </span> 1.0.6
+#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr  </span> 1.1.3     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">stringr</span> 1.4.0
+#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">readr  </span> 1.4.0     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">forcats</span> 0.5.1
+</code></pre>
+<pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Conflicts</span> ───────────────────────────────────── tidyverse_conflicts() ──
+#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">filter()</span> masks <span style="color: #0000BB;">dm</span>::filter(), <span style="color: #0000BB;">stats</span>::filter()
+#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">lag()</span>    masks <span style="color: #0000BB;">stats</span>::lag()
+</code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
 <span class="va">parent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>, pk <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
 <span class="va">parent</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span>
 #&gt;   value    pk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> A         1
-#&gt; </span><span style="color: #555555;">2</span><span> B         2
-#&gt; </span><span style="color: #555555;">3</span><span> C         3
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
+#&gt; <span style="color: #555555;">1</span> A         1
+#&gt; <span style="color: #555555;">2</span> B         2
+#&gt; <span style="color: #555555;">3</span> C         3
+</code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">child</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span>, pk <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, fk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span>
 <span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 3</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 3</span>
 #&gt;   value    pk    fk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> a         1     1
-#&gt; </span><span style="color: #555555;">2</span><span> b         2     1
-#&gt; </span><span style="color: #555555;">3</span><span> c         3    </span><span style="color: #BB0000;">NA</span><span>
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> a         1     1
+#&gt; <span style="color: #555555;">2</span> b         2     1
+#&gt; <span style="color: #555555;">3</span> c         3    <span style="color: #BB0000;">NA</span>
+</code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">demo_dm</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span>parent <span class="op">=</span> <span class="va">parent</span>, child <span class="op">=</span> <span class="va">child</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -272,22 +272,22 @@
 <path fill="none" stroke="#555555" d="M44,-11C64.25,-11 71.6855,-11 87.931,-11"></path><polygon fill="#555555" stroke="#555555" points="88,-14.5001 98,-11 88,-7.5001 88,-14.5001"></polygon></g></g></svg><p>{dm} doesn’t check your key values when you create a dm, we add this check:<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="va">demo_dm</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
-</span></code></pre>
+<pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span> All constraints satisfied.
+</code></pre>
 <p>Then we copy <code>demo_dm</code> into an SQLite database. Note: the default for the method used, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code>, is to create temporary tables that will be automatically deleted when your session ends. As <code>demo_sql</code> will be the destination dm for the examples, the argument <code>temporary = FALSE</code> is used to make this distinction apparent.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span>
 <span class="va">sqlite_db</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">demo_sql</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">sqlite_db</span>, <span class="va">demo_dm</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="va">demo_sql</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
 #&gt; src:  sqlite 3.35.5 []
-#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `parent`, `child`
 #&gt; Columns: 5
 #&gt; Primary keys: 2
 #&gt; Foreign keys: 1
-</span></code></pre>
+</code></pre>
 <p>{dm}’s table modification methods can be piped together to create a repeatable sequence of operations that returns a dm incorporating all the changes required. This is a common use case for {dm} – building by hand a sequence of operations using temporary results until it is complete and correct, then committing the result.</p>
 </div>
 <div id="insert" class="section level2">
@@ -299,19 +299,19 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">new_parent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>value <span class="op">=</span> <span class="st">"D"</span>, pk <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
 <span class="va">new_parent</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span>
 #&gt;   value    pk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> D         4
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> D         4
+</code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">new_child</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>value <span class="op">=</span> <span class="st">"d"</span>, pk <span class="op">=</span> <span class="fl">4</span>, fk <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
 <span class="va">new_child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 3</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 3</span>
 #&gt;   value    pk    fk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> d         4     4
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> d         4     4
+</code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_insert_in</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span>parent <span class="op">=</span> <span class="va">new_parent</span>, child <span class="op">=</span> <span class="va">new_child</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -325,25 +325,25 @@
 <p>This gives us a warning that changes will not be persisted. Inspecting the <code>child</code> table of the resulting <code>dm_insert_out</code> and <code>demo_sql</code>, we can see that’s exactly what happened. {dm} returned to us a dm object with our inserted rows in place, but the underlying database has not changed.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_insert_out</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.35.5 []</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 3]</span>
+#&gt; <span style="color: #555555;"># Database: sqlite 3.35.5 []</span>
 #&gt;   value    pk    fk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> a         1     1
-#&gt; </span><span style="color: #555555;">2</span><span> b         2     1
-#&gt; </span><span style="color: #555555;">3</span><span> c         3    </span><span style="color: #BB0000;">NA</span><span>
-#&gt; </span><span style="color: #555555;">4</span><span> d         4     4
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> a         1     1
+#&gt; <span style="color: #555555;">2</span> b         2     1
+#&gt; <span style="color: #555555;">3</span> c         3    <span style="color: #BB0000;">NA</span>
+#&gt; <span style="color: #555555;">4</span> d         4     4
+</code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.35.5 []</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span>
+#&gt; <span style="color: #555555;"># Database: sqlite 3.35.5 []</span>
 #&gt;   value    pk    fk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> a         1     1
-#&gt; </span><span style="color: #555555;">2</span><span> b         2     1
-#&gt; </span><span style="color: #555555;">3</span><span> c         3    </span><span style="color: #BB0000;">NA</span><span>
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> a         1     1
+#&gt; <span style="color: #555555;">2</span> b         2     1
+#&gt; <span style="color: #555555;">3</span> c         3    <span style="color: #BB0000;">NA</span>
+</code></pre>
 <p>We repeat the operation, this time with the argument <code>in_place = TRUE</code> and the changes now persist in <code>demo_sql</code>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_insert_out</span> <span class="op">&lt;-</span>
@@ -351,15 +351,15 @@
   <span class="fu"><a href="../reference/rows-dm.html">dm_rows_insert</a></span><span class="op">(</span><span class="va">dm_insert_in</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.35.5 []</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span>
+#&gt; <span style="color: #555555;"># Database: sqlite 3.35.5 []</span>
 #&gt;   value    pk    fk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> a         1     1
-#&gt; </span><span style="color: #555555;">2</span><span> b         2     1
-#&gt; </span><span style="color: #555555;">3</span><span> c         3    </span><span style="color: #BB0000;">NA</span><span>
-#&gt; </span><span style="color: #555555;">4</span><span> d         4     4
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> a         1     1
+#&gt; <span style="color: #555555;">2</span> b         2     1
+#&gt; <span style="color: #555555;">3</span> c         3    <span style="color: #BB0000;">NA</span>
+#&gt; <span style="color: #555555;">4</span> d         4     4
+</code></pre>
 </div>
 <div id="update" class="section level2">
 <h2 class="hasAnchor">
@@ -369,11 +369,11 @@
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">updated_child</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>value <span class="op">=</span> <span class="st">"b"</span>, pk <span class="op">=</span> <span class="fl">2</span>, fk <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="va">updated_child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 3</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 3</span>
 #&gt;   value    pk    fk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> b         2     2
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> b         2     2
+</code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_update_in</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span>child <span class="op">=</span> <span class="va">updated_child</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -384,15 +384,15 @@
   <span class="fu"><a href="../reference/rows-dm.html">dm_rows_update</a></span><span class="op">(</span><span class="va">dm_update_in</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.35.5 []</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span>
+#&gt; <span style="color: #555555;"># Database: sqlite 3.35.5 []</span>
 #&gt;   value    pk    fk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> a         1     1
-#&gt; </span><span style="color: #555555;">2</span><span> b         2     2
-#&gt; </span><span style="color: #555555;">3</span><span> c         3    </span><span style="color: #BB0000;">NA</span><span>
-#&gt; </span><span style="color: #555555;">4</span><span> d         4     4
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> a         1     1
+#&gt; <span style="color: #555555;">2</span> b         2     2
+#&gt; <span style="color: #555555;">3</span> c         3    <span style="color: #BB0000;">NA</span>
+#&gt; <span style="color: #555555;">4</span> d         4     4
+</code></pre>
 </div>
 <div id="delete" class="section level2">
 <h2 class="hasAnchor">
@@ -403,24 +403,24 @@
 <code class="sourceCode R"><span class="va">local_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">demo_sql</span><span class="op">)</span>
 
 <span class="va">local_dm</span><span class="op">$</span><span class="va">parent</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 2</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 2</span>
 #&gt;   value    pk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> A         1
-#&gt; </span><span style="color: #555555;">2</span><span> B         2
-#&gt; </span><span style="color: #555555;">3</span><span> C         3
-#&gt; </span><span style="color: #555555;">4</span><span> D         4
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
+#&gt; <span style="color: #555555;">1</span> A         1
+#&gt; <span style="color: #555555;">2</span> B         2
+#&gt; <span style="color: #555555;">3</span> C         3
+#&gt; <span style="color: #555555;">4</span> D         4
+</code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">local_dm</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 3</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 3</span>
 #&gt;   value    pk    fk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> a         1     1
-#&gt; </span><span style="color: #555555;">2</span><span> b         2     2
-#&gt; </span><span style="color: #555555;">3</span><span> c         3    </span><span style="color: #BB0000;">NA</span><span>
-#&gt; </span><span style="color: #555555;">4</span><span> d         4     4
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> a         1     1
+#&gt; <span style="color: #555555;">2</span> b         2     2
+#&gt; <span style="color: #555555;">3</span> c         3    <span style="color: #BB0000;">NA</span>
+#&gt; <span style="color: #555555;">4</span> d         4     4
+</code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_deleted</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span>parent <span class="op">=</span> <span class="va">new_parent</span>, child <span class="op">=</span> <span class="va">new_child</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -430,13 +430,13 @@
 <span class="co">#&gt; Ignoring extra columns: value</span>
 
 <span class="va">dm_deleted</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 3</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 3</span>
 #&gt;   value    pk    fk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> a         1     1
-#&gt; </span><span style="color: #555555;">2</span><span> b         2     2
-#&gt; </span><span style="color: #555555;">3</span><span> c         3    </span><span style="color: #BB0000;">NA</span><span>
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> a         1     1
+#&gt; <span style="color: #555555;">2</span> b         2     2
+#&gt; <span style="color: #555555;">3</span> c         3    <span style="color: #BB0000;">NA</span>
+</code></pre>
 </div>
 <div id="patch" class="section level2">
 <h2 class="hasAnchor">
@@ -446,11 +446,11 @@
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">patched_child</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>value <span class="op">=</span> <span class="st">"c"</span>, pk <span class="op">=</span> <span class="fl">3</span>, fk <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 <span class="va">patched_child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 3</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 3</span>
 #&gt;   value    pk    fk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> c         3     3
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> c         3     3
+</code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_patched</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span>child <span class="op">=</span> <span class="va">patched_child</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -458,13 +458,13 @@
 <span class="co">#&gt; Not persisting, use `in_place = FALSE` to turn off this message.</span>
 
 <span class="va">dm_patched</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 3</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 3</span>
 #&gt;   value    pk    fk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> a         1     1
-#&gt; </span><span style="color: #555555;">2</span><span> b         2     2
-#&gt; </span><span style="color: #555555;">3</span><span> c         3     3
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> a         1     1
+#&gt; <span style="color: #555555;">2</span> b         2     2
+#&gt; <span style="color: #555555;">3</span> c         3     3
+</code></pre>
 </div>
 <div id="upsert" class="section level2">
 <h2 class="hasAnchor">
@@ -474,20 +474,20 @@
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">upserted_parent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>value <span class="op">=</span> <span class="st">"D"</span>, pk <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
 <span class="va">upserted_parent</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span>
 #&gt;   value    pk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> D         4
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> D         4
+</code></pre>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">upserted_child</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"b"</span>, <span class="st">"d"</span><span class="op">)</span>, pk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, fk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
 <span class="va">upserted_child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 2 x 3</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 2 x 3</span>
 #&gt;   value    pk    fk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> b         2     3
-#&gt; </span><span style="color: #555555;">2</span><span> d         4     4
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> b         2     3
+#&gt; <span style="color: #555555;">2</span> d         4     4
+</code></pre>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_upserted</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span>parent <span class="op">=</span> <span class="va">upserted_parent</span>, child <span class="op">=</span> <span class="va">upserted_child</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -495,24 +495,24 @@
 <span class="co">#&gt; Not persisting, use `in_place = FALSE` to turn off this message.</span>
 
 <span class="va">dm_upserted</span><span class="op">$</span><span class="va">parent</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 2</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 2</span>
 #&gt;   value    pk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> A         1
-#&gt; </span><span style="color: #555555;">2</span><span> B         2
-#&gt; </span><span style="color: #555555;">3</span><span> C         3
-#&gt; </span><span style="color: #555555;">4</span><span> D         4
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> A         1
+#&gt; <span style="color: #555555;">2</span> B         2
+#&gt; <span style="color: #555555;">3</span> C         3
+#&gt; <span style="color: #555555;">4</span> D         4
+</code></pre>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_upserted</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 3</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 3</span>
 #&gt;   value    pk    fk
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> a         1     1
-#&gt; </span><span style="color: #555555;">2</span><span> b         2     3
-#&gt; </span><span style="color: #555555;">3</span><span> c         3     3
-#&gt; </span><span style="color: #555555;">4</span><span> d         4     4
-</span></code></pre>
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #555555;">1</span> a         1     1
+#&gt; <span style="color: #555555;">2</span> b         2     3
+#&gt; <span style="color: #555555;">3</span> c         3     3
+#&gt; <span style="color: #555555;">4</span> d         4     4
+</code></pre>
 </div>
 <div id="truncate" class="section level2">
 <h2 class="hasAnchor">
@@ -524,24 +524,27 @@
   <span class="va">demo_sql</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">child</span><span class="op">)</span>
 <span class="va">dm_trunc_in</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
 #&gt; src:  sqlite 3.35.5 []
-#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `child`
 #&gt; Columns: 3
 #&gt; Primary keys: 1
 #&gt; Foreign keys: 0
-</span></code></pre>
+</code></pre>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_trunc_out</span> <span class="op">&lt;-</span>
   <span class="va">demo_sql</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/rows-dm.html">dm_rows_truncate</a></span><span class="op">(</span><span class="va">dm_trunc_in</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.35.5 []</span><span>
-#&gt; </span><span style="color: #555555;"># … with 3 variables: value &lt;chr&gt;, pk &lt;int&gt;, fk &lt;dbl&gt;</span><span>
-</span></code></pre>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span>
+#&gt; <span style="color: #555555;"># Database: sqlite 3.35.5 []</span>
+#&gt; <span style="color: #555555;"># … with 3 variables: value &lt;chr&gt;, pk &lt;int&gt;, fk &lt;dbl&gt;</span>
+</code></pre>
+<p>When done, do not forget to disconnect:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">sqlite_db</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">

@@ -67,9 +67,6 @@ Existing tables are not overwritten." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -92,7 +89,7 @@ Existing tables are not overwritten." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -195,7 +192,7 @@ Existing tables are not overwritten." />
 Existing tables are not overwritten.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_add_tbl</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>...</span>, repair <span class='op'>=</span> <span class='st'>"unique"</span>, quiet <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_add_tbl</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>...</span>, repair <span class='op'>=</span> <span class='st'>"unique"</span>, quiet <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -245,9 +242,9 @@ messages.</p></td>
     <div class='dont-index'><p><code><a href='dm_mutate_tbl.html'>dm_mutate_tbl()</a></code>, <code><a href='dm_rm_tbl.html'>dm_rm_tbl()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>dm_add_tbl</span><span class='op'>(</span><span class='va'>mtcars</span>, flowers <span class='op'>=</span> <span class='va'>iris</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span> <span style='color: #FFAFFF;'>Metadata</span> <span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Tables: `mtcars`, `flowers`</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Columns: 16</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Primary keys: 0</span>
@@ -259,12 +256,12 @@ messages.</p></td>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> New names:</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> * new_tbl -&gt; new_tbl...1</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> * new_tbl -&gt; new_tbl...2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span> <span style='color: #FFAFFF;'>Metadata</span> <span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Tables: `new_tbl...1`, `new_tbl...2`</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Columns: 16</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Primary keys: 0</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Foreign keys: 0</span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

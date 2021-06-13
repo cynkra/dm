@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Visualizing dm objects</h1>
             
-            <h4 data-toc-skip class="date">2021-05-11</h4>
+            <h4 data-toc-skip class="date">2021-06-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-draw.Rmd" class="external-link"><code>vignettes/tech-dm-draw.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-draw.Rmd</code></div>
@@ -165,12 +165,12 @@
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 <span class="va">flights_dm_w_many_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>color <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="va">flights_dm_w_many_keys</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 4
 #&gt; Foreign keys: 4
-</span></code></pre>
+</code></pre>
 <p>The schema is drawn with <code><a href="../reference/dm_draw.html">dm_draw()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">flights_dm_w_many_keys</span><span class="op">)</span></code></pre></div>

@@ -74,9 +74,6 @@ for a more detailed introduction." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -99,7 +96,7 @@ for a more detailed introduction." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -209,13 +206,13 @@ The filter conditions for the zoomed table are added to the original filter cond
 for a more detailed introduction.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_zoom_to</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_zoom_to</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span><span class='op'>)</span>
 
 <span class='fu'>dm_insert_zoomed</span><span class='op'>(</span><span class='va'>dm</span>, new_tbl_name <span class='op'>=</span> <span class='cn'>NULL</span>, repair <span class='op'>=</span> <span class='st'>"unique"</span>, quiet <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='fu'>dm_update_zoomed</span><span class='op'>(</span><span class='va'>dm</span><span class='op'>)</span>
 
-<span class='fu'>dm_discard_zoomed</span><span class='op'>(</span><span class='va'>dm</span><span class='op'>)</span></pre>
+<span class='fu'>dm_discard_zoomed</span><span class='op'>(</span><span class='va'>dm</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -282,23 +279,23 @@ and have an extra argument <code>select</code> that allows choosing the columns 
 <p>And -- last but not least -- also the tidyr-functions <code><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite()</a></code> and <code><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate()</a></code> are supported for <code>zoomed_dm</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='va'>flights_zoomed</span> <span class='op'>&lt;-</span> <span class='fu'>dm_zoom_to</span><span class='op'>(</span><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>flights</span><span class='op'>)</span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>flights_zoomed</span> <span class='op'>&lt;-</span> <span class='fu'>dm_zoom_to</span><span class='op'>(</span><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>flights</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>flights_zoomed</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Zoomed table: flights</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble:     1,761 x 19</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359        17      447            444</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450            500       -</span><span style='color: #BB0000;'>10</span><span>      634            648</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520            525        -</span><span style='color: #BB0000;'>5</span><span>      813            820</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      530            530         0      824            829</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531            540        -</span><span style='color: #BB0000;'>9</span><span>      832            850</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535            540        -</span><span style='color: #BB0000;'>5</span><span>     </span><span style='text-decoration: underline;'>1</span><span>015           </span><span style='text-decoration: underline;'>1</span><span>017</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      546            600       -</span><span style='color: #BB0000;'>14</span><span>      645            709</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      549            600       -</span><span style='color: #BB0000;'>11</span><span>      652            724</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550            600       -</span><span style='color: #BB0000;'>10</span><span>      649            703</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span>  <span style='text-decoration: underline;'>2</span>013     1    10        3           <span style='text-decoration: underline;'>2</span>359         4      426            437</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span>  <span style='text-decoration: underline;'>2</span>013     1    10       16           <span style='text-decoration: underline;'>2</span>359        17      447            444</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span>  <span style='text-decoration: underline;'>2</span>013     1    10      450            500       -<span style='color: #BB0000;'>10</span>      634            648</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span>  <span style='text-decoration: underline;'>2</span>013     1    10      520            525        -<span style='color: #BB0000;'>5</span>      813            820</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span>  <span style='text-decoration: underline;'>2</span>013     1    10      530            530         0      824            829</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span>  <span style='text-decoration: underline;'>2</span>013     1    10      531            540        -<span style='color: #BB0000;'>9</span>      832            850</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span>  <span style='text-decoration: underline;'>2</span>013     1    10      535            540        -<span style='color: #BB0000;'>5</span>     <span style='text-decoration: underline;'>1</span>015           <span style='text-decoration: underline;'>1</span>017</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span>  <span style='text-decoration: underline;'>2</span>013     1    10      546            600       -<span style='color: #BB0000;'>14</span>      645            709</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>  <span style='text-decoration: underline;'>2</span>013     1    10      549            600       -<span style='color: #BB0000;'>11</span>      652            724</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>  <span style='text-decoration: underline;'>2</span>013     1    10      550            600       -<span style='color: #BB0000;'>10</span>      649            703</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 1,751 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span>
@@ -315,17 +312,17 @@ and have an extra argument <code>select</code> that allows choosing the columns 
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Zoomed table: flights</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble:     1,761 x 27</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3 am                  </span><span style='text-decoration: underline;'>2</span><span>359         4      426</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16 am                  </span><span style='text-decoration: underline;'>2</span><span>359        17      447</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450 am                   500       -</span><span style='color: #BB0000;'>10</span><span>      634</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520 am                   525        -</span><span style='color: #BB0000;'>5</span><span>      813</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      530 am                   530         0      824</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531 am                   540        -</span><span style='color: #BB0000;'>9</span><span>      832</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535 am                   540        -</span><span style='color: #BB0000;'>5</span><span>     </span><span style='text-decoration: underline;'>1</span><span>015</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      546 am                   600       -</span><span style='color: #BB0000;'>14</span><span>      645</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      549 am                   600       -</span><span style='color: #BB0000;'>11</span><span>      652</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550 am                   600       -</span><span style='color: #BB0000;'>10</span><span>      649</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span>  <span style='text-decoration: underline;'>2</span>013     1    10        3 am                  <span style='text-decoration: underline;'>2</span>359         4      426</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span>  <span style='text-decoration: underline;'>2</span>013     1    10       16 am                  <span style='text-decoration: underline;'>2</span>359        17      447</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span>  <span style='text-decoration: underline;'>2</span>013     1    10      450 am                   500       -<span style='color: #BB0000;'>10</span>      634</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span>  <span style='text-decoration: underline;'>2</span>013     1    10      520 am                   525        -<span style='color: #BB0000;'>5</span>      813</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span>  <span style='text-decoration: underline;'>2</span>013     1    10      530 am                   530         0      824</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span>  <span style='text-decoration: underline;'>2</span>013     1    10      531 am                   540        -<span style='color: #BB0000;'>9</span>      832</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span>  <span style='text-decoration: underline;'>2</span>013     1    10      535 am                   540        -<span style='color: #BB0000;'>5</span>     <span style='text-decoration: underline;'>1</span>015</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span>  <span style='text-decoration: underline;'>2</span>013     1    10      546 am                   600       -<span style='color: #BB0000;'>14</span>      645</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>  <span style='text-decoration: underline;'>2</span>013     1    10      549 am                   600       -<span style='color: #BB0000;'>11</span>      652</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>  <span style='text-decoration: underline;'>2</span>013     1    10      550 am                   600       -<span style='color: #BB0000;'>10</span>      649</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 1,751 more rows, and 19 more variables: sched_arr_time &lt;int&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,</span></span>
@@ -335,7 +332,7 @@ and have an extra argument <code>select</code> that allows choosing the columns 
 <span class='r-in'><span class='co'># replace table `flights` with the zoomed table</span></span>
 <span class='r-in'><span class='va'>flights_zoomed_transformed</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>dm_update_zoomed</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span> <span style='color: #FFAFFF;'>Metadata</span> <span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Columns: 61</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Primary keys: 4</span>
@@ -479,12 +476,12 @@ and have an extra argument <code>select</code> that allows choosing the columns 
 <span class='r-in'><span class='co'># discard the zoomed table</span></span>
 <span class='r-in'><span class='va'>flights_zoomed_transformed</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>dm_discard_zoomed</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span> <span style='color: #FFAFFF;'>Metadata</span> <span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Columns: 53</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Primary keys: 4</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Foreign keys: 4</span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

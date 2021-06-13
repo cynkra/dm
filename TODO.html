@@ -65,7 +65,6 @@
 
 
 
-
   
 
   
@@ -88,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -196,13 +195,20 @@
 <a href="#later" class="anchor" aria-hidden="true"></a>Later</h1>
 <ul>
 <li>Store <code>keys</code> objects in dm, much easier for debugging</li>
-<li>Abolish <code>skip_if_local_src()</code>: all tests that run only remotely always run at least with SQLite, to avoid hassle with distorted snapshots and late failures</li>
 <li>Add “strict mode” to GitHub Actions: validation in <code>new_dm3()</code>
 </li>
 <li>Named PK and unique constraints: <a href="https://github.com/r-dbi/DBI/pull/351#issuecomment-833438890" class="external-link uri">https://github.com/r-dbi/DBI/pull/351#issuecomment-833438890</a>
 </li>
 <li>
 <code><a href="reference/dm_paste.html">dm_paste()</a></code>: remove <code>select</code> argument from documentation, via <code>_impl()</code> function that takes dots and this argument, like <code><a href="reference/dm_rm_pk.html">dm_rm_pk()</a></code>
+</li>
+<li>Persistent test dm objects
+<ul>
+<li>Use <code>copy_to(temporary = FALSE)</code>
+</li>
+<li>sqlite and duckdb: use file that can be discarded</li>
+<li>Requires schema support for all databases</li>
+</ul>
 </li>
 </ul>
 </div>

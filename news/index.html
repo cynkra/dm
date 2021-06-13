@@ -65,7 +65,6 @@
 
 
 
-
   
 
   
@@ -88,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -185,9 +184,37 @@
       <small>Source: <a href='https://github.com/cynkra/dm/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="dm-022" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.2">
+<a href="#dm-022" class="anchor" aria-hidden="true"></a>dm 0.2.2<small> Unreleased </small></h1>
+<ul><li>Same as previous version.</li>
+</ul></div>
+    <div id="dm-0219002" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.1.9002">
+<a href="#dm-0219002" class="anchor" aria-hidden="true"></a>dm 0.2.1.9002<small> Unreleased </small></h1>
+<ul><li>Always run database tests on sqlite for df source.</li>
+<li>
+<code><a href="../reference/materialize.html">collect.dm()</a></code> gains <code>progress</code> argument (<a href='https://github.com/cynkra/dm/issues/582'>#582</a>).</li>
+<li>
+<code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> gains <code>progress</code> and <code>copy_to</code> arguments (<a href='https://github.com/cynkra/dm/issues/582'>#582</a>).</li>
+</ul></div>
+    <div id="dm-0219001" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.1.9001">
+<a href="#dm-0219001" class="anchor" aria-hidden="true"></a>dm 0.2.1.9001<small> Unreleased </small></h1>
+<ul><li>
+<code><a href="../reference/rows-dm.html">dm_rows_insert()</a></code> and related functions now show a progress bar in interactive mode if the progress package is installed. The <code>progress</code> argument controls this (<a href='https://github.com/cynkra/dm/issues/573'>#573</a>, <a href='https://github.com/moodymudskipper'>@moodymudskipper</a>).</li>
+<li>
+<code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> supports progress bars in interactive mode via the progress package. The new <code>progress = NA</code> argument controls the behavior (<a href='https://github.com/cynkra/dm/issues/262'>#262</a>, <a href='https://github.com/moodymudskipper'>@moodymudskipper</a>).</li>
+<li>Establish compatibility with testthat &gt; 3.0.2 (<a href='https://github.com/cynkra/dm/issues/566'>#566</a>, <a href='https://github.com/moodymudskipper'>@moodymudskipper</a>).</li>
+</ul></div>
+    <div id="dm-0219000" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.1.9000">
+<a href="#dm-0219000" class="anchor" aria-hidden="true"></a>dm 0.2.1.9000<small> Unreleased </small></h1>
+<ul><li>Same as previous version.</li>
+</ul></div>
     <div id="dm-021" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.1">
-<a href="#dm-021" class="anchor" aria-hidden="true"></a>dm 0.2.1<small> Unreleased </small></h1>
+<a href="#dm-021" class="anchor" aria-hidden="true"></a>dm 0.2.1<small> 2021-05-11 </small></h1>
 <div id="breaking-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#breaking-changes" class="anchor" aria-hidden="true"></a>Breaking changes</h2>

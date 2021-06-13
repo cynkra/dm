@@ -66,9 +66,6 @@
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -91,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -193,7 +190,7 @@
     <p><code>dm_paste()</code> takes an existing <code>dm</code> and emits the code necessary for its creation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_paste</span><span class='op'>(</span><span class='va'>dm</span>, select <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, tab_width <span class='op'>=</span> <span class='fl'>2</span>, options <span class='op'>=</span> <span class='cn'>NULL</span>, path <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_paste</span><span class='op'>(</span><span class='va'>dm</span>, select <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, tab_width <span class='op'>=</span> <span class='fl'>2</span>, options <span class='op'>=</span> <span class='cn'>NULL</span>, path <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -245,7 +242,7 @@ table definitions.
 Data in the tables is never included, see <code><a href='dm_ptype.html'>dm_ptype()</a></code> for the underlying logic.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>dm_paste</span><span class='op'>(</span><span class='op'>)</span></span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> dm::dm()</span>
 <span class='r-in'></span>
@@ -274,7 +271,7 @@ Data in the tables is never included, see <code><a href='dm_ptype.html'>dm_ptype
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_select(flights, year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour) %&gt;%</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_select(planes, tailnum, year, type, manufacturer, model, engines, seats, speed, engine) %&gt;%</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   dm::dm_select(weather, origin, year, month, day, hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib, time_hour)</span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

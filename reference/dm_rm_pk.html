@@ -69,9 +69,6 @@ Foreign keys are never removed." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -94,7 +91,7 @@ Foreign keys are never removed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -199,7 +196,7 @@ If the selection criteria are ambiguous, a message with unambiguous replacement 
 Foreign keys are never removed.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_rm_pk</span><span class='op'>(</span><span class='va'>dm</span>, table <span class='op'>=</span> <span class='cn'>NULL</span>, columns <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, fail_fk <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_rm_pk</span><span class='op'>(</span><span class='va'>dm</span>, table <span class='op'>=</span> <span class='cn'>NULL</span>, columns <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, fail_fk <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -242,7 +239,7 @@ if there are foreign keys addressing the primary key that is to be removed.</p><
 <code><a href='enum_pk_candidates.html'>enum_pk_candidates</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>dm_rm_pk</span><span class='op'>(</span><span class='va'>airports</span>, fail_fk <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -336,7 +333,7 @@ if there are foreign keys addressing the primary key that is to be removed.</p><
 </g>
 </g>
 </svg>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

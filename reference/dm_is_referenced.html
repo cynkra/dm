@@ -66,9 +66,6 @@
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -91,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -193,7 +190,7 @@
     <p>Is a table of a <code><a href='dm.html'>dm</a></code> referenced by another table?</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_is_referenced</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_is_referenced</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -218,13 +215,13 @@ key of the <code>table</code> argument, <code>FALSE</code> otherwise.</p>
 <code><a href='dm_get_referencing_tables.html'>dm_get_referencing_tables</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>dm_is_referenced</span><span class='op'>(</span><span class='va'>airports</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
 <span class='r-in'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>dm_is_referenced</span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

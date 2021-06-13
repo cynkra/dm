@@ -66,9 +66,6 @@
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -91,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -193,7 +190,7 @@
     <p>Use these methods without the '.zoomed_dm' suffix (see examples).</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for zoomed_dm</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='co'># S3 method for zoomed_dm</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for zoomed_dm</span>
@@ -243,7 +240,7 @@
 <span class='fu'>pull</span><span class='op'>(</span><span class='va'>.data</span>, var <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for zoomed_dm</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -312,7 +309,7 @@ names and column locations).</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='va'>zoomed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>zoomed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>month</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'>desc</span><span class='op'>(</span><span class='va'>day</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
@@ -321,16 +318,16 @@ names and column locations).</p></td>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Zoomed table: flights</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble:     2 x 2</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   month avg_air_time</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span><span>     1         147.</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span><span>     2         149.</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>     1         147.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span>     2         149.</span>
 <span class='r-in'><span class='fu'><a href='dm_zoom_to.html'>dm_insert_zoomed</a></span><span class='op'>(</span><span class='va'>zoomed</span>, new_tbl_name <span class='op'>=</span> <span class='st'>"avg_air_time_per_month"</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span> <span style='color: #FFAFFF;'>Metadata</span> <span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `avg_air_time_per_month`</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Columns: 55</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Primary keys: 4</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Foreign keys: 4</span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
