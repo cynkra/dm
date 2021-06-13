@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.2
+
+- Same as previous version.
+
+
 # dm 0.2.1.9002
 
 - Always run database tests on sqlite for df source.
