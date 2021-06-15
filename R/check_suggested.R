@@ -10,7 +10,7 @@ check_suggested <- function(package, use, message) {
     return(FALSE)
   }
 
-  if (!is_installed("progress")) {
+  if (!is_installed(package)) {
     abort(message)
   }
   TRUE
