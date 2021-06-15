@@ -17,7 +17,7 @@
 dm_financial <- function() {
   check_suggested("RMariaDB",
     use = TRUE,
-    message = "RMariaDB package needed for this function to work. Please install it."
+    top_level_fun = "dm_financial"
   )
 
   my_db <- financial_db_con()
@@ -69,7 +69,7 @@ dm_has_financial <- function() {
 dm_financial_sqlite <- function() {
   check_suggested("RSQLite",
     use = TRUE,
-    message = "RSQLite package needed for this function to work. Please install it."
+    top_level_fun = "dm_financial_sqlite"
   )
 
   my_dm <-

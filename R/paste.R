@@ -47,7 +47,7 @@ dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
   if (!is.null(path)) {
     check_suggested("brio",
       use = TRUE,
-      message = "brio package needed for this function to work. Please install it."
+      top_level_fun = "dm_paste"
     )
   }
 
