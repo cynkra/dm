@@ -2,28 +2,20 @@
 
 # dm 0.2.2.9000
 
-- Same as previous version.
-
+Internal changes only.
 
 # dm 0.2.2
 
-## In
+## Features
+
+- `dm_examine_constraints()`, `dm_rows_insert()` and related, `copy_dm_to()` and `collect.dm()` show progress bars in interactive mode via the progress package. The new `progress = NA` argument controls the behavior (#262, @moodymudskipper).
+- `copy_dm_to()` gains a `copy_to` argument to support other ways of copying data to the database (#582).
+
+## Internal
+>>>>>>> cran-0.2.2
 
 - Always run database tests on sqlite for df source.
-- `collect.dm()` gains `progress` argument (#582).
-- `copy_dm_to()` gains `progress` and `copy_to` arguments (#582).
-
-
-# dm 0.2.1.9001
-
-- `dm_rows_insert()` and related functions now show a progress bar in interactive mode if the progress package is installed. The `progress` argument controls this (#573, @moodymudskipper).
-- `dm_examine_constraints()` supports progress bars in interactive mode via the progress package. The new `progress = NA` argument controls the behavior (#262, @moodymudskipper).
 - Establish compatibility with testthat > 3.0.2 (#566, @moodymudskipper).
-
-
-# dm 0.2.1.9000
-
-- Same as previous version.
 
 
 # dm 0.2.1
