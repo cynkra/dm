@@ -12,7 +12,6 @@ Internal changes only.
 - `copy_dm_to()` gains a `copy_to` argument to support other ways of copying data to the database (#582).
 
 ## Internal
->>>>>>> cran-0.2.2
 
 - Always run database tests on sqlite for df source.
 - Establish compatibility with testthat > 3.0.2 (#566, @moodymudskipper).
