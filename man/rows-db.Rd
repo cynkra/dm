@@ -4,17 +4,23 @@
 \alias{rows-db}
 \alias{rows_insert.tbl_dbi}
 \alias{rows_update.tbl_dbi}
+\alias{rows_delete.tbl_dbi}
 \alias{sql_rows_insert}
 \alias{sql_rows_update}
+\alias{sql_rows_delete}
 \title{Updating database tables}
 \usage{
 \method{rows_insert}{tbl_dbi}(x, y, by = NULL, ..., in_place = NULL, copy = FALSE, check = NULL)
 
 \method{rows_update}{tbl_dbi}(x, y, by = NULL, ..., in_place = NULL, copy = FALSE, check = NULL)
 
+\method{rows_delete}{tbl_dbi}(x, y, by = NULL, ..., in_place = NULL, copy = FALSE, check = NULL)
+
 sql_rows_insert(x, y, ...)
 
 sql_rows_update(x, y, by, ...)
+
+sql_rows_delete(x, y, by, ...)
 }
 \arguments{
 \item{x}{A pair of data frames or data frame extensions (e.g. a tibble).

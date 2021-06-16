@@ -1,4 +1,7 @@
-test_that("insert + truncate", {
+test_that("insert + delete + truncate", {
+  # FIXME: Avoid CTE for duckdb or even in general
+  skip_if_src("duckdb")
+
   expect_snapshot({
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
     data
@@ -11,6 +14,22 @@ test_that("insert + truncate", {
     rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = FALSE)
     data %>% arrange(select)
     rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = TRUE)
+    data %>% arrange(select)
+    rows_delete(data, test_db_src_frame(select = 2), in_place = FALSE)
+    data %>% arrange(select)
+    rows_delete(data, test_db_src_frame(select = 2), in_place = TRUE)
+    data %>% arrange(select)
+    rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = c("select", "where"), in_place = FALSE)
+    data %>% arrange(select)
+    rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = c("select", "where"), in_place = TRUE)
+    data %>% arrange(select)
+    rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = "where", in_place = FALSE)
+    data %>% arrange(select)
+    rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = "where", in_place = TRUE)
+    data %>% arrange(select)
+    rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), in_place = FALSE)
+    data %>% arrange(select)
+    rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), in_place = TRUE)
     data %>% arrange(select)
 
     rows_truncate(data, in_place = FALSE)
