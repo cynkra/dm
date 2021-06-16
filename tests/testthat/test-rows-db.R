@@ -1,4 +1,7 @@
 test_that("insert + delete + truncate", {
+  # FIXME: Avoid CTE for duckdb or even in general
+  skip_if_src("duckdb")
+
   expect_snapshot({
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
     data
