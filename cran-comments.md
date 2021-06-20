@@ -7,14 +7,10 @@ dm 0.2.3
 ## R CMD check results
 
 - [x] Checked locally, R 4.1.0
-- [ ] Checked on CI system, R 4.1.0
-- [ ] Checked on win-builder, R devel
-
-Check the boxes above after successful execution and remove this line. Then run `fledge::release()`.
+- [x] Checked on CI system, R 4.1.0
+- [x] Checked on win-builder, R devel
 
 ## Current CRAN check results
 
 - [x] Checked on 2021-06-20, problems found: https://cran.r-project.org/web/checks/check_results_dm.html
-- [ ] ERROR: r-patched-solaris-x86
-
-Check results at: https://cran.r-project.org/web/checks/check_results_dm.html
+- [x] ERROR: r-patched-solaris-x86: fixed brittle examples that access a remote database.

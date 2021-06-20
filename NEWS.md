@@ -2,19 +2,18 @@
 
 # dm 0.2.3
 
-- Same as previous version.
+## Bug fixes
 
+- Fix `rows_truncate()` in interactive mode (#588).
 
-# dm 0.2.2.9001
+## Features
 
 - Implement `rows_delete()` for databases (#589).
-- Fix `rows_truncate()` in interactive mode (#588).
+
+## Internal
+
 - Skip examples that might require internet access on non-CI platforms.
 
-
-# dm 0.2.2.9000
-
-Internal changes only.
 
 # dm 0.2.2
 
