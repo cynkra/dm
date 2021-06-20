@@ -4,6 +4,7 @@
 
 - Implement `rows_delete()` for databases (#589).
 - Fix `rows_truncate()` in interactive mode (#588).
+- Skip examples that might require internet access on non-CI platforms.
 
 
 # dm 0.2.2.9000
