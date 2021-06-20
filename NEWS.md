@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.3
+
+- Same as previous version.
+
+
 # dm 0.2.2.9001
 
 - Implement `rows_delete()` for databases (#589).
