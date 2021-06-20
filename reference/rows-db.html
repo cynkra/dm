@@ -104,7 +104,7 @@ y needs to be located on the same data source as x." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -180,7 +180,7 @@ y needs to be located on the same data source as x." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/cynkra/dm">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -228,9 +228,14 @@ Unlike <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>comput
 <span class='co'># S3 method for tbl_dbi</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_update</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, by <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span>, copy <span class='op'>=</span> <span class='cn'>FALSE</span>, check <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
+<span class='co'># S3 method for tbl_dbi</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_delete</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, by <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span>, copy <span class='op'>=</span> <span class='cn'>FALSE</span>, check <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
 <span class='fu'>sql_rows_insert</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>sql_rows_update</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>by</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
+<span class='fu'>sql_rows_update</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>by</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>sql_rows_delete</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>by</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
