@@ -38,11 +38,10 @@ test_that("'collect.zoomed_dm()' collects tables, with message", {
 })
 
 test_that("'compute.dm()' computes tables on DB", {
-  skip_if_local_src()
   skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
 
   def <-
-    dm_for_filter() %>%
+    dm_for_filter_sqlite() %>%
     dm_filter(tf_1, a > 3) %>%
     {
       suppress_mssql_message(compute(.))
@@ -54,11 +53,10 @@ test_that("'compute.dm()' computes tables on DB", {
 })
 
 test_that("'compute.zoomed_dm()' computes tables on DB", {
-  skip_if_local_src()
   skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
 
   zoomed_dm_for_compute <-
-    dm_for_filter() %>%
+    dm_for_filter_sqlite() %>%
     dm_zoom_to(tf_1) %>%
     mutate(c = a + 1)
 
@@ -234,10 +232,9 @@ test_that("dm_get_con() errors", {
 })
 
 test_that("dm_get_con() works", {
-  skip_if_local_src()
   expect_identical(
-    dm_get_con(dm_for_filter()),
-    con_from_src_or_con(my_test_src())
+    dm_get_con(dm_for_filter_db()),
+    con_from_src_or_con(my_db_test_src())
   )
 })
 

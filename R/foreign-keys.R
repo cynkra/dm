@@ -90,8 +90,9 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
   ref_column <- unclass(ref_column)
 
   loc <- which(!duplicated(ref_table))
-  if (length(loc) > 1) {
-    my_ref_table <- ref_table[[ loc[[length(loc)]] ]]
+  n_loc <- length(loc)
+  if (n_loc > 1) {
+    my_ref_table <- ref_table[[loc[[n_loc]]]]
 
     my <- ref_table == my_ref_table
     where_other <- which(!my)
@@ -102,7 +103,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
     ref_column <- ref_column[my]
     # ref_table must be scalar, unlike the others
     ref_table <- my_ref_table
-  } else if (length(loc) == 0) {
+  } else if (n_loc == 0) {
     return(dm)
   } else {
     my_ref_table <- ref_table[[1]]
@@ -117,7 +118,8 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
   existing <- fks$table == table & !is.na(vec_match(fks$column, column))
   if (any(existing)) {
     if (dm_is_strict_keys(dm)) {
-      abort_fk_exists(table[ which(existing)[[1]] ], column[ which(existing)[[1]] ], ref_table)
+      first_existing <- which(existing)[[1]]
+      abort_fk_exists(table[[first_existing]], column[[first_existing]], ref_table)
     }
 
     return(dm)
@@ -507,8 +509,11 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     count(!!!t2_vals) %>%
     ungroup()
 
-  # FIXME: Build expression instead of paste() + parse()
-  any_value_na_expr <- parse(text = paste0("is.na(", val_names, ")", collapse = " | "))[[1]]
+  any_value_na_expr <- reduce(
+    syms(val_names[-1]),
+    ~ call("|", .x, call("is.na", .y)),
+    .init = call("is.na", sym(val_names[[1]]))
+  )
 
   res_tbl <- tryCatch(
     t1_join %>%
@@ -536,7 +541,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   res_tbl$value <- exec(paste0, !!!res_tbl[val_names])
 
   vals_formatted <- commas(
-    glue('{res_tbl$value} ({res_tbl$n})'),
+    glue("{res_tbl$value} ({res_tbl$n})"),
     capped = TRUE
   )
   glue(

@@ -164,9 +164,7 @@ test_that("Learning from SQLite works (#288)?", {
 
 
 test_that("'schema_if()' works", {
-  skip_if_local_src()
-
-  con_db <- my_test_src()$con
+  con_db <- my_db_test_src()$con
 
   # all 3 naming parameters set ('table' is required)
   expect_match(

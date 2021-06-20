@@ -38,14 +38,12 @@
 #' as_dm(list(trees = trees, mtcars = mtcars))
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
 #'
-#' dm_nycflights13() %>% tbl("airports")
-#' dm_nycflights13() %>% src_tbls()
-#' dm_nycflights13() %>% dm_get_src()
+#' dm_nycflights13()$airports
+#' dm_nycflights13() %>% names()
 #'
 #' copy_dm_to(
 #'   dbplyr::src_memdb(),
-#'   dm_nycflights13(),
-#'   unique_table_names = TRUE
+#'   dm_nycflights13()
 #' ) %>%
 #'   dm_get_con()
 #'
@@ -616,13 +614,17 @@ compute.dm <- function(x, ...) { # for both dm and zoomed_dm
 #'
 #' `collect()` downloads the tables in a `dm` object as local [tibble]s.
 #'
+#' @inheritParams dm_examine_constraints
+#'
 #' @rdname materialize
 #' @export
-collect.dm <- function(x, ...) { # for both dm and zoomed_dm
+collect.dm <- function(x, ..., progress = NA) { # for both dm and zoomed_dm
   x <- dm_apply_filters(x)
 
   def <- dm_get_def(x)
-  def$data <- map(def$data, collect, ...)
+
+  ticker <- new_ticker("downloading data", nrow(def), progress = progress)
+  def$data <- map(def$data, ticker(collect), ...)
   new_dm3(def, zoomed = is_zoomed(x))
 }
 

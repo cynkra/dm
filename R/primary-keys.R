@@ -229,7 +229,7 @@ dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL, fail_f
 
   if (!is.null(rm_referencing_fks)) {
     deprecate_soft("0.2.1", "dm::dm_rm_pk(rm_referencing_fks = )", "dm::dm_rm_pk(fail_fk = )",
-                   details = "Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed."
+      details = "Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed."
     )
     if (is.null(fail_fk)) {
       fail_fk <- !rm_referencing_fks

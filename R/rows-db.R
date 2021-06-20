@@ -126,6 +126,38 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
   }
 }
 
+#' @export
+#' @rdname rows-db
+rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
+                                in_place = NULL, copy = FALSE, check = NULL) {
+  y <- auto_copy(x, y, copy = copy)
+  y_key <- db_key(y, by)
+  by <- names(y_key)
+  x_key <- db_key(x, by)
+
+  name <- target_table_name(x, in_place)
+
+  if (!is_null(name)) {
+    # Checking optional, can rely on primary key constraint
+    if (is_true(check)) {
+      check_db_superset(x, y, by)
+    }
+
+    con <- dbplyr::remote_con(x)
+    sql <- sql_rows_delete(x, y, by)
+    dbExecute(con, sql, immediate = TRUE)
+    invisible(x)
+  } else {
+    # Checking optional, can rely on primary key constraint
+    # FIXME: contrary to doc currently also checks if `in_place = FALSE`
+    if (is_null(check) || is_true(check)) {
+      check_db_superset(x, y, by)
+    }
+
+    anti_join(x, y, by = by)
+  }
+}
+
 target_table_name <- function(x, in_place) {
   name <- dbplyr::remote_name(x)
 
@@ -335,4 +367,29 @@ sql_rows_update_prep <- function(x, y, by) {
     new_columns_qual_qq, new_columns_qual_qq_list,
     compare_qual_qq
   )
+}
+
+#' @export
+#' @rdname rows-db
+sql_rows_delete <- function(x, y, by, ...) {
+  ellipsis::check_dots_used()
+  # FIXME: check here same src for x and y? if not -> error.
+  UseMethod("sql_rows_delete")
+}
+
+#' @export
+sql_rows_delete.tbl_sql <- function(x, y, by, ...) {
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_update_prep(x, y, by)
+
+  sql <- paste0(
+    "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
+    dbplyr::sql_render(y),
+    "\n)\n",
+    #
+    "DELETE FROM ", p$name, "\n",
+    "WHERE EXISTS (SELECT * FROM ", p$y_name, " WHERE ", p$compare_qual_qq, ")"
+  )
+  glue::as_glue(sql)
 }

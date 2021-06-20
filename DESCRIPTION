@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.2.1.9000
-Date: 2021-05-11
+Version: 0.2.2.9001
+Date: 2021-06-16
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -71,6 +71,7 @@ Suggests:
     mockr,
     nycflights13,
     odbc,
+    progress,
     RMariaDB (>= 1.0.10),
     rmarkdown,
     RPostgres,
@@ -86,4 +87,4 @@ Roxygen: list(markdown = TRUE, roclets = c("collate",
 RoxygenNote: 7.1.1.9001
 Config/testthat/edition: 3
 Config/testthat/parallel: true
-Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm, draw-dm, bind
+Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm, draw-dm, bind, rows-dm

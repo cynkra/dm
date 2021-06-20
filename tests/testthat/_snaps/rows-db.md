@@ -1,7 +1,7 @@
-# insert + truncate
+# insert + delete + truncate
 
     Code
-      data <- test_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 +
+      data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 +
         0:2)
       data
     Output
@@ -16,7 +16,7 @@
     Output
       `x` and `y` must share the same src, set `copy` = TRUE (may be slow).
     Code
-      rows_insert(data, test_src_frame(select = 4, where = "z"))
+      rows_insert(data, test_db_src_frame(select = 4, where = "z"))
     Message <message>
       Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.
     Output
@@ -35,7 +35,7 @@
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_insert(data, test_src_frame(select = 4, where = "z"), in_place = FALSE)
+      rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = FALSE)
     Output
         select where exists
          <dbl> <chr>  <dbl>
@@ -52,7 +52,7 @@
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_insert(data, test_src_frame(select = 4, where = "z"), in_place = TRUE)
+      rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = TRUE)
       data %>% arrange(select)
     Output
         select where exists
@@ -61,6 +61,107 @@
       2      2 b        1.5
       3      3 <NA>     2.5
       4      4 z       NA  
+    Code
+      rows_delete(data, test_db_src_frame(select = 2), in_place = FALSE)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      1 a        0.5
+      2      3 <NA>     2.5
+      3      4 z       NA  
+    Code
+      data %>% arrange(select)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      1 a        0.5
+      2      2 b        1.5
+      3      3 <NA>     2.5
+      4      4 z       NA  
+    Code
+      rows_delete(data, test_db_src_frame(select = 2), in_place = TRUE)
+      data %>% arrange(select)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      1 a        0.5
+      2      3 <NA>     2.5
+      3      4 z       NA  
+    Code
+      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = c("select",
+        "where"), in_place = FALSE)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      1 a        0.5
+      2      3 <NA>     2.5
+      3      4 z       NA  
+    Code
+      data %>% arrange(select)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      1 a        0.5
+      2      3 <NA>     2.5
+      3      4 z       NA  
+    Code
+      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = c("select",
+        "where"), in_place = TRUE)
+      data %>% arrange(select)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      1 a        0.5
+      2      3 <NA>     2.5
+      3      4 z       NA  
+    Code
+      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = "where",
+      in_place = FALSE)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      1 a        0.5
+      2      3 <NA>     2.5
+      3      4 z       NA  
+    Code
+      data %>% arrange(select)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      1 a        0.5
+      2      3 <NA>     2.5
+      3      4 z       NA  
+    Code
+      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = "where",
+      in_place = TRUE)
+      data %>% arrange(select)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      1 a        0.5
+      2      3 <NA>     2.5
+      3      4 z       NA  
+    Code
+      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), in_place = FALSE)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      4 z         NA
+    Code
+      data %>% arrange(select)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      1 a        0.5
+      2      3 <NA>     2.5
+      3      4 z       NA  
+    Code
+      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), in_place = TRUE)
+      data %>% arrange(select)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      4 z         NA
     Code
       rows_truncate(data, in_place = FALSE)
     Output
@@ -70,10 +171,7 @@
     Output
         select where exists
          <int> <chr>  <dbl>
-      1      1 a        0.5
-      2      2 b        1.5
-      3      3 <NA>     2.5
-      4      4 z       NA  
+      1      4 z         NA
     Code
       rows_truncate(data, in_place = TRUE)
       data %>% arrange(select)
@@ -83,7 +181,7 @@
 # update
 
     Code
-      data <- test_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 +
+      data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 +
         0:2)
       data
     Output
@@ -118,7 +216,7 @@
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_update(data, test_src_frame(select = 0L, where = "a"), by = "where",
+      rows_update(data, test_db_src_frame(select = 0L, where = "a"), by = "where",
       in_place = FALSE)
     Output
         select where exists
@@ -135,7 +233,7 @@
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_update(data, test_src_frame(select = 2:3, where = "w"), in_place = TRUE)
+      rows_update(data, test_db_src_frame(select = 2:3, where = "w"), in_place = TRUE)
       data %>% arrange(select)
     Output
         select where exists
@@ -144,7 +242,7 @@
       2      2 w        1.5
       3      3 w        2.5
     Code
-      rows_update(data, test_src_frame(select = 2, where = "w", exists = 3.5),
+      rows_update(data, test_db_src_frame(select = 2, where = "w", exists = 3.5),
       in_place = TRUE)
       data %>% arrange(select)
     Output
@@ -154,7 +252,7 @@
       2      2 w        3.5
       3      3 w        2.5
     Code
-      rows_update(data, test_src_frame(select = 2:3), in_place = TRUE)
+      rows_update(data, test_db_src_frame(select = 2:3), in_place = TRUE)
       data %>% arrange(select)
     Output
         select where exists
@@ -163,7 +261,7 @@
       2      2 w        3.5
       3      3 w        2.5
     Code
-      rows_update(data, test_src_frame(select = 0L, where = "a"), by = "where",
+      rows_update(data, test_db_src_frame(select = 0L, where = "a"), by = "where",
       in_place = TRUE)
       data %>% arrange(select)
     Output

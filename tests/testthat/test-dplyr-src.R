@@ -48,6 +48,8 @@ test_that("'copy_to.dm()' works", {
 })
 
 test_that("'copy_to.dm()' works (2)", {
+  skip_if_ide()
+
   local_options(lifecycle_verbosity = "quiet")
 
   expect_dm_error(
