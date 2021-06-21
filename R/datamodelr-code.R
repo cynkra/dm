@@ -124,8 +124,7 @@ bdm_render_graph <- function(graph, width = NULL, height = NULL) {
   DiagrammeR::grViz(graph$dot_code, allow_subst = FALSE, width, height)
 }
 
-bdm_create_graph_list <- function(
-                                  data_model,
+bdm_create_graph_list <- function(data_model,
                                   view_type = "all",
                                   focus = NULL,
                                   col_attr = "column",
@@ -400,7 +399,7 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
         value <- NULL
       }
     }
-    if (col_name == "column" && row_values[["key"]]) {
+    if (col_name == "column" && row_values[["key"]] == 1) {
       value <- sprintf("<U>%s</U>", value)
     }
     if (!is.null(value) && is.na(value)) {

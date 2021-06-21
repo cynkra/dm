@@ -26,16 +26,19 @@
 #' dm_nycflights13() %>%
 #'   dm_draw()
 dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE) {
-  airlines <- nycflights13::airlines
-  airports <- nycflights13::airports
-  planes <- nycflights13::planes
-
   if (subset) {
-    flights <- flights_subset()
-    weather <- weather_subset()
+    data <- nycflights_subset()
+    flights <- data$flights
+    weather <- data$weather
+    airlines <- data$airlines
+    airports <- data$airports
+    planes <- data$planes
   } else {
     flights <- nycflights13::flights
     weather <- nycflights13::weather
+    airlines <- nycflights13::airlines
+    airports <- nycflights13::airports
+    planes <- nycflights13::planes
   }
 
   dm <-
@@ -73,12 +76,6 @@ dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE, compound
   dm
 }
 
-flights_subset <- function() {
-  nycflights13::flights %>%
-    filter(day == 10)
-}
-
-weather_subset <- function() {
-  nycflights13::weather %>%
-    filter(day == 10)
+nycflights_subset <- function() {
+  readRDS(system.file("extdata/nycflights13-small.rds", package = "dm"))
 }

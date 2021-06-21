@@ -13,6 +13,8 @@
 #' The arguments are included in the signature to avoid passing them via the
 #' `...` ellipsis.
 #'
+#' @inheritParams dm_examine_constraints
+#'
 #' @param dest An object of class `"src"` or `"DBIConnection"`.
 #' @param dm A `dm` object.
 #' @param overwrite,types,indexes,unique_indexes Must remain `NULL`.
@@ -58,7 +60,14 @@
 #'
 #'   Use qualified names corresponding to your database's syntax
 #'   to specify e.g. database and schema for your tables.
-#' @param ... Passed on to [dplyr::copy_to()], which is used on each table.
+#' @param copy_to By default, [dplyr::copy_to()] is called to upload the
+#'   individual tables to the target data source.
+#'   This argument allows overriding the standard behavior in cases
+#'   when the default does not work as expected, such as spatial data frames
+#'   or other tables with special data types.
+#'   If not `NULL`, this argument is processed with [rlang::as_function()].
+#' @param ... Passed on to [dplyr::copy_to()] or to the function specified
+#'   by the `copy_to` argument.
 #'
 #' @family DB interaction functions
 #'
@@ -92,7 +101,9 @@ copy_dm_to <- function(dest, dm, ...,
                        set_key_constraints = TRUE, unique_table_names = NULL,
                        table_names = NULL,
                        temporary = TRUE,
-                       schema = NULL) {
+                       schema = NULL,
+                       progress = NA,
+                       copy_to = NULL) {
   # for the time being, we will be focusing on MSSQL
   # we want to
   #   1. change `dm_get_src_impl(dm)` to `dest`
@@ -172,12 +183,18 @@ copy_dm_to <- function(dest, dm, ...,
     table_names_out <- set_names(src_names)
   }
 
+  if (is.null(copy_to)) {
+    copy_to <- dplyr::copy_to
+  } else {
+    copy_to <- as_function(copy_to)
+  }
+
   check_not_zoomed(dm)
 
   # FIXME: if same_src(), can use compute() but need to set NOT NULL
   # constraints
 
-  dm <- collect(dm)
+  dm <- collect(dm, progress = progress)
 
   # Shortcut necessary to avoid copying into .GlobalEnv
   if (!is_db(dest)) {
@@ -186,9 +203,10 @@ copy_dm_to <- function(dest, dm, ...,
 
   copy_data <- build_copy_data(dm, dest, table_names_out, set_key_constraints, dest_con)
 
-  new_tables <- copy_list_of_tables_to(
-    dest,
-    copy_data = copy_data,
+  ticker <- new_ticker("uploading data", nrow(copy_data), progress = progress)
+  new_tables <- pmap(
+    copy_data, ticker(copy_to),
+    dest = dest,
     temporary = temporary,
     overwrite = FALSE,
     ...
@@ -235,11 +253,8 @@ dm_set_key_constraints <- function(dm) {
   if (!is_src_db(dm) && !is_this_a_test()) abort_key_constraints_need_db()
   db_table_names <- get_db_table_names(dm)
 
-  tables_w_pk <- dm_get_all_pks(dm)
-
   fk_info <-
     dm_get_all_fks(dm) %>%
-    left_join(tables_w_pk, by = c("parent_table" = "table")) %>%
     left_join(db_table_names, by = c("child_table" = "table_name")) %>%
     rename(db_child_table = remote_name) %>%
     left_join(db_table_names, by = c("parent_table" = "table_name")) %>%

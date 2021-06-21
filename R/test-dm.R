@@ -42,14 +42,27 @@ dm_tbl_name <- function(dm, table) {
   table_name
 }
 
+dm_tbl_name_null <- function(dm, table) {
+  table_expr <- enexpr(table)
+
+  # Missing argument?
+  if (quo_is_null(table_expr)) {
+    return(NULL)
+  }
+
+  table_name <- as_name(table_expr)
+
+  if (!(table_name %in% src_tbls_impl(dm))) {
+    abort_table_not_in_dm(table_name, src_tbls_impl(dm))
+  }
+
+  table_name
+}
+
 uncurly <- function(call) {
   # Transforms {{ x }} to x
   # Doesn't work for other expression patterns
   call[[2]][[2]]
-}
-
-check_dm <- function(dm) {
-  if (!is_dm(dm)) abort_is_not_dm(class(dm))
 }
 
 is_this_a_test <- function() {
@@ -67,53 +80,6 @@ is_this_a_test <- function() {
   is_testing <- rlang::is_installed("testthat") && testthat::is_testing()
 
   is_test_call || is_testing
-}
-
-check_fk_child_tables <- function(child_tables, dm_tables) {
-  if (!all(map_lgl(child_tables, ~ {
-    . %in% dm_tables
-  }))) {
-    abort_dm_invalid("FK child table names not in `dm` table names.")
-  }
-}
-
-check_colnames <- function(key_tibble, dm_col_names, which) {
-  if (!all(map2_lgl(key_tibble$table, key_tibble$column, ~ {
-    ..2 %in% dm_col_names[[..1]]
-  }))) {
-    abort_dm_invalid(glue("At least one {which} column name not in `dm` tables' column names."))
-  }
-}
-
-check_col_classes <- function(def) {
-  # Called for its side effect of checking type compatibility
-  vctrs::vec_ptype2(def, dm_get_def(new_dm()))
-
-  invisible()
-}
-
-check_one_zoom <- function(def, zoomed) {
-  if (zoomed) {
-    if (sum(!map_lgl(def$zoom, is_null)) > 1) {
-      abort_dm_invalid("More than one table is zoomed.")
-    }
-    if (sum(!map_lgl(def$zoom, is_null)) < 1) {
-      abort_dm_invalid("Class is `zoomed_dm` but no zoomed table available.")
-    }
-    if (sum(!map_lgl(def$col_tracker_zoom, is_null)) > 1) {
-      abort_dm_invalid("Key tracking is active for more than one zoomed table.")
-    }
-    if (sum(!map_lgl(def$col_tracker_zoom, is_null)) < 1) {
-      abort_dm_invalid("No key tracking is active despite `dm` a `zoomed_dm`.")
-    }
-  } else {
-    if (sum(!map_lgl(def$zoom, is_null)) != 0) {
-      abort_dm_invalid("Zoomed table(s) available despite `dm` not a `zoomed_dm`.")
-    }
-    if (sum(!map_lgl(def$col_tracker_zoom, is_null)) != 0) {
-      abort_dm_invalid("Key tracker for zoomed table activated despite `dm` not a `zoomed_dm`.")
-    }
-  }
 }
 
 

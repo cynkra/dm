@@ -38,14 +38,12 @@
 #' as_dm(list(trees = trees, mtcars = mtcars))
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
 #'
-#' dm_nycflights13() %>% tbl("airports")
-#' dm_nycflights13() %>% src_tbls()
-#' dm_nycflights13() %>% dm_get_src()
+#' dm_nycflights13()$airports
+#' dm_nycflights13() %>% names()
 #'
 #' copy_dm_to(
 #'   dbplyr::src_memdb(),
-#'   dm_nycflights13(),
-#'   unique_table_names = TRUE
+#'   dm_nycflights13()
 #' ) %>%
 #'   dm_get_con()
 #'
@@ -69,7 +67,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
     }
   }
 
-  names(tbls) <- vctrs::vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
+  names(tbls) <- vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
   dm <- new_dm(tbls)
   validate_dm(dm)
   dm
@@ -101,19 +99,19 @@ new_dm <- function(tables = list()) {
   pks <-
     tibble(
       table = table,
-      pks = vctrs::list_of(new_pk())
+      pks = list_of(new_pk())
     )
 
   fks <-
     tibble(
       table = table,
-      fks = vctrs::list_of(new_fk())
+      fks = list_of(new_fk())
     )
 
   filters <-
     tibble(
       table = table,
-      filters = vctrs::list_of(new_filter())
+      filters = list_of(new_filter())
     )
 
   def <-
@@ -124,16 +122,29 @@ new_dm <- function(tables = list()) {
     left_join(zoom, by = "table") %>%
     left_join(col_tracker_zoom, by = "table")
 
-  new_dm3(def)
+  new_dm3(def, validate = FALSE)
 }
 
-new_dm3 <- function(def, zoomed = FALSE) {
+new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
   class <- c(
     if (zoomed) "zoomed_dm",
-    "dm_v1",
     "dm"
   )
-  structure(list(def = def), class = class)
+  out <- structure(list(def = def), class = class, version = 1L)
+
+  # Enable for strict tests:
+  # if (validate) {
+  #   validate_dm(out)
+  # }
+
+  out
+}
+
+dm_get_def <- function(x, quiet = FALSE) {
+  if (!identical(attr(x, "version"), 1L)) {
+    x <- dm_upgrade(x, quiet)
+  }
+  unclass(x)$def
 }
 
 new_pk <- function(column = list()) {
@@ -141,9 +152,9 @@ new_pk <- function(column = list()) {
   tibble(column = column)
 }
 
-new_fk <- function(table = character(), column = list()) {
-  stopifnot(is.list(column))
-  tibble(table = table, column = column)
+new_fk <- function(ref_column = list(), table = character(), column = list()) {
+  stopifnot(is.list(column), is.list(ref_column), length(table) == length(column), length(table) == length(ref_column))
+  tibble(ref_column = ref_column, table = table, column = column)
 }
 
 new_filter <- function(quos = list(), zoomed = logical()) {
@@ -161,79 +172,6 @@ new_zoom <- function() {
 
 new_col_tracker_zoom <- function() {
   tibble(table = character(), col_tracker_zoom = list())
-}
-
-#' Validator
-#'
-#' `validate_dm()` checks the internal consistency of a `dm` object.
-#'
-#' @param x An object.
-#'
-#' @return For `validate_dm()`: Returns the `dm`, invisibly, after finishing all checks.
-#'
-#' @rdname dm
-#' @export
-validate_dm <- function(x) {
-  check_dm(x)
-
-  if (!identical(names(unclass(x)), "def")) abort_dm_invalid("A `dm` needs to be a list of one item named `def`.")
-  def <- dm_get_def(x)
-
-  table_names <- def$table
-  if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
-  check_col_classes(def)
-
-  if (!all(map_lgl(def$data, ~ {
-    inherits(., "data.frame") || inherits(., "tbl_dbi")
-  }))) {
-    abort_dm_invalid(
-      "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `dm_get_tables()`."
-    )
-  }
-  if (!all_same_source(def$data)) abort_dm_invalid(error_txt_not_same_src())
-
-  if (nrow(def) == 0) {
-    return(invisible(x))
-  }
-  if (ncol(def) != 9) {
-    abort_dm_invalid(
-      glue(
-        "Number of columns of tibble defining `dm` is wrong: {as.character(ncol(def))} ",
-        "instead of 9."
-      )
-    )
-  }
-
-  inner_names <- map(def, names)
-  if (!all(map_lgl(inner_names, is.null))) {
-    abort_dm_invalid("`def` must not have inner names.")
-  }
-
-  fks <- def$fks %>%
-    map_dfr(I) %>%
-    unnest(column)
-  check_fk_child_tables(fks$table, table_names)
-  dm_col_names <- set_names(map(def$data, colnames), table_names)
-  check_colnames(fks, dm_col_names, "FK")
-  pks <- select(def, table, pks) %>%
-    unnest(pks) %>%
-    unnest(column)
-  check_colnames(pks, dm_col_names, "PK")
-  check_one_zoom(def, is_zoomed(x))
-  if (!all(map_lgl(def$zoom, ~ {
-    inherits(., "data.frame") || inherits(., "tbl_dbi") || inherits(., "NULL")
-  }))) {
-    abort_dm_invalid(
-      "Not all entries in `def$zoom` are of class `data.frame`, `tbl_dbi` or `NULL`."
-    )
-  }
-  invisible(x)
-}
-
-debug_validate_dm <- function(dm) {
-  # Uncomment to enable validation for troubleshooting
-  # validate_dm(dm)
-  dm
 }
 
 dm_get_src_impl <- function(x) {
@@ -279,13 +217,9 @@ dm_get_tables <- function(x) {
   dm_get_tables_impl(x)
 }
 
-dm_get_tables_impl <- function(x) {
-  def <- dm_get_def(x)
+dm_get_tables_impl <- function(x, quiet = FALSE) {
+  def <- dm_get_def(x, quiet)
   set_names(def$data, def$table)
-}
-
-dm_get_def <- function(x) {
-  unclass(x)$def
 }
 
 unnest_pks <- function(def) {
@@ -294,7 +228,7 @@ unnest_pks <- function(def) {
     table = rep(def$table, map_int(def$pks, nrow))
   )
 
-  pk_df <- vctrs::vec_cbind(pk_df, vctrs::vec_rbind(!!!def$pks))
+  pk_df <- vec_cbind(pk_df, vec_rbind(!!!def$pks))
 
   # FIXME: Should work better with dplyr 0.9.0
   if (!("column" %in% names(pk_df))) {
@@ -326,7 +260,7 @@ dm_get_filters <- function(x) {
   filter_df <-
     dm_get_def(x) %>%
     select(table, filters) %>%
-    unnest(filters)
+    unnest_list_of_df("filters")
 
   # FIXME: Should work better with dplyr 0.9.0
   if (!("filter_expr" %in% names(filter_df))) {
@@ -338,10 +272,16 @@ dm_get_filters <- function(x) {
     mutate(filter = unname(filter))
 }
 
-dm_get_zoomed_tbl <- function(x) {
-  dm_get_def(x) %>%
-    filter(!map_lgl(zoom, is_null)) %>%
-    select(table, zoom)
+dm_get_zoom <- function(x, cols = c("table", "zoom"), quiet = FALSE) {
+  # Performance
+  def <- dm_get_def(x, quiet)
+  zoom <- def$zoom
+  where <- which(lengths(zoom) != 0)
+  if (length(where) != 1) {
+    # FIXME: Better error message?
+    abort_not_pulling_multiple_zoomed()
+  }
+  def[where, cols]
 }
 
 #' Check class
@@ -375,7 +315,7 @@ as_dm.default <- function(x) {
   }
 
   # Automatic name repair
-  names(x) <- vctrs::vec_as_names(names2(x), repair = "unique")
+  names(x) <- vec_as_names(names2(x), repair = "unique")
   dm <- new_dm(x)
   validate_dm(dm)
   dm
@@ -468,18 +408,20 @@ def_get_n_columns <- function(def) {
 }
 
 def_get_n_pks <- function(def) {
-  sum(map_int(def$pks, vctrs::vec_size))
+  sum(map_int(def$pks, vec_size))
 }
 
 def_get_n_fks <- function(def) {
-  sum(map_int(def$fks, vctrs::vec_size))
+  sum(map_int(def$fks, vec_size))
 }
 
 as_zoomed_df <- function(x) {
+  zoomed <- dm_get_zoom(x)
+
   # for tests
   new_zoomed_df(
-    get_zoomed_tbl(x),
-    name_df = orig_name_zoomed(x)
+    zoomed$zoom[[1]],
+    name_df = zoomed$table
   )
 }
 
@@ -524,7 +466,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 #' @export
 `$.zoomed_dm` <- function(x, name) {
   name <- ensym(name)
-  eval_tidy(quo(`$`(get_zoomed_tbl(x), !!name)))
+  eval_tidy(quo(`$`(tbl_zoomed(x), !!name)))
 }
 
 #' @export
@@ -535,12 +477,12 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 #' @export
 `[[.dm` <- function(x, id) { # for both dm and zoomed_dm
   if (is.numeric(id)) id <- src_tbls_impl(x)[id] else id <- as_string(id)
-  tbl_impl(x, id)
+  tbl_impl(x, id, quiet = TRUE)
 }
 
 #' @export
 `[[.zoomed_dm` <- function(x, id) {
-  `[[`(get_zoomed_tbl(x), id)
+  `[[`(tbl_zoomed(x, quiet = TRUE), id)
 }
 
 #' @export
@@ -557,7 +499,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 #' @export
 `[.zoomed_dm` <- function(x, id) { # for both dm and zoomed_dm
-  `[`(get_zoomed_tbl(x), id)
+  `[`(tbl_zoomed(x), id)
 }
 
 
@@ -568,12 +510,12 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 #' @export
 names.dm <- function(x) { # for both dm and zoomed_dm
-  src_tbls_impl(x)
+  src_tbls_impl(x, quiet = TRUE)
 }
 
 #' @export
 names.zoomed_dm <- function(x) {
-  names(get_zoomed_tbl(x))
+  names(tbl_zoomed(x, quiet = TRUE))
 }
 
 
@@ -584,12 +526,12 @@ names.zoomed_dm <- function(x) {
 
 #' @export
 length.dm <- function(x) { # for both dm and zoomed_dm
-  length(src_tbls_impl(x))
+  length(src_tbls_impl(x, quiet = TRUE))
 }
 
 #' @export
 length.zoomed_dm <- function(x) {
-  length(get_zoomed_tbl(x))
+  length(tbl_zoomed(x, quiet = TRUE))
 }
 
 #' @export
@@ -599,21 +541,23 @@ length.zoomed_dm <- function(x) {
 
 #' @export
 str.dm <- function(object, ...) { # for both dm and zoomed_dm
-  object <- dm_get_def(object) %>%
+  object <-
+    dm_get_def(object, quiet = TRUE) %>%
     select(table, pks, fks, filters)
   str(object)
 }
 
 #' @export
 str.zoomed_dm <- function(object, ...) {
-  object <- dm_get_def(object) %>%
+  object <-
+    dm_get_def(object, quiet = TRUE) %>%
     mutate(zoom = if_else(map_lgl(zoom, is_null), NA_character_, table)) %>%
     select(zoom, table, pks, fks, filters)
   str(object)
 }
 
-tbl_impl <- function(dm, from) {
-  out <- dm_get_tables_impl(dm)[[from]]
+tbl_impl <- function(dm, from, quiet = FALSE) {
+  out <- dm_get_tables_impl(dm, quiet)[[from]]
 
   if (is.null(out)) {
     abort_table_not_in_dm(from, src_tbls_impl(dm))
@@ -622,8 +566,8 @@ tbl_impl <- function(dm, from) {
   out
 }
 
-src_tbls_impl <- function(dm) {
-  dm_get_def(dm)$table
+src_tbls_impl <- function(dm, quiet = FALSE) {
+  dm_get_def(dm, quiet)$table
 }
 
 #' Materialize
@@ -659,7 +603,8 @@ src_tbls_impl <- function(dm) {
 #'   pull_tbl(districts) %>%
 #'   class()
 compute.dm <- function(x, ...) { # for both dm and zoomed_dm
-  dm_apply_filters(x) %>%
+  x %>%
+    dm_apply_filters() %>%
     dm_get_def() %>%
     mutate(data = map(data, compute, ...)) %>%
     new_dm3()
@@ -669,13 +614,17 @@ compute.dm <- function(x, ...) { # for both dm and zoomed_dm
 #'
 #' `collect()` downloads the tables in a `dm` object as local [tibble]s.
 #'
+#' @inheritParams dm_examine_constraints
+#'
 #' @rdname materialize
 #' @export
-collect.dm <- function(x, ...) { # for both dm and zoomed_dm
+collect.dm <- function(x, ..., progress = NA) { # for both dm and zoomed_dm
   x <- dm_apply_filters(x)
 
   def <- dm_get_def(x)
-  def$data <- map(def$data, collect, ...)
+
+  ticker <- new_ticker("downloading data", nrow(def), progress = progress)
+  def$data <- map(def$data, ticker(collect), ...)
   new_dm3(def, zoomed = is_zoomed(x))
 }
 
@@ -690,12 +639,12 @@ collect.zoomed_dm <- function(x, ...) {
 # FIXME: what about 'dim.dm()'?
 #' @export
 dim.zoomed_dm <- function(x) { # dm method provided by base
-  dim(get_zoomed_tbl(x))
+  dim(tbl_zoomed(x, quiet = TRUE))
 }
 
 #' @export
 dimnames.zoomed_dm <- function(x) { # dm method provided by base
-  dimnames(get_zoomed_tbl(x))
+  dimnames(tbl_zoomed(x))
 }
 
 #' @export
@@ -705,12 +654,12 @@ tbl_vars.dm <- function(x) {
 
 #' @export
 tbl_vars.zoomed_dm <- function(x) {
-  tbl_vars(get_zoomed_tbl(x))
+  tbl_vars(tbl_zoomed(x))
 }
 
 dm_reset_all_filters <- function(dm) {
   def <- dm_get_def(dm)
-  def$filters <- vctrs::list_of(new_filter())
+  def$filters <- list_of(new_filter())
   new_dm3(def)
 }
 
@@ -728,9 +677,9 @@ empty_dm <- function() {
       data = list(),
       segment = character(),
       display = character(),
-      pks = vctrs::list_of(new_pk()),
-      fks = vctrs::list_of(new_fk()),
-      filters = vctrs::list_of(new_filter()),
+      pks = list_of(new_pk()),
+      fks = list_of(new_fk()),
+      filters = list_of(new_filter()),
       zoom = list(),
       col_tracker_zoom = list()
     )
@@ -773,19 +722,17 @@ pull_tbl.dm <- function(dm, table) { # for both dm and zoomed_dm
 #' @export
 pull_tbl.zoomed_dm <- function(dm, table) {
   table_name <- as_string(enexpr(table))
-  tbl_zoomed <- dm_get_zoomed_tbl(dm)
+  zoomed <- dm_get_zoom(dm)
   if (table_name == "") {
-    if (nrow(tbl_zoomed) == 1) {
-      tbl_zoomed$zoom[[1]]
+    if (nrow(zoomed) == 1) {
+      zoomed$zoom[[1]]
     } else {
       abort_not_pulling_multiple_zoomed()
     }
-  } else if (!(table_name %in% tbl_zoomed$table)) {
-    abort_table_not_zoomed(table_name, tbl_zoomed$table)
+  } else if (!(table_name %in% zoomed$table)) {
+    abort_table_not_zoomed(table_name, zoomed$table)
   } else {
-    filter(tbl_zoomed, table == table_name) %>%
-      pull(zoom) %>%
-      pluck(1)
+    zoomed$zoom[[1]]
   }
 }
 
@@ -796,5 +743,5 @@ as.list.dm <- function(x, ...) { # for both dm and zoomed_dm
 
 #' @export
 as.list.zoomed_dm <- function(x, ...) {
-  as.list(get_zoomed_tbl(x))
+  as.list(tbl_zoomed(x))
 }

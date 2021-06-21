@@ -6,10 +6,15 @@ test_that("data source found", {
 skip_if_not_installed("dbplyr")
 
 test_that("copy_dm_to() copies data frames to databases", {
-  skip_if_local_src()
+  skip_if_ide()
 
   expect_equivalent_dm(
-    copy_dm_to(my_test_src(), collect(dm_for_filter())),
+    copy_dm_to(my_db_test_src(), collect(dm_for_filter())),
+    dm_for_filter()
+  )
+
+  expect_equivalent_dm(
+    copy_dm_to(my_db_test_src(), dm_for_filter()),
     dm_for_filter()
   )
 
@@ -22,25 +27,6 @@ test_that("copy_dm_to() copies data frames from any source", {
       copy_dm_to(default_local_src(), dm_for_filter())
     ),
     dm_for_filter()
-  )
-})
-
-test_that("copy_dm_to() copies to SQLite", {
-  skip_if_not_installed("RSQLite")
-
-  expect_equivalent_dm(
-    copy_dm_to(test_src_sqlite(), dm_for_filter()),
-    dm_for_filter()
-  )
-})
-
-test_that("copy_dm_to() copies from SQLite", {
-  skip_if_local_src()
-  skip_if_not_installed("RSQLite")
-
-  expect_equivalent_dm(
-    copy_dm_to(my_test_src(), dm_for_filter_sqlite()),
-    dm_for_filter_sqlite()
   )
 })
 
@@ -60,21 +46,17 @@ test_that("copy_dm_to() rejects overwrite and types arguments", {
 })
 
 test_that("copy_dm_to() fails with duplicate table names", {
-  skip_if_local_src()
-
   bad_names <- set_names(names(dm_for_filter()))
   bad_names[[2]] <- bad_names[[1]]
 
   expect_dm_error(
-    copy_dm_to(my_test_src(), dm_for_filter(), table_names = bad_names),
+    copy_dm_to(my_db_test_src(), dm_for_filter(), table_names = bad_names),
     class = "copy_dm_to_table_names_duplicated"
   )
 })
 
 test_that("default table repair works", {
-  skip_if_local_src()
-
-  con <- con_from_src_or_con(my_test_src())
+  con <- con_from_src_or_con(my_db_test_src())
 
   table_names <- c("t1", "t2", "t3")
 
@@ -98,17 +80,14 @@ test_that("default table repair works", {
 })
 
 test_that("table identifiers are quoted", {
-  skip_if_local_src()
-
-  # Implicitly created with copy_dm_to()
-  dm <- dm_test_obj()
+  dm <- dm_for_filter_sqlite()
   remote_names <-
     dm %>%
     dm_get_tables() %>%
     map_chr(dbplyr::remote_name)
 
   con <- dm_get_con(dm)
-  pattern <- unclass(DBI::dbQuoteIdentifier(con, "[a-z0-9_#]+"))
+  pattern <- paste0("^", unclass(DBI::dbQuoteIdentifier(con, "[a-z0-9_#]+")), "$")
   expect_true(all(grepl(pattern, remote_names)))
 })
 
@@ -169,13 +148,13 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
   expect_identical(
     sort(deframe(table_tibble)),
     sort(
-      dm_get_tables(remote_dm) %>%
+      remote_dm %>%
+        dm_get_tables() %>%
         map(dbplyr::remote_name) %>%
         flatten_chr() %>%
         dbplyr::ident_q()
     )
   )
-
 })
 
 test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
@@ -188,7 +167,8 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
       my_test_src(),
       local_dm,
       temporary = FALSE,
-      schema = "test"),
+      schema = "test"
+    ),
     "no_schemas_supported"
   )
 })

@@ -1,5 +1,58 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.3
+
+## Bug fixes
+
+- Fix `rows_truncate()` in interactive mode (#588).
+
+## Features
+
+- Implement `rows_delete()` for databases (#589).
+
+## Internal
+
+- Skip examples that might require internet access on non-CI platforms.
+
+
+# dm 0.2.2
+
+## Features
+
+- `dm_examine_constraints()`, `dm_rows_insert()` and related, `copy_dm_to()` and `collect.dm()` show progress bars in interactive mode via the progress package. The new `progress = NA` argument controls the behavior (#262, @moodymudskipper).
+- `copy_dm_to()` gains a `copy_to` argument to support other ways of copying data to the database (#582).
+
+## Internal
+
+- Always run database tests on sqlite for df source.
+- Establish compatibility with testthat > 3.0.2 (#566, @moodymudskipper).
+
+
+# dm 0.2.1
+
+## Breaking changes
+
+- `dm_get_all_fks()` returns a data frame with a  `parent_key_cols` instead of a `parent_pk_cols` column (introduced in dm 0.2.0), to reflect the fact that a foreign key no longer necessarily points to a primary key (#562).
+- `*_pk()` and `*_fk()` functions now verify that the dots are actually empty (#536).
+- `dm_get_pk()` is deprecated in favor of `dm_get_all_pks()` (#561).
+- `dm_has_fk()` and `dm_get_fk()` are deprecated in favor of `dm_get_all_fks()` (#561).
+
+## Features
+
+- `dm_add_fk()` gains `ref_columns` argument that supports creating foreign keys to non-primary keys (#402).
+- `dm_get_all_pks()` gains `table` argument for filtering the returned primary keys (#560).
+- `dm_get_all_fks()` gains `parent_table` argument for filtering the returned foreign keys (#560).
+- `dm_rm_fk()` gains an optional `ref_columns` argument. This function now supports removal of multiple foreign keys filtered by parent or child table or columns, with a message (#559).
+- `dm_rm_pk()` gains `columns` argument and allows filtering by columns and by tables or removing all primary keys. The `rm_referencing_fks` argument has been deprecated in favor of the new `fail_fk` argument (#558).
+- `dm_get_all_fks()` has been optimized for speed and no longer sorts the keys (#560).
+- dm operations are now slightly faster overall.
+
+## Internal
+
+- The internal data structure for a dm object has changed to accommodate foreign keys to other columns than the primary key. An upgrade message is shown when working with a dm object from an earlier version, e.g. if it was loaded from a cache or an `.rds` file (#402).
+- Drop `"dm_v1"` class from dm objects again, this would have made every S3 dispatch more costly. Relying on an internal `"version"` attribute instead (#547).
+
+
 # dm 0.2.0
 
 ## Breaking changes

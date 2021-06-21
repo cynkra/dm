@@ -22,7 +22,7 @@ test_that("`dm_set_colors()` works", {
         blue = starts_with("air"),
         green = contains("h")
       ) %>%
-        dm_get_colors()
+      dm_get_colors()
   })
 
   colset <- c(blue = "flights", green = "airports")
@@ -100,17 +100,11 @@ test_that("getter", {
 })
 
 test_that("datamodel-code for drawing", {
-  data_model_for_filter <- dm_get_data_model(dm_for_filter(), column_types = TRUE)
+  local_options(max.print = 10000)
 
-  expect_s3_class(
-    data_model_for_filter,
-    "data_model"
-  )
-
-  expect_identical(
-    map(data_model_for_filter, nrow),
-    list(tables = 6L, columns = 15L, references = 5L)
-  )
+  expect_snapshot({
+    dm_get_data_model(dm_for_filter(), column_types = TRUE)
+  })
 })
 
 test_that("get available colors", {
@@ -121,68 +115,18 @@ test_that("get available colors", {
 })
 
 test_that("helpers", {
-  expect_identical(
-    dm_get_all_columns(dm_for_filter()),
-    tibble::tribble(
-      ~table, ~column, ~id,
-      "tf_1",     "a",  1L,
-      "tf_1",     "b",  2L,
-      "tf_2",     "c",  1L,
-      "tf_2",     "d",  2L,
-      "tf_2",     "e",  3L,
-      "tf_3",     "f",  1L,
-      "tf_3",     "g",  2L,
-      "tf_4",     "h",  1L,
-      "tf_4",     "i",  2L,
-      "tf_4",     "j",  3L,
-      "tf_5",     "k",  1L,
-      "tf_5",     "l",  2L,
-      "tf_5",     "m",  3L,
-      "tf_6",     "n",  1L,
-      "tf_6",     "o",  2L,
-    )
-  )
+  expect_snapshot({
+    dm_get_all_columns(dm_for_filter())
+  })
 
-  expect_identical(
-    dm_get_all_column_types(dm_for_filter()),
-    tibble::tribble(
-      ~table, ~column, ~id, ~type,
-      "tf_1",     "a",  1L, "int",
-      "tf_1",     "b",  2L, "chr",
-      "tf_2",     "c",  1L, "chr",
-      "tf_2",     "d",  2L, "int",
-      "tf_2",     "e",  3L, "chr",
-      "tf_3",     "f",  1L, "chr",
-      "tf_3",     "g",  2L, "chr",
-      "tf_4",     "h",  1L, "chr",
-      "tf_4",     "i",  2L, "chr",
-      "tf_4",     "j",  3L, "chr",
-      "tf_5",     "k",  1L, "int",
-      "tf_5",     "l",  2L, "chr",
-      "tf_5",     "m",  3L, "chr",
-      "tf_6",     "n",  1L, "chr",
-      "tf_6",     "o",  2L, "chr",
-    )
-  )
+  expect_snapshot({
+    dm_get_all_column_types(dm_for_filter())
+  })
 })
 
 test_that("output", {
   skip_if_not_installed("DiagrammeRsvg")
   skip_if_not_installed("nycflights13")
-
-  # Loose table
-  expect_snapshot_diagram(
-    dm_nycflights13(compound = FALSE) %>%
-      dm_draw(),
-    "nycflight-dm-loose.svg"
-  )
-
-  # Default view
-  expect_snapshot_diagram(
-    dm_nycflights13() %>%
-      dm_draw(),
-    "nycflight-dm.svg"
-  )
 
   # 444: types
   expect_snapshot_diagram(
@@ -191,12 +135,17 @@ test_that("output", {
     "nycflight-dm-types.svg"
   )
 
-  # Multi-fk (#37)
   expect_snapshot_diagram(
-    dm_nycflights13() %>%
+    dm_nycflights13(cycle = TRUE) %>%
       dm_zoom_to(planes) %>%
+      # Multi-fk (#37)
       dm_insert_zoomed("planes_copy") %>%
+      # Loose table
+      dm_add_tbl(loose = tibble(a = 1)) %>%
+      # Non-default fk (#402)
+      dm_add_tbl(agency = tibble(airline_name = character())) %>%
+      dm_add_fk(agency, airline_name, airlines, name) %>%
       dm_draw(),
-    "nycflight-dm-copy.svg"
+    "nycflight-dm.svg"
   )
 })

@@ -1,25 +1,17 @@
-#' Add/remove a primary key
+#' Add a primary key
 #'
-#' @description `dm_add_pk()` marks the specified columns as the primary key of the specified table.
+#' @description
+#' `dm_add_pk()` marks the specified columns as the primary key of the specified table.
 #' If `check == TRUE`, then it will first check if
 #' the given combination of columns is a unique key of the table.
 #' If `force == TRUE`, the function will replace an already
-#' set key.
-#'
-#' `dm_rm_pk()` removes a primary key from a table and leaves the [`dm`] object otherwise unaltered.
-#' Foreign keys that point to the table from other tables, can be optionally removed as well.
-#'
-#' @section Compound keys:
-#'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
-#' The syntax of these functions will be extended but will remain compatible
-#' with current semantics.
+#' set key, without altering foreign keys previously pointing to that primary key.
 #'
 #' @inheritParams ellipsis::dots_empty
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
 #' @param columns Table columns, unquoted.
+#'   To define a compound key, use `c(col1, col2)`.
 #' @param check Boolean, if `TRUE`, a check is made if the combination of columns is a unique key of the table.
 #' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key
 #'   set for this table.
@@ -27,30 +19,33 @@
 #'
 #' @family primary key functions
 #'
-#' @return For `dm_add_pk()`: An updated `dm` with an additional primary key.
+#' @return An updated `dm` with an additional primary key.
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' nycflights_dm <- dm(
 #'   planes = nycflights13::planes,
-#'   airports = nycflights13::airports
+#'   airports = nycflights13::airports,
+#'   weather = nycflights13::weather
 #' )
 #'
 #' nycflights_dm %>%
 #'   dm_draw()
 #'
-#' # the following works
+#' # Create primary keys:
 #' nycflights_dm %>%
 #'   dm_add_pk(planes, tailnum) %>%
 #'   dm_add_pk(airports, faa, check = TRUE) %>%
+#'   dm_add_pk(weather, c(origin, time_hour)) %>%
 #'   dm_draw()
 #'
-#' # the following throws an error:
+#' # Keys can be checked during creation:
 #' try(
 #'   nycflights_dm %>%
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
 #' )
 dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE) {
+  check_dots_empty()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
@@ -82,7 +77,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
     abort_key_set_force_false(table)
   }
 
-  def$pks[[which(def$table == table)]] <- tibble(column = !!list(column))
+  def$pks[[i]] <- tibble(column = !!list(column))
 
   new_dm3(def)
 }
@@ -104,6 +99,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #'   dm_has_pk(planes)
 #' @export
 dm_has_pk <- function(dm, table, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   dm_has_pk_impl(dm, table_name)
@@ -115,37 +111,21 @@ dm_has_pk_impl <- function(dm, table) {
 
 #' Primary key column names
 #'
-#' @description `dm_get_pk()` returns the names of the
-#' columns marked as primary key of a table of a [`dm`] object.
-#' If no primary key is
-#' set for the table, an empty character vector is returned.
+#' @description
+#' `r lifecycle::badge("deprecated")`
 #'
-#' @section Compound keys and multiple primary keys:
+#' This function is deprecated because of its limited use
+#' and its unintuitive return value.
+#' Use [dm_get_all_pks()] instead.
 #'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
-#' Therefore the function may return vectors of length greater than one in the future.
-#'
-#' Similarly, each table currently can have only one primary key.
-#' This restriction may be lifted in the future.
-#' For this reason, and for symmetry with `dm_get_fk()`,
-#' this function returns a slit of character vectors.
-#'
-#' @family primary key functions
-#'
-#' @return A list with character vectors with the column name(s) of the
-#'   primary keys of `table`.
-#'
-#' @inheritParams dm_add_pk
-#'
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_get_pk(flights)
-#' dm_nycflights13() %>%
-#'   dm_get_pk(planes)
 #' @export
+#' @keywords internal
 dm_get_pk <- function(dm, table, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
+
+  deprecate_soft("0.2.1", "dm::dm_get_pk()", "dm::dm_get_all_pks()")
+
   table_name <- dm_tbl_name(dm, {{ table }})
   new_keys(dm_get_pk_impl(dm, table_name))
 }
@@ -162,85 +142,155 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @description `dm_get_all_pks()` checks the `dm` object for set primary keys and
 #' returns the tables, the respective primary key columns and their classes.
 #'
-#' @section Compound keys:
-#'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
-#' Therefore the `pk_cols` column may contain vectors of length greater than one.
-#'
 #' @family primary key functions
+#' @param table One or more table names, as character vector,
+#'   to return primary key information for.
+#'   The default `NULL` returns information for all tables.
 #'
 #' @inheritParams dm_add_pk
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`table`}{table name,}
-#'     \item{`pk_cols`}{column name(s) of primary key.}
+#'     \item{`pk_cols`}{column name(s) of primary key, as list of character vectors.}
 #'   }
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_get_all_pks()
-dm_get_all_pks <- function(dm, ...) {
+dm_get_all_pks <- function(dm, table = NULL, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
-  dm_get_all_pks_impl(dm)
+  dm_get_all_pks_impl(dm, table)
 }
 
-dm_get_all_pks_impl <- function(dm) {
-  dm_get_def(dm) %>%
-    dm_get_all_pks_def_impl()
+dm_get_all_pks_impl <- function(dm, table = NULL) {
+  dm %>%
+    dm_get_def() %>%
+    dm_get_all_pks_def_impl(table)
 }
 
-dm_get_all_pks_def_impl <- function(def) {
-  def %>%
-    select(table, pks) %>%
-    unnest_pks() %>%
-    select(table = table, pk_col = column) %>%
-    mutate(pk_col = new_keys(pk_col))
+dm_get_all_pks_def_impl <- function(def, table = NULL) {
+  # Optimized for speed
+
+  def_sub <- def[c("table", "pks")]
+
+  if (!is.null(table)) {
+    def_sub <- def_sub[def_sub$table %in% table, ]
+  }
+
+  out <-
+    def_sub %>%
+    unnest_df("pks", tibble(column = list())) %>%
+    set_names(c("table", "pk_col"))
+
+  out$pk_col <- new_keys(out$pk_col)
+  out
 }
 
 
-#' Remove a primary key from a table in a [`dm`] object
+#' Remove a primary key
 #'
-#' @rdname dm_add_pk
+#' `dm_rm_pk()` removes one or more primary keys from a table and leaves the [`dm`] object otherwise unaltered.
+#' An error is thrown if no private key matches the selection criteria.
+#' If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
+#' Foreign keys are never removed.
 #'
-#' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error if
-#'   there are foreign keys addressing the primary key that is to be removed.
-#'   If `TRUE`, the function will
-#'   remove, in addition to the primary key of the `table` argument, also all foreign key constraints
-#'   that are pointing to it.
+#' @inheritParams dm_add_pk
+#' @param table A table in the `dm`.
+#'   Pass `NULL` to remove all matching keys.
+#' @param columns Table columns, unquoted.
+#'   To refer to a compound key, use `c(col1, col2)`.
+#'   Pass `NULL` (the default) to remove all matching keys.
+#' @param fail_fk
+#'   Boolean: if `TRUE` (default), will throw an error
+#'   if there are foreign keys addressing the primary key that is to be removed.
 #'
-#' @return For `dm_rm_pk()`: An updated `dm` without the indicated primary key.
+#' @family primary key functions
 #'
+#' @return An updated `dm` without the indicated primary key(s).
+#'
+#' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
-#'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
+#'   dm_rm_pk(airports, fail_fk = FALSE) %>%
 #'   dm_draw()
-#' @export
-dm_rm_pk <- function(dm, table, ..., rm_referencing_fks = FALSE) {
-  check_not_zoomed(dm)
-  table_name <- dm_tbl_name(dm, {{ table }})
-
-  if (!rm_referencing_fks && dm_is_referenced(dm, !!table_name)) {
-    affected <- dm_get_referencing_tables(dm, !!table_name)
-    abort_first_rm_fks(table_name, affected)
+dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE) {
+  if (missing(fail_fk)) {
+    fail_fk <- NULL
   }
-
-  dm_rm_pk_impl(dm, table_name)
+  dm_rm_pk_(dm, {{ table }}, {{ columns }}, ..., fail_fk = fail_fk)
 }
 
-dm_rm_pk_impl <- function(dm, table_name) {
-  def <- dm_get_def(dm)
+dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL, fail_fk = NULL) {
+  check_dots_empty()
+  check_not_zoomed(dm)
 
-  i <- which(def$table == table_name)
-
-  if (nrow(def$pks[[i]]) == 0 && dm_is_strict_keys(dm)) {
-    abort_pk_not_defined(table_name)
+  if (!is.null(rm_referencing_fks)) {
+    deprecate_soft("0.2.1", "dm::dm_rm_pk(rm_referencing_fks = )", "dm::dm_rm_pk(fail_fk = )",
+      details = "Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed."
+    )
+    if (is.null(fail_fk)) {
+      fail_fk <- !rm_referencing_fks
+    }
   }
 
-  def$pks[[i]] <- new_pk()
-  def$fks[[i]] <- new_fk()
+  if (is.null(fail_fk)) {
+    fail_fk <- TRUE
+  }
+
+  table_name <- dm_tbl_name_null(dm, {{ table }})
+  columns <- enexpr(columns)
+
+  dm_rm_pk_impl(dm, table_name, columns, fail_fk)
+}
+
+dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
+  def <- dm_get_def(dm)
+
+  if (is.null(table_name)) {
+    i <- which(map_int(def$pks, vec_size) > 0)
+  } else {
+    i <- which(def$table == table_name)
+    if (nrow(def$pks[[i]]) == 0) {
+      i <- integer()
+    }
+  }
+
+  if (!quo_is_null(columns)) {
+    ii <- map2_lgl(def$data[i], def$pks[i], ~ tryCatch(
+      {
+        vars <- eval_select_indices(columns, colnames(.x))
+        identical(names(vars), .y$column[[1]])
+      },
+      error = function(e) {
+        FALSE
+      }
+    ))
+
+    i <- i[ii]
+  }
+
+  if (length(i) == 0 && dm_is_strict_keys(dm)) {
+    abort_pk_not_defined()
+  }
+
+  pwalk(list(def$fks[i], def$pks[i], def$table[i]),  ~ {
+    is_match <- !is.na(vec_match(..1$ref_column, ..2$column))
+    if (fail_fk && any(is_match)) {
+      abort_first_rm_fks(..3, ..1$table[is_match])
+    }
+  })
+
+  # Talk about it
+  if (is.null(table_name)) {
+    message("Removing primary keys: %>%")
+    message("  ", glue_collapse(glue("dm_rm_pk({tick_if_needed(def$table[i])})"), " %>%\n  "))
+  }
+
+  # Execute
+  def$pks[i] <- list_of(new_pk())
 
   new_dm3(def)
 }
@@ -273,10 +323,14 @@ dm_rm_pk_impl <- function(dm, table_name) {
 #' nycflights13::flights %>%
 #'   enum_pk_candidates()
 enum_pk_candidates <- function(table, ...) {
+  check_dots_empty()
   # a list of ayes and noes:
-  if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)
+  if (is_dm(table) && is_zoomed(table)) {
+    table <- tbl_zoomed(table)
+  }
 
-  enum_pk_candidates_impl(table) %>%
+  table %>%
+    enum_pk_candidates_impl() %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 }
@@ -295,6 +349,7 @@ enum_pk_candidates <- function(table, ...) {
 #' dm_nycflights13() %>%
 #'   dm_enum_pk_candidates(airports)
 dm_enum_pk_candidates <- function(dm, table, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
@@ -303,13 +358,14 @@ dm_enum_pk_candidates <- function(dm, table, ...) {
   table_name <- dm_tbl_name(dm, {{ table }})
 
   table <- dm_get_tables_impl(dm)[[table_name]]
-  enum_pk_candidates_impl(table) %>%
+  table %>%
+    enum_pk_candidates_impl() %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 }
 
 enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table))) {
-    tibble(column = new_keys(columns)) %>%
+  tibble(column = new_keys(columns)) %>%
     mutate(why = map_chr(column, ~ check_pk(table, .x))) %>%
     mutate(candidate = (why == "")) %>%
     select(column, candidate, why) %>%
@@ -353,12 +409,12 @@ check_pk <- function(table, columns) {
 
 # Error -------------------------------------------------------------------
 
-abort_pk_not_defined <- function(table) {
-  abort(error_txt_pk_not_defined(table), .subclass = dm_error_full("pk_not_defined"))
+abort_pk_not_defined <- function() {
+  abort(error_txt_pk_not_defined(), .subclass = dm_error_full("pk_not_defined"))
 }
 
-error_txt_pk_not_defined <- function(table) {
-  glue("Table {tick(table)} does not have a primary key.")
+error_txt_pk_not_defined <- function() {
+  glue("No primary keys to remove.")
 }
 
 abort_key_set_force_false <- function(table) {
@@ -376,6 +432,6 @@ abort_first_rm_fks <- function(table, fk_tables) {
 error_txt_first_rm_fks <- function(table, fk_tables) {
   glue(
     "There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {tick(table)}. ",
-    "First remove those or set `rm_referencing_fks = TRUE`."
+    "First remove those, or set `fail_fk = FALSE`."
   )
 }

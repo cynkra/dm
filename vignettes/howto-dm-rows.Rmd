@@ -250,6 +250,13 @@ demo_sql$child
 ``````
 
 
+
+When done, do not forget to disconnect:
+
+``````{r disconnect}
+DBI::dbDisconnect(sqlite_db)
+``````
+
 ## Conclusion {#conclusion}
 
 The `dm_rows_*` methods give you row-level granularity over the modifications you need to make to your relational model.

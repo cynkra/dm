@@ -29,7 +29,8 @@ dm_rename <- function(dm, table, ...) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
-  dm_zoom_to(dm, !!table_name) %>%
+  dm %>%
+    dm_zoom_to(!!table_name) %>%
     rename(...) %>%
     dm_update_zoomed()
 }
@@ -52,7 +53,8 @@ dm_select <- function(dm, table, ...) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
-  dm_zoom_to(dm, !!table_name) %>%
+  dm %>%
+    dm_zoom_to(!!table_name) %>%
     select(...) %>%
     dm_update_zoomed()
 }

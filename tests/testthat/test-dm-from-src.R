@@ -1,7 +1,5 @@
 test_that("table identifiers are quoted", {
-  skip_if_local_src()
-
-  src_db <- my_test_src()
+  src_db <- my_db_test_src()
 
   test_dm <- copy_dm_to(
     src_db,
@@ -24,7 +22,8 @@ test_that("table identifiers are quoted", {
     )
   )
 
-  dm <- suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE)) %>%
+  dm <-
+    suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE)) %>%
     dm_select_tbl(!!!remote_tbl_names_copied)
 
   remote_tbl_names_learned <-
@@ -38,8 +37,7 @@ test_that("table identifiers are quoted", {
 })
 
 test_that("table identifiers are quoted with learn_keys = FALSE", {
-  skip_if_local_src()
-  src_db <- my_test_src()
+  src_db <- my_db_test_src()
 
   test_dm <- copy_dm_to(
     src_db,
@@ -74,17 +72,16 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
 
 test_that("copy_dm_to() and dm_from_src() output for compound keys", {
   # FIXME: COMPOUND:: both copy_dm_to() and dm_from_src() cannot deal with compound keys yet
-  skip_if_local_src()
-  src_db <- my_test_src()
+  src_db <- my_db_test_src()
   skip("FIXME")
 
   nyc_comp_permanent <- copy_dm_to(src_db, dm_nycflights13(compound = TRUE), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
   withr::defer({
     walk(
       dm_get_tables_impl(nyc_comp_permanent)[c("flights", "airlines", "planes", "airports", "weather")],
-      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x)))))
-    }
-  )
+      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
+    )
+  })
 
   expect_snapshot({
     learned_dm <- dm_from_src(src_db)[c("flights", "airlines", "planes", "airports", "weather")]

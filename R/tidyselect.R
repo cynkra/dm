@@ -39,16 +39,11 @@ eval_select_both <- function(quo, names) {
 eval_select_indices <- function(quo, names, unique = TRUE) {
   pos <- tidyselect::eval_select(quo, set_names(names))
 
-  # https://github.com/r-lib/tidyselect/issues/173?
-  if (!rlang::is_named(pos)) {
-    names(pos) <- names[pos]
-  }
-
   if (unique) {
     # Called for side effects.
     # Normally done by tidyselect if the `data` argument
     # to eval_select() is a data frame.
-    vctrs::vec_as_names(names(pos), repair = "check_unique")
+    vec_as_names(names(pos), repair = "check_unique")
   }
 
   pos
@@ -67,7 +62,7 @@ eval_rename_indices <- function(quo, names) {
   # Called for side effects.
   # Normally done by tidyselect if the `data` argument
   # to eval_rename() is a data frame.
-  vctrs::vec_as_names(names(pos), repair = "check_unique")
+  vec_as_names(names(pos), repair = "check_unique")
 
   pos
 }

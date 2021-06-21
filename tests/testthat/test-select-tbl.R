@@ -1,7 +1,7 @@
 test_that("dm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?", {
   def <-
     dm_for_filter() %>%
-    dm_rm_fk(tf_5, m, tf_6) %>%
+    dm_rm_fk(tf_5, m, tf_6, n) %>%
     dm_rm_fk(tf_2, d, tf_1) %>%
     dm_get_def()
 
@@ -30,7 +30,8 @@ test_that("dm_select_tbl() remembers all FKs", {
   skip_if_not_installed("nycflights13")
 
   expect_snapshot({
-    dm_add_fk(dm_nycflights_small(), flights, origin, airports) %>%
+    dm_nycflights_small() %>%
+      dm_add_fk(flights, origin, airports) %>%
       dm_select_tbl(airports, flights) %>%
       dm_paste()
   })

@@ -82,7 +82,7 @@ columns.
 dm %>%
   dm_get_all_fks()
 #> # A tibble: 4 x 4
-#>   child_table child_fk_cols     parent_table parent_pk_cols   
+#>   child_table child_fk_cols     parent_table parent_key_cols   
 #>   <chr>       <keys>            <chr>        <keys>           
 #> 1 flights     carrier           airlines     carrier          
 #> 2 flights     origin            airports     faa              
@@ -98,7 +98,8 @@ Let’s look at some examples:
 `flights` table.**
 
 ``` r
-dm_joined <- dm %>%
+dm_joined <-
+  dm %>%
   dm_join_to_tbl(flights, airlines, join = left_join)
 dm_joined
 #> # A tibble: 11,227 x 20

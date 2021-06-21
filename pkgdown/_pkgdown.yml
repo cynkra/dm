@@ -30,7 +30,6 @@ reference:
   contents:
   - dm_add_pk
   - dm_has_pk
-  - dm_get_pk
   - dm_get_all_pks
   - dm_rm_pk
   - dm_enum_pk_candidates
@@ -39,8 +38,6 @@ reference:
 - title: Foreign keys
   contents:
   - dm_add_fk
-  - dm_has_fk
-  - dm_get_fk
   - dm_get_all_fks
   - dm_rm_fk
   - dm_enum_fk_candidates

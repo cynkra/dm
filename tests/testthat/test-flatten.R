@@ -1,7 +1,7 @@
 test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   # for left join test the basic flattening also on all DBs
   expect_equivalent_tbl(
-    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact)),
+    expect_message_obj(dm_flatten_to_tbl(dm_for_flatten(), fact)),
     result_from_flatten()
   )
 
@@ -14,7 +14,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   )
 
   # explicitly choose parent tables
-  out <- expect_message(dm_flatten_to_tbl(
+  out <- expect_message_obj(dm_flatten_to_tbl(
     dm_for_flatten(), fact, dim_1, dim_2
   ))
   expect_equivalent_tbl(
@@ -28,7 +28,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   )
 
   # change order of parent tables
-  out <- expect_message(dm_flatten_to_tbl(
+  out <- expect_message_obj(dm_flatten_to_tbl(
     dm_for_flatten(), fact, dim_2, dim_1
   ))
   expect_equivalent_tbl(
@@ -56,12 +56,12 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   # for flatten: columns from tf_5 + tf_4 + tf_4_2 + tf_6 are combined in one table, 8 cols in total
   expect_identical(
     ncol(dm_flatten_to_tbl(dm_more_complex(), tf_5)),
-    8L
+    9L
   )
 })
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
-  out <- expect_message(dm_flatten_to_tbl(
+  out <- expect_message_obj(dm_flatten_to_tbl(
     dm_for_flatten(), fact,
     join = inner_join
   ))
@@ -71,7 +71,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
 test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
   skip_if_src("sqlite")
   skip_if_src("maria")
-  out <- expect_message(dm_flatten_to_tbl(
+  out <- expect_message_obj(dm_flatten_to_tbl(
     dm_for_flatten(), fact,
     join = full_join
   ))
@@ -110,7 +110,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'nest_join()'", {
 test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
   skip_if_src("sqlite")
   expect_equivalent_tbl(
-    expect_message(expect_warning(
+    expect_message_obj(expect_warning_obj(
       dm_flatten_to_tbl(dm_for_flatten(), fact, join = right_join),
       "right_join"
     )),
@@ -122,7 +122,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
   )
 
   # change order of parent tables
-  out <- expect_message(dm_flatten_to_tbl(
+  out <- expect_message_obj(dm_flatten_to_tbl(
     dm_for_flatten(), fact, dim_2, dim_1,
     join = right_join
   ))
@@ -144,14 +144,14 @@ test_that("`dm_squash_to_tbl()` does the right things", {
     dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3),
     tf_5() %>%
       left_join(tf_4(), by = c("l" = "h")) %>%
-      left_join(tf_3(), by = c("j" = "f"))
+      left_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
   )
 
   # deeper hierarchy available and `auto_detect = TRUE`
-  # for flatten: columns from tf_5 + tf_4 + tf_3 + tf_4_2 + tf_6 are combined in one table, 9 cols in total
+  # for flatten: columns from tf_5 + tf_4 + tf_3 + tf_4_2 + tf_6 are combined in one table, 10 cols in total
   expect_identical(
     ncol(dm_squash_to_tbl(dm_more_complex(), tf_5)),
-    9L
+    10L
   )
 
 
@@ -179,8 +179,9 @@ test_that("`dm_squash_to_tbl()` does the right things", {
   # full_join:
   expect_equivalent_tbl(
     dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = full_join),
-    full_join(tf_5(), tf_4(), by = c("l" = "h")) %>%
-      full_join(tf_3(), by = c("j" = "f"))
+    tf_5() %>%
+      full_join(tf_4(), by = c("l" = "h")) %>%
+      full_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
   )
 
   # skipping inner_join, not gaining new info
@@ -194,7 +195,7 @@ test_that("`dm_squash_to_tbl()` does the right things", {
 
 test_that("prepare_dm_for_flatten() works", {
   # unfiltered with rename
-  out <- expect_message(prepare_dm_for_flatten(
+  out <- expect_message_obj(prepare_dm_for_flatten(
     dm_for_flatten(),
     c("fact", "dim_1", "dim_3"),
     gotta_rename = TRUE
@@ -208,18 +209,18 @@ test_that("prepare_dm_for_flatten() works", {
   prep_dm <-
     dm_for_flatten() %>%
     dm_select_tbl(fact, dim_1, dim_3) %>%
-
+    #
     dm_zoom_to(fact) %>%
     filter(dim_1_key_1 > 7, dim_1_key_2 > !!LETTERS[7]) %>%
     dm_update_zoomed() %>%
-
+    #
     dm_zoom_to(dim_1) %>%
     filter(dim_1_pk_1 > 7, dim_1_pk_2 > !!LETTERS[7]) %>%
     dm_update_zoomed()
 
   prep_dm_renamed <- dm_disambiguate_cols(prep_dm, quiet = TRUE)
 
-  out <- expect_message(prepare_dm_for_flatten(
+  out <- expect_message_obj(prepare_dm_for_flatten(
     dm_filter(dm_for_flatten(), dim_1, dim_1_pk_1 > 7, dim_1_pk_2 > !!LETTERS[7]),
     c("fact", "dim_1", "dim_3"),
     gotta_rename = TRUE
@@ -244,19 +245,19 @@ test_that("prepare_dm_for_flatten() works", {
 test_that("tidyselect works for flatten", {
   # test if deselecting works
   expect_equivalent_tbl(
-    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact, -dim_2, dim_3, -dim_4, dim_1)),
-    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact, dim_1, dim_3))
+    expect_message_obj(dm_flatten_to_tbl(dm_for_flatten(), fact, -dim_2, dim_3, -dim_4, dim_1)),
+    expect_message_obj(dm_flatten_to_tbl(dm_for_flatten(), fact, dim_1, dim_3))
   )
 
   # test if select helpers work
   expect_equivalent_tbl(
-    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact, ends_with("3"), ends_with("1"))),
-    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact, dim_3, dim_1))
+    expect_message_obj(dm_flatten_to_tbl(dm_for_flatten(), fact, ends_with("3"), ends_with("1"))),
+    expect_message_obj(dm_flatten_to_tbl(dm_for_flatten(), fact, dim_3, dim_1))
   )
 
   expect_equivalent_tbl(
-    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact, everything())),
-    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact))
+    expect_message_obj(dm_flatten_to_tbl(dm_for_flatten(), fact, everything())),
+    expect_message_obj(dm_flatten_to_tbl(dm_for_flatten(), fact))
   )
 
   # if only deselecting one potential candidate for flattening, the tables that are not
@@ -275,7 +276,7 @@ test_that("tidyselect works for flatten", {
 
 test_that("`dm_join_to_tbl()` works", {
   expect_equivalent_tbl(
-    expect_message(dm_join_to_tbl(dm_for_flatten(), fact, dim_3), "Renamed"),
+    expect_message_obj(dm_join_to_tbl(dm_for_flatten(), fact, dim_3), "Renamed"),
     left_join(
       fact_clean(),
       dim_3_clean(),
@@ -294,8 +295,6 @@ test_that("tests with 'bad_dm' work", {
   # can't create bad_dm() on Postgres due to strict constraint checks
   skip_if_src("postgres")
 
-  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
-
   # flatten bad_dm() (no referential integrity)
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3),
@@ -307,6 +306,8 @@ test_that("tests with 'bad_dm' work", {
   skip_if_src("maria")
 
   # filtered `dm`
+  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
+
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1),
     dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1)

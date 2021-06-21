@@ -9,15 +9,15 @@
     Message <cliMessage>
       ! Unsatisfied constraints:
     Output
-      * Table `flights`: foreign key dest into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (187), BQN (28), STT (15), PSE (12)
-      * Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), ...
+      * Table `flights`: foreign key dest into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (30), BQN (6), STT (4), PSE (2)
+      * Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
     Code
       dm_nycflights_small_cycle() %>% dm_examine_constraints()
     Message <cliMessage>
       ! Unsatisfied constraints:
     Output
-      * Table `flights`: foreign key dest into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (187), BQN (28), STT (15), PSE (12)
-      * Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), ...
+      * Table `flights`: foreign key dest into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (30), BQN (6), STT (4), PSE (2)
+      * Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
     Code
       dm_nycflights_small_cycle() %>% dm_select_tbl(-flights) %>%
         dm_examine_constraints()

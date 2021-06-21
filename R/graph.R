@@ -51,7 +51,7 @@ create_graph_from_dm <- function(dm, directed = FALSE) {
   def <- dm_get_def(dm)
   def %>%
     select(ref_table = table, fks) %>%
-    unnest(fks) %>%
+    unnest_list_of_df("fks") %>%
     select(table, ref_table) %>%
     igraph::graph_from_data_frame(directed = directed, vertices = def$table)
 }

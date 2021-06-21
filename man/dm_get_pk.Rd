@@ -6,49 +6,11 @@
 \usage{
 dm_get_pk(dm, table, ...)
 }
-\arguments{
-\item{dm}{A \code{dm} object.}
-
-\item{table}{A table in the \code{dm}.}
-
-\item{...}{These dots are for future extensions and must be empty.}
-}
-\value{
-A list with character vectors with the column name(s) of the
-primary keys of \code{table}.
-}
 \description{
-\code{dm_get_pk()} returns the names of the
-columns marked as primary key of a table of a \code{\link{dm}} object.
-If no primary key is
-set for the table, an empty character vector is returned.
-}
-\section{Compound keys and multiple primary keys}{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-
-Currently, keys consisting of more than one column are not supported.
-\href{https://github.com/cynkra/dm/issues/3}{This feature} is planned for dm 0.2.0.
-Therefore the function may return vectors of length greater than one in the future.
-
-Similarly, each table currently can have only one primary key.
-This restriction may be lifted in the future.
-For this reason, and for symmetry with \code{dm_get_fk()},
-this function returns a slit of character vectors.
+This function is deprecated because of its limited use
+and its unintuitive return value.
+Use \code{\link[=dm_get_all_pks]{dm_get_all_pks()}} instead.
 }
-
-\examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-dm_nycflights13() \%>\%
-  dm_get_pk(flights)
-dm_nycflights13() \%>\%
-  dm_get_pk(planes)
-\dontshow{\}) # examplesIf}
-}
-\seealso{
-Other primary key functions: 
-\code{\link{dm_add_pk}()},
-\code{\link{dm_get_all_pks}()},
-\code{\link{dm_has_pk}()},
-\code{\link{enum_pk_candidates}()}
-}
-\concept{primary key functions}
+\keyword{internal}

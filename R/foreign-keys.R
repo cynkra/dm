@@ -1,102 +1,133 @@
-#' Add/remove foreign keys
+#' Add foreign keys
 #'
-#' @description `dm_add_fk()` marks the specified columns as the foreign key of table `table` with
-#' respect to the primary key of table `ref_table`.
-#' If `check == TRUE`, then it will first check if the values in columns `columns` are a subset
-#' of the values of the primary key in table `ref_table`.
-#'
-#' @section Compound keys:
-#'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
-#' The syntax of these functions will be extended but will remain compatible
-#' with current semantics.
+#' `dm_add_fk()` marks the specified `columns` as the foreign key of table `table` with
+#' respect to a key of table `ref_table`.
+#' Usually the referenced columns are a primary key in `ref_table`,
+#' it is also possible to specify other columns via the `ref_columns` argument.
+#' If `check == TRUE`, then it will first check if the values in `columns` are a subset
+#' of the values of the key in table `ref_table`.
 #'
 #' @inheritParams dm_add_pk
-#' @param columns For `dm_add_fk()`: The columns of `table` which are to become the foreign key columns that
-#'   reference the primary key of `ref_table`.
-#'
-#'   For `dm_rm_fk()`: The columns of `table` that should no longer be referencing the primary key of `ref_table`.
-#'   If `NULL`, all columns will be evaluated.
-#' @param ref_table For `dm_add_fk()`: The table which `table` will be referencing.
-#'   This table needs to have a primary key set.
-#'
-#'   For `dm_rm_fk()`: The table that `table` is referencing.
+#' @param columns The columns of `table` which are to become the foreign key columns that
+#'   reference `ref_table`.
+#'   To define a compound key, use `c(col1, col2)`.
+#' @param ref_table The table which `table` will be referencing.
+#' @param ref_columns The column(s) of `table` which are to become the referenced column(s) in `ref_table`.
+#'   By default, the primary key is used.
+#'   To define a compound key, use `c(col1, col2)`.
 #' @param check Boolean, if `TRUE`, a check will be performed to determine if the values of
-#'   `column` are a subset of the values of the primary key column of `ref_table`.
+#'   `columns` are a subset of the values of the key column(s) of `ref_table`.
 #'
 #' @family foreign key functions
 #'
 #' @rdname dm_add_fk
 #'
-#' @return For `dm_add_fk()`: An updated `dm` with an additional foreign key relation.
+#' @return An updated `dm` with an additional foreign key relation.
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' nycflights_dm <- dm(
 #'   planes = nycflights13::planes,
-#'   flights = nycflights13::flights
+#'   flights = nycflights13::flights,
+#'   weather = nycflights13::weather
 #' )
 #'
 #' nycflights_dm %>%
 #'   dm_draw()
 #'
+#' # Create foreign keys:
 #' nycflights_dm %>%
 #'   dm_add_pk(planes, tailnum) %>%
 #'   dm_add_fk(flights, tailnum, planes) %>%
+#'   dm_add_pk(weather, c(origin, time_hour)) %>%
+#'   dm_add_fk(flights, c(origin, time_hour), weather) %>%
 #'   dm_draw()
-dm_add_fk <- function(dm, table, columns, ref_table, ..., check = FALSE) {
+#'
+#' # Keys can be checked during creation:
+#' try(
+#'   nycflights_dm %>%
+#'     dm_add_pk(planes, tailnum) %>%
+#'     dm_add_fk(flights, tailnum, planes, check = TRUE)
+#' )
+dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ..., check = FALSE) {
+  check_dots_empty()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
-  table <- dm_get_tables_impl(dm)[[table_name]]
+  table_obj <- tbl_impl(dm, table_name)
   col_expr <- enexpr(columns)
-  col_name <- names(eval_select_indices(col_expr, colnames(table)))
+  col_name <- names(eval_select_indices(col_expr, colnames(table_obj)))
 
-  ref_key <- dm_get_pk_impl(dm, ref_table_name)
+  ref_table_obj <- tbl_impl(dm, ref_table_name)
+  ref_col_expr <- enexpr(ref_columns)
+  if (is.null(ref_col_expr)) {
+    ref_key <- dm_get_pk_impl(dm, ref_table_name)
 
-  if (is_empty(ref_key)) {
-    abort_ref_tbl_has_no_pk(ref_table_name)
+    if (is_empty(ref_key)) {
+      abort_ref_tbl_has_no_pk(ref_table_name)
+    }
+
+    ref_col_name <- get_key_cols(ref_key)
+  } else {
+    ref_col_name <- names(eval_select_indices(ref_col_expr, colnames(ref_table_obj)))
   }
-
-  ref_col_name <- get_key_cols(ref_key)
 
   # FIXME: COMPOUND:: Clean check with proper error message
   stopifnot(length(ref_col_name) == length(col_name))
 
   if (check) {
-    tbl_obj <- dm_get_tables(dm)[[table_name]]
-    ref_tbl_obj <- dm_get_tables(dm)[[ref_table_name]]
-
-    if (!is_subset(tbl_obj, !!col_name, ref_tbl_obj, !!ref_col_name)) {
+    if (!is_subset(table_obj, !!col_name, ref_table_obj, !!ref_col_name)) {
       abort_not_subset_of(table_name, col_name, ref_table_name, ref_col_name)
     }
   }
 
-  dm_add_fk_impl(dm, table_name, col_name, ref_table_name)
+  dm_add_fk_impl(dm, table_name, list(col_name), ref_table_name, list(ref_col_name))
 }
 
+dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
+  column <- unclass(column)
+  ref_column <- unclass(ref_column)
 
-dm_add_fk_impl <- function(dm, table, column, ref_table) {
+  loc <- which(!duplicated(ref_table))
+  n_loc <- length(loc)
+  if (n_loc > 1) {
+    my_ref_table <- ref_table[[loc[[n_loc]]]]
+
+    my <- ref_table == my_ref_table
+    where_other <- which(!my)
+    dm <- dm_add_fk_impl(dm, table[where_other], column[where_other], ref_table[where_other], ref_column[where_other])
+
+    table <- table[my]
+    column <- column[my]
+    ref_column <- ref_column[my]
+    # ref_table must be scalar, unlike the others
+    ref_table <- my_ref_table
+  } else if (n_loc == 0) {
+    return(dm)
+  } else {
+    my_ref_table <- ref_table[[1]]
+  }
+
   def <- dm_get_def(dm)
 
   i <- which(def$table == ref_table)
 
   fks <- def$fks[[i]]
 
-  existing <- fks$table == table & !is.na(vctrs::vec_match(fks$column, list(column)))
+  existing <- fks$table == table & !is.na(vec_match(fks$column, column))
   if (any(existing)) {
     if (dm_is_strict_keys(dm)) {
-      abort_fk_exists(table, column, ref_table)
+      first_existing <- which(existing)[[1]]
+      abort_fk_exists(table[[first_existing]], column[[first_existing]], ref_table)
     }
 
     return(dm)
   }
 
-  def$fks[[i]] <- vctrs::vec_rbind(
+  def$fks[[i]] <- vec_rbind(
     fks,
-    new_fk(table, list(column))
+    new_fk(ref_column, table, column)
   )
 
   new_dm3(def)
@@ -104,23 +135,22 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 
 #' Check if foreign keys exists
 #'
-#' `dm_has_fk()` checks if a foreign key reference exists between two tables in a `dm`.
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These functions are deprecated because of their limited use
+#' since the introduction of foreign keys to arbitrary columns in dm 0.2.1.
+#' Use [dm_get_all_fks()] with table manipulation functions instead.
 #'
 #' @inheritParams dm_add_fk
-#' @param ref_table The table to be checked if it is referred to.
-#'
-#' @return A boolean value: `TRUE` if a reference from `table` to `ref_table` exists, `FALSE` otherwise.
-#'
-#' @family foreign key functions
-#'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_has_fk(flights, airports)
-#' dm_nycflights13() %>%
-#'   dm_has_fk(airports, flights)
+#' @keywords internal
 dm_has_fk <- function(dm, table, ref_table, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
+
+  deprecate_soft("0.2.1", "dm::dm_has_fk()", "dm::dm_get_all_fks()")
+
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
   dm_has_fk_impl(dm, table_name, ref_table_name)
@@ -130,34 +160,13 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
   has_length(dm_get_fk_impl(dm, table_name, ref_table_name))
 }
 
-#' Foreign key column names
-#'
-#' @description `dm_get_fk()` returns the names of the
-#' columns marked as foreign key of table `table` with respect to table `ref_table` within a [`dm`] object.
-#' If no foreign key is set between the tables, an empty character vector is returned.
-#'
-#' @section Compound keys:
-#'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
-#' Therefore the function may return vectors of length greater than one in the future.
-#'
-#' @inheritParams dm_has_fk
-#' @param ref_table The table that is referenced from `table`.
-#'
-#' @family foreign key functions
-#'
-#' @return A list of character vectors with the column name(s) of `table`,
-#' pointing to the primary key of `ref_table`.
-#'
+#' @rdname dm_has_fk
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_get_fk(flights, airports)
-#' dm_nycflights13(cycle = TRUE) %>%
-#'   dm_get_fk(flights, airports)
 dm_get_fk <- function(dm, table, ref_table, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
+
+  deprecate_soft("0.2.1", "dm::dm_get_fk()", "dm::dm_get_all_fks()")
 
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
@@ -170,29 +179,34 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
   i <- which(def$table == ref_table_name)
 
   fks <- def$fks[[i]]
-  fks %>%
-    filter(table == !!table_name) %>%
-    pull(column)
+  fks$column[fks$table == table_name]
+}
+
+dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
+  # FIXME: Revisit instances of dm_get_fk_impl()
+  def <- dm_get_def(dm)
+  i <- which(def$table == ref_table_name)
+
+  fks <- def$fks[[i]]
+  fks[fks$table == table_name, c("column", "ref_column")]
 }
 
 #' Get foreign key constraints
 #'
 #' Get a summary of all foreign key relations in a [`dm`].
 #'
-#' @section Compound keys:
-#'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
-#' Therefore the `child_fk_cols` column may contain vectors of length greater than one.
-#'
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`child_table`}{child table,}
-#'     \item{`child_fk_cols`}{foreign key column in child table,}
-#'     \item{`parent_table`}{parent table.}
+#'     \item{`child_fk_cols`}{foreign key column(s) in child table as list of character vectors,}
+#'     \item{`parent_table`}{parent table,}
+#'     \item{`parent_key_cols`}{key column(s) in parent table as list of character vectors.}
 #'   }
 #'
 #' @inheritParams dm_has_fk
+#' @param parent_table One or more table names, as character vector,
+#'   to return foreign key information for.
+#'   The default `NULL` returns information for all tables.
 #'
 #' @family foreign key functions
 #'
@@ -200,82 +214,174 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #' dm_nycflights13() %>%
 #'   dm_get_all_fks()
 #' @export
-dm_get_all_fks <- function(dm, ...) {
+dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
-  dm_get_all_fks_impl(dm)
+  dm_get_all_fks_impl(dm, parent_table)
 }
 
-dm_get_all_fks_impl <- function(dm) {
-  fk_df <-
-    dm_get_def(dm) %>%
-    select(ref = table, fks, pks) %>%
-    filter(map_lgl(fks, has_length)) %>%
-    unnest(pks)
+dm_get_all_fks_impl <- function(dm, parent_table = NULL) {
+  def <- dm_get_def(dm)
 
-  fk_df %>%
-    rename(parent_pk_cols = column) %>%
-    unnest(fks) %>%
-    select(child_table = table, child_fk_cols = column, parent_table = ref, parent_pk_cols) %>%
-    mutate(child_fk_cols = new_keys(child_fk_cols), parent_pk_cols = new_keys(parent_pk_cols)) %>%
-    arrange(child_table, child_fk_cols)
+  sub_def <- def[c("table", "fks")]
+  names(sub_def)[[1]] <- "parent_table"
+
+  if (!is.null(parent_table)) {
+    sub_def <- sub_def[sub_def$parent_table %in% parent_table, ]
+  }
+
+  flat <- unnest_list_of_df(sub_def, "fks")
+
+  names(flat) <- c("parent_table", "parent_key_cols", "child_table", "child_fk_cols")
+  flat[[2]] <- new_keys(flat[[2]])
+  flat[[4]] <- new_keys(flat[[4]])
+  flat[c(3:4, 1:2)]
 }
 
-#' Remove the reference(s) from one [`dm`] table to another
+#' Remove foreign keys
 #'
-#' @description `dm_rm_fk()` can remove either one reference between two tables, or all references at once, if argument `columns = NULL`.
-#' All arguments may be provided quoted or unquoted.
-#'
-#' @rdname dm_add_fk
+#' `dm_rm_fk()` can remove either one reference between two tables, or multiple references at once (with a message).
+#' An error is thrown if no matching foreign key is found.
 #'
 #' @family foreign key functions
 #'
-#' @return For `dm_rm_fk()`: An updated `dm` without the given foreign key relation.
+#' @inheritParams dm_rm_pk
+#' @param ref_table The table referenced by the `table` argument.
+#'   Pass `NULL` to remove all matching keys.
+#' @param ref_columns The columns of `table` that should no longer be referencing the primary key of `ref_table`.
+#'   To refer to a compound key, use `c(col1, col2)`.
+#'
+#' @return An updated `dm` without the matching foreign key relation(s).
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13(cycle = TRUE) %>%
 #'   dm_rm_fk(flights, dest, airports) %>%
 #'   dm_draw()
-dm_rm_fk <- function(dm, table, columns, ref_table, ...) {
+dm_rm_fk <- function(dm, table = NULL, columns = NULL, ref_table = NULL, ref_columns = NULL, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
 
-  column_quo <- enquo(columns)
+  table_name <- dm_tbl_name_null(dm, {{ table }})
+  column_expr <- enexpr(columns)
+  ref_table_name <- dm_tbl_name_null(dm, {{ ref_table }})
+  ref_column_expr <- enexpr(ref_columns)
 
-  if (quo_is_missing(column_quo)) {
-    abort_rm_fk_col_missing()
-  }
-  table_name <- dm_tbl_name(dm, {{ table }})
-  ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
-
-  fk_cols <- dm_get_fk_impl(dm, table_name, ref_table_name)
-  if (is_empty(fk_cols)) {
-    # FIXME: Simplify, check is already done in dm_rm_fk_impl()
-    abort_is_not_fkc(table_name, fk_cols, ref_table_name)
-  }
-
-  if (quo_is_null(column_quo)) {
-    cols <- fk_cols
-  } else {
-    col_idx <- eval_select_indices(column_quo, colnames(dm_get_tables(dm)[[table_name]]))
-    cols <- list(names(col_idx))
-  }
-
-  dm_rm_fk_impl(dm, table_name, cols, ref_table_name)
+  dm_rm_fk_impl(dm, table_name, column_expr, ref_table_name, ref_column_expr)
 }
 
-dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
+dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
   def <- dm_get_def(dm)
-  i <- which(def$table == ref_table_name)
 
-  fks <- def$fks[[i]]
+  # Filter by each argument if given:
 
-  ii <- fks$table != table_name | is.na(vctrs::vec_match(fks$column, unclass(cols)))
-  if (all(ii)) {
-    abort_is_not_fkc(table_name, cols, ref_table_name)
+  # ref_table_name: keyed by def$table, simplest
+  if (is.null(ref_table_name)) {
+    idx <- seq_along(def$table)
+  } else {
+    idx <- which(def$table == ref_table_name)
   }
 
-  fks <- fks[ii, ]
-  def$fks[[i]] <- fks
+  # other args: inside def$fks, maintaining list of indexes
+  idx_fk <- map(def$fks[idx], ~ seq_len(nrow(.x)))
+
+  # table_name: keep FK entries pointing to the other table
+  if (!is.null(table_name)) {
+    idx_fk <- map2(def$fks[idx], idx_fk, ~ {
+      ii <- (.x$table[.y] == table_name)
+      .y[ii]
+    })
+
+    # Prune after each step (this also ensures that negative selection works further below)
+    keep <- (lengths(idx_fk) > 0)
+    idx <- idx[keep]
+    idx_fk <- idx_fk[keep]
+  }
+
+  # ref_cols: find column names once for each ref_table
+  if (!is.null(ref_cols)) {
+    idx_fk <- pmap(list(def$fks[idx], idx_fk, def$data[idx]), ~ {
+      ii <- tryCatch(
+        {
+          names_vars <- names(eval_select_indices(ref_cols, colnames(..3)))
+          map_lgl(.x$ref_column[.y], identical, names_vars)
+        },
+        error = function(e) {
+          0
+        }
+      )
+      .y[ii]
+    })
+
+    # Prune after each step (this also ensures that negative selection works further below)
+    keep <- (lengths(idx_fk) > 0)
+    idx <- idx[keep]
+    idx_fk <- idx_fk[keep]
+  }
+
+  # cols: find column inside each fks entry
+  if (!is.null(cols)) {
+    all_tables <- set_names(def$data, def$table)
+
+    idx_fk <- map2(def$fks[idx], idx_fk, ~ {
+      ii <- map2_lgl(.x$table[.y], .x$column[.y], ~ {
+        tryCatch(
+          {
+            names_vars <- names(eval_select_indices(cols, colnames(all_tables[[.x]])))
+            identical(.y, names_vars)
+          },
+          error = function(e) {
+            FALSE
+          }
+        )
+      })
+      .y[ii]
+    })
+
+    # Prune after each step (this also ensures that negative selection works further below)
+    keep <- (lengths(idx_fk) > 0)
+    idx <- idx[keep]
+    idx_fk <- idx_fk[keep]
+  }
+
+  # Check if empty
+  if (length(idx) == 0) {
+    abort_is_not_fkc()
+  }
+
+  # Talk about it
+  if (is.null(table_name) || is.null(cols) || is.null(ref_table_name)) {
+    show_disambiguation <- TRUE
+  } else if (!is.null(ref_cols)) {
+    show_disambiguation <- FALSE
+  } else {
+    # Check if all FKs point to the primary key
+    show_disambiguation <- !all(map2_lgl(def$fks[idx], def$pks[idx], ~ {
+      all(map_lgl(.x$ref_column, identical, .y$column[[1]]))
+    }))
+  }
+
+  if (show_disambiguation) {
+    def_rm <- def[idx, c("table", "pks", "fks")]
+    def_rm$fks <- map2(def_rm$fks, idx_fk, vec_slice)
+    def_rm$fks <- map2(def_rm$fks, def_rm$pks, ~ {
+      .x$need_ref <- !map_lgl(.x$ref_column, identical, .y$column[[1]])
+      .x
+    })
+
+    disambiguation <-
+      def_rm %>%
+      select(ref_table = table, fks) %>%
+      unnest(-ref_table) %>%
+      mutate(ref_col_text = if_else(need_ref, glue(", {deparse_keys(ref_column)})"), "")) %>%
+      mutate(text = glue("dm_rm_fk({tick_if_needed(table)}, {deparse_keys(column)}, {tick_if_needed(ref_table)}{ref_col_text})")) %>%
+      pull()
+
+    message("Removing foreign keys: %>%\n  ", glue_collapse(disambiguation, " %>%\n  "))
+  }
+
+  # Execute
+  def$fks[idx] <- map2(def$fks[idx], idx_fk, ~ .x[-.y, ])
 
   new_dm3(def)
 }
@@ -329,6 +435,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
 #'   enum_fk_candidates(airports)
 #' @export
 dm_enum_fk_candidates <- function(dm, table, ref_table, ...) {
+  check_dots_empty()
   check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
@@ -341,7 +448,8 @@ dm_enum_fk_candidates <- function(dm, table, ref_table, ...) {
   ref_tbl <- tbl_impl(dm, ref_table_name)
   tbl <- tbl_impl(dm, table_name)
 
-  enum_fk_candidates_impl(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk) %>%
+  table_name %>%
+    enum_fk_candidates_impl(tbl, ref_table_name, ref_tbl, ref_tbl_pk) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 }
@@ -352,6 +460,7 @@ dm_enum_fk_candidates <- function(dm, table, ref_table, ...) {
 #' @param zoomed_dm A `dm` with a zoomed table.
 #' @export
 enum_fk_candidates <- function(zoomed_dm, ref_table, ...) {
+  check_dots_empty()
   check_zoomed(zoomed_dm)
   check_no_filter(zoomed_dm)
 
@@ -361,7 +470,7 @@ enum_fk_candidates <- function(zoomed_dm, ref_table, ...) {
   ref_tbl_pk <- dm_get_pk_impl(zoomed_dm, ref_table_name)
 
   ref_tbl <- dm_get_tables_impl(zoomed_dm)[[ref_table_name]]
-  enum_fk_candidates_impl(table_name, get_zoomed_tbl(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk) %>%
+  enum_fk_candidates_impl(table_name, tbl_zoomed(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 }
@@ -400,8 +509,11 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     count(!!!t2_vals) %>%
     ungroup()
 
-  # FIXME: Build expression instead of paste() + parse()
-  any_value_na_expr <- parse(text = paste0("is.na(", val_names, ")", collapse = " | "))[[1]]
+  any_value_na_expr <- reduce(
+    syms(val_names[-1]),
+    ~ call("|", .x, call("is.na", .y)),
+    .init = call("is.na", sym(val_names[[1]]))
+  )
 
   res_tbl <- tryCatch(
     t1_join %>%
@@ -429,7 +541,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   res_tbl$value <- exec(paste0, !!!res_tbl[val_names])
 
   vals_formatted <- commas(
-    glue('{res_tbl$value} ({res_tbl$n})'),
+    glue("{res_tbl$value} ({res_tbl$n})"),
     capped = TRUE
   )
   glue(
@@ -457,28 +569,13 @@ error_txt_fk_exists <- function(child_table_name, colnames, parent_table_name) {
   )
 }
 
-abort_is_not_fkc <- function(child_table_name, colnames,
-                             parent_table_name) {
+abort_is_not_fkc <- function() {
   abort(
-    error_txt_is_not_fkc(
-      child_table_name, colnames, parent_table_name
-    ),
+    error_txt_is_not_fkc(),
     .subclass = dm_error_full("is_not_fkc")
   )
 }
 
-error_txt_is_not_fkc <- function(child_table_name, colnames,
-                                 parent_table_name) {
-  glue(
-    "({commas(tick(colnames))}) is not a foreign key of table ",
-    "{tick(child_table_name)} into table {tick(parent_table_name)}."
-  )
-}
-
-abort_rm_fk_col_missing <- function() {
-  abort(error_txt_rm_fk_col_missing(), .subclass = dm_error_full("rm_fk_col_missing"))
-}
-
-error_txt_rm_fk_col_missing <- function() {
-  "Parameter `columns` has to be set. Pass `NULL` for removing all references."
+error_txt_is_not_fkc <- function() {
+  "No foreign keys to remove."
 }

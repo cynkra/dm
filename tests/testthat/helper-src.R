@@ -16,14 +16,15 @@ defer_assign <- function(lhs, rhs, env) {
 
   value <- get0(lhs, cache)
   if (is.null(value)) {
-    # message("Deferring ", lhs)
+    message("Deferring ", lhs)
 
     # Enable this for eager assignment:
     # force(rhs)
 
     value <- function() {
       # message("Querying ", lhs)
-      rhs
+      out <- rhs
+      out
     }
     assign(lhs, value, cache)
   } else {
@@ -54,13 +55,15 @@ copy_to_my_test_src <- function(rhs, lhs) {
   }
 }
 
-sqlite %<--% dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
-
 my_test_src_name <- {
   src <- Sys.getenv("DM_TEST_SRC", "df")
   name <- gsub("^.*-", "", src)
   inform(crayon::green(paste0("Testing on ", name)))
   name
+}
+
+is_db_test_src <- function() {
+  my_test_src_name != "df"
 }
 
 my_test_src_fun %<--% {
@@ -85,6 +88,16 @@ my_test_src <- function() {
   )
 }
 
+sqlite_test_src %<--% dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
+
+my_db_test_src <- function() {
+  if (is_db_test_src()) {
+    my_test_src()
+  } else {
+    sqlite_test_src()
+  }
+}
+
 test_src_frame <- function(...) {
   src <- my_test_src()
 
@@ -105,10 +118,27 @@ test_src_frame <- function(...) {
   out
 }
 
+test_db_src_frame <- function(...) {
+  if (is_db_test_src()) {
+    return(test_src_frame(...))
+  }
+
+  src <- my_db_test_src()
+
+  df <- tibble(...)
+
+  name <- unique_db_table_name("test_frame")
+  temporary <- TRUE
+
+  out <- copy_to(src, df, name = name, temporary = temporary)
+  out
+}
+
+
 # for examine_cardinality...() ----------------------------------------------
 
 data_card_1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
-data_card_1_sqlite %<--% copy_to(sqlite(), data_card_1())
+data_card_1_sqlite %<--% copy_to(sqlite_test_src(), data_card_1())
 data_card_2 %<-% tibble::tibble(a = c(1, 3:6), b = letters[1:5])
 data_card_3 %<-% tibble::tibble(c = 1:5)
 data_card_4 %<-% tibble::tibble(c = c(1:5, 5L))
@@ -171,21 +201,35 @@ tf_1 %<-% tibble(
   b = LETTERS[1:10]
 )
 
-tf_2 %<-% tibble(
+tf_2_simple %<-% tibble(
   c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
   d = 2:7,
   e = c(LETTERS[4:7], LETTERS[5:6])
 )
 
-tf_3 %<-% tibble(
+tf_2 %<-% tibble(
+  c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
+  d = 2:7,
+  e = c(LETTERS[4:7], LETTERS[5:6]),
+  e1 = c(4:7, 5:6),
+)
+
+tf_3_simple %<-% tibble(
   f = LETTERS[2:11],
+  g = c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
+)
+
+tf_3 %<-% tibble(
+  f = LETTERS[c(3, 3:11)],
+  f1 = c(2:7, 7L, 7L, 10:11),
   g = c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
 )
 
 tf_4 %<-% tibble(
   h = letters[1:5],
   i = c("three", "four", "five", "six", "seven"),
-  j = c(LETTERS[3:6], LETTERS[6])
+  j = c(LETTERS[3:6], LETTERS[6]),
+  j1 = c(3:6, 6L),
 )
 
 tf_5 %<-% tibble(
@@ -209,19 +253,24 @@ dm_for_filter_w_cycle %<-% {
     tf_1 = tf_1(), tf_2 = tf_2(), tf_3 = tf_3(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6(), tf_7 = tf_7()
   ) %>%
     dm_add_pk(tf_1, a) %>%
+    dm_add_pk(tf_3, c(f, f1)) %>%
+    #
     dm_add_pk(tf_2, c) %>%
-    dm_add_pk(tf_3, f) %>%
-    dm_add_pk(tf_4, h) %>%
-    dm_add_pk(tf_5, k) %>%
-    dm_add_pk(tf_6, n) %>%
-    dm_add_pk(tf_7, p) %>%
     dm_add_fk(tf_2, d, tf_1) %>%
-    dm_add_fk(tf_2, e, tf_3) %>%
-    dm_add_fk(tf_4, j, tf_3) %>%
-    dm_add_fk(tf_5, l, tf_4) %>%
-    dm_add_fk(tf_5, m, tf_6) %>%
+    dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+    #
+    dm_add_pk(tf_4, h) %>%
+    dm_add_fk(tf_4, c(j, j1), tf_3) %>%
+    #
+    dm_add_pk(tf_7, p) %>%
+    dm_add_fk(tf_7, q, tf_2) %>%
+    #
+    dm_add_pk(tf_6, o) %>%
     dm_add_fk(tf_6, o, tf_7) %>%
-    dm_add_fk(tf_7, q, tf_2)
+    #
+    dm_add_pk(tf_5, k) %>%
+    dm_add_fk(tf_5, l, tf_4) %>%
+    dm_add_fk(tf_5, m, tf_6, n)
 }
 
 dm_for_filter %<-% {
@@ -229,59 +278,41 @@ dm_for_filter %<-% {
     dm_select_tbl(-tf_7)
 }
 
-dm_for_filter_sqlite %<--% copy_dm_to(sqlite(), dm_for_filter())
+dm_for_filter_db %<--% {
+  copy_dm_to(my_db_test_src(), dm_for_filter())
+}
 
-output_1 %<-% list(
-  tf_1 = tibble(a = c(4:7), b = LETTERS[4:7]),
-  tf_2 = tibble(c = c("seal", "worm", "dog", "cat"), d = 4:7, e = c("F", "G", "E", "F")),
-  tf_3 = tibble(f = LETTERS[5:7], g = c("four", "five", "six")),
-  tf_4 = tibble(h = letters[3:5], i = c("five", "six", "seven"), j = c("E", "F", "F")),
-  tf_5 = tibble(
-    k = 2:4,
-    l = letters[3:5],
-    m = c("tree", "streetlamp", "streetlamp")
-  ),
-  tf_6 = tibble(
-    n = c("tree", "streetlamp"),
-    o = c("f", "h")
-  )
-)
-
-output_3 %<-% list(
-  tf_1 = tibble::tribble(
-    ~a, ~b,
-    4L, "D",
-    7L, "G"
-  ),
-  tf_2 = tibble::tribble(
-    ~c, ~d, ~e,
-    "seal", 4L, "F",
-    "cat", 7L, "F"
-  ),
-  tf_3 = tibble::tribble(
-    ~f, ~g,
-    "F", "five"
-  ),
-  tf_4 = tibble::tribble(
-    ~h, ~i, ~j,
-    "d", "six", "F",
-    "e", "seven", "F"
-  ),
-  tf_5 = tibble::tribble(
-    ~k, ~l, ~m,
-    3L, "d", "streetlamp",
-    4L, "e", "streetlamp"
-  ),
-  tf_6 = tibble::tribble(
-    ~n, ~o,
-    "streetlamp", "h"
-  )
-)
-
+dm_for_filter_sqlite %<--% copy_dm_to(sqlite_test_src(), dm_for_filter())
 
 dm_for_filter_rev %<-% {
   def_dm_for_filter <- dm_get_def(dm_for_filter())
   new_dm3(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])
+}
+
+# Deprecated tests
+dm_for_filter_simple %<-% {
+  dm(
+    tf_1 = tf_1(), tf_2 = tf_2_simple(), tf_3 = tf_3_simple(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6()
+  ) %>%
+    dm_add_pk(tf_1, a) %>%
+    dm_add_pk(tf_3, f) %>%
+    #
+    dm_add_pk(tf_2, c) %>%
+    dm_add_fk(tf_2, d, tf_1) %>%
+    dm_add_fk(tf_2, e, tf_3) %>%
+    #
+    dm_add_pk(tf_4, h) %>%
+    dm_add_fk(tf_4, j, tf_3) %>%
+    #
+    dm_add_pk(tf_6, n) %>%
+    #
+    dm_add_pk(tf_5, k) %>%
+    dm_add_fk(tf_5, l, tf_4) %>%
+    dm_add_fk(tf_5, m, tf_6)
+}
+
+dm_for_filter_simple_db %<--% {
+  copy_dm_to(my_db_test_src(), dm_for_filter_simple())
 }
 
 # for tests on `dm` objects: dm_add_pk(), dm_add_fk() ------------------------
@@ -310,7 +341,7 @@ rows_dm_obj <- 36L
 
 dm_more_complex_part %<-% {
   dm(
-    tf_6_2 = tibble(p = letters[1:6], f = LETTERS[6:11]),
+    tf_6_2 = tibble(p = letters[1:6], f = LETTERS[6:11], f1 = c(6:7, 7L, 7L, 10:11)),
     tf_4_2 = tibble(
       r = letters[2:6],
       s = c("three", "five", "six", "seven", "eight"),
@@ -331,7 +362,7 @@ dm_more_complex %<-% {
   ) %>%
     dm_add_pk(tf_1, a) %>%
     dm_add_pk(tf_2, c) %>%
-    dm_add_pk(tf_3, f) %>%
+    dm_add_pk(tf_3, c(f, f1)) %>%
     dm_add_pk(tf_4, h) %>%
     dm_add_pk(tf_4_2, r) %>%
     dm_add_pk(tf_5, k) %>%
@@ -343,12 +374,12 @@ dm_more_complex %<-% {
     dm_add_pk(d, d_1) %>%
     dm_add_pk(e, e_1) %>%
     dm_add_fk(tf_2, d, tf_1) %>%
-    dm_add_fk(tf_2, e, tf_3) %>%
-    dm_add_fk(tf_4, j, tf_3) %>%
+    dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+    dm_add_fk(tf_4, c(j, j1), tf_3) %>%
     dm_add_fk(tf_5, l, tf_4) %>%
     dm_add_fk(tf_5, l, tf_4_2) %>%
     dm_add_fk(tf_5, m, tf_6) %>%
-    dm_add_fk(tf_6_2, f, tf_3) %>%
+    dm_add_fk(tf_6_2, c(f, f1), tf_3) %>%
     dm_add_fk(b, b_2, a) %>%
     dm_add_fk(b, b_3, c) %>%
     dm_add_fk(d, b_1, b) %>%
@@ -358,7 +389,8 @@ dm_more_complex %<-% {
 # for testing `dm_disambiguate_cols()` ----------------------------------------
 
 iris_1 %<-% {
-  as_tibble(iris) %>%
+  datasets::iris %>%
+    as_tibble() %>%
     mutate(key = row_number()) %>%
     select(key, everything())
 }
@@ -385,7 +417,8 @@ iris_3_dis %<-% {
 }
 
 dm_for_disambiguate %<-% {
-  as_dm(list(iris_1 = iris_1(), iris_2 = iris_2(), iris_3 = iris_3())) %>%
+  list(iris_1 = iris_1(), iris_2 = iris_2(), iris_3 = iris_3()) %>%
+    as_dm() %>%
     dm_add_pk(iris_1, key) %>%
     dm_add_fk(iris_2, key, iris_1)
 }
@@ -503,13 +536,7 @@ bad_dm %<--% {
 }
 
 dm_nycflights_small_base %<-% {
-  airlines <- nycflights13::airlines
-  airports <- nycflights13::airports
-  planes <- nycflights13::planes
-  flights <- flights_subset()
-  weather <- weather_subset()
-
-  dm(airlines, airports, flights, planes, weather)
+  dm(!!!dm_get_tables(dm_nycflights13()))
 }
 
 # Do not add PK and FK constraints to the database
@@ -546,7 +573,8 @@ get_test_tables_from_postgres <- function() {
   src_postgres <- my_test_src()
   con_postgres <- src_postgres$con
 
-  dbGetQuery(con_postgres, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
+  con_postgres %>%
+    dbGetQuery("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
     as_tibble() %>%
     filter(grepl("^tf_[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+", table_name))
 }
