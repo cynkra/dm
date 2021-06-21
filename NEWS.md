@@ -7,11 +7,11 @@
 
 # dm 0.2.3
 
-## Bug fixes
+## Bug fixes
 
 - Fix `rows_truncate()` in interactive mode (#588).
 
-## Features
+## Features
 
 - Implement `rows_delete()` for databases (#589).
 
