@@ -191,20 +191,16 @@
 </ul></div>
     <div id="dm-023" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.3">
-<a href="#dm-023" class="anchor" aria-hidden="true"></a>dm 0.2.3<small> Unreleased </small></h1>
-<ul><li>Same as previous version.</li>
-</ul></div>
-    <div id="dm-0229001" class="section level1">
-<h1 class="page-header" data-toc-text="0.2.2.9001">
-<a href="#dm-0229001" class="anchor" aria-hidden="true"></a>dm 0.2.2.9001<small> Unreleased </small></h1>
+<a href="#dm-023" class="anchor" aria-hidden="true"></a>dm 0.2.3<small> 2021-06-20 </small></h1>
+<p>## Bug fixes</p>
+<ul><li>Fix <code><a href="../reference/rows_truncate.html">rows_truncate()</a></code> in interactive mode (<a href='https://github.com/cynkra/dm/issues/588'>#588</a>).</li>
+</ul><p>## Features</p>
 <ul><li>Implement <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_delete()</a></code> for databases (<a href='https://github.com/cynkra/dm/issues/589'>#589</a>).</li>
-<li>Fix <code><a href="../reference/rows_truncate.html">rows_truncate()</a></code> in interactive mode (<a href='https://github.com/cynkra/dm/issues/588'>#588</a>).</li>
-<li>Skip examples that might require internet access on non-CI platforms.</li>
+</ul><div id="internal" class="section level2">
+<h2 class="hasAnchor">
+<a href="#internal" class="anchor" aria-hidden="true"></a>Internal</h2>
+<ul><li>Skip examples that might require internet access on non-CI platforms.</li>
 </ul></div>
-    <div id="dm-0229000" class="section level1">
-<h1 class="page-header" data-toc-text="0.2.2.9000">
-<a href="#dm-0229000" class="anchor" aria-hidden="true"></a>dm 0.2.2.9000<small> Unreleased </small></h1>
-<p>Internal changes only.</p>
 </div>
     <div id="dm-022" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.2">
@@ -217,9 +213,9 @@
 <li>
 <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> gains a <code>copy_to</code> argument to support other ways of copying data to the database (<a href='https://github.com/cynkra/dm/issues/582'>#582</a>).</li>
 </ul></div>
-<div id="internal" class="section level2">
+<div id="internal-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-1" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li>Always run database tests on sqlite for df source.</li>
 <li>Establish compatibility with testthat &gt; 3.0.2 (<a href='https://github.com/cynkra/dm/issues/566'>#566</a>, <a href='https://github.com/moodymudskipper'>@moodymudskipper</a>).</li>
 </ul></div>
@@ -256,9 +252,9 @@
 <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code> has been optimized for speed and no longer sorts the keys (<a href='https://github.com/cynkra/dm/issues/560'>#560</a>).</li>
 <li>dm operations are now slightly faster overall.</li>
 </ul></div>
-<div id="internal-1" class="section level2">
+<div id="internal-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-1" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-2" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li>The internal data structure for a dm object has changed to accommodate foreign keys to other columns than the primary key. An upgrade message is shown when working with a dm object from an earlier version, e.g. if it was loaded from a cache or an <code>.rds</code> file (<a href='https://github.com/cynkra/dm/issues/402'>#402</a>).</li>
 <li>Drop <code>"dm_v1"</code> class from dm objects again, this would have made every S3 dispatch more costly. Relying on an internal <code>"version"</code> attribute instead (<a href='https://github.com/cynkra/dm/issues/547'>#547</a>).</li>
 </ul></div>
@@ -323,9 +319,9 @@
 <a href="#documentation" class="anchor" aria-hidden="true"></a>Documentation</h2>
 <ul><li>Fix description of filtering behavior in <code><a href="../reference/dm_zoom_to.html">?dm_zoom_to</a></code> (<a href='https://github.com/cynkra/dm/issues/403'>#403</a>).</li>
 </ul></div>
-<div id="internal-2" class="section level2">
+<div id="internal-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-2" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-3" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li>Move repository to <a href="https://github.com/cynkra/dm" class="external-link uri">https://github.com/cynkra/dm</a> (<a href='https://github.com/cynkra/dm/issues/500'>#500</a>).</li>
 <li>Enable more Postgres tests (<a href='https://github.com/cynkra/dm/issues/497'>#497</a>).</li>
 <li>Test DuckDB on GitHub Actions (<a href='https://github.com/cynkra/dm/issues/498'>#498</a>).</li>
@@ -392,9 +388,9 @@
 <li>
 <code><a href="../reference/rows-dm.html">dm_rows_update()</a></code> and related functions now use the primary keys defined in <code>x</code> for establishing matching rows.</li>
 </ul></div>
-<div id="internal-3" class="section level2">
+<div id="internal-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-3" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-4" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li>Use <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code> where appropriate (<a href='https://github.com/cynkra/dm/issues/422'>#422</a>).</li>
 <li>Consistent definition of <code>.dm</code> and <code>.zoomed_dm</code> methods (<a href='https://github.com/cynkra/dm/issues/300'>#300</a>).</li>
 <li>Examples involving <code><a href="../reference/dm_financial.html">dm_financial()</a></code> are not run if connection can’t be established (<a href='https://github.com/cynkra/dm/issues/418'>#418</a>).</li>
@@ -425,9 +421,9 @@
 <li>Cycles in other connected components don’t affect filtering in a cycle-free component.</li>
 <li>Avoid <code><a href="https://dplyr.tidyverse.org/reference/src_dbi.html" class="external-link">src_sqlite()</a></code> in examples (<a href='https://github.com/cynkra/dm/issues/372'>#372</a>).</li>
 </ul></div>
-<div id="internal-4" class="section level2">
+<div id="internal-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-4" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-5" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li>Testing SQLite, Postgres and SQL Server on GitHub Actions (<a href='https://github.com/cynkra/dm/issues/408'>#408</a>, <a href='https://github.com/pat-s'>@pat-s</a>).</li>
 <li>Testing packages with all “Suggests” uninstalled.</li>
 </ul></div>
@@ -451,9 +447,9 @@
 <ul><li><p>Add TL;DR to README (<a href='https://github.com/cynkra/dm/issues/377'>#377</a>, <a href='https://github.com/jawond'>@jawond</a>).</p></li>
 <li><p>Add content from old README to <code>howto-dm-theory.Rmd</code> (<a href='https://github.com/cynkra/dm/issues/378'>#378</a>, <a href='https://github.com/jawond'>@jawond</a>).</p></li>
 </ul></div>
-<div id="internal-5" class="section level2">
+<div id="internal-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-5" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-6" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li><p>Require dplyr &gt;= 1.0.0.</p></li>
 <li><p>Use GitHub Actions (<a href='https://github.com/cynkra/dm/issues/369'>#369</a>, <a href='https://github.com/pat-s'>@pat-s</a>).</p></li>
 </ul></div>
@@ -525,9 +521,9 @@
 <code><a href="../reference/dm_draw.html">dm_draw()</a></code> output is shown in examples (<a href='https://github.com/cynkra/dm/issues/251'>#251</a>).</li>
 <li>New article “{dm} and databases” (<a href='https://github.com/cynkra/dm/issues/309'>#309</a>, <a href='https://github.com/jawond'>@jawond</a>).</li>
 </ul></div>
-<div id="internal-6" class="section level2">
+<div id="internal-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-6" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-7" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li>Testing on local data frames (by default), optionally also SQLite, Postgres, RMariaDB, and SQL Server. Currently requires development versions and various pull requests (<a href='https://github.com/cynkra/dm/issues/334'>#334</a>, <a href='https://github.com/cynkra/dm/issues/327'>#327</a>, <a href='https://github.com/cynkra/dm/issues/312'>#312</a>, <a href='https://github.com/cynkra/dm/issues/76'>#76</a>).</li>
 <li>
 <code>dm_nycflights13(subset = TRUE)</code> memoizes subset and also reduces the size of the <code>weather</code> table.</li>
@@ -769,9 +765,9 @@
 <a href="#documentation-4" class="anchor" aria-hidden="true"></a>Documentation</h2>
 <ul><li>Add setup article (<a href='https://github.com/cynkra/dm/issues/7'>#7</a>).</li>
 </ul></div>
-<div id="internal-7" class="section level2">
+<div id="internal-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-7" class="anchor" aria-hidden="true"></a>Internal</h2>
+<a href="#internal-8" class="anchor" aria-hidden="true"></a>Internal</h2>
 <ul><li>Using simpler internal data structure to store primary and foreign key relations (<a href='https://github.com/cynkra/dm/issues/26'>#26</a>).</li>
 <li>New <code>nse_function()</code> replaces <code>h()</code> for marking functions as NSE to avoid R CMD check warnings.</li>
 <li>Simplified internal data structure so that creation of new operations that update a dm becomes easier.</li>
