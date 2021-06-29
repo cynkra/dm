@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.3.9001
+
+- Use `NO ACTION` instead of `CASCADE` in foreign key constraints to permit self-references.
+
+
 # dm 0.2.3.9000
 
 - Same as previous version.
