@@ -67,6 +67,12 @@ jobs:
         run: |
           install.packages("styler")
         shell: Rscript {0}
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+
       - name: Style
         run: |
           styler::style_pkg(strict = FALSE)
