@@ -93,25 +93,25 @@ dm_meta_raw <- function(con, catalog) {
     dm_add_fk(tables, c(table_catalog, table_schema), schemata) %>%
     dm_add_pk(columns, c(table_catalog, table_schema, table_name, column_name)) %>%
     dm_add_fk(columns, c(table_catalog, table_schema, table_name), tables) %>%
-    #dm_add_fk(table_constraints, table_schema, schemata) %>%
+    # dm_add_fk(table_constraints, table_schema, schemata) %>%
     dm_add_pk(table_constraints, c(constraint_catalog, constraint_schema, constraint_name)) %>%
     dm_add_fk(table_constraints, c(table_catalog, table_schema, table_name), tables) %>%
     # constraint_schema vs. table_schema?
 
     # not on mssql:
-    #dm_add_fk(referential_constraints, c(constraint_schema, table_name), tables) %>%
-    #dm_add_fk(referential_constraints, c(constraint_schema, referenced_table_name), tables) %>%
+    # dm_add_fk(referential_constraints, c(constraint_schema, table_name), tables) %>%
+    # dm_add_fk(referential_constraints, c(constraint_schema, referenced_table_name), tables) %>%
 
     dm_add_pk(key_column_usage, c(constraint_catalog, constraint_schema, constraint_name, ordinal_position)) %>%
     dm_add_fk(key_column_usage, c(table_catalog, table_schema, table_name, column_name), columns) %>%
     dm_add_fk(key_column_usage, c(constraint_catalog, constraint_schema, constraint_name), table_constraints) %>%
-
+    #
     # not on mariadb;
     dm_add_pk(constraint_column_usage, c(constraint_catalog, constraint_schema, constraint_name, ordinal_position)) %>%
     dm_add_fk(constraint_column_usage, c(table_catalog, table_schema, table_name, column_name), columns) %>%
     dm_add_fk(constraint_column_usage, c(constraint_catalog, constraint_schema, constraint_name), table_constraints) %>%
     dm_add_fk(constraint_column_usage, c(constraint_catalog, constraint_schema, constraint_name, ordinal_position), key_column_usage) %>%
-
+    #
     dm_set_colors(brown = c(tables, columns), blue = schemata, green4 = ends_with("_constraints"), orange = ends_with("_usage"))
 }
 
@@ -136,8 +136,17 @@ select_dm_meta <- function(dm_meta) {
 }
 
 filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
+  force(catalog)
+  force(schema)
+
+  schemata <- dm_meta$schemata
+  tables <- dm_meta$tables
+  columns <- dm_meta$columns
+  table_constraints <- dm_meta$table_constraints
+  key_column_usage <- dm_meta$key_column_usage
+  constraint_column_usage <- dm_meta$constraint_column_usage
+
   if (!is.null(catalog) && !is.na(catalog)) {
-    FIXME
     schemata <- schemata %>% filter(catalog_name %in% !!catalog)
     tables <- tables %>% filter(table_catalog %in% !!catalog)
     columns <- columns %>% filter(table_catalog %in% !!catalog)
@@ -147,7 +156,6 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
   }
 
   if (!is.null(schema)) {
-    FIXME
     schemata <- schemata %>% filter(schema_name %in% !!schema)
     tables <- tables %>% filter(table_schema %in% !!schema)
     columns <- columns %>% filter(table_schema %in% !!schema)
@@ -156,7 +164,14 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
     constraint_column_usage <- constraint_column_usage %>% filter(table_schema %in% !!schema)
   }
 
-  dm_meta
+  dm(
+    schemata,
+    tables,
+    columns,
+    table_constraints,
+    key_column_usage,
+    constraint_column_usage
+  )
 }
 
 dm_learn_from_db_legacy <- function(dest, dbname, ...) {
