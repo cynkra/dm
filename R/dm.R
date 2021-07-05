@@ -301,14 +301,6 @@ dm_get_def <- function(x) {
   unclass(x)$def
 }
 
-dm_get_data_model_pks <- function(x) {
-  # FIXME: Obliterate
-
-  dm_get_def(x) %>%
-    select(table, pks) %>%
-    unnest_pks()
-}
-
 unnest_pks <- function(def) {
   # Optimized
   pk_df <- tibble(
@@ -320,37 +312,9 @@ unnest_pks <- function(def) {
   # FIXME: Should work better with dplyr 0.9.0
   if (!("column" %in% names(pk_df))) {
     pk_df$column <- character()
-  } else {
-    # This is expected to break with compound keys
-    pk_df$column <- flatten_chr(pk_df$column)
   }
 
   pk_df
-}
-
-dm_get_data_model_fks <- function(x) {
-  # FIXME: Obliterate
-
-  fk_df <-
-    dm_get_def(x) %>%
-    select(ref = table, fks, pks) %>%
-    filter(map_lgl(fks, has_length)) %>%
-    unnest(pks)
-
-  if (nrow(fk_df) == 0) {
-    return(tibble(
-      table = character(), column = character(),
-      ref = character(), ref_col = character()
-    ))
-  }
-
-  fk_df %>%
-    # This is expected to break with compound keys
-    mutate(ref_col = flatten_chr(column)) %>%
-    select(-column) %>%
-    unnest(fks) %>%
-    mutate(column = flatten_chr(column)) %>%
-    select(ref, column, table, ref_col)
 }
 
 #' Get filter expressions

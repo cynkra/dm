@@ -133,12 +133,12 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
     mutate(zoomed = FALSE)
 
   # PK: either the same primary key as in the old table, renamed in the new table, or no primary key if none available
-  upd_pk <- update_zoomed_pk(dm)
+  upd_pk <- vctrs::list_of(update_zoomed_pk(dm))
 
   # incoming FKs: in the new row, based on the old table;
   # if PK available, foreign key relations can be copied from the old table
   # if PK vanished, the entry will be empty
-  upd_inc_fks <- update_zoomed_incoming_fks(dm)
+  upd_inc_fks <- vctrs::list_of(update_zoomed_incoming_fks(dm))
 
   dm_wo_outgoing_fks <-
     dm %>%
@@ -154,44 +154,46 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
   # outgoing FKs: potentially in several rows, based on the old table;
   # renamed(?) FK columns if they still exist
   dm_wo_outgoing_fks %>%
-    dm_update_zoomed_outgoing_fks(new_tbl_name_chr, is_upd = FALSE) %>%
+    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr) %>%
     dm_clean_zoomed()
 }
 
 #' @rdname dm_zoom_to
 #' @export
 dm_update_zoomed <- function(dm) {
-  if (!is_zoomed(dm)) {
-    return(dm)
-  }
+  check_zoomed(dm)
+
+  def <- dm_get_def(dm)
   table_name <- orig_name_zoomed(dm)
-  orig_colnames <- colnames(dm_get_tables_impl(dm)[[table_name]])
+  where <- which(def$table == table_name)
+
+  orig_colnames <- colnames(def$data[[where]])
   tracked_cols <- get_tracked_cols(dm)
   # Test if keys need to be updated (TRUE, if at least one column was renamed or lost)
   upd_keys <- !all(orig_colnames %in% tracked_cols) || !all(names(tracked_cols) == tracked_cols)
 
-  upd_filter <- vctrs::list_of(get_filter_for_table(dm, table_name) %>% mutate(zoomed = FALSE))
-  new_def <- dm_get_def(dm) %>%
-    mutate(
-      data = if_else(table == table_name, zoom, data),
-      filters = if_else(table == table_name, upd_filter, filters)
-    )
+  upd_filter <-
+    get_filter_for_table(dm, table_name) %>%
+    mutate(zoomed = FALSE)
+
+  new_def <- def
+  new_def$data[[where]] <- new_def$zoom[[where]]
+  new_def$filters[[where]] <- upd_filter
 
   if (upd_keys) {
-    new_def <-
-      new_def %>%
-      mutate(
-        pks = if_else(table == table_name, update_zoomed_pk(dm), pks),
-        fks = if_else(table == table_name, update_zoomed_incoming_fks(dm), fks)
-      )
+    new_def$pks[[where]] <- update_zoomed_pk(dm)
+    new_def$fks[[where]] <- update_zoomed_incoming_fks(dm)
 
-    new_dm3(new_def, zoomed = TRUE) %>%
-      dm_update_zoomed_outgoing_fks(table_name, is_upd = TRUE) %>%
-      dm_clean_zoomed()
+    out <-
+      new_def %>%
+      new_dm3(zoomed = TRUE) %>%
+      dm_update_zoomed_outgoing_fks()
   } else {
-    new_dm3(new_def, zoomed = TRUE) %>%
-      dm_clean_zoomed()
+    out <- new_dm3(new_def, zoomed = TRUE)
   }
+
+  out %>%
+    dm_clean_zoomed()
 }
 
 #' @rdname dm_zoom_to
@@ -236,51 +238,70 @@ update_zoomed_pk <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- get_tracked_cols(dm)
   orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
-  upd_pk <- if (!is_empty(orig_pk) && orig_pk %in% tracked_cols) {
-    new_pk(list(names(tracked_cols[tracked_cols == orig_pk])))
+
+  if (has_length(orig_pk) && all(get_key_cols(orig_pk) %in% tracked_cols)) {
+    upd_pk <- new_pk(list(recode2(get_key_cols(orig_pk), tracked_cols)))
   } else {
-    new_pk()
+    upd_pk <- new_pk()
   }
-  vctrs::list_of(upd_pk)
+
+  upd_pk
 }
 
 update_zoomed_incoming_fks <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- get_tracked_cols(dm)
   orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
-  if (!is_empty(orig_pk) && orig_pk %in% tracked_cols) {
-    filter(dm_get_def(dm), table == old_tbl_name) %>% pull(fks)
+
+  if (has_length(orig_pk) && all(get_key_cols(orig_pk) %in% tracked_cols)) {
+    def <- dm_get_def(dm)
+    # Nothing to recode here -- updating zoomed table
+    def$fks[[which(def$table == old_tbl_name)]]
   } else {
-    vctrs::list_of(new_fk())
+    new_fk()
   }
 }
 
-# is_upd is logical: either update (TRUE) or insert (FALSE)
-# if `is_upd`, new_tbl_name needs to be the same as old_tbl_name
-dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
+dm_update_zoomed_outgoing_fks <- function(dm) {
+  tracked_cols <- get_tracked_cols(dm)
+
+  def <- dm_get_def(dm)
+
+  tbl_name <- orig_name_zoomed(dm)
+  def$fks <- map(def$fks, update_zoomed_outgoing, tbl_name, tracked_cols)
+  new_dm3(def)
+}
+
+update_zoomed_outgoing <- function(fks, tbl_name, tracked_cols) {
+  idx <- which(fks$table == tbl_name)
+  if (is_empty(idx)) {
+    return(fks)
+  }
+
+  remove <- which(!map_lgl(fks$column[idx], ~ all(.x %in% tracked_cols)))
+  if (has_length(remove)) {
+    fks <- fks[-idx[remove], ]
+    # Nontrivial shifts in idx may occur, need to recompute
+    idx <- which(fks$table == tbl_name)
+  }
+
+  fks$column[idx] <- map(fks$column[idx], ~ recode2(.x, tracked_cols))
+  fks
+}
+
+dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- get_tracked_cols(dm)
   old_out_keys <- dm_get_all_fks_impl(dm) %>%
-    filter(child_table == old_tbl_name) %>%
+    filter(child_table == !!old_tbl_name) %>%
     select(table = parent_table, column = child_fk_cols)
 
   old_and_new_out_keys <-
-    if (nrow(old_out_keys) > 0 && any(old_out_keys$column %in% tracked_cols)) {
-      filter(old_out_keys, column %in% tracked_cols) %>%
-        mutate(new_column = names(tracked_cols[match(column, tracked_cols, nomatch = 0L)]))
-    } else {
-      filter(old_out_keys, 0 == 1) %>% mutate(new_column = character(0))
-    }
+    old_out_keys %>%
+    filter(map_lgl(column, ~ all(.x %in% !!tracked_cols))) %>%
+    distinct() %>%
+    mutate(new_column = new_keys(map(column, ~ (!!names(tracked_cols))[match(.x, !!tracked_cols, nomatch = 0L)])))
 
-  if (is_upd) {
-    # need to remove the old keys
-    dm <- reduce2(
-      old_out_keys$column,
-      old_out_keys$table,
-      ~ dm_rm_fk_impl(..1, old_tbl_name, ..2, ..3),
-      .init = dm
-    )
-  }
   structure(
     reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~ dm_add_fk_impl(..1, new_tbl_name, ..2, ..3), .init = dm),
     class = c("zoomed_dm", "dm")
@@ -288,10 +309,9 @@ dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
 }
 
 get_tracked_cols <- function(dm) {
-  dm_get_def(dm) %>%
-    filter(table == orig_name_zoomed(dm)) %>%
-    pull(col_tracker_zoom) %>%
-    extract2(1)
+  def <- dm_get_def(dm)
+
+  def$col_tracker_zoom[[which(def$table == orig_name_zoomed(dm))]]
 }
 
 orig_name_zoomed <- function(dm) {
@@ -301,9 +321,12 @@ orig_name_zoomed <- function(dm) {
 replace_zoomed_tbl <- function(dm, new_zoomed_tbl, tracked_cols = NULL) {
   table <- orig_name_zoomed(dm)
   def <- dm_get_def(dm)
-  def$zoom[def$table == table] <- list(new_zoomed_tbl)
+  where <- which(def$table == table)
+  def$zoom[[where]] <- new_zoomed_tbl
   # the tracked columns are only replaced if they changed, otherwise this function is called with default `NULL`
-  if (!is_null(tracked_cols)) def$col_tracker_zoom[def$table == table] <- list(tracked_cols)
+  if (!is_null(tracked_cols)) {
+    def$col_tracker_zoom[[where]] <- tracked_cols
+  }
   new_dm3(def, zoomed = TRUE)
 }
 

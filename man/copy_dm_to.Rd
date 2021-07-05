@@ -28,7 +28,9 @@ copy_dm_to(
 
 \item{overwrite, types, indexes, unique_indexes}{Must remain \code{NULL}.}
 
-\item{set_key_constraints}{Boolean variable, if \code{TRUE} will mirror \code{dm} key constraints on a database.}
+\item{set_key_constraints}{If \code{TRUE} will mirror \code{dm} primary and foreign key constraints on a database
+and create unique indexes.
+Set to \code{FALSE} if your data model currently does not satisfy primary or foreign key constraints.}
 
 \item{unique_table_names}{Deprecated.}
 
@@ -65,7 +67,7 @@ as the original table names.
 Use qualified names corresponding to your database's syntax
 to specify e.g. database and schema for your tables.}
 
-\item{temporary}{Boolean variable, if \code{TRUE}, only temporary tables will be created.
+\item{temporary}{If \code{TRUE}, only temporary tables will be created.
 These tables will vanish when disconnecting from the database.}
 
 \item{schema}{Name of schema to copy the \code{dm} to.

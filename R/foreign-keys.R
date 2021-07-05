@@ -50,25 +50,31 @@ dm_add_fk <- function(dm, table, columns, ref_table, check = FALSE) {
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
-  column_name <- as_name(ensym(columns))
-  check_col_input(dm, table_name, column_name)
+  table <- dm_get_tables_impl(dm)[[table_name]]
+  col_expr <- enexpr(columns)
+  col_name <- names(eval_select_indices(col_expr, colnames(table)))
 
-  ref_column_name <- dm_get_pk_impl(dm, ref_table_name)
+  ref_key <- dm_get_pk_impl(dm, ref_table_name)
 
-  if (is_empty(ref_column_name)) {
+  if (is_empty(ref_key)) {
     abort_ref_tbl_has_no_pk(ref_table_name)
   }
+
+  ref_col_name <- get_key_cols(ref_key)
+
+  # FIXME: COMPOUND:: Clean check with proper error message
+  stopifnot(length(ref_col_name) == length(col_name))
 
   if (check) {
     tbl_obj <- dm_get_tables(dm)[[table_name]]
     ref_tbl_obj <- dm_get_tables(dm)[[ref_table_name]]
 
-    if (!is_subset(tbl_obj, !!column_name, ref_tbl_obj, !!ref_column_name)) {
-      abort_not_subset_of(table_name, column_name, ref_table_name, ref_column_name)
+    if (!is_subset(tbl_obj, !!col_name, ref_tbl_obj, !!ref_col_name)) {
+      abort_not_subset_of(table_name, col_name, ref_table_name, ref_col_name)
     }
   }
 
-  dm_add_fk_impl(dm, table_name, column_name, ref_table_name)
+  dm_add_fk_impl(dm, table_name, col_name, ref_table_name)
 }
 
 
@@ -160,8 +166,13 @@ dm_get_fk <- function(dm, table, ref_table) {
 }
 
 dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
-  fks <- dm_get_data_model_fks(dm)
-  fks$column[fks$table == table_name & fks$ref == ref_table_name]
+  def <- dm_get_def(dm)
+  i <- which(def$table == ref_table_name)
+
+  fks <- def$fks[[i]]
+  fks %>%
+    filter(table == !!table_name) %>%
+    pull(column)
 }
 
 #' Get foreign key constraints
@@ -191,13 +202,21 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #' @export
 dm_get_all_fks <- function(dm) {
   check_not_zoomed(dm)
-  dm_get_all_fks_impl(dm) %>%
-    mutate(child_fk_cols = new_keys(child_fk_cols))
+  dm_get_all_fks_impl(dm)
 }
 
 dm_get_all_fks_impl <- function(dm) {
-  dm_get_data_model_fks(dm) %>%
-    select(child_table = table, child_fk_cols = column, parent_table = ref) %>%
+  fk_df <-
+    dm_get_def(dm) %>%
+    select(ref = table, fks, pks) %>%
+    filter(map_lgl(fks, has_length)) %>%
+    unnest(pks)
+
+  fk_df %>%
+    rename(parent_pk_cols = column) %>%
+    unnest(fks) %>%
+    select(child_table = table, child_fk_cols = column, parent_table = ref, parent_pk_cols) %>%
+    mutate(child_fk_cols = new_keys(child_fk_cols), parent_pk_cols = new_keys(parent_pk_cols)) %>%
     arrange(child_table, child_fk_cols)
 }
 
@@ -237,23 +256,20 @@ dm_rm_fk <- function(dm, table, columns, ref_table) {
   if (quo_is_null(column_quo)) {
     cols <- fk_cols
   } else {
-    # FIXME: Add tidyselect support
-    cols <- as_name(ensym(columns))
+    col_idx <- eval_select_indices(column_quo, colnames(dm_get_tables(dm)[[table_name]]))
+    cols <- list(names(col_idx))
   }
 
   dm_rm_fk_impl(dm, table_name, cols, ref_table_name)
 }
 
 dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
-  # FIXME: compound keys
-  cols <- as.list(cols)
-
   def <- dm_get_def(dm)
   i <- which(def$table == ref_table_name)
 
   fks <- def$fks[[i]]
 
-  ii <- fks$table != table_name | is.na(vctrs::vec_match(fks$column, cols))
+  ii <- fks$table != table_name | is.na(vctrs::vec_match(fks$column, unclass(cols)))
   if (all(ii)) {
     abort_is_not_fkc(table_name, cols, ref_table_name)
   }
@@ -354,38 +370,45 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
   if (is_empty(ref_tbl_pk)) {
     abort_ref_tbl_has_no_pk(ref_table_name)
   }
+  ref_tbl_cols <- get_key_cols(ref_tbl_pk)
+
   tbl_colnames <- colnames(tbl)
   tibble(
     column = tbl_colnames,
-    why = map_chr(column, ~ check_fk(tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_pk))
+    why = map_chr(column, ~ check_fk(tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_cols))
   ) %>%
     mutate(candidate = ifelse(why == "", TRUE, FALSE)) %>%
     select(column, candidate, why) %>%
-    mutate(arrange_col = as.integer(gsub("(^[0-9]*).*$", "\\1", why))) %>%
-    arrange(desc(candidate), arrange_col, column) %>%
-    select(-arrange_col)
+    arrange(desc(candidate))
 }
 
 check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
+  stopifnot(length(colname) == length(pk))
+
+  val_names <- paste0("value", seq_along(colname))
+  t1_vals <- syms(colname)
+  names(t1_vals) <- val_names
+  t2_vals <- syms(pk)
+  names(t2_vals) <- val_names
+
   t1_join <-
     t1 %>%
-    select(value = !!sym(colname)) %>%
-    distinct()
-  t2_join <- t2 %>%
-    select(value = !!sym(pk)) %>%
-    distinct() %>%
-    mutate(match = 1L)
+    count(!!!t1_vals) %>%
+    ungroup()
+  t2_join <-
+    t2 %>%
+    count(!!!t2_vals) %>%
+    ungroup()
+
+  # FIXME: Build expression instead of paste() + parse()
+  any_value_na_expr <- parse(text = paste0("is.na(", val_names, ")", collapse = " | "))[[1]]
 
   res_tbl <- tryCatch(
-    left_join(t1_join, t2_join, by = "value") %>%
-      # if value is NULL, this also counts as a match -- consistent with fk semantics
-      mutate(mismatch_or_null = if_else(is.na(match), value, NULL)) %>%
-      safe_count(mismatch_or_null) %>%
-      ungroup() %>% # dbplyr problem?
-      mutate(n_mismatch = sum(if_else(is.na(mismatch_or_null), 0L, n), na.rm = TRUE)) %>%
-      mutate(n_total = sum(n, na.rm = TRUE)) %>%
-      filter(!is.na(mismatch_or_null)) %>%
-      arrange(desc(n)) %>%
+    t1_join %>%
+      # if value* is NULL, this also counts as a match -- consistent with fk semantics
+      filter(!(!!any_value_na_expr)) %>%
+      anti_join(t2_join, by = val_names) %>%
+      arrange(desc(n), !!!syms(val_names)) %>%
       head(MAX_COMMAS + 1L) %>%
       collect(),
     error = identity
@@ -395,19 +418,23 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   if (is_condition(res_tbl)) {
     return(conditionMessage(res_tbl))
   }
-  n_mismatch <- pull(head(res_tbl, 1), n_mismatch)
+
   # return empty character if candidate
-  if (is_empty(n_mismatch)) {
+  if (nrow(res_tbl) == 0) {
     return("")
   }
-  # calculate percentage and compose detailed description for missing values
-  n_total <- pull(head(res_tbl, 1), n_total)
 
-  percentage_missing <- as.character(round((n_mismatch / n_total) * 100, 1))
-  vals_formatted <- commas(format(res_tbl$mismatch_or_null, trim = TRUE, justify = "none"), capped = TRUE)
+  res_tbl[val_names] <- map(res_tbl[val_names], format, trim = TRUE, justify = "none")
+  res_tbl[val_names[-1]] <- map(res_tbl[val_names[-1]], ~ paste0(", ", .x))
+  res_tbl$value <- exec(paste0, !!!res_tbl[val_names])
+
+  vals_formatted <- commas(
+    glue('{res_tbl$value} ({res_tbl$n})'),
+    capped = TRUE
+  )
   glue(
-    "{as.character(n_mismatch)} values ({percentage_missing}%) of ",
-    "{tick(glue('{t1_name}${colname}'))} not in {tick(glue('{t2_name}${pk}'))}: {vals_formatted}"
+    "values of ",
+    "{commas(tick(glue('{t1_name}${colname}')), Inf)} not in {commas(tick(glue('{t2_name}${pk}')), Inf)}: {vals_formatted}"
   )
 }
 

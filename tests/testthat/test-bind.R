@@ -96,3 +96,11 @@ test_that("output", {
     )))
   })
 })
+
+test_that("output for compound keys", {
+  expect_snapshot({
+    dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>% dm_paste(options = c("select", "keys"))
+    dm_bind(dm_for_filter(), dm_for_flatten()) %>% dm_paste(options = c("select", "keys"))
+    dm_bind(dm_for_flatten(), dm_for_filter()) %>% dm_paste(options = c("select", "keys"))
+  })
+})

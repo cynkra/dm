@@ -20,7 +20,7 @@ The {dm} package offers functions to work with relational data models in R.
 
 This document introduces you to filtering functions, and shows how to apply them to the data that is separated into multiple tables.
 
-Our example data is drawn from the [{nycflights13}](https://github.com/hadley/nycflights13) package that contains five inter-linked tables.
+Our example data is drawn from the [{nycflights13}](https://github.com/tidyverse/nycflights13) package that contains five inter-linked tables.
 
 First, we will load the packages that we need:
 

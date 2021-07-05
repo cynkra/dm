@@ -87,3 +87,17 @@ filter_recode_fks_of_table <- function(data, selected) {
 prep_recode <- function(x) {
   set_names(names(x), x)
 }
+
+prep_compact_recode <- function(x) {
+  x <- x[names(x) != x]
+  prep_recode(x)
+}
+
+recode2 <- function(x, new) {
+  recipe <- prep_compact_recode(new)
+  if (is_empty(recipe)) {
+    x
+  } else {
+    recode(x, !!!recipe)
+  }
+}

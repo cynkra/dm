@@ -59,3 +59,6 @@ test_that("check_set_equality() checks properly if 2 sets of values are equal?",
     check_set_equality(data_mcard_1(), a, data_mcard_2(), a)
   })
 })
+
+# FIXME: COMPOUND:: regarding compound keys: should `check_subset()` and `check_set_equality()`
+# also work for multiple columns? (matching needs to be provided, implicitly by order?)

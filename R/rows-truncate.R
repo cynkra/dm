@@ -14,6 +14,12 @@ rows_truncate <- function(x, ..., in_place = FALSE) {
 }
 
 #' @export
+rows_truncate.data.frame <- function(x, ..., in_place = NULL) {
+  stopifnot(is.null(in_place) || !in_place)
+  x[0, ]
+}
+
+#' @export
 rows_truncate.tbl_sql <- function(x, ...,
                                   in_place = NULL) {
   name <- target_table_name(x, in_place)

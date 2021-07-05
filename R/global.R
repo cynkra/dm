@@ -15,8 +15,10 @@ utils::globalVariables(c(
   "planes",
   "tailnum",
   "weather",
+  "time_hour",
   #
   # dm
+  "any_na",
   "arrange_col",
   "candidate",
   "child_fk_cols",
@@ -47,6 +49,7 @@ utils::globalVariables(c(
   "old",
   "origin",
   "parent",
+  "parent_pk_cols",
   "parent_table",
   "pk",
   "pk_col",

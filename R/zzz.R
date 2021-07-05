@@ -12,4 +12,15 @@
   dm_has_financial <<- memoise::memoise(dm_has_financial, cache = cache_attach())
 
   register_pkgdown_methods()
+
+  #rigg(enum_pk_candidates_impl)
+  #rigg(build_copy_data)
+}
+
+rigg <- function(fun) {
+  name <- deparse(substitute(fun))
+
+  rig <- get("rig", asNamespace("boomer"), mode = "function")
+
+  assign(name, rig(fun, ignore = c("~", "{", "(", "<-", "<<-")), getNamespace("dm"))
 }
