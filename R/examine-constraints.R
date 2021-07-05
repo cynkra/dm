@@ -6,6 +6,9 @@
 #' to print as a regular tibble.
 #'
 #' @inheritParams dm_add_pk
+#' @param progress Whether to display a progress bar, if `NA` (the default)
+#'   hide in non-interactive mode, show in interactive mode. Requires the
+#'   'progress' package.
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
@@ -25,18 +28,18 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_constraints()
-dm_examine_constraints <- function(dm) {
+dm_examine_constraints <- function(dm, progress = NA) {
   check_not_zoomed(dm)
   dm %>%
-    dm_examine_constraints_impl() %>%
+    dm_examine_constraints_impl(progress = progress) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns)) %>%
     new_dm_examine_constraints()
 }
 
-dm_examine_constraints_impl <- function(dm) {
-  pk_results <- check_pk_constraints(dm)
-  fk_results <- check_fk_constraints(dm)
+dm_examine_constraints_impl <- function(dm, progress = NA) {
+  pk_results <- check_pk_constraints(dm, progress)
+  fk_results <- check_fk_constraints(dm, progress)
   bind_rows(
     pk_results,
     fk_results
@@ -87,7 +90,7 @@ kind_to_long <- function(kind) {
   if_else(kind == "PK", "primary key", "foreign key")
 }
 
-check_pk_constraints <- function(dm) {
+check_pk_constraints <- function(dm, progress = NA) {
   pks <- dm_get_all_pks_impl(dm)
   if (nrow(pks) == 0) {
     return(tibble(
@@ -99,14 +102,17 @@ check_pk_constraints <- function(dm) {
       problem = character()
     ))
   }
-  table_names <- pull(pks, table)
+  table_names <- pks$table
+  columns     <- pks$pk_col
 
-  tbls <- map(set_names(table_names), ~ tbl_impl(dm, .))
+  ticker <- new_ticker("checking pk constraints", length(table_names), progress = progress)
+  candidates <- map2(set_names(table_names), columns, ticker(~ {
+    tbl <- tbl_impl(dm, .x)
+    enum_pk_candidates_impl(tbl, list(.y))
+  }))
 
   tbl_is_pk <-
-    tibble(table = table_names, tbls, column = pks$pk_col) %>%
-    mutate(candidate = map2(tbls, column, ~ enum_pk_candidates_impl(.x, list(.y)))) %>%
-    select(-column, -tbls) %>%
+    tibble(table = table_names, candidate = candidates) %>%
     unnest_df("candidate", tibble(column = new_keys(), candidate = logical(), why = character())) %>%
     rename(is_key = candidate, problem = why)
 
@@ -119,16 +125,19 @@ check_pk_constraints <- function(dm) {
     left_join(tbl_is_pk, by = c("table", "column"))
 }
 
-check_fk_constraints <- function(dm) {
+check_fk_constraints <- function(dm, progress = NA) {
   fks <- dm_get_all_fks_impl(dm)
   pts <- pull(fks, parent_table) %>% map(tbl_impl, dm = dm)
   cts <- pull(fks, child_table) %>% map(tbl_impl, dm = dm)
   fks_tibble <-
     mutate(fks, t1 = cts, t2 = pts) %>%
     select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = parent_key_cols)
+
+  ticker <- new_ticker("checking pk constraints", nrow(fks_tibble), progress = progress)
+
   fks_tibble %>%
     mutate(
-      problem = pmap_chr(fks_tibble, check_fk),
+      problem = pmap_chr(fks_tibble, ticker(check_fk)),
       is_key = (problem == ""),
       kind = "FK"
     ) %>%

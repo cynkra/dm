@@ -72,6 +72,7 @@ Suggests:
     mockr,
     nycflights13,
     odbc,
+    progress,
     readr,
     readxl,
     RMariaDB (>= 1.0.10),

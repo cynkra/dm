@@ -261,7 +261,7 @@ test_that("cdm_examine_constraints() works", {
 
   expect_identical(
     cdm_check_constraints(bad_dm()),
-    dm_examine_constraints_impl(bad_dm())
+    dm_examine_constraints_impl(bad_dm(), progress = FALSE)
   )
 })
 
