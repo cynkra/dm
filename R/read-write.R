@@ -459,7 +459,7 @@ convert_all_times_to_utc <- function(table_list, col_class_table) {
     table_list <- reduce2(to_convert$table, to_convert$column, function(tables, table, column) {
       tables[[table]] <- tables[[table]] %>%
         mutate(
-          !!column := lubridate::with_tz(!!sym(column), tz = "UTC")
+          !!column := lubridate::with_tz(!!sym(column), tzone = "UTC")
         )
       tables
       },
