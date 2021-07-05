@@ -93,7 +93,7 @@ new_dm <- function(tables = list()) {
   new_dm2(tables)
 }
 
-new_dm2 <- function(tables,
+new_dm2 <- function(tables = list(),
                     pks = structure(list(), names = character()),
                     fks = structure(list(), names = character()),
                     validate = TRUE) {
