@@ -5,7 +5,7 @@ template:
   - pkgdown/assets
 
 reference:
-- title: Creation and basic functionality
+- title: Basic
   contents:
   - dm
   - dm_from_src
@@ -13,10 +13,8 @@ reference:
   - as_dm
   - is_dm
   - validate_dm
-  - dm_get_src
   - dm_get_con
   - dm_get_tables
-  - dm_paste
 
 - title: Tables
   contents:
@@ -27,15 +25,6 @@ reference:
   - dm_rename_tbl
   - pull_tbl
   - dm_bind
-
-- title: Table retrieval, table info and DB interaction methods (`dplyr`)
-  contents:
-  - tbl.dm
-  - compute.dm
-  - compute.zoomed_dm
-  - src_tbls.dm
-  - copy_to.dm
-  - collect.dm
 
 - title: Primary keys
   contents:
@@ -59,21 +48,27 @@ reference:
   - dm_is_referenced
   - dm_get_referencing_tables
 
-- title: Schema handling methods
-  contents:
-  - sql_schema_create
-  - sql_schema_drop
-  - sql_schema_exists
-  - sql_schema_list
-
-- title: Visualization
+- title: Visualize
   contents:
   - dm_draw
   - dm_set_colors
   - dm_get_colors
   - dm_get_available_colors
+  - dm_paste
 
-- title: Zooming
+- title: Select columns
+  contents:
+  - dm_select
+  - dm_rename
+
+- title: Flatten
+  contents:
+  - dm_flatten_to_tbl
+  - dm_squash_to_tbl
+  - dm_join_to_tbl
+  - dm_disambiguate_cols
+
+- title: Zoom
   contents:
   - dm_zoom_to
   - dm_insert_zoomed
@@ -90,6 +85,7 @@ reference:
   - summarise.zoomed_dm
   - transmute.zoomed_dm
   - ungroup.zoomed_dm
+  - compute.zoomed_dm
   - separate.zoomed_dm
   - unite.zoomed_dm
   - anti_join.zoomed_dm
@@ -101,24 +97,10 @@ reference:
   - head.zoomed_dm
   - tail.zoomed_dm
 
-- title: Flattening
+- title: Materialize
   contents:
-  - dm_flatten_to_tbl
-  - dm_squash_to_tbl
-  - dm_join_to_tbl
-  - dm_disambiguate_cols
-
-- title: Filtering
-  contents:
-  - dm_filter
-  - dm_apply_filters
-  - dm_apply_filters_to_tbl
-  - dm_get_filters
-
-- title: Column selection
-  contents:
-  - dm_rename
-  - dm_select
+  - compute.dm
+  - collect.dm
 
 - title: Upload
   contents:
@@ -127,6 +109,13 @@ reference:
   - rows-db
   - rows-dm
   - rows_truncate
+
+- title: Filter
+  contents:
+  - dm_filter
+  - dm_apply_filters
+  - dm_apply_filters_to_tbl
+  - dm_get_filters
 
 - title: Table surgery
   contents:
@@ -146,7 +135,7 @@ reference:
   - check_cardinality_0_1
   - check_cardinality_1_1
 
-- title: Local write/read
+- title: Serialization
   contents:
   - dm_read_xlsx
   - dm_write_xlsx
@@ -154,6 +143,13 @@ reference:
   - dm_write_csv
   - dm_read_zip
   - dm_write_zip
+
+- title: Database schemas
+  contents:
+  - sql_schema_create
+  - sql_schema_drop
+  - sql_schema_exists
+  - sql_schema_list
 
 - title: Miscellaneous
   contents:
