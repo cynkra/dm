@@ -5,7 +5,7 @@ vignette: >
   %\VignetteIndexEntry{Technical: Function naming logic}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -17,7 +17,7 @@ source("setup/setup.R")
 This vignette describes the logic behind the names of the {dm}-functions.
 
 In general the functions are implemented in such a way, that no function can handle both `dm` classes (`dm` and `zoomed_dm`) as an argument.
-A `zoomed_dm` behaves in most situations like a table and there are mostly no explicit functions available for this class, but rather methods (see vignette ["Zooming and manipulating tables"](https://krlmlr.github.io/dm/articles/tech-dm-zoom.html).
+A `zoomed_dm` behaves in most situations like a table and there are mostly no explicit functions available for this class, but rather methods (see vignette ["Zooming and manipulating tables"](https://cynkra.github.io/dm/articles/tech-dm-zoom.html).
 
 ## Prefixes
 
@@ -25,7 +25,7 @@ A `zoomed_dm` behaves in most situations like a table and there are mostly no ex
     - The function takes a `dm` object as a first argument
     - The function constructs a `dm` object from other objects
 1. `check_`: Certain tests on the arguments are performed and an error is thrown in case they are not passed. If the tests are passed, the first argument is returned invisibly.
-1. `examine_`: The function executes checks and returns an object containing an overview of the results of the checks. 
+1. `examine_`: The function executes checks and returns an object containing an overview of the results of the checks.
 
 Most important extended prefixes `dm_..._`:
 

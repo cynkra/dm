@@ -1,23 +1,28 @@
 #' Draw a diagram of the data model
 #'
 #' `dm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
+#' Use [DiagrammeRsvg::export_svg()] to convert the diagram to an SVG file.
 #'
 #' @param dm A [`dm`] object.
+#' @param rankdir Graph attribute for direction (e.g., 'BT' = bottom --> top).
+#' @param col_attr Deprecated, use `colummn_types` instead.
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
 #'   It defines the level of details for rendering tables
 #'   (only primary and foreign keys, all columns, or no columns).
-#' @param rankdir Graph attribute for direction (e.g., 'BT' = bottom --> top).
 #' @param graph_name The name of the graph.
 #' @param graph_attrs Additional graph attributes.
 #' @param node_attrs Additional node attributes.
 #' @param edge_attrs Additional edge attributes.
 #' @param focus A list of parameters for rendering (table filter).
-#' @param col_attr Column atributes to display.
-#'   By default only the column name (\code{"column"}) is displayed.
 #' @param columnArrows Edges from columns to columns (default: `TRUE`).
+#' @inheritParams ellipsis::dots_empty
+#' @param column_types Set to `TRUE` to show column types.
+#'
+#' @seealso [dm_set_colors()] for defining the table colors.
+#'
 #' @export
 #'
-#' @return For `dm_draw()`: returns an object of class `grViz` (see also [DiagrammeR::grViz()]), which,
+#' @return An object of class `grViz` (see also [DiagrammeR::grViz()]), which,
 #' when printed, produces the output seen in the viewer as a side effect.
 #'
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
@@ -34,14 +39,16 @@
 #'   dm_get_colors()
 dm_draw <- function(dm,
                     rankdir = "LR",
-                    col_attr = "column",
-                    view_type = "keys_only",
+                    col_attr = NULL,
+                    view_type = c("keys_only", "all", "title_only"),
                     columnArrows = TRUE,
                     graph_attrs = "",
                     node_attrs = "",
                     edge_attrs = "",
                     focus = NULL,
-                    graph_name = "Data Model") {
+                    graph_name = "Data Model",
+                    ...,
+                    column_types = NULL) {
   #
   check_not_zoomed(dm)
   if (is_empty(dm)) {
@@ -49,12 +56,23 @@ dm_draw <- function(dm,
     return(invisible(NULL))
   }
 
-  data_model <- dm_get_data_model(dm)
+  view_type <- arg_match(view_type)
+
+  if (!is.null(col_attr)) {
+    deprecate_soft("0.1.13", "dm::dm_draw(col_attr = )", "dm::dm_draw(column_types = )")
+    if (is.null(column_types) && "type" %in% col_attr) {
+      column_types <- TRUE
+    }
+  }
+
+  column_types <- isTRUE(column_types)
+
+  data_model <- dm_get_data_model(dm, column_types)
 
   graph <- bdm_create_graph(
     data_model,
     rankdir = rankdir,
-    col_attr = col_attr,
+    col_attr = c("column", if (column_types) "type"),
     view_type = view_type,
     columnArrows = columnArrows,
     graph_attrs = graph_attrs,
@@ -72,7 +90,7 @@ dm_draw <- function(dm,
 #' data model object for drawing.
 #'
 #' @noRd
-dm_get_data_model <- function(x) {
+dm_get_data_model <- function(x, column_types) {
   def <- dm_get_def(x)
 
   tables <- data.frame(
@@ -92,10 +110,14 @@ dm_get_data_model <- function(x) {
     dm_get_data_model_pks(x) %>%
     mutate(key = 1L)
 
+  if (column_types) {
+    types <- dm_get_all_column_types(x)
+  } else {
+    types <- dm_get_all_columns(x)
+  }
+
   columns <-
-    dm_get_all_columns(x) %>%
-    # Hack: datamodelr requires `type` column
-    mutate(type = "integer") %>%
+    types %>%
     left_join(keys, by = c("table", "column")) %>%
     mutate(key = coalesce(key, 0L)) %>%
     left_join(references_for_columns, by = c("table", "column")) %>%
@@ -114,27 +136,39 @@ dm_get_all_columns <- function(x) {
     map(colnames) %>%
     map(~ enframe(., "id", "column")) %>%
     enframe("table") %>%
-    unnest(value)
+    unnest(value) %>%
+    select(table, column, id)
 }
 
-#' `dm_set_colors()`
+dm_get_all_column_types <- function(x) {
+  dm_get_tables_impl(x) %>%
+    map(
+      ~ mutate(
+        enframe(as.list(collect(head(.x, 0))), "column"),
+        id = row_number()
+      )
+    ) %>%
+    enframe("table") %>%
+    unnest(value) %>%
+    mutate(type = map_chr(value, vec_ptype_abbr), .keep = "unused")
+}
+
+#' Color in database diagrams
 #'
-#' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model.
+#' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model with [dm_draw()].
 #' The colors can either be either specified with hex color codes or using the names of the built-in R colors.
 #' An overview of the colors corresponding to the standard color names can be found at
 #' the bottom of
 #' [http://rpubs.com/krlmlr/colors](http://rpubs.com/krlmlr/colors).
 #'
+#' @inheritParams dm_draw
 #' @param ... Colors to set in the form `color = table`.
 #' Allowed colors are all hex coded colors (quoted) and the color names from `dm_get_available_colors()`.
 #' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #' @return For `dm_set_colors()`: the updated data model.
 #'
-#' @rdname dm_draw
-#'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
-#'
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(
 #'     darkblue = starts_with("air"),
@@ -201,7 +235,7 @@ color_quos_to_display <- function(...) {
 #'
 #' @return For `dm_get_colors()`, a two-column tibble with one row per table.
 #'
-#' @rdname dm_draw
+#' @rdname dm_set_colors
 #' @export
 dm_get_colors <- function(dm) {
   dm_get_def(dm) %>%
@@ -214,12 +248,12 @@ dm_get_colors <- function(dm) {
 #' dm_get_available_colors()
 #'
 #' `dm_get_available_colors()` returns an overview of the names of the available colors
-#' These are the standard colors also returned by `grDevices::colors()` plus a default
+#' These are the standard colors also returned by [grDevices::colors()] plus a default
 #' table color with the name "default".
 #'
 #' @return For `dm_get_available_colors()`, a vector with the available colors.
 #'
-#' @rdname dm_draw
+#' @rdname dm_set_colors
 #' @export
 dm_get_available_colors <- function() {
   c("default", colors())

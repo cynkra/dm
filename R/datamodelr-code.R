@@ -74,8 +74,7 @@ bdm_create_references <- function(col_table) {
 
 # graph code directly from {datamodelr} -----------------------------------------
 
-bdm_create_graph <- function(
-                             data_model,
+bdm_create_graph <- function(data_model,
                              rankdir = "BT",
                              graph_name = "Data Model",
                              graph_attrs = "",

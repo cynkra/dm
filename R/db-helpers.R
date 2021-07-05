@@ -3,7 +3,7 @@ unique_db_table_name <- local({
 
   function(table_name) {
     i <<- i + 1
-    glue("{table_name}_", systime_convenient(), "_", as.character(i))
+    glue("{table_name}_", systime_convenient(), "_", get_pid(), "_", as.character(i))
   }
 })
 
@@ -13,6 +13,14 @@ systime_convenient <- function() {
   } else {
     time <- as.character(Sys.time())
     gsub("[-: ]", "_", time)
+  }
+}
+
+get_pid <- function() {
+  if (Sys.getenv("IN_PKGDOWN") != "") {
+    "12345"
+  } else {
+    as.character(Sys.getpid())
   }
 }
 

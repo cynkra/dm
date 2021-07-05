@@ -24,23 +24,21 @@
 #' Whenever possible, the key relations of the original table are transferred to the resulting table
 #' when using `dm_insert_zoomed()` or `dm_update_zoomed()`.
 #'
-#' Functions from `dplyr` that are supported for a `zoomed_dm`: `group_by()`, `summarise()`, `mutate()`,
-#' `transmute()`, `filter()`, `select()`, `rename()` and `ungroup()`.
+#' Functions from `dplyr` that are supported for a `zoomed_dm`: [group_by()], [summarise()], [mutate()],
+#' [transmute()], [filter()], [select()], [rename()] and [ungroup()].
 #' You can use these functions just like you would
 #' with a normal table.
 #'
-#' In addition to filtering the zoomed table, the filter condition from `filter()` is also stored in the `dm`.
-#' Depending on which function you use to return to a normal `dm`, one of the following happens:
+#' Calling [filter()] on a zoomed `dm` is different from calling [dm_filter()]:
+#' only with the latter, the filter expression is added to the list of table filters stored in the dm.
 #'
-#' 1. `dm_discard_zoomed()`: all filter conditions for the zoomed table are discarded
-#' 1. `dm_update_zoomed()`: the filter conditions of the original table and those of the zoomed table are combined
-#' 1. `dm_insert_zoomed()`: the filter conditions of the original table stay there and those of the zoomed table are
-#' transferred to the new table of the `dm`
+#' Furthermore, different `join()`-variants from {dplyr} are also supported,
+#' e.g. [left_join()] and [semi_join()].
+#' (Support for [nest_join()] is planned.)
+#' The join-methods for `zoomed_dm` infer the columns to join by from the primary and foreign keys,
+#' and have an extra argument `select` that allows choosing the columns of the RHS table.
 #'
-#' Furthermore, the different `join()`-variants from {dplyr} are also supported (apart from `nest_join()`).
-#' The join-methods for `zoomed_dm` have an extra argument `select` that allows choosing the columns of the RHS table.
-#'
-#' And -- last but not least -- also the {tidyr}-functions `unite()` and `separate()` are supported for `zoomed_dm`.
+#' And -- last but not least -- also the {tidyr}-functions [unite()] and [separate()] are supported for `zoomed_dm`.
 #'
 #' @rdname dm_zoom_to
 #'

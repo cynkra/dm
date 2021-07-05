@@ -5,6 +5,7 @@
 #' `...` is ignored.
 #'
 #' @inheritParams dplyr::rows_insert
+#' @inheritParams ellipsis::dots_used
 #' @param x A data frame or data frame extension (e.g. a tibble).
 #' @export
 rows_truncate <- function(x, ..., in_place = FALSE) {
@@ -46,3 +47,6 @@ sql_rows_truncate.tbl_SQLiteConnection <- function(x, ...) {
   name <- dbplyr::remote_name(x)
   paste0("DELETE FROM ", name)
 }
+
+#' @export
+sql_rows_truncate.tbl_duckdb_connection <- sql_rows_truncate.tbl_SQLiteConnection

@@ -70,24 +70,21 @@ for a more detailed introduction.
 Whenever possible, the key relations of the original table are transferred to the resulting table
 when using \code{dm_insert_zoomed()} or \code{dm_update_zoomed()}.
 
-Functions from \code{dplyr} that are supported for a \code{zoomed_dm}: \code{group_by()}, \code{summarise()}, \code{mutate()},
-\code{transmute()}, \code{filter()}, \code{select()}, \code{rename()} and \code{ungroup()}.
+Functions from \code{dplyr} that are supported for a \code{zoomed_dm}: \code{\link[=group_by]{group_by()}}, \code{\link[=summarise]{summarise()}}, \code{\link[=mutate]{mutate()}},
+\code{\link[=transmute]{transmute()}}, \code{\link[=filter]{filter()}}, \code{\link[=select]{select()}}, \code{\link[=rename]{rename()}} and \code{\link[=ungroup]{ungroup()}}.
 You can use these functions just like you would
 with a normal table.
 
-In addition to filtering the zoomed table, the filter condition from \code{filter()} is also stored in the \code{dm}.
-Depending on which function you use to return to a normal \code{dm}, one of the following happens:
-\enumerate{
-\item \code{dm_discard_zoomed()}: all filter conditions for the zoomed table are discarded
-\item \code{dm_update_zoomed()}: the filter conditions of the original table and those of the zoomed table are combined
-\item \code{dm_insert_zoomed()}: the filter conditions of the original table stay there and those of the zoomed table are
-transferred to the new table of the \code{dm}
-}
+Calling \code{\link[=filter]{filter()}} on a zoomed \code{dm} is different from calling \code{\link[=dm_filter]{dm_filter()}}:
+only with the latter, the filter expression is added to the list of table filters stored in the dm.
 
-Furthermore, the different \code{join()}-variants from {dplyr} are also supported (apart from \code{nest_join()}).
-The join-methods for \code{zoomed_dm} have an extra argument \code{select} that allows choosing the columns of the RHS table.
+Furthermore, different \code{join()}-variants from {dplyr} are also supported,
+e.g. \code{\link[=left_join]{left_join()}} and \code{\link[=semi_join]{semi_join()}}.
+(Support for \code{\link[=nest_join]{nest_join()}} is planned.)
+The join-methods for \code{zoomed_dm} infer the columns to join by from the primary and foreign keys,
+and have an extra argument \code{select} that allows choosing the columns of the RHS table.
 
-And -- last but not least -- also the {tidyr}-functions \code{unite()} and \code{separate()} are supported for \code{zoomed_dm}.
+And -- last but not least -- also the {tidyr}-functions \code{\link[=unite]{unite()}} and \code{\link[=separate]{separate()}} are supported for \code{zoomed_dm}.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

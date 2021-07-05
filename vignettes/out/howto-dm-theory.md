@@ -168,7 +168,7 @@ The links between the tables are established through [primary keys](#pk)
 and [foreign keys](#fk).
 
 Further Reading: The {dm} methods for [visualizing data
-models](https://krlmlr.github.io/dm/articles/tech-dm-draw.html).
+models](https://cynkra.github.io/dm/articles/tech-dm-draw.html).
 
 ## 3\. Primary Keys
 
@@ -216,7 +216,7 @@ dm %>%
 
 Further Reading: The {dm} package offers several functions for dealing
 with [primary
-keys](https://krlmlr.github.io/dm/articles/tech-dm-class.html#pk).
+keys](https://cynkra.github.io/dm/articles/tech-dm-class.html#pk).
 
 ## 4\. Foreign Keys
 
@@ -272,7 +272,7 @@ dm %>%
 ```
 
 Further Reading: All {dm} functions for working with [foreign
-keys](https://krlmlr.github.io/dm/articles/tech-dm-class.html#foreign-keys).
+keys](https://cynkra.github.io/dm/articles/tech-dm-class.html#foreign-keys).
 
 ## 5\. Normalization
 
@@ -393,7 +393,7 @@ In production, the data is stored in a relational database and {dm} is
 used to work with the data.
 
 Therefore, {dm} can copy data [from and to
-databases](https://krlmlr.github.io/dm/articles/dm.html#copy), and works
+databases](https://cynkra.github.io/dm/articles/dm.html#copy), and works
 transparently with both in-memory data and with relational database
 systems.
 
