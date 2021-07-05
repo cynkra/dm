@@ -93,7 +93,10 @@ new_dm <- function(tables = list()) {
   new_dm2(tables)
 }
 
-new_dm2 <- function(tables, pks = structure(list(), names = character()), fks = structure(list(), names = character())) {
+new_dm2 <- function(tables,
+                    pks = structure(list(), names = character()),
+                    fks = structure(list(), names = character()),
+                    validate = TRUE) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
@@ -124,7 +127,7 @@ new_dm2 <- function(tables, pks = structure(list(), names = character()), fks = 
     left_join(zoom, by = "table") %>%
     left_join(col_tracker_zoom, by = "table")
 
-  new_dm3(def, validate = TRUE)
+  new_dm3(def, validate = validate)
 }
 
 new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {

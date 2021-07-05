@@ -17,7 +17,7 @@ validate_dm <- function(x) {
 
   def <- dm_get_def(x)
 
-  boilerplate <- dm_get_def(new_dm())
+  boilerplate <- dm_get_def(new_dm2(validate = FALSE))
 
   table_names <- def$table
   if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
