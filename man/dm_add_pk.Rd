@@ -5,9 +5,9 @@
 \alias{dm_rm_pk}
 \title{Add/remove a primary key}
 \usage{
-dm_add_pk(dm, table, columns, check = FALSE, force = FALSE)
+dm_add_pk(dm, table, columns, ..., check = FALSE, force = FALSE)
 
-dm_rm_pk(dm, table, rm_referencing_fks = FALSE)
+dm_rm_pk(dm, table, ..., rm_referencing_fks = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -15,6 +15,8 @@ dm_rm_pk(dm, table, rm_referencing_fks = FALSE)
 \item{table}{A table in the \code{dm}.}
 
 \item{columns}{Table columns, unquoted.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 
 \item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
 

@@ -4,7 +4,7 @@
 \alias{dm_has_fk}
 \title{Check if foreign keys exists}
 \usage{
-dm_has_fk(dm, table, ref_table)
+dm_has_fk(dm, table, ref_table, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -12,6 +12,8 @@ dm_has_fk(dm, table, ref_table)
 \item{table}{A table in the \code{dm}.}
 
 \item{ref_table}{The table to be checked if it is referred to.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A boolean value: \code{TRUE} if a reference from \code{table} to \code{ref_table} exists, \code{FALSE} otherwise.
