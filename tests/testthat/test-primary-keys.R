@@ -143,6 +143,8 @@ test_that("dm_get_pk() works as intended?", {
 })
 
 test_that("dm_enum_pk_candidates() works properly?", {
+  skip_if_ide()
+
   expect_snapshot({
     dm_enum_pk_candidates(dm_test_obj(), dm_table_1)
     dm_enum_pk_candidates(dm_test_obj(), dm_table_2)

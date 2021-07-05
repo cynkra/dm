@@ -127,13 +127,13 @@ check_pk_constraints <- function(dm, progress = NA) {
 
 check_fk_constraints <- function(dm, progress = NA) {
   fks <- dm_get_all_fks_impl(dm)
-  pts <- pull(fks, parent_table) %>% map(tbl_impl, dm = dm)
-  cts <- pull(fks, child_table) %>% map(tbl_impl, dm = dm)
+  pts <- map(fks$parent_table, tbl_impl, dm = dm)
+  cts <- map(fks$child_table, tbl_impl, dm = dm)
   fks_tibble <-
     mutate(fks, t1 = cts, t2 = pts) %>%
     select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = parent_key_cols)
 
-  ticker <- new_ticker("checking pk constraints", nrow(fks_tibble), progress = progress)
+  ticker <- new_ticker("checking fk constraints", nrow(fks_tibble), progress = progress)
 
   fks_tibble %>%
     mutate(

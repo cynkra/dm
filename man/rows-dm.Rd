@@ -10,17 +10,17 @@
 \alias{dm_rows_truncate}
 \title{Modifying rows for multiple tables}
 \usage{
-dm_rows_insert(x, y, ..., in_place = NULL)
+dm_rows_insert(x, y, ..., in_place = NULL, progress = NA)
 
-dm_rows_update(x, y, ..., in_place = NULL)
+dm_rows_update(x, y, ..., in_place = NULL, progress = NA)
 
-dm_rows_patch(x, y, ..., in_place = NULL)
+dm_rows_patch(x, y, ..., in_place = NULL, progress = NA)
 
-dm_rows_upsert(x, y, ..., in_place = NULL)
+dm_rows_upsert(x, y, ..., in_place = NULL, progress = NA)
 
-dm_rows_delete(x, y, ..., in_place = NULL)
+dm_rows_delete(x, y, ..., in_place = NULL, progress = NA)
 
-dm_rows_truncate(x, y, ..., in_place = NULL)
+dm_rows_truncate(x, y, ..., in_place = NULL, progress = NA)
 }
 \arguments{
 \item{x}{Target \code{dm} object.}
@@ -34,6 +34,10 @@ relevant for mutable backends (e.g. databases, data.tables).
 
 When \code{TRUE}, a modified version of \code{x} is returned invisibly;
 when \code{FALSE}, a new object representing the resulting changes is returned.}
+
+\item{progress}{Whether to display a progress bar, if \code{NA} (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.}
 }
 \value{
 A dm object of the same \code{\link[=dm_ptype]{dm_ptype()}} as \code{x}.

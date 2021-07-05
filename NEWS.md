@@ -1,8 +1,41 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
-# dm 0.2.1.9000
+# dm 0.2.3.9001
+
+- Use `NO ACTION` instead of `CASCADE` in foreign key constraints to permit self-references.
+
+
+# dm 0.2.3.9000
 
 - Same as previous version.
+
+
+# dm 0.2.3
+
+## Bug fixes
+
+- Fix `rows_truncate()` in interactive mode (#588).
+
+## Features
+
+- Implement `rows_delete()` for databases (#589).
+
+## Internal
+
+- Skip examples that might require internet access on non-CI platforms.
+
+
+# dm 0.2.2
+
+## Features
+
+- `dm_examine_constraints()`, `dm_rows_insert()` and related, `copy_dm_to()` and `collect.dm()` show progress bars in interactive mode via the progress package. The new `progress = NA` argument controls the behavior (#262, @moodymudskipper).
+- `copy_dm_to()` gains a `copy_to` argument to support other ways of copying data to the database (#582).
+
+## Internal
+
+- Always run database tests on sqlite for df source.
+- Establish compatibility with testthat > 3.0.2 (#566, @moodymudskipper).
 
 
 # dm 0.2.1

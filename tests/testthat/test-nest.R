@@ -38,9 +38,8 @@ test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
 })
 
 test_that("'nest_join_zoomed_dm()' fails for DB-'dm'", {
-  skip_if_local_src()
   expect_dm_error(
-    dm_zoom_to(dm_for_filter(), tf_3) %>% nest_join_zoomed_dm(),
+    dm_zoom_to(dm_for_filter_sqlite(), tf_3) %>% nest_join_zoomed_dm(),
     "only_for_local_src"
   )
 })
