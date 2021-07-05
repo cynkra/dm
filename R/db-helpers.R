@@ -160,7 +160,7 @@ queries_set_fk_relations <- function(dest, fk_information) {
         db_parent_tables,
         parent_pk_col
       ),
-      ~ glue_sql("ALTER TABLE {`DBI::SQL(..1)`} ADD FOREIGN KEY ({`..2`*}) REFERENCES {`DBI::SQL(..3)`} ({`..4`*}) ON DELETE CASCADE ON UPDATE CASCADE", .con = dest)
+      ~ glue_sql("ALTER TABLE {`DBI::SQL(..1)`} ADD FOREIGN KEY ({`..2`*}) REFERENCES {`DBI::SQL(..3)`} ({`..4`*}) ON DELETE NO ACTION ON UPDATE NO ACTION", .con = dest)
     )
   } else {
     return(character())

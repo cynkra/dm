@@ -1,15 +1,29 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
-# dm 0.2.2.9001
+# dm 0.2.3.9001
+
+- Use `NO ACTION` instead of `CASCADE` in foreign key constraints to permit self-references.
+
+
+# dm 0.2.3.9000
+
+- Same as previous version.
+
+
+# dm 0.2.3
+
+## Bug fixes
+
+- Fix `rows_truncate()` in interactive mode (#588).
+
+## Features
 
 - Implement `rows_delete()` for databases (#589).
-- Fix `rows_truncate()` in interactive mode (#588).
+
+## Internal
+
 - Skip examples that might require internet access on non-CI platforms.
 
-
-# dm 0.2.2.9000
-
-Internal changes only.
 
 # dm 0.2.2
 

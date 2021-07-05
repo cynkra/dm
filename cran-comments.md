@@ -1,4 +1,4 @@
-dm 0.2.2
+dm 0.2.3
 
 ## Cran Repository Policy
 
@@ -12,4 +12,5 @@ dm 0.2.2
 
 ## Current CRAN check results
 
-- [x] Checked on 2021-06-13, no problems found.
+- [x] Checked on 2021-06-20, problems found: https://cran.r-project.org/web/checks/check_results_dm.html
+- [x] ERROR: r-patched-solaris-x86: fixed brittle examples that access a remote database.
