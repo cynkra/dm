@@ -574,16 +574,16 @@ error_txt_parameter_not_correct_length <- function(parameter, correct_length, pa
   )
 }
 
-warn_if_arg_not <- function(
-                            arg,
+warn_if_arg_not <- function(arg,
+                            only_on,
                             arg_name = deparse(substitute(arg)),
-                            only_on = c("MSSQL", "Postgres"),
                             correct = NULL,
                             additional_msg = "") {
   if (!identical(arg, correct)) {
+    only_on_string <- glue::glue_collapse(only_on, sep = ", ", last = " and ")
     dm_warn(
       glue::glue(
-        "Argument {tick(arg_name)} ignored: currently only supported for {paste0(only_on, collapse = ' and ')}.",
+        "Argument {tick(arg_name)} ignored: currently only supported for {only_on_string}.",
         if (!is.null(additional_msg)) {
           paste0("\n", additional_msg)
         }

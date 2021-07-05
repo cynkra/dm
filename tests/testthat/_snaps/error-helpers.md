@@ -237,7 +237,7 @@
     Error <dm_error_parameter_not_correct_length>
       Parameter `length_1_parameter` needs to be of length `1` but is of length 26 (`a`, `b`, `c`, `d`, `e`, ... (26 total)).
     Code
-      warn_if_arg_not("NULL", "dbms_dependent_arg")
+      warn_if_arg_not("NULL", c("MSSQL", "Postgres"), arg_name = "dbms_dependent_arg")
     Warning <dm_warning_arg_not>
       Argument `dbms_dependent_arg` ignored: currently only supported for MSSQL and Postgres.
     Output
