@@ -39,10 +39,9 @@
     Error <dm_error_ref_tbl_has_no_pk>
       ref_table `parent_table` needs a primary key first. Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key.
     Code
-      abort_is_not_fkc("child_table_name", c("wrong_fk_colname", "and_one_more"),
-      "parent_table_name")
+      abort_is_not_fkc()
     Error <dm_error_is_not_fkc>
-      (`wrong_fk_colname`, `and_one_more`) is not a foreign key of table `child_table_name` into table `parent_table_name`.
+      No foreign keys to remove.
     Code
       abort_rm_fk_col_missing()
     Error <dm_error_rm_fk_col_missing>
@@ -95,9 +94,9 @@
     Error <dm_error_key_constraints_need_db>
       Setting key constraints only works if the tables of the `dm` are on a database.
     Code
-      abort_pk_not_defined("table")
+      abort_pk_not_defined()
     Error <dm_error_pk_not_defined>
-      Table `table` does not have a primary key.
+      No primary keys to remove.
     Code
       abort_fk_exists("child", c("child_1", "child_2"), "parent")
     Error <dm_error_fk_exists>
@@ -105,7 +104,7 @@
     Code
       abort_first_rm_fks("parent", c("child_1", "child_2"))
     Error <dm_error_first_rm_fks>
-      There are foreign keys pointing from table(s) `child_1`, `child_2` to table `parent`. First remove those or set `rm_referencing_fks = TRUE`.
+      There are foreign keys pointing from table(s) `child_1`, `child_2` to table `parent`. First remove those, or set `fail_fk = FALSE`.
     Code
       abort_no_src_or_con()
     Error <dm_error_no_src_or_con>

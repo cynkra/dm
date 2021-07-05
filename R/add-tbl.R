@@ -29,7 +29,7 @@ dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
 
   check_new_tbls(dm, new_tables)
 
-  old_names <- src_tbls(dm)
+  old_names <- src_tbls_impl(dm)
   names_list <- repair_table_names(old_names, new_names, repair, quiet)
   # rename old tables in case name repair changed their names
 
@@ -39,7 +39,7 @@ dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
 
 repair_names_vec <- function(names, repair, quiet) {
   withCallingHandlers(
-    vctrs::vec_as_names(names, repair = repair, quiet = quiet),
+    vec_as_names(names, repair = repair, quiet = quiet),
     vctrs_error_names_must_be_unique = function(e) {
       abort_need_unique_names(names[duplicated(names)])
     }
@@ -48,24 +48,27 @@ repair_names_vec <- function(names, repair, quiet) {
 
 repair_table_names <- function(old_names, new_names, repair = "check_unique", quiet = FALSE) {
   all_names <- repair_names_vec(c(old_names, new_names), repair, quiet)
-  new_old_names <- set_names(old_names, all_names[seq_along(old_names)])
+  all_names_ordered <- all_names[seq_along(old_names)]
+  new_old_names <- set_names(old_names, all_names_ordered)
+  old_new_names <- set_names(all_names_ordered, old_names)
 
   new_names <-
     all_names[seq2(length(old_names) + 1, length(all_names))]
-  list(new_old_names = new_old_names, new_names = new_names)
+  list(new_old_names = new_old_names, new_names = new_names, old_new_names = old_new_names)
 }
 
-dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_filter())) {
+dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()),
+                            pks = list_of(new_pk()), fks = list_of(new_fk())) {
   def <- dm_get_def(dm)
 
   def_0 <- def[rep_along(table_name, NA_integer_), ]
   def_0$table <- table_name
-  def_0$data <- tbls
-  def_0$pks <- vctrs::list_of(new_pk())
-  def_0$fks <- vctrs::list_of(new_fk())
+  def_0$data <- unname(tbls)
+  def_0$pks <- pks
+  def_0$fks <- fks
   def_0$filters <- filters
 
-  new_dm3(vctrs::vec_rbind(def, def_0))
+  new_dm3(vec_rbind(def, def_0))
 }
 
 #' Remove tables
@@ -117,15 +120,14 @@ check_new_tbls <- function(dm, tbls) {
 #' @param ... One or more tables to update in the `dm`.
 #'   Must be named.
 #'
+#' @export
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_mutate_tbl(flights = nycflights13::flights[1:3, ])
-#'
-#' @export
 dm_mutate_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
 
-  old_names <- src_tbls(dm)
+  old_names <- src_tbls_impl(dm)
 
   new_tables <- list2(...)
   stopifnot(is_named(new_tables))
@@ -140,6 +142,6 @@ dm_mutate_tbl <- function(dm, ...) {
   old_tables[new_names] <- new_tables
 
   def <- dm_get_def(dm)
-  def$data <- old_tables
+  def$data <- unname(old_tables)
   new_dm3(def)
 }

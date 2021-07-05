@@ -26,7 +26,7 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
   }
 
   # repair table names
-  table_names <- map(dms, src_tbls) %>% flatten_chr()
+  table_names <- map(dms, src_tbls_impl) %>% flatten_chr()
   new_table_names <- repair_names_vec(table_names, repair, quiet)
   # need to individually rename tables for each `dm`
   ntables_dms <- map(dms, length)
@@ -37,6 +37,6 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
   dms_renamed <- map2(dms, renaming_recipe, dm_rename_tbl)
 
   new_defs <- map(dms_renamed, dm_get_def)
-  vctrs::vec_rbind(!!!new_defs) %>%
+  vec_rbind(!!!new_defs) %>%
     new_dm3()
 }

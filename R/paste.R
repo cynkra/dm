@@ -140,11 +140,12 @@ dm_paste_tables <- function(dm, tab) {
 }
 
 dm_paste_construct <- function(dm) {
-  glue("dm::dm({glue_collapse1(tick_if_needed(src_tbls(dm)), ', ')})")
+  glue("dm::dm({glue_collapse1(tick_if_needed(src_tbls_impl(dm)), ', ')})")
 }
 
 dm_paste_select <- function(dm) {
-  tbl_select <- dm %>%
+  tbl_select <-
+    dm %>%
     dm_get_def() %>%
     mutate(cols = map(data, colnames)) %>%
     mutate(cols = map_chr(cols, ~ glue_collapse1(glue(", {tick_if_needed(.x)}")))) %>%
@@ -153,15 +154,30 @@ dm_paste_select <- function(dm) {
 }
 
 dm_paste_pks <- function(dm) {
-  dm_get_all_pks_impl(dm) %>%
+  dm %>%
+    dm_get_all_pks_impl() %>%
     mutate(code = glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")) %>%
     pull()
 }
 
 dm_paste_fks <- function(dm) {
-  dm_get_all_fks_impl(dm) %>%
-    mutate(code = glue("dm::dm_add_fk({tick_if_needed(child_table)}, {deparse_keys(child_fk_cols)}, {tick_if_needed(parent_table)})")) %>%
-    pull()
+  pks <-
+    dm %>%
+    dm_get_all_pks_impl() %>%
+    set_names(c("parent_table", "parent_default_pk_cols"))
+
+  fks <-
+    dm %>%
+    dm_get_all_fks_impl()
+
+  fpks <-
+    left_join(fks, pks, by = "parent_table")
+
+  need_non_default <- !map2_lgl(fpks$parent_key_cols, fpks$parent_default_pk_cols, identical)
+  fpks$non_default_parent_key_cols <- ""
+  fpks$non_default_parent_key_cols[need_non_default] <- paste0(", ", deparse_keys(fpks$parent_key_cols[need_non_default]))
+
+  glue("dm::dm_add_fk({tick_if_needed(fpks$child_table)}, {deparse_keys(fpks$child_fk_cols)}, {tick_if_needed(fpks$parent_table)}{fpks$non_default_parent_key_cols})")
 }
 
 dm_paste_color <- function(dm) {

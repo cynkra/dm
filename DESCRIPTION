@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.1.99.9002
-Date: 2021-04-28
+Version: 0.2.0.9002
+Date: 2021-05-11
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -54,7 +54,7 @@ Imports:
     rlang (>= 0.4.10),
     tibble,
     tidyr (>= 1.0.0),
-    tidyselect (>= 1.0.0),
+    tidyselect (>= 1.0.1),
     vctrs (>= 0.3.2)
 Suggests: 
     brio,
@@ -78,7 +78,7 @@ Suggests:
     rmarkdown,
     RPostgres,
     RSQLite,
-    testthat (>= 2.1.0),
+    testthat (>= 3.0.2),
     tidyverse,
     withr,
     writexl
@@ -90,4 +90,4 @@ Roxygen: list(markdown = TRUE, roclets = c("collate",
 RoxygenNote: 7.1.1.9001
 Config/testthat/edition: 3
 Config/testthat/parallel: true
-Config/testthat/start-first: flatten, zzx-deprecated, dplyr, dm, filter-dm
+Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm, draw-dm, bind

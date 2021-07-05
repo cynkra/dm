@@ -13,7 +13,7 @@ test_that("table identifiers are quoted", {
     table_names = ~ DBI::SQL(unique_db_table_name(.x))
   )
   remote_tbl_names_copied <- map_chr(
-    src_tbls(test_dm),
+    src_tbls_impl(test_dm),
     ~ dbplyr::remote_name(test_dm[[.x]])
   )
 
@@ -24,7 +24,8 @@ test_that("table identifiers are quoted", {
     )
   )
 
-  dm <- suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE)) %>%
+  dm <-
+    suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE)) %>%
     dm_select_tbl(!!!remote_tbl_names_copied)
 
   remote_tbl_names_learned <-
@@ -51,7 +52,7 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
     table_names = ~ DBI::SQL(unique_db_table_name(.x))
   )
   remote_tbl_names_copied <- map_chr(
-    src_tbls(test_dm),
+    src_tbls_impl(test_dm),
     ~ dbplyr::remote_name(test_dm[[.x]])
   )
 
@@ -82,9 +83,9 @@ test_that("copy_dm_to() and dm_from_src() output for compound keys", {
   withr::defer({
     walk(
       dm_get_tables_impl(nyc_comp_permanent)[c("flights", "airlines", "planes", "airports", "weather")],
-      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x)))))
-    }
-  )
+      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
+    )
+  })
 
   expect_snapshot({
     learned_dm <- dm_from_src(src_db)[c("flights", "airlines", "planes", "airports", "weather")]

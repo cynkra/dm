@@ -2,89 +2,80 @@
 % Please edit documentation in R/foreign-keys.R
 \name{dm_add_fk}
 \alias{dm_add_fk}
-\alias{dm_rm_fk}
-\title{Add/remove foreign keys}
+\title{Add foreign keys}
 \usage{
-dm_add_fk(dm, table, columns, ref_table, ..., check = FALSE)
-
-dm_rm_fk(dm, table, columns, ref_table, ...)
+dm_add_fk(
+  dm,
+  table,
+  columns,
+  ref_table,
+  ref_columns = NULL,
+  ...,
+  check = FALSE
+)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.}
 
-\item{columns}{For \code{dm_add_fk()}: The columns of \code{table} which are to become the foreign key columns that
-reference the primary key of \code{ref_table}.
+\item{columns}{The columns of \code{table} which are to become the foreign key columns that
+reference \code{ref_table}.
+To define a compound key, use \code{c(col1, col2)}.}
 
-For \code{dm_rm_fk()}: The columns of \code{table} that should no longer be referencing the primary key of \code{ref_table}.
-If \code{NULL}, all columns will be evaluated.}
+\item{ref_table}{The table which \code{table} will be referencing.}
 
-\item{ref_table}{For \code{dm_add_fk()}: The table which \code{table} will be referencing.
-This table needs to have a primary key set.
-
-For \code{dm_rm_fk()}: The table that \code{table} is referencing.}
+\item{ref_columns}{The column(s) of \code{table} which are to become the referenced column(s) in \code{ref_table}.
+By default, the primary key is used.
+To define a compound key, use \code{c(col1, col2)}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{check}{Boolean, if \code{TRUE}, a check will be performed to determine if the values of
-\code{column} are a subset of the values of the primary key column of \code{ref_table}.}
+\code{columns} are a subset of the values of the key column(s) of \code{ref_table}.}
 }
 \value{
-For \code{dm_add_fk()}: An updated \code{dm} with an additional foreign key relation.
-
-For \code{dm_rm_fk()}: An updated \code{dm} without the given foreign key relation.
+An updated \code{dm} with an additional foreign key relation.
 }
 \description{
-\code{dm_add_fk()} marks the specified columns as the foreign key of table \code{table} with
-respect to the primary key of table \code{ref_table}.
-If \code{check == TRUE}, then it will first check if the values in columns \code{columns} are a subset
-of the values of the primary key in table \code{ref_table}.
-
-\code{dm_rm_fk()} can remove either one reference between two tables, or all references at once, if argument \code{columns = NULL}.
-All arguments may be provided quoted or unquoted.
+\code{dm_add_fk()} marks the specified \code{columns} as the foreign key of table \code{table} with
+respect to a key of table \code{ref_table}.
+Usually the referenced columns are a primary key in \code{ref_table},
+it is also possible to specify other columns via the \code{ref_columns} argument.
+If \code{check == TRUE}, then it will first check if the values in \code{columns} are a subset
+of the values of the key in table \code{ref_table}.
 }
-\section{Compound keys}{
-
-
-Currently, keys consisting of more than one column are not supported.
-\href{https://github.com/cynkra/dm/issues/3}{This feature} is planned for dm 0.2.0.
-The syntax of these functions will be extended but will remain compatible
-with current semantics.
-}
-
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 nycflights_dm <- dm(
   planes = nycflights13::planes,
-  flights = nycflights13::flights
+  flights = nycflights13::flights,
+  weather = nycflights13::weather
 )
 
 nycflights_dm \%>\%
   dm_draw()
 
+# Create foreign keys:
 nycflights_dm \%>\%
   dm_add_pk(planes, tailnum) \%>\%
   dm_add_fk(flights, tailnum, planes) \%>\%
+  dm_add_pk(weather, c(origin, time_hour)) \%>\%
+  dm_add_fk(flights, c(origin, time_hour), weather) \%>\%
   dm_draw()
-\dontshow{\}) # examplesIf}
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-dm_nycflights13(cycle = TRUE) \%>\%
-  dm_rm_fk(flights, dest, airports) \%>\%
-  dm_draw()
+
+# Keys can be checked during creation:
+try(
+  nycflights_dm \%>\%
+    dm_add_pk(planes, tailnum) \%>\%
+    dm_add_fk(flights, tailnum, planes, check = TRUE)
+)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
 Other foreign key functions: 
 \code{\link{dm_enum_fk_candidates}()},
 \code{\link{dm_get_all_fks}()},
-\code{\link{dm_get_fk}()},
-\code{\link{dm_has_fk}()}
-
-Other foreign key functions: 
-\code{\link{dm_enum_fk_candidates}()},
-\code{\link{dm_get_all_fks}()},
-\code{\link{dm_get_fk}()},
-\code{\link{dm_has_fk}()}
+\code{\link{dm_rm_fk}()}
 }
 \concept{foreign key functions}

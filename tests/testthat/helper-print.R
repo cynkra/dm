@@ -4,11 +4,11 @@ if (is_this_a_test()) {
   # FIXME: what if a table has more than 10 rows?
   if (rlang::is_installed("dbplyr")) {
     tbl_sum.tbl_sql <- function(x, ...) c()
-    vctrs::s3_register("tibble::tbl_sum", "tbl_sql", tbl_sum.tbl_sql)
-    vctrs::s3_register("pillar::tbl_sum", "tbl_sql", tbl_sum.tbl_sql)
+    s3_register("tibble::tbl_sum", "tbl_sql", tbl_sum.tbl_sql)
+    s3_register("pillar::tbl_sum", "tbl_sql", tbl_sum.tbl_sql)
   }
   tbl_sum.tbl_df <- function(x, ...) c()
   if (packageVersion("pillar") < "1.4.99") {
-    vctrs::s3_register("tibble::tbl_sum", "tbl_df", tbl_sum.tbl_df)
+    s3_register("tibble::tbl_sum", "tbl_df", tbl_sum.tbl_df)
   }
 }

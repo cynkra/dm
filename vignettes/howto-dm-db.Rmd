@@ -60,7 +60,7 @@ Lazy tables defer downloading of table data until results are required for print
 A dm can also be constructed from individual tables or views.
 This is useful for when you want to work with a subset of a database's tables, perhaps from different schemas.
 
-Below we use the `tbl()` function from {dplyr} to extract two tables from the financial database.
+Below we use the `$` notation to extract two tables from the financial database.
 Then we create our dm by passing the tables in as arguments.
 Note that the tables arguments have to all be from the same source, in this case `my_db`.
 
@@ -78,13 +78,11 @@ my_manual_dm
 ## Define Primary and Foreign Keys
 
 Primary keys and foreign keys are how relational database tables are linked with each other.
-A primary key is a column that has a unique value for each row within a table.
-A foreign key is a column containing the primary key for a row in another table.[^compound]
+A primary key is a column or column tuple that has a unique value for each row within a table.
+A foreign key is a column or column tuple containing the primary key for a row in another table.
 Foreign keys act as cross references between tables.
 They specify the relationships that gives us the *relational* database.
 For more information on keys and a crash course on databases, see `vignette("howto-dm-theory")`.
-
-[^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/cynkra/dm/issues/3).
 
 The [model diagram](https://relational.fit.cvut.cz/assets/img/datasets-generated/financial.svg) provided by our test database loosely illustrates the intended relationships between tables.
 In the diagram we can see that the `loans` table should be linked to the `accounts` table.

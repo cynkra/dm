@@ -16,6 +16,7 @@
 \alias{count.zoomed_dm}
 \alias{tally.zoomed_dm}
 \alias{pull.zoomed_dm}
+\alias{compute.zoomed_dm}
 \title{\pkg{dplyr} table manipulation methods for zoomed dm objects}
 \usage{
 \method{filter}{zoomed_dm}(.data, ...)
@@ -52,6 +53,8 @@
 \method{tally}{zoomed_dm}(x, ...)
 
 \method{pull}{zoomed_dm}(.data, var = -1, ...)
+
+\method{compute}{zoomed_dm}(x, ...)
 }
 \arguments{
 \item{.data}{object of class \code{zoomed_dm}}

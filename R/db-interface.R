@@ -95,7 +95,7 @@ copy_dm_to <- function(dest, dm, ...,
                        schema = NULL) {
   # for the time being, we will be focusing on MSSQL
   # we want to
-  #   1. change `dm_get_src(dm)` to `dest`
+  #   1. change `dm_get_src_impl(dm)` to `dest`
   #   2. copy the tables to `dest`
   #   3. implement the key situation within our `dm` on the DB
 
@@ -127,7 +127,7 @@ copy_dm_to <- function(dest, dm, ...,
   }
 
   dest <- src_from_src_or_con(dest)
-  src_names <- src_tbls(dm)
+  src_names <- src_tbls_impl(dm)
 
   if (is_db(dest)) {
     dest_con <- con_from_src_or_con(dest)
@@ -235,17 +235,14 @@ dm_set_key_constraints <- function(dm) {
   if (!is_src_db(dm) && !is_this_a_test()) abort_key_constraints_need_db()
   db_table_names <- get_db_table_names(dm)
 
-  tables_w_pk <- dm_get_all_pks(dm)
-
   fk_info <-
     dm_get_all_fks(dm) %>%
-    left_join(tables_w_pk, by = c("parent_table" = "table")) %>%
     left_join(db_table_names, by = c("child_table" = "table_name")) %>%
     rename(db_child_table = remote_name) %>%
     left_join(db_table_names, by = c("parent_table" = "table_name")) %>%
     rename(db_parent_table = remote_name)
 
-  con <- con_from_src_or_con(dm_get_src(dm))
+  con <- con_from_src_or_con(dm_get_src_impl(dm))
   queries <- create_queries(con, fk_info)
   walk(queries, ~ dbExecute(con, .))
 
@@ -254,10 +251,10 @@ dm_set_key_constraints <- function(dm) {
 
 get_db_table_names <- function(dm) {
   if (!is_src_db(dm)) {
-    return(tibble(table_name = src_tbls(dm), remote_name = src_tbls(dm)))
+    return(tibble(table_name = src_tbls_impl(dm), remote_name = src_tbls_impl(dm)))
   }
   tibble(
-    table_name = src_tbls(dm),
+    table_name = src_tbls_impl(dm),
     remote_name = map_chr(dm_get_tables_impl(dm), dbplyr::remote_name)
   )
 }

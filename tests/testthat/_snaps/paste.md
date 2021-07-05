@@ -12,15 +12,15 @@
       dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
         dm::dm_add_pk(tf_1, a) %>%
         dm::dm_add_pk(tf_2, c) %>%
-        dm::dm_add_pk(tf_3, f) %>%
+        dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
-        dm::dm_add_pk(tf_6, n) %>%
+        dm::dm_add_pk(tf_6, o) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
-        dm::dm_add_fk(tf_2, e, tf_3) %>%
-        dm::dm_add_fk(tf_4, j, tf_3) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
         dm::dm_add_fk(tf_5, l, tf_4) %>%
-        dm::dm_add_fk(tf_5, m, tf_6)
+        dm::dm_add_fk(tf_5, m, tf_6, n)
     Code
       # changing the tab width
       dm_for_filter() %>% dm_paste(tab_width = 4)
@@ -28,15 +28,15 @@
       dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
           dm::dm_add_pk(tf_1, a) %>%
           dm::dm_add_pk(tf_2, c) %>%
-          dm::dm_add_pk(tf_3, f) %>%
+          dm::dm_add_pk(tf_3, c(f, f1)) %>%
           dm::dm_add_pk(tf_4, h) %>%
           dm::dm_add_pk(tf_5, k) %>%
-          dm::dm_add_pk(tf_6, n) %>%
+          dm::dm_add_pk(tf_6, o) %>%
           dm::dm_add_fk(tf_2, d, tf_1) %>%
-          dm::dm_add_fk(tf_2, e, tf_3) %>%
-          dm::dm_add_fk(tf_4, j, tf_3) %>%
+          dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+          dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
           dm::dm_add_fk(tf_5, l, tf_4) %>%
-          dm::dm_add_fk(tf_5, m, tf_6)
+          dm::dm_add_fk(tf_5, m, tf_6, n)
     Code
       # we don't care if the tables really exist
       dm_for_filter() %>% dm_rename_tbl(tf_1_new = tf_1) %>% dm_paste()
@@ -44,15 +44,15 @@
       dm::dm(tf_1_new, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
         dm::dm_add_pk(tf_1_new, a) %>%
         dm::dm_add_pk(tf_2, c) %>%
-        dm::dm_add_pk(tf_3, f) %>%
+        dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
-        dm::dm_add_pk(tf_6, n) %>%
+        dm::dm_add_pk(tf_6, o) %>%
         dm::dm_add_fk(tf_2, d, tf_1_new) %>%
-        dm::dm_add_fk(tf_2, e, tf_3) %>%
-        dm::dm_add_fk(tf_4, j, tf_3) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
         dm::dm_add_fk(tf_5, l, tf_4) %>%
-        dm::dm_add_fk(tf_5, m, tf_6)
+        dm::dm_add_fk(tf_5, m, tf_6, n)
     Code
       # produce `dm_select()` statements in addition to the rest
       dm_for_filter() %>% dm_select(tf_5, k = k, m) %>% dm_select(tf_1, a) %>%
@@ -60,9 +60,9 @@
     Message <cliMessage>
       dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6, x) %>%
         dm::dm_select(tf_1, a) %>%
-        dm::dm_select(tf_2, c, d, e) %>%
-        dm::dm_select(tf_3, f, g) %>%
-        dm::dm_select(tf_4, h, i, j) %>%
+        dm::dm_select(tf_2, c, d, e, e1) %>%
+        dm::dm_select(tf_3, f, f1, g) %>%
+        dm::dm_select(tf_4, h, i, j, j1) %>%
         dm::dm_select(tf_5, k, m) %>%
         dm::dm_select(tf_6, n, o) %>%
         dm::dm_select(x, q)
@@ -74,15 +74,15 @@
       dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
         dm::dm_add_pk(tf_1, a) %>%
         dm::dm_add_pk(tf_2, c) %>%
-        dm::dm_add_pk(tf_3, f) %>%
+        dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
-        dm::dm_add_pk(tf_6, n) %>%
+        dm::dm_add_pk(tf_6, o) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
-        dm::dm_add_fk(tf_2, e, tf_3) %>%
-        dm::dm_add_fk(tf_4, j, tf_3) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
         dm::dm_add_fk(tf_5, l, tf_4) %>%
-        dm::dm_add_fk(tf_5, m, tf_6) %>%
+        dm::dm_add_fk(tf_5, m, tf_6, n) %>%
         dm::dm_set_colors(`#FFA500FF` = tf_1) %>%
         dm::dm_set_colors(`#FFA500FF` = tf_2) %>%
         dm::dm_set_colors(`#FFA500FF` = tf_3) %>%
@@ -197,7 +197,7 @@
       dm::dm()
     Code
       # error for bad option
-      writeLines(conditionMessage(expect_error(dm() %>% dm_paste(options = c("bogus",
+      writeLines(conditionMessage(expect_error(dm_paste(dm(), options = c("bogus",
         "all", "mad")))))
     Output
       Option unknown: "bogus", "mad". Must be one of "all", "tables", "keys", "select", "color".

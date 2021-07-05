@@ -5,14 +5,15 @@ R users have backgrounds in other disciplines, we present **six
 important terms in relational data modeling** to help you to jump-start
 working with {dm}. These terms are:
 
-1)  [Data Frames and Tables](#tables)
-2)  [Data Model](#model)
-3)  [Primary Keys](#pk)
-4)  [Foreign Keys](#fk)
-5)  [Normalization](#normalization)
-6)  [Relational Databases](#relational-databases)
+1.  [Data Frames and Tables](#tables)
+2.  [Data Model](#model)
+3.  [Primary Keys](#pk)
+4.  [Foreign Keys](#fk)
+5.  [Referential Integrity](#referential-integrity)
+6.  [Normalization](#normalization)
+7.  [Relational Databases](#relational-databases)
 
-## 1\. Data Frames and Tables
+## 1. Data Frames and Tables
 
 A data frame is a fundamental data structure in R. Columns represent
 variables, rows represent observations. In more technical terms: a data
@@ -32,7 +33,7 @@ between data frames and database tables, which also consist of columns
 and rows. The elements are just named differently:
 
 | Data Frame | Table     |
-| ---------- | --------- |
+|------------|-----------|
 | Column     | Attribute |
 | Row        | Tuple     |
 
@@ -40,12 +41,12 @@ Relational databases, unlike data frames, do not keep all data in one
 large table but instead split it into multiple smaller tables. That
 separation into sub-tables has several advantages:
 
-  - all information is stored only once, avoiding redundancy and
+-   all information is stored only once, avoiding redundancy and
     conserving memory
-  - all information needs to be updated only once and in one place,
+-   all information needs to be updated only once and in one place,
     improving consistency and avoiding errors that may result from
     updating the same value in multiple locations
-  - all information is organized by topic and segmented into smaller
+-   all information is organized by topic and segmented into smaller
     tables that are easier to handle
 
 It is for these reasons that separation of data helps with data quality,
@@ -61,9 +62,9 @@ associated data model is needed to overcome the challenges that arise
 when working with multiple tables.
 
 Let’s illustrate this challenge with the data from the [`nycflights13`
-dataset](https://github.com/hadley/nycflights13) that contains detailed
-information about the 336776 flights that departed from New York City in
-2013. The information is stored in five tables.
+dataset](https://github.com/tidyverse/nycflights13) that contains
+detailed information about the 336776 flights that departed from New
+York City in 2013. The information is stored in five tables.
 
 Details like the full name of an airport are not available immediately;
 these can only be obtained by joining or merging the constituent tables,
@@ -71,62 +72,66 @@ which can result in long and inflated pipe chains full of `left_join()`,
 `anti_join()` and other forms of data merging.
 
 In classical {dplyr} notation, you will need three `left_join()` calls
-to merge the `flights` table gradually to `airlines`, `planes` and
-`airports` tables to create one wide data frame.
+to merge the `flights` table gradually to `airlines`, `planes`,
+`airports` and `weather` tables to create one wide data frame.
 
 ``` r
 library(tidyverse)
-#> ── Attaching packages ────────────────────────────────── tidyverse 1.3.0 ──
-#> ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
-#> ✓ tibble  3.0.3     ✓ dplyr   1.0.0
-#> ✓ tidyr   1.1.0     ✓ stringr 1.4.0
-#> ✓ readr   1.3.1     ✓ forcats 0.5.0
+#> ── Attaching packages ────────────────────────────────── tidyverse 1.3.1 ──
+#> ✔ ggplot2 3.3.3     ✔ purrr   0.3.4
+#> ✔ tibble  3.1.1     ✔ dplyr   1.0.5
+#> ✔ tidyr   1.1.3     ✔ stringr 1.4.0
+#> ✔ readr   1.4.0     ✔ forcats 0.5.1
 #> ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
-#> x purrr::%@%()         masks dm::%@%()
-#> x purrr::as_function() masks dm::as_function()
-#> x tidyr::extract()     masks dm::extract()
-#> x dplyr::filter()      masks dm::filter(), stats::filter()
-#> x purrr::flatten()     masks dm::flatten()
-#> x purrr::flatten_chr() masks dm::flatten_chr()
-#> x purrr::flatten_dbl() masks dm::flatten_dbl()
-#> x purrr::flatten_int() masks dm::flatten_int()
-#> x purrr::flatten_lgl() masks dm::flatten_lgl()
-#> x purrr::flatten_raw() masks dm::flatten_raw()
-#> x purrr::invoke()      masks dm::invoke()
-#> x purrr::is_null()     masks dm::is_null(), testthat::is_null()
-#> x dplyr::lag()         masks dm::lag(), stats::lag()
-#> x purrr::list_along()  masks dm::list_along()
-#> x dplyr::matches()     masks tidyr::matches(), dm::matches(), testthat::matches()
-#> x purrr::modify()      masks dm::modify()
-#> x purrr::prepend()     masks dm::prepend()
-#> x purrr::splice()      masks dm::splice()
+#> ✖ purrr::%@%()         masks dm::%@%()
+#> ✖ purrr::as_function() masks dm::as_function()
+#> ✖ tidyr::extract()     masks dm::extract()
+#> ✖ dplyr::filter()      masks dm::filter(), stats::filter()
+#> ✖ purrr::flatten()     masks dm::flatten()
+#> ✖ purrr::flatten_chr() masks dm::flatten_chr()
+#> ✖ purrr::flatten_dbl() masks dm::flatten_dbl()
+#> ✖ purrr::flatten_int() masks dm::flatten_int()
+#> ✖ purrr::flatten_lgl() masks dm::flatten_lgl()
+#> ✖ purrr::flatten_raw() masks dm::flatten_raw()
+#> ✖ purrr::invoke()      masks dm::invoke()
+#> ✖ purrr::is_null()     masks dm::is_null(), testthat::is_null()
+#> ✖ dplyr::lag()         masks dm::lag(), stats::lag()
+#> ✖ purrr::list_along()  masks dm::list_along()
+#> ✖ dplyr::matches()     masks tidyr::matches(), dm::matches(), testthat::matches()
+#> ✖ purrr::modify()      masks dm::modify()
+#> ✖ purrr::prepend()     masks dm::prepend()
+#> ✖ purrr::splice()      masks dm::splice()
 library(dm)
 library(nycflights13)
 
-flights %>% 
+flights %>%
   left_join(airlines, by = "carrier") %>%
   left_join(planes, by = "tailnum") %>%
-  left_join(airports, by = c("origin" = "faa"))
-#> # A tibble: 336,776 x 35
-#>    year.x month   day dep_time sched_dep_time dep_delay arr_time
-#>     <int> <int> <int>    <int>          <int>     <dbl>    <int>
-#>  1   2013     1     1      517            515         2      830
-#>  2   2013     1     1      533            529         4      850
-#>  3   2013     1     1      542            540         2      923
-#>  4   2013     1     1      544            545        -1     1004
-#>  5   2013     1     1      554            600        -6      812
-#>  6   2013     1     1      554            558        -4      740
-#>  7   2013     1     1      555            600        -5      913
-#>  8   2013     1     1      557            600        -3      709
-#>  9   2013     1     1      557            600        -3      838
-#> 10   2013     1     1      558            600        -2      753
-#> # … with 336,766 more rows, and 28 more variables: sched_arr_time <int>,
+  left_join(airports, by = c("origin" = "faa")) %>%
+  left_join(weather, by = c("origin", "time_hour"))
+#> # A tibble: 336,776 x 48
+#>    year.x month.x day.x dep_time sched_dep_time dep_delay arr_time
+#>     <int>   <int> <int>    <int>          <int>     <dbl>    <int>
+#>  1   2013       1     1      517            515         2      830
+#>  2   2013       1     1      533            529         4      850
+#>  3   2013       1     1      542            540         2      923
+#>  4   2013       1     1      544            545        -1     1004
+#>  5   2013       1     1      554            600        -6      812
+#>  6   2013       1     1      554            558        -4      740
+#>  7   2013       1     1      555            600        -5      913
+#>  8   2013       1     1      557            600        -3      709
+#>  9   2013       1     1      557            600        -3      838
+#> 10   2013       1     1      558            600        -2      753
+#> # … with 336,766 more rows, and 41 more variables: sched_arr_time <int>,
 #> #   arr_delay <dbl>, carrier <chr>, flight <int>, tailnum <chr>,
-#> #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
-#> #   minute <dbl>, time_hour <dttm>, name.x <chr>, year.y <int>,
-#> #   type <chr>, manufacturer <chr>, model <chr>, engines <int>,
-#> #   seats <int>, speed <int>, engine <chr>, name.y <chr>, lat <dbl>,
-#> #   lon <dbl>, alt <dbl>, tz <dbl>, dst <chr>, tzone <chr>
+#> #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>,
+#> #   hour.x <dbl>, minute <dbl>, time_hour <dttm>, name.x <chr>,
+#> #   year.y <int>, type <chr>, manufacturer <chr>, model <chr>,
+#> #   engines <int>, seats <int>, speed <int>, engine <chr>, name.y <chr>,
+#> #   lat <dbl>, lon <dbl>, alt <dbl>, tz <dbl>, dst <chr>, tzone <chr>,
+#> #   year <int>, month.y <int>, day.y <int>, hour.y <int>, temp <dbl>,
+#> #   dewp <dbl>, humid <dbl>, wind_dir <dbl>, wind_speed <dbl>,
+#> #   wind_gust <dbl>, precip <dbl>, pressure <dbl>, visib <dbl>
 ```
 
 {dm} offers a more elegant and shorter way to combine tables while
@@ -139,7 +144,7 @@ analysis with {dplyr} on an as-needed basis.
 The next step is to create a [data model](#model) based on multiple
 tables:
 
-## 2\. Data Model
+## 2. Data Model
 
 A data model shows the structure between multiple tables that can be
 linked together.
@@ -148,13 +153,13 @@ The `nycflights13` relations can be transferred into the following
 graphical representation:
 
 ``` r
-dm <- dm_nycflights13(cycle = TRUE) 
+dm <- dm_nycflights13(cycle = TRUE)
 
-dm %>% 
+dm %>%
   dm_draw()
 ```
 
-![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/howto-dm-theory_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](/home/kirill/git/R/dm/vignettes/out/howto-dm-theory_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 The `flights` table is linked to three other tables: `airlines`,
 `planes` and `airports`. By using directed arrows, the visualization
@@ -170,111 +175,137 @@ and [foreign keys](#fk).
 Further Reading: The {dm} methods for [visualizing data
 models](https://cynkra.github.io/dm/articles/tech-dm-draw.html).
 
-## 3\. Primary Keys
+## 3. Primary Keys
 
-In a relational data model, every table needs to have **one column or
-attribute that uniquely identifies a row**. This column is called the
-*primary key* (abbreviated with pk). A primary key can be either an
-existing column that satisfies the condition of being unique, or a new
-column that assigns an identifier.
+In a relational data model, each table should have **one or several
+columns that uniquely identifies a row**. These columns define the
+*primary key* (abbreviated with “pk”). If the key consists of a single
+column, it is called *simple key*. A key consisting of more than one
+column is called a *compound key*.
 
 Example: In the `airlines` table of `nycflights13` the column `carrier`
-is the primary key.
+is the primary key, a simple key. The `weather` table has the
+combination of `origin` and `time_hour` as primary key, a compound key.
 
 You can get all primary keys in a `dm` by calling `dm_get_all_pks()`:
 
 ``` r
 dm %>%
   dm_get_all_pks()
-#> # A tibble: 3 x 2
-#>   table    pk_col 
-#>   <chr>    <keys> 
-#> 1 airlines carrier
-#> 2 airports faa    
-#> 3 planes   tailnum
+#> # A tibble: 4 x 2
+#>   table    pk_col           
+#>   <chr>    <keys>           
+#> 1 airlines carrier          
+#> 2 airports faa              
+#> 3 planes   tailnum          
+#> 4 weather  origin, time_hour
 ```
 
-If an attribute is suitable as a primary key, it can be checked with
-`dm_enum_pk_candidates()`. Which columns of the `airlines` table can
-serve as a primary key?
+`dm_enum_pk_candidates()` checks all columns if they are suitable as a
+simple primary key:
 
 ``` r
-dm %>% 
+dm %>%
   dm_enum_pk_candidates(airports)
 #> # A tibble: 8 x 3
 #>   columns candidate why                                                    
 #>   <keys>  <lgl>     <chr>                                                  
 #> 1 faa     TRUE      ""                                                     
 #> 2 lon     TRUE      ""                                                     
-#> 3 alt     FALSE     "has duplicate values: 0, 1, 3, 4, 5, …"               
-#> 4 dst     FALSE     "has duplicate values: A, N, U"                        
-#> 5 lat     FALSE     "has duplicate values: 38.88944, 40.63975"             
-#> 6 name    FALSE     "has duplicate values: All Airports, Capital City Airp…
-#> 7 tz      FALSE     "has duplicate values: -10, -9, -8, -7, -6, …"         
-#> 8 tzone   FALSE     "has duplicate values: America/Anchorage, America/Chic…
+#> 3 name    FALSE     "has duplicate values: Municipal Airport (5), All Airp…
+#> 4 lat     FALSE     "has duplicate values: 38.88944 (2), 40.63975 (2)"     
+#> 5 alt     FALSE     "has duplicate values: 0 (51), 13 (13), 14 (12), 15 (1…
+#> 6 tz      FALSE     "has duplicate values: -5 (521), -6 (342), -9 (240), -…
+#> 7 dst     FALSE     "has duplicate values: A (1388), U (47), N (23)"       
+#> 8 tzone   FALSE     "has duplicate values: America/New_York (519), America…
 ```
 
 Further Reading: The {dm} package offers several functions for dealing
 with [primary
 keys](https://cynkra.github.io/dm/articles/tech-dm-class.html#pk).
 
-## 4\. Foreign Keys
+## 4. Foreign Keys
 
 The **counterpart of a primary key in one table is the foreign key in
 another table**. In order to join two tables, the primary key of the
-first table needs to be available in the second table as well. This
-second column is called the *foreign key* (abbreviated with fk).
+first table needs to be referenced from the second table. This column or
+these columns are called the *foreign key* (abbreviated with “fk”).
 
 For example, if you want to link the `airlines` table to the `flights`
 table, the primary key in `airlines` needs to match the foreign key in
 `flights`. This condition is satisfied because the column `carrier` is
 present as a primary key in the `airlines` table as well as a foreign
-key in the `flights` table. You can find foreign key candidates with the
-function `dm_enum_fk_candidates()`, they are marked with `TRUE` in the
+key in the `flights` table. In the case of compound keys, the `origin`
+and `time_hour` columns (which form the primary key of the `weather`
+table) are also present in the `flights` table.
+
+You can find foreign key candidates for simple keys with the function
+`dm_enum_fk_candidates()`, they are marked with `TRUE` in the
 `candidate` column.
 
 ``` r
-dm %>% 
+dm %>%
   dm_enum_fk_candidates(flights, airlines)
 #> # A tibble: 19 x 3
 #>    columns      candidate why                                              
 #>    <keys>       <lgl>     <chr>                                            
 #>  1 carrier      TRUE      ""                                               
-#>  2 tailnum      FALSE     "11080 entries (98.7%) of `flights$tailnum` not …
-#>  3 dest         FALSE     "11227 entries (100%) of `flights$dest` not in `…
-#>  4 origin       FALSE     "11227 entries (100%) of `flights$origin` not in…
-#>  5 air_time     FALSE     "Can't join on `x$value` x `y$value` because of …
-#>  6 arr_delay    FALSE     "Can't join on `x$value` x `y$value` because of …
-#>  7 arr_time     FALSE     "Can't join on `x$value` x `y$value` because of …
-#>  8 day          FALSE     "Can't join on `x$value` x `y$value` because of …
-#>  9 dep_delay    FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 10 dep_time     FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 11 distance     FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 12 flight       FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 13 hour         FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 14 minute       FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 15 month        FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 16 sched_arr_t… FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 17 sched_dep_t… FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 18 time_hour    FALSE     "Can't join on `x$value` x `y$value` because of …
-#> 19 year         FALSE     "Can't join on `x$value` x `y$value` because of …
-```
-
-After finding and assigning foreign keys, get the name of the set
-foreign key:
-
-``` r
-dm %>% 
-  dm_get_fk(flights, airlines)
-#> <list_of<character>[1]>
-#> [[1]]
-#> [1] "carrier"
+#>  2 year         FALSE     "Can't combine `value1` <integer> and `value1` <…
+#>  3 month        FALSE     "Can't combine `value1` <integer> and `value1` <…
+#>  4 day          FALSE     "Can't combine `value1` <integer> and `value1` <…
+#>  5 dep_time     FALSE     "Can't combine `value1` <integer> and `value1` <…
+#>  6 sched_dep_t… FALSE     "Can't combine `value1` <integer> and `value1` <…
+#>  7 dep_delay    FALSE     "Can't combine `value1` <double> and `value1` <c…
+#>  8 arr_time     FALSE     "Can't combine `value1` <integer> and `value1` <…
+#>  9 sched_arr_t… FALSE     "Can't combine `value1` <integer> and `value1` <…
+#> 10 arr_delay    FALSE     "Can't combine `value1` <double> and `value1` <c…
+#> 11 flight       FALSE     "Can't combine `value1` <integer> and `value1` <…
+#> 12 tailnum      FALSE     "values of `flights$tailnum` not in `airlines$ca…
+#> 13 origin       FALSE     "values of `flights$origin` not in `airlines$car…
+#> 14 dest         FALSE     "values of `flights$dest` not in `airlines$carri…
+#> 15 air_time     FALSE     "Can't combine `value1` <double> and `value1` <c…
+#> 16 distance     FALSE     "Can't combine `value1` <double> and `value1` <c…
+#> 17 hour         FALSE     "Can't combine `value1` <double> and `value1` <c…
+#> 18 minute       FALSE     "Can't combine `value1` <double> and `value1` <c…
+#> 19 time_hour    FALSE     "Can't combine `value1` <datetime<America/New_Yo…
 ```
 
 Further Reading: All {dm} functions for working with [foreign
 keys](https://cynkra.github.io/dm/articles/tech-dm-class.html#foreign-keys).
 
-## 5\. Normalization
+## 5. Referential Integrity
+
+A data set has referential integrity if all relations between tables are
+valid. That is, every foreign key holds a primary key that is present in
+the parent table. If a foreign key contains a reference where the
+corresponding row in the parent table is not availabe, that row is an
+orphan row and the database no longer has referential integrity.
+
+{dm} allows checking referential integrity with the
+`dm_examine_constraints()` function. The following conditions are
+checked:
+
+-   All primary key values must be unique.
+-   All primary key values must be set, `NA` values are not allowed.
+-   Each foreign key value must have a corresponding primary key value.
+
+In the example data model, for a substantial share of the flights,
+detailed information for the corresponding airplane is not available:
+
+``` r
+dm %>%
+  dm_examine_constraints()
+#> ! Unsatisfied constraints:
+#> ● Table `flights`: foreign key dest into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (187), BQN (28), STT (15), PSE (12)
+#> ● Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …
+```
+
+Establishing referential integrity is important for providing clean data
+for analysis or downstream users. See `vignette("howto-dm-rows")` for
+more information on adding, deleting or updating individual rows, and
+`vignette("tech-dm-zoom")` for operations on the data in a data model.
+
+## 6. Normalization
 
 Normalization is a technical term that describes the **central design
 principle of a relational data model**: splitting data into multiple
@@ -303,7 +334,7 @@ airlines %>%
 
 # ...propagates to all related records
 flights %>%
-  left_join(airlines) %>% 
+  left_join(airlines) %>%
   select(flight, name)
 #> Joining, by = "carrier"
 #> # A tibble: 336,776 x 2
@@ -343,31 +374,31 @@ planes %>%
 #>    tailnum  year engine    model_id
 #>    <chr>   <int> <chr>        <int>
 #>  1 N10156   2004 Turbo-fan      120
-#>  2 N102UW   1998 Turbo-fan       94
-#>  3 N103US   1999 Turbo-fan       94
-#>  4 N104UW   1999 Turbo-fan       94
+#>  2 N102UW   1998 Turbo-fan       93
+#>  3 N103US   1999 Turbo-fan       93
+#>  4 N104UW   1999 Turbo-fan       93
 #>  5 N10575   2002 Turbo-fan      119
-#>  6 N105UW   1999 Turbo-fan       94
-#>  7 N107US   1999 Turbo-fan       94
-#>  8 N108UW   1999 Turbo-fan       94
-#>  9 N109UW   1999 Turbo-fan       94
-#> 10 N110UW   1999 Turbo-fan       94
+#>  6 N105UW   1999 Turbo-fan       93
+#>  7 N107US   1999 Turbo-fan       93
+#>  8 N108UW   1999 Turbo-fan       93
+#>  9 N109UW   1999 Turbo-fan       93
+#> 10 N110UW   1999 Turbo-fan       93
 #> # … with 3,312 more rows
 #> 
 #> $parent_table
 #> # A tibble: 147 x 7
-#>    model_id model     manufacturer type                 engines seats speed
-#>       <int> <chr>     <chr>        <chr>                  <int> <int> <int>
-#>  1        1 150       CESSNA       Fixed wing single e…       1     2    90
-#>  2        2 172E      CESSNA       Fixed wing single e…       1     4   105
-#>  3        3 172M      CESSNA       Fixed wing single e…       1     4   108
-#>  4        4 172N      CESSNA       Fixed wing single e…       1     4   105
-#>  5        5 206B      BELL         Rotorcraft                 1     5   112
-#>  6        6 210-5(20… CESSNA       Fixed wing single e…       1     6    NA
-#>  7        7 230       BELL         Rotorcraft                 2    11    NA
-#>  8        8 310Q      CESSNA       Fixed wing multi en…       2     6   167
-#>  9        9 421C      CESSNA       Fixed wing multi en…       2     8    90
-#> 10       10 550       CESSNA       Fixed wing multi en…       2     8    NA
+#>    model_id model      manufacturer   type              engines seats speed
+#>       <int> <chr>      <chr>          <chr>               <int> <int> <int>
+#>  1      120 EMB-145XR  EMBRAER        Fixed wing multi…       2    55    NA
+#>  2       93 A320-214   AIRBUS INDUST… Fixed wing multi…       2   182    NA
+#>  3      119 EMB-145LR  EMBRAER        Fixed wing multi…       2    55    NA
+#>  4       39 737-824    BOEING         Fixed wing multi…       2   149    NA
+#>  5       68 767-332    BOEING         Fixed wing multi…       2   330    NA
+#>  6       52 757-224    BOEING         Fixed wing multi…       2   178    NA
+#>  7       94 A320-214   AIRBUS         Fixed wing multi…       2   182    NA
+#>  8      112 CL-600-2D… BOMBARDIER INC Fixed wing multi…       2    95    NA
+#>  9       30 737-724    BOEING         Fixed wing multi…       2   149    NA
+#> 10       27 737-524    BOEING         Fixed wing multi…       2   149    NA
 #> # … with 137 more rows
 ```
 
@@ -380,7 +411,7 @@ Further Reading: See the [Simple English Wikipedia article on database
 normalization](https://simple.wikipedia.org/wiki/Database_normalisation)
 for more details.
 
-## 6\. Relational Databases
+## 7. Relational Databases
 
 {dm} is built upon relational data models but it is not a database
 itself. Databases are systems for data management and many of them are
@@ -411,10 +442,13 @@ DBI::dbListTables(con_sqlite)
 
 copy_dm_to(con_sqlite, dm)
 DBI::dbListTables(con_sqlite)
-#> [1] "airlines_2020_08_28_07_13_03_1" "airports_2020_08_28_07_13_03_1"
-#> [3] "flights_2020_08_28_07_13_03_1"  "planes_2020_08_28_07_13_03_1"  
-#> [5] "sqlite_stat1"                   "sqlite_stat4"                  
-#> [7] "weather_2020_08_28_07_13_03_1"
+#> [1] "airlines_2020_08_28_07_13_03_12345_1"
+#> [2] "airports_2020_08_28_07_13_03_12345_1"
+#> [3] "flights_2020_08_28_07_13_03_12345_1" 
+#> [4] "planes_2020_08_28_07_13_03_12345_1"  
+#> [5] "sqlite_stat1"                        
+#> [6] "sqlite_stat4"                        
+#> [7] "weather_2020_08_28_07_13_03_12345_1"
 ```
 
 In the opposite direction, `dm` can also be populated with data from a
@@ -426,9 +460,9 @@ not the keys:
 dm_from_src(con_sqlite)
 #> Keys could not be queried, use `learn_keys = FALSE` to mute this message.
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.30.1 []
+#> src:  sqlite 3.35.5 []
 #> ── Metadata ───────────────────────────────────────────────────────────────
-#> Tables: `airlines_2020_08_28_07_13_03_1`, `airports_2020_08_28_07_13_03_1`, `flights_2020_08_28_07_13_03_1`, `planes_2020_08_28_07_13_03_1`, `sqlite_stat1`, … (7 total)
+#> Tables: `airlines_2020_08_28_07_13_03_12345_1`, `airports_2020_08_28_07_13_03_12345_1`, `flights_2020_08_28_07_13_03_12345_1`, `planes_2020_08_28_07_13_03_12345_1`, `sqlite_stat1`, … (7 total)
 #> Columns: 62
 #> Primary keys: 0
 #> Foreign keys: 0

@@ -59,8 +59,9 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
 #' @keywords internal
 #' @export
 cdm_get_src <- function(x) {
-  deprecate_soft("0.1.0", "dm::cdm_get_src()", "dm::dm_get_src()")
-  out <- dm_get_src(x = x)
+  deprecate_soft("0.1.0", "dm::cdm_get_src()", "dm::dm_get_con()")
+  check_not_zoomed(x)
+  out <- dm_get_src_impl(x)
   if (is.null(out)) {
     out <- default_local_src()
   }
@@ -192,7 +193,8 @@ cdm_get_available_colors <- function() {
 #' @export
 cdm_filter <- function(dm, table, ...) {
   deprecate_soft("0.1.0", "dm::cdm_filter()", "dm::dm_filter()")
-  dm_zoom_to(dm, {{ table }}) %>%
+  dm %>%
+    dm_zoom_to({{ table }}) %>%
     dm_filter_impl(..., set_filter = TRUE) %>%
     dm_update_zoomed()
 }
@@ -271,7 +273,7 @@ cdm_apply_filters_to_tbl <- function(dm, table) {
 #' @export
 cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   deprecate_soft("0.1.0", "dm::cdm_add_pk()", "dm::dm_add_pk()")
-  dm_add_pk(dm, {{ table }}, {{ column }}, check, force)
+  dm_add_pk(dm, {{ table }}, {{ column }}, check = check, force = force)
 }
 
 #' @rdname deprecated
@@ -279,7 +281,7 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
 #' @export
 cdm_add_fk <- function(dm, table, column, ref_table, check = FALSE) {
   deprecate_soft("0.1.0", "dm::cdm_add_fk()", "dm::dm_add_fk()")
-  dm_add_fk(dm, {{ table }}, {{ column }}, {{ ref_table }}, check)
+  dm_add_fk(dm, {{ table }}, {{ column }}, {{ ref_table }}, check = check)
 }
 
 #' @rdname deprecated
@@ -309,9 +311,10 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' @export
 cdm_get_all_fks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_fks()", "dm::dm_get_all_fks()")
-  dm_get_all_fks_impl(dm = dm) %>%
+  dm %>%
+    dm_get_all_fks_impl() %>%
     mutate(child_fk_cols = as.character(unclass(child_fk_cols))) %>%
-    mutate(parent_pk_cols = as.character(unclass(parent_pk_cols)))
+    mutate(parent_key_cols = as.character(unclass(parent_key_cols)))
 }
 
 #' @rdname deprecated
@@ -336,12 +339,10 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
   else {
     cols <- as_name(ensym(columns))
     if (!all(cols %in% fk_cols)) {
-      abort_is_not_fkc(
-        table_name, cols, ref_table_name
-      )
+      abort_is_not_fkc()
     }
   }
-  dm_rm_fk_impl(dm, table_name, new_keys(cols), ref_table_name)
+  dm_rm_fk_impl(dm, table_name, cols, ref_table_name, NULL)
 }
 
 #' @rdname deprecated
@@ -355,8 +356,8 @@ cdm_enum_fk_candidates <- function(dm, table, ref_table) {
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
   ref_tbl_pk <- dm_get_pk_impl(dm, ref_table_name)
-  ref_tbl <- tbl(dm, ref_table_name)
-  tbl <- tbl(dm, table_name)
+  ref_tbl <- tbl_impl(dm, ref_table_name)
+  tbl <- tbl_impl(dm, table_name)
   enum_fk_candidates_impl(
     table_name, tbl, ref_table_name,
     ref_tbl, ref_tbl_pk
@@ -457,7 +458,8 @@ cdm_get_pk <- function(dm, table) {
 #' @export
 cdm_get_all_pks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_pks()", "dm::dm_get_all_pks()")
-  dm_get_all_pks_impl(dm = dm) %>%
+  dm %>%
+    dm_get_all_pks_impl() %>%
     mutate(pk_col = as.character(unclass(pk_col)))
 }
 
@@ -515,7 +517,8 @@ cdm_select <- function(dm, table, ...) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
-  dm_zoom_to(dm, !!table_name) %>%
+  dm %>%
+    dm_zoom_to(!!table_name) %>%
     select(...) %>%
     dm_update_zoomed()
 }
@@ -528,7 +531,8 @@ cdm_rename <- function(dm, table, ...) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
-  dm_zoom_to(dm, !!table_name) %>%
+  dm %>%
+    dm_zoom_to(!!table_name) %>%
     rename(...) %>%
     dm_update_zoomed()
 }
@@ -542,7 +546,8 @@ cdm_zoom_to_tbl <- function(dm, table) {
   zoom <- dm_tbl_name(dm, {{ table }})
 
   cols <- list(get_all_cols(dm, zoom))
-  dm_get_def(dm) %>%
+  dm %>%
+    dm_get_def() %>%
     mutate(
       zoom = if_else(table == !!zoom, data, list(NULL)),
       col_tracker_zoom = if_else(table == !!zoom, cols, list(NULL))
@@ -573,18 +578,19 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
   new_tbl_name_chr <- names_list$new_names
   old_tbl_name <- orig_name_zoomed(dm)
-  new_tbl <- list(get_zoomed_tbl(dm))
-  all_filters <- get_filter_for_table(dm, old_tbl_name)
+  new_tbl <- list(tbl_zoomed(dm))
+  all_filters <- filters_zoomed(dm)
   old_filters <- all_filters %>% filter(!zoomed)
-  new_filters <- all_filters %>%
+  new_filters <-
+    all_filters %>%
     filter(zoomed) %>%
     mutate(zoomed = FALSE)
-  upd_pk <- vctrs::list_of(update_zoomed_pk(dm))
-  upd_inc_fks <- vctrs::list_of(update_zoomed_incoming_fks(dm))
+  upd_pk <- list_of(update_zoomed_pk(dm))
+  upd_inc_fks <- list_of(update_zoomed_incoming_fks(dm))
   dm_wo_outgoing_fks <-
     dm %>%
-    update_filter(old_tbl_name, vctrs::list_of(old_filters)) %>%
-    dm_add_tbl_impl(new_tbl, new_tbl_name_chr, vctrs::list_of(new_filters)) %>%
+    update_filter(old_tbl_name, list_of(old_filters)) %>%
+    dm_add_tbl_impl(new_tbl, new_tbl_name_chr, list_of(new_filters)) %>%
     dm_get_def() %>%
     mutate(
       pks = if_else(table == new_tbl_name_chr, !!upd_pk, pks),
@@ -593,7 +599,7 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
     new_dm3(zoomed = TRUE)
 
   dm_wo_outgoing_fks %>%
-    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr) %>%
+    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr, names_list$old_new_names[old_tbl_name], col_tracker_zoomed(dm)) %>%
     dm_clean_zoomed()
 }
 
@@ -611,4 +617,13 @@ cdm_update_zoomed_tbl <- function(dm) {
 cdm_zoom_out <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_zoom_out()", "dm::dm_discard_zoomed()")
   dm_discard_zoomed(dm = dm)
+}
+
+
+abort_rm_fk_col_missing <- function() {
+  abort(error_txt_rm_fk_col_missing(), .subclass = dm_error_full("rm_fk_col_missing"))
+}
+
+error_txt_rm_fk_col_missing <- function() {
+  "Parameter `columns` has to be set. Pass `NULL` for removing all references."
 }

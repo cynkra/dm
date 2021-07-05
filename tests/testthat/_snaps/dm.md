@@ -30,6 +30,9 @@
 
     Code
       copy_to(nyc_comp(), mtcars, "car_table")
+    Warning <lifecycle_warning_deprecated>
+      `copy_to.dm()` was deprecated in dm 0.2.0.
+      Use `copy_to(dm_get_con(dm), ...)` and `dm_add_tbl()`.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `car_table`
@@ -59,11 +62,11 @@
       # A tibble: 5 x 9
         table  data    segment display      pks     fks filters zoom  col_tracker_zoom
         <chr>  <list>  <chr>   <chr>   <list<t> <list<> <list<> <lis> <list>          
-      1 airli~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      2 airpo~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      3 fligh~ <tibbl~ <NA>    <NA>     [0 x 1] [0 x 2] [0 x 2] <NUL~ <NULL>          
-      4 planes <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      5 weath~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
+      1 airli~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+      2 airpo~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+      3 fligh~ <tibbl~ <NA>    <NA>     [0 x 1] [0 x 3] [0 x 2] <NUL~ <NULL>          
+      4 planes <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+      5 weath~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% mutate(origin_new = paste0(origin,
         " airport")) %>% compute() %>% dm_update_zoomed() %>% collect() %>%
@@ -72,17 +75,17 @@
       # A tibble: 5 x 9
         table  data    segment display      pks     fks filters zoom  col_tracker_zoom
         <chr>  <list>  <chr>   <chr>   <list<t> <list<> <list<> <lis> <list>          
-      1 airli~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      2 airpo~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      3 fligh~ <tibbl~ <NA>    <NA>     [0 x 1] [0 x 2] [0 x 2] <NUL~ <NULL>          
-      4 planes <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      5 weath~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
+      1 airli~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+      2 airpo~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+      3 fligh~ <tibbl~ <NA>    <NA>     [0 x 1] [0 x 3] [0 x 2] <NUL~ <NULL>          
+      4 planes <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+      5 weath~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()
     Message <simpleMessage>
       Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.
     Output
-      # A tibble: 861 x 15
+      # A tibble: 144 x 15
          origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
          <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
        1 EWR     2013     1    10     0  41    32    70.1      230       8.06
@@ -95,12 +98,12 @@
        8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90
        9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
-      # ... with 851 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
+      # ... with 134 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
       #   pressure <dbl>, visib <dbl>, time_hour <dttm>
     Code
       pull_tbl(nyc_comp(), weather)
     Output
-      # A tibble: 861 x 15
+      # A tibble: 144 x 15
          origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
          <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
        1 EWR     2013     1    10     0  41    32    70.1      230       8.06
@@ -113,12 +116,12 @@
        8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90
        9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
-      # ... with 851 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
+      # ... with 134 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
       #   pressure <dbl>, visib <dbl>, time_hour <dttm>
     Code
-      dm_zoom_to(nyc_comp(), weather) %>% pull_tbl()
+      nyc_comp() %>% dm_zoom_to(weather) %>% pull_tbl()
     Output
-      # A tibble: 861 x 15
+      # A tibble: 144 x 15
          origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
          <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
        1 EWR     2013     1    10     0  41    32    70.1      230       8.06
@@ -131,6 +134,6 @@
        8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90
        9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
-      # ... with 851 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
+      # ... with 134 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
       #   pressure <dbl>, visib <dbl>, time_hour <dttm>
 

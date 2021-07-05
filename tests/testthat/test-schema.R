@@ -27,7 +27,8 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_message(sql_schema_create(con_db, "1-dm_schema_TEST"), "created")
   expect_dm_error(sql_schema_create(con_db, "1-dm_schema_TEST"), "schema_exists")
   expect_identical(
-    sql_schema_list(con_db, include_default = FALSE) %>%
+    con_db %>%
+      sql_schema_list(include_default = FALSE) %>%
       filter(schema_name == "1-dm_schema_TEST") %>%
       pull(schema_name),
     "1-dm_schema_TEST"
@@ -55,7 +56,10 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_true("test_schema_1" %in% sql_schema_table_list(con_db)$table_name)
   expect_true("test_schema_1" %in% sql_schema_table_list(src_db)$table_name)
 
-  remote_table_1 <- filter(sql_schema_table_list(src_db), table_name == "test_schema_1") %>%
+  remote_table_1 <-
+    src_db %>%
+    sql_schema_table_list() %>%
+    filter(table_name == "test_schema_1") %>%
     pull(remote_name)
   expect_identical(
     tbl(src_db, remote_table_1) %>% collect(),

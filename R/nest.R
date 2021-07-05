@@ -16,19 +16,20 @@ nest_join_zoomed_dm <- function(x, ...) {
   }
 
   orig_pk <- dm_get_pk_impl(zoomed_dm, orig_table)
-  keys <- get_tracked_cols(zoomed_dm)
+  keys <- col_tracker_zoomed(zoomed_dm)
   if (!(orig_pk %in% keys)) {
     abort_pk_not_tracked(orig_table, orig_pk)
   }
   new_pk <- names(keys[keys == orig_pk])
 
-  child_tables <- get_orig_in_fks(zoomed_dm, orig_table) %>%
+  child_tables <-
+    get_orig_in_fks(zoomed_dm, orig_table) %>%
     mutate(data = map(child_table, ~ dm_get_tables_impl(zoomed_dm)[[.x]])) %>%
     # FIXME: should we check and warn/message, if no child table is in selected?
     filter(child_table %in% selected) %>%
     # perform joins in the order given in the ellipsis
     arrange(match(child_table, selected))
-  x <- get_zoomed_tbl(zoomed_dm)
+  x <- tbl_zoomed(zoomed_dm)
 
   for (i in seq_len(nrow(child_tables))) {
     x <- nest_join(
@@ -38,7 +39,7 @@ nest_join_zoomed_dm <- function(x, ...) {
       name = child_tables$child_table[i]
     ) %>%
       # FIXME: why does `nest_join()` not produce a `list_of`?
-      mutate(!!child_tables$child_table[i] := vctrs::as_list_of(!!sym(child_tables$child_table[i])))
+      mutate(!!child_tables$child_table[i] := as_list_of(!!sym(child_tables$child_table[i])))
   }
   replace_zoomed_tbl(zoomed_dm, x)
 }

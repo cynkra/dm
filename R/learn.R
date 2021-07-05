@@ -224,7 +224,8 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
   stopifnot(all(names(tables) %in% data_model_tables$table))
   stopifnot(all(data_model_tables$table %in% names(tables)))
 
-  pks <- columns %>%
+  pks <-
+    columns %>%
     select(column, table, key) %>%
     filter(key > 0) %>%
     select(-key)
@@ -234,12 +235,12 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
       table = character(),
       column = character(),
       ref = character(),
-      ref_col = character()
+      ref_column = character()
     )
   } else {
     fks <-
       data_model$references %>%
-      select(table, column, ref, ref_col) %>%
+      select(table, column, ref, ref_column = ref_col) %>%
       as_tibble()
   }
 
@@ -262,31 +263,31 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
   pks <-
     tibble(
       table = setdiff(table, pks$table),
-      pks = vctrs::list_of(new_pk())
+      pks = list_of(new_pk())
     ) %>%
-    vctrs::vec_rbind(pks)
+    vec_rbind(pks)
 
   # Legacy compatibility
   fks$column <- as.list(fks$column)
+  fks$ref_column <- as.list(fks$ref_column)
 
   fks <-
     fks %>%
-    select(-ref_col) %>%
     nest_compat(fks = -ref) %>%
     rename(table = ref)
 
   fks <-
     tibble(
       table = setdiff(table, fks$table),
-      fks = vctrs::list_of(new_fk())
+      fks = list_of(new_fk())
     ) %>%
-    vctrs::vec_rbind(fks)
+    vec_rbind(fks)
 
   # there are no filters at this stage
   filters <-
     tibble(
       table = table,
-      filters = vctrs::list_of(new_filter())
+      filters = list_of(new_filter())
     )
 
   def <-
@@ -309,13 +310,14 @@ nest_compat <- function(.data, ...) {
     remove <- eval_select_indices(quo(c(...)), colnames(.data))
     keep <- setdiff(seq_along(.data), remove)
 
-    nest <- vctrs::new_list_of(list(), ptype = .data %>% select(!!!remove))
+    nest <- new_list_of(list(), ptype = .data %>% select(!!!remove))
 
     .data %>%
       select(!!!keep) %>%
       mutate(!!new_col := !!nest)
   } else {
-    nest(.data, ...) %>%
-      mutate_at(vars(!!!new_col), vctrs::as_list_of)
+    .data %>%
+      nest(...) %>%
+      mutate_at(vars(!!!new_col), as_list_of)
   }
 }

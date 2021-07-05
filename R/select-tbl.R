@@ -61,7 +61,7 @@ dm_select_tbl_impl <- function(dm, selected, needs_repair = TRUE, repair = "uniq
 filter_recode_table_fks <- function(def, selected) {
   def$fks <-
     # as_list_of() is needed so that `fks` doesn't become a normal list
-    vctrs::as_list_of(map(
+    as_list_of(map(
       def$fks, filter_recode_fks_of_table,
       selected = selected
     ))
@@ -80,8 +80,9 @@ filter_recode_table_def <- function(data, selected) {
 filter_recode_fks_of_table <- function(data, selected) {
   # data$table can have multiple entries, we don't care about the order
   idx <- data$table %in% selected
-  data[idx, ] %>%
-    mutate(table = recode(table, !!!prep_recode(selected)))
+  out <- data[idx, ]
+  out$table <- recode(out$table, !!!prep_recode(selected))
+  out
 }
 
 prep_recode <- function(x) {

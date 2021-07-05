@@ -8,13 +8,13 @@ test_that("dm_add_tbl() works", {
 
   # can I retrieve the tibble under its old name?
   expect_equivalent_tbl(
-    tbl(dm_add_tbl(dm_for_filter(), data_card_1()), "data_card_1()"),
+    dm_add_tbl(dm_for_filter(), data_card_1())[["data_card_1()"]],
     data_card_1()
   )
 
   # can I retrieve the tibble under a new name?
   expect_equivalent_tbl(
-    tbl(dm_add_tbl(dm_for_filter(), test = data_card_1()), "test"),
+    dm_add_tbl(dm_for_filter(), test = data_card_1())[["test"]],
     data_card_1()
   )
 
@@ -26,14 +26,14 @@ test_that("dm_add_tbl() works", {
 
   # we accept even weird table names, as long as they are unique
   expect_equivalent_tbl(
-    tbl(data_card_1() %>% dm_add_tbl(dm_for_filter(), .), "."),
+    dm_add_tbl(dm_for_filter(), . = data_card_1())[["."]],
     data_card_1()
   )
 
   # do I avoid the warning when piping the table but setting the name?
   expect_silent(
     expect_equivalent_tbl(
-      dm_for_filter() %>% dm_add_tbl(new_name = data_card_1()) %>% tbl("new_name"),
+      dm_for_filter() %>% dm_add_tbl(new_name = data_card_1()) %>% pull_tbl(new_name),
       data_card_1()
     )
   )
@@ -47,8 +47,8 @@ test_that("dm_add_tbl() works", {
 
   # 2. Is the resulting order of the tables correct?
   expect_identical(
-    src_tbls(dm_add_tbl(dm_for_filter(), data_card_1(), data_card_2())),
-    c(src_tbls(dm_for_filter()), "data_card_1()", "data_card_2()")
+    src_tbls_impl(dm_add_tbl(dm_for_filter(), data_card_1(), data_card_2())),
+    c(src_tbls_impl(dm_for_filter()), "data_card_1()", "data_card_2()")
   )
 
   # Is an error thrown in case I try to give the new table an old table's name if `repair = "check_unique"`?
@@ -59,7 +59,7 @@ test_that("dm_add_tbl() works", {
 
   # are in the default case (`repair = 'unique'`) the tables renamed (old table AND new table) according to "unique" default setting
   expect_identical(
-    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), quiet = TRUE) %>% src_tbls(),
+    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), quiet = TRUE) %>% src_tbls_impl(),
     c("tf_1...1", "tf_2", "tf_3", "tf_4", "tf_5", "tf_6", "tf_1...7")
   )
 
