@@ -130,7 +130,7 @@ dm_write_zip <- function(dm, zip_file_path, overwrite = FALSE) {
   if (file.exists(zip_file_path)) {
     if (overwrite) {
       message(glue::glue("Overwriting file {tick(zip_file_path)}."))
-    } else{
+    } else {
       abort_file_exists(zip_file_path)
     }
   }
@@ -173,11 +173,10 @@ dm_read_zip <- function(zip_file_path) {
 #' @rdname dm-read-write
 #' @export
 dm_write_xlsx <- function(dm, xlsx_file_path, overwrite = FALSE) {
-
   if (file.exists(xlsx_file_path)) {
     if (overwrite) {
       message(glue::glue("Overwriting file {tick(xlsx_file_path)}."))
-    } else{
+    } else {
       abort_file_exists(xlsx_file_path)
     }
   }
@@ -192,8 +191,8 @@ dm_write_xlsx <- function(dm, xlsx_file_path, overwrite = FALSE) {
       "___coltypes_dm" = xlsx_tables$col_class_tibble,
       "___pk_dm" = xlsx_tables$pk_tibble,
       "___fk_dm" = xlsx_tables$fk_tibble
-      )
     )
+  )
 
   writexl::write_xlsx(xl_sheet_list, path = xlsx_file_path)
   message(
@@ -238,8 +237,8 @@ dm_read_xlsx <- function(xlsx_file_path) {
     summarize(column = list(column), class = list(class))
 
   pk_info <- readxl::read_xlsx(
-      xlsx_file_path,
-      sheet = "___pk_dm",
+    xlsx_file_path,
+    sheet = "___pk_dm",
     col_types = "text"
   )
 
@@ -258,7 +257,8 @@ dm_read_xlsx <- function(xlsx_file_path) {
 
   table_tibble <- map(
     table_sheets_sorted,
-    readxl::read_xlsx, path = xlsx_file_path
+    readxl::read_xlsx,
+    path = xlsx_file_path
   ) %>%
     set_names(table_names) %>%
     enframe(name = "table", value = "data")
@@ -279,7 +279,6 @@ dm_read_xlsx <- function(xlsx_file_path) {
 }
 
 make_dm <- function(def_base, table_tibble, pk_info, fk_info) {
-
   pk_tibble <- pk_info %>%
     group_by(table) %>%
     mutate(pks = list(tibble(column = list(pk_col)))) %>%
@@ -327,7 +326,9 @@ prepare_tbls_for_def_and_class <- function(dm, csv) {
   check_param_class(dm, "dm")
   check_not_zoomed(dm, -3)
   check_no_filter(dm, -3)
-  if (is_empty(dm)) {abort_empty_dm()}
+  if (is_empty(dm)) {
+    abort_empty_dm()
+  }
 
   if (is_db(dm_get_src(dm))) {
     abort_only_for_local_src(dm_get_src(dm))
@@ -343,7 +344,7 @@ prepare_tbls_for_def_and_class <- function(dm, csv) {
   if (csv) {
     # are all classes among the classes we support for csv?
     if (!all(col_class_tibble$class %in% class_translation_r_readr$r_class)) {
-    abort_class_not_supported(setdiff(col_class_tibble$class, class_translation_r_readr$r_class))
+      abort_class_not_supported(setdiff(col_class_tibble$class, class_translation_r_readr$r_class))
     }
   } else {
     # are all classes among the classes we support for xlsx?
@@ -406,7 +407,9 @@ dm_write_csv_impl <- function(dm, csv_directory, zip) {
 dm_col_class <- function(dm) {
   tables <- dm_get_tables_impl(dm)
   map(dm_get_tables_impl(dm), colnames) %>%
-    imap_dfr(function(col, table) {tibble(table = table, column = col)}) %>%
+    imap_dfr(function(col, table) {
+      tibble(table = table, column = col)
+    }) %>%
     mutate(class = map2_chr(
       table,
       column,
@@ -414,9 +417,9 @@ dm_col_class <- function(dm) {
         tables[[table]] %>%
           pull(column) %>%
           class() %>%
-          pluck(1)}
-      )
-    )
+          pluck(1)
+      }
+    ))
 }
 
 readr_translate <- function(r_class) {
@@ -448,8 +451,10 @@ convert_all_times_to_utc <- function(table_list, col_class_table) {
   if (any(col_class_table$class %in% c("POSIXlt", "POSIXct"))) {
     to_convert <- filter(col_class_table, class %in% c("POSIXlt", "POSIXct"))
     message(
-      c("Converting the datetime values for the following column(s) to timezone `UTC`:\n",
-        glue::glue("{paste0(to_convert$table, '$', to_convert$column, collapse = '\n')}"))
+      c(
+        "Converting the datetime values for the following column(s) to timezone `UTC`:\n",
+        glue::glue("{paste0(to_convert$table, '$', to_convert$column, collapse = '\n')}")
+      )
     )
     table_list <- reduce2(to_convert$table, to_convert$column, function(tables, table, column) {
       tables[[table]] <- tables[[table]] %>%
