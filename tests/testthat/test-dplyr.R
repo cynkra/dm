@@ -437,7 +437,11 @@ test_that("key tracking works", {
       summarize(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
+  })
+})
 
+test_that("key tracking works (2)", {
+  expect_snapshot({
     "transmute()"
 
     # grouped by two key cols: "c" and "e" -> these two remain
@@ -445,13 +449,26 @@ test_that("key tracking works", {
       transmute(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
+  })
+})
 
+test_that("key tracking works (3)", {
+  # https://github.com/tidyverse/dbplyr/issues/670
+  skip_if_remote_src()
+
+  # FKs that point to a PK that vanished, should also vanish
+  expect_snapshot({
     # grouped_by non-key col means, that no keys remain
     zoomed_grouped_in_dm %>%
       transmute(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
+  })
+})
 
+test_that("key tracking works (4)", {
+  # FKs that point to a PK that vanished, should also vanish
+  expect_snapshot({
     "mutate()"
 
     # grouped by two key cols: "c" and "e" -> these two remain
@@ -485,7 +502,7 @@ test_that("key tracking works", {
   })
 })
 
-test_that("key tracking works (2)", {
+test_that("key tracking works (5)", {
   # FKs that point to a PK that vanished, should also vanish
   expect_snapshot({
     zoomed_grouped_in_dm %>%
@@ -494,7 +511,7 @@ test_that("key tracking works (2)", {
   })
 })
 
-test_that("key tracking works (3)", {
+test_that("key tracking works (6)", {
   expect_identical(
     zoomed_dm() %>%
       distinct(d_new = d) %>%
