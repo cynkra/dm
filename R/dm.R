@@ -93,7 +93,7 @@ new_dm <- function(tables = list()) {
   new_dm2(tables)
 }
 
-new_dm2 <- function(tables,
+new_dm2 <- function(tables = list(),
                     pks = structure(list(), names = character()),
                     fks = structure(list(), names = character()),
                     validate = TRUE) {
@@ -138,9 +138,9 @@ new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
   out <- structure(list(def = def), class = class, version = 1L)
 
   # Enable for strict tests:
-  if (validate) {
-    validate_dm(out)
-  }
+  # if (validate) {
+  #   validate_dm(out)
+  # }
 
   out
 }

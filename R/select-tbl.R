@@ -42,7 +42,7 @@ dm_rename_tbl <- function(dm, ...) {
   dm_select_tbl_impl(dm, selected)
 }
 
-dm_select_tbl_impl <- function(dm, selected, needs_repair = TRUE, repair = "unique", quiet = FALSE) {
+dm_select_tbl_impl <- function(dm, selected) {
   if (anyDuplicated(names(selected))) abort_need_unique_names(names(selected[duplicated(names(selected))]))
 
   # Required to avoid an error further on
