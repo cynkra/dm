@@ -132,10 +132,8 @@ new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
   )
   out <- structure(list(def = def), class = class, version = 1L)
 
-  # Enable for strict tests:
-  # if (validate) {
-  #   validate_dm(out)
-  # }
+  # Enable for strict tests (search for INSTRUMENT in .github/workflows):
+  # if (validate) { validate_dm(out) } # INSTRUMENT: validate
 
   out
 }
