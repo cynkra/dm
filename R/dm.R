@@ -138,9 +138,9 @@ new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
   out <- structure(list(def = def), class = class, version = 1L)
 
   # Enable for strict tests:
-  if (validate) {
-    validate_dm(out)
-  }
+  # if (validate) {
+  #   validate_dm(out)
+  # }
 
   out
 }
