@@ -488,7 +488,13 @@ test_that("key tracking works (4)", {
       mutate(g_new = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
+  })
+})
 
+test_that("key tracking works (5)", {
+  skip_if_remote_src()
+
+  expect_snapshot({
     "chain of renames & other transformations"
 
     zoomed_grouped_out_dm %>%
@@ -502,7 +508,7 @@ test_that("key tracking works (4)", {
   })
 })
 
-test_that("key tracking works (5)", {
+test_that("key tracking works (6)", {
   # FKs that point to a PK that vanished, should also vanish
   expect_snapshot({
     zoomed_grouped_in_dm %>%
@@ -511,7 +517,7 @@ test_that("key tracking works (5)", {
   })
 })
 
-test_that("key tracking works (6)", {
+test_that("key tracking works for distinct() and arrange()", {
   expect_identical(
     zoomed_dm() %>%
       distinct(d_new = d) %>%
