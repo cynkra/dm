@@ -441,6 +441,9 @@ test_that("key tracking works", {
 })
 
 test_that("key tracking works (2)", {
+  # https://github.com/tidyverse/dbplyr/issues/670
+  skip_if_remote_src()
+
   expect_snapshot({
     "transmute()"
 
@@ -453,9 +456,6 @@ test_that("key tracking works (2)", {
 })
 
 test_that("key tracking works (3)", {
-  # https://github.com/tidyverse/dbplyr/issues/670
-  skip_if_remote_src()
-
   # FKs that point to a PK that vanished, should also vanish
   expect_snapshot({
     # grouped_by non-key col means, that no keys remain
