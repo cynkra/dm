@@ -187,6 +187,9 @@
       4 tf_5        l             tf_4         h              
       5 tf_5        m             tf_6         n              
       
+
+# key tracking works (2)
+
     Code
       # transmute()
       zoomed_grouped_out_dm %>% transmute(d_mean = mean(d)) %>% dm_insert_zoomed(
@@ -215,6 +218,9 @@
       5 tf_5        l             tf_4         h              
       6 tf_5        m             tf_6         n              
       
+
+# key tracking works (3)
+
     Code
       zoomed_grouped_in_dm %>% transmute(g_list = list(g)) %>% dm_insert_zoomed(
         "new_tbl") %>% get_all_keys()
@@ -240,6 +246,9 @@
       4 tf_5        l             tf_4         h              
       5 tf_5        m             tf_6         n              
       
+
+# key tracking works (4)
+
     Code
       # mutate()
       zoomed_grouped_out_dm %>% mutate(d_mean = mean(d), d = d * 2) %>%
@@ -321,6 +330,9 @@
       6 tf_2        e, e1         new_tbl      f, f1          
       7 tf_4        j, j1         new_tbl      f, f1          
       
+
+# key tracking works (5)
+
     Code
       # chain of renames & other transformations
       zoomed_grouped_out_dm %>% summarize(d_mean = mean(d)) %>% ungroup() %>% rename(
@@ -350,7 +362,7 @@
       6 tf_5        m             tf_6         n              
       
 
-# key tracking works (2)
+# key tracking works (6)
 
     Code
       zoomed_grouped_in_dm %>% select(g_new = g) %>% get_all_keys("tf_3")
