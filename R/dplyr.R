@@ -56,6 +56,10 @@ transmute.zoomed_dm <- function(.data, ...) {
   # groups are "selected"; key tracking will continue for them
   groups <- set_names(map_chr(groups(tbl), as_string))
   transmuted_tbl <- transmute(tbl, ...)
+
+  # columns can vanish, https://github.com/tidyverse/dbplyr/issues/670:
+  groups <- groups[names(groups) %in% colnames(transmuted_tbl)]
+
   new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
 
   replace_zoomed_tbl(.data, transmuted_tbl, new_tracked_cols_zoom)

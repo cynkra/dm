@@ -17,7 +17,7 @@ validate_dm <- function(x) {
 
   def <- dm_get_def(x)
 
-  boilerplate <- dm_get_def(new_dm())
+  boilerplate <- dm_get_def(new_dm2(validate = FALSE))
 
   table_names <- def$table
   if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
@@ -101,8 +101,10 @@ check_fk_child_tables <- function(child_tables, dm_tables) {
 }
 
 check_colnames <- function(key_tibble, dm_col_names, which) {
-  if (!all(map2_lgl(key_tibble$table, key_tibble$column, ~ ..2 %in% dm_col_names[[..1]]))) {
-    abort_dm_invalid(glue("At least one {which} column name not in `dm` tables' column names."))
+  good <- map2_lgl(key_tibble$table, key_tibble$column, ~ ..2 %in% dm_col_names[[..1]])
+  if (!all(good)) {
+    bad_key <- key_tibble[which(!good)[[1]], ]
+    abort_dm_invalid(glue("{which} column name not in `dm` tables' column names: `{bad_key$table}`$`{bad_key$column}`"))
   }
 }
 

@@ -90,23 +90,26 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #' @rdname dm
 #' @export
 new_dm <- function(tables = list()) {
+  new_dm2(tables)
+}
+
+new_dm2 <- function(tables = list(),
+                    pks = structure(list(), names = character()),
+                    fks = structure(list(), names = character()),
+                    validate = TRUE) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
+
+  stopifnot(!is.null(names(pks)), all(names(pks) %in% table))
+  stopifnot(!is.null(names(fks)), all(names(fks) %in% table))
+
   zoom <- new_zoom()
   col_tracker_zoom <- new_col_tracker_zoom()
 
-  pks <-
-    tibble(
-      table = table,
-      pks = list_of(new_pk())
-    )
+  pks_df <- enframe(pks, "table", "pks")
 
-  fks <-
-    tibble(
-      table = table,
-      fks = list_of(new_fk())
-    )
+  fks_df <- enframe(fks, "table", "fks")
 
   filters <-
     tibble(
@@ -116,13 +119,15 @@ new_dm <- function(tables = list()) {
 
   def <-
     tibble(table, data, segment = NA_character_, display = NA_character_) %>%
-    left_join(pks, by = "table") %>%
-    left_join(fks, by = "table") %>%
-    left_join(filters, by = "table") %>%
+    left_join(pks_df, by = "table") %>%
+    mutate(pks = as_list_of(map(pks, `%||%`, new_pk()), .ptype = new_pk())) %>%
+    left_join(fks_df, by = "table") %>%
+    mutate(fks = as_list_of(map(fks, `%||%`, new_fk()), .ptype = new_fk())) %>%
+    mutate(filters = list_of(new_filter())) %>%
     left_join(zoom, by = "table") %>%
     left_join(col_tracker_zoom, by = "table")
 
-  new_dm3(def, validate = FALSE)
+  new_dm3(def, validate = validate)
 }
 
 new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
