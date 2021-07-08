@@ -93,7 +93,13 @@ jobs:
 
       - name: Instrument R code for validation
         run: |
+          if [ $(git status --porcelain | wc -l) -gt 0 ]; then
+            echo "Fatal: git working copy not clean"
+          fi
           sed -i -r '/INSTRUMENT: validate/ s/^( +)# /\1/g' R/*
+          if [ $(git status --porcelain | wc -l) -eq 0 ]; then
+            echo "Fatal: substitution did not change anything"
+          fi
 
       # Begin custom: after install
       - name: Run tests
