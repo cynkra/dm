@@ -47,7 +47,7 @@ dm_write_csv <- function(dm, csv_directory) {
       # remove directory in case it was created but there was an error
       try(unlink(csv_directory, recursive = TRUE))
       # keep error message and class though
-      abort(conditionMessage(e), .subclass = class(e))
+      stop(e)
     }
   )
 }
