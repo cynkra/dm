@@ -25,19 +25,19 @@ dm_read_xlsx(xlsx_file_path)
 \item{dm}{A \code{dm} object.}
 
 \item{csv_directory}{For \code{dm_write_csv()}: The path to a non-existent or empty
-directory to write the \code{csv}-files defining the \code{dm} to.
+directory to write the \code{csv} files defining the \code{dm} to.
 
-For \code{dm_read_csv()}: The path to the directory containing the \code{dm} as \code{csv-files}.}
+For \code{dm_read_csv()}: The path to the directory containing the \code{dm} as \code{csv} files.}
 
-\item{zip_file_path}{For \code{dm_write_zip}: The file path to the \code{zip}-file to write.
+\item{zip_file_path}{For \code{dm_write_zip}: The file path to the \code{zip} file to write.
 
-For \code{dm_read_zip}: The file path to the \code{zip}-file to read the \code{dm} from.}
+For \code{dm_read_zip}: The file path to the \code{zip} file to read the \code{dm} from.}
 
 \item{overwrite}{Logical, default: \code{FALSE}. In case the file already exists, should it be overwritten?}
 
-\item{xlsx_file_path}{For \code{dm_write_xlsx()}: The file path to the \code{xlsx}-file to write.
+\item{xlsx_file_path}{For \code{dm_write_xlsx()}: The file path to the \code{xlsx} file to write.
 
-For \code{dm_read_xlsx()}: The file path to the \code{xlsx}-file to read the \code{dm} from.}
+For \code{dm_read_xlsx()}: The file path to the \code{xlsx} file to read the \code{dm} from.}
 }
 \value{
 \code{read}-family: A \code{dm} object.
@@ -57,17 +57,17 @@ Not all column types are supported, only: \code{character}, \code{Date}, \code{i
 due to not tracking the timezone.
 An informative message will be issued when this happens.
 
-\code{dm_write_csv()}: write a \code{dm} to a collection of \code{csv}-files to a non-existent or empty directory.
+\code{dm_write_csv()}: write a \code{dm} to a collection of \code{csv} files to a non-existent or empty directory.
 
 \code{dm_read_csv()}: read a \code{dm} from a directory created using \code{dm_write_csv()}.
 
-\code{dm_write_zip()}: write a \code{dm} to a \code{zip}-file containing a collection of \code{csv}-files.
+\code{dm_write_zip()}: write a \code{dm} to a \code{zip} file containing a collection of \code{csv} files.
 
-\code{dm_read_zip()}: read a \code{dm} from a \code{zip}-file created using \code{dm_write_zip()}.
+\code{dm_read_zip()}: read a \code{dm} from a \code{zip} file created using \code{dm_write_zip()}.
 
-\code{dm_write_xlsx()}: write a \code{dm} to an \code{xlsx}-file containing several tables defining the \code{dm}.
+\code{dm_write_xlsx()}: write a \code{dm} to an \code{xlsx} file containing several tables defining the \code{dm}.
 
-\code{dm_read_xlsx()}: read a \code{dm} from an \code{xlsx}-file created using \code{dm_write_xlsx()}.
+\code{dm_read_xlsx()}: read a \code{dm} from an \code{xlsx} file created using \code{dm_write_xlsx()}.
 }
 \examples{
 \dontrun{

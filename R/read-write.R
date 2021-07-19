@@ -7,9 +7,9 @@
 #'
 #' @inheritParams dm_add_pk
 #' @param csv_directory For `dm_write_csv()`: The path to a non-existent or empty
-#' directory to write the `csv`-files defining the `dm` to.
+#' directory to write the `csv` files defining the `dm` to.
 #'
-#' For `dm_read_csv()`: The path to the directory containing the `dm` as `csv-files`.
+#' For `dm_read_csv()`: The path to the directory containing the `dm` as `csv` files.
 #' @details
 #' Not all column types are supported, only: `character`, `Date`, `integer`, `logical`, `numeric`,
 #' `POSIXct`, `POSIXlt`.
@@ -18,7 +18,7 @@
 #' due to not tracking the timezone.
 #' An informative message will be issued when this happens.
 #'
-#' `dm_write_csv()`: write a `dm` to a collection of `csv`-files to a non-existent or empty directory.
+#' `dm_write_csv()`: write a `dm` to a collection of `csv` files to a non-existent or empty directory.
 #'
 #' @return `read`-family: A `dm` object.
 #'
@@ -119,11 +119,11 @@ dm_read_csv <- function(csv_directory) {
 
 #' @inheritParams dm_write_csv
 #' @param zip_file_path
-#' For `dm_write_zip`: The file path to the `zip`-file to write.
+#' For `dm_write_zip`: The file path to the `zip` file to write.
 #'
-#' For `dm_read_zip`: The file path to the `zip`-file to read the `dm` from.
+#' For `dm_read_zip`: The file path to the `zip` file to read the `dm` from.
 #' @param overwrite Logical, default: `FALSE`. In case the file already exists, should it be overwritten?
-#' @details `dm_write_zip()`: write a `dm` to a `zip`-file containing a collection of `csv`-files.
+#' @details `dm_write_zip()`: write a `dm` to a `zip` file containing a collection of `csv` files.
 #' @rdname dm-read-write
 #' @export
 dm_write_zip <- function(dm, zip_file_path, overwrite = FALSE) {
@@ -148,11 +148,11 @@ dm_write_zip <- function(dm, zip_file_path, overwrite = FALSE) {
     files = file.path(csv_directory, csv_files),
     flags = "-j -q"
   )
-  message(glue::glue("Written `dm` as zip-file {tick(zip_file_path)}."))
+  message(glue::glue("Written `dm` as zip file {tick(zip_file_path)}."))
   invisible(dm)
 }
 
-#' @details `dm_read_zip()`: read a `dm` from a `zip`-file created using `dm_write_zip()`.
+#' @details `dm_read_zip()`: read a `dm` from a `zip` file created using `dm_write_zip()`.
 #' @rdname dm-read-write
 #' @export
 dm_read_zip <- function(zip_file_path) {
@@ -166,10 +166,10 @@ dm_read_zip <- function(zip_file_path) {
 
 #' @inheritParams dm_write_zip
 #' @param xlsx_file_path
-#' For `dm_write_xlsx()`: The file path to the `xlsx`-file to write.
+#' For `dm_write_xlsx()`: The file path to the `xlsx` file to write.
 #'
-#' For `dm_read_xlsx()`: The file path to the `xlsx`-file to read the `dm` from.
-#' @details `dm_write_xlsx()`: write a `dm` to an `xlsx`-file containing several tables defining the `dm`.
+#' For `dm_read_xlsx()`: The file path to the `xlsx` file to read the `dm` from.
+#' @details `dm_write_xlsx()`: write a `dm` to an `xlsx` file containing several tables defining the `dm`.
 #' @rdname dm-read-write
 #' @export
 dm_write_xlsx <- function(dm, xlsx_file_path, overwrite = FALSE) {
@@ -196,12 +196,12 @@ dm_write_xlsx <- function(dm, xlsx_file_path, overwrite = FALSE) {
 
   writexl::write_xlsx(xl_sheet_list, path = xlsx_file_path)
   message(
-    glue::glue("Written `dm` as xlsx-file {tick(xlsx_file_path)}.")
+    glue::glue("Written `dm` as xlsx file {tick(xlsx_file_path)}.")
   )
   invisible(dm)
 }
 
-#' @details `dm_read_xlsx()`: read a `dm` from an `xlsx`-file created using `dm_write_xlsx()`.
+#' @details `dm_read_xlsx()`: read a `dm` from an `xlsx` file created using `dm_write_xlsx()`.
 #'
 #' @rdname dm-read-write
 #' @export
@@ -398,7 +398,7 @@ dm_write_csv_impl <- function(dm, csv_directory, zip) {
   walk2(dm_tables, csv_table_filenames, readr::write_csv)
   if (!zip) {
     message(
-      glue::glue("Written `dm` as collection of csv-files to directory {tick(csv_directory)}.")
+      glue::glue("Written `dm` as collection of csv files to directory {tick(csv_directory)}.")
     )
   }
   invisible(dm)

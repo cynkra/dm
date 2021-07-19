@@ -652,7 +652,7 @@ abort_one_of_schema_table_names <- function() {
 
 abort_dir_not_empty <- function() {
   abort(
-    "Please choose a non-existent or empty directory for the csv-files.",
+    "Please choose a non-existent or empty directory for the csv files.",
     .subclass = dm_error_full("dir_not_empty")
   )
 }

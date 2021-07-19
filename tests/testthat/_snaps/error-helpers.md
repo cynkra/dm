@@ -281,7 +281,7 @@
     Code
       abort_dir_not_empty()
     Error <dm_error_dir_not_empty>
-      Please choose a non-existent or empty directory for the csv-files.
+      Please choose a non-existent or empty directory for the csv files.
     Code
       abort_file_exists("existing_file")
     Error <dm_error_file_exists>

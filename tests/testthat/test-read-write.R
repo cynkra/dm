@@ -15,7 +15,7 @@ test_that("read and write csv/zip/xlsx works", {
   # writing into a non-existing directory
   expect_message(
     dm_write_csv(dm_for_filter(), csv_directory = test_path),
-    "csv-files"
+    "csv files"
   )
 
   expect_equivalent_dm(
@@ -34,7 +34,7 @@ test_that("read and write csv/zip/xlsx works", {
 
   expect_message(
     dm_write_csv(dm_for_filter(), csv_directory = test_path_2),
-    "csv-files"
+    "csv files"
   )
 
   expect_equivalent_dm(
@@ -55,7 +55,7 @@ test_that("read and write csv/zip/xlsx works", {
 
   expect_message(
     dm_write_zip(dm_for_filter(), zip_file_path = file.path(test_path, "dm.zip")),
-    "zip-file"
+    "zip file"
   )
 
   expect_equivalent_dm(
@@ -66,7 +66,7 @@ test_that("read and write csv/zip/xlsx works", {
 
   expect_message(
     dm_write_xlsx(dm_for_filter(), xlsx_file_path = file.path(test_path, "dm.xlsx")),
-    "xlsx-file"
+    "xlsx file"
   )
 
   expect_equivalent_dm(
@@ -91,7 +91,7 @@ test_that("read and write csv/zip/xlsx works", {
         zip_file_path = file.path(test_path, "dm.zip"),
         overwrite = TRUE),
       "Overwriting file"),
-    "zip-file"
+    "zip file"
   )
 
   expect_equivalent_dm(
@@ -106,7 +106,7 @@ test_that("read and write csv/zip/xlsx works", {
         xlsx_file_path = file.path(test_path, "dm.xlsx"),
         overwrite = TRUE),
       "Overwriting file"),
-    "xlsx-file"
+    "xlsx file"
   )
 
   expect_equivalent_dm(
@@ -150,7 +150,7 @@ test_that("read and write csv/zip/xlsx works", {
   expect_message(
     expect_message(
       dm_write_csv(no_key_date_time_bool_dm, csv_directory = test_path_3),
-      "csv-files"
+      "csv files"
     ),
     "`UTC`"
   )
@@ -163,7 +163,7 @@ test_that("read and write csv/zip/xlsx works", {
   expect_message(
     expect_message(
       dm_write_zip(no_key_date_time_bool_dm, zip_file_path = file.path(test_path_3, "dm.zip")),
-      "zip-file"
+      "zip file"
     ),
     "`UTC`"
   )
@@ -176,7 +176,7 @@ test_that("read and write csv/zip/xlsx works", {
   expect_message(
     expect_message(
       dm_write_xlsx(no_key_date_time_bool_dm, xlsx_file_path = file.path(test_path_3, "dm.xlsx")),
-      "xlsx-file"
+      "xlsx file"
       ),
     "`UTC`"
   )
