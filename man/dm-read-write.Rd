@@ -29,9 +29,9 @@ directory to write the \code{csv} files defining the \code{dm} to.
 
 For \code{dm_read_csv()}: The path to the directory containing the \code{dm} as \code{csv} files.}
 
-\item{zip_file_path}{For \code{dm_write_zip}: The file path to the \code{zip} file to write.
+\item{zip_file_path}{For \code{dm_write_zip()}: The file path to the \code{zip} file to write.
 
-For \code{dm_read_zip}: The file path to the \code{zip} file to read the \code{dm} from.}
+For \code{dm_read_zip()}: The file path to the \code{zip} file to read the \code{dm} from.}
 
 \item{overwrite}{Logical, default: \code{FALSE}. In case the file already exists, should it be overwritten?}
 

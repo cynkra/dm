@@ -119,9 +119,9 @@ dm_read_csv <- function(csv_directory) {
 
 #' @inheritParams dm_write_csv
 #' @param zip_file_path
-#' For `dm_write_zip`: The file path to the `zip` file to write.
+#' For `dm_write_zip()`: The file path to the `zip` file to write.
 #'
-#' For `dm_read_zip`: The file path to the `zip` file to read the `dm` from.
+#' For `dm_read_zip()`: The file path to the `zip` file to read the `dm` from.
 #' @param overwrite Logical, default: `FALSE`. In case the file already exists, should it be overwritten?
 #' @details `dm_write_zip()`: write a `dm` to a `zip` file containing a collection of `csv` files.
 #' @rdname dm-read-write
