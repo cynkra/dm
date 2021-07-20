@@ -87,16 +87,17 @@ dm_read_csv <- function(csv_directory) {
     summarize(readr_class = paste0(readr_class, collapse = ""))
   # sort column classes according to column def_base$table
   col_class_sorted <- col_class_info$readr_class[order(match(col_class_info$table, table_names))]
-
-  pk_info <- readr::read_csv(
+  pks <- readr::read_csv(
     file.path(csv_directory, "___pk_file_dm.csv"),
     col_types = "cc"
-  )
+  ) %>%
+    reformat_pks()
 
-  fk_info <- readr::read_csv(
+  fks <- readr::read_csv(
     file.path(csv_directory, "___fk_file_dm.csv"),
-    col_types = "ccci"
-  )
+    col_types = "cccci"
+  ) %>%
+    reformat_fks()
 
   table_files <- setdiff(
     list.files(csv_directory),
@@ -116,12 +117,16 @@ dm_read_csv <- function(csv_directory) {
     ~ readr::read_csv(file = .x, col_types = .y)
   ) %>%
     set_names(table_names) %>%
-    enframe(name = "table", value = "data") %>%
     # empty subset is necessary because
-    # https://www.tidyverse.org/blog/2018/12/readr-1-3-1/#tibble-subclass
-    mutate(data = map(data, `[`))
+    #   # https://www.tidyverse.org/blog/2018/12/readr-1-3-1/#tibble-subclass
+    map(`[`)
 
-  make_dm(def_base, table_tibble, pk_info, fk_info)
+  colors <- select(def_base, display, table) %>%
+    filter(!is.na(display)) %>%
+    deframe()
+
+  new_dm2(tables = table_tibble, pks, fks) %>%
+    dm_set_colors(!!!colors)
 }
 
 #' @inheritParams dm_write_csv
@@ -243,17 +248,19 @@ dm_read_xlsx <- function(xlsx_file_path) {
     group_by(table) %>%
     summarize(column = list(column), class = list(class))
 
-  pk_info <- readxl::read_xlsx(
+  pks <- readxl::read_xlsx(
     xlsx_file_path,
     sheet = "___pk_dm",
     col_types = "text"
-  )
+  ) %>%
+    reformat_pks()
 
-  fk_info <- readxl::read_xlsx(
+  fks <- readxl::read_xlsx(
     xlsx_file_path,
     sheet = "___fk_dm",
-    col_types = c("text", "text", "text", "numeric")
-  )
+    col_types = c("text", "text", "text", "text", "numeric")
+  ) %>%
+    reformat_fks()
 
   table_sheets <- setdiff(
     sheet_list,
@@ -284,54 +291,14 @@ dm_read_xlsx <- function(xlsx_file_path) {
       mutate(data, !!column := get(paste0("as.", class))(!!sym(column)))
     }, .init = data)
     }) %>%
-    set_names(table_names) %>%
-    enframe(name = "table", value = "data")
+    set_names(table_names)
 
-  make_dm(def_base, table_tibble_reclassed, pk_info, fk_info)
-}
+  colors <- select(def_base, display, table) %>%
+    filter(!is.na(display)) %>%
+    deframe()
 
-make_dm <- function(def_base, table_tibble, pk_info, fk_info) {
-  pk_tibble <- pk_info %>%
-    group_by(table) %>%
-    mutate(pks = list(tibble(column = list(pk_col)))) %>%
-    ungroup() %>%
-    select(-pk_col)
-
-  fk_tibble <- fk_info %>%
-    group_by(child_table, key_nr) %>%
-    summarize(fks = list(
-      tibble(
-        table = unique(parent_table),
-        column = list(fk_col)
-      )
-    ), .groups = "drop_last"
-    ) %>%
-    summarize(
-      fks = list(bind_rows(fks)),
-      .groups = "drop"
-    )
-
-  zoom <- new_zoom()
-  col_tracker_zoom <- new_col_tracker_zoom()
-  filter_tibble <-
-    tibble(
-      table = def_base$table,
-      filters = vctrs::list_of(new_filter())
-    )
-
-  def_base %>%
-    left_join(table_tibble, by = "table") %>%
-    relocate(data, .after = "table") %>%
-    left_join(pk_tibble, by = "table") %>%
-    mutate(pks = map(pks, ~ if (is_null(.x)) {new_pk()} else {.x})) %>%
-    mutate(pks = vctrs::as_list_of(pks)) %>%
-    left_join(fk_tibble, by = c("table" = "child_table")) %>%
-    mutate(fks = map(fks, ~ if (is_null(.x)) {new_fk()} else {.x})) %>%
-    mutate(fks = vctrs::as_list_of(fks)) %>%
-    left_join(filter_tibble, by = "table") %>%
-    left_join(zoom, by = "table") %>%
-    left_join(col_tracker_zoom, by = "table") %>%
-    new_dm3()
+  new_dm2(tables = table_tibble_reclassed, pks, fks) %>%
+    dm_set_colors(!!!colors)
 }
 
 prepare_tbls_for_def_and_class <- function(dm, csv) {
@@ -365,19 +332,16 @@ prepare_tbls_for_def_and_class <- function(dm, csv) {
     }
   }
 
-  # FIXME: might need to revisit for compound keys
-  pk_tibble <- dm_get_all_pks_impl(dm)
+  pk_tibble <- dm_get_all_pks_impl(dm) %>%
+    # We want one row per key column (compound keys)
+    # plus, if the table is empty, we do not want any remaining list columns
+    repair_if_empty("pk_col")
 
-  # not using dm_get_all_fks_impl(), because it will break with introduction of compound keys
-  # FIXME: might need to revisit for compound keys
-  fk_tibble <- dm_get_def(dm) %>%
-    select("child_table" = table, fks) %>%
-    unnest(fks) %>%
-    rename(parent_table = table, fk_col = column) %>%
-    # key number is needed in case of compound keys
-    # FIXME: referenced column of PK then needs to be given too
+  fk_tibble <- dm_get_all_fks_impl(dm) %>%
+    # in case there are 2 independent FKs from one table to another, we need to
+    # be able to distinguish them when reading from a file
     mutate(key_nr = row_number()) %>%
-    unnest(fk_col)
+    repair_if_empty(c("child_fk_cols", "parent_key_cols"))
 
   list(
     info_tibble = info_tibble,
@@ -479,4 +443,37 @@ convert_all_times_to_utc <- function(table_list, col_class_table) {
     )
   }
   table_list
+}
+
+repair_if_empty <- function(table, cols) {
+  if (nrow(table) > 0) {
+    table %>%
+      unnest(cols)
+  } else {
+    mutate(table, across(where(is.list), as.character))
+  }
+}
+
+reformat_pks <- function(pk_info) {
+  pk_info %>%
+    group_by(table) %>%
+    summarize(pks = list(tibble("column" = list(pk_col)))) %>%
+    deframe()
+}
+
+reformat_fks <- function(fk_info) {
+  fk_info %>%
+    rename(table = parent_table) %>%
+    group_by(table, key_nr) %>%
+    summarize(fks = list(tibble(
+      ref_column = list(parent_key_cols),
+      table = unique(child_table),
+      column = list(child_fk_cols)
+    ))) %>%
+    select(-key_nr) %>%
+    summarize(
+      table = unique(table),
+      fks = list(bind_rows(fks))
+    ) %>%
+    deframe()
 }
