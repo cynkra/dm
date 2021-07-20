@@ -362,7 +362,7 @@ dm_write_csv_impl <- function(dm, csv_directory, zip) {
   csv_coltypes_filename <- file.path(csv_directory, "___coltypes_file_dm.csv")
   csv_pk_filename <- file.path(csv_directory, "___pk_file_dm.csv")
   csv_fk_filename <- file.path(csv_directory, "___fk_file_dm.csv")
-  csv_table_filenames <- file.path(csv_directory, paste0(src_tbls(dm), ".csv"))
+  csv_table_filenames <- file.path(csv_directory, paste0(src_tbls_impl(dm), ".csv"))
 
   readr::write_csv(csv_tables$info_tibble, csv_info_filename)
   readr::write_csv(csv_tables$col_class_tibble, csv_coltypes_filename)
