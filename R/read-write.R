@@ -450,7 +450,7 @@ repair_if_empty <- function(table, cols) {
     table %>%
       unnest(cols)
   } else {
-    mutate(table, across(where(is.list), as.character))
+    mutate(table, across(tidyselect::where(is.list), as.character))
   }
 }
 
