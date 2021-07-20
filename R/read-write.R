@@ -69,13 +69,15 @@ dm_read_csv <- function(csv_directory) {
 
   def_base <- readr::read_csv(
     file.path(csv_directory, "___info_file_dm.csv"),
-    col_types = "ccc"
+    col_types = "cc"
   )
   table_names <- def_base$table
+
   col_class_info_raw <- readr::read_csv(
     file.path(csv_directory, "___coltypes_file_dm.csv"),
     col_types = "ccc"
   )
+
   if (!all(col_class_info_raw$class %in% class_translation_r_readr$r_class)) {
     abort_class_not_supported(setdiff(col_class_info_raw$class, class_translation_r_readr$r_class))
   }
@@ -334,7 +336,7 @@ prepare_tbls_for_def_and_class <- function(dm, csv) {
     abort_only_for_local_con(dm_get_con(dm))
   }
 
-  info_tibble <- dm_get_def(dm) %>% select(table, segment, display)
+  info_tibble <- dm_get_def(dm) %>% select(table, display)
 
   col_class_tibble <- dm_col_class(dm)
   if ("list" %in% col_class_tibble$class) {
