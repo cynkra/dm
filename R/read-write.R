@@ -101,7 +101,12 @@ dm_read_csv <- function(csv_directory) {
   table_files <- setdiff(
     list.files(csv_directory),
     c("___info_file_dm.csv", "___pk_file_dm.csv", "___fk_file_dm.csv", "___coltypes_file_dm.csv")
-  )
+  ) %>%
+    # in case other files happen to be in the directory
+    intersect(paste0(table_names, ".csv"))
+  if (length(table_files) != length(table_names)) {
+    abort_files_or_sheets_missing(setdiff(paste0(table_names, ".csv"), table_files), csv_directory)
+  }
   # sort table_files according to column def_base$table
   table_files_sorted <- table_files[order(match(table_files, paste0(table_names, ".csv")))]
 
@@ -253,7 +258,12 @@ dm_read_xlsx <- function(xlsx_file_path) {
   table_sheets <- setdiff(
     sheet_list,
     c("___info_dm", "___pk_dm", "___fk_dm", "___coltypes_dm")
-  )
+  ) %>%
+    # in case other sheets happen to be in the xlsx file
+    intersect(table_names)
+  if (length(table_sheets) != length(table_names)) {
+    abort_files_or_sheets_missing(setdiff(table_names, table_sheets), xlsx_file_path)
+  }
   # sort table_files according to column def_base$table
   table_sheets_sorted <- table_sheets[order(match(table_sheets, table_names))]
 
