@@ -198,3 +198,15 @@ test_that("read and write csv/zip/xlsx works", {
     "empty_dm"
   )
 })
+
+test_that("read and write csv/zip/xlsx errors on remote src", {
+  skip_if_src_not(c("mssql", "postgres", "sqlite"))
+
+  test_path <- "___test_path"
+
+  # writing into a non-existing directory
+  expect_dm_error(
+    dm_write_csv(dm_for_filter(), csv_directory = test_path),
+    "only_for_local_con"
+  )
+})
