@@ -80,6 +80,7 @@ utils::globalVariables(c(
   "unique_indexes",
   "value",
   "values",
+  "where",
   "why",
   "zoom",
   "zoomed",
