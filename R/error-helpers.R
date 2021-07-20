@@ -450,8 +450,10 @@ error_txt_pk_not_tracked <- function(orig_table, orig_pk) {
 }
 
 
-# only for local src ------------------------------------------------------
+# only for local src or con------------------------------------------------------
 
+# FIXME: since we don't work with sources, this error needs to be revisited
+# also: `nest_join.zoomed_dm()` currently not implemented anyway ;)
 abort_only_for_local_src <- function(src_dm) {
   abort(error_txt_only_for_local_src(format_classes(class(src_dm))), .subclass = dm_error_full("only_for_local_src"))
 }
@@ -459,6 +461,15 @@ abort_only_for_local_src <- function(src_dm) {
 error_txt_only_for_local_src <- function(src_class) {
   glue("`nest_join.zoomed_dm()` works only for a local `src`, not on a database with `src`-class: {src_class}.")
 }
+
+abort_only_for_local_con <- function(con_dm) {
+  abort(error_txt_only_for_local_con(format_classes(class(con_dm))), .subclass = dm_error_full("only_for_local_con"))
+}
+
+error_txt_only_for_local_con <- function(con_class) {
+  glue("This operation works only locally, not on a database with `con`-class: {con_class}.")
+}
+
 
 # Errors for `pull_tbl.dm()` -----------------------------
 

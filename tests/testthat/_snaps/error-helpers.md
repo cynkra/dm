@@ -310,4 +310,8 @@
       R-class(es) `blobber`, `hashmash` not supported. Please consider one of:
       * converting the respective columns to a supported class (see `?dm_read_csv()`)
       * filing an issue and/or PR at https://github.com/krlmlr/dm
+    Code
+      abort_only_for_local_con(as.Date("2021-07-20"))
+    Error <dm_error_only_for_local_con>
+      This operation works only locally, not on a database with `con`-class: `Date`.
 

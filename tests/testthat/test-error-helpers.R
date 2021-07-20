@@ -76,5 +76,6 @@ test_that("output", {
     abort_files_or_sheets_missing("___coltypes_file_dm.csv", "path/", TRUE)
     abort_files_or_sheets_missing("___coltypes_dm", "path/file.xlsx", FALSE)
     abort_class_not_supported(c("blobber", "hashmash"))
+    abort_only_for_local_con(as.Date("2021-07-20"))
   })
 })

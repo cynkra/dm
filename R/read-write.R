@@ -330,8 +330,8 @@ prepare_tbls_for_def_and_class <- function(dm, csv) {
     abort_empty_dm()
   }
 
-  if (is_db(dm_get_src(dm))) {
-    abort_only_for_local_src(dm_get_src(dm))
+  if (is_db(dm_get_src_impl(dm))) {
+    abort_only_for_local_con(dm_get_con(dm))
   }
 
   info_tibble <- dm_get_def(dm) %>% select(table, segment, display)
