@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Create a dm object from data frames</h1>
             
-            <h4 data-toc-skip class="date">2021-07-08</h4>
+            <h4 data-toc-skip class="date">2021-07-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/howto-dm-df.Rmd" class="external-link"><code>vignettes/howto-dm-df.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-df.Rmd</code></div>
@@ -175,7 +175,7 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
 
 <span class="va">airports</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,458 x 8</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,458 × 8</span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>        
 #&gt; <span style="color: #555555;"> 1</span> 04G   Lansdowne Airport      41.1  -<span style="color: #BB0000;">80.6</span>  <span style="text-decoration: underline;">1</span>044    -<span style="color: #BB0000;">5</span> A     America/New_…
@@ -218,7 +218,7 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">flights_dm_no_keys</span><span class="op">)</span>
 <span class="co">#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather"</span>
 <span class="va">flights_dm_no_keys</span><span class="op">$</span><span class="va">airports</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,458 x 8</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,458 × 8</span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>        
 #&gt; <span style="color: #555555;"> 1</span> 04G   Lansdowne Airport      41.1  -<span style="color: #BB0000;">80.6</span>  <span style="text-decoration: underline;">1</span>044    -<span style="color: #BB0000;">5</span> A     America/New_…
@@ -257,7 +257,7 @@
   dm <span class="op">=</span> <span class="va">flights_dm_no_keys</span>,
   table <span class="op">=</span> <span class="va">planes</span>
 <span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 9 x 3</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 9 × 3</span>
 #&gt;   columns     candidate why                                                
 #&gt;   <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>      <span style="color: #555555; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                                              
 #&gt; <span style="color: #555555;">1</span> tailnum     TRUE      <span style="color: #555555;">""</span>                                                 
@@ -296,7 +296,7 @@
   table <span class="op">=</span> <span class="va">flights</span>,
   ref_table <span class="op">=</span> <span class="va">airlines</span>
 <span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 19 x 3</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 19 × 3</span>
 #&gt;    columns      candidate why                                              
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>       <span style="color: #555555; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                                            
 #&gt; <span style="color: #555555;"> 1</span> carrier      TRUE      <span style="color: #555555;">""</span>                                               
@@ -431,7 +431,7 @@
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_only_pks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 × 2</span>
 #&gt;   table    pk_col 
 #&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span> 
 #&gt; <span style="color: #555555;">1</span> airlines carrier
@@ -442,7 +442,7 @@
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 × 2</span>
 #&gt;   table    pk_col 
 #&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span> 
 #&gt; <span style="color: #555555;">1</span> airlines carrier
@@ -454,7 +454,7 @@
 <code class="sourceCode R"><span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 6 x 6</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 6 × 6</span>
 #&gt;   table   kind  columns ref_table is_key problem                           
 #&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;lgl&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                             
 #&gt; <span style="color: #555555;">1</span> flights FK    tailnum planes    FALSE  <span style="color: #555555;">"</span>values of `flights$tailnum` not …

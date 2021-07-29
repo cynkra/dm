@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Joining in relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-07-08</h4>
+            <h4 data-toc-skip class="date">2021-07-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-join.Rmd" class="external-link"><code>vignettes/tech-dm-join.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-join.Rmd</code></div>
@@ -201,7 +201,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 4</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 × 4</span>
 #&gt;   child_table child_fk_cols     parent_table parent_key_cols  
 #&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>            <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>           
 #&gt; <span style="color: #555555;">1</span> flights     carrier           airlines     carrier          
@@ -220,7 +220,7 @@
   <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span>
 <span class="va">dm_joined</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,761 x 20</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,761 × 20</span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>          <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
 #&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359         4      426
@@ -276,7 +276,7 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, join <span class="op">=</span> <span class="va">anti_join</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 19</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 × 19</span>
 #&gt; <span style="color: #555555;"># … with 19 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,</span>
 #&gt; <span style="color: #555555;">#   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span>
 #&gt; <span style="color: #555555;">#   sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,</span>
@@ -292,7 +292,7 @@
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 26</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 × 26</span>
 #&gt; <span style="color: #555555;"># … with 26 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,</span>
 #&gt; <span style="color: #555555;">#   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span>
 #&gt; <span style="color: #555555;">#   sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,</span>
@@ -311,7 +311,7 @@
 <span class="co">#&gt; Renamed columns:</span>
 <span class="co">#&gt; * year -&gt; flights.year, planes.year</span>
 <span class="co">#&gt; * name -&gt; airlines.name, airports.name</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,761 x 35</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,761 × 35</span>
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;           <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>          <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
 #&gt; <span style="color: #555555;"> 1</span>         <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359         4      426

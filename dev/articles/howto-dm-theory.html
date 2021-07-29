@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Introduction to relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-07-08</h4>
+            <h4 data-toc-skip class="date">2021-07-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-theory.Rmd</code></div>
@@ -195,9 +195,9 @@
 <pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Attaching packages</span> ────────────────────────────────── tidyverse 1.3.1 ──
 </code></pre>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2</span> 3.3.5     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr  </span> 0.3.4
-#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tibble </span> 3.1.2     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr  </span> 1.0.7
+#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tibble </span> 3.1.3     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr  </span> 1.0.7
 #&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr  </span> 1.1.3     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">stringr</span> 1.4.0
-#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">readr  </span> 1.4.0     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">forcats</span> 0.5.1
+#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">readr  </span> 2.0.0     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">forcats</span> 0.5.1
 </code></pre>
 <pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Conflicts</span> ───────────────────────────────────── tidyverse_conflicts() ──
 #&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">filter()</span> masks <span style="color: #0000BB;">dm</span>::filter(), <span style="color: #0000BB;">stats</span>::filter()
@@ -212,7 +212,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">planes</span>, by <span class="op">=</span> <span class="st">"tailnum"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airports</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span> <span class="op">=</span> <span class="st">"faa"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">weather</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span>, <span class="st">"time_hour"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 48</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 × 48</span>
 #&gt;    year.x month.x day.x dep_time sched_dep_time dep_delay arr_time
 #&gt;     <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>   <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>          <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
 #&gt; <span style="color: #555555;"> 1</span>   <span style="text-decoration: underline;">2</span>013       1     1      517            515         2      830
@@ -278,7 +278,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 2</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 × 2</span>
 #&gt;   table    pk_col           
 #&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>           
 #&gt; <span style="color: #555555;">1</span> airlines carrier          
@@ -290,7 +290,7 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span><span class="va">airports</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 8 x 3</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 8 × 3</span>
 #&gt;   columns candidate why                                                    
 #&gt;   <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                                                  
 #&gt; <span style="color: #555555;">1</span> faa     TRUE      <span style="color: #555555;">""</span>                                                     
@@ -313,7 +313,7 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 19 x 3</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 19 × 3</span>
 #&gt;    columns      candidate why                                              
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>       <span style="color: #555555; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                                            
 #&gt; <span style="color: #555555;"> 1</span> carrier      TRUE      <span style="color: #555555;">""</span>                                               
@@ -371,7 +371,7 @@
 
 <span class="va">airlines</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">carrier</span> <span class="op">==</span> <span class="st">"UA"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 × 2</span>
 #&gt;   carrier name                  
 #&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                 
 #&gt; <span style="color: #555555;">1</span> UA      United broke my guitar
@@ -383,7 +383,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airlines</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">flight</span>, <span class="va">name</span><span class="op">)</span>
 <span class="co">#&gt; Joining, by = "carrier"</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 2</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 × 2</span>
 #&gt;    flight name                    
 #&gt;     <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                   
 #&gt; <span style="color: #555555;"> 1</span>   <span style="text-decoration: underline;">1</span>545 United broke my guitar  
@@ -406,7 +406,7 @@
 <code class="sourceCode R"><span class="va">planes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">model_id</span>, <span class="va">model</span>, <span class="va">manufacturer</span>, <span class="va">type</span>, <span class="va">engines</span>, <span class="va">seats</span>, <span class="va">manufacturer</span>, <span class="va">speed</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; $child_table
-#&gt; <span style="color: #555555;"># A tibble: 3,322 x 4</span>
+#&gt; <span style="color: #555555;"># A tibble: 3,322 × 4</span>
 #&gt;    tailnum  year engine    model_id
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
 #&gt; <span style="color: #555555;"> 1</span> N10156   <span style="text-decoration: underline;">2</span>004 Turbo-fan      120
@@ -422,7 +422,7 @@
 #&gt; <span style="color: #555555;"># … with 3,312 more rows</span>
 #&gt; 
 #&gt; $parent_table
-#&gt; <span style="color: #555555;"># A tibble: 147 x 7</span>
+#&gt; <span style="color: #555555;"># A tibble: 147 × 7</span>
 #&gt;    model_id model      manufacturer   type              engines seats speed
 #&gt;       <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
 #&gt; <span style="color: #555555;"> 1</span>      120 EMB-145XR  EMBRAER        Fixed wing multi…       2    55    <span style="color: #BB0000;">NA</span>

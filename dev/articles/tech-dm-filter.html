@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Filtering in relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-07-08</h4>
+            <h4 data-toc-skip class="date">2021-07-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-filter.Rmd" class="external-link"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-filter.Rmd</code></div>
@@ -195,7 +195,7 @@
 <code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">dm</span>, <span class="st">"airports"</span><span class="op">)</span>
 <span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span>
 <span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 86 x 8</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 86 × 8</span>
 #&gt;    faa   name                     lat    lon   alt    tz dst   tzone       
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>       
 #&gt; <span style="color: #555555;"> 1</span> ALB   Albany Intl             42.7  -<span style="color: #BB0000;">73.8</span>   285    -<span style="color: #BB0000;">5</span> A     America/New…
@@ -306,14 +306,14 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"airlines"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 2</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 × 2</span>
 #&gt; <span style="color: #555555;"># … with 2 variables: carrier &lt;chr&gt;, name &lt;chr&gt;</span>
 </code></pre>
 <p>Which planes were used to service these flights?</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"planes"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 9</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 × 9</span>
 #&gt; <span style="color: #555555;"># … with 9 variables: tailnum &lt;chr&gt;, year &lt;int&gt;, type &lt;chr&gt;,</span>
 #&gt; <span style="color: #555555;">#   manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,</span>
 #&gt; <span style="color: #555555;">#   speed &lt;int&gt;, engine &lt;chr&gt;</span>
@@ -322,7 +322,7 @@
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"flights"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 19</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 × 19</span>
 #&gt; <span style="color: #555555;"># … with 19 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,</span>
 #&gt; <span style="color: #555555;">#   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span>
 #&gt; <span style="color: #555555;">#   sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,</span>
@@ -337,7 +337,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join</a></span><span class="op">(</span><span class="va">airlines_filtered</span>, by <span class="op">=</span> <span class="st">"carrier"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join</a></span><span class="op">(</span><span class="va">airports_filtered</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span> <span class="op">=</span> <span class="st">"faa"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 2,340 x 19</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 2,340 × 19</span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>          <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
 #&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">2</span>013     5     1      554            600        -<span style="color: #BB0000;">6</span>      731

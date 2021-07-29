@@ -203,7 +203,7 @@
 <span class="co"># The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.</span>
 <span class="va">flights_zoomed</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Zoomed table: flights</span>
-#&gt; <span style="color: #555555;"># A tibble:     1,761 x 19</span>
+#&gt; <span style="color: #555555;"># A tibble:     1,761 × 19</span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>          <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
 #&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359         4      426
@@ -230,7 +230,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span><span class="op">:</span><span class="va">dep_time</span>, <span class="va">am_pm_dep</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">flights_zoomed_mutate</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Zoomed table: flights</span>
-#&gt; <span style="color: #555555;"># A tibble:     1,761 x 20</span>
+#&gt; <span style="color: #555555;"># A tibble:     1,761 × 20</span>
 #&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
 #&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3 am                  <span style="text-decoration: underline;">2</span>359         4      426
@@ -291,7 +291,7 @@
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">weather</span><span class="op">)</span>
 <span class="va">weather_zoomed</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Zoomed table: weather</span>
-#&gt; <span style="color: #555555;"># A tibble:     144 x 15</span>
+#&gt; <span style="color: #555555;"># A tibble:     144 × 15</span>
 #&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
 #&gt; <span style="color: #555555;"> 1</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     0  41    32    70.1      230       8.06
@@ -310,7 +310,7 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Maybe there is some hidden candidate for a primary key that we overlooked</span>
 <span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span><span class="op">(</span><span class="va">weather_zoomed</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 x 3</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 × 3</span>
 #&gt;    columns    candidate why                                                
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                                              
 #&gt; <span style="color: #555555;"> 1</span> origin     FALSE     has duplicate values: EWR (48), JFK (48), LGA (48) 
@@ -342,7 +342,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">origin_slot_id</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># check if we the result is as expected:</span>
 <span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span><span class="op">(</span><span class="va">weather_zoomed_mutate</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">candidate</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 3</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 × 3</span>
 #&gt;   columns        candidate why  
 #&gt;   <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>         <span style="color: #555555; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>
 #&gt; <span style="color: #555555;">1</span> origin_slot_id TRUE      <span style="color: #555555;">""</span>
@@ -482,7 +482,7 @@
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"flights_plane_type"</span><span class="op">)</span>
 <span class="co"># this is how the table looks now</span>
 <span class="va">joined_flights_dm</span><span class="op">$</span><span class="va">flights_plane_type</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,761 x 11</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,761 × 11</span>
 #&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>          <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> 
 #&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359 B6         727 N571JB  JFK   
@@ -530,7 +530,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">dep_delay</span><span class="op">:</span><span class="op">-</span><span class="va">arr_delay</span>, <span class="op">-</span><span class="va">air_time</span><span class="op">:</span><span class="op">-</span><span class="va">time_hour</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">planes</span>, select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tailnum</span>, plane_type <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,761 x 11</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,761 × 11</span>
 #&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>          <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> 
 #&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359 B6         727 N571JB  JFK   
