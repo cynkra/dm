@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Class dm and basic operations</h1>
             
-            <h4 data-toc-skip class="date">2021-07-29</h4>
+            <h4 data-toc-skip class="date">2021-08-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-class.Rmd" class="external-link"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-class.Rmd</code></div>
@@ -233,7 +233,7 @@
 <span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">sqlite_src</span><span class="op">)</span>
 <span class="va">flights_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
-#&gt; src:  sqlite 3.35.5 [/tmp/RtmpeuVfJe/nycflights13.sqlite]
+#&gt; src:  sqlite 3.35.5 [/tmp/RtmpKZyjOK/nycflights13.sqlite]
 #&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -270,7 +270,7 @@
 <span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span>
 <span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`airports`&gt; [?? x 8]</span>
-#&gt; <span style="color: #555555;"># Database: sqlite 3.35.5 [/tmp/RtmpeuVfJe/nycflights13.sqlite]</span>
+#&gt; <span style="color: #555555;"># Database: sqlite 3.35.5 [/tmp/RtmpKZyjOK/nycflights13.sqlite]</span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>        
 #&gt; <span style="color: #555555;"> 1</span> 04G   Lansdowne Airport      41.1  -<span style="color: #BB0000;">80.6</span>  <span style="text-decoration: underline;">1</span>044    -<span style="color: #BB0000;">5</span> A     America/New_…
@@ -305,7 +305,7 @@
 <span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span>
 <span class="va">flights_dm_with_key</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
-#&gt; src:  sqlite 3.35.5 [/tmp/RtmpeuVfJe/nycflights13.sqlite]
+#&gt; src:  sqlite 3.35.5 [/tmp/RtmpKZyjOK/nycflights13.sqlite]
 #&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -372,7 +372,7 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_key</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
-#&gt; src:  sqlite 3.35.5 [/tmp/RtmpeuVfJe/nycflights13.sqlite]
+#&gt; src:  sqlite 3.35.5 [/tmp/RtmpKZyjOK/nycflights13.sqlite]
 #&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
