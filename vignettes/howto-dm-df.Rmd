@@ -194,7 +194,7 @@ A data frame of foreign keys is retrieved with `dm_get_all_fks()`:
 
 ```{r}
 flights_dm_all_keys %>%
-  dm_get_all_pks()
+  dm_get_all_fks()
 ```
 
 We can use `tibble::as_tibble()` on the result of `dm_examine_constraints()` to programmatically inspect which constraints are not satisfied:
