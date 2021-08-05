@@ -748,3 +748,36 @@ as.list.dm <- function(x, ...) { # for both dm and zoomed_dm
 as.list.zoomed_dm <- function(x, ...) {
   as.list(tbl_zoomed(x))
 }
+
+#' @export
+glimpse.dm <- function(x, width = NULL, ...) {
+  table_list <- dm_get_tables_impl(x)
+  all_fks <- dm_get_all_fks_impl(x)
+  cat_line("dm of ", length(table_list), " tables: ", commas(tick(names(table_list))))
+  iwalk(table_list, function(table, table_name) {
+    cat_line("\nTable: ", tick(table_name))
+    pk <- dm_get_pk_impl(x, table_name) %>%
+      map_chr(~ paste0("(", paste0(tick(.x), collapse = ", "), ")"))
+    if (!is_empty(pk)) {
+      cat_line(length(pk), " primary key(s): ", pk)
+    }
+    fk <- all_fks %>%
+      filter(child_table == !!table_name) %>%
+      select(-child_table) %>%
+      pmap_chr(
+        function(child_fk_cols, parent_table, parent_key_cols) {
+          paste0(
+            "(",
+            paste0(tick(child_fk_cols), collapse = ", "), ")",
+            " -> ",
+            paste0("(`", paste0(parent_table, "$", parent_key_cols, collapse = "`, `"), "`)")
+          )
+      })
+    if (!is_empty(fk)) {
+      cat_line(length(fk), " outgoing foreign key(s):")
+      cat_line("  ", fk)
+    }
+    glimpse(table, width = width, ...)
+  })
+  invisible(x)
+}
