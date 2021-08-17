@@ -25,10 +25,18 @@
 #'   The default is to check only if `in_place` is `TRUE` or `NULL`.
 #'
 #'   Currently these checks are no-ops and need yet to be implemented.
+#' @param returning <[`tidy-select`][tidyr_tidy_select]> Columns to return
+#'   of the inserted data. Note that also columns not in `y` but automatically
+#'   created when inserting into `x` can be returned, for example the `id`
+#'   column.
 #'
-#' @return A tbl object of the same structure as `x`.
-#'   If `in_place = TRUE`, the underlying data is updated as a side effect,
-#'   and `x` is returned, invisibly.
+#' @return Either a tbl object of the same structure as `x` or a tibble with
+#'   the columns as in `returning`.
+#'   If `in_place = TRUE`, the underlying data is updated as a side effect and
+#'   if
+#'     * `returning = NULL`, then `x` is returned, invisibly.
+#'     * else a tibble with the inserted data and the specified columns is
+#'       returned.
 #'
 #' @name rows-db
 #' @examplesIf rlang::is_installed("dbplyr")
@@ -48,7 +56,10 @@ NULL
 #' @export
 #' @rdname rows-db
 rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
-                                in_place = NULL, copy = FALSE, check = NULL) {
+                                in_place = NULL, copy = FALSE, check = NULL,
+                                returning = NULL) {
+  returning <- enquo(returning)
+
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
   by <- names(y_key)
@@ -63,9 +74,14 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
     }
 
     con <- dbplyr::remote_con(x)
-    sql <- sql_rows_insert(x, y)
-    dbExecute(con, sql, immediate = TRUE)
-    invisible(x)
+    sql <- sql_rows_insert(x, y, returning = returning)
+
+    if (!quo_is_null(returning)) {
+      dbGetQuery(con, sql, immediate = TRUE)
+    } else {
+      dbExecute(con, sql, immediate = TRUE)
+      invisible(x)
+    }
   } else {
     # Checking mandatory by default, opt-out
     # FIXME: contrary to doc currently also checks if `in_place = FALSE`
@@ -209,14 +225,15 @@ check_db_superset <- function(x, y, by) {
 #'
 #' @export
 #' @rdname rows-db
-sql_rows_insert <- function(x, y, ...) {
+sql_rows_insert <- function(x, y, returning = NULL, ...) {
+  # TODO `returning` is somehow caught by ellipsis...
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_insert")
 }
 
 #' @export
-sql_rows_insert.tbl_sql <- function(x, y, ...) {
+sql_rows_insert.tbl_sql <- function(x, y, returning = NULL, ...) {
   con <- dbplyr::remote_con(x)
   name <- dbplyr::remote_name(x)
 
@@ -227,6 +244,8 @@ sql_rows_insert.tbl_sql <- function(x, y, ...) {
     "INSERT INTO ", name, " (", columns_qq, ")\n",
     dbplyr::remote_query(y)
   )
+
+  sql <- add_returning(sql, x, returning)
   glue::as_glue(sql)
 }
 
@@ -392,4 +411,34 @@ sql_rows_delete.tbl_sql <- function(x, y, by, ...) {
     "WHERE EXISTS (SELECT * FROM ", p$y_name, " WHERE ", p$compare_qual_qq, ")"
   )
   glue::as_glue(sql)
+}
+
+add_returning <- function(sql, x, returning) {
+  if (quo_is_null(returning)) {
+    return(sql)
+  }
+
+  sim_data <- simulate_vars(x)
+  loc <- tidyselect::eval_select(returning, sim_data)
+  ret_vars <- set_names(names(sim_data)[loc], names(loc))
+
+  con <- dbplyr::remote_con(x)
+  ret_cols <- dbplyr::ident(ret_vars) %>% dbplyr::escape(con = con)
+  paste0(sql, "\n", returning_clause(con), " ", ret_cols)
+}
+
+returning_clause <- function(con) {
+  UseMethod("returning_clause")
+}
+
+returning_clause.DBIConnection <- function(con) {
+  "RETURNING"
+}
+
+`returning_clause.Microsoft SQL Server` <- function(con) {
+  "OUTPUT"
+}
+
+simulate_vars <- function(x) {
+  as_tibble(rep_named(colnames(x), list(logical())))
 }
