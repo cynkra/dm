@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Create a dm object from data frames</h1>
             
-            <h4 data-toc-skip class="date">2021-08-02</h4>
+            <h4 data-toc-skip class="date">2021-08-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/howto-dm-df.Rmd" class="external-link"><code>vignettes/howto-dm-df.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-df.Rmd</code></div>
@@ -441,13 +441,13 @@
 <p>A data frame of foreign keys is retrieved with <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 × 2</span>
-#&gt;   table    pk_col 
-#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span> 
-#&gt; <span style="color: #555555;">1</span> airlines carrier
-#&gt; <span style="color: #555555;">2</span> airports faa    
-#&gt; <span style="color: #555555;">3</span> planes   tailnum
+  <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 × 4</span>
+#&gt;   child_table child_fk_cols parent_table parent_key_cols
+#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>        <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>         
+#&gt; <span style="color: #555555;">1</span> flights     carrier       airlines     carrier        
+#&gt; <span style="color: #555555;">2</span> flights     origin        airports     faa            
+#&gt; <span style="color: #555555;">3</span> flights     tailnum       planes       tailnum
 </code></pre>
 <p>We can use <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble()</a></code> on the result of <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> to programmatically inspect which constraints are not satisfied:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
