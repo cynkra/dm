@@ -90,7 +90,10 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
 #' @export
 #' @rdname rows-db
 rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
-                                in_place = NULL, copy = FALSE, check = NULL) {
+                                in_place = NULL, copy = FALSE, check = NULL,
+                                returning = NULL) {
+  returning <- enquo(returning)
+
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
   by <- names(y_key)
@@ -111,9 +114,9 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
     }
 
     con <- dbplyr::remote_con(x)
-    sql <- sql_rows_update(x, y, by)
-    dbExecute(con, sql, immediate = TRUE)
-    invisible(x)
+    sql <- sql_rows_update(x, y, by, returning = returning)
+
+    get_or_execute(x, con, sql, returning)
   } else {
     # Checking optional, can rely on primary key constraint
     # FIXME: contrary to doc currently also checks if `in_place = FALSE`
@@ -140,7 +143,9 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
 #' @export
 #' @rdname rows-db
 rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
-                                in_place = NULL, copy = FALSE, check = NULL) {
+                                in_place = NULL, copy = FALSE, check = NULL,
+                                returning = NULL) {
+  returning <- enquo(returning)
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
   by <- names(y_key)
@@ -155,9 +160,8 @@ rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
     }
 
     con <- dbplyr::remote_con(x)
-    sql <- sql_rows_delete(x, y, by)
-    dbExecute(con, sql, immediate = TRUE)
-    invisible(x)
+    sql <- sql_rows_delete(x, y, by, returning = returning)
+    get_or_execute(x, con, sql, returning)
   } else {
     # Checking optional, can rely on primary key constraint
     # FIXME: contrary to doc currently also checks if `in_place = FALSE`
@@ -246,14 +250,14 @@ sql_rows_insert.tbl_sql <- function(x, y, returning = NULL, ...) {
 
 #' @export
 #' @rdname rows-db
-sql_rows_update <- function(x, y, by, ...) {
+sql_rows_update <- function(x, y, by, returning = NULL, ...) {
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_update")
 }
 
 #' @export
-sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ...) {
+sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, returning = NULL, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
@@ -270,11 +274,12 @@ sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ...) {
     "WHERE (", p$compare_qual_qq, "))\n",
     "WHERE EXISTS (SELECT * FROM ", p$y_name, " WHERE ", p$compare_qual_qq, ")"
   )
+  sql <- add_returning(sql, x, returning)
   glue::as_glue(sql)
 }
 
 #' @export
-`sql_rows_update.tbl_Microsoft SQL Server` <- function(x, y, by, ...) {
+`sql_rows_update.tbl_Microsoft SQL Server` <- function(x, y, by, returning = NULL, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
@@ -297,11 +302,12 @@ sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ...) {
     "  INNER JOIN ", p$y_name, "\n",
     "  ON ", p$compare_qual_qq
   )
+  sql <- add_returning(sql, x, returning)
   glue::as_glue(sql)
 }
 
 #' @export
-sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, ...) {
+sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, returning = NULL, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
@@ -314,11 +320,12 @@ sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, ...) {
     "SET\n",
     paste0("  ", p$target_columns_qual_qq, " = ", p$new_columns_qual_qq, collapse = ",\n")
   )
+  sql <- add_returning(sql, x, returning)
   glue::as_glue(sql)
 }
 
 #' @export
-sql_rows_update.tbl_PqConnection <- function(x, y, by, ...) {
+sql_rows_update.tbl_PqConnection <- function(x, y, by, returning = NULL, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
@@ -340,6 +347,7 @@ sql_rows_update.tbl_PqConnection <- function(x, y, by, ...) {
     "FROM ", p$y_name, "\n",
     "WHERE ", p$compare_qual_qq
   )
+  sql <- add_returning(sql, x, returning)
   glue::as_glue(sql)
 }
 
@@ -385,14 +393,14 @@ sql_rows_update_prep <- function(x, y, by) {
 
 #' @export
 #' @rdname rows-db
-sql_rows_delete <- function(x, y, by, ...) {
+sql_rows_delete <- function(x, y, by, ..., returning = NULL) {
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_delete")
 }
 
 #' @export
-sql_rows_delete.tbl_sql <- function(x, y, by, ...) {
+sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning = NULL) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
@@ -405,6 +413,7 @@ sql_rows_delete.tbl_sql <- function(x, y, by, ...) {
     "DELETE FROM ", p$name, "\n",
     "WHERE EXISTS (SELECT * FROM ", p$y_name, " WHERE ", p$compare_qual_qq, ")"
   )
+  sql <- add_returning(sql, x, returning)
   glue::as_glue(sql)
 }
 
