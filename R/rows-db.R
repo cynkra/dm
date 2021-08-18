@@ -76,12 +76,7 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
     con <- dbplyr::remote_con(x)
     sql <- sql_rows_insert(x, y, returning = returning)
 
-    if (!quo_is_null(returning)) {
-      dbGetQuery(con, sql, immediate = TRUE)
-    } else {
-      dbExecute(con, sql, immediate = TRUE)
-      invisible(x)
-    }
+    get_or_execute(x, con, sql, returning)
   } else {
     # Checking mandatory by default, opt-out
     # FIXME: contrary to doc currently also checks if `in_place = FALSE`
@@ -413,18 +408,61 @@ sql_rows_delete.tbl_sql <- function(x, y, by, ...) {
   glue::as_glue(sql)
 }
 
+get_or_execute <- function(x, con, sql, returning) {
+  if (quo_is_null(returning)) {
+    dbExecute(con, sql, immediate = TRUE)
+  } else {
+    returned_rows <- dbGetQuery(con, sql, immediate = TRUE)
+    attr(x, "returned_rows") <- as_tibble(returned_rows)
+  }
+
+  invisible(x)
+}
+
+#' Extract the RETURNING rows
+#'
+#' Extract the RETURNING rows produced by `rows_insert()`, `rows_update()`,
+#' `rows_upsert()`, or `rows_delete().`
+#'
+#' @param x A lazy tbl.
+#'
+#' @return A tibble.
+#'
+#' @export
+get_returned_rows <- function(x) {
+  attr(x, "returned_rows")
+}
+
 add_returning <- function(sql, x, returning) {
   if (quo_is_null(returning)) {
     return(sql)
   }
 
-  sim_data <- simulate_vars(x)
-  loc <- tidyselect::eval_select(returning, sim_data)
-  ret_vars <- set_names(names(sim_data)[loc], names(loc))
-
   con <- dbplyr::remote_con(x)
-  ret_cols <- dbplyr::ident(ret_vars) %>% dbplyr::escape(con = con)
+
+  ret_vars <- eval_select_both(returning, colnames(x))$names
+  ret_cols <- sql_named_cols(con, ret_vars, table = dbplyr::remote_name(x))
+
   paste0(sql, "\n", returning_clause(con), " ", ret_cols)
+}
+
+sql_named_cols <- function(con, cols, table = NULL) {
+  nms <- names2(cols)
+  nms[nms == cols] <- ""
+  # Workaround for incorrect column names after `RETURNING`
+  # https://github.com/r-dbi/RSQLite/issues/381
+  if (inherits(con, "SQLiteConnection")) {
+    nms[nms == ""] <- cols[nms == ""]
+  }
+
+  cols <- DBI::dbQuoteIdentifier(con, cols)
+  if (!is.null(table)) {
+    table <- DBI::dbQuoteIdentifier(con, table)
+    cols <- paste0(table, ".", cols)
+  }
+
+  cols[nms != ""] <- paste0(cols, " AS ", nms[nms != ""])
+  paste0(cols, collapse = ", ")
 }
 
 returning_clause <- function(con) {
@@ -437,8 +475,4 @@ returning_clause.DBIConnection <- function(con) {
 
 `returning_clause.Microsoft SQL Server` <- function(con) {
   "OUTPUT"
-}
-
-simulate_vars <- function(x) {
-  as_tibble(rep_named(colnames(x), list(logical())))
 }
