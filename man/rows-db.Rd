@@ -10,17 +10,44 @@
 \alias{sql_rows_delete}
 \title{Updating database tables}
 \usage{
-\method{rows_insert}{tbl_dbi}(x, y, by = NULL, ..., in_place = NULL, copy = FALSE, check = NULL)
+\method{rows_insert}{tbl_dbi}(
+  x,
+  y,
+  by = NULL,
+  ...,
+  in_place = NULL,
+  copy = FALSE,
+  check = NULL,
+  returning = NULL
+)
 
-\method{rows_update}{tbl_dbi}(x, y, by = NULL, ..., in_place = NULL, copy = FALSE, check = NULL)
+\method{rows_update}{tbl_dbi}(
+  x,
+  y,
+  by = NULL,
+  ...,
+  in_place = NULL,
+  copy = FALSE,
+  check = NULL,
+  returning = NULL
+)
 
-\method{rows_delete}{tbl_dbi}(x, y, by = NULL, ..., in_place = NULL, copy = FALSE, check = NULL)
+\method{rows_delete}{tbl_dbi}(
+  x,
+  y,
+  by = NULL,
+  ...,
+  in_place = NULL,
+  copy = FALSE,
+  check = NULL,
+  returning = NULL
+)
 
-sql_rows_insert(x, y, ...)
+sql_rows_insert(x, y, returning = NULL, ...)
 
-sql_rows_update(x, y, by, ...)
+sql_rows_update(x, y, by, returning = NULL, ...)
 
-sql_rows_delete(x, y, by, ...)
+sql_rows_delete(x, y, by, ..., returning = NULL)
 }
 \arguments{
 \item{x}{A pair of data frames or data frame extensions (e.g. a tibble).
@@ -54,11 +81,20 @@ it is a potentially expensive operation so you must opt into it.}
 The default is to check only if \code{in_place} is \code{TRUE} or \code{NULL}.
 
 Currently these checks are no-ops and need yet to be implemented.}
+
+\item{returning}{<\code{\link[=tidyr_tidy_select]{tidy-select}}> Columns to return
+of the inserted data. Note that also columns not in \code{y} but automatically
+created when inserting into \code{x} can be returned, for example the \code{id}
+column.}
 }
 \value{
-A tbl object of the same structure as \code{x}.
-If \code{in_place = TRUE}, the underlying data is updated as a side effect,
-and \code{x} is returned, invisibly.
+Either a tbl object of the same structure as \code{x} or a tibble with
+the columns as in \code{returning}.
+If \code{in_place = TRUE}, the underlying data is updated as a side effect and
+if
+* \code{returning = NULL}, then \code{x} is returned, invisibly.
+* else a tibble with the inserted data and the specified columns is
+returned.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
