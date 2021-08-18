@@ -80,6 +80,33 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
 #' @rdname rows-db
 rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL) {
+  rows_update_impl(
+    x, y, by = by,
+    in_place = in_place,
+    copy = copy,
+    check = check,
+    f_update = function(x, y) y
+  )
+}
+
+#' @export
+#' @rdname rows-db
+rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
+                               in_place = NULL, copy = FALSE, check = NULL) {
+  rows_update_impl(
+    x, y, by = by,
+    in_place = in_place,
+    copy = copy,
+    check = check,
+    f_update = f_patch
+  )
+}
+
+rows_update_impl <- function(x, y, by = NULL, ...,
+                             in_place = NULL, copy = FALSE, check = NULL,
+                             f_update = NULL) {
+  f_update <- f_update %||% function(x, y) y
+
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
   by <- names(y_key)
@@ -100,7 +127,7 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
     }
 
     con <- dbplyr::remote_con(x)
-    sql <- sql_rows_update(x, y, by)
+    sql <- sql_rows_update(x, y, by, f_update = f_update)
     dbExecute(con, sql, immediate = TRUE)
     invisible(x)
   } else {
@@ -232,17 +259,17 @@ sql_rows_insert.tbl_sql <- function(x, y, ...) {
 
 #' @export
 #' @rdname rows-db
-sql_rows_update <- function(x, y, by, ...) {
+sql_rows_update <- function(x, y, by, ..., f_update) {
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_update")
 }
 
 #' @export
-sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ...) {
+sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ..., f_update) {
   con <- dbplyr::remote_con(x)
 
-  p <- sql_rows_update_prep(x, y, by)
+  p <- sql_rows_update_prep(x, y, by, f_update)
 
   sql <- paste0(
     "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
@@ -332,7 +359,15 @@ sql_rows_update.tbl_PqConnection <- function(x, y, by, ...) {
 #' @export
 sql_rows_update.tbl_duckdb_connection <- sql_rows_update.tbl_SQLiteConnection
 
-sql_rows_update_prep <- function(x, y, by) {
+sql_rows_patch <- function(x, y, by, ...) {
+  sql_rows_update(x, y, by, ..., f_update = f_patch)
+}
+
+f_patch <- function(x, y) {
+  paste0("COALESCE(", x, ", ", y, ")")
+}
+
+sql_rows_update_prep <- function(x, y, by, f_update = function(x, y) y) {
   con <- dbplyr::remote_con(x)
   name <- dbplyr::remote_name(x)
 
@@ -346,11 +381,12 @@ sql_rows_update_prep <- function(x, y, by) {
   new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by))
   new_columns_qq <- paste(new_columns_q, collapse = ", ")
   new_columns_qq_list <- list(new_columns_q)
-  new_columns_qual_qq <- paste0(
-    y_name, ".", new_columns_q,
-    collapse = ", "
-  )
-  new_columns_qual_qq_list <- list(paste0(y_name, ".", new_columns_q))
+
+  new_columns_qual_qq_list <- list(f_update(
+    x = paste0(name, ".", new_columns_q),
+    y = paste0(y_name, ".", new_columns_q)
+  ))
+  new_columns_qual_qq <- paste0(new_columns_qual_qq_list, collapse = ", ")
 
   key_columns_q <- DBI::dbQuoteIdentifier(con, by)
   compare_qual_qq <- paste0(
