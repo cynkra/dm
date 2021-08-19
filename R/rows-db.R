@@ -30,13 +30,11 @@
 #'   created when inserting into `x` can be returned, for example the `id`
 #'   column.
 #'
-#' @return Either a tbl object of the same structure as `x` or a tibble with
-#'   the columns as in `returning`.
-#'   If `in_place = TRUE`, the underlying data is updated as a side effect and
-#'   if
-#'     * `returning = NULL`, then `x` is returned, invisibly.
-#'     * else a tibble with the inserted data and the specified columns is
-#'       returned.
+#' @return A tbl object of the same structure as `x`.
+#'   If `in_place = TRUE`, the underlying data is updated as a side effect,
+#'   and `x` is returned, invisibly. If return columns are specified with
+#'   `returning` then the resulting tibble is stored in the attribute
+#'   `returned_rows`. This can be accessed with [get_returned_rows()].
 #'
 #' @name rows-db
 #' @examplesIf rlang::is_installed("dbplyr")
@@ -58,7 +56,7 @@ NULL
 rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
-  returning <- enquo(returning)
+  returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
 
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
@@ -74,9 +72,10 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
     }
 
     con <- dbplyr::remote_con(x)
-    sql <- sql_rows_insert(x, y, returning = returning)
+    sql <- sql_rows_insert(x, y) %>%
+      sql_add_returning(x, returning_cols)
 
-    get_or_execute(x, con, sql, returning)
+    rows_get_or_execute(x, con, sql, returning_cols)
   } else {
     # Checking mandatory by default, opt-out
     # FIXME: contrary to doc currently also checks if `in_place = FALSE`
@@ -92,7 +91,7 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
-  returning <- enquo(returning)
+  returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
 
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
@@ -114,9 +113,10 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
     }
 
     con <- dbplyr::remote_con(x)
-    sql <- sql_rows_update(x, y, by, returning = returning)
+    sql <- sql_rows_update(x, y, by) %>%
+      sql_add_returning(x, returning_cols)
 
-    get_or_execute(x, con, sql, returning)
+    rows_get_or_execute(x, con, sql, returning_cols)
   } else {
     # Checking optional, can rely on primary key constraint
     # FIXME: contrary to doc currently also checks if `in_place = FALSE`
@@ -145,7 +145,7 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
-  returning <- enquo(returning)
+  returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
   by <- names(y_key)
@@ -160,8 +160,9 @@ rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
     }
 
     con <- dbplyr::remote_con(x)
-    sql <- sql_rows_delete(x, y, by, returning = returning)
-    get_or_execute(x, con, sql, returning)
+    sql <- sql_rows_delete(x, y, by) %>%
+      sql_add_returning(x, returning_cols)
+    rows_get_or_execute(x, con, sql, returning_cols)
   } else {
     # Checking optional, can rely on primary key constraint
     # FIXME: contrary to doc currently also checks if `in_place = FALSE`
@@ -224,15 +225,14 @@ check_db_superset <- function(x, y, by) {
 #'
 #' @export
 #' @rdname rows-db
-sql_rows_insert <- function(x, y, returning = NULL, ...) {
-  # TODO `returning` is somehow caught by ellipsis...
+sql_rows_insert <- function(x, y, ...) {
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_insert")
 }
 
 #' @export
-sql_rows_insert.tbl_sql <- function(x, y, returning = NULL, ...) {
+sql_rows_insert.tbl_sql <- function(x, y, ...) {
   con <- dbplyr::remote_con(x)
   name <- dbplyr::remote_name(x)
 
@@ -244,20 +244,19 @@ sql_rows_insert.tbl_sql <- function(x, y, returning = NULL, ...) {
     dbplyr::remote_query(y)
   )
 
-  sql <- add_returning(sql, x, returning)
   glue::as_glue(sql)
 }
 
 #' @export
 #' @rdname rows-db
-sql_rows_update <- function(x, y, by, returning = NULL, ...) {
+sql_rows_update <- function(x, y, by, ...) {
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_update")
 }
 
 #' @export
-sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, returning = NULL, ...) {
+sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
@@ -274,12 +273,12 @@ sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, returning = NULL, ...
     "WHERE (", p$compare_qual_qq, "))\n",
     "WHERE EXISTS (SELECT * FROM ", p$y_name, " WHERE ", p$compare_qual_qq, ")"
   )
-  sql <- add_returning(sql, x, returning)
+
   glue::as_glue(sql)
 }
 
 #' @export
-`sql_rows_update.tbl_Microsoft SQL Server` <- function(x, y, by, returning = NULL, ...) {
+`sql_rows_update.tbl_Microsoft SQL Server` <- function(x, y, by, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
@@ -302,12 +301,12 @@ sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, returning = NULL, ...
     "  INNER JOIN ", p$y_name, "\n",
     "  ON ", p$compare_qual_qq
   )
-  sql <- add_returning(sql, x, returning)
+
   glue::as_glue(sql)
 }
 
 #' @export
-sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, returning = NULL, ...) {
+sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
@@ -320,12 +319,12 @@ sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, returning = NULL, ..
     "SET\n",
     paste0("  ", p$target_columns_qual_qq, " = ", p$new_columns_qual_qq, collapse = ",\n")
   )
-  sql <- add_returning(sql, x, returning)
+
   glue::as_glue(sql)
 }
 
 #' @export
-sql_rows_update.tbl_PqConnection <- function(x, y, by, returning = NULL, ...) {
+sql_rows_update.tbl_PqConnection <- function(x, y, by, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
@@ -347,7 +346,7 @@ sql_rows_update.tbl_PqConnection <- function(x, y, by, returning = NULL, ...) {
     "FROM ", p$y_name, "\n",
     "WHERE ", p$compare_qual_qq
   )
-  sql <- add_returning(sql, x, returning)
+
   glue::as_glue(sql)
 }
 
@@ -393,14 +392,14 @@ sql_rows_update_prep <- function(x, y, by) {
 
 #' @export
 #' @rdname rows-db
-sql_rows_delete <- function(x, y, by, ..., returning = NULL) {
+sql_rows_delete <- function(x, y, by, ...) {
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_delete")
 }
 
 #' @export
-sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning = NULL) {
+sql_rows_delete.tbl_sql <- function(x, y, by, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
@@ -413,12 +412,12 @@ sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning = NULL) {
     "DELETE FROM ", p$name, "\n",
     "WHERE EXISTS (SELECT * FROM ", p$y_name, " WHERE ", p$compare_qual_qq, ")"
   )
-  sql <- add_returning(sql, x, returning)
+
   glue::as_glue(sql)
 }
 
-get_or_execute <- function(x, con, sql, returning) {
-  if (quo_is_null(returning)) {
+rows_get_or_execute <- function(x, con, sql, returning_cols) {
+  if (is_empty(returning_cols)) {
     dbExecute(con, sql, immediate = TRUE)
   } else {
     returned_rows <- dbGetQuery(con, sql, immediate = TRUE)
@@ -442,17 +441,19 @@ get_returned_rows <- function(x) {
   attr(x, "returned_rows")
 }
 
-add_returning <- function(sql, x, returning) {
-  if (quo_is_null(returning)) {
+#' @param sql SQL code generated with a `sql_rows_()` function.
+#' @param returning_cols A (named) character vector of columns to return.
+#'
+#' @rdname rows-db
+sql_add_returning <- function(sql, x, returning_cols) {
+  if (is_empty(returning_cols)) {
     return(sql)
   }
 
   con <- dbplyr::remote_con(x)
 
-  ret_vars <- eval_select_both(returning, colnames(x))$names
-  ret_cols <- sql_named_cols(con, ret_vars, table = dbplyr::remote_name(x))
-
-  paste0(sql, "\n", returning_clause(con), " ", ret_cols)
+  returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x))
+  paste0(sql, "\n", returning_clause(con), " ", returning_cols)
 }
 
 sql_named_cols <- function(con, cols, table = NULL) {
@@ -478,10 +479,12 @@ returning_clause <- function(con) {
   UseMethod("returning_clause")
 }
 
+#' @export
 returning_clause.DBIConnection <- function(con) {
   "RETURNING"
 }
 
+#' @export
 `returning_clause.Microsoft SQL Server` <- function(con) {
   "OUTPUT"
 }

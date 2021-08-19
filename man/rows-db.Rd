@@ -8,6 +8,7 @@
 \alias{sql_rows_insert}
 \alias{sql_rows_update}
 \alias{sql_rows_delete}
+\alias{sql_add_returning}
 \title{Updating database tables}
 \usage{
 \method{rows_insert}{tbl_dbi}(
@@ -43,11 +44,13 @@
   returning = NULL
 )
 
-sql_rows_insert(x, y, returning = NULL, ...)
+sql_rows_insert(x, y, ...)
 
-sql_rows_update(x, y, by, returning = NULL, ...)
+sql_rows_update(x, y, by, ...)
 
-sql_rows_delete(x, y, by, ..., returning = NULL)
+sql_rows_delete(x, y, by, ...)
+
+sql_add_returning(sql, x, returning_cols)
 }
 \arguments{
 \item{x}{A pair of data frames or data frame extensions (e.g. a tibble).
@@ -86,15 +89,17 @@ Currently these checks are no-ops and need yet to be implemented.}
 of the inserted data. Note that also columns not in \code{y} but automatically
 created when inserting into \code{x} can be returned, for example the \code{id}
 column.}
+
+\item{sql}{SQL code generated with a \code{sql_rows_()} function.}
+
+\item{returning_cols}{A (named) character vector of columns to return.}
 }
 \value{
-Either a tbl object of the same structure as \code{x} or a tibble with
-the columns as in \code{returning}.
-If \code{in_place = TRUE}, the underlying data is updated as a side effect and
-if
-* \code{returning = NULL}, then \code{x} is returned, invisibly.
-* else a tibble with the inserted data and the specified columns is
-returned.
+A tbl object of the same structure as \code{x}.
+If \code{in_place = TRUE}, the underlying data is updated as a side effect,
+and \code{x} is returned, invisibly. If return columns are specified with
+\code{returning} then the resulting tibble is stored in the attribute
+\code{returned_rows}. This can be accessed with \code{\link[=get_returned_rows]{get_returned_rows()}}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
