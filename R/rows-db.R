@@ -470,7 +470,7 @@ sql_returning.tbl_dbi <- function(x, returning_cols) {
   con <- dbplyr::remote_con(x)
   returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x))
 
-  paste0(returning_clause(con), " ", returning_cols)
+  paste0("RETURNING ", returning_cols)
 }
 
 #' @export
@@ -478,7 +478,15 @@ sql_returning.tbl_SQLiteConnection <- function(x, returning_cols) {
   con <- dbplyr::remote_con(x)
   returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x), force_names = TRUE)
 
-  paste0(returning_clause(con), " ", returning_cols)
+  paste0("RETURNING ", returning_cols)
+}
+
+#' @export
+`sql_returning.tbl_Microsoft SQL Server` <- function(x, returning_cols) {
+  con <- dbplyr::remote_con(x)
+  returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x))
+
+  paste0("OUTPUT ", returning_cols)
 }
 
 sql_named_cols <- function(con, cols, table = NULL, force_names = FALSE) {
@@ -498,18 +506,4 @@ sql_named_cols <- function(con, cols, table = NULL, force_names = FALSE) {
 
   cols[nms != ""] <- paste0(cols, " AS ", nms[nms != ""])
   paste0(cols, collapse = ", ")
-}
-
-returning_clause <- function(con) {
-  UseMethod("returning_clause")
-}
-
-#' @export
-returning_clause.DBIConnection <- function(con) {
-  "RETURNING"
-}
-
-#' @export
-`returning_clause.Microsoft SQL Server` <- function(con) {
-  "OUTPUT"
 }
