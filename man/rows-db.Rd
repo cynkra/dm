@@ -9,6 +9,7 @@
 \alias{sql_rows_update}
 \alias{sql_rows_delete}
 \alias{sql_add_returning}
+\alias{sql_returning}
 \title{Updating database tables}
 \usage{
 \method{rows_insert}{tbl_dbi}(
@@ -51,6 +52,8 @@ sql_rows_update(x, y, by, ...)
 sql_rows_delete(x, y, by, ...)
 
 sql_add_returning(sql, x, returning_cols)
+
+sql_returning(x, returning_cols)
 }
 \arguments{
 \item{x}{A pair of data frames or data frame extensions (e.g. a tibble).

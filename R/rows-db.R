@@ -444,24 +444,49 @@ get_returned_rows <- function(x) {
 #' @param sql SQL code generated with a `sql_rows_()` function.
 #' @param returning_cols A (named) character vector of columns to return.
 #'
+#' @export
 #' @rdname rows-db
 sql_add_returning <- function(sql, x, returning_cols) {
   if (is_empty(returning_cols)) {
     return(sql)
   }
 
-  con <- dbplyr::remote_con(x)
-
-  returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x))
-  paste0(sql, "\n", returning_clause(con), " ", returning_cols)
+  returning_clause <- sql_returning(x, returning_cols)
+  paste0(sql, if (!is_empty(returning_clause)) paste0("\n", returning_clause))
 }
 
-sql_named_cols <- function(con, cols, table = NULL) {
+#' @export
+#' @rdname rows-db
+sql_returning <- function(x, returning_cols) {
+  if (is_empty(returning_cols)) {
+    return()
+  }
+
+  UseMethod("sql_returning")
+}
+
+#' @export
+sql_returning.tbl_dbi <- function(x, returning_cols) {
+  con <- dbplyr::remote_con(x)
+  returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x))
+
+  paste0(returning_clause(con), " ", returning_cols)
+}
+
+#' @export
+sql_returning.tbl_SQLiteConnection <- function(x, returning_cols) {
+  con <- dbplyr::remote_con(x)
+  returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x), force_names = TRUE)
+
+  paste0(returning_clause(con), " ", returning_cols)
+}
+
+sql_named_cols <- function(con, cols, table = NULL, force_names = FALSE) {
   nms <- names2(cols)
   nms[nms == cols] <- ""
   # Workaround for incorrect column names after `RETURNING`
   # https://github.com/r-dbi/RSQLite/issues/381
-  if (inherits(con, "SQLiteConnection")) {
+  if (force_names) {
     nms[nms == ""] <- cols[nms == ""]
   }
 
