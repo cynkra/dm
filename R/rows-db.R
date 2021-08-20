@@ -25,10 +25,10 @@
 #'   The default is to check only if `in_place` is `TRUE` or `NULL`.
 #'
 #'   Currently these checks are no-ops and need yet to be implemented.
-#' @param returning <[`tidy-select`][tidyr_tidy_select]> Columns to return
-#'   of the inserted data. Note that also columns not in `y` but automatically
-#'   created when inserting into `x` can be returned, for example the `id`
-#'   column.
+#' @param returning `r lifecycle::badge("experimental")`
+#'   <[`tidy-select`][tidyr_tidy_select]> Columns to return of the inserted data.
+#'   Note that also columns not in `y` but automatically created when inserting
+#'   into `x` can be returned, for example the `id` column.
 #'
 #' @return A tbl object of the same structure as `x`.
 #'   If `in_place = TRUE`, the underlying data is updated as a side effect,
@@ -429,6 +429,9 @@ rows_get_or_execute <- function(x, con, sql, returning_cols) {
 
 #' Extract the RETURNING rows
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Extract the RETURNING rows produced by `rows_insert()`, `rows_update()`,
 #' `rows_upsert()`, or `rows_delete().`
 #'
@@ -438,7 +441,22 @@ rows_get_or_execute <- function(x, con, sql, returning_cols) {
 #'
 #' @export
 get_returned_rows <- function(x) {
-  attr(x, "returned_rows")
+  attr(x, "returned_rows", TRUE)
+}
+
+#' Does `x` have RETURNING rows?
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' Checks if `x` has stored RETURNING rows produced by `rows_insert()`, `rows_update()`,
+#' `rows_upsert()`, or `rows_delete().`
+#'
+#' @param x A lazy tbl.
+#'
+#' @export
+has_returned_rows <- function(x) {
+  !identical(attr(x, "returned_rows"), NULL)
 }
 
 #' @param sql SQL code generated with a `sql_rows_()` function.
@@ -452,14 +470,14 @@ sql_add_returning <- function(sql, x, returning_cols) {
   }
 
   returning_clause <- sql_returning(x, returning_cols)
-  paste0(sql, if (!is_empty(returning_clause)) paste0("\n", returning_clause))
+  paste0(sql, "\n", returning_clause)
 }
 
 #' @export
 #' @rdname rows-db
 sql_returning <- function(x, returning_cols) {
   if (is_empty(returning_cols)) {
-    return()
+    return("")
   }
 
   UseMethod("sql_returning")

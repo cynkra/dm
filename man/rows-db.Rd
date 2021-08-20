@@ -88,10 +88,10 @@ The default is to check only if \code{in_place} is \code{TRUE} or \code{NULL}.
 
 Currently these checks are no-ops and need yet to be implemented.}
 
-\item{returning}{<\code{\link[=tidyr_tidy_select]{tidy-select}}> Columns to return
-of the inserted data. Note that also columns not in \code{y} but automatically
-created when inserting into \code{x} can be returned, for example the \code{id}
-column.}
+\item{returning}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+<\code{\link[=tidyr_tidy_select]{tidy-select}}> Columns to return of the inserted data.
+Note that also columns not in \code{y} but automatically created when inserting
+into \code{x} can be returned, for example the \code{id} column.}
 
 \item{sql}{SQL code generated with a \code{sql_rows_()} function.}
 
