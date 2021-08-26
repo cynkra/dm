@@ -49,7 +49,7 @@ Imports:
     magrittr,
     memoise,
     methods,
-    pillar,
+    pillar (>= 1.6.2),
     purrr,
     rlang (>= 0.4.10),
     tibble,
