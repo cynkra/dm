@@ -89,3 +89,10 @@ test_that("update", {
     tibble(select = 2:3, where = "w", exists = c(1.5, 2.5))
   )
 })
+
+test_that("rows_*() checks arguments", {
+  data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
+  expect_snapshot_error(suppressWarnings(rows_insert(data, data, in_place = FALSE, returning = everything())))
+  expect_snapshot_error(suppressWarnings(rows_update(data, data, in_place = FALSE, returning = everything())))
+  expect_snapshot_error(suppressWarnings(rows_delete(data, data, in_place = FALSE, returning = everything())))
+})

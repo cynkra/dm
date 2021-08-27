@@ -57,6 +57,7 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
   returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
+  check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
@@ -92,6 +93,7 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
   returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
+  check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
@@ -146,6 +148,8 @@ rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
   returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
+  check_returning_cols_possible(returning_cols, in_place)
+
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
   by <- names(y_key)
@@ -217,6 +221,13 @@ check_db_dupes <- function(x, y, by) {
 check_db_superset <- function(x, y, by) {
   # FIXME
 }
+
+check_returning_cols_possible <- function(returning_cols, in_place) {
+  if (is_false(in_place) & !is_empty(returning_cols)) {
+    abort("`returning` only works if `in_place` is true.")
+  }
+}
+
 
 #' @description
 #' The `sql_rows_*()` functions return the SQL used for the corresponding
