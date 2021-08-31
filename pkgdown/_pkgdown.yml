@@ -106,6 +106,7 @@ reference:
   - rows-db
   - rows-dm
   - rows_truncate
+  - get_returned_rows
 
 - title: Filter
   contents:
