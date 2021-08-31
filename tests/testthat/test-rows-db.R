@@ -37,6 +37,14 @@ test_that("insert + delete + truncate", {
     rows_truncate(data, in_place = TRUE)
     data %>% arrange(select)
   })
+})
+
+test_that("insert + delete + truncate with returning argument (#607)", {
+  skip_if_src("duckdb")
+
+  if (identical(my_db_test_src(), sqlite_test_src())) {
+    skip_if_not_installed("RSQLite", "2.2.8")
+  }
 
   data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
 
@@ -78,6 +86,14 @@ test_that("update", {
     rows_update(data, test_db_src_frame(select = 0L, where = "a"), by = "where", in_place = TRUE)
     data %>% arrange(select)
   })
+})
+
+test_that("update with returning argument (#607)", {
+  skip_if_src("duckdb")
+
+  if (identical(my_db_test_src(), sqlite_test_src())) {
+    skip_if_not_installed("RSQLite", "2.2.8")
+  }
 
   data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
   expect_equal(
