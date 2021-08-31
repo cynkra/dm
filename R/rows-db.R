@@ -539,6 +539,6 @@ sql_named_cols <- function(con, cols, table = NULL, force_names = FALSE) {
     cols <- paste0(table, ".", cols)
   }
 
-  cols[nms != ""] <- paste0(cols, " AS ", nms[nms != ""])
+  cols[nms != ""] <- paste0(cols, " AS ", DBI::dbQuoteIdentifier(con, nms[nms != ""]))
   paste0(cols, collapse = ", ")
 }
