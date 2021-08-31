@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.3.9003
+
+- `rows_insert()`, `rows_update()` and `rows_delete()` gain `returning` argument. In combination with `in_place = TRUE` this argument makes the newly inserted rows accessible via `get_returning_rows()` after the operation completes (#593, @mgirlich).
+
+
 # dm 0.2.3.9002
 
 - Update tests for pillar 1.6.2.
