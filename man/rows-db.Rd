@@ -8,8 +8,8 @@
 \alias{sql_rows_insert}
 \alias{sql_rows_update}
 \alias{sql_rows_delete}
-\alias{sql_add_returning}
 \alias{sql_returning}
+\alias{sql_output_cols}
 \title{Updating database tables}
 \usage{
 \method{rows_insert}{tbl_dbi}(
@@ -45,15 +45,15 @@
   returning = NULL
 )
 
-sql_rows_insert(x, y, ...)
+sql_rows_insert(x, y, ..., returning_cols = NULL)
 
-sql_rows_update(x, y, by, ...)
+sql_rows_update(x, y, by, ..., returning_cols = NULL)
 
-sql_rows_delete(x, y, by, ...)
+sql_rows_delete(x, y, by, ..., returning_cols = NULL)
 
-sql_add_returning(sql, x, returning_cols)
+sql_returning(x, returning_cols, ...)
 
-sql_returning(x, returning_cols)
+sql_output_cols(x, returning_cols, output_delete = FALSE, ...)
 }
 \arguments{
 \item{x}{A pair of data frames or data frame extensions (e.g. a tibble).
@@ -93,9 +93,12 @@ Currently these checks are no-ops and need yet to be implemented.}
 Note that also columns not in \code{y} but automatically created when inserting
 into \code{x} can be returned, for example the \code{id} column.}
 
-\item{sql}{SQL code generated with a \code{sql_rows_()} function.}
+\item{returning_cols}{A character vector of unquote column names
+to return, created from the \code{returning} argument.
+Methods for database that do not support this should raise an error.}
 
-\item{returning_cols}{A (named) character vector of columns to return.}
+\item{output_delete}{For \code{sql_output_cols()}, construct the SQL
+for a \code{DELETE} operation.}
 }
 \value{
 A tbl object of the same structure as \code{x}.
@@ -126,6 +129,12 @@ Unlike \code{\link[=compute]{compute()}} or \code{\link[=copy_to]{copy_to()}}, n
 The \verb{sql_rows_*()} functions return the SQL used for the corresponding
 \verb{rows_*()} function with \code{in_place = FALSE}.
 \code{y} needs to be located on the same data source as \code{x}.
+
+\code{sql_returning()} and \code{sql_output_cols()} construct the SQL
+required to support the \code{returning} argument.
+Two methods are required, because the syntax for SQL Server
+(and some other databases) is vastly different from Postgres and other
+more standardized DBs.
 }
 \examples{
 \dontshow{if (rlang::is_installed("dbplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
