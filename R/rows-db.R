@@ -255,8 +255,7 @@ sql_rows_insert.tbl_sql <- function(x, y, ..., returning_cols = NULL) {
     "INSERT INTO ", name, " (", columns_qq, ")\n",
     sql_output_cols(x, returning_cols),
     dbplyr::remote_query(y),
-    # FIXME: Rename to sql_returning_cols
-    sql_returning(x, returning_cols)
+    sql_returning_cols(x, returning_cols)
   )
 
   glue::as_glue(sql)
@@ -287,7 +286,7 @@ sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ..., returning_cols =
     "FROM ", p$y_name, "\n",
     "WHERE (", p$compare_qual_qq, "))\n",
     "WHERE EXISTS (SELECT * FROM ", p$y_name, " WHERE ", p$compare_qual_qq, ")",
-    sql_returning(x, returning_cols)
+    sql_returning_cols(x, returning_cols)
   )
 
   glue::as_glue(sql)
@@ -335,7 +334,7 @@ sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols 
     "  ON ", p$compare_qual_qq, "\n",
     "SET\n",
     paste0("  ", p$target_columns_qual_qq, " = ", p$new_columns_qual_qq, collapse = ",\n"),
-    sql_returning(x, returning_cols)
+    sql_returning_cols(x, returning_cols)
   )
 
   glue::as_glue(sql)
@@ -363,7 +362,7 @@ sql_rows_update.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NUL
     "\n",
     "FROM ", p$y_name, "\n",
     "WHERE ", p$compare_qual_qq,
-    sql_returning(x, returning_cols)
+    sql_returning_cols(x, returning_cols)
   )
 
   glue::as_glue(sql)
@@ -431,7 +430,7 @@ sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
     "DELETE FROM ", p$name, "\n",
     sql_output_cols(x, returning_cols, delete = TRUE),
     "WHERE EXISTS (SELECT * FROM ", p$y_name, " WHERE ", p$compare_qual_qq, ")",
-    sql_returning(x, returning_cols)
+    sql_returning_cols(x, returning_cols)
   )
 
   glue::as_glue(sql)
@@ -486,26 +485,26 @@ has_returned_rows <- function(x) {
   !identical(attr(x, "returned_rows"), NULL)
 }
 
-#' sql_returning
+#' sql_returning_cols
 #'
-#' `sql_returning()` and `sql_output_cols()` construct the SQL
+#' `sql_returning_cols()` and `sql_output_cols()` construct the SQL
 #' required to support the `returning` argument.
 #' Two methods are required, because the syntax for SQL Server
 #' (and some other databases) is vastly different from Postgres and other
 #' more standardized DBs.
 #' @export
 #' @rdname rows-db
-sql_returning <- function(x, returning_cols, ...) {
+sql_returning_cols <- function(x, returning_cols, ...) {
   if (is_empty(returning_cols)) {
     return(NULL)
   }
 
   check_dots_empty()
-  UseMethod("sql_returning")
+  UseMethod("sql_returning_cols")
 }
 
 #' @export
-sql_returning.tbl_dbi <- function(x, returning_cols, ...) {
+sql_returning_cols.tbl_dbi <- function(x, returning_cols, ...) {
   con <- dbplyr::remote_con(x)
   returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x))
 
@@ -513,7 +512,7 @@ sql_returning.tbl_dbi <- function(x, returning_cols, ...) {
 }
 
 #' @export
-sql_returning.tbl_SQLiteConnection <- function(x, returning_cols, ...) {
+sql_returning_cols.tbl_SQLiteConnection <- function(x, returning_cols, ...) {
   con <- dbplyr::remote_con(x)
   returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x), force_names = TRUE)
 
@@ -521,7 +520,7 @@ sql_returning.tbl_SQLiteConnection <- function(x, returning_cols, ...) {
 }
 
 #' @export
-`sql_returning.tbl_Microsoft SQL Server` <- function(x, returning_cols, ...) {
+`sql_returning_cols.tbl_Microsoft SQL Server` <- function(x, returning_cols, ...) {
   NULL
 }
 

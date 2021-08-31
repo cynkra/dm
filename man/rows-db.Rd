@@ -8,7 +8,7 @@
 \alias{sql_rows_insert}
 \alias{sql_rows_update}
 \alias{sql_rows_delete}
-\alias{sql_returning}
+\alias{sql_returning_cols}
 \alias{sql_output_cols}
 \title{Updating database tables}
 \usage{
@@ -51,7 +51,7 @@ sql_rows_update(x, y, by, ..., returning_cols = NULL)
 
 sql_rows_delete(x, y, by, ..., returning_cols = NULL)
 
-sql_returning(x, returning_cols, ...)
+sql_returning_cols(x, returning_cols, ...)
 
 sql_output_cols(x, returning_cols, output_delete = FALSE, ...)
 }
@@ -130,7 +130,7 @@ The \verb{sql_rows_*()} functions return the SQL used for the corresponding
 \verb{rows_*()} function with \code{in_place = FALSE}.
 \code{y} needs to be located on the same data source as \code{x}.
 
-\code{sql_returning()} and \code{sql_output_cols()} construct the SQL
+\code{sql_returning_cols()} and \code{sql_output_cols()} construct the SQL
 required to support the \code{returning} argument.
 Two methods are required, because the syntax for SQL Server
 (and some other databases) is vastly different from Postgres and other
