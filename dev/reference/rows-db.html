@@ -63,7 +63,12 @@ By default, an informative message is given.
 Unlike compute() or copy_to(), no new tables are created.
 The sql_rows_*() functions return the SQL used for the corresponding
 rows_*() function with in_place = FALSE.
-y needs to be located on the same data source as x." />
+y needs to be located on the same data source as x.
+sql_returning_cols() and sql_output_cols() construct the SQL
+required to support the returning argument.
+Two methods are required, because the syntax for SQL Server
+(and some other databases) is vastly different from Postgres and other
+more standardized DBs." />
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
@@ -220,22 +225,58 @@ Unlike <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>comput
 <p>The <code>sql_rows_*()</code> functions return the SQL used for the corresponding
 <code>rows_*()</code> function with <code>in_place = FALSE</code>.
 <code>y</code> needs to be located on the same data source as <code>x</code>.</p>
+<p><code>sql_returning_cols()</code> and <code>sql_output_cols()</code> construct the SQL
+required to support the <code>returning</code> argument.
+Two methods are required, because the syntax for SQL Server
+(and some other databases) is vastly different from Postgres and other
+more standardized DBs.</p>
     </div>
 
     <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='co'># S3 method for tbl_dbi</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_insert</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, by <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span>, copy <span class='op'>=</span> <span class='cn'>FALSE</span>, check <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_insert</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>y</span>,
+  by <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>,
+  in_place <span class='op'>=</span> <span class='cn'>NULL</span>,
+  copy <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  check <span class='op'>=</span> <span class='cn'>NULL</span>,
+  returning <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for tbl_dbi</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_update</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, by <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span>, copy <span class='op'>=</span> <span class='cn'>FALSE</span>, check <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_update</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>y</span>,
+  by <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>,
+  in_place <span class='op'>=</span> <span class='cn'>NULL</span>,
+  copy <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  check <span class='op'>=</span> <span class='cn'>NULL</span>,
+  returning <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for tbl_dbi</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_delete</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, by <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='cn'>NULL</span>, copy <span class='op'>=</span> <span class='cn'>FALSE</span>, check <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_delete</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>y</span>,
+  by <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>,
+  in_place <span class='op'>=</span> <span class='cn'>NULL</span>,
+  copy <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  check <span class='op'>=</span> <span class='cn'>NULL</span>,
+  returning <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
-<span class='fu'>sql_rows_insert</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>sql_rows_insert</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, returning_cols <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>sql_rows_update</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>by</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>sql_rows_update</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>by</span>, <span class='va'>...</span>, returning_cols <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>sql_rows_delete</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>by</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
+<span class='fu'>sql_rows_delete</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>by</span>, <span class='va'>...</span>, returning_cols <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
+<span class='fu'>sql_returning_cols</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>returning_cols</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>sql_output_cols</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>returning_cols</span>, output_delete <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -283,19 +324,39 @@ it is a potentially expensive operation so you must opt into it.</p></td>
 The default is to check only if <code>in_place</code> is <code>TRUE</code> or <code>NULL</code>.</p>
 <p>Currently these checks are no-ops and need yet to be implemented.</p></td>
     </tr>
+    <tr>
+      <th>returning</th>
+      <td><p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a>
+&lt;<code>tidy-select</code>&gt; Columns to return of the inserted data.
+Note that also columns not in <code>y</code> but automatically created when inserting
+into <code>x</code> can be returned, for example the <code>id</code> column.</p></td>
+    </tr>
+    <tr>
+      <th>returning_cols</th>
+      <td><p>A character vector of unquote column names
+to return, created from the <code>returning</code> argument.
+Methods for database that do not support this should raise an error.</p></td>
+    </tr>
+    <tr>
+      <th>output_delete</th>
+      <td><p>For <code>sql_output_cols()</code>, construct the SQL
+for a <code>DELETE</code> operation.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A tbl object of the same structure as <code>x</code>.
 If <code>in_place = TRUE</code>, the underlying data is updated as a side effect,
-and <code>x</code> is returned, invisibly.</p>
+and <code>x</code> is returned, invisibly. If return columns are specified with
+<code>returning</code> then the resulting tibble is stored in the attribute
+<code>returned_rows</code>. This can be accessed with <code><a href='get_returned_rows.html'>get_returned_rows()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'>dbplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>memdb_frame</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, b <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='cn'>NA</span><span class='op'>)</span><span class='op'>]</span>, c <span class='op'>=</span> <span class='fl'>0.5</span> <span class='op'>+</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>data</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Database: sqlite 3.35.5 [:memory:]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Database: sqlite 3.36.0 [:memory:]</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>       a b         c</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>     1 a       0.5</span>
@@ -307,7 +368,7 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='r-in'><span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_insert</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>4</span>, b <span class='op'>=</span> <span class='st'>"z"</span><span class='op'>)</span>, copy <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Source:   lazy query [?? x 3]</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Database: sqlite 3.35.5 [:memory:]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Database: sqlite 3.36.0 [:memory:]</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>       a b         c</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>     1 a       0.5</span>
@@ -316,7 +377,7 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span>     4 z      <span style='color: #BB0000;'>NA</span>  </span>
 <span class='r-in'><span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_update</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>, b <span class='op'>=</span> <span class='st'>"w"</span><span class='op'>)</span>, copy <span class='op'>=</span> <span class='cn'>TRUE</span>, in_place <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Source:   lazy query [?? x 3]</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Database: sqlite 3.35.5 [:memory:]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Database: sqlite 3.36.0 [:memory:]</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>       a b         c</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>     1 a       0.5</span>
@@ -326,7 +387,7 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='r-in'><span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_insert</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='fu'>dbplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>memdb_frame</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>4</span>, b <span class='op'>=</span> <span class='st'>"z"</span><span class='op'>)</span>, in_place <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>data</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Database: sqlite 3.35.5 [:memory:]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Database: sqlite 3.36.0 [:memory:]</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>       a b         c</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>     1 a       0.5</span>
@@ -336,7 +397,7 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='r-in'><span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_update</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='fu'>dbplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>memdb_frame</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>, b <span class='op'>=</span> <span class='st'>"w"</span><span class='op'>)</span>, in_place <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>data</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Database: sqlite 3.35.5 [:memory:]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Database: sqlite 3.36.0 [:memory:]</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>       a b         c</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>     1 a       0.5</span>
