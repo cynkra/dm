@@ -101,8 +101,8 @@ test_that("update with returning argument (#607)", {
     suppressWarnings(suppressMessages(
       rows_update(target, tibble(select = 2:3, where = "w"), copy = TRUE, in_place = TRUE, returning = everything())
     )) %>%
-        get_returned_rows() %>%
-        arrange(select),
+      get_returned_rows() %>%
+      arrange(select),
     tibble(select = 2:3, where = "w", exists = c(1.5, 2.5))
   )
 })
