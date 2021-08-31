@@ -50,14 +50,14 @@ test_that("insert + delete + truncate with returning argument (#607)", {
 
   # TODO remove `suppressWarnings()` when `dplyr::rows_*()` get argument `returning`
   expect_equal(
-    suppressWarnings(rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = everything()) %>%
-      get_returned_rows()),
+    suppressWarnings(rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = everything())) %>%
+      get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA_real_)
   )
 
   expect_equal(
-    suppressWarnings(rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = c(sl = select)) %>%
-      get_returned_rows()),
+    suppressWarnings(rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = c(sl = select))) %>%
+      get_returned_rows(),
     tibble(sl = 4L)
   )
 })
@@ -98,10 +98,10 @@ test_that("update with returning argument (#607)", {
   data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
   expect_equal(
     suppressWarnings(suppressMessages(
-      rows_update(data, tibble(select = 2:3, where = "w"), copy = TRUE, in_place = TRUE, returning = everything()) %>%
+      rows_update(data, tibble(select = 2:3, where = "w"), copy = TRUE, in_place = TRUE, returning = everything())
+    )) %>%
         get_returned_rows() %>%
-        arrange(select)
-    )),
+        arrange(select),
     tibble(select = 2:3, where = "w", exists = c(1.5, 2.5))
   )
 })
