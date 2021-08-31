@@ -2,19 +2,29 @@
 % Please edit documentation in R/rows-db.R
 \name{get_returned_rows}
 \alias{get_returned_rows}
-\title{Extract the RETURNING rows}
+\alias{has_returned_rows}
+\title{Extract and check the RETURNING rows}
 \usage{
 get_returned_rows(x)
+
+has_returned_rows(x)
 }
 \arguments{
 \item{x}{A lazy tbl.}
 }
 \value{
-A tibble.
+For \code{get_returned_rows()}, a tibble.
+
+For \code{has_returned_rows()}, a scalar logical.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Extract the RETURNING rows produced by \code{rows_insert()}, \code{rows_update()},
-\code{rows_upsert()}, or \verb{rows_delete().}
+\code{get_returned_rows()} extracts the RETURNING rows produced by
+\code{\link[=rows_insert]{rows_insert()}}, \code{\link[=rows_update]{rows_update()}}, \code{\link[=rows_upsert]{rows_upsert()}}, or \code{\link[=rows_delete]{rows_delete()}}
+if called with the \code{returning} argument.
+An error is raised if this information is not available.
+
+\code{has_returned_rows()} checks if \code{x} has stored RETURNING rows produced by
+\code{\link[=rows_insert]{rows_insert()}}, \code{\link[=rows_update]{rows_update()}}, \code{\link[=rows_upsert]{rows_upsert()}}, or \code{\link[=rows_delete]{rows_delete()}}.
 }

@@ -438,33 +438,39 @@ rows_get_or_execute <- function(x, con, sql, returning_cols) {
   invisible(x)
 }
 
-#' Extract the RETURNING rows
+#' Extract and check the RETURNING rows
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' Extract the RETURNING rows produced by `rows_insert()`, `rows_update()`,
-#' `rows_upsert()`, or `rows_delete().`
+#' `get_returned_rows()` extracts the RETURNING rows produced by
+#' [rows_insert()], [rows_update()], [rows_upsert()], or [rows_delete()]
+#' if called with the `returning` argument.
+#' An error is raised if this information is not available.
 #'
 #' @param x A lazy tbl.
 #'
-#' @return A tibble.
+#' @return For `get_returned_rows()`, a tibble.
 #'
 #' @export
 get_returned_rows <- function(x) {
-  attr(x, "returned_rows", TRUE)
+  out <- attr(x, "returned_rows", TRUE)
+  if (is.null(out)) {
+    abort("No returned rows available.")
+  }
+  out
 }
 
-#' Does `x` have RETURNING rows?
+#' has_returned_rows()
 #'
-#' @description
-#' `r lifecycle::badge("experimental")`
-#'
-#' Checks if `x` has stored RETURNING rows produced by `rows_insert()`, `rows_update()`,
-#' `rows_upsert()`, or `rows_delete().`
+#' `has_returned_rows()` checks if `x` has stored RETURNING rows produced by
+#' [rows_insert()], [rows_update()], [rows_upsert()], or [rows_delete()].
 #'
 #' @param x A lazy tbl.
 #'
+#' @return For `has_returned_rows()`, a scalar logical.
+#'
+#' @rdname get_returned_rows
 #' @export
 has_returned_rows <- function(x) {
   !identical(attr(x, "returned_rows"), NULL)
