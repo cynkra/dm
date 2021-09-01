@@ -271,3 +271,15 @@
       2      2 w        3.5
       3      3 w        2.5
 
+# rows_*() checks arguments
+
+    `returning` only works if `in_place` is true.
+
+---
+
+    `returning` only works if `in_place` is true.
+
+---
+
+    `returning` only works if `in_place` is true.
+
