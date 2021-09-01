@@ -320,3 +320,30 @@ test_that("output for compound keys", {
       pull_tbl()
   })
 })
+
+test_that("glimpse.dm() works", {
+  skip_if_remote_src()
+  expect_snapshot({
+    glimpse(empty_dm())
+
+    # glimpse 'standard' dm object
+    glimpse(dm_for_disambiguate())
+
+    # glimpse 'standard' dm object with different width
+    glimpse(dm_for_disambiguate(), width = 40)
+
+    # option "width" inside test_that-environment should always be 80
+    getOption("width")
+
+    # # glimpse dm with long names for tables and/or columns
+    glimpse(
+      dm_for_disambiguate() %>%
+        dm_rename(
+          iris_1,
+          gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd = key) %>%
+        dm_rename_tbl(
+          gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd = iris_1
+        )
+    )
+  })
+})
