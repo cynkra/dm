@@ -757,6 +757,10 @@ glimpse.dm <- function(x, width = NULL, ...) {
     width
   }
   table_list <- dm_get_tables_impl(x)
+  if (length(table_list) == 0) {
+    cat_line(trim_width("dm of 0 tables", glimpse_width))
+    return(invisible(x))
+  }
   cat_line(
     trim_width(
       paste0("dm of ", length(table_list), " tables: ", paste0(tick(names(table_list)), collapse = ", ")),
