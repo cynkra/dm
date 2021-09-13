@@ -17,6 +17,8 @@
       `x` and `y` must share the same src, set `copy` = TRUE (may be slow).
     Code
       rows_insert(data, test_db_src_frame(select = 4, where = "z"))
+    Message <dplyr_message_matching_by>
+      Matching, by = "select"
     Message <message>
       Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.
     Output
@@ -36,6 +38,8 @@
       3      3 <NA>     2.5
     Code
       rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = FALSE)
+    Message <dplyr_message_matching_by>
+      Matching, by = "select"
     Output
         select where exists
          <dbl> <chr>  <dbl>
@@ -53,6 +57,9 @@
       3      3 <NA>     2.5
     Code
       rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = TRUE)
+    Message <dplyr_message_matching_by>
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -63,6 +70,8 @@
       4      4 z       NA  
     Code
       rows_delete(data, test_db_src_frame(select = 2), in_place = FALSE)
+    Message <dplyr_message_matching_by>
+      Matching, by = "select"
     Output
         select where exists
          <int> <chr>  <dbl>
@@ -80,6 +89,9 @@
       4      4 z       NA  
     Code
       rows_delete(data, test_db_src_frame(select = 2), in_place = TRUE)
+    Message <dplyr_message_matching_by>
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -143,6 +155,8 @@
       3      4 z       NA  
     Code
       rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), in_place = FALSE)
+    Message <dplyr_message_matching_by>
+      Matching, by = "select"
     Output
         select where exists
          <int> <chr>  <dbl>
@@ -157,6 +171,9 @@
       3      4 z       NA  
     Code
       rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), in_place = TRUE)
+    Message <dplyr_message_matching_by>
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -234,6 +251,9 @@
       3      3 <NA>     2.5
     Code
       rows_update(data, test_db_src_frame(select = 2:3, where = "w"), in_place = TRUE)
+    Message <dplyr_message_matching_by>
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -244,6 +264,9 @@
     Code
       rows_update(data, test_db_src_frame(select = 2, where = "w", exists = 3.5),
       in_place = TRUE)
+    Message <dplyr_message_matching_by>
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -253,6 +276,9 @@
       3      3 w        2.5
     Code
       rows_update(data, test_db_src_frame(select = 2:3), in_place = TRUE)
+    Message <dplyr_message_matching_by>
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
