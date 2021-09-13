@@ -60,9 +60,10 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
   check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
-  y_key <- db_key(y, by)
-  by <- names(y_key)
-  x_key <- db_key(x, by)
+  by <- rows_check_key(by, x, y)
+
+  rows_check_key_df(x, by, df_name = "x")
+  rows_check_key_df(y, by, df_name = "y")
 
   name <- target_table_name(x, in_place)
 
@@ -95,9 +96,10 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
   check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
-  y_key <- db_key(y, by)
-  by <- names(y_key)
-  x_key <- db_key(x, by)
+  by <- rows_check_key(by, x, y)
+
+  rows_check_key_df(x, by, df_name = "x")
+  rows_check_key_df(y, by, df_name = "y")
 
   new_columns <- setdiff(colnames(y), by)
 
@@ -149,9 +151,10 @@ rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
   check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
-  y_key <- db_key(y, by)
-  by <- names(y_key)
-  x_key <- db_key(x, by)
+  by <- rows_check_key(by, x, y)
+
+  rows_check_key_df(x, by, df_name = "x")
+  rows_check_key_df(y, by, df_name = "y")
 
   name <- target_table_name(x, in_place)
 
@@ -208,6 +211,37 @@ db_key <- function(y, by) {
   } else {
     idx <- match(by, colnames(y))
     set_names(idx, by)
+  }
+}
+
+rows_check_key <- function(by, x, y) {
+  if (is.null(by)) {
+    by <- colnames(y)[[1]]
+    inform(glue("Matching, by = \"{by}\""),
+      class = c("dplyr_message_matching_by", "dplyr_message")
+    )
+  }
+
+  if (!is.character(by) || length(by) == 0) {
+    abort("`by` must be a character vector.")
+  }
+  # is_named(by) checks all(names2(by) != ""), we need any(...)
+  if (any(names2(by) != "")) {
+    abort("`by` must be unnamed.")
+  }
+
+  bad <- setdiff(colnames(y), colnames(x))
+  if (has_length(bad)) {
+    abort("All columns in `y` must exist in `x`.")
+  }
+
+  by
+}
+
+rows_check_key_df <- function(df, by, df_name) {
+  y_miss <- setdiff(by, colnames(df))
+  if (length(y_miss) > 0) {
+    abort(glue("All `by` columns must exist in `{df_name}`."))
   }
 }
 
