@@ -45,6 +45,9 @@ dm_financial <- function() {
 }
 
 dm_has_financial <- function() {
+  # Not on CRAN:
+  if (Sys.getenv("CI") != "true") return(FALSE)
+
   # Crashes observed with R < 3.5:
   if (getRversion() < 3.5) return(FALSE)
 

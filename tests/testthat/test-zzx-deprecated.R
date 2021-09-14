@@ -27,7 +27,7 @@ test_that("cdm_copy_to() behaves correctly", {
   local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_dm(
-    cdm_copy_to(sqlite(), dm_for_filter_simple(), unique_table_names = TRUE),
+    cdm_copy_to(sqlite_test_src(), dm_for_filter_simple(), unique_table_names = TRUE),
     dm_for_filter_simple()
   )
 })
@@ -113,10 +113,9 @@ test_that("cdm_get_src() works", {
     class = "is_not_dm"
   )
 
-  skip_if_local_src()
   expect_identical(
-    class(cdm_get_src(dm_for_filter_simple())),
-    class(my_test_src())
+    class(cdm_get_src(dm_for_filter_simple_db())),
+    class(my_db_test_src())
   )
 })
 

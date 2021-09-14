@@ -177,6 +177,7 @@ test_that("dm_rm_fk() works with partial matching", {
 
 
 test_that("dm_enum_fk_candidates() works as intended?", {
+  skip_if_ide()
 
   # `anti_join()` doesn't distinguish between `dbl` and `int`
   tbl_fk_candidates_tf_1_tf_4 <- tribble(

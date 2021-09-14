@@ -16,14 +16,15 @@ defer_assign <- function(lhs, rhs, env) {
 
   value <- get0(lhs, cache)
   if (is.null(value)) {
-    # message("Deferring ", lhs)
+    message("Deferring ", lhs)
 
     # Enable this for eager assignment:
     # force(rhs)
 
     value <- function() {
       # message("Querying ", lhs)
-      rhs
+      out <- rhs
+      out
     }
     assign(lhs, value, cache)
   } else {
@@ -54,13 +55,15 @@ copy_to_my_test_src <- function(rhs, lhs) {
   }
 }
 
-sqlite %<--% dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
-
 my_test_src_name <- {
   src <- Sys.getenv("DM_TEST_SRC", "df")
   name <- gsub("^.*-", "", src)
   inform(crayon::green(paste0("Testing on ", name)))
   name
+}
+
+is_db_test_src <- function() {
+  my_test_src_name != "df"
 }
 
 my_test_src_fun %<--% {
@@ -85,7 +88,17 @@ my_test_src <- function() {
   )
 }
 
-test_src_frame <- function(...) {
+sqlite_test_src %<--% dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
+
+my_db_test_src <- function() {
+  if (is_db_test_src()) {
+    my_test_src()
+  } else {
+    sqlite_test_src()
+  }
+}
+
+test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame()) {
   src <- my_test_src()
 
   df <- tibble(...)
@@ -93,7 +106,10 @@ test_src_frame <- function(...) {
     return(df)
   }
 
-  if (is_mssql(src)) {
+  if (!.temporary) {
+    name <- unique_db_table_name("test_frame")
+    temporary <- FALSE
+  } else if (is_mssql(src)) {
     name <- paste0("#", unique_db_table_name("test_frame"))
     temporary <- FALSE
   } else {
@@ -105,10 +121,31 @@ test_src_frame <- function(...) {
   out
 }
 
+test_db_src_frame <- function(..., .temporary = TRUE, .env = parent.frame()) {
+  if (is_db_test_src()) {
+    return(test_src_frame(..., .temporary = .temporary, .env = .env))
+  }
+
+  src <- my_db_test_src()
+
+  df <- tibble(...)
+
+  name <- unique_db_table_name("test_frame")
+
+  out <- copy_to(src, df, name = name, temporary = .temporary)
+
+  if (!.temporary) {
+    withr::defer(DBI::dbRemoveTable(con_from_src_or_con(src), name), envir = .env)
+  }
+
+  out
+}
+
+
 # for examine_cardinality...() ----------------------------------------------
 
 data_card_1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
-data_card_1_sqlite %<--% copy_to(sqlite(), data_card_1())
+data_card_1_sqlite %<--% copy_to(sqlite_test_src(), data_card_1())
 data_card_2 %<-% tibble::tibble(a = c(1, 3:6), b = letters[1:5])
 data_card_3 %<-% tibble::tibble(c = 1:5)
 data_card_4 %<-% tibble::tibble(c = c(1:5, 5L))
@@ -248,7 +285,11 @@ dm_for_filter %<-% {
     dm_select_tbl(-tf_7)
 }
 
-dm_for_filter_sqlite %<--% copy_dm_to(sqlite(), dm_for_filter())
+dm_for_filter_db %<--% {
+  copy_dm_to(my_db_test_src(), dm_for_filter())
+}
+
+dm_for_filter_sqlite %<--% copy_dm_to(sqlite_test_src(), dm_for_filter())
 
 dm_for_filter_rev %<-% {
   def_dm_for_filter <- dm_get_def(dm_for_filter())
@@ -275,6 +316,10 @@ dm_for_filter_simple %<-% {
     dm_add_pk(tf_5, k) %>%
     dm_add_fk(tf_5, l, tf_4) %>%
     dm_add_fk(tf_5, m, tf_6)
+}
+
+dm_for_filter_simple_db %<--% {
+  copy_dm_to(my_db_test_src(), dm_for_filter_simple())
 }
 
 # for tests on `dm` objects: dm_add_pk(), dm_add_fk() ------------------------
