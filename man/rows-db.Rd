@@ -4,6 +4,7 @@
 \alias{rows-db}
 \alias{rows_insert.tbl_dbi}
 \alias{rows_update.tbl_dbi}
+\alias{rows_upsert.tbl_dbi}
 \alias{rows_delete.tbl_dbi}
 \alias{sql_rows_insert}
 \alias{sql_rows_update}
@@ -24,6 +25,17 @@
 )
 
 \method{rows_update}{tbl_dbi}(
+  x,
+  y,
+  by = NULL,
+  ...,
+  in_place = NULL,
+  copy = FALSE,
+  check = NULL,
+  returning = NULL
+)
+
+\method{rows_upsert}{tbl_dbi}(
   x,
   y,
   by = NULL,
