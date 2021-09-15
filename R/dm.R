@@ -777,7 +777,7 @@ glimpse.dm <- function(x, width = NULL, ...) {
       cat_line(trim_width(paste0(length(pk), " primary key(s): ", pk), glimpse_width))
     }
     fk <- all_fks %>%
-      filter(child_table == !!table_name) %>%
+      filter(child_table == table_name) %>%
       select(-child_table) %>%
       pmap_chr(
         function(child_fk_cols, parent_table, parent_key_cols) {
