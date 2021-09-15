@@ -1,5 +1,23 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.3.9004
+
+- Establish compatibility with vctrs > 0.3.8.
+- Establish compatibility with rlang > 0.4.11 (#613).
+
+
+# dm 0.2.3.9003
+
+- `rows_insert()`, `rows_update()` and `rows_delete()` gain `returning` argument. In combination with `in_place = TRUE` this argument makes the newly inserted rows accessible via `get_returning_rows()` after the operation completes (#593, @mgirlich).
+
+
+# dm 0.2.3.9002
+
+- Update tests for pillar 1.6.2.
+- Add CI run for validating all new `dm` objects (#597).
+- Avoid generating invalid `dm` objects in some corner cases (#596).
+
+
 # dm 0.2.3.9001
 
 - Use `NO ACTION` instead of `CASCADE` in foreign key constraints to permit self-references.
