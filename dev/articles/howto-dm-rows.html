@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Insert, update or remove rows in a database dm</h1>
                         <h4 data-toc-skip class="author">James Wondrasek</h4>
             
-            <h4 data-toc-skip class="date">2021-09-01</h4>
+            <h4 data-toc-skip class="date">2021-09-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/howto-dm-rows.Rmd" class="external-link"><code>vignettes/howto-dm-rows.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-rows.Rmd</code></div>
@@ -429,7 +429,6 @@
 <span class="co">#&gt; Not persisting, use `in_place = FALSE` to turn off this message.</span>
 <span class="co">#&gt; Ignoring extra columns: value, fk</span>
 <span class="co">#&gt; Ignoring extra columns: value</span>
-
 <span class="va">dm_deleted</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 × 3</span>
 #&gt;   value    pk    fk
@@ -457,7 +456,6 @@
   <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span>child <span class="op">=</span> <span class="va">patched_child</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/rows-dm.html">dm_rows_patch</a></span><span class="op">(</span><span class="va">dm_deleted</span>, <span class="va">.</span><span class="op">)</span>
 <span class="co">#&gt; Not persisting, use `in_place = FALSE` to turn off this message.</span>
-
 <span class="va">dm_patched</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 × 3</span>
 #&gt;   value    pk    fk
@@ -494,7 +492,6 @@
   <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span>parent <span class="op">=</span> <span class="va">upserted_parent</span>, child <span class="op">=</span> <span class="va">upserted_child</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/rows-dm.html">dm_rows_upsert</a></span><span class="op">(</span><span class="va">dm_patched</span>, <span class="va">.</span><span class="op">)</span>
 <span class="co">#&gt; Not persisting, use `in_place = FALSE` to turn off this message.</span>
-
 <span class="va">dm_upserted</span><span class="op">$</span><span class="va">parent</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 × 2</span>
 #&gt;   value    pk
