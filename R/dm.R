@@ -763,7 +763,7 @@ glimpse.dm <- function(x, width = NULL, ...) {
   }
   cat_line(
     trim_width(
-      paste0("dm of ", length(table_list), " tables: ", paste0(tick(names(table_list)), collapse = ", ")),
+      paste0("dm of ", length(table_list), " tables: ", toString(tick(names(table_list)))),
       glimpse_width
     )
   )
