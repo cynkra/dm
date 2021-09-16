@@ -477,6 +477,31 @@ sql_rows_patch <- function(x, y, by, ..., returning_cols = NULL) {
 }
 
 #' @export
+sql_rows_patch.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
+  # * avoid CTEs for the general case as they do not work everywhere
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_patch_prep(x, y, by)
+
+  sql <- paste0(
+    "UPDATE ", p$name, "\n",
+    "SET\n",
+    paste0(
+      "  ", unlist(p$new_columns_qq_list),
+      " = ", unlist(p$new_columns_qual_qq_list),
+      collapse = ",\n"
+    ), "\n",
+    "FROM (\n",
+    "    ", dbplyr::sql_render(y), "\n",
+    "  ) AS ", p$y_name, "\n",
+    "WHERE (", p$compare_qual_qq, ")\n",
+    sql_returning_cols(x, returning_cols)
+  )
+
+  glue::as_glue(sql)
+}
+
+#' @export
 sql_rows_patch.tbl_SQLiteConnection <- function(x, y, by, ..., returning_cols = NULL) {
   con <- dbplyr::remote_con(x)
 
@@ -574,9 +599,6 @@ sql_rows_patch.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NULL
 
   glue::as_glue(sql)
 }
-
-#' @export
-sql_rows_patch.tbl_duckdb_connection <- sql_rows_patch.tbl_SQLiteConnection
 
 sql_rows_patch_prep <- function(x, y, by) {
   con <- dbplyr::remote_con(x)
