@@ -502,29 +502,6 @@ sql_rows_patch.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
 }
 
 #' @export
-sql_rows_patch.tbl_SQLiteConnection <- function(x, y, by, ..., returning_cols = NULL) {
-  con <- dbplyr::remote_con(x)
-
-  p <- sql_rows_patch_prep(x, y, by)
-
-  sql <- paste0(
-    "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
-    dbplyr::sql_render(y),
-    "\n)\n",
-    #
-    "UPDATE ", p$name, "\n",
-    "SET (", p$new_columns_qq, ") = (\n",
-    "SELECT ", p$new_columns_qual_qq, "\n",
-    "FROM ", p$y_name, "\n",
-    "WHERE (", p$compare_qual_qq, "))\n",
-    "WHERE EXISTS (SELECT * FROM ", p$y_name, " WHERE ", p$compare_qual_qq, ")",
-    sql_returning_cols(x, returning_cols)
-  )
-
-  glue::as_glue(sql)
-}
-
-#' @export
 `sql_rows_patch.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL) {
   con <- dbplyr::remote_con(x)
 
