@@ -539,10 +539,6 @@ sql_returning_cols.tbl_duckdb_connection <- function(x, returning_cols, ...) {
   if (!is_empty(returning_cols)) {
     abort("DuckDB does not support the `returning` argument.")
   }
-  con <- dbplyr::remote_con(x)
-  returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x))
-
-  paste0("RETURNING ", returning_cols)
 }
 
 #' @export
