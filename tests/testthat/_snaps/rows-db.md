@@ -271,7 +271,94 @@
       2      2 w        3.5
       3      3 w        2.5
 
+# patch
+
+    Code
+      data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)])
+      data
+    Output
+        select where
+         <int> <chr>
+      1      1 a    
+      2      2 b    
+      3      3 <NA> 
+    Code
+      suppressMessages(rows_patch(data, tibble(select = 2:3, where = "patched"),
+      copy = TRUE, in_place = FALSE) %>% arrange(select))
+    Output
+        select where  
+         <int> <chr>  
+      1      1 a      
+      2      2 b      
+      3      3 patched
+    Code
+      suppressMessages(rows_patch(data, tibble(select = 2:3), copy = TRUE, in_place = FALSE))
+    Output
+        select where
+         <int> <chr>
+      1      1 a    
+      2      2 b    
+      3      3 <NA> 
+    Code
+      data %>% arrange(select)
+    Output
+        select where
+         <int> <chr>
+      1      1 a    
+      2      2 b    
+      3      3 <NA> 
+    Code
+      rows_patch(data, test_db_src_frame(select = 0L, where = "patched"), by = "where",
+      in_place = FALSE)
+    Output
+        select where
+         <int> <chr>
+      1      1 a    
+      2      2 b    
+      3      3 <NA> 
+    Code
+      data %>% arrange(select)
+    Output
+        select where
+         <int> <chr>
+      1      1 a    
+      2      2 b    
+      3      3 <NA> 
+    Code
+      rows_patch(data, test_db_src_frame(select = 2:3, where = "patched"), in_place = TRUE)
+      data %>% arrange(select)
+    Output
+        select where  
+         <int> <chr>  
+      1      1 a      
+      2      2 b      
+      3      3 patched
+    Code
+      data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)])
+      rows_patch(data, test_db_src_frame(select = 2:3), in_place = TRUE)
+      data %>% arrange(select)
+    Output
+        select where
+         <int> <chr>
+      1      1 a    
+      2      2 b    
+      3      3 <NA> 
+    Code
+      rows_patch(data, test_db_src_frame(select = 0L, where = "a"), by = "where",
+      in_place = TRUE)
+      data %>% arrange(select)
+    Output
+        select where
+         <int> <chr>
+      1      1 a    
+      2      2 b    
+      3      3 <NA> 
+
 # rows_*() checks arguments
+
+    `returning` only works if `in_place` is true.
+
+---
 
     `returning` only works if `in_place` is true.
 
