@@ -4,10 +4,12 @@
 \alias{rows-db}
 \alias{rows_insert.tbl_dbi}
 \alias{rows_update.tbl_dbi}
+\alias{rows_patch.tbl_dbi}
 \alias{rows_upsert.tbl_dbi}
 \alias{rows_delete.tbl_dbi}
 \alias{sql_rows_insert}
 \alias{sql_rows_update}
+\alias{sql_rows_patch}
 \alias{sql_rows_delete}
 \alias{sql_returning_cols}
 \alias{sql_output_cols}
@@ -25,6 +27,17 @@
 )
 
 \method{rows_update}{tbl_dbi}(
+  x,
+  y,
+  by = NULL,
+  ...,
+  in_place = NULL,
+  copy = FALSE,
+  check = NULL,
+  returning = NULL
+)
+
+\method{rows_patch}{tbl_dbi}(
   x,
   y,
   by = NULL,
@@ -60,6 +73,8 @@
 sql_rows_insert(x, y, ..., returning_cols = NULL)
 
 sql_rows_update(x, y, by, ..., returning_cols = NULL)
+
+sql_rows_patch(x, y, by, ..., returning_cols = NULL)
 
 sql_rows_delete(x, y, by, ..., returning_cols = NULL)
 
@@ -156,10 +171,13 @@ data
 try(rows_insert(data, tibble::tibble(a = 4, b = "z")))
 rows_insert(data, tibble::tibble(a = 4, b = "z"), copy = TRUE)
 rows_update(data, tibble::tibble(a = 2:3, b = "w"), copy = TRUE, in_place = FALSE)
+rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = FALSE)
 
 rows_insert(data, dbplyr::memdb_frame(a = 4, b = "z"), in_place = TRUE)
 data
 rows_update(data, dbplyr::memdb_frame(a = 2:3, b = "w"), in_place = TRUE)
+data
+rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = TRUE)
 data
 \dontshow{\}) # examplesIf}
 }

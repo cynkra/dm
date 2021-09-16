@@ -81,7 +81,7 @@ dm_draw <- function(dm,
     focus = focus,
     graph_name = graph_name
   )
-  bdm_render_graph(graph)
+  bdm_render_graph(graph, top_level_fun = "dm_draw")
 }
 
 #' Get data_model
