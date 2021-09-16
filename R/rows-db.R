@@ -594,7 +594,8 @@ sql_rows_upsert.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
     "WHEN NOT MATCHED THEN\n",
     "  INSERT (", p$y_columns_qq, ")\n",
     "  VALUES (", p$y_columns_qual_qq, ")\n",
-    sql_output_cols(x, returning_cols)
+    sql_output_cols(x, returning_cols),
+    ";"
   )
 
   glue::as_glue(sql)
