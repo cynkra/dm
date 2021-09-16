@@ -29,6 +29,9 @@
       out <- dm_rows_insert(flights_sqlite, flights_hour10_sqlite)
     Message <simpleMessage>
       Not persisting, use `in_place = FALSE` to turn off this message.
+    Message <dplyr_message_matching_by>
+      Matching, by = "origin"
+      Matching, by = "year"
     Code
       print(dm_nrow(flights_sqlite))
     Output
@@ -36,6 +39,10 @@
             15       86        0      945        0 
     Code
       dm_rows_insert(flights_sqlite, flights_hour10_sqlite, in_place = TRUE)
+    Message <dplyr_message_matching_by>
+      Matching, by = "origin"
+      Matching, by = "year"
+    Code
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
@@ -47,6 +54,10 @@
       hour == 11) %>% dm_update_zoomed()
       flights_hour11_sqlite <- copy_dm_to(sqlite, flights_hour11)
       flights_new <- dm_rows_insert(flights_sqlite, flights_hour11_sqlite, in_place = FALSE)
+    Message <dplyr_message_matching_by>
+      Matching, by = "origin"
+      Matching, by = "year"
+    Code
       print(dm_nrow(flights_new))
     Output
       airlines airports  flights   planes  weather 
@@ -64,6 +75,10 @@
       * Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N0EGMQ (1), N3BCAA (1), N3CCAA (1), N3CFAA (1), N3EHAA (1), ...
     Code
       dm_rows_insert(flights_sqlite, flights_hour11_sqlite, in_place = TRUE)
+    Message <dplyr_message_matching_by>
+      Matching, by = "origin"
+      Matching, by = "year"
+    Code
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
