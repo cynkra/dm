@@ -108,9 +108,7 @@ test_that("update with returning argument (#607)", {
 })
 
 test_that("upsert", {
-  # DuckDB: https://github.com/duckdb/duckdb/issues/1791
-  # MS SQL not yet implemented
-  skip_if_src("duckdb", "mssql")
+  skip_if_src("duckdb")
 
   expect_snapshot({
     data <- test_db_src_frame(

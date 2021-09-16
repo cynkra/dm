@@ -466,9 +466,62 @@ sql_rows_upsert <- function(x, y, by, ..., returning_cols = NULL) {
   UseMethod("sql_rows_upsert")
 }
 
-# DuckDB
-# * not yet supported
-# * https://github.com/duckdb/duckdb/issues/1791
+#' @export
+sql_rows_upsert.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_upsert_prep(x, y, by)
+
+  update_clause <- paste0(
+    unlist(p$new_columns_qq_list), " = ", "excluded.", unlist(p$new_columns_qq_list),
+    collapse = ",\n"
+  )
+
+  sql <- paste0(
+    "MERGE INTO ", p$name, "\n",
+    "USING (", dbplyr::sql_render(y), ") AS ", p$y_name, "\n",
+    "ON (", p$compare_qual_qq, ")\n",
+    "WHEN MATCHED THEN\n",
+    "  UPDATE SET", update_clause, "\n",
+    "WHEN NOT MATCHED THEN\n",
+    "  INSERT (", p$y_columns_qq, ")\n",
+    "  VALUES (", p$y_columns_qual_qq, ")\n",
+    sql_returning_cols(x, returning_cols)
+  )
+
+  glue::as_glue(sql)
+}
+
+#' @export
+`sql_rows_upsert.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL) {
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_upsert_prep(x, y, by)
+
+  update_clause <- paste0(
+    unlist(p$new_columns_qq_list), " = ", "excluded.", unlist(p$new_columns_qq_list),
+    collapse = ",\n"
+  )
+
+  sql <- paste0(
+    "MERGE INTO ", p$name, "\n",
+    "USING (", dbplyr::sql_render(y), ") AS ", p$y_name, "\n",
+    "ON (", p$compare_qual_qq, ")\n",
+    "WHEN MATCHED THEN\n",
+    "  UPDATE SET", update_clause, "\n",
+    "WHEN NOT MATCHED THEN\n",
+    "  INSERT (", p$y_columns_qq, ")\n",
+    "  VALUES (", p$y_columns_qual_qq, ")\n",
+    sql_output_cols(x, returning_cols)
+  )
+
+  glue::as_glue(sql)
+}
+
+#' @export
+sql_rows_upsert.tbl_duckdb_connection <- function(x, y, by, ..., returning_cols = NULL) {
+  abort("upsert is not supported for DuckDB")
+}
 
 #' @export
 sql_rows_upsert.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NULL) {
@@ -542,6 +595,10 @@ sql_rows_upsert_prep <- function(x, y, by) {
     DBI::dbQuoteIdentifier(con, colnames(y)),
     collapse = ", "
   )
+  y_columns_qual_qq <- paste(
+    y_name, ".", DBI::dbQuoteIdentifier(con, colnames(y)),
+    collapse = ", "
+  )
 
   by_columns_qq <- DBI::dbQuoteIdentifier(con, by)
   new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by))
@@ -564,6 +621,7 @@ sql_rows_upsert_prep <- function(x, y, by) {
   tibble(
     name, y_name,
     y_columns_qq,
+    y_columns_qual_qq,
     by_columns_qq,
     new_columns_qq, new_columns_qq_list,
     new_columns_qual_qq, new_columns_qual_qq_list,
