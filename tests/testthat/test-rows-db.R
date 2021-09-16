@@ -39,7 +39,7 @@ test_that("insert + delete + truncate", {
 test_that("insert + delete + truncate with returning argument (#607)", {
   skip_if_src("duckdb")
 
-  if (identical(my_db_test_src(), sqlite_test_src())) {
+  if (is_my_test_src_sqlite()) {
     skip_if_not_installed("RSQLite", "2.2.8")
   }
 
@@ -117,7 +117,7 @@ test_that("patch", {
 test_that("update with returning argument (#607)", {
   skip_if_src("duckdb")
 
-  if (identical(my_db_test_src(), sqlite_test_src())) {
+  if (is_my_test_src_sqlite()) {
     skip_if_not_installed("RSQLite", "2.2.8")
   }
 
@@ -136,7 +136,7 @@ test_that("update with returning argument (#607)", {
 test_that("patch with returning argument (#607)", {
   skip_if_src("duckdb")
 
-  if (identical(my_db_test_src(), sqlite_test_src())) {
+  if (is_my_test_src_sqlite()) {
     skip_if_not_installed("RSQLite", "2.2.8")
   }
 
@@ -182,7 +182,7 @@ test_that("upsert", {
 test_that("upsert with returning argument (#607)", {
   skip_if_src("duckdb")
 
-  if (identical(my_db_test_src(), sqlite_test_src())) {
+  if (is_my_test_src_sqlite()) {
     skip_if_not_installed("RSQLite", "2.2.8")
   }
 
@@ -192,7 +192,7 @@ test_that("upsert with returning argument (#607)", {
     # TODO remove this hack
     # hack needed because RETURNING doesn't work correctly for temporary tables in SQLite
     # https://github.com/cynkra/dm/pull/616#issuecomment-920624883
-    .temporary = is_db_test_src()
+    .temporary = !is_my_test_src_sqlite()
   )
 
   expect_equal(
