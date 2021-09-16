@@ -66,6 +66,10 @@ is_db_test_src <- function() {
   my_test_src_name != "df"
 }
 
+is_my_test_src_sqlite <- function() {
+  inherits(my_db_test_src(), "src_SQLiteConnection")
+}
+
 my_test_src_fun %<--% {
   fun <- paste0("test_src_", my_test_src_name)
   get0(fun, inherits = TRUE)
