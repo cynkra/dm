@@ -536,9 +536,7 @@ sql_returning_cols.tbl_dbi <- function(x, returning_cols, ...) {
 
 #' @export
 sql_returning_cols.tbl_duckdb_connection <- function(x, returning_cols, ...) {
-  if (!is_empty(returning_cols)) {
-    abort("DuckDB does not support the `returning` argument.")
-  }
+  abort("DuckDB does not support the `returning` argument.")
 }
 
 #' @export
