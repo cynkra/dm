@@ -145,7 +145,11 @@ test_that("upsert with returning argument (#607)", {
 
   target <- test_db_src_frame(
     select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2,
-    .unique_indexes = list("select", "where")
+    .unique_indexes = list("select", "where"),
+    # TODO remove this hack
+    # hack needed because RETURNING doesn't work correctly for temporary tables in SQLite
+    # https://github.com/cynkra/dm/pull/616#issuecomment-920624883
+    .temporary = is_db_test_src()
   )
 
   expect_equal(
