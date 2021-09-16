@@ -382,6 +382,31 @@ sql_rows_update <- function(x, y, by, ..., returning_cols = NULL) {
 }
 
 #' @export
+sql_rows_update.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
+  # * avoid CTEs for the general case as they do not work everywhere
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_update_prep(x, y, by)
+
+  sql <- paste0(
+    "UPDATE ", p$name, "\n",
+    "SET\n",
+    paste0(
+      "  ", unlist(p$new_columns_qq_list),
+      " = ", unlist(p$new_columns_qual_qq_list),
+      collapse = ",\n"
+    ), "\n",
+    "FROM (\n",
+    "    ", dbplyr::sql_render(y), "\n",
+    "  ) AS ", p$y_name, "\n",
+    "WHERE (", p$compare_qual_qq, ")\n",
+    sql_returning_cols(x, returning_cols)
+  )
+
+  glue::as_glue(sql)
+}
+
+#' @export
 sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ..., returning_cols = NULL) {
   con <- dbplyr::remote_con(x)
 
@@ -479,9 +504,6 @@ sql_rows_update.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NUL
 
   glue::as_glue(sql)
 }
-
-#' @export
-sql_rows_update.tbl_duckdb_connection <- sql_rows_update.tbl_SQLiteConnection
 
 sql_rows_update_prep <- function(x, y, by) {
   con <- dbplyr::remote_con(x)
@@ -857,13 +879,14 @@ sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
   p <- sql_rows_update_prep(x, y, by)
 
   sql <- paste0(
-    "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
-    dbplyr::sql_render(y),
-    "\n)\n",
-    #
     "DELETE FROM ", p$name, "\n",
     sql_output_cols(x, returning_cols, delete = TRUE),
-    "WHERE EXISTS (SELECT * FROM ", p$y_name, " WHERE ", p$compare_qual_qq, ")",
+    "WHERE EXISTS (\n",
+    "  SELECT * FROM (\n",
+    "    ", dbplyr::sql_render(y), "\n",
+    "  ) AS ", p$y_name, "\n",
+    "  WHERE ", p$compare_qual_qq, "\n",
+    ")",
     sql_returning_cols(x, returning_cols)
   )
 
@@ -943,6 +966,11 @@ sql_returning_cols.tbl_dbi <- function(x, returning_cols, ...) {
   returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x))
 
   paste0("RETURNING ", returning_cols)
+}
+
+#' @export
+sql_returning_cols.tbl_duckdb_connection <- function(x, returning_cols, ...) {
+  abort("DuckDB does not support the `returning` argument.")
 }
 
 #' @export

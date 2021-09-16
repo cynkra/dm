@@ -1,7 +1,4 @@
 test_that("insert + delete + truncate", {
-  # FIXME: Avoid CTE for duckdb or even in general
-  skip_if_src("duckdb")
-
   expect_snapshot({
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
     data
@@ -62,11 +59,18 @@ test_that("insert + delete + truncate with returning argument (#607)", {
   )
 })
 
-test_that("update", {
-  # https://github.com/duckdb/duckdb/issues/1187
-  # FIXME: See https://github.com/duckdb/duckdb/blob/master/test/sql/update/test_update_from.test for a solution
-  skip_if_src("duckdb")
+test_that("duckdb errors for returning argument", {
+  skip_if_src_not("duckdb")
 
+  target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
+
+  # TODO remove `suppressWarnings()` when `dplyr::rows_*()` get argument `returning`
+  expect_snapshot_error(
+    suppressWarnings(rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = everything()))
+  )
+})
+
+test_that("update", {
   expect_snapshot({
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
     data
