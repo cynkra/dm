@@ -89,15 +89,11 @@ test_that("update", {
 })
 
 test_that("patch", {
-  # https://github.com/duckdb/duckdb/issues/1187
-  # FIXME: See https://github.com/duckdb/duckdb/blob/master/test/sql/update/test_update_from.test for a solution
-  skip_if_src("duckdb")
-
   expect_snapshot({
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)])
     data
 
-    suppressMessages(rows_patch(data, tibble(select = 2:3, where = "patched"), copy = TRUE, in_place = FALSE))
+    suppressMessages(rows_patch(data, tibble(select = 2:3, where = "patched"), copy = TRUE, in_place = FALSE) %>% arrange(select))
     suppressMessages(rows_patch(data, tibble(select = 2:3), copy = TRUE, in_place = FALSE))
     data %>% arrange(select)
 

@@ -284,7 +284,7 @@
       3      3 <NA> 
     Code
       suppressMessages(rows_patch(data, tibble(select = 2:3, where = "patched"),
-      copy = TRUE, in_place = FALSE))
+      copy = TRUE, in_place = FALSE) %>% arrange(select))
     Output
         select where  
          <int> <chr>  
