@@ -93,9 +93,11 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
 #' @rdname rows-db
 rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
-                                returning = NULL) {
+                                returning = NULL,
+                                na_matches = c("na", "never")) {
   returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
+  na_matches <- arg_match(na_matches)
 
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
@@ -117,7 +119,7 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
     }
 
     con <- dbplyr::remote_con(x)
-    sql <- sql_rows_update(x, y, by, returning_cols = returning_cols)
+    sql <- sql_rows_update(x, y, by, returning_cols = returning_cols, na_matches = na_matches)
 
     rows_get_or_execute(x, con, sql, returning_cols)
   } else {
@@ -133,11 +135,11 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
 
     existing_columns <- setdiff(colnames(x), new_columns)
 
-    unchanged <- anti_join(x, y, by = by)
+    unchanged <- anti_join(x, y, by = by, na_matches = na_matches)
     updated <-
       x %>%
       select(!!!existing_columns) %>%
-      inner_join(y, by = by)
+      inner_join(y, by = by, na_matches = na_matches)
 
     union_all(unchanged, updated)
   }
@@ -147,9 +149,11 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
 #' @rdname rows-db
 rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
                                in_place = NULL, copy = FALSE, check = NULL,
-                               returning = NULL) {
+                               returning = NULL,
+                               na_matches = c("na", "never")) {
   returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
+  na_matches <- arg_match(na_matches)
 
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
@@ -171,7 +175,7 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
     }
 
     con <- dbplyr::remote_con(x)
-    sql <- sql_rows_patch(x, y, by, returning_cols = returning_cols)
+    sql <- sql_rows_patch(x, y, by, returning_cols = returning_cols, na_matches = na_matches)
 
     rows_get_or_execute(x, con, sql, returning_cols)
   } else {
@@ -188,7 +192,8 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
     xy <- left_join(
       x, y,
       by = by,
-      suffix = c("", "...y")
+      suffix = c("", "...y"),
+      na_matches = na_matches
     )
 
     patch_columns_y <- paste0(new_columns, "...y")
@@ -204,9 +209,11 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
 #' @rdname rows-db
 rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
-                                returning = NULL) {
+                                returning = NULL,
+                                na_matches = c("na", "never")) {
   returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
+  na_matches <- arg_match(na_matches)
 
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
@@ -222,7 +229,7 @@ rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
     }
 
     con <- dbplyr::remote_con(x)
-    sql <- sql_rows_delete(x, y, by, returning_cols = returning_cols)
+    sql <- sql_rows_delete(x, y, by, returning_cols = returning_cols, na_matches = na_matches)
     rows_get_or_execute(x, con, sql, returning_cols)
   } else {
     # Checking optional, can rely on primary key constraint
@@ -231,7 +238,7 @@ rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
       check_db_superset(x, y, by)
     }
 
-    anti_join(x, y, by = by)
+    anti_join(x, y, by = by, na_matches = na_matches)
   }
 }
 
@@ -323,18 +330,19 @@ sql_rows_insert.tbl_sql <- function(x, y, ..., returning_cols = NULL) {
 
 #' @export
 #' @rdname rows-db
-sql_rows_update <- function(x, y, by, ..., returning_cols = NULL) {
+sql_rows_update <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_update")
 }
 
 #' @export
-sql_rows_update.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
+sql_rows_update.tbl_sql <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
   # * avoid CTEs for the general case as they do not work everywhere
   con <- dbplyr::remote_con(x)
+  na_matches <- arg_match(na_matches)
 
-  p <- sql_rows_update_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by, na_matches = na_matches)
 
   sql <- paste0(
     "UPDATE ", p$name, "\n",
@@ -355,10 +363,11 @@ sql_rows_update.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
 }
 
 #' @export
-sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ..., returning_cols = NULL) {
+sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
   con <- dbplyr::remote_con(x)
+  na_matches <- arg_match(na_matches)
 
-  p <- sql_rows_update_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by, na_matches = na_matches)
 
   sql <- paste0(
     "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
@@ -378,10 +387,11 @@ sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ..., returning_cols =
 }
 
 #' @export
-`sql_rows_update.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL) {
+`sql_rows_update.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
   con <- dbplyr::remote_con(x)
+  na_matches <- arg_match(na_matches)
 
-  p <- sql_rows_update_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by, na_matches = na_matches)
 
   # https://stackoverflow.com/a/2334741/946850
   sql <- paste0(
@@ -407,10 +417,11 @@ sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ..., returning_cols =
 }
 
 #' @export
-sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols = NULL) {
+sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
   con <- dbplyr::remote_con(x)
+  na_matches <- arg_match(na_matches)
 
-  p <- sql_rows_update_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by, na_matches = na_matches)
 
   # https://stackoverflow.com/a/19346375/946850
   sql <- paste0(
@@ -426,10 +437,11 @@ sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols 
 }
 
 #' @export
-sql_rows_update.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NULL) {
+sql_rows_update.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
   con <- dbplyr::remote_con(x)
+  na_matches <- arg_match(na_matches)
 
-  p <- sql_rows_update_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by, na_matches = na_matches)
 
   # https://www.postgresql.org/docs/9.5/sql-update.html
   sql <- paste0(
@@ -453,64 +465,28 @@ sql_rows_update.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NUL
   glue::as_glue(sql)
 }
 
-sql_rows_update_prep <- function(x, y, by) {
-  con <- dbplyr::remote_con(x)
-  name <- dbplyr::remote_name(x)
-
-  # https://stackoverflow.com/a/47753166/946850
-  y_name <- DBI::dbQuoteIdentifier(con, "...y")
-  y_columns_qq <- paste(
-    DBI::dbQuoteIdentifier(con, colnames(y)),
-    collapse = ", "
-  )
-
-  new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by))
-  new_columns_qq <- paste(new_columns_q, collapse = ", ")
-  new_columns_qq_list <- list(new_columns_q)
-  new_columns_qual_qq <- paste0(
-    y_name, ".", new_columns_q,
-    collapse = ", "
-  )
-  new_columns_qual_qq_list <- list(paste0(y_name, ".", new_columns_q))
-
-  key_columns_q <- DBI::dbQuoteIdentifier(con, by)
-  compare_qual_qq <- paste0(
-    y_name, ".", key_columns_q,
-    " = ",
-    name, ".", key_columns_q,
-    collapse = " AND "
-  )
-
-  tibble(
-    name, y_name,
-    y_columns_qq,
-    new_columns_qq, new_columns_qq_list,
-    new_columns_qual_qq, new_columns_qual_qq_list,
-    compare_qual_qq
-  )
-}
-
 #' @export
 #' @rdname rows-db
-sql_rows_patch <- function(x, y, by, ..., returning_cols = NULL) {
+sql_rows_patch <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_patch")
 }
 
 #' @export
-sql_rows_patch.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
+sql_rows_patch.tbl_sql <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
   # * avoid CTEs for the general case as they do not work everywhere
   con <- dbplyr::remote_con(x)
+  na_matches <- arg_match(na_matches)
 
-  p <- sql_rows_patch_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by, na_matches = na_matches)
 
   sql <- paste0(
     "UPDATE ", p$name, "\n",
     "SET\n",
     paste0(
       "  ", unlist(p$new_columns_qq_list),
-      " = ", unlist(p$new_columns_qual_qq_list),
+      " = ", unlist(p$new_columns_patch_qq_list),
       collapse = ",\n"
     ), "\n",
     "FROM (\n",
@@ -524,10 +500,11 @@ sql_rows_patch.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
 }
 
 #' @export
-`sql_rows_patch.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL) {
+`sql_rows_patch.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
   con <- dbplyr::remote_con(x)
+  na_matches <- arg_match(na_matches)
 
-  p <- sql_rows_patch_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by, na_matches = na_matches)
 
   # https://stackoverflow.com/a/2334741/946850
   sql <- paste0(
@@ -539,7 +516,7 @@ sql_rows_patch.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
     "SET\n",
     paste0(
       "  ", unlist(p$new_columns_qq_list),
-      " = ", unlist(p$new_columns_qual_qq_list),
+      " = ", unlist(p$new_columns_patch_qq_list),
       collapse = ",\n"
     ),
     "\n",
@@ -553,10 +530,11 @@ sql_rows_patch.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
 }
 
 #' @export
-sql_rows_patch.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols = NULL) {
+sql_rows_patch.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
   con <- dbplyr::remote_con(x)
+  na_matches <- arg_match(na_matches)
 
-  p <- sql_rows_patch_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by, na_matches = na_matches)
 
   # https://stackoverflow.com/a/19346375/946850
   sql <- paste0(
@@ -564,7 +542,7 @@ sql_rows_patch.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols =
     "  INNER JOIN (\n", dbplyr::sql_render(y), "\n) AS ", p$y_name, "\n",
     "  ON ", p$compare_qual_qq, "\n",
     "SET\n",
-    paste0("  ", p$target_columns_qual_qq, " = ", p$new_columns_qual_qq, collapse = ",\n"),
+    paste0("  ", p$new_columns_qq, " = ", p$new_columns_patch_qq, collapse = ",\n"),
     sql_returning_cols(x, returning_cols)
   )
 
@@ -572,10 +550,11 @@ sql_rows_patch.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols =
 }
 
 #' @export
-sql_rows_patch.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NULL) {
+sql_rows_patch.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
   con <- dbplyr::remote_con(x)
+  na_matches <- arg_match(na_matches)
 
-  p <- sql_rows_patch_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by, na_matches = na_matches)
 
   # https://www.postgresql.org/docs/9.5/sql-update.html
   sql <- paste0(
@@ -587,7 +566,7 @@ sql_rows_patch.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NULL
     "SET\n",
     paste0(
       "  ", unlist(p$new_columns_qq_list),
-      " = ", unlist(p$new_columns_qual_qq_list),
+      " = ", unlist(p$new_columns_patch_qq_list),
       collapse = ",\n"
     ),
     "\n",
@@ -599,63 +578,24 @@ sql_rows_patch.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NULL
   glue::as_glue(sql)
 }
 
-sql_rows_patch_prep <- function(x, y, by) {
-  con <- dbplyr::remote_con(x)
-  name <- dbplyr::remote_name(x)
-
-  # https://stackoverflow.com/a/47753166/946850
-  y_name <- DBI::dbQuoteIdentifier(con, "...y")
-  y_columns_qq <- paste(
-    DBI::dbQuoteIdentifier(con, colnames(y)),
-    collapse = ", "
-  )
-
-  new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by))
-  new_columns_qq <- paste(new_columns_q, collapse = ", ")
-  new_columns_qq_list <- list(new_columns_q)
-  old_columns_qual <- paste0(name, ".", new_columns_q)
-  new_columns_qual <- paste0(y_name, ".", new_columns_q)
-
-  new_columns_qual_qq <- paste0(
-    sql_coalesce(old_columns_qual, new_columns_qual),
-    collapse = ", "
-  )
-  new_columns_qual_qq_list <- list(sql_coalesce(old_columns_qual, new_columns_qual))
-
-  key_columns_q <- DBI::dbQuoteIdentifier(con, by)
-  compare_qual_qq <- paste0(
-    y_name, ".", key_columns_q,
-    " = ",
-    name, ".", key_columns_q,
-    collapse = " AND "
-  )
-
-  tibble(
-    name, y_name,
-    y_columns_qq,
-    new_columns_qq, new_columns_qq_list,
-    new_columns_qual_qq, new_columns_qual_qq_list,
-    compare_qual_qq
-  )
-}
-
 sql_coalesce <- function(x, y) {
   paste0("COALESCE(", x, ",", y, ")")
 }
 
 #' @export
 #' @rdname rows-db
-sql_rows_delete <- function(x, y, by, ..., returning_cols = NULL) {
+sql_rows_delete <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_delete")
 }
 
 #' @export
-sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
+sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
   con <- dbplyr::remote_con(x)
+  na_matches <- arg_match(na_matches)
 
-  p <- sql_rows_update_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by, na_matches = na_matches)
 
   sql <- paste0(
     "DELETE FROM ", p$name, "\n",
@@ -670,6 +610,65 @@ sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
   )
 
   glue::as_glue(sql)
+}
+
+sql_rows_prep <- function(x, y, by, na_matches) {
+  con <- dbplyr::remote_con(x)
+  name <- dbplyr::remote_name(x)
+
+  # https://stackoverflow.com/a/47753166/946850
+  y_name <- DBI::dbQuoteIdentifier(con, "...y")
+  y_q <- DBI::dbQuoteIdentifier(con, colnames(y))
+  by_q <- DBI::dbQuoteIdentifier(con, by)
+
+  y_columns_qq <- sql_list(y_q)
+
+  new_columns_q <- setdiff(y_q, by_q)
+  new_columns_qual_q <- paste0(y_name, ".", new_columns_q)
+  old_columns_qual_q <- paste0(name, ".", new_columns_q)
+
+  new_columns_qq <- sql_list(new_columns_q)
+  new_columns_qq_list <- list(new_columns_q)
+
+  new_columns_qual_qq <- sql_list(new_columns_qual_q)
+  new_columns_qual_qq_list <- list(new_columns_qual_q)
+
+  new_columns_patch <- sql_coalesce(old_columns_qual_q, new_columns_qual_q)
+  new_columns_patch_qq <- sql_list(new_columns_patch)
+  new_columns_patch_qq_list <- list(new_columns_patch)
+
+  compare_qual_qq <- sql_compare_columns(
+    con,
+    paste0(y_name, ".", by_q),
+    paste0(name, ".", by_q),
+    na_matches = na_matches
+  )
+
+  tibble(
+    name, y_name,
+    y_columns_qq,
+    new_columns_qq, new_columns_qq_list,
+    new_columns_qual_qq, new_columns_qual_qq_list,
+    new_columns_patch_qq, new_columns_patch_qq_list,
+    compare_qual_qq
+  )
+}
+
+sql_list <- function(x) {
+  paste(x, collapse = ", ")
+}
+
+sql_compare_columns <- function(con, x, y, na_matches) {
+  if (na_matches == "na") {
+    conditions <- purrr::map2(
+      x, y,
+      ~ dbplyr::sql_expr_matches(con, dbplyr::sql(.x), dbplyr::sql(.y))
+    )
+  } else {
+    conditions <- paste0(x, " = ", y)
+  }
+
+  paste0(conditions, collapse = " AND ")
 }
 
 rows_get_or_execute <- function(x, con, sql, returning_cols) {
