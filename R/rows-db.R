@@ -29,6 +29,12 @@
 #'   <[`tidy-select`][tidyr_tidy_select]> Columns to return of the inserted data.
 #'   Note that also columns not in `y` but automatically created when inserting
 #'   into `x` can be returned, for example the `id` column.
+#' @param na_matches Should `NA` and `NaN` values match one another?
+#'
+#'   The default, `"na"`, treats two `NA` or `NaN` values as equal, like `%in%`, `match()`, `merge()`.
+#'
+#'   Use `"never"` to always treat two `NA` or `NaN` values as different,
+#'   like joins for database sources, similarly to `merge(incomparables = FALSE)`.
 #'
 #' @return A tbl object of the same structure as `x`.
 #'   If `in_place = TRUE`, the underlying data is updated as a side effect,

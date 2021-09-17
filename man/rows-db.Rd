@@ -33,7 +33,8 @@
   in_place = NULL,
   copy = FALSE,
   check = NULL,
-  returning = NULL
+  returning = NULL,
+  na_matches = c("na", "never")
 )
 
 \method{rows_patch}{tbl_dbi}(
@@ -44,7 +45,8 @@
   in_place = NULL,
   copy = FALSE,
   check = NULL,
-  returning = NULL
+  returning = NULL,
+  na_matches = c("na", "never")
 )
 
 \method{rows_delete}{tbl_dbi}(
@@ -55,16 +57,38 @@
   in_place = NULL,
   copy = FALSE,
   check = NULL,
-  returning = NULL
+  returning = NULL,
+  na_matches = c("na", "never")
 )
 
 sql_rows_insert(x, y, ..., returning_cols = NULL)
 
-sql_rows_update(x, y, by, ..., returning_cols = NULL)
+sql_rows_update(
+  x,
+  y,
+  by,
+  ...,
+  returning_cols = NULL,
+  na_matches = c("na", "never")
+)
 
-sql_rows_patch(x, y, by, ..., returning_cols = NULL)
+sql_rows_patch(
+  x,
+  y,
+  by,
+  ...,
+  returning_cols = NULL,
+  na_matches = c("na", "never")
+)
 
-sql_rows_delete(x, y, by, ..., returning_cols = NULL)
+sql_rows_delete(
+  x,
+  y,
+  by,
+  ...,
+  returning_cols = NULL,
+  na_matches = c("na", "never")
+)
 
 sql_returning_cols(x, returning_cols, ...)
 
@@ -107,6 +131,13 @@ Currently these checks are no-ops and need yet to be implemented.}
 <\code{\link[=tidyr_tidy_select]{tidy-select}}> Columns to return of the inserted data.
 Note that also columns not in \code{y} but automatically created when inserting
 into \code{x} can be returned, for example the \code{id} column.}
+
+\item{na_matches}{Should \code{NA} and \code{NaN} values match one another?
+
+The default, \code{"na"}, treats two \code{NA} or \code{NaN} values as equal, like \code{\%in\%}, \code{match()}, \code{merge()}.
+
+Use \code{"never"} to always treat two \code{NA} or \code{NaN} values as different,
+like joins for database sources, similarly to \code{merge(incomparables = FALSE)}.}
 
 \item{returning_cols}{A character vector of unquote column names
 to return, created from the \code{returning} argument.
