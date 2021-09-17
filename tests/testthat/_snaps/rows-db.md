@@ -474,3 +474,7 @@
 
     `returning` only works if `in_place` is true.
 
+---
+
+    `returning` only works if `in_place` is true.
+
