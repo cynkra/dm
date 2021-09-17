@@ -34,7 +34,7 @@
   copy = FALSE,
   check = NULL,
   returning = NULL,
-  na_matches = c("na", "never")
+  na_matches = c("never", "na")
 )
 
 \method{rows_patch}{tbl_dbi}(
@@ -46,7 +46,7 @@
   copy = FALSE,
   check = NULL,
   returning = NULL,
-  na_matches = c("na", "never")
+  na_matches = c("never", "na")
 )
 
 \method{rows_delete}{tbl_dbi}(
@@ -58,7 +58,7 @@
   copy = FALSE,
   check = NULL,
   returning = NULL,
-  na_matches = c("na", "never")
+  na_matches = c("never", "na")
 )
 
 sql_rows_insert(x, y, ..., returning_cols = NULL)
@@ -69,7 +69,7 @@ sql_rows_update(
   by,
   ...,
   returning_cols = NULL,
-  na_matches = c("na", "never")
+  na_matches = c("never", "na")
 )
 
 sql_rows_patch(
@@ -78,7 +78,7 @@ sql_rows_patch(
   by,
   ...,
   returning_cols = NULL,
-  na_matches = c("na", "never")
+  na_matches = c("never", "na")
 )
 
 sql_rows_delete(
@@ -87,7 +87,7 @@ sql_rows_delete(
   by,
   ...,
   returning_cols = NULL,
-  na_matches = c("na", "never")
+  na_matches = c("never", "na")
 )
 
 sql_returning_cols(x, returning_cols, ...)

@@ -100,7 +100,7 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL,
-                                na_matches = c("na", "never")) {
+                                na_matches = c("never", "na")) {
   returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
   na_matches <- arg_match(na_matches)
@@ -156,7 +156,7 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
                                in_place = NULL, copy = FALSE, check = NULL,
                                returning = NULL,
-                               na_matches = c("na", "never")) {
+                               na_matches = c("never", "na")) {
   returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
   na_matches <- arg_match(na_matches)
@@ -216,7 +216,7 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL,
-                                na_matches = c("na", "never")) {
+                                na_matches = c("never", "na")) {
   returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
   na_matches <- arg_match(na_matches)
@@ -336,14 +336,14 @@ sql_rows_insert.tbl_sql <- function(x, y, ..., returning_cols = NULL) {
 
 #' @export
 #' @rdname rows-db
-sql_rows_update <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
+sql_rows_update <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("never", "na")) {
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_update")
 }
 
 #' @export
-sql_rows_update.tbl_sql <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
+sql_rows_update.tbl_sql <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("never", "na")) {
   # * avoid CTEs for the general case as they do not work everywhere
   con <- dbplyr::remote_con(x)
   na_matches <- arg_match(na_matches)
@@ -369,7 +369,7 @@ sql_rows_update.tbl_sql <- function(x, y, by, ..., returning_cols = NULL, na_mat
 }
 
 #' @export
-`sql_rows_update.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
+`sql_rows_update.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("never", "na")) {
   con <- dbplyr::remote_con(x)
   na_matches <- arg_match(na_matches)
 
@@ -399,7 +399,7 @@ sql_rows_update.tbl_sql <- function(x, y, by, ..., returning_cols = NULL, na_mat
 }
 
 #' @export
-sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
+sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("never", "na")) {
   con <- dbplyr::remote_con(x)
   na_matches <- arg_match(na_matches)
 
@@ -420,14 +420,14 @@ sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols 
 
 #' @export
 #' @rdname rows-db
-sql_rows_patch <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
+sql_rows_patch <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("never", "na")) {
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_patch")
 }
 
 #' @export
-sql_rows_patch.tbl_sql <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
+sql_rows_patch.tbl_sql <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("never", "na")) {
   # * avoid CTEs for the general case as they do not work everywhere
   con <- dbplyr::remote_con(x)
   na_matches <- arg_match(na_matches)
@@ -453,7 +453,7 @@ sql_rows_patch.tbl_sql <- function(x, y, by, ..., returning_cols = NULL, na_matc
 }
 
 #' @export
-`sql_rows_patch.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
+`sql_rows_patch.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("never", "na")) {
   con <- dbplyr::remote_con(x)
   na_matches <- arg_match(na_matches)
 
@@ -483,7 +483,7 @@ sql_rows_patch.tbl_sql <- function(x, y, by, ..., returning_cols = NULL, na_matc
 }
 
 #' @export
-sql_rows_patch.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
+sql_rows_patch.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("never", "na")) {
   con <- dbplyr::remote_con(x)
   na_matches <- arg_match(na_matches)
 
@@ -508,14 +508,14 @@ sql_coalesce <- function(x, y) {
 
 #' @export
 #' @rdname rows-db
-sql_rows_delete <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
+sql_rows_delete <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("never", "na")) {
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_delete")
 }
 
 #' @export
-sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("na", "never")) {
+sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning_cols = NULL, na_matches = c("never", "na")) {
   con <- dbplyr::remote_con(x)
   na_matches <- arg_match(na_matches)
 

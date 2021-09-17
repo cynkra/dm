@@ -178,6 +178,10 @@
     Output
       # ... with 3 variables: select <int>, where <chr>, exists <dbl>
 
+# duckdb errors for returning argument
+
+    DuckDB does not support the `returning` argument.
+
 # update
 
     Code
