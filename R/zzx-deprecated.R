@@ -403,7 +403,7 @@ cdm_learn_from_db <- function(dest) {
 #' @export
 cdm_check_constraints <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_check_constraints()", "dm::dm_examine_constraints()")
-  dm_examine_constraints_impl(dm = dm, progress = FALSE)
+  dm_examine_constraints_impl(dm = dm, progress = FALSE, top_level_fun = "cdm_check_constraints")
 }
 
 #' @rdname deprecated

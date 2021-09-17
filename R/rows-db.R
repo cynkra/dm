@@ -44,10 +44,13 @@
 #' try(rows_insert(data, tibble::tibble(a = 4, b = "z")))
 #' rows_insert(data, tibble::tibble(a = 4, b = "z"), copy = TRUE)
 #' rows_update(data, tibble::tibble(a = 2:3, b = "w"), copy = TRUE, in_place = FALSE)
+#' rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = FALSE)
 #'
 #' rows_insert(data, dbplyr::memdb_frame(a = 4, b = "z"), in_place = TRUE)
 #' data
 #' rows_update(data, dbplyr::memdb_frame(a = 2:3, b = "w"), in_place = TRUE)
+#' data
+#' rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = TRUE)
 #' data
 NULL
 
@@ -137,6 +140,63 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
       inner_join(y, by = by)
 
     union_all(unchanged, updated)
+  }
+}
+
+#' @export
+#' @rdname rows-db
+rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
+                               in_place = NULL, copy = FALSE, check = NULL,
+                               returning = NULL) {
+  returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
+  check_returning_cols_possible(returning_cols, in_place)
+
+  y <- auto_copy(x, y, copy = copy)
+  y_key <- db_key(y, by)
+  by <- names(y_key)
+  x_key <- db_key(x, by)
+
+  new_columns <- setdiff(colnames(y), by)
+
+  name <- target_table_name(x, in_place)
+
+  if (!is_null(name)) {
+    # Checking optional, can rely on primary key constraint
+    if (is_true(check)) {
+      check_db_superset(x, y, by)
+    }
+
+    if (is_empty(new_columns)) {
+      return(invisible(x))
+    }
+
+    con <- dbplyr::remote_con(x)
+    sql <- sql_rows_patch(x, y, by, returning_cols = returning_cols)
+
+    rows_get_or_execute(x, con, sql, returning_cols)
+  } else {
+    # Checking optional, can rely on primary key constraint
+    # FIXME: contrary to doc currently also checks if `in_place = FALSE`
+    if (is_null(check) || is_true(check)) {
+      check_db_superset(x, y, by)
+    }
+
+    if (is_empty(new_columns)) {
+      return(x)
+    }
+
+    xy <- left_join(
+      x, y,
+      by = by,
+      suffix = c("", "...y")
+    )
+
+    patch_columns_y <- paste0(new_columns, "...y")
+    patch_quos <- lapply(new_columns, function(.x) quo(coalesce(!!sym(.x), !!sym(patch_columns_y)))) %>%
+      rlang::set_names(new_columns)
+    xy %>%
+      mutate(!!!patch_quos) %>%
+      select(-all_of(patch_columns_y))
   }
 }
 
@@ -270,6 +330,31 @@ sql_rows_update <- function(x, y, by, ..., returning_cols = NULL) {
 }
 
 #' @export
+sql_rows_update.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
+  # * avoid CTEs for the general case as they do not work everywhere
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_update_prep(x, y, by)
+
+  sql <- paste0(
+    "UPDATE ", p$name, "\n",
+    "SET\n",
+    paste0(
+      "  ", unlist(p$new_columns_qq_list),
+      " = ", unlist(p$new_columns_qual_qq_list),
+      collapse = ",\n"
+    ), "\n",
+    "FROM (\n",
+    "    ", dbplyr::sql_render(y), "\n",
+    "  ) AS ", p$y_name, "\n",
+    "WHERE (", p$compare_qual_qq, ")\n",
+    sql_returning_cols(x, returning_cols)
+  )
+
+  glue::as_glue(sql)
+}
+
+#' @export
 sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ..., returning_cols = NULL) {
   con <- dbplyr::remote_con(x)
 
@@ -368,9 +453,6 @@ sql_rows_update.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NUL
   glue::as_glue(sql)
 }
 
-#' @export
-sql_rows_update.tbl_duckdb_connection <- sql_rows_update.tbl_SQLiteConnection
-
 sql_rows_update_prep <- function(x, y, by) {
   con <- dbplyr::remote_con(x)
   name <- dbplyr::remote_name(x)
@@ -410,6 +492,159 @@ sql_rows_update_prep <- function(x, y, by) {
 
 #' @export
 #' @rdname rows-db
+sql_rows_patch <- function(x, y, by, ..., returning_cols = NULL) {
+  ellipsis::check_dots_used()
+  # FIXME: check here same src for x and y? if not -> error.
+  UseMethod("sql_rows_patch")
+}
+
+#' @export
+sql_rows_patch.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
+  # * avoid CTEs for the general case as they do not work everywhere
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_patch_prep(x, y, by)
+
+  sql <- paste0(
+    "UPDATE ", p$name, "\n",
+    "SET\n",
+    paste0(
+      "  ", unlist(p$new_columns_qq_list),
+      " = ", unlist(p$new_columns_qual_qq_list),
+      collapse = ",\n"
+    ), "\n",
+    "FROM (\n",
+    "    ", dbplyr::sql_render(y), "\n",
+    "  ) AS ", p$y_name, "\n",
+    "WHERE (", p$compare_qual_qq, ")\n",
+    sql_returning_cols(x, returning_cols)
+  )
+
+  glue::as_glue(sql)
+}
+
+#' @export
+`sql_rows_patch.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL) {
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_patch_prep(x, y, by)
+
+  # https://stackoverflow.com/a/2334741/946850
+  sql <- paste0(
+    "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
+    dbplyr::sql_render(y),
+    "\n)\n",
+    #
+    "UPDATE ", p$name, "\n",
+    "SET\n",
+    paste0(
+      "  ", unlist(p$new_columns_qq_list),
+      " = ", unlist(p$new_columns_qual_qq_list),
+      collapse = ",\n"
+    ),
+    "\n",
+    sql_output_cols(x, returning_cols),
+    "FROM ", p$name, "\n",
+    "  INNER JOIN ", p$y_name, "\n",
+    "  ON ", p$compare_qual_qq
+  )
+
+  glue::as_glue(sql)
+}
+
+#' @export
+sql_rows_patch.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols = NULL) {
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_patch_prep(x, y, by)
+
+  # https://stackoverflow.com/a/19346375/946850
+  sql <- paste0(
+    "UPDATE ", p$name, "\n",
+    "  INNER JOIN (\n", dbplyr::sql_render(y), "\n) AS ", p$y_name, "\n",
+    "  ON ", p$compare_qual_qq, "\n",
+    "SET\n",
+    paste0("  ", p$target_columns_qual_qq, " = ", p$new_columns_qual_qq, collapse = ",\n"),
+    sql_returning_cols(x, returning_cols)
+  )
+
+  glue::as_glue(sql)
+}
+
+#' @export
+sql_rows_patch.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NULL) {
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_patch_prep(x, y, by)
+
+  # https://www.postgresql.org/docs/9.5/sql-update.html
+  sql <- paste0(
+    "WITH ", p$y_name, " AS (\n",
+    dbplyr::sql_render(y),
+    "\n)\n",
+    #
+    "UPDATE ", p$name, "\n",
+    "SET\n",
+    paste0(
+      "  ", unlist(p$new_columns_qq_list),
+      " = ", unlist(p$new_columns_qual_qq_list),
+      collapse = ",\n"
+    ),
+    "\n",
+    "FROM ", p$y_name, "\n",
+    "WHERE ", p$compare_qual_qq,
+    sql_returning_cols(x, returning_cols)
+  )
+
+  glue::as_glue(sql)
+}
+
+sql_rows_patch_prep <- function(x, y, by) {
+  con <- dbplyr::remote_con(x)
+  name <- dbplyr::remote_name(x)
+
+  # https://stackoverflow.com/a/47753166/946850
+  y_name <- DBI::dbQuoteIdentifier(con, "...y")
+  y_columns_qq <- paste(
+    DBI::dbQuoteIdentifier(con, colnames(y)),
+    collapse = ", "
+  )
+
+  new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by))
+  new_columns_qq <- paste(new_columns_q, collapse = ", ")
+  new_columns_qq_list <- list(new_columns_q)
+  old_columns_qual <- paste0(name, ".", new_columns_q)
+  new_columns_qual <- paste0(y_name, ".", new_columns_q)
+
+  new_columns_qual_qq <- paste0(
+    sql_coalesce(old_columns_qual, new_columns_qual),
+    collapse = ", "
+  )
+  new_columns_qual_qq_list <- list(sql_coalesce(old_columns_qual, new_columns_qual))
+
+  key_columns_q <- DBI::dbQuoteIdentifier(con, by)
+  compare_qual_qq <- paste0(
+    y_name, ".", key_columns_q,
+    " = ",
+    name, ".", key_columns_q,
+    collapse = " AND "
+  )
+
+  tibble(
+    name, y_name,
+    y_columns_qq,
+    new_columns_qq, new_columns_qq_list,
+    new_columns_qual_qq, new_columns_qual_qq_list,
+    compare_qual_qq
+  )
+}
+
+sql_coalesce <- function(x, y) {
+  paste0("COALESCE(", x, ",", y, ")")
+}
+
+#' @export
+#' @rdname rows-db
 sql_rows_delete <- function(x, y, by, ..., returning_cols = NULL) {
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
@@ -423,13 +658,14 @@ sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
   p <- sql_rows_update_prep(x, y, by)
 
   sql <- paste0(
-    "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
-    dbplyr::sql_render(y),
-    "\n)\n",
-    #
     "DELETE FROM ", p$name, "\n",
     sql_output_cols(x, returning_cols, delete = TRUE),
-    "WHERE EXISTS (SELECT * FROM ", p$y_name, " WHERE ", p$compare_qual_qq, ")",
+    "WHERE EXISTS (\n",
+    "  SELECT * FROM (\n",
+    "    ", dbplyr::sql_render(y), "\n",
+    "  ) AS ", p$y_name, "\n",
+    "  WHERE ", p$compare_qual_qq, "\n",
+    ")",
     sql_returning_cols(x, returning_cols)
   )
 
@@ -509,6 +745,11 @@ sql_returning_cols.tbl_dbi <- function(x, returning_cols, ...) {
   returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x))
 
   paste0("RETURNING ", returning_cols)
+}
+
+#' @export
+sql_returning_cols.tbl_duckdb_connection <- function(x, returning_cols, ...) {
+  abort("DuckDB does not support the `returning` argument.")
 }
 
 #' @export
