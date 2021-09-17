@@ -672,7 +672,7 @@ sql_returning_cols.tbl_duckdb_connection <- function(x, returning_cols, ...) {
 #' @export
 sql_returning_cols.tbl_SQLiteConnection <- function(x, returning_cols, ...) {
   con <- dbplyr::remote_con(x)
-  returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x), force_names = TRUE)
+  returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x))
 
   paste0("RETURNING ", returning_cols)
 }
@@ -710,14 +710,9 @@ sql_output_cols.default <- function(x, returning_cols, output_delete = FALSE, ..
   paste0("OUTPUT ", returning_cols)
 }
 
-sql_named_cols <- function(con, cols, table = NULL, force_names = FALSE) {
+sql_named_cols <- function(con, cols, table = NULL) {
   nms <- names2(cols)
   nms[nms == cols] <- ""
-  # Workaround for incorrect column names after `RETURNING`
-  # https://github.com/r-dbi/RSQLite/issues/381
-  if (force_names) {
-    nms[nms == ""] <- cols[nms == ""]
-  }
 
   cols <- DBI::dbQuoteIdentifier(con, cols)
   if (!is.null(table)) {
