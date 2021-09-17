@@ -774,7 +774,8 @@ glimpse.dm <- function(x, width = NULL, ...) {
     pk <- dm_get_pk_impl(x, table_name) %>%
       map_chr(~ paste0("(", paste0(tick(.x), collapse = ", "), ")"))
     if (!is_empty(pk)) {
-      cat_line(trim_width(paste0(length(pk), " primary key(s): ", pk), glimpse_width))
+      # FIXME: needs to change if #622 is solved
+      cat_line(trim_width(paste0("Primary key: ", pk), glimpse_width))
     }
     fk <- all_fks %>%
       filter(child_table == table_name) %>%
