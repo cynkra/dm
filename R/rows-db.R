@@ -548,6 +548,8 @@ sql_rows_upsert <- function(x, y, by, ..., returning_cols = NULL) {
   UseMethod("sql_rows_upsert")
 }
 
+# nocov start
+# exclude from coverage because no database in the workflow supports MERGE
 #' @export
 sql_rows_upsert.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
   con <- dbplyr::remote_con(x)
@@ -573,7 +575,10 @@ sql_rows_upsert.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
 
   glue::as_glue(sql)
 }
+# nocov end
 
+# nocov start
+# exclude from coverage because MERGE somehow doesn't work with MS SQL 2017
 #' @export
 `sql_rows_upsert.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL) {
   con <- dbplyr::remote_con(x)
@@ -600,6 +605,7 @@ sql_rows_upsert.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
 
   glue::as_glue(sql)
 }
+# nocov end
 
 #' @export
 sql_rows_upsert.tbl_duckdb_connection <- function(x, y, by, ..., returning_cols = NULL) {
