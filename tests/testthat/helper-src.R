@@ -102,7 +102,7 @@ my_db_test_src <- function() {
   }
 }
 
-test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(), .unique_indexes = .unique_indexes) {
+test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(), .unique_indexes = NULL) {
   src <- my_test_src()
 
   df <- tibble(...)
