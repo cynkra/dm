@@ -614,10 +614,6 @@ sql_rows_upsert.tbl_duckdb_connection <- function(x, y, by, ..., returning_cols 
 
 #' @export
 sql_rows_upsert.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NULL) {
-# sql_rows_upsert.tbl_SQLiteConnection <- function(x, y, by, ..., returning_cols = NULL) {
-  # TODO point out that RETURNING acts differently depending on the db
-  # * SQLite: returns only inserted rows
-  # * Postgres: returns inserted and updated rows
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_upsert_prep(x, y, by)
