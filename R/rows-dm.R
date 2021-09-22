@@ -257,7 +257,10 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   tbls <- dm_get_tables_impl(y)[tables]
 
   if (require_keys) {
-    # FIXME: Better error message if keys not found
+    all_pks <- dm_get_all_pks(x)
+    if (!nrow(all_pks)) {
+      abort(glue("`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys but none were found."))
+    }
     keys <- deframe(dm_get_all_pks(x))[tables]
   } else {
     keys <- rep_along(tables, list(NULL))
