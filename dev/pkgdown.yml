@@ -1,6 +1,6 @@
 pandoc: 2.7.3
 pkgdown: 1.6.1.9001
-pkgdown_sha: aebaa72ca333398883e723d9d55ebb4de3402cbf
+pkgdown_sha: 9ac9c8d5a6ca30325100205161441df8cf427035
 articles:
   dm: dm.html
   howto-dm-copy: howto-dm-copy.html
@@ -20,7 +20,7 @@ articles:
   dm-readme-old: wip/dm-readme-old.html
   dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
   dm-tips-and-tricks: wip/dm-tips-and-tricks.html
-last_built: 2021-09-19T16:52Z
+last_built: 2021-09-25T18:07Z
 urls:
   reference: https://cynkra.github.io/dm/reference
   article: https://cynkra.github.io/dm/articles
