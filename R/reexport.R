@@ -80,6 +80,9 @@ dplyr::rows_upsert
 dplyr::rows_delete
 
 #' @export
+pillar::glimpse
+
+#' @export
 tidyr::unite
 
 #' @export
