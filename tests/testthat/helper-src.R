@@ -66,6 +66,10 @@ is_db_test_src <- function() {
   my_test_src_name != "df"
 }
 
+is_my_test_src_sqlite <- function() {
+  inherits(my_db_test_src(), "src_SQLiteConnection")
+}
+
 my_test_src_fun %<--% {
   fun <- paste0("test_src_", my_test_src_name)
   get0(fun, inherits = TRUE)
@@ -98,7 +102,7 @@ my_db_test_src <- function() {
   }
 }
 
-test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame()) {
+test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(), .unique_indexes = NULL) {
   src <- my_test_src()
 
   df <- tibble(...)
@@ -117,13 +121,14 @@ test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame()) {
     temporary <- TRUE
   }
 
-  out <- copy_to(src, df, name = name, temporary = temporary)
+  out <- copy_to(src, df, name = name, temporary = temporary, unique_indexes = .unique_indexes)
   out
 }
 
-test_db_src_frame <- function(..., .temporary = TRUE, .env = parent.frame()) {
+test_db_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(),
+                              .unique_indexes = NULL) {
   if (is_db_test_src()) {
-    return(test_src_frame(..., .temporary = .temporary, .env = .env))
+    return(test_src_frame(..., .temporary = .temporary, .env = .env, .unique_indexes = .unique_indexes))
   }
 
   src <- my_db_test_src()
@@ -132,7 +137,7 @@ test_db_src_frame <- function(..., .temporary = TRUE, .env = parent.frame()) {
 
   name <- unique_db_table_name("test_frame")
 
-  out <- copy_to(src, df, name = name, temporary = .temporary)
+  out <- copy_to(src, df, name = name, temporary = .temporary, unique_indexes = .unique_indexes)
 
   if (!.temporary) {
     withr::defer(DBI::dbRemoveTable(con_from_src_or_con(src), name), envir = .env)
