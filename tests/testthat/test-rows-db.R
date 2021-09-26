@@ -45,9 +45,17 @@ test_that("insert + delete + truncate with returning argument (#607)", {
 
   target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
 
-  # TODO remove `suppressWarnings()` when `dplyr::rows_*()` get argument `returning`
   expect_equal(
     rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = quote(everything())) %>%
+      get_returned_rows(),
+    tibble(select = 4L, where = "z", exists = NA_real_)
+  )
+
+  expect_equal(
+    expect_warning(
+      rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = everything()),
+      NA
+    ) %>%
       get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA_real_)
   )
@@ -64,10 +72,9 @@ test_that("duckdb errors for returning argument", {
 
   target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
 
-  # TODO remove `suppressWarnings()` when `dplyr::rows_*()` get argument `returning`
-  expect_snapshot_error(
+  expect_snapshot_error({
     rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = quote(everything()))
-  )
+  })
 })
 
 test_that("update", {
@@ -154,8 +161,16 @@ test_that("patch with returning argument (#607)", {
 
 test_that("rows_*() checks arguments", {
   data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
-  expect_snapshot_error(rows_insert(data, data, in_place = FALSE, returning = quote(everything())))
-  expect_snapshot_error(rows_update(data, data, in_place = FALSE, returning = quote(everything())))
-  expect_snapshot_error(rows_patch(data, data, in_place = FALSE, returning = quote(everything())))
-  expect_snapshot_error(rows_delete(data, data, in_place = FALSE, returning = quote(everything())))
+  expect_snapshot_error({
+    rows_insert(data, data, in_place = FALSE, returning = quote(everything()))
+  })
+  expect_snapshot_error({
+    rows_update(data, data, in_place = FALSE, returning = quote(everything()))
+  })
+  expect_snapshot_error({
+    rows_patch(data, data, in_place = FALSE, returning = quote(everything()))
+  })
+  expect_snapshot_error({
+    rows_delete(data, data, in_place = FALSE, returning = quote(everything()))
+  })
 })
