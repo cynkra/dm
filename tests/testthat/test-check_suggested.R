@@ -1,4 +1,6 @@
 test_that("`check_suggested()` works", {
+  skip_if(getRversion() < "3.4")
+
   expect_snapshot({
     check_suggested("dm", TRUE, top_level_fun = "foo")
     try(check_suggested("not-a-package", TRUE, top_level_fun = "foo"))
