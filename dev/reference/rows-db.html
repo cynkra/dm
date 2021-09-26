@@ -109,7 +109,7 @@ more standardized DBs." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.3.9004</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.3.9005</span>
       </span>
     </div>
 
@@ -355,7 +355,11 @@ The default is to check only if <code>in_place</code> is <code>TRUE</code> or <c
       <td><p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a>
 &lt;<code>tidy-select</code>&gt; Columns to return of the inserted data.
 Note that also columns not in <code>y</code> but automatically created when inserting
-into <code>x</code> can be returned, for example the <code>id</code> column.</p></td>
+into <code>x</code> can be returned, for example the <code>id</code> column.</p>
+<p>Due to upstream limitations, a warning is given if this argument
+is passed unquoted.
+To avoid the warning, quote the argument manually:
+use e.g. <code>returning = quote(everything())</code> .</p></td>
     </tr>
     <tr>
       <th>returning_cols</th>
