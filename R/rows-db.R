@@ -30,6 +30,11 @@
 #'   Note that also columns not in `y` but automatically created when inserting
 #'   into `x` can be returned, for example the `id` column.
 #'
+#'   To avoid a warning due to upstream limitations,
+#'   this argument will be evaluated inside [tryCatch()] .
+#'   To avoid any ambiguity, quote the argument manually:
+#'   use e.g. `returning = quote(everything())` .
+#'
 #' @return A tbl object of the same structure as `x`.
 #'   If `in_place = TRUE`, the underlying data is updated as a side effect,
 #'   and `x` is returned, invisibly. If return columns are specified with
@@ -59,7 +64,15 @@ NULL
 rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
-  returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
+
+  # Expect manual quote from user, silently fall back to enexpr()
+  returning_expr <- enexpr(returning)
+  tryCatch(
+    returning_expr <- returning,
+    error = identity
+  )
+
+  returning_cols <- eval_select_both(returning_expr, colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
@@ -94,7 +107,15 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
-  returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
+
+  # Expect manual quote from user, silently fall back to enexpr()
+  returning_expr <- enexpr(returning)
+  tryCatch(
+    returning_expr <- returning,
+    error = identity
+  )
+
+  returning_cols <- eval_select_both(returning_expr, colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
@@ -148,7 +169,15 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
                                in_place = NULL, copy = FALSE, check = NULL,
                                returning = NULL) {
-  returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
+
+  # Expect manual quote from user, silently fall back to enexpr()
+  returning_expr <- enexpr(returning)
+  tryCatch(
+    returning_expr <- returning,
+    error = identity
+  )
+
+  returning_cols <- eval_select_both(returning_expr, colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
@@ -205,7 +234,15 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
-  returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
+
+  # Expect manual quote from user, silently fall back to enexpr()
+  returning_expr <- enexpr(returning)
+  tryCatch(
+    returning_expr <- returning,
+    error = identity
+  )
+
+  returning_cols <- eval_select_both(returning_expr, colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)

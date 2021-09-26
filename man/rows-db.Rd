@@ -106,7 +106,12 @@ Currently these checks are no-ops and need yet to be implemented.}
 \item{returning}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 <\code{\link[=tidyr_tidy_select]{tidy-select}}> Columns to return of the inserted data.
 Note that also columns not in \code{y} but automatically created when inserting
-into \code{x} can be returned, for example the \code{id} column.}
+into \code{x} can be returned, for example the \code{id} column.
+
+To avoid a warning due to upstream limitations,
+this argument will be evaluated inside \code{\link[=tryCatch]{tryCatch()}} .
+To avoid any ambiguity, quote the argument manually:
+use e.g. \code{returning = quote(everything())} .}
 
 \item{returning_cols}{A character vector of unquote column names
 to return, created from the \code{returning} argument.
