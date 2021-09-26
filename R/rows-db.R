@@ -234,6 +234,14 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
+
+  # Expect manual quote from user, silently fall back to enexpr()
+  returning_expr <- enexpr(returning)
+  tryCatch(
+    returning_expr <- returning,
+    error = identity
+  )
+
   returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
 
