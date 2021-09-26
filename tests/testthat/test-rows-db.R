@@ -221,9 +221,9 @@ test_that("upsert with returning argument (#607)", {
   )
 
   expect_equal(
-    suppressWarnings(suppressMessages(
-      rows_upsert(target, tibble(select = 2:4, where = c("x", "y", "z")), copy = TRUE, in_place = TRUE, returning = everything())
-    )) %>%
+    suppressMessages(
+      rows_upsert(target, tibble(select = 2:4, where = c("x", "y", "z")), copy = TRUE, in_place = TRUE, returning = quote(everything()))
+    ) %>%
       get_returned_rows() %>%
       arrange(select),
     tibble(select = 2:4, where = c("x", "y", "z"), exists = c(1.5, 2.5, NA))
@@ -239,7 +239,7 @@ test_that("rows_*() checks arguments", {
     rows_update(data, data, in_place = FALSE, returning = quote(everything()))
   })
   expect_snapshot_error({
-    suppressWarnings(rows_upsert(data, data, in_place = FALSE, returning = everything()))
+    rows_upsert(data, data, in_place = FALSE, returning = quote(everything()))
   })
   expect_snapshot_error({
     rows_patch(data, data, in_place = FALSE, returning = quote(everything()))
