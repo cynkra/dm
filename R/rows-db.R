@@ -30,6 +30,11 @@
 #'   Note that also columns not in `y` but automatically created when inserting
 #'   into `x` can be returned, for example the `id` column.
 #'
+#'   Due to upstream limitations, a warning is given if this argument
+#'   is passed unquoted.
+#'   To avoid the warning, quote the argument manually:
+#'   use e.g. `returning = quote(everything())` .
+#'
 #' @return A tbl object of the same structure as `x`.
 #'   If `in_place = TRUE`, the underlying data is updated as a side effect,
 #'   and `x` is returned, invisibly. If return columns are specified with
@@ -59,7 +64,15 @@ NULL
 rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
-  returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
+
+  # Expect manual quote from user, silently fall back to enexpr()
+  returning_expr <- enexpr(returning)
+  tryCatch(
+    returning_expr <- returning,
+    error = identity
+  )
+
+  returning_cols <- eval_select_both(returning_expr, colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
@@ -94,7 +107,15 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
-  returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
+
+  # Expect manual quote from user, silently fall back to enexpr()
+  returning_expr <- enexpr(returning)
+  tryCatch(
+    returning_expr <- returning,
+    error = identity
+  )
+
+  returning_cols <- eval_select_both(returning_expr, colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
@@ -148,7 +169,15 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
                                in_place = NULL, copy = FALSE, check = NULL,
                                returning = NULL) {
-  returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
+
+  # Expect manual quote from user, silently fall back to enexpr()
+  returning_expr <- enexpr(returning)
+  tryCatch(
+    returning_expr <- returning,
+    error = identity
+  )
+
+  returning_cols <- eval_select_both(returning_expr, colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
@@ -205,6 +234,14 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
+
+  # Expect manual quote from user, silently fall back to enexpr()
+  returning_expr <- enexpr(returning)
+  tryCatch(
+    returning_expr <- returning,
+    error = identity
+  )
+
   returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
 
@@ -257,7 +294,15 @@ rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
-  returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
+
+  # Expect manual quote from user, silently fall back to enexpr()
+  returning_expr <- enexpr(returning)
+  tryCatch(
+    returning_expr <- returning,
+    error = identity
+  )
+
+  returning_cols <- eval_select_both(returning_expr, colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
@@ -503,43 +548,6 @@ sql_rows_update.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NUL
   )
 
   glue::as_glue(sql)
-}
-
-sql_rows_update_prep <- function(x, y, by) {
-  con <- dbplyr::remote_con(x)
-  name <- dbplyr::remote_name(x)
-
-  # https://stackoverflow.com/a/47753166/946850
-  y_name <- DBI::dbQuoteIdentifier(con, "...y")
-  y_columns_qq <- paste(
-    DBI::dbQuoteIdentifier(con, colnames(y)),
-    collapse = ", "
-  )
-
-  new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by))
-  new_columns_qq <- paste(new_columns_q, collapse = ", ")
-  new_columns_qq_list <- list(new_columns_q)
-  new_columns_qual_qq <- paste0(
-    y_name, ".", new_columns_q,
-    collapse = ", "
-  )
-  new_columns_qual_qq_list <- list(paste0(y_name, ".", new_columns_q))
-
-  key_columns_q <- DBI::dbQuoteIdentifier(con, by)
-  compare_qual_qq <- paste0(
-    y_name, ".", key_columns_q,
-    " = ",
-    name, ".", key_columns_q,
-    collapse = " AND "
-  )
-
-  tibble(
-    name, y_name,
-    y_columns_qq,
-    new_columns_qq, new_columns_qq_list,
-    new_columns_qual_qq, new_columns_qual_qq_list,
-    compare_qual_qq
-  )
 }
 
 sql_rows_upsert <- function(x, y, by, ..., returning_cols = NULL) {

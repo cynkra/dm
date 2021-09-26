@@ -45,15 +45,23 @@ test_that("insert + delete + truncate with returning argument (#607)", {
 
   target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
 
-  # TODO remove `suppressWarnings()` when `dplyr::rows_*()` get argument `returning`
   expect_equal(
-    suppressWarnings(rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = everything())) %>%
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = quote(everything())) %>%
       get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA_real_)
   )
 
   expect_equal(
-    suppressWarnings(rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = c(sl = select))) %>%
+    expect_warning(
+      rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = everything()),
+      "returning"
+    ) %>%
+      get_returned_rows(),
+    tibble(select = 4L, where = "z", exists = NA_real_)
+  )
+
+  expect_equal(
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = quote(c(sl = select))) %>%
       get_returned_rows(),
     tibble(sl = 4L)
   )
@@ -64,10 +72,9 @@ test_that("duckdb errors for returning argument", {
 
   target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
 
-  # TODO remove `suppressWarnings()` when `dplyr::rows_*()` get argument `returning`
-  expect_snapshot_error(
-    suppressWarnings(rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = everything()))
-  )
+  expect_snapshot_error({
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = quote(everything()))
+  })
 })
 
 test_that("update", {
@@ -124,9 +131,9 @@ test_that("update with returning argument (#607)", {
   target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
 
   expect_equal(
-    suppressWarnings(suppressMessages(
-      rows_update(target, tibble(select = 2:3, where = "w"), copy = TRUE, in_place = TRUE, returning = everything())
-    )) %>%
+    suppressMessages(
+      rows_update(target, tibble(select = 2:3, where = "w"), copy = TRUE, in_place = TRUE, returning = quote(everything()))
+    ) %>%
       get_returned_rows() %>%
       arrange(select),
     tibble(select = 2:3, where = "w", exists = c(1.5, 2.5))
@@ -143,9 +150,9 @@ test_that("patch with returning argument (#607)", {
   target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
 
   expect_equal(
-    suppressWarnings(suppressMessages(
-      rows_patch(target, tibble(select = 2:3, where = "w"), copy = TRUE, in_place = TRUE, returning = everything())
-    )) %>%
+    suppressMessages(
+      rows_patch(target, tibble(select = 2:3, where = "w"), copy = TRUE, in_place = TRUE, returning = quote(everything()))
+    ) %>%
       get_returned_rows() %>%
       arrange(select),
     tibble(select = 2:3, where = c("b", "w"), exists = c(1.5, 2.5))
@@ -214,9 +221,9 @@ test_that("upsert with returning argument (#607)", {
   )
 
   expect_equal(
-    suppressWarnings(suppressMessages(
-      rows_upsert(target, tibble(select = 2:4, where = c("x", "y", "z")), copy = TRUE, in_place = TRUE, returning = everything())
-    )) %>%
+    suppressMessages(
+      rows_upsert(target, tibble(select = 2:4, where = c("x", "y", "z")), copy = TRUE, in_place = TRUE, returning = quote(everything()))
+    ) %>%
       get_returned_rows() %>%
       arrange(select),
     tibble(select = 2:4, where = c("x", "y", "z"), exists = c(1.5, 2.5, NA))
@@ -225,9 +232,19 @@ test_that("upsert with returning argument (#607)", {
 
 test_that("rows_*() checks arguments", {
   data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
-  expect_snapshot_error(suppressWarnings(rows_insert(data, data, in_place = FALSE, returning = everything())))
-  expect_snapshot_error(suppressWarnings(rows_update(data, data, in_place = FALSE, returning = everything())))
-  expect_snapshot_error(suppressWarnings(rows_upsert(data, data, in_place = FALSE, returning = everything())))
-  expect_snapshot_error(suppressWarnings(rows_patch(data, data, in_place = FALSE, returning = everything())))
-  expect_snapshot_error(suppressWarnings(rows_delete(data, data, in_place = FALSE, returning = everything())))
+  expect_snapshot_error({
+    rows_insert(data, data, in_place = FALSE, returning = quote(everything()))
+  })
+  expect_snapshot_error({
+    rows_update(data, data, in_place = FALSE, returning = quote(everything()))
+  })
+  expect_snapshot_error({
+    rows_upsert(data, data, in_place = FALSE, returning = quote(everything()))
+  })
+  expect_snapshot_error({
+    rows_patch(data, data, in_place = FALSE, returning = quote(everything()))
+  })
+  expect_snapshot_error({
+    rows_delete(data, data, in_place = FALSE, returning = quote(everything()))
+  })
 })
