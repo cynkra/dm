@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.3.9005
+
+- Suggest manually quoting the returning argument (#627).
+- `glimpse()` is implemented for dm objects (#605).
+- Support DuckDB in `rows_insert()`, `rows_update()` and `rows_delete()` (#617, @mgirlich).
+- Implement `rows_patch()` for DBI connections (#610, @mgirlich).
+- Use `check_suggested()` everywhere (#572, @moodymudskipper).
+
+
 # dm 0.2.3.9004
 
 - Establish compatibility with vctrs > 0.3.8.

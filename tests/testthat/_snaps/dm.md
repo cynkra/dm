@@ -149,7 +149,7 @@
       dm of 3 tables: `iris_1`, `iris_2`, `iris_3`
       
       Table: `iris_1`
-      1 primary key(s): (`key`)
+      Primary key: (`key`)
       Rows: 150
       Columns: 6
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -189,7 +189,7 @@
       dm of 3 tables: `iris_1`, `iris_2`, `iri...
       
       Table: `iris_1`
-      1 primary key(s): (`key`)
+      Primary key: (`key`)
       Rows: 150
       Columns: 6
       $ key          <int> 1, 2, 3, 4, 5, 6,~
@@ -236,7 +236,7 @@
       dm of 3 tables: `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrj...
       
       Table: `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoie...
-      1 primary key(s): (`gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogj...
+      Primary key: (`gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjih...
       Rows: 150
       Columns: 6
       $ gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd <int> ~
