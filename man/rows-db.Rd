@@ -120,9 +120,9 @@ Currently these checks are no-ops and need yet to be implemented.}
 Note that also columns not in \code{y} but automatically created when inserting
 into \code{x} can be returned, for example the \code{id} column.
 
-To avoid a warning due to upstream limitations,
-this argument will be evaluated inside \code{\link[=tryCatch]{tryCatch()}} .
-To avoid any ambiguity, quote the argument manually:
+Due to upstream limitations, a warning is given if this argument
+is passed unquoted.
+To avoid the warning, quote the argument manually:
 use e.g. \code{returning = quote(everything())} .}
 
 \item{returning_cols}{A character vector of unquote column names

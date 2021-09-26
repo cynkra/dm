@@ -30,9 +30,9 @@
 #'   Note that also columns not in `y` but automatically created when inserting
 #'   into `x` can be returned, for example the `id` column.
 #'
-#'   To avoid a warning due to upstream limitations,
-#'   this argument will be evaluated inside [tryCatch()] .
-#'   To avoid any ambiguity, quote the argument manually:
+#'   Due to upstream limitations, a warning is given if this argument
+#'   is passed unquoted.
+#'   To avoid the warning, quote the argument manually:
 #'   use e.g. `returning = quote(everything())` .
 #'
 #' @return A tbl object of the same structure as `x`.
