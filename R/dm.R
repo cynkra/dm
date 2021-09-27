@@ -279,7 +279,7 @@ dm_get_zoom <- function(x, cols = c("table", "zoom"), quiet = FALSE) {
   # Performance
   def <- dm_get_def(x, quiet)
   zoom <- def$zoom
-  where <- which(lengths(zoom) != 0)
+  where <- which(!map_lgl(zoom, is.null))
   if (length(where) != 1) {
     # FIXME: Better error message?
     abort_not_pulling_multiple_zoomed()
