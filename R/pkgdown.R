@@ -12,7 +12,11 @@ register_pkgdown_methods <- function() {
     return()
   }
 
-  stopifnot(rlang::is_installed(c("DiagrammeR", "DiagrammeRsvg")))
+  check_suggested(c("DiagrammeR", "DiagrammeRsvg"),
+    use = TRUE,
+    message = "DiagrammeR and DiagrammeRsvg packages needed for this function to work. Please install it."
+  )
+
   # For dev pkgdown
   s3_register("downlit::replay_html", "dm_draw", replay_html_dm_draw)
   s3_register("pkgdown::pkgdown_print", "grViz", pkgdown_print_grViz)
