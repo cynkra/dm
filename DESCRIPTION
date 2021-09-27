@@ -57,6 +57,7 @@ Imports:
     tidyselect (>= 1.0.1),
     vctrs (>= 0.3.2)
 Suggests: 
+    pool,
     brio,
     covr,
     crayon,
