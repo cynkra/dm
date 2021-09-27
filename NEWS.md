@@ -1,5 +1,11 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.3.9006
+
+- Better error message for `dm_rows_update()` and related functions for dm objects with tables without primary key (#592).
+- `dm_from_src()` supports `pool::Pool` objects (#599, @moodymudskipper).
+
+
 # dm 0.2.3.9005
 
 - Suggest manually quoting the returning argument (#627).
