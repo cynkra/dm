@@ -202,10 +202,11 @@
     Code
       dm_enum_pk_candidates(dm_test_obj(), dm_table_6)
     Output
-      # A tibble: 1 x 3
-        columns candidate why                                              
-        <keys>  <lgl>     <chr>                                            
-      1 c       FALSE     has 1 missing values, and duplicate values: 3 (2)
+      # A tibble: 2 x 3
+        columns candidate why                        
+        <keys>  <lgl>     <chr>                      
+      1 c       FALSE     has 1 missing values       
+      2 c       FALSE     has duplicate values: 3 (2)
 
 # output
 
