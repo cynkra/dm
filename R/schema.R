@@ -73,6 +73,14 @@ sql_schema_list.SQLiteConnection <- function(dest, include_default = TRUE, ...) 
   abort_no_schemas_supported("SQLite")
 }
 
+#' @export
+sql_schema_list.Pool <- function(dest, include_default = TRUE, ...) {
+  default_if_true <- if_else(include_default, "", ", 'public'")
+  pool_dest <- pool::poolCheckout(dest)
+  on.exit(pool::poolReturn(pool_dest))
+  sql_schema_list(pool_dest, include_default, ...)
+}
+
 
 # sql_schema_exists() -----------------------------------------------------
 
