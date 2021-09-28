@@ -103,11 +103,10 @@ test_that("DB helpers work for Postgres", {
 })
 
 test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
-  skip_if_local_src()
   skip_if_src("mssql")
   skip_if_src("postgres")
   # for other DBMS than "MSSQL" or "Postgrs", get_src_tbl_names() translates to `src_tbls_impl()`
-  con_db <- my_test_src()$con
+  con_db <- my_db_test_src()$con
   dbWriteTable(
     con_db,
     DBI::Id(table = "test_db_helpers"),
@@ -120,7 +119,7 @@ test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
   # test for 2 warnings and if the output contains the new table
   expect_dm_warning(
     expect_dm_warning(
-      expect_true("test_db_helpers" %in% get_src_tbl_names(my_test_src(), schema = "schema", dbname = "dbname")),
+      expect_true("test_db_helpers" %in% get_src_tbl_names(my_db_test_src(), schema = "schema", dbname = "dbname")),
       class = "arg_not"
     ),
     class = "arg_not"

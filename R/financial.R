@@ -15,7 +15,10 @@
 #' dm_financial() %>%
 #'   dm_draw()
 dm_financial <- function() {
-  stopifnot(rlang::is_installed("RMariaDB"))
+  check_suggested("RMariaDB",
+    use = TRUE,
+    top_level_fun = "dm_financial"
+  )
 
   my_db <- financial_db_con()
 
@@ -42,6 +45,9 @@ dm_financial <- function() {
 }
 
 dm_has_financial <- function() {
+  # Not on CRAN:
+  if (Sys.getenv("CI") != "true") return(FALSE)
+
   # Crashes observed with R < 3.5:
   if (getRversion() < 3.5) return(FALSE)
 
@@ -64,7 +70,10 @@ dm_has_financial <- function() {
 #' @rdname dm_financial
 #' @export
 dm_financial_sqlite <- function() {
-  stopifnot(rlang::is_installed("RSQLite"))
+  check_suggested("RSQLite",
+    use = TRUE,
+    top_level_fun = "dm_financial_sqlite"
+  )
 
   my_dm <-
     dm_financial() %>%

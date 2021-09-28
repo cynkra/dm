@@ -110,12 +110,11 @@ bdm_create_graph <- function(data_model,
   graph
 }
 
-bdm_render_graph <- function(graph, width = NULL, height = NULL) {
-  if (!rlang::is_installed("DiagrammeR")) {
-    stop("DiagrammeR package needed for this function to work. Please install it.",
-      call. = FALSE
-    )
-  }
+bdm_render_graph <- function(graph, width = NULL, height = NULL, top_level_fun = NULL) {
+  check_suggested("DiagrammeR",
+    use = TRUE,
+    top_level_fun = top_level_fun
+  )
 
   if (is.null(graph$dot_code)) {
     graph$dot_code <- dot_graph(graph)

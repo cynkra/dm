@@ -1,4 +1,4 @@
-dm 0.2.1
+dm 0.2.3
 
 ## Cran Repository Policy
 
@@ -6,10 +6,11 @@ dm 0.2.1
 
 ## R CMD check results
 
-- [x] Checked locally, R 4.0.5
-- [x] Checked on CI system, R 4.0.5
+- [x] Checked locally, R 4.1.0
+- [x] Checked on CI system, R 4.1.0
 - [x] Checked on win-builder, R devel
 
 ## Current CRAN check results
 
-- [x] Checked on 2021-05-11, no problems found.
+- [x] Checked on 2021-06-20, problems found: https://cran.r-project.org/web/checks/check_results_dm.html
+- [x] ERROR: r-patched-solaris-x86: fixed brittle examples that access a remote database.

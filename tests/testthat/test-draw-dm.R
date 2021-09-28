@@ -128,20 +128,6 @@ test_that("output", {
   skip_if_not_installed("DiagrammeRsvg")
   skip_if_not_installed("nycflights13")
 
-  # Loose table
-  expect_snapshot_diagram(
-    dm_nycflights13(compound = FALSE) %>%
-      dm_draw(),
-    "nycflight-dm-loose.svg"
-  )
-
-  # Default view
-  expect_snapshot_diagram(
-    dm_nycflights13() %>%
-      dm_draw(),
-    "nycflight-dm.svg"
-  )
-
   # 444: types
   expect_snapshot_diagram(
     dm_nycflights13() %>%
@@ -149,19 +135,17 @@ test_that("output", {
     "nycflight-dm-types.svg"
   )
 
-  # Multi-fk (#37)
   expect_snapshot_diagram(
-    dm_nycflights13() %>%
+    dm_nycflights13(cycle = TRUE) %>%
       dm_zoom_to(planes) %>%
+      # Multi-fk (#37)
       dm_insert_zoomed("planes_copy") %>%
+      # Loose table
+      dm_add_tbl(loose = tibble(a = 1)) %>%
+      # Non-default fk (#402)
+      dm_add_tbl(agency = tibble(airline_name = character())) %>%
+      dm_add_fk(agency, airline_name, airlines, name) %>%
       dm_draw(),
-    "nycflight-dm-copy.svg"
-  )
-
-  # Non-default fk (#402)
-  expect_snapshot_diagram(
-    dm_for_filter() %>%
-      dm_draw(),
-    "dm-for-filter.svg"
+    "nycflight-dm.svg"
   )
 })
