@@ -562,7 +562,7 @@ sql_rows_upsert <- function(x, y, by, ..., returning_cols = NULL) {
 sql_rows_upsert.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
   con <- dbplyr::remote_con(x)
 
-  p <- sql_rows_upsert_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by)
 
   update_clause <- paste0(
     unlist(p$new_columns_qq_list), " = ", "excluded.", unlist(p$new_columns_qq_list),
@@ -591,7 +591,7 @@ sql_rows_upsert.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
 `sql_rows_upsert.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL) {
   con <- dbplyr::remote_con(x)
 
-  p <- sql_rows_upsert_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by)
 
   update_clause <- paste0(
     unlist(p$new_columns_qq_list), " = ", "excluded.", unlist(p$new_columns_qq_list),
@@ -624,7 +624,7 @@ sql_rows_upsert.tbl_duckdb_connection <- function(x, y, by, ..., returning_cols 
 sql_rows_upsert.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NULL) {
   con <- dbplyr::remote_con(x)
 
-  p <- sql_rows_upsert_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by)
 
   update_clause <- paste0(
     unlist(p$new_columns_qq_list), " = ", "excluded.", unlist(p$new_columns_qq_list),
@@ -654,7 +654,7 @@ sql_rows_upsert.tbl_SQLiteConnection <- sql_rows_upsert.tbl_PqConnection
 sql_rows_upsert.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols = NULL) {
   con <- dbplyr::remote_con(x)
 
-  p <- sql_rows_upsert_prep(x, y, by)
+  p <- sql_rows_prep(x, y, by)
 
   update_clause <- paste0(
     p$new_columns_qq_list, " = ", p$new_columns_qual_qq_list,
@@ -676,50 +676,6 @@ sql_rows_upsert.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols 
   )
 
   glue::as_glue(sql)
-}
-
-sql_rows_upsert_prep <- function(x, y, by) {
-  con <- dbplyr::remote_con(x)
-  name <- dbplyr::remote_name(x)
-
-  # https://stackoverflow.com/a/47753166/946850
-  y_name <- DBI::dbQuoteIdentifier(con, "...y")
-  y_columns_qq <- paste(
-    DBI::dbQuoteIdentifier(con, colnames(y)),
-    collapse = ", "
-  )
-  y_columns_qual_qq <- paste(
-    y_name, ".", DBI::dbQuoteIdentifier(con, colnames(y)),
-    collapse = ", "
-  )
-
-  by_columns_qq <- DBI::dbQuoteIdentifier(con, by)
-  new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by))
-  new_columns_qq <- paste(new_columns_q, collapse = ", ")
-  new_columns_qq_list <- list(new_columns_q)
-  new_columns_qual_qq <- paste0(
-    y_name, ".", new_columns_q,
-    collapse = ", "
-  )
-  new_columns_qual_qq_list <- list(paste0(y_name, ".", new_columns_q))
-
-  key_columns_q <- DBI::dbQuoteIdentifier(con, by)
-  compare_qual_qq <- paste0(
-    y_name, ".", key_columns_q,
-    " = ",
-    name, ".", key_columns_q,
-    collapse = " AND "
-  )
-
-  tibble(
-    name, y_name,
-    y_columns_qq,
-    y_columns_qual_qq,
-    by_columns_qq,
-    new_columns_qq, new_columns_qq_list,
-    new_columns_qual_qq, new_columns_qual_qq_list,
-    compare_qual_qq
-  )
 }
 
 #' @export
@@ -853,6 +809,9 @@ sql_rows_prep <- function(x, y, by) {
   by_q <- DBI::dbQuoteIdentifier(con, by)
 
   y_columns_qq <- sql_list(y_q)
+  y_columns_qual_qq <- sql_list(paste(y_name, ".", y_q))
+
+  by_columns_qq <- sql_list(by_q)
 
   new_columns_q <- setdiff(y_q, by_q)
   new_columns_qual_q <- paste0(y_name, ".", new_columns_q)
@@ -878,6 +837,8 @@ sql_rows_prep <- function(x, y, by) {
   tibble(
     name, y_name,
     y_columns_qq,
+    y_columns_qual_qq,
+    by_columns_qq,
     new_columns_qq, new_columns_qq_list,
     new_columns_qual_qq, new_columns_qual_qq_list,
     new_columns_patch_qq, new_columns_patch_qq_list,
