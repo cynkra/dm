@@ -38,11 +38,10 @@ test_that("'collect.zoomed_dm()' collects tables, with message", {
 })
 
 test_that("'compute.dm()' computes tables on DB", {
-  skip_if_local_src()
   skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
 
   def <-
-    dm_for_filter() %>%
+    dm_for_filter_sqlite() %>%
     dm_filter(tf_1, a > 3) %>%
     {
       suppress_mssql_message(compute(.))
@@ -54,11 +53,10 @@ test_that("'compute.dm()' computes tables on DB", {
 })
 
 test_that("'compute.zoomed_dm()' computes tables on DB", {
-  skip_if_local_src()
   skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
 
   zoomed_dm_for_compute <-
-    dm_for_filter() %>%
+    dm_for_filter_sqlite() %>%
     dm_zoom_to(tf_1) %>%
     mutate(c = a + 1)
 
@@ -234,10 +232,9 @@ test_that("dm_get_con() errors", {
 })
 
 test_that("dm_get_con() works", {
-  skip_if_local_src()
   expect_identical(
-    dm_get_con(dm_for_filter()),
-    con_from_src_or_con(my_test_src())
+    dm_get_con(dm_for_filter_db()),
+    con_from_src_or_con(my_db_test_src())
   )
 })
 
@@ -321,5 +318,32 @@ test_that("output for compound keys", {
     nyc_comp() %>%
       dm_zoom_to(weather) %>%
       pull_tbl()
+  })
+})
+
+test_that("glimpse.dm() works", {
+  skip_if_remote_src()
+  expect_snapshot({
+    glimpse(empty_dm())
+
+    # glimpse 'standard' dm object
+    glimpse(dm_for_disambiguate())
+
+    # glimpse 'standard' dm object with different width
+    glimpse(dm_for_disambiguate(), width = 40)
+
+    # option "width" inside test_that-environment should always be 80
+    getOption("width")
+
+    # # glimpse dm with long names for tables and/or columns
+    glimpse(
+      dm_for_disambiguate() %>%
+        dm_rename(
+          iris_1,
+          gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd = key) %>%
+        dm_rename_tbl(
+          gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd = iris_1
+        )
+    )
   })
 })

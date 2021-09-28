@@ -54,7 +54,7 @@
       abort_no_cycles(create_graph_from_dm(dm_for_filter_w_cycle()))
     Error <dm_error_no_cycles>
       Cycles in the relationship graph not yet supported.
-      * Shortest cycle: tf_5 -> tf_6 -> tf_7 -> tf_2 -> tf_3 -> tf_4 -> tf_5
+      i Shortest cycle: tf_5 -> tf_6 -> tf_7 -> tf_2 -> tf_3 -> tf_4 -> tf_5
     Code
       abort_tables_not_reachable_from_start()
     Error <dm_error_tables_not_reachable_from_start>

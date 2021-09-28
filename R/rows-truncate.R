@@ -9,7 +9,11 @@
 #' @param x A data frame or data frame extension (e.g. a tibble).
 #' @export
 rows_truncate <- function(x, ..., in_place = FALSE) {
-  ellipsis::check_dots_used(action = "warn")
+  ellipsis::check_dots_used(action = warn)
+  UseMethod("rows_truncate", x)
+}
+# For dm_rows_truncate
+rows_truncate_ <- function(x, y, ..., in_place = FALSE) {
   UseMethod("rows_truncate", x)
 }
 

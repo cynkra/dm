@@ -31,15 +31,24 @@
 dm_examine_constraints <- function(dm, progress = NA, sample = TRUE) {
   check_not_zoomed(dm)
   dm %>%
-    dm_examine_constraints_impl(progress = progress, sample = sample) %>%
+    dm_examine_constraints_impl(
+      progress = progress, 
+      sample = sample, 
+      top_level_fun = "dm_examine_constraints") %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns), repair_plan = NULL) %>%
     new_dm_examine_constraints()
 }
 
-dm_examine_constraints_impl <- function(dm, progress = NA, fk_repair = NULL, pk_repair = NULL, sample = TRUE) {
-  pk_results <- check_pk_constraints(dm, progress, pk_repair)
-  fk_results <- check_fk_constraints(dm, progress, fk_repair, sample)
+
+dm_examine_constraints_impl <- function(
+  dm, progress = NA, fk_repair = NULL, pk_repair = NULL, sample = TRUE,
+  top_level_fun = NULL) {
+  pk_results <- check_pk_constraints(
+    dm, progress, pk_repair = pk_repair, top_level_fun = top_level_fun)
+  fk_results <- check_fk_constraints(
+    dm, progress, fk_repair = fk_repair, sample = sample, top_level_fun = top_level_fun)
+
   bind_rows(
     pk_results,
     fk_results
@@ -90,7 +99,7 @@ kind_to_long <- function(kind) {
   if_else(kind == "PK", "primary key", "foreign key")
 }
 
-check_pk_constraints <- function(dm, progress = NA, pk_repair = NULL) {
+check_pk_constraints <- function(dm, progress = NA, pk_repair = NULL, top_level_fun = NULL) {
   pks <- dm_get_all_pks_impl(dm)
   if (nrow(pks) == 0) {
     return(tibble(
@@ -105,7 +114,12 @@ check_pk_constraints <- function(dm, progress = NA, pk_repair = NULL) {
   table_names <- pks$table
   columns     <- pks$pk_col
 
-  ticker <- new_ticker("checking pk constraints", length(table_names), progress = progress)
+
+  ticker <- new_ticker(
+    "checking pk constraints",
+    n = length(table_names),
+    progress = progress,
+    top_level_fun = top_level_fun)
 
   candidates <- map2(set_names(table_names), columns, ticker(~ {
     tbl <- tbl_impl(dm, .x)
@@ -128,15 +142,20 @@ check_pk_constraints <- function(dm, progress = NA, pk_repair = NULL) {
     left_join(tbl_is_pk, by = c("table", "column"))
 }
 
-check_fk_constraints <- function(dm, progress = NA, fk_repair = NULL, sample = TRUE) {
+
+check_fk_constraints <- function(dm, progress = NA, fk_repair = NULL, sample = TRUE, top_level_fun = NULL) {
   fks <- dm_get_all_fks_impl(dm)
-  pts <- pull(fks, parent_table) %>% map(tbl_impl, dm = dm)
-  cts <- pull(fks, child_table) %>% map(tbl_impl, dm = dm)
+  pts <- map(fks$parent_table, tbl_impl, dm = dm)
+  cts <- map(fks$child_table, tbl_impl, dm = dm)
   fks_tibble <-
     mutate(fks, t1 = cts, t2 = pts) %>%
     select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = parent_key_cols)
 
-  ticker <- new_ticker("checking fk constraints", nrow(fks_tibble), progress = progress)
+  ticker <- new_ticker(
+    "checking pk constraints",
+    n = nrow(fks_tibble),
+    progress = progress,
+    top_level_fun = top_level_fun)
 
   problems <-
     pmap_dfr(fks_tibble, ticker(check_fk), fk_repair = fk_repair, sample = sample)

@@ -138,12 +138,6 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
   copy_data
 }
 
-# Not exported, to give us flexibility to change easily
-copy_list_of_tables_to <- function(dest, copy_data,
-                                   ..., overwrite = FALSE, df = NULL, name = NULL, types = NULL) {
-  pmap(copy_data, copy_to, dest = dest, overwrite = overwrite, ...)
-}
-
 create_queries <- function(dest, fk_information) {
   if (is_null(fk_information)) {
     character()
@@ -166,7 +160,7 @@ queries_set_fk_relations <- function(dest, fk_information) {
         db_parent_tables,
         parent_pk_col
       ),
-      ~ glue_sql("ALTER TABLE {`DBI::SQL(..1)`} ADD FOREIGN KEY ({`..2`*}) REFERENCES {`DBI::SQL(..3)`} ({`..4`*}) ON DELETE CASCADE ON UPDATE CASCADE", .con = dest)
+      ~ glue_sql("ALTER TABLE {`DBI::SQL(..1)`} ADD FOREIGN KEY ({`..2`*}) REFERENCES {`DBI::SQL(..3)`} ({`..4`*}) ON DELETE NO ACTION ON UPDATE NO ACTION", .con = dest)
     )
   } else {
     return(character())

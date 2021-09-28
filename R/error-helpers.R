@@ -143,7 +143,7 @@ abort_no_cycles <- function(g) {
 }
 
 error_txt_no_cycles <- function(shortest_cycle) {
-  c("Cycles in the relationship graph not yet supported.", glue::glue("Shortest cycle: {shortest_cycle}"))
+  c("Cycles in the relationship graph not yet supported.", i = glue::glue("Shortest cycle: {shortest_cycle}"))
 }
 
 
