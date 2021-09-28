@@ -502,7 +502,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sa
 
   t1_join <-
     t1 %>%
-    count(!!!t1_vals, name = "*n*") %>%
+    count(!!!t1_vals, name = "_n_") %>%
     ungroup()
   t2_join <-
     t2 %>%
@@ -520,7 +520,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sa
       # if value* is NULL, this also counts as a match -- consistent with fk semantics
       filter(!(!!any_value_na_expr)) %>%
       anti_join(t2_join, by = val_names) %>%
-      arrange(desc(`*n*`), !!!syms(val_names)),
+      arrange(desc(`_n_`), !!!syms(val_names)),
     error = identity
   )
 
@@ -550,7 +550,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sa
   count_tbl_for_label$value <- exec(paste0, !!!count_tbl_for_label[val_names])
 
   vals_formatted <- commas(
-    glue("{count_tbl_for_label$value} ({count_tbl_for_label$`*n*`})"),
+    glue("{count_tbl_for_label$value} ({count_tbl_for_label$`_n_`})"),
     capped = TRUE
   )
   label <- glue(
@@ -563,7 +563,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sa
     return(new_repair_plan(label))
   }
 
-  tbl_for_repair <- select(counts_tbl, - `*n*`)
+  tbl_for_repair <- select(counts_tbl, - `_n_`)
   if (fk_repair == "insert") {
     new_repair_plan(label, t2_name, rename_all(tbl_for_repair, ~pk), "insert_new_pk")
   } else {
