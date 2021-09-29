@@ -1,16 +1,22 @@
-dm 0.2.3
+dm 0.2.4
 
 ## Cran Repository Policy
 
-- [x] Reviewed CRP last edited 2021-04-25.
+- [ ] Reviewed CRP last edited 2021-09-25.
+
+See changes at https://github.com/eddelbuettel/crp/compare/master@%7B2021-04-25%7D...master@%7B2021-09-25%7D
 
 ## R CMD check results
 
-- [x] Checked locally, R 4.1.0
-- [x] Checked on CI system, R 4.1.0
-- [x] Checked on win-builder, R devel
+- [x] Checked locally, R 4.1.1
+- [ ] Checked on CI system, R 4.1.1
+- [ ] Checked on win-builder, R devel
+
+Check the boxes above after successful execution and remove this line. Then run `fledge::release()`.
 
 ## Current CRAN check results
 
-- [x] Checked on 2021-06-20, problems found: https://cran.r-project.org/web/checks/check_results_dm.html
-- [x] ERROR: r-patched-solaris-x86: fixed brittle examples that access a remote database.
+- [x] Checked on 2021-09-29, problems found: https://cran.r-project.org/web/checks/check_results_dm.html
+- [ ] ERROR: r-patched-linux-x86_64
+
+Check results at: https://cran.r-project.org/web/checks/check_results_dm.html
