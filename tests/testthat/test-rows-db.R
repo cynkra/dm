@@ -51,14 +51,12 @@ test_that("insert + delete + truncate with returning argument (#607)", {
     tibble(select = 4L, where = "z", exists = NA_real_)
   )
 
-  expect_equal(
-    expect_warning(
-      rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = everything()),
-      "returning"
-    ) %>%
+  expect_warning(
+    out <- rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = everything()) %>%
       get_returned_rows(),
-    tibble(select = 4L, where = "z", exists = NA_real_)
+    "returning"
   )
+  expect_equal(out, tibble(select = 4L, where = "z", exists = NA_real_))
 
   expect_equal(
     rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = quote(c(sl = select))) %>%
