@@ -720,6 +720,27 @@ sql_rows_delete <- function(x, y, by, ..., returning_cols = NULL) {
   UseMethod("sql_rows_delete")
 }
 
+#' @export
+sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_prep(x, y, by)
+
+  sql <- paste0(
+    "DELETE FROM ", p$name, "\n",
+    sql_output_cols(x, returning_cols, delete = TRUE),
+    "WHERE EXISTS (\n",
+    "  SELECT * FROM (\n",
+    "    ", dbplyr::sql_render(y), "\n",
+    "  ) AS ", p$y_name, "\n",
+    "  WHERE ", p$compare_qual_qq, "\n",
+    ")",
+    sql_returning_cols(x, returning_cols)
+  )
+
+  glue::as_glue(sql)
+}
+
 sql_rows_prep <- function(x, y, by) {
   con <- dbplyr::remote_con(x)
   name <- dbplyr::remote_name(x)
@@ -769,27 +790,6 @@ sql_rows_prep <- function(x, y, by) {
 
 sql_list <- function(x) {
   paste(x, collapse = ", ")
-}
-
-#' @export
-sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
-  con <- dbplyr::remote_con(x)
-
-  p <- sql_rows_prep(x, y, by)
-
-  sql <- paste0(
-    "DELETE FROM ", p$name, "\n",
-    sql_output_cols(x, returning_cols, delete = TRUE),
-    "WHERE EXISTS (\n",
-    "  SELECT * FROM (\n",
-    "    ", dbplyr::sql_render(y), "\n",
-    "  ) AS ", p$y_name, "\n",
-    "  WHERE ", p$compare_qual_qq, "\n",
-    ")",
-    sql_returning_cols(x, returning_cols)
-  )
-
-  glue::as_glue(sql)
 }
 
 rows_get_or_execute <- function(x, con, sql, returning_cols) {
