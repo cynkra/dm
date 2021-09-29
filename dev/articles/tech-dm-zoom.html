@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.3.9006</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9000</span>
       </span>
     </div>
 
@@ -222,7 +222,8 @@
 #&gt; <span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
 </code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_zoomed_mutate</span> <span class="op">&lt;-</span>
+<code class="sourceCode R">
+<span class="va">flights_zoomed_mutate</span> <span class="op">&lt;-</span>
   <span class="va">flights_zoomed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>am_pm_dep <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">dep_time</span> <span class="op">&lt;</span> <span class="fl">1200</span>, <span class="st">"am"</span>, <span class="st">"pm"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="co"># in order to see our changes in the output we use `select()` for reordering the columns</span>
@@ -248,7 +249,8 @@
 #&gt; <span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
 </code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:</span>
+<code class="sourceCode R">
+<span class="co"># To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:</span>
 <span class="va">updated_flights_dm</span> <span class="op">&lt;-</span>
   <span class="va">flights_zoomed_mutate</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span><span class="op">(</span><span class="op">)</span>

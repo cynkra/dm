@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.3.9006</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9000</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Model verification - keys, constraints and normalization</h1>
             
-            <h4 data-toc-skip class="date">2021-09-28</h4>
+            <h4 data-toc-skip class="date">2021-09-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-low-level.Rmd" class="external-link"><code>vignettes/tech-dm-low-level.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-low-level.Rmd</code></div>
@@ -252,12 +252,14 @@
 <code class="sourceCode R"><span class="co"># This does not pass, `c` is not unique key of d2:</span>
 <span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_n</a></span><span class="op">(</span><span class="va">d2</span>, <span class="va">c</span>, <span class="va">d1</span>, <span class="va">a</span><span class="op">)</span>
 <span class="co">#&gt; Error: (`c`) not a unique key of `d2`.</span>
+
 <span class="co"># This passes, multiple values in d2$c are allowed:</span>
 <span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_n</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d2</span>, <span class="va">c</span><span class="op">)</span>
 
 <span class="co"># This does not pass, injectivity is violated:</span>
 <span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_1_1</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d2</span>, <span class="va">c</span><span class="op">)</span>
 <span class="co">#&gt; Error: 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2` contains duplicate values.</span>
+
 <span class="co"># This passes:</span>
 <span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_1</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d3</span>, <span class="va">c</span><span class="op">)</span></code></pre></div>
 <p><code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> returns the type of relation, e.g.:</p>
