@@ -1,5 +1,11 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.3.9007
+
+- `sql_schema_list()` supports `pool::Pool` objects (#633, @brancengregory).
+- Fix `dm_zoom_to()` for an empty table (#626, @moodymudskipper).
+
+
 # dm 0.2.3.9006
 
 - Better error message for `dm_rows_update()` and related functions for dm objects with tables without primary key (#592).
