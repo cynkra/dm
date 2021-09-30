@@ -23,7 +23,8 @@
   in_place = NULL,
   copy = FALSE,
   check = NULL,
-  returning = NULL
+  returning = NULL,
+  na_matches = c("never", "na")
 )
 
 \method{rows_update}{tbl_dbi}(
@@ -34,7 +35,8 @@
   in_place = NULL,
   copy = FALSE,
   check = NULL,
-  returning = NULL
+  returning = NULL,
+  na_matches = c("never", "na")
 )
 
 \method{rows_patch}{tbl_dbi}(
@@ -45,7 +47,8 @@
   in_place = NULL,
   copy = FALSE,
   check = NULL,
-  returning = NULL
+  returning = NULL,
+  na_matches = c("never", "na")
 )
 
 \method{rows_upsert}{tbl_dbi}(
@@ -56,7 +59,8 @@
   in_place = NULL,
   copy = FALSE,
   check = NULL,
-  returning = NULL
+  returning = NULL,
+  na_matches = c("never", "na")
 )
 
 \method{rows_delete}{tbl_dbi}(
@@ -67,7 +71,8 @@
   in_place = NULL,
   copy = FALSE,
   check = NULL,
-  returning = NULL
+  returning = NULL,
+  na_matches = c("never", "na")
 )
 
 sql_rows_insert(x, y, ..., returning_cols = NULL)
@@ -124,6 +129,14 @@ Due to upstream limitations, a warning is given if this argument
 is passed unquoted.
 To avoid the warning, quote the argument manually:
 use e.g. \code{returning = quote(everything())} .}
+
+\item{na_matches}{Should two \code{NULL} values in the database (the equivalent
+of \code{na}) match one another?
+
+The default, \code{"never"}, treats two \code{NULL} values as different,
+like joins for database sources, similarly to \code{merge(incomparables = FALSE)}.
+
+Use \code{"na"} to consider \code{NULL} values as equal, like \code{\%in\%}, \code{match()}, \code{merge()}.}
 
 \item{returning_cols}{A character vector of unquote column names
 to return, created from the \code{returning} argument.
