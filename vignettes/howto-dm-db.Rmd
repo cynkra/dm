@@ -2,7 +2,9 @@
 title: "Create a dm object from a database"
 date: "`r Sys.Date()`"
 author: James Wondrasek, Kirill Müller
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    md_extensions: -autolink_bare_uris
 vignette: >
   %\VignetteIndexEntry{How to: Create a dm object from a database}
   %\VignetteEncoding{UTF-8}
