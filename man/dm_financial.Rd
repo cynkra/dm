@@ -16,7 +16,7 @@ A \code{dm} object.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \code{dm_financial()} creates an example \code{\link{dm}} object from the tables at
-\url{https://relational.fit.cvut.cz/dataset/Financial}.
+https://relational.fit.cvut.cz/dataset/Financial.
 The connection is established once per session,
 subsequent calls return the same connection.
 
