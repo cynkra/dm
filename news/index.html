@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
       </span>
     </div>
 
@@ -184,6 +184,64 @@
       <small>Source: <a href='https://github.com/cynkra/dm/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="dm-024" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.4">
+<a href="#dm-024" class="anchor" aria-hidden="true"></a>dm 0.2.4<small> Unreleased </small></h1>
+<ul><li>Same as previous version.</li>
+</ul></div>
+    <div id="dm-0239007" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.3.9007">
+<a href="#dm-0239007" class="anchor" aria-hidden="true"></a>dm 0.2.3.9007<small> Unreleased </small></h1>
+<ul><li>
+<code><a href="../reference/sql_schema_list.html">sql_schema_list()</a></code> supports <code><a href="https://rdrr.io/pkg/pool/man/Pool-class.html" class="external-link">pool::Pool</a></code> objects (<a href='https://github.com/cynkra/dm/issues/633'>#633</a>, <a href='https://github.com/brancengregory'>@brancengregory</a>).</li>
+<li>Fix <code><a href="../reference/dm_zoom_to.html">dm_zoom_to()</a></code> for an empty table (<a href='https://github.com/cynkra/dm/issues/626'>#626</a>, <a href='https://github.com/moodymudskipper'>@moodymudskipper</a>).</li>
+</ul></div>
+    <div id="dm-0239006" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.3.9006">
+<a href="#dm-0239006" class="anchor" aria-hidden="true"></a>dm 0.2.3.9006<small> Unreleased </small></h1>
+<ul><li>Better error message for <code><a href="../reference/rows-dm.html">dm_rows_update()</a></code> and related functions for dm objects with tables without primary key (<a href='https://github.com/cynkra/dm/issues/592'>#592</a>).</li>
+<li>
+<code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> supports <code><a href="https://rdrr.io/pkg/pool/man/Pool-class.html" class="external-link">pool::Pool</a></code> objects (<a href='https://github.com/cynkra/dm/issues/599'>#599</a>, <a href='https://github.com/moodymudskipper'>@moodymudskipper</a>).</li>
+</ul></div>
+    <div id="dm-0239005" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.3.9005">
+<a href="#dm-0239005" class="anchor" aria-hidden="true"></a>dm 0.2.3.9005<small> Unreleased </small></h1>
+<ul><li>Suggest manually quoting the returning argument (<a href='https://github.com/cynkra/dm/issues/627'>#627</a>).</li>
+<li>
+<code><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse()</a></code> is implemented for dm objects (<a href='https://github.com/cynkra/dm/issues/605'>#605</a>).</li>
+<li>Support DuckDB in <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_delete()</a></code> (<a href='https://github.com/cynkra/dm/issues/617'>#617</a>, <a href='https://github.com/mgirlich'>@mgirlich</a>).</li>
+<li>Implement <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_patch()</a></code> for DBI connections (<a href='https://github.com/cynkra/dm/issues/610'>#610</a>, <a href='https://github.com/mgirlich'>@mgirlich</a>).</li>
+<li>Use <code>check_suggested()</code> everywhere (<a href='https://github.com/cynkra/dm/issues/572'>#572</a>, <a href='https://github.com/moodymudskipper'>@moodymudskipper</a>).</li>
+</ul></div>
+    <div id="dm-0239004" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.3.9004">
+<a href="#dm-0239004" class="anchor" aria-hidden="true"></a>dm 0.2.3.9004<small> Unreleased </small></h1>
+<ul><li>Establish compatibility with vctrs &gt; 0.3.8.</li>
+<li>Establish compatibility with rlang &gt; 0.4.11 (<a href='https://github.com/cynkra/dm/issues/613'>#613</a>).</li>
+</ul></div>
+    <div id="dm-0239003" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.3.9003">
+<a href="#dm-0239003" class="anchor" aria-hidden="true"></a>dm 0.2.3.9003<small> Unreleased </small></h1>
+<ul><li>
+<code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_delete()</a></code> gain <code>returning</code> argument. In combination with <code>in_place = TRUE</code> this argument makes the newly inserted rows accessible via <code>get_returning_rows()</code> after the operation completes (<a href='https://github.com/cynkra/dm/issues/593'>#593</a>, <a href='https://github.com/mgirlich'>@mgirlich</a>).</li>
+</ul></div>
+    <div id="dm-0239002" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.3.9002">
+<a href="#dm-0239002" class="anchor" aria-hidden="true"></a>dm 0.2.3.9002<small> Unreleased </small></h1>
+<ul><li>Update tests for pillar 1.6.2.</li>
+<li>Add CI run for validating all new <code>dm</code> objects (<a href='https://github.com/cynkra/dm/issues/597'>#597</a>).</li>
+<li>Avoid generating invalid <code>dm</code> objects in some corner cases (<a href='https://github.com/cynkra/dm/issues/596'>#596</a>).</li>
+</ul></div>
+    <div id="dm-0239001" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.3.9001">
+<a href="#dm-0239001" class="anchor" aria-hidden="true"></a>dm 0.2.3.9001<small> Unreleased </small></h1>
+<ul><li>Use <code>NO ACTION</code> instead of <code>CASCADE</code> in foreign key constraints to permit self-references.</li>
+</ul></div>
+    <div id="dm-0239000" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.3.9000">
+<a href="#dm-0239000" class="anchor" aria-hidden="true"></a>dm 0.2.3.9000<small> Unreleased </small></h1>
+<ul><li>Same as previous version.</li>
+</ul></div>
     <div id="dm-023" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.3">
 <a href="#dm-023" class="anchor" aria-hidden="true"></a>dm 0.2.3<small> 2021-06-20 </small></h1>

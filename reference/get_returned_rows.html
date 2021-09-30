@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Merge several dm — dm_bind • dm</title>
+<title>Extract and check the RETURNING rows — get_returned_rows • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,14 @@
 
 
 
-<meta property="og:title" content="Merge several dm — dm_bind" />
-<meta property="og:description" content="Create a single dm from two or more dm objects." />
+<meta property="og:title" content="Extract and check the RETURNING rows — get_returned_rows" />
+<meta property="og:description" content="
+get_returned_rows() extracts the RETURNING rows produced by
+rows_insert(), rows_update(), rows_upsert(), or rows_delete()
+if called with the returning argument.
+An error is raised if this information is not available.
+has_returned_rows() checks if x has stored RETURNING rows produced by
+rows_insert(), rows_update(), rows_upsert(), or rows_delete()." />
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
@@ -181,69 +187,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Merge several <code>dm</code></h1>
-    <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/bind.R'><code>R/bind.R</code></a></small>
-    <div class="hidden name"><code>dm_bind.Rd</code></div>
+    <h1>Extract and check the RETURNING rows</h1>
+    <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/rows-db.R'><code>R/rows-db.R</code></a></small>
+    <div class="hidden name"><code>get_returned_rows.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create a single <code>dm</code> from two or more <code>dm</code> objects.</p>
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
+<p><code>get_returned_rows()</code> extracts the RETURNING rows produced by
+<code><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_insert()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_update()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_upsert()</a></code>, or <code><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_delete()</a></code>
+if called with the <code>returning</code> argument.
+An error is raised if this information is not available.</p>
+<p><code>has_returned_rows()</code> checks if <code>x</code> has stored RETURNING rows produced by
+<code><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_insert()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_update()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_upsert()</a></code>, or <code><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_delete()</a></code>.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dm_bind</span><span class='op'>(</span><span class='va'>...</span>, repair <span class='op'>=</span> <span class='st'>"check_unique"</span>, quiet <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>get_returned_rows</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>has_returned_rows</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p><code>dm</code> objects to bind together.</p></td>
-    </tr>
-    <tr>
-      <th>repair</th>
-      <td><p>Either a string or a function. If a string, it must
-be one of <code>"check_unique"</code>, <code>"minimal"</code>, <code>"unique"</code>, or <code>"universal"</code>.
-If a function, it is invoked with a vector of minimal names and must
-return minimal names, otherwise an error is thrown.</p><ul>
-<li><p>Minimal names are never <code>NULL</code> or <code>NA</code>. When an element doesn't
-have a name, its minimal name is an empty string.</p></li>
-<li><p>Unique names are unique. A suffix is appended to duplicate
-names to make them unique.</p></li>
-<li><p>Universal names are unique and syntactic, meaning that you can
-safely use the names as variables without causing a syntax
-error.</p></li>
-</ul>
-
-<p>The <code>"check_unique"</code> option doesn't perform any name repair.
-Instead, an error is raised if the names don't suit the
-<code>"unique"</code> criteria.</p></td>
-    </tr>
-    <tr>
-      <th>quiet</th>
-      <td><p>By default, the user is informed of any renaming
-caused by repairing the names. This only concerns unique and
-universal repairing. Set <code>quiet</code> to <code>TRUE</code> to silence the
-messages.</p></td>
+      <th>x</th>
+      <td><p>A lazy tbl.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>dm</code> containing the tables and key relations of all <code>dm</code> objects.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>For <code>get_returned_rows()</code>, a tibble.</p>
+<p>For <code>has_returned_rows()</code>, a scalar logical.</p>
 
-    <p>The <code>dm</code> objects have to share the same <code>src</code>. By default table names need to be unique.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>dm_1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>dm_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span><span class='va'>mtcars</span>, <span class='va'>iris</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'>dm_bind</span><span class='op'>(</span><span class='va'>dm_1</span>, <span class='va'>dm_2</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FFAFFF;'>──</span> <span style='color: #FFAFFF;'>Metadata</span> <span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, … (7 total)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Columns: 69</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Primary keys: 4</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Foreign keys: 4</span>
-</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

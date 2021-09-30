@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Class dm and basic operations</h1>
             
-            <h4 data-toc-skip class="date">2021-06-21</h4>
+            <h4 data-toc-skip class="date">2021-09-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-class.Rmd" class="external-link"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-class.Rmd</code></div>
@@ -232,7 +232,7 @@
 <span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">sqlite_src</span><span class="op">)</span>
 <span class="va">flights_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
-#&gt; src:  sqlite 3.35.5 [/tmp/RtmpzfD2x4/nycflights13.sqlite]
+#&gt; src:  sqlite 3.36.0 [/tmp/RtmpK7Gl2o/nycflights13.sqlite]
 #&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -269,7 +269,7 @@
 <span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span>
 <span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`airports`&gt; [?? x 8]</span>
-#&gt; <span style="color: #555555;"># Database: sqlite 3.35.5 [/tmp/RtmpzfD2x4/nycflights13.sqlite]</span>
+#&gt; <span style="color: #555555;"># Database: sqlite 3.36.0 [/tmp/RtmpK7Gl2o/nycflights13.sqlite]</span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>        
 #&gt; <span style="color: #555555;"> 1</span> 04G   Lansdowne Airport      41.1  -<span style="color: #BB0000;">80.6</span>  <span style="text-decoration: underline;">1</span>044    -<span style="color: #BB0000;">5</span> A     America/New_…
@@ -304,7 +304,7 @@
 <span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span>
 <span class="va">flights_dm_with_key</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
-#&gt; src:  sqlite 3.35.5 [/tmp/RtmpzfD2x4/nycflights13.sqlite]
+#&gt; src:  sqlite 3.36.0 [/tmp/RtmpK7Gl2o/nycflights13.sqlite]
 #&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -318,7 +318,7 @@
 <p>To get an overview over all tables with primary keys, use <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 × 2</span>
 #&gt;   table    pk_col
 #&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>
 #&gt; <span style="color: #555555;">1</span> airports faa
@@ -331,7 +331,7 @@
 <p>If you still need to get to know your data better, and it is already available in the form of a <code>dm</code> object, you can use the <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> function in order to get information about which columns of the table are unique keys:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 8 x 3</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 8 × 3</span>
 #&gt;   columns candidate why                                                    
 #&gt;   <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                                                  
 #&gt; <span style="color: #555555;">1</span> faa     TRUE      <span style="color: #555555;">""</span>                                                     
@@ -346,7 +346,7 @@
 <p>The <code>flights</code> table does not have any one-column primary key candidates:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">candidate</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 × 2</span>
 #&gt;   candidate     n
 #&gt;   <span style="color: #555555; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
 #&gt; <span style="color: #555555;">1</span> FALSE        19
@@ -371,7 +371,7 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_key</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
-#&gt; src:  sqlite 3.35.5 [/tmp/RtmpzfD2x4/nycflights13.sqlite]
+#&gt; src:  sqlite 3.36.0 [/tmp/RtmpK7Gl2o/nycflights13.sqlite]
 #&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -393,7 +393,7 @@
 <p>Get an overview of all foreign key relations with<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 5 x 4</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 5 × 4</span>
 #&gt;   child_table child_fk_cols     parent_table parent_key_cols  
 #&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>            <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>           
 #&gt; <span style="color: #555555;">1</span> flights     carrier           airlines     carrier          
@@ -426,7 +426,7 @@
 <p>Another function for getting to know your data better (cf. <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> in <a href="#pk">“Primary keys of <code>dm</code> objects”</a>) is <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>. Use it to get an overview over foreign key candidates that point from one table to another:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">weather</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 x 3</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 × 3</span>
 #&gt;    columns    candidate why                                                
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                                              
 #&gt; <span style="color: #555555;"> 1</span> origin     TRUE      <span style="color: #555555;">""</span>                                                 

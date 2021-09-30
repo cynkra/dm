@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Migration guide: ‘cdm’ -&gt; ‘dm’</h1>
             
-            <h4 data-toc-skip class="date">2021-06-21</h4>
+            <h4 data-toc-skip class="date">2021-09-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-cdm.Rmd" class="external-link"><code>vignettes/tech-dm-cdm.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-cdm.Rmd</code></div>
@@ -174,7 +174,7 @@
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="st">"airports"</span><span class="op">)</span>
 <span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span>
 <span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 86 x 8</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 86 × 8</span>
 #&gt;    faa   name                     lat    lon   alt    tz dst   tzone       
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>       
 #&gt; <span style="color: #555555;"> 1</span> ALB   Albany Intl             42.7  -<span style="color: #BB0000;">73.8</span>   285    -<span style="color: #BB0000;">5</span> A     America/New…
@@ -191,7 +191,7 @@
 </code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm</span><span class="op">$</span><span class="va">planes</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 945 x 9</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 945 × 9</span>
 #&gt;    tailnum  year type       manufacturer  model  engines seats speed engine
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> 
 #&gt; <span style="color: #555555;"> 1</span> N10156   <span style="text-decoration: underline;">2</span>004 Fixed win… EMBRAER       EMB-1…       2    55    <span style="color: #BB0000;">NA</span> Turbo…
@@ -208,7 +208,7 @@
 </code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm</span><span class="op">[[</span><span class="st">"weather"</span><span class="op">]</span><span class="op">]</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 144 x 15</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 144 × 15</span>
 #&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
 #&gt; <span style="color: #555555;"> 1</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     0  41    32    70.1      230       8.06
@@ -227,7 +227,7 @@
 <p>After the update the same result is achieved by this type of function call:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airlines</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 x 2</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 × 2</span>
 #&gt;    carrier name                       
 #&gt;    <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                      
 #&gt; <span style="color: #555555;"> 1</span> 9E      Endeavor Air Inc.          

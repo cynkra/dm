@@ -1,6 +1,6 @@
 pandoc: 2.7.3
 pkgdown: 1.6.1.9001
-pkgdown_sha: 51268b0d9cb0588d7a6404a2b8ef4ee19c435e89
+pkgdown_sha: 632889250b23aae88d6b3adcc0afd48160cb17ca
 articles:
   dm: dm.html
   howto-dm-copy: howto-dm-copy.html
@@ -16,11 +16,11 @@ articles:
   tech-dm-low-level: tech-dm-low-level.html
   tech-dm-naming: tech-dm-naming.html
   tech-dm-zoom: tech-dm-zoom.html
-  wip/dm-insert: dm-insert.html
-  wip/dm-readme-old: dm-readme-old.html
-  wip/dm-shiny-dynafilter: dm-shiny-dynafilter.html
-  wip/dm-tips-and-tricks: dm-tips-and-tricks.html
-last_built: 2021-06-21T03:32Z
+  dm-insert: wip/dm-insert.html
+  dm-readme-old: wip/dm-readme-old.html
+  dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
+  dm-tips-and-tricks: wip/dm-tips-and-tricks.html
+last_built: 2021-09-30T03:32Z
 urls:
   reference: https://cynkra.github.io/dm/reference
   article: https://cynkra.github.io/dm/articles
