@@ -476,6 +476,27 @@ sql_rows_insert_ignore_duplicates.tbl_sql <- function(x, y, by, ..., returning_c
 }
 
 #' @export
+sql_rows_insert_ignore_duplicates.tbl_duckdb_connection <- function(x, y, by, ..., returning_cols = NULL) {
+  con <- dbplyr::remote_con(x)
+  p <- sql_rows_prep(x, y, by)
+
+  sql <- paste0(
+    "INSERT INTO ", p$name, " (", p$y_columns_qq, ")\n",
+    sql_output_cols(x, returning_cols),
+    "SELECT * FROM (\n",
+    "  ", dbplyr::sql_render(y), "\n",
+    ") AS ", p$y_name, "\n",
+    "WHERE NOT EXISTS (\n",
+    "  SELECT * FROM ", p$name, "\n",
+    "  WHERE ", p$compare_qual_qq, "\n",
+    ")",
+    sql_returning_cols(x, returning_cols)
+  )
+
+  glue::as_glue(sql)
+}
+
+#' @export
 sql_rows_insert_ignore_duplicates.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NULL) {
   # Pros `ON CONFLICT`
   # * concurrency
@@ -503,6 +524,11 @@ sql_rows_insert_ignore_duplicates.tbl_PqConnection <- function(x, y, by, ..., re
 
 #' @export
 sql_rows_insert_ignore_duplicates.tbl_SQLiteConnection <- sql_rows_insert_ignore_duplicates.tbl_PqConnection
+
+#' @export
+`sql_rows_insert_ignore_duplicates.tbl_Microsoft SQL Server` <- function(x, y, by, ..., returning_cols = NULL) {
+  abort('`rows_insert(duplicates = "ignore")` is not supported for MS SQL')
+}
 
 #' @export
 #' @rdname rows-db
