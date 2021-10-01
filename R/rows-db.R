@@ -102,7 +102,7 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
 
     if (!is_empty(returning_cols)) {
       # Need to `union_all()` with `x` so that all columns of `x` exist in the result
-      returned_rows <- union_all(y, x %>% filter(FALSE)) %>%
+      returned_rows <- union_all(y, x %>% filter(0 == 1)) %>%
         select(returning_cols) %>%
         collect()
       returned_x <- set_returned_rows(returned_x, returned_rows)
