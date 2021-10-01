@@ -36,7 +36,7 @@ test_that("insert + delete + truncate", {
   })
 })
 
-test_that("insert + delete + truncate with returning argument (#607)", {
+test_that("insert + delete with returning argument (#607)", {
   skip_if_src("duckdb")
 
   if (is_my_test_src_sqlite()) {
@@ -64,6 +64,22 @@ test_that("insert + delete + truncate with returning argument (#607)", {
     rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = quote(c(sl = select))) %>%
       get_returned_rows(),
     tibble(sl = 4L)
+  )
+})
+
+test_that("insert + delete with returning argument and in_place = FALSE", {
+  target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
+
+  expect_equal(
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
+      get_returned_rows(),
+    tibble(select = 4L, where = "z", exists = NA_real_)
+  )
+
+  expect_equal(
+    rows_delete(target, test_db_src_frame(select = 3:4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
+      get_returned_rows(),
+    tibble(select = 3L, where = NA_character_, exists = 2.5)
   )
 })
 
@@ -122,40 +138,62 @@ test_that("patch", {
 })
 
 test_that("update with returning argument (#607)", {
+  target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
+  y <- tibble(select = 2:4, where = "w")
+  expected <- tibble(select = 2:3, where = "w", exists = c(1.5, 2.5))
+
+  expect_equal(
+    suppressMessages(
+      rows_update(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything()))
+    ) %>%
+      get_returned_rows() %>%
+      arrange(select),
+    expected
+  )
+
   skip_if_src("duckdb")
 
   if (is_my_test_src_sqlite()) {
     skip_if_not_installed("RSQLite", "2.2.8")
   }
 
-  target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
-
   expect_equal(
     suppressMessages(
-      rows_update(target, tibble(select = 2:3, where = "w"), copy = TRUE, in_place = TRUE, returning = quote(everything()))
+      rows_update(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything()))
     ) %>%
       get_returned_rows() %>%
       arrange(select),
-    tibble(select = 2:3, where = "w", exists = c(1.5, 2.5))
+    expected
   )
 })
 
 test_that("patch with returning argument (#607)", {
+  target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
+  y <- tibble(select = 2:4, where = "w")
+  expected <- tibble(select = 2:3, where = c("b", "w"), exists = c(1.5, 2.5))
+
+  expect_equal(
+    suppressMessages(
+      rows_patch(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything()))
+    ) %>%
+      get_returned_rows() %>%
+      arrange(select),
+    expected
+  )
+
   skip_if_src("duckdb")
 
   if (is_my_test_src_sqlite()) {
     skip_if_not_installed("RSQLite", "2.2.8")
   }
 
-  target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
-
   expect_equal(
     suppressMessages(
-      rows_patch(target, tibble(select = 2:3, where = "w"), copy = TRUE, in_place = TRUE, returning = quote(everything()))
+      rows_patch(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything()))
     ) %>%
       get_returned_rows() %>%
       arrange(select),
-    tibble(select = 2:3, where = c("b", "w"), exists = c(1.5, 2.5))
+    expected
   )
 })
 
@@ -203,14 +241,6 @@ test_that("upsert errors for duckdb", {
 })
 
 test_that("upsert with returning argument (#607)", {
-  # only seems to work with SQL Server 2019, not with 2017 used in our CI
-  # so let's just skip it for now
-  skip_if_src("duckdb", "mssql")
-
-  if (is_my_test_src_sqlite()) {
-    skip_if_not_installed("RSQLite", "2.2.8")
-  }
-
   target <- test_db_src_frame(
     select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2,
     .unique_indexes = list("select", "where"),
@@ -220,31 +250,29 @@ test_that("upsert with returning argument (#607)", {
     .temporary = !is_my_test_src_sqlite()
   )
 
+  y <- tibble(select = 2:4, where = c("x", "y", "z"))
+  expected <- tibble(select = 2:4, where = c("x", "y", "z"), exists = c(1.5, 2.5, NA))
+
+  expect_equal(
+    rows_upsert(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything())) %>%
+      get_returned_rows(),
+    expected
+  )
+
+  # only seems to work with SQL Server 2019, not with 2017 used in our CI
+  # so let's just skip it for now
+  skip_if_src("duckdb", "mssql")
+
+  if (is_my_test_src_sqlite()) {
+    skip_if_not_installed("RSQLite", "2.2.8")
+  }
+
   expect_equal(
     suppressMessages(
-      rows_upsert(target, tibble(select = 2:4, where = c("x", "y", "z")), copy = TRUE, in_place = TRUE, returning = quote(everything()))
+      rows_upsert(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything()))
     ) %>%
       get_returned_rows() %>%
       arrange(select),
-    tibble(select = 2:4, where = c("x", "y", "z"), exists = c(1.5, 2.5, NA))
+    expected
   )
-})
-
-test_that("rows_*() checks arguments", {
-  data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
-  expect_snapshot_error({
-    rows_insert(data, data, in_place = FALSE, returning = quote(everything()))
-  })
-  expect_snapshot_error({
-    rows_update(data, data, in_place = FALSE, returning = quote(everything()))
-  })
-  expect_snapshot_error({
-    rows_upsert(data, data, in_place = FALSE, returning = quote(everything()))
-  })
-  expect_snapshot_error({
-    rows_patch(data, data, in_place = FALSE, returning = quote(everything()))
-  })
-  expect_snapshot_error({
-    rows_delete(data, data, in_place = FALSE, returning = quote(everything()))
-  })
 })
