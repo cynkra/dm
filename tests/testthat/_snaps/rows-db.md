@@ -181,37 +181,37 @@
 # insert respects `duplicates = ignore`
 
     Code
-      rows_insert(data, test_db_src_frame(select = 2), in_place = FALSE, duplicates = "ignore")
+      rows_insert(data, test_db_src_frame(select = 2L), in_place = FALSE, duplicates = "ignore")
     Output
         select where exists
-         <dbl> <chr>  <dbl>
+         <int> <chr>  <dbl>
       1      1 a        0.5
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_insert(data, test_db_src_frame(select = 4), in_place = FALSE, duplicates = "ignore")
+      rows_insert(data, test_db_src_frame(select = 4L), in_place = FALSE, duplicates = "ignore")
     Output
         select where exists
-         <dbl> <chr>  <dbl>
+         <int> <chr>  <dbl>
       1      1 a        0.5
       2      2 b        1.5
       3      3 <NA>     2.5
       4      4 <NA>    NA  
     Code
-      rows_insert(data, test_db_src_frame(select = 2, where = "a"), in_place = FALSE,
+      rows_insert(data, test_db_src_frame(select = 2L, where = "a"), in_place = FALSE,
       duplicates = "ignore", by = "where")
     Output
         select where exists
-         <dbl> <chr>  <dbl>
+         <int> <chr>  <dbl>
       1      1 a        0.5
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_insert(data, test_db_src_frame(select = 2, where = "d"), in_place = FALSE,
+      rows_insert(data, test_db_src_frame(select = 2L, where = "d"), in_place = FALSE,
       duplicates = "ignore", by = "where")
     Output
         select where exists
-         <dbl> <chr>  <dbl>
+         <int> <chr>  <dbl>
       1      1 a        0.5
       2      2 b        1.5
       3      3 <NA>     2.5
@@ -228,7 +228,7 @@
 ---
 
     Code
-      rows_insert(data, test_db_src_frame(select = 2), in_place = TRUE, duplicates = "ignore")
+      rows_insert(data, test_db_src_frame(select = 2L), in_place = TRUE, duplicates = "ignore")
       data %>% arrange(select)
     Output
         select where exists
@@ -237,7 +237,7 @@
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_insert(data, test_db_src_frame(select = 4), in_place = TRUE, duplicates = "ignore")
+      rows_insert(data, test_db_src_frame(select = 4L), in_place = TRUE, duplicates = "ignore")
       data %>% arrange(select)
     Output
         select where exists
@@ -247,7 +247,7 @@
       3      3 <NA>     2.5
       4      4 <NA>    NA  
     Code
-      rows_insert(data, test_db_src_frame(select = 5, where = "a"), in_place = TRUE,
+      rows_insert(data, test_db_src_frame(select = 5L, where = "a"), in_place = TRUE,
       duplicates = "ignore", by = "where")
       data %>% arrange(select)
     Output
@@ -258,7 +258,7 @@
       3      3 <NA>     2.5
       4      4 <NA>    NA  
     Code
-      rows_insert(data, test_db_src_frame(select = 5, where = "d"), in_place = TRUE,
+      rows_insert(data, test_db_src_frame(select = 5L, where = "d"), in_place = TRUE,
       duplicates = "ignore", by = "where")
       data %>% arrange(select)
     Output
