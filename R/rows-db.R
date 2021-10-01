@@ -457,13 +457,10 @@ sql_rows_insert_ignore_duplicates.tbl_sql <- function(x, y, by, ..., returning_c
   # * I don't know of any advantage of using `MERGE`
   # * and this might be compatible with more DBs
   con <- dbplyr::remote_con(x)
-  name <- dbplyr::remote_name(x)
-
-  columns_q <- DBI::dbQuoteIdentifier(con, colnames(y))
-  columns_qq <- paste(columns_q, collapse = ", ")
+  p <- sql_rows_prep(x, y, by)
 
   sql <- paste0(
-    "INSERT INTO ", name, " (", columns_qq, ")\n",
+    "INSERT INTO ", p$name, " (", p$y_columns_qq, ")\n",
     sql_output_cols(x, returning_cols),
     dbplyr::remote_query(y),
     "WHERE NOT EXISTS (\n",
