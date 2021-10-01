@@ -144,7 +144,7 @@ test_that("update with returning argument (#607)", {
 
   expect_equal(
     suppressMessages(
-      rows_update(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything()))
+      rows_update(target, y, copy = TRUE, in_place = FALSE, returning = quote(everything()))
     ) %>%
       get_returned_rows() %>%
       arrange(select),
@@ -174,7 +174,7 @@ test_that("patch with returning argument (#607)", {
 
   expect_equal(
     suppressMessages(
-      rows_patch(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything()))
+      rows_patch(target, y, copy = TRUE, in_place = FALSE, returning = quote(everything()))
     ) %>%
       get_returned_rows() %>%
       arrange(select),
@@ -254,7 +254,7 @@ test_that("upsert with returning argument (#607)", {
   expected <- tibble(select = 2:4, where = c("x", "y", "z"), exists = c(1.5, 2.5, NA))
 
   expect_equal(
-    rows_upsert(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything())) %>%
+    rows_upsert(target, y, copy = TRUE, in_place = FALSE, returning = quote(everything())) %>%
       get_returned_rows(),
     expected
   )
