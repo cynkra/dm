@@ -36,6 +36,30 @@ test_that("insert + delete + truncate", {
   })
 })
 
+test_that("insert respects `duplicates = ignore`", {
+  expect_snapshot({
+    data <- test_db_src_frame(
+      select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2,
+      .unique_indexes = list("select", "where")
+    )
+
+    rows_insert(data, test_db_src_frame(select = 2), in_place = FALSE, duplicates = "ignore")
+    rows_insert(data, test_db_src_frame(select = 4), in_place = FALSE, duplicates = "ignore")
+    rows_insert(data, test_db_src_frame(select = 2, where = "a"), in_place = FALSE, duplicates = "ignore", by = "where")
+    rows_insert(data, test_db_src_frame(select = 2, where = "d"), in_place = FALSE, duplicates = "ignore", by = "where")
+    data %>% arrange(select)
+
+    rows_insert(data, test_db_src_frame(select = 2), in_place = TRUE, duplicates = "ignore")
+    data %>% arrange(select)
+    rows_insert(data, test_db_src_frame(select = 4), in_place = TRUE, duplicates = "ignore")
+    data %>% arrange(select)
+    rows_insert(data, test_db_src_frame(select = 5, where = "a"), in_place = TRUE, duplicates = "ignore", by = "where")
+    data %>% arrange(select)
+    rows_insert(data, test_db_src_frame(select = 5, where = "d"), in_place = TRUE, duplicates = "ignore", by = "where")
+    data %>% arrange(select)
+  })
+})
+
 test_that("insert + delete + truncate with returning argument (#607)", {
   skip_if_src("duckdb")
 

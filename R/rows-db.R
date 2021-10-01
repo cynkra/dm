@@ -34,6 +34,11 @@
 #'   is passed unquoted.
 #'   To avoid the warning, quote the argument manually:
 #'   use e.g. `returning = quote(everything())` .
+#' @param duplicates `r lifecycle::badge("experimental")`
+#'   The default, `"insert"`, means insert all rows regardless of what is
+#'   specified in `by`.
+#'   With `duplicates = "ignore"` only these rows are inserted whose key values
+#'   are not yet in `x`.
 #'
 #' @return A tbl object of the same structure as `x`.
 #'   If `in_place = TRUE`, the underlying data is updated as a side effect,
@@ -63,8 +68,8 @@ NULL
 #' @rdname rows-db
 rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
-                                returning = NULL) {
-
+                                returning = NULL,
+                                duplicates = c("insert", "ignore")) {
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
   tryCatch(
@@ -74,6 +79,7 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
 
   returning_cols <- eval_select_both(returning_expr, colnames(x))$names
   check_returning_cols_possible(returning_cols, in_place)
+  duplicates <- arg_match(duplicates)
 
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
@@ -89,7 +95,7 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
     }
 
     con <- dbplyr::remote_con(x)
-    sql <- sql_rows_insert(x, y, returning_cols = returning_cols)
+    sql <- sql_rows_insert(x, y, by, returning_cols = returning_cols, duplicates = duplicates)
 
     rows_get_or_execute(x, con, sql, returning_cols)
   } else {
@@ -98,7 +104,15 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
     if (is_null(check) || is_true(check)) {
       check_db_dupes(x, y, by)
     }
-    union_all(x, y)
+
+    if (duplicates == "insert") {
+      union_all(x, y)
+    } else {
+      union_all(
+        x,
+        anti_join(y, x, by = by)
+      )
+    }
   }
 }
 
@@ -394,14 +408,29 @@ check_returning_cols_possible <- function(returning_cols, in_place) {
 #'
 #' @export
 #' @rdname rows-db
-sql_rows_insert <- function(x, y, ..., returning_cols = NULL) {
+sql_rows_insert <- function(x, y, by, ..., returning_cols = NULL,
+                            duplicates = c("insert", "ignore")) {
+  # TODO error probably doesn't really work, right?
+  # -> SQLite: `RAISE()` but only in triggers
+  # -> TSQL: `THROW`
   ellipsis::check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_insert")
 }
 
 #' @export
-sql_rows_insert.tbl_sql <- function(x, y, ..., returning_cols = NULL) {
+sql_rows_insert.tbl_sql <- function(x, y, by, ..., returning_cols = NULL,
+                                    duplicates = c("insert", "ignore")) {
+  duplicates <- arg_match(duplicates)
+
+  if (duplicates == "insert") {
+    sql_rows_insert_everything(x, y, by, ..., returning_cols = returning_cols)
+  } else {
+    sql_rows_insert_ignore_duplicates(x, y, by, ..., returning_cols = returning_cols)
+  }
+}
+
+sql_rows_insert_everything <- function(x, y, by, ..., returning_cols = NULL) {
   con <- dbplyr::remote_con(x)
   name <- dbplyr::remote_name(x)
 
@@ -417,6 +446,66 @@ sql_rows_insert.tbl_sql <- function(x, y, ..., returning_cols = NULL) {
 
   glue::as_glue(sql)
 }
+
+sql_rows_insert_ignore_duplicates <- function(x, y, by, ..., returning_cols = NULL) {
+  UseMethod("sql_rows_insert_ignore_duplicates")
+}
+
+#' @export
+sql_rows_insert_ignore_duplicates.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
+  # One could also use `MERGE` (see `sql_rows_upsert.tbl_sql()`) but
+  # * I don't know of any advantage of using `MERGE`
+  # * and this might be compatible with more DBs
+  con <- dbplyr::remote_con(x)
+  name <- dbplyr::remote_name(x)
+
+  columns_q <- DBI::dbQuoteIdentifier(con, colnames(y))
+  columns_qq <- paste(columns_q, collapse = ", ")
+
+  sql <- paste0(
+    "INSERT INTO ", name, " (", columns_qq, ")\n",
+    sql_output_cols(x, returning_cols),
+    dbplyr::remote_query(y),
+    "WHERE NOT EXISTS (\n",
+    "  SELECT * FROM (\n",
+    "    ", dbplyr::sql_render(y), "\n",
+    "  ) AS ", p$y_name, "\n",
+    "  WHERE ", p$compare_qual_qq, "\n",
+    ")",
+    sql_returning_cols(x, returning_cols)
+  )
+
+  glue::as_glue(sql)
+}
+
+#' @export
+sql_rows_insert_ignore_duplicates.tbl_PqConnection <- function(x, y, by, ..., returning_cols = NULL) {
+  # Pros `ON CONFLICT`
+  # * concurrency
+  # Cons `ON CONFLICT`
+  # * only works in few databases
+  # * doesn't support `na_matches`
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_prep(x, y, by)
+
+  sql <- paste0(
+    "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
+    dbplyr::sql_render(y),
+    "\n)\n",
+    "INSERT INTO ", p$name, " (", p$y_columns_qq, ")\n",
+    "SELECT * FROM ", p$y_name, "\n",
+    "WHERE true\n",
+    "ON CONFLICT (", p$by_columns_qq, ")\n",
+    "DO NOTHING\n",
+    sql_returning_cols(x, returning_cols)
+  )
+
+  glue::as_glue(sql)
+}
+
+#' @export
+sql_rows_insert_ignore_duplicates.tbl_SQLiteConnection <- sql_rows_insert_ignore_duplicates.tbl_PqConnection
 
 #' @export
 #' @rdname rows-db

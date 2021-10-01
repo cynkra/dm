@@ -23,7 +23,8 @@
   in_place = NULL,
   copy = FALSE,
   check = NULL,
-  returning = NULL
+  returning = NULL,
+  duplicates = c("insert", "ignore")
 )
 
 \method{rows_update}{tbl_dbi}(
@@ -70,7 +71,14 @@
   returning = NULL
 )
 
-sql_rows_insert(x, y, ..., returning_cols = NULL)
+sql_rows_insert(
+  x,
+  y,
+  by,
+  ...,
+  returning_cols = NULL,
+  duplicates = c("insert", "ignore")
+)
 
 sql_rows_update(x, y, by, ..., returning_cols = NULL)
 
@@ -124,6 +132,12 @@ Due to upstream limitations, a warning is given if this argument
 is passed unquoted.
 To avoid the warning, quote the argument manually:
 use e.g. \code{returning = quote(everything())} .}
+
+\item{duplicates}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+The default, \code{"insert"}, means insert all rows regardless of what is
+specified in \code{by}.
+With \code{duplicates = "ignore"} only these rows are inserted whose key values
+are not yet in \code{x}.}
 
 \item{returning_cols}{A character vector of unquote column names
 to return, created from the \code{returning} argument.
