@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Create a dm object from a database</h1>
                         <h4 data-toc-skip class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2021-09-29</h4>
+            <h4 data-toc-skip class="date">2021-10-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/howto-dm-db.Rmd" class="external-link"><code>vignettes/howto-dm-db.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-db.Rmd</code></div>
@@ -167,7 +167,7 @@
 <span class="va">my_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
 #&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
-#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
 #&gt; Columns: 57
 #&gt; Primary keys: 0
@@ -192,7 +192,7 @@
 <span class="va">my_manual_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
 #&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
-#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `loans`, `accounts`
 #&gt; Columns: 11
 #&gt; Primary keys: 0
@@ -236,7 +236,7 @@
   <span class="fu"><a href="../reference/dm_add_tbl.html">dm_add_tbl</a></span><span class="op">(</span><span class="va">trans</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
 #&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
-#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `loans`, `accounts`, `trans`
 #&gt; Columns: 21
 #&gt; Primary keys: 2
@@ -252,7 +252,7 @@
 <code class="sourceCode R"><span class="va">my_dm_keys</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
 #&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
-#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `loans`, `accounts`
 #&gt; Columns: 11
 #&gt; Primary keys: 2
@@ -267,7 +267,7 @@
 <span class="va">my_dm_trans</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
 #&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
-#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `loans`, `accounts`, `trans`
 #&gt; Columns: 21
 #&gt; Primary keys: 2
@@ -279,22 +279,22 @@
   <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span>
 <span class="co">#&gt; Renamed columns:</span>
 <span class="co">#&gt; * date -&gt; loans.date, accounts.date</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 10]</span>
-#&gt; <span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Source:   lazy query [?? x 10]</span>
+#&gt; <span style="color: #949494;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 #&gt;       id account_id loans.date amount duration payments status district_id
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>      <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;date&gt;</span>      <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
-#&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">4</span>959          2 1994-01-05  <span style="text-decoration: underline;">80</span>952       24     <span style="text-decoration: underline;">3</span>373 A                1
-#&gt; <span style="color: #555555;"> 2</span>  <span style="text-decoration: underline;">4</span>961         19 1996-04-29  <span style="text-decoration: underline;">30</span>276       12     <span style="text-decoration: underline;">2</span>523 B               21
-#&gt; <span style="color: #555555;"> 3</span>  <span style="text-decoration: underline;">4</span>962         25 1997-12-08  <span style="text-decoration: underline;">30</span>276       12     <span style="text-decoration: underline;">2</span>523 A               68
-#&gt; <span style="color: #555555;"> 4</span>  <span style="text-decoration: underline;">4</span>967         37 1998-10-14 <span style="text-decoration: underline;">318</span>480       60     <span style="text-decoration: underline;">5</span>308 D               20
-#&gt; <span style="color: #555555;"> 5</span>  <span style="text-decoration: underline;">4</span>968         38 1998-04-19 <span style="text-decoration: underline;">110</span>736       48     <span style="text-decoration: underline;">2</span>307 C               19
-#&gt; <span style="color: #555555;"> 6</span>  <span style="text-decoration: underline;">4</span>973         67 1996-05-02 <span style="text-decoration: underline;">165</span>960       24     <span style="text-decoration: underline;">6</span>915 A               16
-#&gt; <span style="color: #555555;"> 7</span>  <span style="text-decoration: underline;">4</span>986         97 1997-08-10 <span style="text-decoration: underline;">102</span>876       12     <span style="text-decoration: underline;">8</span>573 A               74
-#&gt; <span style="color: #555555;"> 8</span>  <span style="text-decoration: underline;">4</span>988        103 1997-12-06 <span style="text-decoration: underline;">265</span>320       36     <span style="text-decoration: underline;">7</span>370 D               44
-#&gt; <span style="color: #555555;"> 9</span>  <span style="text-decoration: underline;">4</span>989        105 1998-12-05 <span style="text-decoration: underline;">352</span>704       48     <span style="text-decoration: underline;">7</span>348 C               21
-#&gt; <span style="color: #555555;">10</span>  <span style="text-decoration: underline;">4</span>990        110 1997-09-08 <span style="text-decoration: underline;">162</span>576       36     <span style="text-decoration: underline;">4</span>516 C               36
-#&gt; <span style="color: #555555;"># … with more rows, and 2 more variables: frequency &lt;chr&gt;,</span>
-#&gt; <span style="color: #555555;">#   accounts.date &lt;date&gt;</span>
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>
+#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">4</span>959          2 1994-01-05  <span style="text-decoration: underline;">80</span>952       24     <span style="text-decoration: underline;">3</span>373 A                1
+#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">4</span>961         19 1996-04-29  <span style="text-decoration: underline;">30</span>276       12     <span style="text-decoration: underline;">2</span>523 B               21
+#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">4</span>962         25 1997-12-08  <span style="text-decoration: underline;">30</span>276       12     <span style="text-decoration: underline;">2</span>523 A               68
+#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">4</span>967         37 1998-10-14 <span style="text-decoration: underline;">318</span>480       60     <span style="text-decoration: underline;">5</span>308 D               20
+#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">4</span>968         38 1998-04-19 <span style="text-decoration: underline;">110</span>736       48     <span style="text-decoration: underline;">2</span>307 C               19
+#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">4</span>973         67 1996-05-02 <span style="text-decoration: underline;">165</span>960       24     <span style="text-decoration: underline;">6</span>915 A               16
+#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">4</span>986         97 1997-08-10 <span style="text-decoration: underline;">102</span>876       12     <span style="text-decoration: underline;">8</span>573 A               74
+#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">4</span>988        103 1997-12-06 <span style="text-decoration: underline;">265</span>320       36     <span style="text-decoration: underline;">7</span>370 D               44
+#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">4</span>989        105 1998-12-05 <span style="text-decoration: underline;">352</span>704       48     <span style="text-decoration: underline;">7</span>348 C               21
+#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">4</span>990        110 1997-09-08 <span style="text-decoration: underline;">162</span>576       36     <span style="text-decoration: underline;">4</span>516 C               36
+#&gt; <span style="color: #949494;"># … with more rows, and 2 more variables: frequency &lt;chr&gt;,</span>
+#&gt; <span style="color: #949494;">#   accounts.date &lt;date&gt;</span>
 </code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
@@ -342,21 +342,21 @@
 <path fill="none" stroke="#555555" d="M66.5,-11C83.675,-11 83.6705,-30.4257 94.1348,-38.0138"></path><polygon fill="#555555" stroke="#555555" points="93.4148,-41.4526 104,-41 95.4429,-34.7529 93.4148,-41.4526"></polygon></g></g></svg><p>The resulting table <code>total_loans</code> can be accessed like any other table in the dm object.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_total</span><span class="op">$</span><span class="va">total_loans</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 2]</span>
-#&gt; <span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Source:   lazy query [?? x 2]</span>
+#&gt; <span style="color: #949494;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 #&gt;    account_id total_amount
-#&gt;         <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>        <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
-#&gt; <span style="color: #555555;"> 1</span>          2        <span style="text-decoration: underline;">80</span>952
-#&gt; <span style="color: #555555;"> 2</span>         19        <span style="text-decoration: underline;">30</span>276
-#&gt; <span style="color: #555555;"> 3</span>         25        <span style="text-decoration: underline;">30</span>276
-#&gt; <span style="color: #555555;"> 4</span>         37       <span style="text-decoration: underline;">318</span>480
-#&gt; <span style="color: #555555;"> 5</span>         38       <span style="text-decoration: underline;">110</span>736
-#&gt; <span style="color: #555555;"> 6</span>         67       <span style="text-decoration: underline;">165</span>960
-#&gt; <span style="color: #555555;"> 7</span>         97       <span style="text-decoration: underline;">102</span>876
-#&gt; <span style="color: #555555;"> 8</span>        103       <span style="text-decoration: underline;">265</span>320
-#&gt; <span style="color: #555555;"> 9</span>        105       <span style="text-decoration: underline;">352</span>704
-#&gt; <span style="color: #555555;">10</span>        110       <span style="text-decoration: underline;">162</span>576
-#&gt; <span style="color: #555555;"># … with more rows</span>
+#&gt;         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #BCBCBC;"> 1</span>          2        <span style="text-decoration: underline;">80</span>952
+#&gt; <span style="color: #BCBCBC;"> 2</span>         19        <span style="text-decoration: underline;">30</span>276
+#&gt; <span style="color: #BCBCBC;"> 3</span>         25        <span style="text-decoration: underline;">30</span>276
+#&gt; <span style="color: #BCBCBC;"> 4</span>         37       <span style="text-decoration: underline;">318</span>480
+#&gt; <span style="color: #BCBCBC;"> 5</span>         38       <span style="text-decoration: underline;">110</span>736
+#&gt; <span style="color: #BCBCBC;"> 6</span>         67       <span style="text-decoration: underline;">165</span>960
+#&gt; <span style="color: #BCBCBC;"> 7</span>         97       <span style="text-decoration: underline;">102</span>876
+#&gt; <span style="color: #BCBCBC;"> 8</span>        103       <span style="text-decoration: underline;">265</span>320
+#&gt; <span style="color: #BCBCBC;"> 9</span>        105       <span style="text-decoration: underline;">352</span>704
+#&gt; <span style="color: #BCBCBC;">10</span>        110       <span style="text-decoration: underline;">162</span>576
+#&gt; <span style="color: #949494;"># … with more rows</span>
 </code></pre>
 <p>It is a <em>lazy table</em> powered by the {<a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a>} package: the results are not materialized, instead an SQL query is built and executed each time the data is requested.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -377,20 +377,20 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">my_dm_local</span><span class="op">$</span><span class="va">total_loans</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 682 × 2</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 682 × 2</span>
 #&gt;    account_id total_amount
-#&gt;         <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>        <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
-#&gt; <span style="color: #555555;"> 1</span>          2        <span style="text-decoration: underline;">80</span>952
-#&gt; <span style="color: #555555;"> 2</span>         19        <span style="text-decoration: underline;">30</span>276
-#&gt; <span style="color: #555555;"> 3</span>         25        <span style="text-decoration: underline;">30</span>276
-#&gt; <span style="color: #555555;"> 4</span>         37       <span style="text-decoration: underline;">318</span>480
-#&gt; <span style="color: #555555;"> 5</span>         38       <span style="text-decoration: underline;">110</span>736
-#&gt; <span style="color: #555555;"> 6</span>         67       <span style="text-decoration: underline;">165</span>960
-#&gt; <span style="color: #555555;"> 7</span>         97       <span style="text-decoration: underline;">102</span>876
-#&gt; <span style="color: #555555;"> 8</span>        103       <span style="text-decoration: underline;">265</span>320
-#&gt; <span style="color: #555555;"> 9</span>        105       <span style="text-decoration: underline;">352</span>704
-#&gt; <span style="color: #555555;">10</span>        110       <span style="text-decoration: underline;">162</span>576
-#&gt; <span style="color: #555555;"># … with 672 more rows</span>
+#&gt;         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #BCBCBC;"> 1</span>          2        <span style="text-decoration: underline;">80</span>952
+#&gt; <span style="color: #BCBCBC;"> 2</span>         19        <span style="text-decoration: underline;">30</span>276
+#&gt; <span style="color: #BCBCBC;"> 3</span>         25        <span style="text-decoration: underline;">30</span>276
+#&gt; <span style="color: #BCBCBC;"> 4</span>         37       <span style="text-decoration: underline;">318</span>480
+#&gt; <span style="color: #BCBCBC;"> 5</span>         38       <span style="text-decoration: underline;">110</span>736
+#&gt; <span style="color: #BCBCBC;"> 6</span>         67       <span style="text-decoration: underline;">165</span>960
+#&gt; <span style="color: #BCBCBC;"> 7</span>         97       <span style="text-decoration: underline;">102</span>876
+#&gt; <span style="color: #BCBCBC;"> 8</span>        103       <span style="text-decoration: underline;">265</span>320
+#&gt; <span style="color: #BCBCBC;"> 9</span>        105       <span style="text-decoration: underline;">352</span>704
+#&gt; <span style="color: #BCBCBC;">10</span>        110       <span style="text-decoration: underline;">162</span>576
+#&gt; <span style="color: #949494;"># … with 672 more rows</span>
 </code></pre>
 <p>Use this method with caution. If you are not sure of the size of the dataset you will be downloading you can call <code><a href="../reference/dm_nrow.html">dm_nrow()</a></code> on your dm for the row count of your data model’s tables.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -411,7 +411,7 @@
 <span class="va">deployed_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
 #&gt; src:  sqlite 3.36.0 []
-#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `loans`, `accounts`, `total_loans`
 #&gt; Columns: 13
 #&gt; Primary keys: 2
@@ -419,7 +419,7 @@
 </code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_local</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `loans`, `accounts`, `total_loans`
 #&gt; Columns: 13
 #&gt; Primary keys: 2
@@ -463,7 +463,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>

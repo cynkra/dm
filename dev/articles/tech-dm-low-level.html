@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Model verification - keys, constraints and normalization</h1>
             
-            <h4 data-toc-skip class="date">2021-09-29</h4>
+            <h4 data-toc-skip class="date">2021-10-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-low-level.Rmd" class="external-link"><code>vignettes/tech-dm-low-level.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-low-level.Rmd</code></div>
@@ -151,7 +151,7 @@
 <pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Attaching packages</span> ────────────────────────────────── tidyverse 1.3.1 ──
 </code></pre>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2</span> 3.3.5     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr  </span> 0.3.4
-#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tibble </span> 3.1.4     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr  </span> 1.0.7
+#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tibble </span> 3.1.5     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr  </span> 1.0.7
 #&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr  </span> 1.1.4     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">stringr</span> 1.4.0
 #&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">readr  </span> 2.0.2     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">forcats</span> 0.5.1
 </code></pre>
@@ -188,10 +188,10 @@
 <p>This function is important for determining if a column is a foreign key to some other table. What about the inverse relation?</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/check_subset.html">check_subset</a></span><span class="op">(</span><span class="va">data_2</span>, <span class="va">a</span>, <span class="va">data_1</span>, <span class="va">a</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 × 3</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span>
 #&gt;       a     b     c
-#&gt;   <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
-#&gt; <span style="color: #555555;">1</span>     3     6     9
+#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #BCBCBC;">1</span>     3     6     9
 </code></pre>
 <pre><code>#&gt; Error: Column `a` of table `data_2` contains values (see examples above) that are not present in column `a` of table `data_1`.</code></pre>
 <p>It should be kept in mind that <code><a href="../reference/check_subset.html">check_subset()</a></code> does not test if column <code>c2</code> is a unique key of table <code>t2</code>. In order to find out if a (child) table <code>t1</code> contains a column <code>c1</code> that is a foreign key to a (parent) table <code>t2</code> with the corresponding column <code>c2</code>, the following method should be used:</p>
@@ -201,10 +201,10 @@
 <p>To check both directions at once, and to find out if the unique values of <code>c_1</code> in <code>t_1</code> are the same as those of <code>c_2</code> in <code>t_2</code>, {dm} provides the function <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/check_set_equality.html">check_set_equality</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span>, <span class="va">data_2</span>, <span class="va">a</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 × 3</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span>
 #&gt;       a     b     c
-#&gt;   <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
-#&gt; <span style="color: #555555;">1</span>     3     6     9
+#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #BCBCBC;">1</span>     3     6     9
 </code></pre>
 <pre><code>#&gt; Error: Column `a` of table `data_2` contains values (see examples above) that are not present in column `a` of table `data_1`..</code></pre>
 <p>Introducing one more table enables us to show how it looks when the test is passed:</p>
@@ -287,57 +287,57 @@
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars_tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>
 <span class="va">mtcars_tibble</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 32 × 11</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span>
 #&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
-#&gt; <span style="color: #555555;"> 1</span>  21       6  160    110  3.9   2.62  16.5     0     1     4     4
-#&gt; <span style="color: #555555;"> 2</span>  21       6  160    110  3.9   2.88  17.0     0     1     4     4
-#&gt; <span style="color: #555555;"> 3</span>  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
-#&gt; <span style="color: #555555;"> 4</span>  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
-#&gt; <span style="color: #555555;"> 5</span>  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
-#&gt; <span style="color: #555555;"> 6</span>  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
-#&gt; <span style="color: #555555;"> 7</span>  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
-#&gt; <span style="color: #555555;"> 8</span>  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
-#&gt; <span style="color: #555555;"> 9</span>  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
-#&gt; <span style="color: #555555;">10</span>  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
-#&gt; <span style="color: #555555;"># … with 22 more rows</span>
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #BCBCBC;"> 1</span>  21       6  160    110  3.9   2.62  16.5     0     1     4     4
+#&gt; <span style="color: #BCBCBC;"> 2</span>  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+#&gt; <span style="color: #BCBCBC;"> 3</span>  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+#&gt; <span style="color: #BCBCBC;"> 4</span>  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+#&gt; <span style="color: #BCBCBC;"> 5</span>  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
+#&gt; <span style="color: #BCBCBC;"> 6</span>  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+#&gt; <span style="color: #BCBCBC;"> 7</span>  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
+#&gt; <span style="color: #BCBCBC;"> 8</span>  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+#&gt; <span style="color: #BCBCBC;"> 9</span>  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+#&gt; <span style="color: #BCBCBC;">10</span>  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+#&gt; <span style="color: #949494;"># … with 22 more rows</span>
 </code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">decomposed_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">mtcars_tibble</span>, <span class="va">am_gear_carb_id</span>, <span class="va">am</span>, <span class="va">gear</span>, <span class="va">carb</span><span class="op">)</span>
 <span class="va">decomposed_table</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; $child_table
-#&gt; <span style="color: #555555;"># A tibble: 32 × 9</span>
+#&gt; <span style="color: #949494;"># A tibble: 32 × 9</span>
 #&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs am_gear_carb_id
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
-#&gt; <span style="color: #555555;"> 1</span>  21       6  160    110  3.9   2.62  16.5     0               7
-#&gt; <span style="color: #555555;"> 2</span>  21       6  160    110  3.9   2.88  17.0     0               7
-#&gt; <span style="color: #555555;"> 3</span>  22.8     4  108     93  3.85  2.32  18.6     1               8
-#&gt; <span style="color: #555555;"> 4</span>  21.4     6  258    110  3.08  3.22  19.4     1               1
-#&gt; <span style="color: #555555;"> 5</span>  18.7     8  360    175  3.15  3.44  17.0     0               2
-#&gt; <span style="color: #555555;"> 6</span>  18.1     6  225    105  2.76  3.46  20.2     1               1
-#&gt; <span style="color: #555555;"> 7</span>  14.3     8  360    245  3.21  3.57  15.8     0               3
-#&gt; <span style="color: #555555;"> 8</span>  24.4     4  147.    62  3.69  3.19  20       1               4
-#&gt; <span style="color: #555555;"> 9</span>  22.8     4  141.    95  3.92  3.15  22.9     1               4
-#&gt; <span style="color: #555555;">10</span>  19.2     6  168.   123  3.92  3.44  18.3     1               5
-#&gt; <span style="color: #555555;"># … with 22 more rows</span>
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>
+#&gt; <span style="color: #BCBCBC;"> 1</span>  21       6  160    110  3.9   2.62  16.5     0               7
+#&gt; <span style="color: #BCBCBC;"> 2</span>  21       6  160    110  3.9   2.88  17.0     0               7
+#&gt; <span style="color: #BCBCBC;"> 3</span>  22.8     4  108     93  3.85  2.32  18.6     1               8
+#&gt; <span style="color: #BCBCBC;"> 4</span>  21.4     6  258    110  3.08  3.22  19.4     1               1
+#&gt; <span style="color: #BCBCBC;"> 5</span>  18.7     8  360    175  3.15  3.44  17.0     0               2
+#&gt; <span style="color: #BCBCBC;"> 6</span>  18.1     6  225    105  2.76  3.46  20.2     1               1
+#&gt; <span style="color: #BCBCBC;"> 7</span>  14.3     8  360    245  3.21  3.57  15.8     0               3
+#&gt; <span style="color: #BCBCBC;"> 8</span>  24.4     4  147.    62  3.69  3.19  20       1               4
+#&gt; <span style="color: #BCBCBC;"> 9</span>  22.8     4  141.    95  3.92  3.15  22.9     1               4
+#&gt; <span style="color: #BCBCBC;">10</span>  19.2     6  168.   123  3.92  3.44  18.3     1               5
+#&gt; <span style="color: #949494;"># … with 22 more rows</span>
 #&gt; 
 #&gt; $parent_table
-#&gt; <span style="color: #555555;"># A tibble: 13 × 4</span>
+#&gt; <span style="color: #949494;"># A tibble: 13 × 4</span>
 #&gt;    am_gear_carb_id    am  gear  carb
-#&gt;              <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
-#&gt; <span style="color: #555555;"> 1</span>               7     1     4     4
-#&gt; <span style="color: #555555;"> 2</span>               8     1     4     1
-#&gt; <span style="color: #555555;"> 3</span>               1     0     3     1
-#&gt; <span style="color: #555555;"> 4</span>               2     0     3     2
-#&gt; <span style="color: #555555;"> 5</span>               3     0     3     4
-#&gt; <span style="color: #555555;"> 6</span>               4     0     4     2
-#&gt; <span style="color: #555555;"> 7</span>               5     0     4     4
-#&gt; <span style="color: #555555;"> 8</span>               6     0     3     3
-#&gt; <span style="color: #555555;"> 9</span>               9     1     4     2
-#&gt; <span style="color: #555555;">10</span>              10     1     5     2
-#&gt; <span style="color: #555555;">11</span>              11     1     5     4
-#&gt; <span style="color: #555555;">12</span>              12     1     5     6
-#&gt; <span style="color: #555555;">13</span>              13     1     5     8
+#&gt;              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #BCBCBC;"> 1</span>               7     1     4     4
+#&gt; <span style="color: #BCBCBC;"> 2</span>               8     1     4     1
+#&gt; <span style="color: #BCBCBC;"> 3</span>               1     0     3     1
+#&gt; <span style="color: #BCBCBC;"> 4</span>               2     0     3     2
+#&gt; <span style="color: #BCBCBC;"> 5</span>               3     0     3     4
+#&gt; <span style="color: #BCBCBC;"> 6</span>               4     0     4     2
+#&gt; <span style="color: #BCBCBC;"> 7</span>               5     0     4     4
+#&gt; <span style="color: #BCBCBC;"> 8</span>               6     0     3     3
+#&gt; <span style="color: #BCBCBC;"> 9</span>               9     1     4     2
+#&gt; <span style="color: #BCBCBC;">10</span>              10     1     5     2
+#&gt; <span style="color: #BCBCBC;">11</span>              11     1     5     4
+#&gt; <span style="color: #BCBCBC;">12</span>              12     1     5     6
+#&gt; <span style="color: #BCBCBC;">13</span>              13     1     5     8
 </code></pre>
 <p>A new column is created, with which the two tables can be joined again, essentially creating the original table.</p>
 <p>The functions that do the inverse operation, i.e. join a parent and a child table and subsequently drop the <code>new_id_column</code>, are <code><a href="../reference/reunite_parent_child.html">reunite_parent_child()</a></code> and <code><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list()</a></code>. The former takes as arguments two tables and the unquoted name of the ID column, and the latter takes as arguments a list of two tables plus the unquoted name of the ID column:</p>
@@ -345,20 +345,20 @@
 <code class="sourceCode R"><span class="va">parent_table</span> <span class="op">&lt;-</span> <span class="va">decomposed_table</span><span class="op">$</span><span class="va">parent_table</span>
 <span class="va">child_table</span> <span class="op">&lt;-</span> <span class="va">decomposed_table</span><span class="op">$</span><span class="va">child_table</span>
 <span class="fu"><a href="../reference/reunite_parent_child.html">reunite_parent_child</a></span><span class="op">(</span><span class="va">child_table</span>, <span class="va">parent_table</span>, id_column <span class="op">=</span> <span class="va">am_gear_carb_id</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 32 × 11</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span>
 #&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
-#&gt; <span style="color: #555555;"> 1</span>  21       6  160    110  3.9   2.62  16.5     0     1     4     4
-#&gt; <span style="color: #555555;"> 2</span>  21       6  160    110  3.9   2.88  17.0     0     1     4     4
-#&gt; <span style="color: #555555;"> 3</span>  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
-#&gt; <span style="color: #555555;"> 4</span>  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
-#&gt; <span style="color: #555555;"> 5</span>  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
-#&gt; <span style="color: #555555;"> 6</span>  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
-#&gt; <span style="color: #555555;"> 7</span>  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
-#&gt; <span style="color: #555555;"> 8</span>  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
-#&gt; <span style="color: #555555;"> 9</span>  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
-#&gt; <span style="color: #555555;">10</span>  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
-#&gt; <span style="color: #555555;"># … with 22 more rows</span>
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #BCBCBC;"> 1</span>  21       6  160    110  3.9   2.62  16.5     0     1     4     4
+#&gt; <span style="color: #BCBCBC;"> 2</span>  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+#&gt; <span style="color: #BCBCBC;"> 3</span>  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+#&gt; <span style="color: #BCBCBC;"> 4</span>  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+#&gt; <span style="color: #BCBCBC;"> 5</span>  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
+#&gt; <span style="color: #BCBCBC;"> 6</span>  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+#&gt; <span style="color: #BCBCBC;"> 7</span>  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
+#&gt; <span style="color: #BCBCBC;"> 8</span>  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+#&gt; <span style="color: #BCBCBC;"> 9</span>  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+#&gt; <span style="color: #BCBCBC;">10</span>  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+#&gt; <span style="color: #949494;"># … with 22 more rows</span>
 </code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Shortcut:</span>
@@ -384,7 +384,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>

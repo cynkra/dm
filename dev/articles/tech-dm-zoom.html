@@ -190,7 +190,7 @@
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 <span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">flights_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 4
@@ -202,24 +202,24 @@
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span>
 <span class="co"># The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.</span>
 <span class="va">flights_zoomed</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Zoomed table: flights</span>
-#&gt; <span style="color: #555555;"># A tibble:     1,761 × 19</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Zoomed table: flights</span>
+#&gt; <span style="color: #949494;"># A tibble:     1,761 × 19</span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>          <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
-#&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359         4      426
-#&gt; <span style="color: #555555;"> 2</span>  <span style="text-decoration: underline;">2</span>013     1    10       16           <span style="text-decoration: underline;">2</span>359        17      447
-#&gt; <span style="color: #555555;"> 3</span>  <span style="text-decoration: underline;">2</span>013     1    10      450            500       -<span style="color: #BB0000;">10</span>      634
-#&gt; <span style="color: #555555;"> 4</span>  <span style="text-decoration: underline;">2</span>013     1    10      520            525        -<span style="color: #BB0000;">5</span>      813
-#&gt; <span style="color: #555555;"> 5</span>  <span style="text-decoration: underline;">2</span>013     1    10      530            530         0      824
-#&gt; <span style="color: #555555;"> 6</span>  <span style="text-decoration: underline;">2</span>013     1    10      531            540        -<span style="color: #BB0000;">9</span>      832
-#&gt; <span style="color: #555555;"> 7</span>  <span style="text-decoration: underline;">2</span>013     1    10      535            540        -<span style="color: #BB0000;">5</span>     <span style="text-decoration: underline;">1</span>015
-#&gt; <span style="color: #555555;"> 8</span>  <span style="text-decoration: underline;">2</span>013     1    10      546            600       -<span style="color: #BB0000;">14</span>      645
-#&gt; <span style="color: #555555;"> 9</span>  <span style="text-decoration: underline;">2</span>013     1    10      549            600       -<span style="color: #BB0000;">11</span>      652
-#&gt; <span style="color: #555555;">10</span>  <span style="text-decoration: underline;">2</span>013     1    10      550            600       -<span style="color: #BB0000;">10</span>      649
-#&gt; <span style="color: #555555;"># … with 1,751 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span>
-#&gt; <span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
-#&gt; <span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span>
-#&gt; <span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>
+#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359         4      426
+#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>013     1    10       16           <span style="text-decoration: underline;">2</span>359        17      447
+#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>013     1    10      450            500       -<span style="color: #BB0000;">10</span>      634
+#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>013     1    10      520            525        -<span style="color: #BB0000;">5</span>      813
+#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>013     1    10      530            530         0      824
+#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>013     1    10      531            540        -<span style="color: #BB0000;">9</span>      832
+#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>013     1    10      535            540        -<span style="color: #BB0000;">5</span>     <span style="text-decoration: underline;">1</span>015
+#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>013     1    10      546            600       -<span style="color: #BB0000;">14</span>      645
+#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>013     1    10      549            600       -<span style="color: #BB0000;">11</span>      652
+#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>013     1    10      550            600       -<span style="color: #BB0000;">10</span>      649
+#&gt; <span style="color: #949494;"># … with 1,751 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span>
+#&gt; <span style="color: #949494;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
+#&gt; <span style="color: #949494;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span>
+#&gt; <span style="color: #949494;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
 </code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
@@ -229,24 +229,24 @@
   <span class="co"># in order to see our changes in the output we use `select()` for reordering the columns</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span><span class="op">:</span><span class="va">dep_time</span>, <span class="va">am_pm_dep</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">flights_zoomed_mutate</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Zoomed table: flights</span>
-#&gt; <span style="color: #555555;"># A tibble:     1,761 × 20</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Zoomed table: flights</span>
+#&gt; <span style="color: #949494;"># A tibble:     1,761 × 20</span>
 #&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
-#&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3 am                  <span style="text-decoration: underline;">2</span>359         4      426
-#&gt; <span style="color: #555555;"> 2</span>  <span style="text-decoration: underline;">2</span>013     1    10       16 am                  <span style="text-decoration: underline;">2</span>359        17      447
-#&gt; <span style="color: #555555;"> 3</span>  <span style="text-decoration: underline;">2</span>013     1    10      450 am                   500       -<span style="color: #BB0000;">10</span>      634
-#&gt; <span style="color: #555555;"> 4</span>  <span style="text-decoration: underline;">2</span>013     1    10      520 am                   525        -<span style="color: #BB0000;">5</span>      813
-#&gt; <span style="color: #555555;"> 5</span>  <span style="text-decoration: underline;">2</span>013     1    10      530 am                   530         0      824
-#&gt; <span style="color: #555555;"> 6</span>  <span style="text-decoration: underline;">2</span>013     1    10      531 am                   540        -<span style="color: #BB0000;">9</span>      832
-#&gt; <span style="color: #555555;"> 7</span>  <span style="text-decoration: underline;">2</span>013     1    10      535 am                   540        -<span style="color: #BB0000;">5</span>     <span style="text-decoration: underline;">1</span>015
-#&gt; <span style="color: #555555;"> 8</span>  <span style="text-decoration: underline;">2</span>013     1    10      546 am                   600       -<span style="color: #BB0000;">14</span>      645
-#&gt; <span style="color: #555555;"> 9</span>  <span style="text-decoration: underline;">2</span>013     1    10      549 am                   600       -<span style="color: #BB0000;">11</span>      652
-#&gt; <span style="color: #555555;">10</span>  <span style="text-decoration: underline;">2</span>013     1    10      550 am                   600       -<span style="color: #BB0000;">10</span>      649
-#&gt; <span style="color: #555555;"># … with 1,751 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span>
-#&gt; <span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
-#&gt; <span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span>
-#&gt; <span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>
+#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3 am                  <span style="text-decoration: underline;">2</span>359         4      426
+#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>013     1    10       16 am                  <span style="text-decoration: underline;">2</span>359        17      447
+#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>013     1    10      450 am                   500       -<span style="color: #BB0000;">10</span>      634
+#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>013     1    10      520 am                   525        -<span style="color: #BB0000;">5</span>      813
+#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>013     1    10      530 am                   530         0      824
+#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>013     1    10      531 am                   540        -<span style="color: #BB0000;">9</span>      832
+#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>013     1    10      535 am                   540        -<span style="color: #BB0000;">5</span>     <span style="text-decoration: underline;">1</span>015
+#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>013     1    10      546 am                   600       -<span style="color: #BB0000;">14</span>      645
+#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>013     1    10      549 am                   600       -<span style="color: #BB0000;">11</span>      652
+#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>013     1    10      550 am                   600       -<span style="color: #BB0000;">10</span>      649
+#&gt; <span style="color: #949494;"># … with 1,751 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span>
+#&gt; <span style="color: #949494;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
+#&gt; <span style="color: #949494;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span>
+#&gt; <span style="color: #949494;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
 </code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
@@ -256,7 +256,7 @@
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co"># The only difference in the `dm` print output is the increased number of columns</span>
 <span class="va">updated_flights_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 54
 #&gt; Primary keys: 4
@@ -290,44 +290,44 @@
   <span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">weather</span><span class="op">)</span>
 <span class="va">weather_zoomed</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Zoomed table: weather</span>
-#&gt; <span style="color: #555555;"># A tibble:     144 × 15</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Zoomed table: weather</span>
+#&gt; <span style="color: #949494;"># A tibble:     144 × 15</span>
 #&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
-#&gt; <span style="color: #555555;"> 1</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     0  41    32    70.1      230       8.06
-#&gt; <span style="color: #555555;"> 2</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     1  39.0  30.0  69.9      210       9.21
-#&gt; <span style="color: #555555;"> 3</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     2  39.0  28.9  66.8      230       6.90
-#&gt; <span style="color: #555555;"> 4</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     3  39.9  27.0  59.5      270       5.75
-#&gt; <span style="color: #555555;"> 5</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     4  41    26.1  55.0      320       6.90
-#&gt; <span style="color: #555555;"> 6</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     5  41    26.1  55.0      300      12.7 
-#&gt; <span style="color: #555555;"> 7</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     6  39.9  25.0  54.8      280       6.90
-#&gt; <span style="color: #555555;"> 8</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     7  41    25.0  52.6      330       6.90
-#&gt; <span style="color: #555555;"> 9</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     8  43.0  25.0  48.7      330       8.06
-#&gt; <span style="color: #555555;">10</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     9  45.0  23    41.6      320      17.3 
-#&gt; <span style="color: #555555;"># … with 134 more rows, and 5 more variables: wind_gust &lt;dbl&gt;,</span>
-#&gt; <span style="color: #555555;">#   precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #BCBCBC;"> 1</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     0  41    32    70.1      230       8.06
+#&gt; <span style="color: #BCBCBC;"> 2</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     1  39.0  30.0  69.9      210       9.21
+#&gt; <span style="color: #BCBCBC;"> 3</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     2  39.0  28.9  66.8      230       6.90
+#&gt; <span style="color: #BCBCBC;"> 4</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     3  39.9  27.0  59.5      270       5.75
+#&gt; <span style="color: #BCBCBC;"> 5</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     4  41    26.1  55.0      320       6.90
+#&gt; <span style="color: #BCBCBC;"> 6</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     5  41    26.1  55.0      300      12.7 
+#&gt; <span style="color: #BCBCBC;"> 7</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     6  39.9  25.0  54.8      280       6.90
+#&gt; <span style="color: #BCBCBC;"> 8</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     7  41    25.0  52.6      330       6.90
+#&gt; <span style="color: #BCBCBC;"> 9</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     8  43.0  25.0  48.7      330       8.06
+#&gt; <span style="color: #BCBCBC;">10</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     9  45.0  23    41.6      320      17.3 
+#&gt; <span style="color: #949494;"># … with 134 more rows, and 5 more variables: wind_gust &lt;dbl&gt;,</span>
+#&gt; <span style="color: #949494;">#   precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
 </code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Maybe there is some hidden candidate for a primary key that we overlooked</span>
 <span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span><span class="op">(</span><span class="va">weather_zoomed</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 × 3</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 15 × 3</span>
 #&gt;    columns    candidate why                                                
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                                              
-#&gt; <span style="color: #555555;"> 1</span> origin     FALSE     has duplicate values: EWR (48), JFK (48), LGA (48) 
-#&gt; <span style="color: #555555;"> 2</span> year       FALSE     has duplicate values: 2013 (144)                   
-#&gt; <span style="color: #555555;"> 3</span> month      FALSE     has duplicate values: 1 (72), 2 (72)               
-#&gt; <span style="color: #555555;"> 4</span> day        FALSE     has duplicate values: 10 (144)                     
-#&gt; <span style="color: #555555;"> 5</span> hour       FALSE     has duplicate values: 0 (6), 1 (6), 2 (6), 3 (6), …
-#&gt; <span style="color: #555555;"> 6</span> temp       FALSE     has duplicate values: 44.06 (12), 41.00 (8), 44.96…
-#&gt; <span style="color: #555555;"> 7</span> dewp       FALSE     has duplicate values: 21.92 (16), 24.98 (16), 6.98…
-#&gt; <span style="color: #555555;"> 8</span> humid      FALSE     has duplicate values: 53.71 (4), 56.56 (4), 32.53 …
-#&gt; <span style="color: #555555;"> 9</span> wind_dir   FALSE     has duplicate values: 320 (25), 330 (17), 310 (15)…
-#&gt; <span style="color: #555555;">10</span> wind_speed FALSE     has duplicate values: 6.90468 (20), 8.05546 (19), …
-#&gt; <span style="color: #555555;">11</span> wind_gust  FALSE     has 123 missing values, and duplicate values: 23.0…
-#&gt; <span style="color: #555555;">12</span> precip     FALSE     has duplicate values: 0 (144)                      
-#&gt; <span style="color: #555555;">13</span> pressure   FALSE     has duplicate values: 1028.9 (6), 1029.0 (5), 1032…
-#&gt; <span style="color: #555555;">14</span> visib      FALSE     has duplicate values: 10 (144)                     
-#&gt; <span style="color: #555555;">15</span> time_hour  FALSE     has duplicate values: 2013-01-10 00:00:00 (3), 201…
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                              
+#&gt; <span style="color: #BCBCBC;"> 1</span> origin     FALSE     has duplicate values: EWR (48), JFK (48), LGA (48) 
+#&gt; <span style="color: #BCBCBC;"> 2</span> year       FALSE     has duplicate values: 2013 (144)                   
+#&gt; <span style="color: #BCBCBC;"> 3</span> month      FALSE     has duplicate values: 1 (72), 2 (72)               
+#&gt; <span style="color: #BCBCBC;"> 4</span> day        FALSE     has duplicate values: 10 (144)                     
+#&gt; <span style="color: #BCBCBC;"> 5</span> hour       FALSE     has duplicate values: 0 (6), 1 (6), 2 (6), 3 (6), …
+#&gt; <span style="color: #BCBCBC;"> 6</span> temp       FALSE     has duplicate values: 44.06 (12), 41.00 (8), 44.96…
+#&gt; <span style="color: #BCBCBC;"> 7</span> dewp       FALSE     has duplicate values: 21.92 (16), 24.98 (16), 6.98…
+#&gt; <span style="color: #BCBCBC;"> 8</span> humid      FALSE     has duplicate values: 53.71 (4), 56.56 (4), 32.53 …
+#&gt; <span style="color: #BCBCBC;"> 9</span> wind_dir   FALSE     has duplicate values: 320 (25), 330 (17), 310 (15)…
+#&gt; <span style="color: #BCBCBC;">10</span> wind_speed FALSE     has duplicate values: 6.90468 (20), 8.05546 (19), …
+#&gt; <span style="color: #BCBCBC;">11</span> wind_gust  FALSE     has 123 missing values, and duplicate values: 23.0…
+#&gt; <span style="color: #BCBCBC;">12</span> precip     FALSE     has duplicate values: 0 (144)                      
+#&gt; <span style="color: #BCBCBC;">13</span> pressure   FALSE     has duplicate values: 1028.9 (6), 1029.0 (5), 1032…
+#&gt; <span style="color: #BCBCBC;">14</span> visib      FALSE     has duplicate values: 10 (144)                     
+#&gt; <span style="color: #BCBCBC;">15</span> time_hour  FALSE     has duplicate values: 2013-01-10 00:00:00 (3), 201…
 </code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Seems we have to construct a column with unique values</span>
@@ -342,10 +342,10 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">origin_slot_id</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># check if we the result is as expected:</span>
 <span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span><span class="op">(</span><span class="va">weather_zoomed_mutate</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">candidate</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 × 3</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span>
 #&gt;   columns        candidate why  
-#&gt;   <span style="color: #555555; font-style: italic;">&lt;keys&gt;</span>         <span style="color: #555555; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>
-#&gt; <span style="color: #555555;">1</span> origin_slot_id TRUE      <span style="color: #555555;">""</span>
+#&gt;   <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>
+#&gt; <span style="color: #BCBCBC;">1</span> origin_slot_id TRUE      <span style="color: #949494;">""</span>
 </code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_upd_weather_dm</span> <span class="op">&lt;-</span>
@@ -353,7 +353,7 @@
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">weather</span>, <span class="va">origin_slot_id</span><span class="op">)</span>
 <span class="va">flights_upd_weather_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 4
@@ -482,21 +482,21 @@
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"flights_plane_type"</span><span class="op">)</span>
 <span class="co"># this is how the table looks now</span>
 <span class="va">joined_flights_dm</span><span class="op">$</span><span class="va">flights_plane_type</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,761 × 11</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 1,761 × 11</span>
 #&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>          <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> 
-#&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359 B6         727 N571JB  JFK   
-#&gt; <span style="color: #555555;"> 2</span>  <span style="text-decoration: underline;">2</span>013     1    10       16           <span style="text-decoration: underline;">2</span>359 B6         739 N564JB  JFK   
-#&gt; <span style="color: #555555;"> 3</span>  <span style="text-decoration: underline;">2</span>013     1    10      450            500 US        <span style="text-decoration: underline;">1</span>117 N171US  EWR   
-#&gt; <span style="color: #555555;"> 4</span>  <span style="text-decoration: underline;">2</span>013     1    10      520            525 UA        <span style="text-decoration: underline;">1</span>018 N35204  EWR   
-#&gt; <span style="color: #555555;"> 5</span>  <span style="text-decoration: underline;">2</span>013     1    10      530            530 UA         404 N815UA  LGA   
-#&gt; <span style="color: #555555;"> 6</span>  <span style="text-decoration: underline;">2</span>013     1    10      531            540 AA        <span style="text-decoration: underline;">1</span>141 N5EAAA  JFK   
-#&gt; <span style="color: #555555;"> 7</span>  <span style="text-decoration: underline;">2</span>013     1    10      535            540 B6         725 N784JB  JFK   
-#&gt; <span style="color: #555555;"> 8</span>  <span style="text-decoration: underline;">2</span>013     1    10      546            600 B6         380 N337JB  EWR   
-#&gt; <span style="color: #555555;"> 9</span>  <span style="text-decoration: underline;">2</span>013     1    10      549            600 EV        <span style="text-decoration: underline;">6</span>055 N19554  LGA   
-#&gt; <span style="color: #555555;">10</span>  <span style="text-decoration: underline;">2</span>013     1    10      550            600 US        <span style="text-decoration: underline;">2</span>114 N740UW  LGA   
-#&gt; <span style="color: #555555;"># … with 1,751 more rows, and 2 more variables: dest &lt;chr&gt;,</span>
-#&gt; <span style="color: #555555;">#   plane_type &lt;chr&gt;</span>
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> 
+#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359 B6         727 N571JB  JFK   
+#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>013     1    10       16           <span style="text-decoration: underline;">2</span>359 B6         739 N564JB  JFK   
+#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>013     1    10      450            500 US        <span style="text-decoration: underline;">1</span>117 N171US  EWR   
+#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>013     1    10      520            525 UA        <span style="text-decoration: underline;">1</span>018 N35204  EWR   
+#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>013     1    10      530            530 UA         404 N815UA  LGA   
+#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>013     1    10      531            540 AA        <span style="text-decoration: underline;">1</span>141 N5EAAA  JFK   
+#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>013     1    10      535            540 B6         725 N784JB  JFK   
+#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>013     1    10      546            600 B6         380 N337JB  EWR   
+#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>013     1    10      549            600 EV        <span style="text-decoration: underline;">6</span>055 N19554  LGA   
+#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>013     1    10      550            600 US        <span style="text-decoration: underline;">2</span>114 N740UW  LGA   
+#&gt; <span style="color: #949494;"># … with 1,751 more rows, and 2 more variables: dest &lt;chr&gt;,</span>
+#&gt; <span style="color: #949494;">#   plane_type &lt;chr&gt;</span>
 </code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># also here, the FK-relations are transferred to the new table</span>
@@ -530,21 +530,21 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">dep_delay</span><span class="op">:</span><span class="op">-</span><span class="va">arr_delay</span>, <span class="op">-</span><span class="va">air_time</span><span class="op">:</span><span class="op">-</span><span class="va">time_hour</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">planes</span>, select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tailnum</span>, plane_type <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,761 × 11</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 1,761 × 11</span>
 #&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>          <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> 
-#&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359 B6         727 N571JB  JFK   
-#&gt; <span style="color: #555555;"> 2</span>  <span style="text-decoration: underline;">2</span>013     1    10       16           <span style="text-decoration: underline;">2</span>359 B6         739 N564JB  JFK   
-#&gt; <span style="color: #555555;"> 3</span>  <span style="text-decoration: underline;">2</span>013     1    10      450            500 US        <span style="text-decoration: underline;">1</span>117 N171US  EWR   
-#&gt; <span style="color: #555555;"> 4</span>  <span style="text-decoration: underline;">2</span>013     1    10      520            525 UA        <span style="text-decoration: underline;">1</span>018 N35204  EWR   
-#&gt; <span style="color: #555555;"> 5</span>  <span style="text-decoration: underline;">2</span>013     1    10      530            530 UA         404 N815UA  LGA   
-#&gt; <span style="color: #555555;"> 6</span>  <span style="text-decoration: underline;">2</span>013     1    10      531            540 AA        <span style="text-decoration: underline;">1</span>141 N5EAAA  JFK   
-#&gt; <span style="color: #555555;"> 7</span>  <span style="text-decoration: underline;">2</span>013     1    10      535            540 B6         725 N784JB  JFK   
-#&gt; <span style="color: #555555;"> 8</span>  <span style="text-decoration: underline;">2</span>013     1    10      546            600 B6         380 N337JB  EWR   
-#&gt; <span style="color: #555555;"> 9</span>  <span style="text-decoration: underline;">2</span>013     1    10      549            600 EV        <span style="text-decoration: underline;">6</span>055 N19554  LGA   
-#&gt; <span style="color: #555555;">10</span>  <span style="text-decoration: underline;">2</span>013     1    10      550            600 US        <span style="text-decoration: underline;">2</span>114 N740UW  LGA   
-#&gt; <span style="color: #555555;"># … with 1,751 more rows, and 2 more variables: dest &lt;chr&gt;,</span>
-#&gt; <span style="color: #555555;">#   plane_type &lt;chr&gt;</span>
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> 
+#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359 B6         727 N571JB  JFK   
+#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>013     1    10       16           <span style="text-decoration: underline;">2</span>359 B6         739 N564JB  JFK   
+#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>013     1    10      450            500 US        <span style="text-decoration: underline;">1</span>117 N171US  EWR   
+#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>013     1    10      520            525 UA        <span style="text-decoration: underline;">1</span>018 N35204  EWR   
+#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>013     1    10      530            530 UA         404 N815UA  LGA   
+#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>013     1    10      531            540 AA        <span style="text-decoration: underline;">1</span>141 N5EAAA  JFK   
+#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>013     1    10      535            540 B6         725 N784JB  JFK   
+#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>013     1    10      546            600 B6         380 N337JB  EWR   
+#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>013     1    10      549            600 EV        <span style="text-decoration: underline;">6</span>055 N19554  LGA   
+#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>013     1    10      550            600 US        <span style="text-decoration: underline;">2</span>114 N740UW  LGA   
+#&gt; <span style="color: #949494;"># … with 1,751 more rows, and 2 more variables: dest &lt;chr&gt;,</span>
+#&gt; <span style="color: #949494;">#   plane_type &lt;chr&gt;</span>
 </code></pre>
 </div>
 <div id="possible-pitfalls-and-caveats" class="section level3">
@@ -576,7 +576,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>
