@@ -78,7 +78,6 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
   )
 
   returning_cols <- eval_select_both(returning_expr, colnames(x))$names
-  check_returning_cols_possible(returning_cols, in_place)
   duplicates <- arg_match(duplicates)
 
   y <- auto_copy(x, y, copy = copy)
@@ -106,13 +105,23 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
     }
 
     if (duplicates == "insert") {
-      union_all(x, y)
+      returned_x <- union_all(x, y)
     } else {
-      union_all(
+      returned_x <- union_all(
         x,
         anti_join(y, x, by = by)
       )
     }
+
+    if (!is_empty(returning_cols)) {
+      # Need to `union_all()` with `x` so that all columns of `x` exist in the result
+      returned_rows <- union_all(y, x %>% filter(0 == 1)) %>%
+        select(returning_cols) %>%
+        collect()
+      returned_x <- set_returned_rows(returned_x, returned_rows)
+    }
+
+    returned_x
   }
 }
 
@@ -130,7 +139,6 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
   )
 
   returning_cols <- eval_select_both(returning_expr, colnames(x))$names
-  check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
@@ -162,19 +170,26 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
       check_db_superset(x, y, by)
     }
 
-    if (is_empty(new_columns)) {
-      return(x)
-    }
-
     existing_columns <- setdiff(colnames(x), new_columns)
-
-    unchanged <- anti_join(x, y, by = by)
-    updated <-
-      x %>%
+    updated <- x %>%
       select(!!!existing_columns) %>%
       inner_join(y, by = by)
 
-    union_all(unchanged, updated)
+    if (is_empty(new_columns)) {
+      returned_x <- x
+    } else {
+      unchanged <- anti_join(x, y, by = by)
+      returned_x <- union_all(unchanged, updated)
+    }
+
+    if (!is_empty(returning_cols)) {
+      returned_rows <- updated %>%
+        select(!!!returning_cols) %>%
+        collect()
+      returned_x <- set_returned_rows(returned_x, returned_rows)
+    }
+
+    returned_x
   }
 }
 
@@ -192,7 +207,6 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
   )
 
   returning_cols <- eval_select_both(returning_expr, colnames(x))$names
-  check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
@@ -224,11 +238,7 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
       check_db_superset(x, y, by)
     }
 
-    if (is_empty(new_columns)) {
-      return(x)
-    }
-
-    xy <- left_join(
+    to_patch <- inner_join(
       x, y,
       by = by,
       suffix = c("", "...y")
@@ -237,9 +247,25 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
     patch_columns_y <- paste0(new_columns, "...y")
     patch_quos <- lapply(new_columns, function(.x) quo(coalesce(!!sym(.x), !!sym(patch_columns_y)))) %>%
       rlang::set_names(new_columns)
-    xy %>%
-      mutate(!!!patch_quos) %>%
-      select(-all_of(patch_columns_y))
+    if (is_empty(new_columns)) {
+      patched <- to_patch
+      returned_x <- x
+    } else {
+      patched <- to_patch %>%
+        mutate(!!!patch_quos) %>%
+        select(-all_of(patch_columns_y))
+      unchanged <- anti_join(x, y, by = by)
+      returned_x <- union_all(unchanged, patched)
+    }
+
+    if (!is_empty(returning_cols)) {
+      returned_rows <- patched %>%
+        select(!!!returning_cols) %>%
+        collect()
+      returned_x <- set_returned_rows(returned_x, returned_rows)
+    }
+
+    returned_x
   }
 }
 
@@ -257,7 +283,6 @@ rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
   )
 
   returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
-  check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
@@ -299,7 +324,16 @@ rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
       inner_join(y, by = by)
     upserted <- union_all(updated, inserted)
 
-    union_all(unchanged, upserted)
+    returned_x <- union_all(unchanged, upserted)
+
+    if (!is_empty(returning_cols)) {
+      returned_rows <- upserted %>%
+        select(!!!returning_cols) %>%
+        collect()
+      returned_x <- set_returned_rows(returned_x, returned_rows)
+    }
+
+    returned_x
   }
 }
 
@@ -317,7 +351,6 @@ rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
   )
 
   returning_cols <- eval_select_both(returning_expr, colnames(x))$names
-  check_returning_cols_possible(returning_cols, in_place)
 
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
@@ -342,7 +375,16 @@ rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
       check_db_superset(x, y, by)
     }
 
-    anti_join(x, y, by = by)
+    returned_x <- anti_join(x, y, by = by)
+
+    if (!is_empty(returning_cols)) {
+      returned_rows <- semi_join(x, y, by = by) %>%
+        select(returning_cols) %>%
+        collect()
+      returned_x <- set_returned_rows(returned_x, returned_rows)
+    }
+
+    returned_x
   }
 }
 
@@ -909,10 +951,15 @@ rows_get_or_execute <- function(x, con, sql, returning_cols) {
     dbExecute(con, sql, immediate = TRUE)
   } else {
     returned_rows <- dbGetQuery(con, sql, immediate = TRUE)
-    attr(x, "returned_rows") <- as_tibble(returned_rows)
+    x <- set_returned_rows(x, returned_rows)
   }
 
   invisible(x)
+}
+
+set_returned_rows <- function(x, returned_rows) {
+  attr(x, "returned_rows") <- as_tibble(returned_rows)
+  x
 }
 
 #' Extract and check the RETURNING rows

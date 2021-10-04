@@ -558,23 +558,3 @@
 
     upsert is not supported for DuckDB
 
-# rows_*() checks arguments
-
-    `returning` only works if `in_place` is true.
-
----
-
-    `returning` only works if `in_place` is true.
-
----
-
-    `returning` only works if `in_place` is true.
-
----
-
-    `returning` only works if `in_place` is true.
-
----
-
-    `returning` only works if `in_place` is true.
-

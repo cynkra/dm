@@ -2,7 +2,9 @@
 title: "Create a dm object from a database"
 date: "`r Sys.Date()`"
 author: James Wondrasek, Kirill Müller
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    md_extensions: -autolink_bare_uris
 vignette: >
   %\VignetteIndexEntry{How to: Create a dm object from a database}
   %\VignetteEncoding{UTF-8}
@@ -22,8 +24,8 @@ To this end, a dm object can be created from any database that has a {[DBI](http
 When a dm object is created via a DBI connection to an RDBMS it can import all the tables in the database, the active schema or a limited set.
 For some RDBMS, such as Postgres and SQL Server, primary and foreign keys are also imported and do not have to be manually added afterwards.
 
-To demonstrate, we will connect to a [relational dataset repository](https://relational.fit.cvut.cz/) with a database server that is publicly accessible without registration.
-It hosts a [financial dataset](https://relational.fit.cvut.cz/dataset/Financial) that contains loan data along with relevant account information and transactions.
+To demonstrate, we will connect to a `r href("relational dataset repository", "https://relational.fit.cvut.cz/")` with a database server that is publicly accessible without registration.
+It hosts a `r href("financial dataset", "https://relational.fit.cvut.cz/dataset/Financial")` that contains loan data along with relevant account information and transactions.
 We chose this dataset because the relationships between `loan`, `account`, and `transactions` tables are a good representation of databases that record real-world business transactions.
 The repository uses a MariaDB server for which {dm} does not currently import primary or foreign keys, so we will need to add them.
 
@@ -84,7 +86,7 @@ Foreign keys act as cross references between tables.
 They specify the relationships that gives us the *relational* database.
 For more information on keys and a crash course on databases, see `vignette("howto-dm-theory")`.
 
-The [model diagram](https://relational.fit.cvut.cz/assets/img/datasets-generated/financial.svg) provided by our test database loosely illustrates the intended relationships between tables.
+The `r href("model diagram", "https://relational.fit.cvut.cz/assets/img/datasets-generated/financial.svg")` provided by our test database loosely illustrates the intended relationships between tables.
 In the diagram we can see that the `loans` table should be linked to the `accounts` table.
 Below we create those links in 3 steps:
 
