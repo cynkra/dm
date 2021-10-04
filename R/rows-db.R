@@ -64,6 +64,7 @@ NULL
 rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
+  check_dots_empty()
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
@@ -117,6 +118,8 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
+
+  check_dots_empty()
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
@@ -185,6 +188,7 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
                                in_place = NULL, copy = FALSE, check = NULL,
                                returning = NULL) {
+  check_dots_empty()
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
@@ -262,6 +266,8 @@ rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
 
+  check_dots_empty()
+
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
   tryCatch(
@@ -329,6 +335,8 @@ rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
 rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
                                 in_place = NULL, copy = FALSE, check = NULL,
                                 returning = NULL) {
+
+  check_dots_empty()
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
