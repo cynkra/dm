@@ -34,12 +34,12 @@
       dm_for_filter() %>% dm_paste(tab_width = 4)
     Message <cliMessage>
       dm::dm(
-        tf_1,
-        tf_2,
-        tf_3,
-        tf_4,
-        tf_5,
-        tf_6,
+          tf_1,
+          tf_2,
+          tf_3,
+          tf_4,
+          tf_5,
+          tf_6,
       ) %>%
           dm::dm_add_pk(tf_1, a) %>%
           dm::dm_add_pk(tf_2, c) %>%
