@@ -7,6 +7,13 @@
       dm::dm(
       )
     Code
+      # empty table
+      dm(a = tibble()) %>% dm_paste(options = "tables")
+    Message <cliMessage>
+      a <- tibble::tibble(
+      )
+      dm::dm(a)
+    Code
       # baseline
       dm_for_filter() %>% dm_paste()
     Message <cliMessage>
@@ -134,10 +141,10 @@
         options = "all")
     Message <cliMessage>
       a <- tibble::tibble(
-        `a b` = numeric(0)
+        `a b` = numeric(0),
       )
       `a b` <- tibble::tibble(
-        `a b` = numeric(0)
+        `a b` = numeric(0),
       )
       dm::dm(
         a,
@@ -152,7 +159,7 @@
     Message <cliMessage>
       airlines <- tibble::tibble(
         carrier = character(0),
-        name = character(0)
+        name = character(0),
       )
       airports <- tibble::tibble(
         faa = character(0),
@@ -162,7 +169,7 @@
         alt = numeric(0),
         tz = numeric(0),
         dst = character(0),
-        tzone = character(0)
+        tzone = character(0),
       )
       flights <- tibble::tibble(
         year = integer(0),
@@ -183,7 +190,7 @@
         distance = numeric(0),
         hour = numeric(0),
         minute = numeric(0),
-        time_hour = structure(numeric(0), tzone = "America/New_York", class = c("POSIXct", "POSIXt"))
+        time_hour = structure(numeric(0), tzone = "America/New_York", class = c("POSIXct", "POSIXt")),
       )
       planes <- tibble::tibble(
         tailnum = character(0),
@@ -194,7 +201,7 @@
         engines = integer(0),
         seats = integer(0),
         speed = integer(0),
-        engine = character(0)
+        engine = character(0),
       )
       weather <- tibble::tibble(
         origin = character(0),
@@ -211,7 +218,7 @@
         precip = numeric(0),
         pressure = numeric(0),
         visib = numeric(0),
-        time_hour = structure(numeric(0), tzone = "America/New_York", class = c("POSIXct", "POSIXt"))
+        time_hour = structure(numeric(0), tzone = "America/New_York", class = c("POSIXct", "POSIXt")),
       )
       dm::dm(
         airlines,

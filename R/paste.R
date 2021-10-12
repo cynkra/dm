@@ -200,15 +200,12 @@ dm_paste_color <- function(dm) {
 df_paste <- function(x, tab) {
   cols <- map_chr(x, deparse_line)
   if (is_empty(x)) {
-    cols <- ""
+    cols <- character()
   } else {
-    cols <- paste0(
-      paste0("\n", tab, tick_if_needed(names(cols)), " = ", cols, collapse = ","),
-      "\n"
-    )
+    cols <- paste0(tab, tick_if_needed(names(cols)), " = ", cols, ",\n", collapse = "")
   }
 
-  paste0("tibble::tibble(", cols, ")")
+  paste0("tibble::tibble(\n", cols, ")")
 }
 
 deparse_line <- function(x) {

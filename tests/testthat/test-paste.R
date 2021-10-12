@@ -15,6 +15,9 @@ test_that("output", {
     "empty"
     empty_dm() %>% dm_paste()
 
+    "empty table"
+    dm(a = tibble()) %>% dm_paste(options = "tables")
+
     "baseline"
     dm_for_filter() %>% dm_paste()
 
