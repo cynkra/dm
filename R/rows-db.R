@@ -453,7 +453,7 @@ sql_rows_insert.tbl_sql <- function(x, y, ..., returning_cols = NULL) {
 
   sql <- paste0(
     "INSERT INTO ", name, " (", columns_qq, ")\n",
-    sql_output_cols(x, returning_cols),
+    sql_output_cols(x, returning_cols), "\n",
     dbplyr::remote_query(y),
     sql_returning_cols(x, returning_cols)
   )
