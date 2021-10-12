@@ -209,6 +209,8 @@ df_paste <- function(x, tab) {
 }
 
 deparse_line <- function(x) {
+  attrs <- attributes(x)
+  attributes(x) <- attrs[sort(names(attrs))]
   x <- deparse(x, width.cutoff = 500, backtick = TRUE)
   gsub(" *\n *", " ", x)
 }
