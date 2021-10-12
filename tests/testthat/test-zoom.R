@@ -154,3 +154,10 @@ test_that("zoom output for compound keys", {
     attr(igraph::E(create_graph_from_dm(nyc_comp_3)), "vnames")
   })
 })
+
+test_that("dm_get_zoom() works to zoom on empty tables", {
+  zdm <- dm(x = tibble()) %>% dm_zoom_to(x)
+  expect_identical(
+    dm_get_zoom(zdm),
+    tibble(table = "x", zoom = list(tibble())))
+})

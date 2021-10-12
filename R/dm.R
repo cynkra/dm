@@ -279,7 +279,7 @@ dm_get_zoom <- function(x, cols = c("table", "zoom"), quiet = FALSE) {
   # Performance
   def <- dm_get_def(x, quiet)
   zoom <- def$zoom
-  where <- which(lengths(zoom) != 0)
+  where <- which(!map_lgl(zoom, is.null))
   if (length(where) != 1) {
     # FIXME: Better error message?
     abort_not_pulling_multiple_zoomed()
@@ -747,4 +747,56 @@ as.list.dm <- function(x, ...) { # for both dm and zoomed_dm
 #' @export
 as.list.zoomed_dm <- function(x, ...) {
   as.list(tbl_zoomed(x))
+}
+
+#' @export
+glimpse.dm <- function(x, width = NULL, ...) {
+  glimpse_width <- if (is.null(width)) {
+    getOption("width")
+  } else {
+    width
+  }
+  table_list <- dm_get_tables_impl(x)
+  if (length(table_list) == 0) {
+    cat_line(trim_width("dm of 0 tables", glimpse_width))
+    return(invisible(x))
+  }
+  cat_line(
+    trim_width(
+      paste0("dm of ", length(table_list), " tables: ", toString(tick(names(table_list)))),
+      glimpse_width
+    )
+  )
+
+  all_fks <- dm_get_all_fks_impl(x)
+  iwalk(table_list, function(table, table_name) {
+    cat_line("\n", trim_width(paste0("Table: ", tick(table_name)), glimpse_width))
+    pk <- dm_get_pk_impl(x, table_name) %>%
+      map_chr(~ paste0("(", paste0(tick(.x), collapse = ", "), ")"))
+    if (!is_empty(pk)) {
+      # FIXME: needs to change if #622 is solved
+      cat_line(trim_width(paste0("Primary key: ", pk), glimpse_width))
+    }
+    fk <- all_fks %>%
+      filter(child_table == table_name) %>%
+      select(-child_table) %>%
+      pmap_chr(
+        function(child_fk_cols, parent_table, parent_key_cols) {
+          trim_width(
+            paste0(
+              "  (",
+              paste0(tick(child_fk_cols), collapse = ", "), ")",
+              " -> ",
+              paste0("(`", paste0(parent_table, "$", parent_key_cols, collapse = "`, `"), "`)")
+            ),
+            glimpse_width
+          )
+      })
+    if (!is_empty(fk)) {
+      cat_line(length(fk), " outgoing foreign key(s):")
+      cat_line(fk)
+    }
+    glimpse(table, width = width, ...)
+  })
+  invisible(x)
 }
