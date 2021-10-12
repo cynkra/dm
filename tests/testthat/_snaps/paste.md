@@ -6,6 +6,13 @@
     Message <cliMessage>
       dm::dm()
     Code
+      # empty table
+      dm(a = tibble()) %>% dm_paste(options = "tables")
+    Message <cliMessage>
+      a <- tibble::tibble(
+      )
+      dm::dm(a)
+    Code
       # baseline
       dm_for_filter() %>% dm_paste()
     Message <cliMessage>
