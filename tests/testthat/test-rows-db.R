@@ -65,6 +65,12 @@ test_that("insert + delete with returning argument (#607)", {
       get_returned_rows(),
     tibble(sl = 4L)
   )
+
+  expect_equal(
+    rows_delete(target, test_db_src_frame(where = "z"), in_place = TRUE, returning = quote(select)) %>%
+      get_returned_rows(),
+    tibble(select = rep(4L, 3))
+  )
 })
 
 test_that("insert + delete with returning argument and in_place = FALSE", {

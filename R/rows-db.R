@@ -771,7 +771,7 @@ sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
 
   sql <- paste0(
     "DELETE FROM ", p$name, "\n",
-    sql_output_cols(x, returning_cols, delete = TRUE),
+    sql_output_cols(x, returning_cols, output_delete = TRUE),
     "WHERE EXISTS (\n",
     "  SELECT * FROM (\n",
     "    ", dbplyr::sql_render(y), "\n",
