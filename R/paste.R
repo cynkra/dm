@@ -143,7 +143,15 @@ dm_paste_tables <- function(dm, tab) {
 }
 
 dm_paste_construct <- function(dm) {
-  glue("dm::dm({glue_collapse1(tick_if_needed(src_tbls_impl(dm)), ', ')})")
+  if (length(dm) == 0) {
+    return("dm::dm(\n)")
+  }
+
+  paste0(
+    "dm::dm(\n",
+    paste0("  ", tick_if_needed(src_tbls_impl(dm)), ",\n", collapse = ""),
+    ")"
+  )
 }
 
 dm_paste_select <- function(dm) {
