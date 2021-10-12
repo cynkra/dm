@@ -42,15 +42,29 @@ dm_learn_from_db <- function(dest, dbname = NULL, ...) {
   }
 
   #if (!is_mssql(con)) {
-    return(dm_learn_from_db_legacy(dest, dbname, ...))
+    return(dm_learn_from_db_legacy(con, dbname, ...))
   #}
 
-  dm_learn_from_db_meta(dest, catalog = dbname, ...)
+  dm_learn_from_db_meta(con, catalog = dbname, ...)
 }
 
-dm_learn_from_db_meta <- function(dest, catalog = NULL, schema = NULL) {
-  info <- dm_meta(con, catalog = dbname, schema = schema)
-  info
+dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL) {
+  info <- dm_meta(con, catalog = catalog, schema = schema)
+
+  table_info <-
+    info$columns %>%
+    select(catalog = table_catalog, schema = table_schema, table = table_name, column_name, ordinal_position) %>%
+    arrange(catalog, schema, table, ordinal_position) %>%
+    collect() %>%
+    arrange(catalog, schema, table) %>%
+    group_by(catalog, schema, table) %>%
+    summarize(vars = list(column_name)) %>%
+    ungroup()
+
+  from <- pmap_chr(table_info[1:3], ~ DBI::dbQuoteIdentifier(con, DBI::Id(...)))
+
+  tables <- map2(from, table_info$vars, ~ tbl(con, dbplyr::ident_q(.x), vars = .y))
+  tables
 }
 
 dm_meta <- function(con, catalog = NA, schema = NULL) {
@@ -88,6 +102,11 @@ dm_meta_raw <- function(con, catalog) {
   }
 
   dm(schemata, tables, columns, table_constraints, key_column_usage, constraint_column_usage) %>%
+    dm_meta_add_keys()
+}
+
+dm_meta_add_keys <- function(dm_meta) {
+  dm_meta %>%
     dm_add_pk(schemata, c(catalog_name, schema_name)) %>%
     dm_add_pk(tables, c(table_catalog, table_schema, table_name)) %>%
     dm_add_fk(tables, c(table_catalog, table_schema), schemata) %>%
@@ -171,7 +190,8 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
     table_constraints,
     key_column_usage,
     constraint_column_usage
-  )
+  ) %>%
+    dm_meta_add_keys()
 }
 
 dm_learn_from_db_legacy <- function(dest, dbname, ...) {

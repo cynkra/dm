@@ -24,7 +24,7 @@ mssql_sys_all_db <- function(con, dbname, name, warn = FALSE) {
   reduce(compact(lazy), union_all)
 }
 
-mssql_sys_databases <- function(dbname) {
+mssql_sys_databases <- function(con, dbname) {
   if (is.null(dbname)) {
     dbname <-
       tbl(con, dbplyr::ident_q("sys.databases")) %>%
@@ -40,7 +40,7 @@ mssql_sys_databases <- function(dbname) {
 }
 
 mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
-  dbname <- mssql_sys_databases(dbname)
+  dbname <- mssql_sys_databases(con, dbname)
 
   info_fkc <-
     table_constraints %>%
