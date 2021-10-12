@@ -61,7 +61,13 @@
       dm_select(dm_for_flatten(), fact, dim_1_key_1, dim_1_key_2) %>% dm_paste(
         options = c("select", "keys"))
     Message <cliMessage>
-      dm::dm(fact, dim_1, dim_2, dim_3, dim_4) %>%
+      dm::dm(
+        fact,
+        dim_1,
+        dim_2,
+        dim_3,
+        dim_4,
+      ) %>%
         dm::dm_select(fact, dim_1_key_1, dim_1_key_2) %>%
         dm::dm_select(dim_1, dim_1_pk_1, dim_1_pk_2, something) %>%
         dm::dm_select(dim_2, dim_2_pk, something) %>%
@@ -76,7 +82,13 @@
       dm_select(dm_for_flatten(), dim_1, dim_1_pk_1, dim_1_pk_2) %>% dm_paste(
         options = c("select", "keys"))
     Message <cliMessage>
-      dm::dm(fact, dim_1, dim_2, dim_3, dim_4) %>%
+      dm::dm(
+        fact,
+        dim_1,
+        dim_2,
+        dim_3,
+        dim_4,
+      ) %>%
         dm::dm_select(fact, fact, dim_1_key_1, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) %>%
         dm::dm_select(dim_1, dim_1_pk_1, dim_1_pk_2) %>%
         dm::dm_select(dim_2, dim_2_pk, something) %>%
@@ -94,7 +106,13 @@
       dm_select(dm_for_flatten(), fact, -dim_1_key_1) %>% dm_paste(options = c(
         "select", "keys"))
     Message <cliMessage>
-      dm::dm(fact, dim_1, dim_2, dim_3, dim_4) %>%
+      dm::dm(
+        fact,
+        dim_1,
+        dim_2,
+        dim_3,
+        dim_4,
+      ) %>%
         dm::dm_select(fact, fact, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) %>%
         dm::dm_select(dim_1, dim_1_pk_1, dim_1_pk_2, something) %>%
         dm::dm_select(dim_2, dim_2_pk, something) %>%
@@ -111,7 +129,13 @@
       dm_select(dm_for_flatten(), dim_1, -dim_1_pk_1) %>% dm_paste(options = c(
         "select", "keys"))
     Message <cliMessage>
-      dm::dm(fact, dim_1, dim_2, dim_3, dim_4) %>%
+      dm::dm(
+        fact,
+        dim_1,
+        dim_2,
+        dim_3,
+        dim_4,
+      ) %>%
         dm::dm_select(fact, fact, dim_1_key_1, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) %>%
         dm::dm_select(dim_1, dim_1_pk_2, something) %>%
         dm::dm_select(dim_2, dim_2_pk, something) %>%
