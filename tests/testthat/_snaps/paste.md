@@ -12,7 +12,9 @@
     Message <cliMessage>
       a <- tibble::tibble(
       )
-      dm::dm(a)
+      dm::dm(
+        a,
+      )
     Code
       # baseline
       dm_for_filter() %>% dm_paste()
