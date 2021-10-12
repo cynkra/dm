@@ -190,7 +190,7 @@
         distance = numeric(0),
         hour = numeric(0),
         minute = numeric(0),
-        time_hour = structure(numeric(0), tzone = "America/New_York", class = c("POSIXct", "POSIXt")),
+        time_hour = structure(numeric(0), class = c("POSIXct", "POSIXt"), tzone = "America/New_York"),
       )
       planes <- tibble::tibble(
         tailnum = character(0),
@@ -218,7 +218,7 @@
         precip = numeric(0),
         pressure = numeric(0),
         visib = numeric(0),
-        time_hour = structure(numeric(0), tzone = "America/New_York", class = c("POSIXct", "POSIXt")),
+        time_hour = structure(numeric(0), class = c("POSIXct", "POSIXt"), tzone = "America/New_York"),
       )
       dm::dm(
         airlines,
