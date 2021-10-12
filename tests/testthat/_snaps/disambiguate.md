@@ -7,7 +7,13 @@
       Renamed columns:
       * something -> fact.something, dim_1.something, dim_2.something, dim_3.something, dim_4.something
     Message <cliMessage>
-      dm::dm(fact, dim_1, dim_2, dim_3, dim_4) %>%
+      dm::dm(
+        fact,
+        dim_1,
+        dim_2,
+        dim_3,
+        dim_4,
+      ) %>%
         dm::dm_select(fact, fact, dim_1_key_1, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, fact.something) %>%
         dm::dm_select(dim_1, dim_1_pk_1, dim_1_pk_2, dim_1.something) %>%
         dm::dm_select(dim_2, dim_2_pk, dim_2.something) %>%
