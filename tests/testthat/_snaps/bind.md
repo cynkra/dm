@@ -39,39 +39,25 @@
     Output
       Each new table needs to have a unique name. Duplicate new name(s): `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`.
 
----
-
-    Code
-      dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique") %>%
-        collect()
-    Message <rlib_message_name_repair>
-      New names:
-      * `tf_1` -> `tf_1...1`
-      * `tf_2` -> `tf_2...2`
-      * `tf_3` -> `tf_3...3`
-      * `tf_4` -> `tf_4...4`
-      * `tf_5` -> `tf_5...5`
-      * `tf_6` -> `tf_6...6`
-      * `tf_1` -> `tf_1...12`
-      * `tf_2` -> `tf_2...13`
-      * `tf_3` -> `tf_3...14`
-      * `tf_4` -> `tf_4...15`
-      * `tf_5` -> `tf_5...16`
-      * `tf_6` -> `tf_6...17`
-    Output
-      -- Metadata --------------------------------------------------------------------
-      Tables: `tf_1...1`, `tf_2...2`, `tf_3...3`, `tf_4...4`, `tf_5...5`, ... (17 total)
-      Columns: 52
-      Primary keys: 16
-      Foreign keys: 14
-
 # output for compound keys
 
     Code
       dm_bind(dm_for_filter(), dm_for_flatten()) %>% dm_paste(options = c("select",
         "keys"))
     Message <cliMessage>
-      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6, fact, dim_1, dim_2, dim_3, dim_4) %>%
+      dm::dm(
+        tf_1,
+        tf_2,
+        tf_3,
+        tf_4,
+        tf_5,
+        tf_6,
+        fact,
+        dim_1,
+        dim_2,
+        dim_3,
+        dim_4,
+      ) %>%
         dm::dm_select(tf_1, a, b) %>%
         dm::dm_select(tf_2, c, d, e, e1) %>%
         dm::dm_select(tf_3, f, f1, g) %>%
@@ -106,7 +92,19 @@
       dm_bind(dm_for_flatten(), dm_for_filter()) %>% dm_paste(options = c("select",
         "keys"))
     Message <cliMessage>
-      dm::dm(fact, dim_1, dim_2, dim_3, dim_4, tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+      dm::dm(
+        fact,
+        dim_1,
+        dim_2,
+        dim_3,
+        dim_4,
+        tf_1,
+        tf_2,
+        tf_3,
+        tf_4,
+        tf_5,
+        tf_6,
+      ) %>%
         dm::dm_select(fact, fact, dim_1_key_1, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) %>%
         dm::dm_select(dim_1, dim_1_pk_1, dim_1_pk_2, something) %>%
         dm::dm_select(dim_2, dim_2_pk, something) %>%
@@ -156,7 +154,18 @@
       * `dim_3` -> `dim_3...9`
       * `dim_4` -> `dim_4...10`
     Message <cliMessage>
-      dm::dm(fact...1, dim_1...2, dim_2...3, dim_3...4, dim_4...5, fact...6, dim_1...7, dim_2...8, dim_3...9, dim_4...10) %>%
+      dm::dm(
+        fact...1,
+        dim_1...2,
+        dim_2...3,
+        dim_3...4,
+        dim_4...5,
+        fact...6,
+        dim_1...7,
+        dim_2...8,
+        dim_3...9,
+        dim_4...10,
+      ) %>%
         dm::dm_select(fact...1, fact, dim_1_key_1, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) %>%
         dm::dm_select(dim_1...2, dim_1_pk_1, dim_1_pk_2, something) %>%
         dm::dm_select(dim_2...3, dim_2_pk, something) %>%

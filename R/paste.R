@@ -100,7 +100,7 @@ dm_paste_impl <- function(dm, options, tab_width) {
   code_tables <- if ("tables" %in% options) dm_paste_tables(dm, tab)
 
   # code for including the tables
-  code_construct <- dm_paste_construct(dm)
+  code_construct <- dm_paste_construct(dm, tab)
 
   # adding code for selection of columns
   code_select <- if ("select" %in% options) dm_paste_select(dm)
@@ -142,8 +142,16 @@ dm_paste_tables <- function(dm, tab) {
   )
 }
 
-dm_paste_construct <- function(dm) {
-  glue("dm::dm({glue_collapse1(tick_if_needed(src_tbls_impl(dm)), ', ')})")
+dm_paste_construct <- function(dm, tab) {
+  if (length(dm) == 0) {
+    return("dm::dm(\n)")
+  }
+
+  paste0(
+    "dm::dm(\n",
+    paste0(tab, tick_if_needed(src_tbls_impl(dm)), ",\n", collapse = ""),
+    ")"
+  )
 }
 
 dm_paste_select <- function(dm) {
