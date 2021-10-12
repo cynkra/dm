@@ -152,7 +152,7 @@ loans_residuals <- tibble::tibble(
 )
 
 loans_residuals
-```
+``````
 
 Adding `loans_residuals` to the dm is done using `copy_to()`.
 The call to the method includes the argument `temporary = FALSE` because we want this table to persist beyond our current session.

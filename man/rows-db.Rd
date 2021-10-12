@@ -4,9 +4,12 @@
 \alias{rows-db}
 \alias{rows_insert.tbl_dbi}
 \alias{rows_update.tbl_dbi}
+\alias{rows_patch.tbl_dbi}
+\alias{rows_upsert.tbl_dbi}
 \alias{rows_delete.tbl_dbi}
 \alias{sql_rows_insert}
 \alias{sql_rows_update}
+\alias{sql_rows_patch}
 \alias{sql_rows_delete}
 \alias{sql_returning_cols}
 \alias{sql_output_cols}
@@ -34,6 +37,28 @@
   returning = NULL
 )
 
+\method{rows_patch}{tbl_dbi}(
+  x,
+  y,
+  by = NULL,
+  ...,
+  in_place = NULL,
+  copy = FALSE,
+  check = NULL,
+  returning = NULL
+)
+
+\method{rows_upsert}{tbl_dbi}(
+  x,
+  y,
+  by = NULL,
+  ...,
+  in_place = NULL,
+  copy = FALSE,
+  check = NULL,
+  returning = NULL
+)
+
 \method{rows_delete}{tbl_dbi}(
   x,
   y,
@@ -48,6 +73,8 @@
 sql_rows_insert(x, y, ..., returning_cols = NULL)
 
 sql_rows_update(x, y, by, ..., returning_cols = NULL)
+
+sql_rows_patch(x, y, by, ..., returning_cols = NULL)
 
 sql_rows_delete(x, y, by, ..., returning_cols = NULL)
 
@@ -91,7 +118,12 @@ Currently these checks are no-ops and need yet to be implemented.}
 \item{returning}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 <\code{\link[=tidyr_tidy_select]{tidy-select}}> Columns to return of the inserted data.
 Note that also columns not in \code{y} but automatically created when inserting
-into \code{x} can be returned, for example the \code{id} column.}
+into \code{x} can be returned, for example the \code{id} column.
+
+Due to upstream limitations, a warning is given if this argument
+is passed unquoted.
+To avoid the warning, quote the argument manually:
+use e.g. \code{returning = quote(everything())} .}
 
 \item{returning_cols}{A character vector of unquote column names
 to return, created from the \code{returning} argument.
@@ -144,10 +176,13 @@ data
 try(rows_insert(data, tibble::tibble(a = 4, b = "z")))
 rows_insert(data, tibble::tibble(a = 4, b = "z"), copy = TRUE)
 rows_update(data, tibble::tibble(a = 2:3, b = "w"), copy = TRUE, in_place = FALSE)
+rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = FALSE)
 
 rows_insert(data, dbplyr::memdb_frame(a = 4, b = "z"), in_place = TRUE)
 data
 rows_update(data, dbplyr::memdb_frame(a = 2:3, b = "w"), in_place = TRUE)
+data
+rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = TRUE)
 data
 \dontshow{\}) # examplesIf}
 }

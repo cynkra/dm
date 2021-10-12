@@ -52,6 +52,12 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
     # FIXME: Check empty arguments and ellipsis
     return(empty_dm())
   }
+
+  if (inherits(src, "Pool")) {
+    src <- pool_src <- pool::poolCheckout(src)
+    on.exit(pool::poolReturn(pool_src))
+  }
+
   # both DBI-Connection and {dplyr}-src object are accepted
   src <- src_from_src_or_con(src)
   con <- con_from_src_or_con(src)

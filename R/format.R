@@ -53,3 +53,11 @@ if_pkg_version <- function(pkg, min_version, if_true, if_false = NULL) {
 format_classes <- function(class) {
   commas(tick(class))
 }
+
+trim_width <- function(x, width) {
+  if (nchar(x) > width) {
+    paste0(strtrim(x, width), cli::symbol$ellipsis)
+  } else {
+    x
+  }
+}
