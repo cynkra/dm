@@ -12,6 +12,8 @@
 
   register_pkgdown_methods()
 
+  check_version_on_load("RSQLite", "2.2.8", "to use the {.code returning} argument in {.code dm::rows_*()}")
+
   # rigg(enum_pk_candidates_impl)
   # rigg(build_copy_data)
   # rigg(dm_insert_zoomed_outgoing_fks)
@@ -32,4 +34,27 @@ rigg <- function(fun) {
   rig <- get("rig", asNamespace("boomer"), mode = "function")
 
   assign(name, rig(fun, ignore = c("~", "{", "(", "<-", "<<-")), getNamespace("dm"))
+}
+
+check_version_on_load <- function(package, version, reason) {
+  check_version <- function(...) {
+    if (utils::packageVersion(package) < version) {
+      message <- c(
+        paste0("You need {.pkg {package} >= {version}} ", reason),
+        `i` = 'Install with {.pkg `install.packages("{package}")`}'
+      )
+
+      cli::cli_inform(message)
+    }
+  }
+
+  # Always register hook in case package is later unloaded & reloaded
+  setHook(packageEvent(package, "onLoad"), check_version)
+
+  # Avoid registration failures during loading (pkgload or regular)
+  if (isNamespaceLoaded(package)) {
+    check_version()
+  }
+
+  invisible()
 }
