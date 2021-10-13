@@ -47,7 +47,8 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
       transmute(
         source_name,
         cols = map_chr(pk_col, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
-        constraint = "PRIMARY KEY"
+        constraint = "PRIMARY KEY",
+        extra = ""
       )
 
     fks <-
@@ -61,7 +62,8 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
       transmute(
         source_name,
         cols = map_chr(pk_col, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
-        constraint = "UNIQUE"
+        constraint = "UNIQUE",
+        extra = ""
       )
 
     if (is_duckdb(con)) {
@@ -88,7 +90,7 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
 
     clause <-
       bind_rows(pks_clause, unique_clause, fks_clause) %>%
-      mutate(sql = paste0(",\n", constraint, " (", cols, ")", coalesce(extra, ""))) %>%
+      mutate(sql = paste0(",\n", constraint, " (", cols, ")", extra)) %>%
       group_by(source_name) %>%
       summarize(sql = paste(sql, collapse = "")) %>%
       ungroup()
