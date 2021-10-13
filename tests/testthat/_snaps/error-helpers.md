@@ -242,14 +242,6 @@
     Output
       NULL
     Code
-      abort_schema_exists("silhouette")
-    Error <dm_error_schema_exists>
-      A schema named `silhouette` already exists.
-    Code
-      abort_schema_exists("silhouette", "exhibition")
-    Error <dm_error_schema_exists>
-      A schema named `silhouette` already exists on database `exhibition`.
-    Code
       abort_no_schema_exists("table_1")
     Error <dm_error_no_schema_exists>
       No schema named `table_1` exists.

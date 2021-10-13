@@ -47,5 +47,8 @@ test_src_mssql <- function() {
       uid = "kirill", pwd = keyring::key_get("mssql", "kirill")
     )
   }
+
+  dbExecute(con, "SET IMPLICIT_TRANSACTIONS OFF", immediate = TRUE)
+
   dbplyr::src_dbi(con, auto_disconnect = TRUE)
 }
