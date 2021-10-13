@@ -94,7 +94,7 @@
         <chr>       <keys>        <chr>        <keys>          <chr>    
       1 tf_2        d             tf_1         a               no_action
       2 tf_4        j, j1         tf_3         f, f1           no_action
-      3 tf_5        l             tf_4         h               no_action
+      3 tf_5        l             tf_4         h               cascade  
       4 tf_5        m             tf_6         n               no_action
       
     Code
@@ -120,7 +120,7 @@
         child_table child_fk_cols parent_table parent_key_cols on_delete
         <chr>       <keys>        <chr>        <keys>          <chr>    
       1 tf_2        d             tf_1         a               no_action
-      2 tf_5        l             tf_4         h               no_action
+      2 tf_5        l             tf_4         h               cascade  
       3 tf_5        m             tf_6         n               no_action
       
     Code
@@ -146,7 +146,7 @@
         child_table child_fk_cols parent_table parent_key_cols on_delete
         <chr>       <keys>        <chr>        <keys>          <chr>    
       1 tf_2        d             tf_1         a               no_action
-      2 tf_5        l             tf_4         h               no_action
+      2 tf_5        l             tf_4         h               cascade  
       3 tf_5        m             tf_6         n               no_action
       
     Code
