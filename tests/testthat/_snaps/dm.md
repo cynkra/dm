@@ -161,7 +161,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        (`key`) -> (`iris_1$key`)
+        (`key`) -> (`iris_1$key`) no_action
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -201,7 +201,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        (`key`) -> (`iris_1$key`)
+        (`key`) -> (`iris_1$key`) no_action
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6,~

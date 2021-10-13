@@ -785,13 +785,14 @@ glimpse.dm <- function(x, width = NULL, ...) {
       filter(child_table == table_name) %>%
       select(-child_table) %>%
       pmap_chr(
-        function(child_fk_cols, parent_table, parent_key_cols) {
+        function(child_fk_cols, parent_table, parent_key_cols, on_delete) {
           trim_width(
             paste0(
               "  (",
               paste0(tick(child_fk_cols), collapse = ", "), ")",
               " -> ",
-              paste0("(`", paste0(parent_table, "$", parent_key_cols, collapse = "`, `"), "`)")
+              "(`", paste0(parent_table, "$", parent_key_cols, collapse = "`, `"), "`) ",
+              on_delete
             ),
             glimpse_width
           )
