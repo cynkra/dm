@@ -51,8 +51,7 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
       )
 
     fks <-
-      dm_get_all_fks_impl(dm) %>%
-      rename(source_name = child_table)
+      dm_get_all_fks_impl(dm)
 
     unique_clause <-
       fks %>%
@@ -67,13 +66,15 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
 
     fks_clause <-
       fks %>%
+      rename(source_name = parent_table) %>%
+      left_join(copy_data_base %>% select(source_name, parent_table_id = name)) %>%
       transmute(
-        source_name,
+        source_name = child_table,
         cols = map_chr(child_fk_cols, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
         constraint = "FOREIGN KEY",
         extra = paste0(
           " REFERENCES ",
-          DBI::dbQuoteIdentifier(con, parent_table), " (",
+          parent_table_id, " (",
           map_chr(parent_key_cols, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
           ") ON DELETE ",
           if_else(on_delete == "cascade", "CASCADE", "NO ACTION")
@@ -128,7 +129,7 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
 
     copy_data_non_unique_indexes <-
       fks %>%
-      group_by(source_name) %>%
+      group_by(source_name = child_table) %>%
       summarize(indexes = list(child_fk_cols)) %>%
       ungroup()
 
