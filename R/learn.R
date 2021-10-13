@@ -48,22 +48,43 @@ dm_learn_from_db <- function(dest, dbname = NULL, ...) {
   dm_learn_from_db_meta(con, catalog = dbname, ...)
 }
 
-dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL) {
+dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_format = "{table}") {
   info <- dm_meta(con, catalog = catalog, schema = schema)
 
+  df_info <-
+    info %>%
+    dm_select_tbl(-schemata) %>%
+    collect()
+
+  dm_name <-
+    df_info$tables %>%
+    select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
+    mutate(name = glue(name_format)) %>%
+    pull() %>%
+    vec_as_names(repair = "unique")
+
+  from <-
+    df_info$tables %>%
+    select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
+    pmap_chr(~ DBI::dbQuoteIdentifier(con, DBI::Id(...)))
+
+  df_info <-
+    df_info %>%
+    dm_zoom_to(tables) %>%
+    mutate(dm_name = !!dm_name, from = !!from) %>%
+    dm_update_zoomed()
+
   table_info <-
-    info$columns %>%
-    select(catalog = table_catalog, schema = table_schema, table = table_name, column_name, ordinal_position) %>%
-    arrange(catalog, schema, table, ordinal_position) %>%
-    collect() %>%
-    arrange(catalog, schema, table) %>%
-    group_by(catalog, schema, table) %>%
+    df_info %>%
+    dm_zoom_to(columns) %>%
+    left_join(tables) %>%
+    group_by(dm_name, from) %>%
     summarize(vars = list(column_name)) %>%
-    ungroup()
+    ungroup() %>%
+    pull_tbl()
 
-  from <- pmap_chr(table_info[1:3], ~ DBI::dbQuoteIdentifier(con, DBI::Id(...)))
-
-  tables <- map2(from, table_info$vars, ~ tbl(con, dbplyr::ident_q(.x), vars = .y))
+  tables <- map2(table_info$from, table_info$vars, ~ tbl(con, dbplyr::ident_q(.x), vars = .y))
+  names(tables) <- table_info$dm_name
   tables
 }
 
