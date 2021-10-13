@@ -60,7 +60,7 @@
 #' )
 dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ...,
                       check = FALSE,
-                      on_delete = c("cascade", "no_action")) {
+                      on_delete = c("no_action", "cascade")) {
   check_dots_empty()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})

@@ -12,7 +12,7 @@ dm_add_fk(
   ref_columns = NULL,
   ...,
   check = FALSE,
-  on_delete = c("cascade", "no_action")
+  on_delete = c("no_action", "cascade")
 )
 }
 \arguments{
