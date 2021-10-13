@@ -86,6 +86,19 @@ dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_forma
   tables <- map2(table_info$from, table_info$vars, ~ tbl(con, dbplyr::ident_q(.x), vars = .y))
   names(tables) <- table_info$dm_name
   tables
+
+  pks <-
+    df_info %>%
+    dm_select(columns, -ordinal_position) %>%
+    dm_select_tbl(constraint_column_usage, key_column_usage, columns, tables) %>%
+    dm_zoom_to(key_column_usage) %>%
+    anti_join(constraint_column_usage) %>%
+    dm_update_zoomed() %>%
+    dm_squash_to_tbl(key_column_usage) %>%
+    select(constraint_catalog, constraint_schema, constraint_name, dm_name, column = column_name) %>%
+    nest(data = column) %>%
+    select(dm_name, data) %>%
+    deframe()
 }
 
 dm_meta <- function(con, catalog = NA, schema = NULL) {
