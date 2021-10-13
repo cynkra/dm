@@ -264,10 +264,15 @@ summarise.dm <- function(.data, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 summarise.zoomed_dm <- function(.data, ...) {
+  quos <- enquos(..., .named = TRUE)
   tbl <- tbl_zoomed(.data)
+  # see #640
+  if (any(grepl("across\\(", names(quos)))) {
+    names(quos)[grepl("across\\(", names(quos))] <- NA
+  }
   # groups are "selected"; key tracking will continue for them
   groups <- set_names(map_chr(groups(tbl), as_string))
-  summarized_tbl <- summarize(tbl, ...)
+  summarized_tbl <- summarize(tbl, !!!quos)
   new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
   replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
 }
