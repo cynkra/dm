@@ -1,3 +1,15 @@
+test_that("insert + delete + truncate message", {
+  skip_if_not_installed("rlang", "0.99.0.9000")
+
+  expect_snapshot({
+    data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
+    data
+
+    rows_insert(data, test_db_src_frame(select = 4, where = "z"))
+    data %>% arrange(select)
+  })
+})
+
 test_that("insert + delete + truncate", {
   expect_snapshot({
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
@@ -6,8 +18,6 @@ test_that("insert + delete + truncate", {
     writeLines(conditionMessage(expect_error(
       rows_insert(data, tibble(select = 4, where = "z"))
     )))
-    rows_insert(data, test_db_src_frame(select = 4, where = "z"))
-    data %>% arrange(select)
     rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = FALSE)
     data %>% arrange(select)
     rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = TRUE)
