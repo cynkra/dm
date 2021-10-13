@@ -41,9 +41,9 @@ dm_learn_from_db <- function(dest, dbname = NULL, ...) {
     return()
   }
 
-  #if (!is_mssql(con)) {
+  if (!is_mssql(con)) {
     return(dm_learn_from_db_legacy(con, dbname, ...))
-  #}
+  }
 
   dm_learn_from_db_meta(con, catalog = dbname, ...)
 }
@@ -68,16 +68,21 @@ dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_forma
     select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
     pmap_chr(~ DBI::dbQuoteIdentifier(con, DBI::Id(...)))
 
-  df_info <-
+  df_key_info <-
     df_info %>%
     dm_zoom_to(tables) %>%
     mutate(dm_name = !!dm_name, from = !!from) %>%
-    dm_update_zoomed()
+    dm_update_zoomed() %>%
+    dm_zoom_to(columns) %>%
+    arrange(ordinal_position) %>%
+    select(-ordinal_position) %>%
+    left_join(tables) %>%
+    dm_update_zoomed() %>%
+    dm_select_tbl(constraint_column_usage, key_column_usage, columns)
 
   table_info <-
-    df_info %>%
+    df_key_info %>%
     dm_zoom_to(columns) %>%
-    left_join(tables) %>%
     group_by(dm_name, from) %>%
     summarize(vars = list(column_name)) %>%
     ungroup() %>%
@@ -85,20 +90,64 @@ dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_forma
 
   tables <- map2(table_info$from, table_info$vars, ~ tbl(con, dbplyr::ident_q(.x), vars = .y))
   names(tables) <- table_info$dm_name
-  tables
 
   pks <-
-    df_info %>%
-    dm_select(columns, -ordinal_position) %>%
-    dm_select_tbl(constraint_column_usage, key_column_usage, columns, tables) %>%
+    df_key_info %>%
     dm_zoom_to(key_column_usage) %>%
     anti_join(constraint_column_usage) %>%
+    arrange(ordinal_position) %>%
     dm_update_zoomed() %>%
     dm_squash_to_tbl(key_column_usage) %>%
-    select(constraint_catalog, constraint_schema, constraint_name, dm_name, column = column_name) %>%
-    nest(data = column) %>%
+    select(constraint_catalog, constraint_schema, constraint_name, dm_name, column_name) %>%
+    group_by(constraint_catalog, constraint_schema, constraint_name, dm_name) %>%
+    summarize(data = list(tibble(column = list(column_name)))) %>%
+    ungroup() %>%
     select(dm_name, data) %>%
     deframe()
+
+  fks <-
+    df_key_info %>%
+    dm_zoom_to(key_column_usage) %>%
+    left_join(columns, select = c(column_name, dm_name, table_catalog, table_schema, table_name)) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(constraint_column_usage) %>%
+    left_join(columns, select = c(column_name, dm_name, table_catalog, table_schema, table_name)) %>%
+    dm_update_zoomed() %>%
+    dm_select_tbl(-columns) %>%
+    dm_disambiguate_cols(quiet = TRUE) %>%
+    dm_flatten_to_tbl(constraint_column_usage) %>%
+    select(
+      constraint_catalog,
+      constraint_schema,
+      constraint_name,
+      ordinal_position,
+      ref_table = constraint_column_usage.dm_name,
+      ref_column = constraint_column_usage.column_name,
+      table = key_column_usage.dm_name,
+      column = key_column_usage.column_name,
+    ) %>%
+    arrange(
+      constraint_catalog,
+      constraint_schema,
+      constraint_name,
+      ordinal_position,
+    ) %>%
+    select(-ordinal_position) %>%
+    # FIXME: Where to learn this in INFORMATION_SCHEMA?
+    group_by(
+      constraint_catalog,
+      constraint_schema,
+      constraint_name,
+      ref_table,
+    ) %>%
+    summarize(data = list(tibble(
+      ref_column = list(ref_column), table = table[[1]], column = list(column), on_delete = "no_action"
+    ))) %>%
+    ungroup() %>%
+    select(-(1:3)) %>%
+    deframe()
+
+  new_dm2(tables, pks, fks)
 }
 
 dm_meta <- function(con, catalog = NA, schema = NULL) {
