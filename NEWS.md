@@ -1,5 +1,15 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.4.9001
+
+- `copy_dm_to()` no longer actively checks if the target schema exists (#644).
+- `dm_paste()` output uses trailing commas in the `dm::dm()` and `tibble::tibble()` calls, and sorts column attributes by name, for better modularity (#641).
+- Remove method only needed for RSQLite < 2.2.8, add warning if loaded RSQLite version is <= 2.2.8 (#632).
+- Add newline after `OUTPUT` clause for SQL Server (#647).
+- Fix `sql_rows_delete()` with `returning` argument for SQL Server (#645).
+- Adapt MSSQL tests to testthat update (#648).
+
+
 # dm 0.2.4.9000
 
 - Same as previous version.
