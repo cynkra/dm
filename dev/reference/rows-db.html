@@ -38,7 +38,7 @@ more standardized DBs."><meta property="og:image" content="https://cynkra.github
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9001</span>
       </span>
     </div>
 
@@ -279,7 +279,7 @@ and <code>x</code> is returned, invisibly. If return columns are specified with
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, b <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">]</span>, c <span class="op">=</span> <span class="fl">0.5</span> <span class="op">+</span> <span class="fl">0</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.36.0 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -319,7 +319,7 @@ and <code>x</code> is returned, invisibly. If return columns are specified with
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_insert</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">4</span>, b <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.36.0 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -329,7 +329,7 @@ and <code>x</code> is returned, invisibly. If return columns are specified with
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 z      <span style="color: #BB0000;">NA</span>  </span>
 <span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_update</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, b <span class="op">=</span> <span class="st">"w"</span><span class="op">)</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.36.0 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -339,7 +339,7 @@ and <code>x</code> is returned, invisibly. If return columns are specified with
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 z      <span style="color: #BB0000;">NA</span>  </span>
 <span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_patch</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, c <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.36.0 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9001</span>
       </span>
     </div>
 
@@ -103,6 +103,18 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/master/NEWS.md"><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="dm-0249001" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.4.9001">
+<a href="#dm-0249001" class="anchor" aria-hidden="true"></a>dm 0.2.4.9001<small> Unreleased </small></h1>
+<ul><li>
+<code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> no longer actively checks if the target schema exists (<a href="https://github.com/cynkra/dm/issues/644">#644</a>).</li>
+<li>
+<code><a href="../reference/dm_paste.html">dm_paste()</a></code> output uses trailing commas in the <code><a href="../reference/dm.html">dm::dm()</a></code> and <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble::tibble()</a></code> calls, and sorts column attributes by name, for better modularity (<a href="https://github.com/cynkra/dm/issues/641">#641</a>).</li>
+<li>Remove method only needed for RSQLite &lt; 2.2.8, add warning if loaded RSQLite version is &lt;= 2.2.8 (<a href="https://github.com/cynkra/dm/issues/632">#632</a>).</li>
+<li>Add newline after <code>OUTPUT</code> clause for SQL Server (<a href="https://github.com/cynkra/dm/issues/647">#647</a>).</li>
+<li>Fix <code><a href="../reference/rows-db.html">sql_rows_delete()</a></code> with <code>returning</code> argument for SQL Server (<a href="https://github.com/cynkra/dm/issues/645">#645</a>).</li>
+<li>Adapt MSSQL tests to testthat update (<a href="https://github.com/cynkra/dm/issues/648">#648</a>).</li>
+</ul></div>
     <div id="dm-0249000" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.4.9000">
 <a href="#dm-0249000" class="anchor" aria-hidden="true"></a>dm 0.2.4.9000<small> Unreleased </small></h1>
