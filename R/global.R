@@ -125,5 +125,10 @@ utils::globalVariables(c(
   "table_constraints",
   "table_schema",
   "table_type",
-  "tables"
+  "tables",
+  "constraint_column_usage.column_name",
+  "constraint_column_usage.dm_name",
+  "key_column_usage.column_name",
+  "key_column_usage.dm_name",
+  NULL
 ))
