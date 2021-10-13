@@ -228,8 +228,7 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
     dm_meta_add_keys()
 }
 
-dm_learn_from_db_legacy <- function(dest, dbname, ...) {
-  con <- dest$con
+dm_learn_from_db_legacy <- function(con, dbname, ...) {
   sql <- db_learn_query(con, dbname = dbname, ...)
   if (is.null(sql)) {
     return()
