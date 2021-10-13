@@ -36,11 +36,15 @@ mutate.dm <- function(.data, ...) {
 mutate.zoomed_dm <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
   quos <- enquos(..., .named = TRUE)
-  mutated_tbl <- mutate(tbl, !!!quos)
+  # see #640
+  if (any(grepl("across\\(", names(quos)))) {
+    names(quos)[grepl("across\\(", names(quos))] <- NA
+  }
   # all columns that are not touched count as "selected"; names of "selected" are identical to "selected"
   # in case no keys are tracked, `set_names(NULL)` would throw an error
   selected <- set_names(setdiff(names2(col_tracker_zoomed(.data)), names(quos)))
   new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
+  mutated_tbl <- mutate(tbl, !!!quos)
   replace_zoomed_tbl(.data, mutated_tbl, new_tracked_cols_zoom)
 }
 
