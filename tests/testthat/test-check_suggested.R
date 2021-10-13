@@ -1,10 +1,6 @@
 test_that("`check_suggested()` works", {
-  skip_if(getRversion() < "3.4")
-
   expect_snapshot({
     check_suggested("dm", TRUE, top_level_fun = "foo")
-    try(check_suggested("not-a-package", TRUE, top_level_fun = "foo"))
-    try(check_suggested("not-a-package", TRUE, message = "not installed!"))
 
     check_suggested("dm", NA, top_level_fun = "foo")
     check_suggested("not-a-package", NA, top_level_fun = "foo")
@@ -13,5 +9,12 @@ test_that("`check_suggested()` works", {
     check_suggested("dm", FALSE, top_level_fun = "foo")
     check_suggested("not-a-package", FALSE, top_level_fun = "foo")
     check_suggested("not-a-package", FALSE, message = "not installed!")
+  })
+})
+
+test_that("`check_suggested()` works for error messages", {
+  expect_snapshot(error = TRUE, {
+    check_suggested("not-a-package", TRUE, top_level_fun = "foo")
+    check_suggested("not-a-package", TRUE, message = "not installed!")
   })
 })
