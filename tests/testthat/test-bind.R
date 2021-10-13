@@ -94,7 +94,9 @@ test_that("output", {
       dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter())
     )))
   })
+})
 
+test_that("output dev vctrs", {
   skip_if_not_installed("vctrs", "0.3.8.9001")
 
   expect_snapshot({
@@ -107,7 +109,9 @@ test_that("output for compound keys", {
     dm_bind(dm_for_filter(), dm_for_flatten()) %>% dm_paste(options = c("select", "keys"))
     dm_bind(dm_for_flatten(), dm_for_filter()) %>% dm_paste(options = c("select", "keys"))
   })
+})
 
+test_that("output for compound keys dev vctrs", {
   skip_if_not_installed("vctrs", "0.3.8.9001")
 
   expect_snapshot({

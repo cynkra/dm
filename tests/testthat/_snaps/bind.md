@@ -39,6 +39,32 @@
     Output
       Each new table needs to have a unique name. Duplicate new name(s): `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`.
 
+# output dev vctrs
+
+    Code
+      dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique") %>%
+        collect()
+    Message <rlib_message_name_repair>
+      New names:
+      * `tf_1` -> `tf_1...1`
+      * `tf_2` -> `tf_2...2`
+      * `tf_3` -> `tf_3...3`
+      * `tf_4` -> `tf_4...4`
+      * `tf_5` -> `tf_5...5`
+      * `tf_6` -> `tf_6...6`
+      * `tf_1` -> `tf_1...12`
+      * `tf_2` -> `tf_2...13`
+      * `tf_3` -> `tf_3...14`
+      * `tf_4` -> `tf_4...15`
+      * `tf_5` -> `tf_5...16`
+      * `tf_6` -> `tf_6...17`
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `tf_1...1`, `tf_2...2`, `tf_3...3`, `tf_4...4`, `tf_5...5`, ... (17 total)
+      Columns: 52
+      Primary keys: 16
+      Foreign keys: 14
+
 # output for compound keys
 
     Code
@@ -136,7 +162,7 @@
         dm::dm_add_fk(tf_5, l, tf_4) %>%
         dm::dm_add_fk(tf_5, m, tf_6, n)
 
----
+# output for compound keys dev vctrs
 
     Code
       dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>% dm_paste(
