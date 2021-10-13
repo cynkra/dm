@@ -249,3 +249,20 @@ test_that("enum_fk_candidates() works properly", {
     )
   )
 })
+
+test_that("can add foreign key with cascade", {
+  expect_snapshot({
+    dm(a = tibble(x = 1), b = tibble(x = 1)) %>%
+      dm_add_fk(a, x, b, x, on_delete = "cascade") %>%
+      dm_get_all_fks()
+  })
+})
+
+test_that("bogus arguments are rejected", {
+  expect_snapshot(error = TRUE, {
+    dm(a = tibble(x = 1), b = tibble(x = 1)) %>%
+      dm_add_fk(a, x, b, x, on_delete = "bogus")
+    dm(a = tibble(x = 1), b = tibble(x = 1)) %>%
+      dm_add_fk(a, x, b, x, on_delete = letters)
+  })
+})
