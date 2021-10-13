@@ -144,9 +144,8 @@ test_that("schema handling on MSSQL works for different DBs", {
     "on database `test_db_for_schema_dm`"
   )
 
-  expect_dm_error(
-    sql_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
-    "schema_exists"
+  expect_error(
+    sql_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm")
   )
 
   expect_identical(
