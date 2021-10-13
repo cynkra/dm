@@ -25,7 +25,7 @@ test_that("schema handling on MSSQL and Postgres works", {
 
   # create a table in the default schema
   expect_message(sql_schema_create(con_db, "1-dm_schema_TEST"), "created")
-  expect_dm_error(sql_schema_create(con_db, "1-dm_schema_TEST"), "schema_exists")
+  expect_error(sql_schema_create(con_db, "1-dm_schema_TEST"))
   expect_identical(
     con_db %>%
       sql_schema_list(include_default = FALSE) %>%
