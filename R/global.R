@@ -83,6 +83,8 @@ utils::globalVariables(c(
   "why",
   "zoom",
   "zoomed",
+  "extra",
+  "on_delete",
   #
   # financial
   "account_id",

@@ -564,7 +564,6 @@ test_that("key tracking works for distinct() and arrange()", {
 
   # dm_nycflights13() (with FK constraints) doesn't work on DB
   # here, FK constraints are not implemented on the DB
-  skip_if_src_not("df", "mssql", "postgres")
   skip_if_not_installed("dbplyr")
   skip_if_not_installed("nycflights13")
 
