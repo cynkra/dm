@@ -159,9 +159,9 @@ new_pk <- function(column = list()) {
   tibble(column = column)
 }
 
-new_fk <- function(ref_column = list(), table = character(), column = list()) {
-  stopifnot(is.list(column), is.list(ref_column), length(table) == length(column), length(table) == length(ref_column))
-  tibble(ref_column = ref_column, table = table, column = column)
+new_fk <- function(ref_column = list(), table = character(), column = list(), on_delete = character()) {
+  stopifnot(is.list(column), is.list(ref_column), length(table) == length(column), length(table) == length(ref_column), length(on_delete) %in% c(1L, length(table)))
+  tibble(ref_column, table, column, on_delete)
 }
 
 new_filter <- function(quos = list(), zoomed = logical()) {
