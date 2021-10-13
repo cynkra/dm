@@ -62,11 +62,11 @@
       # A tibble: 5 x 9
         table    data   segment display     pks     fks filters zoom  col_tracker_zoom
         <chr>    <list> <chr>   <chr>   <list<> <list<> <list<> <lis> <list>          
-      1 airlines <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      2 airports <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      3 flights  <tibb~ <NA>    <NA>    [0 x 1] [0 x 3] [0 x 2] <NUL~ <NULL>          
-      4 planes   <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      5 weather  <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+      1 airlines <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
+      2 airports <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
+      3 flights  <tibb~ <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NUL~ <NULL>          
+      4 planes   <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
+      5 weather  <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% mutate(origin_new = paste0(origin,
         " airport")) %>% compute() %>% dm_update_zoomed() %>% collect() %>%
@@ -75,11 +75,11 @@
       # A tibble: 5 x 9
         table    data   segment display     pks     fks filters zoom  col_tracker_zoom
         <chr>    <list> <chr>   <chr>   <list<> <list<> <list<> <lis> <list>          
-      1 airlines <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      2 airports <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      3 flights  <tibb~ <NA>    <NA>    [0 x 1] [0 x 3] [0 x 2] <NUL~ <NULL>          
-      4 planes   <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      5 weather  <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+      1 airlines <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
+      2 airports <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
+      3 flights  <tibb~ <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NUL~ <NULL>          
+      4 planes   <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
+      5 weather  <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()
     Message <simpleMessage>

@@ -22,6 +22,7 @@ dm_upgrade <- function(dm, quiet) {
       message("Upgrading dm object created with dm <= 0.2.4.")
     }
     def <- unclass(dm)$def
+    def$fks <- list_of(!!!map(def$fks, mutate, on_delete = "no_action"))
     dm <- new_dm3(def, zoomed = is_zoomed(dm))
   }
 
