@@ -83,6 +83,20 @@ select.zoomed_dm <- function(.data, ...) {
 }
 
 #' @export
+relocate.dm <- function(.data, ..., .before = NULL, .after = NULL) {
+  check_zoomed(.data)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+relocate.zoomed_dm <- function(.data, ..., .before = NULL, .after = NULL) {
+  tbl <- tbl_zoomed(.data)
+
+  relocated_tbl <- relocate(tbl, ..., .before = !!enquo(.before), .after = !!enquo(.after))
+  replace_zoomed_tbl(.data, relocated_tbl)
+}
+
+#' @export
 rename.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
