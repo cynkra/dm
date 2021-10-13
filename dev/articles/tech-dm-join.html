@@ -201,13 +201,13 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 4 × 4</span>
-#&gt;   child_table child_fk_cols     parent_table parent_key_cols  
-#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span>           
-#&gt; <span style="color: #BCBCBC;">1</span> flights     carrier           airlines     carrier          
-#&gt; <span style="color: #BCBCBC;">2</span> flights     origin            airports     faa              
-#&gt; <span style="color: #BCBCBC;">3</span> flights     tailnum           planes       tailnum          
-#&gt; <span style="color: #BCBCBC;">4</span> flights     origin, time_hour weather      origin, time_hour
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 4 × 5</span>
+#&gt;   child_table child_fk_cols     parent_table parent_key_cols   on_delete
+#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    
+#&gt; <span style="color: #BCBCBC;">1</span> flights     carrier           airlines     carrier           no_action
+#&gt; <span style="color: #BCBCBC;">2</span> flights     origin            airports     faa               no_action
+#&gt; <span style="color: #BCBCBC;">3</span> flights     tailnum           planes       tailnum           no_action
+#&gt; <span style="color: #BCBCBC;">4</span> flights     origin, time_hour weather      origin, time_hour no_action
 </code></pre>
 </div>
 <div id="joining-examples" class="section level3">

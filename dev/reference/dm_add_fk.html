@@ -125,7 +125,8 @@ of the values of the key in table <code>ref_table</code>.</p>
   <span class="va">ref_table</span>,
   ref_columns <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>,
-  check <span class="op">=</span> <span class="cn">FALSE</span>
+  check <span class="op">=</span> <span class="cn">FALSE</span>,
+  on_delete <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"no_action"</span>, <span class="st">"cascade"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -148,6 +149,14 @@ To define a compound key, use <code>c(col1, col2)</code>.</p></td>
     </tr><tr><th>check</th>
       <td><p>Boolean, if <code>TRUE</code>, a check will be performed to determine if the values of
 <code>columns</code> are a subset of the values of the key column(s) of <code>ref_table</code>.</p></td>
+    </tr><tr><th>on_delete</th>
+      <td><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
+<p>Defines behavior if a row in the parent table is deleted.
+- <code>"no_action"</code>, the default, means that no action is taken
+and the operation is aborted if child rows exist
+- <code>"cascade"</code> means that the child row is also deleted
+This setting is picked up by <code><a href="copy_dm_to.html">copy_dm_to()</a></code> with <code>set_key_constraints = TRUE</code>,
+and might be considered by <code><a href="rows-dm.html">dm_rows_delete()</a></code> in a future version.</p></td>
     </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An updated <code>dm</code> with an additional foreign key relation.</p>
