@@ -44,7 +44,8 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
 
     pks_clause <-
       pks %>%
-      mutate(
+      transmute(
+        source_name,
         cols = map_chr(pk_col, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
         constraint = "PRIMARY KEY"
       )
@@ -58,14 +59,30 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
       select(source_name = parent_table, pk_col = parent_key_cols) %>%
       anti_join(pks, by = c("source_name", "pk_col")) %>%
       distinct() %>%
-      mutate(
+      transmute(
+        source_name,
         cols = map_chr(pk_col, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
         constraint = "UNIQUE"
       )
 
+    fks_clause <-
+      fks %>%
+      transmute(
+        source_name,
+        cols = map_chr(child_fk_cols, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
+        constraint = "FOREIGN KEY",
+        extra = paste0(
+          " REFERENCES ",
+          DBI::dbQuoteIdentifier(con, parent_table), " (",
+          map_chr(parent_key_cols, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
+          ") ON DELETE ",
+          if_else(on_delete == "cascade", "CASCADE", "NO ACTION")
+        )
+      )
+
     clause <-
-      bind_rows(pks_clause, unique_clause) %>%
-      mutate(sql = paste0(",\n", constraint, " (", cols, ")")) %>%
+      bind_rows(pks_clause, unique_clause, fks_clause) %>%
+      mutate(sql = paste0(",\n", constraint, " (", cols, ")", coalesce(extra, ""))) %>%
       group_by(source_name) %>%
       summarize(sql = paste(sql, collapse = "")) %>%
       ungroup()

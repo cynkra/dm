@@ -216,10 +216,6 @@ copy_dm_to <- function(dest, dm, ...,
   def$data <- new_tables
   remote_dm <- new_dm3(def)
 
-  if (set_key_constraints && is_src_db(remote_dm)) {
-    dm_set_key_constraints(remote_dm)
-  }
-
   invisible(debug_validate_dm(remote_dm))
 }
 
