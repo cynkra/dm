@@ -15,7 +15,9 @@ dm_upgrade <- function(dm, quiet) {
       .x
     }))
     dm <- new_dm3(def, zoomed = is_zoomed(dm))
-  } else if (version < 2) {
+  }
+
+  if (version < 2) {
     # FIXME: Can't give unconditional message, because IDE can tickle object in environment,
     # and this also produces a message. Don't emit message when calling str()?
     if (!quiet) {

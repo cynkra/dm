@@ -12,6 +12,7 @@
       def <- dm_get_def(dm_v1)
     Message <simpleMessage>
       Upgrading dm object created with dm <= 0.2.1.
+      Upgrading dm object created with dm <= 0.2.4.
     Code
       dm <- new_dm3(def)
       validate_dm(dm)
@@ -26,6 +27,7 @@
       def <- dm_get_def(dm_v1_zoomed)
     Message <simpleMessage>
       Upgrading dm object created with dm <= 0.2.1.
+      Upgrading dm object created with dm <= 0.2.4.
     Code
       dm <- new_dm3(def, zoomed = TRUE)
       validate_dm(dm)
