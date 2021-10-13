@@ -14,7 +14,7 @@ dm_upgrade <- function(dm, quiet) {
       .x <- .x[c("ref_column", "table", "column")]
       .x
     }))
-    dm <- new_dm3(def, zoomed = is_zoomed(dm))
+    dm <- new_dm3(def, zoomed = is_zoomed(dm), validate = FALSE)
   }
 
   if (version < 2) {
