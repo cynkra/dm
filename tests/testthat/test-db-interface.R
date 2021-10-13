@@ -97,9 +97,8 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
   src_db <- my_test_src()
   local_dm <- dm_for_filter() %>% collect()
 
-  expect_dm_error(
-    copy_dm_to(src_db, local_dm, schema = "copy_dm_to_schema", temporary = FALSE),
-    "no_schema_exists"
+  expect_error(
+    copy_dm_to(src_db, local_dm, schema = "copy_dm_to_schema", temporary = FALSE)
   )
 
   sql_schema_create(src_db, "copy_dm_to_schema")
