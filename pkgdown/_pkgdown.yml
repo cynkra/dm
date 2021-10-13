@@ -76,6 +76,7 @@ reference:
   - filter.zoomed_dm
   - group_by.zoomed_dm
   - mutate.zoomed_dm
+  - relocate.zoomed_dm
   - rename.zoomed_dm
   - select.zoomed_dm
   - slice.zoomed_dm
