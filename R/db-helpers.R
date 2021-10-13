@@ -138,7 +138,7 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
   copy_data
 }
 
-create_queries <- function(dest, fk_information) {
+create_key_constraint_queries <- function(dest, fk_information) {
   if (is_null(fk_information)) {
     character()
   } else {

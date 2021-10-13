@@ -261,7 +261,7 @@ dm_set_key_constraints <- function(dm) {
     rename(db_parent_table = remote_name)
 
   con <- con_from_src_or_con(dm_get_src_impl(dm))
-  queries <- create_queries(con, fk_info)
+  queries <- create_key_constraint_queries(con, fk_info)
   walk(queries, ~ dbExecute(con, .))
 
   invisible(dm)
