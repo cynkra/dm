@@ -64,22 +64,27 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
         constraint = "UNIQUE"
       )
 
-    fks_clause <-
-      fks %>%
-      rename(source_name = parent_table) %>%
-      left_join(copy_data_base %>% select(source_name, parent_table = name), by = "source_name") %>%
-      transmute(
-        source_name = child_table,
-        cols = map_chr(child_fk_cols, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
-        constraint = "FOREIGN KEY",
-        extra = paste0(
-          " REFERENCES ",
-          parent_table, " (",
-          map_chr(parent_key_cols, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
-          ") ON DELETE ",
-          if_else(on_delete == "cascade", "CASCADE", "NO ACTION")
+    if (is_duckdb(con)) {
+      # https://github.com/duckdb/duckdb/issues/46
+      fks_clause <- NULL
+    } else {
+      fks_clause <-
+        fks %>%
+        rename(source_name = parent_table) %>%
+        left_join(copy_data_base %>% select(source_name, parent_table = name), by = "source_name") %>%
+        transmute(
+          source_name = child_table,
+          cols = map_chr(child_fk_cols, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
+          constraint = "FOREIGN KEY",
+          extra = paste0(
+            " REFERENCES ",
+            parent_table, " (",
+            map_chr(parent_key_cols, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
+            ") ON DELETE ",
+            if_else(on_delete == "cascade", "CASCADE", "NO ACTION")
+          )
         )
-      )
+    }
 
     clause <-
       bind_rows(pks_clause, unique_clause, fks_clause) %>%
@@ -180,6 +185,10 @@ is_db <- function(x) {
 
 is_src_db <- function(dm) {
   is_db(dm_get_src_impl(dm))
+}
+
+is_duckdb <- function(dest) {
+  inherits(dest, c("duckdb_connection", "src_duckdb_connection"))
 }
 
 is_mssql <- function(dest) {
