@@ -12,6 +12,8 @@
 
   register_pkgdown_methods()
 
+  s3_register("waldo::compare_proxy", "dm")
+
   check_version_on_load("RSQLite", "2.2.8", "to use the {.code returning} argument in {.code dm::rows_*()}")
 
   # rigg(enum_pk_candidates_impl)
