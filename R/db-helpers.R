@@ -67,7 +67,7 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
     fks_clause <-
       fks %>%
       rename(source_name = parent_table) %>%
-      left_join(copy_data_base %>% select(source_name, parent_table = name)) %>%
+      left_join(copy_data_base %>% select(source_name, parent_table = name), by = "source_name") %>%
       transmute(
         source_name = child_table,
         cols = map_chr(child_fk_cols, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
