@@ -1,5 +1,13 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.4.9002
+
+- `dm_add_fk()` gains `on_delete` argument which `copy_dm_to()` picks up and translates to an `ON DELETE CASCADE` or `ON DELETE NO ACTION` specification for the foreign key (#649).
+- `dm_copy_to()` defines foreign keys during table creation, and for all databases except DuckDB. This requires a topological order of the tables (#658).
+- `sql_create_schema()` no longer actively checks for schema existence (#660).
+- `waldo::compare()` shows better output for dm objects (#642).
+
+
 # dm 0.2.4.9001
 
 - `copy_dm_to()` no longer actively checks if the target schema exists (#644).
