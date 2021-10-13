@@ -153,7 +153,12 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
       copy_data_base
   }
 
-  copy_data
+  # Finally, reorder according to topological sort
+  graph <- create_graph_from_dm(dm, directed = TRUE)
+  topo <- igraph::topo_sort(graph, mode = "in")
+  idx <- match(names(topo), copy_data$source_name)
+
+  copy_data[idx, ]
 }
 
 class_to_db_class <- function(dest, class_vector) {
