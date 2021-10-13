@@ -67,14 +67,14 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
     fks_clause <-
       fks %>%
       rename(source_name = parent_table) %>%
-      left_join(copy_data_base %>% select(source_name, parent_table_id = name)) %>%
+      left_join(copy_data_base %>% select(source_name, parent_table = name)) %>%
       transmute(
         source_name = child_table,
         cols = map_chr(child_fk_cols, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
         constraint = "FOREIGN KEY",
         extra = paste0(
           " REFERENCES ",
-          parent_table_id, " (",
+          parent_table, " (",
           map_chr(parent_key_cols, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
           ") ON DELETE ",
           if_else(on_delete == "cascade", "CASCADE", "NO ACTION")
