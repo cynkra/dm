@@ -214,7 +214,7 @@ copy_dm_to <- function(dest, dm, ...,
   names(new_tables) <- copy_data$source_name
 
   def <- dm_get_def(dm)
-  def$data <- new_tables[names(dm)]
+  def$data <- unname(new_tables[names(dm)])
   remote_dm <- new_dm3(def)
 
   invisible(debug_validate_dm(remote_dm))
