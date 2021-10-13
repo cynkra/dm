@@ -191,7 +191,7 @@ copy_dm_to <- function(dest, dm, ...,
 
   check_not_zoomed(dm)
 
-  # FIXME: if same_src(), can use compute() but need to set NOT NULL
+  # FIXME: if same_src(), can use compute() but need to set NOT NULL and other
   # constraints
 
   dm <- collect(dm, progress = progress)
