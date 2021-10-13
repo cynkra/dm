@@ -74,19 +74,21 @@ test_that("schema handling on MSSQL and Postgres works", {
     value = tibble(b = letters[1:5])
   )
 
+  schema_list <- sql_schema_table_list(con_db, schema = "1-dm_schema_TEST")
+
   expect_identical(
-    sql_schema_table_list(con_db, schema = "1-dm_schema_TEST"),
+    schema_list,
     tibble(
       table_name = "test_schema_2",
       remote_name = dbplyr::ident_q("\"1-dm_schema_TEST\".\"test_schema_2\"")
     )
   )
 
-  remote_table_2 <- filter(
-    sql_schema_table_list(src_db, schema = "1-dm_schema_TEST"),
-    table_name == "test_schema_2"
-  ) %>%
+  remote_table_2 <-
+    schema_list %>%
+    filter(table_name == "test_schema_2") %>%
     pull(remote_name)
+
   expect_identical(
     tbl(src_db, remote_table_2) %>% collect(),
     tibble(b = letters[1:5])
