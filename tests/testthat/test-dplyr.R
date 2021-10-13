@@ -396,6 +396,40 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
   )
 })
 
+test_that("basic test: 'across' works properly", {
+  expect_equivalent_tbl(
+    dm_for_filter() %>%
+      dm_zoom_to(tf_2) %>%
+      mutate(across(where(is.character), ~ "C")) %>%
+      pull_tbl(),
+    dm_for_filter() %>%
+      pull_tbl(tf_2) %>%
+      mutate(across(where(is.character), ~ "C"))
+  )
+
+  expect_equivalent_tbl(
+    dm_for_filter() %>%
+      dm_zoom_to(tf_2) %>%
+      summarize(across(where(is.character), ~ "C")) %>%
+      pull_tbl(),
+    dm_for_filter() %>%
+      pull_tbl(tf_2) %>%
+      summarize(across(where(is.character), ~ "C"))
+  )
+
+  expect_equivalent_tbl(
+    dm_for_filter() %>%
+      dm_zoom_to(tf_2) %>%
+      group_by(d) %>%
+      summarize(across(where(is.character), ~ "C")) %>%
+      pull_tbl(),
+    dm_for_filter() %>%
+      pull_tbl(tf_2) %>%
+      group_by(d) %>%
+      summarize(across(where(is.character), ~ "C"))
+  )
+})
+
 # test key tracking for all methods ---------------------------------------
 
 # dm_for_filter(), zoomed to tf_2; PK: c; 2 outgoing FKs: d, e; no incoming FKS
