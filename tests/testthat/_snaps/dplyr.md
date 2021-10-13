@@ -20,14 +20,14 @@
       6 tf_6  o     
       
       $fks
-      # A tibble: 5 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        tf_2.d        tf_1         a              
-      2 tf_2        e, e1         tf_3         f, f1          
-      3 tf_4        j, j1         tf_3         f, f1          
-      4 tf_5        l             tf_4         h              
-      5 tf_5        m             tf_6         n              
+      # A tibble: 5 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        tf_2.d        tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 tf_5        l             tf_4         h               no_action
+      5 tf_5        m             tf_6         n               no_action
       
     Code
       # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
@@ -46,14 +46,14 @@
       6 tf_6  o     
       
       $fks
-      # A tibble: 5 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        d             tf_1         a              
-      2 tf_2        e, e1         tf_3         f, f1          
-      3 tf_4        j, j1         tf_3         f, f1          
-      4 tf_5        l             tf_4         h              
-      5 tf_5        m             tf_6         n              
+      # A tibble: 5 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 tf_5        l             tf_4         h               no_action
+      5 tf_5        m             tf_6         n               no_action
       
 
 # key tracking works
@@ -75,14 +75,14 @@
       6 tf_6  o     
       
       $fks
-      # A tibble: 5 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        d             tf_1         a              
-      2 tf_2        e, e1         tf_3         f, f1          
-      3 tf_4        j, j1         tf_3         f, f1          
-      4 tf_5        l             tf_4         h              
-      5 tf_5        m             tf_6         n              
+      # A tibble: 5 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 tf_5        l             tf_4         h               no_action
+      5 tf_5        m             tf_6         n               no_action
       
     Code
       zoomed_grouped_out_dm %>% rename(e_new = e) %>% dm_update_zoomed() %>%
@@ -100,14 +100,14 @@
       6 tf_6  o     
       
       $fks
-      # A tibble: 5 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        d             tf_1         a              
-      2 tf_2        e_new, e1     tf_3         f, f1          
-      3 tf_4        j, j1         tf_3         f, f1          
-      4 tf_5        l             tf_4         h              
-      5 tf_5        m             tf_6         n              
+      # A tibble: 5 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e_new, e1     tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 tf_5        l             tf_4         h               no_action
+      5 tf_5        m             tf_6         n               no_action
       
     Code
       zoomed_grouped_in_dm %>% rename(f_new = f) %>% dm_update_zoomed() %>%
@@ -125,14 +125,14 @@
       6 tf_6  o        
       
       $fks
-      # A tibble: 5 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        d             tf_1         a              
-      2 tf_2        e, e1         tf_3         f, f1          
-      3 tf_4        j, j1         tf_3         f, f1          
-      4 tf_5        l             tf_4         h              
-      5 tf_5        m             tf_6         n              
+      # A tibble: 5 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 tf_5        l             tf_4         h               no_action
+      5 tf_5        m             tf_6         n               no_action
       
     Code
       # summarize()
@@ -152,15 +152,15 @@
       7 new_tbl c     
       
       $fks
-      # A tibble: 6 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        d             tf_1         a              
-      2 tf_2        e, e1         tf_3         f, f1          
-      3 tf_4        j, j1         tf_3         f, f1          
-      4 new_tbl     e, e1         tf_3         f, f1          
-      5 tf_5        l             tf_4         h              
-      6 tf_5        m             tf_6         n              
+      # A tibble: 6 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 new_tbl     e, e1         tf_3         f, f1           no_action
+      5 tf_5        l             tf_4         h               no_action
+      6 tf_5        m             tf_6         n               no_action
       
     Code
       zoomed_grouped_in_dm %>% summarize(g_list = list(g)) %>% dm_insert_zoomed(
@@ -178,14 +178,14 @@
       6 tf_6  o     
       
       $fks
-      # A tibble: 5 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        d             tf_1         a              
-      2 tf_2        e, e1         tf_3         f, f1          
-      3 tf_4        j, j1         tf_3         f, f1          
-      4 tf_5        l             tf_4         h              
-      5 tf_5        m             tf_6         n              
+      # A tibble: 5 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 tf_5        l             tf_4         h               no_action
+      5 tf_5        m             tf_6         n               no_action
       
 
 # key tracking works (2)
@@ -208,15 +208,15 @@
       7 new_tbl c     
       
       $fks
-      # A tibble: 6 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        d             tf_1         a              
-      2 tf_2        e, e1         tf_3         f, f1          
-      3 tf_4        j, j1         tf_3         f, f1          
-      4 new_tbl     e, e1         tf_3         f, f1          
-      5 tf_5        l             tf_4         h              
-      6 tf_5        m             tf_6         n              
+      # A tibble: 6 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 new_tbl     e, e1         tf_3         f, f1           no_action
+      5 tf_5        l             tf_4         h               no_action
+      6 tf_5        m             tf_6         n               no_action
       
 
 # key tracking works (3)
@@ -237,14 +237,14 @@
       6 tf_6  o     
       
       $fks
-      # A tibble: 5 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        d             tf_1         a              
-      2 tf_2        e, e1         tf_3         f, f1          
-      3 tf_4        j, j1         tf_3         f, f1          
-      4 tf_5        l             tf_4         h              
-      5 tf_5        m             tf_6         n              
+      # A tibble: 5 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 tf_5        l             tf_4         h               no_action
+      5 tf_5        m             tf_6         n               no_action
       
 
 # key tracking works (4)
@@ -267,15 +267,15 @@
       7 new_tbl c     
       
       $fks
-      # A tibble: 6 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        d             tf_1         a              
-      2 tf_2        e, e1         tf_3         f, f1          
-      3 tf_4        j, j1         tf_3         f, f1          
-      4 new_tbl     e, e1         tf_3         f, f1          
-      5 tf_5        l             tf_4         h              
-      6 tf_5        m             tf_6         n              
+      # A tibble: 6 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 new_tbl     e, e1         tf_3         f, f1           no_action
+      5 tf_5        l             tf_4         h               no_action
+      6 tf_5        m             tf_6         n               no_action
       
     Code
       zoomed_grouped_in_dm %>% mutate(f = list(g)) %>% dm_insert_zoomed("new_tbl") %>%
@@ -293,14 +293,14 @@
       6 tf_6  o     
       
       $fks
-      # A tibble: 5 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        d             tf_1         a              
-      2 tf_2        e, e1         tf_3         f, f1          
-      3 tf_4        j, j1         tf_3         f, f1          
-      4 tf_5        l             tf_4         h              
-      5 tf_5        m             tf_6         n              
+      # A tibble: 5 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 tf_5        l             tf_4         h               no_action
+      5 tf_5        m             tf_6         n               no_action
       
     Code
       zoomed_grouped_in_dm %>% mutate(g_new = list(g)) %>% dm_insert_zoomed("new_tbl") %>%
@@ -319,16 +319,16 @@
       7 new_tbl f, f1 
       
       $fks
-      # A tibble: 7 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        d             tf_1         a              
-      2 tf_2        e, e1         tf_3         f, f1          
-      3 tf_4        j, j1         tf_3         f, f1          
-      4 tf_5        l             tf_4         h              
-      5 tf_5        m             tf_6         n              
-      6 tf_2        e, e1         new_tbl      f, f1          
-      7 tf_4        j, j1         new_tbl      f, f1          
+      # A tibble: 7 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 tf_5        l             tf_4         h               no_action
+      5 tf_5        m             tf_6         n               no_action
+      6 tf_2        e, e1         new_tbl      f, f1           no_action
+      7 tf_4        j, j1         new_tbl      f, f1           no_action
       
 
 # key tracking works (5)
@@ -351,15 +351,15 @@
       6 tf_6  o     
       
       $fks
-      # A tibble: 6 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        d             tf_1         a              
-      2 tf_2        e, e1         tf_3         f, f1          
-      3 tf_4        j, j1         tf_3         f, f1          
-      4 new_tbl     e_new, e1     tf_3         f, f1          
-      5 tf_5        l             tf_4         h              
-      6 tf_5        m             tf_6         n              
+      # A tibble: 6 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 new_tbl     e_new, e1     tf_3         f, f1           no_action
+      5 tf_5        l             tf_4         h               no_action
+      6 tf_5        m             tf_6         n               no_action
       
 
 # key tracking works (6)
@@ -374,11 +374,11 @@
       1 tf_3  f, f1 
       
       $fks
-      # A tibble: 2 x 4
-        child_table child_fk_cols parent_table parent_key_cols
-        <chr>       <keys>        <chr>        <keys>         
-      1 tf_2        e, e1         tf_3         f, f1          
-      2 tf_4        j, j1         tf_3         f, f1          
+      # A tibble: 2 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        e, e1         tf_3         f, f1           no_action
+      2 tf_4        j, j1         tf_3         f, f1           no_action
       
 
 # output for compound keys

@@ -159,9 +159,9 @@ new_pk <- function(column = list()) {
   tibble(column = column)
 }
 
-new_fk <- function(ref_column = list(), table = character(), column = list()) {
-  stopifnot(is.list(column), is.list(ref_column), length(table) == length(column), length(table) == length(ref_column))
-  tibble(ref_column = ref_column, table = table, column = column)
+new_fk <- function(ref_column = list(), table = character(), column = list(), on_delete = character()) {
+  stopifnot(is.list(column), is.list(ref_column), length(table) == length(column), length(table) == length(ref_column), length(on_delete) %in% c(1L, length(table)))
+  tibble(ref_column, table, column, on_delete)
 }
 
 new_filter <- function(quos = list(), zoomed = logical()) {
@@ -785,13 +785,14 @@ glimpse.dm <- function(x, width = NULL, ...) {
       filter(child_table == table_name) %>%
       select(-child_table) %>%
       pmap_chr(
-        function(child_fk_cols, parent_table, parent_key_cols) {
+        function(child_fk_cols, parent_table, parent_key_cols, on_delete) {
           trim_width(
             paste0(
               "  (",
               paste0(tick(child_fk_cols), collapse = ", "), ")",
               " -> ",
-              paste0("(`", paste0(parent_table, "$", parent_key_cols, collapse = "`, `"), "`)")
+              "(`", paste0(parent_table, "$", parent_key_cols, collapse = "`, `"), "`) ",
+              on_delete
             ),
             glimpse_width
           )

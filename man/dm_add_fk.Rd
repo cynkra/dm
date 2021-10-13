@@ -11,7 +11,8 @@ dm_add_fk(
   ref_table,
   ref_columns = NULL,
   ...,
-  check = FALSE
+  check = FALSE,
+  on_delete = c("no_action", "cascade")
 )
 }
 \arguments{
@@ -33,6 +34,15 @@ To define a compound key, use \code{c(col1, col2)}.}
 
 \item{check}{Boolean, if \code{TRUE}, a check will be performed to determine if the values of
 \code{columns} are a subset of the values of the key column(s) of \code{ref_table}.}
+
+\item{on_delete}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Defines behavior if a row in the parent table is deleted.
+- \code{"no_action"}, the default, means that no action is taken
+and the operation is aborted if child rows exist
+- \code{"cascade"} means that the child row is also deleted
+This setting is picked up by \code{\link[=copy_dm_to]{copy_dm_to()}} with \code{set_key_constraints = TRUE},
+and might be considered by \code{\link[=dm_rows_delete]{dm_rows_delete()}} in a future version.}
 }
 \value{
 An updated \code{dm} with an additional foreign key relation.
