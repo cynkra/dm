@@ -101,6 +101,8 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column, on_delete) 
   column <- unclass(column)
   ref_column <- unclass(ref_column)
 
+  on_delete <- vec_recycle(on_delete, length(ref_table))
+
   loc <- which(!duplicated(ref_table))
   n_loc <- length(loc)
   if (n_loc > 1) {
@@ -108,11 +110,12 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column, on_delete) 
 
     my <- ref_table == my_ref_table
     where_other <- which(!my)
-    dm <- dm_add_fk_impl(dm, table[where_other], column[where_other], ref_table[where_other], ref_column[where_other], on_delete)
+    dm <- dm_add_fk_impl(dm, table[where_other], column[where_other], ref_table[where_other], ref_column[where_other], on_delete[where_other])
 
     table <- table[my]
     column <- column[my]
     ref_column <- ref_column[my]
+    on_delete <- on_delete[my]
     # ref_table must be scalar, unlike the others
     ref_table <- my_ref_table
   } else if (n_loc == 0) {
