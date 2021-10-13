@@ -183,8 +183,9 @@ is_src_db <- function(dm) {
 }
 
 is_mssql <- function(dest) {
-  inherits(dest, "Microsoft SQL Server") ||
-    inherits(dest, "src_Microsoft SQL Server")
+  inherits(dest, c(
+    "Microsoft SQL Server", "src_Microsoft SQL Server", "dblogConnection-Microsoft SQL Server", "src_dblogConnection-Microsoft SQL Server"
+  ))
 }
 
 is_postgres <- function(dest) {
