@@ -135,7 +135,7 @@ new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
     if (zoomed) "zoomed_dm",
     "dm"
   )
-  out <- structure(list(def = def), class = class, version = 1L)
+  out <- structure(list(def = def), class = class, version = 2L)
 
   # Enable for strict tests (search for INSTRUMENT in .github/workflows):
   # if (validate) { validate_dm(out) } # INSTRUMENT: validate
@@ -148,7 +148,7 @@ dm_get_def <- function(x, quiet = FALSE) {
   # Most callers already call it, but not all
   check_dm(x)
 
-  if (!identical(attr(x, "version"), 1L)) {
+  if (!identical(attr(x, "version"), 2L)) {
     x <- dm_upgrade(x, quiet)
   }
   unclass(x)$def
