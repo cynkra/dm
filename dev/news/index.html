@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9002</span>
       </span>
     </div>
 
@@ -103,6 +103,18 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/master/NEWS.md"><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="dm-0249002" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.4.9002">
+<a href="#dm-0249002" class="anchor" aria-hidden="true"></a>dm 0.2.4.9002<small> Unreleased </small></h1>
+<ul><li>
+<code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> gains <code>on_delete</code> argument which <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> picks up and translates to an <code>ON DELETE CASCADE</code> or <code>ON DELETE NO ACTION</code> specification for the foreign key (<a href="https://github.com/cynkra/dm/issues/649">#649</a>).</li>
+<li>
+<code>dm_copy_to()</code> defines foreign keys during table creation, and for all databases except DuckDB. This requires a topological order of the tables (<a href="https://github.com/cynkra/dm/issues/658">#658</a>).</li>
+<li>
+<code>sql_create_schema()</code> no longer actively checks for schema existence (<a href="https://github.com/cynkra/dm/issues/660">#660</a>).</li>
+<li>
+<code><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">waldo::compare()</a></code> shows better output for dm objects (<a href="https://github.com/cynkra/dm/issues/642">#642</a>).</li>
+</ul></div>
     <div id="dm-0249001" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.4.9001">
 <a href="#dm-0249001" class="anchor" aria-hidden="true"></a>dm 0.2.4.9001<small> Unreleased </small></h1>
