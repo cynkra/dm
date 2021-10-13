@@ -6,6 +6,7 @@
 \alias{mutate.zoomed_dm}
 \alias{transmute.zoomed_dm}
 \alias{select.zoomed_dm}
+\alias{relocate.zoomed_dm}
 \alias{rename.zoomed_dm}
 \alias{distinct.zoomed_dm}
 \alias{arrange.zoomed_dm}
@@ -26,6 +27,8 @@
 \method{transmute}{zoomed_dm}(.data, ...)
 
 \method{select}{zoomed_dm}(.data, ...)
+
+\method{relocate}{zoomed_dm}(.data, ..., .before = NULL, .after = NULL)
 
 \method{rename}{zoomed_dm}(.data, ...)
 
