@@ -144,6 +144,10 @@ new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
 }
 
 dm_get_def <- function(x, quiet = FALSE) {
+  # FIXME: Move that check to callers, for speed
+  # Most callers already call it, but not all
+  check_dm(x)
+
   if (!identical(attr(x, "version"), 1L)) {
     x <- dm_upgrade(x, quiet)
   }

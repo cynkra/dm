@@ -1,3 +1,10 @@
+test_that("error message for non-dm object", {
+  # FIXME: Add a similar test to all callers of dm_get_def()
+  expect_snapshot(error = TRUE, {
+    dm_get_def(structure(list(table = "a"), class = "bogus"))
+  })
+})
+
 test_that("can upgrade from v1", {
   if (FALSE) {
     saveRDS(dm_for_filter(), "tests/testthat/dm/v1.rds", version = 2)

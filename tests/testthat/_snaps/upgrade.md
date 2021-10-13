@@ -1,3 +1,10 @@
+# error message for non-dm object
+
+    Code
+      dm_get_def(structure(list(table = "a"), class = "bogus"))
+    Error <dm_error_is_not_dm>
+      Required class `dm` but instead is `bogus`.
+
 # can upgrade from v1
 
     Code
