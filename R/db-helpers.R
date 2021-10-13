@@ -155,35 +155,6 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
   copy_data
 }
 
-create_key_constraint_queries <- function(dest, fk_information) {
-  if (is_null(fk_information)) {
-    character()
-  } else {
-    queries_set_fk_relations(dest, fk_information)
-  }
-}
-
-queries_set_fk_relations <- function(dest, fk_information) {
-  db_child_tables <- fk_information$db_child_table
-  child_fk_cols <- fk_information$child_fk_cols
-  db_parent_tables <- fk_information$db_parent_table
-  parent_pk_col <- fk_information$parent_key_cols
-
-  if (is_mssql(dest) || is_postgres(dest)) {
-    pmap_chr(
-      list(
-        db_child_tables,
-        child_fk_cols,
-        db_parent_tables,
-        parent_pk_col
-      ),
-      ~ glue_sql("ALTER TABLE {`DBI::SQL(..1)`} ADD FOREIGN KEY ({`..2`*}) REFERENCES {`DBI::SQL(..3)`} ({`..4`*}) ON DELETE NO ACTION ON UPDATE NO ACTION", .con = dest)
-    )
-  } else {
-    return(character())
-  }
-}
-
 class_to_db_class <- function(dest, class_vector) {
   if (is_mssql(dest) || is_postgres(dest)) {
     case_when(
