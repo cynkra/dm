@@ -83,11 +83,12 @@ select.zoomed_dm <- function(.data, ...) {
 }
 
 #' @export
-relocate.dm <- function(.data, ..., .before = NULL, .after = NULL) {
+relocate.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
+#' @inheritParams dplyr::relocate
 #' @export
 relocate.zoomed_dm <- function(.data, ..., .before = NULL, .after = NULL) {
   tbl <- tbl_zoomed(.data)
