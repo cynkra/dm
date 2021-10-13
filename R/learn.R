@@ -424,12 +424,13 @@ legacy_new_dm <- function(tables = NULL, data_model = NULL) {
       table = character(),
       column = character(),
       ref = character(),
-      ref_column = character()
+      ref_column = character(),
+      on_delete = character()
     )
   } else {
     fks <-
       data_model$references %>%
-      select(table, column, ref, ref_column = ref_col) %>%
+      transmute(table, column, ref, ref_column = ref_col, on_delete = "no_action") %>%
       as_tibble()
   }
 

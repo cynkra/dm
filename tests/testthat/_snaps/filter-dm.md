@@ -3,7 +3,22 @@
     Code
       dm_more_complex() %>% dm_paste(options = c("select", "keys"))
     Message <cliMessage>
-      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6, tf_7, tf_6_2, tf_4_2, a, b, c, d, e) %>%
+      dm::dm(
+        tf_1,
+        tf_2,
+        tf_3,
+        tf_4,
+        tf_5,
+        tf_6,
+        tf_7,
+        tf_6_2,
+        tf_4_2,
+        a,
+        b,
+        c,
+        d,
+        e,
+      ) %>%
         dm::dm_select(tf_1, a, b) %>%
         dm::dm_select(tf_2, c, d, e, e1) %>%
         dm::dm_select(tf_3, f, f1, g) %>%

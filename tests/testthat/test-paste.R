@@ -3,7 +3,7 @@ test_that("path argument", {
 
   path <- tempfile()
   dm() %>% dm_paste(path = path)
-  expect_identical(readLines(path), "dm::dm()")
+  expect_identical(readLines(path), c("dm::dm(", ")"))
 })
 
 local_options(lifecycle_verbosity = "warning")
@@ -14,6 +14,9 @@ test_that("output", {
   expect_snapshot({
     "empty"
     empty_dm() %>% dm_paste()
+
+    "empty table"
+    dm(a = tibble()) %>% dm_paste(options = "tables")
 
     "baseline"
     dm_for_filter() %>% dm_paste()

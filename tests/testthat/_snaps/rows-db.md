@@ -1,3 +1,35 @@
+# insert + delete + truncate message
+
+    Code
+      data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 +
+        0:2)
+      data
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      1 a        0.5
+      2      2 b        1.5
+      3      3 <NA>     2.5
+    Code
+      rows_insert(data, test_db_src_frame(select = 4, where = "z"))
+    Message <rlang_message>
+      Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.
+    Output
+        select where exists
+         <dbl> <chr>  <dbl>
+      1      1 a        0.5
+      2      2 b        1.5
+      3      3 <NA>     2.5
+      4      4 z       NA  
+    Code
+      data %>% arrange(select)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      1 a        0.5
+      2      2 b        1.5
+      3      3 <NA>     2.5
+
 # insert + delete + truncate
 
     Code
@@ -15,25 +47,6 @@
         where = "z")))))
     Output
       `x` and `y` must share the same src, set `copy` = TRUE (may be slow).
-    Code
-      rows_insert(data, test_db_src_frame(select = 4, where = "z"))
-    Message <message>
-      Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.
-    Output
-        select where exists
-         <dbl> <chr>  <dbl>
-      1      1 a        0.5
-      2      2 b        1.5
-      3      3 <NA>     2.5
-      4      4 z       NA  
-    Code
-      data %>% arrange(select)
-    Output
-        select where exists
-         <int> <chr>  <dbl>
-      1      1 a        0.5
-      2      2 b        1.5
-      3      3 <NA>     2.5
     Code
       rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = FALSE)
     Output

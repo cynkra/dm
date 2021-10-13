@@ -157,9 +157,6 @@ sql_schema_exists.SQLiteConnection <- function(dest, schema, ...) {
 sql_schema_create <- function(dest, schema, ...) {
   check_param_class(schema, "character")
   check_param_length(schema)
-  if (sql_schema_exists(dest, schema, ...)) {
-    abort_schema_exists(sql_to_character(dest, schema), ...)
-  }
   UseMethod("sql_schema_create")
 }
 

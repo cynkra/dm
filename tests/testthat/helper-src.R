@@ -281,7 +281,7 @@ dm_for_filter_w_cycle %<-% {
     dm_add_fk(tf_6, o, tf_7) %>%
     #
     dm_add_pk(tf_5, k) %>%
-    dm_add_fk(tf_5, l, tf_4) %>%
+    dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
     dm_add_fk(tf_5, m, tf_6, n)
 }
 
