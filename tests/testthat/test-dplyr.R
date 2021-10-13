@@ -414,6 +414,47 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
   )
 })
 
+test_that("basic test: 'across' works properly", {
+  # FIXME: These tests fail at least on Postgres and SQLite
+  # and probably on other remote srcs too(?),
+  # because `[...] mutate(across(where(is.character), ~ "C"))`
+  # leads to an error:
+  # `Error in `ensure_named()`: Can't rename variables in this context.`
+  # (independent of {dm})
+  skip_if_src_not("df")
+  expect_equivalent_tbl(
+    dm_for_filter() %>%
+      dm_zoom_to(tf_2) %>%
+      mutate(across(where(is.character), ~ "C")) %>%
+      pull_tbl(),
+    dm_for_filter() %>%
+      pull_tbl(tf_2) %>%
+      mutate(across(where(is.character), ~ "C"))
+  )
+
+  expect_equivalent_tbl(
+    dm_for_filter() %>%
+      dm_zoom_to(tf_2) %>%
+      summarize(across(where(is.character), ~ "C")) %>%
+      pull_tbl(),
+    dm_for_filter() %>%
+      pull_tbl(tf_2) %>%
+      summarize(across(where(is.character), ~ "C"))
+  )
+
+  expect_equivalent_tbl(
+    dm_for_filter() %>%
+      dm_zoom_to(tf_2) %>%
+      group_by(d) %>%
+      summarize(across(where(is.character), ~ "C")) %>%
+      pull_tbl(),
+    dm_for_filter() %>%
+      pull_tbl(tf_2) %>%
+      group_by(d) %>%
+      summarize(across(where(is.character), ~ "C"))
+  )
+})
+
 # test key tracking for all methods ---------------------------------------
 
 # dm_for_filter(), zoomed to tf_2; PK: c; 2 outgoing FKs: d, e; no incoming FKS
