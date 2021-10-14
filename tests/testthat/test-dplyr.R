@@ -445,7 +445,7 @@ test_that("basic test: 'across' works properly", {
     dm_for_filter() %>%
       pull_tbl(tf_2) %>%
       group_by(d) %>%
-      summarize(across(c(c, e), ~ "C"))
+      summarize(across(c(1, 3), ~ "C"))
   )
 })
 
