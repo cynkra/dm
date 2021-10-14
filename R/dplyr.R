@@ -122,15 +122,10 @@ distinct.dm <- function(.data, ...) {
 distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
   tbl <- tbl_zoomed(.data)
   distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
-  # when keeping all columns or empty ellipsis
-  # (use all columns for distinct)
-  # all keys columns remain
-  if (.keep_all || rlang::dots_n(...) == 0) {
-    return(replace_zoomed_tbl(.data, distinct_tbl))
-  }
 
-  selected <- eval_select_both(quo(c(...)), colnames(tbl))
-  new_tracked_cols_zoom <- new_tracked_cols(.data, selected$names)
+  # #663: user responsibility: those columns are tracked whose names remain
+  selected <- set_names(intersect(colnames(tbl), colnames(distinct_tbl)))
+  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
 
   replace_zoomed_tbl(.data, distinct_tbl, new_tracked_cols_zoom)
 }
