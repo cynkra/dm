@@ -25,6 +25,24 @@ test_that("basic test: 'select()'-methods work", {
   )
 })
 
+test_that("basic test: 'relocate()'-methods work", {
+  expect_equivalent_tbl(
+    relocate(zoomed_dm(), e) %>% tbl_zoomed(),
+    relocate(tf_2(), e)
+  )
+
+  expect_equivalent_tbl(
+    relocate(zoomed_dm(), e, .after = e1) %>% tbl_zoomed(),
+    relocate(tf_2(), e, .after = e1)
+  )
+
+  expect_dm_error(
+    relocate(dm_for_filter()),
+    "only_possible_w_zoom"
+  )
+})
+
+
 test_that("basic test: 'rename()'-methods work", {
   expect_equivalent_tbl(
     rename(zoomed_dm(), a = c) %>% tbl_zoomed(),
