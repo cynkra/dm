@@ -205,3 +205,9 @@ Methods are provided for: `unite()` and `separate()`.
 1. There might be situations when you would like the key relations to remain intact, but they are dropped nevertheless.
 This is because a rigid logic is implemented, that does drop a key when its associated column is acted upon with e.g. a `mutate()` call.
 In these cases the key relations will need to be established once more after finishing with the manipulations.
+
+1. For each implemented {dplyr}-verb there is a logic for tracking key relations between the tables.
+Up to {dm} version 2.4 we tried to track the columns in a very detailed manner, but because of updates in {dplyr}, namely the function `across()`, it turned out to be the better solution to give more responsibility to the {dm} user:
+Now those columns are tracked whose **names** remain in the resulting table.
+Affected by these changes are the methods for: `mutate()`, `transmute()`, `distinct()`.
+When using one of these functions, be aware that if you want to replace a key column with a column with a different content but of the same name, this column will automatically become a key column.
