@@ -507,7 +507,7 @@ test_that("key tracking works (2)", {
   expect_snapshot({
     "transmute()"
 
-    # grouped by two key cols: "c" and "e" -> these two remain
+    # grouped by three key cols: "c", "e", "e1" -> these three remain
     zoomed_grouped_out_dm %>%
       transmute(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
@@ -533,21 +533,22 @@ test_that("key tracking works (4)", {
 
     # grouped by three key cols: "c", "e" and "e1 -> these three remain
     zoomed_grouped_out_dm %>%
-      transmute(d_mean = mean(d)) %>%
+      mutate(d_mean = mean(d)) %>%
+      select(-d) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
 
     # grouped_by non-key col means, that only key-columns that remain in the
     # result tibble are tracked for mutate()
     zoomed_grouped_in_dm %>%
-      mutate(f = list(g)) %>%
+      mutate(f = paste0(g, g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
 
     # grouped_by non-key col means, that only key-columns that remain in the
     # result tibble are tracked for transmute()
     zoomed_grouped_in_dm %>%
-      transmute(g_new = list(g)) %>%
+      mutate(g_new = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
   })
