@@ -35,11 +35,11 @@ mutate.dm <- function(.data, ...) {
 #' @export
 mutate.zoomed_dm <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
-  res_tbl <- mutate(tbl, ...)
+  mutated_tbl <- mutate(tbl, ...)
   # #663: user responsibility: those columns are tracked whose names remain
-  selected <- set_names(intersect(colnames(tbl), colnames(res_tbl)))
+  selected <- set_names(intersect(colnames(tbl), colnames(mutated_tbl)))
   new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
-  replace_zoomed_tbl(.data, res_tbl, new_tracked_cols_zoom)
+  replace_zoomed_tbl(.data, mutated_tbl, new_tracked_cols_zoom)
 }
 
 #' @export
