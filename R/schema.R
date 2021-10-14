@@ -3,9 +3,13 @@
 
 #' List schemas on a database
 #'
-#' @description `db_schema_list()` lists the available schemas on the database.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `db_schema_list()` lists the available schemas on the database.
 #'
 #' @inheritParams copy_dm_to
+#' @param con An object of class `"src"` or `"DBIConnection"`.
 #' @param include_default Boolean, if `TRUE` (default), also the default schema
 #' on the database is included in the result
 #' @param ... Passed on to the individual methods.
@@ -15,7 +19,7 @@
 #' Additional arguments are:
 #'
 #'   - `dbname`: supported for MSSQL. List schemas on a different database on the connected MSSQL-server;
-#'   default: database addressed by `dest`.
+#'   default: database addressed by `con`.
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
@@ -27,27 +31,33 @@
 #' @family schema handling functions
 #'
 #' @name db_schema_list
-db_schema_list <- function(dest, include_default = TRUE, ...) {
+db_schema_list <- function(con, include_default = TRUE, ...) {
   check_param_class(include_default, "logical")
+
+  # If we check in the method, we need to specify the user_env argument
+  if (inherits(con, "src_dbi")) {
+    deprecate_soft("0.2.5", 'dm::db_schema_list(con = "must be a DBI connection, not a dbplyr source,")', )
+  }
+
   UseMethod("db_schema_list")
 }
 
 #' @export
-db_schema_list.src_dbi <- function(dest, include_default = TRUE, ...) {
-  db_schema_list(dest$con, include_default = include_default, ...)
+db_schema_list.src_dbi <- function(con, include_default = TRUE, ...) {
+  db_schema_list(con$con, include_default = include_default, ...)
 }
 
 #' @export
-`db_schema_list.Microsoft SQL Server` <- function(dest, include_default = TRUE, dbname = NULL, ...) {
+`db_schema_list.Microsoft SQL Server` <- function(con, include_default = TRUE, dbname = NULL, ...) {
   dbname_sql <- if (is_null(dbname)) {
     ""
   } else {
     check_param_class(dbname, "character")
     check_param_length(dbname)
-    paste0(DBI::dbQuoteIdentifier(dest, dbname), ".")
+    paste0(DBI::dbQuoteIdentifier(con, dbname), ".")
   }
   default_if_true <- if_else(include_default, "", " AND NOT s.name = 'dbo'")
-  DBI::dbGetQuery(dest, glue::glue("SELECT s.name as schema_name,
+  DBI::dbGetQuery(con, glue::glue("SELECT s.name as schema_name,
     u.name AS schema_owner
     FROM {dbname_sql}sys.schemas s
     INNER JOIN {dbname_sql}sys.sysusers u
@@ -58,9 +68,9 @@ db_schema_list.src_dbi <- function(dest, include_default = TRUE, ...) {
 }
 
 #' @export
-db_schema_list.PqConnection <- function(dest, include_default = TRUE, ...) {
+db_schema_list.PqConnection <- function(con, include_default = TRUE, ...) {
   default_if_true <- if_else(include_default, "", ", 'public'")
-  DBI::dbGetQuery(dest, glue::glue("SELECT schema_name, schema_owner FROM information_schema.schemata WHERE
+  DBI::dbGetQuery(con, glue::glue("SELECT schema_name, schema_owner FROM information_schema.schemata WHERE
     schema_name NOT IN ('information_schema', 'pg_catalog'{default_if_true})
     AND schema_name NOT LIKE 'pg_toast%'
     AND schema_name NOT LIKE 'pg_temp_%'
@@ -69,15 +79,15 @@ db_schema_list.PqConnection <- function(dest, include_default = TRUE, ...) {
 }
 
 #' @export
-db_schema_list.SQLiteConnection <- function(dest, include_default = TRUE, ...) {
+db_schema_list.SQLiteConnection <- function(con, include_default = TRUE, ...) {
   abort_no_schemas_supported("SQLite")
 }
 
 #' @export
-db_schema_list.Pool <- function(dest, include_default = TRUE, ...) {
-  pool_dest <- pool::poolCheckout(dest)
-  on.exit(pool::poolReturn(pool_dest))
-  db_schema_list(pool_dest, include_default, ...)
+db_schema_list.Pool <- function(con, include_default = TRUE, ...) {
+  pool_con <- pool::poolCheckout(con)
+  on.exit(pool::poolReturn(pool_con))
+  db_schema_list(pool_con, include_default, ...)
 }
 
 
@@ -85,7 +95,10 @@ db_schema_list.Pool <- function(dest, include_default = TRUE, ...) {
 
 #' Check for existence of a schema on a database
 #'
-#' @description `db_schema_exists()` checks, if a schema exists on the database.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `db_schema_exists()` checks, if a schema exists on the database.
 #'
 #' @inheritParams db_schema_list
 #' @param schema Class `character` or `SQL`, name of the schema
@@ -95,35 +108,41 @@ db_schema_list.Pool <- function(dest, include_default = TRUE, ...) {
 #' Additional arguments are:
 #'
 #'   - `dbname`: supported for MSSQL. Check if a schema exists on a different
-#'   database on the connected MSSQL-server; default: database addressed by `dest`.
+#'   database on the connected MSSQL-server; default: database addressed by `con`.
 #' @return A boolean: `TRUE` if schema exists, `FALSE` otherwise.
 #'
 #' @family schema handling functions
 #' @export
-db_schema_exists <- function(dest, schema, ...) {
+db_schema_exists <- function(con, schema, ...) {
   check_param_class(schema, "character")
   check_param_length(schema)
+
+  # If we check in the method, we need to specify the user_env argument
+  if (inherits(con, "src_dbi")) {
+    deprecate_soft("0.2.5", 'dm::db_schema_exists(con = "must be a DBI connection, not a dbplyr source,")', )
+  }
+
   UseMethod("db_schema_exists")
 }
 
 #' @export
-db_schema_exists.src_dbi <- function(dest, schema, ...) {
-  db_schema_exists(dest$con, schema, ...)
+db_schema_exists.src_dbi <- function(con, schema, ...) {
+  db_schema_exists(con$con, schema, ...)
 }
 
 #' @export
-`db_schema_exists.Microsoft SQL Server` <- function(dest, schema, dbname = NULL, ...) {
-  sql_to_character(dest, schema) %in% db_schema_list(dest, dbname = dbname)$schema_name
+`db_schema_exists.Microsoft SQL Server` <- function(con, schema, dbname = NULL, ...) {
+  sql_to_character(con, schema) %in% db_schema_list(con, dbname = dbname)$schema_name
 }
 
 
 #' @export
-db_schema_exists.PqConnection <- function(dest, schema, ...) {
-  sql_to_character(dest, schema) %in% db_schema_list(dest)$schema_name
+db_schema_exists.PqConnection <- function(con, schema, ...) {
+  sql_to_character(con, schema) %in% db_schema_list(con)$schema_name
 }
 
 #' @export
-db_schema_exists.SQLiteConnection <- function(dest, schema, ...) {
+db_schema_exists.SQLiteConnection <- function(con, schema, ...) {
   abort_no_schemas_supported("SQLite")
 }
 
@@ -132,7 +151,10 @@ db_schema_exists.SQLiteConnection <- function(dest, schema, ...) {
 
 #' Create a schema on a database
 #'
-#' @description `db_schema_create()` creates a schema on the database.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `db_schema_create()` creates a schema on the database.
 #'
 #' @inheritParams db_schema_list
 #' @param schema Class `character` or `SQL` (cf. Details), name of the schema
@@ -148,45 +170,51 @@ db_schema_exists.SQLiteConnection <- function(dest, schema, ...) {
 #' Additional arguments are:
 #'
 #'   - `dbname`: supported for MSSQL. Create a schema in a different
-#'   database on the connected MSSQL-server; default: database addressed by `dest`.
+#'   database on the connected MSSQL-server; default: database addressed by `con`.
 #'
 #' @return `NULL` invisibly.
 #'
 #' @family schema handling functions
 #' @export
-db_schema_create <- function(dest, schema, ...) {
+db_schema_create <- function(con, schema, ...) {
   check_param_class(schema, "character")
   check_param_length(schema)
+
+  # If we check in the method, we need to specify the user_env argument
+  if (inherits(con, "src_dbi")) {
+    deprecate_soft("0.2.5", 'dm::db_schema_create(con = "must be a DBI connection, not a dbplyr source,")', )
+  }
+
   UseMethod("db_schema_create")
 }
 
 #' @export
-db_schema_create.src_dbi <- function(dest, schema, ...) {
-  db_schema_create(dest$con, schema, ...)
+db_schema_create.src_dbi <- function(con, schema, ...) {
+  db_schema_create(con$con, schema, ...)
 }
 
 #' @export
-db_schema_create.PqConnection <- function(dest, schema, ...) {
-  DBI::dbExecute(dest, SQL(glue::glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(dest, schema)}")))
-  message(glue::glue("Schema {tick(sql_to_character(dest, schema))} created."))
+db_schema_create.PqConnection <- function(con, schema, ...) {
+  DBI::dbExecute(con, SQL(glue::glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(con, schema)}")))
+  message(glue::glue("Schema {tick(sql_to_character(con, schema))} created."))
   invisible(NULL)
 }
 
 #' @export
-`db_schema_create.Microsoft SQL Server` <- function(dest, schema, dbname = NULL, ...) {
+`db_schema_create.Microsoft SQL Server` <- function(con, schema, dbname = NULL, ...) {
   if (!is_null(dbname)) {
-    original_dbname <- attributes(dest)$info$dbname
-    DBI::dbExecute(dest, glue::glue("USE {DBI::dbQuoteIdentifier(dest, dbname)}"))
-    withr::defer(DBI::dbExecute(dest, glue::glue("USE {DBI::dbQuoteIdentifier(dest, original_dbname)}")))
+    original_dbname <- attributes(con)$info$dbname
+    DBI::dbExecute(con, glue::glue("USE {DBI::dbQuoteIdentifier(con, dbname)}"))
+    withr::defer(DBI::dbExecute(con, glue::glue("USE {DBI::dbQuoteIdentifier(con, original_dbname)}")))
   }
-  msg_suffix <- fix_msg(sql_to_character(dest, dbname))
-  DBI::dbExecute(dest, SQL(glue::glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(dest, schema)}")))
-  message(glue::glue("Schema {tick(sql_to_character(dest, schema))} created{msg_suffix}."))
+  msg_suffix <- fix_msg(sql_to_character(con, dbname))
+  DBI::dbExecute(con, SQL(glue::glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(con, schema)}")))
+  message(glue::glue("Schema {tick(sql_to_character(con, schema))} created{msg_suffix}."))
   invisible(NULL)
 }
 
 #' @export
-db_schema_create.SQLiteConnection <- function(dest, schema, ...) {
+db_schema_create.SQLiteConnection <- function(con, schema, ...) {
   abort_no_schemas_supported("SQLite")
 }
 
@@ -205,32 +233,32 @@ db_schema_create.SQLiteConnection <- function(dest, schema, ...) {
 # Additional arguments are:
 #
 #   - `dbname`: supported for MSSQL. Look for tables on a different
-#   database on the connected MSSQL-server; default: database addressed by `dest`.
+#   database on the connected MSSQL-server; default: database addressed by `con`.
 #
 # @return A tibble with the following columns:
 #   \describe{
 #     \item{`table_name`}{name of the table,}
 #     \item{`remote_name`}{identifier of the table on the DBMS.
 #     Can be used to access the listed tables with the syntax
-#     `tbl(dest, remote_name).`}
+#     `tbl(con, remote_name).`}
 #   }
 #
 # @family schema handling functions
 # @export
-# sql_schema_table_list <- function(dest, schema = NULL, ...) {
+# sql_schema_table_list <- function(con, schema = NULL, ...) {
 #   if (!is_null(schema)) {
 #     check_param_class(schema, "character")
 #     check_param_length(schema)
 #   }
-#   if (!is_null(schema) && !db_schema_exists(dest, schema, ...)) {
-#     abort_no_schema_exists(sql_to_character(con_from_src_or_con(dest), schema), ...)
+#   if (!is_null(schema) && !db_schema_exists(con, schema, ...)) {
+#     abort_no_schema_exists(sql_to_character(con_from_src_or_con(con), schema), ...)
 #   }
 #   UseMethod("sql_schema_table_list")
 # }
 
 # FIXME: this should be done using a dplyr function
-sql_schema_table_list_mssql <- function(dest, schema = NULL, dbname = NULL) {
-  src <- src_from_src_or_con(dest)
+sql_schema_table_list_mssql <- function(con, schema = NULL, dbname = NULL) {
+  src <- src_from_src_or_con(con)
   if (!is_null(schema)) {
     check_param_class(schema, "character")
     check_param_length(schema)
@@ -252,8 +280,8 @@ sql_schema_table_list_mssql <- function(dest, schema = NULL, dbname = NULL) {
 }
 
 # FIXME: this should be done using a dplyr function
-sql_schema_table_list_postgres <- function(dest, schema = NULL) {
-  src <- src_from_src_or_con(dest)
+sql_schema_table_list_postgres <- function(con, schema = NULL) {
+  src <- src_from_src_or_con(con)
   if (!is_null(schema)) {
     check_param_class(schema, "character")
     check_param_length(schema)
@@ -274,7 +302,10 @@ sql_schema_table_list_postgres <- function(dest, schema = NULL) {
 
 #' Remove a schema from a database
 #'
-#' @description `db_schema_drop()` deletes a schema from the database.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `db_schema_drop()` deletes a schema from the database.
 #' For certain DBMS it is possible to force the removal of a non-empty schema, see below.
 #'
 #' @inheritParams db_schema_create
@@ -291,30 +322,36 @@ sql_schema_table_list_postgres <- function(dest, schema = NULL) {
 #' Additional arguments are:
 #'
 #'   - `dbname`: supported for MSSQL. Remove a schema from a different
-#'   database on the connected MSSQL-server; default: database addressed by `dest`.
+#'   database on the connected MSSQL-server; default: database addressed by `con`.
 #'
 #' @return `NULL` invisibly.
 #'
 #' @family schema handling functions
 #' @export
-db_schema_drop <- function(dest, schema, force = FALSE, ...) {
+db_schema_drop <- function(con, schema, force = FALSE, ...) {
   check_param_class(schema, "character")
   check_param_length(schema)
   check_param_class(force, "logical")
   check_param_length(force)
-  if (!db_schema_exists(dest, schema, ...)) {
-    abort_no_schema_exists(sql_to_character(con_from_src_or_con(dest), schema), ...)
+
+  # If we check in the method, we need to specify the user_env argument
+  if (inherits(con, "src_dbi")) {
+    deprecate_soft("0.2.5", 'dm::db_schema_drop(con = "must be a DBI connection, not a dbplyr source,")', )
+  }
+
+  if (!db_schema_exists(con, schema, ...)) {
+    abort_no_schema_exists(sql_to_character(con_from_src_or_con(con), schema), ...)
   }
   UseMethod("db_schema_drop")
 }
 
 #' @export
-db_schema_drop.src_dbi <- function(dest, schema, force = FALSE, ...) {
-  db_schema_drop(dest$con, schema, force, ...)
+db_schema_drop.src_dbi <- function(con, schema, force = FALSE, ...) {
+  db_schema_drop(con$con, schema, force, ...)
 }
 
 #' @export
-db_schema_drop.PqConnection <- function(dest, schema, force = FALSE, ...) {
+db_schema_drop.PqConnection <- function(con, schema, force = FALSE, ...) {
   if (force) {
     force_infix <- " and all objects it contained"
     force_suffix <- " CASCADE"
@@ -322,13 +359,13 @@ db_schema_drop.PqConnection <- function(dest, schema, force = FALSE, ...) {
     force_infix <- ""
     force_suffix <- ""
   }
-  DBI::dbExecute(dest, SQL(glue::glue("DROP SCHEMA {DBI::dbQuoteIdentifier(dest, schema)}{force_suffix}")))
-  message(glue::glue("Dropped schema {tick(sql_to_character(dest, schema))}{force_infix}."))
+  DBI::dbExecute(con, SQL(glue::glue("DROP SCHEMA {DBI::dbQuoteIdentifier(con, schema)}{force_suffix}")))
+  message(glue::glue("Dropped schema {tick(sql_to_character(con, schema))}{force_infix}."))
   invisible(NULL)
 }
 
 #' @export
-`db_schema_drop.Microsoft SQL Server` <- function(dest, schema, force = FALSE, dbname = NULL, ...) {
+`db_schema_drop.Microsoft SQL Server` <- function(con, schema, force = FALSE, dbname = NULL, ...) {
   warn_if_arg_not(
     force,
     only_on = "Postgres",
@@ -338,18 +375,18 @@ db_schema_drop.PqConnection <- function(dest, schema, force = FALSE, ...) {
   if (!is_null(dbname)) {
     check_param_class(dbname, "character")
     check_param_length(dbname)
-    original_dbname <- attributes(dest)$info$dbname
-    DBI::dbExecute(dest, glue::glue("USE {dbname}"))
-    withr::defer(DBI::dbExecute(dest, glue::glue("USE {original_dbname}")))
+    original_dbname <- attributes(con)$info$dbname
+    DBI::dbExecute(con, glue::glue("USE {dbname}"))
+    withr::defer(DBI::dbExecute(con, glue::glue("USE {original_dbname}")))
   }
-  msg_infix <- fix_msg(sql_to_character(dest, dbname))
-  DBI::dbExecute(dest, SQL(glue::glue("DROP SCHEMA {DBI::dbQuoteIdentifier(dest, schema)}")))
-  message(glue::glue("Dropped schema {tick(sql_to_character(dest, schema))}{msg_infix}."))
+  msg_infix <- fix_msg(sql_to_character(con, dbname))
+  DBI::dbExecute(con, SQL(glue::glue("DROP SCHEMA {DBI::dbQuoteIdentifier(con, schema)}")))
+  message(glue::glue("Dropped schema {tick(sql_to_character(con, schema))}{msg_infix}."))
   invisible(NULL)
 }
 
 #' @export
-db_schema_drop.SQLiteConnection <- function(dest, schema, force = FALSE, ...) {
+db_schema_drop.SQLiteConnection <- function(con, schema, force = FALSE, ...) {
   abort_no_schemas_supported("SQLite")
 }
 

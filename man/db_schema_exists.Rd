@@ -4,10 +4,10 @@
 \alias{db_schema_exists}
 \title{Check for existence of a schema on a database}
 \usage{
-db_schema_exists(dest, schema, ...)
+db_schema_exists(con, schema, ...)
 }
 \arguments{
-\item{dest}{An object of class \code{"src"} or \code{"DBIConnection"}.}
+\item{con}{An object of class \code{"src"} or \code{"DBIConnection"}.}
 
 \item{schema}{Class \code{character} or \code{SQL}, name of the schema}
 
@@ -17,6 +17,8 @@ db_schema_exists(dest, schema, ...)
 A boolean: \code{TRUE} if schema exists, \code{FALSE} otherwise.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{db_schema_exists()} checks, if a schema exists on the database.
 }
 \details{
@@ -25,7 +27,7 @@ Methods are not available for all DBMS.
 Additional arguments are:
 \itemize{
 \item \code{dbname}: supported for MSSQL. Check if a schema exists on a different
-database on the connected MSSQL-server; default: database addressed by \code{dest}.
+database on the connected MSSQL-server; default: database addressed by \code{con}.
 }
 }
 \seealso{
