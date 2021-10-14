@@ -20,6 +20,8 @@ all objects it contains at once. Currently only supported for Postgres.}
 \code{NULL} invisibly.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{db_schema_drop()} deletes a schema from the database.
 For certain DBMS it is possible to force the removal of a non-empty schema, see below.
 }

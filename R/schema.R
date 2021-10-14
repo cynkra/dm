@@ -3,7 +3,10 @@
 
 #' List schemas on a database
 #'
-#' @description `db_schema_list()` lists the available schemas on the database.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `db_schema_list()` lists the available schemas on the database.
 #'
 #' @inheritParams copy_dm_to
 #' @param con An object of class `"src"` or `"DBIConnection"`.
@@ -86,7 +89,10 @@ db_schema_list.Pool <- function(con, include_default = TRUE, ...) {
 
 #' Check for existence of a schema on a database
 #'
-#' @description `db_schema_exists()` checks, if a schema exists on the database.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `db_schema_exists()` checks, if a schema exists on the database.
 #'
 #' @inheritParams db_schema_list
 #' @param schema Class `character` or `SQL`, name of the schema
@@ -133,7 +139,10 @@ db_schema_exists.SQLiteConnection <- function(con, schema, ...) {
 
 #' Create a schema on a database
 #'
-#' @description `db_schema_create()` creates a schema on the database.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `db_schema_create()` creates a schema on the database.
 #'
 #' @inheritParams db_schema_list
 #' @param schema Class `character` or `SQL` (cf. Details), name of the schema
@@ -275,7 +284,10 @@ sql_schema_table_list_postgres <- function(con, schema = NULL) {
 
 #' Remove a schema from a database
 #'
-#' @description `db_schema_drop()` deletes a schema from the database.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `db_schema_drop()` deletes a schema from the database.
 #' For certain DBMS it is possible to force the removal of a non-empty schema, see below.
 #'
 #' @inheritParams db_schema_create

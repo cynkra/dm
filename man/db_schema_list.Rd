@@ -22,6 +22,8 @@ A tibble with the following columns:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{db_schema_list()} lists the available schemas on the database.
 }
 \details{
