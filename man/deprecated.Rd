@@ -5,6 +5,7 @@
 \alias{sql_schema_create}
 \alias{sql_schema_drop}
 \alias{sql_schema_exists}
+\alias{sql_schema_list}
 \alias{check_if_subset}
 \alias{check_cardinality}
 \alias{cdm_get_src}
@@ -59,6 +60,8 @@ sql_schema_create(dest, schema, ...)
 sql_schema_drop(dest, schema, force = FALSE, ...)
 
 sql_schema_exists(dest, schema, ...)
+
+sql_schema_list(dest, include_default = TRUE, ...)
 
 check_if_subset(t1, c1, t2, c2)
 

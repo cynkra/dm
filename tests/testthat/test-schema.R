@@ -28,7 +28,7 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_error(db_schema_create(con_db, "1-dm_schema_TEST"))
   expect_identical(
     con_db %>%
-      sql_schema_list(include_default = FALSE) %>%
+      db_schema_list(include_default = FALSE) %>%
       filter(schema_name == "1-dm_schema_TEST") %>%
       pull(schema_name),
     "1-dm_schema_TEST"
@@ -111,7 +111,7 @@ test_that("schema handling on Postgres works", {
   expect_identical(
     sort(
       filter(
-        sql_schema_list(con_db, include_default = TRUE),
+        db_schema_list(con_db, include_default = TRUE),
         schema_name == "public" | schema_name == "2-dm_schema_TEST"
       ) %>%
         pull(schema_name)
@@ -150,7 +150,7 @@ test_that("schema handling on MSSQL works for different DBs", {
 
   expect_identical(
     sort(
-      sql_schema_list(con_db, include_default = TRUE, dbname = "test_db_for_schema_dm")$schema_name
+      db_schema_list(con_db, include_default = TRUE, dbname = "test_db_for_schema_dm")$schema_name
     ),
     c("dbo", "test_schema")
   )
@@ -208,7 +208,7 @@ test_that("schema handling on SQLite all throw errors", {
     "no_schemas_supported"
   )
   expect_dm_error(
-    sql_schema_list(src_db),
+    db_schema_list(src_db),
     "no_schemas_supported"
   )
   expect_dm_error(
@@ -225,7 +225,7 @@ test_that("schema handling on SQLite all throw errors", {
     "no_schemas_supported"
   )
   expect_dm_error(
-    sql_schema_list(con_db),
+    db_schema_list(con_db),
     "no_schemas_supported"
   )
   expect_dm_error(
