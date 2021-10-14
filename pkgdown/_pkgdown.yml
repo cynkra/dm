@@ -135,7 +135,7 @@ reference:
 
 - title: Database schemas
   contents:
-  - sql_schema_create
+  - db_schema_create
   - sql_schema_drop
   - sql_schema_exists
   - sql_schema_list

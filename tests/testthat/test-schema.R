@@ -24,8 +24,8 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_false(sql_schema_exists(src_db, "1-dm_schema_TEST"))
 
   # create a table in the default schema
-  expect_message(sql_schema_create(con_db, "1-dm_schema_TEST"), "created")
-  expect_error(sql_schema_create(con_db, "1-dm_schema_TEST"))
+  expect_message(db_schema_create(con_db, "1-dm_schema_TEST"), "created")
+  expect_error(db_schema_create(con_db, "1-dm_schema_TEST"))
   expect_identical(
     con_db %>%
       sql_schema_list(include_default = FALSE) %>%
@@ -38,7 +38,7 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_dm_error(sql_schema_drop(con_db, "1-dm_schema_TEST"), "no_schema_exists")
   expect_false(sql_schema_exists(con_db, "1-dm_schema_TEST"))
 
-  expect_message(sql_schema_create(src_db, "1-dm_schema_TEST"), "created")
+  expect_message(db_schema_create(src_db, "1-dm_schema_TEST"), "created")
   expect_true(sql_schema_exists(src_db, "1-dm_schema_TEST"))
   expect_message(sql_schema_drop(src_db, "1-dm_schema_TEST"), "Dropped schema")
   expect_false(sql_schema_exists(src_db, "1-dm_schema_TEST"))
@@ -66,7 +66,7 @@ test_that("schema handling on MSSQL and Postgres works", {
     tibble(a = 1:5)
   )
 
-  expect_message(sql_schema_create(src_db, "1-dm_schema_TEST"), "created")
+  expect_message(db_schema_create(src_db, "1-dm_schema_TEST"), "created")
 
   dbWriteTable(
     con_db,
@@ -101,7 +101,7 @@ test_that("schema handling on Postgres works", {
   src_db <- my_test_src()
   con_db <- src_db$con
 
-  sql_schema_create(con_db, "2-dm_schema_TEST")
+  db_schema_create(con_db, "2-dm_schema_TEST")
   dbWriteTable(
     con_db,
     DBI::Id(schema = "2-dm_schema_TEST", table = "test_schema_2"),
@@ -140,12 +140,12 @@ test_that("schema handling on MSSQL works for different DBs", {
   expect_false(sql_schema_exists(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"))
 
   expect_message(
-    sql_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    db_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
     "on database `test_db_for_schema_dm`"
   )
 
   expect_error(
-    sql_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm")
+    db_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm")
   )
 
   expect_identical(
@@ -161,7 +161,7 @@ test_that("schema handling on MSSQL works for different DBs", {
   )
 
   expect_message(
-    sql_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    db_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
     "on database `test_db_for_schema_dm`"
   )
 

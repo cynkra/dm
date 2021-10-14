@@ -112,7 +112,7 @@ test_that("copy_dm_to() fails legibly with schema argument for MSSQL & Postgres"
 
   expect_false(sql_schema_exists(src_db, "copy_dm_to_schema"))
 
-  sql_schema_create(src_db, "copy_dm_to_schema")
+  db_schema_create(src_db, "copy_dm_to_schema")
 
   withr::defer({
     try(dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
@@ -143,7 +143,7 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
 
   expect_false(sql_schema_exists(src_db, "copy_dm_to_schema"))
 
-  sql_schema_create(src_db, "copy_dm_to_schema")
+  db_schema_create(src_db, "copy_dm_to_schema")
 
   withr::defer({
     order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")

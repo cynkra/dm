@@ -128,11 +128,11 @@ sql_schema_exists.SQLiteConnection <- function(dest, schema, ...) {
 }
 
 
-# sql_schema_create() -----------------------------------------------------
+# db_schema_create() -----------------------------------------------------
 
 #' Create a schema on a database
 #'
-#' @description `sql_schema_create()` creates a schema on the database.
+#' @description `db_schema_create()` creates a schema on the database.
 #'
 #' @inheritParams sql_schema_list
 #' @param schema Class `character` or `SQL` (cf. Details), name of the schema
@@ -154,26 +154,26 @@ sql_schema_exists.SQLiteConnection <- function(dest, schema, ...) {
 #'
 #' @family schema handling functions
 #' @export
-sql_schema_create <- function(dest, schema, ...) {
+db_schema_create <- function(dest, schema, ...) {
   check_param_class(schema, "character")
   check_param_length(schema)
-  UseMethod("sql_schema_create")
+  UseMethod("db_schema_create")
 }
 
 #' @export
-sql_schema_create.src_dbi <- function(dest, schema, ...) {
-  sql_schema_create(dest$con, schema, ...)
+db_schema_create.src_dbi <- function(dest, schema, ...) {
+  db_schema_create(dest$con, schema, ...)
 }
 
 #' @export
-sql_schema_create.PqConnection <- function(dest, schema, ...) {
+db_schema_create.PqConnection <- function(dest, schema, ...) {
   DBI::dbExecute(dest, SQL(glue::glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(dest, schema)}")))
   message(glue::glue("Schema {tick(sql_to_character(dest, schema))} created."))
   invisible(NULL)
 }
 
 #' @export
-`sql_schema_create.Microsoft SQL Server` <- function(dest, schema, dbname = NULL, ...) {
+`db_schema_create.Microsoft SQL Server` <- function(dest, schema, dbname = NULL, ...) {
   if (!is_null(dbname)) {
     original_dbname <- attributes(dest)$info$dbname
     DBI::dbExecute(dest, glue::glue("USE {DBI::dbQuoteIdentifier(dest, dbname)}"))
@@ -186,7 +186,7 @@ sql_schema_create.PqConnection <- function(dest, schema, ...) {
 }
 
 #' @export
-sql_schema_create.SQLiteConnection <- function(dest, schema, ...) {
+db_schema_create.SQLiteConnection <- function(dest, schema, ...) {
   abort_no_schemas_supported("SQLite")
 }
 
@@ -277,7 +277,7 @@ sql_schema_table_list_postgres <- function(dest, schema = NULL) {
 #' @description `sql_schema_drop()` deletes a schema from the database.
 #' For certain DBMS it is possible to force the removal of a non-empty schema, see below.
 #'
-#' @inheritParams sql_schema_create
+#' @inheritParams db_schema_create
 #' @param force Boolean, default `FALSE`. Set to `TRUE` to drop a schema and
 #' all objects it contains at once. Currently only supported for Postgres.
 #'

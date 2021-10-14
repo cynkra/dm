@@ -2,6 +2,7 @@
 % Please edit documentation in R/deprecated.R, R/zzx-deprecated.R
 \name{deprecated}
 \alias{deprecated}
+\alias{sql_schema_create}
 \alias{check_if_subset}
 \alias{check_cardinality}
 \alias{cdm_get_src}
@@ -51,6 +52,8 @@
 \alias{cdm_zoom_out}
 \title{Deprecated functions}
 \usage{
+sql_schema_create(dest, schema, ...)
+
 check_if_subset(t1, c1, t2, c2)
 
 check_cardinality(parent_table, pk_column, child_table, fk_column)
@@ -177,5 +180,8 @@ cdm_zoom_out(dm)
 These functions are deprecated in favor of better alternatives.
 Most functions with the \code{cdm_} prefix have an identical alternative
 with a \code{dm_} prefix.
+
+\verb{sql_schema_*()} functions have been replaced with the corresponding
+\verb{db_schema_*()} functions.
 }
 \keyword{internal}
