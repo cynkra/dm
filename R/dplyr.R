@@ -35,13 +35,11 @@ mutate.dm <- function(.data, ...) {
 #' @export
 mutate.zoomed_dm <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
-  quos <- enquos(..., .named = TRUE)
-  mutated_tbl <- mutate(tbl, !!!quos)
-  # all columns that are not touched count as "selected"; names of "selected" are identical to "selected"
-  # in case no keys are tracked, `set_names(NULL)` would throw an error
-  selected <- set_names(setdiff(names2(col_tracker_zoomed(.data)), names(quos)))
+  res_tbl <- mutate(tbl, ...)
+  # #663: user responsibility: those columns are tracked whose names remain
+  selected <- set_names(intersect(colnames(tbl), colnames(res_tbl)))
   new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
-  replace_zoomed_tbl(.data, mutated_tbl, new_tracked_cols_zoom)
+  replace_zoomed_tbl(.data, res_tbl, new_tracked_cols_zoom)
 }
 
 #' @export
