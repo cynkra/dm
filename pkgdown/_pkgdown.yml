@@ -135,10 +135,10 @@ reference:
 
 - title: Database schemas
   contents:
-  - sql_schema_create
-  - sql_schema_drop
-  - sql_schema_exists
-  - sql_schema_list
+  - db_schema_create
+  - db_schema_drop
+  - db_schema_exists
+  - db_schema_list
 
 - title: Miscellaneous
   contents:
