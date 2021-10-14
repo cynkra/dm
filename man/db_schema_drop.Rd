@@ -4,10 +4,10 @@
 \alias{db_schema_drop}
 \title{Remove a schema from a database}
 \usage{
-db_schema_drop(dest, schema, force = FALSE, ...)
+db_schema_drop(con, schema, force = FALSE, ...)
 }
 \arguments{
-\item{dest}{An object of class \code{"src"} or \code{"DBIConnection"}.}
+\item{con}{An object of class \code{"src"} or \code{"DBIConnection"}.}
 
 \item{schema}{Class \code{character} or \code{SQL} (cf. Details), name of the schema}
 
@@ -34,7 +34,7 @@ Keep in mind, that in this case it is assumed that they are already correctly qu
 Additional arguments are:
 \itemize{
 \item \code{dbname}: supported for MSSQL. Remove a schema from a different
-database on the connected MSSQL-server; default: database addressed by \code{dest}.
+database on the connected MSSQL-server; default: database addressed by \code{con}.
 }
 }
 \seealso{

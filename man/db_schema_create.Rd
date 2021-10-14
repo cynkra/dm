@@ -4,10 +4,10 @@
 \alias{db_schema_create}
 \title{Create a schema on a database}
 \usage{
-db_schema_create(dest, schema, ...)
+db_schema_create(con, schema, ...)
 }
 \arguments{
-\item{dest}{An object of class \code{"src"} or \code{"DBIConnection"}.}
+\item{con}{An object of class \code{"src"} or \code{"DBIConnection"}.}
 
 \item{schema}{Class \code{character} or \code{SQL} (cf. Details), name of the schema}
 
@@ -31,7 +31,7 @@ using \code{\link[DBI:dbQuoteIdentifier]{DBI::dbQuoteIdentifier()}}.
 Additional arguments are:
 \itemize{
 \item \code{dbname}: supported for MSSQL. Create a schema in a different
-database on the connected MSSQL-server; default: database addressed by \code{dest}.
+database on the connected MSSQL-server; default: database addressed by \code{con}.
 }
 }
 \seealso{

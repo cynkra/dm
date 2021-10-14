@@ -4,10 +4,10 @@
 \alias{db_schema_exists}
 \title{Check for existence of a schema on a database}
 \usage{
-db_schema_exists(dest, schema, ...)
+db_schema_exists(con, schema, ...)
 }
 \arguments{
-\item{dest}{An object of class \code{"src"} or \code{"DBIConnection"}.}
+\item{con}{An object of class \code{"src"} or \code{"DBIConnection"}.}
 
 \item{schema}{Class \code{character} or \code{SQL}, name of the schema}
 
@@ -25,7 +25,7 @@ Methods are not available for all DBMS.
 Additional arguments are:
 \itemize{
 \item \code{dbname}: supported for MSSQL. Check if a schema exists on a different
-database on the connected MSSQL-server; default: database addressed by \code{dest}.
+database on the connected MSSQL-server; default: database addressed by \code{con}.
 }
 }
 \seealso{
