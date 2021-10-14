@@ -197,7 +197,7 @@ flights_dm %>%
 
 1. Currently not all of the {dplyr}-verbs have their own method for a `zoomed_dm`, so be aware that in some cases it will still be necessary to resort to extracting one or more tables from a `dm` and reinserting a transformed version of theirs into the `dm` eventually.
 The supported functions are:
-`group_by()`, `ungroup()`, `summarise()`, `mutate()`, `transmute()`, `filter()`, `select()`, `rename()`, `distinct()`, `arrange()`, `slice()`, `left_join()`, `inner_join()`, `full_join()`, `right_join()`, `semi_join()` and `anti_join()`.
+`group_by()`, `ungroup()`, `summarise()`, `mutate()`, `transmute()`, `filter()`, `select()`, `relocate()`, `rename()`, `distinct()`, `arrange()`, `slice()`, `left_join()`, `inner_join()`, `full_join()`, `right_join()`, `semi_join()` and `anti_join()`.
 
 1. The same is true for {tidyr}-functions.
 Methods are provided for: `unite()` and `separate()`.
