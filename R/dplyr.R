@@ -275,6 +275,7 @@ summarise.dm <- function(.data, ...) {
 summarise.zoomed_dm <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
   # groups are "selected"; key tracking will continue for them
+  # #663: user responsibility: if group columns are manipulated, they are still tracked
   groups <- set_names(map_chr(groups(tbl), as_string))
   summarized_tbl <- summarize(tbl, ...)
   new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
