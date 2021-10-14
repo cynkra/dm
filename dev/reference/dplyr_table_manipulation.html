@@ -121,6 +121,9 @@
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for zoomed_dm</span>
+<span class="fu">relocate</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span>, .before <span class="op">=</span> <span class="cn">NULL</span>, .after <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+
+<span class="co"># S3 method for zoomed_dm</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for zoomed_dm</span>
@@ -165,6 +168,14 @@
       <td><p>object of class <code>zoomed_dm</code></p></td>
     </tr><tr><th>...</th>
       <td><p>see corresponding function in package <span class="pkg">dplyr</span> or <span class="pkg">tidyr</span></p></td>
+    </tr><tr><th>.before</th>
+      <td><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html">tidy-select</a></code>&gt; Destination of
+columns selected by <code>...</code>. Supplying neither will move columns to the
+left-hand side; specifying both is an error.</p></td>
+    </tr><tr><th>.after</th>
+      <td><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html">tidy-select</a></code>&gt; Destination of
+columns selected by <code>...</code>. Supplying neither will move columns to the
+left-hand side; specifying both is an error.</p></td>
     </tr><tr><th>.keep_all</th>
       <td><p>For <code>distinct.zoomed_dm()</code>: see <code><a href="https://dplyr.tidyverse.org/reference/distinct.html">dplyr::distinct</a></code></p></td>
     </tr><tr><th>.keep_pk</th>
