@@ -22,3 +22,16 @@ sql_schema_create <- function(dest, schema, ...) {
   check_dots_empty()
   db_schema_create(dest, schema)
 }
+
+#' sql_schema_drop()
+#'
+#' @keywords internal
+#' @rdname deprecated
+#' @export
+sql_schema_drop <- function(dest, schema, force = FALSE, ...) {
+  # FIXME: Use sql_*() methods to construct the SQL code
+  # Challenge: How to run multi-statement code with cleanup?
+  deprecate_soft("0.2.5", "dm::sql_schema_drop()", "dm::db_schema_drop()")
+  check_dots_empty()
+  db_schema_drop(dest, schema, force)
+}

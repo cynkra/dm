@@ -3,6 +3,7 @@
 \name{deprecated}
 \alias{deprecated}
 \alias{sql_schema_create}
+\alias{sql_schema_drop}
 \alias{check_if_subset}
 \alias{check_cardinality}
 \alias{cdm_get_src}
@@ -53,6 +54,8 @@
 \title{Deprecated functions}
 \usage{
 sql_schema_create(dest, schema, ...)
+
+sql_schema_drop(dest, schema, force = FALSE, ...)
 
 check_if_subset(t1, c1, t2, c2)
 

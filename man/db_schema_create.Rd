@@ -36,7 +36,7 @@ database on the connected MSSQL-server; default: database addressed by \code{des
 }
 \seealso{
 Other schema handling functions: 
-\code{\link{sql_schema_drop}()},
+\code{\link{db_schema_drop}()},
 \code{\link{sql_schema_exists}()},
 \code{\link{sql_schema_list}()}
 }

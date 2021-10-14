@@ -36,7 +36,7 @@ default: database addressed by \code{dest}.
 \seealso{
 Other schema handling functions: 
 \code{\link{db_schema_create}()},
-\code{\link{sql_schema_drop}()},
+\code{\link{db_schema_drop}()},
 \code{\link{sql_schema_exists}()}
 }
 \concept{schema handling functions}

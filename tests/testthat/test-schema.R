@@ -34,13 +34,13 @@ test_that("schema handling on MSSQL and Postgres works", {
     "1-dm_schema_TEST"
   )
   expect_true(sql_schema_exists(con_db, "1-dm_schema_TEST"))
-  expect_message(sql_schema_drop(con_db, "1-dm_schema_TEST"), "Dropped schema")
-  expect_dm_error(sql_schema_drop(con_db, "1-dm_schema_TEST"), "no_schema_exists")
+  expect_message(db_schema_drop(con_db, "1-dm_schema_TEST"), "Dropped schema")
+  expect_dm_error(db_schema_drop(con_db, "1-dm_schema_TEST"), "no_schema_exists")
   expect_false(sql_schema_exists(con_db, "1-dm_schema_TEST"))
 
   expect_message(db_schema_create(src_db, "1-dm_schema_TEST"), "created")
   expect_true(sql_schema_exists(src_db, "1-dm_schema_TEST"))
-  expect_message(sql_schema_drop(src_db, "1-dm_schema_TEST"), "Dropped schema")
+  expect_message(db_schema_drop(src_db, "1-dm_schema_TEST"), "Dropped schema")
   expect_false(sql_schema_exists(src_db, "1-dm_schema_TEST"))
 
   expect_false("test_schema_1" %in% sql_schema_table_list(con_db)$table_name)
@@ -120,7 +120,7 @@ test_that("schema handling on Postgres works", {
   )
 
   expect_message(
-    sql_schema_drop(src_db, "2-dm_schema_TEST", force = TRUE),
+    db_schema_drop(src_db, "2-dm_schema_TEST", force = TRUE),
     "all objects"
   )
 })
@@ -156,7 +156,7 @@ test_that("schema handling on MSSQL works for different DBs", {
   )
 
   expect_message(
-    sql_schema_drop(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    db_schema_drop(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
     "on database `test_db_for_schema_dm`"
   )
 
@@ -183,7 +183,7 @@ test_that("schema handling on MSSQL works for different DBs", {
 
   expect_error(
     expect_warning(
-      sql_schema_drop(con_db, "test_schema", dbname = "test_db_for_schema_dm", force = TRUE),
+      db_schema_drop(con_db, "test_schema", dbname = "test_db_for_schema_dm", force = TRUE),
       "Argument `force` ignored:"
     )
   )
@@ -212,7 +212,7 @@ test_that("schema handling on SQLite all throw errors", {
     "no_schemas_supported"
   )
   expect_dm_error(
-    sql_schema_drop(src_db, "test"),
+    db_schema_drop(src_db, "test"),
     "no_schemas_supported"
   )
   expect_dm_error(
@@ -229,7 +229,7 @@ test_that("schema handling on SQLite all throw errors", {
     "no_schemas_supported"
   )
   expect_dm_error(
-    sql_schema_drop(con_db, "test"),
+    db_schema_drop(con_db, "test"),
     "no_schemas_supported"
   )
   expect_dm_error(

@@ -270,11 +270,11 @@ sql_schema_table_list_postgres <- function(dest, schema = NULL) {
     mutate(remote_name = dbplyr::ident_q(remote_name))
 }
 
-# sql_schema_drop() -------------------------------------------------------
+# db_schema_drop() -------------------------------------------------------
 
 #' Remove a schema from a database
 #'
-#' @description `sql_schema_drop()` deletes a schema from the database.
+#' @description `db_schema_drop()` deletes a schema from the database.
 #' For certain DBMS it is possible to force the removal of a non-empty schema, see below.
 #'
 #' @inheritParams db_schema_create
@@ -297,7 +297,7 @@ sql_schema_table_list_postgres <- function(dest, schema = NULL) {
 #'
 #' @family schema handling functions
 #' @export
-sql_schema_drop <- function(dest, schema, force = FALSE, ...) {
+db_schema_drop <- function(dest, schema, force = FALSE, ...) {
   check_param_class(schema, "character")
   check_param_length(schema)
   check_param_class(force, "logical")
@@ -305,16 +305,16 @@ sql_schema_drop <- function(dest, schema, force = FALSE, ...) {
   if (!sql_schema_exists(dest, schema, ...)) {
     abort_no_schema_exists(sql_to_character(con_from_src_or_con(dest), schema), ...)
   }
-  UseMethod("sql_schema_drop")
+  UseMethod("db_schema_drop")
 }
 
 #' @export
-sql_schema_drop.src_dbi <- function(dest, schema, force = FALSE, ...) {
-  sql_schema_drop(dest$con, schema, force, ...)
+db_schema_drop.src_dbi <- function(dest, schema, force = FALSE, ...) {
+  db_schema_drop(dest$con, schema, force, ...)
 }
 
 #' @export
-sql_schema_drop.PqConnection <- function(dest, schema, force = FALSE, ...) {
+db_schema_drop.PqConnection <- function(dest, schema, force = FALSE, ...) {
   if (force) {
     force_infix <- " and all objects it contained"
     force_suffix <- " CASCADE"
@@ -328,7 +328,7 @@ sql_schema_drop.PqConnection <- function(dest, schema, force = FALSE, ...) {
 }
 
 #' @export
-`sql_schema_drop.Microsoft SQL Server` <- function(dest, schema, force = FALSE, dbname = NULL, ...) {
+`db_schema_drop.Microsoft SQL Server` <- function(dest, schema, force = FALSE, dbname = NULL, ...) {
   warn_if_arg_not(
     force,
     only_on = "Postgres",
@@ -349,7 +349,7 @@ sql_schema_drop.PqConnection <- function(dest, schema, force = FALSE, ...) {
 }
 
 #' @export
-sql_schema_drop.SQLiteConnection <- function(dest, schema, force = FALSE, ...) {
+db_schema_drop.SQLiteConnection <- function(dest, schema, force = FALSE, ...) {
   abort_no_schemas_supported("SQLite")
 }
 
