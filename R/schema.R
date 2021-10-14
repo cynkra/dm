@@ -33,6 +33,12 @@
 #' @name db_schema_list
 db_schema_list <- function(con, include_default = TRUE, ...) {
   check_param_class(include_default, "logical")
+
+  # If we check in the method, we need to specify the user_env argument
+  if (inherits(con, "src_dbi")) {
+    deprecate_soft("0.2.5", 'dm::db_schema_list(con = "must be a DBI connection, not a dbplyr source,")', )
+  }
+
   UseMethod("db_schema_list")
 }
 
@@ -110,6 +116,12 @@ db_schema_list.Pool <- function(con, include_default = TRUE, ...) {
 db_schema_exists <- function(con, schema, ...) {
   check_param_class(schema, "character")
   check_param_length(schema)
+
+  # If we check in the method, we need to specify the user_env argument
+  if (inherits(con, "src_dbi")) {
+    deprecate_soft("0.2.5", 'dm::db_schema_exists(con = "must be a DBI connection, not a dbplyr source,")', )
+  }
+
   UseMethod("db_schema_exists")
 }
 
@@ -167,6 +179,12 @@ db_schema_exists.SQLiteConnection <- function(con, schema, ...) {
 db_schema_create <- function(con, schema, ...) {
   check_param_class(schema, "character")
   check_param_length(schema)
+
+  # If we check in the method, we need to specify the user_env argument
+  if (inherits(con, "src_dbi")) {
+    deprecate_soft("0.2.5", 'dm::db_schema_create(con = "must be a DBI connection, not a dbplyr source,")', )
+  }
+
   UseMethod("db_schema_create")
 }
 
@@ -315,6 +333,12 @@ db_schema_drop <- function(con, schema, force = FALSE, ...) {
   check_param_length(schema)
   check_param_class(force, "logical")
   check_param_length(force)
+
+  # If we check in the method, we need to specify the user_env argument
+  if (inherits(con, "src_dbi")) {
+    deprecate_soft("0.2.5", 'dm::db_schema_drop(con = "must be a DBI connection, not a dbplyr source,")', )
+  }
+
   if (!db_schema_exists(con, schema, ...)) {
     abort_no_schema_exists(sql_to_character(con_from_src_or_con(con), schema), ...)
   }
