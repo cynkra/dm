@@ -218,9 +218,10 @@ test_that("basic test: 'slice()'-methods work", {
     )
   )
 
-  # silent when no PK available anymore
-  expect_silent(
-    mutate(zoomed_dm(), c = 1) %>% slice(1:3)
+  # changed for #663: mutate() tracks now all cols that remain
+  expect_message(
+    mutate(zoomed_dm(), c = 1) %>% slice(1:3),
+    "Keeping PK column"
   )
 
   expect_silent(
@@ -304,7 +305,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
 
   # a former FK-relation could not be tracked
   expect_dm_error(
-    zoomed_dm() %>% mutate(e = e) %>% left_join(tf_3),
+    zoomed_dm() %>% select(-e) %>% left_join(tf_3),
     "fk_not_tracked"
   )
 
@@ -530,21 +531,23 @@ test_that("key tracking works (4)", {
   expect_snapshot({
     "mutate()"
 
-    # grouped by two key cols: "c" and "e" -> these two remain
+    # grouped by three key cols: "c", "e" and "e1 -> these three remain
     zoomed_grouped_out_dm %>%
-      mutate(d_mean = mean(d), d = d * 2) %>%
+      transmute(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
 
-    # grouped_by non-key col means, that only key-columns that are not touched remain for mutate()
+    # grouped_by non-key col means, that only key-columns that remain in the
+    # result tibble are tracked for mutate()
     zoomed_grouped_in_dm %>%
       mutate(f = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
 
-    # grouped_by non-key col means, that only key-columns that are not touched remain for
+    # grouped_by non-key col means, that only key-columns that remain in the
+    # result tibble are tracked for transmute()
     zoomed_grouped_in_dm %>%
-      mutate(g_new = list(g)) %>%
+      transmute(g_new = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
   })
@@ -584,9 +587,7 @@ test_that("key tracking works for distinct() and arrange()", {
       dm_get_all_fks_impl(),
     dm_for_filter() %>%
       dm_get_all_fks_impl() %>%
-      filter(child_table != "tf_2" | parent_table != "tf_3") %>%
-      # https://github.com/r-lib/vctrs/issues/1371
-      mutate(child_fk_cols = new_keys(if_else(child_fk_cols == new_keys("d"), list("d_new"), unclass(child_fk_cols))))
+      filter(child_table != "tf_2")
   )
 
   expect_identical(
