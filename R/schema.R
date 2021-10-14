@@ -81,11 +81,11 @@ sql_schema_list.Pool <- function(dest, include_default = TRUE, ...) {
 }
 
 
-# sql_schema_exists() -----------------------------------------------------
+# db_schema_exists() -----------------------------------------------------
 
 #' Check for existence of a schema on a database
 #'
-#' @description `sql_schema_exists()` checks, if a schema exists on the database.
+#' @description `db_schema_exists()` checks, if a schema exists on the database.
 #'
 #' @inheritParams sql_schema_list
 #' @param schema Class `character` or `SQL`, name of the schema
@@ -100,30 +100,30 @@ sql_schema_list.Pool <- function(dest, include_default = TRUE, ...) {
 #'
 #' @family schema handling functions
 #' @export
-sql_schema_exists <- function(dest, schema, ...) {
+db_schema_exists <- function(dest, schema, ...) {
   check_param_class(schema, "character")
   check_param_length(schema)
-  UseMethod("sql_schema_exists")
+  UseMethod("db_schema_exists")
 }
 
 #' @export
-sql_schema_exists.src_dbi <- function(dest, schema, ...) {
-  sql_schema_exists(dest$con, schema, ...)
+db_schema_exists.src_dbi <- function(dest, schema, ...) {
+  db_schema_exists(dest$con, schema, ...)
 }
 
 #' @export
-`sql_schema_exists.Microsoft SQL Server` <- function(dest, schema, dbname = NULL, ...) {
+`db_schema_exists.Microsoft SQL Server` <- function(dest, schema, dbname = NULL, ...) {
   sql_to_character(dest, schema) %in% sql_schema_list(dest, dbname = dbname)$schema_name
 }
 
 
 #' @export
-sql_schema_exists.PqConnection <- function(dest, schema, ...) {
+db_schema_exists.PqConnection <- function(dest, schema, ...) {
   sql_to_character(dest, schema) %in% sql_schema_list(dest)$schema_name
 }
 
 #' @export
-sql_schema_exists.SQLiteConnection <- function(dest, schema, ...) {
+db_schema_exists.SQLiteConnection <- function(dest, schema, ...) {
   abort_no_schemas_supported("SQLite")
 }
 
@@ -196,7 +196,7 @@ db_schema_create.SQLiteConnection <- function(dest, schema, ...) {
 #
 # @description `sql_schema_table_list()` list the tables in a schema on the database.
 #
-# @inheritParams sql_schema_exists
+# @inheritParams db_schema_exists
 #
 # @details Methods are not available for all DBMS.
 #
@@ -222,7 +222,7 @@ db_schema_create.SQLiteConnection <- function(dest, schema, ...) {
 #     check_param_class(schema, "character")
 #     check_param_length(schema)
 #   }
-#   if (!is_null(schema) && !sql_schema_exists(dest, schema, ...)) {
+#   if (!is_null(schema) && !db_schema_exists(dest, schema, ...)) {
 #     abort_no_schema_exists(sql_to_character(con_from_src_or_con(dest), schema), ...)
 #   }
 #   UseMethod("sql_schema_table_list")
@@ -235,7 +235,7 @@ sql_schema_table_list_mssql <- function(dest, schema = NULL, dbname = NULL) {
     check_param_class(schema, "character")
     check_param_length(schema)
   }
-  if (!is_null(schema) && !sql_schema_exists(src$con, schema, dbname)) {
+  if (!is_null(schema) && !db_schema_exists(src$con, schema, dbname)) {
     abort_no_schema_exists(sql_to_character(src$con, schema), dbname)
   }
   if (!is_null(dbname)) {
@@ -258,7 +258,7 @@ sql_schema_table_list_postgres <- function(dest, schema = NULL) {
     check_param_class(schema, "character")
     check_param_length(schema)
   }
-  if (!is_null(schema) && !sql_schema_exists(src$con, schema)) {
+  if (!is_null(schema) && !db_schema_exists(src$con, schema)) {
     abort_no_schema_exists(sql_to_character(src$con, schema))
   }
   enframe(
@@ -302,7 +302,7 @@ db_schema_drop <- function(dest, schema, force = FALSE, ...) {
   check_param_length(schema)
   check_param_class(force, "logical")
   check_param_length(force)
-  if (!sql_schema_exists(dest, schema, ...)) {
+  if (!db_schema_exists(dest, schema, ...)) {
     abort_no_schema_exists(sql_to_character(con_from_src_or_con(dest), schema), ...)
   }
   UseMethod("db_schema_drop")

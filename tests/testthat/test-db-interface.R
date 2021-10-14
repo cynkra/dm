@@ -97,7 +97,7 @@ test_that("copy_dm_to() fails legibly if target schema missing for MSSQL & Postg
   src_db <- my_test_src()
   local_dm <- dm_for_filter() %>% collect()
 
-  expect_false(sql_schema_exists(src_db, "copy_dm_to_schema"))
+  expect_false(db_schema_exists(src_db, "copy_dm_to_schema"))
 
   expect_error(
     copy_dm_to(src_db, local_dm, schema = "copy_dm_to_schema", temporary = FALSE)
@@ -110,7 +110,7 @@ test_that("copy_dm_to() fails legibly with schema argument for MSSQL & Postgres"
   src_db <- my_test_src()
   local_dm <- dm_for_filter() %>% collect()
 
-  expect_false(sql_schema_exists(src_db, "copy_dm_to_schema"))
+  expect_false(db_schema_exists(src_db, "copy_dm_to_schema"))
 
   db_schema_create(src_db, "copy_dm_to_schema")
 
@@ -141,7 +141,7 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
   src_db <- my_test_src()
   local_dm <- dm_for_filter() %>% collect()
 
-  expect_false(sql_schema_exists(src_db, "copy_dm_to_schema"))
+  expect_false(db_schema_exists(src_db, "copy_dm_to_schema"))
 
   db_schema_create(src_db, "copy_dm_to_schema")
 

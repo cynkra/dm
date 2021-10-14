@@ -9,10 +9,10 @@ test_that("schema handling on MSSQL and Postgres works", {
     sql_schema_table_list_mssql
   }
 
-  expect_dm_error(sql_schema_exists(con_db, 1), "parameter_not_correct_class")
-  expect_dm_error(sql_schema_exists(con_db, letters[1:2]), "parameter_not_correct_length")
-  expect_dm_error(sql_schema_exists(src_db, 1), "parameter_not_correct_class")
-  expect_dm_error(sql_schema_exists(src_db, letters[1:2]), "parameter_not_correct_length")
+  expect_dm_error(db_schema_exists(con_db, 1), "parameter_not_correct_class")
+  expect_dm_error(db_schema_exists(con_db, letters[1:2]), "parameter_not_correct_length")
+  expect_dm_error(db_schema_exists(src_db, 1), "parameter_not_correct_class")
+  expect_dm_error(db_schema_exists(src_db, letters[1:2]), "parameter_not_correct_length")
 
   withr::defer({
     try(dbExecute(con_db, "DROP TABLE test_schema_1"))
@@ -20,8 +20,8 @@ test_that("schema handling on MSSQL and Postgres works", {
     try(dbExecute(con_db, SQL('DROP SCHEMA "1-dm_schema_TEST"')))
   })
 
-  expect_false(sql_schema_exists(con_db, "1-dm_schema_TEST"))
-  expect_false(sql_schema_exists(src_db, "1-dm_schema_TEST"))
+  expect_false(db_schema_exists(con_db, "1-dm_schema_TEST"))
+  expect_false(db_schema_exists(src_db, "1-dm_schema_TEST"))
 
   # create a table in the default schema
   expect_message(db_schema_create(con_db, "1-dm_schema_TEST"), "created")
@@ -33,15 +33,15 @@ test_that("schema handling on MSSQL and Postgres works", {
       pull(schema_name),
     "1-dm_schema_TEST"
   )
-  expect_true(sql_schema_exists(con_db, "1-dm_schema_TEST"))
+  expect_true(db_schema_exists(con_db, "1-dm_schema_TEST"))
   expect_message(db_schema_drop(con_db, "1-dm_schema_TEST"), "Dropped schema")
   expect_dm_error(db_schema_drop(con_db, "1-dm_schema_TEST"), "no_schema_exists")
-  expect_false(sql_schema_exists(con_db, "1-dm_schema_TEST"))
+  expect_false(db_schema_exists(con_db, "1-dm_schema_TEST"))
 
   expect_message(db_schema_create(src_db, "1-dm_schema_TEST"), "created")
-  expect_true(sql_schema_exists(src_db, "1-dm_schema_TEST"))
+  expect_true(db_schema_exists(src_db, "1-dm_schema_TEST"))
   expect_message(db_schema_drop(src_db, "1-dm_schema_TEST"), "Dropped schema")
-  expect_false(sql_schema_exists(src_db, "1-dm_schema_TEST"))
+  expect_false(db_schema_exists(src_db, "1-dm_schema_TEST"))
 
   expect_false("test_schema_1" %in% sql_schema_table_list(con_db)$table_name)
   expect_false("test_schema_1" %in% sql_schema_table_list(src_db)$table_name)
@@ -137,7 +137,7 @@ test_that("schema handling on MSSQL works for different DBs", {
 
   original_dbname <- attributes(con_db)$info$dbname
   DBI::dbExecute(con_db, "CREATE DATABASE test_db_for_schema_dm")
-  expect_false(sql_schema_exists(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"))
+  expect_false(db_schema_exists(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"))
 
   expect_message(
     db_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
@@ -165,7 +165,7 @@ test_that("schema handling on MSSQL works for different DBs", {
     "on database `test_db_for_schema_dm`"
   )
 
-  expect_true(sql_schema_exists(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"))
+  expect_true(db_schema_exists(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"))
 
   expect_identical(
     sql_schema_table_list_mssql(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
@@ -204,7 +204,7 @@ test_that("schema handling on SQLite all throw errors", {
   con_db <- src_db$con
 
   expect_dm_error(
-    sql_schema_exists(src_db, "test"),
+    db_schema_exists(src_db, "test"),
     "no_schemas_supported"
   )
   expect_dm_error(
@@ -216,12 +216,12 @@ test_that("schema handling on SQLite all throw errors", {
     "no_schemas_supported"
   )
   expect_dm_error(
-    sql_schema_exists(src_db, "test"),
+    db_schema_exists(src_db, "test"),
     "no_schemas_supported"
   )
 
   expect_dm_error(
-    sql_schema_exists(con_db, "test"),
+    db_schema_exists(con_db, "test"),
     "no_schemas_supported"
   )
   expect_dm_error(
@@ -233,7 +233,7 @@ test_that("schema handling on SQLite all throw errors", {
     "no_schemas_supported"
   )
   expect_dm_error(
-    sql_schema_exists(con_db, "test"),
+    db_schema_exists(con_db, "test"),
     "no_schemas_supported"
   )
 })

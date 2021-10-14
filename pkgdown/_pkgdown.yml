@@ -137,7 +137,7 @@ reference:
   contents:
   - db_schema_create
   - db_schema_drop
-  - sql_schema_exists
+  - db_schema_exists
   - sql_schema_list
 
 - title: Miscellaneous
