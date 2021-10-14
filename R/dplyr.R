@@ -93,7 +93,7 @@ relocate.dm <- function(.data, ...) {
 relocate.zoomed_dm <- function(.data, ..., .before = NULL, .after = NULL) {
   tbl <- tbl_zoomed(.data)
 
-  relocated_tbl <- relocate(tbl, ..., .before = !!enquo(.before), .after = !!enquo(.after))
+  relocated_tbl <- relocate(tbl, ..., .before = {{ .before }}, .after = {{ .after }})
   replace_zoomed_tbl(.data, relocated_tbl)
 }
 
