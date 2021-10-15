@@ -1,5 +1,15 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.4.9003
+
+- `mutate()`, `transmute()`, `distinct()` and `summarize()` now support `dplyr::across()` and extra arguments (#640).
+- Key tracking for the first three verbs is less strict and based on name equality (#663).
+- `db_schema_*()` connection argument is called `con`, not `dest` (#668).
+- `relocate()` now works on zoomed `dm` objects (#666).
+- New `db_schema_create()`, `db_schema_drop()`, `db_schema_exists()` and `db_schema_list()` replace the corresponding `sql_schema_*()` functions, the latter are soft-deprecated (#670).
+- Safeguard copy_dm_to() against cyclic graphs (#664).
+
+
 # dm 0.2.4.9002
 
 - `dm_add_fk()` gains `on_delete` argument which `copy_dm_to()` picks up and translates to an `ON DELETE CASCADE` or `ON DELETE NO ACTION` specification for the foreign key (#649).
