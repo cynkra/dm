@@ -1,4 +1,4 @@
-dm 0.2.4
+dm 0.2.5
 
 ## Cran Repository Policy
 
@@ -7,10 +7,11 @@ dm 0.2.4
 ## R CMD check results
 
 - [x] Checked locally, R 4.1.1
-- [x] Checked on CI system, R 4.1.1
-- [x] Checked on win-builder, R devel
+- [ ] Checked on CI system, R 4.1.1
+- [ ] Checked on win-builder, R devel
+
+Check the boxes above after successful execution and remove this line. Then run `fledge::release()`.
 
 ## Current CRAN check results
 
-- [x] Checked on 2021-09-29, problems found: https://cran.r-project.org/web/checks/check_results_dm.html
-- [x] ERROR: r-patched-linux-x86_64: False positive
+- [x] Checked on 2021-10-15, no problems found.
