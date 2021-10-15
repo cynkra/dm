@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting started with dm</h1>
             
-            <h4 data-toc-skip class="date">2021-09-30</h4>
+            <h4 data-toc-skip class="date">2021-10-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/dm.Rmd" class="external-link"><code>vignettes/dm.Rmd</code></a></small>
       <div class="hidden name"><code>dm.Rmd</code></div>
@@ -145,13 +145,13 @@
     
     
 <div id="introduction" class="section level2">
-<h2 class="hasAnchor">
-<a href="#introduction" class="anchor" aria-hidden="true"></a>Introduction</h2>
+<h2>Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
 <p>In this article we’re going show you how easy it is to move from connecting to the database holding your data to producing the results you need. It’s meant to be a quick and friendly introduction to {dm}, so it is low on details and caveats. Links to detailed documentation are provided at the end. (If your data is in data frames instead of a database and you’re in a hurry, jump over to <code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code>.)</p>
 </div>
 <div id="creating-a-dm-object" class="section level2">
-<h2 class="hasAnchor">
-<a href="#creating-a-dm-object" class="anchor" aria-hidden="true"></a>Creating a dm object</h2>
+<h2>Creating a dm object<a class="anchor" aria-label="anchor" href="#creating-a-dm-object"></a>
+</h2>
 <p>dm objects can be created from individual tables or loaded directly from a relational data model on an RDBMS (relational database management system).</p>
 <p>For this demonstration we’re going work with a model hosted on a public server. The first thing we need is a connection to the RDBMS hosting the data.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -172,7 +172,7 @@
 <span class="va">fin_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
 #&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
-#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
 #&gt; Columns: 57
 #&gt; Primary keys: 0
@@ -181,37 +181,37 @@
 <p>The dm object interrogates the RDBMS for table and column information and, where implemented, primary and foreign keys. Currently, primary and foreign keys are only available from Postgres and SQL Server.</p>
 </div>
 <div id="selecting-tables" class="section level2">
-<h2 class="hasAnchor">
-<a href="#selecting-tables" class="anchor" aria-hidden="true"></a>Selecting tables</h2>
+<h2>Selecting tables<a class="anchor" aria-label="anchor" href="#selecting-tables"></a>
+</h2>
 <p>The dm object can be accessed like a named list of tables:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fin_dm</span><span class="op">)</span>
 <span class="co">#&gt; [1] "accounts"  "cards"     "clients"   "disps"     "districts" "loans"    </span>
 <span class="co">#&gt; [7] "orders"    "tkeys"     "trans"</span>
 <span class="va">fin_dm</span><span class="op">$</span><span class="va">loans</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`Financial_ijs`.`loans`&gt; [?? x 7]</span>
-#&gt; <span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Source:   table&lt;`Financial_ijs`.`loans`&gt; [?? x 7]</span>
+#&gt; <span style="color: #949494;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 #&gt;       id account_id date       amount duration payments status
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>      <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;date&gt;</span>      <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> 
-#&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">4</span>959          2 1994-01-05  <span style="text-decoration: underline;">80</span>952       24     <span style="text-decoration: underline;">3</span>373 A     
-#&gt; <span style="color: #555555;"> 2</span>  <span style="text-decoration: underline;">4</span>961         19 1996-04-29  <span style="text-decoration: underline;">30</span>276       12     <span style="text-decoration: underline;">2</span>523 B     
-#&gt; <span style="color: #555555;"> 3</span>  <span style="text-decoration: underline;">4</span>962         25 1997-12-08  <span style="text-decoration: underline;">30</span>276       12     <span style="text-decoration: underline;">2</span>523 A     
-#&gt; <span style="color: #555555;"> 4</span>  <span style="text-decoration: underline;">4</span>967         37 1998-10-14 <span style="text-decoration: underline;">318</span>480       60     <span style="text-decoration: underline;">5</span>308 D     
-#&gt; <span style="color: #555555;"> 5</span>  <span style="text-decoration: underline;">4</span>968         38 1998-04-19 <span style="text-decoration: underline;">110</span>736       48     <span style="text-decoration: underline;">2</span>307 C     
-#&gt; <span style="color: #555555;"> 6</span>  <span style="text-decoration: underline;">4</span>973         67 1996-05-02 <span style="text-decoration: underline;">165</span>960       24     <span style="text-decoration: underline;">6</span>915 A     
-#&gt; <span style="color: #555555;"> 7</span>  <span style="text-decoration: underline;">4</span>986         97 1997-08-10 <span style="text-decoration: underline;">102</span>876       12     <span style="text-decoration: underline;">8</span>573 A     
-#&gt; <span style="color: #555555;"> 8</span>  <span style="text-decoration: underline;">4</span>988        103 1997-12-06 <span style="text-decoration: underline;">265</span>320       36     <span style="text-decoration: underline;">7</span>370 D     
-#&gt; <span style="color: #555555;"> 9</span>  <span style="text-decoration: underline;">4</span>989        105 1998-12-05 <span style="text-decoration: underline;">352</span>704       48     <span style="text-decoration: underline;">7</span>348 C     
-#&gt; <span style="color: #555555;">10</span>  <span style="text-decoration: underline;">4</span>990        110 1997-09-08 <span style="text-decoration: underline;">162</span>576       36     <span style="text-decoration: underline;">4</span>516 C     
-#&gt; <span style="color: #555555;"># … with more rows</span>
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> 
+#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">4</span>959          2 1994-01-05  <span style="text-decoration: underline;">80</span>952       24     <span style="text-decoration: underline;">3</span>373 A     
+#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">4</span>961         19 1996-04-29  <span style="text-decoration: underline;">30</span>276       12     <span style="text-decoration: underline;">2</span>523 B     
+#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">4</span>962         25 1997-12-08  <span style="text-decoration: underline;">30</span>276       12     <span style="text-decoration: underline;">2</span>523 A     
+#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">4</span>967         37 1998-10-14 <span style="text-decoration: underline;">318</span>480       60     <span style="text-decoration: underline;">5</span>308 D     
+#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">4</span>968         38 1998-04-19 <span style="text-decoration: underline;">110</span>736       48     <span style="text-decoration: underline;">2</span>307 C     
+#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">4</span>973         67 1996-05-02 <span style="text-decoration: underline;">165</span>960       24     <span style="text-decoration: underline;">6</span>915 A     
+#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">4</span>986         97 1997-08-10 <span style="text-decoration: underline;">102</span>876       12     <span style="text-decoration: underline;">8</span>573 A     
+#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">4</span>988        103 1997-12-06 <span style="text-decoration: underline;">265</span>320       36     <span style="text-decoration: underline;">7</span>370 D     
+#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">4</span>989        105 1998-12-05 <span style="text-decoration: underline;">352</span>704       48     <span style="text-decoration: underline;">7</span>348 C     
+#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">4</span>990        110 1997-09-08 <span style="text-decoration: underline;">162</span>576       36     <span style="text-decoration: underline;">4</span>516 C     
+#&gt; <span style="color: #949494;"># … with more rows</span>
 </code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">fin_dm</span><span class="op">$</span><span class="va">trans</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 1]</span>
-#&gt; <span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Source:   lazy query [?? x 1]</span>
+#&gt; <span style="color: #949494;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 #&gt;         n
-#&gt;   <span style="color: #555555; font-style: italic;">&lt;int64&gt;</span>
-#&gt; <span style="color: #555555;">1</span> 1<span style="text-decoration: underline;">056</span>320
+#&gt;   <span style="color: #949494; font-style: italic;">&lt;int64&gt;</span>
+#&gt; <span style="color: #BCBCBC;">1</span> 1<span style="text-decoration: underline;">056</span>320
 </code></pre>
 <p>At the same time, most <code>dm</code> functions are pipe-friendly and support tidy evaluation. We can use <code>[</code> or the <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> verb to derive a smaller dm with the <code>loans</code>, <code>accounts</code>, <code>districts</code> and <code>trans</code> tables:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -221,8 +221,8 @@
   <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">accounts</span>, <span class="va">districts</span>, <span class="va">trans</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="linking-tables-by-adding-keys" class="section level2">
-<h2 class="hasAnchor">
-<a href="#linking-tables-by-adding-keys" class="anchor" aria-hidden="true"></a>Linking tables by adding keys</h2>
+<h2>Linking tables by adding keys<a class="anchor" aria-label="anchor" href="#linking-tables-by-adding-keys"></a>
+</h2>
 <p>In many cases, <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> already returns a dm with all keys set. If not, dm allows us to define primary and foreign keys ourselves.</p>
 <p>In our data model, <code>id</code> columns uniquely identify records in the <code>accounts</code> and <code>loans</code> table, a primary key is added with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. Each loan is linked to one account via the <code>account_id</code> column in the <code>loans</code> table, the relationship is established with <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -237,8 +237,8 @@
   <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">accounts</span>, <span class="va">district_id</span>, <span class="va">districts</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="visualizing-a-data-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#visualizing-a-data-model" class="anchor" aria-hidden="true"></a>Visualizing a data model</h2>
+<h2>Visualizing a data model<a class="anchor" aria-label="anchor" href="#visualizing-a-data-model"></a>
+</h2>
 <p>Having a diagram of the data model is the quickest way to verify we’re on the right track. We can display a visual summary of the dm at any time. The default is to display the table name, any defined keys and their links to other tables.</p>
 <p>Visualizing the dm in its current state we see the keys we have created and how they link the tables together. Color guides the eye.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -259,32 +259,32 @@
 <path fill="none" stroke="#555555" d="M66.5,-11C86.6802,-11 82.4424,-38.4316 94.2289,-47.8613"></path><polygon fill="#555555" stroke="#555555" points="93.4087,-51.2739 104,-51 95.5496,-44.6093 93.4087,-51.2739"></polygon></g></g></svg>
 </div>
 <div id="accessing-a-data-model-as-a-table" class="section level2">
-<h2 class="hasAnchor">
-<a href="#accessing-a-data-model-as-a-table" class="anchor" aria-hidden="true"></a>Accessing a data model as a table</h2>
+<h2>Accessing a data model as a table<a class="anchor" aria-label="anchor" href="#accessing-a-data-model-as-a-table"></a>
+</h2>
 <p>If we want to perform modeling or analysis on this relational model we need to transform it into a tabular format that R functions can work with. <code><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl()</a></code> will automatically follow foreign keys across tables to gather all the available columns into a single table.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span>
 <span class="co">#&gt; Renamed columns:</span>
 <span class="co">#&gt; * date -&gt; loans.date, accounts.date</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 25]</span>
-#&gt; <span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Source:   lazy query [?? x 25]</span>
+#&gt; <span style="color: #949494;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 #&gt;       id account_id loans.date amount duration payments status district_id
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>      <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;date&gt;</span>      <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
-#&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">4</span>959          2 1994-01-05  <span style="text-decoration: underline;">80</span>952       24     <span style="text-decoration: underline;">3</span>373 A                1
-#&gt; <span style="color: #555555;"> 2</span>  <span style="text-decoration: underline;">4</span>961         19 1996-04-29  <span style="text-decoration: underline;">30</span>276       12     <span style="text-decoration: underline;">2</span>523 B               21
-#&gt; <span style="color: #555555;"> 3</span>  <span style="text-decoration: underline;">4</span>962         25 1997-12-08  <span style="text-decoration: underline;">30</span>276       12     <span style="text-decoration: underline;">2</span>523 A               68
-#&gt; <span style="color: #555555;"> 4</span>  <span style="text-decoration: underline;">4</span>967         37 1998-10-14 <span style="text-decoration: underline;">318</span>480       60     <span style="text-decoration: underline;">5</span>308 D               20
-#&gt; <span style="color: #555555;"> 5</span>  <span style="text-decoration: underline;">4</span>968         38 1998-04-19 <span style="text-decoration: underline;">110</span>736       48     <span style="text-decoration: underline;">2</span>307 C               19
-#&gt; <span style="color: #555555;"> 6</span>  <span style="text-decoration: underline;">4</span>973         67 1996-05-02 <span style="text-decoration: underline;">165</span>960       24     <span style="text-decoration: underline;">6</span>915 A               16
-#&gt; <span style="color: #555555;"> 7</span>  <span style="text-decoration: underline;">4</span>986         97 1997-08-10 <span style="text-decoration: underline;">102</span>876       12     <span style="text-decoration: underline;">8</span>573 A               74
-#&gt; <span style="color: #555555;"> 8</span>  <span style="text-decoration: underline;">4</span>988        103 1997-12-06 <span style="text-decoration: underline;">265</span>320       36     <span style="text-decoration: underline;">7</span>370 D               44
-#&gt; <span style="color: #555555;"> 9</span>  <span style="text-decoration: underline;">4</span>989        105 1998-12-05 <span style="text-decoration: underline;">352</span>704       48     <span style="text-decoration: underline;">7</span>348 C               21
-#&gt; <span style="color: #555555;">10</span>  <span style="text-decoration: underline;">4</span>990        110 1997-09-08 <span style="text-decoration: underline;">162</span>576       36     <span style="text-decoration: underline;">4</span>516 C               36
-#&gt; <span style="color: #555555;"># … with more rows, and 17 more variables: frequency &lt;chr&gt;,</span>
-#&gt; <span style="color: #555555;">#   accounts.date &lt;date&gt;, A2 &lt;chr&gt;, A3 &lt;chr&gt;, A4 &lt;int&gt;, A5 &lt;int&gt;,</span>
-#&gt; <span style="color: #555555;">#   A6 &lt;int&gt;, A7 &lt;int&gt;, A8 &lt;int&gt;, A9 &lt;int&gt;, A10 &lt;dbl&gt;, A11 &lt;int&gt;,</span>
-#&gt; <span style="color: #555555;">#   A12 &lt;dbl&gt;, A13 &lt;dbl&gt;, A14 &lt;int&gt;, A15 &lt;int&gt;, A16 &lt;int&gt;</span>
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>
+#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">4</span>959          2 1994-01-05  <span style="text-decoration: underline;">80</span>952       24     <span style="text-decoration: underline;">3</span>373 A                1
+#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">4</span>961         19 1996-04-29  <span style="text-decoration: underline;">30</span>276       12     <span style="text-decoration: underline;">2</span>523 B               21
+#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">4</span>962         25 1997-12-08  <span style="text-decoration: underline;">30</span>276       12     <span style="text-decoration: underline;">2</span>523 A               68
+#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">4</span>967         37 1998-10-14 <span style="text-decoration: underline;">318</span>480       60     <span style="text-decoration: underline;">5</span>308 D               20
+#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">4</span>968         38 1998-04-19 <span style="text-decoration: underline;">110</span>736       48     <span style="text-decoration: underline;">2</span>307 C               19
+#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">4</span>973         67 1996-05-02 <span style="text-decoration: underline;">165</span>960       24     <span style="text-decoration: underline;">6</span>915 A               16
+#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">4</span>986         97 1997-08-10 <span style="text-decoration: underline;">102</span>876       12     <span style="text-decoration: underline;">8</span>573 A               74
+#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">4</span>988        103 1997-12-06 <span style="text-decoration: underline;">265</span>320       36     <span style="text-decoration: underline;">7</span>370 D               44
+#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">4</span>989        105 1998-12-05 <span style="text-decoration: underline;">352</span>704       48     <span style="text-decoration: underline;">7</span>348 C               21
+#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">4</span>990        110 1997-09-08 <span style="text-decoration: underline;">162</span>576       36     <span style="text-decoration: underline;">4</span>516 C               36
+#&gt; <span style="color: #949494;"># … with more rows, and 17 more variables: frequency &lt;chr&gt;,</span>
+#&gt; <span style="color: #949494;">#   accounts.date &lt;date&gt;, A2 &lt;chr&gt;, A3 &lt;chr&gt;, A4 &lt;int&gt;, A5 &lt;int&gt;,</span>
+#&gt; <span style="color: #949494;">#   A6 &lt;int&gt;, A7 &lt;int&gt;, A8 &lt;int&gt;, A9 &lt;int&gt;, A10 &lt;dbl&gt;, A11 &lt;int&gt;,</span>
+#&gt; <span style="color: #949494;">#   A12 &lt;dbl&gt;, A13 &lt;dbl&gt;, A14 &lt;int&gt;, A15 &lt;int&gt;, A16 &lt;int&gt;</span>
 </code></pre>
 <p>Apart from the rows printed above, no data has been fetched from the database. Use <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> to reduce the number of columns fetched, and <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> to retrieve the entire result for local processing.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -312,8 +312,8 @@
 <span class="co">#&gt;          -28572</span></code></pre></div>
 </div>
 <div id="operations-on-table-data-within-a-dm" class="section level2">
-<h2 class="hasAnchor">
-<a href="#operations-on-table-data-within-a-dm" class="anchor" aria-hidden="true"></a>Operations on table data within a dm</h2>
+<h2>Operations on table data within a dm<a class="anchor" aria-label="anchor" href="#operations-on-table-data-within-a-dm"></a>
+</h2>
 <p>We don’t need to take the extra step of exporting the data to work with it. Through the dm object we have complete access to dplyr’s data manipulation verbs. These operate on the data within individual tables.</p>
 <p>To work with a particular table we use <code><a href="../reference/dm_zoom_to.html">dm_zoom_to()</a></code> to set the context to our chosen table. Then we can perform any of the operations we want.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -326,27 +326,27 @@
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"total_loans"</span><span class="op">)</span>
 
 <span class="va">fin_dm_total</span><span class="op">$</span><span class="va">total_loans</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 2]</span>
-#&gt; <span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Source:   lazy query [?? x 2]</span>
+#&gt; <span style="color: #949494;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 #&gt;    account_id total_amount
-#&gt;         <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>        <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>
-#&gt; <span style="color: #555555;"> 1</span>          2        <span style="text-decoration: underline;">80</span>952
-#&gt; <span style="color: #555555;"> 2</span>         19        <span style="text-decoration: underline;">30</span>276
-#&gt; <span style="color: #555555;"> 3</span>         25        <span style="text-decoration: underline;">30</span>276
-#&gt; <span style="color: #555555;"> 4</span>         37       <span style="text-decoration: underline;">318</span>480
-#&gt; <span style="color: #555555;"> 5</span>         38       <span style="text-decoration: underline;">110</span>736
-#&gt; <span style="color: #555555;"> 6</span>         67       <span style="text-decoration: underline;">165</span>960
-#&gt; <span style="color: #555555;"> 7</span>         97       <span style="text-decoration: underline;">102</span>876
-#&gt; <span style="color: #555555;"> 8</span>        103       <span style="text-decoration: underline;">265</span>320
-#&gt; <span style="color: #555555;"> 9</span>        105       <span style="text-decoration: underline;">352</span>704
-#&gt; <span style="color: #555555;">10</span>        110       <span style="text-decoration: underline;">162</span>576
-#&gt; <span style="color: #555555;"># … with more rows</span>
+#&gt;         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
+#&gt; <span style="color: #BCBCBC;"> 1</span>          2        <span style="text-decoration: underline;">80</span>952
+#&gt; <span style="color: #BCBCBC;"> 2</span>         19        <span style="text-decoration: underline;">30</span>276
+#&gt; <span style="color: #BCBCBC;"> 3</span>         25        <span style="text-decoration: underline;">30</span>276
+#&gt; <span style="color: #BCBCBC;"> 4</span>         37       <span style="text-decoration: underline;">318</span>480
+#&gt; <span style="color: #BCBCBC;"> 5</span>         38       <span style="text-decoration: underline;">110</span>736
+#&gt; <span style="color: #BCBCBC;"> 6</span>         67       <span style="text-decoration: underline;">165</span>960
+#&gt; <span style="color: #BCBCBC;"> 7</span>         97       <span style="text-decoration: underline;">102</span>876
+#&gt; <span style="color: #BCBCBC;"> 8</span>        103       <span style="text-decoration: underline;">265</span>320
+#&gt; <span style="color: #BCBCBC;"> 9</span>        105       <span style="text-decoration: underline;">352</span>704
+#&gt; <span style="color: #BCBCBC;">10</span>        110       <span style="text-decoration: underline;">162</span>576
+#&gt; <span style="color: #949494;"># … with more rows</span>
 </code></pre>
 <p>Note that in the above example we use <code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code> to add the results as a new table to our data model. This table is temporary and will be deleted when our session ends. If you want to make permanent changes to your data model on an RDBMS please see the “Persisting results” section in <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code>.</p>
 </div>
 <div id="checking-constraints" class="section level2">
-<h2 class="hasAnchor">
-<a href="#checking-constraints" class="anchor" aria-hidden="true"></a>Checking constraints</h2>
+<h2>Checking constraints<a class="anchor" aria-label="anchor" href="#checking-constraints"></a>
+</h2>
 <p>It’s always smart to check that your data model follows its specifications. When building our own model or changing existing models by adding tables or keys, it is even more important that the new model is validated.</p>
 <p><code>dm_examine_constrains()</code> checks all primary and foreign keys and reports if they violate their expected constraints.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -357,8 +357,8 @@
 <p>For more on constraint checking, including cardinality, finding candidate columns for keys, and normalization, see <code><a href="../articles/tech-dm-low-level.html">vignette("tech-dm-low-level")</a></code>.</p>
 </div>
 <div id="next-steps" class="section level2">
-<h2 class="hasAnchor">
-<a href="#next-steps" class="anchor" aria-hidden="true"></a>Next Steps</h2>
+<h2>Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
+</h2>
 <p>Now that you have been introduced to the basic operation of dm, the next step is to learn more about the dm methods that your particular use case requires.</p>
 <p>Is your data in an RDBMS? Then move on to <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> for a more detailed looking at working with an existing relational data model.</p>
 <p>If your data is in data frames, then you want to read <code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code> next.</p>
@@ -366,8 +366,8 @@
 <p>If you’re familiar with relational data models but want to know how to work with them in dm, then any of <code><a href="../articles/tech-dm-join.html">vignette("tech-dm-join")</a></code>, <code><a href="../articles/tech-dm-filter.html">vignette("tech-dm-filter")</a></code>, or <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> is a good next step.</p>
 </div>
 <div id="further-reading" class="section level2">
-<h2 class="hasAnchor">
-<a href="#further-reading" class="anchor" aria-hidden="true"></a>Further reading</h2>
+<h2>Further reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
+</h2>
 <p><code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> - This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.</p>
 <p><code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code> - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.</p>
 <p><code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code> - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.</p>
@@ -381,8 +381,8 @@
 <p><code><a href="../articles/tech-dm-cdm.html">vignette("tech-dm-cdm")</a></code> - If you’re an early adopter, used dm version 0.0.5 or lower and want to migrate your code, this is for you.</p>
 </div>
 <div id="standing-on-the-shoulders-of-giants" class="section level2">
-<h2 class="hasAnchor">
-<a href="#standing-on-the-shoulders-of-giants" class="anchor" aria-hidden="true"></a>Standing on the shoulders of giants</h2>
+<h2>Standing on the shoulders of giants<a class="anchor" aria-label="anchor" href="#standing-on-the-shoulders-of-giants"></a>
+</h2>
 <p>The {dm} package follows the tidyverse principles:</p>
 <ul>
 <li>
@@ -416,7 +416,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>

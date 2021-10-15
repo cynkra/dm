@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
       <h1 data-toc-skip>Filtering in relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-09-30</h4>
+            <h4 data-toc-skip class="date">2021-10-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-filter.Rmd" class="external-link"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-filter.Rmd</code></div>
@@ -154,8 +154,8 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></code></pre></div>
 <div id="data-nycflights13" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-nycflights13" class="anchor" aria-hidden="true"></a>Data: nycflights13</h2>
+<h2>Data: nycflights13<a class="anchor" aria-label="anchor" href="#data-nycflights13"></a>
+</h2>
 <p>To explore filtering with {dm}, we’ll use the {nycflights13} data with its <code>flights</code>, <code>planes</code>, <code>airlines</code>, <code>airports</code> and <code>weather</code> tables.</p>
 <p>This dataset contains information about the 336 776 flights that departed from New York City in 2013, with 3322 different planes and 1458 airports involved. The data comes from the US Bureau of Transportation Statistics, and is documented in <code><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">?nycflights13::flights</a></code>.</p>
 <p>To start with our exploration, we have to create a <code>dm</code> object from the {nycflights13} data. The built-in <code><a href="../reference/dm_nycflights13.html">dm::dm_nycflights13()</a></code> function takes care of this.</p>
@@ -167,7 +167,7 @@
 <p>The console output of the ’dm` object shows its data and metadata, and is colored for clarity:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 4
@@ -194,29 +194,29 @@
 <code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">dm</span>, <span class="st">"airports"</span><span class="op">)</span>
 <span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span>
 <span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 86 × 8</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 86 × 8</span>
 #&gt;    faa   name                     lat    lon   alt    tz dst   tzone       
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span> <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>       
-#&gt; <span style="color: #555555;"> 1</span> ALB   Albany Intl             42.7  -<span style="color: #BB0000;">73.8</span>   285    -<span style="color: #BB0000;">5</span> A     America/New…
-#&gt; <span style="color: #555555;"> 2</span> ATL   Hartsfield Jackson At…  33.6  -<span style="color: #BB0000;">84.4</span>  <span style="text-decoration: underline;">1</span>026    -<span style="color: #BB0000;">5</span> A     America/New…
-#&gt; <span style="color: #555555;"> 3</span> AUS   Austin Bergstrom Intl   30.2  -<span style="color: #BB0000;">97.7</span>   542    -<span style="color: #BB0000;">6</span> A     America/Chi…
-#&gt; <span style="color: #555555;"> 4</span> BDL   Bradley Intl            41.9  -<span style="color: #BB0000;">72.7</span>   173    -<span style="color: #BB0000;">5</span> A     America/New…
-#&gt; <span style="color: #555555;"> 5</span> BHM   Birmingham Intl         33.6  -<span style="color: #BB0000;">86.8</span>   644    -<span style="color: #BB0000;">6</span> A     America/Chi…
-#&gt; <span style="color: #555555;"> 6</span> BNA   Nashville Intl          36.1  -<span style="color: #BB0000;">86.7</span>   599    -<span style="color: #BB0000;">6</span> A     America/Chi…
-#&gt; <span style="color: #555555;"> 7</span> BOS   General Edward Lawren…  42.4  -<span style="color: #BB0000;">71.0</span>    19    -<span style="color: #BB0000;">5</span> A     America/New…
-#&gt; <span style="color: #555555;"> 8</span> BTV   Burlington Intl         44.5  -<span style="color: #BB0000;">73.2</span>   335    -<span style="color: #BB0000;">5</span> A     America/New…
-#&gt; <span style="color: #555555;"> 9</span> BUF   Buffalo Niagara Intl    42.9  -<span style="color: #BB0000;">78.7</span>   724    -<span style="color: #BB0000;">5</span> A     America/New…
-#&gt; <span style="color: #555555;">10</span> BUR   Bob Hope                34.2 -<span style="color: #BB0000;">118.</span>    778    -<span style="color: #BB0000;">8</span> A     America/Los…
-#&gt; <span style="color: #555555;"># … with 76 more rows</span>
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       
+#&gt; <span style="color: #BCBCBC;"> 1</span> ALB   Albany Intl             42.7  -<span style="color: #BB0000;">73.8</span>   285    -<span style="color: #BB0000;">5</span> A     America/New…
+#&gt; <span style="color: #BCBCBC;"> 2</span> ATL   Hartsfield Jackson At…  33.6  -<span style="color: #BB0000;">84.4</span>  <span style="text-decoration: underline;">1</span>026    -<span style="color: #BB0000;">5</span> A     America/New…
+#&gt; <span style="color: #BCBCBC;"> 3</span> AUS   Austin Bergstrom Intl   30.2  -<span style="color: #BB0000;">97.7</span>   542    -<span style="color: #BB0000;">6</span> A     America/Chi…
+#&gt; <span style="color: #BCBCBC;"> 4</span> BDL   Bradley Intl            41.9  -<span style="color: #BB0000;">72.7</span>   173    -<span style="color: #BB0000;">5</span> A     America/New…
+#&gt; <span style="color: #BCBCBC;"> 5</span> BHM   Birmingham Intl         33.6  -<span style="color: #BB0000;">86.8</span>   644    -<span style="color: #BB0000;">6</span> A     America/Chi…
+#&gt; <span style="color: #BCBCBC;"> 6</span> BNA   Nashville Intl          36.1  -<span style="color: #BB0000;">86.7</span>   599    -<span style="color: #BB0000;">6</span> A     America/Chi…
+#&gt; <span style="color: #BCBCBC;"> 7</span> BOS   General Edward Lawren…  42.4  -<span style="color: #BB0000;">71.0</span>    19    -<span style="color: #BB0000;">5</span> A     America/New…
+#&gt; <span style="color: #BCBCBC;"> 8</span> BTV   Burlington Intl         44.5  -<span style="color: #BB0000;">73.2</span>   335    -<span style="color: #BB0000;">5</span> A     America/New…
+#&gt; <span style="color: #BCBCBC;"> 9</span> BUF   Buffalo Niagara Intl    42.9  -<span style="color: #BB0000;">78.7</span>   724    -<span style="color: #BB0000;">5</span> A     America/New…
+#&gt; <span style="color: #BCBCBC;">10</span> BUR   Bob Hope                34.2 -<span style="color: #BB0000;">118.</span>    778    -<span style="color: #BB0000;">8</span> A     America/Los…
+#&gt; <span style="color: #949494;"># … with 76 more rows</span>
 </code></pre>
 </div>
 <div id="filter" class="section level2">
-<h2 class="hasAnchor">
-<a href="#filter" class="anchor" aria-hidden="true"></a>Filtering a <code>dm</code> object</h2>
+<h2>Filtering a <code>dm</code> object<a class="anchor" aria-label="anchor" href="#filter"></a>
+</h2>
 <p><code><a href="../reference/dm_filter.html">dm_filter()</a></code> allows you to select a subset of a <code>dm</code> object.</p>
 <div id="how-it-works" class="section level3">
-<h3 class="hasAnchor">
-<a href="#how-it-works" class="anchor" aria-hidden="true"></a>How it works</h3>
+<h3>How it works<a class="anchor" aria-label="anchor" href="#how-it-works"></a>
+</h3>
 <p>Filtering a <code>dm</code> object is not that different from filtering a dataframe or tibble with <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code>.</p>
 <p>The corresponding {dm} function is <code><a href="../reference/dm_filter.html">dm::dm_filter()</a></code>. With this function one or more filtering conditions can be set for one of the tables of the <code>dm</code> object. These conditions are immediately evaluated for their respective tables and in addition they are stored in the <code>dm</code>. There are two ways in which a condition on one table could affect another table:</p>
 <ol style="list-style-type: decimal">
@@ -232,8 +232,8 @@
 <p>Keep in mind that several {dm} functions will refuse to work when unevaluated filter conditions exist, such as, e.g. <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>, <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code>, <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code>, <code><a href="../reference/dm_select_tbl.html">dm_rename_tbl()</a></code>, <code><a href="../reference/dm_select.html">dm_select()</a></code>, <code><a href="../reference/dm_rename.html">dm_rename()</a></code> and <code><a href="../reference/dm_nrow.html">dm_nrow()</a></code>. In these cases consider applying the filters with <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code> first.</p>
 </div>
 <div id="filtering-examples" class="section level3">
-<h3 class="hasAnchor">
-<a href="#filtering-examples" class="anchor" aria-hidden="true"></a>Filtering Examples</h3>
+<h3>Filtering Examples<a class="anchor" aria-label="anchor" href="#filtering-examples"></a>
+</h3>
 <p>Let’s see filtering in action:</p>
 <p><strong>We only want the data that is related to John F. Kennedy International Airport.</strong></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -241,12 +241,12 @@
   <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span>
 <span class="va">filtered_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 4
 #&gt; Foreign keys: 4
-#&gt; <span style="color: #BBBB00;">──</span> <span style="color: #BBBB00;">Filters</span> <span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span>
+#&gt; <span style="color: #FFAF00;">──</span> <span style="color: #FFAF00;">Filters</span> <span style="color: #FFAF00;">────────────────────────────────────────────────────────────────</span>
 #&gt; airports: name == "John F Kennedy Intl"
 </code></pre>
 <p>The filter expression is listed in the print output.</p>
@@ -284,12 +284,12 @@
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">!=</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span>
 <span class="va">dm_delta_may</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">───────────────────────────────────────────────────────────────</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 4
 #&gt; Foreign keys: 4
-#&gt; <span style="color: #BBBB00;">──</span> <span style="color: #BBBB00;">Filters</span> <span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span>
+#&gt; <span style="color: #FFAF00;">──</span> <span style="color: #FFAF00;">Filters</span> <span style="color: #FFAF00;">────────────────────────────────────────────────────────────────</span>
 #&gt; airlines: name == "Delta Air Lines Inc."
 #&gt; airports: name != "John F Kennedy Intl"
 #&gt; flights: month == 5
@@ -305,28 +305,28 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"airlines"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 × 2</span>
-#&gt; <span style="color: #555555;"># … with 2 variables: carrier &lt;chr&gt;, name &lt;chr&gt;</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 0 × 2</span>
+#&gt; <span style="color: #949494;"># … with 2 variables: carrier &lt;chr&gt;, name &lt;chr&gt;</span>
 </code></pre>
 <p>Which planes were used to service these flights?</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"planes"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 × 9</span>
-#&gt; <span style="color: #555555;"># … with 9 variables: tailnum &lt;chr&gt;, year &lt;int&gt;, type &lt;chr&gt;,</span>
-#&gt; <span style="color: #555555;">#   manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,</span>
-#&gt; <span style="color: #555555;">#   speed &lt;int&gt;, engine &lt;chr&gt;</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 0 × 9</span>
+#&gt; <span style="color: #949494;"># … with 9 variables: tailnum &lt;chr&gt;, year &lt;int&gt;, type &lt;chr&gt;,</span>
+#&gt; <span style="color: #949494;">#   manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,</span>
+#&gt; <span style="color: #949494;">#   speed &lt;int&gt;, engine &lt;chr&gt;</span>
 </code></pre>
 <p>And indeed, all included flights departed in May (<code>month == 5</code>):</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"flights"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 × 19</span>
-#&gt; <span style="color: #555555;"># … with 19 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,</span>
-#&gt; <span style="color: #555555;">#   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span>
-#&gt; <span style="color: #555555;">#   sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,</span>
-#&gt; <span style="color: #555555;">#   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span>
-#&gt; <span style="color: #555555;">#   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 0 × 19</span>
+#&gt; <span style="color: #949494;"># … with 19 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,</span>
+#&gt; <span style="color: #949494;">#   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span>
+#&gt; <span style="color: #949494;">#   sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,</span>
+#&gt; <span style="color: #949494;">#   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span>
+#&gt; <span style="color: #949494;">#   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
 </code></pre>
 <p>For comparison, let’s review the equivalent manual query for <code>flights</code> in <code>dplyr</code> syntax:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -336,30 +336,30 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join</a></span><span class="op">(</span><span class="va">airlines_filtered</span>, by <span class="op">=</span> <span class="st">"carrier"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join</a></span><span class="op">(</span><span class="va">airports_filtered</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span> <span class="op">=</span> <span class="st">"faa"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 2,340 × 19</span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 2,340 × 19</span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
-#&gt;    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span> <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>          <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>
-#&gt; <span style="color: #555555;"> 1</span>  <span style="text-decoration: underline;">2</span>013     5     1      554            600        -<span style="color: #BB0000;">6</span>      731
-#&gt; <span style="color: #555555;"> 2</span>  <span style="text-decoration: underline;">2</span>013     5     1      555            600        -<span style="color: #BB0000;">5</span>      819
-#&gt; <span style="color: #555555;"> 3</span>  <span style="text-decoration: underline;">2</span>013     5     1      603            610        -<span style="color: #BB0000;">7</span>      754
-#&gt; <span style="color: #555555;"> 4</span>  <span style="text-decoration: underline;">2</span>013     5     1      622            630        -<span style="color: #BB0000;">8</span>      848
-#&gt; <span style="color: #555555;"> 5</span>  <span style="text-decoration: underline;">2</span>013     5     1      654            700        -<span style="color: #BB0000;">6</span>      931
-#&gt; <span style="color: #555555;"> 6</span>  <span style="text-decoration: underline;">2</span>013     5     1      655            700        -<span style="color: #BB0000;">5</span>      944
-#&gt; <span style="color: #555555;"> 7</span>  <span style="text-decoration: underline;">2</span>013     5     1      656            705        -<span style="color: #BB0000;">9</span>     <span style="text-decoration: underline;">1</span>005
-#&gt; <span style="color: #555555;"> 8</span>  <span style="text-decoration: underline;">2</span>013     5     1      658            700        -<span style="color: #BB0000;">2</span>      925
-#&gt; <span style="color: #555555;"> 9</span>  <span style="text-decoration: underline;">2</span>013     5     1      743            745        -<span style="color: #BB0000;">2</span>     <span style="text-decoration: underline;">1</span>014
-#&gt; <span style="color: #555555;">10</span>  <span style="text-decoration: underline;">2</span>013     5     1      755            800        -<span style="color: #BB0000;">5</span>      929
-#&gt; <span style="color: #555555;"># … with 2,330 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span>
-#&gt; <span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
-#&gt; <span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span>
-#&gt; <span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
+#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>
+#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>013     5     1      554            600        -<span style="color: #BB0000;">6</span>      731
+#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>013     5     1      555            600        -<span style="color: #BB0000;">5</span>      819
+#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>013     5     1      603            610        -<span style="color: #BB0000;">7</span>      754
+#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>013     5     1      622            630        -<span style="color: #BB0000;">8</span>      848
+#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>013     5     1      654            700        -<span style="color: #BB0000;">6</span>      931
+#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>013     5     1      655            700        -<span style="color: #BB0000;">5</span>      944
+#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>013     5     1      656            705        -<span style="color: #BB0000;">9</span>     <span style="text-decoration: underline;">1</span>005
+#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>013     5     1      658            700        -<span style="color: #BB0000;">2</span>      925
+#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>013     5     1      743            745        -<span style="color: #BB0000;">2</span>     <span style="text-decoration: underline;">1</span>014
+#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>013     5     1      755            800        -<span style="color: #BB0000;">5</span>      929
+#&gt; <span style="color: #949494;"># … with 2,330 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span>
+#&gt; <span style="color: #949494;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
+#&gt; <span style="color: #949494;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span>
+#&gt; <span style="color: #949494;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
 </code></pre>
 <p>The {dm} code is leaner because the foreign key information is encoded in the object.</p>
 </div>
 </div>
 <div id="sql-statements-behind-filtering-a-dm-object-on-a-database" class="section level2">
-<h2 class="hasAnchor">
-<a href="#sql-statements-behind-filtering-a-dm-object-on-a-database" class="anchor" aria-hidden="true"></a>SQL statements behind filtering a <code>dm</code> object on a database</h2>
+<h2>SQL statements behind filtering a <code>dm</code> object on a database<a class="anchor" aria-label="anchor" href="#sql-statements-behind-filtering-a-dm-object-on-a-database"></a>
+</h2>
 <p>{dm} is meant to work with relational data models, locally as well as on databases. In your project, the data is probably not stored locally but in a remote <a href="https://cynkra.github.io/dm/articles/howto-dm-theory.html#relational-databases">relational database</a> that can be queried with SQL statements.</p>
 <p>You can check the queries by using <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render()</a></code> from the <a href="https://dbplyr.tidyverse.org/" class="external-link">{dbplyr}</a> package.</p>
 <p>Example:</p>
@@ -441,7 +441,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>
