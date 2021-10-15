@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.5
+
+- Same as previous version.
+
+
 # dm 0.2.4.9003
 
 - `mutate()`, `transmute()`, `distinct()` and `summarize()` now support `dplyr::across()` and extra arguments (#640).
