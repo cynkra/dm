@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9003</span>
       </span>
     </div>
 
@@ -110,7 +110,8 @@
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_paste</span><span class="op">(</span><span class="va">dm</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span>, tab_width <span class="op">=</span> <span class="fl">2</span>, options <span class="op">=</span> <span class="cn">NULL</span>, path <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <div id="arguments">
+    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
     </tr><tr><th>select</th>
@@ -130,17 +131,22 @@ of the dm.</p></li>
 </ul><p>Default <code>NULL</code> is equivalent to <code>c("keys", "color")</code></p></td>
     </tr><tr><th>path</th>
       <td><p>Output file, if <code>NULL</code> the code is printed to the console.</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    </tr></table></div>
 
+    <div id="value">
+    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>Code for producing the prototype of the given <code>dm</code>.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
+    </div>
+    <div id="details">
+    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The code emitted by the function reproduces the structure of the <code>dm</code> object.
 The <code>options</code> argument controls the level of detail: keys, colors,
 table definitions.
 Data in the tables is never included, see <code><a href="dm_ptype.html">dm_ptype()</a></code> for the underlying logic.</p>
+    </div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <div id="examples">
+    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm.html">dm</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_paste</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dm::dm(</span>
@@ -184,6 +190,7 @@ Data in the tables is never included, see <code><a href="dm_ptype.html">dm_ptype
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_select(planes, tailnum, year, type, manufacturer, model, engines, seats, speed, engine) %&gt;%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_select(weather, origin, year, month, day, hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib, time_hour)</span>
 </code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

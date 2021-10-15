@@ -25,7 +25,7 @@ for a more detailed introduction.'><meta property="og:image" content="https://cy
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9003</span>
       </span>
     </div>
 
@@ -132,7 +132,8 @@ for a more detailed introduction.</p>
 
 <span class="fu">dm_discard_zoomed</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></code></pre></div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <div id="arguments">
+    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
     </tr><tr><th>table</th>
@@ -158,12 +159,15 @@ Instead, an error is raised if the names don't suit the
 caused by repairing the names. This only concerns unique and
 universal repairing. Set <code>quiet</code> to <code>TRUE</code> to silence the
 messages.</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    </tr></table></div>
 
+    <div id="value">
+    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>For <code>dm_zoom_to()</code>: A <code>zoomed_dm</code> object.</p>
 <p>For <code>dm_insert_zoomed()</code>, <code>dm_update_zoomed()</code> and <code>dm_discard_zoomed()</code>: A <code>dm</code> object.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
+    </div>
+    <div id="details">
+    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Whenever possible, the key relations of the original table are transferred to the resulting table
 when using <code>dm_insert_zoomed()</code> or <code>dm_update_zoomed()</code>.</p>
 <p>Functions from <code>dplyr</code> that are supported for a <code>zoomed_dm</code>: <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>,
@@ -178,8 +182,10 @@ e.g. <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">lef
 The join-methods for <code>zoomed_dm</code> infer the columns to join by from the primary and foreign keys,
 and have an extra argument <code>select</code> that allows choosing the columns of the RHS table.</p>
 <p>And -- last but not least -- also the tidyr-functions <code><a href="https://tidyr.tidyverse.org/reference/unite.html">unite()</a></code> and <code><a href="https://tidyr.tidyverse.org/reference/separate.html">separate()</a></code> are supported for <code>zoomed_dm</code>.</p>
+    </div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <div id="examples">
+    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">flights_zoomed</span> <span class="op">&lt;-</span> <span class="fu">dm_zoom_to</span><span class="op">(</span><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">flights</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">flights_zoomed</span></span>
@@ -256,6 +262,7 @@ and have an extra argument <code>select</code> that allows choosing the columns 
 <span class="r-out co"><span class="r-pr">#&gt;</span> Primary keys: 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Foreign keys: 4</span>
 </code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

@@ -23,7 +23,7 @@ columns from the original table, which is now called the 'child table, and adds 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9003</span>
       </span>
     </div>
 
@@ -122,7 +122,8 @@ columns from the original table, which is now called the 'child table, and adds 
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">decompose_table</span><span class="op">(</span><span class="va">.data</span>, <span class="va">new_id_column</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <div id="arguments">
+    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>.data</th>
       <td><p>Data frame from which columns <code>...</code> are to be extracted.</p></td>
     </tr><tr><th>new_id_column</th>
@@ -138,22 +139,28 @@ They also support
 unquoting and splicing.
 See vignette("programming") for an introduction to those concepts.</p>
 <p>See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    </tr></table></div>
 
+    <div id="value">
+    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A named list of length two:</p><ul><li><p>entry "child_table": the child table with column <code>new_id_column</code> referring to the same column in <code>parent_table</code>,</p></li>
 <li><p>entry "parent_table": the "lookup table" for <code>child_table</code>.</p></li>
-</ul><h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
-
+</ul></div>
+    <div id="life-cycle">
+    <h2>Life cycle<a class="anchor" aria-label="anchor" href="#life-cycle"></a></h2>
     
 
 <p>This function is marked "questioning" because it feels more useful
 when applied to a table in a dm object.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
+    </div>
+    <div id="see-also">
+    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other table surgery functions: 
 <code><a href="reunite_parent_child.html">reunite_parent_child</a>()</code></p></div>
+    </div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <div id="examples">
+    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">decomposed_table</span> <span class="op">&lt;-</span> <span class="fu">decompose_table</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">new_id</span>, <span class="va">am</span>, <span class="va">gear</span>, <span class="va">carb</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">decomposed_table</span><span class="op">$</span><span class="va">child_table</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     mpg cyl  disp  hp drat    wt  qsec vs new_id</span>
@@ -205,6 +212,7 @@ when applied to a table in a dm object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Ferrari Dino          12  1    5    6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Maserati Bora         13  1    5    8</span>
 </code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

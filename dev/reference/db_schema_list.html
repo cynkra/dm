@@ -18,7 +18,7 @@ db_schema_list() lists the available schemas on the database."><meta property="o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9003</span>
       </span>
     </div>
 
@@ -112,7 +112,8 @@ db_schema_list() lists the available schemas on the database."><meta property="o
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">db_schema_list</span><span class="op">(</span><span class="va">con</span>, include_default <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <div id="arguments">
+    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>con</th>
       <td><p>An object of class <code>"src"</code> or <code>"DBIConnection"</code>.</p></td>
     </tr><tr><th>include_default</th>
@@ -120,22 +121,27 @@ db_schema_list() lists the available schemas on the database."><meta property="o
 on the database is included in the result</p></td>
     </tr><tr><th>...</th>
       <td><p>Passed on to the individual methods.</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    </tr></table></div>
 
+    <div id="value">
+    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A tibble with the following columns:</p><dl><dt><code>schema_name</code></dt><dd><p>the names of the schemas,</p></dd>
 <dt><code>schema_owner</code></dt><dd><p>the schema owner names.</p></dd>
 
-</dl><h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
+</dl></div>
+    <div id="details">
+    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Methods are not available for all DBMS.</p>
 <p>Additional arguments are:</p><ul><li><p><code>dbname</code>: supported for MSSQL. List schemas on a different database on the connected MSSQL-server;
 default: database addressed by <code>con</code>.</p></li>
-</ul><h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
+</ul></div>
+    <div id="see-also">
+    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other schema handling functions: 
 <code><a href="db_schema_create.html">db_schema_create</a>()</code>,
 <code><a href="db_schema_drop.html">db_schema_drop</a>()</code>,
 <code><a href="db_schema_exists.html">db_schema_exists</a>()</code></p></div>
+    </div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -18,7 +18,7 @@ Both functions perform a disambiguation of column names and a cascade of joins."
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9003</span>
       </span>
     </div>
 
@@ -114,7 +114,8 @@ Both functions perform a disambiguation of column names and a cascade of joins.<
 
 <span class="fu">dm_squash_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">start</span>, <span class="va">...</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></code></pre></div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <div id="arguments">
+    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
       <td><p>A <code><a href="dm.html">dm</a></code> object.</p></td>
     </tr><tr><th>start</th>
@@ -132,11 +133,14 @@ it will only work with <code>dm_squash_to_tbl()</code> (given one of the allowed
 <code>tidyselect</code> is supported, see <code><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select()</a></code> for details on the semantics.</p></td>
     </tr><tr><th>join</th>
       <td><p>The type of join to be performed, see <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::join()</a></code>.</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    </tr></table></div>
 
+    <div id="value">
+    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A single table that results from consecutively joining all affected tables to the <code>start</code> table.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
+    </div>
+    <div id="details">
+    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>With <code>...</code> left empty, this function will join together all the tables of your <code><a href="dm.html">dm</a></code>
 object that can be reached from the <code>start</code> table, in the direction of the foreign key relations
 (pointing from the child tables to the parent tables), using the foreign key relations to
@@ -164,12 +168,15 @@ table would depend on the order the tables that are listed in the <code>dm</code
 Therefore, trying this will result in a warning.</p>
 <p>Since <code>join = nest_join()</code> does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
+    </div>
+    <div id="see-also">
+    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other flattening functions: 
 <code><a href="dm_join_to_tbl.html">dm_join_to_tbl</a>()</code></p></div>
+    </div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <div id="examples">
+    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">weather</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_flatten_to_tbl</span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span>
@@ -197,6 +204,7 @@ each nested column entry would be a tibble of one row), an error will be thrown 
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   speed &lt;int&gt;, engine &lt;chr&gt;</span></span>
 </code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

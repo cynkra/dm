@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9003</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Class dm and basic operations</h1>
             
-            <h4 data-toc-skip class="date">2021-10-14</h4>
+            <h4 data-toc-skip class="date">2021-10-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-class.Rmd" class="external-link"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-class.Rmd</code></div>
@@ -148,8 +148,7 @@
 <p>The goal of the {dm} package and the <code>dm</code> class that comes with it, is to make your life easier when you are dealing with data from several different tables.</p>
 <p>Let’s take a look at the <code>dm</code> class.</p>
 <div id="class-dm" class="section level2">
-<h2 class="hasAnchor">
-<a href="#class-dm" class="anchor" aria-hidden="true"></a>Class <code>dm</code>
+<h2>Class <code>dm</code><a class="anchor" aria-label="anchor" href="#class-dm"></a>
 </h2>
 <p>The <code>dm</code> class consists of a collection of tables and metadata about the tables, such as</p>
 <ul>
@@ -161,8 +160,8 @@
 <p>All tables in a <code>dm</code> must be obtained from the same data source; csv files and spreadsheets would need to be imported to data frames in R.</p>
 </div>
 <div id="ex_dm" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ex_dm" class="anchor" aria-hidden="true"></a>Examples of <code>dm</code> objects</h2>
+<h2>Examples of <code>dm</code> objects<a class="anchor" aria-label="anchor" href="#ex_dm"></a>
+</h2>
 <p>There are currently three options available for creating a <code>dm</code> object. The relevant functions for creating <code>dm</code> objects are:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/dm.html">dm()</a></code></li>
@@ -172,8 +171,8 @@
 </ol>
 <p>To illustrate these options, we will now create the same <code>dm</code> in several different ways. We can use the tables from the well-known {nycflights13} package.</p>
 <div id="pass-the-tables-directly" class="section level3">
-<h3 class="hasAnchor">
-<a href="#pass-the-tables-directly" class="anchor" aria-hidden="true"></a>Pass the tables directly</h3>
+<h3>Pass the tables directly<a class="anchor" aria-label="anchor" href="#pass-the-tables-directly"></a>
+</h3>
 <p>Create a <code>dm</code> object directly by providing data frames to <code><a href="../reference/dm.html">dm()</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
@@ -187,8 +186,7 @@
 </code></pre>
 </div>
 <div id="start-with-an-empty-dm" class="section level3">
-<h3 class="hasAnchor">
-<a href="#start-with-an-empty-dm" class="anchor" aria-hidden="true"></a>Start with an empty <code>dm</code>
+<h3>Start with an empty <code>dm</code><a class="anchor" aria-label="anchor" href="#start-with-an-empty-dm"></a>
 </h3>
 <p>Start with an empty <code>dm</code> object that has been created with <code><a href="../reference/dm.html">dm()</a></code> or <code><a href="../reference/dm.html">new_dm()</a></code>, and add tables to that object:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -206,8 +204,8 @@
 </code></pre>
 </div>
 <div id="coerce-a-list-of-tables" class="section level3">
-<h3 class="hasAnchor">
-<a href="#coerce-a-list-of-tables" class="anchor" aria-hidden="true"></a>Coerce a list of tables</h3>
+<h3>Coerce a list of tables<a class="anchor" aria-label="anchor" href="#coerce-a-list-of-tables"></a>
+</h3>
 <p>Turn a named list of tables into a <code>dm</code> with <code><a href="../reference/dm.html">as_dm()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm.html">as_dm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>airlines <span class="op">=</span> <span class="va">airlines</span>,
@@ -223,8 +221,7 @@
 </code></pre>
 </div>
 <div id="turn-tables-from-a-src-into-a-dm" class="section level3">
-<h3 class="hasAnchor">
-<a href="#turn-tables-from-a-src-into-a-dm" class="anchor" aria-hidden="true"></a>Turn tables from a <code>src</code> into a <code>dm</code>
+<h3>Turn tables from a <code>src</code> into a <code>dm</code><a class="anchor" aria-label="anchor" href="#turn-tables-from-a-src-into-a-dm"></a>
 </h3>
 <p>Squeeze all (or a subset of) tables belonging to a <code>src</code> object into a <code>dm</code> using <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -233,7 +230,7 @@
 <span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">sqlite_src</span><span class="op">)</span>
 <span class="va">flights_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
-#&gt; src:  sqlite 3.36.0 [/tmp/RtmpYwa5lx/nycflights13.sqlite]
+#&gt; src:  sqlite 3.36.0 [/tmp/RtmpT9JD3n/nycflights13.sqlite]
 #&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -243,8 +240,8 @@
 <p>The function <code>dm_from_src(src, table_names = NULL)</code> includes all available tables on a source in the <code>dm</code> object. This means that you can use this, for example, on a postgres database that you access via <code><a href="https://dplyr.tidyverse.org/reference/src_dbi.html" class="external-link">src_postgres()</a></code> (with the appropriate arguments <code>dbname</code>, <code>host</code>, <code>port</code>, …), to produce a <code>dm</code> object with all the tables on the database.</p>
 </div>
 <div id="low-level-construction" class="section level3">
-<h3 class="hasAnchor">
-<a href="#low-level-construction" class="anchor" aria-hidden="true"></a>Low-level construction</h3>
+<h3>Low-level construction<a class="anchor" aria-label="anchor" href="#low-level-construction"></a>
+</h3>
 <p>Another way of creating a <code>dm</code> object is calling <code><a href="../reference/dm.html">new_dm()</a></code> on a list of <code>tbl</code> objects:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">base_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">new_dm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="va">trees</span>, mtcars <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span>
@@ -261,8 +258,8 @@
 </div>
 </div>
 <div id="access-tables" class="section level2">
-<h2 class="hasAnchor">
-<a href="#access-tables" class="anchor" aria-hidden="true"></a>Access tables</h2>
+<h2>Access tables<a class="anchor" aria-label="anchor" href="#access-tables"></a>
+</h2>
 <p>We can get the list of tables with <code><a href="../reference/dm.html">dm_get_tables()</a></code> and the <code>src</code> object with <code><a href="../reference/dplyr_src.html">dm_get_src()</a></code>.</p>
 <p>In order to pull a specific table from a <code>dm</code>, use:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -270,7 +267,7 @@
 <span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span>
 <span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Source:   table&lt;`airports`&gt; [?? x 8]</span>
-#&gt; <span style="color: #949494;"># Database: sqlite 3.36.0 [/tmp/RtmpYwa5lx/nycflights13.sqlite]</span>
+#&gt; <span style="color: #949494;"># Database: sqlite 3.36.0 [/tmp/RtmpT9JD3n/nycflights13.sqlite]</span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        
 #&gt; <span style="color: #BCBCBC;"> 1</span> 04G   Lansdowne Airport      41.1  -<span style="color: #BB0000;">80.6</span>  <span style="text-decoration: underline;">1</span>044    -<span style="color: #BB0000;">5</span> A     America/New_…
@@ -288,8 +285,8 @@
 <p>But how can we use {dm}-functions to manage the primary keys of the tables in a <code>dm</code> object?</p>
 </div>
 <div id="pk" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pk" class="anchor" aria-hidden="true"></a>Primary keys of <code>dm</code> objects</h2>
+<h2>Primary keys of <code>dm</code> objects<a class="anchor" aria-label="anchor" href="#pk"></a>
+</h2>
 <p>Some useful functions for managing primary key settings are:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code></li>
@@ -305,7 +302,7 @@
 <span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span>
 <span class="va">flights_dm_with_key</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
-#&gt; src:  sqlite 3.36.0 [/tmp/RtmpYwa5lx/nycflights13.sqlite]
+#&gt; src:  sqlite 3.36.0 [/tmp/RtmpT9JD3n/nycflights13.sqlite]
 #&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -358,8 +355,8 @@
 <span class="co">#&gt; Error: (`tzone`) not a unique key of `airports`.</span></code></pre></div>
 </div>
 <div id="foreign-keys" class="section level2">
-<h2 class="hasAnchor">
-<a href="#foreign-keys" class="anchor" aria-hidden="true"></a>Foreign keys</h2>
+<h2>Foreign keys<a class="anchor" aria-label="anchor" href="#foreign-keys"></a>
+</h2>
 <p>Useful functions for managing foreign key relations include:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code></li>
@@ -372,7 +369,7 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_key</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
-#&gt; src:  sqlite 3.36.0 [/tmp/RtmpYwa5lx/nycflights13.sqlite]
+#&gt; src:  sqlite 3.36.0 [/tmp/RtmpT9JD3n/nycflights13.sqlite]
 #&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62

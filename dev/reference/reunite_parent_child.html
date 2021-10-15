@@ -25,7 +25,7 @@ of the columns is not retained, and the original row names are lost)."><meta pro
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9003</span>
       </span>
     </div>
 
@@ -128,7 +128,8 @@ of the columns is not retained, and the original row names are lost).</p>
 
 <span class="fu">reunite_parent_child_from_list</span><span class="op">(</span><span class="va">list_of_parent_child_tables</span>, <span class="va">id_column</span><span class="op">)</span></code></pre></div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <div id="arguments">
+    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>child_table</th>
       <td><p>Table (possibly created by <code><a href="decompose_table.html">decompose_table()</a></code>) that references <code>parent_table</code></p></td>
     </tr><tr><th>parent_table</th>
@@ -138,21 +139,27 @@ of the columns is not retained, and the original row names are lost).</p>
     </tr><tr><th>list_of_parent_child_tables</th>
       <td><p>Cf arguments <code>child_table</code> and <code>parent_table</code> from
 <code>reunite_parent_child()</code>, but both in a named list (as created by <code><a href="decompose_table.html">decompose_table()</a></code>).</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    </tr></table></div>
 
+    <div id="value">
+    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A wide table produced by joining the two given tables.</p>
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
-
+    </div>
+    <div id="life-cycle">
+    <h2>Life cycle<a class="anchor" aria-label="anchor" href="#life-cycle"></a></h2>
     
 
 <p>These functions are marked "questioning" because they feel more useful
 when applied to a table in a dm object.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
+    </div>
+    <div id="see-also">
+    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other table surgery functions: 
 <code><a href="decompose_table.html">decompose_table</a>()</code></p></div>
+    </div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <div id="examples">
+    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">decomposed_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">new_id</span>, <span class="va">am</span>, <span class="va">gear</span>, <span class="va">carb</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">ct</span> <span class="op">&lt;-</span> <span class="va">decomposed_table</span><span class="op">$</span><span class="va">child_table</span></span>
 <span class="r-in"><span class="va">pt</span> <span class="op">&lt;-</span> <span class="va">decomposed_table</span><span class="op">$</span><span class="va">parent_table</span></span>
@@ -226,6 +233,7 @@ when applied to a table in a dm object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 31 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 32 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</span>
 </code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

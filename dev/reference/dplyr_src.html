@@ -20,7 +20,7 @@ Use other ways to access the tables in a dm.'><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9003</span>
       </span>
     </div>
 
@@ -134,7 +134,8 @@ Use other ways to access the tables in a <code>dm</code>.</p>
   <span class="va">...</span>
 <span class="op">)</span></code></pre></div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <div id="arguments">
+    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>src</th>
       <td><p>A <code>dm</code> object.</p></td>
     </tr><tr><th>from</th>
@@ -154,8 +155,10 @@ Use other ways to access the tables in a <code>dm</code>.</p>
 After the connection is reset it will no longer be available.</p></td>
     </tr><tr><th>repair, quiet</th>
       <td><p>Name repair options; cf. <code><a href="https://vctrs.r-lib.org/reference/vec_as_names.html">vctrs::vec_as_names()</a></code></p></td>
-    </tr></table><h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    </tr></table></div>
 
+    <div id="details">
+    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Use <code><a href="dm.html">dm_get_con()</a></code> instead of <code>dm_get_src()</code> to get the DBI connetion for a
 <code>dm</code> object</p>
 <p>Use <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> instead of <code><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl()</a></code> to access individual tables in a <code>dm</code> object.</p>
@@ -163,6 +166,7 @@ After the connection is reset it will no longer be available.</p></td>
 to list the table names in a <code>dm</code> object.</p>
 <p>Use <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to()</a></code> on a table and then <code><a href="dm_add_tbl.html">dm_add_tbl()</a></code> instead of <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to()</a></code>
 on a <code>dm</code> object.</p>
+    </div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

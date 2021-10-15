@@ -38,7 +38,7 @@ validate_dm() checks the internal consistency of a dm object."><meta property="o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9003</span>
       </span>
     </div>
 
@@ -161,7 +161,8 @@ To get a filtered table, use <code><a href="dm_filter.html">dm_apply_filters_to_
 
 <span class="fu">validate_dm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <div id="arguments">
+    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>...</th>
       <td><p>Tables to add to the <code>dm</code> object.
 If no names are provided, the tables
@@ -174,19 +175,23 @@ Forwarded as <code>repair</code> to <code><a href="https://vctrs.r-lib.org/refer
 to be included in the <code>dm</code> object.</p></td>
     </tr><tr><th>x</th>
       <td><p>An object.</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    </tr></table></div>
 
+    <div id="value">
+    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>For <code>dm()</code>, <code>new_dm()</code>, <code>as_dm()</code>: A <code>dm</code> object.</p>
 <p>For <code>dm_get_con()</code>: The <code><a href="https://dbi.r-dbi.org/reference/DBIConnection-class.html">DBI::DBIConnection</a></code> for <code>dm</code> objects.</p>
 <p>For <code>dm_get_tables()</code>: A named list with the tables constituting the <code>dm</code>.</p>
 <p>For <code>is_dm()</code>: Boolean, is this object a <code>dm</code>.</p>
 <p>For <code>validate_dm()</code>: Returns the <code>dm</code>, invisibly, after finishing all checks.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
+    </div>
+    <div id="details">
+    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>All lazy tables in a dm object must be stored on the same database server
 and accessed through the same connection.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
+    </div>
+    <div id="see-also">
+    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index">
 <ul><li><p><code><a href="dm_from_src.html">dm_from_src()</a></code> for connecting to all tables in a database
 and importing the primary and foreign keys</p></li>
@@ -201,8 +206,10 @@ and importing the primary and foreign keys</p></li>
 <li><p><code><a href="check_key.html">check_key()</a></code> and <code><a href="check_subset.html">check_subset()</a></code> for checking for key properties</p></li>
 <li><p><code><a href="examine_cardinality.html">examine_cardinality()</a></code> for checking the cardinality of the relation between two tables</p></li>
 </ul></div>
+    </div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <div id="examples">
+    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">dm</span><span class="op">(</span><span class="va">trees</span>, <span class="va">mtcars</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `trees`, `mtcars`</span>
@@ -380,6 +387,7 @@ and importing the primary and foreign keys</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> BUR   Bob Hope                            34.2 -<span style="color: #BB0000;">118.</span>    778    -<span style="color: #BB0000;">8</span> A     Amer…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 76 more rows</span></span>
 </code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

@@ -22,7 +22,7 @@ of the values of the key in table ref_table."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.4.9003</span>
       </span>
     </div>
 
@@ -129,7 +129,8 @@ of the values of the key in table <code>ref_table</code>.</p>
   on_delete <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"no_action"</span>, <span class="st">"cascade"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <div id="arguments">
+    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
     </tr><tr><th>table</th>
@@ -157,17 +158,22 @@ and the operation is aborted if child rows exist
 - <code>"cascade"</code> means that the child row is also deleted
 This setting is picked up by <code><a href="copy_dm_to.html">copy_dm_to()</a></code> with <code>set_key_constraints = TRUE</code>,
 and might be considered by <code><a href="rows-dm.html">dm_rows_delete()</a></code> in a future version.</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    </tr></table></div>
 
+    <div id="value">
+    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>An updated <code>dm</code> with an additional foreign key relation.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
+    </div>
+    <div id="see-also">
+    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other foreign key functions: 
 <code><a href="dm_enum_fk_candidates.html">dm_enum_fk_candidates</a>()</code>,
 <code><a href="dm_get_all_fks.html">dm_get_all_fks</a>()</code>,
 <code><a href="dm_rm_fk.html">dm_rm_fk</a>()</code></p></div>
+    </div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <div id="examples">
+    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">nycflights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm.html">dm</a></span><span class="op">(</span></span>
 <span class="r-in">  planes <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/planes.html">planes</a></span>,</span>
 <span class="r-in">  flights <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html">flights</a></span>,</span>
@@ -200,6 +206,7 @@ and might be considered by <code><a href="rows-dm.html">dm_rows_delete()</a></co
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_not_subset_of(table_name, col_name, ref_table_name, ref_col_name) : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Column `tailnum` of table `flights` contains values (see examples above) that are not present in column `tailnum` of table `planes`.</span>
 </code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
