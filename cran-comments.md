@@ -1,4 +1,4 @@
-dm 0.2.4
+dm 0.2.5
 
 ## Cran Repository Policy
 
@@ -12,5 +12,4 @@ dm 0.2.4
 
 ## Current CRAN check results
 
-- [x] Checked on 2021-09-29, problems found: https://cran.r-project.org/web/checks/check_results_dm.html
-- [x] ERROR: r-patched-linux-x86_64: False positive
+- [x] Checked on 2021-10-15, no problems found.
