@@ -191,7 +191,7 @@ copy_dm_to <- function(dest, dm, ...,
 
   check_not_zoomed(dm)
 
-  # FIXME: if same_src(), can use compute() but need to set NOT NULL
+  # FIXME: if same_src(), can use compute() but need to set NOT NULL and other
   # constraints
 
   dm <- collect(dm, progress = progress)
@@ -211,60 +211,13 @@ copy_dm_to <- function(dest, dm, ...,
     overwrite = FALSE,
     ...
   )
+  names(new_tables) <- copy_data$source_name
 
   def <- dm_get_def(dm)
-  def$data <- new_tables
+  def$data <- unname(new_tables[names(dm)])
   remote_dm <- new_dm3(def)
 
-  if (set_key_constraints && is_src_db(remote_dm)) {
-    dm_set_key_constraints(remote_dm)
-  }
-
   invisible(debug_validate_dm(remote_dm))
-}
-
-#' Set key constraints on a DB for a `dm`-obj with keys
-#'
-#' @description `dm_set_key_constraints()` takes a `dm` object that is constructed from tables in a database,
-#' and mirrors the foreign key constraints in the dm on the database.
-#' This is currently only implemented for MSSQL and Postgres databases.
-#'
-#' @inheritParams copy_dm_to
-#'
-#' @family DB interaction functions
-#'
-#' @return Returns the `dm`, invisibly. Side effect: installing key constraints on DB.
-#'
-#' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13")
-#' # Setting key constraints not yet supported on SQLite,
-#' # try this with SQL Server or Postgres instead:
-#' sqlite <- DBI::dbConnect(RSQLite::SQLite())
-#'
-#' flights_dm <- copy_dm_to(
-#'   sqlite,
-#'   dm_nycflights13(),
-#'   set_key_constraints = FALSE
-#' )
-#'
-#' dm_set_key_constraints(flights_dm)
-#' DBI::dbDisconnect(sqlite)
-#' @noRd
-dm_set_key_constraints <- function(dm) {
-  if (!is_src_db(dm) && !is_this_a_test()) abort_key_constraints_need_db()
-  db_table_names <- get_db_table_names(dm)
-
-  fk_info <-
-    dm_get_all_fks(dm) %>%
-    left_join(db_table_names, by = c("child_table" = "table_name")) %>%
-    rename(db_child_table = remote_name) %>%
-    left_join(db_table_names, by = c("parent_table" = "table_name")) %>%
-    rename(db_parent_table = remote_name)
-
-  con <- con_from_src_or_con(dm_get_src_impl(dm))
-  queries <- create_queries(con, fk_info)
-  walk(queries, ~ dbExecute(con, .))
-
-  invisible(dm)
 }
 
 get_db_table_names <- function(dm) {

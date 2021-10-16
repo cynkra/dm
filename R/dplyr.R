@@ -35,11 +35,9 @@ mutate.dm <- function(.data, ...) {
 #' @export
 mutate.zoomed_dm <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
-  quos <- enquos(..., .named = TRUE)
-  mutated_tbl <- mutate(tbl, !!!quos)
-  # all columns that are not touched count as "selected"; names of "selected" are identical to "selected"
-  # in case no keys are tracked, `set_names(NULL)` would throw an error
-  selected <- set_names(setdiff(names2(col_tracker_zoomed(.data)), names(quos)))
+  mutated_tbl <- mutate(tbl, ...)
+  # #663: user responsibility: those columns are tracked whose names remain
+  selected <- set_names(intersect(colnames(tbl), colnames(mutated_tbl)))
   new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
   replace_zoomed_tbl(.data, mutated_tbl, new_tracked_cols_zoom)
 }
@@ -56,7 +54,10 @@ transmute.zoomed_dm <- function(.data, ...) {
   # groups are "selected"; key tracking will continue for them
   groups <- set_names(map_chr(groups(tbl), as_string))
   transmuted_tbl <- transmute(tbl, ...)
-  new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
+
+  # #663: user responsibility: those columns are tracked whose names remain
+  selected <- set_names(intersect(colnames(tbl), colnames(transmuted_tbl)))
+  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
 
   replace_zoomed_tbl(.data, transmuted_tbl, new_tracked_cols_zoom)
 }
@@ -76,6 +77,21 @@ select.zoomed_dm <- function(.data, ...) {
   new_tracked_cols_zoom <- new_tracked_cols(.data, selected$names)
 
   replace_zoomed_tbl(.data, selected_tbl, new_tracked_cols_zoom)
+}
+
+#' @export
+relocate.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @inheritParams dplyr::relocate
+#' @export
+relocate.zoomed_dm <- function(.data, ..., .before = NULL, .after = NULL) {
+  tbl <- tbl_zoomed(.data)
+
+  relocated_tbl <- relocate(tbl, ..., .before = {{ .before }}, .after = {{ .after }})
+  replace_zoomed_tbl(.data, relocated_tbl)
 }
 
 #' @export
@@ -106,15 +122,10 @@ distinct.dm <- function(.data, ...) {
 distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
   tbl <- tbl_zoomed(.data)
   distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
-  # when keeping all columns or empty ellipsis
-  # (use all columns for distinct)
-  # all keys columns remain
-  if (.keep_all || rlang::dots_n(...) == 0) {
-    return(replace_zoomed_tbl(.data, distinct_tbl))
-  }
 
-  selected <- eval_select_both(quo(c(...)), colnames(tbl))
-  new_tracked_cols_zoom <- new_tracked_cols(.data, selected$names)
+  # #663: user responsibility: those columns are tracked whose names remain
+  selected <- set_names(intersect(colnames(tbl), colnames(distinct_tbl)))
+  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
 
   replace_zoomed_tbl(.data, distinct_tbl, new_tracked_cols_zoom)
 }
@@ -258,6 +269,7 @@ summarise.dm <- function(.data, ...) {
 summarise.zoomed_dm <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
   # groups are "selected"; key tracking will continue for them
+  # #663: user responsibility: if group columns are manipulated, they are still tracked
   groups <- set_names(map_chr(groups(tbl), as_string))
   summarized_tbl <- summarize(tbl, ...)
   new_tracked_cols_zoom <- new_tracked_cols(.data, groups)

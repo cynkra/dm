@@ -44,28 +44,53 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
 
     pks_clause <-
       pks %>%
-      mutate(
+      transmute(
+        source_name,
         cols = map_chr(pk_col, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
-        constraint = "PRIMARY KEY"
+        constraint = "PRIMARY KEY",
+        extra = ""
       )
 
     fks <-
-      dm_get_all_fks_impl(dm) %>%
-      rename(source_name = child_table)
+      dm_get_all_fks_impl(dm)
 
     unique_clause <-
       fks %>%
       select(source_name = parent_table, pk_col = parent_key_cols) %>%
       anti_join(pks, by = c("source_name", "pk_col")) %>%
       distinct() %>%
-      mutate(
+      transmute(
+        source_name,
         cols = map_chr(pk_col, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
-        constraint = "UNIQUE"
+        constraint = "UNIQUE",
+        extra = ""
       )
 
+    if (is_duckdb(con)) {
+      # https://github.com/duckdb/duckdb/issues/46
+      fks_clause <- NULL
+    } else {
+      fks_clause <-
+        fks %>%
+        rename(source_name = parent_table) %>%
+        left_join(copy_data_base %>% select(source_name, parent_table = name), by = "source_name") %>%
+        transmute(
+          source_name = child_table,
+          cols = map_chr(child_fk_cols, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
+          constraint = "FOREIGN KEY",
+          extra = paste0(
+            " REFERENCES ",
+            parent_table, " (",
+            map_chr(parent_key_cols, ~ paste(DBI::dbQuoteIdentifier(con, .x), collapse = ", ")),
+            ") ON DELETE ",
+            if_else(on_delete == "cascade", "CASCADE", "NO ACTION")
+          )
+        )
+    }
+
     clause <-
-      bind_rows(pks_clause, unique_clause) %>%
-      mutate(sql = paste0(",\n", constraint, " (", cols, ")")) %>%
+      bind_rows(pks_clause, unique_clause, fks_clause) %>%
+      mutate(sql = paste0(",\n", constraint, " (", cols, ")", extra)) %>%
       group_by(source_name) %>%
       summarize(sql = paste(sql, collapse = "")) %>%
       ungroup()
@@ -77,8 +102,8 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
       summarize(column = as.character(unlist(pk_col)), pk = TRUE) %>%
       ungroup()
 
-    # Need to supply NOT NULL modifiers for primary keys
-    # because they are difficult to add to MSSQL after the fact
+    # Adding constraints at creation,
+    # because they are difficult to add to e.g. MSSQL and SQLite after the fact
     copy_data_types <-
       copy_data_base %>%
       select(source_name, df) %>%
@@ -92,7 +117,8 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
       left_join(clause, by = "source_name") %>%
       group_by(source_name) %>%
       #
-      # HACK: Append PRIMARY KEY clause to end, https://github.com/r-dbi/DBI/pull/351
+      # HACK: Append PRIMARY KEY, UNIQUE, and FOREIGN KEY clauses to end,
+      # https://github.com/r-dbi/DBI/pull/351
       # So far this is the only reason to use `con` in this function
       mutate(full_type = paste0(full_type, if_else(
         !!set_key_constraints & !is.na(sql) & (row_number() == n()),
@@ -110,7 +136,7 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
 
     copy_data_non_unique_indexes <-
       fks %>%
-      group_by(source_name) %>%
+      group_by(source_name = child_table) %>%
       summarize(indexes = list(child_fk_cols)) %>%
       ungroup()
 
@@ -135,35 +161,15 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints, con) {
       copy_data_base
   }
 
-  copy_data
-}
+  # Finally, reorder according to topological sort
+  graph <- create_graph_from_dm(dm, directed = TRUE)
+  topo <- igraph::topo_sort(graph, mode = "in")
+  idx <- match(names(topo), copy_data$source_name)
 
-create_queries <- function(dest, fk_information) {
-  if (is_null(fk_information)) {
-    character()
+  if (length(idx) < nrow(copy_data)) {
+    copy_data
   } else {
-    queries_set_fk_relations(dest, fk_information)
-  }
-}
-
-queries_set_fk_relations <- function(dest, fk_information) {
-  db_child_tables <- fk_information$db_child_table
-  child_fk_cols <- fk_information$child_fk_cols
-  db_parent_tables <- fk_information$db_parent_table
-  parent_pk_col <- fk_information$parent_key_cols
-
-  if (is_mssql(dest) || is_postgres(dest)) {
-    pmap_chr(
-      list(
-        db_child_tables,
-        child_fk_cols,
-        db_parent_tables,
-        parent_pk_col
-      ),
-      ~ glue_sql("ALTER TABLE {`DBI::SQL(..1)`} ADD FOREIGN KEY ({`..2`*}) REFERENCES {`DBI::SQL(..3)`} ({`..4`*}) ON DELETE CASCADE ON UPDATE CASCADE", .con = dest)
-    )
-  } else {
-    return(character())
+    copy_data[idx, ]
   }
 }
 
@@ -187,9 +193,14 @@ is_src_db <- function(dm) {
   is_db(dm_get_src_impl(dm))
 }
 
+is_duckdb <- function(dest) {
+  inherits(dest, c("duckdb_connection", "src_duckdb_connection"))
+}
+
 is_mssql <- function(dest) {
-  inherits(dest, "Microsoft SQL Server") ||
-    inherits(dest, "src_Microsoft SQL Server")
+  inherits(dest, c(
+    "Microsoft SQL Server", "src_Microsoft SQL Server", "dblogConnection-Microsoft SQL Server", "src_dblogConnection-Microsoft SQL Server"
+  ))
 }
 
 is_postgres <- function(dest) {

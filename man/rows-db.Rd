@@ -4,23 +4,83 @@
 \alias{rows-db}
 \alias{rows_insert.tbl_dbi}
 \alias{rows_update.tbl_dbi}
+\alias{rows_patch.tbl_dbi}
+\alias{rows_upsert.tbl_dbi}
 \alias{rows_delete.tbl_dbi}
 \alias{sql_rows_insert}
 \alias{sql_rows_update}
+\alias{sql_rows_patch}
 \alias{sql_rows_delete}
+\alias{sql_returning_cols}
+\alias{sql_output_cols}
 \title{Updating database tables}
 \usage{
-\method{rows_insert}{tbl_dbi}(x, y, by = NULL, ..., in_place = NULL, copy = FALSE, check = NULL)
+\method{rows_insert}{tbl_dbi}(
+  x,
+  y,
+  by = NULL,
+  ...,
+  in_place = NULL,
+  copy = FALSE,
+  check = NULL,
+  returning = NULL
+)
 
-\method{rows_update}{tbl_dbi}(x, y, by = NULL, ..., in_place = NULL, copy = FALSE, check = NULL)
+\method{rows_update}{tbl_dbi}(
+  x,
+  y,
+  by = NULL,
+  ...,
+  in_place = NULL,
+  copy = FALSE,
+  check = NULL,
+  returning = NULL
+)
 
-\method{rows_delete}{tbl_dbi}(x, y, by = NULL, ..., in_place = NULL, copy = FALSE, check = NULL)
+\method{rows_patch}{tbl_dbi}(
+  x,
+  y,
+  by = NULL,
+  ...,
+  in_place = NULL,
+  copy = FALSE,
+  check = NULL,
+  returning = NULL
+)
 
-sql_rows_insert(x, y, ...)
+\method{rows_upsert}{tbl_dbi}(
+  x,
+  y,
+  by = NULL,
+  ...,
+  in_place = NULL,
+  copy = FALSE,
+  check = NULL,
+  returning = NULL
+)
 
-sql_rows_update(x, y, by, ...)
+\method{rows_delete}{tbl_dbi}(
+  x,
+  y,
+  by = NULL,
+  ...,
+  in_place = NULL,
+  copy = FALSE,
+  check = NULL,
+  returning = NULL
+)
 
-sql_rows_delete(x, y, by, ...)
+sql_rows_insert(x, y, ..., returning_cols = NULL)
+
+sql_rows_update(x, y, by, ..., returning_cols = NULL)
+
+sql_rows_patch(x, y, by, ..., returning_cols = NULL)
+
+sql_rows_delete(x, y, by, ..., returning_cols = NULL)
+
+sql_returning_cols(x, returning_cols, ...)
+
+sql_output_cols(x, returning_cols, output_delete = FALSE, ...)
 }
 \arguments{
 \item{x}{A pair of data frames or data frame extensions (e.g. a tibble).
@@ -54,11 +114,30 @@ it is a potentially expensive operation so you must opt into it.}
 The default is to check only if \code{in_place} is \code{TRUE} or \code{NULL}.
 
 Currently these checks are no-ops and need yet to be implemented.}
+
+\item{returning}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+<\code{\link[=tidyr_tidy_select]{tidy-select}}> Columns to return of the inserted data.
+Note that also columns not in \code{y} but automatically created when inserting
+into \code{x} can be returned, for example the \code{id} column.
+
+Due to upstream limitations, a warning is given if this argument
+is passed unquoted.
+To avoid the warning, quote the argument manually:
+use e.g. \code{returning = quote(everything())} .}
+
+\item{returning_cols}{A character vector of unquote column names
+to return, created from the \code{returning} argument.
+Methods for database that do not support this should raise an error.}
+
+\item{output_delete}{For \code{sql_output_cols()}, construct the SQL
+for a \code{DELETE} operation.}
 }
 \value{
 A tbl object of the same structure as \code{x}.
 If \code{in_place = TRUE}, the underlying data is updated as a side effect,
-and \code{x} is returned, invisibly.
+and \code{x} is returned, invisibly. If return columns are specified with
+\code{returning} then the resulting tibble is stored in the attribute
+\code{returned_rows}. This can be accessed with \code{\link[=get_returned_rows]{get_returned_rows()}}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -82,6 +161,12 @@ Unlike \code{\link[=compute]{compute()}} or \code{\link[=copy_to]{copy_to()}}, n
 The \verb{sql_rows_*()} functions return the SQL used for the corresponding
 \verb{rows_*()} function with \code{in_place = FALSE}.
 \code{y} needs to be located on the same data source as \code{x}.
+
+\code{sql_returning_cols()} and \code{sql_output_cols()} construct the SQL
+required to support the \code{returning} argument.
+Two methods are required, because the syntax for SQL Server
+(and some other databases) is vastly different from Postgres and other
+more standardized DBs.
 }
 \examples{
 \dontshow{if (rlang::is_installed("dbplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -91,10 +176,13 @@ data
 try(rows_insert(data, tibble::tibble(a = 4, b = "z")))
 rows_insert(data, tibble::tibble(a = 4, b = "z"), copy = TRUE)
 rows_update(data, tibble::tibble(a = 2:3, b = "w"), copy = TRUE, in_place = FALSE)
+rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = FALSE)
 
 rows_insert(data, dbplyr::memdb_frame(a = 4, b = "z"), in_place = TRUE)
 data
 rows_update(data, dbplyr::memdb_frame(a = 2:3, b = "w"), in_place = TRUE)
+data
+rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = TRUE)
 data
 \dontshow{\}) # examplesIf}
 }

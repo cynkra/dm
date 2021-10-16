@@ -89,7 +89,6 @@ test_that("output", {
     dm_bind()
     dm_bind(empty_dm())
     dm_bind(dm_for_filter()) %>% collect()
-    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique") %>% collect()
     dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique", quiet = TRUE) %>% collect()
     writeLines(conditionMessage(expect_error(
       dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter())
@@ -97,10 +96,25 @@ test_that("output", {
   })
 })
 
+test_that("output dev vctrs", {
+  skip_if_not_installed("vctrs", "0.3.8.9001")
+
+  expect_snapshot({
+    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique") %>% collect()
+  })
+})
+
 test_that("output for compound keys", {
   expect_snapshot({
-    dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>% dm_paste(options = c("select", "keys"))
     dm_bind(dm_for_filter(), dm_for_flatten()) %>% dm_paste(options = c("select", "keys"))
     dm_bind(dm_for_flatten(), dm_for_filter()) %>% dm_paste(options = c("select", "keys"))
+  })
+})
+
+test_that("output for compound keys dev vctrs", {
+  skip_if_not_installed("vctrs", "0.3.8.9001")
+
+  expect_snapshot({
+    dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>% dm_paste(options = c("select", "keys"))
   })
 })

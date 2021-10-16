@@ -54,7 +54,7 @@
       abort_no_cycles(create_graph_from_dm(dm_for_filter_w_cycle()))
     Error <dm_error_no_cycles>
       Cycles in the relationship graph not yet supported.
-      * Shortest cycle: tf_5 -> tf_6 -> tf_7 -> tf_2 -> tf_3 -> tf_4 -> tf_5
+      i Shortest cycle: tf_5 -> tf_6 -> tf_7 -> tf_2 -> tf_3 -> tf_4 -> tf_5
     Code
       abort_tables_not_reachable_from_start()
     Error <dm_error_tables_not_reachable_from_start>
@@ -241,14 +241,6 @@
       Argument `dbms_dependent_arg` ignored: currently only supported for MSSQL and Postgres.
     Output
       NULL
-    Code
-      abort_schema_exists("silhouette")
-    Error <dm_error_schema_exists>
-      A schema named `silhouette` already exists.
-    Code
-      abort_schema_exists("silhouette", "exhibition")
-    Error <dm_error_schema_exists>
-      A schema named `silhouette` already exists on database `exhibition`.
     Code
       abort_no_schema_exists("table_1")
     Error <dm_error_no_schema_exists>

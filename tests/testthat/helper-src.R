@@ -66,6 +66,10 @@ is_db_test_src <- function() {
   my_test_src_name != "df"
 }
 
+is_my_test_src_sqlite <- function() {
+  inherits(my_db_test_src(), "src_SQLiteConnection")
+}
+
 my_test_src_fun %<--% {
   fun <- paste0("test_src_", my_test_src_name)
   get0(fun, inherits = TRUE)
@@ -98,7 +102,7 @@ my_db_test_src <- function() {
   }
 }
 
-test_src_frame <- function(...) {
+test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(), .unique_indexes = NULL) {
   src <- my_test_src()
 
   df <- tibble(...)
@@ -106,7 +110,10 @@ test_src_frame <- function(...) {
     return(df)
   }
 
-  if (is_mssql(src)) {
+  if (!.temporary) {
+    name <- unique_db_table_name("test_frame")
+    temporary <- FALSE
+  } else if (is_mssql(src)) {
     name <- paste0("#", unique_db_table_name("test_frame"))
     temporary <- FALSE
   } else {
@@ -114,13 +121,14 @@ test_src_frame <- function(...) {
     temporary <- TRUE
   }
 
-  out <- copy_to(src, df, name = name, temporary = temporary)
+  out <- copy_to(src, df, name = name, temporary = temporary, unique_indexes = .unique_indexes)
   out
 }
 
-test_db_src_frame <- function(...) {
+test_db_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(),
+                              .unique_indexes = NULL) {
   if (is_db_test_src()) {
-    return(test_src_frame(...))
+    return(test_src_frame(..., .temporary = .temporary, .env = .env, .unique_indexes = .unique_indexes))
   }
 
   src <- my_db_test_src()
@@ -128,9 +136,13 @@ test_db_src_frame <- function(...) {
   df <- tibble(...)
 
   name <- unique_db_table_name("test_frame")
-  temporary <- TRUE
 
-  out <- copy_to(src, df, name = name, temporary = temporary)
+  out <- copy_to(src, df, name = name, temporary = .temporary, unique_indexes = .unique_indexes)
+
+  if (!.temporary) {
+    withr::defer(DBI::dbRemoveTable(con_from_src_or_con(src), name), envir = .env)
+  }
+
   out
 }
 
@@ -269,7 +281,7 @@ dm_for_filter_w_cycle %<-% {
     dm_add_fk(tf_6, o, tf_7) %>%
     #
     dm_add_pk(tf_5, k) %>%
-    dm_add_fk(tf_5, l, tf_4) %>%
+    dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
     dm_add_fk(tf_5, m, tf_6, n)
 }
 

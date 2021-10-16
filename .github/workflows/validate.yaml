@@ -3,22 +3,35 @@ on:
     branches:
       - main
       - master
+      - "r-*"
   pull_request:
     branches:
       - main
       - master
+      - "r-*"
+  schedule:
+    - cron:  '20 2 * * *'
 
-name: covr
+name: validate
 
 jobs:
-  test-coverage:
-    runs-on: ubuntu-18.04
+  db-tests:
+    runs-on: ${{ matrix.config.os }}${{ matrix.config.os-version }}
+
+    name: ${{ matrix.config.os }}${{ matrix.config.os-version }} (${{ matrix.config.r }}) ${{ matrix.config.desc }}
 
     # Begin custom: services
     # End custom: services
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { os: ubuntu-, os-version: 18.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest" }
+
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      RSPM: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"
+      RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       # prevent rgl issues because no X11 display is available
       RGL_USE_NULL: true
@@ -38,9 +51,8 @@ jobs:
 
       - uses: r-lib/actions/setup-r@v1
         with:
-          install-r: false
-
-      - uses: r-lib/actions/setup-pandoc@v1
+          r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
 
       - name: Install remotes
         run: |
@@ -60,40 +72,52 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ubuntu-18.04-${{ hashFiles('.github/R-version') }}-2-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ubuntu-18.04-${{ hashFiles('.github/R-version') }}-2-
+          key: ${{ matrix.config.os }}${{ matrix.config.os-version }}-${{ hashFiles('.github/R-version') }}-2-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ matrix.config.os }}${{ matrix.config.os-version }}-${{ hashFiles('.github/R-version') }}-2-
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
-          sudo apt-get update -y
           while read -r cmd
           do
             eval sudo $cmd
-          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "18.04"))')
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "${{matrix.config.os-version}}"))')
 
-      - name: Add fake qpdf and checkbashisms
-        if: runner.os == 'Linux'
-        run: |
-          sudo ln -s $(which true) /usr/local/bin/qpdf
-          sudo ln -s $(which true) /usr/local/bin/checkbashisms
+      # Begin custom: before install
+      # End custom: before install
 
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE, type = .Platform$pkgType)
-          remotes::install_cran("covr")
         shell: Rscript {0}
 
-      - name: Session info
+      - name: Instrument R code for validation
         run: |
-          options(width = 100)
-          if (!requireNamespace("sessioninfo", quietly = TRUE)) install.packages("sessioninfo")
-          pkgs <- installed.packages()[, "Package"]
-          sessioninfo::session_info(pkgs, include_base = TRUE)
-        shell: Rscript {0}
+          if [ $(git status --porcelain | wc -l) -gt 0 ]; then
+            echo "Fatal: git working copy not clean"
+          fi
+          sed -i -r '/INSTRUMENT: validate/ s/^( +)# /\1/g' R/*
+          if [ $(git status --porcelain | wc -l) -eq 0 ]; then
+            echo "Fatal: substitution did not change anything"
+          fi
 
       # Begin custom: after install
+      - name: Run tests
+        run: |
+          testthat::test_local(reporter = testthat::ProgressReporter$new(max_failures = Inf, update_interval = Inf))
+        shell: Rscript {0}
       # End custom: after install
+
+      - name: Run tests
+        run: |
+          testthat::test_local(reporter = testthat::ProgressReporter$new(max_failures = Inf, update_interval = Inf))
+        shell: Rscript {0}
+
+      - name: Show test output
+        if: always()
+        run: |
+          find check -name '*.Rout*' -exec head -n 1000000 '{}' \; || true
+        shell: bash
 
       - name: Test coverage
         run: covr::codecov()

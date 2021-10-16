@@ -25,3 +25,12 @@ if (rlang::has_length(grep("^library[(]dm[)]", input))) {
   # we load it here to omit warnings
   library(dm)
 }
+
+## Link helper to enable links only on pkgdown
+href <- function(title, url) {
+  if (Sys.getenv("IN_PKGDOWN") == "") {
+    paste0(title, " (", url, ")")
+  } else {
+    paste0("[", title, "](", url, ")")
+  }
+}

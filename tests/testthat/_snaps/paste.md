@@ -4,12 +4,29 @@
       # empty
       empty_dm() %>% dm_paste()
     Message <cliMessage>
-      dm::dm()
+      dm::dm(
+      )
+    Code
+      # empty table
+      dm(a = tibble()) %>% dm_paste(options = "tables")
+    Message <cliMessage>
+      a <- tibble::tibble(
+      )
+      dm::dm(
+        a,
+      )
     Code
       # baseline
       dm_for_filter() %>% dm_paste()
     Message <cliMessage>
-      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+      dm::dm(
+        tf_1,
+        tf_2,
+        tf_3,
+        tf_4,
+        tf_5,
+        tf_6,
+      ) %>%
         dm::dm_add_pk(tf_1, a) %>%
         dm::dm_add_pk(tf_2, c) %>%
         dm::dm_add_pk(tf_3, c(f, f1)) %>%
@@ -25,7 +42,14 @@
       # changing the tab width
       dm_for_filter() %>% dm_paste(tab_width = 4)
     Message <cliMessage>
-      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+      dm::dm(
+          tf_1,
+          tf_2,
+          tf_3,
+          tf_4,
+          tf_5,
+          tf_6,
+      ) %>%
           dm::dm_add_pk(tf_1, a) %>%
           dm::dm_add_pk(tf_2, c) %>%
           dm::dm_add_pk(tf_3, c(f, f1)) %>%
@@ -41,7 +65,14 @@
       # we don't care if the tables really exist
       dm_for_filter() %>% dm_rename_tbl(tf_1_new = tf_1) %>% dm_paste()
     Message <cliMessage>
-      dm::dm(tf_1_new, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+      dm::dm(
+        tf_1_new,
+        tf_2,
+        tf_3,
+        tf_4,
+        tf_5,
+        tf_6,
+      ) %>%
         dm::dm_add_pk(tf_1_new, a) %>%
         dm::dm_add_pk(tf_2, c) %>%
         dm::dm_add_pk(tf_3, c(f, f1)) %>%
@@ -58,7 +89,15 @@
       dm_for_filter() %>% dm_select(tf_5, k = k, m) %>% dm_select(tf_1, a) %>%
         dm_add_tbl(x = copy_to_my_test_src(tibble(q = 1L), qq)) %>% dm_paste(options = "select")
     Message <cliMessage>
-      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6, x) %>%
+      dm::dm(
+        tf_1,
+        tf_2,
+        tf_3,
+        tf_4,
+        tf_5,
+        tf_6,
+        x,
+      ) %>%
         dm::dm_select(tf_1, a) %>%
         dm::dm_select(tf_2, c, d, e, e1) %>%
         dm::dm_select(tf_3, f, f1, g) %>%
@@ -71,7 +110,14 @@
       dm_for_filter() %>% dm_set_colors(orange = tf_1:tf_3, darkgreen = tf_5:tf_6) %>%
         dm_paste()
     Message <cliMessage>
-      dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+      dm::dm(
+        tf_1,
+        tf_2,
+        tf_3,
+        tf_4,
+        tf_5,
+        tf_6,
+      ) %>%
         dm::dm_add_pk(tf_1, a) %>%
         dm::dm_add_pk(tf_2, c) %>%
         dm::dm_add_pk(tf_3, c(f, f1)) %>%
@@ -97,12 +143,15 @@
         options = "all")
     Message <cliMessage>
       a <- tibble::tibble(
-        `a b` = numeric(0)
+        `a b` = numeric(0),
       )
       `a b` <- tibble::tibble(
-        `a b` = numeric(0)
+        `a b` = numeric(0),
       )
-      dm::dm(a, `a b`) %>%
+      dm::dm(
+        a,
+        `a b`,
+      ) %>%
         dm::dm_add_pk(a, `a b`) %>%
         dm::dm_add_fk(`a b`, `a b`, a) %>%
         dm::dm_set_colors(`#00FF00FF` = `a b`)
@@ -112,7 +161,7 @@
     Message <cliMessage>
       airlines <- tibble::tibble(
         carrier = character(0),
-        name = character(0)
+        name = character(0),
       )
       airports <- tibble::tibble(
         faa = character(0),
@@ -122,7 +171,7 @@
         alt = numeric(0),
         tz = numeric(0),
         dst = character(0),
-        tzone = character(0)
+        tzone = character(0),
       )
       flights <- tibble::tibble(
         year = integer(0),
@@ -143,7 +192,7 @@
         distance = numeric(0),
         hour = numeric(0),
         minute = numeric(0),
-        time_hour = structure(numeric(0), tzone = "America/New_York", class = c("POSIXct", "POSIXt"))
+        time_hour = structure(numeric(0), class = c("POSIXct", "POSIXt"), tzone = "America/New_York"),
       )
       planes <- tibble::tibble(
         tailnum = character(0),
@@ -154,7 +203,7 @@
         engines = integer(0),
         seats = integer(0),
         speed = integer(0),
-        engine = character(0)
+        engine = character(0),
       )
       weather <- tibble::tibble(
         origin = character(0),
@@ -171,9 +220,15 @@
         precip = numeric(0),
         pressure = numeric(0),
         visib = numeric(0),
-        time_hour = structure(numeric(0), tzone = "America/New_York", class = c("POSIXct", "POSIXt"))
+        time_hour = structure(numeric(0), class = c("POSIXct", "POSIXt"), tzone = "America/New_York"),
       )
-      dm::dm(airlines, airports, flights, planes, weather) %>%
+      dm::dm(
+        airlines,
+        airports,
+        flights,
+        planes,
+        weather,
+      ) %>%
         dm::dm_add_pk(airlines, carrier) %>%
         dm::dm_add_pk(airports, faa) %>%
         dm::dm_add_pk(planes, tailnum) %>%
@@ -194,7 +249,8 @@
       The `select` argument of `dm_paste()` is deprecated as of dm 0.1.2.
       Please use the `options` argument instead.
     Message <cliMessage>
-      dm::dm()
+      dm::dm(
+      )
     Code
       # error for bad option
       writeLines(conditionMessage(expect_error(dm_paste(dm(), options = c("bogus",

@@ -30,11 +30,13 @@ expect_dm_error <- function(expr, class) {
 }
 
 expect_dm_warning <- function(expr, class) {
-  expect_warning(expr, class = dm_warning(class))
+  expect_warning(out <- expr, class = dm_warning(class))
+  out
 }
 
 expect_name_repair_message <- function(expr) {
-  expect_message(expr)
+  expect_message(out <- expr)
+  out
 }
 
 arrange_if_no_list <- function(tbl) {
@@ -73,5 +75,5 @@ expect_snapshot_diagram <- function(diagram, name) {
     DiagrammeRsvg::export_svg() %>%
     writeLines(path)
 
-  expect_snapshot_file(path, binary = FALSE)
+  expect_snapshot_file(path, compare = compare_file_text)
 }

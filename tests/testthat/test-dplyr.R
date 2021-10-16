@@ -25,6 +25,24 @@ test_that("basic test: 'select()'-methods work", {
   )
 })
 
+test_that("basic test: 'relocate()'-methods work", {
+  expect_equivalent_tbl(
+    relocate(zoomed_dm(), e) %>% tbl_zoomed(),
+    relocate(tf_2(), e)
+  )
+
+  expect_equivalent_tbl(
+    relocate(zoomed_dm(), e, .after = e1) %>% tbl_zoomed(),
+    relocate(tf_2(), e, .after = e1)
+  )
+
+  expect_dm_error(
+    relocate(dm_for_filter()),
+    "only_possible_w_zoom"
+  )
+})
+
+
 test_that("basic test: 'rename()'-methods work", {
   expect_equivalent_tbl(
     rename(zoomed_dm(), a = c) %>% tbl_zoomed(),
@@ -200,9 +218,10 @@ test_that("basic test: 'slice()'-methods work", {
     )
   )
 
-  # silent when no PK available anymore
-  expect_silent(
-    mutate(zoomed_dm(), c = 1) %>% slice(1:3)
+  # changed for #663: mutate() tracks now all cols that remain
+  expect_message(
+    mutate(zoomed_dm(), c = 1) %>% slice(1:3),
+    "Keeping PK column"
   )
 
   expect_silent(
@@ -286,7 +305,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
 
   # a former FK-relation could not be tracked
   expect_dm_error(
-    zoomed_dm() %>% mutate(e = e) %>% left_join(tf_3),
+    zoomed_dm() %>% select(-e) %>% left_join(tf_3),
     "fk_not_tracked"
   )
 
@@ -396,6 +415,40 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
   )
 })
 
+test_that("basic test: 'across' works properly", {
+  expect_equivalent_tbl(
+    dm_for_filter() %>%
+      dm_zoom_to(tf_2) %>%
+      mutate(across(c(1, 3), ~ "C")) %>%
+      pull_tbl(),
+    dm_for_filter() %>%
+      pull_tbl(tf_2) %>%
+      mutate(across(c(1, 3), ~ "C"))
+  )
+
+  expect_equivalent_tbl(
+    dm_for_filter() %>%
+      dm_zoom_to(tf_2) %>%
+      summarize(across(c(c, e), ~ "C")) %>%
+      pull_tbl(),
+    dm_for_filter() %>%
+      pull_tbl(tf_2) %>%
+      summarize(across(c(c, e), ~ "C"))
+  )
+
+  expect_equivalent_tbl(
+    dm_for_filter() %>%
+      dm_zoom_to(tf_2) %>%
+      group_by(d) %>%
+      summarize(across(c(1, 3), ~ "C")) %>%
+      pull_tbl(),
+    dm_for_filter() %>%
+      pull_tbl(tf_2) %>%
+      group_by(d) %>%
+      summarize(across(c(1, 3), ~ "C"))
+  )
+})
+
 # test key tracking for all methods ---------------------------------------
 
 # dm_for_filter(), zoomed to tf_2; PK: c; 2 outgoing FKs: d, e; no incoming FKS
@@ -437,41 +490,67 @@ test_that("key tracking works", {
       summarize(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
+  })
+})
 
+test_that("key tracking works (2)", {
+  # https://github.com/tidyverse/dbplyr/issues/670
+  skip_if_remote_src()
+
+  expect_snapshot({
     "transmute()"
 
-    # grouped by two key cols: "c" and "e" -> these two remain
+    # grouped by three key cols: "c", "e", "e1" -> these three remain
     zoomed_grouped_out_dm %>%
       transmute(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
+  })
+})
 
+test_that("key tracking works (3)", {
+  # FKs that point to a PK that vanished, should also vanish
+  expect_snapshot({
     # grouped_by non-key col means, that no keys remain
     zoomed_grouped_in_dm %>%
       transmute(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
+  })
+})
 
+test_that("key tracking works (4)", {
+  # FKs that point to a PK that vanished, should also vanish
+  expect_snapshot({
     "mutate()"
 
-    # grouped by two key cols: "c" and "e" -> these two remain
+    # grouped by three key cols: "c", "e" and "e1 -> these three remain
     zoomed_grouped_out_dm %>%
-      mutate(d_mean = mean(d), d = d * 2) %>%
+      mutate(d_mean = mean(d)) %>%
+      select(-d) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
 
-    # grouped_by non-key col means, that only key-columns that are not touched remain for mutate()
+    # grouped_by non-key col means, that only key-columns that remain in the
+    # result tibble are tracked for mutate()
     zoomed_grouped_in_dm %>%
-      mutate(f = list(g)) %>%
+      mutate(f = paste0(g, g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
 
-    # grouped_by non-key col means, that only key-columns that are not touched remain for
+    # grouped_by non-key col means, that only key-columns that remain in the
+    # result tibble are tracked for transmute()
     zoomed_grouped_in_dm %>%
       mutate(g_new = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys()
+  })
+})
 
+test_that("key tracking works (5)", {
+  skip_if_remote_src()
+
+  expect_snapshot({
     "chain of renames & other transformations"
 
     zoomed_grouped_out_dm %>%
@@ -485,7 +564,7 @@ test_that("key tracking works", {
   })
 })
 
-test_that("key tracking works (2)", {
+test_that("key tracking works (6)", {
   # FKs that point to a PK that vanished, should also vanish
   expect_snapshot({
     zoomed_grouped_in_dm %>%
@@ -494,7 +573,7 @@ test_that("key tracking works (2)", {
   })
 })
 
-test_that("key tracking works (3)", {
+test_that("key tracking works for distinct() and arrange()", {
   expect_identical(
     zoomed_dm() %>%
       distinct(d_new = d) %>%
@@ -502,9 +581,7 @@ test_that("key tracking works (3)", {
       dm_get_all_fks_impl(),
     dm_for_filter() %>%
       dm_get_all_fks_impl() %>%
-      filter(child_table != "tf_2" | parent_table != "tf_3") %>%
-      # https://github.com/r-lib/vctrs/issues/1371
-      mutate(child_fk_cols = new_keys(if_else(child_fk_cols == new_keys("d"), list("d_new"), unclass(child_fk_cols))))
+      filter(child_table != "tf_2")
   )
 
   expect_identical(
@@ -541,7 +618,6 @@ test_that("key tracking works (3)", {
 
   # dm_nycflights13() (with FK constraints) doesn't work on DB
   # here, FK constraints are not implemented on the DB
-  skip_if_src_not("df", "mssql", "postgres")
   skip_if_not_installed("dbplyr")
   skip_if_not_installed("nycflights13")
 
