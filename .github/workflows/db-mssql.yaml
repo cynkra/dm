@@ -56,6 +56,9 @@ jobs:
 
       - uses: actions/checkout@v2
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       # Begin custom: before install
       - name: Install MSSQL Server Driver
         run: |
