@@ -52,6 +52,23 @@ test_that("output", {
       dm_set_colors(green = "a b") %>%
       dm_paste(options = "all")
 
+    "FK referencing non default PK"
+    b <- tibble(x = 1, y = "A", z = "A")
+    c <- tibble(x = "A", y = "A")
+
+    dm(b, c) %>%
+      dm_add_pk(c, x) %>%
+      dm_add_fk(b, y, c) %>%
+      dm_add_fk(b, z, c, y) %>%
+      dm_paste()
+
+    "on_delete if needed"
+    dm(b, c) %>%
+      dm_add_pk(c, x) %>%
+      dm_add_fk(b, y, c, on_delete = "cascade") %>%
+      dm_add_fk(b, z, c, y, on_delete = "no_action") %>%
+      dm_paste()
+
     "all of nycflights13"
     dm_nycflights13() %>%
       dm_paste(options = "all")
