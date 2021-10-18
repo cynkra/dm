@@ -8,7 +8,6 @@
 #'
 #' `db_schema_list()` lists the available schemas on the database.
 #'
-#' @inheritParams copy_dm_to
 #' @param con An object of class `"src"` or `"DBIConnection"`.
 #' @param include_default Boolean, if `TRUE` (default), also the default schema
 #' on the database is included in the result

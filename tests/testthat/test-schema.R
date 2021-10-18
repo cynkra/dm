@@ -21,7 +21,7 @@ test_that("schema handling on MSSQL and Postgres works", {
   })
 
   expect_false(db_schema_exists(con_db, "1-dm_schema_TEST"))
-  expect_false(db_schema_exists(src_db, "1-dm_schema_TEST"))
+  expect_deprecated(expect_false(db_schema_exists(src_db, "1-dm_schema_TEST")))
 
   # create a table in the default schema
   expect_message(db_schema_create(con_db, "1-dm_schema_TEST"), "created")
@@ -38,10 +38,10 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_dm_error(db_schema_drop(con_db, "1-dm_schema_TEST"), "no_schema_exists")
   expect_false(db_schema_exists(con_db, "1-dm_schema_TEST"))
 
-  expect_message(db_schema_create(src_db, "1-dm_schema_TEST"), "created")
-  expect_true(db_schema_exists(src_db, "1-dm_schema_TEST"))
-  expect_message(db_schema_drop(src_db, "1-dm_schema_TEST"), "Dropped schema")
-  expect_false(db_schema_exists(src_db, "1-dm_schema_TEST"))
+  expect_deprecated(expect_message(db_schema_create(src_db, "1-dm_schema_TEST"), "created"))
+  expect_deprecated(expect_true(db_schema_exists(src_db, "1-dm_schema_TEST")))
+  expect_message(db_schema_drop(con_db, "1-dm_schema_TEST"), "Dropped schema")
+  expect_deprecated(expect_false(db_schema_exists(src_db, "1-dm_schema_TEST")))
 
   expect_false("test_schema_1" %in% sql_schema_table_list(con_db)$table_name)
   expect_false("test_schema_1" %in% sql_schema_table_list(src_db)$table_name)
@@ -66,7 +66,7 @@ test_that("schema handling on MSSQL and Postgres works", {
     tibble(a = 1:5)
   )
 
-  expect_message(db_schema_create(src_db, "1-dm_schema_TEST"), "created")
+  expect_message(expect_deprecated(db_schema_create(src_db, "1-dm_schema_TEST")), "created")
 
   dbWriteTable(
     con_db,
@@ -120,7 +120,7 @@ test_that("schema handling on Postgres works", {
   )
 
   expect_message(
-    db_schema_drop(src_db, "2-dm_schema_TEST", force = TRUE),
+    db_schema_drop(con_db, "2-dm_schema_TEST", force = TRUE),
     "all objects"
   )
 })
