@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Insert, update or remove rows in a database dm</h1>
                         <h4 data-toc-skip class="author">James Wondrasek</h4>
             
-            <h4 data-toc-skip class="date">2021-10-17</h4>
+            <h4 data-toc-skip class="date">2021-10-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/howto-dm-rows.Rmd" class="external-link"><code>vignettes/howto-dm-rows.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-rows.Rmd</code></div>
@@ -146,8 +146,8 @@
 
     
     
-<div id="intro" class="section level2">
-<h2>Introduction<a class="anchor" aria-label="anchor" href="#intro"></a>
+<div class="section level2">
+<h2 id="intro">Introduction<a class="anchor" aria-label="anchor" href="#intro"></a>
 </h2>
 <p>This tutorial introduces the methods {dm} provides for modifying the data in the tables of a relational model. There are 6 methods:</p>
 <ul>
@@ -165,8 +165,8 @@
 <a href="#truncate"><code>dm_rows_truncate()</code></a> - removes all rows, leaving table structure intact</li>
 </ul>
 </div>
-<div id="the-dm_rows_-process" class="section level2">
-<h2>The dm_rows_* process<a class="anchor" aria-label="anchor" href="#the-dm_rows_-process"></a>
+<div class="section level2">
+<h2 id="the-dm_rows_-process">The dm_rows_* process<a class="anchor" aria-label="anchor" href="#the-dm_rows_-process"></a>
 </h2>
 <p>All six methods take the same arguments and using them follows the same process:</p>
 <ol style="list-style-type: decimal">
@@ -216,8 +216,8 @@
 </table>
 <p>To ensure the integrity of all relations during the process, all methods automatically determine the correct processing order for the tables involved. For operations that create records, parent tables are processed before child tables. For <code><a href="../reference/rows-dm.html">dm_rows_delete()</a></code> and <code><a href="../reference/rows-dm.html">dm_rows_truncate()</a></code>, child tables are processed before their parent tables. For more details on this see <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code> and <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code>.</p>
 </div>
-<div id="usage" class="section level2">
-<h2>Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <p>To demonstrate the use of these table modifying methods we will create a simple dm object with two tables linked by a foreign key. Note the foreign key of <code>NA</code> in the <code>child</code> table.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -291,8 +291,8 @@
 </code></pre>
 <p>{dm}’s table modification methods can be piped together to create a repeatable sequence of operations that returns a dm incorporating all the changes required. This is a common use case for {dm} – building by hand a sequence of operations using temporary results until it is complete and correct, then committing the result.</p>
 </div>
-<div id="insert" class="section level2">
-<h2>
+<div class="section level2">
+<h2 id="insert">
 <code>dm_rows_insert()</code><a class="anchor" aria-label="anchor" href="#insert"></a>
 </h2>
 <p>To demonstrate <code><a href="../reference/rows-dm.html">dm_rows_insert()</a></code> we create a dm with tables containing the rows to insert and copy it to <code>sqlite_db</code>, the same source as <code>demo_sql</code>. For all of the <code>dm_rows_*</code> methods the source and destination dm objects must be in the same RDBMS. You will get an error message if this is not the case.</p>
@@ -362,8 +362,8 @@
 #&gt; <span style="color: #BCBCBC;">4</span> d         4     4
 </code></pre>
 </div>
-<div id="update" class="section level2">
-<h2>
+<div class="section level2">
+<h2 id="update">
 <code>dm_rows_update()</code><a class="anchor" aria-label="anchor" href="#update"></a>
 </h2>
 <p><code><a href="../reference/rows-dm.html">dm_rows_update()</a></code> works the same as <code><a href="../reference/rows-dm.html">dm_rows_insert()</a></code>. We create the dm object and copy it to the same source as the destination. Here we will change the foreign key for the row in <code>child</code> containing “b” to point to the correct row in <code>parent</code>. And we will persist the changes.</p>
@@ -395,8 +395,8 @@
 #&gt; <span style="color: #BCBCBC;">4</span> d         4     4
 </code></pre>
 </div>
-<div id="delete" class="section level2">
-<h2>
+<div class="section level2">
+<h2 id="delete">
 <code>dm_rows_delete()</code><a class="anchor" aria-label="anchor" href="#delete"></a>
 </h2>
 <p><code><a href="../reference/rows-dm.html">dm_rows_delete()</a></code> is not currently implemented to work with an RDBMS, so we will shift our demonstrations back to the local R environment. We’ve made changes to <code>demo_sql</code> so we use <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> to copy the current tables out of SQLite. Note that persistence is not a concern with local dm objects. Every operation returns a new dm object containing the changes made.</p>
@@ -439,8 +439,8 @@
 #&gt; <span style="color: #BCBCBC;">3</span> c         3    <span style="color: #BB0000;">NA</span>
 </code></pre>
 </div>
-<div id="patch" class="section level2">
-<h2>
+<div class="section level2">
+<h2 id="patch">
 <code>dm_rows_patch()</code><a class="anchor" aria-label="anchor" href="#patch"></a>
 </h2>
 <p><code><a href="../reference/rows-dm.html">dm_rows_patch()</a></code> updates missing values in existing records. We use it here to fix the missing foreign key in the <code>child</code> table.</p>
@@ -467,8 +467,8 @@
 #&gt; <span style="color: #BCBCBC;">3</span> c         3     3
 </code></pre>
 </div>
-<div id="upsert" class="section level2">
-<h2>
+<div class="section level2">
+<h2 id="upsert">
 <code>dm_rows_upsert()</code><a class="anchor" aria-label="anchor" href="#upsert"></a>
 </h2>
 <p><code><a href="../reference/rows-dm.html">dm_rows_upsert()</a></code> updates rows with supplied values if they exist or inserts the supplied values as new rows if they don’t. In this example we add the letter “D” back to our dm, and update the foreign key for “b”.</p>
@@ -515,8 +515,8 @@
 #&gt; <span style="color: #BCBCBC;">4</span> d         4     4
 </code></pre>
 </div>
-<div id="truncate" class="section level2">
-<h2>
+<div class="section level2">
+<h2 id="truncate">
 <code>dm_rows_truncate()</code><a class="anchor" aria-label="anchor" href="#truncate"></a>
 </h2>
 <p><code><a href="../reference/rows-dm.html">dm_rows_truncate()</a></code> deletes all the rows in a table while leaving all other related information intact, including column names, column types, and key relations. The function derives its name from the SQL <code>TRUNCATE TABLE</code> statement, so we will return to our SQLite database to demonstrate its use. The example below truncates only the <code>child</code> table. Note how a modified version of the destination dm is used as “changeset dm”: the rows in the changeset dm do not matter here.</p>
@@ -547,13 +547,13 @@
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">sqlite_db</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="conclusion" class="section level2">
-<h2>Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
+<div class="section level2">
+<h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
 <p>The <code>dm_rows_*</code> methods give you row-level granularity over the modifications you need to make to your relational model. By using the <code>in_place</code> argument they all share you can construct and verify your modifications before committing them. There are a few limitations, as mentioned in the tutorial, but these will be addressed in future updates to {dm}.</p>
 </div>
-<div id="next-steps" class="section level2">
-<h2>Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
+<div class="section level2">
+<h2 id="next-steps">Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
 </h2>
 <p>If this tutorial answered some questions, but opened others, these resources might be of assistance.</p>
 <p>Is your data in an RDBMS? <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> offers a detailed look at working with an existing relational data model.</p>

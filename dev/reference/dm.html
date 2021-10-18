@@ -162,7 +162,7 @@ To get a filtered table, use <code><a href="dm_filter.html">dm_apply_filters_to_
 <span class="fu">validate_dm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
 
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+    <h2>Arguments</h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>...</th>
       <td><p>Tables to add to the <code>dm</code> object.
 If no names are provided, the tables
@@ -178,7 +178,7 @@ to be included in the <code>dm</code> object.</p></td>
     </tr></table></div>
 
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>For <code>dm()</code>, <code>new_dm()</code>, <code>as_dm()</code>: A <code>dm</code> object.</p>
 <p>For <code>dm_get_con()</code>: The <code><a href="https://dbi.r-dbi.org/reference/DBIConnection-class.html">DBI::DBIConnection</a></code> for <code>dm</code> objects.</p>
 <p>For <code>dm_get_tables()</code>: A named list with the tables constituting the <code>dm</code>.</p>
@@ -186,12 +186,12 @@ to be included in the <code>dm</code> object.</p></td>
 <p>For <code>validate_dm()</code>: Returns the <code>dm</code>, invisibly, after finishing all checks.</p>
     </div>
     <div id="details">
-    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <h2>Details</h2>
     <p>All lazy tables in a dm object must be stored on the same database server
 and accessed through the same connection.</p>
     </div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index">
 <ul><li><p><code><a href="dm_from_src.html">dm_from_src()</a></code> for connecting to all tables in a database
 and importing the primary and foreign keys</p></li>
@@ -209,7 +209,7 @@ and importing the primary and foreign keys</p></li>
     </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">dm</span><span class="op">(</span><span class="va">trees</span>, <span class="va">mtcars</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `trees`, `mtcars`</span>

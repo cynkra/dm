@@ -120,7 +120,7 @@ An error is thrown if no matching foreign key is found.</p>
 <span class="op">)</span></code></pre></div>
 
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+    <h2>Arguments</h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
     </tr><tr><th>table</th>
@@ -141,11 +141,11 @@ To refer to a compound key, use <code>c(col1, col2)</code>.</p></td>
     </tr></table></div>
 
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>An updated <code>dm</code> without the matching foreign key relation(s).</p>
     </div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index"><p>Other foreign key functions: 
 <code><a href="dm_add_fk.html">dm_add_fk</a>()</code>,
 <code><a href="dm_enum_fk_candidates.html">dm_enum_fk_candidates</a>()</code>,
@@ -153,7 +153,7 @@ To refer to a compound key, use <code>c(col1, col2)</code>.</p></td>
     </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_rm_fk</span><span class="op">(</span><span class="va">flights</span>, <span class="va">dest</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span>

@@ -117,7 +117,7 @@ to print as a regular tibble.</p>
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_examine_constraints</span><span class="op">(</span><span class="va">dm</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
 
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+    <h2>Arguments</h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
     </tr><tr><th>progress</th>
@@ -127,7 +127,7 @@ hide in non-interactive mode, show in interactive mode. Requires the
     </tr></table></div>
 
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>A tibble with the following columns:</p><dl><dt><code>table</code></dt><dd><p>the table in the <code>dm</code>,</p></dd>
 <dt><code>kind</code></dt><dd><p>"PK" or "FK",</p></dd>
 <dt><code>columns</code></dt><dd><p>the table columns that define the key,</p></dd>
@@ -137,14 +137,14 @@ hide in non-interactive mode, show in interactive mode. Requires the
 
 </dl></div>
     <div id="details">
-    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <h2>Details</h2>
     <p>For the primary key constraints, it is tested if the values in the respective columns are all unique.
 For the foreign key constraints, the tests check if for each foreign key constraint, the values of the foreign key column
 form a subset of the values of the referenced column.</p>
     </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_examine_constraints</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Unsatisfied constraints:</span>

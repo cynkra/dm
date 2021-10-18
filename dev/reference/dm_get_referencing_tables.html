@@ -113,7 +113,7 @@ of a table.</p>
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_get_referencing_tables</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span></code></pre></div>
 
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+    <h2>Arguments</h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
     </tr><tr><th>table</th>
@@ -121,18 +121,18 @@ of a table.</p>
     </tr></table></div>
 
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>A character vector of the names of the tables that point to the primary
 key of <code>table</code>.</p>
     </div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index"><p>Other functions utilizing foreign key relations: 
 <code><a href="dm_is_referenced.html">dm_is_referenced</a>()</code></p></div>
     </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_get_referencing_tables</span><span class="op">(</span><span class="va">airports</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "flights"</span>

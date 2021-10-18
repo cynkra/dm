@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Model verification - keys, constraints and normalization</h1>
             
-            <h4 data-toc-skip class="date">2021-10-17</h4>
+            <h4 data-toc-skip class="date">2021-10-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-low-level.Rmd" class="external-link"><code>vignettes/tech-dm-low-level.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-low-level.Rmd</code></div>
@@ -161,8 +161,8 @@
 </code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></code></pre></div>
-<div id="testing-key-constraints" class="section level2">
-<h2>Testing key constraints<a class="anchor" aria-label="anchor" href="#testing-key-constraints"></a>
+<div class="section level2">
+<h2 id="testing-key-constraints">Testing key constraints<a class="anchor" aria-label="anchor" href="#testing-key-constraints"></a>
 </h2>
 <p>This section contains information and examples about the following functions:</p>
 <ol style="list-style-type: decimal">
@@ -214,8 +214,8 @@
 <span class="fu"><a href="../reference/check_set_equality.html">check_set_equality</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span>, <span class="va">data_3</span>, <span class="va">a</span><span class="op">)</span></code></pre></div>
 <p>If the test is passed, the return value of the function will be the first table parameter (invisibly). This ensures that the functions can be conveniently used in a pipe configuration.</p>
 </div>
-<div id="testing-cardinalities-between-two-tables" class="section level2">
-<h2>Testing cardinalities between two tables<a class="anchor" aria-label="anchor" href="#testing-cardinalities-between-two-tables"></a>
+<div class="section level2">
+<h2 id="testing-cardinalities-between-two-tables">Testing cardinalities between two tables<a class="anchor" aria-label="anchor" href="#testing-cardinalities-between-two-tables"></a>
 </h2>
 <p>This section contains information and examples for the functions</p>
 <ol style="list-style-type: decimal">
@@ -238,8 +238,8 @@
 <p><code>0_1</code> means, that for each value of the <code>parent_key_column</code>, at least zero and at most one value has to correspond to it in the column of the child table. This means that there is an “injective” relation from the child table to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times. But not all of the parent table column values have to be referred to.</p>
 <p><code>1_1</code> means, that for each value of the <code>parent_key_column</code>, exactly one value has to correspond to it in the child table’s column. This means that there is a “bijective” (“injective” AND “surjective”) relation between the child table and the parent table w.r.t. the specified columns, i.e. the set of values of the two columns is equal and there are no duplicates in either of them.</p>
 <p>Also <code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> first performs the above mentioned tests to figure out, if the parent-child table relationship criteria are met. Subsequently, two further checks are made to determine the nature of the relation (surjective, injective, bijective or none of these) between the two columns.</p>
-<div id="examples" class="section level3">
-<h3>Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+<div class="section level3">
+<h3 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h3>
 <p>Given the following three data frames:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -274,8 +274,8 @@
 <span class="co">#&gt; [1] "generic mapping (child: 0 to n -&gt; parent: 1)"</span></code></pre></div>
 </div>
 </div>
-<div id="table-surgery" class="section level2">
-<h2>Table surgery<a class="anchor" aria-label="anchor" href="#table-surgery"></a>
+<div class="section level2">
+<h2 id="table-surgery">Table surgery<a class="anchor" aria-label="anchor" href="#table-surgery"></a>
 </h2>
 <p>The relevant functions are:</p>
 <ol style="list-style-type: decimal">

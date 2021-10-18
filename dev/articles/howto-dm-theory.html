@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Introduction to relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-10-17</h4>
+            <h4 data-toc-skip class="date">2021-10-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-theory.Rmd</code></div>
@@ -156,8 +156,8 @@
 <li><a href="#normalization">Normalization</a></li>
 <li><a href="#relational-databases">Relational Databases</a></li>
 </ol>
-<div id="data-frames-and-tables" class="section level2">
-<h2>1. Data Frames and Tables<a class="anchor" aria-label="anchor" href="#data-frames-and-tables"></a>
+<div class="section level2">
+<h2 id="data-frames-and-tables">1. Data Frames and Tables<a class="anchor" aria-label="anchor" href="#data-frames-and-tables"></a>
 </h2>
 <p>A data frame is a fundamental data structure in R. Columns represent variables, rows represent observations. In more technical terms: a data frame is a list of variables of identical length and unique row names. If you imagine it visually, the result is a typical table structure. That is why working with data from spreadsheets is so convenient and the users of the popular <a href="https://dplyr.tidyverse.org" class="external-link">{dplyr}</a> package for data wrangling mainly rely on data frames.</p>
 <p>The downside is that data frames and flat file systems like spreadsheets can result in bloated tables because they hold many repetitive values. In the worst case, a data frame can contain multiple columns with only a single value different in each row.</p>
@@ -237,8 +237,8 @@
 <p>It is possible to have the best of both worlds: manage your data with {dm} as linked tables, then flatten multiple tables into one for your analysis with {dplyr} on an as-needed basis.</p>
 <p>The next step is to create a <a href="#model">data model</a> based on multiple tables:</p>
 </div>
-<div id="model" class="section level2">
-<h2>2. Data Model<a class="anchor" aria-label="anchor" href="#model"></a>
+<div class="section level2">
+<h2 id="model">2. Data Model<a class="anchor" aria-label="anchor" href="#model"></a>
 </h2>
 <p>A data model shows the structure between multiple tables that can be linked together.</p>
 <p>The <code>nycflights13</code> relations can be transferred into the following graphical representation:</p>
@@ -266,8 +266,8 @@
 <p>The links between the tables are established through <a href="#pk">primary keys</a> and <a href="#fk">foreign keys</a>.</p>
 <p>Further Reading: The {dm} methods for <a href="https://cynkra.github.io/dm/articles/tech-dm-draw.html">visualizing data models</a>.</p>
 </div>
-<div id="pk" class="section level2">
-<h2>3. Primary Keys<a class="anchor" aria-label="anchor" href="#pk"></a>
+<div class="section level2">
+<h2 id="pk">3. Primary Keys<a class="anchor" aria-label="anchor" href="#pk"></a>
 </h2>
 <p>In a relational data model, each table should have <strong>one or several columns that uniquely identifies a row</strong>. These columns define the <em>primary key</em> (abbreviated with “pk”). If the key consists of a single column, it is called <em>simple key</em>. A key consisting of more than one column is called a <em>compound key</em>.</p>
 <p>Example: In the <code>airlines</code> table of <code>nycflights13</code> the column <code>carrier</code> is the primary key, a simple key. The <code>weather</code> table has the combination of <code>origin</code> and <code>time_hour</code> as primary key, a compound key.</p>
@@ -301,8 +301,8 @@
 </code></pre>
 <p>Further Reading: The {dm} package offers several functions for dealing with <a href="https://cynkra.github.io/dm/articles/tech-dm-class.html#pk">primary keys</a>.</p>
 </div>
-<div id="fk" class="section level2">
-<h2>4. Foreign Keys<a class="anchor" aria-label="anchor" href="#fk"></a>
+<div class="section level2">
+<h2 id="fk">4. Foreign Keys<a class="anchor" aria-label="anchor" href="#fk"></a>
 </h2>
 <p>The <strong>counterpart of a primary key in one table is the foreign key in another table</strong>. In order to join two tables, the primary key of the first table needs to be referenced from the second table. This column or these columns are called the <em>foreign key</em> (abbreviated with “fk”).</p>
 <p>For example, if you want to link the <code>airlines</code> table to the <code>flights</code> table, the primary key in <code>airlines</code> needs to match the foreign key in <code>flights</code>. This condition is satisfied because the column <code>carrier</code> is present as a primary key in the <code>airlines</code> table as well as a foreign key in the <code>flights</code> table. In the case of compound keys, the <code>origin</code> and <code>time_hour</code> columns (which form the primary key of the <code>weather</code> table) are also present in the <code>flights</code> table.</p>
@@ -335,8 +335,8 @@
 </code></pre>
 <p>Further Reading: All {dm} functions for working with <a href="https://cynkra.github.io/dm/articles/tech-dm-class.html#foreign-keys">foreign keys</a>.</p>
 </div>
-<div id="referential-integrity" class="section level2">
-<h2>5. Referential Integrity<a class="anchor" aria-label="anchor" href="#referential-integrity"></a>
+<div class="section level2">
+<h2 id="referential-integrity">5. Referential Integrity<a class="anchor" aria-label="anchor" href="#referential-integrity"></a>
 </h2>
 <p>A data set has referential integrity if all relations between tables are valid. That is, every foreign key holds a primary key that is present in the parent table. If a foreign key contains a reference where the corresponding row in the parent table is not availabe, that row is an orphan row and the database no longer has referential integrity.</p>
 <p>{dm} allows checking referential integrity with the <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> function. The following conditions are checked:</p>
@@ -356,8 +356,8 @@
 </code></pre>
 <p>Establishing referential integrity is important for providing clean data for analysis or downstream users. See <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code> for more information on adding, deleting or updating individual rows, and <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> for operations on the data in a data model.</p>
 </div>
-<div id="normalization" class="section level2">
-<h2>6. Normalization<a class="anchor" aria-label="anchor" href="#normalization"></a>
+<div class="section level2">
+<h2 id="normalization">6. Normalization<a class="anchor" aria-label="anchor" href="#normalization"></a>
 </h2>
 <p>Normalization is a technical term that describes the <strong>central design principle of a relational data model</strong>: splitting data into multiple tables.</p>
 <p>A normalized data schema consists of several relations (tables) that are linked with attributes (columns). The relations can be joined together by means of <a href="#pk">primary</a> and <a href="#fk">foreign keys</a>. The main goal of normalization is to keep data organization as clean and simple as possible by avoiding redundant data entries.</p>
@@ -437,8 +437,8 @@
 <p>While <code>child_table</code> contains 3322 unique <code>tailnum</code> rows and therefore consists of 3322 rows, just like the original <code>planes</code> table, the <code>parent_table</code> shrunk to just 147 rows, enough to store all relevant combinations and avoid storing redundant information.</p>
 <p>Further Reading: See the <a href="https://simple.wikipedia.org/wiki/Database_normalisation" class="external-link">Simple English Wikipedia article on database normalization</a> for more details.</p>
 </div>
-<div id="relational-databases" class="section level2">
-<h2>7. Relational Databases<a class="anchor" aria-label="anchor" href="#relational-databases"></a>
+<div class="section level2">
+<h2 id="relational-databases">7. Relational Databases<a class="anchor" aria-label="anchor" href="#relational-databases"></a>
 </h2>
 <p>{dm} is built upon relational data models but it is not a database itself. Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres. As you can guess from the names of the databases, SQL, short for Structured Querying Language, plays an important role: it was invented for the purpose of querying relational databases.</p>
 <p>In production, the data is stored in a relational database and {dm} is used to work with the data.</p>

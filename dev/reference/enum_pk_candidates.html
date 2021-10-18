@@ -123,7 +123,7 @@ for a table in a <a href="dm.html">dm</a> object.</p>
 <span class="fu">dm_enum_pk_candidates</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+    <h2>Arguments</h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>table</th>
       <td><p>A table in the <code>dm</code>.</p></td>
     </tr><tr><th>...</th>
@@ -133,14 +133,14 @@ for a table in a <a href="dm.html">dm</a> object.</p>
     </tr></table></div>
 
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>A tibble with the following columns:</p><dl><dt><code>columns</code></dt><dd><p>columns of <code>table</code>,</p></dd>
 <dt><code>candidate</code></dt><dd><p>boolean: are these columns a candidate for a primary key,</p></dd>
 <dt><code>why</code></dt><dd><p>if not a candidate for a primary key column, explanation for this.</p></dd>
 
 </dl></div>
     <div id="life-cycle">
-    <h2>Life cycle<a class="anchor" aria-label="anchor" href="#life-cycle"></a></h2>
+    <h2>Life cycle</h2>
     
 
 <p>These functions are marked "questioning" because we are not yet sure about
@@ -150,7 +150,7 @@ Changing the interface later seems harmless because these functions are
 most likely used interactively.</p>
     </div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index"><p>Other primary key functions: 
 <code><a href="dm_add_pk.html">dm_add_pk</a>()</code>,
 <code><a href="dm_get_all_pks.html">dm_get_all_pks</a>()</code>,
@@ -159,7 +159,7 @@ most likely used interactively.</p>
     </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html">flights</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">enum_pk_candidates</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 19 × 3</span></span>

@@ -128,7 +128,7 @@ examine_cardinality() also checks the first two points and subsequently determin
 <span class="fu">examine_cardinality</span><span class="op">(</span><span class="va">parent_table</span>, <span class="va">pk_column</span>, <span class="va">child_table</span>, <span class="va">fk_column</span><span class="op">)</span></code></pre></div>
 
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+    <h2>Arguments</h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>parent_table</th>
       <td><p>Data frame.</p></td>
     </tr><tr><th>pk_column</th>
@@ -140,13 +140,13 @@ examine_cardinality() also checks the first two points and subsequently determin
     </tr></table></div>
 
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>For <code>check_cardinality_?_?()</code>: Functions return <code>parent_table</code>, invisibly, if the check is passed, to support pipes.
 Otherwise an error is thrown and the reason for it is explained.</p>
 <p>For <code>examine_cardinality()</code>: Returns a character variable specifying the type of relationship between the two columns.</p>
     </div>
     <div id="details">
-    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <h2>Details</h2>
     <p>All cardinality-functions accept a <code>parent table</code> (data frame), a column name of this table,
 a <code>child table</code>, and a column name of the child table.
 The given column of the <code>parent table</code> has to be one of its
@@ -181,7 +181,7 @@ the result will contain the information which prerequisite was violated.</p>
     </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">d1</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">d3</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>

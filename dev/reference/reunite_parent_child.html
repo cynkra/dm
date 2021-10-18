@@ -129,7 +129,7 @@ of the columns is not retained, and the original row names are lost).</p>
 <span class="fu">reunite_parent_child_from_list</span><span class="op">(</span><span class="va">list_of_parent_child_tables</span>, <span class="va">id_column</span><span class="op">)</span></code></pre></div>
 
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+    <h2>Arguments</h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>child_table</th>
       <td><p>Table (possibly created by <code><a href="decompose_table.html">decompose_table()</a></code>) that references <code>parent_table</code></p></td>
     </tr><tr><th>parent_table</th>
@@ -142,24 +142,24 @@ of the columns is not retained, and the original row names are lost).</p>
     </tr></table></div>
 
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>A wide table produced by joining the two given tables.</p>
     </div>
     <div id="life-cycle">
-    <h2>Life cycle<a class="anchor" aria-label="anchor" href="#life-cycle"></a></h2>
+    <h2>Life cycle</h2>
     
 
 <p>These functions are marked "questioning" because they feel more useful
 when applied to a table in a dm object.</p>
     </div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index"><p>Other table surgery functions: 
 <code><a href="decompose_table.html">decompose_table</a>()</code></p></div>
     </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">decomposed_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">new_id</span>, <span class="va">am</span>, <span class="va">gear</span>, <span class="va">carb</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">ct</span> <span class="op">&lt;-</span> <span class="va">decomposed_table</span><span class="op">$</span><span class="va">child_table</span></span>
 <span class="r-in"><span class="va">pt</span> <span class="op">&lt;-</span> <span class="va">decomposed_table</span><span class="op">$</span><span class="va">parent_table</span></span>

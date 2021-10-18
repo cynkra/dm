@@ -117,7 +117,7 @@ the join will always be a "child table", i.e. a table referencing the other tabl
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_join_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table_1</span>, <span class="va">table_2</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></code></pre></div>
 
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+    <h2>Arguments</h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
       <td><p>A <code><a href="dm.html">dm</a></code> object.</p></td>
     </tr><tr><th>table_1</th>
@@ -129,17 +129,17 @@ the join will always be a "child table", i.e. a table referencing the other tabl
     </tr></table></div>
 
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>The resulting table of the join.</p>
     </div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index"><p>Other flattening functions: 
 <code><a href="dm_flatten_to_tbl.html">dm_flatten_to_tbl</a>()</code></p></div>
     </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_join_to_tbl</span><span class="op">(</span><span class="va">airports</span>, <span class="va">flights</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,761 × 26</span></span>

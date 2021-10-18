@@ -136,7 +136,7 @@ and in addition foreign key constraints are set on MSSQL and Postgres databases.
 <span class="op">)</span></code></pre></div>
 
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+    <h2>Arguments</h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dest</th>
       <td><p>An object of class <code>"src"</code> or <code>"DBIConnection"</code>.</p></td>
     </tr><tr><th>dm</th>
@@ -199,12 +199,12 @@ If not <code>NULL</code>, this argument is processed with <code><a href="https:/
     </tr></table></div>
 
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>A <code>dm</code> object on the given <code>src</code> with the same table names
 as the input <code>dm</code>.</p>
     </div>
     <div id="details">
-    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <h2>Details</h2>
     <p>No tables will be overwritten; passing <code>overwrite = TRUE</code> to the function will give an error.
 Types are determined separately for each table, setting the <code>types</code> argument will
 also throw an error.
@@ -213,7 +213,7 @@ The arguments are included in the signature to avoid passing them via the
     </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Copy to temporary tables, unique table names by default:</span></span>
