@@ -62,8 +62,8 @@ abort_not_subset_of <- function(table_name_1, colname_1,
 error_txt_not_subset_of <- function(table_name_1, colname_1,
                                     table_name_2, colname_2) {
   glue(
-    "Column {tick(colname_1)} of table {tick(table_name_1)} contains values (see examples above) that are not present in column ",
-    "{tick(colname_2)} of table {tick(table_name_2)}."
+    "Column(s) ({commas(tick(colname_1))}) of table {tick(table_name_1)} contains values (see examples above) that are not present in column(s) ",
+    "({commas(tick(colname_2))}) of table {tick(table_name_2)}."
   )
 }
 
@@ -74,7 +74,7 @@ abort_sets_not_equal <- function(error_msgs) {
 }
 
 error_txt_sets_not_equal <- function(error_msgs) {
-  paste0(error_msgs, ".", collapse = "\n  ")
+  paste0(error_msgs, collapse = "\n  ")
 }
 
 # cardinality check errors ------------------------------------------------
