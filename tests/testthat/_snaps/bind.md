@@ -108,7 +108,7 @@
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
-        dm::dm_add_fk(tf_5, l, tf_4) %>%
+        dm::dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
         dm::dm_add_fk(tf_5, m, tf_6, n) %>%
         dm::dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1) %>%
         dm::dm_add_fk(fact, dim_2_key, dim_2) %>%
@@ -159,7 +159,7 @@
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
-        dm::dm_add_fk(tf_5, l, tf_4) %>%
+        dm::dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
         dm::dm_add_fk(tf_5, m, tf_6, n)
 
 # output for compound keys dev vctrs
