@@ -177,21 +177,21 @@ examine_cardinality <- function(parent_table, pk_column, child_table, fk_column)
   fkcq <- enexpr(fk_column)
   fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ctq))))
   if (!is_unique_key(eval_tidy(ptq), !!pkc)$unique) {
-    plural <- if (length(pkc) > 1) {"s"} else {""}
+    plural <- s_if_plural(pkc)
     return(
       glue(
-        "Column{plural} ({commas(tick(pkc))}) not ",
+        "Column{plural$noun} ({commas(tick(pkc))}) not ",
         "a unique key of {tick(as_label(ptq))}."
       )
     )
   }
 
   if (!is_subset(eval_tidy(ctq), !!fkc, eval_tidy(ptq), !!pkc)) {
-    plural <- if (length(pkc) > 1) {"s"} else {""}
+    plural <- s_if_plural(pkc)
     return(
       glue(
-        "Column{plural} ({commas(tick(fkc))}) of table {tick(as_label(ctq))} not ",
-        "a subset of column{plural} ({commas(tick(pkc))}) of table {tick(as_label(ptq))}."
+        "Column{plural$noun} ({commas(tick(fkc))}) of table {tick(as_label(ctq))} not ",
+        "a subset of column{plural$noun} ({commas(tick(pkc))}) of table {tick(as_label(ptq))}."
       )
     )
   }
