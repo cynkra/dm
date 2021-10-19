@@ -25,14 +25,14 @@ dm_pixarfilms <- function(color = TRUE) {
   public_response <- pixarfilms::public_response
 
   # Create dm object
-  dm <-
-    dm(pixar_films,
-       pixar_people,
-       academy,
-       box_office,
-       genres,
-       public_response)
-
+  dm <- dm(
+    pixar_films,
+    pixar_people,
+    academy,
+    box_office,
+    genres,
+    public_response
+  )
 
   # Add primary keys
   dm <-
