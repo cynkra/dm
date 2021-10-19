@@ -123,8 +123,8 @@ check_set_equality <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
-  c1q <- ensym(c1)
-  c2q <- ensym(c2)
+  c1q <- enexpr(c1)
+  c2q <- enexpr(c2)
 
   catcher_1 <- tryCatch(
     {
@@ -177,25 +177,22 @@ check_subset <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
-  c1q <- ensym(c1)
-  c2q <- ensym(c2)
+  c1q <- enexpr(c1)
+  c2q <- enexpr(c2)
+  col_names_1 <- names(eval_select_indices(c1q, colnames(eval_tidy(t1q))))
+  col_names_2 <- names(eval_select_indices(c2q, colnames(eval_tidy(t2q))))
 
-  if (is_subset(eval_tidy(t1q), !!c1q, eval_tidy(t2q), !!c2q)) {
+  # not using `is_subset()`, since then we would do the same job of finding
+  # missing values/combinations twice
+  res <- anti_join(eval_tidy(t1q), eval_tidy(t2q), by = set_names(col_names_2, col_names_1))
+  if (pull(count(head(res, 1))) == 0) {
     return(invisible(eval_tidy(t1q)))
   }
 
-  # Hier kann nicht t1 direkt verwendet werden, da das für den Aufruf
-  # check_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
-  # entsprechen würde; dies ist nicht erlaubt.
-  # Siehe eval-bang.R für ein Minimalbeispiel.
-  v1 <- pull(eval_tidy(t1q), !!ensym(c1q))
-  v2 <- pull(eval_tidy(t2q), !!ensym(c2q))
-
-  setdiff_v1_v2 <- setdiff(v1, v2)
   # collect() for robust test output
-  print(collect(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2)), n = 10)
+  print(collect(head(res, n = 10)))
 
-  abort_not_subset_of(as_label(t1q), as_name(c1q), as_label(t2q), as_name(c2q))
+  abort_not_subset_of(as_label(t1q), col_names_1, as_label(t2q), col_names_2)
 }
 
 # similar to `check_subset()`, but evaluates to a boolean
