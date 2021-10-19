@@ -92,9 +92,12 @@ check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_colum
 #' @export
 check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- ensym(pk_column)
+  pkcq <- enexpr(pk_column)
+  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
+
   ct <- enquo(child_table)
-  fkc <- ensym(fk_column)
+  fkcq <- enexpr(fk_column)
+  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ct))))
 
   check_key(!!pt, !!pkc)
 
@@ -107,9 +110,12 @@ check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_colum
 #' @export
 check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- ensym(pk_column)
+  pkcq <- enexpr(pk_column)
+  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
+
   ct <- enquo(child_table)
-  fkc <- ensym(fk_column)
+  fkcq <- enexpr(fk_column)
+  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ct))))
 
   check_key(!!pt, !!pkc)
 
@@ -130,9 +136,12 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
 #' @export
 check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- ensym(pk_column)
+  pkcq <- enexpr(pk_column)
+  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
+
   ct <- enquo(child_table)
-  fkc <- ensym(fk_column)
+  fkcq <- enexpr(fk_column)
+  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ct))))
 
   check_key(!!pt, !!pkc)
 
@@ -156,31 +165,35 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
 #' # Returns the kind of cardinality
 #' examine_cardinality(d1, a, d2, c)
 examine_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
-  pt <- enquo(parent_table)
-  pkc <- enexpr(pk_column)
-  ct <- enquo(child_table)
-  fkc <- enexpr(fk_column)
+  ptq <- enquo(parent_table)
+  pkcq <- enexpr(pk_column)
+  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(ptq))))
 
-  if (!is_unique_key(eval_tidy(pt), !!pkc)$unique) {
+  ctq <- enquo(child_table)
+  fkcq <- enexpr(fk_column)
+  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ctq))))
+  if (!is_unique_key(eval_tidy(ptq), !!pkc)$unique) {
+    plural <- if (length(pkc) > 1) {"s"} else {""}
     return(
       glue(
-        "Column(s) {tick(commas(as_string(pkc)))} not ",
-        "a unique key of {tick('parent_table')}."
+        "Column{plural} ({commas(tick(pkc))}) not ",
+        "a unique key of {tick(as_label(ptq))}."
       )
     )
   }
 
-  if (!is_subset(!!ct, !!fkc, !!pt, !!pkc)) {
+  if (!is_subset(eval_tidy(ctq), !!fkc, eval_tidy(ptq), !!pkc)) {
+    plural <- if (length(pkc) > 1) {"s"} else {""}
     return(
       glue(
-        "Column(s) {tick(commas(as_string(fkc)))} of {tick('child_table')} not ",
-        "a subset of column(s) {tick(commas(as_string(pkc)))} of {tick('parent_table')}."
+        "Column{plural} ({commas(tick(fkc))}) of table {tick(as_label(ctq))} not ",
+        "a subset of column{plural} ({commas(tick(pkc))}) of table {tick(as_label(ptq))}."
       )
     )
   }
 
-  min_1 <- is_subset(!!pt, !!pkc, !!ct, !!fkc)
-  max_1 <- pull(is_unique_key(eval_tidy(ct), !!fkc), unique)
+  min_1 <- is_subset(eval_tidy(ptq), !!pkc, eval_tidy(ctq), !!fkc)
+  max_1 <- pull(is_unique_key(eval_tidy(ctq), !!fkc), unique)
 
   if (min_1 && max_1) {
     return("bijective mapping (child: 1 -> parent: 1)")
