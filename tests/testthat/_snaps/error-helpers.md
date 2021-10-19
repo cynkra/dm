@@ -19,7 +19,7 @@
     Code
       abort_not_subset_of("playing", "game", "hunting", "game")
     Error <dm_error_not_subset_of>
-      Column(s) (`game`) of table `playing` contains values (see examples above) that are not present in column(s) (`game`) of table `hunting`.
+      Column (`game`) of table `playing` contains values (see examples above) that are not present in column (`game`) of table `hunting`.
     Code
       abort_sets_not_equal(c("A problem occurred.",
         "And another, even worse problem, occurred shortly after."))

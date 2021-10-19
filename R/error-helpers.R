@@ -61,8 +61,11 @@ abort_not_subset_of <- function(table_name_1, colname_1,
 
 error_txt_not_subset_of <- function(table_name_1, colname_1,
                                     table_name_2, colname_2) {
+  plural <- length(colname_1) > 1
   glue(
-    "Column(s) ({commas(tick(colname_1))}) of table {tick(table_name_1)} contains values (see examples above) that are not present in column(s) ",
+    "Column{if_else(plural, \"s\", \"\")} ({commas(tick(colname_1))}) of table ",
+    "{tick(table_name_1)} contains values (see examples above) that are ",
+    "not present in column{if_else(plural, \"s\", \"\")} ",
     "({commas(tick(colname_2))}) of table {tick(table_name_2)}."
   )
 }

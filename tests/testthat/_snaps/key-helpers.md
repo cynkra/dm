@@ -8,7 +8,7 @@
         <dbl> <dbl> <dbl>
       1     3     6     9
     Error <dm_error_not_subset_of>
-      Column(s) (`a`) of table `data_mcard_2()` contains values (see examples above) that are not present in column(s) (`a`) of table `data_mcard_1()`.
+      Column (`a`) of table `data_mcard_2()` contains values (see examples above) that are not present in column (`a`) of table `data_mcard_1()`.
 
 # output for compound keys
 
@@ -22,7 +22,7 @@
       2     2     5     8
       3     3     6     9
     Error <dm_error_not_subset_of>
-      Column(s) (`a`, `b`) of table `data_mcard_2()` contains values (see examples above) that are not present in column(s) (`a`, `b`) of table `data_mcard_1()`.
+      Columns (`a`, `b`) of table `data_mcard_2()` contains values (see examples above) that are not present in columns (`a`, `b`) of table `data_mcard_1()`.
 
 # check_set_equality() checks properly if 2 sets of values are equal?
 
@@ -40,6 +40,6 @@
       1     2     5     8
       2     3     6     9
     Error <dm_error_sets_not_equal>
-      Column(s) (`a`, `c`) of table `data_mcard_1()` contains values (see examples above) that are not present in column(s) (`a`, `c`) of table `data_mcard_2()`.
-        Column(s) (`a`, `c`) of table `data_mcard_2()` contains values (see examples above) that are not present in column(s) (`a`, `c`) of table `data_mcard_1()`.
+      Columns (`a`, `c`) of table `data_mcard_1()` contains values (see examples above) that are not present in columns (`a`, `c`) of table `data_mcard_2()`.
+        Columns (`a`, `c`) of table `data_mcard_2()` contains values (see examples above) that are not present in columns (`a`, `c`) of table `data_mcard_1()`.
 
