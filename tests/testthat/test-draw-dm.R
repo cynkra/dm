@@ -148,4 +148,15 @@ test_that("output", {
       dm_draw(),
     "nycflight-dm.svg"
   )
+
+  # empty table corner cases
+  expect_snapshot_diagram(
+    dm(a = tibble()) %>%
+      dm_draw(),
+    "single-empty-table-dm.svg")
+
+  expect_snapshot_diagram(
+    dm(x = tibble(a = 1), y = tibble(b = 1), a = tibble()) %>%
+      dm_draw(view_type = "all"),
+    "empty-table-in-dm.svg")
 })
