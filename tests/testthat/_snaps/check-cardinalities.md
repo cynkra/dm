@@ -24,3 +24,24 @@
       expect_dm_error(check_cardinality_1_1(data_card_1(), a, data_card_4(), c),
       class = "not_bijective")
 
+# check_cardinality_...() functions are supporting compound keys
+
+    Code
+      expect_dm_error(check_cardinality_0_n(parent_table = data_card_1(), pk_column = c(
+        a, b), child_table = data_card_2(), fk_column = c(a, b)), class = "not_subset_of")
+    Output
+      # A tibble: 4 x 2
+            a b    
+        <dbl> <chr>
+      1     3 b    
+      2     4 c    
+      3     5 d    
+      4     6 e    
+    Code
+      expect_dm_error(check_cardinality_1_1(data_card_1(), c(a, b), data_card_12(), c(
+        a, b)), class = "not_bijective")
+      expect_dm_error(check_cardinality_1_1(data_card_12(), c(a, b), data_card_1(), c(
+        a, b)), class = "not_unique_key")
+      expect_dm_error(check_cardinality_0_1(data_card_1(), c(b, a), data_card_12(), c(
+        b, a)), class = "not_injective")
+

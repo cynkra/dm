@@ -29,11 +29,11 @@
     Code
       abort_not_bijective("child_table_name", "fk_col_name")
     Error <dm_error_not_bijective>
-      1..1 cardinality (bijectivity) is not given: Column `fk_col_name` in table `child_table_name` contains duplicate values.
+      1..1 cardinality (bijectivity) is not given: Column (`fk_col_name`) in table `child_table_name` contains duplicate values.
     Code
       abort_not_injective("child_table_name", "fk_col_name")
     Error <dm_error_not_injective>
-      0..1 cardinality (injectivity from child table to parent table) is not given: Column `fk_col_name` in table `child_table_name` contains duplicate values.
+      0..1 cardinality (injectivity from child table to parent table) is not given: Column (`fk_col_name`) in table `child_table_name` contains duplicate values.
     Code
       abort_ref_tbl_has_no_pk("parent_table")
     Error <dm_error_ref_tbl_has_no_pk>
