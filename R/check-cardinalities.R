@@ -74,9 +74,12 @@
 #' check_cardinality_0_1(d1, a, d3, c)
 check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- ensym(pk_column)
+  pkcq <- enexpr(pk_column)
+  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
+
   ct <- enquo(child_table)
-  fkc <- ensym(fk_column)
+  fkcq <- enexpr(fk_column)
+  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ct))))
 
   check_key(!!pt, !!pkc)
 
