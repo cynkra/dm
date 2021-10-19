@@ -193,7 +193,7 @@
 #&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
 #&gt; <span style="color: #BCBCBC;">1</span>     3     6     9
 </code></pre>
-<pre><code>#&gt; Error: Column `a` of table `data_2` contains values (see examples above) that are not present in column `a` of table `data_1`.</code></pre>
+<pre><code>#&gt; Error: Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</code></pre>
 <p>It should be kept in mind that <code><a href="../reference/check_subset.html">check_subset()</a></code> does not test if column <code>c2</code> is a unique key of table <code>t2</code>. In order to find out if a (child) table <code>t1</code> contains a column <code>c1</code> that is a foreign key to a (parent) table <code>t2</code> with the corresponding column <code>c2</code>, the following method should be used:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/check_key.html">check_key</a></span><span class="op">(</span><span class="va">t2</span>, <span class="va">c2</span><span class="op">)</span>
@@ -206,7 +206,7 @@
 #&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
 #&gt; <span style="color: #BCBCBC;">1</span>     3     6     9
 </code></pre>
-<pre><code>#&gt; Error: Column `a` of table `data_2` contains values (see examples above) that are not present in column `a` of table `data_1`..</code></pre>
+<pre><code>#&gt; Error: Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</code></pre>
 <p>Introducing one more table enables us to show how it looks when the test is passed:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>, c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span><span class="op">)</span>
