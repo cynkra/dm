@@ -126,7 +126,7 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
       check_key(!!ct, !!fkc)
       NULL
     },
-    error = function(e) abort_not_bijective(as_label(ct), as_label(fkc))
+    error = function(e) abort_not_bijective(as_label(ct), fkc)
   )
 
   invisible(parent_table)
@@ -152,7 +152,7 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
       check_key(!!ct, !!fkc)
       NULL
     },
-    error = function(e) abort_not_injective(as_label(ct), as_label(fkc))
+    error = function(e) abort_not_injective(as_label(ct), fkc)
   )
 
   invisible(parent_table)
