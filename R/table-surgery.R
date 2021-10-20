@@ -58,7 +58,7 @@ decompose_table <- function(.data, new_id_column, ...) {
     select(.data, !!!sel_vars$indices) %>%
     distinct() %>%
     # Without as.integer(), RPostgres creates integer64 column (#15)
-    mutate(!!id_col_q := as.integer(row_number(!!sym(names(sel_vars$indices)[[1]])))) %>%
+    mutate(!!id_col_q := as.integer(coalesce(row_number(!!sym(names(sel_vars$indices)[[1]])), 0L))) %>%
     select(!!id_col_q, everything())
 
   non_key_indices <-
