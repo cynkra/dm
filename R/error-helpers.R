@@ -64,9 +64,9 @@ error_txt_not_subset_of <- function(table_name_1, colname_1,
   # taking care of singular/plural of the word "columns" and the corresponding ending of the verb
   plural <- s_if_plural(colname_1)
   glue(
-    "Column{plural$noun} ({commas(tick(colname_1))}) of table ",
-    "{tick(table_name_1)} contain{plural$verb} values (see examples above) that are ",
-    "not present in column{plural$noun} ",
+    "Column{plural['n']} ({commas(tick(colname_1))}) of table ",
+    "{tick(table_name_1)} contain{plural['v']} values (see examples above) that are ",
+    "not present in column{plural['n']} ",
     "({commas(tick(colname_2))}) of table {tick(table_name_2)}."
   )
 }
@@ -92,9 +92,9 @@ abort_not_bijective <- function(child_table_name, fk_col_name) {
 error_txt_not_bijective <- function(child_table_name, fk_col_name) {
   plural <- s_if_plural(fk_col_name)
   glue(
-    "1..1 cardinality (bijectivity) is not given: Column{plural$noun} ",
+    "1..1 cardinality (bijectivity) is not given: Column{plural['n']} ",
     "({commas(tick(fk_col_name))}) in table ",
-    "{tick(child_table_name)} contain{plural$verb} duplicate values."
+    "{tick(child_table_name)} contain{plural['v']} duplicate values."
   )
 }
 
@@ -108,8 +108,8 @@ error_txt_not_injective <- function(child_table_name, fk_col_name) {
   plural <- s_if_plural(fk_col_name)
   glue(
     "0..1 cardinality (injectivity from child table to parent table) is not given: ",
-    "Column{plural$noun} ({commas(tick(fk_col_name))})",
-    " in table {tick(child_table_name)} contain{plural$verb} duplicate values."
+    "Column{plural['n']} ({commas(tick(fk_col_name))})",
+    " in table {tick(child_table_name)} contain{plural['v']} duplicate values."
   )
 }
 
@@ -644,8 +644,9 @@ abort_one_of_schema_table_names <- function() {
 
 s_if_plural <- function(vec) {
   if (length(vec) > 1) {
-    list(noun = "s", verb = "")
+    # n = noun, v = verb
+    c(n = "s", v = "")
   } else {
-    list(noun = "", verb = "s")
+    c(n = "", v = "s")
   }
 }

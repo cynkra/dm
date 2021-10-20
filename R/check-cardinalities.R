@@ -180,7 +180,7 @@ examine_cardinality <- function(parent_table, pk_column, child_table, fk_column)
     plural <- s_if_plural(pkc)
     return(
       glue(
-        "Column{plural$noun} ({commas(tick(pkc))}) not ",
+        "Column{plural['n']} ({commas(tick(pkc))}) not ",
         "a unique key of {tick(as_label(ptq))}."
       )
     )
@@ -190,8 +190,8 @@ examine_cardinality <- function(parent_table, pk_column, child_table, fk_column)
     plural <- s_if_plural(pkc)
     return(
       glue(
-        "Column{plural$noun} ({commas(tick(fkc))}) of table {tick(as_label(ctq))} not ",
-        "a subset of column{plural$noun} ({commas(tick(pkc))}) of table {tick(as_label(ptq))}."
+        "Column{plural['n']} ({commas(tick(fkc))}) of table {tick(as_label(ctq))} not ",
+        "a subset of column{plural['n']} ({commas(tick(pkc))}) of table {tick(as_label(ptq))}."
       )
     )
   }
