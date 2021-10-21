@@ -160,6 +160,9 @@ data_card_7 %<-% tibble::tibble(c = c(1:5, 5L, 6L))
 data_card_8 %<-% tibble::tibble(c = c(1:6))
 data_card_9 %<-% tibble::tibble(c = c(1:5, NA))
 data_card_10 %<-% tibble::tibble(c = c(1:3, 4:3, NA))
+data_card_11 %<-% tibble::tibble(a = 1:4, b = letters[1:4])
+data_card_12 %<-% tibble::tibble(a = c(1:5, 5), b = letters[c(1:5, 5)])
+data_card_13 %<-% tibble::tibble(a = 1:6, b = letters[1:6])
 
 # for check_key() ---------------------------------------------------------
 
