@@ -28,7 +28,7 @@ examine_cardinality(parent_table, pk_column, child_table, fk_column)
 \item{fk_column}{Columns of \code{child_table} that have to be a foreign key candidate to \code{pk_column} in \code{parent_table}, for multiple columns use \code{c(col1, col2)}.}
 }
 \value{
-For \verb{check_cardinality_?_?()}: Functions return \code{parent_table}, invisibly, if the check is passed, to support pipes.
+For \verb{check_cardinality_*()}: Functions return \code{parent_table}, invisibly, if the check is passed, to support pipes.
 Otherwise an error is thrown and the reason for it is explained.
 
 For \code{examine_cardinality()}: Returns a character variable specifying the type of relationship between the two columns.

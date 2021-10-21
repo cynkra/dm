@@ -55,7 +55,7 @@
 #'
 #' @name examine_cardinality
 #'
-#' @return For `check_cardinality_?_?()`: Functions return `parent_table`, invisibly, if the check is passed, to support pipes.
+#' @return For `check_cardinality_*()`: Functions return `parent_table`, invisibly, if the check is passed, to support pipes.
 #' Otherwise an error is thrown and the reason for it is explained.
 #'
 #' For `examine_cardinality()`: Returns a character variable specifying the type of relationship between the two columns.
