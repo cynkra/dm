@@ -34,7 +34,7 @@ Otherwise an error is thrown and the reason for it is explained.
 For \code{examine_cardinality()}: Returns a character variable specifying the type of relationship between the two columns.
 }
 \description{
-All \verb{check_cardinality_?_?()} functions test the following conditions:
+All \verb{check_cardinality_*()} functions test the following conditions:
 \enumerate{
 \item Is \code{pk_column} a unique key for \code{parent_table}?
 \item Is the set of values in \code{fk_column} of \code{child_table} a subset of the set of values of \code{pk_column}?
@@ -44,38 +44,38 @@ All \verb{check_cardinality_?_?()} functions test the following conditions:
 \code{examine_cardinality()} also checks the first two points and subsequently determines the type of cardinality.
 }
 \details{
-All cardinality-functions accept a \verb{parent table} (data frame), column names of this table,
-a \verb{child table}, and column names of the child table.
-The given columns of the \verb{parent table} have to be one of its
+All cardinality-functions accept a \code{parent_table} (data frame), column names of this table,
+a \code{child_table}, and column names of the child table.
+The given columns of the \code{parent_table} have to be one of its
 unique keys (no duplicates are allowed).
 Furthermore, in all cases, the set of combinations of the child table's columns have
 to be a subset of the combinations of values of the parent table's columns.
 
-The cardinality specifications \verb{0_n}, \verb{1_n}, \verb{0_1}, \verb{1_1} refer to the expected relation that the child table has with the parent table.
-The numbers \code{0}, \code{1} and \code{n} refer to the number of occurrences of combinations
-of values of the columns of the child table that correspond to each combination in the
+The cardinality specifications "0_n", "1_n", "0_1", "1_1" refer to the expected relation that the child table has with the parent table.
+"0", "1" and "n" refer to the occurrences of value combinations
+in the columns of the child table that correspond to each combination in the
 columns of the parent table.
-\code{n} means "more than one" in this context, with no upper limit.
+"n" means "more than one" in this context, with no upper limit.
 
-\verb{0_n} means, that each combination of \code{pk_column} values has at least \code{0} and at most
-\code{n} corresponding occurrences in the columns of the child table
+\strong{"0_n"}: each combination of \code{pk_column} values has at least 0 and at most
+n corresponding occurrences in the columns of the child table
 (which translates to no further restrictions).
 
-\verb{1_n} means, that each combination of \code{pk_column} values has at least \code{1} and at most
-\code{n} corresponding occurrences in the columns of the child table.
+\strong{"1_n"}: each combination of \code{pk_column} values has at least 1 and at most
+n corresponding occurrences in the columns of the child table.
 This means that there is a "surjective" mapping from the child table
 to the parent table w.r.t. the specified columns, i.e. each combination in the
 parent table columns exists at least once in the child table columns.
 
-\verb{0_1} means, that each combination of \code{pk_column} values has at least \code{0} and at most
-\code{1} corresponding occurrence in the column of the child table.
+\strong{"0_1"}: each combination of \code{pk_column} values has at least 0 and at most
+1 corresponding occurrence in the column of the child table.
 This means that there is a "injective" mapping from the child table
 to the parent table w.r.t. the specified columns, i.e. no combination of values in the
 parent table columns is addressed multiple times.
 But not all of the parent table column values have to be referred to.
 
-\verb{1_1} means, that each combination of \code{pk_column} values has exactly
-\code{1}  corresponding occurrence in the columns of the child table.
+\strong{"1_1"}: each combination of \code{pk_column} values occurs exactly once
+in the corresponding columns of the child table.
 This means that there is a "bijective" ("injective" AND "surjective") mapping
 between the child table and the parent table w.r.t. the specified columns, i.e. the
 respective sets of combinations within the two sets of columns are equal and there
