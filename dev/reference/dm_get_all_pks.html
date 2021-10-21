@@ -86,7 +86,7 @@ returns the tables, the respective primary key columns and their classes."><meta
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -101,7 +101,7 @@ returns the tables, the respective primary key columns and their classes."><meta
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get all primary keys of a <code><a href="dm.html">dm</a></code> object</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/primary-keys.R"><code>R/primary-keys.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/primary-keys.R" class="external-link"><code>R/primary-keys.R</code></a></small>
     <div class="hidden name"><code>dm_get_all_pks.Rd</code></div>
     </div>
 
@@ -124,6 +124,7 @@ The default <code>NULL</code> returns information for all tables.</p></td>
       <td><p>These dots are for future extensions and must be empty.</p></td>
     </tr></table></div>
 
+    <div id="ref-sections">
     <div id="value">
     <h2>Value</h2>
     <p>A tibble with the following columns:</p><dl><dt><code>table</code></dt><dd><p>table name,</p></dd>
@@ -138,10 +139,11 @@ The default <code>NULL</code> returns information for all tables.</p></td>
 <code><a href="dm_rm_pk.html">dm_rm_pk</a>()</code>,
 <code><a href="enum_pk_candidates.html">enum_pk_candidates</a>()</code></p></div>
     </div>
+    </div>
 
     <div id="examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_get_all_pks</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   table    pk_col           </span>

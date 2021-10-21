@@ -91,7 +91,7 @@ dm_apply_filters_to_tbl() retrieves one specific table of the dm that is updated
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -106,15 +106,15 @@ dm_apply_filters_to_tbl() retrieves one specific table of the dm that is updated
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Filtering</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/filter-dm.R"><code>R/filter-dm.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/filter-dm.R" class="external-link"><code>R/filter-dm.R</code></a></small>
     <div class="hidden name"><code>dm_filter.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#questioning"><img src="figures/lifecycle-questioning.svg" alt="[Questioning]"></a></p>
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#questioning" class="external-link"><img src="figures/lifecycle-questioning.svg" alt="[Questioning]"></a></p>
 <p>Filtering a table of a <code><a href="dm.html">dm</a></code> object may affect other tables that are connected to it
 directly or indirectly via foreign key relations.</p>
-<p><code>dm_filter()</code> can be used to define filter conditions for tables using syntax that is similar to <code><a href="https://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code>.
+<p><code>dm_filter()</code> can be used to define filter conditions for tables using syntax that is similar to <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code>.
 These conditions will be stored in the <code><a href="dm.html">dm</a></code>, and executed immediately for the tables that they are referring to.</p>
 <p>With <code>dm_apply_filters()</code>, all tables will be updated according to the filter conditions and the foreign key relations.</p>
 <p><code>dm_apply_filters_to_tbl()</code> retrieves one specific table of the <code>dm</code> that is updated according to the filter conditions and the foreign key relations.</p>
@@ -133,16 +133,17 @@ These conditions will be stored in the <code><a href="dm.html">dm</a></code>, an
     </tr><tr><th>table</th>
       <td><p>A table in the <code>dm</code>.</p></td>
     </tr><tr><th>...</th>
-      <td><p>Logical predicates defined in terms of the variables in <code>.data</code>, passed on to <code><a href="https://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code>.
+      <td><p>Logical predicates defined in terms of the variables in <code>.data</code>, passed on to <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code>.
 Multiple conditions are combined with <code>&amp;</code> or <code>,</code>.
 Only the rows where the condition evaluates
 to <code>TRUE</code> are kept.</p>
 <p>The arguments in ... are automatically quoted and evaluated in the context of
 the data frame. They support unquoting and splicing.
-See <code><a href="https://dplyr.tidyverse.org/articles/programming.html">vignette("programming", package = "dplyr")</a></code>
+See <code><a href="https://dplyr.tidyverse.org/articles/programming.html" class="external-link">vignette("programming", package = "dplyr")</a></code>
 for an introduction to these concepts.</p></td>
     </tr></table></div>
 
+    <div id="ref-sections">
     <div id="value">
     <h2>Value</h2>
     <p>For <code>dm_filter()</code>: an updated <code>dm</code> object (filter executed for given table, and condition stored).</p>
@@ -152,13 +153,13 @@ for an introduction to these concepts.</p></td>
     <div id="details">
     <h2>Details</h2>
     <p>The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
-in one of the following scenarios:</p><ol><li><p>Calling <code>dm_apply_filters()</code> or <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> (method for <code>dm</code> objects) on a <code>dm</code>: each filtered table potentially
+in one of the following scenarios:</p><ol><li><p>Calling <code>dm_apply_filters()</code> or <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> (method for <code>dm</code> objects) on a <code>dm</code>: each filtered table potentially
 reduces the rows of all other tables connected to it by foreign key relations (cascading effect), leaving only the rows
 with corresponding key values.
 Tables that are not connected to any table with an active filter are left unchanged.
 This results in a new <code>dm</code> class object without any filter conditions.</p></li>
 <li><p>Calling <code>dm_apply_filters_to_tbl()</code>: the remaining rows of the requested table are calculated by performing a sequence
-of semi-joins (<code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">dplyr::semi_join()</a></code>) starting from each table that has been filtered to the requested table
+of semi-joins (<code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">dplyr::semi_join()</a></code>) starting from each table that has been filtered to the requested table
 (similar to 1. but only for one table).</p></li>
 </ol><p>Several functions of the dm package will throw an error if filter conditions exist when they are called.</p>
     </div>
@@ -175,15 +176,16 @@ However, these filter condition should be only of informative nature
 and never affect the results of other operations.
 We are working on formalizing the semantics of the underlying operations
 in order to present them in a cleaner interface.</p>
-<p>Use <code><a href="dm_zoom_to.html">dm_zoom_to()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code> to filter rows without registering
+<p>Use <code><a href="dm_zoom_to.html">dm_zoom_to()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code> to filter rows without registering
 the filter.</p>
+    </div>
     </div>
 
     <div id="examples">
     <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dm_nyc</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">dm_nyc_filtered</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_filter</span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">dm_apply_filters_to_tbl</span><span class="op">(</span><span class="va">dm_nyc_filtered</span>, <span class="va">flights</span><span class="op">)</span></span>
@@ -204,7 +206,7 @@ the filter.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">dm_nyc_filtered</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in"><span class="va">dm_nyc_filtered</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_apply_filters</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
@@ -215,9 +217,9 @@ the filter.</p>
 <span class="r-in"><span class="co"># If you want to keep only those rows in the parent tables</span></span>
 <span class="r-in"><span class="co"># whose primary key values appear as foreign key values in</span></span>
 <span class="r-in"><span class="co"># `flights`, you can set a `TRUE` filter in `flights`:</span></span>
-<span class="r-in"><span class="va">dm_nyc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_filter</span><span class="op">(</span><span class="va">flights</span>, <span class="fl">1</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_apply_filters</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in"><span class="va">dm_nyc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">dm_filter</span><span class="op">(</span><span class="va">flights</span>, <span class="fl">1</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">dm_apply_filters</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> airlines airports  flights   planes  weather </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       15        3     1761      945      105 </span>
@@ -225,9 +227,9 @@ the filter.</p>
 <span class="r-in"><span class="co"># `airports` because the departure airports in `flights` are</span></span>
 <span class="r-in"><span class="co"># only the three New York airports.</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">dm_nyc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_filter</span><span class="op">(</span><span class="va">planes</span>, <span class="va">engine</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Reciprocating"</span>, <span class="st">"4 Cycle"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">compute</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">dm_nyc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">dm_filter</span><span class="op">(</span><span class="va">planes</span>, <span class="va">engine</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Reciprocating"</span>, <span class="st">"4 Cycle"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 53</span>

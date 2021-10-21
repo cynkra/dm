@@ -88,7 +88,7 @@ Use other ways to access the tables in a dm.'><meta property="og:image" content=
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -103,12 +103,12 @@ Use other ways to access the tables in a dm.'><meta property="og:image" content=
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>dm as data source</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/dplyr-src.R"><code>R/dplyr-src.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/dplyr-src.R" class="external-link"><code>R/dplyr-src.R</code></a></small>
     <div class="hidden name"><code>dplyr_src.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a></p>
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a></p>
 <p>These methods are deprecated because of their limited use,
 and because the notion of a "source" seems to be getting phased out from dplyr.
 Use other ways to access the tables in a <code>dm</code>.</p>
@@ -117,16 +117,16 @@ Use other ways to access the tables in a <code>dm</code>.</p>
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_get_src</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
 <span class="co"># S3 method for dm</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="va">src</span>, <span class="va">from</span>, <span class="va">...</span><span class="op">)</span>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">src</span>, <span class="va">from</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for dm</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/src_tbls.html">src_tbls</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/src_tbls.html" class="external-link">src_tbls</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for dm</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span><span class="op">(</span>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to</a></span><span class="op">(</span>
   <span class="va">dest</span>,
   <span class="va">df</span>,
-  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/deparse.html">deparse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html">substitute</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>,
+  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/deparse.html" class="external-link">deparse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>,
   overwrite <span class="op">=</span> <span class="cn">FALSE</span>,
   temporary <span class="op">=</span> <span class="cn">TRUE</span>,
   repair <span class="op">=</span> <span class="st">"unique"</span>,
@@ -147,25 +147,27 @@ Use other ways to access the tables in a <code>dm</code>.</p>
     </tr><tr><th>df</th>
       <td><p>For <code>copy_to.dm()</code>: A table (can be on a different <code>src</code>)</p></td>
     </tr><tr><th>name</th>
-      <td><p>For <code>copy_to.dm()</code>: See <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html">dplyr::copy_to</a></code></p></td>
+      <td><p>For <code>copy_to.dm()</code>: See <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">dplyr::copy_to</a></code></p></td>
     </tr><tr><th>overwrite</th>
-      <td><p>For <code>copy_to.dm()</code>: See <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html">dplyr::copy_to</a></code>; <code>TRUE</code> leads to an error</p></td>
+      <td><p>For <code>copy_to.dm()</code>: See <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">dplyr::copy_to</a></code>; <code>TRUE</code> leads to an error</p></td>
     </tr><tr><th>temporary</th>
       <td><p>For <code>copy_to.dm()</code>: If the <code>dm</code> is on a DB, the copied version of <code>df</code> will only be written temporarily to the DB.
 After the connection is reset it will no longer be available.</p></td>
     </tr><tr><th>repair, quiet</th>
-      <td><p>Name repair options; cf. <code><a href="https://vctrs.r-lib.org/reference/vec_as_names.html">vctrs::vec_as_names()</a></code></p></td>
+      <td><p>Name repair options; cf. <code><a href="https://vctrs.r-lib.org/reference/vec_as_names.html" class="external-link">vctrs::vec_as_names()</a></code></p></td>
     </tr></table></div>
 
+    <div id="ref-sections">
     <div id="details">
     <h2>Details</h2>
     <p>Use <code><a href="dm.html">dm_get_con()</a></code> instead of <code>dm_get_src()</code> to get the DBI connetion for a
 <code>dm</code> object</p>
-<p>Use <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> instead of <code><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl()</a></code> to access individual tables in a <code>dm</code> object.</p>
+<p>Use <code><a href="https://rdrr.io/r/base/Extract.html" class="external-link">[[</a></code> instead of <code><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl()</a></code> to access individual tables in a <code>dm</code> object.</p>
 <p>Get the names from <code><a href="dm.html">dm_get_tables()</a></code> instead of calling <code>dm_get_src()</code>
 to list the table names in a <code>dm</code> object.</p>
-<p>Use <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to()</a></code> on a table and then <code><a href="dm_add_tbl.html">dm_add_tbl()</a></code> instead of <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to()</a></code>
+<p>Use <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> on a table and then <code><a href="dm_add_tbl.html">dm_add_tbl()</a></code> instead of <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code>
 on a <code>dm</code> object.</p>
+    </div>
     </div>
 
   </div>

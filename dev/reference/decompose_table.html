@@ -91,7 +91,7 @@ columns from the original table, which is now called the 'child table, and adds 
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -106,12 +106,12 @@ columns from the original table, which is now called the 'child table, and adds 
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Decompose a table into two linked tables</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/table-surgery.R"><code>R/table-surgery.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/table-surgery.R" class="external-link"><code>R/table-surgery.R</code></a></small>
     <div class="hidden name"><code>decompose_table.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#questioning"><img src="figures/lifecycle-questioning.svg" alt="[Questioning]"></a></p>
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#questioning" class="external-link"><img src="figures/lifecycle-questioning.svg" alt="[Questioning]"></a></p>
 <p>Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.</p>
 <p><code>decompose_table()</code> accepts a data frame, a name for the 'ID column' that will be newly created, and the names
 of the columns that will be extracted into the new data frame.</p>
@@ -141,6 +141,7 @@ See vignette("programming") for an introduction to those concepts.</p>
 <p>See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...</p></td>
     </tr></table></div>
 
+    <div id="ref-sections">
     <div id="value">
     <h2>Value</h2>
     <p>A named list of length two:</p><ul><li><p>entry "child_table": the child table with column <code>new_id_column</code> referring to the same column in <code>parent_table</code>,</p></li>
@@ -157,6 +158,7 @@ when applied to a table in a dm object.</p>
     <h2>See also</h2>
     <div class="dont-index"><p>Other table surgery functions: 
 <code><a href="reunite_parent_child.html">reunite_parent_child</a>()</code></p></div>
+    </div>
     </div>
 
     <div id="examples">

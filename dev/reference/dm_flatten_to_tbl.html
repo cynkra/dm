@@ -86,7 +86,7 @@ Both functions perform a disambiguation of column names and a cascade of joins."
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -101,7 +101,7 @@ Both functions perform a disambiguation of column names and a cascade of joins."
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Flatten a part of a <code>dm</code> into a wide table</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/flatten.R"><code>R/flatten.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/flatten.R" class="external-link"><code>R/flatten.R</code></a></small>
     <div class="hidden name"><code>dm_flatten_to_tbl.Rd</code></div>
     </div>
 
@@ -130,11 +130,12 @@ the order of the joins.
 If the argument is empty, all tables that can be reached will be included.
 If this includes tables that are not direct neighbors of <code>start</code>,
 it will only work with <code>dm_squash_to_tbl()</code> (given one of the allowed join-methods).
-<code>tidyselect</code> is supported, see <code><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select()</a></code> for details on the semantics.</p></td>
+<code>tidyselect</code> is supported, see <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> for details on the semantics.</p></td>
     </tr><tr><th>join</th>
-      <td><p>The type of join to be performed, see <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::join()</a></code>.</p></td>
+      <td><p>The type of join to be performed, see <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::join()</a></code>.</p></td>
     </tr></table></div>
 
+    <div id="ref-sections">
     <div id="value">
     <h2>Value</h2>
     <p>A single table that results from consecutively joining all affected tables to the <code>start</code> table.</p>
@@ -174,11 +175,12 @@ each nested column entry would be a tibble of one row), an error will be thrown 
     <div class="dont-index"><p>Other flattening functions: 
 <code><a href="dm_join_to_tbl.html">dm_join_to_tbl</a>()</code></p></div>
     </div>
+    </div>
 
     <div id="examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">weather</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">weather</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_flatten_to_tbl</span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Renamed columns:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> * year -&gt; flights.year, planes.year</span>
