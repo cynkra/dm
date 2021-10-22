@@ -96,5 +96,7 @@ utils::globalVariables(c(
   "districts",
   "loans",
   "orders",
-  "trans"
+  "trans",
+  # check_fk
+  "_n_"
 ))
