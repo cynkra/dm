@@ -28,12 +28,11 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_constraints()
-dm_examine_constraints <- function(dm, progress = NA, sample = TRUE) {
+dm_examine_constraints <- function(dm, progress = NA) {
   check_not_zoomed(dm)
   dm %>%
     dm_examine_constraints_impl(
-      progress = progress, 
-      sample = sample, 
+      progress = progress,
       top_level_fun = "dm_examine_constraints") %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns), repair_plan = NULL) %>%
