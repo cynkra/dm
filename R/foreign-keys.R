@@ -491,6 +491,30 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
     arrange(desc(candidate))
 }
 
+#' Check validity of foreign key
+#'
+#' Checks if `t1`'s `colname` columns are a valid foreign
+#' key for `t2`'s `pk` columns. It returns a repair plan whose content depends on
+#' `fk_repair`
+#' @param t1 data.frame, potential child table to be checked
+#' @param t1_name string
+#' @param colname character, names of columns forming the foreign key to check
+#' @param t2 data.frame, parent table
+#' @param t1_name string
+#' @param pk character, names of columns forming the primary key to check against
+#' @param fk_repair string, repair operation
+#' @param sample should we keep a sample of the problems or all of them, keeping
+#'   all is necessary for repair operations
+#' @examples
+#' check_fk(
+#'   t1 = dm_nycflights13()$flights,
+#'   t1_name = "flights",
+#'   colname = "tailnum",
+#'   t2 = dm_nycflights13()$planes,
+#'   t2_name = "planes",
+#'   pk = "tailnum"
+#' )
+#' @noRd
 check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sample = TRUE) {
   stopifnot(length(colname) == length(pk))
 
@@ -500,21 +524,27 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sa
   t2_vals <- syms(pk)
   names(t2_vals) <- val_names
 
+  # count of occurrences by foreign key
   t1_join <-
     t1 %>%
     count(!!!t1_vals, name = "_n_") %>%
     ungroup()
+
+  # count of occurrences by primary key
   t2_join <-
     t2 %>%
     count(!!!t2_vals) %>%
     ungroup()
 
+  # expr `is.na(value1) | is.na(value2) | ...`
   any_value_na_expr <- reduce(
     syms(val_names[-1]),
     ~ call("|", .x, call("is.na", .y)),
     .init = call("is.na", sym(val_names[[1]]))
   )
 
+  # problematic fks: count of occurrences by foreign key afer removing NAs and keys found in PK
+  # not collected at this point
   counts_tbl <- tryCatch(
     t1_join %>%
       # if value* is NULL, this also counts as a match -- consistent with fk semantics
@@ -529,6 +559,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, fk_repair = NULL, sa
     return(new_repair_plan(conditionMessage(counts_tbl)))
   }
 
+  # collect, we need only a sample unless we intend to repair
   if (sample) {
     count_tbl_for_label <-
       counts_tbl %>%
