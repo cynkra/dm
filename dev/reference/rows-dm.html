@@ -178,26 +178,21 @@ The order in which the tables are processed is reversed.</p>
 
 <span class="fu">dm_rows_truncate</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span>, in_place <span class="op">=</span> <span class="cn">NULL</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
-      <td><p>Target <code>dm</code> object.</p></td>
-    </tr><tr><th>y</th>
-      <td><p><code>dm</code> object with new data.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
-    </tr><tr><th>in_place</th>
-      <td><p>Should <code>x</code> be modified in place? This argument is only
-relevant for mutable backends (e.g. databases, data.tables).</p>
-<p>When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
-when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></td>
-    </tr><tr><th>progress</th>
-      <td><p>Whether to display a progress bar, if <code>NA</code> (the default)
-hide in non-interactive mode, show in interactive mode. Requires the
-'progress' package.</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>x</dt><dd><p>Target <code>dm</code> object.</p></dd>
+</dl><dl><dt>y</dt><dd><p><code>dm</code> object with new data.</p></dd>
+</dl><dl><dt>...</dt><dd><p>These dots are for future extensions and must be empty.</p></dd>
+</dl><dl><dt>in_place</dt><dd><p>Should <code>x</code> be modified in place? This argument is only
+relevant for mutable backends (e.g. databases, data.tables).When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
+when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></dd>
+</dl><dl><dt>progress</dt><dd><p>Whether to display a progress bar, if <code>NA</code> (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A dm object of the same <code><a href="dm_ptype.html">dm_ptype()</a></code> as <code>x</code>.

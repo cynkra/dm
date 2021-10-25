@@ -118,12 +118,13 @@ The methods for regular <code>dm</code> objects extract the first or last tables
 <span class="co"># S3 method for zoomed_dm</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="fl">6L</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
-      <td><p>object of class <code>zoomed_dm</code></p></td>
-    </tr><tr><th>n</th>
-      <td><p>an integer vector of length up to <code>dim(x)</code> (or 1,
+    
+
+<dl><dt>x</dt><dd><p>object of class <code>zoomed_dm</code></p></dd>
+</dl><dl><dt>n</dt><dd><p>an integer vector of length up to <code>dim(x)</code> (or 1,
     for non-dimensioned objects). Values specify the indices to be
     selected in the corresponding dimension (or along the length) of the
     object. A positive value of <code>n[i]</code> includes the first/last
@@ -131,12 +132,9 @@ The methods for regular <code>dm</code> objects extract the first or last tables
     excludes the last/first <code>abs(n[i])</code>, including all remaining
     indices. <code>NA</code> or non-specified values (when <code>length(n) &lt;
       length(dim(x))</code>) select all indices in that dimension. Must
-    contain at least one non-missing value.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>arguments to be passed to or from other methods.</p></td>
-    </tr></table></div>
-
-    <div id="ref-sections">
+    contain at least one non-missing value.</p></dd>
+</dl><dl><dt>...</dt><dd><p>arguments to be passed to or from other methods.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A <code>zoomed_dm</code> object.</p>

@@ -119,28 +119,23 @@ An error is thrown if no matching foreign key is found.</p>
   <span class="va">...</span>
 <span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr><tr><th>table</th>
-      <td><p>A table in the <code>dm</code>.
-Pass <code>NULL</code> to remove all matching keys.</p></td>
-    </tr><tr><th>columns</th>
-      <td><p>Table columns, unquoted.
-To refer to a compound key, use <code>c(col1, col2)</code>.
-Pass <code>NULL</code> (the default) to remove all matching keys.</p></td>
-    </tr><tr><th>ref_table</th>
-      <td><p>The table referenced by the <code>table</code> argument.
-Pass <code>NULL</code> to remove all matching keys.</p></td>
-    </tr><tr><th>ref_columns</th>
-      <td><p>The columns of <code>table</code> that should no longer be referencing the primary key of <code>ref_table</code>.
-To refer to a compound key, use <code>c(col1, col2)</code>.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>dm</dt><dd><p>A <code>dm</code> object.</p></dd>
+</dl><dl><dt>table</dt><dd><p>A table in the <code>dm</code>.
+Pass <code>NULL</code> to remove all matching keys.</p></dd>
+</dl><dl><dt>columns</dt><dd><p>Table columns, unquoted.
+To refer to a compound key, use <code>c(col1, col2)</code>.
+Pass <code>NULL</code> (the default) to remove all matching keys.</p></dd>
+</dl><dl><dt>ref_table</dt><dd><p>The table referenced by the <code>table</code> argument.
+Pass <code>NULL</code> to remove all matching keys.</p></dd>
+</dl><dl><dt>ref_columns</dt><dd><p>The columns of <code>table</code> that should no longer be referencing the primary key of <code>ref_table</code>.
+To refer to a compound key, use <code>c(col1, col2)</code>.</p></dd>
+</dl><dl><dt>...</dt><dd><p>These dots are for future extensions and must be empty.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>An updated <code>dm</code> without the matching foreign key relation(s).</p>

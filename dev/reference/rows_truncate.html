@@ -116,20 +116,17 @@ This operation corresponds to <code>TRUNCATE</code> in SQL.
 
 <span class="fu">sql_rows_truncate</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
-      <td><p>A data frame or data frame extension (e.g. a tibble).</p></td>
-    </tr><tr><th>...</th>
-      <td><p>Other parameters passed onto methods.</p></td>
-    </tr><tr><th>in_place</th>
-      <td><p>Should <code>x</code> be modified in place? This argument is only
-relevant for mutable backends (e.g. databases, data.tables).</p>
-<p>When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
-when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>x</dt><dd><p>A data frame or data frame extension (e.g. a tibble).</p></dd>
+</dl><dl><dt>...</dt><dd><p>Other parameters passed onto methods.</p></dd>
+</dl><dl><dt>in_place</dt><dd><p>Should <code>x</code> be modified in place? This argument is only
+relevant for mutable backends (e.g. databases, data.tables).When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
+when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></dd>
+</dl></div>
     </div>
 
   </div>

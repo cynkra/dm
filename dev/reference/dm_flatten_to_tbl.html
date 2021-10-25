@@ -114,28 +114,25 @@ Both functions perform a disambiguation of column names and a cascade of joins.<
 
 <span class="fu">dm_squash_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">start</span>, <span class="va">...</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
-      <td><p>A <code><a href="dm.html">dm</a></code> object.</p></td>
-    </tr><tr><th>start</th>
-      <td><p>The table from which all outgoing foreign key relations are considered
+    
+
+<dl><dt>dm</dt><dd><p>A <code><a href="dm.html">dm</a></code> object.</p></dd>
+</dl><dl><dt>start</dt><dd><p>The table from which all outgoing foreign key relations are considered
 when establishing a processing order for the joins.
 An interesting choice could be
-for example a fact table in a star schema.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>Unquoted names of the tables to be included in addition to the <code>start</code> table.
+for example a fact table in a star schema.</p></dd>
+</dl><dl><dt>...</dt><dd><p>Unquoted names of the tables to be included in addition to the <code>start</code> table.
 The order of the tables here determines
 the order of the joins.
 If the argument is empty, all tables that can be reached will be included.
 If this includes tables that are not direct neighbors of <code>start</code>,
 it will only work with <code>dm_squash_to_tbl()</code> (given one of the allowed join-methods).
-<code>tidyselect</code> is supported, see <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> for details on the semantics.</p></td>
-    </tr><tr><th>join</th>
-      <td><p>The type of join to be performed, see <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::join()</a></code>.</p></td>
-    </tr></table></div>
-
-    <div id="ref-sections">
+<code>tidyselect</code> is supported, see <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> for details on the semantics.</p></dd>
+</dl><dl><dt>join</dt><dd><p>The type of join to be performed, see <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::join()</a></code>.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A single table that results from consecutively joining all affected tables to the <code>start</code> table.</p>

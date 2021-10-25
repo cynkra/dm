@@ -128,20 +128,17 @@ of the columns is not retained, and the original row names are lost).</p>
 
 <span class="fu">reunite_parent_child_from_list</span><span class="op">(</span><span class="va">list_of_parent_child_tables</span>, <span class="va">id_column</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>child_table</th>
-      <td><p>Table (possibly created by <code><a href="decompose_table.html">decompose_table()</a></code>) that references <code>parent_table</code></p></td>
-    </tr><tr><th>parent_table</th>
-      <td><p>Table (possibly created by <code><a href="decompose_table.html">decompose_table()</a></code>).</p></td>
-    </tr><tr><th>id_column</th>
-      <td><p>Identical name of referencing / referenced column in <code>child_table</code>/<code>parent_table</code>.</p></td>
-    </tr><tr><th>list_of_parent_child_tables</th>
-      <td><p>Cf arguments <code>child_table</code> and <code>parent_table</code> from
-<code>reunite_parent_child()</code>, but both in a named list (as created by <code><a href="decompose_table.html">decompose_table()</a></code>).</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>child_table</dt><dd><p>Table (possibly created by <code><a href="decompose_table.html">decompose_table()</a></code>) that references <code>parent_table</code></p></dd>
+</dl><dl><dt>parent_table</dt><dd><p>Table (possibly created by <code><a href="decompose_table.html">decompose_table()</a></code>).</p></dd>
+</dl><dl><dt>id_column</dt><dd><p>Identical name of referencing / referenced column in <code>child_table</code>/<code>parent_table</code>.</p></dd>
+</dl><dl><dt>list_of_parent_child_tables</dt><dd><p>Cf arguments <code>child_table</code> and <code>parent_table</code> from
+<code>reunite_parent_child()</code>, but both in a named list (as created by <code><a href="decompose_table.html">decompose_table()</a></code>).</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A wide table produced by joining the two given tables.</p>

@@ -116,21 +116,17 @@ to reference the primary key column of another table of the <code><a href="dm.ht
 
 <span class="fu">enum_fk_candidates</span><span class="op">(</span><span class="va">zoomed_dm</span>, <span class="va">ref_table</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr><tr><th>table</th>
-      <td><p>The table whose columns should be tested for suitability as foreign keys.</p></td>
-    </tr><tr><th>ref_table</th>
-      <td><p>A table with a primary key.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
-    </tr><tr><th>zoomed_dm</th>
-      <td><p>A <code>dm</code> with a zoomed table.</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>dm</dt><dd><p>A <code>dm</code> object.</p></dd>
+</dl><dl><dt>table</dt><dd><p>The table whose columns should be tested for suitability as foreign keys.</p></dd>
+</dl><dl><dt>ref_table</dt><dd><p>A table with a primary key.</p></dd>
+</dl><dl><dt>...</dt><dd><p>These dots are for future extensions and must be empty.</p></dd>
+</dl><dl><dt>zoomed_dm</dt><dd><p>A <code>dm</code> with a zoomed table.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A tibble with the following columns:</p><dl><dt><code>columns</code></dt><dd><p>columns of <code>table</code>,</p></dd>

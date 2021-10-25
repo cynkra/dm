@@ -112,19 +112,17 @@ returns the tables, the respective primary key columns and their classes.</p>
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_get_all_pks</span><span class="op">(</span><span class="va">dm</span>, table <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr><tr><th>table</th>
-      <td><p>One or more table names, as character vector,
-to return primary key information for.
-The default <code>NULL</code> returns information for all tables.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>dm</dt><dd><p>A <code>dm</code> object.</p></dd>
+</dl><dl><dt>table</dt><dd><p>One or more table names, as character vector,
+to return primary key information for.
+The default <code>NULL</code> returns information for all tables.</p></dd>
+</dl><dl><dt>...</dt><dd><p>These dots are for future extensions and must be empty.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A tibble with the following columns:</p><dl><dt><code>table</code></dt><dd><p>table name,</p></dd>

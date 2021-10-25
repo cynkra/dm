@@ -120,26 +120,23 @@ data integrity constraints.</p>
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_nycflights13</span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">FALSE</span>, color <span class="op">=</span> <span class="cn">TRUE</span>, subset <span class="op">=</span> <span class="cn">TRUE</span>, compound <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>cycle</th>
-      <td><p>Boolean.
+    
+
+<dl><dt>cycle</dt><dd><p>Boolean.
 If <code>FALSE</code> (default), only one foreign key relation
 (from <code>flights$origin</code> to <code>airports$faa</code>) between the <code>flights</code> table and the <code>airports</code> table is
 established.
 If <code>TRUE</code>, a <code>dm</code> object with a double reference
-between those tables will be produced.</p></td>
-    </tr><tr><th>color</th>
-      <td><p>Boolean, if <code>TRUE</code> (default), the resulting <code>dm</code> object will have
-colors assigned to different tables for visualization with <code><a href="dm_draw.html">dm_draw()</a></code>.</p></td>
-    </tr><tr><th>subset</th>
-      <td><p>Boolean, if <code>TRUE</code> (default), the <code>flights</code> table is reduced to flights with column <code>day</code> equal to 10.</p></td>
-    </tr><tr><th>compound</th>
-      <td><p>Boolean, if <code>FALSE</code>, no link will be established between tables <code>flights</code> and <code>weather</code>,
-because this requires compound keys.</p></td>
-    </tr></table></div>
-
-    <div id="ref-sections">
+between those tables will be produced.</p></dd>
+</dl><dl><dt>color</dt><dd><p>Boolean, if <code>TRUE</code> (default), the resulting <code>dm</code> object will have
+colors assigned to different tables for visualization with <code><a href="dm_draw.html">dm_draw()</a></code>.</p></dd>
+</dl><dl><dt>subset</dt><dd><p>Boolean, if <code>TRUE</code> (default), the <code>flights</code> table is reduced to flights with column <code>day</code> equal to 10.</p></dd>
+</dl><dl><dt>compound</dt><dd><p>Boolean, if <code>FALSE</code>, no link will be established between tables <code>flights</code> and <code>weather</code>,
+because this requires compound keys.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A <code>dm</code> object consisting of nycflights13 tables, complete with primary and foreign keys and optionally colored.</p>

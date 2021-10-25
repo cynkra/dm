@@ -122,26 +122,21 @@ columns from the original table, which is now called the 'child table, and adds 
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">decompose_table</span><span class="op">(</span><span class="va">.data</span>, <span class="va">new_id_column</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>.data</th>
-      <td><p>Data frame from which columns <code>...</code> are to be extracted.</p></td>
-    </tr><tr><th>new_id_column</th>
-      <td><p>Name of the identifier column (primary key column) for the parent table.
-A column of this name is also added in 'child table'.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>The columns to be extracted from the <code>.data</code>.</p>
-<p>One or more unquoted expressions separated by commas.
+    
+
+<dl><dt>.data</dt><dd><p>Data frame from which columns <code>...</code> are to be extracted.</p></dd>
+</dl><dl><dt>new_id_column</dt><dd><p>Name of the identifier column (primary key column) for the parent table.
+A column of this name is also added in 'child table'.</p></dd>
+</dl><dl><dt>...</dt><dd><p>The columns to be extracted from the <code>.data</code>.One or more unquoted expressions separated by commas.
 You can treat variable names as if they were positions, so you
-can use expressions like x:y to select ranges of variables.</p>
-<p>The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
+can use expressions like x:y to select ranges of variables.The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
 They also support
 unquoting and splicing.
-See vignette("programming") for an introduction to those concepts.</p>
-<p>See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...</p></td>
-    </tr></table></div>
-
-    <div id="ref-sections">
+See vignette("programming") for an introduction to those concepts.See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A named list of length two:</p><ul><li><p>entry "child_table": the child table with column <code>new_id_column</code> referring to the same column in <code>parent_table</code>,</p></li>

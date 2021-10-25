@@ -114,19 +114,16 @@ If not, it throws an error.</p>
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">check_set_equality</span><span class="op">(</span><span class="va">t1</span>, <span class="va">c1</span>, <span class="va">t2</span>, <span class="va">c2</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>t1</th>
-      <td><p>The data frame that contains the columns <code>c1</code>.</p></td>
-    </tr><tr><th>c1</th>
-      <td><p>The columns of <code>t1</code> that should only contain values that are also present in columns <code>c2</code> of data frame <code>t2</code>. Multiple columns can be chosen using <code>c(col1, col2)</code>.</p></td>
-    </tr><tr><th>t2</th>
-      <td><p>The data frame that contains the columns <code>c2</code>.</p></td>
-    </tr><tr><th>c2</th>
-      <td><p>The columns of <code>t2</code> that should only contain values that are also present in columns <code>c1</code> of data frame <code>t1</code>. Multiple columns can be chosen using <code>c(col1, col2)</code>.</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>t1</dt><dd><p>The data frame that contains the columns <code>c1</code>.</p></dd>
+</dl><dl><dt>c1</dt><dd><p>The columns of <code>t1</code> that should only contain values that are also present in columns <code>c2</code> of data frame <code>t2</code>. Multiple columns can be chosen using <code>c(col1, col2)</code>.</p></dd>
+</dl><dl><dt>t2</dt><dd><p>The data frame that contains the columns <code>c2</code>.</p></dd>
+</dl><dl><dt>c2</dt><dd><p>The columns of <code>t2</code> that should only contain values that are also present in columns <code>c1</code> of data frame <code>t1</code>. Multiple columns can be chosen using <code>c(col1, col2)</code>.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>Returns <code>t1</code>, invisibly, if the check is passed.

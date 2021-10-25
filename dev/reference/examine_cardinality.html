@@ -127,19 +127,16 @@ examine_cardinality() also checks the first two points and subsequently determin
 
 <span class="fu">examine_cardinality</span><span class="op">(</span><span class="va">parent_table</span>, <span class="va">pk_column</span>, <span class="va">child_table</span>, <span class="va">fk_column</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>parent_table</th>
-      <td><p>Data frame.</p></td>
-    </tr><tr><th>pk_column</th>
-      <td><p>Columns of <code>parent_table</code> that have to be one of its unique keys, for multiple columns use <code>c(col1, col2)</code>.</p></td>
-    </tr><tr><th>child_table</th>
-      <td><p>Data frame.</p></td>
-    </tr><tr><th>fk_column</th>
-      <td><p>Columns of <code>child_table</code> that have to be a foreign key candidate to <code>pk_column</code> in <code>parent_table</code>, for multiple columns use <code>c(col1, col2)</code>.</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>parent_table</dt><dd><p>Data frame.</p></dd>
+</dl><dl><dt>pk_column</dt><dd><p>Columns of <code>parent_table</code> that have to be one of its unique keys, for multiple columns use <code>c(col1, col2)</code>.</p></dd>
+</dl><dl><dt>child_table</dt><dd><p>Data frame.</p></dd>
+</dl><dl><dt>fk_column</dt><dd><p>Columns of <code>child_table</code> that have to be a foreign key candidate to <code>pk_column</code> in <code>parent_table</code>, for multiple columns use <code>c(col1, col2)</code>.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>For <code>check_cardinality_*()</code>: Functions return <code>parent_table</code>, invisibly, if the check is passed, to support pipes.

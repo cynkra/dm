@@ -116,23 +116,19 @@ If the columns given in the ellipsis ARE a key, the data frame itself is returne
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">check_key</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>.data</th>
-      <td><p>The data frame whose columns should be tested for key properties.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>The names of the columns to be checked.</p>
-<p>One or more unquoted expressions separated by commas.
+    
+
+<dl><dt>.data</dt><dd><p>The data frame whose columns should be tested for key properties.</p></dd>
+</dl><dl><dt>...</dt><dd><p>The names of the columns to be checked.One or more unquoted expressions separated by commas.
 Variable names can be treated as if they were positions, so you
-can use expressions like x:y to select ranges of variables.</p>
-<p>The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
+can use expressions like x:y to select ranges of variables.The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
 They also support
 unquoting and splicing.
-See vignette("programming") for an introduction to these concepts.</p>
-<p>See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...</p></td>
-    </tr></table></div>
-
-    <div id="ref-sections">
+See vignette("programming") for an introduction to these concepts.See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>Returns <code>.data</code>, invisibly, if the check is passed.

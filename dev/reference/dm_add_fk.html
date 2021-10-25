@@ -129,38 +129,30 @@ of the values of the key in table <code>ref_table</code>.</p>
   on_delete <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no_action"</span>, <span class="st">"cascade"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr><tr><th>table</th>
-      <td><p>A table in the <code>dm</code>.</p></td>
-    </tr><tr><th>columns</th>
-      <td><p>The columns of <code>table</code> which are to become the foreign key columns that
+    
+
+<dl><dt>dm</dt><dd><p>A <code>dm</code> object.</p></dd>
+</dl><dl><dt>table</dt><dd><p>A table in the <code>dm</code>.</p></dd>
+</dl><dl><dt>columns</dt><dd><p>The columns of <code>table</code> which are to become the foreign key columns that
 reference <code>ref_table</code>.
-To define a compound key, use <code>c(col1, col2)</code>.</p></td>
-    </tr><tr><th>ref_table</th>
-      <td><p>The table which <code>table</code> will be referencing.</p></td>
-    </tr><tr><th>ref_columns</th>
-      <td><p>The column(s) of <code>table</code> which are to become the referenced column(s) in <code>ref_table</code>.
+To define a compound key, use <code>c(col1, col2)</code>.</p></dd>
+</dl><dl><dt>ref_table</dt><dd><p>The table which <code>table</code> will be referencing.</p></dd>
+</dl><dl><dt>ref_columns</dt><dd><p>The column(s) of <code>table</code> which are to become the referenced column(s) in <code>ref_table</code>.
 By default, the primary key is used.
-To define a compound key, use <code>c(col1, col2)</code>.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
-    </tr><tr><th>check</th>
-      <td><p>Boolean, if <code>TRUE</code>, a check will be performed to determine if the values of
-<code>columns</code> are a subset of the values of the key column(s) of <code>ref_table</code>.</p></td>
-    </tr><tr><th>on_delete</th>
-      <td><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
-<p>Defines behavior if a row in the parent table is deleted.
+To define a compound key, use <code>c(col1, col2)</code>.</p></dd>
+</dl><dl><dt>...</dt><dd><p>These dots are for future extensions and must be empty.</p></dd>
+</dl><dl><dt>check</dt><dd><p>Boolean, if <code>TRUE</code>, a check will be performed to determine if the values of
+<code>columns</code> are a subset of the values of the key column(s) of <code>ref_table</code>.</p></dd>
+</dl><dl><dt>on_delete</dt><dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a>Defines behavior if a row in the parent table is deleted.
 - <code>"no_action"</code>, the default, means that no action is taken
 and the operation is aborted if child rows exist
 - <code>"cascade"</code> means that the child row is also deleted
 This setting is picked up by <code><a href="copy_dm_to.html">copy_dm_to()</a></code> with <code>set_key_constraints = TRUE</code>,
-and might be considered by <code><a href="rows-dm.html">dm_rows_delete()</a></code> in a future version.</p></td>
-    </tr></table></div>
-
-    <div id="ref-sections">
+and might be considered by <code><a href="rows-dm.html">dm_rows_delete()</a></code> in a future version.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>An updated <code>dm</code> with an additional foreign key relation.</p>

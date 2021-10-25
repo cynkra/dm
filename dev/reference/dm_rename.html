@@ -110,26 +110,21 @@
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_rename</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr><tr><th>table</th>
-      <td><p>A table in the <code>dm</code>.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>One or more unquoted expressions separated by commas.
+    
+
+<dl><dt>dm</dt><dd><p>A <code>dm</code> object.</p></dd>
+</dl><dl><dt>table</dt><dd><p>A table in the <code>dm</code>.</p></dd>
+</dl><dl><dt>...</dt><dd><p>One or more unquoted expressions separated by commas.
 You can treat
 variable names as if they were positions, and use expressions like x:y
-to select the ranges of variables.</p>
-<p>Use named arguments, e.g. new_name = old_name, to rename the selected variables.</p>
-<p>The arguments in ... are automatically quoted and evaluated in a context where
+to select the ranges of variables.Use named arguments, e.g. new_name = old_name, to rename the selected variables.The arguments in ... are automatically quoted and evaluated in a context where
 column names represent column positions.
 They also support unquoting and splicing.
-See <code><a href="https://dplyr.tidyverse.org/articles/programming.html" class="external-link">vignette("programming", package = "dplyr")</a></code> for an introduction to those concepts.</p>
-<p>See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...</p></td>
-    </tr></table></div>
-
-    <div id="ref-sections">
+See <code><a href="https://dplyr.tidyverse.org/articles/programming.html" class="external-link">vignette("programming", package = "dplyr")</a></code> for an introduction to those concepts.See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>An updated <code>dm</code> with the columns of <code>table</code> renamed.</p>

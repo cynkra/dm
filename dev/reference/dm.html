@@ -161,23 +161,20 @@ To get a filtered table, use <code><a href="dm_filter.html">dm_apply_filters_to_
 
 <span class="fu">validate_dm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>...</th>
-      <td><p>Tables to add to the <code>dm</code> object.
-If no names are provided, the tables
-are auto-named.</p></td>
-    </tr><tr><th>.name_repair</th>
-      <td><p>Options for name repair.
-Forwarded as <code>repair</code> to <code><a href="https://vctrs.r-lib.org/reference/vec_as_names.html" class="external-link">vctrs::vec_as_names()</a></code>.</p></td>
-    </tr><tr><th>tables</th>
-      <td><p>A named list of the tables (tibble-objects, not names),
-to be included in the <code>dm</code> object.</p></td>
-    </tr><tr><th>x</th>
-      <td><p>An object.</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>...</dt><dd><p>Tables to add to the <code>dm</code> object.
+If no names are provided, the tables
+are auto-named.</p></dd>
+</dl><dl><dt>.name_repair</dt><dd><p>Options for name repair.
+Forwarded as <code>repair</code> to <code><a href="https://vctrs.r-lib.org/reference/vec_as_names.html" class="external-link">vctrs::vec_as_names()</a></code>.</p></dd>
+</dl><dl><dt>tables</dt><dd><p>A named list of the tables (tibble-objects, not names),
+to be included in the <code>dm</code> object.</p></dd>
+</dl><dl><dt>x</dt><dd><p>An object.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>For <code>dm()</code>, <code>new_dm()</code>, <code>as_dm()</code>: A <code>dm</code> object.</p>
