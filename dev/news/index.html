@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.5.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.5.9001</span>
       </span>
     </div>
 
@@ -103,6 +103,19 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.5.9001" id="dm-0259001">dm 0.2.5.9001<a class="anchor" aria-label="anchor" href="#dm-0259001"></a></h2>
+<ul><li>
+<code><a href="../reference/examine_cardinality.html">check_cardinality_0_1()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_0_n()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_1_1()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_1_n()</a></code>, and <code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> now support compound keys (<a href="https://github.com/cynkra/dm/issues/524" class="external-link">#524</a>).</li>
+<li>
+<code><a href="../reference/decompose_table.html">decompose_table()</a></code> now avoids creating <code>NA</code> values in the key column (<a href="https://github.com/cynkra/dm/issues/580" class="external-link">#580</a>, <a href="https://github.com/moodymudskipper" class="external-link">@moodymudskipper</a>).</li>
+<li>
+<code><a href="../reference/check_subset.html">check_subset()</a></code> and <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code> support compound keys (<a href="https://github.com/cynkra/dm/issues/523" class="external-link">#523</a>).</li>
+<li>
+<code><a href="../reference/dm_draw.html">dm_draw()</a></code> works with empty tables (<a href="https://github.com/cynkra/dm/issues/585" class="external-link">#585</a>, <a href="https://github.com/moodymudskipper" class="external-link">@moodymudskipper</a>).</li>
+<li>
+<code><a href="../reference/dm_paste.html">dm_paste()</a></code> adds the <code>on_delete</code> argument to <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> (<a href="https://github.com/cynkra/dm/issues/673" class="external-link">#673</a>).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.5.9000" id="dm-0259000">dm 0.2.5.9000<a class="anchor" aria-label="anchor" href="#dm-0259000"></a></h2>
 <ul><li>Same as previous version.</li>
