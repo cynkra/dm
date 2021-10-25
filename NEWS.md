@@ -1,26 +1,36 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
-# dm 0.2.4.9002
-
-- `dm_add_fk()` gains `on_delete` argument which `copy_dm_to()` picks up and translates to an `ON DELETE CASCADE` or `ON DELETE NO ACTION` specification for the foreign key (#649).
-- `dm_copy_to()` defines foreign keys during table creation, and for all databases except DuckDB. This requires a topological order of the tables (#658).
-- `sql_create_schema()` no longer actively checks for schema existence (#660).
-- `waldo::compare()` shows better output for dm objects (#642).
-
-
-# dm 0.2.4.9001
-
-- `copy_dm_to()` no longer actively checks if the target schema exists (#644).
-- `dm_paste()` output uses trailing commas in the `dm::dm()` and `tibble::tibble()` calls, and sorts column attributes by name, for better modularity (#641).
-- Remove method only needed for RSQLite < 2.2.8, add warning if loaded RSQLite version is <= 2.2.8 (#632).
-- Add newline after `OUTPUT` clause for SQL Server (#647).
-- Fix `sql_rows_delete()` with `returning` argument for SQL Server (#645).
-- Adapt MSSQL tests to testthat update (#648).
-
-
-# dm 0.2.4.9000
+# dm 0.2.5.9000
 
 - Same as previous version.
+
+
+# dm 0.2.5
+
+## Features
+
+- `mutate()`, `transmute()`, `distinct()` and `summarize()` now support `dplyr::across()` and extra arguments (#640).
+- Key tracking for the first three verbs is less strict and based on name equality (#663).
+- `relocate()` now works on zoomed `dm` objects (#666).
+- `dm_add_fk()` gains `on_delete` argument which `copy_dm_to()` picks up and translates to an `ON DELETE CASCADE` or `ON DELETE NO ACTION` specification for the foreign key (#649).
+- `dm_copy_to()` defines foreign keys during table creation, for all databases except DuckDB. Tables are created in topological order (#658). For cyclic relationship graphs, table creation is attempted in the original order and may fail (#664).
+- `waldo::compare()` shows better output for dm objects (#642).
+- `dm_paste()` output uses trailing commas in the `dm::dm()` and `tibble::tibble()` calls, and sorts column attributes by name, for better modularity (#641).
+
+## Breaking changes
+
+- New `db_schema_create()`, `db_schema_drop()`, `db_schema_exists()` and `db_schema_list()` replace the corresponding `sql_schema_*()` functions, the latter are soft-deprecated (#670). The connection argument to `db_schema_*()` is called `con`, not `dest` (#668).
+
+## Bug fixes
+
+- `copy_dm_to()` and `sql_create_schema()` no longer actively check for schema existence (#644, #660).
+- Add newline after `OUTPUT` clause for SQL Server (#647).
+- Fix `sql_rows_delete()` with `returning` argument for SQL Server (#645).
+
+## Internal
+
+- Remove method only needed for RSQLite < 2.2.8, add warning if loaded RSQLite version is <= 2.2.8 (#632).
+- Adapt MSSQL tests to testthat update (#648).
 
 
 # dm 0.2.4

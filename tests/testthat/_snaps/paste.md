@@ -36,7 +36,7 @@
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
-        dm::dm_add_fk(tf_5, l, tf_4) %>%
+        dm::dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
         dm::dm_add_fk(tf_5, m, tf_6, n)
     Code
       # changing the tab width
@@ -59,7 +59,7 @@
           dm::dm_add_fk(tf_2, d, tf_1) %>%
           dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
           dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
-          dm::dm_add_fk(tf_5, l, tf_4) %>%
+          dm::dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
           dm::dm_add_fk(tf_5, m, tf_6, n)
     Code
       # we don't care if the tables really exist
@@ -82,7 +82,7 @@
         dm::dm_add_fk(tf_2, d, tf_1_new) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
-        dm::dm_add_fk(tf_5, l, tf_4) %>%
+        dm::dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
         dm::dm_add_fk(tf_5, m, tf_6, n)
     Code
       # produce `dm_select()` statements in addition to the rest
@@ -127,7 +127,7 @@
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
-        dm::dm_add_fk(tf_5, l, tf_4) %>%
+        dm::dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
         dm::dm_add_fk(tf_5, m, tf_6, n) %>%
         dm::dm_set_colors(`#FFA500FF` = tf_1) %>%
         dm::dm_set_colors(`#FFA500FF` = tf_2) %>%
@@ -155,6 +155,32 @@
         dm::dm_add_pk(a, `a b`) %>%
         dm::dm_add_fk(`a b`, `a b`, a) %>%
         dm::dm_set_colors(`#00FF00FF` = `a b`)
+    Code
+      # FK referencing non default PK
+      b <- tibble(x = 1, y = "A", z = "A")
+      c <- tibble(x = "A", y = "A")
+      dm(b, c) %>% dm_add_pk(c, x) %>% dm_add_fk(b, y, c) %>% dm_add_fk(b, z, c, y) %>%
+        dm_paste()
+    Message <cliMessage>
+      dm::dm(
+        b,
+        c,
+      ) %>%
+        dm::dm_add_pk(c, x) %>%
+        dm::dm_add_fk(b, y, c) %>%
+        dm::dm_add_fk(b, z, c, y)
+    Code
+      # on_delete if needed
+      dm(b, c) %>% dm_add_pk(c, x) %>% dm_add_fk(b, y, c, on_delete = "cascade") %>%
+        dm_add_fk(b, z, c, y, on_delete = "no_action") %>% dm_paste()
+    Message <cliMessage>
+      dm::dm(
+        b,
+        c,
+      ) %>%
+        dm::dm_add_pk(c, x) %>%
+        dm::dm_add_fk(b, y, c, on_delete = "cascade") %>%
+        dm::dm_add_fk(b, z, c, y)
     Code
       # all of nycflights13
       dm_nycflights13() %>% dm_paste(options = "all")

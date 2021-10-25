@@ -5,7 +5,7 @@ test_that("output", {
     abort_not_unique_key("Christmas", c("elves", "Rudolph", "mulled_wine"))
     abort_table_not_in_dm("laziness", "hard_work")
     abort_not_subset_of("playing", "game", "hunting", "game")
-    abort_sets_not_equal(c("A problem occurred", "And another, even worse problem, occurred shortly after"))
+    abort_sets_not_equal(c("A problem occurred.", "And another, even worse problem, occurred shortly after."))
     # The mentioned reasons for not being bijective and injective are the same, but this is intended:
     # If surjectivity is not given during the test for bijectivity it will fail earlier
     abort_not_bijective("child_table_name", "fk_col_name")

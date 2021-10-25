@@ -76,6 +76,7 @@ reference:
   - filter.zoomed_dm
   - group_by.zoomed_dm
   - mutate.zoomed_dm
+  - relocate.zoomed_dm
   - rename.zoomed_dm
   - select.zoomed_dm
   - slice.zoomed_dm
@@ -135,10 +136,10 @@ reference:
 
 - title: Database schemas
   contents:
-  - sql_schema_create
-  - sql_schema_drop
-  - sql_schema_exists
-  - sql_schema_list
+  - db_schema_create
+  - db_schema_drop
+  - db_schema_exists
+  - db_schema_list
 
 - title: Miscellaneous
   contents:

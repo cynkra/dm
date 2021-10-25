@@ -19,21 +19,21 @@
     Code
       abort_not_subset_of("playing", "game", "hunting", "game")
     Error <dm_error_not_subset_of>
-      Column `game` of table `playing` contains values (see examples above) that are not present in column `game` of table `hunting`.
+      Column (`game`) of table `playing` contains values (see examples above) that are not present in column (`game`) of table `hunting`.
     Code
-      abort_sets_not_equal(c("A problem occurred",
-        "And another, even worse problem, occurred shortly after"))
+      abort_sets_not_equal(c("A problem occurred.",
+        "And another, even worse problem, occurred shortly after."))
     Error <dm_error_sets_not_equal>
       A problem occurred.
         And another, even worse problem, occurred shortly after.
     Code
       abort_not_bijective("child_table_name", "fk_col_name")
     Error <dm_error_not_bijective>
-      1..1 cardinality (bijectivity) is not given: Column `fk_col_name` in table `child_table_name` contains duplicate values.
+      1..1 cardinality (bijectivity) is not given: Column (`fk_col_name`) in table `child_table_name` contains duplicate values.
     Code
       abort_not_injective("child_table_name", "fk_col_name")
     Error <dm_error_not_injective>
-      0..1 cardinality (injectivity from child table to parent table) is not given: Column `fk_col_name` in table `child_table_name` contains duplicate values.
+      0..1 cardinality (injectivity from child table to parent table) is not given: Column (`fk_col_name`) in table `child_table_name` contains duplicate values.
     Code
       abort_ref_tbl_has_no_pk("parent_table")
     Error <dm_error_ref_tbl_has_no_pk>

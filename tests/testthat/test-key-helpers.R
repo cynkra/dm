@@ -52,11 +52,17 @@ test_that("output", {
   })
 })
 
+test_that("output for compound keys", {
+  expect_snapshot(error = TRUE, {
+    check_subset(data_mcard_2(), c(a, b), data_mcard_1(), c(a, b))
+  })
+})
+
 test_that("check_set_equality() checks properly if 2 sets of values are equal?", {
   expect_silent(check_set_equality(data_mcard_1(), a, data_mcard_3(), a))
 
   expect_snapshot(error = TRUE, {
-    check_set_equality(data_mcard_1(), a, data_mcard_2(), a)
+    check_set_equality(data_mcard_1(), c(a, c), data_mcard_2(), c(a, c))
   })
 })
 

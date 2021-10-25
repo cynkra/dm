@@ -6,6 +6,7 @@
 \alias{mutate.zoomed_dm}
 \alias{transmute.zoomed_dm}
 \alias{select.zoomed_dm}
+\alias{relocate.zoomed_dm}
 \alias{rename.zoomed_dm}
 \alias{distinct.zoomed_dm}
 \alias{arrange.zoomed_dm}
@@ -26,6 +27,8 @@
 \method{transmute}{zoomed_dm}(.data, ...)
 
 \method{select}{zoomed_dm}(.data, ...)
+
+\method{relocate}{zoomed_dm}(.data, ..., .before = NULL, .after = NULL)
 
 \method{rename}{zoomed_dm}(.data, ...)
 
@@ -60,6 +63,14 @@
 \item{.data}{object of class \code{zoomed_dm}}
 
 \item{...}{see corresponding function in package \pkg{dplyr} or \pkg{tidyr}}
+
+\item{.before}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> Destination of
+columns selected by \code{...}. Supplying neither will move columns to the
+left-hand side; specifying both is an error.}
+
+\item{.after}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> Destination of
+columns selected by \code{...}. Supplying neither will move columns to the
+left-hand side; specifying both is an error.}
 
 \item{.keep_all}{For \code{distinct.zoomed_dm()}: see \code{\link[dplyr:distinct]{dplyr::distinct}}}
 

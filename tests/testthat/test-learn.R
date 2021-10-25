@@ -343,7 +343,7 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
   expect_message(dm_db_learned <- dm_from_src(src_db, schema = "dm_test", dbname = "test_database_dm"))
   dm_learned <- dm_db_learned %>% collect()
   expect_equivalent_dm(
-    dm_learned,
+    dm_learned[c("test_1", "test_2")],
     dm_local_no_keys %>%
       dm_add_pk(test_1, b) %>%
       dm_add_fk(test_2, c, test_1)

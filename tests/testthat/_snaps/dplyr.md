@@ -251,7 +251,7 @@
 
     Code
       # mutate()
-      zoomed_grouped_out_dm %>% mutate(d_mean = mean(d), d = d * 2) %>%
+      zoomed_grouped_out_dm %>% mutate(d_mean = mean(d)) %>% select(-d) %>%
         dm_insert_zoomed("new_tbl") %>% get_all_keys()
     Output
       $pks
@@ -278,22 +278,23 @@
       6 tf_5        m             tf_6         n               no_action
       
     Code
-      zoomed_grouped_in_dm %>% mutate(f = list(g)) %>% dm_insert_zoomed("new_tbl") %>%
-        get_all_keys()
+      zoomed_grouped_in_dm %>% mutate(f = paste0(g, g)) %>% dm_insert_zoomed(
+        "new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 7 x 2
+        table   pk_col
+        <chr>   <keys>
+      1 tf_1    a     
+      2 tf_2    c     
+      3 tf_3    f, f1 
+      4 tf_4    h     
+      5 tf_5    k     
+      6 tf_6    o     
+      7 new_tbl f, f1 
       
       $fks
-      # A tibble: 5 x 5
+      # A tibble: 7 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
         <chr>       <keys>        <chr>        <keys>          <chr>    
       1 tf_2        d             tf_1         a               no_action
@@ -301,6 +302,8 @@
       3 tf_4        j, j1         tf_3         f, f1           no_action
       4 tf_5        l             tf_4         h               cascade  
       5 tf_5        m             tf_6         n               no_action
+      6 tf_2        e, e1         new_tbl      f, f1           no_action
+      7 tf_4        j, j1         new_tbl      f, f1           no_action
       
     Code
       zoomed_grouped_in_dm %>% mutate(g_new = list(g)) %>% dm_insert_zoomed("new_tbl") %>%
@@ -340,15 +343,16 @@
         dm_insert_zoomed("new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 7 x 2
+        table   pk_col
+        <chr>   <keys>
+      1 tf_1    a     
+      2 tf_2    c     
+      3 tf_3    f, f1 
+      4 tf_4    h     
+      5 tf_5    k     
+      6 tf_6    o     
+      7 new_tbl c     
       
       $fks
       # A tibble: 6 x 5
