@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.5.9001
+
+- `check_cardinality_0_1()`, `check_cardinality_0_n()`, `check_cardinality_1_1()`, `check_cardinality_1_n()`, and `examine_cardinality()` now support compound keys (#524).
+- `decompose_table()` now avoids creating `NA` values in the key column (#580, @moodymudskipper).
+- `check_subset()` and `check_set_equality()` support compound keys (#523).
+- `dm_draw()` works with empty tables (#585, @moodymudskipper).
+- `dm_paste()` adds the `on_delete` argument to `dm_add_fk()` (#673).
+
+
 # dm 0.2.5.9000
 
 - Same as previous version.
