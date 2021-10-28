@@ -16,6 +16,12 @@
 #' dm_pixarfilms() %>%
 #'   dm_draw()
 dm_pixarfilms <- function(color = TRUE) {
+  # Check for data package installed
+  check_suggested("pixarfilms",
+    use = TRUE,
+    top_level_fun = "dm_pixarfilms"
+  )
+
   # Extract data objects
   pixar_films <- pixarfilms::pixar_films
   pixar_people <- pixarfilms::pixar_people
