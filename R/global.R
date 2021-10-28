@@ -106,5 +106,9 @@ utils::globalVariables(c(
   "academy",
   "box_office",
   "genres",
-  "public_response"
+  "public_response",
+  "film",
+  "role_type",
+  "award_type",
+  "genre"
 ))
