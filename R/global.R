@@ -98,5 +98,13 @@ utils::globalVariables(c(
   "districts",
   "loans",
   "orders",
-  "trans"
+  "trans",
+  #
+  # pixarfilms
+  "pixar_films",
+  "pixar_people",
+  "academy",
+  "box_office",
+  "genres",
+  "public_response"
 ))
