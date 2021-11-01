@@ -62,13 +62,14 @@ compute_disambiguate_cols_recipe <- function(table_colnames, sep) {
 
   dup_colnames$new_name <- paste0(dup_colnames$table, sep, dup_colnames$column)
   dup_data <- dup_colnames[c("new_name", "column")]
-  dup_data$column <- syms(dup_data$column)
+  dup_data$column_sym <- syms(dup_data$column)
 
   dup_nested <-
     vec_split(dup_data, dup_colnames$table) %>%
     set_names("table", "renames")
 
-  dup_nested$renames <- map(dup_nested$renames, deframe)
+  dup_nested$names <- map(dup_nested$renames, select, new_name, column)
+  dup_nested$renames <- map(dup_nested$renames, ~deframe(select(., -column)))
   as_tibble(dup_nested)
 }
 
