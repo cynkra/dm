@@ -84,21 +84,23 @@ compute_disambiguate_cols_recipe <- function(table_colnames, sep) {
   as_tibble(dup_nested)
 }
 
+
+#' Describe renaming of cols by printing code
+#'
+#' @param recipe created by `compute_disambiguate_cols_recipe`
+#' @noRd
 explain_col_rename <- function(recipe) {
   if (nrow(recipe) == 0) {
     return()
   }
 
-  msg_base <-
+  disambiguation <-
     recipe %>%
-    mutate(renames = map(renames, ~ enframe(., "new", "old"))) %>%
-    unnest_df("renames", tibble(new = character(), old = syms(character()))) %>%
-    nest(data = -old)
+    unnest(names) %>%
+    mutate(text = glue("dm_rename({tick_if_needed(table)}, {tick_if_needed(new_name)} = {tick_if_needed(column)})")) %>%
+    pull(text)
 
-  sub_text <- map_chr(msg_base$data, ~ paste0(.x$new, collapse = ", "))
-  msg_core <- paste0("* ", msg_base$old, " -> ", sub_text)
-
-  message("Renamed columns:\n", paste(msg_core, collapse = "\n"))
+  message("Renaming ambiguous columns: %>%\n  ", glue_collapse(disambiguation, " %>%\n  "))
 }
 
 col_rename <- function(dm, recipe) {
