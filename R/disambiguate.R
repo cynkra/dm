@@ -26,7 +26,7 @@ dm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
 }
 
 dm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
-  table_colnames <- get_table_colnames(dm, tables)
+  table_colnames <- get_table_colnames(dm, tables, exclude_pk = FALSE)
   recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = sep)
   if (!quiet) explain_col_rename(recipe)
   col_rename(dm, recipe)
