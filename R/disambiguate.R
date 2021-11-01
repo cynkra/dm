@@ -32,7 +32,7 @@ dm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
   col_rename(dm, recipe)
 }
 
-get_table_colnames <- function(dm, tables = NULL) {
+get_table_colnames <- function(dm, tables = NULL, exclude_pk = TRUE) {
   def <- dm_get_def(dm)
 
   if (!is.null(tables)) {
@@ -43,6 +43,7 @@ get_table_colnames <- function(dm, tables = NULL) {
     tibble(table = def$table, column = map(def$data, colnames)) %>%
     unnest_col("column", character())
 
+  if(exclude_pk) {
   pks <- dm_get_all_pks_def_impl(def)
 
   keep_colnames <-
@@ -50,10 +51,13 @@ get_table_colnames <- function(dm, tables = NULL) {
     set_names(c("table", "column")) %>%
     unnest_col("column", character())
 
-  table_colnames %>%
+  table_colnames <-
+    table_colnames %>%
     # in case of flattening, the primary key columns will never be responsible for the name
     # of the resulting column in the end, so they do not need to be disambiguated
     anti_join(keep_colnames, by = c("table", "column"))
+  }
+  table_colnames
 }
 
 compute_disambiguate_cols_recipe <- function(table_colnames, sep) {
