@@ -9,15 +9,15 @@
     Message <cliMessage>
       ! Unsatisfied constraints:
     Output
-      * Table `flights`: foreign key dest into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (30), BQN (6), STT (4), PSE (2)
-      * Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
+      * Table `flights`: foreign key `dest` into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (30), BQN (6), STT (4), PSE (2)
+      * Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
     Code
       dm_nycflights_small_cycle() %>% dm_examine_constraints()
     Message <cliMessage>
       ! Unsatisfied constraints:
     Output
-      * Table `flights`: foreign key dest into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (30), BQN (6), STT (4), PSE (2)
-      * Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
+      * Table `flights`: foreign key `dest` into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (30), BQN (6), STT (4), PSE (2)
+      * Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
     Code
       dm_nycflights_small_cycle() %>% dm_select_tbl(-flights) %>%
         dm_examine_constraints()
@@ -52,8 +52,8 @@
     Message <cliMessage>
       ! Unsatisfied constraints:
     Output
-      * Table `tbl_2`: primary key id, x: has duplicate values: 3, E (2)
-      * Table `tbl_3`: primary key id: has duplicate values: 4 (2)
-      * Table `tbl_1`: foreign key a, x into table `tbl_2`: values of `tbl_1$a`, `tbl_1$x` not in `tbl_2$id`, `tbl_2$x`: 4, E (1), 5, F (1)
-      * Table `tbl_1`: foreign key b into table `tbl_3`: values of `tbl_1$b` not in `tbl_3$id`: 1 (1), 5 (1)
+      * Table `tbl_2`: primary key `id`, `x` : has duplicate values: 3, E (2)
+      * Table `tbl_3`: primary key `id`: has duplicate values: 4 (2)
+      * Table `tbl_1`: foreign key `a`, `x` into table `tbl_2`: values of `tbl_1$a`, `tbl_1$x` not in `tbl_2$id`, `tbl_2$x`: 4, E (1), 5, F (1)
+      * Table `tbl_1`: foreign key `b` into table `tbl_3`: values of `tbl_1$b` not in `tbl_3$id`: 1 (1), 5 (1)
 
