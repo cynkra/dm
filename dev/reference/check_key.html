@@ -103,7 +103,7 @@ If the columns given in the ellipsis ARE a key, the data frame itself is returne
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Check if column(s) can be used as keys</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/key-helpers.R" class="external-link"><code>R/key-helpers.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/key-helpers.R" class="external-link"><code>R/key-helpers.R</code></a></small>
     <div class="hidden name"><code>check_key.Rd</code></div>
     </div>
 
@@ -119,15 +119,18 @@ If the columns given in the ellipsis ARE a key, the data frame itself is returne
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>.data</dt><dd><p>The data frame whose columns should be tested for key properties.</p></dd>
-</dl><dl><dt>...</dt><dd><p>The names of the columns to be checked.One or more unquoted expressions separated by commas.
+    <dl><dt>.data</dt>
+<dd><p>The data frame whose columns should be tested for key properties.</p></dd>
+<dt>...</dt>
+<dd><p>The names of the columns to be checked.</p>
+<p>One or more unquoted expressions separated by commas.
 Variable names can be treated as if they were positions, so you
-can use expressions like x:y to select ranges of variables.The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
+can use expressions like x:y to select ranges of variables.</p>
+<p>The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
 They also support
 unquoting and splicing.
-See vignette("programming") for an introduction to these concepts.See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...</p></dd>
+See vignette("programming") for an introduction to these concepts.</p>
+<p>See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

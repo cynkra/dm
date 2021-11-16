@@ -103,7 +103,7 @@ Foreign keys are never removed."><meta property="og:image" content="https://cynk
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Remove a primary key</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/primary-keys.R" class="external-link"><code>R/primary-keys.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/primary-keys.R" class="external-link"><code>R/primary-keys.R</code></a></small>
     <div class="hidden name"><code>dm_rm_pk.Rd</code></div>
     </div>
 
@@ -119,16 +119,19 @@ Foreign keys are never removed.</p>
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>dm</dt><dd><p>A <code>dm</code> object.</p></dd>
-</dl><dl><dt>table</dt><dd><p>A table in the <code>dm</code>.
+    <dl><dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+<dt>table</dt>
+<dd><p>A table in the <code>dm</code>.
 Pass <code>NULL</code> to remove all matching keys.</p></dd>
-</dl><dl><dt>columns</dt><dd><p>Table columns, unquoted.
+<dt>columns</dt>
+<dd><p>Table columns, unquoted.
 To refer to a compound key, use <code>c(col1, col2)</code>.
 Pass <code>NULL</code> (the default) to remove all matching keys.</p></dd>
-</dl><dl><dt>...</dt><dd><p>These dots are for future extensions and must be empty.</p></dd>
-</dl><dl><dt>fail_fk</dt><dd><p>Boolean: if <code>TRUE</code> (default), will throw an error
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+<dt>fail_fk</dt>
+<dd><p>Boolean: if <code>TRUE</code> (default), will throw an error
 if there are foreign keys addressing the primary key that is to be removed.</p></dd>
 </dl></div>
     <div id="value">

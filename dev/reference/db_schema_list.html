@@ -101,7 +101,7 @@ db_schema_list() lists the available schemas on the database."><meta property="o
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>List schemas on a database</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/schema.R" class="external-link"><code>R/schema.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/schema.R" class="external-link"><code>R/schema.R</code></a></small>
     <div class="hidden name"><code>db_schema_list.Rd</code></div>
     </div>
 
@@ -115,17 +115,22 @@ db_schema_list() lists the available schemas on the database."><meta property="o
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>con</dt><dd><p>An object of class <code>"src"</code> or <code>"DBIConnection"</code>.</p></dd>
-</dl><dl><dt>include_default</dt><dd><p>Boolean, if <code>TRUE</code> (default), also the default schema
+    <dl><dt>con</dt>
+<dd><p>An object of class <code>"src"</code> or <code>"DBIConnection"</code>.</p></dd>
+<dt>include_default</dt>
+<dd><p>Boolean, if <code>TRUE</code> (default), also the default schema
 on the database is included in the result</p></dd>
-</dl><dl><dt>...</dt><dd><p>Passed on to the individual methods.</p></dd>
+<dt>...</dt>
+<dd><p>Passed on to the individual methods.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A tibble with the following columns:</p><dl><dt><code>schema_name</code></dt><dd><p>the names of the schemas,</p></dd>
-<dt><code>schema_owner</code></dt><dd><p>the schema owner names.</p></dd>
+    <p>A tibble with the following columns:</p><dl><dt><code>schema_name</code></dt>
+<dd><p>the names of the schemas,</p></dd>
+
+<dt><code>schema_owner</code></dt>
+<dd><p>the schema owner names.</p></dd>
+
 
 </dl></div>
     <div id="details">

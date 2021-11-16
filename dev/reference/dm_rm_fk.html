@@ -101,7 +101,7 @@ An error is thrown if no matching foreign key is found."><meta property="og:imag
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Remove foreign keys</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/foreign-keys.R" class="external-link"><code>R/foreign-keys.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/foreign-keys.R" class="external-link"><code>R/foreign-keys.R</code></a></small>
     <div class="hidden name"><code>dm_rm_fk.Rd</code></div>
     </div>
 
@@ -122,19 +122,23 @@ An error is thrown if no matching foreign key is found.</p>
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>dm</dt><dd><p>A <code>dm</code> object.</p></dd>
-</dl><dl><dt>table</dt><dd><p>A table in the <code>dm</code>.
+    <dl><dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+<dt>table</dt>
+<dd><p>A table in the <code>dm</code>.
 Pass <code>NULL</code> to remove all matching keys.</p></dd>
-</dl><dl><dt>columns</dt><dd><p>Table columns, unquoted.
+<dt>columns</dt>
+<dd><p>Table columns, unquoted.
 To refer to a compound key, use <code>c(col1, col2)</code>.
 Pass <code>NULL</code> (the default) to remove all matching keys.</p></dd>
-</dl><dl><dt>ref_table</dt><dd><p>The table referenced by the <code>table</code> argument.
+<dt>ref_table</dt>
+<dd><p>The table referenced by the <code>table</code> argument.
 Pass <code>NULL</code> to remove all matching keys.</p></dd>
-</dl><dl><dt>ref_columns</dt><dd><p>The columns of <code>table</code> that should no longer be referencing the primary key of <code>ref_table</code>.
+<dt>ref_columns</dt>
+<dd><p>The columns of <code>table</code> that should no longer be referencing the primary key of <code>ref_table</code>.
 To refer to a compound key, use <code>c(col1, col2)</code>.</p></dd>
-</dl><dl><dt>...</dt><dd><p>These dots are for future extensions and must be empty.</p></dd>
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

@@ -102,7 +102,7 @@ For certain DBMS it is possible to force the removal of a non-empty schema, see 
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Remove a schema from a database</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/schema.R" class="external-link"><code>R/schema.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/schema.R" class="external-link"><code>R/schema.R</code></a></small>
     <div class="hidden name"><code>db_schema_drop.Rd</code></div>
     </div>
 
@@ -117,13 +117,15 @@ For certain DBMS it is possible to force the removal of a non-empty schema, see 
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>con</dt><dd><p>An object of class <code>"src"</code> or <code>"DBIConnection"</code>.</p></dd>
-</dl><dl><dt>schema</dt><dd><p>Class <code>character</code> or <code>SQL</code> (cf. Details), name of the schema</p></dd>
-</dl><dl><dt>force</dt><dd><p>Boolean, default <code>FALSE</code>. Set to <code>TRUE</code> to drop a schema and
+    <dl><dt>con</dt>
+<dd><p>An object of class <code>"src"</code> or <code>"DBIConnection"</code>.</p></dd>
+<dt>schema</dt>
+<dd><p>Class <code>character</code> or <code>SQL</code> (cf. Details), name of the schema</p></dd>
+<dt>force</dt>
+<dd><p>Boolean, default <code>FALSE</code>. Set to <code>TRUE</code> to drop a schema and
 all objects it contains at once. Currently only supported for Postgres.</p></dd>
-</dl><dl><dt>...</dt><dd><p>Passed on to the individual methods.</p></dd>
+<dt>...</dt>
+<dd><p>Passed on to the individual methods.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

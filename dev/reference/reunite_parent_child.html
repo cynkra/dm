@@ -108,7 +108,7 @@ of the columns is not retained, and the original row names are lost)."><meta pro
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Merge two tables that are linked by a foreign key relation</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/table-surgery.R" class="external-link"><code>R/table-surgery.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/table-surgery.R" class="external-link"><code>R/table-surgery.R</code></a></small>
     <div class="hidden name"><code>reunite_parent_child.Rd</code></div>
     </div>
 
@@ -131,12 +131,14 @@ of the columns is not retained, and the original row names are lost).</p>
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>child_table</dt><dd><p>Table (possibly created by <code><a href="decompose_table.html">decompose_table()</a></code>) that references <code>parent_table</code></p></dd>
-</dl><dl><dt>parent_table</dt><dd><p>Table (possibly created by <code><a href="decompose_table.html">decompose_table()</a></code>).</p></dd>
-</dl><dl><dt>id_column</dt><dd><p>Identical name of referencing / referenced column in <code>child_table</code>/<code>parent_table</code>.</p></dd>
-</dl><dl><dt>list_of_parent_child_tables</dt><dd><p>Cf arguments <code>child_table</code> and <code>parent_table</code> from
+    <dl><dt>child_table</dt>
+<dd><p>Table (possibly created by <code><a href="decompose_table.html">decompose_table()</a></code>) that references <code>parent_table</code></p></dd>
+<dt>parent_table</dt>
+<dd><p>Table (possibly created by <code><a href="decompose_table.html">decompose_table()</a></code>).</p></dd>
+<dt>id_column</dt>
+<dd><p>Identical name of referencing / referenced column in <code>child_table</code>/<code>parent_table</code>.</p></dd>
+<dt>list_of_parent_child_tables</dt>
+<dd><p>Cf arguments <code>child_table</code> and <code>parent_table</code> from
 <code>reunite_parent_child()</code>, but both in a named list (as created by <code><a href="decompose_table.html">decompose_table()</a></code>).</p></dd>
 </dl></div>
     <div id="value">

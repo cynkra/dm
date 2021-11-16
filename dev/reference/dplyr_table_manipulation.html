@@ -100,7 +100,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1><span class="pkg">dplyr</span> table manipulation methods for zoomed dm objects</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/dplyr.R" class="external-link"><code>R/dplyr.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/dplyr.R" class="external-link"><code>R/dplyr.R</code></a></small>
     <div class="hidden name"><code>dplyr_table_manipulation.Rd</code></div>
     </div>
 
@@ -166,40 +166,50 @@
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>.data</dt><dd><p>object of class <code>zoomed_dm</code></p></dd>
-</dl><dl><dt>...</dt><dd><p>see corresponding function in package <span class="pkg">dplyr</span> or <span class="pkg">tidyr</span></p></dd>
-</dl><dl><dt>.before</dt><dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html" class="external-link">tidy-select</a></code>&gt; Destination of
+    <dl><dt>.data</dt>
+<dd><p>object of class <code>zoomed_dm</code></p></dd>
+<dt>...</dt>
+<dd><p>see corresponding function in package <span class="pkg">dplyr</span> or <span class="pkg">tidyr</span></p></dd>
+<dt>.before</dt>
+<dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html" class="external-link">tidy-select</a></code>&gt; Destination of
 columns selected by <code>...</code>. Supplying neither will move columns to the
 left-hand side; specifying both is an error.</p></dd>
-</dl><dl><dt>.after</dt><dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html" class="external-link">tidy-select</a></code>&gt; Destination of
+<dt>.after</dt>
+<dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html" class="external-link">tidy-select</a></code>&gt; Destination of
 columns selected by <code>...</code>. Supplying neither will move columns to the
 left-hand side; specifying both is an error.</p></dd>
-</dl><dl><dt>.keep_all</dt><dd><p>For <code>distinct.zoomed_dm()</code>: see <code><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">dplyr::distinct</a></code></p></dd>
-</dl><dl><dt>.keep_pk</dt><dd><p>For <code>slice.zoomed_dm</code>: Logical, if <code>TRUE</code>, the primary key will be retained during this transformation. If <code>FALSE</code>, it will be dropped.
+<dt>.keep_all</dt>
+<dd><p>For <code>distinct.zoomed_dm()</code>: see <code><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">dplyr::distinct</a></code></p></dd>
+<dt>.keep_pk</dt>
+<dd><p>For <code>slice.zoomed_dm</code>: Logical, if <code>TRUE</code>, the primary key will be retained during this transformation. If <code>FALSE</code>, it will be dropped.
 By default, the value is <code>NULL</code>, which causes the function to issue a message in case a primary key is available for the zoomed table.
 This argument is specific for the <code>slice.zoomed_dm()</code> method.</p></dd>
-</dl><dl><dt>x</dt><dd><p>For <code>ungroup.zoomed_dm</code>: object of class <code>zoomed_dm</code></p></dd>
-</dl><dl><dt>wt</dt><dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_data_masking.html" class="external-link">data-masking</a></code>&gt; Frequency weights.
-Can be <code>NULL</code> or a variable:
-</p><ul><li><p>If <code>NULL</code> (the default), counts the number of rows in each group.</p></li>
+<dt>x</dt>
+<dd><p>For <code>ungroup.zoomed_dm</code>: object of class <code>zoomed_dm</code></p></dd>
+<dt>wt</dt>
+<dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_data_masking.html" class="external-link">data-masking</a></code>&gt; Frequency weights.
+Can be <code>NULL</code> or a variable:</p><ul><li><p>If <code>NULL</code> (the default), counts the number of rows in each group.</p></li>
 <li><p>If a variable, computes <code>sum(wt)</code> for each group.</p></li>
 </ul></dd>
-</dl><dl><dt>sort</dt><dd><p>If <code>TRUE</code>, will show the largest groups at the top.</p></dd>
-</dl><dl><dt>name</dt><dd><p>The name of the new column in the output.If omitted, it will default to <code>n</code>. If there's already a column called <code>n</code>,
+<dt>sort</dt>
+<dd><p>If <code>TRUE</code>, will show the largest groups at the top.</p></dd>
+<dt>name</dt>
+<dd><p>The name of the new column in the output.</p>
+<p>If omitted, it will default to <code>n</code>. If there's already a column called <code>n</code>,
 it will error, and require you to specify the name.</p></dd>
-</dl><dl><dt>.drop</dt><dd><p>For <code>count()</code>: if <code>FALSE</code> will include counts for empty groups
+<dt>.drop</dt>
+<dd><p>For <code>count()</code>: if <code>FALSE</code> will include counts for empty groups
 (i.e. for levels of factors that don't exist in the data). Deprecated in
 <code>add_count()</code> since it didn't actually affect the output.</p></dd>
-</dl><dl><dt>var</dt><dd><p>A variable specified as:
-</p><ul><li><p>a literal variable name</p></li>
+<dt>var</dt>
+<dd><p>A variable specified as:</p><ul><li><p>a literal variable name</p></li>
 <li><p>a positive integer, giving the position counting from the left</p></li>
 <li><p>a negative integer, giving the position counting from the right.</p></li>
-</ul>The default returns the last column (on the assumption that's the
-column you've created most recently).This argument is taken by expression and supports
-<a href="https://rlang.r-lib.org/reference/bang-bang.html" class="external-link">quasiquotation</a> (you can unquote column
-names and column locations).</dd>
+</ul><p>The default returns the last column (on the assumption that's the
+column you've created most recently).</p>
+<p>This argument is taken by expression and supports
+<a href="https://rlang.r-lib.org/reference/topic-inject.html" class="external-link">quasiquotation</a> (you can unquote column
+names and column locations).</p></dd>
 </dl></div>
     </div>
 

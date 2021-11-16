@@ -102,7 +102,7 @@ This operation corresponds to TRUNCATE in SQL.
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Truncate all rows</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/rows-truncate.R" class="external-link"><code>R/rows-truncate.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/rows-truncate.R" class="external-link"><code>R/rows-truncate.R</code></a></small>
     <div class="hidden name"><code>rows_truncate.Rd</code></div>
     </div>
 
@@ -119,12 +119,14 @@ This operation corresponds to <code>TRUNCATE</code> in SQL.
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>x</dt><dd><p>A data frame or data frame extension (e.g. a tibble).</p></dd>
-</dl><dl><dt>...</dt><dd><p>Other parameters passed onto methods.</p></dd>
-</dl><dl><dt>in_place</dt><dd><p>Should <code>x</code> be modified in place? This argument is only
-relevant for mutable backends (e.g. databases, data.tables).When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
+    <dl><dt>x</dt>
+<dd><p>A data frame or data frame extension (e.g. a tibble).</p></dd>
+<dt>...</dt>
+<dd><p>Other parameters passed onto methods.</p></dd>
+<dt>in_place</dt>
+<dd><p>Should <code>x</code> be modified in place? This argument is only
+relevant for mutable backends (e.g. databases, data.tables).</p>
+<p>When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
 when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></dd>
 </dl></div>
     </div>

@@ -105,7 +105,7 @@ for a table in a dm object."><meta property="og:image" content="https://cynkra.g
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Primary key candidate</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/primary-keys.R" class="external-link"><code>R/primary-keys.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/primary-keys.R" class="external-link"><code>R/primary-keys.R</code></a></small>
     <div class="hidden name"><code>enum_pk_candidates.Rd</code></div>
     </div>
 
@@ -125,17 +125,24 @@ for a table in a <a href="dm.html">dm</a> object.</p>
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>table</dt><dd><p>A table in the <code>dm</code>.</p></dd>
-</dl><dl><dt>...</dt><dd><p>These dots are for future extensions and must be empty.</p></dd>
-</dl><dl><dt>dm</dt><dd><p>A <code>dm</code> object.</p></dd>
+    <dl><dt>table</dt>
+<dd><p>A table in the <code>dm</code>.</p></dd>
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+<dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A tibble with the following columns:</p><dl><dt><code>columns</code></dt><dd><p>columns of <code>table</code>,</p></dd>
-<dt><code>candidate</code></dt><dd><p>boolean: are these columns a candidate for a primary key,</p></dd>
-<dt><code>why</code></dt><dd><p>if not a candidate for a primary key column, explanation for this.</p></dd>
+    <p>A tibble with the following columns:</p><dl><dt><code>columns</code></dt>
+<dd><p>columns of <code>table</code>,</p></dd>
+
+<dt><code>candidate</code></dt>
+<dd><p>boolean: are these columns a candidate for a primary key,</p></dd>
+
+<dt><code>why</code></dt>
+<dd><p>if not a candidate for a primary key column, explanation for this.</p></dd>
+
 
 </dl></div>
     <div id="life-cycle">

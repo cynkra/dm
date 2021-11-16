@@ -129,7 +129,7 @@ The order in which the tables are processed is reversed."><meta property="og:ima
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Modifying rows for multiple tables</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/rows-dm.R" class="external-link"><code>R/rows-dm.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/rows-dm.R" class="external-link"><code>R/rows-dm.R</code></a></small>
     <div class="hidden name"><code>rows-dm.Rd</code></div>
     </div>
 
@@ -181,15 +181,19 @@ The order in which the tables are processed is reversed.</p>
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>x</dt><dd><p>Target <code>dm</code> object.</p></dd>
-</dl><dl><dt>y</dt><dd><p><code>dm</code> object with new data.</p></dd>
-</dl><dl><dt>...</dt><dd><p>These dots are for future extensions and must be empty.</p></dd>
-</dl><dl><dt>in_place</dt><dd><p>Should <code>x</code> be modified in place? This argument is only
-relevant for mutable backends (e.g. databases, data.tables).When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
+    <dl><dt>x</dt>
+<dd><p>Target <code>dm</code> object.</p></dd>
+<dt>y</dt>
+<dd><p><code>dm</code> object with new data.</p></dd>
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+<dt>in_place</dt>
+<dd><p>Should <code>x</code> be modified in place? This argument is only
+relevant for mutable backends (e.g. databases, data.tables).</p>
+<p>When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
 when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></dd>
-</dl><dl><dt>progress</dt><dd><p>Whether to display a progress bar, if <code>NA</code> (the default)
+<dt>progress</dt>
+<dd><p>Whether to display a progress bar, if <code>NA</code> (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.</p></dd>
 </dl></div>
@@ -291,7 +295,7 @@ and <code>x</code> is returned, invisibly.</p>
 <span class="r-in"><span class="va">flights_new</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Unsatisfied constraints:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">•</span> Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">•</span> Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Apply:</span></span>
 <span class="r-in"><span class="fu">dm_rows_insert</span><span class="op">(</span><span class="va">flights_sqlite</span>, <span class="va">flights_feb_sqlite</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>

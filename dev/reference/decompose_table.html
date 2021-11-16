@@ -106,7 +106,7 @@ columns from the original table, which is now called the 'child table, and adds 
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Decompose a table into two linked tables</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/table-surgery.R" class="external-link"><code>R/table-surgery.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/table-surgery.R" class="external-link"><code>R/table-surgery.R</code></a></small>
     <div class="hidden name"><code>decompose_table.Rd</code></div>
     </div>
 
@@ -125,17 +125,21 @@ columns from the original table, which is now called the 'child table, and adds 
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>.data</dt><dd><p>Data frame from which columns <code>...</code> are to be extracted.</p></dd>
-</dl><dl><dt>new_id_column</dt><dd><p>Name of the identifier column (primary key column) for the parent table.
+    <dl><dt>.data</dt>
+<dd><p>Data frame from which columns <code>...</code> are to be extracted.</p></dd>
+<dt>new_id_column</dt>
+<dd><p>Name of the identifier column (primary key column) for the parent table.
 A column of this name is also added in 'child table'.</p></dd>
-</dl><dl><dt>...</dt><dd><p>The columns to be extracted from the <code>.data</code>.One or more unquoted expressions separated by commas.
+<dt>...</dt>
+<dd><p>The columns to be extracted from the <code>.data</code>.</p>
+<p>One or more unquoted expressions separated by commas.
 You can treat variable names as if they were positions, so you
-can use expressions like x:y to select ranges of variables.The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
+can use expressions like x:y to select ranges of variables.</p>
+<p>The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
 They also support
 unquoting and splicing.
-See vignette("programming") for an introduction to those concepts.See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...</p></dd>
+See vignette("programming") for an introduction to those concepts.</p>
+<p>See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

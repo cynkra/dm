@@ -101,7 +101,7 @@ returns the tables, the respective primary key columns and their classes."><meta
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get all primary keys of a <code><a href="dm.html">dm</a></code> object</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/primary-keys.R" class="external-link"><code>R/primary-keys.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/primary-keys.R" class="external-link"><code>R/primary-keys.R</code></a></small>
     <div class="hidden name"><code>dm_get_all_pks.Rd</code></div>
     </div>
 
@@ -115,18 +115,23 @@ returns the tables, the respective primary key columns and their classes.</p>
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>dm</dt><dd><p>A <code>dm</code> object.</p></dd>
-</dl><dl><dt>table</dt><dd><p>One or more table names, as character vector,
+    <dl><dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+<dt>table</dt>
+<dd><p>One or more table names, as character vector,
 to return primary key information for.
 The default <code>NULL</code> returns information for all tables.</p></dd>
-</dl><dl><dt>...</dt><dd><p>These dots are for future extensions and must be empty.</p></dd>
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A tibble with the following columns:</p><dl><dt><code>table</code></dt><dd><p>table name,</p></dd>
-<dt><code>pk_cols</code></dt><dd><p>column name(s) of primary key, as list of character vectors.</p></dd>
+    <p>A tibble with the following columns:</p><dl><dt><code>table</code></dt>
+<dd><p>table name,</p></dd>
+
+<dt><code>pk_cols</code></dt>
+<dd><p>column name(s) of primary key, as list of character vectors.</p></dd>
+
 
 </dl></div>
     <div id="see-also">

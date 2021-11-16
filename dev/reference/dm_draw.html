@@ -101,7 +101,7 @@ Use DiagrammeRsvg::export_svg() to convert the diagram to an SVG file."><meta pr
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Draw a diagram of the data model</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/draw-dm.R" class="external-link"><code>R/draw-dm.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/draw-dm.R" class="external-link"><code>R/draw-dm.R</code></a></small>
     <div class="hidden name"><code>dm_draw.Rd</code></div>
     </div>
 
@@ -128,22 +128,32 @@ Use <code><a href="https://rdrr.io/pkg/DiagrammeRsvg/man/export_svg.html" class=
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>dm</dt><dd><p>A <code><a href="dm.html">dm</a></code> object.</p></dd>
-</dl><dl><dt>rankdir</dt><dd><p>Graph attribute for direction (e.g., 'BT' = bottom --&gt; top).</p></dd>
-</dl><dl><dt>col_attr</dt><dd><p>Deprecated, use <code>colummn_types</code> instead.</p></dd>
-</dl><dl><dt>view_type</dt><dd><p>Can be "keys_only" (default), "all" or "title_only".
+    <dl><dt>dm</dt>
+<dd><p>A <code><a href="dm.html">dm</a></code> object.</p></dd>
+<dt>rankdir</dt>
+<dd><p>Graph attribute for direction (e.g., 'BT' = bottom --&gt; top).</p></dd>
+<dt>col_attr</dt>
+<dd><p>Deprecated, use <code>colummn_types</code> instead.</p></dd>
+<dt>view_type</dt>
+<dd><p>Can be "keys_only" (default), "all" or "title_only".
 It defines the level of details for rendering tables
 (only primary and foreign keys, all columns, or no columns).</p></dd>
-</dl><dl><dt>columnArrows</dt><dd><p>Edges from columns to columns (default: <code>TRUE</code>).</p></dd>
-</dl><dl><dt>graph_attrs</dt><dd><p>Additional graph attributes.</p></dd>
-</dl><dl><dt>node_attrs</dt><dd><p>Additional node attributes.</p></dd>
-</dl><dl><dt>edge_attrs</dt><dd><p>Additional edge attributes.</p></dd>
-</dl><dl><dt>focus</dt><dd><p>A list of parameters for rendering (table filter).</p></dd>
-</dl><dl><dt>graph_name</dt><dd><p>The name of the graph.</p></dd>
-</dl><dl><dt>...</dt><dd><p>These dots are for future extensions and must be empty.</p></dd>
-</dl><dl><dt>column_types</dt><dd><p>Set to <code>TRUE</code> to show column types.</p></dd>
+<dt>columnArrows</dt>
+<dd><p>Edges from columns to columns (default: <code>TRUE</code>).</p></dd>
+<dt>graph_attrs</dt>
+<dd><p>Additional graph attributes.</p></dd>
+<dt>node_attrs</dt>
+<dd><p>Additional node attributes.</p></dd>
+<dt>edge_attrs</dt>
+<dd><p>Additional edge attributes.</p></dd>
+<dt>focus</dt>
+<dd><p>A list of parameters for rendering (table filter).</p></dd>
+<dt>graph_name</dt>
+<dd><p>The name of the graph.</p></dd>
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+<dt>column_types</dt>
+<dd><p>Set to <code>TRUE</code> to show column types.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

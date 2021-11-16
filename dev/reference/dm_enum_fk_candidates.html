@@ -102,7 +102,7 @@ to reference the primary key column of another table of the dm object."><meta pr
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Foreign key candidates</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/foreign-keys.R" class="external-link"><code>R/foreign-keys.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/foreign-keys.R" class="external-link"><code>R/foreign-keys.R</code></a></small>
     <div class="hidden name"><code>dm_enum_fk_candidates.Rd</code></div>
     </div>
 
@@ -119,19 +119,28 @@ to reference the primary key column of another table of the <code><a href="dm.ht
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>dm</dt><dd><p>A <code>dm</code> object.</p></dd>
-</dl><dl><dt>table</dt><dd><p>The table whose columns should be tested for suitability as foreign keys.</p></dd>
-</dl><dl><dt>ref_table</dt><dd><p>A table with a primary key.</p></dd>
-</dl><dl><dt>...</dt><dd><p>These dots are for future extensions and must be empty.</p></dd>
-</dl><dl><dt>zoomed_dm</dt><dd><p>A <code>dm</code> with a zoomed table.</p></dd>
+    <dl><dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+<dt>table</dt>
+<dd><p>The table whose columns should be tested for suitability as foreign keys.</p></dd>
+<dt>ref_table</dt>
+<dd><p>A table with a primary key.</p></dd>
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+<dt>zoomed_dm</dt>
+<dd><p>A <code>dm</code> with a zoomed table.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A tibble with the following columns:</p><dl><dt><code>columns</code></dt><dd><p>columns of <code>table</code>,</p></dd>
-<dt><code>candidate</code></dt><dd><p>boolean: are these columns a candidate for a foreign key,</p></dd>
-<dt><code>why</code></dt><dd><p>if not a candidate for a foreign key, explanation for for this.</p></dd>
+    <p>A tibble with the following columns:</p><dl><dt><code>columns</code></dt>
+<dd><p>columns of <code>table</code>,</p></dd>
+
+<dt><code>candidate</code></dt>
+<dd><p>boolean: are these columns a candidate for a foreign key,</p></dd>
+
+<dt><code>why</code></dt>
+<dd><p>if not a candidate for a foreign key, explanation for for this.</p></dd>
+
 
 </dl></div>
     <div id="details">

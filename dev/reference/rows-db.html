@@ -121,7 +121,7 @@ more standardized DBs."><meta property="og:image" content="https://cynkra.github
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Updating database tables</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/rows-db.R" class="external-link"><code>R/rows-db.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/rows-db.R" class="external-link"><code>R/rows-db.R</code></a></small>
     <div class="hidden name"><code>rows-db.Rd</code></div>
     </div>
 
@@ -225,38 +225,50 @@ more standardized DBs.</p>
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>x</dt><dd><p>A pair of data frames or data frame extensions (e.g. a tibble).
+    <dl><dt>x</dt>
+<dd><p>A pair of data frames or data frame extensions (e.g. a tibble).
 <code>y</code> must have the same columns of <code>x</code> or a subset.</p></dd>
-</dl><dl><dt>y</dt><dd><p>A pair of data frames or data frame extensions (e.g. a tibble).
+<dt>y</dt>
+<dd><p>A pair of data frames or data frame extensions (e.g. a tibble).
 <code>y</code> must have the same columns of <code>x</code> or a subset.</p></dd>
-</dl><dl><dt>by</dt><dd><p>An unnamed character vector giving the key columns. The key
+<dt>by</dt>
+<dd><p>An unnamed character vector giving the key columns. The key
 values must uniquely identify each row (i.e. each combination of key
 values occurs at most once), and the key columns must exist in both <code>x</code>
-and <code>y</code>.By default, we use the first column in <code>y</code>, since the first column is
+and <code>y</code>.</p>
+<p>By default, we use the first column in <code>y</code>, since the first column is
 a reasonable place to put an identifier variable.</p></dd>
-</dl><dl><dt>...</dt><dd><p>Other parameters passed onto methods.</p></dd>
-</dl><dl><dt>in_place</dt><dd><p>Should <code>x</code> be modified in place? This argument is only
-relevant for mutable backends (e.g. databases, data.tables).When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
+<dt>...</dt>
+<dd><p>Other parameters passed onto methods.</p></dd>
+<dt>in_place</dt>
+<dd><p>Should <code>x</code> be modified in place? This argument is only
+relevant for mutable backends (e.g. databases, data.tables).</p>
+<p>When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
 when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></dd>
-</dl><dl><dt>copy</dt><dd><p>If <code>x</code> and <code>y</code> are not from the same data source,
+<dt>copy</dt>
+<dd><p>If <code>x</code> and <code>y</code> are not from the same data source,
 and <code>copy</code> is <code>TRUE</code>, then <code>y</code> will be copied into the
 same src as <code>x</code>.  This allows you to join tables across srcs, but
 it is a potentially expensive operation so you must opt into it.</p></dd>
-</dl><dl><dt>check</dt><dd><p>Set to <code>TRUE</code> to always check keys, or <code>FALSE</code> to never check.
-The default is to check only if <code>in_place</code> is <code>TRUE</code> or <code>NULL</code>.Currently these checks are no-ops and need yet to be implemented.</p></dd>
-</dl><dl><dt>returning</dt><dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a>
+<dt>check</dt>
+<dd><p>Set to <code>TRUE</code> to always check keys, or <code>FALSE</code> to never check.
+The default is to check only if <code>in_place</code> is <code>TRUE</code> or <code>NULL</code>.</p>
+<p>Currently these checks are no-ops and need yet to be implemented.</p></dd>
+<dt>returning</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a>
 &lt;<code>tidy-select</code>&gt; Columns to return of the inserted data.
 Note that also columns not in <code>y</code> but automatically created when inserting
-into <code>x</code> can be returned, for example the <code>id</code> column.Due to upstream limitations, a warning is given if this argument
+into <code>x</code> can be returned, for example the <code>id</code> column.</p>
+<p>Due to upstream limitations, a warning is given if this argument
 is passed unquoted.
 To avoid the warning, quote the argument manually:
 use e.g. <code>returning = quote(everything())</code> .</p></dd>
-</dl><dl><dt>returning_cols</dt><dd><p>A character vector of unquote column names
+<dt>returning_cols</dt>
+<dd><p>A character vector of unquote column names
 to return, created from the <code>returning</code> argument.
 Methods for database that do not support this should raise an error.</p></dd>
-</dl><dl><dt>output_delete</dt><dd><p>For <code>sql_output_cols()</code>, construct the SQL
+<dt>output_delete</dt>
+<dd><p>For <code>sql_output_cols()</code>, construct the SQL
 for a <code>DELETE</code> operation.</p></dd>
 </dl></div>
     <div id="value">

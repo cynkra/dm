@@ -100,7 +100,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create R code for a dm object</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/paste.R" class="external-link"><code>R/paste.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/paste.R" class="external-link"><code>R/paste.R</code></a></small>
     <div class="hidden name"><code>dm_paste.Rd</code></div>
     </div>
 
@@ -113,22 +113,25 @@
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>dm</dt><dd><p>A <code>dm</code> object.</p></dd>
-</dl><dl><dt>select</dt><dd><p>Deprecated, see <code>"select"</code> in the <code>options</code> argument.</p></dd>
-</dl><dl><dt>...</dt><dd><p>Must be empty.</p></dd>
-</dl><dl><dt>tab_width</dt><dd><p>Indentation width for code from the second line onwards</p></dd>
-</dl><dl><dt>options</dt><dd><p>Formatting options. A character vector containing some of:
-</p><ul><li><p><code>"tables"</code>: <code>tibble()</code> calls for empty table definitions
+    <dl><dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+<dt>select</dt>
+<dd><p>Deprecated, see <code>"select"</code> in the <code>options</code> argument.</p></dd>
+<dt>...</dt>
+<dd><p>Must be empty.</p></dd>
+<dt>tab_width</dt>
+<dd><p>Indentation width for code from the second line onwards</p></dd>
+<dt>options</dt>
+<dd><p>Formatting options. A character vector containing some of:</p><ul><li><p><code>"tables"</code>: <code>tibble()</code> calls for empty table definitions
 derived from <code><a href="dm_ptype.html">dm_ptype()</a></code>, overrides <code>"select"</code>.</p></li>
 <li><p><code>"select"</code>: <code><a href="dm_select.html">dm_select()</a></code> statements for columns that are part
 of the dm.</p></li>
 <li><p><code>"keys"</code>: <code><a href="dm_add_pk.html">dm_add_pk()</a></code> and <code><a href="dm_add_fk.html">dm_add_fk()</a></code> statements for adding keys.</p></li>
 <li><p><code>"color"</code>: <code><a href="dm_set_colors.html">dm_set_colors()</a></code> statements to set color.</p></li>
 <li><p><code>"all"</code>: All options above except <code>"select"</code></p></li>
-</ul>Default <code>NULL</code> is equivalent to <code>c("keys", "color")</code></dd>
-</dl><dl><dt>path</dt><dd><p>Output file, if <code>NULL</code> the code is printed to the console.</p></dd>
+</ul><p>Default <code>NULL</code> is equivalent to <code>c("keys", "color")</code></p></dd>
+<dt>path</dt>
+<dd><p>Output file, if <code>NULL</code> the code is printed to the console.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -147,46 +150,46 @@ Data in the tables is never included, see <code><a href="dm_ptype.html">dm_ptype
     <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm.html">dm</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_paste</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dm::dm(</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> )</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dm::<span style="color: #00BBBB;">dm</span><span style="color: #BBBB00;">(</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_paste</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dm::dm(</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dm::<span style="color: #00BBBB;">dm</span><span style="color: #BBBB00;">(</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   airlines,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   airports,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   flights,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   planes,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   weather,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_add_pk(airlines, carrier) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_add_pk(airports, faa) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_add_pk(planes, tailnum) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_add_pk(weather, c(origin, time_hour)) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_add_fk(flights, carrier, airlines) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_add_fk(flights, origin, airports) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_add_fk(flights, tailnum, planes) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_add_fk(flights, c(origin, time_hour), weather) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_set_colors(`#ED7D31FF` = airlines) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_set_colors(`#ED7D31FF` = airports) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_set_colors(`#5B9BD5FF` = flights) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_set_colors(`#ED7D31FF` = planes) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_set_colors(`#70AD47FF` = weather)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_add_pk</span><span style="color: #BBBB00;">(</span>airlines, carrier<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_add_pk</span><span style="color: #BBBB00;">(</span>airports, faa<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_add_pk</span><span style="color: #BBBB00;">(</span>planes, tailnum<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_add_pk</span><span style="color: #BBBB00;">(</span>weather, <span style="color: #00BBBB;">c</span><span style="color: #0000BB;">(</span>origin, time_hour<span style="color: #0000BB;">)</span><span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_add_fk</span><span style="color: #BBBB00;">(</span>flights, carrier, airlines<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_add_fk</span><span style="color: #BBBB00;">(</span>flights, origin, airports<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_add_fk</span><span style="color: #BBBB00;">(</span>flights, tailnum, planes<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_add_fk</span><span style="color: #BBBB00;">(</span>flights, <span style="color: #00BBBB;">c</span><span style="color: #0000BB;">(</span>origin, time_hour<span style="color: #0000BB;">)</span>, weather<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_set_colors</span><span style="color: #BBBB00;">(</span>`#ED7D31FF` = airlines<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_set_colors</span><span style="color: #BBBB00;">(</span>`#ED7D31FF` = airports<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_set_colors</span><span style="color: #BBBB00;">(</span>`#5B9BD5FF` = flights<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_set_colors</span><span style="color: #BBBB00;">(</span>`#ED7D31FF` = planes<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_set_colors</span><span style="color: #BBBB00;">(</span>`#70AD47FF` = weather<span style="color: #BBBB00;">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_paste</span><span class="op">(</span>options <span class="op">=</span> <span class="st">"select"</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dm::dm(</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dm::<span style="color: #00BBBB;">dm</span><span style="color: #BBBB00;">(</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   airlines,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   airports,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   flights,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   planes,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   weather,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_select(airlines, carrier, name) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_select(airports, faa, name, lat, lon, alt, tz, dst, tzone) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_select(flights, year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_select(planes, tailnum, year, type, manufacturer, model, engines, seats, speed, engine) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::dm_select(weather, origin, year, month, day, hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib, time_hour)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_select</span><span style="color: #BBBB00;">(</span>airlines, carrier, name<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_select</span><span style="color: #BBBB00;">(</span>airports, faa, name, lat, lon, alt, tz, dst, tzone<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_select</span><span style="color: #BBBB00;">(</span>flights, year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_select</span><span style="color: #BBBB00;">(</span>planes, tailnum, year, type, manufacturer, model, engines, seats, speed, engine<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_select</span><span style="color: #BBBB00;">(</span>weather, origin, year, month, day, hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib, time_hour<span style="color: #BBBB00;">)</span></span>
 </code></pre></div>
     </div>
   </div>

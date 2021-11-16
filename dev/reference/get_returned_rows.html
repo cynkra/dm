@@ -106,7 +106,7 @@ rows_insert(), rows_update(), rows_upsert(), or rows_delete()."><meta property="
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Extract and check the RETURNING rows</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/rows-db.R" class="external-link"><code>R/rows-db.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/rows-db.R" class="external-link"><code>R/rows-db.R</code></a></small>
     <div class="hidden name"><code>get_returned_rows.Rd</code></div>
     </div>
 
@@ -127,14 +127,13 @@ An error is raised if this information is not available.</p>
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>x</dt><dd><p>A lazy tbl.</p></dd>
+    <dl><dt>x</dt>
+<dd><p>A lazy tbl.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>For <code>get_returned_rows()</code>, a tibble.</p>
-<p>For <code>has_returned_rows()</code>, a scalar logical.</p>
+    <p>For <code>get_returned_rows()</code>, a tibble.
+For <code>has_returned_rows()</code>, a scalar logical.</p>
     </div>
     </div>
 

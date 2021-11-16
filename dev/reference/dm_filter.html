@@ -106,7 +106,7 @@ dm_apply_filters_to_tbl() retrieves one specific table of the dm that is updated
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Filtering</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/filter-dm.R" class="external-link"><code>R/filter-dm.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/filter-dm.R" class="external-link"><code>R/filter-dm.R</code></a></small>
     <div class="hidden name"><code>dm_filter.Rd</code></div>
     </div>
 
@@ -129,23 +129,25 @@ These conditions will be stored in the <code><a href="dm.html">dm</a></code>, an
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>dm</dt><dd><p>A <code>dm</code> object.</p></dd>
-</dl><dl><dt>table</dt><dd><p>A table in the <code>dm</code>.</p></dd>
-</dl><dl><dt>...</dt><dd><p>Logical predicates defined in terms of the variables in <code>.data</code>, passed on to <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code>.
+    <dl><dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+<dt>table</dt>
+<dd><p>A table in the <code>dm</code>.</p></dd>
+<dt>...</dt>
+<dd><p>Logical predicates defined in terms of the variables in <code>.data</code>, passed on to <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code>.
 Multiple conditions are combined with <code>&amp;</code> or <code>,</code>.
 Only the rows where the condition evaluates
-to <code>TRUE</code> are kept.The arguments in ... are automatically quoted and evaluated in the context of
+to <code>TRUE</code> are kept.</p>
+<p>The arguments in ... are automatically quoted and evaluated in the context of
 the data frame. They support unquoting and splicing.
 See <code><a href="https://dplyr.tidyverse.org/articles/programming.html" class="external-link">vignette("programming", package = "dplyr")</a></code>
 for an introduction to these concepts.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>For <code>dm_filter()</code>: an updated <code>dm</code> object (filter executed for given table, and condition stored).</p>
-<p>For <code>dm_apply_filters()</code>: an updated <code>dm</code> object (filter effects evaluated for all tables).</p>
-<p>For <code>dm_apply_filters_to_tbl()</code>, a table.</p>
+    <p>For <code>dm_filter()</code>: an updated <code>dm</code> object (filter executed for given table, and condition stored).
+For <code>dm_apply_filters()</code>: an updated <code>dm</code> object (filter effects evaluated for all tables).
+For <code>dm_apply_filters_to_tbl()</code>, a table.</p>
     </div>
     <div id="details">
     <h2>Details</h2>

@@ -136,9 +136,9 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Create a dm object from data frames</h1>
             
-            <h4 data-toc-skip class="date">2021-10-25</h4>
+            <h4 data-toc-skip class="date">2021-11-16</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/howto-dm-df.Rmd" class="external-link"><code>vignettes/howto-dm-df.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-df.Rmd" class="external-link"><code>vignettes/howto-dm-df.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-df.Rmd</code></div>
 
     </div>
@@ -175,21 +175,20 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
 
 <span class="va">airports</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 1,458 × 8</span>
-#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
-#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        
-#&gt; <span style="color: #BCBCBC;"> 1</span> 04G   Lansdowne Airport      41.1  -<span style="color: #BB0000;">80.6</span>  <span style="text-decoration: underline;">1</span>044    -<span style="color: #BB0000;">5</span> A     America/New_…
-#&gt; <span style="color: #BCBCBC;"> 2</span> 06A   Moton Field Municipa…  32.5  -<span style="color: #BB0000;">85.7</span>   264    -<span style="color: #BB0000;">6</span> A     America/Chic…
-#&gt; <span style="color: #BCBCBC;"> 3</span> 06C   Schaumburg Regional    42.0  -<span style="color: #BB0000;">88.1</span>   801    -<span style="color: #BB0000;">6</span> A     America/Chic…
-#&gt; <span style="color: #BCBCBC;"> 4</span> 06N   Randall Airport        41.4  -<span style="color: #BB0000;">74.4</span>   523    -<span style="color: #BB0000;">5</span> A     America/New_…
-#&gt; <span style="color: #BCBCBC;"> 5</span> 09J   Jekyll Island Airport  31.1  -<span style="color: #BB0000;">81.4</span>    11    -<span style="color: #BB0000;">5</span> A     America/New_…
-#&gt; <span style="color: #BCBCBC;"> 6</span> 0A9   Elizabethton Municip…  36.4  -<span style="color: #BB0000;">82.2</span>  <span style="text-decoration: underline;">1</span>593    -<span style="color: #BB0000;">5</span> A     America/New_…
-#&gt; <span style="color: #BCBCBC;"> 7</span> 0G6   Williams County Airp…  41.5  -<span style="color: #BB0000;">84.5</span>   730    -<span style="color: #BB0000;">5</span> A     America/New_…
-#&gt; <span style="color: #BCBCBC;"> 8</span> 0G7   Finger Lakes Regiona…  42.9  -<span style="color: #BB0000;">76.8</span>   492    -<span style="color: #BB0000;">5</span> A     America/New_…
-#&gt; <span style="color: #BCBCBC;"> 9</span> 0P2   Shoestring Aviation …  39.8  -<span style="color: #BB0000;">76.6</span>  <span style="text-decoration: underline;">1</span>000    -<span style="color: #BB0000;">5</span> U     America/New_…
-#&gt; <span style="color: #BCBCBC;">10</span> 0S9   Jefferson County Intl  48.1 -<span style="color: #BB0000;">123.</span>    108    -<span style="color: #BB0000;">8</span> A     America/Los_…
-#&gt; <span style="color: #949494;"># … with 1,448 more rows</span>
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1,458 × 8</span>
+<span class="co">#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        </span>
+<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;        </span>
+<span class="co">#&gt;  1 04G   Lansdowne Airport      41.1  -80.6  1044    -5 A     America/New_…</span>
+<span class="co">#&gt;  2 06A   Moton Field Municipa…  32.5  -85.7   264    -6 A     America/Chic…</span>
+<span class="co">#&gt;  3 06C   Schaumburg Regional    42.0  -88.1   801    -6 A     America/Chic…</span>
+<span class="co">#&gt;  4 06N   Randall Airport        41.4  -74.4   523    -5 A     America/New_…</span>
+<span class="co">#&gt;  5 09J   Jekyll Island Airport  31.1  -81.4    11    -5 A     America/New_…</span>
+<span class="co">#&gt;  6 0A9   Elizabethton Municip…  36.4  -82.2  1593    -5 A     America/New_…</span>
+<span class="co">#&gt;  7 0G6   Williams County Airp…  41.5  -84.5   730    -5 A     America/New_…</span>
+<span class="co">#&gt;  8 0G7   Finger Lakes Regiona…  42.9  -76.8   492    -5 A     America/New_…</span>
+<span class="co">#&gt;  9 0P2   Shoestring Aviation …  39.8  -76.6  1000    -5 U     America/New_…</span>
+<span class="co">#&gt; 10 0S9   Jefferson County Intl  48.1 -123.    108    -8 A     America/Los_…</span>
+<span class="co">#&gt; # … with 1,448 more rows</span></code></pre>
 <p>Your own data will probably not be available as an R package. Whatever format it is in, you will need to be able to load it as data frames into your R session. If the data is too large, consider using dm to connect to the database instead. See <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> for details on using dm with databases.</p>
 </div>
 <div class="section level2">
@@ -201,12 +200,11 @@
 
 <span class="va">flights_dm_no_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">airports</span>, <span class="va">flights</span>, <span class="va">planes</span>, <span class="va">weather</span><span class="op">)</span>
 <span class="va">flights_dm_no_keys</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
+<span class="co">#&gt; Columns: 53</span>
+<span class="co">#&gt; Primary keys: 0</span>
+<span class="co">#&gt; Foreign keys: 0</span></code></pre>
 <p>The <code><a href="../reference/dm.html">as_dm()</a></code> function is an alternative that works if you already have a list of tables.</p>
 </div>
 <div class="section level2">
@@ -218,29 +216,27 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">flights_dm_no_keys</span><span class="op">)</span>
 <span class="co">#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather"</span>
 <span class="va">flights_dm_no_keys</span><span class="op">$</span><span class="va">airports</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 1,458 × 8</span>
-#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
-#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        
-#&gt; <span style="color: #BCBCBC;"> 1</span> 04G   Lansdowne Airport      41.1  -<span style="color: #BB0000;">80.6</span>  <span style="text-decoration: underline;">1</span>044    -<span style="color: #BB0000;">5</span> A     America/New_…
-#&gt; <span style="color: #BCBCBC;"> 2</span> 06A   Moton Field Municipa…  32.5  -<span style="color: #BB0000;">85.7</span>   264    -<span style="color: #BB0000;">6</span> A     America/Chic…
-#&gt; <span style="color: #BCBCBC;"> 3</span> 06C   Schaumburg Regional    42.0  -<span style="color: #BB0000;">88.1</span>   801    -<span style="color: #BB0000;">6</span> A     America/Chic…
-#&gt; <span style="color: #BCBCBC;"> 4</span> 06N   Randall Airport        41.4  -<span style="color: #BB0000;">74.4</span>   523    -<span style="color: #BB0000;">5</span> A     America/New_…
-#&gt; <span style="color: #BCBCBC;"> 5</span> 09J   Jekyll Island Airport  31.1  -<span style="color: #BB0000;">81.4</span>    11    -<span style="color: #BB0000;">5</span> A     America/New_…
-#&gt; <span style="color: #BCBCBC;"> 6</span> 0A9   Elizabethton Municip…  36.4  -<span style="color: #BB0000;">82.2</span>  <span style="text-decoration: underline;">1</span>593    -<span style="color: #BB0000;">5</span> A     America/New_…
-#&gt; <span style="color: #BCBCBC;"> 7</span> 0G6   Williams County Airp…  41.5  -<span style="color: #BB0000;">84.5</span>   730    -<span style="color: #BB0000;">5</span> A     America/New_…
-#&gt; <span style="color: #BCBCBC;"> 8</span> 0G7   Finger Lakes Regiona…  42.9  -<span style="color: #BB0000;">76.8</span>   492    -<span style="color: #BB0000;">5</span> A     America/New_…
-#&gt; <span style="color: #BCBCBC;"> 9</span> 0P2   Shoestring Aviation …  39.8  -<span style="color: #BB0000;">76.6</span>  <span style="text-decoration: underline;">1</span>000    -<span style="color: #BB0000;">5</span> U     America/New_…
-#&gt; <span style="color: #BCBCBC;">10</span> 0S9   Jefferson County Intl  48.1 -<span style="color: #BB0000;">123.</span>    108    -<span style="color: #BB0000;">8</span> A     America/Los_…
-#&gt; <span style="color: #949494;"># … with 1,448 more rows</span>
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1,458 × 8</span>
+<span class="co">#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        </span>
+<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;        </span>
+<span class="co">#&gt;  1 04G   Lansdowne Airport      41.1  -80.6  1044    -5 A     America/New_…</span>
+<span class="co">#&gt;  2 06A   Moton Field Municipa…  32.5  -85.7   264    -6 A     America/Chic…</span>
+<span class="co">#&gt;  3 06C   Schaumburg Regional    42.0  -88.1   801    -6 A     America/Chic…</span>
+<span class="co">#&gt;  4 06N   Randall Airport        41.4  -74.4   523    -5 A     America/New_…</span>
+<span class="co">#&gt;  5 09J   Jekyll Island Airport  31.1  -81.4    11    -5 A     America/New_…</span>
+<span class="co">#&gt;  6 0A9   Elizabethton Municip…  36.4  -82.2  1593    -5 A     America/New_…</span>
+<span class="co">#&gt;  7 0G6   Williams County Airp…  41.5  -84.5   730    -5 A     America/New_…</span>
+<span class="co">#&gt;  8 0G7   Finger Lakes Regiona…  42.9  -76.8   492    -5 A     America/New_…</span>
+<span class="co">#&gt;  9 0P2   Shoestring Aviation …  39.8  -76.6  1000    -5 U     America/New_…</span>
+<span class="co">#&gt; 10 0S9   Jefferson County Intl  48.1 -123.    108    -8 A     America/Los_…</span>
+<span class="co">#&gt; # … with 1,448 more rows</span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_no_keys</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"airports"</span>, <span class="st">"flights"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `airports`, `flights`
-#&gt; Columns: 27
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; Tables: `airports`, `flights`</span>
+<span class="co">#&gt; Columns: 27</span>
+<span class="co">#&gt; Primary keys: 0</span>
+<span class="co">#&gt; Foreign keys: 0</span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="defining-keys">Defining Keys<a class="anchor" aria-label="anchor" href="#defining-keys"></a>
@@ -257,19 +253,18 @@
   dm <span class="op">=</span> <span class="va">flights_dm_no_keys</span>,
   table <span class="op">=</span> <span class="va">planes</span>
 <span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 9 × 3</span>
-#&gt;   columns      candidate why                                               
-#&gt;   <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                             
-#&gt; <span style="color: #BCBCBC;">1</span> tailnum      TRUE      <span style="color: #949494;">""</span>                                                
-#&gt; <span style="color: #BCBCBC;">2</span> year         FALSE     <span style="color: #949494;">"</span>has duplicate values: 2001 (284), 2000 (244), 20…
-#&gt; <span style="color: #BCBCBC;">3</span> type         FALSE     <span style="color: #949494;">"</span>has duplicate values: Fixed wing multi engine (3…
-#&gt; <span style="color: #BCBCBC;">4</span> manufacturer FALSE     <span style="color: #949494;">"</span>has duplicate values: BOEING (1630), AIRBUS INDU…
-#&gt; <span style="color: #BCBCBC;">5</span> model        FALSE     <span style="color: #949494;">"</span>has duplicate values: 737-7H4 (361), A320-232 (2…
-#&gt; <span style="color: #BCBCBC;">6</span> engines      FALSE     <span style="color: #949494;">"</span>has duplicate values: 2 (3288), 1 (27), 4 (4), 3…
-#&gt; <span style="color: #BCBCBC;">7</span> seats        FALSE     <span style="color: #949494;">"</span>has duplicate values: 149 (452), 140 (411), 55 (…
-#&gt; <span style="color: #BCBCBC;">8</span> speed        FALSE     <span style="color: #949494;">"</span>has 3299 missing values, and duplicate values: 4…
-#&gt; <span style="color: #BCBCBC;">9</span> engine       FALSE     <span style="color: #949494;">"</span>has duplicate values: Turbo-fan (2750), Turbo-je…
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 9 × 3</span>
+<span class="co">#&gt;   columns      candidate why                                               </span>
+<span class="co">#&gt;   &lt;keys&gt;       &lt;lgl&gt;     &lt;chr&gt;                                             </span>
+<span class="co">#&gt; 1 tailnum      TRUE      ""                                                </span>
+<span class="co">#&gt; 2 year         FALSE     "has duplicate values: 2001 (284), 2000 (244), 20…</span>
+<span class="co">#&gt; 3 type         FALSE     "has duplicate values: Fixed wing multi engine (3…</span>
+<span class="co">#&gt; 4 manufacturer FALSE     "has duplicate values: BOEING (1630), AIRBUS INDU…</span>
+<span class="co">#&gt; 5 model        FALSE     "has duplicate values: 737-7H4 (361), A320-232 (2…</span>
+<span class="co">#&gt; 6 engines      FALSE     "has duplicate values: 2 (3288), 1 (27), 4 (4), 3…</span>
+<span class="co">#&gt; 7 seats        FALSE     "has duplicate values: 149 (452), 140 (411), 55 (…</span>
+<span class="co">#&gt; 8 speed        FALSE     "has 3299 missing values, and duplicate values: 4…</span>
+<span class="co">#&gt; 9 engine       FALSE     "has duplicate values: Turbo-fan (2750), Turbo-je…</span></code></pre>
 <p>Now, we add the primary keys that we have identified:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_only_pks</span> <span class="op">&lt;-</span>
@@ -278,12 +273,11 @@
   <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">planes</span>, <span class="va">tailnum</span><span class="op">)</span>
 <span class="va">flights_dm_only_pks</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 0
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
+<span class="co">#&gt; Columns: 53</span>
+<span class="co">#&gt; Primary keys: 3</span>
+<span class="co">#&gt; Foreign keys: 0</span></code></pre>
 <p>Note that we demonstrate both named and positional arguments above.</p>
 </div>
 <div class="section level2">
@@ -296,29 +290,28 @@
   table <span class="op">=</span> <span class="va">flights</span>,
   ref_table <span class="op">=</span> <span class="va">airlines</span>
 <span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 19 × 3</span>
-#&gt;    columns        candidate why                                            
-#&gt;    <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                          
-#&gt; <span style="color: #BCBCBC;"> 1</span> carrier        TRUE      <span style="color: #949494;">""</span>                                             
-#&gt; <span style="color: #BCBCBC;"> 2</span> year           FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;integer&gt; and `value1`…
-#&gt; <span style="color: #BCBCBC;"> 3</span> month          FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;integer&gt; and `value1`…
-#&gt; <span style="color: #BCBCBC;"> 4</span> day            FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;integer&gt; and `value1`…
-#&gt; <span style="color: #BCBCBC;"> 5</span> dep_time       FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;integer&gt; and `value1`…
-#&gt; <span style="color: #BCBCBC;"> 6</span> sched_dep_time FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;integer&gt; and `value1`…
-#&gt; <span style="color: #BCBCBC;"> 7</span> dep_delay      FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;double&gt; and `value1` …
-#&gt; <span style="color: #BCBCBC;"> 8</span> arr_time       FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;integer&gt; and `value1`…
-#&gt; <span style="color: #BCBCBC;"> 9</span> sched_arr_time FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;integer&gt; and `value1`…
-#&gt; <span style="color: #BCBCBC;">10</span> arr_delay      FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;double&gt; and `value1` …
-#&gt; <span style="color: #BCBCBC;">11</span> flight         FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;integer&gt; and `value1`…
-#&gt; <span style="color: #BCBCBC;">12</span> tailnum        FALSE     <span style="color: #949494;">"</span>values of `flights$tailnum` not in `airlines$…
-#&gt; <span style="color: #BCBCBC;">13</span> origin         FALSE     <span style="color: #949494;">"</span>values of `flights$origin` not in `airlines$c…
-#&gt; <span style="color: #BCBCBC;">14</span> dest           FALSE     <span style="color: #949494;">"</span>values of `flights$dest` not in `airlines$car…
-#&gt; <span style="color: #BCBCBC;">15</span> air_time       FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;double&gt; and `value1` …
-#&gt; <span style="color: #BCBCBC;">16</span> distance       FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;double&gt; and `value1` …
-#&gt; <span style="color: #BCBCBC;">17</span> hour           FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;double&gt; and `value1` …
-#&gt; <span style="color: #BCBCBC;">18</span> minute         FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;double&gt; and `value1` …
-#&gt; <span style="color: #BCBCBC;">19</span> time_hour      FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;datetime&lt;America/New_…
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 19 × 3</span>
+<span class="co">#&gt;    columns        candidate why                                            </span>
+<span class="co">#&gt;    &lt;keys&gt;         &lt;lgl&gt;     &lt;chr&gt;                                          </span>
+<span class="co">#&gt;  1 carrier        TRUE      ""                                             </span>
+<span class="co">#&gt;  2 year           FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
+<span class="co">#&gt;  3 month          FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
+<span class="co">#&gt;  4 day            FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
+<span class="co">#&gt;  5 dep_time       FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
+<span class="co">#&gt;  6 sched_dep_time FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
+<span class="co">#&gt;  7 dep_delay      FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
+<span class="co">#&gt;  8 arr_time       FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
+<span class="co">#&gt;  9 sched_arr_time FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
+<span class="co">#&gt; 10 arr_delay      FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
+<span class="co">#&gt; 11 flight         FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
+<span class="co">#&gt; 12 tailnum        FALSE     "values of `flights$tailnum` not in `airlines$…</span>
+<span class="co">#&gt; 13 origin         FALSE     "values of `flights$origin` not in `airlines$c…</span>
+<span class="co">#&gt; 14 dest           FALSE     "values of `flights$dest` not in `airlines$car…</span>
+<span class="co">#&gt; 15 air_time       FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
+<span class="co">#&gt; 16 distance       FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
+<span class="co">#&gt; 17 hour           FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
+<span class="co">#&gt; 18 minute         FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
+<span class="co">#&gt; 19 time_hour      FALSE     "Can't combine `value1` &lt;datetime&lt;America/New_…</span></code></pre>
 <p>Having chosen a column from the successful candidates provided by <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>, we use the <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> function to establish the foreign key linking the tables. In the second call to <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> we complete the process for the <code>flights</code> and <code>airlines</code> tables that we started above. The <code>carrier</code> column in the <code>airlines</code> table will be added as the foreign key in <code>flights</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_all_keys</span> <span class="op">&lt;-</span>
@@ -327,12 +320,11 @@
   <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">carrier</span>, <span class="va">airlines</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span>
 <span class="va">flights_dm_all_keys</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
+<span class="co">#&gt; Columns: 53</span>
+<span class="co">#&gt; Primary keys: 3</span>
+<span class="co">#&gt; Foreign keys: 3</span></code></pre>
 <p>Having created the required primary and foreign keys to link all the tables together, we now have a relational data model we can work with.</p>
 </div>
 <div class="section level2">
@@ -405,22 +397,18 @@
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_no_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span> No constraints defined.
-</code></pre>
+<pre class="fansi fansi-message"><code><span class="co">#&gt; ℹ No constraints defined.</span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">flights_dm_only_pks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span> All constraints satisfied.
-</code></pre>
+<pre class="fansi fansi-message"><code><span class="co">#&gt; ℹ All constraints satisfied.</span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code>#&gt; <span style="color: #BBBB00;">!</span> Unsatisfied constraints:
-</code></pre>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #BB0000;">•</span> Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), …
-</code></pre>
+<pre class="fansi fansi-message"><code><span class="co">#&gt; ! Unsatisfied constraints:</span></code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; • Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), …</span></code></pre>
 <p>The results are presented in a human-readable form, and available as a tibble for programmatic inspection.</p>
 </div>
 <div class="section level2">
@@ -431,39 +419,36 @@
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_only_pks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span>
-#&gt;   table    pk_col 
-#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span> 
-#&gt; <span style="color: #BCBCBC;">1</span> airlines carrier
-#&gt; <span style="color: #BCBCBC;">2</span> airports faa    
-#&gt; <span style="color: #BCBCBC;">3</span> planes   tailnum
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 3 × 2</span>
+<span class="co">#&gt;   table    pk_col </span>
+<span class="co">#&gt;   &lt;chr&gt;    &lt;keys&gt; </span>
+<span class="co">#&gt; 1 airlines carrier</span>
+<span class="co">#&gt; 2 airports faa    </span>
+<span class="co">#&gt; 3 planes   tailnum</span></code></pre>
 <p>A data frame of foreign keys is retrieved with <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 3 × 5</span>
-#&gt;   child_table child_fk_cols parent_table parent_key_cols on_delete
-#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    
-#&gt; <span style="color: #BCBCBC;">1</span> flights     carrier       airlines     carrier         no_action
-#&gt; <span style="color: #BCBCBC;">2</span> flights     origin        airports     faa             no_action
-#&gt; <span style="color: #BCBCBC;">3</span> flights     tailnum       planes       tailnum         no_action
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 3 × 5</span>
+<span class="co">#&gt;   child_table child_fk_cols parent_table parent_key_cols on_delete</span>
+<span class="co">#&gt;   &lt;chr&gt;       &lt;keys&gt;        &lt;chr&gt;        &lt;keys&gt;          &lt;chr&gt;    </span>
+<span class="co">#&gt; 1 flights     carrier       airlines     carrier         no_action</span>
+<span class="co">#&gt; 2 flights     origin        airports     faa             no_action</span>
+<span class="co">#&gt; 3 flights     tailnum       planes       tailnum         no_action</span></code></pre>
 <p>We can use <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble()</a></code> on the result of <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> to programmatically inspect which constraints are not satisfied:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 6 × 6</span>
-#&gt;   table    kind  columns ref_table is_key problem                          
-#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                            
-#&gt; <span style="color: #BCBCBC;">1</span> flights  FK    tailnum planes    FALSE  <span style="color: #949494;">"</span>values of `flights$tailnum` not…
-#&gt; <span style="color: #BCBCBC;">2</span> airlines PK    carrier <span style="color: #BB0000;">NA</span>        TRUE   <span style="color: #949494;">""</span>                               
-#&gt; <span style="color: #BCBCBC;">3</span> airports PK    faa     <span style="color: #BB0000;">NA</span>        TRUE   <span style="color: #949494;">""</span>                               
-#&gt; <span style="color: #BCBCBC;">4</span> planes   PK    tailnum <span style="color: #BB0000;">NA</span>        TRUE   <span style="color: #949494;">""</span>                               
-#&gt; <span style="color: #BCBCBC;">5</span> flights  FK    carrier airlines  TRUE   <span style="color: #949494;">""</span>                               
-#&gt; <span style="color: #BCBCBC;">6</span> flights  FK    origin  airports  TRUE   <span style="color: #949494;">""</span>
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 6 × 6</span>
+<span class="co">#&gt;   table    kind  columns ref_table is_key problem                          </span>
+<span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;keys&gt;  &lt;chr&gt;     &lt;lgl&gt;  &lt;chr&gt;                            </span>
+<span class="co">#&gt; 1 flights  FK    tailnum planes    FALSE  "values of `flights$tailnum` not…</span>
+<span class="co">#&gt; 2 airlines PK    carrier NA        TRUE   ""                               </span>
+<span class="co">#&gt; 3 airports PK    faa     NA        TRUE   ""                               </span>
+<span class="co">#&gt; 4 planes   PK    tailnum NA        TRUE   ""                               </span>
+<span class="co">#&gt; 5 flights  FK    carrier airlines  TRUE   ""                               </span>
+<span class="co">#&gt; 6 flights  FK    origin  airports  TRUE   ""</span></code></pre>
 </div>
 </div>
   </div>

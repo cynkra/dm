@@ -102,7 +102,7 @@ The methods for regular dm objects extract the first or last tables."><meta prop
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1><span class="pkg">utils</span> table manipulation methods for <code>zoomed_dm</code> objects</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/utils.R" class="external-link"><code>R/utils.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/utils.R" class="external-link"><code>R/utils.R</code></a></small>
     <div class="hidden name"><code>utils_table_manipulation.Rd</code></div>
     </div>
 
@@ -121,10 +121,10 @@ The methods for regular <code>dm</code> objects extract the first or last tables
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>x</dt><dd><p>object of class <code>zoomed_dm</code></p></dd>
-</dl><dl><dt>n</dt><dd><p>an integer vector of length up to <code>dim(x)</code> (or 1,
+    <dl><dt>x</dt>
+<dd><p>object of class <code>zoomed_dm</code></p></dd>
+<dt>n</dt>
+<dd><p>an integer vector of length up to <code>dim(x)</code> (or 1,
     for non-dimensioned objects). Values specify the indices to be
     selected in the corresponding dimension (or along the length) of the
     object. A positive value of <code>n[i]</code> includes the first/last
@@ -133,7 +133,8 @@ The methods for regular <code>dm</code> objects extract the first or last tables
     indices. <code>NA</code> or non-specified values (when <code>length(n) &lt;
       length(dim(x))</code>) select all indices in that dimension. Must
     contain at least one non-missing value.</p></dd>
-</dl><dl><dt>...</dt><dd><p>arguments to be passed to or from other methods.</p></dd>
+<dt>...</dt>
+<dd><p>arguments to be passed to or from other methods.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

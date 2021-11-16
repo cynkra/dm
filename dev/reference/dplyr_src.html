@@ -103,7 +103,7 @@ Use other ways to access the tables in a dm.'><meta property="og:image" content=
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>dm as data source</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/dplyr-src.R" class="external-link"><code>R/dplyr-src.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/dplyr-src.R" class="external-link"><code>R/dplyr-src.R</code></a></small>
     <div class="hidden name"><code>dplyr_src.Rd</code></div>
     </div>
 
@@ -137,18 +137,25 @@ Use other ways to access the tables in a <code>dm</code>.</p>
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>src</dt><dd><p>A <code>dm</code> object.</p></dd>
-</dl><dl><dt>from</dt><dd><p>A length one character variable containing the name of the requested table</p></dd>
-</dl><dl><dt>...</dt><dd><p>See original function documentation</p></dd>
-</dl><dl><dt>dest</dt><dd><p>For <code>copy_to.dm()</code>: The <code>dm</code> object to which a table should be copied.</p></dd>
-</dl><dl><dt>df</dt><dd><p>For <code>copy_to.dm()</code>: A table (can be on a different <code>src</code>)</p></dd>
-</dl><dl><dt>name</dt><dd><p>For <code>copy_to.dm()</code>: See <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">dplyr::copy_to</a></code></p></dd>
-</dl><dl><dt>overwrite</dt><dd><p>For <code>copy_to.dm()</code>: See <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">dplyr::copy_to</a></code>; <code>TRUE</code> leads to an error</p></dd>
-</dl><dl><dt>temporary</dt><dd><p>For <code>copy_to.dm()</code>: If the <code>dm</code> is on a DB, the copied version of <code>df</code> will only be written temporarily to the DB.
+    <dl><dt>src</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+<dt>from</dt>
+<dd><p>A length one character variable containing the name of the requested table</p></dd>
+<dt>...</dt>
+<dd><p>See original function documentation</p></dd>
+<dt>dest</dt>
+<dd><p>For <code>copy_to.dm()</code>: The <code>dm</code> object to which a table should be copied.</p></dd>
+<dt>df</dt>
+<dd><p>For <code>copy_to.dm()</code>: A table (can be on a different <code>src</code>)</p></dd>
+<dt>name</dt>
+<dd><p>For <code>copy_to.dm()</code>: See <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">dplyr::copy_to</a></code></p></dd>
+<dt>overwrite</dt>
+<dd><p>For <code>copy_to.dm()</code>: See <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">dplyr::copy_to</a></code>; <code>TRUE</code> leads to an error</p></dd>
+<dt>temporary</dt>
+<dd><p>For <code>copy_to.dm()</code>: If the <code>dm</code> is on a DB, the copied version of <code>df</code> will only be written temporarily to the DB.
 After the connection is reset it will no longer be available.</p></dd>
-</dl><dl><dt>repair, quiet</dt><dd><p>Name repair options; cf. <code><a href="https://vctrs.r-lib.org/reference/vec_as_names.html" class="external-link">vctrs::vec_as_names()</a></code></p></dd>
+<dt>repair, quiet</dt>
+<dd><p>Name repair options; cf. <code><a href="https://vctrs.r-lib.org/reference/vec_as_names.html" class="external-link">vctrs::vec_as_names()</a></code></p></dd>
 </dl></div>
     <div id="details">
     <h2>Details</h2>

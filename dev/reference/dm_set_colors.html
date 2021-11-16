@@ -108,7 +108,7 @@ table color with the name "default".'><meta property="og:image" content="https:/
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Color in database diagrams</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/draw-dm.R" class="external-link"><code>R/draw-dm.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/draw-dm.R" class="external-link"><code>R/draw-dm.R</code></a></small>
     <div class="hidden name"><code>dm_set_colors.Rd</code></div>
     </div>
 
@@ -133,18 +133,18 @@ table color with the name "default".</p>
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>dm</dt><dd><p>A <code><a href="dm.html">dm</a></code> object.</p></dd>
-</dl><dl><dt>...</dt><dd><p>Colors to set in the form <code>color = table</code>.
+    <dl><dt>dm</dt>
+<dd><p>A <code><a href="dm.html">dm</a></code> object.</p></dd>
+<dt>...</dt>
+<dd><p>Colors to set in the form <code>color = table</code>.
 Allowed colors are all hex coded colors (quoted) and the color names from <code>dm_get_available_colors()</code>.
 <code>tidyselect</code> is supported, see <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> for details on the semantics.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>For <code>dm_set_colors()</code>: the updated data model.</p>
-<p>For <code>dm_get_colors()</code>, a two-column tibble with one row per table.</p>
-<p>For <code>dm_get_available_colors()</code>, a vector with the available colors.</p>
+    <p>For <code>dm_set_colors()</code>: the updated data model.
+For <code>dm_get_colors()</code>, a two-column tibble with one row per table.
+For <code>dm_get_available_colors()</code>, a vector with the available colors.</p>
     </div>
     </div>
 

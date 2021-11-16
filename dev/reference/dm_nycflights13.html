@@ -105,7 +105,7 @@ data integrity constraints.'><meta property="og:image" content="https://cynkra.g
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Creates a dm object for the <span class="pkg">nycflights13</span> data</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/nycflights13.R" class="external-link"><code>R/nycflights13.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/nycflights13.R" class="external-link"><code>R/nycflights13.R</code></a></small>
     <div class="hidden name"><code>dm_nycflights13.Rd</code></div>
     </div>
 
@@ -123,18 +123,20 @@ data integrity constraints.</p>
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>cycle</dt><dd><p>Boolean.
+    <dl><dt>cycle</dt>
+<dd><p>Boolean.
 If <code>FALSE</code> (default), only one foreign key relation
 (from <code>flights$origin</code> to <code>airports$faa</code>) between the <code>flights</code> table and the <code>airports</code> table is
 established.
 If <code>TRUE</code>, a <code>dm</code> object with a double reference
 between those tables will be produced.</p></dd>
-</dl><dl><dt>color</dt><dd><p>Boolean, if <code>TRUE</code> (default), the resulting <code>dm</code> object will have
+<dt>color</dt>
+<dd><p>Boolean, if <code>TRUE</code> (default), the resulting <code>dm</code> object will have
 colors assigned to different tables for visualization with <code><a href="dm_draw.html">dm_draw()</a></code>.</p></dd>
-</dl><dl><dt>subset</dt><dd><p>Boolean, if <code>TRUE</code> (default), the <code>flights</code> table is reduced to flights with column <code>day</code> equal to 10.</p></dd>
-</dl><dl><dt>compound</dt><dd><p>Boolean, if <code>FALSE</code>, no link will be established between tables <code>flights</code> and <code>weather</code>,
+<dt>subset</dt>
+<dd><p>Boolean, if <code>TRUE</code> (default), the <code>flights</code> table is reduced to flights with column <code>day</code> equal to 10.</p></dd>
+<dt>compound</dt>
+<dd><p>Boolean, if <code>FALSE</code>, no link will be established between tables <code>flights</code> and <code>weather</code>,
 because this requires compound keys.</p></dd>
 </dl></div>
     <div id="value">

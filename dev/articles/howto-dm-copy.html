@@ -137,9 +137,9 @@
       <h1 data-toc-skip>Copy tables to and from a database</h1>
                         <h4 data-toc-skip class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2021-10-25</h4>
+            <h4 data-toc-skip class="date">2021-11-16</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/howto-dm-copy.Rmd" class="external-link"><code>vignettes/howto-dm-copy.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-copy.Rmd" class="external-link"><code>vignettes/howto-dm-copy.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-copy.Rmd</code></div>
 
     </div>
@@ -155,17 +155,14 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Attaching packages</span> ────────────────────────────────── tidyverse 1.3.1 ──
-</code></pre>
-<pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2</span> 3.3.5     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr  </span> 0.3.4
-#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tibble </span> 3.1.5     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr  </span> 1.0.7
-#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr  </span> 1.1.4     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">stringr</span> 1.4.0
-#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">readr  </span> 2.0.2     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">forcats</span> 0.5.1
-</code></pre>
-<pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Conflicts</span> ───────────────────────────────────── tidyverse_conflicts() ──
-#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">filter()</span> masks <span style="color: #0000BB;">dm</span>::filter(), <span style="color: #0000BB;">stats</span>::filter()
-#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">lag()</span>    masks <span style="color: #0000BB;">stats</span>::lag()
-</code></pre>
+<pre class="fansi fansi-message"><code><span class="co">#&gt; ── Attaching packages ────────────────────────────────── tidyverse 1.3.1 ──</span></code></pre>
+<pre class="fansi fansi-message"><code><span class="co">#&gt; ✔ ggplot2 3.3.5     ✔ purrr   0.3.4</span>
+<span class="co">#&gt; ✔ tibble  3.1.6     ✔ dplyr   1.0.7</span>
+<span class="co">#&gt; ✔ tidyr   1.1.4     ✔ stringr 1.4.0</span>
+<span class="co">#&gt; ✔ readr   2.1.0     ✔ forcats 0.5.1</span></code></pre>
+<pre class="fansi fansi-message"><code><span class="co">#&gt; ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──</span>
+<span class="co">#&gt; ✖ dplyr::filter() masks dm::filter(), stats::filter()</span>
+<span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
@@ -235,8 +232,9 @@
   <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">amount</span>, <span class="va">duration</span>, <span class="va">A3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; Renamed columns:</span>
-<span class="co">#&gt; * date -&gt; loans.date, accounts.date</span></code></pre></div>
+<span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span>
+<span class="co">#&gt;   dm_rename(loans, loans.date = date) %&gt;%</span>
+<span class="co">#&gt;   dm_rename(accounts, accounts.date = date)</span></code></pre></div>
 <p>Please note the use of <code><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl()</a></code>. This method gathers all linked information into a single wide table. It follows foreign key relations starting from the table supplied as its argument and gathers all the columns from related tables, disambiguating column names as it goes.</p>
 <p>In the above code, the <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> statement isolates the columns we need for our model. <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> works similarly to <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> by forcing the execution of the underlying SQL query, but it returns the results as a local tibble.</p>
 <p>Below, the local tibble, <code>loans_df</code>, is used to estimate the linear model and the residuals are stored along with the original associated <code>id</code> in a new tibble, <code>loans_residuals</code>. The <code>id</code> column is necessary to link the new tibble to the tables in the dm it was collected from.</p>
@@ -249,21 +247,20 @@
 <span class="op">)</span>
 
 <span class="va">loans_residuals</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 682 × 2</span>
-#&gt;       id   resid
-#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
-#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">4</span>959 -<span style="color: #BB0000; text-decoration: underline;">31</span><span style="color: #BB0000;">912.</span>
-#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">4</span>961 -<span style="color: #BB0000; text-decoration: underline;">27</span><span style="color: #BB0000;">336.</span>
-#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">4</span>962 -<span style="color: #BB0000; text-decoration: underline;">30</span><span style="color: #BB0000;">699.</span>
-#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">4</span>967  <span style="text-decoration: underline;">63</span>621.
-#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">4</span>968 -<span style="color: #BB0000; text-decoration: underline;">94</span><span style="color: #BB0000;">811.</span>
-#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">4</span>973  <span style="text-decoration: underline;">59</span>036.
-#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">4</span>986  <span style="text-decoration: underline;">41</span>901.
-#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">4</span>988 <span style="text-decoration: underline;">123</span>392.
-#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">4</span>989 <span style="text-decoration: underline;">147</span>157.
-#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">4</span>990  <span style="text-decoration: underline;">33</span>377.
-#&gt; <span style="color: #949494;"># … with 672 more rows</span>
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 682 × 2</span>
+<span class="co">#&gt;       id   resid</span>
+<span class="co">#&gt;    &lt;int&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt;  1  4959 -31912.</span>
+<span class="co">#&gt;  2  4961 -27336.</span>
+<span class="co">#&gt;  3  4962 -30699.</span>
+<span class="co">#&gt;  4  4967  63621.</span>
+<span class="co">#&gt;  5  4968 -94811.</span>
+<span class="co">#&gt;  6  4973  59036.</span>
+<span class="co">#&gt;  7  4986  41901.</span>
+<span class="co">#&gt;  8  4988 123392.</span>
+<span class="co">#&gt;  9  4989 147157.</span>
+<span class="co">#&gt; 10  4990  33377.</span>
+<span class="co">#&gt; # … with 672 more rows</span></code></pre>
 <p>Adding <code>loans_residuals</code> to the dm is done using <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code>. The call to the method includes the argument <code>temporary = FALSE</code> because we want this table to persist beyond our current session. In the same pipeline we create the necessary primary and foreign keys to integrate the table with the rest of our relational model. For more information on key creation see <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> and <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_sqlite_resid</span> <span class="op">&lt;-</span>
@@ -299,26 +296,24 @@
 <polygon fill="#efebdd" stroke="transparent" points="28,-34 28,-54 61,-54 61,-34 28,-34"></polygon><text text-anchor="start" x="29.7251" y="-39.4" font-family="Times,serif" font-size="14.00" fill="#000000">tkeys</text><polygon fill="none" stroke="#555555" points="26.5,-33 26.5,-55 61.5,-55 61.5,-33 26.5,-33"></polygon></g></g></svg><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_sqlite_resid</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span> All constraints satisfied.
-</code></pre>
+<pre class="fansi fansi-message"><code><span class="co">#&gt; ℹ All constraints satisfied.</span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_sqlite_resid</span><span class="op">$</span><span class="va">loans_residuals</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Source:   table&lt;loans_residuals_2020_08_28_07_13_03_12345_1&gt; [?? x 2]</span>
-#&gt; <span style="color: #949494;"># Database: sqlite 3.36.0 []</span>
-#&gt;       id   resid
-#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
-#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">4</span>959 -<span style="color: #BB0000; text-decoration: underline;">31</span><span style="color: #BB0000;">912.</span>
-#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">4</span>961 -<span style="color: #BB0000; text-decoration: underline;">27</span><span style="color: #BB0000;">336.</span>
-#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">4</span>962 -<span style="color: #BB0000; text-decoration: underline;">30</span><span style="color: #BB0000;">699.</span>
-#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">4</span>967  <span style="text-decoration: underline;">63</span>621.
-#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">4</span>968 -<span style="color: #BB0000; text-decoration: underline;">94</span><span style="color: #BB0000;">811.</span>
-#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">4</span>973  <span style="text-decoration: underline;">59</span>036.
-#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">4</span>986  <span style="text-decoration: underline;">41</span>901.
-#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">4</span>988 <span style="text-decoration: underline;">123</span>392.
-#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">4</span>989 <span style="text-decoration: underline;">147</span>157.
-#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">4</span>990  <span style="text-decoration: underline;">33</span>377.
-#&gt; <span style="color: #949494;"># … with more rows</span>
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;loans_residuals_2020_08_28_07_13_03_12345_1&gt; [?? x 2]</span>
+<span class="co">#&gt; # Database: sqlite 3.36.0 []</span>
+<span class="co">#&gt;       id   resid</span>
+<span class="co">#&gt;    &lt;int&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt;  1  4959 -31912.</span>
+<span class="co">#&gt;  2  4961 -27336.</span>
+<span class="co">#&gt;  3  4962 -30699.</span>
+<span class="co">#&gt;  4  4967  63621.</span>
+<span class="co">#&gt;  5  4968 -94811.</span>
+<span class="co">#&gt;  6  4973  59036.</span>
+<span class="co">#&gt;  7  4986  41901.</span>
+<span class="co">#&gt;  8  4988 123392.</span>
+<span class="co">#&gt;  9  4989 147157.</span>
+<span class="co">#&gt; 10  4990  33377.</span>
+<span class="co">#&gt; # … with more rows</span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="copy-model">Persisting a relational model with <code>copy_dm_to()</code><a class="anchor" aria-label="anchor" href="#copy-model"></a>
@@ -338,12 +333,11 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">fin_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)
-#&gt; Columns: 47
-#&gt; Primary keys: 7
-#&gt; Foreign keys: 6
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)</span>
+<span class="co">#&gt; Columns: 47</span>
+<span class="co">#&gt; Primary keys: 7</span>
+<span class="co">#&gt; Foreign keys: 6</span></code></pre>
 <p>It is just as simple to move a local relational model into an RDBMS.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">destination_db</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
@@ -352,14 +346,13 @@
   <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">destination_db</span>, <span class="va">fin_dm</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="va">deployed_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
-#&gt; src:  sqlite 3.36.0 []
-#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)
-#&gt; Columns: 47
-#&gt; Primary keys: 7
-#&gt; Foreign keys: 6
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; src:  sqlite 3.36.0 []</span>
+<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)</span>
+<span class="co">#&gt; Columns: 47</span>
+<span class="co">#&gt; Primary keys: 7</span>
+<span class="co">#&gt; Foreign keys: 6</span></code></pre>
 <p>Note that in the call to <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> the argument <code>temporary = FALSE</code> is supplied. Without this argument the model would still be copied into the database, but the argument would default to <code>temporary = TRUE</code> and the data would be deleted once your session ends.</p>
 <p>In the output you can observe that the <code>src</code> for <code>deployed_dm</code> is SQLite, while for <code>fin_dm</code> the source is not indicated because it is a local data model.</p>
 <p>Copying a relational model into an empty database is the simplest use case for <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code>. If you want to copy a model into an RDBMS that is already populated, be aware that <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> will not overwrite pre-existing tables. In this case you will need to use the <code>table_names</code> argument to give the tables unique names.</p>
@@ -369,14 +362,13 @@
   <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">destination_db</span>, <span class="va">fin_dm</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span>, table_names <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"dup_"</span>, <span class="va">.x</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">dup_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">───────────────────────────────────────────────────────────</span>
-#&gt; src:  sqlite 3.36.0 []
-#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)
-#&gt; Columns: 47
-#&gt; Primary keys: 7
-#&gt; Foreign keys: 6
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; src:  sqlite 3.36.0 []</span>
+<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)</span>
+<span class="co">#&gt; Columns: 47</span>
+<span class="co">#&gt; Primary keys: 7</span>
+<span class="co">#&gt; Foreign keys: 6</span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html" class="external-link">remote_name</a></span><span class="op">(</span><span class="va">dup_dm</span><span class="op">$</span><span class="va">accounts</span><span class="op">)</span>
 <span class="co">#&gt; &lt;IDENT&gt; `dup_accounts`</span>
