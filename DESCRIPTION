@@ -71,6 +71,7 @@ Suggests:
     mockr,
     nycflights13,
     odbc,
+    pixarfilms,
     pool,
     progress,
     RMariaDB (>= 1.0.10),
