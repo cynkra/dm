@@ -44,19 +44,20 @@ get_table_colnames <- function(dm, tables = NULL, exclude_pk = TRUE) {
     unnest_col("column", character())
 
   if(exclude_pk) {
-  pks <- dm_get_all_pks_def_impl(def)
+    pks <- dm_get_all_pks_def_impl(def)
 
-  keep_colnames <-
-    pks[c("table", "pk_col")] %>%
-    set_names(c("table", "column")) %>%
-    unnest_col("column", character())
+    keep_colnames <-
+      pks[c("table", "pk_col")] %>%
+      set_names(c("table", "column")) %>%
+      unnest_col("column", character())
 
-  table_colnames <-
-    table_colnames %>%
-    # in case of flattening, the primary key columns will never be responsible for the name
-    # of the resulting column in the end, so they do not need to be disambiguated
-    anti_join(keep_colnames, by = c("table", "column"))
+    table_colnames <-
+      table_colnames %>%
+      # in case of flattening, the primary key columns will never be responsible for the name
+      # of the resulting column in the end, so they do not need to be disambiguated
+      anti_join(keep_colnames, by = c("table", "column"))
   }
+
   table_colnames
 }
 
