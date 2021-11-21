@@ -7,8 +7,8 @@ dm 0.2.6
 ## R CMD check results
 
 - [x] Checked locally, R 4.1.1
-- [ ] Checked on CI system, R 4.1.2
-- [ ] Checked on win-builder, R devel
+- [x] Checked on CI system, R 4.1.2
+- [x] Checked on win-builder, R devel
 
 Check the boxes above after successful execution and remove this line. Then run `fledge::release()`.
 
