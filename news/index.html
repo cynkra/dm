@@ -105,36 +105,34 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.6" id="dm-026">dm 0.2.6<a class="anchor" aria-label="anchor" href="#dm-026"></a></h2>
-<ul><li>Same as previous version.</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.5.9002" id="dm-0259002">dm 0.2.5.9002<a class="anchor" aria-label="anchor" href="#dm-0259002"></a></h2>
-<ul><li>
+<div class="section level3">
+<h3 id="features-0-2-6">Features<a class="anchor" aria-label="anchor" href="#features-0-2-6"></a></h3>
+<ul><li>New <code>dm_pixarfilms()</code> creates a dm object with data from the {pixarfilms} package (<a href="https://github.com/cynkra/dm/issues/600" class="external-link">#600</a>, <a href="https://github.com/erictleung" class="external-link">@erictleung</a>).</li>
+<li>
+<code><a href="../reference/examine_cardinality.html">check_cardinality_0_1()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_0_n()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_1_1()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_1_n()</a></code>, and <code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> now support compound keys (<a href="https://github.com/cynkra/dm/issues/524" class="external-link">#524</a>).</li>
+<li>
+<code><a href="../reference/check_subset.html">check_subset()</a></code> and <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code> support compound keys (<a href="https://github.com/cynkra/dm/issues/523" class="external-link">#523</a>).</li>
+<li>
+<code><a href="../reference/dm_paste.html">dm_paste()</a></code> adds the <code>on_delete</code> argument to <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> (<a href="https://github.com/cynkra/dm/issues/673" class="external-link">#673</a>).</li>
+<li>
 <code><a href="../reference/dm_disambiguate_cols.html">dm_disambiguate_cols()</a></code> also disambiguates columns used in keys, to support correct disambiguation for compound keys (<a href="https://github.com/cynkra/dm/issues/662" class="external-link">#662</a>).</li>
 <li>
 <code><a href="../reference/dm_disambiguate_cols.html">dm_disambiguate_cols()</a></code> now emits the source code equivalent of a renaming operation (<a href="https://github.com/cynkra/dm/issues/684" class="external-link">#684</a>).</li>
 <li>
 <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> uses backticks to surround table names (<a href="https://github.com/cynkra/dm/issues/687" class="external-link">#687</a>).</li>
-<li>New <code>dm_pixarfilms()</code> creates a dm object with data from the {pixarfilms} package (<a href="https://github.com/cynkra/dm/issues/600" class="external-link">#600</a>, <a href="https://github.com/erictleung" class="external-link">@erictleung</a>).</li>
-<li>Fix compatibility with dplyr 1.0.8 (<a href="https://github.com/cynkra/dm/issues/698" class="external-link">#698</a>).</li>
 </ul></div>
-    <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.5.9001" id="dm-0259001">dm 0.2.5.9001<a class="anchor" aria-label="anchor" href="#dm-0259001"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-2-6">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-6"></a></h3>
 <ul><li>
-<code><a href="../reference/examine_cardinality.html">check_cardinality_0_1()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_0_n()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_1_1()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_1_n()</a></code>, and <code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> now support compound keys (<a href="https://github.com/cynkra/dm/issues/524" class="external-link">#524</a>).</li>
-<li>
 <code><a href="../reference/decompose_table.html">decompose_table()</a></code> now avoids creating <code>NA</code> values in the key column (<a href="https://github.com/cynkra/dm/issues/580" class="external-link">#580</a>).</li>
 <li>
-<code><a href="../reference/check_subset.html">check_subset()</a></code> and <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code> support compound keys (<a href="https://github.com/cynkra/dm/issues/523" class="external-link">#523</a>).</li>
-<li>
 <code><a href="../reference/dm_draw.html">dm_draw()</a></code> works with empty tables (<a href="https://github.com/cynkra/dm/issues/585" class="external-link">#585</a>).</li>
-<li>
-<code><a href="../reference/dm_paste.html">dm_paste()</a></code> adds the <code>on_delete</code> argument to <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> (<a href="https://github.com/cynkra/dm/issues/673" class="external-link">#673</a>).</li>
 </ul></div>
-    <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.5.9000" id="dm-0259000">dm 0.2.5.9000<a class="anchor" aria-label="anchor" href="#dm-0259000"></a></h2>
-<ul><li>Same as previous version.</li>
+<div class="section level3">
+<h3 id="internal-0-2-6">Internal<a class="anchor" aria-label="anchor" href="#internal-0-2-6"></a></h3>
+<ul><li>Fix compatibility with dplyr 1.0.8 (<a href="https://github.com/cynkra/dm/issues/698" class="external-link">#698</a>).</li>
 </ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.5" id="dm-025">dm 0.2.5<small>2021-10-15</small><a class="anchor" aria-label="anchor" href="#dm-025"></a></h2>
 <div class="section level3">
