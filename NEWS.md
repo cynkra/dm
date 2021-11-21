@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.6
+
+- Same as previous version.
+
+
 # dm 0.2.5.9002
 
 - `dm_disambiguate_cols()` also disambiguates columns used in keys, to support correct disambiguation for compound keys  (#662).
