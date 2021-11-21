@@ -192,16 +192,14 @@ the result will contain the information which prerequisite was violated.</p>
 <span class="r-in"><span class="va">d3</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
 <span class="r-in"><span class="co"># This does not pass, `c` is not unique key of d2:</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">check_cardinality_0_n</span><span class="op">(</span><span class="va">d2</span>, <span class="va">c</span>, <span class="va">d1</span>, <span class="va">a</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_not_unique_key(as_label(data_q), orig_names) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   (`c`) not a unique key of `d2`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : (`c`) not a unique key of `d2`.</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># This passes, multiple values in d2$c are allowed:</span></span>
 <span class="r-in"><span class="fu">check_cardinality_0_n</span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d2</span>, <span class="va">c</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># This does not pass, injectivity is violated:</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">check_cardinality_1_1</span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d2</span>, <span class="va">c</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_not_bijective(as_label(ct), fkc) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1..1 cardinality (bijectivity) is not given: Column (`c`) in table `d2` contains duplicate values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : 1..1 cardinality (bijectivity) is not given: Column (`c`) in table `d2` contains duplicate values.</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># This passes:</span></span>
 <span class="r-in"><span class="fu">check_cardinality_0_1</span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d3</span>, <span class="va">c</span><span class="op">)</span></span>
