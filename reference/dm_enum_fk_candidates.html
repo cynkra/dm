@@ -19,7 +19,7 @@ to reference the primary key column of another table of the dm object."><meta pr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@ to reference the primary key column of another table of the dm object."><meta pr
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -102,12 +102,12 @@ to reference the primary key column of another table of the dm object."><meta pr
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Foreign key candidates</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/foreign-keys.R"><code>R/foreign-keys.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/foreign-keys.R" class="external-link"><code>R/foreign-keys.R</code></a></small>
     <div class="hidden name"><code>dm_enum_fk_candidates.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#questioning"><img src="figures/lifecycle-questioning.svg" alt="[Questioning]"></a></p>
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#questioning" class="external-link"><img src="figures/lifecycle-questioning.svg" alt="[Questioning]"></a></p>
 <p>Determine which columns would be good candidates to be used as foreign keys of a table,
 to reference the primary key column of another table of the <code><a href="dm.html">dm</a></code> object.</p>
     </div>
@@ -116,29 +116,35 @@ to reference the primary key column of another table of the <code><a href="dm.ht
 
 <span class="fu">enum_fk_candidates</span><span class="op">(</span><span class="va">zoomed_dm</span>, <span class="va">ref_table</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr><tr><th>table</th>
-      <td><p>The table whose columns should be tested for suitability as foreign keys.</p></td>
-    </tr><tr><th>ref_table</th>
-      <td><p>A table with a primary key.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
-    </tr><tr><th>zoomed_dm</th>
-      <td><p>A <code>dm</code> with a zoomed table.</p></td>
-    </tr></table></div>
-
+    <h2>Arguments</h2>
+    <dl><dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+<dt>table</dt>
+<dd><p>The table whose columns should be tested for suitability as foreign keys.</p></dd>
+<dt>ref_table</dt>
+<dd><p>A table with a primary key.</p></dd>
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+<dt>zoomed_dm</dt>
+<dd><p>A <code>dm</code> with a zoomed table.</p></dd>
+</dl></div>
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble with the following columns:</p><dl><dt><code>columns</code></dt><dd><p>columns of <code>table</code>,</p></dd>
-<dt><code>candidate</code></dt><dd><p>boolean: are these columns a candidate for a foreign key,</p></dd>
-<dt><code>why</code></dt><dd><p>if not a candidate for a foreign key, explanation for for this.</p></dd>
+    <h2>Value</h2>
+    <p>A tibble with the following columns:</p><dl><dt><code>columns</code></dt>
+<dd><p>columns of <code>table</code>,</p></dd>
+
+<dt><code>candidate</code></dt>
+<dd><p>boolean: are these columns a candidate for a foreign key,</p></dd>
+
+<dt><code>why</code></dt>
+<dd><p>if not a candidate for a foreign key, explanation for for this.</p></dd>
+
 
 </dl></div>
     <div id="details">
-    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <h2>Details</h2>
     <p><code>dm_enum_fk_candidates()</code> first checks if <code>ref_table</code> has a primary key set,
 if not, an error is thrown.</p>
 <p>If <code>ref_table</code> does have a primary key, then a join operation will be tried using
@@ -150,7 +156,7 @@ Attempting to join incompatible columns triggers an error.</p>
 </ul><p><code>enum_fk_candidates()</code> works like <code>dm_enum_fk_candidates()</code> with the zoomed table as <code>table</code>.</p>
     </div>
     <div id="life-cycle">
-    <h2>Life cycle<a class="anchor" aria-label="anchor" href="#life-cycle"></a></h2>
+    <h2>Life cycle</h2>
     
 
 <p>These functions are marked "questioning" because we are not yet sure about
@@ -160,16 +166,17 @@ Changing the interface later seems harmless because these functions are
 most likely used interactively.</p>
     </div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index"><p>Other foreign key functions: 
 <code><a href="dm_add_fk.html">dm_add_fk</a>()</code>,
 <code><a href="dm_get_all_fks.html">dm_get_all_fks</a>()</code>,
 <code><a href="dm_rm_fk.html">dm_rm_fk</a>()</code></p></div>
     </div>
+    </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+    <h2>Examples</h2>
+    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_enum_fk_candidates</span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 19 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    columns        candidate why                                                 </span>
@@ -194,8 +201,8 @@ most likely used interactively.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> minute         FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;double&gt; and `value1` &lt;char…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> time_hour      FALSE     <span style="color: #949494;">"</span>Can't combine `value1` &lt;datetime&lt;America/New_York&gt;…</span>
 <span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">enum_fk_candidates</span><span class="op">(</span><span class="va">airports</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 19 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    columns        candidate why                                                 </span>

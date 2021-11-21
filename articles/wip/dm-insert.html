@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
       <h1 data-toc-skip>Updating tables and dm objects</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/wip/dm-insert.Rmd" class="external-link"><code>vignettes/wip/dm-insert.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/wip/dm-insert.Rmd" class="external-link"><code>vignettes/wip/dm-insert.Rmd</code></a></small>
       <div class="hidden name"><code>dm-insert.Rmd</code></div>
 
     </div>
@@ -144,12 +144,12 @@
     
     
 <p>This draft describes update operations on tables and dm objects. The generics for the table operations can be private in dm for now and move to dplyr later. Contains parts from <a href="https://github.com/tidyverse/dplyr/issues/4654" class="external-link uri">https://github.com/tidyverse/dplyr/issues/4654</a>.</p>
-<div id="tables" class="section level2">
-<h2>Tables<a class="anchor" aria-label="anchor" href="#tables"></a>
+<div class="section level2">
+<h2 id="tables">Tables<a class="anchor" aria-label="anchor" href="#tables"></a>
 </h2>
 <p>In dplyr, operations on tables in dplyr are generally transient or ephemeral. Resulting table objects must be stored in a new object, otherwise they are lost. All operations by default return a new table object that is disconnected from the original.</p>
-<div id="operations" class="section level3">
-<h3>Operations<a class="anchor" aria-label="anchor" href="#operations"></a>
+<div class="section level3">
+<h3 id="operations">Operations<a class="anchor" aria-label="anchor" href="#operations"></a>
 </h3>
 <p>The operations are modeled after existing database statements, with the exception of the new “patch”.</p>
 <ul>
@@ -166,8 +166,8 @@
 <li>Key columns must be present in source.</li>
 </ul>
 </div>
-<div id="mutable-backends" class="section level3">
-<h3>Mutable backends<a class="anchor" aria-label="anchor" href="#mutable-backends"></a>
+<div class="section level3">
+<h3 id="mutable-backends">Mutable backends<a class="anchor" aria-label="anchor" href="#mutable-backends"></a>
 </h3>
 <p>Some <em>mutable</em> backends, most notably databases, Google sheets and data.table, permit in-place update of the source data. Update operations on mutable backends should optionally allow updating the source data. Because this is a potentially destructive exception from the dplyr guarantees, in-place updates must be “opt in”. The default result always will be a “lazy” table. This allows previewing the results of an update operation before materializing.</p>
 <p>On these backends, the following additional operations are useful:</p>
@@ -183,12 +183,12 @@
 </ul>
 </div>
 </div>
-<div id="dm" class="section level2">
-<h2>dm<a class="anchor" aria-label="anchor" href="#dm"></a>
+<div class="section level2">
+<h2 id="dm">dm<a class="anchor" aria-label="anchor" href="#dm"></a>
 </h2>
 <p>Operations on a dm object are generally transient or ephemeral. Resulting dm or table objects must be stored in a new object, otherwise they are lost.</p>
-<div id="design" class="section level3">
-<h3>Design<a class="anchor" aria-label="anchor" href="#design"></a>
+<div class="section level3">
+<h3 id="design">Design<a class="anchor" aria-label="anchor" href="#design"></a>
 </h3>
 <ul>
 <li>records from tables from a source dm are appended/updated/upserted/removed/replaced/… from the target dm</li>
@@ -213,8 +213,8 @@
 </li>
 </ul>
 </div>
-<div id="logic-of-operation" class="section level3">
-<h3>Logic of operation<a class="anchor" aria-label="anchor" href="#logic-of-operation"></a>
+<div class="section level3">
+<h3 id="logic-of-operation">Logic of operation<a class="anchor" aria-label="anchor" href="#logic-of-operation"></a>
 </h3>
 <ul>
 <li>check compatibility</li>
@@ -222,8 +222,8 @@
 <li>put back into dm if necessary</li>
 </ul>
 </div>
-<div id="api-draft" class="section level3">
-<h3>API draft<a class="anchor" aria-label="anchor" href="#api-draft"></a>
+<div class="section level3">
+<h3 id="api-draft">API draft<a class="anchor" aria-label="anchor" href="#api-draft"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_insert</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">...</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
@@ -309,12 +309,12 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
+<p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.9000.9000.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>

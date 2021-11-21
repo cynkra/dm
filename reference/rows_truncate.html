@@ -19,7 +19,7 @@ This operation corresponds to TRUNCATE in SQL.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@ This operation corresponds to TRUNCATE in SQL.
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -102,7 +102,7 @@ This operation corresponds to TRUNCATE in SQL.
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Truncate all rows</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/rows-truncate.R"><code>R/rows-truncate.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/rows-truncate.R" class="external-link"><code>R/rows-truncate.R</code></a></small>
     <div class="hidden name"><code>rows_truncate.Rd</code></div>
     </div>
 
@@ -116,19 +116,20 @@ This operation corresponds to <code>TRUNCATE</code> in SQL.
 
 <span class="fu">sql_rows_truncate</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
-      <td><p>A data frame or data frame extension (e.g. a tibble).</p></td>
-    </tr><tr><th>...</th>
-      <td><p>Other parameters passed onto methods.</p></td>
-    </tr><tr><th>in_place</th>
-      <td><p>Should <code>x</code> be modified in place? This argument is only
+    <h2>Arguments</h2>
+    <dl><dt>x</dt>
+<dd><p>A data frame or data frame extension (e.g. a tibble).</p></dd>
+<dt>...</dt>
+<dd><p>Other parameters passed onto methods.</p></dd>
+<dt>in_place</dt>
+<dd><p>Should <code>x</code> be modified in place? This argument is only
 relevant for mutable backends (e.g. databases, data.tables).</p>
 <p>When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
-when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></td>
-    </tr></table></div>
-
+when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></dd>
+</dl></div>
+    </div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

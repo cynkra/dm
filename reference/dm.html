@@ -38,7 +38,7 @@ validate_dm() checks the internal consistency of a dm object."><meta property="o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -106,7 +106,7 @@ validate_dm() checks the internal consistency of a dm object."><meta property="o
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -121,15 +121,15 @@ validate_dm() checks the internal consistency of a dm object."><meta property="o
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Data model class</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/dm.R"><code>R/dm.R</code></a>, <a href="https://github.com/cynkra/dm/blob/master/R/validate.R"><code>R/validate.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/dm.R" class="external-link"><code>R/dm.R</code></a>, <a href="https://github.com/cynkra/dm/blob/HEAD/R/validate.R" class="external-link"><code>R/validate.R</code></a></small>
     <div class="hidden name"><code>dm.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>The <code>dm</code> class holds a list of tables and their relationships.
-It is inspired by <a href="https://github.com/bergant/datamodelr">datamodelr</a>,
+It is inspired by <a href="https://github.com/bergant/datamodelr" class="external-link">datamodelr</a>,
 and extends the idea by offering operations to access the data in the tables.</p>
-<p><code>dm()</code> creates a <code>dm</code> object from <a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a> objects
+<p><code>dm()</code> creates a <code>dm</code> object from <a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a> objects
 (tibbles or lazy data objects).</p>
 <p><code>new_dm()</code> is a low-level constructor that creates a new <code>dm</code> object.</p><ul><li><p>If called without arguments, it will create an empty <code>dm</code>.</p></li>
 <li><p>If called with arguments, no validation checks will be made to ascertain that
@@ -138,7 +138,7 @@ use <code>validate_dm()</code> to double-check the returned object.</p></li>
 </ul><p><code>dm_get_con()</code> returns the DBI connection for a <code>dm</code> object.
 This works only if the tables are stored on a database, otherwise an error
 is thrown.</p>
-<p><code>dm_get_tables()</code> returns a named list of <span class="pkg">dplyr</span> <a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a> objects
+<p><code>dm_get_tables()</code> returns a named list of <span class="pkg">dplyr</span> <a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a> objects
 of a <code>dm</code> object.
 Filtering expressions are NOT evaluated at this stage.
 To get a filtered table, use <code><a href="dm_filter.html">dm_apply_filters_to_tbl()</a></code>, to apply filters to all tables use <code><a href="dm_filter.html">dm_apply_filters()</a></code></p>
@@ -147,9 +147,9 @@ To get a filtered table, use <code><a href="dm_filter.html">dm_apply_filters_to_
 <p><code>validate_dm()</code> checks the internal consistency of a <code>dm</code> object.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">dm</span><span class="op">(</span><span class="va">...</span>, .name_repair <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"check_unique"</span>, <span class="st">"unique"</span>, <span class="st">"universal"</span>, <span class="st">"minimal"</span><span class="op">)</span><span class="op">)</span>
+    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">dm</span><span class="op">(</span><span class="va">...</span>, .name_repair <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"check_unique"</span>, <span class="st">"unique"</span>, <span class="st">"universal"</span>, <span class="st">"minimal"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">new_dm</span><span class="op">(</span>tables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="fu">new_dm</span><span class="op">(</span>tables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu">dm_get_con</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
@@ -161,37 +161,37 @@ To get a filtered table, use <code><a href="dm_filter.html">dm_apply_filters_to_
 
 <span class="fu">validate_dm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>...</th>
-      <td><p>Tables to add to the <code>dm</code> object.
+    <h2>Arguments</h2>
+    <dl><dt>...</dt>
+<dd><p>Tables to add to the <code>dm</code> object.
 If no names are provided, the tables
-are auto-named.</p></td>
-    </tr><tr><th>.name_repair</th>
-      <td><p>Options for name repair.
-Forwarded as <code>repair</code> to <code><a href="https://vctrs.r-lib.org/reference/vec_as_names.html">vctrs::vec_as_names()</a></code>.</p></td>
-    </tr><tr><th>tables</th>
-      <td><p>A named list of the tables (tibble-objects, not names),
-to be included in the <code>dm</code> object.</p></td>
-    </tr><tr><th>x</th>
-      <td><p>An object.</p></td>
-    </tr></table></div>
-
+are auto-named.</p></dd>
+<dt>.name_repair</dt>
+<dd><p>Options for name repair.
+Forwarded as <code>repair</code> to <code><a href="https://vctrs.r-lib.org/reference/vec_as_names.html" class="external-link">vctrs::vec_as_names()</a></code>.</p></dd>
+<dt>tables</dt>
+<dd><p>A named list of the tables (tibble-objects, not names),
+to be included in the <code>dm</code> object.</p></dd>
+<dt>x</dt>
+<dd><p>An object.</p></dd>
+</dl></div>
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>For <code>dm()</code>, <code>new_dm()</code>, <code>as_dm()</code>: A <code>dm</code> object.</p>
-<p>For <code>dm_get_con()</code>: The <code><a href="https://dbi.r-dbi.org/reference/DBIConnection-class.html">DBI::DBIConnection</a></code> for <code>dm</code> objects.</p>
-<p>For <code>dm_get_tables()</code>: A named list with the tables constituting the <code>dm</code>.</p>
-<p>For <code>is_dm()</code>: Boolean, is this object a <code>dm</code>.</p>
-<p>For <code>validate_dm()</code>: Returns the <code>dm</code>, invisibly, after finishing all checks.</p>
+    <h2>Value</h2>
+    <p>For <code>dm()</code>, <code>new_dm()</code>, <code>as_dm()</code>: A <code>dm</code> object.
+For <code>dm_get_con()</code>: The <code><a href="https://dbi.r-dbi.org/reference/DBIConnection-class.html" class="external-link">DBI::DBIConnection</a></code> for <code>dm</code> objects.
+For <code>dm_get_tables()</code>: A named list with the tables constituting the <code>dm</code>.
+For <code>is_dm()</code>: Boolean, is this object a <code>dm</code>.
+For <code>validate_dm()</code>: Returns the <code>dm</code>, invisibly, after finishing all checks.</p>
     </div>
     <div id="details">
-    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <h2>Details</h2>
     <p>All lazy tables in a dm object must be stored on the same database server
 and accessed through the same connection.</p>
     </div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index">
 <ul><li><p><code><a href="dm_from_src.html">dm_from_src()</a></code> for connecting to all tables in a database
 and importing the primary and foreign keys</p></li>
@@ -207,22 +207,23 @@ and importing the primary and foreign keys</p></li>
 <li><p><code><a href="examine_cardinality.html">examine_cardinality()</a></code> for checking the cardinality of the relation between two tables</p></li>
 </ul></div>
     </div>
+    </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">dm</span><span class="op">(</span><span class="va">trees</span>, <span class="va">mtcars</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `trees`, `mtcars`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 14</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Primary keys: 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Foreign keys: 0</span>
-<span class="r-in"><span class="fu">new_dm</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="va">trees</span>, mtcars <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">new_dm</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="va">trees</span>, mtcars <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `trees`, `mtcars`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 14</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Primary keys: 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Foreign keys: 0</span>
-<span class="r-in"><span class="fu">as_dm</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="va">trees</span>, mtcars <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">as_dm</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="va">trees</span>, mtcars <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `trees`, `mtcars`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 14</span>
@@ -244,19 +245,19 @@ and importing the primary and foreign keys</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> BUF   Buffalo Niagara Intl                42.9  -<span style="color: #BB0000;">78.7</span>   724    -<span style="color: #BB0000;">5</span> A     Amer…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> BUR   Bob Hope                            34.2 -<span style="color: #BB0000;">118.</span>    778    -<span style="color: #BB0000;">8</span> A     Amer…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 76 more rows</span></span>
-<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "airlines" "airports" "flights"  "planes"   "weather" </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html">src_memdb</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span class="r-in">  <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">src_memdb</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span class="r-in">  <span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in"><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_get_con</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;SQLiteConnection&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Path: :memory:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Extensions: TRUE</span>
 <span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dm_get_tables</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dm_get_tables</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $airlines</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    carrier name                       </span>
@@ -344,10 +345,10 @@ and importing the primary and foreign keys</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 134 more rows, and 5 more variables: wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="dm_get_filters.html">dm_get_filters</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="dm_get_filters.html">dm_get_filters</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 0 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3 variables: table &lt;chr&gt;, filter &lt;list&gt;, zoomed &lt;lgl&gt;</span></span>
-<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">validate_dm</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">validate_dm</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">is_dm</span><span class="op">(</span><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"airports"</span><span class="op">]</span></span>

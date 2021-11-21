@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
       <h1 data-toc-skip>Zooming and manipulating tables</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-zoom.Rmd" class="external-link"><code>vignettes/tech-dm-zoom.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-zoom.Rmd" class="external-link"><code>vignettes/tech-dm-zoom.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-zoom.Rmd</code></div>
 
     </div>
@@ -149,8 +149,8 @@
 <li>do all this within the <code>dm</code> object by zooming to a table and manipulating it while maintaining the key relations whenever possible.</li>
 </ol>
 <p>The first approach is rather self-explanatory, so let us have a closer look at the second way.</p>
-<div id="enabling-dplyr-workflow-within-a-dm" class="section level2">
-<h2>Enabling {dplyr}-workflow within a <code>dm</code><a class="anchor" aria-label="anchor" href="#enabling-dplyr-workflow-within-a-dm"></a>
+<div class="section level2">
+<h2 id="enabling-dplyr-workflow-within-a-dm">Enabling {dplyr}-workflow within a <code>dm</code><a class="anchor" aria-label="anchor" href="#enabling-dplyr-workflow-within-a-dm"></a>
 </h2>
 <p>“Zooming” to a table of a <code>dm</code> means:</p>
 <ul>
@@ -167,12 +167,12 @@
 </ol>
 <p>When employing one of the first two options, the resulting table in the <code>dm</code> will have all the primary and foreign keys available that could be tracked from the originally zoomed table.</p>
 </div>
-<div id="examples" class="section level2">
-<h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+<div class="section level2">
+<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h2>
 <p>So much for the theory, but how does it look and feel? To explore this, we once more make use of our trusted {nycflights13} data.</p>
-<div id="use-case-1-add-a-new-column-to-an-existing-table" class="section level3">
-<h3>Use case 1: Add a new column to an existing table<a class="anchor" aria-label="anchor" href="#use-case-1-add-a-new-column-to-an-existing-table"></a>
+<div class="section level3">
+<h3 id="use-case-1-add-a-new-column-to-an-existing-table">Use case 1: Add a new column to an existing table<a class="anchor" aria-label="anchor" href="#use-case-1-add-a-new-column-to-an-existing-table"></a>
 </h3>
 <p>Imagine you want to have a column in <code>flights</code>, specifying if a flight left before noon or after. Just like with {dplyr}, we can tackle this with <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code>. Let us do this step by step:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -188,37 +188,35 @@
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 <span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">flights_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 4
-#&gt; Foreign keys: 4
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
+<span class="co">#&gt; Columns: 53</span>
+<span class="co">#&gt; Primary keys: 4</span>
+<span class="co">#&gt; Foreign keys: 4</span></code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_zoomed</span> <span class="op">&lt;-</span>
   <span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span>
 <span class="co"># The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.</span>
 <span class="va">flights_zoomed</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Zoomed table: flights</span>
-#&gt; <span style="color: #949494;"># A tibble:     1,761 × 19</span>
-#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
-#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>
-#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359         4      426
-#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>013     1    10       16           <span style="text-decoration: underline;">2</span>359        17      447
-#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>013     1    10      450            500       -<span style="color: #BB0000;">10</span>      634
-#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>013     1    10      520            525        -<span style="color: #BB0000;">5</span>      813
-#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>013     1    10      530            530         0      824
-#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>013     1    10      531            540        -<span style="color: #BB0000;">9</span>      832
-#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>013     1    10      535            540        -<span style="color: #BB0000;">5</span>     <span style="text-decoration: underline;">1</span>015
-#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>013     1    10      546            600       -<span style="color: #BB0000;">14</span>      645
-#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>013     1    10      549            600       -<span style="color: #BB0000;">11</span>      652
-#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>013     1    10      550            600       -<span style="color: #BB0000;">10</span>      649
-#&gt; <span style="color: #949494;"># … with 1,751 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span>
-#&gt; <span style="color: #949494;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
-#&gt; <span style="color: #949494;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span>
-#&gt; <span style="color: #949494;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Zoomed table: flights</span>
+<span class="co">#&gt; # A tibble:     1,761 × 19</span>
+<span class="co">#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time</span>
+<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span>
+<span class="co">#&gt;  1  2013     1    10        3           2359         4      426</span>
+<span class="co">#&gt;  2  2013     1    10       16           2359        17      447</span>
+<span class="co">#&gt;  3  2013     1    10      450            500       -10      634</span>
+<span class="co">#&gt;  4  2013     1    10      520            525        -5      813</span>
+<span class="co">#&gt;  5  2013     1    10      530            530         0      824</span>
+<span class="co">#&gt;  6  2013     1    10      531            540        -9      832</span>
+<span class="co">#&gt;  7  2013     1    10      535            540        -5     1015</span>
+<span class="co">#&gt;  8  2013     1    10      546            600       -14      645</span>
+<span class="co">#&gt;  9  2013     1    10      549            600       -11      652</span>
+<span class="co">#&gt; 10  2013     1    10      550            600       -10      649</span>
+<span class="co">#&gt; # … with 1,751 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span>
+<span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
+<span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">flights_zoomed_mutate</span> <span class="op">&lt;-</span>
@@ -227,25 +225,24 @@
   <span class="co"># in order to see our changes in the output we use `select()` for reordering the columns</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span><span class="op">:</span><span class="va">dep_time</span>, <span class="va">am_pm_dep</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">flights_zoomed_mutate</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Zoomed table: flights</span>
-#&gt; <span style="color: #949494;"># A tibble:     1,761 × 20</span>
-#&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time
-#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>
-#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3 am                  <span style="text-decoration: underline;">2</span>359         4      426
-#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>013     1    10       16 am                  <span style="text-decoration: underline;">2</span>359        17      447
-#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>013     1    10      450 am                   500       -<span style="color: #BB0000;">10</span>      634
-#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>013     1    10      520 am                   525        -<span style="color: #BB0000;">5</span>      813
-#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>013     1    10      530 am                   530         0      824
-#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>013     1    10      531 am                   540        -<span style="color: #BB0000;">9</span>      832
-#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>013     1    10      535 am                   540        -<span style="color: #BB0000;">5</span>     <span style="text-decoration: underline;">1</span>015
-#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>013     1    10      546 am                   600       -<span style="color: #BB0000;">14</span>      645
-#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>013     1    10      549 am                   600       -<span style="color: #BB0000;">11</span>      652
-#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>013     1    10      550 am                   600       -<span style="color: #BB0000;">10</span>      649
-#&gt; <span style="color: #949494;"># … with 1,751 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span>
-#&gt; <span style="color: #949494;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
-#&gt; <span style="color: #949494;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span>
-#&gt; <span style="color: #949494;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Zoomed table: flights</span>
+<span class="co">#&gt; # A tibble:     1,761 × 20</span>
+<span class="co">#&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time</span>
+<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt; &lt;chr&gt;              &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span>
+<span class="co">#&gt;  1  2013     1    10        3 am                  2359         4      426</span>
+<span class="co">#&gt;  2  2013     1    10       16 am                  2359        17      447</span>
+<span class="co">#&gt;  3  2013     1    10      450 am                   500       -10      634</span>
+<span class="co">#&gt;  4  2013     1    10      520 am                   525        -5      813</span>
+<span class="co">#&gt;  5  2013     1    10      530 am                   530         0      824</span>
+<span class="co">#&gt;  6  2013     1    10      531 am                   540        -9      832</span>
+<span class="co">#&gt;  7  2013     1    10      535 am                   540        -5     1015</span>
+<span class="co">#&gt;  8  2013     1    10      546 am                   600       -14      645</span>
+<span class="co">#&gt;  9  2013     1    10      549 am                   600       -11      652</span>
+<span class="co">#&gt; 10  2013     1    10      550 am                   600       -10      649</span>
+<span class="co">#&gt; # … with 1,751 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span>
+<span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
+<span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:</span>
@@ -254,12 +251,11 @@
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co"># The only difference in the `dm` print output is the increased number of columns</span>
 <span class="va">updated_flights_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 54
-#&gt; Primary keys: 4
-#&gt; Foreign keys: 4
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
+<span class="co">#&gt; Columns: 54</span>
+<span class="co">#&gt; Primary keys: 4</span>
+<span class="co">#&gt; Foreign keys: 4</span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># The schematic view of the data model remains unchanged</span>
 <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">updated_flights_dm</span><span class="op">)</span></code></pre></div>
@@ -278,8 +274,8 @@
 <polygon fill="#70ad47" stroke="transparent" points="140.5,-21 140.5,-41 241.5,-41 241.5,-21 140.5,-21"></polygon><text text-anchor="start" x="168.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="#e2eeda" stroke="transparent" points="140.5,-1 140.5,-21 241.5,-21 241.5,-1 140.5,-1"></polygon><text text-anchor="start" x="142.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="139,0 139,-42 242,-42 242,0 139,0"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge4" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title>
 <path fill="none" stroke="#555555" d="M102.5,-71C129.8727,-71 114.6101,-25.8792 130.6579,-13.8939"></path><polygon fill="#555555" stroke="#555555" points="131.8935,-17.1789 140.5,-11 129.9188,-10.4631 131.8935,-17.1789"></polygon></g></g></svg>
 </div>
-<div id="use-case-2-creation-of-a-surrogate-key" class="section level3">
-<h3>Use case 2: Creation of a surrogate key<a class="anchor" aria-label="anchor" href="#use-case-2-creation-of-a-surrogate-key"></a>
+<div class="section level3">
+<h3 id="use-case-2-creation-of-a-surrogate-key">Use case 2: Creation of a surrogate key<a class="anchor" aria-label="anchor" href="#use-case-2-creation-of-a-surrogate-key"></a>
 </h3>
 <p>The same course of action could, for example, be employed to create a surrogate key for a table. We can do this for the <code>weather</code> table.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -288,45 +284,43 @@
   <span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">weather</span><span class="op">)</span>
 <span class="va">weather_zoomed</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># Zoomed table: weather</span>
-#&gt; <span style="color: #949494;"># A tibble:     144 × 15</span>
-#&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
-#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>
-#&gt; <span style="color: #BCBCBC;"> 1</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     0  41    32    70.1      230       8.06
-#&gt; <span style="color: #BCBCBC;"> 2</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     1  39.0  30.0  69.9      210       9.21
-#&gt; <span style="color: #BCBCBC;"> 3</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     2  39.0  28.9  66.8      230       6.90
-#&gt; <span style="color: #BCBCBC;"> 4</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     3  39.9  27.0  59.5      270       5.75
-#&gt; <span style="color: #BCBCBC;"> 5</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     4  41    26.1  55.0      320       6.90
-#&gt; <span style="color: #BCBCBC;"> 6</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     5  41    26.1  55.0      300      12.7 
-#&gt; <span style="color: #BCBCBC;"> 7</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     6  39.9  25.0  54.8      280       6.90
-#&gt; <span style="color: #BCBCBC;"> 8</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     7  41    25.0  52.6      330       6.90
-#&gt; <span style="color: #BCBCBC;"> 9</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     8  43.0  25.0  48.7      330       8.06
-#&gt; <span style="color: #BCBCBC;">10</span> EWR     <span style="text-decoration: underline;">2</span>013     1    10     9  45.0  23    41.6      320      17.3 
-#&gt; <span style="color: #949494;"># … with 134 more rows, and 5 more variables: wind_gust &lt;dbl&gt;,</span>
-#&gt; <span style="color: #949494;">#   precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</span>
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Zoomed table: weather</span>
+<span class="co">#&gt; # A tibble:     144 × 15</span>
+<span class="co">#&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 EWR     2013     1    10     0  41    32    70.1      230       8.06</span>
+<span class="co">#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21</span>
+<span class="co">#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90</span>
+<span class="co">#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75</span>
+<span class="co">#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90</span>
+<span class="co">#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 </span>
+<span class="co">#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90</span>
+<span class="co">#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90</span>
+<span class="co">#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06</span>
+<span class="co">#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 </span>
+<span class="co">#&gt; # … with 134 more rows, and 5 more variables: wind_gust &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Maybe there is some hidden candidate for a primary key that we overlooked</span>
 <span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span><span class="op">(</span><span class="va">weather_zoomed</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 15 × 3</span>
-#&gt;    columns    candidate why                                                
-#&gt;    <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                              
-#&gt; <span style="color: #BCBCBC;"> 1</span> origin     FALSE     has duplicate values: EWR (48), JFK (48), LGA (48) 
-#&gt; <span style="color: #BCBCBC;"> 2</span> year       FALSE     has duplicate values: 2013 (144)                   
-#&gt; <span style="color: #BCBCBC;"> 3</span> month      FALSE     has duplicate values: 1 (72), 2 (72)               
-#&gt; <span style="color: #BCBCBC;"> 4</span> day        FALSE     has duplicate values: 10 (144)                     
-#&gt; <span style="color: #BCBCBC;"> 5</span> hour       FALSE     has duplicate values: 0 (6), 1 (6), 2 (6), 3 (6), …
-#&gt; <span style="color: #BCBCBC;"> 6</span> temp       FALSE     has duplicate values: 44.06 (12), 41.00 (8), 44.96…
-#&gt; <span style="color: #BCBCBC;"> 7</span> dewp       FALSE     has duplicate values: 21.92 (16), 24.98 (16), 6.98…
-#&gt; <span style="color: #BCBCBC;"> 8</span> humid      FALSE     has duplicate values: 53.71 (4), 56.56 (4), 32.53 …
-#&gt; <span style="color: #BCBCBC;"> 9</span> wind_dir   FALSE     has duplicate values: 320 (25), 330 (17), 310 (15)…
-#&gt; <span style="color: #BCBCBC;">10</span> wind_speed FALSE     has duplicate values: 6.90468 (20), 8.05546 (19), …
-#&gt; <span style="color: #BCBCBC;">11</span> wind_gust  FALSE     has 123 missing values, and duplicate values: 23.0…
-#&gt; <span style="color: #BCBCBC;">12</span> precip     FALSE     has duplicate values: 0 (144)                      
-#&gt; <span style="color: #BCBCBC;">13</span> pressure   FALSE     has duplicate values: 1028.9 (6), 1029.0 (5), 1032…
-#&gt; <span style="color: #BCBCBC;">14</span> visib      FALSE     has duplicate values: 10 (144)                     
-#&gt; <span style="color: #BCBCBC;">15</span> time_hour  FALSE     has duplicate values: 2013-01-10 00:00:00 (3), 201…
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 15 × 3</span>
+<span class="co">#&gt;    columns    candidate why                                                </span>
+<span class="co">#&gt;    &lt;keys&gt;     &lt;lgl&gt;     &lt;chr&gt;                                              </span>
+<span class="co">#&gt;  1 origin     FALSE     has duplicate values: EWR (48), JFK (48), LGA (48) </span>
+<span class="co">#&gt;  2 year       FALSE     has duplicate values: 2013 (144)                   </span>
+<span class="co">#&gt;  3 month      FALSE     has duplicate values: 1 (72), 2 (72)               </span>
+<span class="co">#&gt;  4 day        FALSE     has duplicate values: 10 (144)                     </span>
+<span class="co">#&gt;  5 hour       FALSE     has duplicate values: 0 (6), 1 (6), 2 (6), 3 (6), …</span>
+<span class="co">#&gt;  6 temp       FALSE     has duplicate values: 44.06 (12), 41.00 (8), 44.96…</span>
+<span class="co">#&gt;  7 dewp       FALSE     has duplicate values: 21.92 (16), 24.98 (16), 6.98…</span>
+<span class="co">#&gt;  8 humid      FALSE     has duplicate values: 53.71 (4), 56.56 (4), 32.53 …</span>
+<span class="co">#&gt;  9 wind_dir   FALSE     has duplicate values: 320 (25), 330 (17), 310 (15)…</span>
+<span class="co">#&gt; 10 wind_speed FALSE     has duplicate values: 6.90468 (20), 8.05546 (19), …</span>
+<span class="co">#&gt; 11 wind_gust  FALSE     has 123 missing values, and duplicate values: 23.0…</span>
+<span class="co">#&gt; 12 precip     FALSE     has duplicate values: 0 (144)                      </span>
+<span class="co">#&gt; 13 pressure   FALSE     has duplicate values: 1028.9 (6), 1029.0 (5), 1032…</span>
+<span class="co">#&gt; 14 visib      FALSE     has duplicate values: 10 (144)                     </span>
+<span class="co">#&gt; 15 time_hour  FALSE     has duplicate values: 2013-01-10 00:00:00 (3), 201…</span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Seems we have to construct a column with unique values</span>
 <span class="co"># This can be done by combining column `origin` with `time_hour`, if the latter</span>
@@ -340,23 +334,21 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">origin_slot_id</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># check if we the result is as expected:</span>
 <span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span><span class="op">(</span><span class="va">weather_zoomed_mutate</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">candidate</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span>
-#&gt;   columns        candidate why  
-#&gt;   <span style="color: #949494; font-style: italic;">&lt;keys&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>
-#&gt; <span style="color: #BCBCBC;">1</span> origin_slot_id TRUE      <span style="color: #949494;">""</span>
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1 × 3</span>
+<span class="co">#&gt;   columns        candidate why  </span>
+<span class="co">#&gt;   &lt;keys&gt;         &lt;lgl&gt;     &lt;chr&gt;</span>
+<span class="co">#&gt; 1 origin_slot_id TRUE      ""</span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_upd_weather_dm</span> <span class="op">&lt;-</span>
   <span class="va">weather_zoomed_mutate</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">weather</span>, <span class="va">origin_slot_id</span><span class="op">)</span>
 <span class="va">flights_upd_weather_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">───────────────────────────────────────────────────────────────</span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 4
-#&gt; Foreign keys: 3
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
+<span class="co">#&gt; Columns: 53</span>
+<span class="co">#&gt; Primary keys: 4</span>
+<span class="co">#&gt; Foreign keys: 3</span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># creating the coveted FK relation between `flights` and `weather`</span>
 <span class="va">extended_flights_dm</span> <span class="op">&lt;-</span>
@@ -383,8 +375,8 @@
 <polygon fill="#70ad47" stroke="transparent" points="121,-81 121,-101 203,-101 203,-81 121,-81"></polygon><text text-anchor="start" x="139.8492" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="#e2eeda" stroke="transparent" points="121,-61 121,-81 203,-81 203,-61 121,-61"></polygon><text text-anchor="start" x="122.7209" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin_slot_id</text><polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="120,-60 120,-102 204,-102 204,-60 120,-60"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge4" class="edge"><title>flights:origin_slot_id-&gt;weather:origin_slot_id</title>
 <path fill="none" stroke="#555555" d="M83,-91C98.0595,-91 101.1299,-78.5476 111.1315,-73.2943"></path><polygon fill="#555555" stroke="#555555" points="112.0523,-76.6736 121,-71 110.4672,-69.8554 112.0523,-76.6736"></polygon></g></g></svg>
 </div>
-<div id="use-case-3-disentangle-dm" class="section level3">
-<h3>Use case 3: Disentangle <code>dm</code><a class="anchor" aria-label="anchor" href="#use-case-3-disentangle-dm"></a>
+<div class="section level3">
+<h3 id="use-case-3-disentangle-dm">Use case 3: Disentangle <code>dm</code><a class="anchor" aria-label="anchor" href="#use-case-3-disentangle-dm"></a>
 </h3>
 <p>If you look at the <code>dm</code> created by <code>dm_nycflights13(cycle = TRUE)</code>, you see that two columns of <code>flights</code> relate to one and the same table, <code>airports</code>. One column stands for the departure airport and the other for the arrival airport.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -434,8 +426,8 @@
 <polygon fill="#70ad47" stroke="transparent" points="140.5,-21 140.5,-41 241.5,-41 241.5,-21 140.5,-21"></polygon><text text-anchor="start" x="168.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="#e2eeda" stroke="transparent" points="140.5,-1 140.5,-21 241.5,-21 241.5,-1 140.5,-1"></polygon><text text-anchor="start" x="142.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="139,0 139,-42 242,-42 242,0 139,0"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge4" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title>
 <path fill="none" stroke="#555555" d="M102.5,-91C137.7113,-91 108.8369,-26.9851 130.5301,-13.482"></path><polygon fill="#555555" stroke="#555555" points="131.6417,-16.8121 140.5,-11 129.9506,-10.0195 131.6417,-16.8121"></polygon></g></g></svg><p>In a future update we will provide a more convenient way to “disentangle” <code>dm</code> objects, so that the individual steps will be done automatically.</p>
 </div>
-<div id="use-case-4-add-summary-table-to-dm" class="section level3">
-<h3>Use case 4: Add summary table to <code>dm</code><a class="anchor" aria-label="anchor" href="#use-case-4-add-summary-table-to-dm"></a>
+<div class="section level3">
+<h3 id="use-case-4-add-summary-table-to-dm">Use case 4: Add summary table to <code>dm</code><a class="anchor" aria-label="anchor" href="#use-case-4-add-summary-table-to-dm"></a>
 </h3>
 <p>Here is an example for adding a summary of a table as a new table to a <code>dm</code> (FK-relations are taken care of automatically):</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -463,8 +455,8 @@
 <polygon fill="#70ad47" stroke="transparent" points="144.5,-21 144.5,-41 245.5,-41 245.5,-21 144.5,-21"></polygon><text text-anchor="start" x="172.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="#e2eeda" stroke="transparent" points="144.5,-1 144.5,-21 245.5,-21 245.5,-1 144.5,-1"></polygon><text text-anchor="start" x="146.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="143,0 143,-42 246,-42 246,0 143,0"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge6" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title>
 <path fill="none" stroke="#555555" d="M104.5,-41C122.7292,-41 123.014,-20.8126 134.7944,-13.5578"></path><polygon fill="#555555" stroke="#555555" points="135.7221,-16.9329 144.5,-11 133.9382,-10.164 135.7221,-16.9329"></polygon></g></g></svg>
 </div>
-<div id="use-case-5-joining-tables" class="section level3">
-<h3>Use case 5: Joining tables<a class="anchor" aria-label="anchor" href="#use-case-5-joining-tables"></a>
+<div class="section level3">
+<h3 id="use-case-5-joining-tables">Use case 5: Joining tables<a class="anchor" aria-label="anchor" href="#use-case-5-joining-tables"></a>
 </h3>
 <p>If you would like to join some or all of the columns of one table to another, you can make use of one of the <code>join</code>-methods for a <code>zoomed_dm</code>. In addition to the usual arguments for the {dplyr}-joins, by supplying the <code>select</code> argument you can specify which columns of the RHS-table you want to be included in the join. For the syntax please see the example below. The LHS-table of a join is always the zoomed table.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -478,22 +470,21 @@
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"flights_plane_type"</span><span class="op">)</span>
 <span class="co"># this is how the table looks now</span>
 <span class="va">joined_flights_dm</span><span class="op">$</span><span class="va">flights_plane_type</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 1,761 × 11</span>
-#&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin
-#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> 
-#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359 B6         727 N571JB  JFK   
-#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>013     1    10       16           <span style="text-decoration: underline;">2</span>359 B6         739 N564JB  JFK   
-#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>013     1    10      450            500 US        <span style="text-decoration: underline;">1</span>117 N171US  EWR   
-#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>013     1    10      520            525 UA        <span style="text-decoration: underline;">1</span>018 N35204  EWR   
-#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>013     1    10      530            530 UA         404 N815UA  LGA   
-#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>013     1    10      531            540 AA        <span style="text-decoration: underline;">1</span>141 N5EAAA  JFK   
-#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>013     1    10      535            540 B6         725 N784JB  JFK   
-#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>013     1    10      546            600 B6         380 N337JB  EWR   
-#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>013     1    10      549            600 EV        <span style="text-decoration: underline;">6</span>055 N19554  LGA   
-#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>013     1    10      550            600 US        <span style="text-decoration: underline;">2</span>114 N740UW  LGA   
-#&gt; <span style="color: #949494;"># … with 1,751 more rows, and 2 more variables: dest &lt;chr&gt;,</span>
-#&gt; <span style="color: #949494;">#   plane_type &lt;chr&gt;</span>
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1,761 × 11</span>
+<span class="co">#&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin</span>
+<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; </span>
+<span class="co">#&gt;  1  2013     1    10        3           2359 B6         727 N571JB  JFK   </span>
+<span class="co">#&gt;  2  2013     1    10       16           2359 B6         739 N564JB  JFK   </span>
+<span class="co">#&gt;  3  2013     1    10      450            500 US        1117 N171US  EWR   </span>
+<span class="co">#&gt;  4  2013     1    10      520            525 UA        1018 N35204  EWR   </span>
+<span class="co">#&gt;  5  2013     1    10      530            530 UA         404 N815UA  LGA   </span>
+<span class="co">#&gt;  6  2013     1    10      531            540 AA        1141 N5EAAA  JFK   </span>
+<span class="co">#&gt;  7  2013     1    10      535            540 B6         725 N784JB  JFK   </span>
+<span class="co">#&gt;  8  2013     1    10      546            600 B6         380 N337JB  EWR   </span>
+<span class="co">#&gt;  9  2013     1    10      549            600 EV        6055 N19554  LGA   </span>
+<span class="co">#&gt; 10  2013     1    10      550            600 US        2114 N740UW  LGA   </span>
+<span class="co">#&gt; # … with 1,751 more rows, and 2 more variables: dest &lt;chr&gt;,</span>
+<span class="co">#&gt; #   plane_type &lt;chr&gt;</span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># also here, the FK-relations are transferred to the new table</span>
 <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">joined_flights_dm</span><span class="op">)</span></code></pre></div>
@@ -516,8 +507,8 @@
 <path fill="none" stroke="#555555" d="M109,-151C151.1832,-151 132.3925,-83.5867 164.5722,-72.5267"></path><polygon fill="#555555" stroke="#555555" points="165.1482,-75.9793 174.5,-71 164.0842,-69.0606 165.1482,-75.9793"></polygon></g><!-- flights_plane_type&#45;&gt;planes --><g id="edge6" class="edge"><title>flights_plane_type:tailnum-&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M109,-171C139.3794,-171 140.5443,-139.2715 164.533,-132.3309"></path><polygon fill="#555555" stroke="#555555" points="165.0512,-135.7928 174.5,-131 164.1247,-128.8544 165.0512,-135.7928"></polygon></g></g></svg>
 </div>
-<div id="tip-accessing-the-zoomed-table" class="section level3">
-<h3>Tip: Accessing the zoomed table<a class="anchor" aria-label="anchor" href="#tip-accessing-the-zoomed-table"></a>
+<div class="section level3">
+<h3 id="tip-accessing-the-zoomed-table">Tip: Accessing the zoomed table<a class="anchor" aria-label="anchor" href="#tip-accessing-the-zoomed-table"></a>
 </h3>
 <p>At each point you can retrieve the zoomed table by calling <code><a href="../reference/pull_tbl.html">pull_tbl()</a></code> on a <code>zoomed_dm</code>. To use our last example once more:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -526,25 +517,24 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">dep_delay</span><span class="op">:</span><span class="op">-</span><span class="va">arr_delay</span>, <span class="op">-</span><span class="va">air_time</span><span class="op">:</span><span class="op">-</span><span class="va">time_hour</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">planes</span>, select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tailnum</span>, plane_type <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #949494;"># A tibble: 1,761 × 11</span>
-#&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin
-#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> 
-#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359 B6         727 N571JB  JFK   
-#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>013     1    10       16           <span style="text-decoration: underline;">2</span>359 B6         739 N564JB  JFK   
-#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>013     1    10      450            500 US        <span style="text-decoration: underline;">1</span>117 N171US  EWR   
-#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>013     1    10      520            525 UA        <span style="text-decoration: underline;">1</span>018 N35204  EWR   
-#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>013     1    10      530            530 UA         404 N815UA  LGA   
-#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>013     1    10      531            540 AA        <span style="text-decoration: underline;">1</span>141 N5EAAA  JFK   
-#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>013     1    10      535            540 B6         725 N784JB  JFK   
-#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>013     1    10      546            600 B6         380 N337JB  EWR   
-#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>013     1    10      549            600 EV        <span style="text-decoration: underline;">6</span>055 N19554  LGA   
-#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>013     1    10      550            600 US        <span style="text-decoration: underline;">2</span>114 N740UW  LGA   
-#&gt; <span style="color: #949494;"># … with 1,751 more rows, and 2 more variables: dest &lt;chr&gt;,</span>
-#&gt; <span style="color: #949494;">#   plane_type &lt;chr&gt;</span>
-</code></pre>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1,761 × 11</span>
+<span class="co">#&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin</span>
+<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; </span>
+<span class="co">#&gt;  1  2013     1    10        3           2359 B6         727 N571JB  JFK   </span>
+<span class="co">#&gt;  2  2013     1    10       16           2359 B6         739 N564JB  JFK   </span>
+<span class="co">#&gt;  3  2013     1    10      450            500 US        1117 N171US  EWR   </span>
+<span class="co">#&gt;  4  2013     1    10      520            525 UA        1018 N35204  EWR   </span>
+<span class="co">#&gt;  5  2013     1    10      530            530 UA         404 N815UA  LGA   </span>
+<span class="co">#&gt;  6  2013     1    10      531            540 AA        1141 N5EAAA  JFK   </span>
+<span class="co">#&gt;  7  2013     1    10      535            540 B6         725 N784JB  JFK   </span>
+<span class="co">#&gt;  8  2013     1    10      546            600 B6         380 N337JB  EWR   </span>
+<span class="co">#&gt;  9  2013     1    10      549            600 EV        6055 N19554  LGA   </span>
+<span class="co">#&gt; 10  2013     1    10      550            600 US        2114 N740UW  LGA   </span>
+<span class="co">#&gt; # … with 1,751 more rows, and 2 more variables: dest &lt;chr&gt;,</span>
+<span class="co">#&gt; #   plane_type &lt;chr&gt;</span></code></pre>
 </div>
-<div id="possible-pitfalls-and-caveats" class="section level3">
-<h3>Possible pitfalls and caveats<a class="anchor" aria-label="anchor" href="#possible-pitfalls-and-caveats"></a>
+<div class="section level3">
+<h3 id="possible-pitfalls-and-caveats">Possible pitfalls and caveats<a class="anchor" aria-label="anchor" href="#possible-pitfalls-and-caveats"></a>
 </h3>
 <ol style="list-style-type: decimal">
 <li><p>Currently not all of the {dplyr}-verbs have their own method for a <code>zoomed_dm</code>, so be aware that in some cases it will still be necessary to resort to extracting one or more tables from a <code>dm</code> and reinserting a transformed version of theirs into the <code>dm</code> eventually. The supported functions are: <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/relocate.html" class="external-link">relocate()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">full_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">right_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code>.</p></li>
@@ -568,12 +558,12 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
+<p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.9000.9000.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>

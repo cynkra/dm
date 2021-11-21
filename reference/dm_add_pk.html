@@ -21,7 +21,7 @@ set key, without altering foreign keys previously pointing to that primary key."
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@ set key, without altering foreign keys previously pointing to that primary key."
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -104,7 +104,7 @@ set key, without altering foreign keys previously pointing to that primary key."
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add a primary key</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/primary-keys.R"><code>R/primary-keys.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/primary-keys.R" class="external-link"><code>R/primary-keys.R</code></a></small>
     <div class="hidden name"><code>dm_add_pk.Rd</code></div>
     </div>
 
@@ -118,69 +118,69 @@ set key, without altering foreign keys previously pointing to that primary key.<
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_add_pk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">columns</span>, <span class="va">...</span>, check <span class="op">=</span> <span class="cn">FALSE</span>, force <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr><tr><th>table</th>
-      <td><p>A table in the <code>dm</code>.</p></td>
-    </tr><tr><th>columns</th>
-      <td><p>Table columns, unquoted.
-To define a compound key, use <code>c(col1, col2)</code>.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
-    </tr><tr><th>check</th>
-      <td><p>Boolean, if <code>TRUE</code>, a check is made if the combination of columns is a unique key of the table.</p></td>
-    </tr><tr><th>force</th>
-      <td><p>Boolean, if <code>FALSE</code> (default), an error will be thrown if there is already a primary key
+    <h2>Arguments</h2>
+    <dl><dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+<dt>table</dt>
+<dd><p>A table in the <code>dm</code>.</p></dd>
+<dt>columns</dt>
+<dd><p>Table columns, unquoted.
+To define a compound key, use <code>c(col1, col2)</code>.</p></dd>
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+<dt>check</dt>
+<dd><p>Boolean, if <code>TRUE</code>, a check is made if the combination of columns is a unique key of the table.</p></dd>
+<dt>force</dt>
+<dd><p>Boolean, if <code>FALSE</code> (default), an error will be thrown if there is already a primary key
 set for this table.
-If <code>TRUE</code>, a potential old <code>pk</code> is deleted before setting a new one.</p></td>
-    </tr></table></div>
-
+If <code>TRUE</code>, a potential old <code>pk</code> is deleted before setting a new one.</p></dd>
+</dl></div>
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>An updated <code>dm</code> with an additional primary key.</p>
     </div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index"><p>Other primary key functions: 
 <code><a href="dm_get_all_pks.html">dm_get_all_pks</a>()</code>,
 <code><a href="dm_has_pk.html">dm_has_pk</a>()</code>,
 <code><a href="dm_rm_pk.html">dm_rm_pk</a>()</code>,
 <code><a href="enum_pk_candidates.html">enum_pk_candidates</a>()</code></p></div>
     </div>
+    </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">nycflights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm.html">dm</a></span><span class="op">(</span></span>
-<span class="r-in">  planes <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/planes.html">planes</a></span>,</span>
-<span class="r-in">  airports <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/airports.html">airports</a></span>,</span>
-<span class="r-in">  weather <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/weather.html">weather</a></span></span>
+<span class="r-in">  planes <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/planes.html" class="external-link">planes</a></span>,</span>
+<span class="r-in">  airports <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/airports.html" class="external-link">airports</a></span>,</span>
+<span class="r-in">  weather <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/weather.html" class="external-link">weather</a></span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">nycflights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in"><span class="va">nycflights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="140pt" height="110pt" viewbox="0.00 0.00 140.00 110.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 106)"><title>%0</title><g id="a_graph0"><a xlink:title="Data Model">
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-106 136,-106 136,4 -4,4"></polygon></a>
 </g><!-- airports --><g id="node1" class="node"><title>airports</title><polygon fill="#efebdd" stroke="transparent" points="82,-8 82,-28 128,-28 128,-8 82,-8"></polygon><text text-anchor="start" x="83.6192" y="-13.4" font-family="Times,serif" font-size="14.00" fill="#000000">airports</text><polygon fill="none" stroke="#555555" points="81,-7 81,-29 129,-29 129,-7 81,-7"></polygon></g><!-- planes --><g id="node2" class="node"><title>planes</title><polygon fill="#efebdd" stroke="transparent" points="86,-68 86,-88 125,-88 125,-68 86,-68"></polygon><text text-anchor="start" x="87.6178" y="-73.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="none" stroke="#555555" points="84.5,-67 84.5,-89 125.5,-89 125.5,-67 84.5,-67"></polygon></g><!-- weather --><g id="node3" class="node"><title>weather</title><polygon fill="#efebdd" stroke="transparent" points="3,-74 3,-94 51,-94 51,-74 3,-74"></polygon><text text-anchor="start" x="4.8492" y="-79.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="2,-73 2,-95 52,-95 52,-73 2,-73"></polygon></g></g></svg><span class="r-in"></span>
 <span class="r-in"><span class="co"># Create primary keys:</span></span>
-<span class="r-in"><span class="va">nycflights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_add_pk</span><span class="op">(</span><span class="va">planes</span>, <span class="va">tailnum</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_add_pk</span><span class="op">(</span><span class="va">airports</span>, <span class="va">faa</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_add_pk</span><span class="op">(</span><span class="va">weather</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">time_hour</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in"><span class="va">nycflights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">dm_add_pk</span><span class="op">(</span><span class="va">planes</span>, <span class="va">tailnum</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">dm_add_pk</span><span class="op">(</span><span class="va">airports</span>, <span class="va">faa</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">dm_add_pk</span><span class="op">(</span><span class="va">weather</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">time_hour</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="160pt" height="120pt" viewbox="0.00 0.00 160.00 120.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 116)"><title>%0</title><g id="a_graph0"><a xlink:title="Data Model">
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-116 156,-116 156,4 -4,4"></polygon></a>
 </g><!-- airports --><g id="node1" class="node"><title>airports</title><polygon fill="#efebdd" stroke="transparent" points="4,-91 4,-111 50,-111 50,-91 4,-91"></polygon><text text-anchor="start" x="5.6192" y="-96.4" font-family="Times,serif" font-size="14.00" fill="#000000">airports</text><polygon fill="#ffffff" stroke="transparent" points="4,-71 4,-91 50,-91 50,-71 4,-71"></polygon><text text-anchor="start" x="6" y="-77.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">faa</text><polygon fill="none" stroke="#555555" points="3,-70 3,-112 51,-112 51,-70 3,-70"></polygon></g><!-- planes --><g id="node2" class="node"><title>planes</title><polygon fill="#efebdd" stroke="transparent" points="81,-84 81,-104 127,-104 127,-84 81,-84"></polygon><text text-anchor="start" x="86.1178" y="-89.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="#ffffff" stroke="transparent" points="81,-64 81,-84 127,-84 127,-64 81,-64"></polygon><text text-anchor="start" x="82.6115" y="-70.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#555555" points="80,-63 80,-105 128,-105 128,-63 80,-63"></polygon></g><!-- weather --><g id="node3" class="node"><title>weather</title><polygon fill="#efebdd" stroke="transparent" points="50.5,-21 50.5,-41 151.5,-41 151.5,-21 50.5,-21"></polygon><text text-anchor="start" x="78.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="#ffffff" stroke="transparent" points="50.5,-1 50.5,-21 151.5,-21 151.5,-1 50.5,-1"></polygon><text text-anchor="start" x="52.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#555555" points="49,0 49,-42 152,-42 152,0 49,0"></polygon></g></g></svg><span class="r-in"></span>
 <span class="r-in"><span class="co"># Keys can be checked during creation:</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">nycflights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span>
+<span class="r-in">  <span class="va">nycflights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">    <span class="fu">dm_add_pk</span><span class="op">(</span><span class="va">planes</span>, <span class="va">manufacturer</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_not_unique_key(as_label(data_q), orig_names) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   (`manufacturer`) not a unique key of `planes`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : (`manufacturer`) not a unique key of `planes`.</span>
 </code></pre></div>
     </div>
   </div>

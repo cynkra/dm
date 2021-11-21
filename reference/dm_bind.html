@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -100,7 +100,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Merge several <code>dm</code></h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/bind.R"><code>R/bind.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/bind.R" class="external-link"><code>R/bind.R</code></a></small>
     <div class="hidden name"><code>dm_bind.Rd</code></div>
     </div>
 
@@ -110,12 +110,13 @@
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_bind</span><span class="op">(</span><span class="va">...</span>, repair <span class="op">=</span> <span class="st">"check_unique"</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>...</th>
-      <td><p><code>dm</code> objects to bind together.</p></td>
-    </tr><tr><th>repair</th>
-      <td><p>Either a string or a function. If a string, it must
+    <h2>Arguments</h2>
+    <dl><dt>...</dt>
+<dd><p><code>dm</code> objects to bind together.</p></dd>
+<dt>repair</dt>
+<dd><p>Either a string or a function. If a string, it must
 be one of <code>"check_unique"</code>, <code>"minimal"</code>, <code>"unique"</code>, or <code>"universal"</code>.
 If a function, it is invoked with a vector of minimal names and must
 return minimal names, otherwise an error is thrown.</p><ul><li><p>Minimal names are never <code>NULL</code> or <code>NA</code>. When an element doesn't
@@ -127,25 +128,25 @@ safely use the names as variables without causing a syntax
 error.</p></li>
 </ul><p>The <code>"check_unique"</code> option doesn't perform any name repair.
 Instead, an error is raised if the names don't suit the
-<code>"unique"</code> criteria.</p></td>
-    </tr><tr><th>quiet</th>
-      <td><p>By default, the user is informed of any renaming
+<code>"unique"</code> criteria.</p></dd>
+<dt>quiet</dt>
+<dd><p>By default, the user is informed of any renaming
 caused by repairing the names. This only concerns unique and
 universal repairing. Set <code>quiet</code> to <code>TRUE</code> to silence the
-messages.</p></td>
-    </tr></table></div>
-
+messages.</p></dd>
+</dl></div>
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p><code>dm</code> containing the tables and key relations of all <code>dm</code> objects.</p>
     </div>
     <div id="details">
-    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <h2>Details</h2>
     <p>The <code>dm</code> objects have to share the same <code>src</code>. By default table names need to be unique.</p>
+    </div>
     </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dm_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">dm_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm.html">dm</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">iris</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">dm_bind</span><span class="op">(</span><span class="va">dm_1</span>, <span class="va">dm_2</span><span class="op">)</span></span>

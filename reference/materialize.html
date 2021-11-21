@@ -19,7 +19,7 @@ collect() downloads the tables in a dm object as local tibbles."><meta property=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@ collect() downloads the tables in a dm object as local tibbles."><meta property=
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -102,65 +102,66 @@ collect() downloads the tables in a dm object as local tibbles."><meta property=
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Materialize</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/dm.R"><code>R/dm.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/dm.R" class="external-link"><code>R/dm.R</code></a></small>
     <div class="hidden name"><code>materialize.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> materializes all tables in a <code>dm</code> to new (temporary or permanent)
+    <p><code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> materializes all tables in a <code>dm</code> to new (temporary or permanent)
 tables on the database.</p>
-<p><code><a href="https://dplyr.tidyverse.org/reference/compute.html">collect()</a></code> downloads the tables in a <code>dm</code> object as local tibbles.</p>
+<p><code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> downloads the tables in a <code>dm</code> object as local tibbles.</p>
     </div>
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for dm</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">compute</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for dm</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
-      <td><p>A <code>dm</code>.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>Passed on to <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code>.</p></td>
-    </tr><tr><th>progress</th>
-      <td><p>Whether to display a progress bar, if <code>NA</code> (the default)
+    <h2>Arguments</h2>
+    <dl><dt>x</dt>
+<dd><p>A <code>dm</code>.</p></dd>
+<dt>...</dt>
+<dd><p>Passed on to <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code>.</p></dd>
+<dt>progress</dt>
+<dd><p>Whether to display a progress bar, if <code>NA</code> (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
-'progress' package.</p></td>
-    </tr></table></div>
-
+'progress' package.</p></dd>
+</dl></div>
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>A <code>dm</code> object of the same structure as the input.</p>
     </div>
     <div id="details">
-    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <h2>Details</h2>
     <p>Called on a <code>dm</code> object, these methods create a copy of all tables in the <code>dm</code>.
 Depending on the size of your data this may take a long time.</p>
     </div>
+    </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">financial</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm_financial.html">dm_financial_sqlite</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">financial</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="va">districts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html">remote_name</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">financial</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="va">districts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html" class="external-link">remote_name</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;IDENT&gt; `districts`</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># compute() copies the data to new tables:</span></span>
-<span class="r-in"><span class="va">financial</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">compute</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="va">districts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html">remote_name</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">financial</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="va">districts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html" class="external-link">remote_name</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># collect() returns a local dm:</span></span>
-<span class="r-in"><span class="va">financial</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="va">districts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">financial</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="va">districts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "tbl_df"     "tbl"        "data.frame"</span>
 </code></pre></div>
     </div>

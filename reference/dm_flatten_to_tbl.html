@@ -18,7 +18,7 @@ Both functions perform a disambiguation of column names and a cascade of joins."
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@ Both functions perform a disambiguation of column names and a cascade of joins."
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -101,7 +101,7 @@ Both functions perform a disambiguation of column names and a cascade of joins."
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Flatten a part of a <code>dm</code> into a wide table</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/flatten.R"><code>R/flatten.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/flatten.R" class="external-link"><code>R/flatten.R</code></a></small>
     <div class="hidden name"><code>dm_flatten_to_tbl.Rd</code></div>
     </div>
 
@@ -114,33 +114,33 @@ Both functions perform a disambiguation of column names and a cascade of joins.<
 
 <span class="fu">dm_squash_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">start</span>, <span class="va">...</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
-      <td><p>A <code><a href="dm.html">dm</a></code> object.</p></td>
-    </tr><tr><th>start</th>
-      <td><p>The table from which all outgoing foreign key relations are considered
+    <h2>Arguments</h2>
+    <dl><dt>dm</dt>
+<dd><p>A <code><a href="dm.html">dm</a></code> object.</p></dd>
+<dt>start</dt>
+<dd><p>The table from which all outgoing foreign key relations are considered
 when establishing a processing order for the joins.
 An interesting choice could be
-for example a fact table in a star schema.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>Unquoted names of the tables to be included in addition to the <code>start</code> table.
+for example a fact table in a star schema.</p></dd>
+<dt>...</dt>
+<dd><p>Unquoted names of the tables to be included in addition to the <code>start</code> table.
 The order of the tables here determines
 the order of the joins.
 If the argument is empty, all tables that can be reached will be included.
 If this includes tables that are not direct neighbors of <code>start</code>,
 it will only work with <code>dm_squash_to_tbl()</code> (given one of the allowed join-methods).
-<code>tidyselect</code> is supported, see <code><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select()</a></code> for details on the semantics.</p></td>
-    </tr><tr><th>join</th>
-      <td><p>The type of join to be performed, see <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::join()</a></code>.</p></td>
-    </tr></table></div>
-
+<code>tidyselect</code> is supported, see <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> for details on the semantics.</p></dd>
+<dt>join</dt>
+<dd><p>The type of join to be performed, see <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::join()</a></code>.</p></dd>
+</dl></div>
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>A single table that results from consecutively joining all affected tables to the <code>start</code> table.</p>
     </div>
     <div id="details">
-    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <h2>Details</h2>
     <p>With <code>...</code> left empty, this function will join together all the tables of your <code><a href="dm.html">dm</a></code>
 object that can be reached from the <code>start</code> table, in the direction of the foreign key relations
 (pointing from the child tables to the parent tables), using the foreign key relations to
@@ -170,19 +170,22 @@ Therefore, trying this will result in a warning.</p>
 each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.</p>
     </div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index"><p>Other flattening functions: 
 <code><a href="dm_join_to_tbl.html">dm_join_to_tbl</a>()</code></p></div>
     </div>
+    </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">weather</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+    <h2>Examples</h2>
+    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">weather</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_flatten_to_tbl</span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Renamed columns:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * year -&gt; flights.year, planes.year</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * name -&gt; airlines.name, airports.name</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Renaming ambiguous columns: %&gt;%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(flights, flights.year = year) %&gt;%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(airlines, airlines.name = name) %&gt;%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(airports, airports.name = name) %&gt;%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(planes, planes.year = year)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,761 × 35</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    flights.year month   day dep_time sched_dep_time dep_delay arr_time</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>

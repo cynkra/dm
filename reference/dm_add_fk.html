@@ -22,7 +22,7 @@ of the values of the key in table ref_table."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@ of the values of the key in table ref_table."><meta property="og:image" content=
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -105,7 +105,7 @@ of the values of the key in table ref_table."><meta property="og:image" content=
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add foreign keys</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/foreign-keys.R"><code>R/foreign-keys.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/foreign-keys.R" class="external-link"><code>R/foreign-keys.R</code></a></small>
     <div class="hidden name"><code>dm_add_fk.Rd</code></div>
     </div>
 
@@ -126,85 +126,85 @@ of the values of the key in table <code>ref_table</code>.</p>
   ref_columns <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>,
   check <span class="op">=</span> <span class="cn">FALSE</span>,
-  on_delete <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"no_action"</span>, <span class="st">"cascade"</span><span class="op">)</span>
+  on_delete <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no_action"</span>, <span class="st">"cascade"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr><tr><th>table</th>
-      <td><p>A table in the <code>dm</code>.</p></td>
-    </tr><tr><th>columns</th>
-      <td><p>The columns of <code>table</code> which are to become the foreign key columns that
+    <h2>Arguments</h2>
+    <dl><dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+<dt>table</dt>
+<dd><p>A table in the <code>dm</code>.</p></dd>
+<dt>columns</dt>
+<dd><p>The columns of <code>table</code> which are to become the foreign key columns that
 reference <code>ref_table</code>.
-To define a compound key, use <code>c(col1, col2)</code>.</p></td>
-    </tr><tr><th>ref_table</th>
-      <td><p>The table which <code>table</code> will be referencing.</p></td>
-    </tr><tr><th>ref_columns</th>
-      <td><p>The column(s) of <code>table</code> which are to become the referenced column(s) in <code>ref_table</code>.
+To define a compound key, use <code>c(col1, col2)</code>.</p></dd>
+<dt>ref_table</dt>
+<dd><p>The table which <code>table</code> will be referencing.</p></dd>
+<dt>ref_columns</dt>
+<dd><p>The column(s) of <code>table</code> which are to become the referenced column(s) in <code>ref_table</code>.
 By default, the primary key is used.
-To define a compound key, use <code>c(col1, col2)</code>.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
-    </tr><tr><th>check</th>
-      <td><p>Boolean, if <code>TRUE</code>, a check will be performed to determine if the values of
-<code>columns</code> are a subset of the values of the key column(s) of <code>ref_table</code>.</p></td>
-    </tr><tr><th>on_delete</th>
-      <td><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
+To define a compound key, use <code>c(col1, col2)</code>.</p></dd>
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+<dt>check</dt>
+<dd><p>Boolean, if <code>TRUE</code>, a check will be performed to determine if the values of
+<code>columns</code> are a subset of the values of the key column(s) of <code>ref_table</code>.</p></dd>
+<dt>on_delete</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
 <p>Defines behavior if a row in the parent table is deleted.
 - <code>"no_action"</code>, the default, means that no action is taken
 and the operation is aborted if child rows exist
 - <code>"cascade"</code> means that the child row is also deleted
 This setting is picked up by <code><a href="copy_dm_to.html">copy_dm_to()</a></code> with <code>set_key_constraints = TRUE</code>,
-and might be considered by <code><a href="rows-dm.html">dm_rows_delete()</a></code> in a future version.</p></td>
-    </tr></table></div>
-
+and might be considered by <code><a href="rows-dm.html">dm_rows_delete()</a></code> in a future version.</p></dd>
+</dl></div>
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>An updated <code>dm</code> with an additional foreign key relation.</p>
     </div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index"><p>Other foreign key functions: 
 <code><a href="dm_enum_fk_candidates.html">dm_enum_fk_candidates</a>()</code>,
 <code><a href="dm_get_all_fks.html">dm_get_all_fks</a>()</code>,
 <code><a href="dm_rm_fk.html">dm_rm_fk</a>()</code></p></div>
     </div>
+    </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    <h2>Examples</h2>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">nycflights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm.html">dm</a></span><span class="op">(</span></span>
-<span class="r-in">  planes <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/planes.html">planes</a></span>,</span>
-<span class="r-in">  flights <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html">flights</a></span>,</span>
-<span class="r-in">  weather <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/weather.html">weather</a></span></span>
+<span class="r-in">  planes <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/planes.html" class="external-link">planes</a></span>,</span>
+<span class="r-in">  flights <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">flights</a></span>,</span>
+<span class="r-in">  weather <span class="op">=</span> <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/weather.html" class="external-link">weather</a></span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">nycflights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in"><span class="va">nycflights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="140pt" height="110pt" viewbox="0.00 0.00 140.00 110.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 106)"><title>%0</title><g id="a_graph0"><a xlink:title="Data Model">
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-106 136,-106 136,4 -4,4"></polygon></a>
 </g><!-- flights --><g id="node1" class="node"><title>flights</title><polygon fill="#efebdd" stroke="transparent" points="86,-8 86,-28 125,-28 125,-8 86,-8"></polygon><text text-anchor="start" x="87.6115" y="-13.4" font-family="Times,serif" font-size="14.00" fill="#000000">flights</text><polygon fill="none" stroke="#555555" points="84.5,-7 84.5,-29 125.5,-29 125.5,-7 84.5,-7"></polygon></g><!-- planes --><g id="node2" class="node"><title>planes</title><polygon fill="#efebdd" stroke="transparent" points="86,-68 86,-88 125,-88 125,-68 86,-68"></polygon><text text-anchor="start" x="87.6178" y="-73.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="none" stroke="#555555" points="84.5,-67 84.5,-89 125.5,-89 125.5,-67 84.5,-67"></polygon></g><!-- weather --><g id="node3" class="node"><title>weather</title><polygon fill="#efebdd" stroke="transparent" points="3,-74 3,-94 51,-94 51,-74 3,-74"></polygon><text text-anchor="start" x="4.8492" y="-79.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="2,-73 2,-95 52,-95 52,-73 2,-73"></polygon></g></g></svg><span class="r-in"></span>
 <span class="r-in"><span class="co"># Create foreign keys:</span></span>
-<span class="r-in"><span class="va">nycflights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">planes</span>, <span class="va">tailnum</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_add_fk</span><span class="op">(</span><span class="va">flights</span>, <span class="va">tailnum</span>, <span class="va">planes</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">weather</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">time_hour</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_add_fk</span><span class="op">(</span><span class="va">flights</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">time_hour</span><span class="op">)</span>, <span class="va">weather</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in"><span class="va">nycflights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">planes</span>, <span class="va">tailnum</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">dm_add_fk</span><span class="op">(</span><span class="va">flights</span>, <span class="va">tailnum</span>, <span class="va">planes</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">weather</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">time_hour</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">dm_add_fk</span><span class="op">(</span><span class="va">flights</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">time_hour</span><span class="op">)</span>, <span class="va">weather</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="250pt" height="110pt" viewbox="0.00 0.00 250.00 110.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 106)"><title>%0</title><g id="a_graph0"><a xlink:title="Data Model">
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-106 246,-106 246,4 -4,4"></polygon></a>
 </g><!-- flights --><g id="node1" class="node"><title>flights</title><polygon fill="#efebdd" stroke="transparent" points="1.5,-61 1.5,-81 102.5,-81 102.5,-61 1.5,-61"></polygon><text text-anchor="start" x="34.1115" y="-66.4" font-family="Times,serif" font-size="14.00" fill="#000000">flights</text><polygon fill="#ffffff" stroke="transparent" points="1.5,-41 1.5,-61 102.5,-61 102.5,-41 1.5,-41"></polygon><text text-anchor="start" x="3.5" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text><polygon fill="#ffffff" stroke="transparent" points="1.5,-21 1.5,-41 102.5,-41 102.5,-21 1.5,-21"></polygon><text text-anchor="start" x="3.0056" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#555555" points="0,-20 0,-82 103,-82 103,-20 0,-20"></polygon></g><!-- planes --><g id="node2" class="node"><title>planes</title><polygon fill="#efebdd" stroke="transparent" points="167.5,-81 167.5,-101 213.5,-101 213.5,-81 167.5,-81"></polygon><text text-anchor="start" x="172.6178" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="#ffffff" stroke="transparent" points="167.5,-61 167.5,-81 213.5,-81 213.5,-61 167.5,-61"></polygon><text text-anchor="start" x="169.1115" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#555555" points="166.5,-60 166.5,-102 214.5,-102 214.5,-60 166.5,-60"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge1" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title><path fill="none" stroke="#555555" d="M102.5,-51C128.9473,-51 135.7361,-66.3125 157.2687,-70.1406"></path><polygon fill="#555555" stroke="#555555" points="157.2421,-73.6506 167.5,-71 157.8281,-66.6752 157.2421,-73.6506"></polygon></g><!-- weather --><g id="node3" class="node"><title>weather</title><polygon fill="#efebdd" stroke="transparent" points="140.5,-21 140.5,-41 241.5,-41 241.5,-21 140.5,-21"></polygon><text text-anchor="start" x="168.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="#ffffff" stroke="transparent" points="140.5,-1 140.5,-21 241.5,-21 241.5,-1 140.5,-1"></polygon><text text-anchor="start" x="142.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#555555" points="139,0 139,-42 242,-42 242,0 139,0"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge2" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title><path fill="none" stroke="#555555" d="M102.5,-31C117.5595,-31 120.6299,-18.5476 130.6315,-13.2943"></path><polygon fill="#555555" stroke="#555555" points="131.5523,-16.6736 140.5,-11 129.9672,-9.8554 131.5523,-16.6736"></polygon></g></g></svg><span class="r-in"></span>
 <span class="r-in"><span class="co"># Keys can be checked during creation:</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">nycflights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span class="r-in">    <span class="fu"><a href="dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">planes</span>, <span class="va">tailnum</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span>
+<span class="r-in">  <span class="va">nycflights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">    <span class="fu"><a href="dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">planes</span>, <span class="va">tailnum</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">    <span class="fu">dm_add_fk</span><span class="op">(</span><span class="va">flights</span>, <span class="va">tailnum</span>, <span class="va">planes</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_not_subset_of(table_name, col_name, ref_table_name, ref_col_name) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Column `tailnum` of table `flights` contains values (see examples above) that are not present in column `tailnum` of table `planes`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : Column (`tailnum`) of table `flights` contains values (see examples above) that are not present in column (`tailnum`) of table `planes`.</span>
 </code></pre></div>
     </div>
   </div>

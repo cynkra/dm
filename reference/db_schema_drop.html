@@ -19,7 +19,7 @@ For certain DBMS it is possible to force the removal of a non-empty schema, see 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@ For certain DBMS it is possible to force the removal of a non-empty schema, see 
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -102,37 +102,37 @@ For certain DBMS it is possible to force the removal of a non-empty schema, see 
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Remove a schema from a database</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/schema.R"><code>R/schema.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/schema.R" class="external-link"><code>R/schema.R</code></a></small>
     <div class="hidden name"><code>db_schema_drop.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
 <p><code>db_schema_drop()</code> deletes a schema from the database.
 For certain DBMS it is possible to force the removal of a non-empty schema, see below.</p>
     </div>
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">db_schema_drop</span><span class="op">(</span><span class="va">con</span>, <span class="va">schema</span>, force <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>con</th>
-      <td><p>An object of class <code>"src"</code> or <code>"DBIConnection"</code>.</p></td>
-    </tr><tr><th>schema</th>
-      <td><p>Class <code>character</code> or <code>SQL</code> (cf. Details), name of the schema</p></td>
-    </tr><tr><th>force</th>
-      <td><p>Boolean, default <code>FALSE</code>. Set to <code>TRUE</code> to drop a schema and
-all objects it contains at once. Currently only supported for Postgres.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>Passed on to the individual methods.</p></td>
-    </tr></table></div>
-
+    <h2>Arguments</h2>
+    <dl><dt>con</dt>
+<dd><p>An object of class <code>"src"</code> or <code>"DBIConnection"</code>.</p></dd>
+<dt>schema</dt>
+<dd><p>Class <code>character</code> or <code>SQL</code> (cf. Details), name of the schema</p></dd>
+<dt>force</dt>
+<dd><p>Boolean, default <code>FALSE</code>. Set to <code>TRUE</code> to drop a schema and
+all objects it contains at once. Currently only supported for Postgres.</p></dd>
+<dt>...</dt>
+<dd><p>Passed on to the individual methods.</p></dd>
+</dl></div>
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p><code>NULL</code> invisibly.</p>
     </div>
     <div id="details">
-    <h2>Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <h2>Details</h2>
     <p>Methods are not available for all DBMS.</p>
 <p>An error is thrown if no schema of that name exists.</p>
 <p>The argument <code>schema</code> (and <code>dbname</code> for MSSQL) can be provided as <code>SQL</code> objects.
@@ -141,11 +141,12 @@ Keep in mind, that in this case it is assumed that they are already correctly qu
 database on the connected MSSQL-server; default: database addressed by <code>con</code>.</p></li>
 </ul></div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index"><p>Other schema handling functions: 
 <code><a href="db_schema_create.html">db_schema_create</a>()</code>,
 <code><a href="db_schema_exists.html">db_schema_exists</a>()</code>,
 <code><a href="db_schema_list.html">db_schema_list</a>()</code></p></div>
+    </div>
     </div>
 
   </div>

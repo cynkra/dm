@@ -18,7 +18,7 @@ Use DiagrammeRsvg::export_svg() to convert the diagram to an SVG file."><meta pr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@ Use DiagrammeRsvg::export_svg() to convert the diagram to an SVG file."><meta pr
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -101,20 +101,20 @@ Use DiagrammeRsvg::export_svg() to convert the diagram to an SVG file."><meta pr
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Draw a diagram of the data model</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/draw-dm.R"><code>R/draw-dm.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/draw-dm.R" class="external-link"><code>R/draw-dm.R</code></a></small>
     <div class="hidden name"><code>dm_draw.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p><code>dm_draw()</code> uses <span class="pkg">DiagrammeR</span> to draw diagrams.
-Use <code><a href="https://rdrr.io/pkg/DiagrammeRsvg/man/export_svg.html">DiagrammeRsvg::export_svg()</a></code> to convert the diagram to an SVG file.</p>
+Use <code><a href="https://rdrr.io/pkg/DiagrammeRsvg/man/export_svg.html" class="external-link">DiagrammeRsvg::export_svg()</a></code> to convert the diagram to an SVG file.</p>
     </div>
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_draw</span><span class="op">(</span>
   <span class="va">dm</span>,
   rankdir <span class="op">=</span> <span class="st">"LR"</span>,
   col_attr <span class="op">=</span> <span class="cn">NULL</span>,
-  view_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"keys_only"</span>, <span class="st">"all"</span>, <span class="st">"title_only"</span><span class="op">)</span>,
+  view_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"keys_only"</span>, <span class="st">"all"</span>, <span class="st">"title_only"</span><span class="op">)</span>,
   columnArrows <span class="op">=</span> <span class="cn">TRUE</span>,
   graph_attrs <span class="op">=</span> <span class="st">""</span>,
   node_attrs <span class="op">=</span> <span class="st">""</span>,
@@ -125,67 +125,68 @@ Use <code><a href="https://rdrr.io/pkg/DiagrammeRsvg/man/export_svg.html">Diagra
   column_types <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
-      <td><p>A <code><a href="dm.html">dm</a></code> object.</p></td>
-    </tr><tr><th>rankdir</th>
-      <td><p>Graph attribute for direction (e.g., 'BT' = bottom --&gt; top).</p></td>
-    </tr><tr><th>col_attr</th>
-      <td><p>Deprecated, use <code>colummn_types</code> instead.</p></td>
-    </tr><tr><th>view_type</th>
-      <td><p>Can be "keys_only" (default), "all" or "title_only".
+    <h2>Arguments</h2>
+    <dl><dt>dm</dt>
+<dd><p>A <code><a href="dm.html">dm</a></code> object.</p></dd>
+<dt>rankdir</dt>
+<dd><p>Graph attribute for direction (e.g., 'BT' = bottom --&gt; top).</p></dd>
+<dt>col_attr</dt>
+<dd><p>Deprecated, use <code>colummn_types</code> instead.</p></dd>
+<dt>view_type</dt>
+<dd><p>Can be "keys_only" (default), "all" or "title_only".
 It defines the level of details for rendering tables
-(only primary and foreign keys, all columns, or no columns).</p></td>
-    </tr><tr><th>columnArrows</th>
-      <td><p>Edges from columns to columns (default: <code>TRUE</code>).</p></td>
-    </tr><tr><th>graph_attrs</th>
-      <td><p>Additional graph attributes.</p></td>
-    </tr><tr><th>node_attrs</th>
-      <td><p>Additional node attributes.</p></td>
-    </tr><tr><th>edge_attrs</th>
-      <td><p>Additional edge attributes.</p></td>
-    </tr><tr><th>focus</th>
-      <td><p>A list of parameters for rendering (table filter).</p></td>
-    </tr><tr><th>graph_name</th>
-      <td><p>The name of the graph.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
-    </tr><tr><th>column_types</th>
-      <td><p>Set to <code>TRUE</code> to show column types.</p></td>
-    </tr></table></div>
-
+(only primary and foreign keys, all columns, or no columns).</p></dd>
+<dt>columnArrows</dt>
+<dd><p>Edges from columns to columns (default: <code>TRUE</code>).</p></dd>
+<dt>graph_attrs</dt>
+<dd><p>Additional graph attributes.</p></dd>
+<dt>node_attrs</dt>
+<dd><p>Additional node attributes.</p></dd>
+<dt>edge_attrs</dt>
+<dd><p>Additional edge attributes.</p></dd>
+<dt>focus</dt>
+<dd><p>A list of parameters for rendering (table filter).</p></dd>
+<dt>graph_name</dt>
+<dd><p>The name of the graph.</p></dd>
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+<dt>column_types</dt>
+<dd><p>Set to <code>TRUE</code> to show column types.</p></dd>
+</dl></div>
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object of class <code>grViz</code> (see also <code><a href="https://rdrr.io/pkg/DiagrammeR/man/grViz.html">DiagrammeR::grViz()</a></code>), which,
+    <h2>Value</h2>
+    <p>An object of class <code>grViz</code> (see also <code><a href="https://rdrr.io/pkg/DiagrammeR/man/grViz.html" class="external-link">DiagrammeR::grViz()</a></code>), which,
 when printed, produces the output seen in the viewer as a side effect.</p>
     </div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index"><p><code><a href="dm_set_colors.html">dm_set_colors()</a></code> for defining the table colors.</p></div>
+    </div>
     </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+    <h2>Examples</h2>
+    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_draw</span><span class="op">(</span><span class="op">)</span></span>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="250pt" height="230pt" viewbox="0.00 0.00 250.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 226)"><title>%0</title><g id="a_graph0"><a xlink:title="Data Model">
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-226 246,-226 246,4 -4,4"></polygon></a>
 </g><!-- airlines --><g id="node1" class="node"><title>airlines</title><polygon fill="#ed7d31" stroke="transparent" points="168.5,-201 168.5,-221 213.5,-221 213.5,-201 168.5,-201"></polygon><text text-anchor="start" x="170.3969" y="-206.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airlines</text><polygon fill="#fbe5d5" stroke="transparent" points="168.5,-181 168.5,-201 213.5,-201 213.5,-181 168.5,-181"></polygon><text text-anchor="start" x="170.5" y="-187.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">carrier</text><polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="167,-180 167,-222 214,-222 214,-180 167,-180"></polygon></g><!-- airports --><g id="node2" class="node"><title>airports</title><polygon fill="#ed7d31" stroke="transparent" points="167.5,-81 167.5,-101 213.5,-101 213.5,-81 167.5,-81"></polygon><text text-anchor="start" x="169.1192" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airports</text><polygon fill="#fbe5d5" stroke="transparent" points="167.5,-61 167.5,-81 213.5,-81 213.5,-61 167.5,-61"></polygon><text text-anchor="start" x="169.5" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">faa</text><polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="166.5,-60 166.5,-102 214.5,-102 214.5,-60 166.5,-60"></polygon></g><!-- flights --><g id="node3" class="node"><title>flights</title><polygon fill="#5b9bd5" stroke="transparent" points="1.5,-141 1.5,-161 102.5,-161 102.5,-141 1.5,-141"></polygon><text text-anchor="start" x="34.1115" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">flights</text><polygon fill="#deebf6" stroke="transparent" points="1.5,-121 1.5,-141 102.5,-141 102.5,-121 1.5,-121"></polygon><text text-anchor="start" x="3.5" y="-126.4" font-family="Times,serif" font-size="14.00" fill="#444444">carrier</text><polygon fill="#deebf6" stroke="transparent" points="1.5,-101 1.5,-121 102.5,-121 102.5,-101 1.5,-101"></polygon><text text-anchor="start" x="3.5" y="-106.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text><polygon fill="#deebf6" stroke="transparent" points="1.5,-81 1.5,-101 102.5,-101 102.5,-81 1.5,-81"></polygon><text text-anchor="start" x="3.5" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin</text><polygon fill="#deebf6" stroke="transparent" points="1.5,-61 1.5,-81 102.5,-81 102.5,-61 1.5,-61"></polygon><text text-anchor="start" x="3.0056" y="-66.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#3c678e" stroke-opacity="0.666667" points="0,-60 0,-162 103,-162 103,-60 0,-60"></polygon></g><!-- flights&#45;&gt;airlines --><g id="edge1" class="edge"><title>flights:carrier-&gt;airlines:carrier</title><path fill="none" stroke="#555555" d="M102.5,-131C126.5668,-131 120.8029,-155.2496 139,-171 147.7956,-178.613 151.0394,-185.8305 158.4157,-189.1277"></path><polygon fill="#555555" stroke="#555555" points="158.0291,-192.6157 168.5,-191 159.307,-185.7333 158.0291,-192.6157"></polygon></g><!-- flights&#45;&gt;airports --><g id="edge2" class="edge"><title>flights:origin-&gt;airports:faa</title><path fill="none" stroke="#555555" d="M102.5,-91C128.9473,-91 135.7361,-75.6875 157.2687,-71.8594"></path><polygon fill="#555555" stroke="#555555" points="157.8281,-75.3248 167.5,-71 157.2421,-68.3494 157.8281,-75.3248"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title><polygon fill="#ed7d31" stroke="transparent" points="167.5,-141 167.5,-161 213.5,-161 213.5,-141 167.5,-141"></polygon><text text-anchor="start" x="172.6178" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text><polygon fill="#fbe5d5" stroke="transparent" points="167.5,-121 167.5,-141 213.5,-141 213.5,-121 167.5,-121"></polygon><text text-anchor="start" x="169.1115" y="-127.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="166.5,-120 166.5,-162 214.5,-162 214.5,-120 166.5,-120"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge3" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title><path fill="none" stroke="#555555" d="M102.5,-111C128.9473,-111 135.7361,-126.3125 157.2687,-130.1406"></path><polygon fill="#555555" stroke="#555555" points="157.2421,-133.6506 167.5,-131 157.8281,-126.6752 157.2421,-133.6506"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title><polygon fill="#70ad47" stroke="transparent" points="140.5,-21 140.5,-41 241.5,-41 241.5,-21 140.5,-21"></polygon><text text-anchor="start" x="168.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="#e2eeda" stroke="transparent" points="140.5,-1 140.5,-21 241.5,-21 241.5,-1 140.5,-1"></polygon><text text-anchor="start" x="142.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="139,0 139,-42 242,-42 242,0 139,0"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge4" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title><path fill="none" stroke="#555555" d="M102.5,-71C129.8727,-71 114.6101,-25.8792 130.6579,-13.8939"></path><polygon fill="#555555" stroke="#555555" points="131.8935,-17.1789 140.5,-11 129.9188,-10.4631 131.8935,-17.1789"></polygon></g></g></svg><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_draw</span><span class="op">(</span>view_type <span class="op">=</span> <span class="st">"title_only"</span><span class="op">)</span></span>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="152pt" height="206pt" viewbox="0.00 0.00 152.00 206.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 202)"><title>%0</title><g id="a_graph0"><a xlink:title="Data Model">
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-202 148,-202 148,4 -4,4"></polygon></a>
 </g><!-- airlines --><g id="node1" class="node"><title>airlines</title><polygon fill="#ed7d31" stroke="transparent" points="95,-170 95,-190 140,-190 140,-170 95,-170"></polygon><text text-anchor="start" x="96.8969" y="-175.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airlines</text><polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="93.5,-169 93.5,-191 140.5,-191 140.5,-169 93.5,-169"></polygon></g><!-- airports --><g id="node2" class="node"><title>airports</title><polygon fill="#ed7d31" stroke="transparent" points="94,-116 94,-136 140,-136 140,-116 94,-116"></polygon><text text-anchor="start" x="95.6192" y="-121.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airports</text><polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="93,-115 93,-137 141,-137 141,-115 93,-115"></polygon></g><!-- flights --><g id="node3" class="node"><title>flights</title><polygon fill="#5b9bd5" stroke="transparent" points="8,-116 8,-136 47,-136 47,-116 8,-116"></polygon><text text-anchor="start" x="9.6115" y="-121.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">flights</text><polygon fill="none" stroke="#3c678e" stroke-opacity="0.666667" points="6.5,-115 6.5,-137 47.5,-137 47.5,-115 6.5,-115"></polygon></g><!-- flights&#45;&gt;airlines --><g id="edge1" class="edge"><title>flights:carrier-&gt;airlines:carrier</title><path fill="none" stroke="#555555" d="M54.003,-142.2018C62.4686,-147.2812 71.9516,-152.971 80.9389,-158.3634"></path><polygon fill="#555555" stroke="#555555" points="79.3293,-161.4792 89.705,-163.623 82.9308,-155.4768 79.3293,-161.4792"></polygon></g><!-- flights&#45;&gt;airports --><g id="edge2" class="edge"><title>flights:origin-&gt;airports:faa</title><path fill="none" stroke="#555555" d="M54.003,-119.7547C62.0277,-119.2804 70.9665,-119.1404 79.5309,-119.3347"></path><polygon fill="#555555" stroke="#555555" points="79.5743,-122.8391 89.705,-119.7376 79.8514,-115.8446 79.5743,-122.8391"></polygon></g><!-- flights&#45;&gt;airports --><g id="edge3" class="edge"><title>flights:dest-&gt;airports:faa</title><path fill="none" stroke="#555555" d="M54.003,-132.2453C62.0277,-132.7196 70.9665,-132.8596 79.5309,-132.6653"></path><polygon fill="#555555" stroke="#555555" points="79.8514,-136.1554 89.705,-132.2624 79.5743,-129.1609 79.8514,-136.1554"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title><polygon fill="#ed7d31" stroke="transparent" points="98,-62 98,-82 137,-82 137,-62 98,-62"></polygon><text text-anchor="start" x="99.6178" y="-67.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text><polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="96.5,-61 96.5,-83 137.5,-83 137.5,-61 96.5,-61"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge4" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title><path fill="none" stroke="#555555" d="M54.003,-109.7982C62.4686,-104.7188 71.9516,-99.029 80.9389,-93.6366"></path><polygon fill="#555555" stroke="#555555" points="82.9308,-96.5232 89.705,-88.377 79.3293,-90.5208 82.9308,-96.5232"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title><polygon fill="#70ad47" stroke="transparent" points="93,-8 93,-28 141,-28 141,-8 93,-8"></polygon><text text-anchor="start" x="94.8492" y="-13.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="92,-7 92,-29 142,-29 142,-7 92,-7"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge5" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title><path fill="none" stroke="#555555" d="M40.1474,-107.7912C52.4847,-91.0286 71.7252,-65.7013 90,-45 90.4936,-44.4409 90.9959,-43.8788 91.5052,-43.3151"></path><polygon fill="#555555" stroke="#555555" points="94.0816,-45.6844 98.3833,-36.0021 88.9826,-40.8886 94.0816,-45.6844"></polygon></g></g></svg><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="dm_set_colors.html">dm_get_available_colors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="dm_set_colors.html">dm_get_available_colors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "default"       "white"         "aliceblue"     "antiquewhite" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5] "antiquewhite1" "antiquewhite2"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="dm_set_colors.html">dm_get_available_colors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="dm_set_colors.html">dm_get_available_colors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 658</span>
 <span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="dm_set_colors.html">dm_get_colors</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  #ED7D31FF  #ED7D31FF  #5B9BD5FF  #ED7D31FF  #70AD47FF </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "airlines" "airports"  "flights"   "planes"  "weather" </span>

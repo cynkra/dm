@@ -23,7 +23,7 @@ rows_insert(), rows_update(), rows_upsert(), or rows_delete()."><meta property="
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@ rows_insert(), rows_update(), rows_upsert(), or rows_delete()."><meta property="
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -106,34 +106,35 @@ rows_insert(), rows_update(), rows_upsert(), or rows_delete()."><meta property="
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Extract and check the RETURNING rows</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/rows-db.R"><code>R/rows-db.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/rows-db.R" class="external-link"><code>R/rows-db.R</code></a></small>
     <div class="hidden name"><code>get_returned_rows.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
 <p><code>get_returned_rows()</code> extracts the RETURNING rows produced by
-<code><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_insert()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_update()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_upsert()</a></code>, or <code><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_delete()</a></code>
+<code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_upsert()</a></code>, or <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_delete()</a></code>
 if called with the <code>returning</code> argument.
 An error is raised if this information is not available.</p>
 <p><code>has_returned_rows()</code> checks if <code>x</code> has stored RETURNING rows produced by
-<code><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_insert()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_update()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_upsert()</a></code>, or <code><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_delete()</a></code>.</p>
+<code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_upsert()</a></code>, or <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_delete()</a></code>.</p>
     </div>
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">get_returned_rows</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
 <span class="fu">has_returned_rows</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
-      <td><p>A lazy tbl.</p></td>
-    </tr></table></div>
-
+    <h2>Arguments</h2>
+    <dl><dt>x</dt>
+<dd><p>A lazy tbl.</p></dd>
+</dl></div>
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>For <code>get_returned_rows()</code>, a tibble.</p>
-<p>For <code>has_returned_rows()</code>, a scalar logical.</p>
+    <h2>Value</h2>
+    <p>For <code>get_returned_rows()</code>, a tibble.
+For <code>has_returned_rows()</code>, a scalar logical.</p>
+    </div>
     </div>
 
   </div>

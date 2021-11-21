@@ -19,7 +19,7 @@ dm_rename_tbl() renames tables."><meta property="og:image" content="https://cynk
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@ dm_rename_tbl() renames tables."><meta property="og:image" content="https://cynk
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/cynkra/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -102,7 +102,7 @@ dm_rename_tbl() renames tables."><meta property="og:image" content="https://cynk
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Select and rename tables</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/R/select-tbl.R"><code>R/select-tbl.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/select-tbl.R" class="external-link"><code>R/select-tbl.R</code></a></small>
     <div class="hidden name"><code>dm_select_tbl.Rd</code></div>
     </div>
 
@@ -116,34 +116,35 @@ optionally renaming them.</p>
 
 <span class="fu">dm_rename_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
-    <h2>Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dm</th>
-      <td><p>A <code><a href="dm.html">dm</a></code> object.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>One or more table names of the tables of the <code><a href="dm.html">dm</a></code> object.
-<code>tidyselect</code> is supported, see <code><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select()</a></code> for details on the semantics.</p></td>
-    </tr></table></div>
-
+    <h2>Arguments</h2>
+    <dl><dt>dm</dt>
+<dd><p>A <code><a href="dm.html">dm</a></code> object.</p></dd>
+<dt>...</dt>
+<dd><p>One or more table names of the tables of the <code><a href="dm.html">dm</a></code> object.
+<code>tidyselect</code> is supported, see <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> for details on the semantics.</p></dd>
+</dl></div>
     <div id="value">
-    <h2>Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <h2>Value</h2>
     <p>The input <code>dm</code> with tables renamed or removed.</p>
     </div>
     <div id="see-also">
-    <h2>See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <h2>See also</h2>
     <div class="dont-index"><p><code><a href="dm_rm_tbl.html">dm_rm_tbl()</a></code></p></div>
+    </div>
     </div>
 
     <div id="examples">
-    <h2>Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+    <h2>Examples</h2>
+    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_select_tbl</span><span class="op">(</span><span class="va">airports</span>, fl <span class="op">=</span> <span class="va">flights</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `airports`, `fl`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 27</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Primary keys: 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Foreign keys: 1</span>
-<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_rename_tbl</span><span class="op">(</span>ap <span class="op">=</span> <span class="va">airports</span>, fl <span class="op">=</span> <span class="va">flights</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `airlines`, `ap`, `fl`, `planes`, `weather`</span>
