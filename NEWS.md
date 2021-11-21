@@ -2,9 +2,9 @@
 
 # dm 0.2.5.9002
 
-- `dm_disambiguate_cols()` also disambiguates columns used in keys, to support correct disambiguation for compound keys  (#662, @moodymudskipper).
-- `dm_disambiguate_cols()` now emits the source code equivalent of a renaming operation (#684, @moodymudskipper).
-- `dm_examine_constraints()` uses backticks to surround table names (#687, @moodymudskipper).
+- `dm_disambiguate_cols()` also disambiguates columns used in keys, to support correct disambiguation for compound keys  (#662).
+- `dm_disambiguate_cols()` now emits the source code equivalent of a renaming operation (#684).
+- `dm_examine_constraints()` uses backticks to surround table names (#687).
 - New `dm_pixarfilms()` creates a dm object with data from the {pixarfilms} package (#600, @erictleung).
 - Fix compatibility with dplyr 1.0.8 (#698).
 
@@ -12,9 +12,9 @@
 # dm 0.2.5.9001
 
 - `check_cardinality_0_1()`, `check_cardinality_0_n()`, `check_cardinality_1_1()`, `check_cardinality_1_n()`, and `examine_cardinality()` now support compound keys (#524).
-- `decompose_table()` now avoids creating `NA` values in the key column (#580, @moodymudskipper).
+- `decompose_table()` now avoids creating `NA` values in the key column (#580).
 - `check_subset()` and `check_set_equality()` support compound keys (#523).
-- `dm_draw()` works with empty tables (#585, @moodymudskipper).
+- `dm_draw()` works with empty tables (#585).
 - `dm_paste()` adds the `on_delete` argument to `dm_add_fk()` (#673).
 
 
