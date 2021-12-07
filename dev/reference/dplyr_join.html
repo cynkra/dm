@@ -108,7 +108,8 @@
     <p>Use these methods without the '.zoomed_dm' suffix (see examples).</p>
     </div>
 
-    <div class="ref-usage sourceCode">Usage,<pre class="sourceCode r"><code><span class="co"># S3 method for zoomed_dm</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for zoomed_dm</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, by <span class="op">=</span> <span class="cn">NULL</span>, copy <span class="op">=</span> <span class="cn">NULL</span>, suffix <span class="op">=</span> <span class="cn">NULL</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for zoomed_dm</span>
@@ -125,8 +126,8 @@
 
 <span class="co"># S3 method for zoomed_dm</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, by <span class="op">=</span> <span class="cn">NULL</span>, copy <span class="op">=</span> <span class="cn">NULL</span>, suffix <span class="op">=</span> <span class="cn">NULL</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x, y</dt>
@@ -146,11 +147,10 @@ The table's <code>by</code> column(s) are automatically added if missing in the 
 <dt>...</dt>
 <dd><p>see <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::join</a></code></p></dd>
 </dl></div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airports</span>, select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">faa</span>, <span class="va">name</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Zoomed table: flights</span></span>
@@ -193,7 +193,7 @@ The table's <code>by</code> column(s) are automatically added if missing in the 
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
 </div>
 
       </footer></div>

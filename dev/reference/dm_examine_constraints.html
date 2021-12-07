@@ -114,9 +114,10 @@ The printing for this object is special, use <code>as_tibble()</code>
 to print as a regular tibble.</p>
     </div>
 
-    <div class="ref-usage sourceCode">Usage,<pre class="sourceCode r"><code><span class="fu">dm_examine_constraints</span><span class="op">(</span><span class="va">dm</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_examine_constraints</span><span class="op">(</span><span class="va">dm</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dm</dt>
@@ -154,11 +155,10 @@ hide in non-interactive mode, show in interactive mode. Requires the
 For the foreign key constraints, the tests check if for each foreign key constraint, the values of the foreign key column
 form a subset of the values of the referenced column.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_examine_constraints</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Unsatisfied constraints:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">•</span> Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</span>
@@ -176,7 +176,7 @@ form a subset of the values of the referenced column.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
 </div>
 
       </footer></div>

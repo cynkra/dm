@@ -166,7 +166,8 @@ only for tables in <code>dm</code>.
 The order in which the tables are processed is reversed.</p>
     </div>
 
-    <div class="ref-usage sourceCode">Usage,<pre class="sourceCode r"><code><span class="fu">dm_rows_insert</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span>, in_place <span class="op">=</span> <span class="cn">NULL</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_rows_insert</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span>, in_place <span class="op">=</span> <span class="cn">NULL</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
 
 <span class="fu">dm_rows_update</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span>, in_place <span class="op">=</span> <span class="cn">NULL</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
 
@@ -177,8 +178,8 @@ The order in which the tables are processed is reversed.</p>
 <span class="fu">dm_rows_delete</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span>, in_place <span class="op">=</span> <span class="cn">NULL</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
 
 <span class="fu">dm_rows_truncate</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span>, in_place <span class="op">=</span> <span class="cn">NULL</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
@@ -203,11 +204,10 @@ hide in non-interactive mode, show in interactive mode. Requires the
 If <code>in_place = TRUE</code>, the underlying data is updated as a side effect,
 and <code>x</code> is returned, invisibly.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Establish database connection:</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Establish database connection:</span></span>
 <span class="r-in"><span class="va">sqlite</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Entire dataset with all dimension tables populated</span></span>
@@ -248,7 +248,7 @@ and <code>x</code> is returned, invisibly.</p>
 <span class="r-in"><span class="fu">dm_rows_insert</span><span class="op">(</span><span class="va">flights_sqlite</span>, <span class="va">flights_jan_sqlite</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Not persisting, use `in_place = FALSE` to turn off this message.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">────────────────────────────────────────────────────────────────</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> src:  sqlite 3.36.0 []</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> src:  sqlite 3.37.0 []</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 53</span>
@@ -318,7 +318,7 @@ and <code>x</code> is returned, invisibly.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
 </div>
 
       </footer></div>
