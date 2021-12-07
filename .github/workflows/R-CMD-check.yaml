@@ -120,7 +120,7 @@ jobs:
         with:
         # Begin custom: rcmdcheck error_on
         # FIXME: Only necessary for R 3.6 or earlier, change when R 3.6 becomes oldrel-3 or oldrel-4, remove when R 3.6 is no longer checked
-        - error_on: ${{ matrix.os.release != 'oldrel-2' && matrix.os.release != 'oldrel-3' && matrix.os.release != 'oldrel-4' && '"note"' }}
+          error_on: ${{ matrix.os.release != 'oldrel-2' && matrix.os.release != 'oldrel-3' && matrix.os.release != 'oldrel-4' && '"note"' }}
         # End custom: rcmdcheck error_on
 
       - name: Show test output
