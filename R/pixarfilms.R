@@ -46,7 +46,6 @@ dm_pixarfilms <- function(color = TRUE) {
   dm <-
     dm %>%
     dm_add_pk(pixar_films, film, check = TRUE) %>%
-    dm_add_pk(pixar_people, c(film, role_type), check = TRUE) %>%
     dm_add_pk(academy, c(film, award_type), check = TRUE) %>%
     dm_add_pk(box_office, film, check = TRUE) %>%
     dm_add_pk(genres, c(film, genre), check = TRUE) %>%
