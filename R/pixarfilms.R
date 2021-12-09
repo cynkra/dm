@@ -45,22 +45,22 @@ dm_pixarfilms <- function(color = TRUE) {
   # Add primary keys
   dm <-
     dm %>%
-    dm_add_pk(pixar_films, film) %>%
-    dm_add_pk(pixar_people, c(film, role_type)) %>%
-    dm_add_pk(academy, c(film, award_type)) %>%
-    dm_add_pk(box_office, film) %>%
-    dm_add_pk(genres, c(film, genre)) %>%
-    dm_add_pk(public_response, film)
+    dm_add_pk(pixar_films, film, check = TRUE) %>%
+    dm_add_pk(pixar_people, c(film, role_type), check = TRUE) %>%
+    dm_add_pk(academy, c(film, award_type), check = TRUE) %>%
+    dm_add_pk(box_office, film, check = TRUE) %>%
+    dm_add_pk(genres, c(film, genre), check = TRUE) %>%
+    dm_add_pk(public_response, film, check = TRUE)
 
 
   # Add foreign keys between tables
   dm <-
     dm %>%
-    dm_add_fk(pixar_people, film, pixar_films) %>%
-    dm_add_fk(academy, film, pixar_films) %>%
-    dm_add_fk(box_office, film, pixar_films) %>%
-    dm_add_fk(genres, film, pixar_films) %>%
-    dm_add_fk(public_response, film, pixar_films)
+    dm_add_fk(pixar_people, film, pixar_films, check = TRUE) %>%
+    dm_add_fk(academy, film, pixar_films, check = TRUE) %>%
+    dm_add_fk(box_office, film, pixar_films, check = TRUE) %>%
+    dm_add_fk(genres, film, pixar_films, check = TRUE) %>%
+    dm_add_fk(public_response, film, pixar_films, check = TRUE)
 
 
   # Set colors for relationship diagram
