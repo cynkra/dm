@@ -23,7 +23,9 @@ dm_pixarfilms <- function(color = TRUE) {
   )
 
   # Extract data objects
-  pixar_films <- pixarfilms::pixar_films
+  pixar_films <- pixarfilms::pixar_films %>%
+    # necessary to have a proper primary key
+    filter(!is.na(film))
   pixar_people <- pixarfilms::pixar_people
   academy <- pixarfilms::academy
   box_office <- pixarfilms::box_office
