@@ -183,11 +183,12 @@ copy_dm_to <- function(dest, dm, ...,
     table_names_out <- set_names(src_names)
   }
 
-  if (is.null(copy_to)) {
-    copy_to <- dplyr::copy_to
-  } else {
-    copy_to <- as_function(copy_to)
-  }
+  ## obsolete old code
+  # if (is.null(copy_to)) {
+  #   copy_to <- dplyr::copy_to
+  # } else {
+  #   copy_to <- as_function(copy_to)
+  # }
 
   check_not_zoomed(dm)
 
@@ -200,6 +201,43 @@ copy_dm_to <- function(dest, dm, ...,
   if (!is_db(dest)) {
     return(dm)
   }
+
+  ## new code
+
+  browser()
+  queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
+
+  # create tables
+  walk(queries$create_table_queries$sql, ~{
+    rs <- DBI::dbSendStatement(dest_con, .x)
+    DBI::dbClearResult(rs)
+  })
+
+  # build remote dm
+  remote_tables <-
+    queries$create_table_queries$remote_table %>%
+    set_names(queries$create_table_queries$table) %>%
+    map(tbl, src = dest_con)
+  remote_dm <- dm(!!! remote_tables)
+
+  # populate tables
+  pwalk(
+    queries$create_table_queries[c("table", "remote_table")],
+    ~ {
+      browser()
+      DBI::dbAppendTable(dest_con, gsub("`", "", .y), dm[[.x]])
+    }
+    )
+
+  dm_rows_insert(remote_dm, dm, progress = progress)
+
+  # create indexes
+  walk(queries$index_queries$query, DBI::dbSendQuery)
+  DBI::dbClearResult()
+
+  return(invisible())
+
+  ## previous code
 
   copy_data <- build_copy_data(dm, dest, table_names_out, set_key_constraints, dest_con)
 
