@@ -64,7 +64,7 @@ build_copy_queries <- function(con, dm, set_key_constraints = TRUE, temporary = 
     # foreign key definitions and indexing queries
     if(is_duckdb(con)) {
       if(nrow(fks)) {
-        warn("duckdb doesn't support foreign keys, these will be ignored")
+        warn("duckdb doesn't support foreign keys, these won't be set in the remote database but are preserved in the `dm`")
       }
       # setup ulterior left join so it'll create a NA col for `fk_def`
       fk_defs <- tibble(table = character(0), fk_defs = character(0))
