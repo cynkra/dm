@@ -21,35 +21,6 @@ on:
 name: rcc
 
 jobs:
-  R-CMD-check-smoke:
-    runs-on: ubuntu-latest
-
-    name: "Smoke test: stock R"
-
-    # Begin custom: services
-    # End custom: services
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: ./.github/workflows/rate-limit
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: ./.github/workflows/custom/before-install
-
-      - uses: ./.github/workflows/install
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          install-r: false
-          cache-version: rcc-smoke-1
-
-      - uses: ./.github/workflows/custom/after-install
-
-      - uses: ./.github/workflows/check
-        with:
-          results: ${{ runner.os }}-smoke-test
-
   # Windows checks are run in parallel and independently,
   # because they alone can take as long as the smoke and full tests combined.
   R-CMD-check-windows:
@@ -64,7 +35,6 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: 'release'}
           # Use 3.6 to trigger usage of RTools35
           - {os: windows-latest, r: '3.6'}
 
@@ -81,57 +51,8 @@ jobs:
 
       - uses: ./.github/workflows/custom/after-install
 
-      - uses: ./.github/workflows/check
-        with:
-          results: ${{ runner.os }}-r${{ matrix.config.r }}
-
-  R-CMD-check-full:
-    runs-on: ${{ matrix.config.os }}
-    needs: R-CMD-check-smoke
-
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }}) ${{ matrix.config.desc }}
-
-    # Begin custom: services
-    # End custom: services
-
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - {os: macOS-latest,   r: 'release'}
-
-          - {os: ubuntu-20.04,   r: 'release'}
-
-          # Use older ubuntu to maximise backward compatibility
-          - {os: ubuntu-18.04,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-18.04,   r: 'release'}
-          - {os: ubuntu-18.04,   r: 'oldrel-1'}
-
-          # Begin custom: R 3.6
-          - {os: ubuntu-18.04,   r: 'oldrel-2'}
-          # End custom: R 3.6
-
-          # Begin custom: R 3.5
-          # End custom: R 3.5
-
-          # Begin custom: R 3.4
-          # End custom: R 3.4
-
-          # Begin custom: matrix elements
-          # End custom: matrix elements
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: ./.github/workflows/custom/before-install
-
-      - uses: ./.github/workflows/install
-        with:
-          r-version: ${{ matrix.config.r }}
-          cache-version: rcc-main-1
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: ./.github/workflows/custom/after-install
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
 
       - uses: ./.github/workflows/check
         with:
