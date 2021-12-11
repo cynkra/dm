@@ -18,3 +18,9 @@ runs:
           cat('_R_CHECK_FORCE_SUGGESTS_=false\n', file = Sys.getenv("GITHUB_ENV"), append = TRUE)
         }
       shell: Rscript {0}
+
+    - name: Clean up broken mysql apt
+      run: |
+        apt-get update
+        apt-get install mysql-common=5.8+1.0.5ubuntu2 --allow-downgrades
+      shell: bash
