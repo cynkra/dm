@@ -183,13 +183,6 @@ copy_dm_to <- function(dest, dm, ...,
     table_names_out <- set_names(src_names)
   }
 
-  ## obsolete old code
-  # if (is.null(copy_to)) {
-  #   copy_to <- dplyr::copy_to
-  # } else {
-  #   copy_to <- as_function(copy_to)
-  # }
-
   check_not_zoomed(dm)
 
   # FIXME: if same_src(), can use compute() but need to set NOT NULL and other
@@ -202,13 +195,25 @@ copy_dm_to <- function(dest, dm, ...,
     return(dm)
   }
 
-  ## new code
-
-  browser()
   queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
 
   # create tables
   walk(queries$create_table_queries$sql, ~{
+    rs <- DBI::dbSendStatement(dest_con, .x)
+    DBI::dbClearResult(rs)
+  })
+
+  # populate tables
+  unquote_ids <- function(x) substr(x, 2, nchar(unclass(x)) - 1)
+  pwalk(
+    queries$create_table_queries[c("table", "remote_table")],
+    ~  {
+      DBI::dbAppendTable(dest_con, unquote_ids(.y), dm[[.x]])
+    }
+  )
+
+  # create indexes
+  walk(queries$index_queries$sql, ~ {
     rs <- DBI::dbSendStatement(dest_con, .x)
     DBI::dbClearResult(rs)
   })
@@ -218,41 +223,9 @@ copy_dm_to <- function(dest, dm, ...,
     queries$create_table_queries$remote_table %>%
     set_names(queries$create_table_queries$table) %>%
     map(tbl, src = dest_con)
-  remote_dm <- dm(!!! remote_tables)
-
-  # populate tables
-  pwalk(
-    queries$create_table_queries[c("table", "remote_table")],
-    ~ {
-      browser()
-      DBI::dbAppendTable(dest_con, gsub("`", "", .y), dm[[.x]])
-    }
-    )
-
-  dm_rows_insert(remote_dm, dm, progress = progress)
-
-  # create indexes
-  walk(queries$index_queries$query, DBI::dbSendQuery)
-  DBI::dbClearResult()
-
-  return(invisible())
-
-  ## previous code
-
-  copy_data <- build_copy_data(dm, dest, table_names_out, set_key_constraints, dest_con)
-
-  ticker <- new_ticker("uploading data", nrow(copy_data), progress = progress)
-  new_tables <- pmap(
-    copy_data, ticker(copy_to),
-    dest = dest,
-    temporary = temporary,
-    overwrite = FALSE,
-    ...
-  )
-  names(new_tables) <- copy_data$source_name
-
+  # remote dm is same as source dm with replaced data
   def <- dm_get_def(dm)
-  def$data <- unname(new_tables[names(dm)])
+  def$data <- unname(remote_tables[names(dm)])
   remote_dm <- new_dm3(def)
 
   invisible(debug_validate_dm(remote_dm))
