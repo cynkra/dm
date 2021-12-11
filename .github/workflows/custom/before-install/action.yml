@@ -4,6 +4,8 @@ runs:
   using: "composite"
   steps:
     - name: Define R CMD check error condition
+      # Rscript not available on Mac
+      if: runner.os != 'macOS'
       run: |
         if (getRversion() < "4.0") {
           message("Setting RCMDCHECK_ERROR_ON")
@@ -12,6 +14,8 @@ runs:
       shell: Rscript {0}
 
     - name: Define _R_CHECK_FORCE_SUGGESTS_
+      # Rscript not available on Mac
+      if: runner.os == 'macOS'
       run: |
         if (getRversion() < "4.0") {
           message("Setting _R_CHECK_FORCE_SUGGESTS_")
