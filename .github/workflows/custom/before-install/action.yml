@@ -1,0 +1,34 @@
+name: 'Actions to run before R packages are installed'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Define R CMD check error condition
+      # Rscript not available on Mac
+      if: runner.os != 'macOS'
+      run: |
+        if (getRversion() < "4.0") {
+          message("Setting RCMDCHECK_ERROR_ON")
+          cat('RCMDCHECK_ERROR_ON="warning"\n', file = Sys.getenv("GITHUB_ENV"), append = TRUE)
+        }
+      shell: Rscript {0}
+
+    - name: Define _R_CHECK_FORCE_SUGGESTS_
+      # Rscript not available on Mac
+      if: runner.os != 'macOS'
+      run: |
+        if (getRversion() < "4.0") {
+          message("Setting _R_CHECK_FORCE_SUGGESTS_")
+          cat('_R_CHECK_FORCE_SUGGESTS_=false\n', file = Sys.getenv("GITHUB_ENV"), append = TRUE)
+        }
+      shell: Rscript {0}
+
+    - name: Clean up broken mysql apt
+      # FIXME: Remove if package becomes unavailable
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        if [ $(lsb_release --short --codename) == 'focal' ]; then
+          sudo apt-get install mysql-common=5.8+1.0.5ubuntu2 --allow-downgrades
+        fi
+      shell: bash
