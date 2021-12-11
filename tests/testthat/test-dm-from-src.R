@@ -15,12 +15,12 @@ test_that("table identifiers are quoted", {
     ~ dbplyr::remote_name(test_dm[[.x]])
   )
 
-  withr::defer(
+  withr::defer({
     walk(
       remote_tbl_names_copied,
       ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", .x)))
     )
-  )
+  })
 
   dm <-
     suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE)) %>%
@@ -53,12 +53,12 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
     ~ dbplyr::remote_name(test_dm[[.x]])
   )
 
-  withr::defer(
+  withr::defer({
     walk(
       remote_tbl_names_copied,
       ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", .x)))
     )
-  )
+  })
 
   dm <- suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE))
   remote_names <-
