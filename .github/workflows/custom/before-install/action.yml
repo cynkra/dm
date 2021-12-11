@@ -23,6 +23,11 @@ runs:
         }
       shell: Rscript {0}
 
+    - name: Define DM_TEST_SRC
+      run: |
+        echo "DM_TEST_SRC=${{ matrix.config.test-src }}" | tee -a $GITHUB_ENV
+      shell: bash
+
     - name: Clean up broken mysql apt
       # FIXME: Remove if package becomes unavailable
       if: runner.os == 'Linux'
