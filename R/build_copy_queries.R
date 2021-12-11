@@ -78,7 +78,7 @@ build_copy_queries <- function(con, dm, set_key_constraints = TRUE, temporary = 
             "FOREIGN KEY (",
             quote_enum_col(child_fk_cols),
             ") REFERENCES ",
-            quote_enum_col(parent_table),
+            unlist(table_names[parent_table]),
             " (",
             quote_enum_col(parent_key_cols),
             ")")) %>%
