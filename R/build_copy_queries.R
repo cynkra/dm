@@ -90,9 +90,10 @@ build_copy_queries <- function(con, dm, set_key_constraints = TRUE, temporary = 
         transmute(
           table = child_table,
           remote_table = unlist(table_names[table]),
-          query = DBI::SQL(paste0(
+          sql = DBI::SQL(paste0(
             "CREATE INDEX ",
-            quote_enum_col(index_name),
+            # hack (?) to create unique indexes
+            sapply(index_name, dm::repair_table_names_for_db, TRUE, con),
             " ON ",
             remote_table,
             " (",
