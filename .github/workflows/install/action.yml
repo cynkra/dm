@@ -39,6 +39,11 @@ runs:
         sudo apt-get update
       shell: bash
 
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+      with:
+        limit-access-to-actor: true
+
     - uses: r-lib/actions/setup-pandoc@v1
 
     - uses: r-lib/actions/setup-r@v1
