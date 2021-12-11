@@ -31,11 +31,6 @@ runs:
         sqlcmd -U SA -P 'YourStrong!Passw0rd' -Q 'CREATE DATABASE test;'
       shell: bash
 
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
-      with:
-        limit-access-to-actor: true
-
     - name: Set ODBCSYSINI (SQL Server)
       if: env.DM_TEST_SRC == 'test-mssql'
       run: |
