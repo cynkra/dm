@@ -56,7 +56,11 @@ copy_to_my_test_src <- function(rhs, lhs) {
 }
 
 my_test_src_name <- {
-  src <- Sys.getenv("DM_TEST_SRC", "df")
+  src <- Sys.getenv("DM_TEST_SRC")
+  # Allow set but empty DM_TEST_SRC environment variable
+  if (src == "") {
+    src <- "df"
+  }
   name <- gsub("^.*-", "", src)
   inform(crayon::green(paste0("Testing on ", name)))
   name
