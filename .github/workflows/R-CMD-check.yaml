@@ -118,7 +118,7 @@ jobs:
           # Begin custom: matrix elements
           - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-mssql',      desc: 'SQL Server' }
           - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-postgres',   desc: 'Postgres' }
-          - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-duckdb',     desc: 'DuckDB' }
+          #- {os: ubuntu-18.04,   r: 'release',   test-src: 'test-duckdb',     desc: 'DuckDB' }
           - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-sqlite',     desc: 'SQLite' }
           # End custom: matrix elements
 
