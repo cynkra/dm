@@ -67,7 +67,6 @@ Suggests:
     DiagrammeR,
     DiagrammeRsvg,
     digest,
-    duckdb,
     fansi,
     keyring,
     knitr,
@@ -85,6 +84,8 @@ Suggests:
     tidyverse,
     waldo,
     withr
+Enhances: 
+    duckdb
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
