@@ -112,11 +112,9 @@ jobs:
           # End custom: R 3.6
 
           # Begin custom: R 3.5
-          - {os: ubuntu-18.04,   r: 'oldrel-3'}
           # End custom: R 3.5
 
           # Begin custom: R 3.4
-          - {os: ubuntu-18.04,   r: 'oldrel-4'}
           # End custom: R 3.4
 
           # Begin custom: matrix elements
