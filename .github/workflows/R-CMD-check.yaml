@@ -116,6 +116,10 @@ jobs:
           # End custom: R 3.4
 
           # Begin custom: matrix elements
+          - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-mssql' }
+          - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-postgres' }
+          - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-duckdb' }
+          - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-sqlite' }
           # End custom: matrix elements
 
     steps:
