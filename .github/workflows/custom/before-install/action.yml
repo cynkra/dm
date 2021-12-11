@@ -15,7 +15,7 @@ runs:
 
     - name: Define _R_CHECK_FORCE_SUGGESTS_
       # Rscript not available on Mac
-      if: runner.os == 'macOS'
+      if: runner.os != 'macOS'
       run: |
         if (getRversion() < "4.0") {
           message("Setting _R_CHECK_FORCE_SUGGESTS_")
