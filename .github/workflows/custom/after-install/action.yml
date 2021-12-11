@@ -36,18 +36,9 @@ runs:
       with:
         limit-access-to-actor: true
 
-    - name: Install ODBC driver (SQL Server)
-      if: env.DM_TEST_SRC == 'test-mssql'
-      run: |
-        curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-        curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
-        apt-get update
-        ACCEPT_EULA=Y apt-get install -y msodbcsql17
-        ln -s /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.*.so.* /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.so
-      shell: bash
-
     - name: Set ODBCSYSINI (SQL Server)
       if: env.DM_TEST_SRC == 'test-mssql'
       run: |
+        ln -s /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.*.so.* /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.so
         echo "ODBCSYSINI=${{ github.workspace }}/.github/odbc" | tee -a $GITHUB_ENV
       shell: bash
