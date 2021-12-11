@@ -33,6 +33,12 @@ runs:
         echo "RGL_USE_NULL=true" | tee -a $GITHUB_ENV
       shell: bash
 
+    - name: Update apt
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+      shell: bash
+
     - uses: r-lib/actions/setup-pandoc@v1
 
     - uses: r-lib/actions/setup-r@v1
