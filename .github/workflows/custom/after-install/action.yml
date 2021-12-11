@@ -30,3 +30,9 @@ runs:
       run: |
         sqlcmd -U SA -P 'YourStrong!Passw0rd' -Q 'CREATE DATABASE test;'
       shell: bash
+
+    - name: Set ODBCSYSINI (SQL Server)
+      if: env.DM_TEST_SRC == 'test-mssql'
+      run: |
+        echo "ODBCSYSINI=${{ github.workspace }}/.github/odbc" | tee -a $GITHUB_ENV
+      shell: bash
