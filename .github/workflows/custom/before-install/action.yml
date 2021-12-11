@@ -20,8 +20,11 @@ runs:
       shell: Rscript {0}
 
     - name: Clean up broken mysql apt
+      # FIXME: Remove if package becomes unavailable
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
-        sudo apt-get install mysql-common=5.8+1.0.5ubuntu2 --allow-downgrades
+        if [ $(lsb_release --short --codename) == 'focal' ]; then
+          sudo apt-get install mysql-common=5.8+1.0.5ubuntu2 --allow-downgrades
+        fi
       shell: bash
