@@ -1,0 +1,20 @@
+name: 'Actions to run before R packages are installed'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Define R CMD check error condition
+      run: |
+        if (getRversion() < "4.0") {
+          message("Setting RCMDCHECK_ERROR_ON")
+          cat('RCMDCHECK_ERROR_ON="warning"\n', file = Sys.getenv("GITHUB_ENV"), append = TRUE)
+        }
+      shell: Rscript {0}
+
+    - name: Define _R_CHECK_FORCE_SUGGESTS_
+      run: |
+        if (getRversion() < "4.0") {
+          message("Setting _R_CHECK_FORCE_SUGGESTS_")
+          cat('_R_CHECK_FORCE_SUGGESTS_=false\n', file = Sys.getenv("GITHUB_ENV"), append = TRUE)
+        }
+      shell: Rscript {0}
