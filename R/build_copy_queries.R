@@ -9,7 +9,6 @@ build_copy_queries <- function(con, dm, set_key_constraints = TRUE, temporary = 
   }
 
   ## fetch types, keys and uniques
-  col_types <- get_sql_col_types(dm, con)
   pks <- dm_get_all_pks_impl(dm)
   fks <- dm_get_all_fks_impl(dm)
 
@@ -129,17 +128,3 @@ build_copy_queries <- function(con, dm, set_key_constraints = TRUE, temporary = 
   lst(create_table_queries, index_queries)
 }
 
-# to do, plug in dm_copy_to, use dm_row_insert, write tests
-
-get_sql_col_types <- function(dm, con) {
-  # TODO: fetch explicit types from dm, either from col attributes or dm itself
-  get_sql_col_types0 <- . %>%
-    tbl_impl(dm, .) %>%
-    DBI::dbDataType(con, .) %>%
-    enframe("col", "type")
-
-  dm %>%
-    src_tbls_impl() %>%
-    set_names() %>%
-    map_dfr(get_sql_col_types0, .id = "table")
-}
