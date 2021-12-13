@@ -88,7 +88,7 @@ build_copy_queries <- function(con, dm, set_key_constraints = TRUE, temporary = 
         mutate(index_name = map_chr(child_fk_cols, paste, collapse = "_")) %>%
         transmute(
           table = child_table,
-          remote_table = unlist(table_names[table]),
+          remote_table = unlist(table_names[table]) %||% character(0),
           sql = DBI::SQL(paste0(
             "CREATE INDEX ",
             # hack (?) to create unique indexes
