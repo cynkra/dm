@@ -168,8 +168,8 @@ copy_dm_to <- function(dest, dm, ...,
         abort_copy_dm_to_table_names_duplicated(problem)
       }
 
-      table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, table_names_out[src_names]))
-      # names(table_names_out) <- src_names
+      table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, unclass(table_names_out[src_names])))
+      names(table_names_out) <- src_names
     }
 
     # create `ident`-class objects from the table names
