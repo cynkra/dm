@@ -39,7 +39,8 @@ build_copy_queries <- function(con, dm, set_key_constraints = TRUE, temporary = 
   if(!set_key_constraints) {
     pk_defs <- tibble(table = character(0), pk_defs = character(0))
     fk_defs <- tibble(table = character(0), fk_defs = character(0))
-    index_queries <- tibble(table = character(0), query = character(0))
+    unique_defs <- tibble(table = character(0), unique_defs = character(0))
+    index_queries <- tibble(table = character(0), sql = character(0))
     } else {
     # primary key definitions
     pk_defs <-
