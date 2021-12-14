@@ -92,7 +92,7 @@ build_copy_queries <- function(con, dm, set_key_constraints = TRUE, temporary = 
           sql = DBI::SQL(paste0(
             "CREATE INDEX ",
             # hack (?) to create unique indexes
-            sapply(index_name, dm::repair_table_names_for_db, TRUE, con),
+            sapply(index_name, unique_db_table_name),
             " ON ",
             remote_table,
             " (",
