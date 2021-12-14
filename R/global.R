@@ -110,5 +110,13 @@ utils::globalVariables(c(
   "film",
   "role_type",
   "award_type",
-  "genre"
+  "genre",
+  #
+  # build_copy_queries
+  "col_def",
+  "fk_def",
+  "index_name",
+  "na.omit",
+  "remote_table",
+  "unique_def"
 ))
