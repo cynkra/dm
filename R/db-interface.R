@@ -204,11 +204,10 @@ copy_dm_to <- function(dest, dm, ...,
   })
 
   # populate tables
-  unquote_ids <- function(x) substr(x, 2, nchar(unclass(x)) - 1)
   pwalk(
     queries$create_table_queries[c("table", "remote_table")],
     ~  {
-      DBI::dbAppendTable(dest_con, unquote_ids(.y), dm[[.x]])
+      DBI::dbAppendTable(dest_con, DBI::SQL(.y), dm[[.x]])
     }
   )
 
