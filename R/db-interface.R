@@ -249,7 +249,7 @@ db_append_table <- function(con, remote_table, table) {
     # chunks of 1000
     idx <- as.integer((seq_len(nrow(values)) + 999L) / 1000L)
     split <- vec_split(values, idx)
-    sql <- map_chr(split$val, ~ DBI::sqlAppendTable(con, DBI::SQL(remote_table), .x, row.names = FALSE))
+    sql <- map_chr(split$val, ~ DBI::sqlAppendTable(con, DBI::SQL(remote_table), as.list(.x), row.names = FALSE))
     walk(sql, ~ DBI::dbExecute(con, .x, immediate = TRUE))
   } else {
     DBI::dbAppendTable(con, DBI::SQL(remote_table), table)
