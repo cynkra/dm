@@ -203,24 +203,10 @@ copy_dm_to <- function(dest, dm, ...,
   })
 
   # populate tables
-  if (is_mssql(dest_con)) {
-    pwalk(
-      queries$create_table_queries[c("table", "remote_table")],
-      ~  {
-        # https://github.com/r-dbi/odbc/issues/480
-        values <- map(dm[[.x]], DBI::dbQuoteLiteral, conn = dest_con)
-        sql <- DBI::sqlAppendTable(dest_con, DBI::SQL(.y), values, row.names = FALSE)
-        DBI::dbExecute(dest_con, sql)
-      }
-    )
-  } else {
-    pwalk(
-      queries$create_table_queries[c("table", "remote_table")],
-      ~  {
-        DBI::dbAppendTable(dest_con, DBI::SQL(.y), dm[[.x]])
-      }
-    )
-  }
+  pwalk(
+    queries$create_table_queries[c("table", "remote_table")],
+    ~ db_append_table(dest_con, .y, dm[[.x]])
+  )
 
   # create indexes
   walk(queries$index_queries$sql, ~ {
@@ -253,6 +239,19 @@ get_db_table_names <- function(dm) {
 check_naming <- function(table_names, dm_table_names) {
   if (!identical(sort(table_names), sort(dm_table_names))) {
     abort_copy_dm_to_table_names()
+  }
+}
+
+db_append_table <- function(con, remote_table, table) {
+  if (is_mssql(con)) {
+    # https://github.com/r-dbi/odbc/issues/480
+    values <- as_tibble(map(table, DBI::dbQuoteLiteral, conn = con))
+    idx <- as.integer((seq_len(nrow(values)) + 999L) / 1000L)
+    split <- vec_split(values, idx)
+    sql <- map_chr(split$val, ~ DBI::sqlAppendTable(con, DBI::SQL(remote_table), .x, row.names = FALSE))
+    walk(sql, ~ DBI::dbExecute(con, .x, immediate = TRUE))
+  } else {
+    DBI::dbAppendTable(con, DBI::SQL(remote_table), table)
   }
 }
 
