@@ -199,22 +199,21 @@ copy_dm_to <- function(dest, dm, ...,
 
   # create tables
   walk(queries$create_table_queries$sql, ~{
-    rs <- DBI::dbSendStatement(dest_con, .x)
-    DBI::dbClearResult(rs)
+    DBI::dbExecute(dest_con, .x, immediate = TRUE)
   })
 
   # populate tables
   pwalk(
     queries$create_table_queries[c("table", "remote_table")],
     ~  {
-      DBI::dbAppendTable(dest_con, DBI::SQL(.y), dm[[.x]])
+      # https://github.com/r-dbi/odbc/issues/480
+      DBI::dbWriteTable(dest_con, DBI::SQL(.y), dm[[.x]], append = TRUE)
     }
   )
 
   # create indexes
   walk(queries$index_queries$sql, ~ {
-    rs <- DBI::dbSendStatement(dest_con, .x)
-    DBI::dbClearResult(rs)
+    DBI::dbExecute(dest_con, .x, immediate = TRUE)
   })
 
   # build remote dm
