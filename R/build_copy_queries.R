@@ -111,7 +111,11 @@ build_copy_queries <- function(con, dm, set_key_constraints = TRUE, temporary = 
     group_by(table) %>%
     mutate(
       remote_table = table_names[table],
-      all_defs = paste(na.omit(c(col_defs, pk_defs, unique_defs, fk_defs)), collapse = ",\n  ")) %>%
+      all_defs = paste(
+        Filter(
+          Negate(is.na),
+          c(col_defs, pk_defs, unique_defs, fk_defs)),
+        collapse = ",\n  ")) %>%
     ungroup() %>%
     transmute(table, remote_table, sql = DBI::SQL(glue(
       "CREATE {if (temporary) 'TEMP ' else ''}TABLE {unlist(remote_table)} (\n  {all_defs}\n)")))

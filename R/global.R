@@ -116,7 +116,6 @@ utils::globalVariables(c(
   "col_def",
   "fk_def",
   "index_name",
-  "na.omit",
   "remote_table",
   "unique_def"
 ))
