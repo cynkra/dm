@@ -206,7 +206,8 @@ copy_dm_to <- function(dest, dm, ...,
   pwalk(
     queries$create_table_queries[c("table", "remote_table")],
     ~  {
-      DBI::dbAppendTable(dest_con, DBI::SQL(.y), dm[[.x]])
+      # https://github.com/r-dbi/odbc/issues/480
+      DBI::dbWriteTable(dest_con, DBI::SQL(.y), dm[[.x]], append = TRUE)
     }
   )
 
