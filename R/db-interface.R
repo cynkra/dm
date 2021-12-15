@@ -212,8 +212,7 @@ copy_dm_to <- function(dest, dm, ...,
 
   # create indexes
   walk(queries$index_queries$sql, ~ {
-    rs <- DBI::dbSendStatement(dest_con, .x)
-    DBI::dbClearResult(rs)
+    DBI::dbExecute(dest_con, .x, immediate = TRUE)
   })
 
   # build remote dm
