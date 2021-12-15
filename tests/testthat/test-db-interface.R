@@ -197,3 +197,28 @@ test_that("copy_dm_to() fails with schema argument for databases other than MSSQ
     "no_schemas_supported"
   )
 })
+
+
+test_that("build_copy_queries works", {
+  skip_if_ide()
+
+  # build regular dm from `dm_pixarfilms()`
+  pixar_dm <-
+    # fetch sample dm
+    dm_pixarfilms() %>%
+    # make it regular
+    dm_filter(pixar_films, !is.na(film)) %>%
+    dm_apply_filters() %>%
+    dm_select_tbl(-pixar_people)
+
+  src_db <- my_test_src()
+  expect_snapshot(
+    pixar_dm %>%
+      build_copy_queries(
+        src_db,
+        .,
+        table_names = names(.) %>%
+          repair_table_names_for_db(temporary = FALSE, con = sqlite_db, schema = NULL) %>%
+          map(dbplyr::ident_q))
+  )
+})
