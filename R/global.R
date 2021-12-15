@@ -117,5 +117,6 @@ utils::globalVariables(c(
   "fk_def",
   "index_name",
   "remote_table",
+  "remote_table_unquoted",
   "unique_def"
 ))
