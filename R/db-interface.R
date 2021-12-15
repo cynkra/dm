@@ -245,7 +245,8 @@ check_naming <- function(table_names, dm_table_names) {
 db_append_table <- function(con, remote_table, table) {
   if (is_mssql(con)) {
     # https://github.com/r-dbi/odbc/issues/480
-    values <- as_tibble(map(table, DBI::dbQuoteLiteral, conn = con))
+    values <- as_tibble(map(table, map_chr, dbplyr::escape, con = con))
+    # chunks of 1000
     idx <- as.integer((seq_len(nrow(values)) + 999L) / 1000L)
     split <- vec_split(values, idx)
     sql <- map_chr(split$val, ~ DBI::sqlAppendTable(con, DBI::SQL(remote_table), .x, row.names = FALSE))
