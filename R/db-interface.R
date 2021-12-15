@@ -199,8 +199,7 @@ copy_dm_to <- function(dest, dm, ...,
 
   # create tables
   walk(queries$create_table_queries$sql, ~{
-    rs <- DBI::dbSendStatement(dest_con, .x)
-    DBI::dbClearResult(rs)
+    DBI::dbExecute(dest_con, .x, immediate = TRUE)
   })
 
   # populate tables
