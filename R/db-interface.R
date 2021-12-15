@@ -203,13 +203,24 @@ copy_dm_to <- function(dest, dm, ...,
   })
 
   # populate tables
-  pwalk(
-    queries$create_table_queries[c("table", "remote_table")],
-    ~  {
-      # https://github.com/r-dbi/odbc/issues/480
-      DBI::dbWriteTable(dest_con, DBI::SQL(.y), dm[[.x]], append = TRUE)
-    }
-  )
+  if (is_mssql(dest_con)) {
+    pwalk(
+      queries$create_table_queries[c("table", "remote_table")],
+      ~  {
+        # https://github.com/r-dbi/odbc/issues/480
+        values <- map(dm[[.x]], DBI::dbQuoteLiteral, conn = dest_con)
+        sql <- DBI::sqlAppendTable(dest_con, DBI::SQL(.y), values, row.names = FALSE)
+        DBI::dbExecute(dest_con, sql)
+      }
+    )
+  } else {
+    pwalk(
+      queries$create_table_queries[c("table", "remote_table")],
+      ~  {
+        DBI::dbAppendTable(dest_con, DBI::SQL(.y), dm[[.x]])
+      }
+    )
+  }
 
   # create indexes
   walk(queries$index_queries$sql, ~ {
