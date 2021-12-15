@@ -19,5 +19,4 @@
 #' @import ellipsis
 #' @importFrom grDevices col2rgb colors rgb
 #' @importFrom pillar pillar_shaft
-#' @importFrom stats na.omit
 NULL
