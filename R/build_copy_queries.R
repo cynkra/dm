@@ -5,7 +5,7 @@ build_copy_queries <- function(con, dm, set_key_constraints = TRUE, temporary = 
 
   ## helper to quote all elements of a column and enumerate (concat) element wise
   quote_enum_col <- function(x) {
-    map_chr(x, ~toString(map_chr(.x, DBI::dbQuoteIdentifier, con = con)))
+    map_chr(x, ~toString(map_chr(.x, DBI::dbQuoteIdentifier, conn = con)))
   }
 
   ## fetch types, keys and uniques
