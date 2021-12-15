@@ -18,10 +18,10 @@
       # A tibble: 5 x 3
         table           remote_table    sql                                           
         <chr>           <chr>           <SQL>                                         
-      1 pixar_people    pixar_people    CREATE INDEX film_2021_12_15_16_52_52_68790_1~
-      2 academy         academy         CREATE INDEX film_2021_12_15_16_52_52_68790_2~
-      3 box_office      box_office      CREATE INDEX film_2021_12_15_16_52_52_68790_3~
-      4 genres          genres          CREATE INDEX film_2021_12_15_16_52_52_68790_4~
-      5 public_response public_response CREATE INDEX film_2021_12_15_16_52_52_68790_5~
+      1 pixar_people    pixar_people    CREATE INDEX pixar_people__film ON pixar_peop~
+      2 academy         academy         CREATE INDEX academy__film ON academy (`film`)
+      3 box_office      box_office      CREATE INDEX box_office__film ON box_office (~
+      4 genres          genres          CREATE INDEX genres__film ON genres (`film`)  
+      5 public_response public_response CREATE INDEX public_response__film ON public_~
       
 
