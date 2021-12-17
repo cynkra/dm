@@ -435,12 +435,6 @@ check_db_superset <- function(x, y, by) {
   # FIXME
 }
 
-check_returning_cols_possible <- function(returning_cols, in_place) {
-  if (is_false(in_place) & !is_empty(returning_cols)) {
-    abort("`returning` only works if `in_place` is true.")
-  }
-}
-
 
 #' @description
 #' The `sql_rows_*()` functions return the SQL used for the corresponding
