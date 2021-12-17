@@ -17,6 +17,15 @@
 #'   To define a compound key, use `c(col1, col2)`.
 #' @param check Boolean, if `TRUE`, a check will be performed to determine if the values of
 #'   `columns` are a subset of the values of the key column(s) of `ref_table`.
+#' @param on_delete
+#'   `r lifecycle::badge("experimental")`
+#'
+#'   Defines behavior if a row in the parent table is deleted.
+#'     - `"no_action"`, the default, means that no action is taken
+#'        and the operation is aborted if child rows exist
+#'     - `"cascade"` means that the child row is also deleted
+#'   This setting is picked up by [copy_dm_to()] with `set_key_constraints = TRUE`,
+#'   and might be considered by [dm_rows_delete()] in a future version.
 #'
 #' @family foreign key functions
 #'
@@ -49,11 +58,14 @@
 #'     dm_add_pk(planes, tailnum) %>%
 #'     dm_add_fk(flights, tailnum, planes, check = TRUE)
 #' )
-dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ..., check = FALSE) {
+dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ...,
+                      check = FALSE,
+                      on_delete = c("no_action", "cascade")) {
   check_dots_empty()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
+  on_delete <- arg_match(on_delete)
 
   table_obj <- tbl_impl(dm, table_name)
   col_expr <- enexpr(columns)
@@ -82,12 +94,14 @@ dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ..., ch
     }
   }
 
-  dm_add_fk_impl(dm, table_name, list(col_name), ref_table_name, list(ref_col_name))
+  dm_add_fk_impl(dm, table_name, list(col_name), ref_table_name, list(ref_col_name), on_delete)
 }
 
-dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
+dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column, on_delete) {
   column <- unclass(column)
   ref_column <- unclass(ref_column)
+
+  on_delete <- vec_recycle(on_delete, length(ref_table))
 
   loc <- which(!duplicated(ref_table))
   n_loc <- length(loc)
@@ -96,11 +110,12 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
 
     my <- ref_table == my_ref_table
     where_other <- which(!my)
-    dm <- dm_add_fk_impl(dm, table[where_other], column[where_other], ref_table[where_other], ref_column[where_other])
+    dm <- dm_add_fk_impl(dm, table[where_other], column[where_other], ref_table[where_other], ref_column[where_other], on_delete[where_other])
 
     table <- table[my]
     column <- column[my]
     ref_column <- ref_column[my]
+    on_delete <- on_delete[my]
     # ref_table must be scalar, unlike the others
     ref_table <- my_ref_table
   } else if (n_loc == 0) {
@@ -122,12 +137,14 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
       abort_fk_exists(table[[first_existing]], column[[first_existing]], ref_table)
     }
 
+    stopifnot(all(existing))
+
     return(dm)
   }
 
   def$fks[[i]] <- vec_rbind(
     fks,
-    new_fk(ref_column, table, column)
+    new_fk(ref_column, table, column, on_delete)
   )
 
   new_dm3(def)
@@ -201,6 +218,7 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 #'     \item{`child_fk_cols`}{foreign key column(s) in child table as list of character vectors,}
 #'     \item{`parent_table`}{parent table,}
 #'     \item{`parent_key_cols`}{key column(s) in parent table as list of character vectors.}
+#'     \item{`on_delete`}{behavior on deletion of rows in the parent table.}
 #'   }
 #'
 #' @inheritParams dm_has_fk
@@ -232,10 +250,10 @@ dm_get_all_fks_impl <- function(dm, parent_table = NULL) {
 
   flat <- unnest_list_of_df(sub_def, "fks")
 
-  names(flat) <- c("parent_table", "parent_key_cols", "child_table", "child_fk_cols")
+  names(flat) <- c("parent_table", "parent_key_cols", "child_table", "child_fk_cols", "on_delete")
   flat[[2]] <- new_keys(flat[[2]])
   flat[[4]] <- new_keys(flat[[4]])
-  flat[c(3:4, 1:2)]
+  flat[c(3:4, 1:2, 5L)]
 }
 
 #' Remove foreign keys

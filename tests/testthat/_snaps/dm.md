@@ -62,11 +62,11 @@
       # A tibble: 5 x 9
         table    data   segment display     pks     fks filters zoom  col_tracker_zoom
         <chr>    <list> <chr>   <chr>   <list<> <list<> <list<> <lis> <list>          
-      1 airlines <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      2 airports <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      3 flights  <tibb~ <NA>    <NA>    [0 x 1] [0 x 3] [0 x 2] <NUL~ <NULL>          
-      4 planes   <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      5 weather  <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+      1 airlines <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
+      2 airports <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
+      3 flights  <tibb~ <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NUL~ <NULL>          
+      4 planes   <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
+      5 weather  <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% mutate(origin_new = paste0(origin,
         " airport")) %>% compute() %>% dm_update_zoomed() %>% collect() %>%
@@ -75,11 +75,11 @@
       # A tibble: 5 x 9
         table    data   segment display     pks     fks filters zoom  col_tracker_zoom
         <chr>    <list> <chr>   <chr>   <list<> <list<> <list<> <lis> <list>          
-      1 airlines <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      2 airports <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      3 flights  <tibb~ <NA>    <NA>    [0 x 1] [0 x 3] [0 x 2] <NUL~ <NULL>          
-      4 planes   <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      5 weather  <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+      1 airlines <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
+      2 airports <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
+      3 flights  <tibb~ <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NUL~ <NULL>          
+      4 planes   <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
+      5 weather  <tibb~ <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NUL~ <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()
     Message <simpleMessage>
@@ -161,7 +161,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        (`key`) -> (`iris_1$key`)
+        (`key`) -> (`iris_1$key`) no_action
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -201,7 +201,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        (`key`) -> (`iris_1$key`)
+        (`key`) -> (`iris_1$key`) no_action
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6,~

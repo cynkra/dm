@@ -56,7 +56,11 @@ copy_to_my_test_src <- function(rhs, lhs) {
 }
 
 my_test_src_name <- {
-  src <- Sys.getenv("DM_TEST_SRC", "df")
+  src <- Sys.getenv("DM_TEST_SRC")
+  # Allow set but empty DM_TEST_SRC environment variable
+  if (src == "") {
+    src <- "df"
+  }
   name <- gsub("^.*-", "", src)
   inform(crayon::green(paste0("Testing on ", name)))
   name
@@ -160,6 +164,9 @@ data_card_7 %<-% tibble::tibble(c = c(1:5, 5L, 6L))
 data_card_8 %<-% tibble::tibble(c = c(1:6))
 data_card_9 %<-% tibble::tibble(c = c(1:5, NA))
 data_card_10 %<-% tibble::tibble(c = c(1:3, 4:3, NA))
+data_card_11 %<-% tibble::tibble(a = 1:4, b = letters[1:4])
+data_card_12 %<-% tibble::tibble(a = c(1:5, 5), b = letters[c(1:5, 5)])
+data_card_13 %<-% tibble::tibble(a = 1:6, b = letters[1:6])
 
 # for check_key() ---------------------------------------------------------
 
@@ -281,7 +288,7 @@ dm_for_filter_w_cycle %<-% {
     dm_add_fk(tf_6, o, tf_7) %>%
     #
     dm_add_pk(tf_5, k) %>%
-    dm_add_fk(tf_5, l, tf_4) %>%
+    dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
     dm_add_fk(tf_5, m, tf_6, n)
 }
 

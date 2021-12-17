@@ -59,14 +59,14 @@
       5 weather_2 origin, time_hour
       
       $fks
-      # A tibble: 5 x 4
-        child_table child_fk_cols     parent_table parent_key_cols  
-        <chr>       <keys>            <chr>        <keys>           
-      1 flights     carrier           airlines     carrier          
-      2 flights     dest              airports     faa              
-      3 flights     tailnum           planes       tailnum          
-      4 flights     origin, time_hour weather      origin, time_hour
-      5 flights     origin, time_hour weather_2    origin, time_hour
+      # A tibble: 5 x 5
+        child_table child_fk_cols     parent_table parent_key_cols   on_delete
+        <chr>       <keys>            <chr>        <keys>            <chr>    
+      1 flights     carrier           airlines     carrier           no_action
+      2 flights     dest              airports     faa               no_action
+      3 flights     tailnum           planes       tailnum           no_action
+      4 flights     origin, time_hour weather      origin, time_hour no_action
+      5 flights     origin, time_hour weather_2    origin, time_hour no_action
       
     Code
       attr(igraph::E(create_graph_from_dm(nyc_comp_2)), "vnames")
@@ -88,17 +88,17 @@
       4 weather  origin, time_hour
       
       $fks
-      # A tibble: 8 x 4
-        child_table child_fk_cols     parent_table parent_key_cols  
-        <chr>       <keys>            <chr>        <keys>           
-      1 flights     carrier           airlines     carrier          
-      2 flights_2   carrier           airlines     carrier          
-      3 flights     dest              airports     faa              
-      4 flights_2   dest              airports     faa              
-      5 flights     tailnum           planes       tailnum          
-      6 flights_2   tailnum           planes       tailnum          
-      7 flights     origin, time_hour weather      origin, time_hour
-      8 flights_2   origin, time_hour weather      origin, time_hour
+      # A tibble: 8 x 5
+        child_table child_fk_cols     parent_table parent_key_cols   on_delete
+        <chr>       <keys>            <chr>        <keys>            <chr>    
+      1 flights     carrier           airlines     carrier           no_action
+      2 flights_2   carrier           airlines     carrier           no_action
+      3 flights     dest              airports     faa               no_action
+      4 flights_2   dest              airports     faa               no_action
+      5 flights     tailnum           planes       tailnum           no_action
+      6 flights_2   tailnum           planes       tailnum           no_action
+      7 flights     origin, time_hour weather      origin, time_hour no_action
+      8 flights_2   origin, time_hour weather      origin, time_hour no_action
       
     Code
       attr(igraph::E(create_graph_from_dm(nyc_comp_3)), "vnames")

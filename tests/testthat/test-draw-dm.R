@@ -28,7 +28,7 @@ test_that("`dm_set_colors()` works", {
   colset <- c(blue = "flights", green = "airports")
 
   # test splicing
-  expect_snapshot({
+  expect_snapshot(variant = if (packageVersion("testthat") > "3.1.0") "testthat-new" else "testthat-legacy", {
     dm_nycflights_small() %>%
       dm_set_colors(!!!colset) %>%
       dm_get_colors()
@@ -148,4 +148,15 @@ test_that("output", {
       dm_draw(),
     "nycflight-dm.svg"
   )
+
+  # empty table corner cases
+  expect_snapshot_diagram(
+    dm(a = tibble()) %>%
+      dm_draw(),
+    "single-empty-table-dm.svg")
+
+  expect_snapshot_diagram(
+    dm(x = tibble(a = 1), y = tibble(b = 1), a = tibble()) %>%
+      dm_draw(view_type = "all"),
+    "empty-table-in-dm.svg")
 })

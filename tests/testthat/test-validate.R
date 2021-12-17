@@ -118,7 +118,7 @@ test_that("validator speaks up when something's wrong", {
       dm_get_def() %>%
       mutate(fks = if_else(
         table == "tf_3",
-        list_of(new_fk(ref_column = list("y"), table = "tf_8", column = list("z"))),
+        list_of(new_fk(ref_column = list("y"), table = "tf_8", column = list("z"), on_delete = "no_action")),
         fks
       )) %>%
       new_dm3() %>%

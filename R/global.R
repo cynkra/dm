@@ -83,6 +83,8 @@ utils::globalVariables(c(
   "why",
   "zoom",
   "zoomed",
+  "extra",
+  "on_delete",
   #
   # financial
   "account_id",
@@ -96,5 +98,17 @@ utils::globalVariables(c(
   "districts",
   "loans",
   "orders",
-  "trans"
+  "trans",
+  #
+  # pixarfilms
+  "pixar_films",
+  "pixar_people",
+  "academy",
+  "box_office",
+  "genres",
+  "public_response",
+  "film",
+  "role_type",
+  "award_type",
+  "genre"
 ))

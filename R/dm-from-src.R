@@ -131,7 +131,6 @@ quote_ids <- function(x, con, schema = NULL) {
       ~ dbplyr::ident_q(dbplyr::build_sql(dbplyr::ident(.x), con = con))
     )
   } else {
-    if (!sql_schema_exists(con, schema)) abort_no_schema_exists(schema)
     map(
       x,
       ~ dbplyr::ident_q(schema_if(rep(schema, length(.x)), .x, con))

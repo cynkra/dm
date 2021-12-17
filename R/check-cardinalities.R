@@ -1,57 +1,61 @@
 #' Check table relations
 #'
-#' @description All `check_cardinality_?_?()` functions test the following conditions:
-#' 1. Is `pk_column` is a unique key for `parent_table`?
+#' @description All `check_cardinality_*()` functions test the following conditions:
+#' 1. Is `pk_column` a unique key for `parent_table`?
 #' 1. Is the set of values in `fk_column` of `child_table` a subset of the set of values of `pk_column`?
 #' 1. Does the relation between the two tables of the data model meet the cardinality requirements?
 #'
 #' `examine_cardinality()` also checks the first two points and subsequently determines the type of cardinality.
 #'
-#' @details All cardinality-functions accept a `parent table` (data frame), a column name of this table,
-#' a `child table`, and a column name of the child table.
-#' The given column of the `parent table` has to be one of its
+#' @details All cardinality-functions accept a `parent_table` (data frame), column names of this table,
+#' a `child_table`, and column names of the child table.
+#' The given columns of the `parent_table` have to be one of its
 #' unique keys (no duplicates are allowed).
-#' Furthermore, in all cases, the set of values of the child table's column has to be a subset of the set of values of
-#' the parent table's column.
+#' Furthermore, in all cases, the set of combinations of the child table's columns have
+#' to be a subset of the combinations of values of the parent table's columns.
 #'
-#' The cardinality specifications `0_n`, `1_n`, `0_1`, `1_1` refer to the expected relation that the child table has with the parent table.
-#' The numbers `0`, `1` and `n` refer to the number of values in the column of the child table that correspond to each value of the
-#' column of the parent table.
-#' `n` means "more than one" in this context, with no upper limit.
+#' The cardinality specifications "0_n", "1_n", "0_1", "1_1" refer to the expected relation that the child table has with the parent table.
+#' "0", "1" and "n" refer to the occurrences of value combinations
+#' in the columns of the child table that correspond to each combination in the
+#' columns of the parent table.
+#' "n" means "more than one" in this context, with no upper limit.
 #'
-#' `0_n` means, that each value of the `pk_column` has at least `0` and at most
-#' `n` corresponding values in the column of the child table (which translates to no further restrictions).
+#' **"0_n"**: each combination of `pk_column` values has at least 0 and at most
+#' n corresponding occurrences in the columns of the child table
+#' (which translates to no further restrictions).
 #'
-#' `1_n` means, that each value of the `pk_column` has at least `1` and at most
-#' `n` corresponding values in the column of the child table.
+#' **"1_n"**: each combination of `pk_column` values has at least 1 and at most
+#' n corresponding occurrences in the columns of the child table.
 #' This means that there is a "surjective" mapping from the child table
-#' to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.
+#' to the parent table w.r.t. the specified columns, i.e. each combination in the
+#' parent table columns exists at least once in the child table columns.
 #'
-#' `0_1` means, that each value of the `pk_column` has at least `0` and at most
-#' `1` corresponding values in the column of the child table.
+#' **"0_1"**: each combination of `pk_column` values has at least 0 and at most
+#' 1 corresponding occurrence in the column of the child table.
 #' This means that there is a "injective" mapping from the child table
-#' to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times.
-#' But not all of the parent table
-#' column values have to be referred to.
+#' to the parent table w.r.t. the specified columns, i.e. no combination of values in the
+#' parent table columns is addressed multiple times.
+#' But not all of the parent table column values have to be referred to.
 #'
-#' `1_1` means, that each value of the `pk_column` has exactly
-#' `1`  corresponding value in the column of the child table.
+#' **"1_1"**: each combination of `pk_column` values occurs exactly once
+#' in the corresponding columns of the child table.
 #' This means that there is a "bijective" ("injective" AND "surjective") mapping
-#' between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
-#' there are no duplicates in either of them.
+#' between the child table and the parent table w.r.t. the specified columns, i.e. the
+#' respective sets of combinations within the two sets of columns are equal and there
+#' are no duplicates in either of them.
 #'
 #' Finally, `examine_cardinality()` tests for and returns the nature of the relationship (injective, surjective, bijective, or none of these)
-#' between the two given columns. If either `pk_column` is not a unique key of `parent_table` or the values of `fk_column` are
+#' between the two given sets of columns. If either `pk_column` is not a unique key of `parent_table` or the values of `fk_column` are
 #' not a subset of the values in `pk_column`, the requirements for a cardinality test is not fulfilled. No error will be thrown, but
 #' the result will contain the information which prerequisite was violated.
 #' @param parent_table Data frame.
-#' @param pk_column Column of `parent_table` that has to be one of its unique keys.
+#' @param pk_column Columns of `parent_table` that have to be one of its unique keys, for multiple columns use `c(col1, col2)`.
 #' @param child_table Data frame.
-#' @param fk_column Column of `child_table` that has to be a foreign key to `pk_column` in `parent_table`.
+#' @param fk_column Columns of `child_table` that have to be a foreign key candidate to `pk_column` in `parent_table`, for multiple columns use `c(col1, col2)`.
 #'
 #' @name examine_cardinality
 #'
-#' @return For `check_cardinality_?_?()`: Functions return `parent_table`, invisibly, if the check is passed, to support pipes.
+#' @return For `check_cardinality_*()`: Functions return `parent_table`, invisibly, if the check is passed, to support pipes.
 #' Otherwise an error is thrown and the reason for it is explained.
 #'
 #' For `examine_cardinality()`: Returns a character variable specifying the type of relationship between the two columns.
@@ -74,9 +78,12 @@
 #' check_cardinality_0_1(d1, a, d3, c)
 check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- ensym(pk_column)
+  pkcq <- enexpr(pk_column)
+  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
+
   ct <- enquo(child_table)
-  fkc <- ensym(fk_column)
+  fkcq <- enexpr(fk_column)
+  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ct))))
 
   check_key(!!pt, !!pkc)
 
@@ -89,9 +96,12 @@ check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_colum
 #' @export
 check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- ensym(pk_column)
+  pkcq <- enexpr(pk_column)
+  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
+
   ct <- enquo(child_table)
-  fkc <- ensym(fk_column)
+  fkcq <- enexpr(fk_column)
+  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ct))))
 
   check_key(!!pt, !!pkc)
 
@@ -104,9 +114,12 @@ check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_colum
 #' @export
 check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- ensym(pk_column)
+  pkcq <- enexpr(pk_column)
+  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
+
   ct <- enquo(child_table)
-  fkc <- ensym(fk_column)
+  fkcq <- enexpr(fk_column)
+  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ct))))
 
   check_key(!!pt, !!pkc)
 
@@ -117,7 +130,7 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
       check_key(!!ct, !!fkc)
       NULL
     },
-    error = function(e) abort_not_bijective(as_label(ct), as_label(fkc))
+    error = function(e) abort_not_bijective(as_label(ct), fkc)
   )
 
   invisible(parent_table)
@@ -127,9 +140,12 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
 #' @export
 check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- ensym(pk_column)
+  pkcq <- enexpr(pk_column)
+  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
+
   ct <- enquo(child_table)
-  fkc <- ensym(fk_column)
+  fkcq <- enexpr(fk_column)
+  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ct))))
 
   check_key(!!pt, !!pkc)
 
@@ -140,7 +156,7 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
       check_key(!!ct, !!fkc)
       NULL
     },
-    error = function(e) abort_not_injective(as_label(ct), as_label(fkc))
+    error = function(e) abort_not_injective(as_label(ct), fkc)
   )
 
   invisible(parent_table)
@@ -153,31 +169,35 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
 #' # Returns the kind of cardinality
 #' examine_cardinality(d1, a, d2, c)
 examine_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
-  pt <- enquo(parent_table)
-  pkc <- enexpr(pk_column)
-  ct <- enquo(child_table)
-  fkc <- enexpr(fk_column)
+  ptq <- enquo(parent_table)
+  pkcq <- enexpr(pk_column)
+  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(ptq))))
 
-  if (!is_unique_key(eval_tidy(pt), !!pkc)$unique) {
+  ctq <- enquo(child_table)
+  fkcq <- enexpr(fk_column)
+  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ctq))))
+  if (!is_unique_key(eval_tidy(ptq), !!pkc)$unique) {
+    plural <- s_if_plural(pkc)
     return(
       glue(
-        "Column(s) {tick(commas(as_string(pkc)))} not ",
-        "a unique key of {tick('parent_table')}."
+        "Column{plural['n']} ({commas(tick(pkc))}) not ",
+        "a unique key of {tick(as_label(ptq))}."
       )
     )
   }
 
-  if (!is_subset(!!ct, !!fkc, !!pt, !!pkc)) {
+  if (!is_subset(eval_tidy(ctq), !!fkc, eval_tidy(ptq), !!pkc)) {
+    plural <- s_if_plural(pkc)
     return(
       glue(
-        "Column(s) {tick(commas(as_string(fkc)))} of {tick('child_table')} not ",
-        "a subset of column(s) {tick(commas(as_string(pkc)))} of {tick('parent_table')}."
+        "Column{plural['n']} ({commas(tick(fkc))}) of table {tick(as_label(ctq))} not ",
+        "a subset of column{plural['n']} ({commas(tick(pkc))}) of table {tick(as_label(ptq))}."
       )
     )
   }
 
-  min_1 <- is_subset(!!pt, !!pkc, !!ct, !!fkc)
-  max_1 <- pull(is_unique_key(eval_tidy(ct), !!fkc), unique)
+  min_1 <- is_subset(eval_tidy(ptq), !!pkc, eval_tidy(ctq), !!fkc)
+  max_1 <- pull(is_unique_key(eval_tidy(ctq), !!fkc), unique)
 
   if (min_1 && max_1) {
     return("bijective mapping (child: 1 -> parent: 1)")

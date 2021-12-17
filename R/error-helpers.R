@@ -61,9 +61,13 @@ abort_not_subset_of <- function(table_name_1, colname_1,
 
 error_txt_not_subset_of <- function(table_name_1, colname_1,
                                     table_name_2, colname_2) {
+  # taking care of singular/plural of the word "columns" and the corresponding ending of the verb
+  plural <- s_if_plural(colname_1)
   glue(
-    "Column {tick(colname_1)} of table {tick(table_name_1)} contains values (see examples above) that are not present in column ",
-    "{tick(colname_2)} of table {tick(table_name_2)}."
+    "Column{plural['n']} ({commas(tick(colname_1))}) of table ",
+    "{tick(table_name_1)} contain{plural['v']} values (see examples above) that are ",
+    "not present in column{plural['n']} ",
+    "({commas(tick(colname_2))}) of table {tick(table_name_2)}."
   )
 }
 
@@ -74,7 +78,7 @@ abort_sets_not_equal <- function(error_msgs) {
 }
 
 error_txt_sets_not_equal <- function(error_msgs) {
-  paste0(error_msgs, ".", collapse = "\n  ")
+  paste0(error_msgs, collapse = "\n  ")
 }
 
 # cardinality check errors ------------------------------------------------
@@ -86,9 +90,11 @@ abort_not_bijective <- function(child_table_name, fk_col_name) {
 }
 
 error_txt_not_bijective <- function(child_table_name, fk_col_name) {
+  plural <- s_if_plural(fk_col_name)
   glue(
-    "1..1 cardinality (bijectivity) is not given: Column {tick(fk_col_name)} in table ",
-    "{tick(child_table_name)} contains duplicate values."
+    "1..1 cardinality (bijectivity) is not given: Column{plural['n']} ",
+    "({commas(tick(fk_col_name))}) in table ",
+    "{tick(child_table_name)} contain{plural['v']} duplicate values."
   )
 }
 
@@ -99,9 +105,11 @@ abort_not_injective <- function(child_table_name, fk_col_name) {
 }
 
 error_txt_not_injective <- function(child_table_name, fk_col_name) {
+  plural <- s_if_plural(fk_col_name)
   glue(
-    "0..1 cardinality (injectivity from child table to parent table) is not given: Column {tick(fk_col_name)}",
-    " in table {tick(child_table_name)} contains duplicate values."
+    "0..1 cardinality (injectivity from child table to parent table) is not given: ",
+    "Column{plural['n']} ({commas(tick(fk_col_name))})",
+    " in table {tick(child_table_name)} contain{plural['v']} duplicate values."
   )
 }
 
@@ -586,19 +594,6 @@ warn_if_arg_not <- function(arg,
 
 # Errors for schema handling functions ------------------------------------
 
-abort_schema_exists <- function(schema, dbname = NULL) {
-  abort(error_txt_schema_exists(schema, dbname),
-    .subclass = dm_error_full("schema_exists")
-  )
-}
-
-error_txt_schema_exists <- function(schema, dbname) {
-  msg_suffix <- fix_msg(dbname)
-  glue(
-    "A schema named {tick(schema)} already exists{msg_suffix}."
-  )
-}
-
 abort_no_schema_exists <- function(schema, dbname = NULL) {
   abort(error_txt_no_schema_exists(schema, dbname),
     .subclass = dm_error_full("no_schema_exists")
@@ -645,4 +640,13 @@ abort_one_of_schema_table_names <- function() {
     "Only one of the arguments `schema` and `table_names` can be different from `NULL`.",
     .subclass = dm_error_full("one_of_schema_table_names")
   )
+}
+
+s_if_plural <- function(vec) {
+  if (length(vec) > 1) {
+    # n = noun, v = verb
+    c(n = "s", v = "")
+  } else {
+    c(n = "", v = "s")
+  }
 }

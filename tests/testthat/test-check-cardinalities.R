@@ -86,4 +86,67 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   })
 })
 
-# FIXME: COMPOUND:: needs tests with compound keys
+
+# tests for compound keys -------------------------------------------------
+
+test_that("check_cardinality_...() functions are supporting compound keys", {
+  # successes
+  expect_silent(check_cardinality_0_n(parent_table = data_card_1(), pk_column = c(a, b), child_table = data_card_11(), fk_column = c(a, b)))
+  expect_silent(check_cardinality_1_n(data_card_1(), c(a, b), data_card_12(), c(a, b)))
+  expect_silent(check_cardinality_1_1(data_card_1(), c(a, b), data_card_1(), c(a, b)))
+  expect_silent(check_set_equality(data_card_12(), c(a, b), data_card_1(), c(a, b)))
+  expect_silent(check_cardinality_0_1(data_card_1(), c(a, b), data_card_11(), c(a, b)))
+
+  # scenarios for examine_cardinality() -------------------------------------
+
+  expect_identical(
+    examine_cardinality(data_card_1(), c(a, b), data_card_11(), c(a, b)),
+    "injective mapping (child: 0 or 1 -> parent: 1)"
+  )
+
+  expect_identical(
+    examine_cardinality(data_card_1(), c(a, b), data_card_12(), c(a, b)),
+    "surjective mapping (child: 1 to n -> parent: 1)"
+  )
+
+  expect_identical(
+    examine_cardinality(data_card_13(), c(b, a), data_card_12(), c(b, a)),
+    "generic mapping (child: 0 to n -> parent: 1)"
+  )
+
+  expect_identical(
+    examine_cardinality(data_card_1(), c(b, a), data_card_1(), c(b, a)),
+    "bijective mapping (child: 1 -> parent: 1)"
+  )
+
+  # expect specific errors and sometimes specific output due to errors ---------------
+
+  expect_snapshot({
+    expect_dm_error(
+      check_cardinality_0_n(
+        parent_table = data_card_1(),
+        pk_column = c(a, b),
+        child_table = data_card_2(),
+        fk_column = c(a, b)
+      ),
+      class = "not_subset_of"
+    )
+
+    expect_dm_error(
+      check_cardinality_1_1(data_card_1(), c(a, b), data_card_12(), c(a, b)),
+      class = "not_bijective"
+    )
+
+    expect_dm_error(
+      check_cardinality_1_1(data_card_12(), c(a, b), data_card_1(), c(a, b)),
+      class = "not_unique_key"
+    )
+
+    expect_dm_error(
+      check_cardinality_0_1(data_card_1(), c(b, a), data_card_12(), c(b, a)),
+      class = "not_injective"
+    )
+
+  })
+
+})
