@@ -7,7 +7,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
   ## helper to quote all elements of a column and enumerate (concat) element wise
   quote_enum_col <- function(x) {
-    map_chr(x, ~toString(map_chr(.x, DBI::dbQuoteIdentifier, conn = con)))
+    map_chr(x, ~ toString(map_chr(.x, DBI::dbQuoteIdentifier, conn = con)))
   }
 
   ## fetch types, keys and uniques
@@ -38,12 +38,12 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     group_by(table) %>%
     summarize(col_defs = paste(col_def, collapse = ",\n  "))
 
-  if(!set_key_constraints) {
+  if (!set_key_constraints) {
     pk_defs <- tibble(table = character(0), pk_defs = character(0))
     fk_defs <- tibble(table = character(0), fk_defs = character(0))
     unique_defs <- tibble(table = character(0), unique_defs = character(0))
     index_queries <- tibble(table = character(0), sql = character(0))
-    } else {
+  } else {
     # primary key definitions
     pk_defs <-
       pks %>%
@@ -64,8 +64,8 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       summarize(unique_defs = paste(unique_def, collapse = ",\n  "))
 
     # foreign key definitions and indexing queries
-    if(is_duckdb(con)) {
-      if(nrow(fks)) {
+    if (is_duckdb(con)) {
+      if (nrow(fks)) {
         warn("duckdb doesn't support foreign keys, these won't be set in the remote database but are preserved in the `dm`")
       }
       # setup ulterior left join so it'll create a NA col for `fk_def`
@@ -93,7 +93,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
         transmute(
           table = child_table,
           remote_table = unlist(table_names[table]) %||% character(0),
-          remote_table_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_table)), ~.x@name[["table"]]),
+          remote_table_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_table)), ~ .x@name[["table"]]),
           sql = DBI::SQL(paste0(
             "CREATE INDEX ",
             # hack (?) to create unique indexes
@@ -131,10 +131,9 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
   idx <- match(names(topo), create_table_queries$table)
 
   if (length(idx) == nrow(create_table_queries)) {
-    create_table_queries <- create_table_queries[idx,]
+    create_table_queries <- create_table_queries[idx, ]
   }
 
   ## Return a list of both type of queries
   lst(create_table_queries, index_queries)
 }
-

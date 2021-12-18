@@ -198,7 +198,7 @@ copy_dm_to <- function(dest, dm, ...,
   queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
 
   # create tables
-  walk(queries$create_table_queries$sql, ~{
+  walk(queries$create_table_queries$sql, ~ {
     DBI::dbExecute(dest_con, .x, immediate = TRUE)
   })
 
