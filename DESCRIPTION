@@ -94,3 +94,5 @@ RoxygenNote: 7.1.2
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm, draw-dm, bind, rows-dm
+Config/autostyle/scope: line_breaks
+Config/autostyle/strict: false
