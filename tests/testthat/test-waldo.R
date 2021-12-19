@@ -1,4 +1,5 @@
 test_that("waldo", {
+  skip_if_not_installed("waldo", "0.3.0")
   expect_snapshot({
     dm_nycflights13() %>%
       waldo::compare(dm_nycflights13(), max_diffs = 10)
