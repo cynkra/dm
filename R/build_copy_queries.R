@@ -93,8 +93,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
           remote_table_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_table)), ~ .x@name[["table"]]),
           sql = DBI::SQL(paste0(
             "CREATE INDEX ",
-            # hack (?) to create unique indexes
-            paste0(remote_table_unquoted, "__", index_name),
+            make.unique(paste0(remote_table_unquoted, "__", index_name), sep = "__"),
             " ON ",
             remote_table,
             " (",
