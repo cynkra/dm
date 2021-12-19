@@ -86,14 +86,16 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
       index_queries <-
         fks %>%
-        mutate(index_name = map_chr(child_fk_cols, paste, collapse = "_")) %>%
+        mutate(
+          index_name = map_chr(child_fk_cols, paste, collapse = "_")) %>%
         transmute(
           table = child_table,
           remote_table = unlist(table_names[table]) %||% character(0),
           remote_table_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_table)), ~ .x@name[["table"]]),
+          index_name = make.unique(paste0(remote_table_unquoted, "__", index_name), sep = "__"),
           sql = DBI::SQL(paste0(
             "CREATE INDEX ",
-            make.unique(paste0(remote_table_unquoted, "__", index_name), sep = "__"),
+            index_name,
             " ON ",
             remote_table,
             " (",
