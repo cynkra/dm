@@ -2,9 +2,6 @@
 build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary = TRUE, table_names = set_names(names(dm))) {
   con <- con_from_src_or_con(dest)
 
-  ## apply filters
-  dm <- dm_apply_filters(dm)
-
   ## helper to quote all elements of a column and enumerate (concat) element wise
   quote_enum_col <- function(x) {
     map_chr(x, ~ toString(map_chr(.x, DBI::dbQuoteIdentifier, conn = con)))
