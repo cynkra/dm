@@ -225,6 +225,7 @@ test_that("build_copy_queries works", {
       map(as.data.frame) # to print full queries
   )
 
+
   # build a dm whose index might be duplicated if naively build (child__a__key)
   ambiguous_dm <- dm(
     parent1 = tibble(key = 1),
@@ -246,7 +247,7 @@ test_that("build_copy_queries works", {
         map(dbplyr::ident_q)) %>%
       pluck("index_queries") %>%
       pull(index_name) %>%
-      anyDuplicated(),
+      {anyDuplicated(.)},
     0
   )
 

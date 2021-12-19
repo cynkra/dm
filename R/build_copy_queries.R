@@ -67,7 +67,12 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       }
       # setup ulterior left join so it'll create a NA col for `fk_def`
       fk_defs <- tibble(table = character(0), fk_defs = character(0))
-      index_queries <- tibble(table = character(0), query = character(0))
+      index_queries <- tibble(
+        table = character(0),
+        remote_table = character(0),
+        remote_table_unquoted = character(0),
+        index_name = character(0),
+        sql = character(0))
     } else {
       fk_defs <-
         fks %>%
