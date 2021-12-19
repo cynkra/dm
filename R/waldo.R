@@ -1,5 +1,5 @@
 # Registered in .onLoad()
-compare_proxy.dm <- function(x, path, ...) {
+compare_proxy.dm <- function(x, path = NULL, ...) {
   list(
     object =
       x %>%
