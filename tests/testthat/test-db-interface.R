@@ -247,7 +247,9 @@ test_that("build_copy_queries works", {
         map(dbplyr::ident_q)) %>%
       pluck("index_queries") %>%
       pull(index_name) %>%
-      {anyDuplicated(.)},
+      {
+        anyDuplicated(.)
+      },
     0
   )
 
