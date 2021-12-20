@@ -21,10 +21,11 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
   ## build sql definitions to use in `CREATE TABLE ...`
 
   # column definitions
-  get_sql_col_types <- . %>%
-    tbl_impl(dm, .) %>%
-    DBI::dbDataType(con, .) %>%
-    enframe("col", "type")
+  get_sql_col_types <- function(x) {
+    tbl <- tbl_impl(dm, x)
+    types <- DBI::dbDataType(con, tbl)
+    enframe(types, "col", "type")
+  }
 
   col_defs <-
     dm %>%
