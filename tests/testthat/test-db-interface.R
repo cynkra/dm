@@ -202,7 +202,7 @@ test_that("copy_dm_to() fails with schema argument for databases other than MSSQ
 test_that("build_copy_queries works", {
   skip_if_ide()
 
-  src_db <- my_test_src()
+  src_db <- my_db_test_src()
 
   # build regular dm from `dm_pixarfilms()`
   pixar_dm <-
@@ -220,7 +220,7 @@ test_that("build_copy_queries works", {
         src_db,
         .,
         table_names = names(.) %>%
-          repair_table_names_for_db(temporary = FALSE, con = sqlite_db, schema = NULL) %>%
+          repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
           map(dbplyr::ident_q)) %>%
       map(as.data.frame) # to print full queries
   )

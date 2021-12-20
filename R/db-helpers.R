@@ -94,7 +94,7 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
     names <- table_names
   }
   names <- set_names(names, table_names)
-  quote_ids(names, con, schema)
+  quote_ids(names, con_from_src_or_con(con), schema)
 }
 
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
