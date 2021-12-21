@@ -199,9 +199,7 @@ test_that("copy_dm_to() fails with schema argument for databases other than MSSQ
 })
 
 
-test_that("build_copy_queries works", {
-  skip_if_ide()
-
+test_that("build_copy_queries snapshot test for pixarfilms", {
   src_db <- my_db_test_src()
 
   # build regular dm from `dm_pixarfilms()`
@@ -212,6 +210,8 @@ test_that("build_copy_queries works", {
     dm_filter(pixar_films, !is.na(film)) %>%
     dm_apply_filters() %>%
     dm_select_tbl(-pixar_people)
+
+  skip_if_not_installed("testthat", "3.1.0")
 
   expect_snapshot(
     variant = if (packageVersion("testthat") > "3.1.0") "testthat-new" else "testthat-legacy",
@@ -224,8 +224,10 @@ test_that("build_copy_queries works", {
           map(dbplyr::ident_q)) %>%
       map(as.data.frame) # to print full queries
   )
+})
 
 
+test_that("build_copy_queries avoids duplicate indexes", {
   # build a dm whose index might be duplicated if naively build (child__a__key)
   ambiguous_dm <- dm(
     parent1 = tibble(key = 1),
@@ -238,21 +240,15 @@ test_that("build_copy_queries works", {
     dm_add_fk(child, a__key, parent2) %>%
     dm_add_fk(child__a, key, parent2)
 
-  expect_equal(
+  queries <-
     build_copy_queries(
       src_db,
       ambiguous_dm,
-      table_names = names(ambiguous_dm) %>%
+      table_names =
+        names(ambiguous_dm) %>%
         repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
-        map(dbplyr::ident_q)) %>%
-      pluck("index_queries") %>%
-      pull(index_name) %>%
-      {
-        anyDuplicated(.)
-      },
-    0
-  )
+        map(dbplyr::ident_q)
+    )
 
-
-
+  expect_equal(anyDuplicated(queries$index_queries$index_name), 0)
 })
