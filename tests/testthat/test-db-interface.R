@@ -228,6 +228,8 @@ test_that("build_copy_queries snapshot test for pixarfilms", {
 
 
 test_that("build_copy_queries avoids duplicate indexes", {
+  src_db <- my_db_test_src()
+
   # build a dm whose index might be duplicated if naively build (child__a__key)
   ambiguous_dm <- dm(
     parent1 = tibble(key = 1),
