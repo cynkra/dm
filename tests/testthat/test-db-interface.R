@@ -246,8 +246,8 @@ test_that("build_copy_queries avoids duplicate indexes", {
       ambiguous_dm,
       table_names =
         names(ambiguous_dm) %>%
-        repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
-        map(dbplyr::ident_q)
+          repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
+          map(dbplyr::ident_q)
     )
 
   expect_equal(anyDuplicated(queries$index_queries$index_name), 0)
