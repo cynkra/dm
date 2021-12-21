@@ -251,6 +251,9 @@ db_append_table <- function(con, remote_table, table) {
     split <- vec_split(values, idx)
     sql <- map_chr(split$val, ~ DBI::sqlAppendTable(con, DBI::SQL(remote_table), as.list(.x), row.names = FALSE))
     walk(sql, ~ DBI::dbExecute(con, .x, immediate = TRUE))
+  } else if (is_postgres(con)) {
+    # https://github.com/r-dbi/RPostgres/issues/382
+    DBI::dbAppendTable(con, DBI::SQL(remote_table), table, copy = FALSE)
   } else {
     DBI::dbAppendTable(con, DBI::SQL(remote_table), table)
   }
