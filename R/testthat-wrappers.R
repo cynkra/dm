@@ -7,7 +7,8 @@ expect_error_obj <- function(object, regexp = NULL, class = NULL, ...,
     ...,
     all = all,
     info = info,
-    label = label)
+    label = label
+  )
   invisible(obj)
 }
 
@@ -19,7 +20,8 @@ expect_warning_obj <- function(object, regexp = NULL, class = NULL, ...,
     class = class,
     ...,
     info = info,
-    label = label)
+    label = label
+  )
   invisible(obj)
 }
 
@@ -31,7 +33,8 @@ expect_message_obj <- function(object, regexp = NULL, class = NULL, ...,
     class = class,
     ...,
     info = info,
-    label = label)
+    label = label
+  )
   invisible(obj)
 }
 
@@ -43,7 +46,8 @@ expect_condition_obj <- function(object, regexp = NULL, class = NULL, ...,
     class = class,
     ...,
     info = info,
-    label = label)
+    label = label
+  )
   invisible(obj)
 }
 
@@ -54,6 +58,7 @@ expect_deprecated_obj <- function(object, regexp = NULL, ...,
     regexp = regexp,
     ...,
     info = info,
-    label = label)
+    label = label
+  )
   invisible(obj)
 }
