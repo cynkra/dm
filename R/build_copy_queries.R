@@ -35,7 +35,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     mutate(col_def = glue("{DBI::dbQuoteIdentifier(con, col)} {type}")) %>%
     group_by(name) %>%
     summarize(col_defs = paste(col_def, collapse = ",\n  "),
-              columns = list(col))
+      columns = list(col))
 
   # default values
   pk_defs <- tibble(name = character(0), pk_defs = character(0))
@@ -106,8 +106,8 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
             quote_enum_col(child_fk_cols),
             ")"
           ))
-        ),
-        index_name = list(index_name))
+          ),
+          index_name = list(index_name))
     }
   }
   ## compile `CREATE TABLE ...` queries
