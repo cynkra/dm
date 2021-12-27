@@ -213,17 +213,18 @@ test_that("build_copy_queries snapshot test for pixarfilms", {
 
   skip_if_not_installed("testthat", "3.1.0")
 
-  expect_snapshot({
+  expect_snapshot(
     variant = if (packageVersion("testthat") > "3.1.0") "testthat-new" else "testthat-legacy",
-    pixar_dm %>%
-      build_copy_queries(
-        src_db,
-        .,
-        table_names = names(.) %>%
-          repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
-          map(dbplyr::ident_q)) %>%
-      map(as.list) # to print full queries
-  })
+    {
+      pixar_dm %>%
+        build_copy_queries(
+          src_db,
+          .,
+          table_names = names(.) %>%
+            repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
+            map(dbplyr::ident_q)) %>%
+        map(as.list) # to print full queries
+    })
 })
 
 
