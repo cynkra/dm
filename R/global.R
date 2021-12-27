@@ -63,6 +63,7 @@ utils::globalVariables(c(
   "ref_column",
   "ref_table",
   "remote_name",
+  "remote_name_unquoted",
   "renames",
   "schema",
   "schema_name",
