@@ -10,6 +10,7 @@ test_that("table identifiers are quoted", {
     temporary = FALSE,
     table_names = ~ DBI::SQL(unique_db_table_name(.x))
   )
+
   remote_tbl_names_copied <- map_chr(dm_get_tables(test_dm), dbplyr::remote_name)
 
   on.exit({
@@ -18,6 +19,13 @@ test_that("table identifiers are quoted", {
       ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", .x)))
     )
   })
+
+  dm <-
+    suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE)) %>%
+    dm_select_tbl(!!!map(
+      DBI::dbUnquoteIdentifier(src_db$con, DBI::SQL(remote_tbl_names_copied)),
+      ~ .x@name[["table"]]
+    ))
 
   remote_tbl_names_learned <-
     dm %>%
