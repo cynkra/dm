@@ -37,15 +37,16 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     summarize(col_defs = paste(col_def, collapse = ",\n  "),
               columns = list(col))
 
-  if (!set_key_constraints) {
-    pk_defs <- tibble(name = character(0), pk_defs = character(0))
-    fk_defs <- tibble(name = character(0), fk_defs = character(0))
-    unique_defs <- tibble(name = character(0), unique_defs = character(0))
-    index_queries  <- tibble(
-      name = character(0),
-      sql_index = list(),
-      index_name = list())
-  } else {
+  # default values
+  pk_defs <- tibble(name = character(0), pk_defs = character(0))
+  fk_defs <- tibble(name = character(0), fk_defs = character(0))
+  unique_defs <- tibble(name = character(0), unique_defs = character(0))
+  index_queries  <- tibble(
+    name = character(0),
+    sql_index = list(),
+    index_name = list())
+
+  if (set_key_constraints) {
     # primary key definitions
     pk_defs <-
       pks %>%
@@ -70,12 +71,6 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       if (nrow(fks)) {
         warn("duckdb doesn't support foreign keys, these won't be set in the remote database but are preserved in the `dm`")
       }
-      # setup ulterior left join so it'll create a NA col for `fk_def`
-      fk_defs <- tibble(name = character(0), fk_defs = character(0))
-      index_queries <- tibble(
-        name = character(0),
-        sql_index = list(),
-        index_name = list())
     } else {
       fk_defs <-
         fks %>%
