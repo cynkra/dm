@@ -198,25 +198,25 @@ copy_dm_to <- function(dest, dm, ...,
   queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
 
   # create tables
-  walk(queries$create_table_queries$sql, ~ {
+  walk(queries$sql_table, ~ {
     DBI::dbExecute(dest_con, .x, immediate = TRUE)
   })
 
   # populate tables
   pwalk(
-    queries$create_table_queries[c("table", "remote_table")],
+    queries[c("name", "remote_name")],
     ~ db_append_table(dest_con, .y, dm[[.x]])
   )
 
   # create indexes
-  walk(queries$index_queries$sql, ~ {
+  walk(unlist(queries$sql_index), ~ {
     DBI::dbExecute(dest_con, .x, immediate = TRUE)
   })
 
   # build remote dm
   remote_tables <-
-    queries$create_table_queries$remote_table %>%
-    set_names(queries$create_table_queries$table) %>%
+    queries$remote_name %>%
+    set_names(queries$name) %>%
     map(tbl, src = dest_con)
   # remote dm is same as source dm with replaced data
   def <- dm_get_def(dm)

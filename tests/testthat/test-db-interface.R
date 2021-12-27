@@ -223,7 +223,7 @@ test_that("build_copy_queries snapshot test for pixarfilms", {
           table_names = names(.) %>%
             repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
             map(dbplyr::ident_q)) %>%
-        map(as.list) # to print full queries
+      as.list() # to print full queries
     })
 })
 
@@ -253,5 +253,5 @@ test_that("build_copy_queries avoids duplicate indexes", {
           map(dbplyr::ident_q)
     )
 
-  expect_equal(anyDuplicated(queries$index_queries$index_name), 0)
+  expect_equal(anyDuplicated(unlist(queries$index_name)), 0)
 })
