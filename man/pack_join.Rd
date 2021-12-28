@@ -47,6 +47,6 @@ If \code{NULL} the name of \code{y} is used.}
 \item{...}{Other parameters passed onto methods.}
 }
 \description{
-\code{pack_join()} returns all rows and columns in x with a new packed column
-that contains all matches from y.
+\code{pack_join()} returns all rows and columns in \code{x} with a new packed column
+that contains all matches from \code{y}.
 }

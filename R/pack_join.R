@@ -1,7 +1,7 @@
 #' Pack Join
 #'
-#' `pack_join()` returns all rows and columns in x with a new packed column
-#' that contains all matches from y.
+#' `pack_join()` returns all rows and columns in `x` with a new packed column
+#' that contains all matches from `y`.
 #' @inheritParams dplyr::nest_join
 #'
 #' @export
