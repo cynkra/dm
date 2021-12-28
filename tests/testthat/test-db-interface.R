@@ -255,6 +255,7 @@ test_that("build_copy_queries avoids duplicate indexes", {
 
   expect_equal(anyDuplicated(unlist(queries$index_name)), 0)
 
+  skip_if_not_installed("testthat", "3.1.1")
 
   expect_snapshot(
     variant = my_test_src_name,
