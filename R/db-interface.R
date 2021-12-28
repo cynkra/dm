@@ -168,8 +168,8 @@ copy_dm_to <- function(dest, dm, ...,
         abort_copy_dm_to_table_names_duplicated(problem)
       }
 
-      table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, table_names_out[src_names]))
-      # names(table_names_out) <- src_names
+      table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, unclass(table_names_out[src_names])))
+      names(table_names_out) <- src_names
     }
 
     # create `ident`-class objects from the table names
@@ -181,12 +181,6 @@ copy_dm_to <- function(dest, dm, ...,
       "dm::collect.dm()"
     )
     table_names_out <- set_names(src_names)
-  }
-
-  if (is.null(copy_to)) {
-    copy_to <- dplyr::copy_to
-  } else {
-    copy_to <- as_function(copy_to)
   }
 
   check_not_zoomed(dm)
@@ -201,20 +195,32 @@ copy_dm_to <- function(dest, dm, ...,
     return(dm)
   }
 
-  copy_data <- build_copy_data(dm, dest, table_names_out, set_key_constraints, dest_con)
+  queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
 
-  ticker <- new_ticker("uploading data", nrow(copy_data), progress = progress)
-  new_tables <- pmap(
-    copy_data, ticker(copy_to),
-    dest = dest,
-    temporary = temporary,
-    overwrite = FALSE,
-    ...
+  # create tables
+  walk(queries$sql_table, ~ {
+    DBI::dbExecute(dest_con, .x, immediate = TRUE)
+  })
+
+  # populate tables
+  pwalk(
+    queries[c("name", "remote_name")],
+    ~ db_append_table(dest_con, .y, dm[[.x]])
   )
-  names(new_tables) <- copy_data$source_name
 
+  # create indexes
+  walk(unlist(queries$sql_index), ~ {
+    DBI::dbExecute(dest_con, .x, immediate = TRUE)
+  })
+
+  # build remote dm
+  remote_tables <-
+    queries$remote_name %>%
+    set_names(queries$name) %>%
+    map(tbl, src = dest_con)
+  # remote dm is same as source dm with replaced data
   def <- dm_get_def(dm)
-  def$data <- unname(new_tables[names(dm)])
+  def$data <- unname(remote_tables[names(dm)])
   remote_dm <- new_dm3(def)
 
   invisible(debug_validate_dm(remote_dm))
@@ -233,6 +239,25 @@ get_db_table_names <- function(dm) {
 check_naming <- function(table_names, dm_table_names) {
   if (!identical(sort(table_names), sort(dm_table_names))) {
     abort_copy_dm_to_table_names()
+  }
+}
+
+db_append_table <- function(con, remote_table, table) {
+  if (is_mssql(con)) {
+    # https://github.com/r-dbi/odbc/issues/480
+    values <- as_tibble(map(table, map_chr, dbplyr::escape, con = con))
+    # chunks of 1000
+    idx <- as.integer((seq_len(nrow(values)) + 999L) / 1000L)
+    split <- vec_split(values, idx)
+    sql <- map_chr(split$val, ~ DBI::sqlAppendTable(con, DBI::SQL(remote_table), as.list(.x), row.names = FALSE))
+    walk(sql, ~ DBI::dbExecute(con, .x, immediate = TRUE))
+  } else if (is_postgres(con)) {
+    # https://github.com/r-dbi/RPostgres/issues/384
+    table <- as.data.frame(table)
+    # https://github.com/r-dbi/RPostgres/issues/382
+    DBI::dbAppendTable(con, DBI::SQL(remote_table), table, copy = FALSE)
+  } else {
+    DBI::dbAppendTable(con, DBI::SQL(remote_table), table)
   }
 }
 

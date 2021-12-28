@@ -45,11 +45,9 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
   max_1 <- pull(is_unique_key(eval_tidy(ct), !!fkc), unique)
   if (min_1 && max_1) {
     return("bijective mapping (child: 1 -> parent: 1)")
-  }
-  else if (min_1) {
+  } else if (min_1) {
     return("surjective mapping (child: 1 to n -> parent: 1)")
-  }
-  else if (max_1) {
+  } else if (max_1) {
     return("injective mapping (child: 0 or 1 -> parent: 1)")
   }
   "generic mapping (child: 0 to n -> parent: 1)"
@@ -335,8 +333,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
   }
   if (quo_is_null(column_quo)) {
     cols <- get_key_cols(fk_cols)
-  }
-  else {
+  } else {
     cols <- as_name(ensym(columns))
     if (!all(cols %in% fk_cols)) {
       abort_is_not_fkc()
@@ -564,8 +561,7 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   check_zoomed(dm)
   if (is_null(enexpr(new_tbl_name))) {
     new_tbl_name_chr <- orig_name_zoomed(dm)
-  }
-  else {
+  } else {
     if (is_symbol(enexpr(new_tbl_name))) {
       warning("The argument `new_tbl_name` in `dm_insert_zoomed()` should be of class `character`.")
     }

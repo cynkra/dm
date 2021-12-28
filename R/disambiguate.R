@@ -43,7 +43,7 @@ get_table_colnames <- function(dm, tables = NULL, exclude_pk = TRUE) {
     tibble(table = def$table, column = map(def$data, colnames)) %>%
     unnest_col("column", character())
 
-  if(exclude_pk) {
+  if (exclude_pk) {
     pks <- dm_get_all_pks_def_impl(def)
 
     keep_colnames <-
@@ -85,7 +85,7 @@ compute_disambiguate_cols_recipe <- function(table_colnames, sep) {
     set_names("table", "renames")
 
   dup_nested$names <- map(dup_nested$renames, select, new_name, column)
-  dup_nested$renames <- map(dup_nested$renames, ~deframe(select(., -column)))
+  dup_nested$renames <- map(dup_nested$renames, ~ deframe(select(., -column)))
   as_tibble(dup_nested)
 }
 

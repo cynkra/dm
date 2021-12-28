@@ -45,6 +45,3 @@ check_suggested <- function(packages, use, top_level_fun = NULL, message = NULL)
   }
   TRUE
 }
-
-
-
