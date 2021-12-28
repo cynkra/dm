@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.6.9001
+
+- `copy_dm_to()` works with DuckDB again, the SQL statements to define the tables and indexes are now created by us (#701, #709).
+- Simplify database checks on GitHub Actions (#712).
+- Export `dm_pixarfilms()` (#703, @erictleung).
+
+
 # dm 0.2.6.9000
 
 - Same as previous version.

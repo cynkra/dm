@@ -9,20 +9,20 @@ on:
     branches:
       - main
       - master
-      - "r-*"
   pull_request:
     branches:
       - main
       - master
-      - "r-*"
   schedule:
     - cron:  '10 0 * * *'
 
 name: rcc
 
 jobs:
-  R-CMD-check-smoke:
+  rcc-smoke:
     runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.commit.outputs.sha }}
 
     name: "Smoke test: stock R"
 
@@ -36,23 +36,87 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: ./.github/workflows/git-identity
+
       - uses: ./.github/workflows/custom/before-install
+        if: hashFiles('.github/workflows/custom/before-install/action.yml') != ''
 
       - uses: ./.github/workflows/install
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           install-r: false
           cache-version: rcc-smoke-1
+          needs: check
+          extra-packages: any::rcmdcheck any::roxygen2 r-lib/styler
 
       - uses: ./.github/workflows/custom/after-install
+        if: hashFiles('.github/workflows/custom/after-install/action.yml') != ''
+
+      - uses: ./.github/workflows/update-snapshots
+
+      - uses: ./.github/workflows/style
+
+      - uses: ./.github/workflows/roxygenize
+
+      - id: commit
+        uses: ./.github/workflows/commit
 
       - uses: ./.github/workflows/check
         with:
           results: ${{ runner.os }}-smoke-test
 
-  # Windows checks are run in parallel and independently,
-  # because they alone can take as long as the smoke and full tests combined.
-  R-CMD-check-windows:
+  # Runs in a separate workflow, because it's using dev pkgdown
+  # which might bring in other dev dependencies
+  pkgdown:
+    needs: rcc-smoke
+
+    runs-on: ubuntu-latest
+
+    name: "pkgdown"
+
+    # Begin custom: services
+    # End custom: services
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.rcc-smoke.outputs.sha }}
+
+      - uses: ./.github/workflows/rate-limit
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: ./.github/workflows/git-identity
+        if: github.event_name == 'push'
+
+      - uses: ./.github/workflows/custom/before-install
+        if: hashFiles('.github/workflows/custom/before-install/action.yml') != ''
+
+      - uses: ./.github/workflows/install
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          install-r: false
+          cache-version: pkgdown-1
+          needs: website
+          extra-packages: r-lib/pkgdown local::.
+
+      - uses: ./.github/workflows/custom/after-install
+        if: hashFiles('.github/workflows/custom/after-install/action.yml') != ''
+
+      - uses: ./.github/workflows/pkgdown-build
+        if: github.event_name != 'push'
+
+      - uses: ./.github/workflows/pkgdown-deploy
+        if: github.event_name == 'push'
+
+  # Windows checks can be run in parallel and independently
+  # when they alone take as long as the smoke and full tests combined.
+  # To achieve this, remove the "needs:" element below.
+  rcc-windows:
+    # Begin custom: early run
+    needs: rcc-smoke
+    # End custom: early run
+
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }}) ${{ matrix.config.desc }}
@@ -70,24 +134,32 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.rcc-smoke.outputs.sha }}
 
       - uses: ./.github/workflows/custom/before-install
+        if: hashFiles('.github/workflows/custom/before-install/action.yml') != ''
 
       - uses: ./.github/workflows/install
         with:
           r-version: ${{ matrix.config.r }}
           cache-version: rcc-main-1
           token: ${{ secrets.GITHUB_TOKEN }}
+          needs: check
 
       - uses: ./.github/workflows/custom/after-install
+        if: hashFiles('.github/workflows/custom/after-install/action.yml') != ''
+
+      - uses: ./.github/workflows/update-snapshots
 
       - uses: ./.github/workflows/check
         with:
           results: ${{ runner.os }}-r${{ matrix.config.r }}
 
-  R-CMD-check-full:
+  rcc-full:
+    needs: rcc-smoke
+
     runs-on: ${{ matrix.config.os }}
-    needs: R-CMD-check-smoke
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }}) ${{ matrix.config.desc }}
 
@@ -126,16 +198,23 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.rcc-smoke.outputs.sha }}
 
       - uses: ./.github/workflows/custom/before-install
+        if: hashFiles('.github/workflows/custom/before-install/action.yml') != ''
 
       - uses: ./.github/workflows/install
         with:
           r-version: ${{ matrix.config.r }}
           cache-version: rcc-main-1
           token: ${{ secrets.GITHUB_TOKEN }}
+          needs: check
 
       - uses: ./.github/workflows/custom/after-install
+        if: hashFiles('.github/workflows/custom/after-install/action.yml') != ''
+
+      - uses: ./.github/workflows/update-snapshots
 
       - uses: ./.github/workflows/check
         with:

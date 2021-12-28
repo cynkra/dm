@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.2.6.9000
-Date: 2021-11-21
+Version: 0.2.6.9001
+Date: 2021-12-28
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -94,3 +94,5 @@ RoxygenNote: 7.1.2
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm, draw-dm, bind, rows-dm
+Config/autostyle/scope: line_breaks
+Config/autostyle/strict: true

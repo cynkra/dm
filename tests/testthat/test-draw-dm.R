@@ -25,6 +25,8 @@ test_that("`dm_set_colors()` works", {
       dm_get_colors()
   })
 
+  skip_if_not_installed("testthat", "3.1.1")
+
   colset <- c(blue = "flights", green = "airports")
 
   # test splicing
@@ -127,6 +129,8 @@ test_that("helpers", {
 test_that("output", {
   skip_if_not_installed("DiagrammeRsvg")
   skip_if_not_installed("nycflights13")
+  skip_if_not_installed("testthat", "3.1.1")
+
 
   # 444: types
   expect_snapshot_diagram(
@@ -153,10 +157,12 @@ test_that("output", {
   expect_snapshot_diagram(
     dm(a = tibble()) %>%
       dm_draw(),
-    "single-empty-table-dm.svg")
+    "single-empty-table-dm.svg"
+  )
 
   expect_snapshot_diagram(
     dm(x = tibble(a = 1), y = tibble(b = 1), a = tibble()) %>%
       dm_draw(view_type = "all"),
-    "empty-table-in-dm.svg")
+    "empty-table-in-dm.svg"
+  )
 })

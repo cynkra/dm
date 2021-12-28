@@ -4,19 +4,23 @@ inputs:
     description: GitHub token, set to secrets.GITHUB_TOKEN
     required: true
   r-version:
-    description: Passed on to r-lib/actions/setup-r@v1
+    description: Passed on to r-lib/actions/setup-r@v2
     required: false
     default: release
   install-r:
-    description: Passed on to r-lib/actions/setup-r@v1
+    description: Passed on to r-lib/actions/setup-r@v2
     required: false
     default: true
-  extra-packages:
-    description: Passed on to r-lib/actions/setup-r@v1
+  needs:
+    description: Passed on to r-lib/actions/setup-r-dependencies@v2
     required: false
-    default: rcmdcheck
+    default: ''
+  extra-packages:
+    description: Passed on to r-lib/actions/setup-r-dependencies@v2
+    required: false
+    default: any::rcmdcheck
   cache-version:
-    description: Passed on to r-lib/actions/setup-r-dependencies@v1
+    description: Passed on to r-lib/actions/setup-r-dependencies@v2
     required: false
     default: 1
 
@@ -39,21 +43,30 @@ runs:
         sudo apt-get update
       shell: bash
 
-    - uses: r-lib/actions/setup-pandoc@v1
+    - uses: r-lib/actions/setup-pandoc@v2
 
-    - uses: r-lib/actions/setup-r@v1
+    - uses: r-lib/actions/setup-r@v2
       with:
         r-version: ${{ inputs.r-version }}
         install-r: ${{ inputs.install-r }}
         http-user-agent: ${{ matrix.config.http-user-agent }}
         use-public-rspm: true
 
-    - uses: cynkra/actions/setup-r-dependencies@master
+    - uses: r-lib/actions/setup-r-dependencies@v2
       env:
         GITHUB_PAT: ${{ inputs.token }}
       with:
-        extra-packages: ${{ inputs.extra-packages }} ${{ matrix.config.covr && 'covr' }}
+        needs: ${{ inputs.needs }}
+        extra-packages: ${{ inputs.extra-packages }} ${{ matrix.config.covr && 'any::covr' }}
         cache-version: ${{ inputs.cache-version }}
+
+    - name: Add pkg.lock to .gitignore
+      run: |
+        set -x
+        if ! [ -f .github/.gitignore ] || [ -z "$(grep '^/pkg.lock$' .github/.gitignore)" ]; then
+          echo /pkg.lock >> .github/.gitignore
+        fi
+      shell: bash
 
     - name: Add fake qpdf and checkbashisms
       if: runner.os == 'Linux'
