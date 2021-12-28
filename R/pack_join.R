@@ -18,5 +18,3 @@ pack_join.data.frame <- function (x, y, by = NULL, copy = FALSE, keep = FALSE, n
   #FIXME: handle potential conflict between name_var and existing variables
   left_join(x, y_packed, by = by, copy = copy, keep = keep, ...)
 }
-
-# band_members %>% pack_join(band_instruments %>% mutate(a = 1))
