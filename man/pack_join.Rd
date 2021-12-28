@@ -48,5 +48,5 @@ If \code{NULL} the name of \code{y} is used.}
 }
 \description{
 \code{pack_join()} returns all rows and columns in x with a new packed column
-that contains all matches from y. When there is no match, the list column is a 0-row tibble.
+that contains all matches from y.
 }
