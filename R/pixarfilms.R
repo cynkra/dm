@@ -6,6 +6,9 @@
 #' @param color Boolean, if `TRUE` (default), the resulting `dm` object will
 #'   have colors assigned to different tables for visualization with
 #'   `dm_draw()`.
+#' @param consistent Boolean, In the original `dm`  the  `film` column in
+#' `pixar_films` contains missing values so cannot be made a proper primary key.
+#' Set to `TRUE` to remove those records.
 #'
 #' @return A `dm` object consisting of {pixarfilms} tables, complete with
 #'   primary and foreign keys and optionally colored.
@@ -15,7 +18,7 @@
 #' dm_pixarfilms()
 #' dm_pixarfilms() %>%
 #'   dm_draw()
-dm_pixarfilms <- function(color = TRUE) {
+dm_pixarfilms <- function(color = TRUE, consistent = FALSE) {
   # Check for data package installed
   check_suggested("pixarfilms",
     use = TRUE,
@@ -24,6 +27,8 @@ dm_pixarfilms <- function(color = TRUE) {
 
   # Extract data objects
   pixar_films <- pixarfilms::pixar_films
+  if (consistent) pixar_films <- filter(pixar_films, !is.na(film))
+
   pixar_people <- pixarfilms::pixar_people
   academy <- pixarfilms::academy
   box_office <- pixarfilms::box_office
@@ -44,7 +49,6 @@ dm_pixarfilms <- function(color = TRUE) {
   dm <-
     dm %>%
     dm_add_pk(pixar_films, film) %>%
-    dm_add_pk(pixar_people, c(film, role_type)) %>%
     dm_add_pk(academy, c(film, award_type)) %>%
     dm_add_pk(box_office, film) %>%
     dm_add_pk(genres, c(film, genre)) %>%
@@ -67,10 +71,12 @@ dm_pixarfilms <- function(color = TRUE) {
       dm %>%
       dm_set_colors(
         "#5B9BD5" = pixar_films,
-        "#ED7D31" = c(academy,
+        "#ED7D31" = c(
+          academy,
           box_office,
           genres,
-          public_response),
+          public_response
+        ),
         "#70AD47" = pixar_people
       )
   }
