@@ -259,7 +259,7 @@ test_that("build_copy_queries avoids duplicate indexes", {
   expect_snapshot(
     variant = my_test_src_name,
     {
-      queries
+      as.list(queries)
     }
   )
 })
