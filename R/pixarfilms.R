@@ -67,10 +67,12 @@ dm_pixarfilms <- function(color = TRUE) {
       dm %>%
       dm_set_colors(
         "#5B9BD5" = pixar_films,
-        "#ED7D31" = c(academy,
+        "#ED7D31" = c(
+          academy,
           box_office,
           genres,
-          public_response),
+          public_response
+        ),
         "#70AD47" = pixar_people
       )
   }

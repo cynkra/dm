@@ -146,7 +146,5 @@ test_that("check_cardinality_...() functions are supporting compound keys", {
       check_cardinality_0_1(data_card_1(), c(b, a), data_card_12(), c(b, a)),
       class = "not_injective"
     )
-
   })
-
 })
