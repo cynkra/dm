@@ -3,6 +3,6 @@ test_that("`dm_pixarfilms()` works", {
     dm_examine_constraints(dm_pixarfilms(consistent = FALSE))
   )
   expect_snapshot(
-  dm_examine_constraints(dm_pixarfilms(consistent = TRUE))
+    dm_examine_constraints(dm_pixarfilms(consistent = TRUE))
   )
 })
