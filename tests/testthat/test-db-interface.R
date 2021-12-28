@@ -222,9 +222,11 @@ test_that("build_copy_queries snapshot test for pixarfilms", {
           .,
           table_names = names(.) %>%
             repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
-            map(dbplyr::ident_q)) %>%
+            map(dbplyr::ident_q)
+        ) %>%
         as.list() # to print full queries
-  })
+    }
+  )
 })
 
 
