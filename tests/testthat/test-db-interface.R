@@ -211,10 +211,10 @@ test_that("build_copy_queries snapshot test for pixarfilms", {
     dm_apply_filters() %>%
     dm_select_tbl(-pixar_people)
 
-  skip_if_not_installed("testthat", "3.1.0")
+  skip_if_not_installed("testthat", "3.1.1")
 
   expect_snapshot(
-    variant = if (packageVersion("testthat") > "3.1.0") "testthat-new" else "testthat-legacy",
+    variant = my_test_src_name,
     {
       pixar_dm %>%
         build_copy_queries(
