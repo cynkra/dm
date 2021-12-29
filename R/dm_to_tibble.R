@@ -3,9 +3,9 @@ dm_to_tibble <- function(dm, root, parent_join = c("left_join", "full_join")) {
   parent_join <- getFromNamespace(parent_join, "dplyr")
 
   replace_in_dm <- function(nm, new) {
-    def <- dm:::dm_get_def(dm)
+    def <- dm_get_def(dm)
     def$data[[which(def$table == nm)]] <- new
-    dm:::new_dm3(def)
+    new_dm3(def)
   }
 
   gather_children <- function(root, except = NULL) {
@@ -41,7 +41,7 @@ dm_to_tibble <- function(dm, root, parent_join = c("left_join", "full_join")) {
     tbl
   }
 
-  fks <- dm:::dm_get_all_fks(dm)
+  fks <- dm_get_all_fks(dm)
   updated_root_tbl <- gather_children(root)
   dm <- replace_in_dm(root, updated_root_tbl)
   gather_parents(root)
