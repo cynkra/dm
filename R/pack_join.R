@@ -12,7 +12,7 @@ pack_join <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, 
 #' @export
 pack_join.data.frame <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...) {
   name_var <- name %||% as_label(enexpr(y))
-  if(!copy && inherits(y, "tbl_lazy"))
+  if (!copy && inherits(y, "tbl_lazy"))
     abort("`x` and `y` must share the same src, set `copy` = TRUE (may be slow)")
   y_local <- collect(y)
   # by2 is only used for `pack`, so we keep dplyr's messages for implicit `by`
@@ -21,4 +21,3 @@ pack_join.data.frame <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, na
   # FIXME: handle potential conflict between name_var and existing variables
   left_join(x, y_packed, by = by, copy = copy, keep = keep, ...)
 }
-
