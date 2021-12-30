@@ -200,9 +200,21 @@ tibble_to_dm <- function(data, root) {
 #' @noRd
 serialize_list_cols <- function(x) {
   list_cols_lgl <- map_lgl(x, is.list)
-  x[list_cols_lgl] <- map(x[list_cols_lgl], jsonlite::serializeJSON)
+  if(!any(list_cols_lgl)) return(x)
+  x[list_cols_lgl] <- map(x[list_cols_lgl], ~ {
+    jsonlite::toJSON(list(
+      data = serialize_list_cols(.x),
+      keys = attr(.x, "..keys..")
+    ))
+  })
   x
 }
+
+# serialize_list_cols <- function(x) {
+#   list_cols_lgl <- map_lgl(x, is.list)
+#   x[list_cols_lgl] <- map(x[list_cols_lgl], jsonlite::serializeJSON)
+#   x
+# }
 
 #' Unerialize json colums
 #'
@@ -212,6 +224,19 @@ serialize_list_cols <- function(x) {
 #'
 #' @noRd
 unserialize_json_cols <- function(x) {
-  list_cols_lgl <- map_lgl(x, inherits, "json")
-  x[list_cols_lgl] <- map(x[list_cols_lgl], jsonlite::unserializeJSON)
+  json_cols_lgl <- map_lgl(x, inherits, "json")
+  if(!any(json_cols_lgl)) return(x)
+  x[json_cols_lgl] <- map(x[json_cols_lgl], ~{
+    unserialized_obj <- jsonlite::fromJSON(.x)
+    unserialized_col <- unserialize_json_cols(unserialized_obj$data)
+    attr(unserialized_col, "..keys..") <- unserialized_obj$keys
+    unserialized_col
+    })
   x
+}
+
+# unserialize_json_cols <- function(x) {
+#   json_cols_lgl <- map_lgl(x, inherits, "json")
+#   x[json_cols_lgl] <- map(x[json_cols_lgl], jsonlite::unserializeJSON)
+#   x
+# }
