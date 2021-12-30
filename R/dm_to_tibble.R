@@ -26,17 +26,21 @@ dm_to_tibble <- function(dm, root, parent_join = c("left_join", "full_join")) {
     n_children <- nrow(fks)
     for(i in seq_len(n_children)) {
       child_tbl_nm <- fks$child_table[i]
-      #if(child_tbl_nm == "tf_2") browser()
       if(child_tbl_nm %in% except) next
-      # keys in format c(parent_key_nm = "child_key_nm")
-      keys <- setNames(unlist(fks$child_fk_cols[[i]]), unlist(fks$parent_key_cols[[i]]))
+      keys <- list(
+        fks = fks[i, c("child_fk_cols", "parent_key_cols", "on_delete")],
+        pks = pks[pks$table == child_tbl_nm,]
+      )
+
+      by_cols <- with(keys$fks, setNames(unlist(child_fk_cols), unlist(parent_key_cols)))
       child_tbl <- gather_children(child_tbl_nm)
       dm <<- replace_in_dm(child_tbl_nm, child_tbl)
       child_tbl <- gather_parents(child_tbl_nm, except = root)
-      tbl <- nest_join(tbl, child_tbl, by = keys, name = child_tbl_nm)
-      # store keys for reverse op
       child_keys <- compact(map(child_tbl, attr, "..keys.."))
-      attr(tbl[[child_tbl_nm]], "..keys..") <- list(keys, child_keys)
+
+      tbl <- nest_join(tbl, child_tbl, by = by_cols, name = child_tbl_nm)
+      # store keys for reverse op
+      attr(tbl[[child_tbl_nm]], "..keys..") <- list(own = keys, child_keys = child_keys)
     }
     tbl
   }
@@ -47,25 +51,33 @@ dm_to_tibble <- function(dm, root, parent_join = c("left_join", "full_join")) {
     n_parents <- nrow(fks)
     for(i in seq_len(n_parents)) {
       parent_tbl_nm <- fks$parent_table[i]
-      # if(parent_tbl_nm == "tf_1") browser()
       if(parent_tbl_nm %in% except) next
-      # keys in format c(child_key_nm = "parent_key_nm")
-      keys <- setNames(unlist(fks$parent_key_cols[[i]]), unlist(fks$child_fk_cols[[i]]))
+      keys <- list(
+        fks = fks[i, c("child_fk_cols", "parent_key_cols", "on_delete")],
+        pks = pks[pks$table == parent_tbl_nm,]
+      )
+      by_cols <- with(keys$fks, setNames(unlist(parent_key_cols), unlist(child_fk_cols)))
       parent_tbl <- gather_parents(parent_tbl_nm)
       dm <<- replace_in_dm(parent_tbl_nm, parent_tbl)
       parent_tbl <- gather_children(parent_tbl_nm, except = root)
-      parent_tbl <- pack(parent_tbl, !!parent_tbl_nm := -match(keys, names(parent_tbl)))
-      tbl <- parent_join(tbl, parent_tbl, by = keys)
-      # store keys for reverse op
+      parent_tbl <- pack(parent_tbl, !!parent_tbl_nm := -match(by_cols, names(parent_tbl)))
+      tbl <- parent_join(tbl, parent_tbl, by = by_cols)
       attr(tbl[[parent_tbl_nm]], "..keys..") <- keys
     }
     tbl
   }
 
+  pks <- dm_get_all_pks(dm)
   fks <- dm_get_all_fks(dm)
-  updated_root_tbl <- gather_children(root)
-  dm <- replace_in_dm(root, updated_root_tbl)
-  gather_parents(root)
+  updated_root_tbl1 <- gather_children(root)
+  dm <- replace_in_dm(root, updated_root_tbl1)
+  updated_root_tbl2 <- gather_parents(root)
+  keys <- list(
+    fks = fks[fks$child_table == root, c("child_fk_cols", "parent_table", "parent_key_cols", "on_delete")],
+    pks = pks[pks$table == root,]
+  )
+  attr(updated_root_tbl2, "..keys..") <- keys
+  updated_root_tbl2
 }
 
 #' Convert a tibble to a dm
@@ -78,7 +90,12 @@ dm_to_tibble <- function(dm, root, parent_join = c("left_join", "full_join")) {
 #'
 #' @noRd
 tibble_to_dm <- function(data, root) {
-  dm <- dm(!!root := data)
+  keys <- attr(data, "..keys..")
+
+  pks <- keys$pks$pk_col[[1]]
+  pk_arg <- call2("c", !!!syms(pks))
+  dm <- dm(!!root := data)   %>%
+    dm_add_pk(!!sym(root), !!pk_arg)
 
   replace_in_dm <- function(nm, new) {
     def <- dm_get_def(dm)
@@ -86,23 +103,32 @@ tibble_to_dm <- function(data, root) {
     new_dm3(def)
   }
 
-  populate_with_parents <- function(root, except = NULL) {
-    #browser()
+  populate_with_parents <- function(root) {
     tbl <- dm[[root]]
     parents_lgl <- map_lgl(tbl, is.data.frame)
     for (parent_tbl_nm in names(tbl)[parents_lgl]) {
-      #if(parent_tbl_nm == "tf_1") browser()
       # fetch data frame col
       parent_tbl <- tbl[[parent_tbl_nm]]
 
       # bind its keys back
       keys <- attr(parent_tbl, "..keys..")
-      attr(parent_tbl, "..key..") <- NULL
+      by_cols <- with(keys$fks, setNames(unlist(parent_key_cols), unlist(child_fk_cols)))
+      attr(parent_tbl, "..keys..") <- NULL
       parent_tbl <- bind_cols(
-        setNames(tbl[names(keys)], keys),
+        setNames(tbl[names(by_cols)], by_cols),
         parent_tbl
       )
-      dm <<- dm_add_tbl(dm, !!parent_tbl_nm := parent_tbl)
+      pks <- keys$pks$pk_col[[1]]
+      pk_arg <- call2("c", !!!syms(pks))
+      dm <<- dm  %>%
+        dm_add_tbl(!!parent_tbl_nm := parent_tbl) %>%
+        dm_add_pk(!!sym(parent_tbl_nm), !!pk_arg)
+      for (i in seq_len(nrow(keys$fks))) {
+        fks <- keys$fks$child_fk_cols[[i]]
+        child_fk_arg <- call2("c", !!!syms(fks))
+        dm <<- dm_add_fk(dm, !!sym(root), !!child_fk_arg, !!sym(parent_tbl_nm))
+      }
+
       populate_with_parents(parent_tbl_nm)
       populate_with_children(parent_tbl_nm)
     }
@@ -111,21 +137,19 @@ tibble_to_dm <- function(data, root) {
     dm <<- replace_in_dm(root, tbl)
   }
 
-  populate_with_children <- function(root, except = NULL) {
-    #browser()
+  populate_with_children <- function(root) {
     tbl <- dm[[root]]
     children_lgl <- map_lgl(tbl, is_bare_list)
     for (child_tbl_nm in names(tbl)[children_lgl]) {
-      #if(child_tbl_nm == "tf_5") browser()
       # fetch list col in its own data frame
       child_tbl <- tbl[child_tbl_nm]
 
       # bind its keys back
       keys <- attr(child_tbl[[1]], "..keys..")
-      attr(child_tbl, "..key..") <- NULL
-      #print(names(keys))
+      by_cols <- with(keys[[1]]$fks, setNames(unlist(child_fk_cols), unlist(parent_key_cols)))
+      attr(child_tbl, "..keys..") <- NULL
       child_tbl <- bind_cols(
-        setNames(tbl[names(keys[[1]])], keys[[1]]),
+        setNames(tbl[names(by_cols)], by_cols),
         child_tbl
       ) %>%
         unnest(!!child_tbl_nm) %>%
@@ -136,7 +160,20 @@ tibble_to_dm <- function(data, root) {
       for(col in names(keys[[2]])) {
         attr(child_tbl[[col]], "..keys..") <- keys[[2]][[col]]
       }
-      dm <<- dm_add_tbl(dm, !!child_tbl_nm := child_tbl)
+
+      pks <- keys[[1]]$pks$pk_col[[1]]
+      pk_arg <- call2("c", !!!syms(pks))
+
+      dm <<-
+        dm_add_tbl(dm, !!child_tbl_nm := child_tbl) %>%
+        dm_add_pk(!!sym(child_tbl_nm), !!pk_arg)
+
+      for (i in seq_len(nrow(keys[[1]]$fks))) {
+        fks <- keys[[1]]$fks$child_fk_cols[[i]]
+        child_fk_arg <- call2("c", !!!syms(fks))
+        dm <<- dm_add_fk(dm, !!sym(child_tbl_nm), !!child_fk_arg, !!sym(root))
+      }
+
       populate_with_children(child_tbl_nm)
       populate_with_parents(child_tbl_nm)
     }
@@ -147,6 +184,9 @@ tibble_to_dm <- function(data, root) {
   populate_with_parents(root)
   populate_with_children(root)
 
+  tbl <- dm[[root]]
+  attr(tbl, "..keys..") <- NULL
+  dm <- replace_in_dm(root, tbl)
   dm
 }
 
