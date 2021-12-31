@@ -11,25 +11,24 @@
 #'
 #' @noRd
 dm_to_tibble <- function(dm, root) {
-
   def <- dm_get_def(dm)
 
   gather_children <- function(def, root, except = NULL) {
     fks_subset <- filter(fks, parent_table == root)
     tbl <- def$data[[which(def$table == root)]]
     n_children <- nrow(fks_subset)
-    for(i in seq_len(n_children)) {
+    for (i in seq_len(n_children)) {
       child_tbl_nm <- fks_subset$child_table[i]
 
       ## recurse if relevant
-      if(child_tbl_nm %in% except) next
+      if (child_tbl_nm %in% except) next
       def <- gather_children(def, child_tbl_nm)
       def <- gather_parents(def, child_tbl_nm, except = root)
 
       ## nest child table
       keys <- list(
         fks = fks_subset[i, c("child_fk_cols", "parent_key_cols", "on_delete")],
-        pks = pks[pks$table == child_tbl_nm,]
+        pks = pks[pks$table == child_tbl_nm, ]
       )
       by_cols <- with(keys$fks, setNames(unlist(child_fk_cols), unlist(parent_key_cols)))
       child_tbl <- def$data[[which(def$table == child_tbl_nm)]]
@@ -53,18 +52,18 @@ dm_to_tibble <- function(dm, root) {
     fks_subset <- filter(fks, child_table == root)
     tbl <- def$data[[which(def$table == root)]]
     n_parents <- nrow(fks_subset)
-    for(i in seq_len(n_parents)) {
+    for (i in seq_len(n_parents)) {
       parent_tbl_nm <- fks_subset$parent_table[i]
 
       ## recurse if relevant
-      if(parent_tbl_nm %in% except) next
+      if (parent_tbl_nm %in% except) next
       def <- gather_parents(def, parent_tbl_nm)
       def <- gather_children(def, parent_tbl_nm, except = root)
 
       ## pack parent table
       keys <- list(
         fks = fks_subset[i, c("child_fk_cols", "parent_key_cols", "on_delete")],
-        pks = pks[pks$table == parent_tbl_nm,]
+        pks = pks[pks$table == parent_tbl_nm, ]
       )
       by_cols <- with(keys$fks, setNames(unlist(parent_key_cols), unlist(child_fk_cols)))
       parent_tbl <- def$data[[which(def$table == parent_tbl_nm)]]
@@ -96,7 +95,7 @@ dm_to_tibble <- function(dm, root) {
   ## set the root table's keys as attributes
   keys <- list(
     fks = fks[fks$child_table == root, c("child_fk_cols", "parent_table", "parent_key_cols", "on_delete")],
-    pks = pks[pks$table == root,]
+    pks = pks[pks$table == root, ]
   )
   attr(tbl, "..keys..") <- keys
 
@@ -113,7 +112,6 @@ dm_to_tibble <- function(dm, root) {
 #'
 #' @noRd
 tibble_to_dm <- function(data, root) {
-
   replace_in_dm <- function(nm, new) {
     def <- dm_get_def(dm)
     def$data[[which(def$table == nm)]] <- new
@@ -139,7 +137,7 @@ tibble_to_dm <- function(data, root) {
       ## set keys back in the dm
       pks <- keys$pks$pk_col[[1]]
       pk_arg <- call2("c", !!!syms(pks))
-      dm <<- dm  %>%
+      dm <<- dm %>%
         dm_add_tbl(!!parent_tbl_nm := parent_tbl) %>%
         dm_add_pk(!!sym(parent_tbl_nm), !!pk_arg)
       for (i in seq_len(nrow(keys$fks))) {
@@ -178,7 +176,7 @@ tibble_to_dm <- function(data, root) {
         unique()
 
       ## set keys back in the dm
-      for(col in names(keys[[2]])) {
+      for (col in names(keys[[2]])) {
         attr(child_tbl[[col]], "..keys..") <- keys[[2]][[col]]
       }
       pks <- keys[[1]]$pks$pk_col[[1]]
@@ -231,7 +229,7 @@ tibble_to_dm <- function(data, root) {
 #' @noRd
 serialize_list_cols <- function(x) {
   list_cols_lgl <- map_lgl(x, is.list)
-  if(!any(list_cols_lgl)) return(x)
+  if (!any(list_cols_lgl)) return(x)
   x[list_cols_lgl] <- map(x[list_cols_lgl], ~ {
     jsonlite::toJSON(list(
       data = serialize_list_cols(.x),
@@ -256,13 +254,13 @@ serialize_list_cols <- function(x) {
 #' @noRd
 unserialize_json_cols <- function(x) {
   json_cols_lgl <- map_lgl(x, inherits, "json")
-  if(!any(json_cols_lgl)) return(x)
-  x[json_cols_lgl] <- map(x[json_cols_lgl], ~{
+  if (!any(json_cols_lgl)) return(x)
+  x[json_cols_lgl] <- map(x[json_cols_lgl], ~ {
     unserialized_obj <- jsonlite::fromJSON(.x)
     unserialized_col <- unserialize_json_cols(unserialized_obj$data)
     attr(unserialized_col, "..keys..") <- unserialized_obj$keys
     unserialized_col
-    })
+  })
   x
 }
 
