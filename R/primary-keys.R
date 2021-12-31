@@ -276,7 +276,7 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
     abort_pk_not_defined()
   }
 
-  pwalk(list(def$fks[i], def$pks[i], def$table[i]),  ~ {
+  pwalk(list(def$fks[i], def$pks[i], def$table[i]), ~ {
     is_match <- !is.na(vec_match(..1$ref_column, ..2$column))
     if (fail_fk && any(is_match)) {
       abort_first_rm_fks(..3, ..1$table[is_match])

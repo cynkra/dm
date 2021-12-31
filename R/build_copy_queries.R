@@ -34,17 +34,20 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     map_dfr(get_sql_col_types, .id = "name") %>%
     mutate(col_def = glue("{DBI::dbQuoteIdentifier(con, col)} {type}")) %>%
     group_by(name) %>%
-    summarize(col_defs = paste(col_def, collapse = ",\n  "),
-      columns = list(col))
+    summarize(
+      col_defs = paste(col_def, collapse = ",\n  "),
+      columns = list(col)
+    )
 
   # default values
   pk_defs <- tibble(name = character(0), pk_defs = character(0))
   fk_defs <- tibble(name = character(0), fk_defs = character(0))
   unique_defs <- tibble(name = character(0), unique_defs = character(0))
-  index_queries  <- tibble(
+  index_queries <- tibble(
     name = character(0),
     sql_index = list(),
-    index_name = list())
+    index_name = list()
+  )
 
   if (set_key_constraints) {
     # primary key definitions
@@ -52,7 +55,8 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       pks %>%
       transmute(
         name,
-        pk_defs = paste0("PRIMARY KEY (", quote_enum_col(pk_col), ")"))
+        pk_defs = paste0("PRIMARY KEY (", quote_enum_col(pk_col), ")")
+      )
 
     # unique constraint definitions
     unique_defs <-
@@ -62,7 +66,9 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
         unique_def = paste0(
           "UNIQUE (",
           quote_enum_col(pk_col),
-          ")")) %>%
+          ")"
+        )
+      ) %>%
       group_by(name) %>%
       summarize(unique_defs = paste(unique_def, collapse = ",\n  "))
 
@@ -83,7 +89,9 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
             unlist(table_names[parent_table]),
             " (",
             quote_enum_col(parent_key_cols),
-            ")")) %>%
+            ")"
+          )
+        ) %>%
         group_by(name) %>%
         summarize(fk_defs = paste(fk_def, collapse = ",\n  "))
 
@@ -94,7 +102,8 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
           index_name = map_chr(child_fk_cols, paste, collapse = "_"),
           remote_name = unlist(table_names[name]) %||% character(0),
           remote_name_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)), ~ .x@name[["table"]]),
-          index_name = make.unique(paste0(remote_name_unquoted, "__", index_name), sep = "__")) %>%
+          index_name = make.unique(paste0(remote_name_unquoted, "__", index_name), sep = "__")
+        ) %>%
         group_by(name) %>%
         summarize(
           sql_index = list(DBI::SQL(paste0(
@@ -105,9 +114,9 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
             " (",
             quote_enum_col(child_fk_cols),
             ")"
-          ))
-          ),
-          index_name = list(index_name))
+          ))),
+          index_name = list(index_name)
+        )
     }
   }
   ## compile `CREATE TABLE ...` queries
@@ -122,11 +131,15 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       all_defs = paste(
         Filter(
           Negate(is.na),
-          c(col_defs, pk_defs, unique_defs, fk_defs)),
-        collapse = ",\n  ")) %>%
+          c(col_defs, pk_defs, unique_defs, fk_defs)
+        ),
+        collapse = ",\n  "
+      )
+    ) %>%
     ungroup() %>%
     transmute(name, remote_name, columns, sql_table = DBI::SQL(glue(
-      "CREATE {if (temporary) 'TEMP ' else ''}TABLE {unlist(remote_name)} (\n  {all_defs}\n)")))
+      "CREATE {if (temporary) 'TEMP ' else ''}TABLE {unlist(remote_name)} (\n  {all_defs}\n)"
+    )))
 
   queries <- left_join(create_table_queries, index_queries, by = "name")
 

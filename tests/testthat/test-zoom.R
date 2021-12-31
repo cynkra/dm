@@ -160,5 +160,6 @@ test_that("dm_get_zoom() works to zoom on empty tables", {
   zdm <- dm(x = tibble()) %>% dm_zoom_to(x)
   expect_identical(
     dm_get_zoom(zdm),
-    tibble(table = "x", zoom = list(tibble())))
+    tibble(table = "x", zoom = list(tibble()))
+  )
 })
