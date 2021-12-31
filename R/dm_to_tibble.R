@@ -85,8 +85,14 @@ dm_to_tibble <- function(dm, root) {
   }
 
   ## setup global variables
-  pks <- dm_get_all_pks(dm)
-  fks <- dm_get_all_fks(dm)
+  # to ease the round trips we remove all unnecessary attrs since toJSON/fromJSON strips them
+  pks <- as.data.frame(dm_get_all_pks(dm))
+  fks <- as.data.frame(dm_get_all_fks(dm))
+  pks[] <- map(pks, unclass)
+  fks[] <- map(fks, unclass)
+  attributes(pks$pk_col) <- NULL
+  attributes(fks$parent_key_cols) <- NULL
+  attributes(fks$child_fk_cols) <- NULL
 
   ## gather all tables into root table
   def <- gather_children(def, root)
@@ -230,14 +236,51 @@ tibble_to_dm <- function(data, root) {
 #'
 #' @noRd
 serialize_list_cols <- function(x) {
-  list_cols_lgl <- map_lgl(x, is.list)
-  if(!any(list_cols_lgl)) return(x)
-  x[list_cols_lgl] <- map(x[list_cols_lgl], ~ {
-    jsonlite::toJSON(list(
-      data = serialize_list_cols(.x),
-      keys = attr(.x, "..keys..")
-    ))
+  children_lgl <- map_lgl(x, is_bare_list)
+  parent_lgl <- map_lgl(x, is.data.frame)
+  x[children_lgl] <- map(x[children_lgl], \(col){
+    map_chr(col, \(item) {
+      #browser()
+      empty = !nrow(item)
+      if(empty) {
+        # toJSON destroys empty tibbles so to save the format we keep a 1
+        # row table and we tag as empty
+        # we use placeholders to preserve format
+        item <- item[1,]
+        item[map_lgl(item, is.integer)] <- 1L
+        item[map_lgl(item, is.double)] <- 1
+        item[map_lgl(item, is.character)] <- "a"
+        item[map_lgl(item, is_tibble)] <- list(tibble(a = 1))
+        item[map_lgl(item, is_bare_list)] <- list(list(1))
+      }
+      jsonlite::toJSON(list(
+        #type = "child",
+        # toJSON destroys empty tibbles so we save the names to rebuild
+        # to be rigorous we'd have to save the type too
+        empty = if(empty) TRUE,
+        # we repeat keys in each element, we could also store in 1st only
+        keys = attr(col, "..keys.."),
+        data = serialize_list_cols(item)
+      ),
+      na = "string")
+    })
   })
+  x[parent_lgl] <- map(x[parent_lgl], \(df){
+    # split by row before serialization
+    #browser()
+    row_dfs <- split(df, seq_len(nrow(df)))
+    map_chr(row_dfs, \(row_df) {
+      jsonlite::toJSON(list(
+        # we repeat keys in each element, we could also store in 1st only
+        #type = "parent",
+        keys = attr(col, "..keys.."),
+        data = serialize_list_cols(row_df)
+      ),
+      na = "string")
+    })
+  })
+  names(x)[children_lgl] <- paste0(names(x)[children_lgl], "_json_child")
+  names(x)[parent_lgl] <- paste0(names(x)[parent_lgl], "_json_parent")
   x
 }
 
@@ -247,6 +290,8 @@ serialize_list_cols <- function(x) {
 #   x
 # }
 
+tibble_from_json <- function(x) as_tibble(jsonlite::fromJSON(x))
+
 #' Unerialize json colums
 #'
 #' @param x a tibble containing list (incl data frame) columns
@@ -255,14 +300,40 @@ serialize_list_cols <- function(x) {
 #'
 #' @noRd
 unserialize_json_cols <- function(x) {
-  json_cols_lgl <- map_lgl(x, inherits, "json")
-  if(!any(json_cols_lgl)) return(x)
-  x[json_cols_lgl] <- map(x[json_cols_lgl], ~{
-    unserialized_obj <- jsonlite::fromJSON(.x)
-    unserialized_col <- unserialize_json_cols(unserialized_obj$data)
-    attr(unserialized_col, "..keys..") <- unserialized_obj$keys
+  x <- as_tibble(x)
+  children_lgl <- endsWith(names2(x), "_json_child")
+  parent_lgl <- endsWith(names2(x), "_json_parent")
+
+  x[children_lgl] <- map(x[children_lgl], \(col) {
+    #browser()
+    unserialized_obj <- map(col, jsonlite::fromJSON)
+
+    unserialized_col <- map(unserialized_obj, ~ {
+      #
+      data <- unserialize_json_cols(.x$data)
+      # rebuild empty data frames
+      if(isTRUE(.x$empty)) {
+        #browser()
+        data <- data[0,]
+      }
+      data
+      })
+    keys <- unserialized_obj[[1]]$keys
+    attr(unserialized_col, "..keys..") <- keys
     unserialized_col
     })
+
+  x[parent_lgl] <- map(x[parent_lgl], \(col) {
+    #browser()
+    unserialized_obj <- map(col, jsonlite::fromJSON)
+    unserialized_col <- map_dfr(unserialized_obj, ~unserialize_json_cols(.x$data))
+    keys <- unserialized_obj[[1]]$keys
+    attr(unserialized_col, "..keys..") <- keys
+    unserialized_col
+  })
+
+  names(x)[children_lgl] <- sub("_json_child$", "", names(x)[children_lgl])
+  names(x)[parent_lgl] <- sub("_json_parent$", "", names(x)[parent_lgl])
   x
 }
 
