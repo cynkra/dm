@@ -84,16 +84,22 @@ dm_to_tibble <- function(dm, root) {
     def
   }
 
+  ## setup global variables
   pks <- dm_get_all_pks(dm)
   fks <- dm_get_all_fks(dm)
+
+  ## gather all tables into root table
   def <- gather_children(def, root)
   def <- gather_parents(def, root)
   tbl <- def$data[[1]]
+
+  ## set the root table's keys as attributes
   keys <- list(
     fks = fks[fks$child_table == root, c("child_fk_cols", "parent_table", "parent_key_cols", "on_delete")],
     pks = pks[pks$table == root,]
   )
   attr(tbl, "..keys..") <- keys
+
   tbl
 }
 
@@ -107,12 +113,6 @@ dm_to_tibble <- function(dm, root) {
 #'
 #' @noRd
 tibble_to_dm <- function(data, root) {
-  keys <- attr(data, "..keys..")
-
-  pks <- keys$pks$pk_col[[1]]
-  pk_arg <- call2("c", !!!syms(pks))
-  dm <- dm(!!root := data)   %>%
-    dm_add_pk(!!sym(root), !!pk_arg)
 
   replace_in_dm <- function(nm, new) {
     def <- dm_get_def(dm)
@@ -124,10 +124,10 @@ tibble_to_dm <- function(data, root) {
     tbl <- dm[[root]]
     parents_lgl <- map_lgl(tbl, is.data.frame)
     for (parent_tbl_nm in names(tbl)[parents_lgl]) {
-      # fetch data frame col
+      ## fetch data frame col
       parent_tbl <- tbl[[parent_tbl_nm]]
 
-      # bind its keys back
+      ## bind its key cols back, removing "..keys.." attr
       keys <- attr(parent_tbl, "..keys..")
       by_cols <- with(keys$fks, setNames(unlist(parent_key_cols), unlist(child_fk_cols)))
       attr(parent_tbl, "..keys..") <- NULL
@@ -135,6 +135,8 @@ tibble_to_dm <- function(data, root) {
         setNames(tbl[names(by_cols)], by_cols),
         parent_tbl
       )
+
+      ## set keys back in the dm
       pks <- keys$pks$pk_col[[1]]
       pk_arg <- call2("c", !!!syms(pks))
       dm <<- dm  %>%
@@ -146,10 +148,11 @@ tibble_to_dm <- function(data, root) {
         dm <<- dm_add_fk(dm, !!sym(root), !!child_fk_arg, !!sym(parent_tbl_nm))
       }
 
+      ## recurse
       populate_with_parents(parent_tbl_nm)
       populate_with_children(parent_tbl_nm)
     }
-    # remove from source table and update dm
+    ## remove from source table and update dm
     tbl[parents_lgl] <- NULL
     dm <<- replace_in_dm(root, tbl)
   }
@@ -158,10 +161,10 @@ tibble_to_dm <- function(data, root) {
     tbl <- dm[[root]]
     children_lgl <- map_lgl(tbl, is_bare_list)
     for (child_tbl_nm in names(tbl)[children_lgl]) {
-      # fetch list col in its own data frame
+      ## fetch list col in its own data frame
       child_tbl <- tbl[child_tbl_nm]
 
-      # bind its keys back
+      ## bind its key cols back and reshape, removing "..keys.." attr
       keys <- attr(child_tbl[[1]], "..keys..")
       by_cols <- with(keys[[1]]$fks, setNames(unlist(child_fk_cols), unlist(parent_key_cols)))
       attr(child_tbl, "..keys..") <- NULL
@@ -173,37 +176,48 @@ tibble_to_dm <- function(data, root) {
         # assuming duplicate rows make no sense in data bases
         # otherwise not robust
         unique()
-      # set back the keys
+
+      ## set keys back in the dm
       for(col in names(keys[[2]])) {
         attr(child_tbl[[col]], "..keys..") <- keys[[2]][[col]]
       }
-
       pks <- keys[[1]]$pks$pk_col[[1]]
       pk_arg <- call2("c", !!!syms(pks))
-
       dm <<-
         dm_add_tbl(dm, !!child_tbl_nm := child_tbl) %>%
         dm_add_pk(!!sym(child_tbl_nm), !!pk_arg)
-
       for (i in seq_len(nrow(keys[[1]]$fks))) {
         fks <- keys[[1]]$fks$child_fk_cols[[i]]
         child_fk_arg <- call2("c", !!!syms(fks))
         dm <<- dm_add_fk(dm, !!sym(child_tbl_nm), !!child_fk_arg, !!sym(root))
       }
 
+      ## recurse
       populate_with_children(child_tbl_nm)
       populate_with_parents(child_tbl_nm)
     }
+
+    ## remove from source table and update dm
     tbl[children_lgl] <- NULL
     dm <<- replace_in_dm(root, tbl)
   }
 
+  ## buid dm from root table
+  keys <- attr(data, "..keys..")
+  pks <- keys$pks$pk_col[[1]]
+  pk_arg <- call2("c", !!!syms(pks))
+  dm <- dm(!!root := data) %>%
+    dm_add_pk(!!sym(root), !!pk_arg)
+
+  ## populate recursively
   populate_with_parents(root)
   populate_with_children(root)
 
+  ## remove attributes from root table
   tbl <- dm[[root]]
   attr(tbl, "..keys..") <- NULL
   dm <- replace_in_dm(root, tbl)
+
   dm
 }
 
