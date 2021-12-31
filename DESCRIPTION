@@ -47,6 +47,7 @@ Imports:
     dplyr (>= 1.0.3),
     ellipsis,
     glue,
+    jsonlite,
     igraph,
     lifecycle,
     magrittr,
