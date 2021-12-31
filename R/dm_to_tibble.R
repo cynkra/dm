@@ -10,9 +10,7 @@
 #' @return a tibble
 #'
 #' @noRd
-dm_to_tibble <- function(dm, root, parent_join = c("left_join", "full_join")) {
-  parent_join <- match.arg(parent_join)
-  parent_join <- getFromNamespace(parent_join, "dplyr")
+dm_to_tibble <- function(dm, root) {
 
   replace_in_dm <- function(nm, new) {
     def <- dm_get_def(dm)
@@ -60,8 +58,11 @@ dm_to_tibble <- function(dm, root, parent_join = c("left_join", "full_join")) {
       parent_tbl <- gather_parents(parent_tbl_nm)
       dm <<- replace_in_dm(parent_tbl_nm, parent_tbl)
       parent_tbl <- gather_children(parent_tbl_nm, except = root)
+
+      # FIXME: when pack_join is merged, replace next lines
       parent_tbl <- pack(parent_tbl, !!parent_tbl_nm := -match(by_cols, names(parent_tbl)))
-      tbl <- parent_join(tbl, parent_tbl, by = by_cols)
+      tbl <- left_join(tbl, parent_tbl, by = by_cols)
+      # tbl <- pack_join(tbl, parent_tbl, by = by_cols, name = parent_tbl_nm)
       attr(tbl[[parent_tbl_nm]], "..keys..") <- keys
     }
     tbl
