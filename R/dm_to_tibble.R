@@ -12,73 +12,89 @@
 #' @noRd
 dm_to_tibble <- function(dm, root) {
 
-  replace_in_dm <- function(nm, new) {
-    def <- dm_get_def(dm)
-    def$data[[which(def$table == nm)]] <- new
-    new_dm3(def)
-  }
+  def <- dm_get_def(dm)
 
-  gather_children <- function(root, except = NULL) {
-    fks <- filter(fks, parent_table == root)
-    tbl <- dm[[root]]
-    n_children <- nrow(fks)
+  gather_children <- function(def, root, except = NULL) {
+    fks_subset <- filter(fks, parent_table == root)
+    tbl <- def$data[[which(def$table == root)]]
+    n_children <- nrow(fks_subset)
     for(i in seq_len(n_children)) {
-      child_tbl_nm <- fks$child_table[i]
+      child_tbl_nm <- fks_subset$child_table[i]
+
+      ## recurse if relevant
       if(child_tbl_nm %in% except) next
+      def <- gather_children(def, child_tbl_nm)
+      def <- gather_parents(def, child_tbl_nm, except = root)
+
+      ## nest child table
       keys <- list(
-        fks = fks[i, c("child_fk_cols", "parent_key_cols", "on_delete")],
+        fks = fks_subset[i, c("child_fk_cols", "parent_key_cols", "on_delete")],
         pks = pks[pks$table == child_tbl_nm,]
       )
-
       by_cols <- with(keys$fks, setNames(unlist(child_fk_cols), unlist(parent_key_cols)))
-      child_tbl <- gather_children(child_tbl_nm)
-      dm <<- replace_in_dm(child_tbl_nm, child_tbl)
-      child_tbl <- gather_parents(child_tbl_nm, except = root)
-      child_keys <- compact(map(child_tbl, attr, "..keys.."))
-
+      child_tbl <- def$data[[which(def$table == child_tbl_nm)]]
       tbl <- nest_join(tbl, child_tbl, by = by_cols, name = child_tbl_nm)
-      # store keys for reverse op
+
+      ## store keys for reverse op
+      # since nesting splits table and destroys attributes we store the child's
+      # keys next to the table's own keys
+      child_keys <- compact(map(child_tbl, attr, "..keys.."))
       attr(tbl[[child_tbl_nm]], "..keys..") <- list(own = keys, child_keys = child_keys)
+
+      ## remove child from def
+      def <- def[def$table != child_tbl_nm, ]
     }
-    tbl
+    ## update def
+    def$data[[which(def$table == root)]] <- tbl
+    def
   }
 
-  gather_parents <- function(root, except = NULL) {
-    fks <- filter(fks, child_table == root)
-    tbl <- dm[[root]]
-    n_parents <- nrow(fks)
+  gather_parents <- function(def, root, except = NULL) {
+    fks_subset <- filter(fks, child_table == root)
+    tbl <- def$data[[which(def$table == root)]]
+    n_parents <- nrow(fks_subset)
     for(i in seq_len(n_parents)) {
-      parent_tbl_nm <- fks$parent_table[i]
+      parent_tbl_nm <- fks_subset$parent_table[i]
+
+      ## recurse if relevant
       if(parent_tbl_nm %in% except) next
+      def <- gather_parents(def, parent_tbl_nm)
+      def <- gather_children(def, parent_tbl_nm, except = root)
+
+      ## pack parent table
       keys <- list(
-        fks = fks[i, c("child_fk_cols", "parent_key_cols", "on_delete")],
+        fks = fks_subset[i, c("child_fk_cols", "parent_key_cols", "on_delete")],
         pks = pks[pks$table == parent_tbl_nm,]
       )
       by_cols <- with(keys$fks, setNames(unlist(parent_key_cols), unlist(child_fk_cols)))
-      parent_tbl <- gather_parents(parent_tbl_nm)
-      dm <<- replace_in_dm(parent_tbl_nm, parent_tbl)
-      parent_tbl <- gather_children(parent_tbl_nm, except = root)
-
+      parent_tbl <- def$data[[which(def$table == parent_tbl_nm)]]
       # FIXME: when pack_join is merged, replace next lines
       parent_tbl <- pack(parent_tbl, !!parent_tbl_nm := -match(by_cols, names(parent_tbl)))
       tbl <- left_join(tbl, parent_tbl, by = by_cols)
       # tbl <- pack_join(tbl, parent_tbl, by = by_cols, name = parent_tbl_nm)
+
+      ## store keys for reverse op
       attr(tbl[[parent_tbl_nm]], "..keys..") <- keys
+
+      ## remove parent from def
+      def <- def[def$table != parent_tbl_nm, ]
     }
-    tbl
+    ## update def
+    def$data[[which(def$table == root)]] <- tbl
+    def
   }
 
   pks <- dm_get_all_pks(dm)
   fks <- dm_get_all_fks(dm)
-  updated_root_tbl1 <- gather_children(root)
-  dm <- replace_in_dm(root, updated_root_tbl1)
-  updated_root_tbl2 <- gather_parents(root)
+  def <- gather_children(def, root)
+  def <- gather_parents(def, root)
+  tbl <- def$data[[1]]
   keys <- list(
     fks = fks[fks$child_table == root, c("child_fk_cols", "parent_table", "parent_key_cols", "on_delete")],
     pks = pks[pks$table == root,]
   )
-  attr(updated_root_tbl2, "..keys..") <- keys
-  updated_root_tbl2
+  attr(tbl, "..keys..") <- keys
+  tbl
 }
 
 #' Convert a tibble to a dm
