@@ -236,6 +236,8 @@ tibble_to_dm <- function(data, root) {
 #'
 #' @noRd
 serialize_list_cols <- function(x) {
+  # FIXME: Use correct `top_level_fun` once we have the round trip and wrappers
+  check_suggested("jsonlite", TRUE, top_level_fun = "serialize_list_cols")
   children_lgl <- map_lgl(x, is_bare_list)
   parent_lgl <- map_lgl(x, is.data.frame)
   x[children_lgl] <- map(x[children_lgl], \(col){
@@ -300,6 +302,8 @@ tibble_from_json <- function(x) as_tibble(jsonlite::fromJSON(x))
 #'
 #' @noRd
 unserialize_json_cols <- function(x) {
+  # FIXME: Use correct `top_level_fun` once we have the round trip and wrappers
+  check_suggested("jsonlite", TRUE, top_level_fun = "serialize_list_cols")
   x <- as_tibble(x)
   children_lgl <- endsWith(names2(x), "_json_child")
   parent_lgl <- endsWith(names2(x), "_json_parent")
