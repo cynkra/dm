@@ -31,7 +31,7 @@ dm_to_tibble <- function(dm, root) {
         fks = fks_subset[i, c("child_fk_cols", "parent_key_cols", "on_delete")],
         pks = pks[pks$table == child_tbl_nm,]
       )
-      by_cols <- with(keys$fks, setNames(unlist(child_fk_cols), unlist(parent_key_cols)))
+      by_cols <- with(keys$fks, set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
       child_tbl <- def$data[[which(def$table == child_tbl_nm)]]
       tbl <- nest_join(tbl, child_tbl, by = by_cols, name = child_tbl_nm)
 
@@ -66,7 +66,7 @@ dm_to_tibble <- function(dm, root) {
         fks = fks_subset[i, c("child_fk_cols", "parent_key_cols", "on_delete")],
         pks = pks[pks$table == parent_tbl_nm,]
       )
-      by_cols <- with(keys$fks, setNames(unlist(parent_key_cols), unlist(child_fk_cols)))
+      by_cols <- with(keys$fks, set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
       parent_tbl <- def$data[[which(def$table == parent_tbl_nm)]]
       # FIXME: when pack_join is merged, replace next lines
       parent_tbl <- pack(parent_tbl, !!parent_tbl_nm := -match(by_cols, names(parent_tbl)))
@@ -135,10 +135,10 @@ tibble_to_dm <- function(data, root) {
 
       ## bind its key cols back, removing "..keys.." attr
       keys <- attr(parent_tbl, "..keys..")
-      by_cols <- with(keys$fks, setNames(unlist(parent_key_cols), unlist(child_fk_cols)))
+      by_cols <- with(keys$fks, set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
       attr(parent_tbl, "..keys..") <- NULL
       parent_tbl <- bind_cols(
-        setNames(tbl[names(by_cols)], by_cols),
+        set_names(tbl[names(by_cols)], by_cols),
         parent_tbl
       )
 
@@ -172,10 +172,10 @@ tibble_to_dm <- function(data, root) {
 
       ## bind its key cols back and reshape, removing "..keys.." attr
       keys <- attr(child_tbl[[1]], "..keys..")
-      by_cols <- with(keys[[1]]$fks, setNames(unlist(child_fk_cols), unlist(parent_key_cols)))
+      by_cols <- with(keys[[1]]$fks, set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
       attr(child_tbl, "..keys..") <- NULL
       child_tbl <- bind_cols(
-        setNames(tbl[names(by_cols)], by_cols),
+        set_names(tbl[names(by_cols)], by_cols),
         child_tbl
       ) %>%
         unnest(!!child_tbl_nm) %>%
