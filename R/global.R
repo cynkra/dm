@@ -63,6 +63,7 @@ utils::globalVariables(c(
   "ref_column",
   "ref_table",
   "remote_name",
+  "remote_name_unquoted",
   "renames",
   "schema",
   "schema_name",
@@ -130,5 +131,27 @@ utils::globalVariables(c(
   "constraint_column_usage.dm_name",
   "key_column_usage.column_name",
   "key_column_usage.dm_name",
+  #
+  # pixarfilms
+  "pixar_films",
+  "pixar_people",
+  "academy",
+  "box_office",
+  "genres",
+  "public_response",
+  "film",
+  "role_type",
+  "award_type",
+  "genre",
+  #
+  # build_copy_queries
+  "col_def",
+  "fk_def",
+  "index_name",
+  "remote_table",
+  "remote_table_unquoted",
+  "unique_def",
+  #
+  # keep this to avoid dealing with trailing commas
   NULL
 ))

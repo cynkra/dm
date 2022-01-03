@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.2.5.9000
-Date: 2021-10-15
+Version: 0.2.6.9001
+Date: 2021-12-28
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -12,6 +12,9 @@ Authors@R:
              role = c("aut", "cre"),
              email = "krlmlr+r@mailbox.org",
              comment = c(ORCID = "0000-0002-1416-3412")),
+      person(given = "Antoine",
+             family = "Fabri",
+             role = "ctb"),
       person(given = "Darko",
              family = "Bergant",
              role = "aut",
@@ -71,6 +74,7 @@ Suggests:
     mockr,
     nycflights13,
     odbc,
+    pixarfilms,
     pool,
     progress,
     RMariaDB (>= 1.0.10),
@@ -90,3 +94,5 @@ RoxygenNote: 7.1.2
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm, draw-dm, bind, rows-dm
+Config/autostyle/scope: line_breaks
+Config/autostyle/strict: true

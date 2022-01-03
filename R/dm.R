@@ -796,7 +796,8 @@ glimpse.dm <- function(x, width = NULL, ...) {
             ),
             glimpse_width
           )
-      })
+        }
+      )
     if (!is_empty(fk)) {
       cat_line(length(fk), " outgoing foreign key(s):")
       cat_line(fk)

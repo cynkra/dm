@@ -46,7 +46,8 @@
       writeLines(conditionMessage(expect_error(rows_insert(data, tibble(select = 4,
         where = "z")))))
     Output
-      `x` and `y` must share the same src, set `copy` = TRUE (may be slow).
+      `x` and `y` must share the same src.
+      i set `copy` = TRUE (may be slow).
     Code
       rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = FALSE)
     Output

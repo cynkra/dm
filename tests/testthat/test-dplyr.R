@@ -419,33 +419,33 @@ test_that("basic test: 'across' works properly", {
   expect_equivalent_tbl(
     dm_for_filter() %>%
       dm_zoom_to(tf_2) %>%
-      mutate(across(c(1, 3), ~ "C")) %>%
+      mutate(across(c(1, 3), ~"C")) %>%
       pull_tbl(),
     dm_for_filter() %>%
       pull_tbl(tf_2) %>%
-      mutate(across(c(1, 3), ~ "C"))
+      mutate(across(c(1, 3), ~"C"))
   )
 
   expect_equivalent_tbl(
     dm_for_filter() %>%
       dm_zoom_to(tf_2) %>%
-      summarize(across(c(c, e), ~ "C")) %>%
+      summarize(across(c(c, e), ~"C")) %>%
       pull_tbl(),
     dm_for_filter() %>%
       pull_tbl(tf_2) %>%
-      summarize(across(c(c, e), ~ "C"))
+      summarize(across(c(c, e), ~"C"))
   )
 
   expect_equivalent_tbl(
     dm_for_filter() %>%
       dm_zoom_to(tf_2) %>%
       group_by(d) %>%
-      summarize(across(c(1, 3), ~ "C")) %>%
+      summarize(across(c(1, 3), ~"C")) %>%
       pull_tbl(),
     dm_for_filter() %>%
       pull_tbl(tf_2) %>%
       group_by(d) %>%
-      summarize(across(c(1, 3), ~ "C"))
+      summarize(across(c(1, 3), ~"C"))
   )
 })
 
