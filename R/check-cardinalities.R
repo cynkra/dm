@@ -176,28 +176,31 @@ examine_cardinality <- function(parent_table, pk_column, child_table, fk_column)
   ctq <- enquo(child_table)
   fkcq <- enexpr(fk_column)
   fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ctq))))
-  if (!is_unique_key(eval_tidy(ptq), !!pkc)$unique) {
+
+  examine_cardinality_impl(eval_tidy(ptq), pkc, eval_tidy(ctq), fkc, as_label(ptq), as_label(ctq))
+}
+
+examine_cardinality_impl <- function(parent_table, pkc, child_table, fkc, pt_name, ct_name) {
+  if (!is_unique_key(parent_table, !!pkc)$unique) {
     plural <- s_if_plural(pkc)
     return(
       glue(
         "Column{plural['n']} ({commas(tick(pkc))}) not ",
-        "a unique key of {tick(as_label(ptq))}."
-      )
+        "a unique key of {tick(pt_name)}."
+        )
     )
   }
-
-  if (!is_subset(eval_tidy(ctq), !!fkc, eval_tidy(ptq), !!pkc)) {
+  if (!is_subset(child_table, !!fkc, parent_table, !!pkc)) {
     plural <- s_if_plural(pkc)
     return(
       glue(
-        "Column{plural['n']} ({commas(tick(fkc))}) of table {tick(as_label(ctq))} not ",
-        "a subset of column{plural['n']} ({commas(tick(pkc))}) of table {tick(as_label(ptq))}."
+        "Column{plural['n']} ({commas(tick(fkc))}) of table {tick(ct_name)} not ",
+        "a subset of column{plural['n']} ({commas(tick(pkc))}) of table {tick(pt_name)}."
       )
     )
   }
-
-  min_1 <- is_subset(eval_tidy(ptq), !!pkc, eval_tidy(ctq), !!fkc)
-  max_1 <- pull(is_unique_key(eval_tidy(ctq), !!fkc), unique)
+  min_1 <- is_subset(parent_table, !!pkc, child_table, !!fkc)
+  max_1 <- pull(is_unique_key(child_table, !!fkc), unique)
 
   if (min_1 && max_1) {
     return("bijective mapping (child: 1 -> parent: 1)")
