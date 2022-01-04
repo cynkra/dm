@@ -98,7 +98,7 @@ tibble_to_dm <- function(data, keys, root) {
       parent_tbl <- bind_cols(
         set_names(tbl[names(by_cols)], by_cols),
         parent_tbl
-      )  %>%
+      ) %>%
         distinct()
       populate(parent_tbl, parent_nm, parent_keys)
       tbl[[parent_nm]] <- NULL
@@ -126,7 +126,7 @@ tibble_to_dm <- function(data, keys, root) {
 
     dm <<- dm_add_tbl(dm, !!tbl_nm := tbl)
     pks <- keys$own_keys$pks
-    if(!is.null(pks)) {
+    if (!is.null(pks)) {
       pk_arg <- call2("c", !!!syms(pks))
       dm <<- dm_add_pk(dm, !!sym(tbl_nm), !!pk_arg)
     }
