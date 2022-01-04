@@ -218,13 +218,12 @@
     Code
       print(roundtrip_dm_from_tf_4$tf_6)
     Output
-      # A tibble: 4 x 2
+      # A tibble: 3 x 2
         n          o    
         <chr>      <chr>
       1 house      e    
       2 tree       f    
       3 streetlamp h    
-      4 streetlamp h    
 
 ---
 
@@ -448,11 +447,10 @@
     Code
       print(roundtrip_dm_from_tf_1$tf_6)
     Output
-      # A tibble: 4 x 2
+      # A tibble: 3 x 2
         n          o    
         <chr>      <chr>
       1 house      e    
       2 tree       f    
       3 streetlamp h    
-      4 streetlamp h    
 
