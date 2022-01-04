@@ -190,7 +190,8 @@ serialize_list_cols <- function(x) {
       ),
       na = "string"
       )
-    })
+    }) %>%
+      glue::as_glue()
   })
   x[parent_lgl] <- map(x[parent_lgl], function(df) {
     # split by row before serialization
@@ -202,7 +203,8 @@ serialize_list_cols <- function(x) {
       ),
       na = "string"
       )
-    })
+    }) %>%
+      glue::as_glue()
   })
   names(x)[children_lgl] <- paste0(names(x)[children_lgl], "_json_child")
   names(x)[parent_lgl] <- paste0(names(x)[parent_lgl], "_json_parent")
