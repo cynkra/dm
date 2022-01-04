@@ -103,13 +103,14 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
     ))
   }
   table_names <- pks$table
-  columns     <- pks$pk_col
+  columns <- pks$pk_col
 
   ticker <- new_ticker(
     "checking pk constraints",
     n = length(table_names),
     progress = progress,
-    top_level_fun = top_level_fun)
+    top_level_fun = top_level_fun
+  )
 
   candidates <- map2(set_names(table_names), columns, ticker(~ {
     tbl <- tbl_impl(dm, .x)
@@ -142,7 +143,8 @@ check_fk_constraints <- function(dm, progress = NA, top_level_fun = top_level_fu
     "checking pk constraints",
     n = nrow(fks_tibble),
     progress = progress,
-    top_level_fun = top_level_fun)
+    top_level_fun = top_level_fun
+  )
 
   fks_tibble %>%
     mutate(

@@ -6,7 +6,8 @@ testthat::test_that("testthat wrappers return the object", {
         message("abc")
         "foo"
       },
-      "a"),
+      "a"
+    ),
     "foo"
   )
   expect_equal(
@@ -15,7 +16,8 @@ testthat::test_that("testthat wrappers return the object", {
         warning("abc")
         "foo"
       },
-      "a"),
+      "a"
+    ),
     "foo"
   )
   expect_equal(
@@ -24,7 +26,8 @@ testthat::test_that("testthat wrappers return the object", {
         message("abc")
         "foo"
       },
-      "a"),
+      "a"
+    ),
     "foo"
   )
 })

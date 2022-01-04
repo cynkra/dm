@@ -191,7 +191,8 @@ dm_paste_fks <- function(dm) {
   on_delete <- if_else(
     fpks$on_delete != "no_action",
     glue(", on_delete = \"{fpks$on_delete}\""),
-    "")
+    ""
+  )
 
   glue("dm::dm_add_fk({tick_if_needed(fpks$child_table)}, {deparse_keys(fpks$child_fk_cols)}, {tick_if_needed(fpks$parent_table)}{fpks$non_default_parent_key_cols}{on_delete})")
 }

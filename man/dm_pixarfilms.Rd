@@ -4,12 +4,16 @@
 \alias{dm_pixarfilms}
 \title{Creates a dm object for the \pkg{pixarfilms} data}
 \usage{
-dm_pixarfilms(color = TRUE)
+dm_pixarfilms(color = TRUE, consistent = FALSE)
 }
 \arguments{
 \item{color}{Boolean, if \code{TRUE} (default), the resulting \code{dm} object will
 have colors assigned to different tables for visualization with
 \code{dm_draw()}.}
+
+\item{consistent}{Boolean, In the original \code{dm}  the  \code{film} column in
+\code{pixar_films} contains missing values so cannot be made a proper primary key.
+Set to \code{TRUE} to remove those records.}
 }
 \value{
 A \code{dm} object consisting of {pixarfilms} tables, complete with
