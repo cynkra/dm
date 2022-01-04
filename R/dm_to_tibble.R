@@ -168,8 +168,8 @@ serialize_list_cols <- function(x) {
   check_suggested("jsonlite", TRUE, top_level_fun = "serialize_list_cols")
   children_lgl <- map_lgl(x, is_bare_list)
   parent_lgl <- map_lgl(x, is.data.frame)
-  x[children_lgl] <- map(x[children_lgl], \(col){
-    map_chr(col, \(item) {
+  x[children_lgl] <- map(x[children_lgl], function (col){
+    map_chr(col, function (item) {
       # browser()
       empty = !NROW(item)
       if (empty) {
@@ -191,11 +191,11 @@ serialize_list_cols <- function(x) {
       )
     })
   })
-  x[parent_lgl] <- map(x[parent_lgl], \(df){
+  x[parent_lgl] <- map(x[parent_lgl], function (df){
     # split by row before serialization
     # browser()
     row_dfs <- split(df, seq_len(nrow(df)))
-    map_chr(row_dfs, \(row_df) {
+    map_chr(row_dfs, function (row_df) {
       jsonlite::toJSON(list(
         data = serialize_list_cols(row_df)
       ),
@@ -224,7 +224,7 @@ unserialize_json_cols <- function(x) {
   children_lgl <- endsWith(names2(x), "_json_child")
   parent_lgl <- endsWith(names2(x), "_json_parent")
 
-  x[children_lgl] <- map(x[children_lgl], \(col) {
+  x[children_lgl] <- map(x[children_lgl], function (col) {
     # browser()
     unserialized_obj <- map(col, jsonlite::fromJSON)
 
@@ -242,7 +242,7 @@ unserialize_json_cols <- function(x) {
     unserialized_col
   })
 
-  x[parent_lgl] <- map(x[parent_lgl], \(col) {
+  x[parent_lgl] <- map(x[parent_lgl], function (col) {
     # browser()
     unserialized_obj <- map(col, jsonlite::fromJSON)
     unserialized_col <- map_dfr(unserialized_obj, ~ unserialize_json_cols(.x$data))
