@@ -99,6 +99,7 @@ tibble_to_dm <- function(data, keys, root) {
         set_names(tbl[names(by_cols)], by_cols),
         parent_tbl
       )  %>%
+        filter(if_any(-all_of(by_cols), ~ !is.na(.x))) %>%
         distinct()
       populate(parent_tbl, parent_nm, parent_keys)
       tbl[[parent_nm]] <- NULL
