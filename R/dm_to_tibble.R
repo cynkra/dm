@@ -99,7 +99,8 @@ tibble_to_dm <- function(data, keys, root) {
       parent_tbl <- bind_cols(
         set_names(tbl[names(by_cols)], by_cols),
         parent_tbl
-      )
+      )  %>%
+        distinct()
       populate(parent_tbl, parent_nm, parent_keys)
       tbl[[parent_nm]] <- NULL
     }
@@ -119,9 +120,7 @@ tibble_to_dm <- function(data, keys, root) {
         child_tbl
       ) %>%
         unnest(!!child_nm) %>%
-        # assuming duplicate rows make no sense in data bases
-        # otherwise not robust
-        unique()
+        distinct()
       populate(child_tbl, child_nm, child_keys)
       tbl[[child_nm]] <- NULL
     }
