@@ -207,12 +207,6 @@ serialize_list_cols <- function(x) {
   x
 }
 
-# serialize_list_cols <- function(x) {
-#   list_cols_lgl <- map_lgl(x, is.list)
-#   x[list_cols_lgl] <- map(x[list_cols_lgl], jsonlite::serializeJSON)
-#   x
-# }
-
 tibble_from_json <- function(x) as_tibble(jsonlite::fromJSON(x))
 
 #' Unerialize json colums
@@ -259,9 +253,3 @@ unserialize_json_cols <- function(x) {
   names(x)[parent_lgl] <- sub("_json_parent$", "", names(x)[parent_lgl])
   x
 }
-
-# unserialize_json_cols <- function(x) {
-#   json_cols_lgl <- map_lgl(x, inherits, "json")
-#   x[json_cols_lgl] <- map(x[json_cols_lgl], jsonlite::unserializeJSON)
-#   x
-# }
