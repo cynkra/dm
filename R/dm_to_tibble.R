@@ -32,12 +32,12 @@ dm_to_tibble <- function(dm, root) {
     # gather children
     children_keys <- list()
     children_nms <- setdiff(tbl_def$children, except)
-    for(child_nm in children_nms) {
+    for (child_nm in children_nms) {
       tbl_keys <- gather(child_nm, except = tbl_nm)
       child_tbl <- tbl_keys$tbl
       child_keys <- tbl_keys$keys
       children_keys[[child_nm]] <- child_keys
-      fks <-  filter(child_keys$own_keys$fks, parent_table == tbl_nm)
+      fks <- filter(child_keys$own_keys$fks, parent_table == tbl_nm)
       by <- with(fks, set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
       tbl <- nest_join(tbl, child_tbl, by = by, name = child_nm)
     }
@@ -46,7 +46,7 @@ dm_to_tibble <- function(dm, root) {
     # gather parents
     parents_keys <- list()
     parent_nms <- setdiff(unique(tbl_def$fks$parent_table), except)
-    for(parent_nm in parent_nms) {
+    for (parent_nm in parent_nms) {
       tbl_keys <- gather(parent_nm, except = tbl_nm)
       parent_tbl <- tbl_keys$tbl
       parent_keys <- tbl_keys$keys
@@ -82,10 +82,9 @@ dm_to_tibble <- function(dm, root) {
 #'
 #' @noRd
 tibble_to_dm <- function(data, keys, root) {
-
   dm <- dm()
   populate <- function(tbl, tbl_nm, keys) {
-    #browser()
+    # browser()
     # populate dm with parents
     parents_lgl <- map_lgl(tbl, is.data.frame)
     for (parent_nm in names(tbl)[parents_lgl]) {
@@ -112,7 +111,7 @@ tibble_to_dm <- function(data, keys, root) {
       child_tbl <- tbl[child_nm]
       child_keys <- keys$children_keys[[child_nm]]
       ## bind its key cols back and reshape
-      fks <-  filter(child_keys$own_keys$fks, parent_table == tbl_nm)
+      fks <- filter(child_keys$own_keys$fks, parent_table == tbl_nm)
       by_cols <-
         with(fks, set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
       child_tbl <- bind_cols(
@@ -134,7 +133,7 @@ tibble_to_dm <- function(data, keys, root) {
   }
 
   add_fks <- function(keys) {
-    #browser()
+    # browser()
     fks <- keys$own_keys$fks
     for (i in seq_len(NROW(fks))) {
       table <- fks$child_table[[i]]
@@ -143,10 +142,10 @@ tibble_to_dm <- function(data, keys, root) {
       ref_table <- fks$parent_table[[i]]
       dm <<- dm_add_fk(dm, !!sym(table), !!columns_arg, !!sym(ref_table))
     }
-    for(key in keys$parents_keys) {
+    for (key in keys$parents_keys) {
       add_fks(key)
     }
-    for(key in keys$children_keys) {
+    for (key in keys$children_keys) {
       add_fks(key)
     }
   }
@@ -169,37 +168,39 @@ serialize_list_cols <- function(x) {
   check_suggested("jsonlite", TRUE, top_level_fun = "serialize_list_cols")
   children_lgl <- map_lgl(x, is_bare_list)
   parent_lgl <- map_lgl(x, is.data.frame)
-  x[children_lgl] <- map(x[children_lgl], \(col){
-    map_chr(col, \(item) {
-      #browser()
+  x[children_lgl] <- map(x[children_lgl], function(col) {
+    map_chr(col, function(item) {
+      # browser()
       empty = !NROW(item)
-      if(empty) {
+      if (empty) {
         # toJSON destroys empty tibbles so to save the format we keep a 1
         # row table and we tag as empty
         # we use placeholders to preserve format
-        item <- item[NA_integer_,]
+        item <- item[NA_integer_, ]
         item[map_lgl(item, is.integer)] <- 1L
         item[map_lgl(item, is.double)] <- 1
         item[map_lgl(item, is.character)] <- "a"
-        item[map_lgl(item, is_tibble)] <- list(tibble(a=1)[0])
+        item[map_lgl(item, is_tibble)] <- list(tibble(a = 1)[0])
         item[map_lgl(item, is_bare_list)] <- list(list(1))
       }
       jsonlite::toJSON(list(
-        empty = if(empty) TRUE,
+        empty = if (empty) TRUE,
         data = serialize_list_cols(item)
       ),
-      na = "string")
+      na = "string"
+      )
     })
   })
-  x[parent_lgl] <- map(x[parent_lgl], \(df){
+  x[parent_lgl] <- map(x[parent_lgl], function(df) {
     # split by row before serialization
-    #browser()
+    # browser()
     row_dfs <- split(df, seq_len(nrow(df)))
-    map_chr(row_dfs, \(row_df) {
+    map_chr(row_dfs, function(row_df) {
       jsonlite::toJSON(list(
         data = serialize_list_cols(row_df)
       ),
-      na = "string")
+      na = "string"
+      )
     })
   })
   names(x)[children_lgl] <- paste0(names(x)[children_lgl], "_json_child")
@@ -223,28 +224,28 @@ unserialize_json_cols <- function(x) {
   children_lgl <- endsWith(names2(x), "_json_child")
   parent_lgl <- endsWith(names2(x), "_json_parent")
 
-  x[children_lgl] <- map(x[children_lgl], \(col) {
-    #browser()
+  x[children_lgl] <- map(x[children_lgl], function(col) {
+    # browser()
     unserialized_obj <- map(col, jsonlite::fromJSON)
 
     unserialized_col <- map(unserialized_obj, ~ {
       #
       data <- unserialize_json_cols(.x$data)
       # rebuild empty data frames
-      if(isTRUE(.x$empty)) {
-        #browser()
-        data <- data[0,]
+      if (isTRUE(.x$empty)) {
+        # browser()
+        data <- data[0, ]
       }
       data
-      })
+    })
     keys <- unserialized_obj[[1]]$keys
     unserialized_col
-    })
+  })
 
-  x[parent_lgl] <- map(x[parent_lgl], \(col) {
-    #browser()
+  x[parent_lgl] <- map(x[parent_lgl], function(col) {
+    # browser()
     unserialized_obj <- map(col, jsonlite::fromJSON)
-    unserialized_col <- map_dfr(unserialized_obj, ~unserialize_json_cols(.x$data))
+    unserialized_col <- map_dfr(unserialized_obj, ~ unserialize_json_cols(.x$data))
     keys <- unserialized_obj[[1]]$keys
     unserialized_col
   })

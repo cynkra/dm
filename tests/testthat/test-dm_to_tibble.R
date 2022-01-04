@@ -97,6 +97,4 @@ test_that("dm_to_tibble and friends work", {
     print(roundtrip_dm_from_tf_1$tf_4)
     print(roundtrip_dm_from_tf_1$tf_6)
   })
-
-
 })
