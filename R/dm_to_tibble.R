@@ -127,7 +127,7 @@ tibble_to_dm <- function(data, keys, root) {
 
     dm <<- dm_add_tbl(dm, !!tbl_nm := tbl)
     pks <- keys$own_keys$pks
-    if(!is.null(pks)) {
+    if (!is.null(pks)) {
       pk_arg <- call2("c", !!!syms(pks))
       dm <<- dm_add_pk(dm, !!sym(tbl_nm), !!pk_arg)
     }
