@@ -177,7 +177,7 @@ serialize_list_cols <- function(x) {
         # toJSON destroys empty tibbles so to save the format we keep a 1
         # row table and we tag as empty
         # we use placeholders to preserve format
-        item <- item[1,]
+        item <- item[NA_integer_,]
         item[map_lgl(item, is.integer)] <- 1L
         item[map_lgl(item, is.double)] <- 1
         item[map_lgl(item, is.character)] <- "a"
