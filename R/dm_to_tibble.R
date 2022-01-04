@@ -125,11 +125,12 @@ tibble_to_dm <- function(data, keys, root) {
       tbl[[child_nm]] <- NULL
     }
 
+    dm <<- dm_add_tbl(dm, !!tbl_nm := tbl)
     pks <- keys$own_keys$pks
-    pk_arg <- call2("c", !!!syms(pks))
-    dm <<- dm %>%
-      dm_add_tbl(!!tbl_nm := tbl) %>%
-      dm_add_pk(!!sym(tbl_nm), !!pk_arg)
+    if(!is.null(pks)) {
+      pk_arg <- call2("c", !!!syms(pks))
+      dm <<- dm_add_pk(dm, !!sym(tbl_nm), !!pk_arg)
+    }
   }
 
   add_fks <- function(keys) {
