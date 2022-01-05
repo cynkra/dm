@@ -16,8 +16,8 @@ dm_examine_cardinalities_impl <- function(dm) {
       fkc = child_fk_cols
     ) %>%
     mutate(
-      pkc = as_list(pkc),
-      fkc = as_list(fkc)
+      pkc = as.list(pkc),
+      fkc = as.list(fkc)
     )
   dm_def <- dm_get_def(dm, TRUE) %>%
     select(table, data) %>%
