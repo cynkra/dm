@@ -46,7 +46,7 @@ new_dm_examine_cardinalities <- function(x) {
 print.dm_examine_cardinalities <- function(x, ...) {
   if (nrow(x) == 0) {
     cli::cli_alert_warning("No FKs available in `dm`.")
-    return(NULL)
+    return(invisible(x))
   }
   x %>% mutate(
     cardinalities =
