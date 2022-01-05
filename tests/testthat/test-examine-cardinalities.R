@@ -1,5 +1,4 @@
 test_that("dm_examine_cardinalities() works", {
-
   expect_snapshot({
     dm_examine_cardinalities(dm_for_card())
     dm_for_card() %>%
@@ -8,6 +7,4 @@ test_that("dm_examine_cardinalities() works", {
       dm_examine_cardinalities()
     dm_examine_cardinalities(dm())
   })
-
-
 })

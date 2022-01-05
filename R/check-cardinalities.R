@@ -187,7 +187,7 @@ examine_cardinality_impl <- function(parent_table, pkc, child_table, fkc, pt_nam
       glue(
         "Column{plural['n']} ({commas(tick(pkc))}) not ",
         "a unique key of {tick(pt_name)}."
-        )
+      )
     )
   }
   if (!is_subset(child_table, !!fkc, parent_table, !!pkc)) {

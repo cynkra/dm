@@ -7,7 +7,6 @@ dm_examine_cardinalities <- function(dm) {
 }
 
 dm_examine_cardinalities_impl <- function(dm) {
-
   fks <- dm_get_all_fks_impl(dm) %>%
     select(
       pt_name = parent_table,
@@ -25,7 +24,7 @@ dm_examine_cardinalities_impl <- function(dm) {
   fks_data <- fks %>%
     mutate(
       parent_table = dm_def[pt_name],
-      child_table =  dm_def[ct_name],
+      child_table = dm_def[ct_name],
       .before = everything()
     )
   fks %>%
@@ -48,26 +47,28 @@ print.dm_examine_cardinalities <- function(x, ...) {
     cli::cli_alert_warning("No FKs available in `dm`.")
     return(invisible(x))
   }
-  x %>% mutate(
-    cardinalities =
-      pmap_chr(
-        x,
-        function(pt_name, pkc, ct_name, fkc, cardinality) {
-          paste0(
-            "FK: ",
-            ct_name,
-            "$(",
-            commas(tick(fkc)),
-            ") -> ",
-            pt_name,
-            "$(",
-            commas(tick(pkc)),
-            "): ",
-            cardinality
-          )
-        })
+  x %>%
+    mutate(
+      cardinalities =
+        pmap_chr(
+          x,
+          function(pt_name, pkc, ct_name, fkc, cardinality) {
+            paste0(
+              "FK: ",
+              ct_name,
+              "$(",
+              commas(tick(fkc)),
+              ") -> ",
+              pt_name,
+              "$(",
+              commas(tick(pkc)),
+              "): ",
+              cardinality
+            )
+          }
+        )
     ) %>%
-      bullets_cardinalities()
+    bullets_cardinalities()
 }
 
 bullets_cardinalities <- function(x) {
