@@ -1,12 +1,12 @@
 
-dm_examine_cardinalities <- function(dm) {
+dm_examine_cardinalities <- function(dm, progress = NA) {
   check_not_zoomed(dm)
   dm %>%
-    dm_examine_cardinalities_impl() %>%
+    dm_examine_cardinalities_impl(progress = progress, top_level_fun = "dm_examine_cardinalities") %>%
     new_dm_examine_cardinalities()
 }
 
-dm_examine_cardinalities_impl <- function(dm) {
+dm_examine_cardinalities_impl <- function(dm, progress = NA, top_level_fun = NULL) {
   fks <- dm_get_all_fks_impl(dm) %>%
     select(-on_delete)
   dm_def <- as.list(dm)
@@ -21,11 +21,20 @@ dm_examine_cardinalities_impl <- function(dm) {
       parent_key_cols = as.list(parent_key_cols),
       child_fk_cols = as.list(child_fk_cols)
     )
+  ticker <- new_ticker(
+    "checking fk cardinalities",
+    n = nrow(fks),
+    progress = progress,
+    top_level_fun = top_level_fun
+  )
+
   fks %>%
     mutate(
       cardinality = pmap_chr(
         fks_data,
-        examine_cardinality_impl
+        ticker(function(parent_table, parent_key_cols, child_table, child_fk_cols, pt_name, ct_name) {
+          examine_cardinality_impl(parent_table, parent_key_cols, child_table, child_fk_cols, pt_name, ct_name)
+        })
       )
     )
 }
