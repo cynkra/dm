@@ -1,4 +1,29 @@
-
+#' Learn about your data model
+#'
+#' This function returns a tibble with information about
+#' the cardinality of the FK constraints.
+#' The printing for this object is special, use [as_tibble()]
+#' to print as a regular tibble.
+#'
+#' @inheritParams dm_examine_constraints
+#'
+#' @return A tibble with the following columns:
+#'   \describe{
+#'     \item{`child_table`}{child table,}
+#'     \item{`child_fk_cols`}{foreign key column(s) in child table as list of character vectors,}
+#'     \item{`parent_table`}{parent table,}
+#'     \item{`parent_key_cols`}{key column(s) in parent table as list of character vectors,}
+#'     \item{`cardinality`}{the nature of cardinality along the foreign key.}
+#'   }
+#'
+#' @details Uses [`examine_cardinality()`] on each foreign key that is defined in the [`dm`].
+#'
+#' @family cardinality functions
+#'
+#' @export
+#' @examplesIf rlang::is_installed("nycflights13")
+#' dm_nycflights13() %>%
+#'   dm_examine_cardinalities()
 dm_examine_cardinalities <- function(dm, progress = NA) {
   check_not_zoomed(dm)
   dm %>%

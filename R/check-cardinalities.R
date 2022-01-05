@@ -53,6 +53,8 @@
 #' @param child_table Data frame.
 #' @param fk_column Columns of `child_table` that have to be a foreign key candidate to `pk_column` in `parent_table`, for multiple columns use `c(col1, col2)`.
 #'
+#' @family cardinality functions
+#'
 #' @name examine_cardinality
 #'
 #' @return For `check_cardinality_*()`: Functions return `parent_table`, invisibly, if the check is passed, to support pipes.
