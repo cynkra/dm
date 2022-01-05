@@ -8,24 +8,18 @@ dm_examine_cardinalities <- function(dm) {
 
 dm_examine_cardinalities_impl <- function(dm) {
   fks <- dm_get_all_fks_impl(dm) %>%
-    select(
-      pt_name = parent_table,
-      pkc = parent_key_cols,
-      ct_name = child_table,
-      fkc = child_fk_cols
-    ) %>%
-    mutate(
-      pkc = as.list(pkc),
-      fkc = as.list(fkc)
-    )
-  dm_def <- dm_get_def(dm, TRUE) %>%
-    select(table, data) %>%
-    deframe()
+    select(-on_delete)
+  dm_def <- as.list(dm)
   fks_data <- fks %>%
     mutate(
+      pt_name = parent_table,
+      ct_name = child_table,
       parent_table = dm_def[pt_name],
-      child_table = dm_def[ct_name],
-      .before = everything()
+      child_table = dm_def[ct_name]
+    ) %>%
+    mutate(
+      parent_key_cols = as.list(parent_key_cols),
+      child_fk_cols = as.list(child_fk_cols)
     )
   fks %>%
     mutate(
@@ -52,16 +46,16 @@ print.dm_examine_cardinalities <- function(x, ...) {
       cardinalities =
         pmap_chr(
           x,
-          function(pt_name, pkc, ct_name, fkc, cardinality) {
+          function(parent_table, parent_key_cols, child_table, child_fk_cols, cardinality) {
             paste0(
               "FK: ",
-              ct_name,
+              child_table,
               "$(",
-              commas(tick(fkc)),
+              commas(tick(child_fk_cols)),
               ") -> ",
-              pt_name,
+              parent_table,
               "$(",
-              commas(tick(pkc)),
+              commas(tick(parent_key_cols)),
               "): ",
               cardinality
             )
