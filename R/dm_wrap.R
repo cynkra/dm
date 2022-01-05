@@ -6,8 +6,8 @@
 table_graph_position <- function(dm) {
   graph <- create_graph_from_dm(dm, directed = TRUE)
   vertices <- igraph::V(graph)
-  n_children <- map_dbl(vertices, ~length(igraph::neighbors(graph, .x, mode = 'in')))
-  n_parents  <- map_dbl(vertices, ~length(igraph::neighbors(graph, .x, mode = 'out')))
+  n_children <- map_dbl(vertices, ~ length(igraph::neighbors(graph, .x, mode = 'in')))
+  n_parents <- map_dbl(vertices, ~ length(igraph::neighbors(graph, .x, mode = 'out')))
   node_types <- set_names(rep_along(vertices, "intermediate"), names(vertices))
   node_types[n_parents == 0 & n_children == 1] <- "terminal parent"
   node_types[n_children == 0 & n_parents == 1] <- "terminal child"
@@ -30,13 +30,12 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   positions <- table_graph_position(dm)
   position <- positions[table_name]
   # so we can forward it
-  if(missing(into)) into <- missing_arg()
-  new_dm <- switch(
-    position,
-    "isolated" =,
+  if (missing(into)) into <- missing_arg()
+  new_dm <- switch(position,
+    "isolated" = ,
     "intermediate" = abort(glue("'{table_name}' is not a terminal parent or child table")),
-    "terminal child"  = dm_nest_wrap(dm, {{table}}, into, silent),
-    "terminal parent" = dm_pack_wrap(dm, {{table}}, into, silent)
+    "terminal child" = dm_nest_wrap(dm, {{ table }}, into, silent),
+    "terminal parent" = dm_pack_wrap(dm, {{ table }}, into, silent)
   )
   new_dm
 }
@@ -54,9 +53,9 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   # FIXME: there might be several, need a loop
   child_name <- pull(fks, child_table)
 
-  if(!missing(into)) {
+  if (!missing(into)) {
     into <- dm_tbl_name(dm, {{ into }})
-    if(into != child_name) {
+    if (into != child_name) {
       abort(glue("'{table_name}' can only be packed into '{child_name}'"))
     }
   }
@@ -68,8 +67,8 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   packed_data <- pack_join(child_data, table_data, by = by, name = table_name)
 
   def$data[def$table == child_name] <- list(packed_data)
-  #def_diff <- def[def$table == table_name,]
-  def <- def[def$table != table_name,]
+  # def_diff <- def[def$table == table_name,]
+  def <- def[def$table != table_name, ]
   new_dm3(def)
 }
 
@@ -87,9 +86,9 @@ dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   # FIXME: there might be several, need a loop
   parent_name <- pull(fks, parent_table)
 
-  if(!missing(into)) {
+  if (!missing(into)) {
     into <- dm_tbl_name(dm, {{ into }})
-    if(into != parent_name) {
+    if (into != parent_name) {
       abort(glue("'{table_name}' can only be packed into '{child_name}'"))
     }
   }
