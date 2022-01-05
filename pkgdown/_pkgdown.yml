@@ -125,6 +125,7 @@ reference:
 - title: Check keys and cardinalities
   contents:
   - dm_examine_constraints
+  - dm_examine_cardinalities
   - examine_cardinality
   - check_key
   - check_subset
