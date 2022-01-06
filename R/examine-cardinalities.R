@@ -1,5 +1,8 @@
 #' Learn about your data model
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' This function returns a tibble with information about
 #' the cardinality of the FK constraints.
 #' The printing for this object is special, use [as_tibble()]

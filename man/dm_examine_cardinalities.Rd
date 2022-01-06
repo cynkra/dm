@@ -24,6 +24,8 @@ A tibble with the following columns:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function returns a tibble with information about
 the cardinality of the FK constraints.
 The printing for this object is special, use \code{\link[=as_tibble]{as_tibble()}}
