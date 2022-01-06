@@ -186,8 +186,24 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
     "isolated" = abort(glue(
       "`{table_name}` is an isolated table (no parent and no child), ",
       "it cannot be wrapped into a connected table")),
-    "intermediate" = abort(glue(
-      "`{table_name}` is not a terminal parent or child table")),
+    "intermediate" = {
+      fks <-  dm_get_all_fks(dm)
+      parents <- filter(fks, child_table == table_name) %>% pull(parent_table)
+      children <- filter(fks, parent_table == table_name) %>% pull(child_table)
+      if(length(parents)) {
+        parent_msg <- paste0("\nparents : ", toString(paste0("`", parents, "`")))
+      } else {
+        parent_msg <- ""
+      }
+      if(length(children)) {
+        children_msg <- paste0("\nchildren: ", toString(paste0("`", children, "`")))
+      } else {
+        children_msg <-  ""
+      }
+      abort(glue(
+      "`{table_name}` is not a terminal parent or child table, ",
+      "it's connected to more than one table.{parent_msg}{children_msg}"))
+      },
     "terminal child"  = dm_nest_wrap(dm, {{table}}, !!into, silent),
     "terminal parent" = dm_pack_wrap(dm, {{table}}, !!into, silent)
   )
