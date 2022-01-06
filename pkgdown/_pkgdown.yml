@@ -150,6 +150,7 @@ reference:
   - dm_pixarfilms
   - dm_nrow
   - dm_ptype
+  - pack_join
 
 navbar:
   title: ~

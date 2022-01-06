@@ -100,7 +100,7 @@
     Code
       abort_fk_exists("child", c("child_1", "child_2"), "parent")
     Error <dm_error_fk_exists>
-      (`child_1`, `child_2`) is alreay a foreign key of table `child` into table `parent`.
+      (`child_1`, `child_2`) is already a foreign key of table `child` into table `parent`.
     Code
       abort_first_rm_fks("parent", c("child_1", "child_2"))
     Error <dm_error_first_rm_fks>
