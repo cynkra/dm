@@ -1,3 +1,4 @@
+# FIXME: can we be more efficient ?
 node_type_from_graph <- function(graph, drop = NULL) {
   vertices <- igraph::V(graph)
   n_children <- map_dbl(vertices, ~length(igraph::neighbors(graph, .x, mode = 'in')))
