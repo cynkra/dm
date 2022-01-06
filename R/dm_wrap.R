@@ -47,6 +47,28 @@ dm_wrap_all <- function(dm, root, silent = FALSE, strict = TRUE) {
   dm
 }
 
+dm_unwrap_all <- function(dm, specs) {
+  # process specs
+  if(is_dm(specs)) {
+    specs <- list(
+      pks = dm_get_all_pks(specs),
+      fks = dm_get_all_fks(specs)
+    )
+  }
+
+  # unwrap all tables and their unwrapped children/parents
+  unwrapped_table_names <- character(0)
+  repeat {
+    to_unwrap <- setdiff(names(dm), unwrapped_table_names)[1]
+    done_unwrapping <- is.na(to_unwrap)
+    if(done_unwrapping) break
+    dm <- dm_unwrap(dm, !!to_unwrap, specs)
+    unwrapped_table_names <- c(unwrapped_table_names, to_unwrap)
+  }
+
+  dm
+}
+
 #' wrap a table from a dm
 #'
 #' @param dm a dm
