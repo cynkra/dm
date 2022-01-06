@@ -9,6 +9,44 @@ node_type_from_graph <- function(graph, drop = NULL) {
   node_types[!names(node_types) %in% drop]
 }
 
+dm_wrap_all <- function(dm, root, silent = FALSE, strict = TRUE) {
+  # process args
+  root_name <- dm_tbl_name(dm, {{ root }})
+
+  # initiate graph and positions
+  graph <- create_graph_from_dm(dm, directed = TRUE)
+  positions <- node_type_from_graph(graph, drop = root_name)
+
+  # wrap terminal nodes as long as they're not the root
+  repeat {
+    child_name <- names(positions)[positions == "terminal child"][1]
+    has_terminal_child <- !is.na(child_name)
+    if(has_terminal_child) {
+      dm <- dm_nest_wrap(dm, !!child_name, silent = silent)
+      graph <- igraph::delete.vertices(graph, child_name)
+      positions <- node_type_from_graph(graph, drop = root_name)
+    }
+    parent_name <- names(positions)[positions == "terminal parent"][1]
+    has_terminal_parent <- !is.na(parent_name)
+    if(has_terminal_parent) {
+      dm <- dm_pack_wrap(dm, !!parent_name, silent = silent)
+      graph <- igraph::delete.vertices(graph, parent_name)
+      positions <- node_type_from_graph(graph, drop = root_name)
+    }
+    if(!has_terminal_child && !has_terminal_parent) break
+  }
+
+  # inform or fail if we have a cycle
+  if(length(dm) > 1) {
+    if(strict) {
+      abort("The `dm` is not cycle free and can't be wrapped in a single tibble.")
+    }
+    inform("The `dm` is not cycle free, returning a partially wrapped multi table 'dm'.")
+  }
+
+  dm
+}
+
 #' wrap a table from a dm
 #'
 #' @param dm a dm
