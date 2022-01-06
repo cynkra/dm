@@ -25,11 +25,16 @@ node_type_from_graph <- function(graph, drop = NULL) {
 #'
 #' @noRd
 dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
+  # process args and build name
   into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
+
+  # retrieve position of table
   graph <- create_graph_from_dm(dm, directed = TRUE)
   positions <- node_type_from_graph(graph)
   position <- positions[table_name]
+
+  # nest, pack or fail appropriately
   new_dm <- switch(
     position,
     "isolated" =,
@@ -37,6 +42,7 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
     "terminal child"  = dm_nest_wrap(dm, {{table}}, !!into, silent),
     "terminal parent" = dm_pack_wrap(dm, {{table}}, !!into, silent)
   )
+
   new_dm
 }
 
