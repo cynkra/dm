@@ -71,7 +71,6 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   new_dm3(def)
 }
 
-
 dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   # process args
   into <- enquo(into)
@@ -104,4 +103,74 @@ dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   def[def$table == parent_name, ][["fks"]][[1]] <- new_parent_table_fks
   def <- def[def$table != table_name, ]
   new_dm3(def)
+}
+
+dm_unnest_unwrap <- function(dm, table, col, specs) {
+  # process args and build names
+  table_name <- dm_tbl_name(dm, {{ table }})
+  table <- dm_get_tables_impl(dm)[[table_name]]
+  col_expr <- enexpr(col)
+  new_table_name <- names(eval_select_indices(col_expr, colnames(table)))
+
+  # retrieve fk and extract nested table
+  fk <- specs$fk %>%
+    filter(child_table == new_table_name, parent_table == table_name) %>%
+    with(set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
+  new_table <- table %>%
+    select(!!!fk, !!new_table_name) %>%
+    unnest(!!new_table_name)
+
+  # update the dm by adding new table, removing nested col and setting keys
+  dm <- dm_add_tbl(dm, !!new_table_name := new_table)
+  dm <- dm_select(dm, !!table_name, -all_of(new_table_name))
+  if(length(fk)) {
+    dm <- dm_add_fk(dm, !!new_table_name, !!names(fk), !!table_name, !!fk)
+  }
+  pk <- specs$pk %>%
+    filter(table == new_table_name) %>%
+    pull(pk_col) %>%
+    unlist()
+  if(length(pk)) {
+    dm <- dm_add_pk(dm, !!new_table_name, !!pk)
+  }
+
+  dm
+}
+
+dm_unpack_unwrap <- function(dm, table, col, specs) {
+  # process args and build names
+  table_name <- dm_tbl_name(dm, {{ table }})
+  table <- dm_get_tables_impl(dm)[[table_name]]
+  col_expr <- enexpr(col)
+  new_table_name <- names(eval_select_indices(col_expr, colnames(table)))
+  if(is_dm(specs)) {
+    specs <- list(
+      pks = dm_get_all_pks(specs),
+      fks = dm_get_all_fks(specs)
+    )
+  }
+
+  # retrieve fk and extract packed table
+  fk <- specs$fk %>%
+    filter(child_table == table_name, parent_table == new_table_name) %>%
+    with(set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
+  new_table <- table %>%
+    select(!!!fk, !!new_table_name) %>%
+    unpack(!!new_table_name)
+
+  # update the dm by adding new table, removing packed col and setting keys
+  dm <- dm_add_tbl(dm, !!new_table_name := new_table)
+  dm <- dm_select(dm, !!table_name, -all_of(new_table_name))
+  if(length(fk)) {
+    dm <- dm_add_fk(dm, !!table_name, !!fk, !!new_table_name, !!names(fk))
+  }
+  pk <- specs$pk %>%
+    filter(table == new_table_name) %>%
+    pull(pk_col) %>%
+    unlist()
+  if(length(pk)) {
+    dm <- dm_add_pk(dm, !!new_table_name, !!pk)
+  }
+
+  dm
 }
