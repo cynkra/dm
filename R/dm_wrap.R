@@ -136,7 +136,7 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   table_name <- dm_tbl_name(dm, {{ table }})
 
   # retrieve fk and child_name
-  fk <- dm_get_all_fk(dm) %>% filter(parent_table == table_name)
+  fk <- dm_get_all_fks(dm) %>% filter(parent_table == table_name)
   child_name <- pull(fk, child_table)
 
   # check consistency of `into` if relevant
@@ -151,7 +151,7 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   child_data <- def$data[def$table == child_name][[1]]
-  by <- with(fks, set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
+  by <- with(fk, set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
   packed_data <- pack_join(child_data, table_data, by = by, name = table_name)
   class(packed_data[[table_name]]) <- c("packed", class(packed_data[[table_name]]))
 
