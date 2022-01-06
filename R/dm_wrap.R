@@ -3,8 +3,7 @@
 # dm with one less table
 # dm_unwrap takes a dm, a table, and key pairs and produces a dm with one more table
 
-table_graph_position <- function(dm) {
-  graph <- create_graph_from_dm(dm, directed = TRUE)
+node_type_from_graph <- function(graph, drop = NULL) {
   vertices <- igraph::V(graph)
   n_children <- map_dbl(vertices, ~length(igraph::neighbors(graph, .x, mode = 'in')))
   n_parents  <- map_dbl(vertices, ~length(igraph::neighbors(graph, .x, mode = 'out')))
@@ -12,7 +11,7 @@ table_graph_position <- function(dm) {
   node_types[n_parents == 0 & n_children == 1] <- "terminal parent"
   node_types[n_children == 0 & n_parents == 1] <- "terminal child"
   node_types[n_children == 0 & n_parents == 0] <- "isolated"
-  node_types
+  node_types[!names(node_types) %in% drop]
 }
 
 #' wrap a table from a dm
@@ -28,7 +27,8 @@ table_graph_position <- function(dm) {
 dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
-  positions <- table_graph_position(dm)
+  graph <- create_graph_from_dm(dm, directed = TRUE)
+  positions <- node_type_from_graph(graph)
   position <- positions[table_name]
   new_dm <- switch(
     position,
