@@ -312,7 +312,8 @@ dm_unnest_unwrap <- function(dm, table, col, specs) {
     with(set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
   new_table <- table %>%
     select(!!!fk, !!new_table_name) %>%
-    unnest(!!new_table_name)
+    unnest(!!new_table_name) %>%
+    distinct()
 
   # update the dm by adding new table, removing nested col and setting keys
   dm <- dm_add_tbl(dm, !!new_table_name := new_table)
@@ -350,7 +351,8 @@ dm_unpack_unwrap <- function(dm, table, col, specs) {
     with(set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
   new_table <- table %>%
     select(!!!fk, !!new_table_name) %>%
-    unpack(!!new_table_name)
+    unpack(!!new_table_name) %>%
+    distinct()
 
   # update the dm by adding new table, removing packed col and setting keys
   dm <- dm_add_tbl(dm, !!new_table_name := new_table)
