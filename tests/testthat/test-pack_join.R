@@ -1,4 +1,6 @@
 test_that("`pack_join()` works", {
+  skip_if_not_installed("rlang", "0.99.0.9003")
+
   df1 <- tibble(col1 = 1:2, key = letters[1:2])
   df2 <- tibble(col2 = 3:4, key = letters[1:2])
   df3 <- tibble(col3 = 3:4, key3 = letters[1:2])
