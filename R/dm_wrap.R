@@ -41,16 +41,13 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
 }
 
 dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
+  # process args
   into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
 
-  fks <- dm_get_all_fks(dm) %>%
-    filter(parent_table == table_name)
-  # pks <- dm_get_all_pks(dm) %>%
-  #   filter(table == table_name)
-
-  # FIXME: there might be several, need a loop
-  child_name <- pull(fks, child_table)
+  # retrieve fk and child_name
+  fk <- dm_get_all_fk(dm) %>% filter(parent_table == table_name)
+  child_name <- pull(fk, child_table)
 
   # check consistency of `into` if relevant
   if(!quo_is_null(into)) {
@@ -60,6 +57,7 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
     }
   }
 
+  # fetch def and join tables
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   child_data <- def$data[def$table == child_name][[1]]
@@ -67,25 +65,20 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   packed_data <- pack_join(child_data, table_data, by = by, name = table_name)
   class(packed_data[[table_name]]) <- c("packed", class(packed_data[[table_name]]))
 
+  # update def and rebuild dm
   def$data[def$table == child_name] <- list(packed_data)
-  #def_diff <- def[def$table == table_name,]
   def <- def[def$table != table_name,]
   new_dm3(def)
 }
 
 
 dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
+  # process args
   into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
-  # we check for missingness and not nullity because NSE, but have default NULL
-  # to advertise that arg is optional
 
-  fks <- dm_get_all_fks(dm) %>%
-    filter(child_table == table_name)
-  # pks <- dm_get_all_pks(dm) %>%
-  #   filter(table == table_name)
-
-  # FIXME: there might be several, need a loop
+  # retrieve fk and parent_name
+  fks <- dm_get_all_fks(dm) %>% filter(child_table == table_name)
   parent_name <- pull(fks, parent_table)
 
   # check consistency of `into` if relevant
@@ -96,6 +89,7 @@ dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
     }
   }
 
+  # fetch def and join tables
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   parent_data <- def$data[def$table == parent_name][[1]]
@@ -103,11 +97,11 @@ dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   nested_data <- nest_join(parent_data, table_data, by = by, name = table_name)
   class(nested_data[[table_name]]) <- c("nested", class(nested_data[[table_name]]))
 
+  # update def and rebuild dm
   def$data[def$table == parent_name] <- list(nested_data)
   old_parent_table_fks <- def[def$table == parent_name, ][["fks"]][[1]]
   new_parent_table_fks <- filter(old_parent_table_fks, table != table_name)
   def[def$table == parent_name, ][["fks"]][[1]] <- new_parent_table_fks
-
   def <- def[def$table != table_name, ]
   new_dm3(def)
 }
