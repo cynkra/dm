@@ -34,9 +34,13 @@
     Code
       check_suggested("not-a-package", TRUE, top_level_fun = "foo")
     Error <rlang_error>
-      `foo()` needs the 'not-a-package' package. Do you need `install.packages("not-a-package")` ?
+      Must supply valid package names.
+      x Problematic names:
+      * "not-a-package"
     Code
       check_suggested("not-a-package", TRUE, message = "not installed!")
     Error <rlang_error>
-      not installed!
+      Must supply valid package names.
+      x Problematic names:
+      * "not-a-package"
 
