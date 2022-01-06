@@ -40,6 +40,29 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   new_dm
 }
 
+dm_unwrap <- function(dm, table, specs) {
+  # process args and build names
+  table_name <- dm_tbl_name(dm, {{ table }})
+  table <- dm_get_tables_impl(dm)[[table_name]]
+  nms <- names(table)
+
+  # detect parent and children tables
+  children <- nms[map_lgl(table, inherits, "nested")]
+  parents <- nms[map_lgl(table, inherits, "packed")]
+
+  # unnest children tables
+  for(child_name in children) {
+    dm <- dm_unnest_unwrap(dm, !!table_name, col = !!child_name, specs)
+  }
+
+  # unpack parent tables
+  for(parent_name in parents) {
+    dm <- dm_unpack_unwrap(dm, !!table_name, col = !!parent_name, specs)
+  }
+
+  dm
+}
+
 dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   # process args
   into <- enquo(into)
