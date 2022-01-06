@@ -26,25 +26,23 @@ table_graph_position <- function(dm) {
 #'
 #' @noRd
 dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
+  into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
   positions <- table_graph_position(dm)
   position <- positions[table_name]
-  # so we can forward it
-  if(missing(into)) into <- missing_arg()
   new_dm <- switch(
     position,
     "isolated" =,
     "intermediate" = abort(glue("'{table_name}' is not a terminal parent or child table")),
-    "terminal child"  = dm_nest_wrap(dm, {{table}}, into, silent),
-    "terminal parent" = dm_pack_wrap(dm, {{table}}, into, silent)
+    "terminal child"  = dm_nest_wrap(dm, {{table}}, !!into, silent),
+    "terminal parent" = dm_pack_wrap(dm, {{table}}, !!into, silent)
   )
   new_dm
 }
 
 dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
+  into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
-  # we check for missingness and not nullity because NSE, but have default NULL
-  # to advertise that arg is optional
 
   fks <- dm_get_all_fks(dm) %>%
     filter(parent_table == table_name)
@@ -54,8 +52,9 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   # FIXME: there might be several, need a loop
   child_name <- pull(fks, child_table)
 
-  if(!missing(into)) {
-    into <- dm_tbl_name(dm, {{ into }})
+  # check consistency of `into` if relevant
+  if(!quo_is_null(into)) {
+    into <- dm_tbl_name(dm, !!into)
     if(into != child_name) {
       abort(glue("'{table_name}' can only be packed into '{child_name}'"))
     }
@@ -75,6 +74,7 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
 
 
 dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
+  into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
   # we check for missingness and not nullity because NSE, but have default NULL
   # to advertise that arg is optional
@@ -87,8 +87,9 @@ dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   # FIXME: there might be several, need a loop
   parent_name <- pull(fks, parent_table)
 
-  if(!missing(into)) {
-    into <- dm_tbl_name(dm, {{ into }})
+  # check consistency of `into` if relevant
+  if(!quo_is_null(into)) {
+    into <- dm_tbl_name(dm, !!into)
     if(into != parent_name) {
       abort(glue("'{table_name}' can only be packed into '{child_name}'"))
     }
