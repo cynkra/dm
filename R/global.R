@@ -119,5 +119,8 @@ utils::globalVariables(c(
   "index_name",
   "remote_table",
   "remote_table_unquoted",
-  "unique_def"
+  "unique_def",
+  #
+  # keep this to avoid dealing with trailing commas
+  NULL
 ))

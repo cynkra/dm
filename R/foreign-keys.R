@@ -582,7 +582,7 @@ abort_fk_exists <- function(child_table_name, colnames, parent_table_name) {
 
 error_txt_fk_exists <- function(child_table_name, colnames, parent_table_name) {
   glue(
-    "({commas(tick(colnames))}) is alreay a foreign key of table ",
+    "({commas(tick(colnames))}) is already a foreign key of table ",
     "{tick(child_table_name)} into table {tick(parent_table_name)}."
   )
 }
