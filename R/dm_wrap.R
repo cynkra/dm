@@ -183,8 +183,11 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   # nest, pack or fail appropriately
   new_dm <- switch(
     position,
-    "isolated" =,
-    "intermediate" = abort(glue("`{table_name}` is not a terminal parent or child table")),
+    "isolated" = abort(glue(
+      "`{table_name}` is an isolated table (no parent and no child), ",
+      "it cannot be wrapped into a connected table")),
+    "intermediate" = abort(glue(
+      "`{table_name}` is not a terminal parent or child table")),
     "terminal child"  = dm_nest_wrap(dm, {{table}}, !!into, silent),
     "terminal parent" = dm_pack_wrap(dm, {{table}}, !!into, silent)
   )
