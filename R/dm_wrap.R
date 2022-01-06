@@ -65,6 +65,7 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   child_data <- def$data[def$table == child_name][[1]]
   by <- with(fks, set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
   packed_data <- pack_join(child_data, table_data, by = by, name = table_name)
+  class(packed_data[[table_name]]) <- c("packed", class(packed_data[[table_name]]))
 
   def$data[def$table == child_name] <- list(packed_data)
   #def_diff <- def[def$table == table_name,]
@@ -100,6 +101,7 @@ dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   parent_data <- def$data[def$table == parent_name][[1]]
   by <- with(fks, set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
   nested_data <- nest_join(parent_data, table_data, by = by, name = table_name)
+  class(nested_data[[table_name]]) <- c("nested", class(nested_data[[table_name]]))
 
   def$data[def$table == parent_name] <- list(nested_data)
   old_parent_table_fks <- def[def$table == parent_name, ][["fks"]][[1]]
