@@ -81,7 +81,7 @@ tibble_to_dm <- function(x, specs, root = NULL) {
     root_name <- candidates
   } else {
     if(!root_name %in% candidates) {
-      abort(glue("'{root_name}' is not a valid choice for the root table"))
+      abort(glue("`{root_name}` is not a valid choice for the root table"))
     }
   }
 
@@ -183,7 +183,7 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   new_dm <- switch(
     position,
     "isolated" =,
-    "intermediate" = abort(glue("'{table_name}' is not a terminal parent or child table")),
+    "intermediate" = abort(glue("`{table_name}` is not a terminal parent or child table")),
     "terminal child"  = dm_nest_wrap(dm, {{table}}, !!into, silent),
     "terminal parent" = dm_pack_wrap(dm, {{table}}, !!into, silent)
   )
@@ -227,7 +227,7 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   if(!quo_is_null(into)) {
     into <- dm_tbl_name(dm, !!into)
     if(into != child_name) {
-      abort(glue("'{table_name}' can only be packed into '{child_name}'"))
+      abort(glue("`{table_name}` can only be packed into `{child_name}`"))
     }
   }
 
@@ -258,7 +258,7 @@ dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   if(!quo_is_null(into)) {
     into <- dm_tbl_name(dm, !!into)
     if(into != parent_name) {
-      abort(glue("'{table_name}' can only be packed into '{child_name}'"))
+      abort(glue("`{table_name}` can only be packed into `{child_name}`"))
     }
   }
 
