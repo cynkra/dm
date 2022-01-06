@@ -1,8 +1,3 @@
-
-# dm_wrap takes a dm and a table name, which needs to be a leaf, and produces a
-# dm with one less table
-# dm_unwrap takes a dm, a table, and key pairs and produces a dm with one more table
-
 node_type_from_graph <- function(graph, drop = NULL) {
   vertices <- igraph::V(graph)
   n_children <- map_dbl(vertices, ~length(igraph::neighbors(graph, .x, mode = 'in')))
