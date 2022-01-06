@@ -9,6 +9,12 @@ node_type_from_graph <- function(graph, drop = NULL) {
   node_types[!names(node_types) %in% drop]
 }
 
+dm_to_tibble <- function(dm, root, silent = FALSE) {
+  root_name <- dm_tbl_name(dm, {{ root }})
+  wrapped_dm <- dm_wrap_all(dm, {{ root }}, silent = silent, strict = TRUE)
+  dm_get_tables_impl(wrapped_dm)[[root_name]]
+}
+
 dm_wrap_all <- function(dm, root, silent = FALSE, strict = TRUE) {
   # process args
   root_name <- dm_tbl_name(dm, {{ root }})
