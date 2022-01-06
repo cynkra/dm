@@ -15,6 +15,90 @@ dm_to_tibble <- function(dm, root, silent = FALSE) {
   dm_get_tables_impl(wrapped_dm)[[root_name]]
 }
 
+#' Convert a tibble to a dm
+#'
+#' @param x a wrapped table, as created by `dm_to_tibble()`
+#' @param specs a dm (usually the one used in the `dm_to_tibble()` call that
+#'   created `table`) or a list containing named elements `pks` and `fks`,
+#'   looking like the respective outputs of `dm_get_all_pks()` and `dm_get_all_fks()`
+#' @param root the root table (unquoted), optional because we can usually infer it from
+#'  `table` and `specs`
+#'
+#' @noRd
+tibble_to_dm <- function(x, specs, root = NULL) {
+  # process args
+  if(is_dm(specs)) {
+    specs <- list(
+      pks = dm_get_all_pks(specs),
+      fks = dm_get_all_fks(specs)
+    )
+  }
+  root_expr <- enexpr(root)
+  all_connected_tables <- union(specs$fks$child_table, specs$fks$parent_table)
+  root_name <- names(eval_select_indices(root_expr, all_connected_tables))
+
+  # find root candidates by retrieving table(s) with rightly named parents/children
+  nms <- names(x)
+  children <- nms[map_lgl(x, inherits, "nested")]
+  parents <- nms[map_lgl(x, inherits, "packed")]
+  if(length(parents)) {
+    candidates_with_correct_parents <-
+      specs$fks %>%
+      with_groups(child_table, filter, setequal(parent_table, parents)) %>%
+      pull(child_table) %>%
+      unique()
+  } else {
+    # children with no fk
+    candidates_with_correct_parents <-
+      setdiff(specs$fks$parent_table, specs$fks$child_table)
+  }
+  if(length(children)) {
+    candidates_with_correct_children <-
+      specs$fks %>%
+      with_groups(parent_table, filter, setequal(child_table, children)) %>%
+      pull(parent_table) %>%
+      unique()
+  } else {
+    # parents which no fk points to
+    candidates_with_correct_parents <-
+      setdiff(specs$fks$child_table, specs$fks$parent_table)
+  }
+  candidates <- intersect(
+    candidates_with_correct_parents,
+    candidates_with_correct_children
+  )
+
+  # check root_name's consistency and unambiguity of candidates
+  if(!length(root_name)) {
+    if(length(candidates) == 0) {
+      abort("`x` and `specs` are uncompatible, cannot unwrap `x` to a dm")
+    }
+    if(length(candidates) > 1) {
+      abort(glue(
+        "Could not guessed the name of the root table from the input. ",
+        "Pick one among: {paste0(\"'\", candidates, \"'\", collapse= \", \")}"))
+    }
+    root_name <- candidates
+  } else {
+    if(!root_name %in% candidates) {
+      abort(glue("'{root_name}' is not a valid choice for the root table"))
+    }
+  }
+
+  # define new single tibble dm with pk if relevant
+  dm <- dm(!!root_name := x)
+  pk <- specs$pk %>%
+    filter(table == root_name) %>%
+    pull(pk_col) %>%
+    unlist()
+  if(length(pk)) {
+    dm <- dm_add_pk(dm, !!root_name, !!pk)
+  }
+
+  # forward to dm_unwrap_all
+  dm_unwrap_all(dm, specs)
+}
+
 dm_wrap_all <- function(dm, root, silent = FALSE, strict = TRUE) {
   # process args
   root_name <- dm_tbl_name(dm, {{ root }})
