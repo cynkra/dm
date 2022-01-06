@@ -57,14 +57,7 @@ dm_examine_cardinalities_impl <- function(dm, progress = NA, top_level_fun = NUL
   )
 
   fks %>%
-    mutate(
-      cardinality = pmap_chr(
-        fks_data,
-        ticker(function(parent_table, parent_key_cols, child_table, child_fk_cols, pt_name, ct_name) {
-          examine_cardinality_impl(parent_table, parent_key_cols, child_table, child_fk_cols, pt_name, ct_name)
-        })
-      )
-    )
+    mutate(cardinality = pmap_chr(fks_data, ticker(examine_cardinality_impl)))
 }
 
 new_dm_examine_cardinalities <- function(x) {
