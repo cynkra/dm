@@ -286,15 +286,15 @@ dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   parent_data <- def$data[def$table == parent_name][[1]]
-  by <- with(fks, set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
+  by <- with(fk, set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
   nested_data <- nest_join(parent_data, table_data, by = by, name = table_name)
   class(nested_data[[table_name]]) <- c("nested", class(nested_data[[table_name]]))
 
   # update def and rebuild dm
   def$data[def$table == parent_name] <- list(nested_data)
-  old_parent_table_fks <- def[def$table == parent_name, ][["fks"]][[1]]
-  new_parent_table_fks <- filter(old_parent_table_fks, table != table_name)
-  def[def$table == parent_name, ][["fks"]][[1]] <- new_parent_table_fks
+  old_parent_table_fk <- def[def$table == parent_name, ][["fks"]][[1]]
+  new_parent_table_fk <- filter(old_parent_table_fk, table != table_name)
+  def[def$table == parent_name, ][["fks"]][[1]] <- new_parent_table_fk
   def <- def[def$table != table_name, ]
   new_dm3(def)
 }
