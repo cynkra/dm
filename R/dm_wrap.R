@@ -250,20 +250,21 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
     pull(parent_table)
   fk <- filter(fks, parent_table == table_name)
   child_name <- pull(fk, child_table)
-  if(length(parents) || !length(child_name) || length(child_name) > 1) {
-    if(length(parents)) {
+  if (length(parents) || !length(child_name) || length(child_name) > 1) {
+    if (length(parents)) {
       parent_msg <- paste0("\nparents : ", toString(paste0("`", parents, "`")))
     } else {
-      parent_msg <-  ""
+      parent_msg <- ""
     }
-    if(length(child_name)) {
+    if (length(child_name)) {
       children_msg <- paste0("\nchildren: ", toString(paste0("`", child_name, "`")))
     } else {
       children_msg <- ""
     }
     abort(glue(
       "`{table_name}` can't be nested because it is not a terminal parent table.",
-      "{parent_msg}{children_msg}"))
+      "{parent_msg}{children_msg}"
+    ))
   }
 
   # check consistency of `into` if relevant
@@ -305,20 +306,21 @@ dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
     pull(child_table)
   fk <- filter(fks, child_table == table_name)
   parent_name <- pull(fk, parent_table)
-  if(length(children) || !length(parent_name) || length(parent_name) > 1) {
-    if(length(parent_name)) {
+  if (length(children) || !length(parent_name) || length(parent_name) > 1) {
+    if (length(parent_name)) {
       parent_msg <- paste0("\nparents : ", toString(paste0("`", parent_name, "`")))
     } else {
       parent_msg <- ""
     }
-    if(length(children)) {
+    if (length(children)) {
       children_msg <- paste0("\nchildren: ", toString(paste0("`", children, "`")))
     } else {
-      children_msg <-  ""
+      children_msg <- ""
     }
     abort(glue(
       "`{table_name}` can't be nested because it is not a terminal child table.",
-      "{parent_msg}{children_msg}"))
+      "{parent_msg}{children_msg}"
+    ))
   }
 
   # check consistency of `into` if relevant
@@ -352,7 +354,7 @@ dm_unnest_unwrap <- function(dm, table, col, specs) {
   table <- dm_get_tables_impl(dm)[[table_name]]
   col_expr <- enexpr(col)
   new_table_name <- names(eval_select_indices(col_expr, colnames(table)))
-  if(is_dm(specs)) {
+  if (is_dm(specs)) {
     specs <- list(
       pks = dm_get_all_pks(specs),
       fks = dm_get_all_fks(specs)
@@ -371,7 +373,7 @@ dm_unnest_unwrap <- function(dm, table, col, specs) {
   # update the dm by adding new table, removing nested col and setting keys
   dm <- dm_add_tbl(dm, !!new_table_name := new_table)
   dm <- dm_select(dm, !!table_name, -all_of(new_table_name))
-  if(length(fk)) {
+  if (length(fk)) {
     # need to unname because of #739
     dm <- dm_add_fk(dm, !!new_table_name, !!names(fk), !!table_name, !!unname(fk))
   }
@@ -411,7 +413,7 @@ dm_unpack_unwrap <- function(dm, table, col, specs) {
   # update the dm by adding new table, removing packed col and setting keys
   dm <- dm_add_tbl(dm, !!new_table_name := new_table)
   dm <- dm_select(dm, !!table_name, -all_of(new_table_name))
-  if(length(fk)) {
+  if (length(fk)) {
     # need to unname because of #739
     dm <- dm_add_fk(dm, !!table_name, !!unname(fk), !!new_table_name, !!names(fk))
   }

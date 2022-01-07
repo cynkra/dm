@@ -1,5 +1,5 @@
 test_that("`node_type_from_graph()` works", {
-  dm1  <- dm_for_filter()
+  dm1 <- dm_for_filter()
   graph <- create_graph_from_dm(dm1, directed = TRUE)
   expect_snapshot({
     node_type_from_graph(graph)
@@ -10,28 +10,42 @@ test_that("`node_type_from_graph()` works", {
 })
 
 test_that("`dm_to_tibble()`/`tibble_to_dm()` round trip works", {
-  dm1  <- dm_for_filter()
+  dm1 <- dm_for_filter()
 
   # to tibble
   tbl <- dm_to_tibble(dm1, tf_4)
-  expect_snapshot({tbl})
-  expect_snapshot({tbl$tf_3$tf_2[[3]]})
-  expect_snapshot({tbl$tf_5[[2]]})
+  expect_snapshot({
+    tbl
+  })
+  expect_snapshot({
+    tbl$tf_3$tf_2[[3]]
+  })
+  expect_snapshot({
+    tbl$tf_5[[2]]
+  })
 
   # back to dm
   dm2 <- tibble_to_dm(tbl, dm1)
-  expect_snapshot({dm2})
-  expect_snapshot({dm2$tf_4})
-  expect_snapshot({dm2$tf_1})
-  expect_snapshot({dm2$tf_6})
+  expect_snapshot({
+    dm2
+  })
+  expect_snapshot({
+    dm2$tf_4
+  })
+  expect_snapshot({
+    dm2$tf_1
+  })
+  expect_snapshot({
+    dm2$tf_6
+  })
 
   expect_snapshot({
-    waldo::compare(dm_ptype(dm1),dm_ptype(dm2))
+    waldo::compare(dm_ptype(dm1), dm_ptype(dm2))
   })
 })
 
 test_that("`dm_wrap_all()` and `dm_unwrap_all()` work", {
-  dm1  <- dm_for_filter()
+  dm1 <- dm_for_filter()
   dm_wrapped <- dm_wrap_all(dm1, tf_4)
   expect_length(dm_wrapped, 1)
   expect_equal(names(dm_wrapped), "tf_4")
@@ -42,7 +56,7 @@ test_that("`dm_wrap_all()` and `dm_unwrap_all()` work", {
 })
 
 test_that("`dm_wrap()` and `dm_unwrap()` work", {
-  dm1  <- dm_for_filter()
+  dm1 <- dm_for_filter()
   dm_wrapped <- dm_wrap(dm1, tf_1)
   expect_snapshot(dm_wrapped)
   expect_snapshot(dm_wrapped$tf_2)
@@ -55,11 +69,12 @@ test_that("`dm_wrap()` and `dm_unwrap()` work", {
   # nothing to unwrap = no op
   expect_identical(
     dm_unwrap(dm_wrapped, tf_3, dm1),
-    dm_wrapped)
+    dm_wrapped
+  )
 })
 
 test_that("`dm_pack_wrap()`, `dm_unpack_unwrap()`, `dm_nest_wrap()`, `dm_unnest_unwrap()` work", {
-  dm1  <- dm_for_filter()
+  dm1 <- dm_for_filter()
 
   # is terminal parent
   expect_error(dm_nest_wrap(dm1, tf_1), "not a terminal child table")
@@ -94,7 +109,3 @@ test_that("`dm_pack_wrap()`, `dm_unpack_unwrap()`, `dm_nest_wrap()`, `dm_unnest_
   expect_error(dm_unpack_unwrap(dm1, tf_2, tf_1, dm1), "Column `tf_1` doesn't exist")
   expect_error(dm_unnest_unwrap(dm1, tf_2, tf_1, dm1), "Column `tf_1` doesn't exist")
 })
-
-
-
-
