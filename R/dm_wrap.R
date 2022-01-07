@@ -305,6 +305,12 @@ dm_unnest_unwrap <- function(dm, table, col, specs) {
   table <- dm_get_tables_impl(dm)[[table_name]]
   col_expr <- enexpr(col)
   new_table_name <- names(eval_select_indices(col_expr, colnames(table)))
+  if(is_dm(specs)) {
+    specs <- list(
+      pks = dm_get_all_pks(specs),
+      fks = dm_get_all_fks(specs)
+    )
+  }
 
   # retrieve fk and extract nested table
   fk <- specs$fk %>%
