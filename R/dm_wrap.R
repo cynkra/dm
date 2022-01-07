@@ -319,7 +319,8 @@ dm_unnest_unwrap <- function(dm, table, col, specs) {
   dm <- dm_add_tbl(dm, !!new_table_name := new_table)
   dm <- dm_select(dm, !!table_name, -all_of(new_table_name))
   if(length(fk)) {
-    dm <- dm_add_fk(dm, !!new_table_name, !!names(fk), !!table_name, !!fk)
+    # need to unname because of #739
+    dm <- dm_add_fk(dm, !!new_table_name, !!names(fk), !!table_name, !!unname(fk))
   }
   pk <- specs$pk %>%
     filter(table == new_table_name) %>%
@@ -358,7 +359,8 @@ dm_unpack_unwrap <- function(dm, table, col, specs) {
   dm <- dm_add_tbl(dm, !!new_table_name := new_table)
   dm <- dm_select(dm, !!table_name, -all_of(new_table_name))
   if(length(fk)) {
-    dm <- dm_add_fk(dm, !!table_name, !!fk, !!new_table_name, !!names(fk))
+    # need to unname because of #739
+    dm <- dm_add_fk(dm, !!table_name, !!unname(fk), !!new_table_name, !!names(fk))
   }
   pk <- specs$pk %>%
     filter(table == new_table_name) %>%
