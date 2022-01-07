@@ -165,8 +165,25 @@ data_card_8 %<-% tibble::tibble(c = c(1:6))
 data_card_9 %<-% tibble::tibble(c = c(1:5, NA))
 data_card_10 %<-% tibble::tibble(c = c(1:3, 4:3, NA))
 data_card_11 %<-% tibble::tibble(a = 1:4, b = letters[1:4])
-data_card_12 %<-% tibble::tibble(a = c(1:5, 5), b = letters[c(1:5, 5)])
+data_card_12 %<-% tibble::tibble(a = c(1:5, 5L), b = letters[c(1:5, 5L)])
 data_card_13 %<-% tibble::tibble(a = 1:6, b = letters[1:6])
+
+dm_for_card %<--% {
+  dm(
+    dc_1 = data_card_1(),
+    dc_2 = data_card_11(),
+    dc_3 = data_card_12(),
+    dc_4 = data_card_13(),
+    dc_5 = data_card_1(),
+    dc_6 = data_card_7()
+  ) %>%
+    dm_add_fk(dc_2, c(a, b), dc_1, c(a, b)) %>%
+    dm_add_fk(dc_3, c(a, b), dc_1, c(a, b)) %>%
+    dm_add_fk(dc_3, c(b, a), dc_4, c(b, a)) %>%
+    dm_add_fk(dc_4, c(b, a), dc_3, c(b, a)) %>%
+    dm_add_fk(dc_5, c(b, a), dc_1, c(b, a)) %>%
+    dm_add_fk(dc_6, c, dc_1, a)
+}
 
 # for check_key() ---------------------------------------------------------
 

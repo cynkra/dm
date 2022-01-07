@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.6.9002
+
+- New `dm_examine_cardinality()` (#264, #735). 
+- New `pack_join()` generic and method for data frames, the same to `tidyr::pack()` as `dplyr::nest_join()` is to `tidyr::nest()` (#721, #722).
+- `dm_pixarfilms()` gains a `consistent = FALSE` argument, if `TRUE` the data is modified so that all referential constraints are satisfied (#707, #708).
+
+
 # dm 0.2.6.9001
 
 - `copy_dm_to()` works with DuckDB again, the SQL statements to define the tables and indexes are now created by us (#701, #709).
