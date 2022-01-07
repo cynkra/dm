@@ -239,9 +239,30 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
 
-  # retrieve fk and child_name
-  fk <- dm_get_all_fks(dm) %>% filter(parent_table == table_name)
+  # retrieve fk and child_name, making sure we have a terminal parent
+  # FIXME: fix redundancies and DRY when we decide what we export
+  fks <- dm_get_all_fks(dm)
+  parents <-
+    fks %>%
+    filter(child_table == table_name) %>%
+    pull(parent_table)
+  fk <- filter(fks, parent_table == table_name)
   child_name <- pull(fk, child_table)
+  if(length(parents) || !length(child_name) || length(child_name) > 1) {
+    if(length(parents)) {
+      parent_msg <- paste0("\nparents : ", toString(paste0("`", parents, "`")))
+    } else {
+      parent_msg <-  ""
+    }
+    if(length(child_name)) {
+      children_msg <- paste0("\nchildren: ", toString(paste0("`", child_name, "`")))
+    } else {
+      children_msg <- ""
+    }
+    abort(glue(
+      "`{table_name}` can't be nested because it is not a terminal parent table.",
+      "{parent_msg}{children_msg}"))
+  }
 
   # check consistency of `into` if relevant
   if(!quo_is_null(into)) {
@@ -271,8 +292,32 @@ dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   table_name <- dm_tbl_name(dm, {{ table }})
 
   # retrieve fk and parent_name
-  fks <- dm_get_all_fks(dm) %>% filter(child_table == table_name)
-  parent_name <- pull(fks, parent_table)
+  fks <- dm_get_all_fks(dm)
+
+  # retrieve fk and parent_name, making sure we have a terminal child
+  # FIXME: fix redundancies and DRY when we decide what we export
+  fks <- dm_get_all_fks(dm)
+  children <-
+    fks %>%
+    filter(parent_table == table_name) %>%
+    pull(child_table)
+  fk <- filter(fks, child_table == table_name)
+  parent_name <- pull(fk, parent_table)
+  if(length(children) || !length(parent_name) || length(parent_name) > 1) {
+    if(length(parent_name)) {
+      parent_msg <- paste0("\nparents : ", toString(paste0("`", parent_name, "`")))
+    } else {
+      parent_msg <- ""
+    }
+    if(length(children)) {
+      children_msg <- paste0("\nchildren: ", toString(paste0("`", children, "`")))
+    } else {
+      children_msg <-  ""
+    }
+    abort(glue(
+      "`{table_name}` can't be nested because it is not a terminal child table.",
+      "{parent_msg}{children_msg}"))
+  }
 
   # check consistency of `into` if relevant
   if(!quo_is_null(into)) {
