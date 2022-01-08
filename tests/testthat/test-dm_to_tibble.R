@@ -10,6 +10,8 @@ test_that("`node_type_from_graph()` works", {
 })
 
 test_that("`dm_to_tibble()`/`tibble_to_dm()` round trip works", {
+  skip_if_remote_src()
+
   dm1 <- dm_for_filter()
 
   # to tibble
@@ -45,6 +47,8 @@ test_that("`dm_to_tibble()`/`tibble_to_dm()` round trip works", {
 })
 
 test_that("`dm_wrap_all()` and `dm_unwrap_all()` work", {
+  skip_if_remote_src()
+
   dm1 <- dm_for_filter()
   dm_wrapped <- dm_wrap_all(dm1, tf_4)
   expect_length(dm_wrapped, 1)
@@ -56,6 +60,8 @@ test_that("`dm_wrap_all()` and `dm_unwrap_all()` work", {
 })
 
 test_that("`dm_wrap()` and `dm_unwrap()` work", {
+  skip_if_remote_src()
+
   dm1 <- dm_for_filter()
   dm_wrapped <- dm_wrap(dm1, tf_1)
   expect_snapshot(dm_wrapped)
@@ -74,6 +80,8 @@ test_that("`dm_wrap()` and `dm_unwrap()` work", {
 })
 
 test_that("`dm_pack_wrap()`, `dm_unpack_unwrap()`, `dm_nest_wrap()`, `dm_unnest_unwrap()` work", {
+  skip_if_remote_src()
+
   dm1 <- dm_for_filter()
 
   # is terminal parent
