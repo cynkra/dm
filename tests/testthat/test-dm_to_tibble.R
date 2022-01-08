@@ -96,19 +96,22 @@ test_that("`dm_wrap_all()` and `dm_unwrap_all()` work", {
 test_that("`dm_wrap()` and `dm_unwrap()` work", {
   skip_if_remote_src()
 
-  dm1 <- dm_for_filter()
-  dm_wrapped <- dm_wrap(dm1, tf_1)
-  expect_snapshot(dm_wrapped)
-  expect_snapshot(dm_wrapped$tf_2)
-  expect_error(dm_wrap(dm1, tf_2), "not a terminal parent or child table")
+  expect_snapshot({
+    dm_wrapped <- dm_wrap(dm_for_filter(), tf_1)
+    dm_wrapped
+    dm_wrapped$tf_2
+  })
+  expect_error(dm_wrap(dm_for_filter(), tf_2), "not a terminal parent or child table")
 
-  dm_unwrapped <- dm_unwrap(dm_wrapped, tf_2, dm1)
-  expect_snapshot(dm_unwrapped)
-  expect_snapshot(dm_unwrapped$tf_1)
+  expect_snapshot({
+    dm_unwrapped <- dm_unwrap(dm_wrap(dm_for_filter(), tf_1), tf_2, dm_for_filter())
+    expect_snapshot(dm_unwrapped)
+    expect_snapshot(dm_unwrapped$tf_1)
+  })
 
   # nothing to unwrap = no op
   expect_identical(
-    dm_unwrap(dm_wrapped, tf_3, dm1),
+    dm_unwrap(dm_wrap(dm_for_filter(), tf_1), tf_3, dm1),
     dm_wrapped
   )
 })
@@ -134,18 +137,19 @@ test_that("`dm_pack_wrap()`, `dm_unpack_unwrap()`, `dm_nest_wrap()`, `dm_unnest_
   # has both parent and child
   expect_error(dm_pack_wrap(dm1, tf_4), "not a terminal parent table")
 
-  dm_packed <- dm_pack_wrap(dm1, tf_1)
-  expect_snapshot(dm_packed)
+  expect_snapshot({
+    dm_packed <- dm_pack_wrap(dm1, tf_1)
+    dm_packed
 
-  dm_packed_nested <- dm_nest_wrap(dm_packed, tf_2)
-  expect_snapshot(dm_packed_nested)
+    dm_packed_nested <- dm_nest_wrap(dm_packed, tf_2)
+    dm_packed_nested
 
-  dm_packed_nested_unnested <- dm_unnest_unwrap(dm_packed_nested, tf_3, tf_2, dm1)
-  expect_snapshot(dm_packed_nested_unnested)
+    dm_packed_nested_unnested <- dm_unnest_unwrap(dm_packed_nested, tf_3, tf_2, dm1)
+    dm_packed_nested_unnested
 
-  dm_packed_nested_unnested_unpacked <-
-    dm_unpack_unwrap(dm_packed_nested_unnested, tf_2, tf_1, dm1)
-  expect_snapshot(dm_packed_nested_unnested_unpacked)
+    dm_packed_nested_unnested_unpacked <- dm_unpack_unwrap(dm_packed_nested_unnested, tf_2, tf_1, dm1)
+    dm_packed_nested_unnested_unpacked
+  })
 
   # trying to unpack or unnest a column that doesn't exist gives informative error
   expect_error(dm_unpack_unwrap(dm1, tf_2, tf_1, dm1), "Column `tf_1` doesn't exist")

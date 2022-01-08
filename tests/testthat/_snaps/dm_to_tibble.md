@@ -94,6 +94,7 @@
 # `dm_wrap()` and `dm_unwrap()` work
 
     Code
+      dm_wrapped <- dm_wrap(dm_for_filter(), tf_1)
       dm_wrapped
     Output
       -- Metadata --------------------------------------------------------------------
@@ -101,9 +102,6 @@
       Columns: 17
       Primary keys: 5
       Foreign keys: 4
-
----
-
     Code
       dm_wrapped$tf_2
     Output
@@ -143,9 +141,42 @@
       5     6 F    
       6     7 G    
 
+---
+
+    Code
+      dm_unwrapped <- dm_unwrap(dm_wrap(dm_for_filter(), tf_1), tf_2, dm_for_filter())
+      expect_snapshot(dm_unwrapped)
+    Warning <testthat_warn>
+      Adding new snapshot:
+      Code
+        dm_unwrapped
+      Output
+        -- Metadata --------------------------------------------------------------------
+        Tables: `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`, `tf_1`
+        Columns: 18
+        Primary keys: 6
+        Foreign keys: 5
+    Code
+      expect_snapshot(dm_unwrapped$tf_1)
+    Warning <testthat_warn>
+      Adding new snapshot:
+      Code
+        dm_unwrapped$tf_1
+      Output
+        # A tibble: 6 x 2
+              a b    
+          <int> <chr>
+        1     2 B    
+        2     3 C    
+        3     4 D    
+        4     5 E    
+        5     6 F    
+        6     7 G    
+
 # `dm_pack_wrap()`, `dm_unpack_unwrap()`, `dm_nest_wrap()`, `dm_unnest_unwrap()` work
 
     Code
+      dm_packed <- dm_pack_wrap(dm1, tf_1)
       dm_packed
     Output
       -- Metadata --------------------------------------------------------------------
@@ -153,10 +184,8 @@
       Columns: 17
       Primary keys: 5
       Foreign keys: 4
-
----
-
     Code
+      dm_packed_nested <- dm_nest_wrap(dm_packed, tf_2)
       dm_packed_nested
     Output
       -- Metadata --------------------------------------------------------------------
@@ -164,10 +193,8 @@
       Columns: 13
       Primary keys: 4
       Foreign keys: 3
-
----
-
     Code
+      dm_packed_nested_unnested <- dm_unnest_unwrap(dm_packed_nested, tf_3, tf_2, dm1)
       dm_packed_nested_unnested
     Output
       -- Metadata --------------------------------------------------------------------
@@ -175,10 +202,9 @@
       Columns: 17
       Primary keys: 5
       Foreign keys: 4
-
----
-
     Code
+      dm_packed_nested_unnested_unpacked <- dm_unpack_unwrap(
+        dm_packed_nested_unnested, tf_2, tf_1, dm1)
       dm_packed_nested_unnested_unpacked
     Output
       -- Metadata --------------------------------------------------------------------
