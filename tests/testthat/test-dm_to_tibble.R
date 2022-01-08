@@ -42,9 +42,8 @@ test_that("`dm_to_tibble()`/`tibble_to_dm()` round trip works", {
     dm %>%
     dm_filter(tf_2, TRUE) %>%
     dm_apply_filters()
-  # FIXME: object 'candidates_with_correct_children' not found
-  # roundtrip_dm <- tibble_to_dm(dm_to_tibble(dm, tf_2), dm)
-  # expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
+  roundtrip_dm <- tibble_to_dm(dm_to_tibble(dm, tf_2), dm)
+  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
 
   dm <- dm_for_filter()
   reduced_dm <-
@@ -67,9 +66,8 @@ test_that("`dm_to_tibble()`/`tibble_to_dm()` round trip works", {
     dm %>%
     dm_filter(tf_5, TRUE) %>%
     dm_apply_filters()
-  # FIXME: object 'candidates_with_correct_children' not found
-  # roundtrip_dm <- tibble_to_dm(dm_to_tibble(dm, tf_5), dm)
-  # expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
+  roundtrip_dm <- tibble_to_dm(dm_to_tibble(dm, tf_5), dm)
+  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
 
   dm <- dm_for_filter()
   reduced_dm <-

@@ -61,7 +61,7 @@ tibble_to_dm <- function(x, specs, root = NULL) {
       unique()
   } else {
     # parents which no fk points to
-    candidates_with_correct_parents <-
+    candidates_with_correct_children <-
       setdiff(specs$fks$child_table, specs$fks$parent_table)
   }
   candidates <- intersect(
