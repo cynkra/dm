@@ -89,7 +89,7 @@ tibble_to_dm <- function(x, specs, root = NULL) {
 
   # define new single tibble dm with pk if relevant
   dm <- dm(!!root_name := x)
-  pk <- specs$pk %>%
+  pk <- specs$pks %>%
     filter(table == root_name) %>%
     pull(pk_col) %>%
     unlist()
@@ -362,7 +362,7 @@ dm_unnest_unwrap <- function(dm, table, col, specs) {
   }
 
   # retrieve fk and extract nested table
-  fk <- specs$fk %>%
+  fk <- specs$fks %>%
     filter(child_table == new_table_name, parent_table == table_name) %>%
     with(set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
   new_table <- table %>%
@@ -377,7 +377,7 @@ dm_unnest_unwrap <- function(dm, table, col, specs) {
     # need to unname because of #739
     dm <- dm_add_fk(dm, !!new_table_name, !!names(fk), !!table_name, !!unname(fk))
   }
-  pk <- specs$pk %>%
+  pk <- specs$pks %>%
     filter(table == new_table_name) %>%
     pull(pk_col) %>%
     unlist()
@@ -402,7 +402,7 @@ dm_unpack_unwrap <- function(dm, table, col, specs) {
   }
 
   # retrieve fk and extract packed table
-  fk <- specs$fk %>%
+  fk <- specs$fks %>%
     filter(child_table == table_name, parent_table == new_table_name) %>%
     with(set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
   new_table <- table %>%
@@ -417,7 +417,7 @@ dm_unpack_unwrap <- function(dm, table, col, specs) {
     # need to unname because of #739
     dm <- dm_add_fk(dm, !!table_name, !!unname(fk), !!new_table_name, !!names(fk))
   }
-  pk <- specs$pk %>%
+  pk <- specs$pks %>%
     filter(table == new_table_name) %>%
     pull(pk_col) %>%
     unlist()
