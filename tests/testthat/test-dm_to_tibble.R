@@ -12,38 +12,72 @@ test_that("`node_type_from_graph()` works", {
 test_that("`dm_to_tibble()`/`tibble_to_dm()` round trip works", {
   skip_if_remote_src()
 
-  dm1 <- dm_for_filter()
-
   # to tibble
-  tbl <- dm_to_tibble(dm1, tf_4)
   expect_snapshot({
+    tbl <- dm_to_tibble(dm_for_filter(), tf_4)
     tbl
-  })
-  expect_snapshot({
     tbl$tf_3$tf_2[[3]]
-  })
-  expect_snapshot({
     tbl$tf_5[[2]]
   })
 
   # back to dm
-  dm2 <- tibble_to_dm(tbl, dm1)
   expect_snapshot({
+    dm2 <- tibble_to_dm(tbl, dm_for_filter())
     dm2
-  })
-  expect_snapshot({
     dm2$tf_4
-  })
-  expect_snapshot({
     dm2$tf_1
-  })
-  expect_snapshot({
     dm2$tf_6
   })
 
-  expect_snapshot({
-    waldo::compare(dm_ptype(dm1), dm_ptype(dm2))
-  })
+  dm <- dm_for_filter()
+  reduced_dm <-
+    dm %>%
+    dm_filter(tf_1, TRUE) %>%
+    dm_apply_filters()
+  roundtrip_dm <- tibble_to_dm(dm_to_tibble(dm, tf_1), dm)
+  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
+
+  dm <- dm_for_filter()
+  reduced_dm <-
+    dm %>%
+    dm_filter(tf_2, TRUE) %>%
+    dm_apply_filters()
+  # FIXME: object 'candidates_with_correct_children' not found
+  # roundtrip_dm <- tibble_to_dm(dm_to_tibble(dm, tf_2), dm)
+  # expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
+
+  dm <- dm_for_filter()
+  reduced_dm <-
+    dm %>%
+    dm_filter(tf_3, TRUE) %>%
+    dm_apply_filters()
+  roundtrip_dm <- tibble_to_dm(dm_to_tibble(dm, tf_3), dm)
+  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
+
+  dm <- dm_for_filter()
+  reduced_dm <-
+    dm %>%
+    dm_filter(tf_4, TRUE) %>%
+    dm_apply_filters()
+  roundtrip_dm <- tibble_to_dm(dm_to_tibble(dm, tf_4), dm)
+  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
+
+  dm <- dm_for_filter()
+  reduced_dm <-
+    dm %>%
+    dm_filter(tf_5, TRUE) %>%
+    dm_apply_filters()
+  # FIXME: object 'candidates_with_correct_children' not found
+  # roundtrip_dm <- tibble_to_dm(dm_to_tibble(dm, tf_5), dm)
+  # expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
+
+  dm <- dm_for_filter()
+  reduced_dm <-
+    dm %>%
+    dm_filter(tf_6, TRUE) %>%
+    dm_apply_filters()
+  roundtrip_dm <- tibble_to_dm(dm_to_tibble(dm, tf_6), dm)
+  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
 })
 
 test_that("`dm_wrap_all()` and `dm_unwrap_all()` work", {

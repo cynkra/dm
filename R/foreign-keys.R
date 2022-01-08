@@ -238,7 +238,7 @@ dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
   dm_get_all_fks_impl(dm, parent_table)
 }
 
-dm_get_all_fks_impl <- function(dm, parent_table = NULL) {
+dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE) {
   def <- dm_get_def(dm)
 
   sub_def <- def[c("table", "fks")]
@@ -253,7 +253,7 @@ dm_get_all_fks_impl <- function(dm, parent_table = NULL) {
   names(flat) <- c("parent_table", "parent_key_cols", "child_table", "child_fk_cols", "on_delete")
   flat[[2]] <- new_keys(flat[[2]])
   flat[[4]] <- new_keys(flat[[4]])
-  flat[c(3:4, 1:2, 5L)]
+  flat[c(3:4, 1:2, if (!ignore_on_delete) 5L)]
 }
 
 #' Remove foreign keys
