@@ -118,6 +118,7 @@
 ---
 
     Code
+      dm_unwrapped <- dm_unwrap(dm_wrap(dm_for_filter(), tf_1), tf_2, dm_for_filter())
       dm_unwrapped
     Output
       -- Metadata --------------------------------------------------------------------
@@ -125,9 +126,6 @@
       Columns: 18
       Primary keys: 6
       Foreign keys: 5
-
----
-
     Code
       dm_unwrapped$tf_1
     Output
@@ -140,38 +138,6 @@
       4     5 E    
       5     6 F    
       6     7 G    
-
----
-
-    Code
-      dm_unwrapped <- dm_unwrap(dm_wrap(dm_for_filter(), tf_1), tf_2, dm_for_filter())
-      expect_snapshot(dm_unwrapped)
-    Warning <testthat_warn>
-      Adding new snapshot:
-      Code
-        dm_unwrapped
-      Output
-        -- Metadata --------------------------------------------------------------------
-        Tables: `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`, `tf_1`
-        Columns: 18
-        Primary keys: 6
-        Foreign keys: 5
-    Code
-      expect_snapshot(dm_unwrapped$tf_1)
-    Warning <testthat_warn>
-      Adding new snapshot:
-      Code
-        dm_unwrapped$tf_1
-      Output
-        # A tibble: 6 x 2
-              a b    
-          <int> <chr>
-        1     2 B    
-        2     3 C    
-        3     4 D    
-        4     5 E    
-        5     6 F    
-        6     7 G    
 
 # `dm_pack_wrap()`, `dm_unpack_unwrap()`, `dm_nest_wrap()`, `dm_unnest_unwrap()` work
 

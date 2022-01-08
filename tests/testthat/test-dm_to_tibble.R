@@ -103,8 +103,8 @@ test_that("`dm_wrap()` and `dm_unwrap()` work", {
 
   expect_snapshot({
     dm_unwrapped <- dm_unwrap(dm_wrap(dm_for_filter(), tf_1), tf_2, dm_for_filter())
-    expect_snapshot(dm_unwrapped)
-    expect_snapshot(dm_unwrapped$tf_1)
+    dm_unwrapped
+    dm_unwrapped$tf_1
   })
 
   # nothing to unwrap = no op
