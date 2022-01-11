@@ -114,14 +114,14 @@ dm_wrap_all <- function(dm, root, silent = FALSE, strict = TRUE) {
     child_name <- names(positions)[positions == "terminal child"][1]
     has_terminal_child <- !is.na(child_name)
     if (has_terminal_child) {
-      dm <- dm_nest_wrap(dm, !!child_name, silent = silent)
+      dm <- dm_nest_tbl(dm, !!child_name, silent = silent)
       graph <- igraph::delete.vertices(graph, child_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }
     parent_name <- names(positions)[positions == "terminal parent"][1]
     has_terminal_parent <- !is.na(parent_name)
     if (has_terminal_parent) {
-      dm <- dm_pack_wrap(dm, !!parent_name, silent = silent)
+      dm <- dm_pack_tbl(dm, !!parent_name, silent = silent)
       graph <- igraph::delete.vertices(graph, parent_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }
@@ -206,8 +206,8 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
         "it's connected to more than one table.{parent_msg}{children_msg}"
       ))
     },
-    "terminal child" = dm_nest_wrap(dm, {{ table }}, !!into, silent),
-    "terminal parent" = dm_pack_wrap(dm, {{ table }}, !!into, silent)
+    "terminal child" = dm_nest_tbl(dm, {{ table }}, !!into, silent),
+    "terminal parent" = dm_pack_tbl(dm, {{ table }}, !!into, silent)
   )
 
   new_dm
@@ -225,18 +225,18 @@ dm_unwrap <- function(dm, table, specs) {
 
   # unnest children tables
   for (child_name in children) {
-    dm <- dm_unnest_unwrap(dm, !!table_name, col = !!child_name, specs)
+    dm <- dm_unnest_tbl(dm, !!table_name, col = !!child_name, specs)
   }
 
   # unpack parent tables
   for (parent_name in parents) {
-    dm <- dm_unpack_unwrap(dm, !!table_name, col = !!parent_name, specs)
+    dm <- dm_unpack_tbl(dm, !!table_name, col = !!parent_name, specs)
   }
 
   dm
 }
 
-dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
+dm_pack_tbl <- function(dm, table, into = NULL, silent = FALSE) {
   # process args
   into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
@@ -289,7 +289,7 @@ dm_pack_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   new_dm3(def)
 }
 
-dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
+dm_nest_tbl <- function(dm, table, into = NULL, silent = FALSE) {
   # process args
   into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
@@ -348,7 +348,7 @@ dm_nest_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   new_dm3(def)
 }
 
-dm_unnest_unwrap <- function(dm, table, col, specs) {
+dm_unnest_tbl <- function(dm, table, col, specs) {
   # process args and build names
   table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[table_name]]
@@ -388,7 +388,7 @@ dm_unnest_unwrap <- function(dm, table, col, specs) {
   dm
 }
 
-dm_unpack_unwrap <- function(dm, table, col, specs) {
+dm_unpack_tbl <- function(dm, table, col, specs) {
   # process args and build names
   table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[table_name]]
