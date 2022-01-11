@@ -12,8 +12,14 @@ node_type_from_graph <- function(graph, drop = NULL) {
 
 dm_to_tibble <- function(dm, root, silent = FALSE) {
   root_name <- dm_tbl_name(dm, {{ root }})
-  wrapped_dm <- dm_wrap_all(dm, {{ root }}, silent = silent, strict = TRUE)
-  dm_get_tables_impl(wrapped_dm)[[root_name]]
+  dm_msg <- dm_wrap_all_impl(dm, {{ root }}, strict = TRUE)
+  if (!silent) {
+    inform(paste0(
+      "Rebuild a dm from this object using : %>%\n",
+      "  dm(", root_name, " = .) %>%\n",
+      dm_msg$msg))
+  }
+  dm_get_tables_impl(dm_msg$dm)[[root_name]]
 }
 
 #' Convert a tibble to a dm
@@ -102,26 +108,39 @@ tibble_to_dm <- function(x, specs, root = NULL) {
 }
 
 dm_wrap_all <- function(dm, root, silent = FALSE, strict = TRUE) {
+  dm_msg <- dm_wrap_all_impl(dm, {{root}}, strict = strict)
+  if(!silent) {
+    inform(paste0("Rebuild a dm from this object using : %>%\n", dm_msg$msg))
+  }
+  dm_msg$dm
+}
+
+dm_wrap_all_impl <- function(dm, root, strict = TRUE) {
   # process args
   root_name <- dm_tbl_name(dm, {{ root }})
 
   # initiate graph and positions
   graph <- create_graph_from_dm(dm, directed = TRUE)
   positions <- node_type_from_graph(graph, drop = root_name)
+  msgs <- character()
 
   # wrap terminal nodes as long as they're not the root
   repeat {
     child_name <- names(positions)[positions == "terminal child"][1]
     has_terminal_child <- !is.na(child_name)
     if (has_terminal_child) {
-      dm <- dm_nest_tbl(dm, !!child_name, silent = silent)
+      dm_msg <- dm_nest_tbl_impl(dm, !!child_name)
+      dm <- dm_msg$dm
+      msgs <- c(msgs, dm_msg$msg)
       graph <- igraph::delete.vertices(graph, child_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }
     parent_name <- names(positions)[positions == "terminal parent"][1]
     has_terminal_parent <- !is.na(parent_name)
     if (has_terminal_parent) {
-      dm <- dm_pack_tbl(dm, !!parent_name, silent = silent)
+      dm_msg <- dm_pack_tbl_impl(dm, !!parent_name)
+      dm <- dm_msg$dm
+      msgs <- c(msgs, dm_msg$msg)
       graph <- igraph::delete.vertices(graph, parent_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }
@@ -136,7 +155,7 @@ dm_wrap_all <- function(dm, root, silent = FALSE, strict = TRUE) {
     inform("The `dm` is not cycle free, returning a partially wrapped multi table 'dm'.")
   }
 
-  dm
+  list(dm = dm, msg = paste(rev(msgs), collapse = " %>%\n"))
 }
 
 dm_unwrap_all <- function(dm, specs) {
@@ -182,7 +201,8 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   position <- positions[table_name]
 
   # nest, pack or fail appropriately
-  new_dm <- switch(position,
+  new_dm <- switch(
+    position,
     "isolated" = abort(glue(
       "`{table_name}` is an isolated table (no parent and no child), ",
       "it cannot be wrapped into a connected table"
@@ -237,6 +257,15 @@ dm_unwrap <- function(dm, table, specs) {
 }
 
 dm_pack_tbl <- function(dm, table, into = NULL, silent = FALSE) {
+  dm_msg <- dm_pack_tbl_impl(dm, {{table}}, into = {{into}})
+  if(!silent) {
+    inform(paste0("Rebuild a dm from this object using : %>%\n", dm_msg$msg))
+  }
+  dm_msg$dm
+}
+
+
+dm_pack_tbl_impl <- function(dm, table, into = NULL) {
   # process args
   into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
@@ -283,13 +312,31 @@ dm_pack_tbl <- function(dm, table, into = NULL, silent = FALSE) {
   packed_data <- pack_join(child_data, table_data, by = by, name = table_name)
   class(packed_data[[table_name]]) <- c("packed", class(packed_data[[table_name]]))
 
+  # output rebuilding code
+  child_fk <- capture.output(dput(names(by)))
+  parent_pk <- capture.output(dput(unname(by)))
+  msg <- glue(
+    "  dm_unpack_tbl({child_name}, {table_name}, list(",
+    "child_fk = {child_fk}, parent_pk = {parent_pk}))",
+    .trim = FALSE
+  )
+
   # update def and rebuild dm
   def$data[def$table == child_name] <- list(packed_data)
   def <- def[def$table != table_name, ]
-  new_dm3(def)
+
+  list(dm = new_dm3(def), msg = msg)
 }
 
 dm_nest_tbl <- function(dm, table, into = NULL, silent = FALSE) {
+  dm_msg <- dm_nest_tbl_impl(dm, {{table}}, into = {{into}})
+  if(!silent) {
+    inform(paste0("Rebuild a dm from this object using : %>%\n", dm_msg$msg))
+  }
+  dm_msg$dm
+}
+
+dm_nest_tbl_impl <- function(dm, table, into = NULL) {
   # process args
   into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
@@ -339,13 +386,35 @@ dm_nest_tbl <- function(dm, table, into = NULL, silent = FALSE) {
   nested_data <- nest_join(parent_data, table_data, by = by, name = table_name)
   class(nested_data[[table_name]]) <- c("nested", class(nested_data[[table_name]]))
 
+  # output rebuilding code
+  child_fk <- capture.output(dput(unname(by)))
+  pks <- dm_get_all_pks(dm)
+  parent_pk <-
+    pks %>%
+    filter(table == parent_name) %>%
+    pull(pk_col) %>%
+    unlist()
+  parent_pk <- capture.output(dput(parent_pk))
+  child_pk <-
+    pks %>%
+    filter(table == table_name) %>%
+    pull(pk_col) %>%
+    unlist()
+  child_pk <- capture.output(dput(child_pk))
+  msg <- glue(
+    "  dm_unnest_tbl({parent_name}, {table_name}, list(",
+    "child_fk = {child_fk}, parent_pk = {parent_pk}, child_pk = {child_pk}))",
+    .trim = FALSE
+  )
+
   # update def and rebuild dm
   def$data[def$table == parent_name] <- list(nested_data)
   old_parent_table_fk <- def[def$table == parent_name, ][["fks"]][[1]]
   new_parent_table_fk <- filter(old_parent_table_fk, table != table_name)
   def[def$table == parent_name, ][["fks"]][[1]] <- new_parent_table_fk
   def <- def[def$table != table_name, ]
-  new_dm3(def)
+
+  list(dm = new_dm3(def), msg = msg)
 }
 
 dm_unnest_tbl <- function(dm, table, col, specs) {
@@ -359,12 +428,31 @@ dm_unnest_tbl <- function(dm, table, col, specs) {
       pks = dm_get_all_pks(specs),
       fks = dm_get_all_fks(specs)
     )
+    pk <- specs$pks %>%
+      filter(table == new_table_name) %>%
+      pull(pk_col) %>%
+      unlist()
+    fk <- specs$fks %>%
+      filter(child_table == new_table_name, parent_table == table_name) %>%
+      with(set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
+  } else if(setequal(names(specs), c("pks", "fks"))) {
+    #FIXME : handle different specs formats better (validation + DRY + doc)
+    pk <- specs$pks %>%
+      filter(table == new_table_name) %>%
+      pull(pk_col) %>%
+      unlist()
+    fk <- specs$fks %>%
+      filter(child_table == new_table_name, parent_table == table_name) %>%
+      with(set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
+    } else {
+    if(!is_bare_list(specs) && setequal(names(specs), c("parent_pk", "child_fk"))) {
+      abort("`specs` should be a dm or a list")
+    }
+    pk <- specs[["child_pk"]]
+    fk <- set_names(specs[["parent_pk"]], specs[["child_fk"]])
   }
 
   # retrieve fk and extract nested table
-  fk <- specs$fks %>%
-    filter(child_table == new_table_name, parent_table == table_name) %>%
-    with(set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
   new_table <- table %>%
     select(!!!fk, !!new_table_name) %>%
     unnest(!!new_table_name) %>%
@@ -377,10 +465,6 @@ dm_unnest_tbl <- function(dm, table, col, specs) {
     # need to unname because of #739
     dm <- dm_add_fk(dm, !!new_table_name, !!names(fk), !!table_name, !!unname(fk))
   }
-  pk <- specs$pks %>%
-    filter(table == new_table_name) %>%
-    pull(pk_col) %>%
-    unlist()
   if (length(pk)) {
     dm <- dm_add_pk(dm, !!new_table_name, !!pk)
   }
@@ -399,12 +483,33 @@ dm_unpack_tbl <- function(dm, table, col, specs) {
       pks = dm_get_all_pks(specs),
       fks = dm_get_all_fks(specs)
     )
+    pk <- specs$pks %>%
+      filter(table == new_table_name) %>%
+      pull(pk_col) %>%
+      unlist()
+
+    fk <- specs$fks %>%
+      filter(child_table == table_name, parent_table == new_table_name) %>%
+      with(set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
+  } else if(setequal(names(specs), c("pks", "fks"))) {
+    #FIXME : handle different specs formats better (validation + DRY + doc)
+    pk <- specs$pks %>%
+      filter(table == new_table_name) %>%
+      pull(pk_col) %>%
+      unlist()
+    fk <- specs$fks %>%
+      filter(child_table == table_name, parent_table == new_table_name) %>%
+      with(set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
+  } else {
+    if(!is_bare_list(specs)) {
+      abort("`specs` should be a dm or a list")
+    }
+    pk <- specs[["parent_pk"]]
+    fk <- set_names(specs[["child_fk"]], pk)
   }
 
   # retrieve fk and extract packed table
-  fk <- specs$fks %>%
-    filter(child_table == table_name, parent_table == new_table_name) %>%
-    with(set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
+
   new_table <- table %>%
     select(!!!fk, !!new_table_name) %>%
     unpack(!!new_table_name) %>%
@@ -417,10 +522,7 @@ dm_unpack_tbl <- function(dm, table, col, specs) {
     # need to unname because of #739
     dm <- dm_add_fk(dm, !!table_name, !!unname(fk), !!new_table_name, !!names(fk))
   }
-  pk <- specs$pks %>%
-    filter(table == new_table_name) %>%
-    pull(pk_col) %>%
-    unlist()
+
   if (length(pk)) {
     dm <- dm_add_pk(dm, !!new_table_name, !!pk)
   }

@@ -22,6 +22,15 @@
 
     Code
       tbl <- dm_to_tibble(dm_for_filter(), tf_4)
+    Message <rlang_message>
+      Rebuild a dm from this object using : %>%
+        dm(tf_4 = .) %>%
+        dm_unnest_tbl(tf_4, tf_5, list(child_fk = "l", parent_pk = "h", child_pk = "k")) %>%
+        dm_unpack_tbl(tf_5, tf_6, list(child_fk = "m", parent_pk = "n")) %>%
+        dm_unpack_tbl(tf_4, tf_3, list(child_fk = c("j", "j1"), parent_pk = c("f", "f1"))) %>%
+        dm_unnest_tbl(tf_3, tf_2, list(child_fk = c("e", "e1"), parent_pk = c("f", "f1"), child_pk = "c")) %>%
+        dm_unpack_tbl(tf_2, tf_1, list(child_fk = "d", parent_pk = "a"))
+    Code
       tbl
     Output
       # A tibble: 5 x 6
@@ -95,6 +104,10 @@
 
     Code
       dm_wrapped <- dm_wrap(dm_for_filter(), tf_1)
+    Message <rlang_message>
+      Rebuild a dm from this object using : %>%
+        dm_unpack_tbl(tf_2, tf_1, list(child_fk = "d", parent_pk = "a"))
+    Code
       dm_wrapped
     Output
       -- Metadata --------------------------------------------------------------------
@@ -119,6 +132,10 @@
 
     Code
       dm_unwrapped <- dm_unwrap(dm_wrap(dm_for_filter(), tf_1), tf_2, dm_for_filter())
+    Message <rlang_message>
+      Rebuild a dm from this object using : %>%
+        dm_unpack_tbl(tf_2, tf_1, list(child_fk = "d", parent_pk = "a"))
+    Code
       dm_unwrapped
     Output
       -- Metadata --------------------------------------------------------------------
@@ -143,6 +160,10 @@
 
     Code
       dm_packed <- dm_pack_tbl(dm1, tf_1)
+    Message <rlang_message>
+      Rebuild a dm from this object using : %>%
+        dm_unpack_tbl(tf_2, tf_1, list(child_fk = "d", parent_pk = "a"))
+    Code
       dm_packed
     Output
       -- Metadata --------------------------------------------------------------------
@@ -152,6 +173,10 @@
       Foreign keys: 4
     Code
       dm_packed_nested <- dm_nest_tbl(dm_packed, tf_2)
+    Message <rlang_message>
+      Rebuild a dm from this object using : %>%
+        dm_unnest_tbl(tf_3, tf_2, list(child_fk = c("e", "e1"), parent_pk = c("f", "f1"), child_pk = "c"))
+    Code
       dm_packed_nested
     Output
       -- Metadata --------------------------------------------------------------------
