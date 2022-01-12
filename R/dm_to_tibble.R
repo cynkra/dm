@@ -231,7 +231,8 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   new_dm
 }
 
-dm_unwrap <- function(dm, table, prototype) {
+
+dm_unwrap <- function(dm, table, keys) {
   # process args and build names
   table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[table_name]]
@@ -243,12 +244,12 @@ dm_unwrap <- function(dm, table, prototype) {
 
   # unnest children tables
   for (child_name in children) {
-    dm <- dm_unnest_tbl(dm, !!table_name, col = !!child_name, prototype)
+    dm <- dm_unnest_tbl(dm, !!table_name, col = !!child_name, keys)
   }
 
   # unpack parent tables
   for (parent_name in parents) {
-    dm <- dm_unpack_tbl(dm, !!table_name, col = !!parent_name, prototype)
+    dm <- dm_unpack_tbl(dm, !!table_name, col = !!parent_name, keys)
   }
 
   dm
