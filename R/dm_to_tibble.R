@@ -14,10 +14,17 @@ dm_to_tibble <- function(dm, root, silent = FALSE) {
   root_name <- dm_tbl_name(dm, {{ root }})
   dm_msg <- dm_wrap_all_impl(dm, {{ root }}, strict = TRUE)
   if (!silent) {
-    inform(paste0(
+    pk <- dm_get_all_pks(dm) %>%
+      filter(table == root_name) %>%
+      pull(pk_col) %>%
+      unlist()
+    inform(glue(
       "Rebuild a dm from this object using : %>%\n",
-      "  dm(", root_name, " = .) %>%\n",
-      dm_msg$msg))
+      "  dm({root_name} = .) %>%\n",
+      if(!length(pk)) "" else "  dm_add_pk({root_name}, {capture.output(dput(pk))}) %>%\n",
+      dm_msg$msg,
+      .trim = FALSE,
+    ))
   }
   dm_get_tables_impl(dm_msg$dm)[[root_name]]
 }
@@ -403,7 +410,8 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
   child_pk <- capture.output(dput(child_pk))
   msg <- glue(
     "  dm_unnest_tbl({parent_name}, {table_name}, list(",
-    "child_fk = {child_fk}, parent_pk = {parent_pk}, child_pk = {child_pk}))",
+    if(child_pk != "NULL") "child_fk = {child_fk}, parent_pk = {parent_pk}, child_pk = {child_pk}))"
+    else "child_fk = {child_fk}, parent_pk = {parent_pk}))",
     .trim = FALSE
   )
 

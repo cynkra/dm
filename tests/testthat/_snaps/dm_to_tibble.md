@@ -25,6 +25,7 @@
     Message <rlang_message>
       Rebuild a dm from this object using : %>%
         dm(tf_4 = .) %>%
+        dm_add_pk(tf_4, "h") %>%
         dm_unnest_tbl(tf_4, tf_5, list(child_fk = "l", parent_pk = "h", child_pk = "k")) %>%
         dm_unpack_tbl(tf_5, tf_6, list(child_fk = "m", parent_pk = "n")) %>%
         dm_unpack_tbl(tf_4, tf_3, list(child_fk = c("j", "j1"), parent_pk = c("f", "f1"))) %>%
