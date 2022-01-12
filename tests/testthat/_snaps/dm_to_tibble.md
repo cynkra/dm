@@ -22,7 +22,7 @@
 
     Code
       tbl <- dm_to_tibble(dm_for_filter(), tf_4)
-    Message <rlang_message>
+    Message <message>
       Rebuild a dm from this object using : %>%
         dm(tf_4 = .) %>%
         dm_add_pk(tf_4, "h") %>%
@@ -105,7 +105,7 @@
 
     Code
       dm_wrapped <- dm_wrap(dm_for_filter(), tf_1)
-    Message <rlang_message>
+    Message <message>
       Rebuild a dm from this object using : %>%
         dm_unpack_tbl(tf_2, tf_1, keys = list(child_fk = "d", parent_pk = "a", parent_fk = "a"))
     Code
@@ -133,7 +133,7 @@
 
     Code
       dm_unwrapped <- dm_unwrap(dm_wrap(dm_for_filter(), tf_1), tf_2, dm_for_filter())
-    Message <rlang_message>
+    Message <message>
       Rebuild a dm from this object using : %>%
         dm_unpack_tbl(tf_2, tf_1, keys = list(child_fk = "d", parent_pk = "a", parent_fk = "a"))
     Code
@@ -161,7 +161,7 @@
 
     Code
       dm_packed <- dm_pack_tbl(dm1, tf_1)
-    Message <rlang_message>
+    Message <message>
       Rebuild a dm from this object using : %>%
         dm_unpack_tbl(tf_2, tf_1, keys = list(child_fk = "d", parent_pk = "a", parent_fk = "a"))
     Code
@@ -174,7 +174,7 @@
       Foreign keys: 4
     Code
       dm_packed_nested <- dm_nest_tbl(dm_packed, tf_2)
-    Message <rlang_message>
+    Message <message>
       Rebuild a dm from this object using : %>%
         dm_unnest_tbl(tf_3, tf_2, keys = list(child_fk = c("e", "e1"), parent_fk = c("f", "f1"), child_pk = "c"))
     Code
