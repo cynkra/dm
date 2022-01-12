@@ -10,6 +10,30 @@ node_type_from_graph <- function(graph, drop = NULL) {
   node_types[!names(node_types) %in% drop]
 }
 
+#' Wrap dm into a single tibble
+#'
+#' `dm_to_tibble()` creates a tibble built from the `root` table and containing
+#'   all the data related to it through the relationships stored in the dm.
+#'
+#' @param dm A cycle free dm object
+#' @param root Table to wrap the dm into (unquoted)
+#' @param silent Whether to print the code that reverse the transformation. See details.
+#'
+#' When silent is `FALSE` (default) we print the steps required to achieve
+#' the reverse transformation without using a prototype. This is sequence of
+#' calls to `dm()`, `dm_unpack_tbl()` and `dm_unnest_tbl()`.
+#'
+#' The reverse transformation i generally not a perfect round trip since
+#' `dm_to_tibble()` keeps only information related to `root`
+#'
+#' @return A tibble
+#' @seealso [dm::tibble_to_dm], [dm::dm_wrap], [dm::dm_unwrap],
+#'   [dm::dm_wrap_all], [dm::dm_unwrap_all],
+#'
+#' @export
+#'
+#' @examples
+#' dm_to_tibble(dm_nycflights13(), airlines)
 dm_to_tibble <- function(dm, root, silent = FALSE) {
   root_name <- dm_tbl_name(dm, {{ root }})
   dm_msg <- dm_wrap_all_impl(dm, {{ root }}, strict = TRUE)
@@ -29,15 +53,25 @@ dm_to_tibble <- function(dm, root, silent = FALSE) {
   dm_get_tables_impl(dm_msg$dm)[[root_name]]
 }
 
-#' Convert a tibble to a dm
+#' Convert a wrapped tibble to a dm
 #'
-#' @param x a wrapped table, as created by `dm_to_tibble()`
-#' @param prototype a dm (usually the one used in the `dm_to_tibble()`), might be an
-#'   empty prototype since only the information about keys will be used
-#' @param root the root table (unquoted), optional because we can usually infer it from
-#'  `table` and `specs`
+#' @param x A wrapped table, as created by `dm_to_tibble()`
+#' @param prototype A dm, might be an empty prototype.
+#' @param root The root table (unquoted), optional because we can often
+#'   infer it from `x` and `prototype`
+#' @export
+#' @return A dm
+#' @seealso [dm::tibble_to_dm], [dm::dm_wrap], [dm::dm_unwrap],
+#'   [dm::dm_wrap_all], [dm::dm_unwrap_all],
 #'
-#' @noRd
+#' @examples
+#' # often we can infer the root table from the prototype
+#' flights_wrapped <- dm_to_tibble(dm_nycflights13(), flights, silent = TRUE)
+#' tibble_to_dm(flights_wrapped, dm_nycflights13())
+#'
+#' # other times, it is ambiguous and should be given
+#' airlines_wrapped <- dm_to_tibble(dm_nycflights13(), airlines, silent = TRUE)
+#' tibble_to_dm(airlines_wrapped, dm_nycflights13(), airlines)
 tibble_to_dm <- function(x, prototype, root = NULL) {
   # process args
   check_dm(prototype)
@@ -111,6 +145,28 @@ tibble_to_dm <- function(x, prototype, root = NULL) {
   dm_unwrap_all(dm, prototype)
 }
 
+#' Wrap dm into a single tibble dm
+#'
+#' `dm_wrap_all()` creates a single tibble tibble dm containing the `root` table
+#'   enhanced with all the data related to it through the relationships stored in the dm.
+#'
+#' @inheritParams dm_to_tibble
+#' @param strict Whether to fail for cyclic dms that cannot be wrapped into a
+#'   single table, if `FALSE` a partially wrapped dm will be returned
+#'
+#' When silent is `FALSE` (default) we print the steps required to achieve
+#' the reverse transformation without using a prototype. This is a sequence of
+#' calls to `dm_unpack_tbl()` and `dm_unnest_tbl()`.
+#'
+#' The reverse transformation i generally not a perfect round trip since
+#' `dm_to_tibble()` keeps only information related to `root`
+#'
+#' @return A single table dm
+#' @export
+#' @seealso [dm::dm_unwrap_all],  [dm::dm_to_tibble], [dm::tibble_to_dm],
+#'   [dm::dm_wrap], [dm::dm_unwrap],
+#' @examples
+#' dm_wrap_all(dm_nycflights13(), airlines)
 dm_wrap_all <- function(dm, root, silent = FALSE, strict = TRUE) {
   dm_msg <- dm_wrap_all_impl(dm, {{root}}, strict = strict)
   if(!silent) {
@@ -154,7 +210,7 @@ dm_wrap_all_impl <- function(dm, root, strict = TRUE) {
   # inform or fail if we have a cycle
   if (length(dm) > 1) {
     if (strict) {
-      abort("The `dm` is not cycle free and can't be wrapped in a single tibble.")
+      abort("The `dm` is not cycle free and can't be wrapped into a single tibble.")
     }
     inform("The `dm` is not cycle free, returning a partially wrapped multi table 'dm'.")
   }
@@ -162,9 +218,20 @@ dm_wrap_all_impl <- function(dm, root, strict = TRUE) {
   list(dm = dm, msg = paste(rev(msgs), collapse = " %>%\n"))
 }
 
+
+#' Unwrap a single table dm
+#'
+#' @inheritParams tibble_to_dm
+#' @param dm A dm
+#' @export
+#' @return A dm
+#' @seealso [dm::dm_wrap_all], [dm::dm_to_tibble], [dm::tibble_to_dm],
+#'   [dm::dm_wrap], [dm::dm_unwrap],
+#' @examples
+#' wrapped_dm <- dm_wrap_all(dm_nycflights13(), airlines, silent = TRUE)
+#' dm_unwrap_all(wrapped_dm, dm_nycflights13())
 dm_unwrap_all <- function(dm, prototype) {
   check_dm(prototype)
-
   # unwrap all tables and their unwrapped children/parents
   unwrapped_table_names <- character(0)
   repeat {
@@ -174,20 +241,28 @@ dm_unwrap_all <- function(dm, prototype) {
     dm <- dm_unwrap(dm, !!to_unwrap, prototype)
     unwrapped_table_names <- c(unwrapped_table_names, to_unwrap)
   }
-
   dm
 }
 
-#' wrap a table from a dm
+#' Wrap a table inside its dm
 #'
-#' @param dm a dm
-#' @param table a table, it needs to have either no parent or no child, but not
-#'   both of these.
-#' @param into the table to wrap `table` into, optional as it can be guessed
+#' These functions pack or nest a table inside its neighbour table (parent or child)
+#'
+#' @param dm A dm
+#' @param table A table
+#' @param into The table to wrap `table` into, optional as it can be guessed
 #'   from the foreign keys unambiguously but useful to be explicit.
 #' @param silent if not silent (the default), the code to unwrap will be printed
 #'
-#' @noRd
+#' * `dm_nest_tbl()` will nest a given `table` into its parent, `table` itself
+#' should not have children tables (i.e. it needs to be a *terminal child table*)
+#' * `dm_pack_tbl()` will pack a given `table` into its child, `table` itself
+#' should not have parent tables (i.e. it needs to be a *terminal parent table*)
+#' * `dm_wrap()` is behave either the same as `dm_nest_tbl()` or `dm_pack_tbl()`
+#'   depending on which one is applicable.
+#' @seealso [dm::dm_unwrap], [dm::dm_wrap_all], [dm::dm_unwrap_all],
+#'   [dm::dm_to_tibble], [dm::tibble_to_dm]
+#' @export
 dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   # process args and build name
   into <- enquo(into)
@@ -232,6 +307,34 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
 }
 
 
+#' Unwrap a table inside its dm
+#'
+#' These functions unpack or unnest columns from a wrapped table. `dm_unpack_tbl()`
+#' and `dm_unnest_tbl()` target a specific column to unpack/unnest, while `dm_unwrap()`
+#' unpacks or unnests all relevant columns.
+#'
+#' @param dm A dm
+#' @param table A table
+#' @param col The column to unpack or unnest (unquoted)
+#' @param keys A dm, or a list of character vectors containing the necessary
+#'   items among `child_pk`, `child_fk`, `parent_pk`, `parent_fk`
+#' @return A dm
+#' @seealso [dm::dm_wrap], [dm::dm_wrap_all], [dm::dm_unwrap_all],
+#'   [dm::dm_to_tibble], [dm::tibble_to_dm]
+#' @export
+#'
+#' @examples
+#' airlines_wrapped <- dm_wrap_all(dm_nycflights13(), airlines, silent = TRUE)
+#' dm_unwrap(airlines_wrapped, airlines, keys = dm_nycflights13())
+#' airlines_wrapped %>%
+#'   dm_unnest_tbl(airlines, flights, keys = list(
+#'     child_fk = "carrier", parent_fk = "carrier")) %>%
+#'   dm_unpack_tbl(flights, weather, keys = list(
+#'     child_fk = c("origin", "time_hour"),
+#'     parent_pk = c("origin",  "time_hour"),
+#'     parent_fk = c("origin", "time_hour")
+#'   ))
+#'
 dm_unwrap <- function(dm, table, keys) {
   # process args and build names
   table_name <- dm_tbl_name(dm, {{ table }})
@@ -255,6 +358,8 @@ dm_unwrap <- function(dm, table, keys) {
   dm
 }
 
+#' @export
+#' @rdname dm_wrap
 dm_pack_tbl <- function(dm, table, into = NULL, silent = FALSE) {
   dm_msg <- dm_pack_tbl_impl(dm, {{table}}, into = {{into}})
   if(!silent) {
@@ -333,6 +438,8 @@ dm_pack_tbl_impl <- function(dm, table, into = NULL) {
   list(dm = new_dm3(def), msg = msg)
 }
 
+#' @export
+#' @rdname dm_wrap
 dm_nest_tbl <- function(dm, table, into = NULL, silent = FALSE) {
   dm_msg <- dm_nest_tbl_impl(dm, {{table}}, into = {{into}})
   if(!silent) {
@@ -417,6 +524,8 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
   list(dm = new_dm3(def), msg = msg)
 }
 
+#' @export
+#' @rdname dm_unwrap
 dm_unnest_tbl <- function(dm, table, col, keys) {
   # process args and build names
   parent_table_name <- dm_tbl_name(dm, {{ table }})
@@ -463,6 +572,8 @@ dm_unnest_tbl <- function(dm, table, col, keys) {
   dm
 }
 
+#' @export
+#' @rdname dm_unwrap
 dm_unpack_tbl <- function(dm, table, col, keys) {
   # process args and build names
   child_table_name <- dm_tbl_name(dm, {{ table }})
