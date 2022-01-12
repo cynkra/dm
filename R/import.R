@@ -14,7 +14,7 @@
 #' @importFrom methods is
 #' @rawNamespace import(glue, except = c(collapse))
 #' @importFrom igraph V E
-#' @importFrom utils head tail str packageVersion
+#' @importFrom utils head tail str packageVersion capture.output
 #' @import lifecycle
 #' @import ellipsis
 #' @importFrom grDevices col2rgb colors rgb
