@@ -26,11 +26,11 @@
       Rebuild a dm from this object using : %>%
         dm(tf_4 = .) %>%
         dm_add_pk(tf_4, "h") %>%
-        dm_unnest_tbl(tf_4, tf_5, list(child_fk = "l", parent_pk = "h", child_pk = "k")) %>%
-        dm_unpack_tbl(tf_5, tf_6, list(child_fk = "m", parent_pk = "n")) %>%
-        dm_unpack_tbl(tf_4, tf_3, list(child_fk = c("j", "j1"), parent_pk = c("f", "f1"))) %>%
-        dm_unnest_tbl(tf_3, tf_2, list(child_fk = c("e", "e1"), parent_pk = c("f", "f1"), child_pk = "c")) %>%
-        dm_unpack_tbl(tf_2, tf_1, list(child_fk = "d", parent_pk = "a"))
+        dm_unnest_tbl(tf_4, tf_5, keys = list(child_fk = "l", parent_fk = "h", child_pk = "k")) %>%
+        dm_unpack_tbl(tf_5, tf_6, keys = list(child_fk = "m", parent_pk = "o", parent_fk = "n")) %>%
+        dm_unpack_tbl(tf_4, tf_3, keys = list(child_fk = c("j", "j1"), parent_pk = c("f", "f1"), parent_fk = c("f",  "f1"))) %>%
+        dm_unnest_tbl(tf_3, tf_2, keys = list(child_fk = c("e", "e1"), parent_fk = c("f", "f1"), child_pk = "c")) %>%
+        dm_unpack_tbl(tf_2, tf_1, keys = list(child_fk = "d", parent_pk = "a", parent_fk = "a"))
     Code
       tbl
     Output
@@ -107,7 +107,7 @@
       dm_wrapped <- dm_wrap(dm_for_filter(), tf_1)
     Message <rlang_message>
       Rebuild a dm from this object using : %>%
-        dm_unpack_tbl(tf_2, tf_1, list(child_fk = "d", parent_pk = "a"))
+        dm_unpack_tbl(tf_2, tf_1, keys = list(child_fk = "d", parent_pk = "a", parent_fk = "a"))
     Code
       dm_wrapped
     Output
@@ -135,7 +135,7 @@
       dm_unwrapped <- dm_unwrap(dm_wrap(dm_for_filter(), tf_1), tf_2, dm_for_filter())
     Message <rlang_message>
       Rebuild a dm from this object using : %>%
-        dm_unpack_tbl(tf_2, tf_1, list(child_fk = "d", parent_pk = "a"))
+        dm_unpack_tbl(tf_2, tf_1, keys = list(child_fk = "d", parent_pk = "a", parent_fk = "a"))
     Code
       dm_unwrapped
     Output
@@ -163,7 +163,7 @@
       dm_packed <- dm_pack_tbl(dm1, tf_1)
     Message <rlang_message>
       Rebuild a dm from this object using : %>%
-        dm_unpack_tbl(tf_2, tf_1, list(child_fk = "d", parent_pk = "a"))
+        dm_unpack_tbl(tf_2, tf_1, keys = list(child_fk = "d", parent_pk = "a", parent_fk = "a"))
     Code
       dm_packed
     Output
@@ -176,7 +176,7 @@
       dm_packed_nested <- dm_nest_tbl(dm_packed, tf_2)
     Message <rlang_message>
       Rebuild a dm from this object using : %>%
-        dm_unnest_tbl(tf_3, tf_2, list(child_fk = c("e", "e1"), parent_pk = c("f", "f1"), child_pk = "c"))
+        dm_unnest_tbl(tf_3, tf_2, keys = list(child_fk = c("e", "e1"), parent_fk = c("f", "f1"), child_pk = "c"))
     Code
       dm_packed_nested
     Output

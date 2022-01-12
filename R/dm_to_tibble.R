@@ -162,14 +162,8 @@ dm_wrap_all_impl <- function(dm, root, strict = TRUE) {
   list(dm = dm, msg = paste(rev(msgs), collapse = " %>%\n"))
 }
 
-dm_unwrap_all <- function(dm, specs) {
-  # process specs
-  if (is_dm(specs)) {
-    specs <- list(
-      pks = dm_get_all_pks(specs),
-      fks = dm_get_all_fks(specs)
-    )
-  }
+dm_unwrap_all <- function(dm, prototype) {
+  check_dm(prototype)
 
   # unwrap all tables and their unwrapped children/parents
   unwrapped_table_names <- character(0)
@@ -177,7 +171,7 @@ dm_unwrap_all <- function(dm, specs) {
     to_unwrap <- setdiff(names(dm), unwrapped_table_names)[1]
     done_unwrapping <- is.na(to_unwrap)
     if (done_unwrapping) break
-    dm <- dm_unwrap(dm, !!to_unwrap, specs)
+    dm <- dm_unwrap(dm, !!to_unwrap, prototype)
     unwrapped_table_names <- c(unwrapped_table_names, to_unwrap)
   }
 
@@ -237,7 +231,7 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   new_dm
 }
 
-dm_unwrap <- function(dm, table, specs) {
+dm_unwrap <- function(dm, table, prototype) {
   # process args and build names
   table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[table_name]]
@@ -249,12 +243,12 @@ dm_unwrap <- function(dm, table, specs) {
 
   # unnest children tables
   for (child_name in children) {
-    dm <- dm_unnest_tbl(dm, !!table_name, col = !!child_name, specs)
+    dm <- dm_unnest_tbl(dm, !!table_name, col = !!child_name, prototype)
   }
 
   # unpack parent tables
   for (parent_name in parents) {
-    dm <- dm_unpack_tbl(dm, !!table_name, col = !!parent_name, specs)
+    dm <- dm_unpack_tbl(dm, !!table_name, col = !!parent_name, prototype)
   }
 
   dm
@@ -268,13 +262,12 @@ dm_pack_tbl <- function(dm, table, into = NULL, silent = FALSE) {
   dm_msg$dm
 }
 
-
 dm_pack_tbl_impl <- function(dm, table, into = NULL) {
   # process args
   into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
 
-  # retrieve fk and child_name, making sure we have a terminal parent
+  # retrieve keys, child and parent
   # FIXME: fix redundancies and DRY when we decide what we export
   fks <- dm_get_all_fks(dm)
   parents <-
@@ -282,7 +275,16 @@ dm_pack_tbl_impl <- function(dm, table, into = NULL) {
     filter(child_table == table_name) %>%
     pull(parent_table)
   fk <- filter(fks, parent_table == table_name)
+  child_fk <- unlist(fk$child_fk_cols)
+  parent_fk <- unlist(fk$parent_key_cols)
+  parent_pk <-
+    dm_get_all_pks(dm) %>%
+    filter(table == table_name) %>%
+    pull(pk_col) %>%
+    unlist()
   child_name <- pull(fk, child_table)
+
+  # make sure we have a terminal parent
   if (length(parents) || !length(child_name) || length(child_name) > 1) {
     if (length(parents)) {
       parent_msg <- paste0("\nparents : ", toString(paste0("`", parents, "`")))
@@ -312,16 +314,14 @@ dm_pack_tbl_impl <- function(dm, table, into = NULL) {
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   child_data <- def$data[def$table == child_name][[1]]
-  by <- with(fk, set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
-  packed_data <- pack_join(child_data, table_data, by = by, name = table_name)
+  packed_data <- pack_join(child_data, table_data, by = set_names(parent_fk, child_fk), name = table_name)
   class(packed_data[[table_name]]) <- c("packed", class(packed_data[[table_name]]))
 
   # output rebuilding code
-  child_fk <- capture.output(dput(names(by)))
-  parent_pk <- capture.output(dput(unname(by)))
+  keys <- compact(lst(child_fk, parent_pk, parent_fk))
+  keys_str <- paste(capture.output(dput(keys)), collapse = " ")
   msg <- glue(
-    "  dm_unpack_tbl({child_name}, {table_name}, list(",
-    "child_fk = {child_fk}, parent_pk = {parent_pk}))",
+    "  dm_unpack_tbl({child_name}, {table_name}, keys = {keys_str})",
     .trim = FALSE
   )
 
@@ -348,7 +348,7 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
   # retrieve fk and parent_name
   fks <- dm_get_all_fks(dm)
 
-  # retrieve fk and parent_name, making sure we have a terminal child
+  # retrieve fk and parent_name
   # FIXME: fix redundancies and DRY when we decide what we export
   fks <- dm_get_all_fks(dm)
   children <-
@@ -356,7 +356,16 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
     filter(parent_table == table_name) %>%
     pull(child_table)
   fk <- filter(fks, child_table == table_name)
+  parent_fk <- unlist(fk$parent_key_cols)
+  child_fk <- unlist(fk$child_fk_cols)
+  child_pk <-
+    dm_get_all_pks(dm) %>%
+    filter(table == table_name) %>%
+    pull(pk_col) %>%
+    unlist()
   parent_name <- pull(fk, parent_table)
+
+  # make sure we have a terminal child
   if (length(children) || !length(parent_name) || length(parent_name) > 1) {
     if (length(parent_name)) {
       parent_msg <- paste0("\nparents : ", toString(paste0("`", parent_name, "`")))
@@ -386,29 +395,14 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   parent_data <- def$data[def$table == parent_name][[1]]
-  by <- with(fk, set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
-  nested_data <- nest_join(parent_data, table_data, by = by, name = table_name)
+  nested_data <- nest_join(parent_data, table_data, by = set_names(child_fk, parent_fk), name = table_name)
   class(nested_data[[table_name]]) <- c("nested", class(nested_data[[table_name]]))
 
   # output rebuilding code
-  child_fk <- capture.output(dput(unname(by)))
-  pks <- dm_get_all_pks(dm)
-  parent_pk <-
-    pks %>%
-    filter(table == parent_name) %>%
-    pull(pk_col) %>%
-    unlist()
-  parent_pk <- capture.output(dput(parent_pk))
-  child_pk <-
-    pks %>%
-    filter(table == table_name) %>%
-    pull(pk_col) %>%
-    unlist()
-  child_pk <- capture.output(dput(child_pk))
+  keys <- compact(lst(child_fk, parent_fk, child_pk))
+  keys_str <- paste(capture.output(dput(keys)), collapse = " ")
   msg <- glue(
-    "  dm_unnest_tbl({parent_name}, {table_name}, list(",
-    if(child_pk != "NULL") "child_fk = {child_fk}, parent_pk = {parent_pk}, child_pk = {child_pk}))"
-    else "child_fk = {child_fk}, parent_pk = {parent_pk}))",
+    "  dm_unnest_tbl({parent_name}, {table_name}, keys = {keys_str})",
     .trim = FALSE
   )
 
@@ -422,114 +416,93 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
   list(dm = new_dm3(def), msg = msg)
 }
 
-dm_unnest_tbl <- function(dm, table, col, specs) {
+dm_unnest_tbl <- function(dm, table, col, keys) {
   # process args and build names
-  table_name <- dm_tbl_name(dm, {{ table }})
-  table <- dm_get_tables_impl(dm)[[table_name]]
+  parent_table_name <- dm_tbl_name(dm, {{ table }})
+  table <- dm_get_tables_impl(dm)[[parent_table_name]]
   col_expr <- enexpr(col)
-  new_table_name <- names(eval_select_indices(col_expr, colnames(table)))
-  if (is_dm(specs)) {
-    specs <- list(
-      pks = dm_get_all_pks(specs),
-      fks = dm_get_all_fks(specs)
-    )
-    pk <- specs$pks %>%
-      filter(table == new_table_name) %>%
+  new_child_table_name <- names(eval_select_indices(col_expr, colnames(table)))
+  if (is_dm(keys)) {
+    child_pk <-
+      dm_get_all_pks(keys) %>%
+      filter(table == new_child_table_name) %>%
       pull(pk_col) %>%
       unlist()
-    fk <- specs$fks %>%
-      filter(child_table == new_table_name, parent_table == table_name) %>%
-      with(set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
-  } else if(setequal(names(specs), c("pks", "fks"))) {
-    #FIXME : handle different specs formats better (validation + DRY + doc)
-    pk <- specs$pks %>%
-      filter(table == new_table_name) %>%
-      pull(pk_col) %>%
-      unlist()
-    fk <- specs$fks %>%
-      filter(child_table == new_table_name, parent_table == table_name) %>%
-      with(set_names(unlist(parent_key_cols), unlist(child_fk_cols)))
-    } else {
-    if(!is_bare_list(specs) && setequal(names(specs), c("parent_pk", "child_fk"))) {
-      abort("`specs` should be a dm or a list")
+    fk <-
+      dm_get_all_fks(keys) %>%
+      filter(child_table == new_child_table_name, parent_table == parent_table_name)
+    parent_fk <- unlist(fk$parent_key_cols)
+    child_fk <- unlist(fk$child_fk_cols)
+  } else {
+    if(!is_bare_list(keys) || !all(names2(keys) %in% c("child_pk", "child_fk", "parent_fk"))) {
+      abort("`keys` should be a dm or a list of character vectors")
     }
-    pk <- specs[["child_pk"]]
-    fk <- set_names(specs[["parent_pk"]], specs[["child_fk"]])
+    child_pk <- keys[["child_pk"]]
+    parent_fk <- keys[["parent_fk"]]
+    child_fk  <- keys[["child_fk"]]
   }
 
   # retrieve fk and extract nested table
   new_table <- table %>%
-    select(!!!fk, !!new_table_name) %>%
-    unnest(!!new_table_name) %>%
+    select(!!!set_names(parent_fk, child_fk), !!new_child_table_name) %>%
+    unnest(!!new_child_table_name) %>%
     distinct()
 
   # update the dm by adding new table, removing nested col and setting keys
-  dm <- dm_add_tbl(dm, !!new_table_name := new_table)
-  dm <- dm_select(dm, !!table_name, -all_of(new_table_name))
-  if (length(fk)) {
+  dm <- dm_add_tbl(dm, !!new_child_table_name := new_table)
+  dm <- dm_select(dm, !!parent_table_name, -all_of(new_child_table_name))
+  if (length(parent_fk)) {
     # need to unname because of #739
-    dm <- dm_add_fk(dm, !!new_table_name, !!names(fk), !!table_name, !!unname(fk))
+    dm <- dm_add_fk(dm, !!new_child_table_name, !!child_fk, !!parent_table_name, !!parent_fk)
   }
-  if (length(pk)) {
-    dm <- dm_add_pk(dm, !!new_table_name, !!pk)
+  if (length(child_pk)) {
+    dm <- dm_add_pk(dm, !!new_child_table_name, !!child_pk)
   }
 
   dm
 }
 
-dm_unpack_tbl <- function(dm, table, col, specs) {
+dm_unpack_tbl <- function(dm, table, col, keys) {
   # process args and build names
-  table_name <- dm_tbl_name(dm, {{ table }})
-  table <- dm_get_tables_impl(dm)[[table_name]]
+  child_table_name <- dm_tbl_name(dm, {{ table }})
+  table <- dm_get_tables_impl(dm)[[child_table_name]]
   col_expr <- enexpr(col)
-  new_table_name <- names(eval_select_indices(col_expr, colnames(table)))
-  if (is_dm(specs)) {
-    specs <- list(
-      pks = dm_get_all_pks(specs),
-      fks = dm_get_all_fks(specs)
-    )
-    pk <- specs$pks %>%
-      filter(table == new_table_name) %>%
+  new_parent_table_name <- names(eval_select_indices(col_expr, colnames(table)))
+  if (is_dm(keys)) {
+    parent_pk <- dm_get_all_pks(keys) %>%
+      filter(table == new_parent_table_name) %>%
       pull(pk_col) %>%
       unlist()
-
-    fk <- specs$fks %>%
-      filter(child_table == table_name, parent_table == new_table_name) %>%
-      with(set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
-  } else if(setequal(names(specs), c("pks", "fks"))) {
-    #FIXME : handle different specs formats better (validation + DRY + doc)
-    pk <- specs$pks %>%
-      filter(table == new_table_name) %>%
-      pull(pk_col) %>%
-      unlist()
-    fk <- specs$fks %>%
-      filter(child_table == table_name, parent_table == new_table_name) %>%
-      with(set_names(unlist(child_fk_cols), unlist(parent_key_cols)))
-  } else {
-    if(!is_bare_list(specs)) {
-      abort("`specs` should be a dm or a list")
+    fk <-  dm_get_all_fks(keys) %>%
+      filter(child_table == child_table_name, parent_table == new_parent_table_name)
+    child_fk <- unlist(fk$child_fk_cols)
+    parent_fk <- unlist(fk$parent_key_cols)
+  }  else {
+    if(!is_bare_list(keys) || !all(names2(keys) %in% c("parent_pk", "parent_fk", "child_fk"))) {
+      abort("`keys` should be a dm or a list containing only elements named `parent_pk`, `parent_fk` or `child_fk`")
     }
-    pk <- specs[["parent_pk"]]
-    fk <- set_names(specs[["child_fk"]], pk)
+    parent_pk <- keys[["parent_pk"]]
+    parent_fk <- keys[["parent_fk"]]
+    child_fk <- keys[["child_fk"]]
   }
 
   # retrieve fk and extract packed table
 
   new_table <- table %>%
-    select(!!!fk, !!new_table_name) %>%
-    unpack(!!new_table_name) %>%
+    select(!!!set_names(child_fk, parent_fk), !!new_parent_table_name) %>%
+    unpack(!!new_parent_table_name) %>%
     distinct()
 
   # update the dm by adding new table, removing packed col and setting keys
-  dm <- dm_add_tbl(dm, !!new_table_name := new_table)
-  dm <- dm_select(dm, !!table_name, -all_of(new_table_name))
-  if (length(fk)) {
+  dm <- dm_add_tbl(dm, !!new_parent_table_name := new_table)
+  dm <- dm_select(dm, !!child_table_name, -all_of(new_parent_table_name))
+  if (length(child_fk)) {
     # need to unname because of #739
-    dm <- dm_add_fk(dm, !!table_name, !!unname(fk), !!new_table_name, !!names(fk))
+    dm <- dm_add_fk(dm, !!child_table_name, !!child_fk, !!new_parent_table_name, !!parent_fk)
   }
 
-  if (length(pk)) {
-    dm <- dm_add_pk(dm, !!new_table_name, !!pk)
+  if (length(parent_pk)) {
+    dm <- dm_add_pk(dm, !!new_parent_table_name, !!parent_pk)
   }
 
   dm
