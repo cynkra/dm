@@ -32,23 +32,20 @@ dm_to_tibble <- function(dm, root, silent = FALSE) {
 #' Convert a tibble to a dm
 #'
 #' @param x a wrapped table, as created by `dm_to_tibble()`
-#' @param specs a dm (usually the one used in the `dm_to_tibble()` call that
-#'   created `table`) or a list containing named elements `pks` and `fks`,
-#'   looking like the respective outputs of `dm_get_all_pks()` and `dm_get_all_fks()`
+#' @param prototype a dm (usually the one used in the `dm_to_tibble()`), might be an
+#'   empty prototype since only the information about keys will be used
 #' @param root the root table (unquoted), optional because we can usually infer it from
 #'  `table` and `specs`
 #'
 #' @noRd
-tibble_to_dm <- function(x, specs, root = NULL) {
+tibble_to_dm <- function(x, prototype, root = NULL) {
   # process args
-  if (is_dm(specs)) {
-    specs <- list(
-      pks = dm_get_all_pks(specs),
-      fks = dm_get_all_fks(specs)
-    )
-  }
+  check_dm(prototype)
+  pks <- dm_get_all_pks(prototype)
+  fks <- dm_get_all_fks(prototype)
+
   root_expr <- enexpr(root)
-  all_connected_tables <- union(specs$fks$child_table, specs$fks$parent_table)
+  all_connected_tables <- union(fks$child_table, fks$parent_table)
   root_name <- names(eval_select_indices(root_expr, all_connected_tables))
 
   # find root candidates by retrieving table(s) with rightly named parents/children
@@ -57,25 +54,25 @@ tibble_to_dm <- function(x, specs, root = NULL) {
   parents <- nms[map_lgl(x, inherits, "packed")]
   if (length(parents)) {
     candidates_with_correct_parents <-
-      specs$fks %>%
+      fks %>%
       with_groups(child_table, filter, setequal(parent_table, parents)) %>%
       pull(child_table) %>%
       unique()
   } else {
     # children with no fk
     candidates_with_correct_parents <-
-      setdiff(specs$fks$parent_table, specs$fks$child_table)
+      setdiff(fks$parent_table, fks$child_table)
   }
   if (length(children)) {
     candidates_with_correct_children <-
-      specs$fks %>%
+      fks %>%
       with_groups(parent_table, filter, setequal(child_table, children)) %>%
       pull(parent_table) %>%
       unique()
   } else {
     # parents which no fk points to
     candidates_with_correct_children <-
-      setdiff(specs$fks$child_table, specs$fks$parent_table)
+      setdiff(fks$child_table, fks$parent_table)
   }
   candidates <- intersect(
     candidates_with_correct_parents,
@@ -102,7 +99,7 @@ tibble_to_dm <- function(x, specs, root = NULL) {
 
   # define new single tibble dm with pk if relevant
   dm <- dm(!!root_name := x)
-  pk <- specs$pks %>%
+  pk <- pks %>%
     filter(table == root_name) %>%
     pull(pk_col) %>%
     unlist()
@@ -111,7 +108,7 @@ tibble_to_dm <- function(x, specs, root = NULL) {
   }
 
   # forward to dm_unwrap_all
-  dm_unwrap_all(dm, specs)
+  dm_unwrap_all(dm, prototype)
 }
 
 dm_wrap_all <- function(dm, root, silent = FALSE, strict = TRUE) {
