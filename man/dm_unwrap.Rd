@@ -35,10 +35,11 @@ airlines_wrapped <- dm_wrap_all(dm_nycflights13(), airlines, silent = TRUE)
 dm_unwrap(airlines_wrapped, airlines, keys = dm_nycflights13())
 airlines_wrapped \%>\%
   dm_unnest_tbl(airlines, flights, keys = list(
-    child_fk = "carrier", parent_fk = "carrier")) \%>\%
+    child_fk = "carrier", parent_fk = "carrier"
+  )) \%>\%
   dm_unpack_tbl(flights, weather, keys = list(
     child_fk = c("origin", "time_hour"),
-    parent_pk = c("origin",  "time_hour"),
+    parent_pk = c("origin", "time_hour"),
     parent_fk = c("origin", "time_hour")
   ))
 

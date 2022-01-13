@@ -45,7 +45,7 @@ dm_to_tibble <- function(dm, root, silent = FALSE) {
     inform(glue(
       "Rebuild a dm from this object using : %>%\n",
       "  dm({root_name} = .) %>%\n",
-      if(!length(pk)) "" else "  dm_add_pk({root_name}, {capture.output(dput(pk))}) %>%\n",
+      if (!length(pk)) "" else "  dm_add_pk({root_name}, {capture.output(dput(pk))}) %>%\n",
       dm_msg$msg,
       .trim = FALSE,
     ))
@@ -168,8 +168,8 @@ tibble_to_dm <- function(x, prototype, root = NULL) {
 #' @examples
 #' dm_wrap_all(dm_nycflights13(), airlines)
 dm_wrap_all <- function(dm, root, silent = FALSE, strict = TRUE) {
-  dm_msg <- dm_wrap_all_impl(dm, {{root}}, strict = strict)
-  if(!silent) {
+  dm_msg <- dm_wrap_all_impl(dm, {{ root }}, strict = strict)
+  if (!silent) {
     inform(paste0("Rebuild a dm from this object using : %>%\n", dm_msg$msg))
   }
   dm_msg$dm
@@ -274,8 +274,7 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
   position <- positions[table_name]
 
   # nest, pack or fail appropriately
-  new_dm <- switch(
-    position,
+  new_dm <- switch(position,
     "isolated" = abort(glue(
       "`{table_name}` is an isolated table (no parent and no child), ",
       "it cannot be wrapped into a connected table"
@@ -328,10 +327,11 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
 #' dm_unwrap(airlines_wrapped, airlines, keys = dm_nycflights13())
 #' airlines_wrapped %>%
 #'   dm_unnest_tbl(airlines, flights, keys = list(
-#'     child_fk = "carrier", parent_fk = "carrier")) %>%
+#'     child_fk = "carrier", parent_fk = "carrier"
+#'   )) %>%
 #'   dm_unpack_tbl(flights, weather, keys = list(
 #'     child_fk = c("origin", "time_hour"),
-#'     parent_pk = c("origin",  "time_hour"),
+#'     parent_pk = c("origin", "time_hour"),
 #'     parent_fk = c("origin", "time_hour")
 #'   ))
 #'
@@ -361,8 +361,8 @@ dm_unwrap <- function(dm, table, keys) {
 #' @export
 #' @rdname dm_wrap
 dm_pack_tbl <- function(dm, table, into = NULL, silent = FALSE) {
-  dm_msg <- dm_pack_tbl_impl(dm, {{table}}, into = {{into}})
-  if(!silent) {
+  dm_msg <- dm_pack_tbl_impl(dm, {{ table }}, into = {{ into }})
+  if (!silent) {
     inform(paste0("Rebuild a dm from this object using : %>%\n", dm_msg$msg))
   }
   dm_msg$dm
@@ -441,8 +441,8 @@ dm_pack_tbl_impl <- function(dm, table, into = NULL) {
 #' @export
 #' @rdname dm_wrap
 dm_nest_tbl <- function(dm, table, into = NULL, silent = FALSE) {
-  dm_msg <- dm_nest_tbl_impl(dm, {{table}}, into = {{into}})
-  if(!silent) {
+  dm_msg <- dm_nest_tbl_impl(dm, {{ table }}, into = {{ into }})
+  if (!silent) {
     inform(paste0("Rebuild a dm from this object using : %>%\n", dm_msg$msg))
   }
   dm_msg$dm
@@ -544,12 +544,12 @@ dm_unnest_tbl <- function(dm, table, col, keys) {
     parent_fk <- unlist(fk$parent_key_cols)
     child_fk <- unlist(fk$child_fk_cols)
   } else {
-    if(!is_bare_list(keys) || !all(names2(keys) %in% c("child_pk", "child_fk", "parent_fk"))) {
+    if (!is_bare_list(keys) || !all(names2(keys) %in% c("child_pk", "child_fk", "parent_fk"))) {
       abort("`keys` should be a dm or a list of character vectors")
     }
     child_pk <- keys[["child_pk"]]
     parent_fk <- keys[["parent_fk"]]
-    child_fk  <- keys[["child_fk"]]
+    child_fk <- keys[["child_fk"]]
   }
 
   # retrieve fk and extract nested table
@@ -585,12 +585,12 @@ dm_unpack_tbl <- function(dm, table, col, keys) {
       filter(table == new_parent_table_name) %>%
       pull(pk_col) %>%
       unlist()
-    fk <-  dm_get_all_fks(keys) %>%
+    fk <- dm_get_all_fks(keys) %>%
       filter(child_table == child_table_name, parent_table == new_parent_table_name)
     child_fk <- unlist(fk$child_fk_cols)
     parent_fk <- unlist(fk$parent_key_cols)
-  }  else {
-    if(!is_bare_list(keys) || !all(names2(keys) %in% c("parent_pk", "parent_fk", "child_fk"))) {
+  } else {
+    if (!is_bare_list(keys) || !all(names2(keys) %in% c("parent_pk", "parent_fk", "child_fk"))) {
       abort("`keys` should be a dm or a list containing only elements named `parent_pk`, `parent_fk` or `child_fk`")
     }
     parent_pk <- keys[["parent_pk"]]
