@@ -30,6 +30,5 @@ airlines_wrapped <- dm_to_tibble(dm_nycflights13(), airlines, silent = TRUE)
 tibble_to_dm(airlines_wrapped, dm_nycflights13(), airlines)
 }
 \seealso{
-\link{tibble_to_dm}, \link{dm_wrap},
-\link{dm_wrap}, \link{dm_unwrap},
+\link{tibble_to_dm}, \link{dm_wrap}, \link{dm_unwrap}
 }

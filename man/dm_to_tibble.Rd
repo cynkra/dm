@@ -31,6 +31,5 @@ all the data related to it through the relationships stored in the dm.
 dm_to_tibble(dm_nycflights13(), airlines)
 }
 \seealso{
-\link{tibble_to_dm}, \link{dm_wrap},
-\link{dm_wrap}, \link{dm_unwrap},
+\link{tibble_to_dm}, \link{dm_wrap}, \link{dm_unwrap},
 }
