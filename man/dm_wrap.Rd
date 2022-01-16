@@ -34,6 +34,6 @@ depending on which one is applicable.
 These functions pack or nest a table inside its neighbour table (parent or child)
 }
 \seealso{
-\link{dm_unwrap}, \link{dm_wrap_all}, \link{dm_unwrap_all},
+\link{dm_wrap_all}, \link{dm_unwrap_all},
 \link{dm_to_tibble}, \link{tibble_to_dm}
 }

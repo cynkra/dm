@@ -23,5 +23,5 @@ dm_unwrap_all(wrapped_dm, dm_nycflights13())
 }
 \seealso{
 \link{dm_wrap_all}, \link{dm_to_tibble}, \link{tibble_to_dm},
-\link{dm_wrap}, \link{dm_unwrap},
+\link{dm_wrap}
 }

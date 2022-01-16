@@ -27,7 +27,7 @@ node_type_from_graph <- function(graph, drop = NULL) {
 #' `dm_to_tibble()` keeps only information related to `root`
 #'
 #' @return A tibble
-#' @seealso [dm::tibble_to_dm], [dm::dm_wrap], [dm::dm_unwrap],
+#' @seealso [dm::tibble_to_dm], [dm::dm_wrap],
 #'   [dm::dm_wrap_all], [dm::dm_unwrap_all],
 #'
 #' @export
@@ -61,7 +61,7 @@ dm_to_tibble <- function(dm, root, silent = FALSE) {
 #'   infer it from `x` and `prototype`
 #' @export
 #' @return A dm
-#' @seealso [dm::tibble_to_dm], [dm::dm_wrap], [dm::dm_unwrap],
+#' @seealso [dm::tibble_to_dm], [dm::dm_wrap],
 #'   [dm::dm_wrap_all], [dm::dm_unwrap_all],
 #'
 #' @examples
@@ -164,7 +164,7 @@ tibble_to_dm <- function(x, prototype, root = NULL) {
 #' @return A single table dm
 #' @export
 #' @seealso [dm::dm_unwrap_all],  [dm::dm_to_tibble], [dm::tibble_to_dm],
-#'   [dm::dm_wrap], [dm::dm_unwrap],
+#'   [dm::dm_wrap]
 #' @examples
 #' dm_wrap_all(dm_nycflights13(), airlines)
 dm_wrap_all <- function(dm, root, silent = FALSE, strict = TRUE) {
@@ -226,7 +226,7 @@ dm_wrap_all_impl <- function(dm, root, strict = TRUE) {
 #' @export
 #' @return A dm
 #' @seealso [dm::dm_wrap_all], [dm::dm_to_tibble], [dm::tibble_to_dm],
-#'   [dm::dm_wrap], [dm::dm_unwrap],
+#'   [dm::dm_wrap]
 #' @examples
 #' wrapped_dm <- dm_wrap_all(dm_nycflights13(), airlines, silent = TRUE)
 #' dm_unwrap_all(wrapped_dm, dm_nycflights13())
@@ -260,7 +260,7 @@ dm_unwrap_all <- function(dm, prototype) {
 #' should not have parent tables (i.e. it needs to be a *terminal parent table*)
 #' * `dm_wrap()` is behave either the same as `dm_nest_tbl()` or `dm_pack_tbl()`
 #'   depending on which one is applicable.
-#' @seealso [dm::dm_unwrap], [dm::dm_wrap_all], [dm::dm_unwrap_all],
+#' @seealso [dm::dm_wrap_all], [dm::dm_unwrap_all],
 #'   [dm::dm_to_tibble], [dm::tibble_to_dm]
 #' @export
 dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
@@ -306,35 +306,6 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
 }
 
 
-#' Unwrap a table inside its dm
-#'
-#' These functions unpack or unnest columns from a wrapped table. `dm_unpack_tbl()`
-#' and `dm_unnest_tbl()` target a specific column to unpack/unnest, while `dm_unwrap()`
-#' unpacks or unnests all relevant columns.
-#'
-#' @param dm A dm
-#' @param table A table
-#' @param col The column to unpack or unnest (unquoted)
-#' @param keys A dm, or a list of character vectors containing the necessary
-#'   items among `child_pk`, `child_fk`, `parent_pk`, `parent_fk`
-#' @return A dm
-#' @seealso [dm::dm_wrap], [dm::dm_wrap_all], [dm::dm_unwrap_all],
-#'   [dm::dm_to_tibble], [dm::tibble_to_dm]
-#' @export
-#'
-#' @examples
-#' airlines_wrapped <- dm_wrap_all(dm_nycflights13(), airlines, silent = TRUE)
-#' dm_unwrap(airlines_wrapped, airlines, keys = dm_nycflights13())
-#' airlines_wrapped %>%
-#'   dm_unnest_tbl(airlines, flights, keys = list(
-#'     child_fk = "carrier", parent_fk = "carrier"
-#'   )) %>%
-#'   dm_unpack_tbl(flights, weather, keys = list(
-#'     child_fk = c("origin", "time_hour"),
-#'     parent_pk = c("origin", "time_hour"),
-#'     parent_fk = c("origin", "time_hour")
-#'   ))
-#'
 dm_unwrap <- function(dm, table, prototype) {
   # process args and build names
   table_name <- dm_tbl_name(dm, {{ table }})
@@ -558,8 +529,42 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
   list(dm = new_dm3(def), msg = msg)
 }
 
+#' Unnest or unpack columns from a wrapped table
+#'
+#' `dm_unpack_tbl()` and `dm_unnest_tbl()` target a specific column to unpack/unnest
+#' from the given table in a given dm. A prototype or a set of keys should be given,
+#' not both.
+#'
+#' @param dm A dm
+#' @param table A table
+#' @param parent_fk Columns in the table to unnest that the unnested child's foreign keys point to
+#' @param child_pk_names Names of the unnested child's primary keys
+#' @param child_fk_names Names of the unnested child's foreign keys
+#' @param child_fk Foreign key columns of the table to unpack
+#' @param parent_pk_names Names of the unpacked parent's primary keys
+#' @param parent_fk_names Names of the unpacked parent's foreign keys
+#' @param prototype A dm
+#' @param col The column to unpack or unnest (unquoted)
+#'
+#' @return A dm
+#' @seealso [dm::dm_wrap], [dm::dm_wrap_all], [dm::dm_unwrap_all],
+#'   [dm::dm_to_tibble], [dm::tibble_to_dm]
 #' @export
-#' @rdname dm_unwrap
+#'
+#' @examples
+#' airlines_wrapped <- dm_wrap_all(dm_nycflights13(), "airlines")
+#'
+#' airlines_wrapped %>%
+#' dm_unnest_tbl(airlines, flights, parent_fk = carrier, child_fk_names = "carrier") %>%
+#'   dm_unpack_tbl(flights, weather, child_fk = c(origin, time_hour), parent_fk_names = c("origin", "time_hour"), parent_pk_names = c("origin", "time_hour")) %>%
+#'   dm_unpack_tbl(flights, planes, child_fk = tailnum, parent_fk_names = "tailnum", parent_pk_names = "tailnum") %>%
+#'   dm_unpack_tbl(flights, airports, child_fk = origin, parent_fk_names = "faa", parent_pk_names = "faa")
+#'
+#' airlines_wrapped %>%
+#'   dm_unnest_tbl(airlines, flights, prototype = dm_nycflights13()) %>%
+#'   dm_unpack_tbl(flights, weather, prototype = dm_nycflights13()) %>%
+#'   dm_unpack_tbl(flights, planes, prototype = dm_nycflights13()) %>%
+#'   dm_unpack_tbl(flights, airports, prototype = dm_nycflights13())
 dm_unnest_tbl <- function(dm, table, col, parent_fk = NULL, child_pk_names = NULL, child_fk_names = NULL, prototype = NULL) {
   parent_fk_expr <- enexpr(parent_fk)
   all_keys_null <-
@@ -608,7 +613,7 @@ dm_unnest_tbl <- function(dm, table, col, parent_fk = NULL, child_pk_names = NUL
 }
 
 #' @export
-#' @rdname dm_unwrap
+#' @rdname dm_unnest_tbl
 dm_unpack_tbl <- function(dm, table, col, child_fk = NULL, parent_pk_names = NULL, parent_fk_names = NULL, prototype = NULL) {
   child_fk_expr  <- enexpr(child_fk)
   all_keys_null <-
