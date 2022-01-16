@@ -29,6 +29,6 @@ should not have parent tables (i.e. it needs to be a \emph{terminal parent table
 These functions nest or pack a table inside its parent or child
 }
 \seealso{
-\link{dm_wrap_all}, \link{dm_unwrap_all},
+\link{dm_wrap}, \link{dm_unwrap},
 \link{dm_to_tibble}, \link{tibble_to_dm}
 }

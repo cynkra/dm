@@ -101,62 +101,6 @@
       2 tree       f    
       3 streetlamp h    
 
-# `dm_wrap()` and `dm_unwrap()` work
-
-    Code
-      dm_wrapped <- dm_wrap(dm_for_filter(), tf_1)
-    Message <rlang_message>
-      Rebuild a dm from this object using : %>%
-        dm_unpack_tbl(tf_2, tf_1, child_fk = d, parent_fk_names = "a", parent_pk_names = "a")
-    Code
-      dm_wrapped
-    Output
-      -- Metadata --------------------------------------------------------------------
-      Tables: `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
-      Columns: 17
-      Primary keys: 5
-      Foreign keys: 4
-    Code
-      dm_wrapped$tf_2
-    Output
-      # A tibble: 6 x 5
-        c            d e        e1 tf_1$b
-        <chr>    <int> <chr> <int> <chr> 
-      1 elephant     2 D         4 B     
-      2 lion         3 E         5 C     
-      3 seal         4 F         6 D     
-      4 worm         5 G         7 E     
-      5 dog          6 E         5 F     
-      6 cat          7 F         6 G     
-
----
-
-    Code
-      dm_unwrapped <- dm_unwrap(dm_wrap(dm_for_filter(), tf_1), tf_2, dm_for_filter())
-    Message <rlang_message>
-      Rebuild a dm from this object using : %>%
-        dm_unpack_tbl(tf_2, tf_1, child_fk = d, parent_fk_names = "a", parent_pk_names = "a")
-    Code
-      dm_unwrapped
-    Output
-      -- Metadata --------------------------------------------------------------------
-      Tables: `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`, `tf_1`
-      Columns: 18
-      Primary keys: 6
-      Foreign keys: 5
-    Code
-      dm_unwrapped$tf_1
-    Output
-      # A tibble: 6 x 2
-            a b    
-        <int> <chr>
-      1     2 B    
-      2     3 C    
-      3     4 D    
-      4     5 E    
-      5     6 F    
-      6     7 G    
-
 # `dm_pack_tbl()`, `dm_unpack_tbl()`, `dm_nest_tbl()`, `dm_unnest_tbl()` work
 
     Code

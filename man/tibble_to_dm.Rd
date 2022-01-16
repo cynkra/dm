@@ -31,5 +31,5 @@ tibble_to_dm(airlines_wrapped, dm_nycflights13(), airlines)
 }
 \seealso{
 \link{tibble_to_dm}, \link{dm_wrap},
-\link{dm_wrap_all}, \link{dm_unwrap_all},
+\link{dm_wrap}, \link{dm_unwrap},
 }

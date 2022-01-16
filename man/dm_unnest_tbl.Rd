@@ -55,7 +55,7 @@ from the given table in a given dm. A prototype or a set of keys should be given
 not both.
 }
 \examples{
-airlines_wrapped <- dm_wrap_all(dm_nycflights13(), "airlines")
+airlines_wrapped <- dm_wrap(dm_nycflights13(), "airlines")
 
 airlines_wrapped \%>\%
 dm_unnest_tbl(airlines, flights, parent_fk = carrier, child_fk_names = "carrier") \%>\%
@@ -70,6 +70,6 @@ airlines_wrapped \%>\%
   dm_unpack_tbl(flights, airports, prototype = dm_nycflights13())
 }
 \seealso{
-\link{dm_wrap}, \link{dm_wrap_all}, \link{dm_unwrap_all},
+\link{dm_wrap}, \link{dm_wrap}, \link{dm_unwrap},
 \link{dm_to_tibble}, \link{tibble_to_dm}
 }
