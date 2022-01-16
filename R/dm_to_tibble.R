@@ -244,68 +244,6 @@ dm_unwrap_all <- function(dm, prototype) {
   dm
 }
 
-#' Wrap a table inside its dm
-#'
-#' These functions pack or nest a table inside its neighbour table (parent or child)
-#'
-#' @param dm A dm
-#' @param table A table
-#' @param into The table to wrap `table` into, optional as it can be guessed
-#'   from the foreign keys unambiguously but useful to be explicit.
-#' @param silent if not silent (the default), the code to unwrap will be printed
-#'
-#' * `dm_nest_tbl()` will nest a given `table` into its parent, `table` itself
-#' should not have children tables (i.e. it needs to be a *terminal child table*)
-#' * `dm_pack_tbl()` will pack a given `table` into its child, `table` itself
-#' should not have parent tables (i.e. it needs to be a *terminal parent table*)
-#' * `dm_wrap()` is behave either the same as `dm_nest_tbl()` or `dm_pack_tbl()`
-#'   depending on which one is applicable.
-#' @seealso [dm::dm_wrap_all], [dm::dm_unwrap_all],
-#'   [dm::dm_to_tibble], [dm::tibble_to_dm]
-#' @export
-dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
-  # process args and build name
-  into <- enquo(into)
-  table_name <- dm_tbl_name(dm, {{ table }})
-
-  # retrieve position of table
-  graph <- create_graph_from_dm(dm, directed = TRUE)
-  positions <- node_type_from_graph(graph)
-  position <- positions[table_name]
-
-  # nest, pack or fail appropriately
-  new_dm <- switch(position,
-    "isolated" = abort(glue(
-      "`{table_name}` is an isolated table (no parent and no child), ",
-      "it cannot be wrapped into a connected table"
-    )),
-    "intermediate" = {
-      fks <- dm_get_all_fks(dm)
-      parents <- filter(fks, child_table == table_name) %>% pull(parent_table)
-      children <- filter(fks, parent_table == table_name) %>% pull(child_table)
-      if (length(parents)) {
-        parent_msg <- paste0("\nparents : ", toString(paste0("`", parents, "`")))
-      } else {
-        parent_msg <- ""
-      }
-      if (length(children)) {
-        children_msg <- paste0("\nchildren: ", toString(paste0("`", children, "`")))
-      } else {
-        children_msg <- ""
-      }
-      abort(glue(
-        "`{table_name}` is not a terminal parent or child table, ",
-        "it's connected to more than one table.{parent_msg}{children_msg}"
-      ))
-    },
-    "terminal child" = dm_nest_tbl(dm, {{ table }}, !!into, silent),
-    "terminal parent" = dm_pack_tbl(dm, {{ table }}, !!into, silent)
-  )
-
-  new_dm
-}
-
-
 dm_unwrap <- function(dm, table, prototype) {
   # process args and build names
   table_name <- dm_tbl_name(dm, {{ table }})
@@ -330,7 +268,7 @@ dm_unwrap <- function(dm, table, prototype) {
 }
 
 #' @export
-#' @rdname dm_wrap
+#' @rdname dm_nest_tbl
 dm_pack_tbl <- function(dm, table, into = NULL, silent = FALSE) {
   dm_msg <- dm_pack_tbl_impl(dm, {{ table }}, into = {{ into }})
   if (!silent) {
@@ -426,8 +364,23 @@ dm_pack_tbl_impl <- function(dm, table, into = NULL) {
   list(dm = new_dm3(def), msg = msg)
 }
 
+#' Nest or pack a table inside its dm
+#'
+#' These functions nest or pack a table inside its parent or child
+#'
+#' @param dm A dm
+#' @param table A table
+#' @param into The table to wrap `table` into, optional as it can be guessed
+#'   from the foreign keys unambiguously but useful to be explicit.
+#' @param silent if not silent (the default), the code to unwrap will be printed
+#'
+#' * `dm_nest_tbl()` will nest a given `table` into its parent, `table` itself
+#' should not have children tables (i.e. it needs to be a *terminal child table*)
+#' * `dm_pack_tbl()` will pack a given `table` into its child, `table` itself
+#' should not have parent tables (i.e. it needs to be a *terminal parent table*)
+#' @seealso [dm::dm_wrap_all], [dm::dm_unwrap_all],
+#'   [dm::dm_to_tibble], [dm::tibble_to_dm]
 #' @export
-#' @rdname dm_wrap
 dm_nest_tbl <- function(dm, table, into = NULL, silent = FALSE) {
   dm_msg <- dm_nest_tbl_impl(dm, {{ table }}, into = {{ into }})
   if (!silent) {
