@@ -335,7 +335,7 @@ dm_wrap <- function(dm, table, into = NULL, silent = FALSE) {
 #'     parent_fk = c("origin", "time_hour")
 #'   ))
 #'
-dm_unwrap <- function(dm, table, keys) {
+dm_unwrap <- function(dm, table, prototype) {
   # process args and build names
   table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[table_name]]
@@ -347,12 +347,12 @@ dm_unwrap <- function(dm, table, keys) {
 
   # unnest children tables
   for (child_name in children) {
-    dm <- dm_unnest_tbl(dm, !!table_name, col = !!child_name, keys)
+    dm <- dm_unnest_tbl(dm, !!table_name, col = !!child_name, prototype = prototype)
   }
 
   # unpack parent tables
   for (parent_name in parents) {
-    dm <- dm_unpack_tbl(dm, !!table_name, col = !!parent_name, keys)
+    dm <- dm_unpack_tbl(dm, !!table_name, col = !!parent_name, prototype = prototype)
   }
 
   dm
@@ -424,10 +424,27 @@ dm_pack_tbl_impl <- function(dm, table, into = NULL) {
   class(packed_data[[table_name]]) <- c("packed", class(packed_data[[table_name]]))
 
   # output rebuilding code
-  keys <- compact(lst(child_fk, parent_pk, parent_fk))
-  keys_str <- paste(capture.output(dput(keys)), collapse = " ")
+  if(length(child_fk) > 1) {
+    child_fk_str <- paste0("c(", toString(child_fk), ")")
+  } else {
+    child_fk_str <- child_fk
+  }
+  parent_fk_quoted <- paste0('"', parent_fk, '"')
+  if(length(parent_fk) > 1) {
+    parent_fk_str <- paste0("c(", toString(parent_fk_quoted), ")")
+  } else {
+    parent_fk_str <- parent_fk_quoted
+  }
+  parent_pk_quoted <- paste0('"', parent_pk, '"')
+  if(length(parent_pk) > 1) {
+    parent_pk_str <- paste0("c(", toString(parent_pk_quoted), ")")
+  } else {
+    parent_pk_str <- parent_pk_quoted
+  }
   msg <- glue(
-    "  dm_unpack_tbl({child_name}, {table_name}, keys = {keys_str})",
+    "  dm_unpack_tbl({child_name}, {table_name}, child_fk = {child_fk_str}",
+    ", parent_fk_names = {parent_fk_str}",
+    if (length(parent_pk)) ", parent_pk_names = {parent_pk_str})" else ")",
     .trim = FALSE
   )
 
@@ -507,10 +524,27 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
   class(nested_data[[table_name]]) <- c("nested", class(nested_data[[table_name]]))
 
   # output rebuilding code
-  keys <- compact(lst(child_fk, parent_fk, child_pk))
-  keys_str <- paste(capture.output(dput(keys)), collapse = " ")
+  if(length(parent_fk) > 1) {
+    parent_fk_str <- paste0("c(", toString(parent_fk), ")")
+  } else {
+    parent_fk_str <- parent_fk
+  }
+  child_fk_quoted <- paste0('"', child_fk, '"')
+  if(length(child_fk) > 1) {
+    child_fk_str <- paste0("c(", toString(child_fk_quoted), ")")
+  } else {
+    child_fk_str <- child_fk_quoted
+  }
+  child_pk_quoted <- paste0('"', child_pk, '"')
+  if(length(child_pk) > 1) {
+    child_pk_str <- paste0("c(", toString(child_pk_quoted), ")")
+  } else {
+    child_pk_str <- child_pk_quoted
+  }
   msg <- glue(
-    "  dm_unnest_tbl({parent_name}, {table_name}, keys = {keys_str})",
+    "  dm_unnest_tbl({parent_name}, {table_name}, parent_fk = {parent_fk_str}",
+    ", child_fk_names = {child_fk_str}",
+    if (length(child_pk)) ", child_pk_names = {child_pk_str})" else ")",
     .trim = FALSE
   )
 
@@ -526,47 +560,48 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
 
 #' @export
 #' @rdname dm_unwrap
-dm_unnest_tbl <- function(dm, table, col, keys) {
+dm_unnest_tbl <- function(dm, table, col, parent_fk = NULL, child_pk_names = NULL, child_fk_names = NULL, prototype = NULL) {
+  parent_fk_expr <- enexpr(parent_fk)
+  all_keys_null <-
+    is_null(parent_fk_expr) && is_null(child_pk_names) && is_null(child_fk_names)
+
   # process args and build names
   parent_table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[parent_table_name]]
   col_expr <- enexpr(col)
   new_child_table_name <- names(eval_select_indices(col_expr, colnames(table)))
-  if (is_dm(keys)) {
-    child_pk <-
-      dm_get_all_pks(keys) %>%
+
+  if (is_null(prototype)) {
+    if (all_keys_null) abort("Provide either keys or a prototype, you provided none")
+    parent_fk_names <- names(eval_select_indices(parent_fk_expr, colnames(table)))
+  } else {
+    if (!all_keys_null) abort("Provide either keys or a prototype, you provided both")
+    child_pk_names <-
+      dm_get_all_pks(prototype) %>%
       filter(table == new_child_table_name) %>%
       pull(pk_col) %>%
       unlist()
     fk <-
-      dm_get_all_fks(keys) %>%
+      dm_get_all_fks(prototype) %>%
       filter(child_table == new_child_table_name, parent_table == parent_table_name)
-    parent_fk <- unlist(fk$parent_key_cols)
-    child_fk <- unlist(fk$child_fk_cols)
-  } else {
-    if (!is_bare_list(keys) || !all(names2(keys) %in% c("child_pk", "child_fk", "parent_fk"))) {
-      abort("`keys` should be a dm or a list of character vectors")
-    }
-    child_pk <- keys[["child_pk"]]
-    parent_fk <- keys[["parent_fk"]]
-    child_fk <- keys[["child_fk"]]
+    parent_fk_names <- unlist(fk$parent_key_cols)
+    child_fk_names <- unlist(fk$child_fk_cols)
   }
 
-  # retrieve fk and extract nested table
+  # extract nested table
   new_table <- table %>%
-    select(!!!set_names(parent_fk, child_fk), !!new_child_table_name) %>%
+    select(!!!set_names(parent_fk_names, child_fk_names), !!new_child_table_name) %>%
     unnest(!!new_child_table_name) %>%
     distinct()
 
   # update the dm by adding new table, removing nested col and setting keys
   dm <- dm_add_tbl(dm, !!new_child_table_name := new_table)
   dm <- dm_select(dm, !!parent_table_name, -all_of(new_child_table_name))
-  if (length(parent_fk)) {
-    # need to unname because of #739
-    dm <- dm_add_fk(dm, !!new_child_table_name, !!child_fk, !!parent_table_name, !!parent_fk)
+  if (length(parent_fk_names)) {
+    dm <- dm_add_fk(dm, !!new_child_table_name, !!child_fk_names, !!parent_table_name, !!parent_fk_names)
   }
-  if (length(child_pk)) {
-    dm <- dm_add_pk(dm, !!new_child_table_name, !!child_pk)
+  if (length(child_pk_names)) {
+    dm <- dm_add_pk(dm, !!new_child_table_name, !!child_pk_names)
   }
 
   dm
@@ -574,47 +609,51 @@ dm_unnest_tbl <- function(dm, table, col, keys) {
 
 #' @export
 #' @rdname dm_unwrap
-dm_unpack_tbl <- function(dm, table, col, keys) {
+dm_unpack_tbl <- function(dm, table, col, child_fk = NULL, parent_pk_names = NULL, parent_fk_names = NULL, prototype = NULL) {
+  child_fk_expr  <- enexpr(child_fk)
+  all_keys_null <-
+    is_null(parent_pk_names) && is_null(parent_fk_names) && is_null(child_fk_expr)
+
   # process args and build names
   child_table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[child_table_name]]
   col_expr <- enexpr(col)
   new_parent_table_name <- names(eval_select_indices(col_expr, colnames(table)))
-  if (is_dm(keys)) {
-    parent_pk <- dm_get_all_pks(keys) %>%
+
+  if (is_null(prototype)) {
+    if (all_keys_null) abort("Provide either keys or a prototype, you provided none")
+    child_fk_names <- names(eval_select_indices(child_fk_expr, colnames(table)))
+  } else {
+    if (!all_keys_null) abort("Provide either keys or a prototype, you provided both")
+    parent_pk_names <- dm_get_all_pks(prototype) %>%
       filter(table == new_parent_table_name) %>%
       pull(pk_col) %>%
       unlist()
-    fk <- dm_get_all_fks(keys) %>%
+    fk <-  dm_get_all_fks(prototype) %>%
       filter(child_table == child_table_name, parent_table == new_parent_table_name)
-    child_fk <- unlist(fk$child_fk_cols)
-    parent_fk <- unlist(fk$parent_key_cols)
-  } else {
-    if (!is_bare_list(keys) || !all(names2(keys) %in% c("parent_pk", "parent_fk", "child_fk"))) {
-      abort("`keys` should be a dm or a list containing only elements named `parent_pk`, `parent_fk` or `child_fk`")
-    }
-    parent_pk <- keys[["parent_pk"]]
-    parent_fk <- keys[["parent_fk"]]
-    child_fk <- keys[["child_fk"]]
+    child_fk_names <- unlist(fk$child_fk_cols)
+    parent_fk_names <- unlist(fk$parent_key_cols)
   }
 
-  # retrieve fk and extract packed table
-
+  # extract packed table
   new_table <- table %>%
-    select(!!!set_names(child_fk, parent_fk), !!new_parent_table_name) %>%
+    select(!!!set_names(child_fk_names, parent_fk_names), !!new_parent_table_name) %>%
     unpack(!!new_parent_table_name) %>%
     distinct()
 
   # update the dm by adding new table, removing packed col and setting keys
   dm <- dm_add_tbl(dm, !!new_parent_table_name := new_table)
   dm <- dm_select(dm, !!child_table_name, -all_of(new_parent_table_name))
-  if (length(child_fk)) {
-    # need to unname because of #739
-    dm <- dm_add_fk(dm, !!child_table_name, !!child_fk, !!new_parent_table_name, !!parent_fk)
+  if (length(child_fk_names)) {
+    dm <- dm_add_fk(
+      dm,
+      !!child_table_name,
+      !!child_fk_names,
+      !!new_parent_table_name,
+      !!parent_fk_names)
   }
-
-  if (length(parent_pk)) {
-    dm <- dm_add_pk(dm, !!new_parent_table_name, !!parent_pk)
+  if (length(parent_pk_names)) {
+    dm <- dm_add_pk(dm, !!new_parent_table_name, !!parent_pk_names)
   }
 
   dm
