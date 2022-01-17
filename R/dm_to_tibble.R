@@ -331,19 +331,19 @@ dm_pack_tbl_impl <- function(dm, table, into = NULL) {
   class(packed_data[[table_name]]) <- c("packed", class(packed_data[[table_name]]))
 
   # output rebuilding code
-  if(length(child_fk) > 1) {
+  if (length(child_fk) > 1) {
     child_fk_str <- paste0("c(", toString(child_fk), ")")
   } else {
     child_fk_str <- child_fk
   }
   parent_fk_quoted <- paste0('"', parent_fk, '"')
-  if(length(parent_fk) > 1) {
+  if (length(parent_fk) > 1) {
     parent_fk_str <- paste0("c(", toString(parent_fk_quoted), ")")
   } else {
     parent_fk_str <- parent_fk_quoted
   }
   parent_pk_quoted <- paste0('"', parent_pk, '"')
-  if(length(parent_pk) > 1) {
+  if (length(parent_pk) > 1) {
     parent_pk_str <- paste0("c(", toString(parent_pk_quoted), ")")
   } else {
     parent_pk_str <- parent_pk_quoted
@@ -446,19 +446,19 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
   class(nested_data[[table_name]]) <- c("nested", class(nested_data[[table_name]]))
 
   # output rebuilding code
-  if(length(parent_fk) > 1) {
+  if (length(parent_fk) > 1) {
     parent_fk_str <- paste0("c(", toString(parent_fk), ")")
   } else {
     parent_fk_str <- parent_fk
   }
   child_fk_quoted <- paste0('"', child_fk, '"')
-  if(length(child_fk) > 1) {
+  if (length(child_fk) > 1) {
     child_fk_str <- paste0("c(", toString(child_fk_quoted), ")")
   } else {
     child_fk_str <- child_fk_quoted
   }
   child_pk_quoted <- paste0('"', child_pk, '"')
-  if(length(child_pk) > 1) {
+  if (length(child_pk) > 1) {
     child_pk_str <- paste0("c(", toString(child_pk_quoted), ")")
   } else {
     child_pk_str <- child_pk_quoted
@@ -506,17 +506,23 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
 #' airlines_wrapped <- dm_wrap(dm_nycflights13(), "airlines")
 #'
 #' airlines_wrapped %>%
-#' dm_unnest_tbl(airlines, flights, parent_fk = carrier, child_fk_names = "carrier") %>%
+#'   dm_unnest_tbl(airlines, flights, parent_fk = carrier, child_fk_names = "carrier") %>%
 #'   dm_unpack_tbl(
-#'     flights, weather, child_fk = c(origin, time_hour),
+#'     flights, weather,
+#'     child_fk = c(origin, time_hour),
 #'     parent_fk_names = c("origin", "time_hour"),
-#'     parent_pk_names = c("origin", "time_hour")) %>%
+#'     parent_pk_names = c("origin", "time_hour")
+#'   ) %>%
 #'   dm_unpack_tbl(
-#'     flights, planes, child_fk = tailnum, parent_fk_names = "tailnum",
-#'     parent_pk_names = "tailnum") %>%
+#'     flights, planes,
+#'     child_fk = tailnum, parent_fk_names = "tailnum",
+#'     parent_pk_names = "tailnum"
+#'   ) %>%
 #'   dm_unpack_tbl(
-#'     flights, airports, child_fk = origin, parent_fk_names = "faa",
-#'     parent_pk_names = "faa")
+#'     flights, airports,
+#'     child_fk = origin, parent_fk_names = "faa",
+#'     parent_pk_names = "faa"
+#'   )
 #'
 #' airlines_wrapped %>%
 #'   dm_unnest_tbl(airlines, flights, prototype = dm_nycflights13()) %>%
@@ -573,7 +579,7 @@ dm_unnest_tbl <- function(dm, table, col, parent_fk = NULL, child_pk_names = NUL
 #' @export
 #' @rdname dm_unnest_tbl
 dm_unpack_tbl <- function(dm, table, col, child_fk = NULL, parent_pk_names = NULL, parent_fk_names = NULL, prototype = NULL) {
-  child_fk_expr  <- enexpr(child_fk)
+  child_fk_expr <- enexpr(child_fk)
   all_keys_null <-
     is_null(parent_pk_names) && is_null(parent_fk_names) && is_null(child_fk_expr)
 
@@ -592,7 +598,7 @@ dm_unpack_tbl <- function(dm, table, col, child_fk = NULL, parent_pk_names = NUL
       filter(table == new_parent_table_name) %>%
       pull(pk_col) %>%
       unlist()
-    fk <-  dm_get_all_fks(prototype) %>%
+    fk <- dm_get_all_fks(prototype) %>%
       filter(child_table == child_table_name, parent_table == new_parent_table_name)
     child_fk_names <- unlist(fk$child_fk_cols)
     parent_fk_names <- unlist(fk$parent_key_cols)
@@ -613,7 +619,8 @@ dm_unpack_tbl <- function(dm, table, col, child_fk = NULL, parent_pk_names = NUL
       !!child_table_name,
       !!child_fk_names,
       !!new_parent_table_name,
-      !!parent_fk_names)
+      !!parent_fk_names
+    )
   }
   if (length(parent_pk_names)) {
     dm <- dm_add_pk(dm, !!new_parent_table_name, !!parent_pk_names)

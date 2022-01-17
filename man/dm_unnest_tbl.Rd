@@ -58,17 +58,23 @@ not both.
 airlines_wrapped <- dm_wrap(dm_nycflights13(), "airlines")
 
 airlines_wrapped \%>\%
-dm_unnest_tbl(airlines, flights, parent_fk = carrier, child_fk_names = "carrier") \%>\%
+  dm_unnest_tbl(airlines, flights, parent_fk = carrier, child_fk_names = "carrier") \%>\%
   dm_unpack_tbl(
-    flights, weather, child_fk = c(origin, time_hour),
+    flights, weather,
+    child_fk = c(origin, time_hour),
     parent_fk_names = c("origin", "time_hour"),
-    parent_pk_names = c("origin", "time_hour")) \%>\%
+    parent_pk_names = c("origin", "time_hour")
+  ) \%>\%
   dm_unpack_tbl(
-    flights, planes, child_fk = tailnum, parent_fk_names = "tailnum",
-    parent_pk_names = "tailnum") \%>\%
+    flights, planes,
+    child_fk = tailnum, parent_fk_names = "tailnum",
+    parent_pk_names = "tailnum"
+  ) \%>\%
   dm_unpack_tbl(
-    flights, airports, child_fk = origin, parent_fk_names = "faa",
-    parent_pk_names = "faa")
+    flights, airports,
+    child_fk = origin, parent_fk_names = "faa",
+    parent_pk_names = "faa"
+  )
 
 airlines_wrapped \%>\%
   dm_unnest_tbl(airlines, flights, prototype = dm_nycflights13()) \%>\%
