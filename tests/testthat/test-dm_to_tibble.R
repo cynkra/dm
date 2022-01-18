@@ -1,14 +1,3 @@
-test_that("`node_type_from_graph()` works", {
-  dm1 <- dm_for_filter()
-  graph <- create_graph_from_dm(dm1, directed = TRUE)
-  expect_snapshot({
-    node_type_from_graph(graph)
-  })
-  expect_snapshot({
-    node_type_from_graph(graph, drop = "tf_4")
-  })
-})
-
 test_that("`dm_to_tibble()`/`tibble_to_dm()` round trip works", {
   skip_if_remote_src()
 
@@ -78,17 +67,15 @@ test_that("`dm_to_tibble()`/`tibble_to_dm()` round trip works", {
   expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
 })
 
-test_that("`dm_wrap()` and `dm_unwrap()` work", {
-  skip_if_remote_src()
-
+test_that("`node_type_from_graph()` works", {
   dm1 <- dm_for_filter()
-  dm_wrapped <- dm_wrap(dm1, tf_4)
-  expect_length(dm_wrapped, 1)
-  expect_equal(names(dm_wrapped), "tf_4")
-  tibble_from_dm <- dm_to_tibble(dm1, tf_4)
-  expect_identical(dm_wrapped$tf_4, tibble_from_dm)
-  dm_unwrapped <- dm_unwrap(dm_wrapped, dm1)
-  expect_identical(dm_unwrapped, tibble_to_dm(tibble_from_dm, dm1))
+  graph <- create_graph_from_dm(dm1, directed = TRUE)
+  expect_snapshot({
+    node_type_from_graph(graph)
+  })
+  expect_snapshot({
+    node_type_from_graph(graph, drop = "tf_4")
+  })
 })
 
 test_that("`dm_pack_tbl()`, `dm_unpack_tbl()`, `dm_nest_tbl()`, `dm_unnest_tbl()` work", {

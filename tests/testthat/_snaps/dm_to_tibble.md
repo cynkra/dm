@@ -1,23 +1,3 @@
-# `node_type_from_graph()` works
-
-    Code
-      node_type_from_graph(graph)
-    Output
-                   tf_1              tf_2              tf_3              tf_4 
-      "terminal parent"    "intermediate"    "intermediate"    "intermediate" 
-                   tf_5              tf_6 
-         "intermediate" "terminal parent" 
-
----
-
-    Code
-      node_type_from_graph(graph, drop = "tf_4")
-    Output
-                   tf_1              tf_2              tf_3              tf_5 
-      "terminal parent"    "intermediate"    "intermediate"    "intermediate" 
-                   tf_6 
-      "terminal parent" 
-
 # `dm_to_tibble()`/`tibble_to_dm()` round trip works
 
     Code
@@ -100,6 +80,26 @@
       1 house      e    
       2 tree       f    
       3 streetlamp h    
+
+# `node_type_from_graph()` works
+
+    Code
+      node_type_from_graph(graph)
+    Output
+                   tf_1              tf_2              tf_3              tf_4 
+      "terminal parent"    "intermediate"    "intermediate"    "intermediate" 
+                   tf_5              tf_6 
+         "intermediate" "terminal parent" 
+
+---
+
+    Code
+      node_type_from_graph(graph, drop = "tf_4")
+    Output
+                   tf_1              tf_2              tf_3              tf_5 
+      "terminal parent"    "intermediate"    "intermediate"    "intermediate" 
+                   tf_6 
+      "terminal parent" 
 
 # `dm_pack_tbl()`, `dm_unpack_tbl()`, `dm_nest_tbl()`, `dm_unnest_tbl()` work
 
