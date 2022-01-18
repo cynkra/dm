@@ -12,7 +12,7 @@
 #' @param root Table to wrap the dm into (unquoted).
 #' @param silent Whether to print the code that reverse the transformation.
 #'   When silent is `FALSE` (default) we print the steps required to achieve
-#'   the reverse transformation without using a prototype.
+#'   the reverse transformation without using a ptype.
 #'   This is a sequence of calls to [dm()], [dm_unpack_tbl()] and [dm_unnest_tbl()].
 #'
 #' @details
@@ -90,12 +90,12 @@ dm_wrap_impl <- function(dm, root, strict = TRUE) {
 #'
 #' @description
 #' `dm_unwrap()` unwraps all tables in a dm object so that the resulting dm
-#' matches a given prototype dm.
+#' matches a given ptype dm.
 #' It runs a sequence of [dm_unnest_tbl()] and [dm_unpack_tbl()] operations
 #' on the dm.
 #'
 #' @param dm A dm.
-#' @param prototype A dm, might be an empty prototype.
+#' @param ptype A dm, might be an empty ptype.
 #' @return A dm.
 #' @export
 #' @examples
@@ -103,27 +103,27 @@ dm_wrap_impl <- function(dm, root, strict = TRUE) {
 #' roundtrip <-
 #'   dm_nycflights13() %>%
 #'   dm_wrap(root = flights, silent = TRUE) %>%
-#'   dm_unwrap(prototype = dm_nycflights13())
+#'   dm_unwrap(ptype = dm_nycflights13())
 #' roundtrip
 #'
 #' # The roundtrip has the same structure but fewer rows:
 #' dm_nrow(dm_nycflights13())
 #' dm_nrow(roundtrip)
-dm_unwrap <- function(dm, prototype) {
-  check_dm(prototype)
+dm_unwrap <- function(dm, ptype) {
+  check_dm(ptype)
   # unwrap all tables and their unwrapped children/parents
   unwrapped_table_names <- character(0)
   repeat {
     to_unwrap <- setdiff(names(dm), unwrapped_table_names)[1]
     done_unwrapping <- is.na(to_unwrap)
     if (done_unwrapping) break
-    dm <- dm_unwrap1(dm, !!to_unwrap, prototype)
+    dm <- dm_unwrap1(dm, !!to_unwrap, ptype)
     unwrapped_table_names <- c(unwrapped_table_names, to_unwrap)
   }
   dm
 }
 
-dm_unwrap1 <- function(dm, table, prototype) {
+dm_unwrap1 <- function(dm, table, ptype) {
   # process args and build names
   table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[table_name]]
@@ -135,12 +135,12 @@ dm_unwrap1 <- function(dm, table, prototype) {
 
   # unnest children tables
   for (child_name in children) {
-    dm <- dm_unnest_tbl(dm, !!table_name, col = !!child_name, prototype = prototype)
+    dm <- dm_unnest_tbl(dm, !!table_name, col = !!child_name, ptype = ptype)
   }
 
   # unpack parent tables
   for (parent_name in parents) {
-    dm <- dm_unpack_tbl(dm, !!table_name, col = !!parent_name, prototype = prototype)
+    dm <- dm_unpack_tbl(dm, !!table_name, col = !!parent_name, ptype = ptype)
   }
 
   dm

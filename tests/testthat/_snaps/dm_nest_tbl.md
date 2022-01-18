@@ -27,8 +27,7 @@
       Primary keys: 4
       Foreign keys: 3
     Code
-      dm_packed_nested_unnested <- dm_unnest_tbl(dm_packed_nested, tf_3, tf_2,
-        prototype = dm_for_filter())
+      dm_packed_nested_unnested <- dm_unnest_tbl(dm_packed_nested, tf_3, tf_2, ptype = dm_for_filter())
       dm_packed_nested_unnested
     Output
       -- Metadata --------------------------------------------------------------------
@@ -38,7 +37,7 @@
       Foreign keys: 4
     Code
       dm_packed_nested_unnested_unpacked <- dm_unpack_tbl(dm_packed_nested_unnested,
-        tf_2, tf_1, prototype = dm_for_filter())
+        tf_2, tf_1, ptype = dm_for_filter())
       dm_packed_nested_unnested_unpacked
     Output
       -- Metadata --------------------------------------------------------------------
@@ -76,8 +75,7 @@
       Primary keys: 4
       Foreign keys: 3
     Code
-      dm_packed_nested_unnested <- dm_unnest_tbl(dm_packed_nested, tf_3, tf_2,
-        prototype = dm_for_filter())
+      dm_packed_nested_unnested <- dm_unnest_tbl(dm_packed_nested, tf_3, tf_2, ptype = dm_for_filter())
       dm_packed_nested_unnested
     Output
       -- Metadata --------------------------------------------------------------------
@@ -87,7 +85,7 @@
       Foreign keys: 4
     Code
       dm_packed_nested_unnested_unpacked <- dm_unpack_tbl(dm_packed_nested_unnested,
-        tf_2, tf_1, prototype = dm_for_filter())
+        tf_2, tf_1, ptype = dm_for_filter())
       dm_packed_nested_unnested_unpacked
     Output
       -- Metadata --------------------------------------------------------------------

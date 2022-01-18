@@ -13,7 +13,7 @@ dm_wrap(dm, root, silent = FALSE, strict = TRUE)
 
 \item{silent}{Whether to print the code that reverse the transformation.
 When silent is \code{FALSE} (default) we print the steps required to achieve
-the reverse transformation without using a prototype.
+the reverse transformation without using a ptype.
 This is a sequence of calls to \code{\link[=dm]{dm()}}, \code{\link[=dm_unpack_tbl]{dm_unpack_tbl()}} and \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}}.}
 
 \item{strict}{Whether to fail for cyclic dms that cannot be wrapped into a

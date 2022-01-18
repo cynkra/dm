@@ -12,7 +12,7 @@ dm_unnest_tbl(
   parent_fk = NULL,
   child_pk_names = NULL,
   child_fk_names = NULL,
-  prototype = NULL
+  ptype = NULL
 )
 
 dm_unpack_tbl(
@@ -22,7 +22,7 @@ dm_unpack_tbl(
   child_fk = NULL,
   parent_pk_names = NULL,
   parent_fk_names = NULL,
-  prototype = NULL
+  ptype = NULL
 )
 }
 \arguments{
@@ -38,7 +38,7 @@ dm_unpack_tbl(
 
 \item{child_fk_names}{Names of the unnested child's foreign keys}
 
-\item{prototype}{A dm}
+\item{ptype}{A dm}
 
 \item{child_fk}{Foreign key columns of the table to unpack}
 
@@ -52,11 +52,11 @@ A dm.
 \description{
 \code{dm_unnest_tbl()} target a specific column to unnest
 from the given table in a given dm.
-A prototype or a set of keys should be given, not both.
+A ptype or a set of keys should be given, not both.
 
 \code{dm_unpack_tbl()} targets a specific column to unpack
 from the given table in a given dm.
-A prototype or a set of keys should be given,
+A ptype or a set of keys should be given,
 not both.
 }
 \details{
@@ -95,10 +95,10 @@ airlines_wrapped \%>\%
   )
 
 airlines_wrapped \%>\%
-  dm_unnest_tbl(airlines, flights, prototype = dm_nycflights13()) \%>\%
-  dm_unpack_tbl(flights, weather, prototype = dm_nycflights13()) \%>\%
-  dm_unpack_tbl(flights, planes, prototype = dm_nycflights13()) \%>\%
-  dm_unpack_tbl(flights, airports, prototype = dm_nycflights13())
+  dm_unnest_tbl(airlines, flights, ptype = dm_nycflights13()) \%>\%
+  dm_unpack_tbl(flights, weather, ptype = dm_nycflights13()) \%>\%
+  dm_unpack_tbl(flights, planes, ptype = dm_nycflights13()) \%>\%
+  dm_unpack_tbl(flights, airports, ptype = dm_nycflights13())
 }
 \seealso{
 \code{\link[=dm_nest_tbl]{dm_nest_tbl()}}, \code{\link[=dm_pack_tbl]{dm_pack_tbl()}}, \code{\link[=dm_wrap]{dm_wrap()}}, \code{\link[=dm_unwrap]{dm_unwrap()}},

@@ -4,19 +4,19 @@
 \alias{dm_unwrap}
 \title{Unwrap a single table dm}
 \usage{
-dm_unwrap(dm, prototype)
+dm_unwrap(dm, ptype)
 }
 \arguments{
 \item{dm}{A dm.}
 
-\item{prototype}{A dm, might be an empty prototype.}
+\item{ptype}{A dm, might be an empty ptype.}
 }
 \value{
 A dm.
 }
 \description{
 \code{dm_unwrap()} unwraps all tables in a dm object so that the resulting dm
-matches a given prototype dm.
+matches a given ptype dm.
 It runs a sequence of \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}} and \code{\link[=dm_unpack_tbl]{dm_unpack_tbl()}} operations
 on the dm.
 }
@@ -25,7 +25,7 @@ on the dm.
 roundtrip <-
   dm_nycflights13() \%>\%
   dm_wrap(root = flights, silent = TRUE) \%>\%
-  dm_unwrap(prototype = dm_nycflights13())
+  dm_unwrap(ptype = dm_nycflights13())
 roundtrip
 
 # The roundtrip has the same structure but fewer rows:
