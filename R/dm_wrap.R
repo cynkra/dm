@@ -28,9 +28,9 @@
 #'
 #' @return A dm.
 #' @export
-#' @seealso [dm_unwrap()], [dm_nest_tbl()], [dm_unnest_tbl()],
+#' @seealso [dm_unwrap()], [dm_nest_tbl()],
 #'   [dm_examine_constraints()],
-#'   [dm_examine_cardinality()]
+#'   [dm_examine_cardinality()].
 #' @examples
 #' dm_nycflights13() %>%
 #'   dm_wrap(root = airlines)
@@ -95,15 +95,19 @@ dm_wrap_impl <- function(dm, root, strict = TRUE) {
 #' on the dm.
 #'
 #' @param dm A dm.
-#' @param ptype A dm, might be an empty ptype.
+#' @param ptype A dm, only used to query names of primary and foreign keys.
 #' @return A dm.
+#' @seealso [dm_wrap()], [dm_unnest_tbl()],
+#'   [dm_examine_constraints()],
+#'   [dm_examine_cardinality()],
+#'   [dm_ptype()].
 #' @export
 #' @examples
 #'
 #' roundtrip <-
 #'   dm_nycflights13() %>%
 #'   dm_wrap(root = flights, silent = TRUE) %>%
-#'   dm_unwrap(ptype = dm_nycflights13())
+#'   dm_unwrap(ptype = dm_ptype(dm_nycflights13()))
 #' roundtrip
 #'
 #' # The roundtrip has the same structure but fewer rows:

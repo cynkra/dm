@@ -38,7 +38,7 @@ dm_unpack_tbl(
 
 \item{child_fk_names}{Names of the unnested child's foreign keys}
 
-\item{ptype}{A dm}
+\item{ptype}{A dm, only used to query names of primary and foreign keys.}
 
 \item{child_fk}{Foreign key columns of the table to unpack}
 
@@ -95,12 +95,13 @@ airlines_wrapped \%>\%
   )
 
 airlines_wrapped \%>\%
-  dm_unnest_tbl(airlines, flights, ptype = dm_nycflights13()) \%>\%
-  dm_unpack_tbl(flights, weather, ptype = dm_nycflights13()) \%>\%
-  dm_unpack_tbl(flights, planes, ptype = dm_nycflights13()) \%>\%
-  dm_unpack_tbl(flights, airports, ptype = dm_nycflights13())
+  dm_unnest_tbl(airlines, flights, ptype = dm_ptype(dm_nycflights13())) \%>\%
+  dm_unpack_tbl(flights, weather, ptype = dm_ptype(dm_nycflights13())) \%>\%
+  dm_unpack_tbl(flights, planes, ptype = dm_ptype(dm_nycflights13())) \%>\%
+  dm_unpack_tbl(flights, airports, ptype = dm_ptype(dm_nycflights13()))
 }
 \seealso{
-\code{\link[=dm_nest_tbl]{dm_nest_tbl()}}, \code{\link[=dm_pack_tbl]{dm_pack_tbl()}}, \code{\link[=dm_wrap]{dm_wrap()}}, \code{\link[=dm_unwrap]{dm_unwrap()}},
-\code{\link[=dm_examine_constraints]{dm_examine_constraints()}}, \code{\link[=dm_examine_cardinality]{dm_examine_cardinality()}}.
+\code{\link[=dm_unwrap]{dm_unwrap()}}, \code{\link[=dm_nest_tbl]{dm_nest_tbl()}}, \code{\link[=dm_pack_tbl]{dm_pack_tbl()}}, \code{\link[=dm_wrap]{dm_wrap()}},
+\code{\link[=dm_examine_constraints]{dm_examine_constraints()}}, \code{\link[=dm_examine_cardinality]{dm_examine_cardinality()}},
+\code{\link[=dm_ptype]{dm_ptype()}}.
 }

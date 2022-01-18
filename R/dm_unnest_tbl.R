@@ -9,7 +9,7 @@
 #' The opposite is true if referential constraints between both tables
 #' are satisfied.
 #'
-#' @param dm A dm.
+#' @inheritParams dm_unwrap
 #' @param table A table.
 #' @param col The column to unpack or unnest (unquoted).
 #' @param parent_fk Columns in the table to unnest that the unnested child's foreign keys point to
@@ -18,11 +18,11 @@
 #' @param child_fk Foreign key columns of the table to unpack
 #' @param parent_pk_names Names of the unpacked parent's primary keys
 #' @param parent_fk_names Names of the unpacked parent's foreign keys
-#' @param ptype A dm
 #'
 #' @return A dm.
-#' @seealso [dm_nest_tbl()], [dm_pack_tbl()], [dm_wrap()], [dm_unwrap()],
-#'   [dm_examine_constraints()], [dm_examine_cardinality()].
+#' @seealso [dm_unwrap()], [dm_nest_tbl()], [dm_pack_tbl()], [dm_wrap()],
+#'   [dm_examine_constraints()], [dm_examine_cardinality()],
+#'   [dm_ptype()].
 #' @export
 #'
 #' @examples
@@ -48,10 +48,10 @@
 #'   )
 #'
 #' airlines_wrapped %>%
-#'   dm_unnest_tbl(airlines, flights, ptype = dm_nycflights13()) %>%
-#'   dm_unpack_tbl(flights, weather, ptype = dm_nycflights13()) %>%
-#'   dm_unpack_tbl(flights, planes, ptype = dm_nycflights13()) %>%
-#'   dm_unpack_tbl(flights, airports, ptype = dm_nycflights13())
+#'   dm_unnest_tbl(airlines, flights, ptype = dm_ptype(dm_nycflights13())) %>%
+#'   dm_unpack_tbl(flights, weather, ptype = dm_ptype(dm_nycflights13())) %>%
+#'   dm_unpack_tbl(flights, planes, ptype = dm_ptype(dm_nycflights13())) %>%
+#'   dm_unpack_tbl(flights, airports, ptype = dm_ptype(dm_nycflights13()))
 dm_unnest_tbl <- function(dm, table, col, parent_fk = NULL, child_pk_names = NULL, child_fk_names = NULL, ptype = NULL) {
   parent_fk_expr <- enexpr(parent_fk)
   all_keys_null <-

@@ -9,7 +9,7 @@ dm_unwrap(dm, ptype)
 \arguments{
 \item{dm}{A dm.}
 
-\item{ptype}{A dm, might be an empty ptype.}
+\item{ptype}{A dm, only used to query names of primary and foreign keys.}
 }
 \value{
 A dm.
@@ -25,10 +25,16 @@ on the dm.
 roundtrip <-
   dm_nycflights13() \%>\%
   dm_wrap(root = flights, silent = TRUE) \%>\%
-  dm_unwrap(ptype = dm_nycflights13())
+  dm_unwrap(ptype = dm_ptype(dm_nycflights13()))
 roundtrip
 
 # The roundtrip has the same structure but fewer rows:
 dm_nrow(dm_nycflights13())
 dm_nrow(roundtrip)
+}
+\seealso{
+\code{\link[=dm_wrap]{dm_wrap()}}, \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}},
+\code{\link[=dm_examine_constraints]{dm_examine_constraints()}},
+\code{\link[=dm_examine_cardinality]{dm_examine_cardinality()}},
+\code{\link[=dm_ptype]{dm_ptype()}}.
 }
