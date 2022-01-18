@@ -31,6 +31,5 @@ The parent table should not have parent tables itself (i.e. it needs to be a
 \emph{terminal parent table}).
 }
 \seealso{
-\link{dm_wrap}, \link{dm_unwrap},
-\link{dm_to_tibble}, \link{tibble_to_dm}
+\link{dm_wrap}, \link{dm_unwrap}
 }

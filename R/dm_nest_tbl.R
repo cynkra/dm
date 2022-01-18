@@ -11,8 +11,7 @@
 #'   from the foreign keys unambiguously but useful to be explicit.
 #' @param silent if not silent (the default), the code to unwrap will be printed.
 #'
-#' @seealso [dm::dm_wrap], [dm::dm_unwrap],
-#'   [dm::dm_to_tibble], [dm::tibble_to_dm]
+#' @seealso [dm::dm_wrap], [dm::dm_unwrap]
 #' @export
 dm_nest_tbl <- function(dm, table, into = NULL, silent = FALSE) {
   dm_msg <- dm_nest_tbl_impl(dm, {{ table }}, into = {{ into }})

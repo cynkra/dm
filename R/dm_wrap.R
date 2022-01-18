@@ -3,15 +3,19 @@
 #' `dm_wrap()` creates a single tibble dm containing the `root` table
 #' enhanced with all the data related to it
 #' through the relationships stored in the dm.
+#' It runs a sequence of [dm_nest_tbl()] and [dm_pack_tbl()] operations
+#' on the dm.
 #'
-#' @inheritParams dm_to_tibble
 #' @param strict Whether to fail for cyclic dms that cannot be wrapped into a
 #'   single table, if `FALSE` a partially wrapped dm will be returned.
+#' @param dm A cycle free dm object.
+#' @param root Table to wrap the dm into (unquoted).
+#' @param silent Whether to print the code that reverse the transformation.
+#'   When silent is `FALSE` (default) we print the steps required to achieve
+#'   the reverse transformation without using a prototype.
+#'   This is a sequence of calls to [dm()], [dm_unpack_tbl()] and [dm_unnest_tbl()].
 #'
-#' When silent is `FALSE` (default) we print the steps required to achieve
-#' the reverse transformation without using a prototype. This is a sequence of
-#' calls to [dm_unpack_tbl()] and [dm_unnest_tbl()].
-#'
+#' @details
 #' `dm_wrap()` is an inverse to `dm_unwrap()`,
 #' i.e., wrapping after unwrapping returns the same information
 #' (disregarding row and column order).
@@ -22,10 +26,11 @@
 #' unwrapping after wrapping loses rows in parent tables
 #' that don't have a corresponding row in the child table.
 #'
-#' @return A single table dm
+#' @return A dm.
 #' @export
-#' @seealso [dm_unwrap()],  [dm_to_tibble()], [tibble_to_dm()],
-#'   [dm_wrap()], [dm_examine_constraints()]
+#' @seealso [dm_unwrap()], [dm_nest_tbl()], [dm_unnest_tbl()],
+#'   [dm_examine_constraints()],
+#'   [dm_examine_cardinality()]
 #' @examples
 #' dm_nycflights13() %>%
 #'   dm_wrap(root = airlines)
@@ -86,12 +91,13 @@ dm_wrap_impl <- function(dm, root, strict = TRUE) {
 #' @description
 #' `dm_unwrap()` unwraps all tables in a dm object so that the resulting dm
 #' matches a given prototype dm.
+#' It runs a sequence of [dm_unnest_tbl()] and [dm_unpack_tbl()] operations
+#' on the dm.
 #'
-#'
-#' @inheritParams tibble_to_dm
 #' @param dm A dm.
-#' @export
+#' @param prototype A dm, might be an empty prototype.
 #' @return A dm.
+#' @export
 #' @examples
 #'
 #' roundtrip <-

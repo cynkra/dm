@@ -17,6 +17,8 @@ A dm.
 \description{
 \code{dm_unwrap()} unwraps all tables in a dm object so that the resulting dm
 matches a given prototype dm.
+It runs a sequence of \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}} and \code{\link[=dm_unpack_tbl]{dm_unpack_tbl()}} operations
+on the dm.
 }
 \examples{
 
