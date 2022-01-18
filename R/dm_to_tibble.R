@@ -44,18 +44,6 @@ dm_to_tibble <- function(dm, root, silent = FALSE) {
   dm_get_tables_impl(dm_msg$dm)[[root_name]]
 }
 
-# FIXME: can we be more efficient ?
-node_type_from_graph <- function(graph, drop = NULL) {
-  vertices <- igraph::V(graph)
-  n_children <- map_dbl(vertices, ~ length(igraph::neighbors(graph, .x, mode = 'in')))
-  n_parents <- map_dbl(vertices, ~ length(igraph::neighbors(graph, .x, mode = 'out')))
-  node_types <- set_names(rep_along(vertices, "intermediate"), names(vertices))
-  node_types[n_parents == 0 & n_children == 1] <- "terminal parent"
-  node_types[n_children == 0 & n_parents == 1] <- "terminal child"
-  node_types[n_children == 0 & n_parents == 0] <- "isolated"
-  node_types[!names(node_types) %in% drop]
-}
-
 #' Convert a wrapped tibble to a dm
 #'
 #' @param x A wrapped table, as created by `dm_to_tibble()`

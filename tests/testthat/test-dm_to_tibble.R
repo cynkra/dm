@@ -66,14 +66,3 @@ test_that("`dm_to_tibble()`/`tibble_to_dm()` round trip works", {
   roundtrip_dm <- tibble_to_dm(dm_to_tibble(dm, tf_6), dm)
   expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
 })
-
-test_that("`node_type_from_graph()` works", {
-  dm1 <- dm_for_filter()
-  graph <- create_graph_from_dm(dm1, directed = TRUE)
-  expect_snapshot({
-    node_type_from_graph(graph)
-  })
-  expect_snapshot({
-    node_type_from_graph(graph, drop = "tf_4")
-  })
-})
