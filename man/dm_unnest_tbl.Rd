@@ -26,11 +26,11 @@ dm_unpack_tbl(
 )
 }
 \arguments{
-\item{dm}{A dm}
+\item{dm}{A dm.}
 
-\item{table}{A table}
+\item{table}{A table.}
 
-\item{col}{The column to unpack or unnest (unquoted)}
+\item{col}{The column to unpack or unnest (unquoted).}
 
 \item{parent_fk}{Columns in the table to unnest that the unnested child's foreign keys point to}
 
@@ -47,12 +47,30 @@ dm_unpack_tbl(
 \item{parent_fk_names}{Names of the unpacked parent's foreign keys}
 }
 \value{
-A dm
+A dm.
 }
 \description{
-\code{dm_unnest_tbl()} and \code{dm_unpack_tbl()} target a specific column to unpack/unnest
-from the given table in a given dm. A prototype or a set of keys should be given,
+\code{dm_unnest_tbl()} target a specific column to unnest
+from the given table in a given dm.
+A prototype or a set of keys should be given, not both.
+
+\code{dm_unpack_tbl()} targets a specific column to unpack
+from the given table in a given dm.
+A prototype or a set of keys should be given,
 not both.
+}
+\details{
+\code{\link[=dm_nest_tbl]{dm_nest_tbl()}} is an inverse operation to \code{dm_unnest_tbl()}
+if differences in row and column order are ignored.
+The opposite is true if referential constraints between both tables
+are satisfied.
+
+\code{\link[=dm_pack_tbl]{dm_pack_tbl()}} is an inverse operation to \code{dm_unpack_tbl()}
+if differences in row and column order are ignored.
+The opposite is true if referential constraints between both tables
+are satisfied
+and if all rows in the parent table have at least one child row,
+i.e. if the relationship is of cardinality 1:n or 1:1.
 }
 \examples{
 airlines_wrapped <- dm_wrap(dm_nycflights13(), "airlines")
@@ -83,6 +101,6 @@ airlines_wrapped \%>\%
   dm_unpack_tbl(flights, airports, prototype = dm_nycflights13())
 }
 \seealso{
-\link{dm_wrap}, \link{dm_wrap}, \link{dm_unwrap},
-\link{dm_to_tibble}, \link{tibble_to_dm}
+\code{\link[=dm_nest_tbl]{dm_nest_tbl()}}, \code{\link[=dm_pack_tbl]{dm_pack_tbl()}}, \code{\link[=dm_wrap]{dm_wrap()}}, \code{\link[=dm_unwrap]{dm_unwrap()}},
+\code{\link[=dm_examine_constraints]{dm_examine_constraints()}}, \code{\link[=dm_examine_cardinality]{dm_examine_cardinality()}}.
 }

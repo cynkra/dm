@@ -1,11 +1,17 @@
 #' Unnest or unpack columns from a wrapped table
 #'
-#' `dm_unnest_tbl()` and `dm_unpack_tbl()` target a specific column to unpack/unnest
-#' from the given table in a given dm. A prototype or a set of keys should be given,
-#' not both.
+#' `dm_unnest_tbl()` target a specific column to unnest
+#' from the given table in a given dm.
+#' A prototype or a set of keys should be given, not both.
 #'
-#' @param dm A dm
-#' @param table A table
+#' [dm_nest_tbl()] is an inverse operation to `dm_unnest_tbl()`
+#' if differences in row and column order are ignored.
+#' The opposite is true if referential constraints between both tables
+#' are satisfied.
+#'
+#' @param dm A dm.
+#' @param table A table.
+#' @param col The column to unpack or unnest (unquoted).
 #' @param parent_fk Columns in the table to unnest that the unnested child's foreign keys point to
 #' @param child_pk_names Names of the unnested child's primary keys
 #' @param child_fk_names Names of the unnested child's foreign keys
@@ -13,11 +19,10 @@
 #' @param parent_pk_names Names of the unpacked parent's primary keys
 #' @param parent_fk_names Names of the unpacked parent's foreign keys
 #' @param prototype A dm
-#' @param col The column to unpack or unnest (unquoted)
 #'
-#' @return A dm
-#' @seealso [dm::dm_wrap], [dm::dm_wrap], [dm::dm_unwrap],
-#'   [dm::dm_to_tibble], [dm::tibble_to_dm]
+#' @return A dm.
+#' @seealso [dm_nest_tbl()], [dm_pack_tbl()], [dm_wrap()], [dm_unwrap()],
+#'   [dm_examine_constraints()], [dm_examine_cardinality()].
 #' @export
 #'
 #' @examples
@@ -94,6 +99,20 @@ dm_unnest_tbl <- function(dm, table, col, parent_fk = NULL, child_pk_names = NUL
   dm
 }
 
+#' dm_unpack_tbl()
+#'
+#' `dm_unpack_tbl()` targets a specific column to unpack
+#' from the given table in a given dm.
+#' A prototype or a set of keys should be given,
+#' not both.
+#'
+#' [dm_pack_tbl()] is an inverse operation to `dm_unpack_tbl()`
+#' if differences in row and column order are ignored.
+#' The opposite is true if referential constraints between both tables
+#' are satisfied
+#' and if all rows in the parent table have at least one child row,
+#' i.e. if the relationship is of cardinality 1:n or 1:1.
+#'
 #' @export
 #' @rdname dm_unnest_tbl
 dm_unpack_tbl <- function(dm, table, col, child_fk = NULL, parent_pk_names = NULL, parent_fk_names = NULL, prototype = NULL) {

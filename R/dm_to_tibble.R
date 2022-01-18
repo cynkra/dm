@@ -1,21 +1,25 @@
 #' Wrap dm into a single tibble
 #'
 #' `dm_to_tibble()` creates a tibble built from the `root` table and containing
-#'   all the data related to it through the relationships stored in the dm.
+#' all the data related to it through the relationships stored in the dm.
 #'
-#' @param dm A cycle free dm object
-#' @param root Table to wrap the dm into (unquoted)
+#' @param dm A cycle free dm object.
+#' @param root Table to wrap the dm into (unquoted).
 #' @param silent Whether to print the code that reverse the transformation. See details.
 #'
 #' When silent is `FALSE` (default) we print the steps required to achieve
-#' the reverse transformation without using a prototype. This is sequence of
-#' calls to `dm()`, `dm_unpack_tbl()` and `dm_unnest_tbl()`.
+#' the reverse transformation without using a prototype.
+#' This is a sequence of calls to [dm()], [dm_unpack_tbl()] and [dm_unnest_tbl()].
 #'
-#' The reverse transformation i generally not a perfect round trip since
-#' `dm_to_tibble()` keeps only information related to `root`
+#' The reverse transformation is generally not a perfect round trip,
+#' since `dm_to_tibble()` keeps only rows related directly or indirectly to
+#' rows in the `root` table.
+#' Even if all referential constraints are satisfied, rows in parent tables
+#' that don't have a corresponding row in the child table are lost.
 #'
 #' @return A tibble
-#' @seealso [dm::tibble_to_dm], [dm::dm_wrap], [dm::dm_unwrap],
+#' @seealso [tibble_to_dm()], [dm_wrap()], [dm_unwrap()],
+#'   [dm_examine_constraints()]
 #'
 #' @export
 #'

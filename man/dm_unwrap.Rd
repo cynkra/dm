@@ -7,21 +7,26 @@
 dm_unwrap(dm, prototype)
 }
 \arguments{
-\item{dm}{A dm}
+\item{dm}{A dm.}
 
 \item{prototype}{A dm, might be an empty prototype.}
 }
 \value{
-A dm
+A dm.
 }
 \description{
-Unwrap a single table dm
+\code{dm_unwrap()} unwraps all tables in a dm object so that the resulting dm
+matches a given prototype dm.
 }
 \examples{
-wrapped_dm <- dm_wrap(dm_nycflights13(), airlines, silent = TRUE)
-dm_unwrap(wrapped_dm, dm_nycflights13())
-}
-\seealso{
-\link{dm_wrap}, \link{dm_to_tibble}, \link{tibble_to_dm},
-\link{dm_wrap}
+
+roundtrip <-
+  dm_nycflights13() \%>\%
+  dm_wrap(root = flights, silent = TRUE) \%>\%
+  dm_unwrap(prototype = dm_nycflights13())
+roundtrip
+
+# The roundtrip has the same structure but fewer rows:
+dm_nrow(dm_nycflights13())
+dm_nrow(roundtrip)
 }

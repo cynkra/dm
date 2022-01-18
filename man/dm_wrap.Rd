@@ -7,40 +7,52 @@
 dm_wrap(dm, root, silent = FALSE, strict = TRUE)
 }
 \arguments{
-\item{dm}{A cycle free dm object}
+\item{dm}{A cycle free dm object.}
 
-\item{root}{Table to wrap the dm into (unquoted)}
+\item{root}{Table to wrap the dm into (unquoted).}
 
 \item{silent}{Whether to print the code that reverse the transformation. See details.
 
 When silent is \code{FALSE} (default) we print the steps required to achieve
-the reverse transformation without using a prototype. This is sequence of
-calls to \code{dm()}, \code{dm_unpack_tbl()} and \code{dm_unnest_tbl()}.
+the reverse transformation without using a prototype.
+This is a sequence of calls to \code{\link[=dm]{dm()}}, \code{\link[=dm_unpack_tbl]{dm_unpack_tbl()}} and \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}}.
 
-The reverse transformation i generally not a perfect round trip since
-\code{dm_to_tibble()} keeps only information related to \code{root}}
+The reverse transformation is generally not a perfect round trip,
+since \code{dm_to_tibble()} keeps only rows related directly or indirectly to
+rows in the \code{root} table.
+Even if all referential constraints are satisfied, rows in parent tables
+that don't have a corresponding row in the child table are lost.}
 
 \item{strict}{Whether to fail for cyclic dms that cannot be wrapped into a
-single table, if \code{FALSE} a partially wrapped dm will be returned
+single table, if \code{FALSE} a partially wrapped dm will be returned.
 
 When silent is \code{FALSE} (default) we print the steps required to achieve
 the reverse transformation without using a prototype. This is a sequence of
-calls to \code{dm_unpack_tbl()} and \code{dm_unnest_tbl()}.
+calls to \code{\link[=dm_unpack_tbl]{dm_unpack_tbl()}} and \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}}.
 
-The reverse transformation i generally not a perfect round trip since
-\code{dm_to_tibble()} keeps only information related to \code{root}}
+\code{dm_wrap()} is an inverse to \code{dm_unwrap()},
+i.e., wrapping after unwrapping returns the same information
+(disregarding row and column order).
+The opposite is not generally true:
+since \code{dm_wrap()} keeps only rows related directly or indirectly to
+rows in the \code{root} table.
+Even if all referential constraints are satisfied,
+unwrapping after wrapping loses rows in parent tables
+that don't have a corresponding row in the child table.}
 }
 \value{
 A single table dm
 }
 \description{
-\code{dm_wrap()} creates a single tibble tibble dm containing the \code{root} table
-enhanced with all the data related to it through the relationships stored in the dm.
+\code{dm_wrap()} creates a single tibble dm containing the \code{root} table
+enhanced with all the data related to it
+through the relationships stored in the dm.
 }
 \examples{
-dm_wrap(dm_nycflights13(), airlines)
+dm_nycflights13() \%>\%
+  dm_wrap(root = airlines)
 }
 \seealso{
-\link{dm_unwrap},  \link{dm_to_tibble}, \link{tibble_to_dm},
-\link{dm_wrap}
+\code{\link[=dm_unwrap]{dm_unwrap()}},  \code{\link[=dm_to_tibble]{dm_to_tibble()}}, \code{\link[=tibble_to_dm]{tibble_to_dm()}},
+\code{\link[=dm_wrap]{dm_wrap()}}, \code{\link[=dm_examine_constraints]{dm_examine_constraints()}}
 }

@@ -1,17 +1,16 @@
 #' Nest or pack a table inside its dm
 #'
-#' These functions nest or pack a table inside its parent or child.
+#' `dm_nest_tbl()` converts a child table to a nested column in its parent
+#' table.
+#' The child table should not have children itself (i.e. it needs to be a
+#' *terminal child table*).
 #'
-#' @param dm A dm
-#' @param table A table
+#' @param dm A dm.
+#' @param table A table.
 #' @param into The table to wrap `table` into, optional as it can be guessed
 #'   from the foreign keys unambiguously but useful to be explicit.
-#' @param silent if not silent (the default), the code to unwrap will be printed
+#' @param silent if not silent (the default), the code to unwrap will be printed.
 #'
-#' * `dm_nest_tbl()` will nest a given `table` into its parent, `table` itself
-#' should not have children tables (i.e. it needs to be a *terminal child table*)
-#' * `dm_pack_tbl()` will pack a given `table` into its child, `table` itself
-#' should not have parent tables (i.e. it needs to be a *terminal parent table*)
 #' @seealso [dm::dm_wrap], [dm::dm_unwrap],
 #'   [dm::dm_to_tibble], [dm::tibble_to_dm]
 #' @export
@@ -116,6 +115,13 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
   list(dm = new_dm3(def), msg = msg)
 }
 
+#' dm_pack_tbl()
+#'
+#' `dm_pack_tbl()` converts a parent table to a packed column in its child
+#' table.
+#' The parent table should not have parent tables itself (i.e. it needs to be a
+#' *terminal parent table*).
+#'
 #' @export
 #' @rdname dm_nest_tbl
 dm_pack_tbl <- function(dm, table, into = NULL, silent = FALSE) {

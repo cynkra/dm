@@ -1,25 +1,34 @@
 #' Wrap dm into a single tibble dm
 #'
-#' `dm_wrap()` creates a single tibble tibble dm containing the `root` table
-#'   enhanced with all the data related to it through the relationships stored in the dm.
+#' `dm_wrap()` creates a single tibble dm containing the `root` table
+#' enhanced with all the data related to it
+#' through the relationships stored in the dm.
 #'
 #' @inheritParams dm_to_tibble
 #' @param strict Whether to fail for cyclic dms that cannot be wrapped into a
-#'   single table, if `FALSE` a partially wrapped dm will be returned
+#'   single table, if `FALSE` a partially wrapped dm will be returned.
 #'
 #' When silent is `FALSE` (default) we print the steps required to achieve
 #' the reverse transformation without using a prototype. This is a sequence of
-#' calls to `dm_unpack_tbl()` and `dm_unnest_tbl()`.
+#' calls to [dm_unpack_tbl()] and [dm_unnest_tbl()].
 #'
-#' The reverse transformation i generally not a perfect round trip since
-#' `dm_to_tibble()` keeps only information related to `root`
+#' `dm_wrap()` is an inverse to `dm_unwrap()`,
+#' i.e., wrapping after unwrapping returns the same information
+#' (disregarding row and column order).
+#' The opposite is not generally true:
+#' since `dm_wrap()` keeps only rows related directly or indirectly to
+#' rows in the `root` table.
+#' Even if all referential constraints are satisfied,
+#' unwrapping after wrapping loses rows in parent tables
+#' that don't have a corresponding row in the child table.
 #'
 #' @return A single table dm
 #' @export
-#' @seealso [dm::dm_unwrap],  [dm::dm_to_tibble], [dm::tibble_to_dm],
-#'   [dm::dm_wrap]
+#' @seealso [dm_unwrap()],  [dm_to_tibble()], [tibble_to_dm()],
+#'   [dm_wrap()], [dm_examine_constraints()]
 #' @examples
-#' dm_wrap(dm_nycflights13(), airlines)
+#' dm_nycflights13() %>%
+#'   dm_wrap(root = airlines)
 dm_wrap <- function(dm, root, silent = FALSE, strict = TRUE) {
   dm_msg <- dm_wrap_impl(dm, {{ root }}, strict = strict)
   if (!silent) {
@@ -74,15 +83,26 @@ dm_wrap_impl <- function(dm, root, strict = TRUE) {
 
 #' Unwrap a single table dm
 #'
+#' @description
+#' `dm_unwrap()` unwraps all tables in a dm object so that the resulting dm
+#' matches a given prototype dm.
+#'
+#'
 #' @inheritParams tibble_to_dm
-#' @param dm A dm
+#' @param dm A dm.
 #' @export
-#' @return A dm
-#' @seealso [dm::dm_wrap], [dm::dm_to_tibble], [dm::tibble_to_dm],
-#'   [dm::dm_wrap]
+#' @return A dm.
 #' @examples
-#' wrapped_dm <- dm_wrap(dm_nycflights13(), airlines, silent = TRUE)
-#' dm_unwrap(wrapped_dm, dm_nycflights13())
+#'
+#' roundtrip <-
+#'   dm_nycflights13() %>%
+#'   dm_wrap(root = flights, silent = TRUE) %>%
+#'   dm_unwrap(prototype = dm_nycflights13())
+#' roundtrip
+#'
+#' # The roundtrip has the same structure but fewer rows:
+#' dm_nrow(dm_nycflights13())
+#' dm_nrow(roundtrip)
 dm_unwrap <- function(dm, prototype) {
   check_dm(prototype)
   # unwrap all tables and their unwrapped children/parents

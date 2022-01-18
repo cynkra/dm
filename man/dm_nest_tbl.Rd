@@ -10,23 +10,25 @@ dm_nest_tbl(dm, table, into = NULL, silent = FALSE)
 dm_pack_tbl(dm, table, into = NULL, silent = FALSE)
 }
 \arguments{
-\item{dm}{A dm}
+\item{dm}{A dm.}
 
-\item{table}{A table}
+\item{table}{A table.}
 
 \item{into}{The table to wrap \code{table} into, optional as it can be guessed
 from the foreign keys unambiguously but useful to be explicit.}
 
-\item{silent}{if not silent (the default), the code to unwrap will be printed
-\itemize{
-\item \code{dm_nest_tbl()} will nest a given \code{table} into its parent, \code{table} itself
-should not have children tables (i.e. it needs to be a \emph{terminal child table})
-\item \code{dm_pack_tbl()} will pack a given \code{table} into its child, \code{table} itself
-should not have parent tables (i.e. it needs to be a \emph{terminal parent table})
-}}
+\item{silent}{if not silent (the default), the code to unwrap will be printed.}
 }
 \description{
-These functions nest or pack a table inside its parent or child.
+\code{dm_nest_tbl()} converts a child table to a nested column in its parent
+table.
+The child table should not have children itself (i.e. it needs to be a
+\emph{terminal child table}).
+
+\code{dm_pack_tbl()} converts a parent table to a packed column in its child
+table.
+The parent table should not have parent tables itself (i.e. it needs to be a
+\emph{terminal parent table}).
 }
 \seealso{
 \link{dm_wrap}, \link{dm_unwrap},

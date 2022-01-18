@@ -7,18 +7,21 @@
 dm_to_tibble(dm, root, silent = FALSE)
 }
 \arguments{
-\item{dm}{A cycle free dm object}
+\item{dm}{A cycle free dm object.}
 
-\item{root}{Table to wrap the dm into (unquoted)}
+\item{root}{Table to wrap the dm into (unquoted).}
 
 \item{silent}{Whether to print the code that reverse the transformation. See details.
 
 When silent is \code{FALSE} (default) we print the steps required to achieve
-the reverse transformation without using a prototype. This is sequence of
-calls to \code{dm()}, \code{dm_unpack_tbl()} and \code{dm_unnest_tbl()}.
+the reverse transformation without using a prototype.
+This is a sequence of calls to \code{\link[=dm]{dm()}}, \code{\link[=dm_unpack_tbl]{dm_unpack_tbl()}} and \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}}.
 
-The reverse transformation i generally not a perfect round trip since
-\code{dm_to_tibble()} keeps only information related to \code{root}}
+The reverse transformation is generally not a perfect round trip,
+since \code{dm_to_tibble()} keeps only rows related directly or indirectly to
+rows in the \code{root} table.
+Even if all referential constraints are satisfied, rows in parent tables
+that don't have a corresponding row in the child table are lost.}
 }
 \value{
 A tibble
@@ -31,5 +34,6 @@ all the data related to it through the relationships stored in the dm.
 dm_to_tibble(dm_nycflights13(), airlines)
 }
 \seealso{
-\link{tibble_to_dm}, \link{dm_wrap}, \link{dm_unwrap},
+\code{\link[=tibble_to_dm]{tibble_to_dm()}}, \code{\link[=dm_wrap]{dm_wrap()}}, \code{\link[=dm_unwrap]{dm_unwrap()}},
+\code{\link[=dm_examine_constraints]{dm_examine_constraints()}}
 }
