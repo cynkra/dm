@@ -265,7 +265,7 @@ db_append_table <- function(con, remote_table, table) {
 # Errors ------------------------------------------------------------------
 
 abort_copy_dm_to_table_names <- function() {
-  abort(error_txt_copy_dm_to_table_names(), .subclass = dm_error_full("copy_dm_to_table_names"))
+  abort(error_txt_copy_dm_to_table_names(), class = dm_error_full("copy_dm_to_table_names"))
 }
 
 error_txt_copy_dm_to_table_names <- function() {
@@ -273,7 +273,7 @@ error_txt_copy_dm_to_table_names <- function() {
 }
 
 abort_copy_dm_to_table_names_duplicated <- function(problem) {
-  abort(error_txt_copy_dm_to_table_names_duplicated(problem), .subclass = dm_error_full("copy_dm_to_table_names_duplicated"))
+  abort(error_txt_copy_dm_to_table_names_duplicated(problem), class = dm_error_full("copy_dm_to_table_names_duplicated"))
 }
 
 error_txt_copy_dm_to_table_names_duplicated <- function(problem) {
