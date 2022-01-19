@@ -79,7 +79,6 @@ dm_wrap_impl <- function(dm, root, strict = TRUE) {
     if (strict) {
       abort("The `dm` is not cycle free and can't be wrapped into a single tibble.")
     }
-    inform("The `dm` is not cycle free, returning a partially wrapped multi table 'dm'.")
   }
 
   list(dm = dm, msg = paste(rev(msgs), collapse = " %>%\n"))
