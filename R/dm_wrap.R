@@ -10,10 +10,6 @@
 #'   single table, if `FALSE` a partially wrapped dm will be returned.
 #' @param dm A cycle free dm object.
 #' @param root Table to wrap the dm into (unquoted).
-#' @param silent Whether to print the code that reverse the transformation.
-#'   When silent is `FALSE` (default) we print the steps required to achieve
-#'   the reverse transformation without using a ptype.
-#'   This is a sequence of calls to [dm()], [dm_unpack_tbl()] and [dm_unnest_tbl()].
 #'
 #' @details
 #' `dm_wrap()` is an inverse to `dm_unwrap()`,
@@ -34,7 +30,7 @@
 #' @examples
 #' dm_nycflights13() %>%
 #'   dm_wrap(root = airlines)
-dm_wrap <- function(dm, root, silent = FALSE, strict = TRUE) {
+dm_wrap <- function(dm, root, strict = TRUE) {
   dm_wrap_impl(dm, {{ root }}, strict = strict)
 }
 
@@ -97,7 +93,7 @@ dm_wrap_impl <- function(dm, root, strict = TRUE) {
 #'
 #' roundtrip <-
 #'   dm_nycflights13() %>%
-#'   dm_wrap(root = flights, silent = TRUE) %>%
+#'   dm_wrap(root = flights) %>%
 #'   dm_unwrap(ptype = dm_ptype(dm_nycflights13()))
 #' roundtrip
 #'
