@@ -15,7 +15,7 @@
 #'
 #' @return A dm.
 #' @seealso [dm_unwrap()], [dm_nest_tbl()], [dm_pack_tbl()], [dm_wrap()],
-#'   [dm_examine_constraints()], [dm_examine_cardinality()],
+#'   [dm_examine_constraints()], [dm_examine_cardinalities()],
 #'   [dm_ptype()].
 #' @export
 #'

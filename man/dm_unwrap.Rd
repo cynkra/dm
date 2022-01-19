@@ -35,6 +35,6 @@ dm_nrow(roundtrip)
 \seealso{
 \code{\link[=dm_wrap]{dm_wrap()}}, \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}},
 \code{\link[=dm_examine_constraints]{dm_examine_constraints()}},
-\code{\link[=dm_examine_cardinality]{dm_examine_cardinality()}},
+\code{\link[=dm_examine_cardinalities]{dm_examine_cardinalities()}},
 \code{\link[=dm_ptype]{dm_ptype()}}.
 }

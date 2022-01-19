@@ -30,7 +30,7 @@
 #' @export
 #' @seealso [dm_unwrap()], [dm_nest_tbl()],
 #'   [dm_examine_constraints()],
-#'   [dm_examine_cardinality()].
+#'   [dm_examine_cardinalities()].
 #' @examples
 #' dm_nycflights13() %>%
 #'   dm_wrap(root = airlines)
@@ -90,7 +90,7 @@ dm_wrap_impl <- function(dm, root, strict = TRUE) {
 #' @return A dm.
 #' @seealso [dm_wrap()], [dm_unnest_tbl()],
 #'   [dm_examine_constraints()],
-#'   [dm_examine_cardinality()],
+#'   [dm_examine_cardinalities()],
 #'   [dm_ptype()].
 #' @export
 #' @examples

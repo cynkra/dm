@@ -47,5 +47,5 @@ dm_nycflights13() \%>\%
 \seealso{
 \code{\link[=dm_unwrap]{dm_unwrap()}}, \code{\link[=dm_nest_tbl]{dm_nest_tbl()}},
 \code{\link[=dm_examine_constraints]{dm_examine_constraints()}},
-\code{\link[=dm_examine_cardinality]{dm_examine_cardinality()}}.
+\code{\link[=dm_examine_cardinalities]{dm_examine_cardinalities()}}.
 }

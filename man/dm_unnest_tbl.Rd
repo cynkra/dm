@@ -61,6 +61,6 @@ airlines_wrapped \%>\%
 }
 \seealso{
 \code{\link[=dm_unwrap]{dm_unwrap()}}, \code{\link[=dm_nest_tbl]{dm_nest_tbl()}}, \code{\link[=dm_pack_tbl]{dm_pack_tbl()}}, \code{\link[=dm_wrap]{dm_wrap()}},
-\code{\link[=dm_examine_constraints]{dm_examine_constraints()}}, \code{\link[=dm_examine_cardinality]{dm_examine_cardinality()}},
+\code{\link[=dm_examine_constraints]{dm_examine_constraints()}}, \code{\link[=dm_examine_cardinalities]{dm_examine_cardinalities()}},
 \code{\link[=dm_ptype]{dm_ptype()}}.
 }
