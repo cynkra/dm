@@ -2,10 +2,6 @@
 
     Code
       dm_packed <- dm_pack_tbl(dm_for_filter(), tf_1)
-    Message <message>
-      Rebuild a dm from this object using : %>%
-        dm_unpack_tbl(tf_2, tf_1, child_fk = d, parent_fk_names = "a", parent_pk_names = "a")
-    Code
       dm_packed
     Output
       -- Metadata --------------------------------------------------------------------
@@ -15,10 +11,6 @@
       Foreign keys: 4
     Code
       dm_packed_nested <- dm_nest_tbl(dm_packed, tf_2)
-    Message <message>
-      Rebuild a dm from this object using : %>%
-        dm_unnest_tbl(tf_3, tf_2, parent_fk = c(f, f1), child_fk_names = c("e", "e1"), child_pk_names = "c")
-    Code
       dm_packed_nested
     Output
       -- Metadata --------------------------------------------------------------------
@@ -50,10 +42,6 @@
 
     Code
       dm_packed <- dm_pack_tbl(dm_for_filter(), tf_1)
-    Message <message>
-      Rebuild a dm from this object using : %>%
-        dm_unpack_tbl(tf_2, tf_1, child_fk = d, parent_fk_names = "a", parent_pk_names = "a")
-    Code
       dm_packed
     Output
       -- Metadata --------------------------------------------------------------------
@@ -63,10 +51,6 @@
       Foreign keys: 4
     Code
       dm_packed_nested <- dm_nest_tbl(dm_packed, tf_2)
-    Message <message>
-      Rebuild a dm from this object using : %>%
-        dm_unnest_tbl(tf_3, tf_2, parent_fk = c(f, f1), child_fk_names = c("e", "e1"), child_pk_names = "c")
-    Code
       dm_packed_nested
     Output
       -- Metadata --------------------------------------------------------------------

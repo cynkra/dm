@@ -2,14 +2,6 @@
 
     Code
       wrapped <- dm_wrap(dm_for_filter(), tf_4)
-    Message <message>
-      Rebuild a dm from this object using : %>%
-        dm_unnest_tbl(tf_4, tf_5, parent_fk = h, child_fk_names = "l", child_pk_names = "k") %>%
-        dm_unpack_tbl(tf_5, tf_6, child_fk = m, parent_fk_names = "n", parent_pk_names = "o") %>%
-        dm_unpack_tbl(tf_4, tf_3, child_fk = c(j, j1), parent_fk_names = c("f", "f1"), parent_pk_names = c("f", "f1")) %>%
-        dm_unnest_tbl(tf_3, tf_2, parent_fk = c(f, f1), child_fk_names = c("e", "e1"), child_pk_names = "c") %>%
-        dm_unpack_tbl(tf_2, tf_1, child_fk = d, parent_fk_names = "a", parent_pk_names = "a")
-    Code
       wrapped
     Output
       -- Metadata --------------------------------------------------------------------
@@ -48,14 +40,6 @@
 
     Code
       unwrapped <- dm_unwrap(dm_wrap(dm_for_filter(), tf_4), dm_for_filter())
-    Message <message>
-      Rebuild a dm from this object using : %>%
-        dm_unnest_tbl(tf_4, tf_5, parent_fk = h, child_fk_names = "l", child_pk_names = "k") %>%
-        dm_unpack_tbl(tf_5, tf_6, child_fk = m, parent_fk_names = "n", parent_pk_names = "o") %>%
-        dm_unpack_tbl(tf_4, tf_3, child_fk = c(j, j1), parent_fk_names = c("f", "f1"), parent_pk_names = c("f", "f1")) %>%
-        dm_unnest_tbl(tf_3, tf_2, parent_fk = c(f, f1), child_fk_names = c("e", "e1"), child_pk_names = "c") %>%
-        dm_unpack_tbl(tf_2, tf_1, child_fk = d, parent_fk_names = "a", parent_pk_names = "a")
-    Code
       unwrapped
     Output
       -- Metadata --------------------------------------------------------------------

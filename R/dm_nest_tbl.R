@@ -9,19 +9,10 @@
 #' @param table A table.
 #' @param into The table to wrap `table` into, optional as it can be guessed
 #'   from the foreign keys unambiguously but useful to be explicit.
-#' @param silent if not silent (the default), the code to unwrap will be printed.
 #'
 #' @seealso [dm::dm_wrap], [dm::dm_unwrap]
 #' @export
-dm_nest_tbl <- function(dm, table, into = NULL, silent = FALSE) {
-  dm_msg <- dm_nest_tbl_impl(dm, {{ table }}, into = {{ into }})
-  if (!silent) {
-    inform(paste0("Rebuild a dm from this object using : %>%\n", dm_msg$msg))
-  }
-  dm_msg$dm
-}
-
-dm_nest_tbl_impl <- function(dm, table, into = NULL) {
+dm_nest_tbl <- function(dm, table, into = NULL) {
   # process args
   into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
@@ -49,7 +40,7 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
   # make sure we have a terminal child
   if (length(children) || !length(parent_name) || length(parent_name) > 1) {
     if (length(parent_name)) {
-      parent_msg <- paste0("\nparents : ", toString(paste0("`", parent_name, "`")))
+      parent_msg <- paste0("\nparents: ", toString(paste0("`", parent_name, "`")))
     } else {
       parent_msg <- ""
     }
@@ -79,31 +70,6 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
   nested_data <- nest_join(parent_data, table_data, by = set_names(child_fk, parent_fk), name = table_name)
   class(nested_data[[table_name]]) <- c("nested", class(nested_data[[table_name]]))
 
-  # output rebuilding code
-  if (length(parent_fk) > 1) {
-    parent_fk_str <- paste0("c(", toString(parent_fk), ")")
-  } else {
-    parent_fk_str <- parent_fk
-  }
-  child_fk_quoted <- paste0('"', child_fk, '"')
-  if (length(child_fk) > 1) {
-    child_fk_str <- paste0("c(", toString(child_fk_quoted), ")")
-  } else {
-    child_fk_str <- child_fk_quoted
-  }
-  child_pk_quoted <- paste0('"', child_pk, '"')
-  if (length(child_pk) > 1) {
-    child_pk_str <- paste0("c(", toString(child_pk_quoted), ")")
-  } else {
-    child_pk_str <- child_pk_quoted
-  }
-  msg <- glue(
-    "  dm_unnest_tbl({parent_name}, {table_name}, parent_fk = {parent_fk_str}",
-    ", child_fk_names = {child_fk_str}",
-    if (length(child_pk)) ", child_pk_names = {child_pk_str})" else ")",
-    .trim = FALSE
-  )
-
   # update def and rebuild dm
   def$data[def$table == parent_name] <- list(nested_data)
   old_parent_table_fk <- def[def$table == parent_name, ][["fks"]][[1]]
@@ -111,7 +77,7 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
   def[def$table == parent_name, ][["fks"]][[1]] <- new_parent_table_fk
   def <- def[def$table != table_name, ]
 
-  list(dm = new_dm3(def), msg = msg)
+  new_dm3(def)
 }
 
 #' dm_pack_tbl()
@@ -123,15 +89,7 @@ dm_nest_tbl_impl <- function(dm, table, into = NULL) {
 #'
 #' @export
 #' @rdname dm_nest_tbl
-dm_pack_tbl <- function(dm, table, into = NULL, silent = FALSE) {
-  dm_msg <- dm_pack_tbl_impl(dm, {{ table }}, into = {{ into }})
-  if (!silent) {
-    inform(paste0("Rebuild a dm from this object using : %>%\n", dm_msg$msg))
-  }
-  dm_msg$dm
-}
-
-dm_pack_tbl_impl <- function(dm, table, into = NULL) {
+dm_pack_tbl <- function(dm, table, into = NULL) {
   # process args
   into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ table }})
@@ -186,36 +144,11 @@ dm_pack_tbl_impl <- function(dm, table, into = NULL) {
   packed_data <- pack_join(child_data, table_data, by = set_names(parent_fk, child_fk), name = table_name)
   class(packed_data[[table_name]]) <- c("packed", class(packed_data[[table_name]]))
 
-  # output rebuilding code
-  if (length(child_fk) > 1) {
-    child_fk_str <- paste0("c(", toString(child_fk), ")")
-  } else {
-    child_fk_str <- child_fk
-  }
-  parent_fk_quoted <- paste0('"', parent_fk, '"')
-  if (length(parent_fk) > 1) {
-    parent_fk_str <- paste0("c(", toString(parent_fk_quoted), ")")
-  } else {
-    parent_fk_str <- parent_fk_quoted
-  }
-  parent_pk_quoted <- paste0('"', parent_pk, '"')
-  if (length(parent_pk) > 1) {
-    parent_pk_str <- paste0("c(", toString(parent_pk_quoted), ")")
-  } else {
-    parent_pk_str <- parent_pk_quoted
-  }
-  msg <- glue(
-    "  dm_unpack_tbl({child_name}, {table_name}, child_fk = {child_fk_str}",
-    ", parent_fk_names = {parent_fk_str}",
-    if (length(parent_pk)) ", parent_pk_names = {parent_pk_str})" else ")",
-    .trim = FALSE
-  )
-
   # update def and rebuild dm
   def$data[def$table == child_name] <- list(packed_data)
   def <- def[def$table != table_name, ]
 
-  list(dm = new_dm3(def), msg = msg)
+  new_dm3(def)
 }
 
 # FIXME: can we be more efficient ?

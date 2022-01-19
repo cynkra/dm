@@ -12,12 +12,6 @@
 #' @inheritParams dm_unwrap
 #' @param table A table.
 #' @param col The column to unpack or unnest (unquoted).
-#' @param parent_fk Columns in the table to unnest that the unnested child's foreign keys point to
-#' @param child_pk_names Names of the unnested child's primary keys
-#' @param child_fk_names Names of the unnested child's foreign keys
-#' @param child_fk Foreign key columns of the table to unpack
-#' @param parent_pk_names Names of the unpacked parent's primary keys
-#' @param parent_fk_names Names of the unpacked parent's foreign keys
 #'
 #' @return A dm.
 #' @seealso [dm_unwrap()], [dm_nest_tbl()], [dm_pack_tbl()], [dm_wrap()],
@@ -26,62 +20,40 @@
 #' @export
 #'
 #' @examples
-#' airlines_wrapped <- dm_wrap(dm_nycflights13(), "airlines")
+#' airlines_wrapped <-
+#'   dm_nycflights13() %>%
+#'   dm_wrap(airlines)
+#'
+#' # The ptype is required for reconstruction.
+#' # It can be an empty dm, only primary and foreign keys are considered.
+#' ptype <- dm_ptype(dm_nycflights13())
 #'
 #' airlines_wrapped %>%
-#'   dm_unnest_tbl(airlines, flights, parent_fk = carrier, child_fk_names = "carrier") %>%
-#'   dm_unpack_tbl(
-#'     flights, weather,
-#'     child_fk = c(origin, time_hour),
-#'     parent_fk_names = c("origin", "time_hour"),
-#'     parent_pk_names = c("origin", "time_hour")
-#'   ) %>%
-#'   dm_unpack_tbl(
-#'     flights, planes,
-#'     child_fk = tailnum, parent_fk_names = "tailnum",
-#'     parent_pk_names = "tailnum"
-#'   ) %>%
-#'   dm_unpack_tbl(
-#'     flights, airports,
-#'     child_fk = origin, parent_fk_names = "faa",
-#'     parent_pk_names = "faa"
-#'   )
-#'
-#' airlines_wrapped %>%
-#'   dm_unnest_tbl(airlines, flights, ptype = dm_ptype(dm_nycflights13())) %>%
-#'   dm_unpack_tbl(flights, weather, ptype = dm_ptype(dm_nycflights13())) %>%
-#'   dm_unpack_tbl(flights, planes, ptype = dm_ptype(dm_nycflights13())) %>%
-#'   dm_unpack_tbl(flights, airports, ptype = dm_ptype(dm_nycflights13()))
-dm_unnest_tbl <- function(dm, table, col, parent_fk = NULL, child_pk_names = NULL, child_fk_names = NULL, ptype = NULL) {
-  parent_fk_expr <- enexpr(parent_fk)
-  all_keys_null <-
-    is_null(parent_fk_expr) && is_null(child_pk_names) && is_null(child_fk_names)
-
+#'   dm_unnest_tbl(airlines, flights, ptype) %>%
+#'   dm_unpack_tbl(flights, weather, ptype) %>%
+#'   dm_unpack_tbl(flights, planes, ptype) %>%
+#'   dm_unpack_tbl(flights, airports, ptype)
+dm_unnest_tbl <- function(dm, table, col, ptype) {
   # process args and build names
   parent_table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[parent_table_name]]
   col_expr <- enexpr(col)
   new_child_table_name <- names(eval_select_indices(col_expr, colnames(table)))
 
-  if (is_null(ptype)) {
-    if (all_keys_null) abort("Provide either keys or a ptype, you provided none")
-    parent_fk_names <- names(eval_select_indices(parent_fk_expr, colnames(table)))
-  } else {
-    if (!all_keys_null) abort("Provide either keys or a ptype, you provided both")
-    child_pk_names <-
-      dm_get_all_pks(ptype) %>%
-      filter(table == new_child_table_name) %>%
-      pull(pk_col) %>%
-      unlist()
-    fk <-
-      dm_get_all_fks(ptype) %>%
-      filter(child_table == new_child_table_name, parent_table == parent_table_name)
-    parent_fk_names <- unlist(fk$parent_key_cols)
-    child_fk_names <- unlist(fk$child_fk_cols)
-  }
+  child_pk_names <-
+    dm_get_all_pks(ptype) %>%
+    filter(table == new_child_table_name) %>%
+    pull(pk_col) %>%
+    unlist()
+  fk <-
+    dm_get_all_fks(ptype) %>%
+    filter(child_table == new_child_table_name, parent_table == parent_table_name)
+  parent_fk_names <- unlist(fk$parent_key_cols)
+  child_fk_names <- unlist(fk$child_fk_cols)
 
   # extract nested table
-  new_table <- table %>%
+  new_table <-
+    table %>%
     select(!!!set_names(parent_fk_names, child_fk_names), !!new_child_table_name) %>%
     unnest(!!new_child_table_name) %>%
     distinct()
@@ -115,34 +87,25 @@ dm_unnest_tbl <- function(dm, table, col, parent_fk = NULL, child_pk_names = NUL
 #'
 #' @export
 #' @rdname dm_unnest_tbl
-dm_unpack_tbl <- function(dm, table, col, child_fk = NULL, parent_pk_names = NULL, parent_fk_names = NULL, ptype = NULL) {
-  child_fk_expr <- enexpr(child_fk)
-  all_keys_null <-
-    is_null(parent_pk_names) && is_null(parent_fk_names) && is_null(child_fk_expr)
-
+dm_unpack_tbl <- function(dm, table, col, ptype) {
   # process args and build names
   child_table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[child_table_name]]
   col_expr <- enexpr(col)
   new_parent_table_name <- names(eval_select_indices(col_expr, colnames(table)))
 
-  if (is_null(ptype)) {
-    if (all_keys_null) abort("Provide either keys or a ptype, you provided none")
-    child_fk_names <- names(eval_select_indices(child_fk_expr, colnames(table)))
-  } else {
-    if (!all_keys_null) abort("Provide either keys or a ptype, you provided both")
-    parent_pk_names <- dm_get_all_pks(ptype) %>%
-      filter(table == new_parent_table_name) %>%
-      pull(pk_col) %>%
-      unlist()
-    fk <- dm_get_all_fks(ptype) %>%
-      filter(child_table == child_table_name, parent_table == new_parent_table_name)
-    child_fk_names <- unlist(fk$child_fk_cols)
-    parent_fk_names <- unlist(fk$parent_key_cols)
-  }
+  parent_pk_names <- dm_get_all_pks(ptype) %>%
+    filter(table == new_parent_table_name) %>%
+    pull(pk_col) %>%
+    unlist()
+  fk <- dm_get_all_fks(ptype) %>%
+    filter(child_table == child_table_name, parent_table == new_parent_table_name)
+  child_fk_names <- unlist(fk$child_fk_cols)
+  parent_fk_names <- unlist(fk$parent_key_cols)
 
   # extract packed table
-  new_table <- table %>%
+  new_table <-
+    table %>%
     select(!!!set_names(child_fk_names, parent_fk_names), !!new_parent_table_name) %>%
     unpack(!!new_parent_table_name) %>%
     distinct()

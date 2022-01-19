@@ -35,11 +35,7 @@
 #' dm_nycflights13() %>%
 #'   dm_wrap(root = airlines)
 dm_wrap <- function(dm, root, silent = FALSE, strict = TRUE) {
-  dm_msg <- dm_wrap_impl(dm, {{ root }}, strict = strict)
-  if (!silent) {
-    inform(paste0("Rebuild a dm from this object using : %>%\n", dm_msg$msg))
-  }
-  dm_msg$dm
+  dm_wrap_impl(dm, {{ root }}, strict = strict)
 }
 
 dm_wrap_impl <- function(dm, root, strict = TRUE) {
@@ -49,25 +45,20 @@ dm_wrap_impl <- function(dm, root, strict = TRUE) {
   # initiate graph and positions
   graph <- create_graph_from_dm(dm, directed = TRUE)
   positions <- node_type_from_graph(graph, drop = root_name)
-  msgs <- character()
 
   # wrap terminal nodes as long as they're not the root
   repeat {
     child_name <- names(positions)[positions == "terminal child"][1]
     has_terminal_child <- !is.na(child_name)
     if (has_terminal_child) {
-      dm_msg <- dm_nest_tbl_impl(dm, !!child_name)
-      dm <- dm_msg$dm
-      msgs <- c(msgs, dm_msg$msg)
+      dm <- dm_nest_tbl(dm, !!child_name)
       graph <- igraph::delete.vertices(graph, child_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }
     parent_name <- names(positions)[positions == "terminal parent"][1]
     has_terminal_parent <- !is.na(parent_name)
     if (has_terminal_parent) {
-      dm_msg <- dm_pack_tbl_impl(dm, !!parent_name)
-      dm <- dm_msg$dm
-      msgs <- c(msgs, dm_msg$msg)
+      dm <- dm_pack_tbl(dm, !!parent_name)
       graph <- igraph::delete.vertices(graph, parent_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }
@@ -77,11 +68,12 @@ dm_wrap_impl <- function(dm, root, strict = TRUE) {
   # inform or fail if we have a cycle
   if (length(dm) > 1) {
     if (strict) {
+      # FIXME: Detect earlier
       abort("The `dm` is not cycle free and can't be wrapped into a single tibble.")
     }
   }
 
-  list(dm = dm, msg = paste(rev(msgs), collapse = " %>%\n"))
+  dm
 }
 
 

@@ -5,25 +5,9 @@
 \alias{dm_unpack_tbl}
 \title{Unnest or unpack columns from a wrapped table}
 \usage{
-dm_unnest_tbl(
-  dm,
-  table,
-  col,
-  parent_fk = NULL,
-  child_pk_names = NULL,
-  child_fk_names = NULL,
-  ptype = NULL
-)
+dm_unnest_tbl(dm, table, col, ptype)
 
-dm_unpack_tbl(
-  dm,
-  table,
-  col,
-  child_fk = NULL,
-  parent_pk_names = NULL,
-  parent_fk_names = NULL,
-  ptype = NULL
-)
+dm_unpack_tbl(dm, table, col, ptype)
 }
 \arguments{
 \item{dm}{A dm.}
@@ -32,19 +16,7 @@ dm_unpack_tbl(
 
 \item{col}{The column to unpack or unnest (unquoted).}
 
-\item{parent_fk}{Columns in the table to unnest that the unnested child's foreign keys point to}
-
-\item{child_pk_names}{Names of the unnested child's primary keys}
-
-\item{child_fk_names}{Names of the unnested child's foreign keys}
-
 \item{ptype}{A dm, only used to query names of primary and foreign keys.}
-
-\item{child_fk}{Foreign key columns of the table to unpack}
-
-\item{parent_pk_names}{Names of the unpacked parent's primary keys}
-
-\item{parent_fk_names}{Names of the unpacked parent's foreign keys}
 }
 \value{
 A dm.
@@ -73,32 +45,19 @@ and if all rows in the parent table have at least one child row,
 i.e. if the relationship is of cardinality 1:n or 1:1.
 }
 \examples{
-airlines_wrapped <- dm_wrap(dm_nycflights13(), "airlines")
+airlines_wrapped <-
+  dm_nycflights13() \%>\%
+  dm_wrap(airlines)
+
+# The ptype is required for reconstruction.
+# It can be an empty dm, only primary and foreign keys are considered.
+ptype <- dm_ptype(dm_nycflights13())
 
 airlines_wrapped \%>\%
-  dm_unnest_tbl(airlines, flights, parent_fk = carrier, child_fk_names = "carrier") \%>\%
-  dm_unpack_tbl(
-    flights, weather,
-    child_fk = c(origin, time_hour),
-    parent_fk_names = c("origin", "time_hour"),
-    parent_pk_names = c("origin", "time_hour")
-  ) \%>\%
-  dm_unpack_tbl(
-    flights, planes,
-    child_fk = tailnum, parent_fk_names = "tailnum",
-    parent_pk_names = "tailnum"
-  ) \%>\%
-  dm_unpack_tbl(
-    flights, airports,
-    child_fk = origin, parent_fk_names = "faa",
-    parent_pk_names = "faa"
-  )
-
-airlines_wrapped \%>\%
-  dm_unnest_tbl(airlines, flights, ptype = dm_ptype(dm_nycflights13())) \%>\%
-  dm_unpack_tbl(flights, weather, ptype = dm_ptype(dm_nycflights13())) \%>\%
-  dm_unpack_tbl(flights, planes, ptype = dm_ptype(dm_nycflights13())) \%>\%
-  dm_unpack_tbl(flights, airports, ptype = dm_ptype(dm_nycflights13()))
+  dm_unnest_tbl(airlines, flights, ptype) \%>\%
+  dm_unpack_tbl(flights, weather, ptype) \%>\%
+  dm_unpack_tbl(flights, planes, ptype) \%>\%
+  dm_unpack_tbl(flights, airports, ptype)
 }
 \seealso{
 \code{\link[=dm_unwrap]{dm_unwrap()}}, \code{\link[=dm_nest_tbl]{dm_nest_tbl()}}, \code{\link[=dm_pack_tbl]{dm_pack_tbl()}}, \code{\link[=dm_wrap]{dm_wrap()}},

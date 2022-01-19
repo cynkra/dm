@@ -5,9 +5,9 @@
 \alias{dm_pack_tbl}
 \title{Nest or pack a table inside its dm}
 \usage{
-dm_nest_tbl(dm, table, into = NULL, silent = FALSE)
+dm_nest_tbl(dm, table, into = NULL)
 
-dm_pack_tbl(dm, table, into = NULL, silent = FALSE)
+dm_pack_tbl(dm, table, into = NULL)
 }
 \arguments{
 \item{dm}{A dm.}
@@ -16,8 +16,6 @@ dm_pack_tbl(dm, table, into = NULL, silent = FALSE)
 
 \item{into}{The table to wrap \code{table} into, optional as it can be guessed
 from the foreign keys unambiguously but useful to be explicit.}
-
-\item{silent}{if not silent (the default), the code to unwrap will be printed.}
 }
 \description{
 \code{dm_nest_tbl()} converts a child table to a nested column in its parent
