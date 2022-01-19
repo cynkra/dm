@@ -87,6 +87,8 @@ Suggests:
     withr
 VignetteBuilder: 
     knitr
+Remotes: 
+    krlmlr/jsonlite@b-373-blob-class
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE, roclets = c("collate",
     "namespace", "rd"))
