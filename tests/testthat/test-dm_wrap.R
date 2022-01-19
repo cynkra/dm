@@ -28,6 +28,8 @@ test_that("`dm_wrap()` and `dm_unwrap()` work", {
 })
 
 test_that("`dm_wrap()` and `dm_unwrap()` round trip", {
+  skip_if_remote_src()
+
   dm <- dm_for_filter()
   reduced_dm <-
     dm %>%
