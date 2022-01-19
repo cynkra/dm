@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.6.9003
+
+- New `dm_wrap()`, `dm_unwrap()`, `dm_nest_tbl()`, `dm_unnest_tbl()`, `dm_pack_tbl()` and `dm_unpack_tbl()` (#595, #733, #737).
+
+
 # dm 0.2.6.9002
 
 - New `dm_examine_cardinality()` (#264, #735). 
