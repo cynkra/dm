@@ -643,7 +643,7 @@ cdm_zoom_out <- function(dm) {
 
 
 abort_rm_fk_col_missing <- function() {
-  abort(error_txt_rm_fk_col_missing(), .subclass = dm_error_full("rm_fk_col_missing"))
+  abort(error_txt_rm_fk_col_missing(), class = dm_error_full("rm_fk_col_missing"))
 }
 
 error_txt_rm_fk_col_missing <- function() {

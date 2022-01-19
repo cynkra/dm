@@ -576,7 +576,7 @@ abort_fk_exists <- function(child_table_name, colnames, parent_table_name) {
     error_txt_fk_exists(
       child_table_name, colnames, parent_table_name
     ),
-    .subclass = dm_error_full("fk_exists")
+    class = dm_error_full("fk_exists")
   )
 }
 
@@ -590,7 +590,7 @@ error_txt_fk_exists <- function(child_table_name, colnames, parent_table_name) {
 abort_is_not_fkc <- function() {
   abort(
     error_txt_is_not_fkc(),
-    .subclass = dm_error_full("is_not_fkc")
+    class = dm_error_full("is_not_fkc")
   )
 }
 
