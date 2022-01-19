@@ -117,7 +117,7 @@ on the dm.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_wrap</span><span class="op">(</span><span class="va">dm</span>, <span class="va">root</span>, silent <span class="op">=</span> <span class="cn">FALSE</span>, strict <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_wrap</span><span class="op">(</span><span class="va">dm</span>, <span class="va">root</span>, strict <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -126,11 +126,6 @@ on the dm.</p>
 <dd><p>A cycle free dm object.</p></dd>
 <dt>root</dt>
 <dd><p>Table to wrap the dm into (unquoted).</p></dd>
-<dt>silent</dt>
-<dd><p>Whether to print the code that reverse the transformation.
-When silent is <code>FALSE</code> (default) we print the steps required to achieve
-the reverse transformation without using a ptype.
-This is a sequence of calls to <code><a href="dm.html">dm()</a></code>, <code><a href="dm_unnest_tbl.html">dm_unpack_tbl()</a></code> and <code><a href="dm_unnest_tbl.html">dm_unnest_tbl()</a></code>.</p></dd>
 <dt>strict</dt>
 <dd><p>Whether to fail for cyclic dms that cannot be wrapped into a
 single table, if <code>FALSE</code> a partially wrapped dm will be returned.</p></dd>
