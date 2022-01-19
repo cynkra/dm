@@ -95,6 +95,15 @@ reference:
   - head.zoomed_dm
   - tail.zoomed_dm
 
+- title: Wrap
+  contents:
+  - dm_wrap
+  - dm_unwrap
+  - dm_nest_tbl
+  - dm_pack_tbl
+  - dm_unnest_tbl
+  - dm_unpack_tbl
+
 - title: Materialize
   contents:
   - compute.dm
