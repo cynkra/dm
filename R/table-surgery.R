@@ -37,6 +37,9 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
   .data <- dm[[table_name]]
   avail_cols <- colnames(.data)
   sel_vars <- eval_select_both(quo(c(...)), avail_cols)
+  new_col_name <- as_string(enexpr(new_key_column))
+
+  split_data <- decompose_table_impl(.data, !!enexpr(new_col_name), table_name, sel_vars)
 
   old_primary_key <- dm_get_all_pks(dm) %>% filter(table == table_name) %>% pull(pk_col)
   if (has_length(old_primary_key) && old_primary_key %in% sel_vars$names) {
@@ -54,36 +57,11 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
   dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
   new_table_name <- names_list$new_names
 
-  new_col_name <- as_string(enexpr(new_key_column))
-
-  id_col_q <- ensym(new_key_column)
-
-  if (as_string(id_col_q) %in% avail_cols) {
-    abort_dupl_new_id_col_name(table_name)
-  }
-
   # in case someone called the new table like the old one:
   table_name <- prep_recode(names_list$new_old_names)[table_name]
 
-  parent_table <-
-    select(.data, !!!sel_vars$indices) %>%
-    distinct() %>%
-    # Without as.integer(), RPostgres creates integer64 column (#15)
-    mutate(!!id_col_q := as.integer(coalesce(row_number(!!sym(names(sel_vars$indices)[[1]])), 0L))) %>%
-    relocate(!!id_col_q)
-
-  non_key_indices <-
-    setdiff(seq_along(avail_cols), sel_vars$indices)
-
-  child_table <-
-    .data %>%
-    left_join(
-      parent_table,
-      by = prep_recode(sel_vars$names)
-    ) %>%
-    select(!!!non_key_indices, !!id_col_q)
-  # FIXME: Think about a good place for the target column,
-  # perhaps if this operation is run in a data model?
+  parent_table <- split_data$parent_table
+  child_table <- split_data$child_table
 
   old_foreign_keys <- dm_get_all_fks(dm) %>%
     filter(child_table == table_name)
@@ -173,4 +151,35 @@ dm_unite_tbls <- function(dm, table_1, table_2, rm_key_col = TRUE) {
       ~ dm_add_fk_impl(..1, start, ..2, ..3),
       .init = .
     )
+}
+
+decompose_table_impl <- function(.data, new_id_column, table_name, sel_vars) {
+  avail_cols <- colnames(.data)
+  id_col_q <- ensym(new_id_column)
+
+  if (as_string(id_col_q) %in% avail_cols) {
+    abort_dupl_new_id_col_name(table_name)
+  }
+
+  parent_table <-
+    select(.data, !!!sel_vars$indices) %>%
+    distinct() %>%
+    # Without as.integer(), RPostgres creates integer64 column (#15)
+    mutate(!!id_col_q := as.integer(coalesce(row_number(!!sym(names(sel_vars$indices)[[1]])), 0L))) %>%
+    relocate(!!id_col_q)
+
+  non_key_indices <-
+    setdiff(seq_along(avail_cols), sel_vars$indices)
+
+  child_table <-
+    .data %>%
+    left_join(
+      parent_table,
+      by = prep_recode(sel_vars$names)
+    ) %>%
+    select(!!!non_key_indices, !!id_col_q)
+  # FIXME: Think about a good place for the target column,
+  # perhaps if this operation is run in a data model?
+
+  list("child_table" = child_table, "parent_table" = parent_table)
 }
