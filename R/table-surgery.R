@@ -104,17 +104,17 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
     new_dm3() %>%
     dm_add_tbl_impl(list(parent_table), new_table_name) %>%
     dm_add_pk_impl(new_table_name, new_col_name, FALSE) %>%
-    dm_add_fk_impl(table_name, new_col_name, new_table_name) %>%
+    dm_add_fk_impl(table_name, list(new_col_name), new_table_name, list(new_col_name), on_delete = on_delete) %>%
     # remove FK-constraints from original table
     reduce2(
-      affected_fks$child_fk_col,
+      affected_fks$child_fk_cols,
       affected_fks$parent_table,
       ~ dm_rm_fk(..1, !!table_name, !!..2, !!..3),
       .init = .
     ) %>%
     # add FK-constraints to new table
     reduce2(
-      affected_fks$child_fk_col,
+      affected_fks$child_fk_cols,
       affected_fks$parent_table,
       ~ dm_add_fk_impl(..1, new_table_name, ..2, ..3),
       .init = .
@@ -155,9 +155,7 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
 dm_unite_tbls <- function(dm, table_1, table_2, rm_key_col = TRUE) {
   table_1_name <- as_string(ensym(table_1))
   table_2_name <- as_string(ensym(table_2))
-
   check_not_zoomed(dm)
-  check_correct_input(dm, c(table_1_name, table_2_name), 2L)
   check_no_filter(dm)
 
   rel <- parent_child_table(dm, {{ table_1 }}, {{ table_2 }})
@@ -182,7 +180,7 @@ dm_unite_tbls <- function(dm, table_1, table_2, rm_key_col = TRUE) {
     dm_get_def() %>%
     mutate(data = if_else(table == start, list(res_tbl), data)) %>%
     new_dm3() %>%
-    reduce2(keys_to_transfer$child_fk_col,
+    reduce2(keys_to_transfer$child_fk_cols,
       keys_to_transfer$parent_table,
       ~ dm_add_fk_impl(..1, start, ..2, ..3),
       .init = .

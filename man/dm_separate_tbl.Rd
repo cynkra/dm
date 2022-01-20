@@ -11,7 +11,8 @@ dm_separate_tbl(
   ...,
   new_table_name = NULL,
   repair = "check_unique",
-  quiet = FALSE
+  quiet = FALSE,
+  on_delete = c("no_action", "cascade")
 )
 }
 \arguments{
@@ -50,6 +51,15 @@ Instead, an error is raised if the names don't suit the
 caused by repairing the names. This only concerns unique and
 universal repairing. Set \code{quiet} to \code{TRUE} to silence the
 messages.}
+
+\item{on_delete}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Defines behavior if a row in the parent table is deleted.
+- \code{"no_action"}, the default, means that no action is taken
+and the operation is aborted if child rows exist
+- \code{"cascade"} means that the child row is also deleted
+This setting is picked up by \code{\link[=copy_dm_to]{copy_dm_to()}} with \code{set_key_constraints = TRUE},
+and might be considered by \code{\link[=dm_rows_delete]{dm_rows_delete()}} in a future version.}
 }
 \value{
 A \code{dm} with one of its tables split into two tables which are linked by
