@@ -129,6 +129,9 @@ reference:
   contents:
   - dm_separate_tbl
   - dm_unite_tbls
+  - decompose_table
+  - reunite_parent_child
+  - reunite_parent_child_from_list
 
 - title: Check keys and cardinalities
   contents:
