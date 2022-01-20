@@ -2,6 +2,12 @@
 % Please edit documentation in R/deprecated.R, R/zzx-deprecated.R
 \name{deprecated}
 \alias{deprecated}
+\alias{sql_schema_create}
+\alias{sql_schema_drop}
+\alias{sql_schema_exists}
+\alias{sql_schema_list}
+\alias{check_if_subset}
+\alias{check_cardinality}
 \alias{cdm_get_src}
 \alias{cdm_get_con}
 \alias{cdm_get_tables}
@@ -49,6 +55,18 @@
 \alias{cdm_zoom_out}
 \title{Deprecated functions}
 \usage{
+sql_schema_create(dest, schema, ...)
+
+sql_schema_drop(dest, schema, force = FALSE, ...)
+
+sql_schema_exists(dest, schema, ...)
+
+sql_schema_list(dest, include_default = TRUE, ...)
+
+check_if_subset(t1, c1, t2, c2)
+
+check_cardinality(parent_table, pk_column, child_table, fk_column)
+
 cdm_get_src(x)
 
 cdm_get_con(x)
@@ -120,7 +138,7 @@ cdm_get_fk(dm, table, ref_table)
 
 cdm_get_all_fks(dm)
 
-cdm_rm_fk(dm, table, column, ref_table)
+cdm_rm_fk(dm, table, columns, ref_table)
 
 cdm_enum_fk_candidates(dm, table, ref_table)
 
@@ -132,7 +150,7 @@ cdm_learn_from_db(dest)
 
 cdm_check_constraints(dm)
 
-cdm_nycflights13(cycle = FALSE, color = TRUE)
+cdm_nycflights13(cycle = FALSE, color = TRUE, subset = TRUE)
 
 cdm_paste(dm, select = FALSE, tab_width = 2)
 
@@ -171,5 +189,8 @@ cdm_zoom_out(dm)
 These functions are deprecated in favor of better alternatives.
 Most functions with the \code{cdm_} prefix have an identical alternative
 with a \code{dm_} prefix.
+
+\verb{sql_schema_*()} functions have been replaced with the corresponding
+\verb{db_schema_*()} functions.
 }
 \keyword{internal}

@@ -2,41 +2,53 @@
 % Please edit documentation in R/foreign-keys.R
 \name{dm_rm_fk}
 \alias{dm_rm_fk}
-\title{Remove the reference(s) from one \code{\link{dm}} table to another}
+\title{Remove foreign keys}
 \usage{
-dm_rm_fk(dm, table, column, ref_table)
+dm_rm_fk(
+  dm,
+  table = NULL,
+  columns = NULL,
+  ref_table = NULL,
+  ref_columns = NULL,
+  ...
+)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}.}
+\item{table}{A table in the \code{dm}.
+Pass \code{NULL} to remove all matching keys.}
 
-\item{column}{The column of \code{table} that should no longer be referencing the primary key of \code{ref_table}.
-If \code{NULL}, all columns will be evaluated.}
+\item{columns}{Table columns, unquoted.
+To refer to a compound key, use \code{c(col1, col2)}.
+Pass \code{NULL} (the default) to remove all matching keys.}
 
-\item{ref_table}{The table that \code{table} was referencing.}
+\item{ref_table}{The table referenced by the \code{table} argument.
+Pass \code{NULL} to remove all matching keys.}
+
+\item{ref_columns}{The columns of \code{table} that should no longer be referencing the primary key of \code{ref_table}.
+To refer to a compound key, use \code{c(col1, col2)}.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
-An updated \code{dm} without the given foreign key relation.
+An updated \code{dm} without the matching foreign key relation(s).
 }
 \description{
-This function can remove either one reference between two tables, or all references at once, if argument \code{column = NULL}.
-All arguments may be provided quoted or unquoted.
+\code{dm_rm_fk()} can remove either one reference between two tables, or multiple references at once (with a message).
+An error is thrown if no matching foreign key is found.
 }
 \examples{
-dm_rm_fk(
-  dm_nycflights13(cycle = TRUE),
-  flights,
-  dest,
-  airports
-)
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13(cycle = TRUE) \%>\%
+  dm_rm_fk(flights, dest, airports) \%>\%
+  dm_draw()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other foreign key functions: 
 \code{\link{dm_add_fk}()},
 \code{\link{dm_enum_fk_candidates}()},
-\code{\link{dm_get_all_fks}()},
-\code{\link{dm_get_fk}()},
-\code{\link{dm_has_fk}()}
+\code{\link{dm_get_all_fks}()}
 }
 \concept{foreign key functions}

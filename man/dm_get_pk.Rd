@@ -2,37 +2,15 @@
 % Please edit documentation in R/primary-keys.R
 \name{dm_get_pk}
 \alias{dm_get_pk}
-\title{Retrieve the name of the primary key column of a \code{dm} table}
+\title{Primary key column names}
 \usage{
-dm_get_pk(dm, table)
-}
-\arguments{
-\item{dm}{A \code{dm} object.}
-
-\item{table}{A table in the \code{dm}.}
-}
-\value{
-A character vector with the column name(s) of the primary key of \code{table}.
+dm_get_pk(dm, table, ...)
 }
 \description{
-\code{dm_get_pk()} returns the name of the
-column marked as primary key of a table of a \code{\link{dm}} object.
-If no primary key is
-set for the table, an empty character vector is returned.
-}
-\examples{
-library(dplyr)
-nycflights_dm <- dm_nycflights13()
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-nycflights_dm \%>\%
-  dm_get_pk(planes)
+This function is deprecated because of its limited use
+and its unintuitive return value.
+Use \code{\link[=dm_get_all_pks]{dm_get_all_pks()}} instead.
 }
-\seealso{
-Other primary key functions: 
-\code{\link{dm_add_pk}()},
-\code{\link{dm_get_all_pks}()},
-\code{\link{dm_has_pk}()},
-\code{\link{dm_rm_pk}()},
-\code{\link{enum_pk_candidates}()}
-}
-\concept{primary key functions}
+\keyword{internal}

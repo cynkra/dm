@@ -2,7 +2,7 @@
 % Please edit documentation in R/dm.R
 \name{pull_tbl}
 \alias{pull_tbl}
-\title{Retrieve a table from a \code{dm} or a \code{zoomed_dm}}
+\title{Retrieve a table}
 \usage{
 pull_tbl(dm, table)
 }
@@ -22,10 +22,14 @@ This function has methods for both \code{dm} classes:
 }
 }
 \examples{
-# both examples lead to the same tibble:
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# For an unzoomed dm you need to specify the table to pull:
 dm_nycflights13() \%>\%
-  pull_tbl(airlines)
+  pull_tbl(airports)
+
+# If zoomed, pulling detaches the zoomed table from the dm:
 dm_nycflights13() \%>\%
-  dm_zoom_to_tbl(airlines) \%>\%
+  dm_zoom_to(airports) \%>\%
   pull_tbl()
+\dontshow{\}) # examplesIf}
 }

@@ -60,3 +60,30 @@ dplyr::src_tbls
 
 #' @export
 dplyr::tbl
+
+#' @export
+dplyr::arrange
+
+#' @export
+dplyr::rows_insert
+
+#' @export
+dplyr::rows_update
+
+#' @export
+dplyr::rows_patch
+
+#' @export
+dplyr::rows_upsert
+
+#' @export
+dplyr::rows_delete
+
+#' @export
+pillar::glimpse
+
+#' @export
+tidyr::unite
+
+#' @export
+tidyr::separate

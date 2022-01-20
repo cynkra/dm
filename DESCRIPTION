@@ -1,7 +1,7 @@
 Package: dm
-Title: Relational data models
-Version: 0.0.6
-Date: 2019-12-05
+Title: Relational Data Models
+Version: 0.2.6.9003
+Date: 2022-01-19
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -10,59 +10,89 @@ Authors@R:
       person(given = "Kirill",
              family = "Müller",
              role = c("aut", "cre"),
-             email = "kirill@cynkra.com",
+             email = "krlmlr+r@mailbox.org",
              comment = c(ORCID = "0000-0002-1416-3412")),
+      person(given = "Antoine",
+             family = "Fabri",
+             role = "ctb"),
       person(given = "Darko",
              family = "Bergant",
              role = "aut",
-             email = "darko.bergant@gmail.com"),       
+             email = "darko.bergant@gmail.com"),
+      person(given = "Katharina",
+             family = "Brunner",
+             role = "ctb"),
+      person(given = "James",
+             family = "Wondrasek",
+             role = "ctb"),
       person(given = "energie360° AG",
              role = "fnd",
              email = "info@energie360.ch"),
       person(given = "cynkra GmbH",
-             role = "fnd",
+             role = c("fnd", "cph"),
              email = "mail@cynkra.com"))
-Description: Provides tools for working with multiple related tables,
-    stored as data frames or in a relational database.
-    Multiple tables (data and metadata) are stored in a compound object,
-    which can then be manipulated with a pipe-friendly syntax.
+Description: Provides tools for working with multiple related
+    tables, stored as data frames or in a relational database.  Multiple
+    tables (data and metadata) are stored in a compound object, which can
+    then be manipulated with a pipe-friendly syntax.
 License: MIT + file LICENSE
-Depends: R (>= 3.3)
+URL: https://cynkra.github.io/dm/, https://github.com/cynkra/dm
+BugReports: https://github.com/cynkra/dm/issues
+Depends: 
+    R (>= 3.3)
 Imports:
     backports,
-    cli,
+    cli (>= 2.2.0),
     DBI,
-    dplyr,
-    DT (>= 0.5),
+    dplyr (>= 1.0.3),
+    ellipsis,
     glue,
     igraph,
     lifecycle,
     magrittr,
+    memoise,
     methods,
+    pillar (>= 1.6.2),
     purrr,
-    rlang (>= 0.4.0),
+    rlang (>= 0.4.10),
     tibble,
     tidyr (>= 1.0.0),
-    tidyselect,
-    vctrs (>= 0.2.0)
+    tidyselect (>= 1.0.1),
+    vctrs (>= 0.3.2)
 Suggests: 
+    brio,
+    covr,
+    crayon,
+    dbplyr,
     DiagrammeR,
     DiagrammeRsvg,
-    dbplyr,
+    digest,
+    duckdb,
     fansi,
+    keyring,
     knitr,
+    mockr,
     nycflights13,
+    odbc,
+    pixarfilms,
+    pool,
+    progress,
+    RMariaDB (>= 1.0.10),
     rmarkdown,
     RPostgres,
-    rprojroot,
-    RSQLite,
-    testthat (>= 2.1.0),
+    RSQLite (>= 2.2.8),
+    testthat (>= 3.0.2),
     tidyverse,
+    waldo,
     withr
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",
     "namespace", "rd"))
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.2
+Config/testthat/edition: 3
+Config/testthat/parallel: true
+Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm, draw-dm, bind, rows-dm
+Config/autostyle/scope: line_breaks
+Config/autostyle/strict: true

@@ -2,7 +2,7 @@
 % Please edit documentation in R/disambiguate.R
 \name{dm_disambiguate_cols}
 \alias{dm_disambiguate_cols}
-\title{Avoid conflicts in column names}
+\title{Resolve column name ambiguities}
 \usage{
 dm_disambiguate_cols(dm, sep = ".", quiet = FALSE)
 }
@@ -12,13 +12,13 @@ dm_disambiguate_cols(dm, sep = ".", quiet = FALSE)
 \item{sep}{The character variable that separates the names of the table and the names of the ambiguous columns.}
 
 \item{quiet}{Boolean.
-By default, this function lists the renamed columns in a message, pass \code{FALSE} to suppress this message.}
+By default, this function lists the renamed columns in a message, pass \code{TRUE} to suppress this message.}
 }
 \value{
 A \code{dm} whose column names are unambiguous.
 }
 \description{
-This function ensures that all columns in \code{dm} have unique names.
+This function ensures that all columns in a \code{dm} have unique names.
 }
 \details{
 The function first checks if there are any column names that are not unique.
@@ -29,5 +29,8 @@ because only the foreign key column will remain when two tables are joined,
 making that column name "unique" as well.
 }
 \examples{
-dm_disambiguate_cols(dm_nycflights13())
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_disambiguate_cols()
+\dontshow{\}) # examplesIf}
 }

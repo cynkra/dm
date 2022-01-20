@@ -2,44 +2,90 @@
 % Please edit documentation in R/foreign-keys.R
 \name{dm_add_fk}
 \alias{dm_add_fk}
-\title{Add a reference from one table of a \code{\link{dm}} to another}
+\title{Add foreign keys}
 \usage{
-dm_add_fk(dm, table, column, ref_table, check = FALSE)
+dm_add_fk(
+  dm,
+  table,
+  columns,
+  ref_table,
+  ref_columns = NULL,
+  ...,
+  check = FALSE,
+  on_delete = c("no_action", "cascade")
+)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.}
 
-\item{column}{The column of \code{table} which is to become the foreign key column and
-reference the primary key of \code{ref_table}.}
+\item{columns}{The columns of \code{table} which are to become the foreign key columns that
+reference \code{ref_table}.
+To define a compound key, use \code{c(col1, col2)}.}
 
-\item{ref_table}{The table which \code{table} is referencing.
-This table needs to have a primary key set.}
+\item{ref_table}{The table which \code{table} will be referencing.}
+
+\item{ref_columns}{The column(s) of \code{table} which are to become the referenced column(s) in \code{ref_table}.
+By default, the primary key is used.
+To define a compound key, use \code{c(col1, col2)}.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 
 \item{check}{Boolean, if \code{TRUE}, a check will be performed to determine if the values of
-\code{column} are a subset of the values of the primary key column of \code{ref_table}.}
+\code{columns} are a subset of the values of the key column(s) of \code{ref_table}.}
+
+\item{on_delete}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Defines behavior if a row in the parent table is deleted.
+- \code{"no_action"}, the default, means that no action is taken
+and the operation is aborted if child rows exist
+- \code{"cascade"} means that the child row is also deleted
+This setting is picked up by \code{\link[=copy_dm_to]{copy_dm_to()}} with \code{set_key_constraints = TRUE},
+and might be considered by \code{\link[=dm_rows_delete]{dm_rows_delete()}} in a future version.}
 }
 \value{
 An updated \code{dm} with an additional foreign key relation.
 }
 \description{
-Add a reference from one table of a \code{\link{dm}} to another
+\code{dm_add_fk()} marks the specified \code{columns} as the foreign key of table \code{table} with
+respect to a key of table \code{ref_table}.
+Usually the referenced columns are a primary key in \code{ref_table},
+it is also possible to specify other columns via the \code{ref_columns} argument.
+If \code{check == TRUE}, then it will first check if the values in \code{columns} are a subset
+of the values of the key in table \code{ref_table}.
 }
 \examples{
-library(dplyr)
-iris_key <- mutate(iris, key = row_number()) \%>\%
-  select(key, everything())
-dm(iris_1 = iris_key, iris_2 = iris_key) \%>\%
-  dm_add_pk(iris_2, key) \%>\%
-  dm_add_fk(iris_1, key, iris_2)
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+nycflights_dm <- dm(
+  planes = nycflights13::planes,
+  flights = nycflights13::flights,
+  weather = nycflights13::weather
+)
+
+nycflights_dm \%>\%
+  dm_draw()
+
+# Create foreign keys:
+nycflights_dm \%>\%
+  dm_add_pk(planes, tailnum) \%>\%
+  dm_add_fk(flights, tailnum, planes) \%>\%
+  dm_add_pk(weather, c(origin, time_hour)) \%>\%
+  dm_add_fk(flights, c(origin, time_hour), weather) \%>\%
+  dm_draw()
+
+# Keys can be checked during creation:
+try(
+  nycflights_dm \%>\%
+    dm_add_pk(planes, tailnum) \%>\%
+    dm_add_fk(flights, tailnum, planes, check = TRUE)
+)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other foreign key functions: 
 \code{\link{dm_enum_fk_candidates}()},
 \code{\link{dm_get_all_fks}()},
-\code{\link{dm_get_fk}()},
-\code{\link{dm_has_fk}()},
 \code{\link{dm_rm_fk}()}
 }
 \concept{foreign key functions}

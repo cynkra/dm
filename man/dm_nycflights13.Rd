@@ -2,9 +2,9 @@
 % Please edit documentation in R/nycflights13.R
 \name{dm_nycflights13}
 \alias{dm_nycflights13}
-\title{Creates a \code{\link{dm}} object for the \pkg{nycflights13} data}
+\title{Creates a dm object for the \pkg{nycflights13} data}
 \usage{
-dm_nycflights13(cycle = FALSE, color = TRUE)
+dm_nycflights13(cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE)
 }
 \arguments{
 \item{cycle}{Boolean.
@@ -15,7 +15,12 @@ If \code{TRUE}, a \code{dm} object with a double reference
 between those tables will be produced.}
 
 \item{color}{Boolean, if \code{TRUE} (default), the resulting \code{dm} object will have
-colors assigned to different tables for visualization with \code{dm_draw()}}
+colors assigned to different tables for visualization with \code{dm_draw()}.}
+
+\item{subset}{Boolean, if \code{TRUE} (default), the \code{flights} table is reduced to flights with column \code{day} equal to 10.}
+
+\item{compound}{Boolean, if \code{FALSE}, no link will be established between tables \code{flights} and \code{weather},
+because this requires compound keys.}
 }
 \value{
 A \code{dm} object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
@@ -29,8 +34,8 @@ between the \code{flights} table and the \code{planes} tables is "weak", it does
 data integrity constraints.
 }
 \examples{
-if (rlang::is_installed("nycflights13")) {
-  dm_nycflights13() \%>\%
-    dm_draw()
-}
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_draw()
+\dontshow{\}) # examplesIf}
 }

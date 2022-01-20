@@ -219,7 +219,7 @@ dm_flights %>%
 # All operations are designed to work locally and on the database
 dm_flights_sqlite <-
   dm_flights %>%
-  dm_copy_to(
+  copy_dm_to(
     dbplyr::src_memdb(), .,
     unique_table_names = TRUE, set_key_constraints = FALSE
   )
@@ -377,7 +377,7 @@ nycflights13_base %>%
 
 
 # Determine key candidates
-zoomed_weather <- dm_zoom_to_tbl(nycflights13_base, weather)
+zoomed_weather <- dm_zoom_to(nycflights13_base, weather)
 zoomed_weather
 
 # `enum_pk_candidates()` works for both `tibbles` and `zoomed_dm`
@@ -413,7 +413,7 @@ nycflights13_weather_link <-
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   unite("origin_slot_id", origin, time_hour_fmt) %>%
   # here the original 'weather' table is updated with the manipulated one
-  dm_update_zoomed_tbl() %>%
+  dm_update_zoomed() %>%
   # here we are adding a PK for the "enhanced" weather table
   dm_add_pk(weather, origin_slot_id)
 
@@ -425,14 +425,14 @@ nycflights13_weather_link %>%
 # FIXME: zoom to multiple tables
 
 nycflights13_weather_flights_link <-
-  dm_zoom_to_tbl(nycflights13_weather_link, flights) %>%
+  dm_zoom_to(nycflights13_weather_link, flights) %>%
   # same procedure with `flights` table
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   # for flights we need to keep the column `origin`,
   # since it is a FK pointing to `airports`
   unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE) %>%
   select(origin_slot_id, everything(), -time_hour_fmt) %>%
-  dm_update_zoomed_tbl()
+  dm_update_zoomed()
 
 # `dm_enum_fk_candidates()` of a `dm` gives info
 # about potential FK columns from one table to another
@@ -449,15 +449,15 @@ nycflights13_perfect %>%
 
 # What are the missings?
 nycflights13_perfect %>%
-  dm_zoom_to_tbl(flights) %>%
+  dm_zoom_to(flights) %>%
   anti_join(weather) %>%
   count(origin_slot_id)
 
 # Create table of aggregates, and insert it into the dm
 nycflights13_perfect %>%
-  dm_zoom_to_tbl(flights) %>%
+  dm_zoom_to(flights) %>%
   count(origin) %>%
-  dm_insert_zoomed_tbl("flights_agg") %>%
+  dm_insert_zoomed("flights_agg") %>%
   dm_draw()
 
 ##
@@ -490,7 +490,7 @@ try({
     dm_flights %>%
     dm_filter(planes, TRUE) %>%
     dm_filter(flights, month == 1, day == 1) %>%
-    dm_copy_to(con_pq, ., temporary = FALSE)
+    copy_dm_to(con_pq, ., temporary = FALSE)
 
   dm_flights_from_pq <-
     dm_learn_from_db(con_pq)

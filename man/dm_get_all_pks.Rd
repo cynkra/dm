@@ -4,26 +4,37 @@
 \alias{dm_get_all_pks}
 \title{Get all primary keys of a \code{\link{dm}} object}
 \usage{
-dm_get_all_pks(dm)
+dm_get_all_pks(dm, table = NULL, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
+
+\item{table}{One or more table names, as character vector,
+to return primary key information for.
+The default \code{NULL} returns information for all tables.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
-A tibble with columns:
-\itemize{
-\item "table": table name,
-\item "pk_col": column name(s) of primary key.
+A tibble with the following columns:
+\describe{
+\item{\code{table}}{table name,}
+\item{\code{pk_cols}}{column name(s) of primary key, as list of character vectors.}
 }
 }
 \description{
 \code{dm_get_all_pks()} checks the \code{dm} object for set primary keys and
 returns the tables, the respective primary key columns and their classes.
 }
+\examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_get_all_pks()
+\dontshow{\}) # examplesIf}
+}
 \seealso{
 Other primary key functions: 
 \code{\link{dm_add_pk}()},
-\code{\link{dm_get_pk}()},
 \code{\link{dm_has_pk}()},
 \code{\link{dm_rm_pk}()},
 \code{\link{enum_pk_candidates}()}

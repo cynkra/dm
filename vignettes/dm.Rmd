@@ -1,236 +1,237 @@
 ---
-title: "Getting Started"
+title: "Getting started with dm"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting Started}
+  %\VignetteIndexEntry{First read: Getting started with dm}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+``````{r setup, include = FALSE}
+source("setup/setup.R")
+``````
+
+## Introduction
+
+In this article we're going show you how easy it is to move from connecting to the database holding your data to producing the results you need.
+It's meant to be a quick and friendly introduction to {dm}, so it is low on details and caveats.
+Links to detailed documentation are provided at the end.
+(If your data is in data frames instead of a database and you're in a hurry, jump over to `vignette("howto-dm-df")`.)
+
+## Creating a dm object
+
+dm objects can be created from individual tables or loaded directly from a relational data model on an RDBMS (relational database management system).
+
+For this demonstration we're going work with a model hosted on a public server.
+The first thing we need is a connection to the RDBMS hosting the data.
+
+``````{r connect}
+library(RMariaDB)
+
+fin_db <- dbConnect(
+  MariaDB(),
+  username = 'guest',
+  password = 'relational',
+  dbname = 'Financial_ijs',
+  host = 'relational.fit.cvut.cz'
 )
-fansi::set_knit_hooks(knitr::knit_hooks)
-options(crayon.enabled = TRUE, width = 75, cli.width = 75)
+``````
 
-knit_print.grViz <- function(x, ...) {
-  x %>% 
-    DiagrammeRsvg::export_svg() %>% 
-    c("`````{=html}\n", ., "\n`````\n") %>% 
-    knitr::asis_output()
-}
-```
+We create a dm object from an RDBMS using `dm_from_src()`, passing in the connection object we just created as the first argument.
 
-The goal of the package {dm} and its `dm` class is to facilitate working with multiple related tables.
-
-An object of the `dm` class contains the data in the tables, and metadata about the tables, such as
-
-- the names of the tables
-- the names of the columns of the tables
-- the key constraints to link the tables together
-- the data (either as data frames or as references to database tables)
-
-This package augments [{dplyr}](https://dplyr.tidyverse.org/)/[{dbplyr}](https://dbplyr.tidyverse.org/) workflows:
-
-- multiple related tables are kept in a single compound object
-- joins across multiple tables are available by specifying the tables involved, without a need to memorize column names or relationships
-
-In addition, a battery of utilities is provided that helps with creating a tidy data model.
-
-This package follows several of the "tidyverse" rules:
-
-- `dm` objects are immutable (your data will never be overwritten in place)
-- many functions used on `dm` objects are pipeable (i.e., return new `dm` objects)
-- tidy evaluation is used (unquoted function parameters are supported)
-
-The {dm} package builds heavily upon the [{datamodelr} package](https://github.com/bergant/datamodelr), and upon the [tidyverse](https://www.tidyverse.org/).
-We're looking forward to a great collaboration!
-
-We will now demonstrate some of the features of {dm}:
-
-1. [Creation of `dm` objects](#create)
-1. [Setting keys and drawing](#keys)
-1. [Filtering](#filter)
-1. [Copying and discovery](#copy)
-
-Let's first have a brief look at how to create a `dm`-class object.
-
-```{r message=FALSE}
+``````{r load, message = FALSE}
 library(dm)
-library(tidyverse)
+
+fin_dm <- dm_from_src(fin_db)
+fin_dm
+``````
+
+The dm object interrogates the RDBMS for table and column information and, where implemented, primary and foreign keys.
+Currently, primary and foreign keys are only available from Postgres and SQL Server.
+
+
+## Selecting tables
+
+The dm object can be accessed like a named list of tables:
+
+```{r names}
+names(fin_dm)
+fin_dm$loans
+dplyr::count(fin_dm$trans)
+```
+
+At the same time, most `dm` functions are pipe-friendly and support tidy evaluation.
+We can use `[` or the `dm_select_tbl()` verb to derive a smaller dm with the `loans`, `accounts`, `districts` and `trans` tables:
+
+```{r select}
+fin_dm_small <- fin_dm[c("loans", "accounts", "districts", "trans")]
+fin_dm_small <-
+  fin_dm %>%
+  dm_select_tbl(loans, accounts, districts, trans)
 ```
 
 
-## Creating `dm` objects: {#create}
+## Linking tables by adding keys
 
-The [{nycflights13}](https://github.com/hadley/nycflights13) package offers a nice example of interconnected tables.
-The most straightforward way of squeezing those tables into a `dm` object is:
+In many cases, `dm_from_src()` already returns a dm with all keys set.
+If not, dm allows us to define primary and foreign keys ourselves.
 
-```{r message=FALSE}
-flights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
-flights_dm
+In our data model, `id` columns uniquely identify records in the `accounts` and `loans` table, a primary key is added with `dm_add_pk()`.
+Each loan is linked to one account via the `account_id` column in the `loans` table, the relationship is established with `dm_add_fk()`.
+
+```{r keys}
+fin_dm_keys <-
+  fin_dm_small %>%
+  dm_add_pk(accounts, id) %>%
+  dm_add_pk(loans, id) %>%
+  dm_add_fk(loans, account_id, accounts) %>%
+  dm_add_pk(trans, id) %>%
+  dm_add_fk(trans, account_id, accounts) %>%
+  dm_add_pk(districts, id) %>%
+  dm_add_fk(accounts, district_id, districts)
 ```
 
-This fairly verbose output shows the data and metadata of a `dm` object.
-These components can be accessed with `dm_get_src()` and `dm_get_tables()`.
+## Visualizing a data model
 
-```{r}
-dm_get_src(flights_dm)
-dm_get_filter(flights_dm)
-dm_get_all_pks(flights_dm)
-dm_get_all_fks(flights_dm)
-```
+Having a diagram of the data model is the quickest way to verify we're on the right track.
+We can display a visual summary of the dm at any time.
+The default is to display the table name, any defined keys and their links to other tables.
 
+Visualizing the dm in its current state we see the keys we have created and how they link the tables together.
+Color guides the eye.
 
-## Keys and visualization {#keys}
-
-As you can see in the output above, no keys have been set so far.
-We will use `dm_add_pk()` and `dm_add_fk()` to add primary keys (pk) and foreign keys (fk):
-
-```{r}
-flights_dm_with_one_key <- 
-  flights_dm %>% 
-  dm_add_pk(airlines, carrier) %>% 
-  dm_add_fk(flights, carrier, airlines)
-```
-
-After you set the keys and establish relations, you can create a graphical representation of your data model with `dm_draw()`:
-
-```{r}
-flights_dm_with_one_key %>% 
+```{r visualize_keys}
+fin_dm_keys %>%
+  dm_set_colors(green = c(loans, accounts), darkblue = trans, grey = districts) %>%
   dm_draw()
 ```
 
-The `dm_nycflights13()` function provides a shortcut: the `dm` object returned by this function contains all tables, defines all primary and foreign keys, and even assigns colors to the different types of tables.
-We will be using the `dm` object created by this function from now on.
+## Accessing a data model as a table
 
-```{r}
-flights_dm_with_keys <- dm_nycflights13(cycle = TRUE)
-flights_dm_with_keys %>% 
-  dm_draw()
+If we want to perform modeling or analysis on this relational model we need to transform it into a tabular format that R functions can work with.
+`dm_squash_to_tbl()` will automatically follow foreign keys across tables to gather all the available columns into a single table.
+
+```{r squash}
+fin_dm_keys %>%
+  dm_squash_to_tbl(loans)
+```
+
+Apart from the rows printed above, no data has been fetched from the database.
+Use `select()` to reduce the number of columns fetched, and `collect()` to retrieve the entire result for local processing.
+
+```{r model}
+loans_df <-
+  fin_dm_keys %>%
+  dm_squash_to_tbl(loans) %>%
+  select(id, amount, duration, A3) %>%
+  collect()
+
+model <- lm(amount ~ duration + A3, data = loans_df)
+
+model
 ```
 
 
-## Filtering a table of a `dm` object {#filter}
+## Operations on table data within a dm
 
-The idea of a filter on a `dm` object:
+We don't need to take the extra step of exporting the data to work with it.
+Through the dm object we have complete access to dplyr's data manipulation verbs.
+These operate on the data within individual tables.
 
-1. You can filter one or more of `dm`'s tables, just like with normal `dplyr::filter()` calls
-1. Filtering conditions are immediately executed for the table in question and additionally stored in the `dm` object
-1. If you access a table via `dm_apply_filters_to_tbl()`, a sequence of `semi_join()` calls is performed to retrieve the requested table with only those values in the key columns which correspond to the remaining values in the filtered tables
+To work with a particular table we use `dm_zoom_to()` to set the context to our chosen table.
+Then we can perform any of the operations we want.
 
-The function `dm_apply_filters()` essentially calls `dm_apply_filters_to_tbl()` for each table of the `dm` and creates a new `dm` object from the result.
+```{r zoom}
+fin_dm_total <-
+  fin_dm_keys %>%
+  dm_zoom_to(loans) %>%
+  group_by(account_id) %>%
+  summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
+  ungroup() %>%
+  dm_insert_zoomed("total_loans")
 
-Currently, this only works if the graph induced by the fk relations is cycle free, the default for `dm_nycflights13()`:
-
-```{r}
-flights_dm_acyclic <- dm_nycflights13()
-flights_dm_acyclic %>% 
-  dm_draw()
+fin_dm_total$total_loans
 ```
 
-Let's set two filters:
+Note that in the above example we use `dm_insert_zoomed()` to add the results as a new table to our data model.
+This table is temporary and will be deleted when our session ends.
+If you want to make permanent changes to your data model on an RDBMS please see the "Persisting results" section in `vignette("howto-dm-db")`.
 
-```{r}
-us_flights_from_jfk_prepared <- 
-  flights_dm_acyclic %>%
-  dm_filter(airports, name == "John F Kennedy Intl") %>% 
-  dm_filter(airlines, name == "US Airways Inc.")
-us_flights_from_jfk_prepared
+
+## Checking constraints
+
+It's always smart to check that your data model follows its specifications.
+When building our own model or changing existing models by adding tables or keys, it is even more important that the new model is validated.
+
+`dm_examine_constrains()` checks all primary and foreign keys and reports if they violate their expected constraints.
+
+```{r constraints}
+fin_dm_total %>%
+  dm_examine_constraints()
 ```
 
-With `dm_apply_filters()`, you can apply all filters and therefore update all tables in the `dm`, so that they contain only the rows that are relevant to the filters. 
-The effect of the filters can be seen when counting the rows:
+For more on constraint checking, including cardinality, finding candidate columns for keys, and normalization, see `vignette("tech-dm-low-level")`.
 
-```{r}
-us_flights_from_jfk <- dm_apply_filters(us_flights_from_jfk_prepared)
-us_flights_from_jfk %>% 
-  dm_get_tables() %>% 
-  map_int(nrow)
-```
+``````{r disconnect, echo = FALSE, results = "hide"}
+dbDisconnect(fin_db)
+``````
 
-Alternatively, you can just pull out one of the tables from `dm` to answer the question which planes were used to service the US Airways flights that departed from JFK airport:
+## Next Steps
 
-```{r}
-dm_apply_filters_to_tbl(us_flights_from_jfk, "planes")
-```
+Now that you have been introduced to the basic operation of dm, the next step is to learn more about the dm methods that your particular use case requires.
 
-Each of the planes in the result set above was a part of at least one US Airways flight departing from JFK.
-Do they have any common characteristics?
+Is your data in an RDBMS? Then move on to `vignette("howto-dm-db")` for a more detailed looking at working with an existing relational data model.
 
-```{r}
-dm_apply_filters_to_tbl(us_flights_from_jfk, "planes") %>% 
-  count(model)
-```
+If your data is in data frames, then you want to read `vignette("howto-dm-df")` next.
 
-For comparison, let's look at the equivalent manual query in {dplyr} syntax:
+If you feel you need to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
 
-```{r eval=FALSE}
-flights %>% 
-  left_join(airports, by = c("origin" = "faa")) %>% 
-  filter(name == "John F Kennedy Intl") %>%
-  left_join(airlines, by = "carrier") %>% 
-  filter(name.y == "US Airways Inc.") %>%
-  semi_join(planes, ., by = "tailnum") %>% 
-  count(model)
-```
-
-The {dm} code is leaner because the fk information is encoded in the object.
-
-Mind, that if you access a table via `tbl.dm()`, `$.dm()` or `[[.dm()`, filter conditions set for other tables are ignored.
-
-### Joining two tables {#join}
-
-The `dm_join_to_tbl()` function joins two immediately related tables in a data model.
-The definition of the primary and foreign key constraints is used to define the relationship.
-
-```{r}
-flights_dm_with_keys %>%
-  dm_join_to_tbl(airlines, flights, join = left_join)
-```
-
-The same operation using {dplyr} syntax looks like this:
-
-```{r eval=FALSE}
-library(nycflights13)
-airlines %>% 
-  left_join(flights, by = "carrier")
-```
-
-Omitting the `by` argument leads to a warning.
-
-## Copy a `dm` object to a DB or learn from it {#copy}
-
-`dm` objects can be transferred from one `src` to another.
-The relevant verb is `dm_copy_to()`, which will copy both data and key constraints.
-
-```{r}
-src_sqlite <- src_sqlite(":memory:", create = TRUE)
-src_sqlite
-flights_dm_with_keys_remote <- dm_copy_to(src_sqlite, flights_dm_with_keys)
-```
-
-As a result, the tables are transferred to the target data source, and all keys will be contained in the returned data model.
-
-```{r}
-src_sqlite
-flights_dm_with_keys_remote
-```
-
-In the opposite direction, `dm` objects can also be "learned" from a DB, including the key constraints, by utilizing the DB's meta-information tables.
-Unfortunately, this currently only works for MSSQL and Postgres, so we cannot show the results here just yet:
-
-```{r eval=FALSE}
-flights_dm_from_remote <- dm_learn_from_db(src_sqlite)
-```
+If you're familiar with relational data models but want to know how to work with them in dm, then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.
 
 ## Further reading
 
-- Learn other ways of creating `dm` objects and basic operations on them, like handling key constraints in the ["Class 'dm' and basic operations"](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html) article
-- All about the possibilities of graphic representations of `dm` objects: the ["Visualizing 'dm' objects"](https://krlmlr.github.io/dm/articles/dm-visualization.html) article
-- Constraints, cardinalities, and normalization: the ["Low level operations"](https://krlmlr.github.io/dm/articles/dm-low-level.html) article
+`vignette("howto-dm-db")` - This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
+
+`vignette("howto-dm-df")` - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.
+
+`vignette("howto-dm-theory")` - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.
+
+`vignette("tech-dm-join")` - Joining is how separate, linked tables are virtually combined in order to perform operations, generate summaries, or prepare data for extraction. This article covers dm's methods for creating the different kind of joins along with usage examples.
+
+`vignette("tech-dm-zoom")` - Learn how to manipulate the data in the tables in your dm using dplyr verbs.
+
+`vignette("tech-dm-filter")` - Need a subset of your data across tables? This introduction to dm's filtering methods will show you how to apply them to data that is separated into multiple tables.
+
+`vignette("tech-dm-draw")` - A quick guide to dm's methods for drawing your data model for exploration, verification or documentation purposes. Learn how to customize the diagrams.
+
+`vignette("tech-dm-low-level")` - If your data model needs to be rock solid, this article covers the dm methods for checking every aspect of the model. It covers key constraints, cardinalities between tables, and methods for normalization as you construct your data model.
+
+`vignette("tech-dm-class")` - A detailed overview of the `"dm"` class.
+
+`vignette("tech-dm-naming")` - Making sense of dm's API.
+
+`vignette("tech-dm-cdm")` - If you're an early adopter, used dm version 0.0.5 or lower and want to migrate your code, this is for you.
+
+## Standing on the shoulders of giants
+
+The {dm} package follows the tidyverse principles:
+
+- `dm` objects are immutable (your data will never be overwritten in place)
+- most functions used on `dm` objects are pipeable (i.e., return new `dm` or table objects)
+- tidy evaluation is used (unquoted function parameters are supported)
+
+The {dm} package builds heavily upon the [{datamodelr} package](https://github.com/bergant/datamodelr), and upon the [tidyverse](https://www.tidyverse.org/).
+We're looking forward to a good collaboration!
+
+The [{polyply} package](https://github.com/russHyde/polyply) has a similar intent with a slightly different interface.
+
+The [{data.cube} package](https://github.com/jangorecki/data.cube) has quite the same intent using `array`-like interface.
+
+Articles in the [{rquery} package](https://github.com/WinVector/rquery) discuss [join controllers](https://github.com/WinVector/rquery/blob/master/extras/JoinController.md) and [join dependency sorting](https://github.com/WinVector/rquery/blob/master/extras/DependencySorting.md), with the intent to move the declaration of table relationships from code to data.
+
+The [{tidygraph} package](https://github.com/thomasp85/tidygraph) stores a network as two related tables of `nodes` and `edges`, compatible with {dplyr} workflows.
+
+In object-oriented programming languages, [object-relational mapping](https://en.wikipedia.org/wiki/Object-relational_mapping) is a similar concept that attempts to map a set of related tables to a class hierarchy.

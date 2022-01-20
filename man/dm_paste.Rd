@@ -2,29 +2,55 @@
 % Please edit documentation in R/paste.R
 \name{dm_paste}
 \alias{dm_paste}
-\title{Reverse engineer code for creation of a \code{\link{dm}}}
+\title{Create R code for a dm object}
 \usage{
-dm_paste(dm, select = FALSE, tab_width = 2)
+dm_paste(dm, select = NULL, ..., tab_width = 2, options = NULL, path = NULL)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{select}{Boolean, default \code{FALSE}. If \code{TRUE} will try to produce code for reducing to necessary columns.}
+\item{select}{Deprecated, see \code{"select"} in the \code{options} argument.}
+
+\item{...}{Must be empty.}
 
 \item{tab_width}{Indentation width for code from the second line onwards}
+
+\item{options}{Formatting options. A character vector containing some of:
+\itemize{
+\item \code{"tables"}: \code{\link[=tibble]{tibble()}} calls for empty table definitions
+derived from \code{\link[=dm_ptype]{dm_ptype()}}, overrides \code{"select"}.
+\item \code{"select"}: \code{\link[=dm_select]{dm_select()}} statements for columns that are part
+of the dm.
+\item \code{"keys"}: \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} statements for adding keys.
+\item \code{"color"}: \code{\link[=dm_set_colors]{dm_set_colors()}} statements to set color.
+\item \code{"all"}: All options above except \code{"select"}
+}
+
+Default \code{NULL} is equivalent to \code{c("keys", "color")}}
+
+\item{path}{Output file, if \code{NULL} the code is printed to the console.}
 }
 \value{
-Code for producing the given \code{dm}.
+Code for producing the prototype of the given \code{dm}.
 }
 \description{
-\code{dm_paste} takes an existing \code{dm} and produces the code necessary for its creation
+\code{dm_paste()} takes an existing \code{dm} and emits the code necessary for its creation.
 }
 \details{
-At the very least (if no keys exist in the given \code{\link{dm}}) a \code{dm()} statement is produced that -- when executed --
-produces the same \code{dm}. In addition, the code for setting the existing primary keys as well as the relations between the
-tables is produced. If \code{select = TRUE}, statements are included to select the respective columns of each table of the \code{dm} (useful if
-only a subset of the columns of the original tables is used for the \code{dm}).
+The code emitted by the function reproduces the structure of the \code{dm} object.
+The \code{options} argument controls the level of detail: keys, colors,
+table definitions.
+Data in the tables is never included, see \code{\link[=dm_ptype]{dm_ptype()}} for the underlying logic.
+}
+\examples{
+dm() \%>\%
+  dm_paste()
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
-Mind, that it is assumed, that the tables of the existing \code{dm} are available in the global environment under their names
-within the \code{dm}.
+dm_nycflights13() \%>\%
+  dm_paste()
+
+dm_nycflights13() \%>\%
+  dm_paste(options = "select")
+\dontshow{\}) # examplesIf}
 }

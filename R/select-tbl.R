@@ -12,17 +12,15 @@
 #' @param ... One or more table names of the tables of the [`dm`] object.
 #' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
-#'   dm_select_tbl(ap = airports)
-#' dm_nycflights13() %>%
-#'   dm_select_tbl(ap = airports, fl = flights)
+#'   dm_select_tbl(airports, fl = flights)
 #' @export
 dm_select_tbl <- function(dm, ...) {
+  check_not_zoomed(dm)
   check_no_filter(dm)
 
-  vars <- tidyselect_table_names(dm)
-  selected <- dm_try_tables(tidyselect::vars_select(vars, ...), vars)
+  selected <- eval_select_table(quo(c(...)), src_tbls_impl(dm))
   dm_select_tbl_impl(dm, selected)
 }
 
@@ -33,34 +31,24 @@ dm_select_tbl <- function(dm, ...) {
 #'
 #' @rdname dm_select_tbl
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_rename_tbl(ap = airports, fl = flights)
 #' @export
 dm_rename_tbl <- function(dm, ...) {
-  vars <- tidyselect_table_names(dm)
-  selected <- dm_try_tables(tidyselect::vars_rename(vars, ...), vars)
+  check_not_zoomed(dm)
+
+  selected <- eval_rename_table_all(quo(c(...)), src_tbls_impl(dm))
   dm_select_tbl_impl(dm, selected)
 }
 
-tidyrename_dm <- function(dm, ...) {
-  tidyselect::vars_rename(tidyselect_table_names(dm), ...)
-}
-
-tidyselect_table_names <- function(dm) {
-  structure(
-    src_tbls(dm),
-    type = c("table", "tables")
-  )
-}
-
 dm_select_tbl_impl <- function(dm, selected) {
+  if (anyDuplicated(names(selected))) abort_need_unique_names(names(selected[duplicated(names(selected))]))
 
   # Required to avoid an error further on
   if (is_empty(selected)) {
     return(empty_dm())
   }
-  check_correct_input(dm, selected)
 
   def <-
     dm_get_def(dm) %>%
@@ -73,7 +61,7 @@ dm_select_tbl_impl <- function(dm, selected) {
 filter_recode_table_fks <- function(def, selected) {
   def$fks <-
     # as_list_of() is needed so that `fks` doesn't become a normal list
-    vctrs::as_list_of(map(
+    as_list_of(map(
       def$fks, filter_recode_fks_of_table,
       selected = selected
     ))
@@ -92,10 +80,25 @@ filter_recode_table_def <- function(data, selected) {
 filter_recode_fks_of_table <- function(data, selected) {
   # data$table can have multiple entries, we don't care about the order
   idx <- data$table %in% selected
-  data[idx, ] %>%
-    mutate(table = recode(table, !!!prep_recode(selected)))
+  out <- data[idx, ]
+  out$table <- recode(out$table, !!!prep_recode(selected))
+  out
 }
 
 prep_recode <- function(x) {
   set_names(names(x), x)
+}
+
+prep_compact_recode <- function(x) {
+  x <- x[names(x) != x]
+  prep_recode(x)
+}
+
+recode2 <- function(x, new) {
+  recipe <- prep_compact_recode(new)
+  if (is_empty(recipe)) {
+    x
+  } else {
+    recode(x, !!!recipe)
+  }
 }

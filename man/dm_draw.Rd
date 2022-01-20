@@ -2,37 +2,29 @@
 % Please edit documentation in R/draw-dm.R
 \name{dm_draw}
 \alias{dm_draw}
-\alias{dm_set_colors}
-\alias{dm_get_colors}
-\alias{dm_get_available_colors}
-\title{Draw a diagram of a \code{\link{dm}}-object's data model}
+\title{Draw a diagram of the data model}
 \usage{
 dm_draw(
   dm,
   rankdir = "LR",
-  col_attr = "column",
-  view_type = "keys_only",
+  col_attr = NULL,
+  view_type = c("keys_only", "all", "title_only"),
   columnArrows = TRUE,
   graph_attrs = "",
   node_attrs = "",
   edge_attrs = "",
   focus = NULL,
-  graph_name = "Data Model"
+  graph_name = "Data Model",
+  ...,
+  column_types = NULL
 )
-
-dm_set_colors(dm, ...)
-
-dm_get_colors(dm)
-
-dm_get_available_colors()
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object.}
 
 \item{rankdir}{Graph attribute for direction (e.g., 'BT' = bottom --> top).}
 
-\item{col_attr}{Column atributes to display.
-By default only the column name (\code{"column"}) is displayed.}
+\item{col_attr}{Deprecated, use \code{colummn_types} instead.}
 
 \item{view_type}{Can be "keys_only" (default), "all" or "title_only".
 It defines the level of details for rendering tables
@@ -50,54 +42,33 @@ It defines the level of details for rendering tables
 
 \item{graph_name}{The name of the graph.}
 
-\item{...}{Colors to set in the form \code{table = "<color>"} .
-Fall-through syntax similarly to
-\code{\link[=switch]{switch()}} is supported: \verb{table1 = , table2 = "<color>"} sets the color for both \code{table1}
-and \code{table2} .
-This argument supports splicing.}
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{column_types}{Set to \code{TRUE} to show column types.}
 }
 \value{
-For \code{dm_draw()}: returns an object of class \code{grViz} (see also \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), which,
+An object of class \code{grViz} (see also \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), which,
 when printed, produces the output seen in the viewer as a side effect.
-
-For \code{dm_set_colors()}: the updated data model.
-
-For \code{dm_get_colors()}, a two-column tibble with one row per table.
-
-For \code{dm_get_available_colors()}, a tibble with the color in the first
-column and auxiliary information in other columns.
 }
 \description{
 \code{dm_draw()} uses \pkg{DiagrammeR} to draw diagrams.
-
-\code{dm_set_colors()} allows to define the colors that will be used to display the tables of the data model.
-
-\code{dm_get_colors()} returns the colors defined for a data model.
-
-\code{dm_get_available_colors()} returns an overview of the available colors and their names
-as a tibble.
+Use \code{\link[DiagrammeRsvg:export_svg]{DiagrammeRsvg::export_svg()}} to convert the diagram to an SVG file.
 }
 \examples{
-library(dplyr)
-dm_draw(dm_nycflights13())
-dm_draw(dm_nycflights13(cycle = TRUE))
-dm_get_available_colors()
-dm_get_colors(dm_nycflights13())
-dm_nycflights13(color = FALSE) \%>\%
-  dm_set_colors(
-    airports = ,
-    airlines = ,
-    planes = "yellow",
-    weather = "dark_blue"
-  ) \%>\%
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
   dm_draw()
 
-# Splicing is supported:
-new_colors <- c(
-  airports = "yellow", airlines = "yellow", planes = "yellow",
-  weather = "dark_blue"
-)
-dm_nycflights13(color = FALSE) \%>\%
-  dm_set_colors(!!!new_colors) \%>\%
-  dm_draw()
+dm_nycflights13(cycle = TRUE) \%>\%
+  dm_draw(view_type = "title_only")
+
+head(dm_get_available_colors())
+length(dm_get_available_colors())
+
+dm_nycflights13() \%>\%
+  dm_get_colors()
+\dontshow{\}) # examplesIf}
+}
+\seealso{
+\code{\link[=dm_set_colors]{dm_set_colors()}} for defining the table colors.
 }

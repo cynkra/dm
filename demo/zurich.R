@@ -217,7 +217,7 @@ dm_flights %>%
 # All operations are designed to work locally and on the database
 dm_flights_sqlite <-
   dm_flights %>%
-  dm_copy_to(
+  copy_dm_to(
     dbplyr::src_memdb(), .,
     unique_table_names = TRUE, set_key_constraints = FALSE
   )
@@ -429,7 +429,7 @@ try({
     dm_flights %>%
     dm_filter(planes, TRUE) %>%
     dm_filter(flights, month == 1, day == 1) %>%
-    dm_copy_to(con_pq, ., temporary = FALSE)
+    copy_dm_to(con_pq, ., temporary = FALSE)
 
   dm_flights_from_pq <-
     dm_learn_from_db(con_pq)

@@ -1,4 +1,7 @@
-#' Filtering a [`dm`] object
+#' Filtering
+#'
+#' @description
+#' `r lifecycle::badge("questioning")`
 #'
 #' Filtering a table of a [`dm`] object may affect other tables that are connected to it
 #' directly or indirectly via foreign key relations.
@@ -24,6 +27,21 @@
 #' (similar to 1. but only for one table).
 #'
 #' Several functions of the {dm} package will throw an error if filter conditions exist when they are called.
+#'
+#' @section Life cycle:
+#' These functions are marked "questioning" because it feels wrong
+#' to tightly couple filtering with the data model.
+#' On the one hand, an overview of active filters is useful
+#' when specifying the base data set for an analysis in terms of column selections
+#' and row filters.
+#' However, these filter condition should be only of informative nature
+#' and never affect the results of other operations.
+#' We are working on formalizing the semantics of the underlying operations
+#' in order to present them in a cleaner interface.
+#'
+#' Use [dm_zoom_to()] and [dplyr::filter()] to filter rows without registering
+#' the filter.
+#'
 #' @rdname dm_filter
 #'
 #' @inheritParams dm_add_pk
@@ -37,25 +55,23 @@
 #'   See `vignette("programming", package = "dplyr")`
 #'   for an introduction to these concepts.
 #'
-#' @return For `dm_filter`: an updated `dm` object (filter executed for given table, and condition stored).
+#' @return For `dm_filter()`: an updated `dm` object (filter executed for given table, and condition stored).
 #'
-#' @examples
-#' library(dplyr)
-#'
+#' @examplesIf rlang::is_installed("nycflights13")
+#' dm_nyc <- dm_nycflights13()
 #' dm_nyc_filtered <-
 #'   dm_nycflights13() %>%
 #'   dm_filter(airports, name == "John F Kennedy Intl")
 #'
 #' dm_apply_filters_to_tbl(dm_nyc_filtered, flights)
 #'
-#' dm_nycflights13() %>%
-#'   dm_filter(airports, name == "John F Kennedy Intl") %>%
+#' dm_nyc_filtered %>%
 #'   dm_apply_filters()
 #'
 #' # If you want to keep only those rows in the parent tables
 #' # whose primary key values appear as foreign key values in
 #' # `flights`, you can set a `TRUE` filter in `flights`:
-#' dm_nycflights13() %>%
+#' dm_nyc %>%
 #'   dm_filter(flights, 1 == 1) %>%
 #'   dm_apply_filters() %>%
 #'   dm_nrow()
@@ -64,16 +80,39 @@
 #' # only the three New York airports.
 #' @export
 dm_filter <- function(dm, table, ...) {
-  dm_zoom_to_tbl(dm, {{ table }}) %>%
-    filter(...) %>%
-    dm_update_zoomed_tbl()
+  check_not_zoomed(dm)
+  dm %>%
+    dm_zoom_to({{ table }}) %>%
+    dm_filter_impl(..., set_filter = TRUE) %>%
+    dm_update_zoomed()
+}
+
+dm_filter_impl <- function(zoomed_dm, ..., set_filter) {
+  # valid table and empty ellipsis provided
+  filter_quos <- enquos(...)
+  if (is_empty(filter_quos)) {
+    return(zoomed_dm)
+  }
+
+  tbl <- tbl_zoomed(zoomed_dm)
+  filtered_tbl <- filter(tbl, ...)
+
+  # attribute filter expression to zoomed table. Needs to be flagged with `zoomed = TRUE`, since
+  # in case of `dm_insert_zoomed()` the filter exprs needs to be transferred
+  if (set_filter) {
+    zoomed_dm <-
+      zoomed_dm %>%
+      set_filter_for_table(orig_name_zoomed(zoomed_dm), map(filter_quos, quo_get_expr), TRUE)
+  }
+
+  replace_zoomed_tbl(zoomed_dm, filtered_tbl)
 }
 
 set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
   def <- dm_get_def(dm)
 
   i <- which(def$table == table)
-  def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(filter_exprs, zoomed))
+  def$filters[[i]] <- vec_rbind(def$filters[[i]], new_filter(filter_exprs, zoomed))
   new_dm3(def, zoomed = zoomed)
 }
 
@@ -82,16 +121,11 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #'
 #' @inheritParams dm_add_pk
 #'
-#' @return For `dm_apply_filters`: an updated `dm` object (filter effects evaluated for all tables).
+#' @return For `dm_apply_filters()`: an updated `dm` object (filter effects evaluated for all tables).
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #'
-#' dm_nycflights13() %>%
-#'   dm_filter(flights, month == 3) %>%
-#'   dm_apply_filters()
-#'
-#' library(dplyr)
-#' dm_nycflights13() %>%
+#' dm_nyc %>%
 #'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
 #'   compute()
 #' @export
@@ -109,15 +143,11 @@ dm_apply_filters <- function(dm) {
 #'
 #' @inheritParams dm_add_pk
 #'
-#' @examples
-#' dm_nycflights13() %>%
-#'   dm_filter(flights, month == 3) %>%
-#'   dm_apply_filters_to_tbl(planes)
+#' @return For `dm_apply_filters_to_tbl()`, a table.
 #' @export
 dm_apply_filters_to_tbl <- function(dm, table) {
   check_not_zoomed(dm)
-  table_name <- as_string(ensym(table))
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
 
   dm_get_filtered_table(dm, table_name)
 }
@@ -125,7 +155,8 @@ dm_apply_filters_to_tbl <- function(dm, table) {
 # calculates the necessary semi-joins from all tables that were filtered to
 # the requested table
 dm_get_filtered_table <- function(dm, from) {
-  filters <- dm_get_filter(dm)
+  filters <- dm_get_filters(dm)
+  # Shortcut for speed, not really necessary
   if (nrow(filters) == 0) {
     return(dm_get_tables(dm)[[from]])
   }
@@ -167,7 +198,7 @@ dm_get_filtered_table <- function(dm, from) {
 }
 
 get_all_filtered_connected <- function(dm, table) {
-  filtered_tables <- unique(dm_get_filter(dm)$table)
+  filtered_tables <- unique(dm_get_filters(dm)$table)
   graph <- create_graph_from_dm(dm)
 
   # Computation of distances and shortest paths uses the same algorithm
@@ -180,16 +211,20 @@ get_all_filtered_connected <- function(dm, table) {
   # as target. This avoids a warning.
   target_tables <- names(finite_distances)
 
+  if (is_empty(intersect(target_tables, filtered_tables))) {
+    return(new_filtered_edges(table))
+  }
+
   # use only subgraph to
   # 1. speed things up
   # 2. make it possible to easily test for a cycle (cycle if: N(E) >= N(V))
   graph <- igraph::induced_subgraph(graph, target_tables)
-  if (length(E(graph)) >= length(V(graph))) abort_no_cycles()
+  if (length(E(graph)) >= length(V(graph))) abort_no_cycles(graph)
   paths <- igraph::shortest_paths(graph, table, target_tables, predecessors = TRUE)
 
   # All edges with finite distance as tidy data frame
   all_edges <-
-    tibble(
+    new_filtered_edges(
       node = names(V(graph)),
       parent = names(paths$predecessors),
       # all of `graph`, `paths` and `finite_distances` are based on the same subset of tables,
@@ -216,21 +251,18 @@ get_all_filtered_connected <- function(dm, table) {
     arrange(-distance)
 }
 
+new_filtered_edges <- function(node, parent = node, distance = 0) {
+  tibble(node, parent, distance)
+}
+
 check_no_filter <- function(dm) {
   def <-
     dm_get_def(dm)
 
-  if (detect_index(def$filters, ~ vctrs::vec_size(.) > 0) == 0) {
+  if (detect_index(def$filters, ~ vec_size(.) > 0) == 0) {
     return()
   }
 
   fun_name <- as_string(sys.call(-1)[[1]])
   abort_only_possible_wo_filters(fun_name)
-}
-
-get_filter_for_table <- function(dm, table_name) {
-  dm_get_def(dm) %>%
-    filter(table == table_name) %>%
-    pull(filters) %>%
-    pluck(1)
 }

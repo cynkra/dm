@@ -1,8 +1,10 @@
 ---
 output:
-  github_document:
+  downlit::readme_document:
     html_preview: false
 ---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include = FALSE}
 library(tidyverse)
@@ -12,255 +14,125 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
-)
+  out.width = "100%")
 
-fansi::set_knit_hooks(knitr::knit_hooks)
-options(crayon.enabled = TRUE, width = 75, cli.width = 75, pillar.bold = TRUE)
-
-knit_print.grViz <- function(x, ...) {
-  x %>%
-    DiagrammeRsvg::export_svg() %>%
-    c("`````{=html}\n", ., "\n`````\n") %>%
-    knitr::asis_output()
+knit_print.grViz <- function(x, ..., options) {
+  svg <- DiagrammeRsvg::export_svg(x)
+  path <- paste0(options$fig.path, options$label, ".svg")
+  writeLines(svg, path)
+  
+  knitr::asis_output(paste0('<img src="', path, '" />'))
 }
+vctrs::s3_register("knitr::knit_print", "grViz")
 ```
 
+# [dm](https://cynkra.github.io/dm/)
+
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build status](https://travis-ci.org/krlmlr/dm.svg?branch=master)](https://travis-ci.org/krlmlr/dm)
-[![Codecov test coverage](https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg)](https://codecov.io/gh/krlmlr/dm?branch=master)
-[![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/package=dm)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![R build status](https://github.com/cynkra/dm/workflows/tic/badge.svg)](https://github.com/cynkra/dm/actions)
+[![Codecov test coverage](https://codecov.io/gh/cynkra/dm/branch/master/graph/badge.svg)](https://app.codecov.io/gh/cynkra/dm?branch=master)
+[![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm)
 [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
 
-# dm
+## TL;DR
 
-{dm} is an R package that provides tools for working with multiple related tables, stored as data frames or in a relational database.
+Are you using multiple data frames or database tables in R? Organize them with dm.
 
-
-**Contents**
-
-- [Background](#background) explains the philosophy behind the package and the problem that it tries to solve
-- [Example](#example) illustrates the general concept with a simple example
-- [Features](#features) gives an overview of the scope of the package
-- [Installation](#installation) describes how to install the package
-- [More information](#more-information) lists more detailed documentation sources
-- [Standing on the shoulders of giants](#standing-on-the-shoulders-of-giants) credits related work
+- Use it today (if only like a list of tables).
+- Build data models tomorrow.
+- Deploy the data models to your organization's RDBMS the day after.
 
 
-## Background{#background}
+## Overview
 
-Relational databases and flat tables, like data frames or spreadsheets, present data in fundamentally different ways.
+dm bridges the gap in the data pipeline between individual data frames and relational databases.
+It's a grammar of joined tables that provides a consistent set of verbs for consuming, creating, and deploying relational data models.
+For individual researchers, it broadens the scope of datasets they can work with and how they work with them.
+For organizations, it enables teams to quickly and efficiently create and share large, complex datasets.
 
-In data frames and spreadsheets, all data is presented together in one large table with many rows and columns.
-This means that the data is accessible in one location but has the disadvantage that the same values may be repeated multiple times, resulting in bloated tables with redundant data.
-In the worst case scenario, a data frame may have many rows and columns but only a single value different in each row.
-
-Relational databases, on the other hand, do not keep all data together but split it into multiple smaller tables.
-That separation into sub-tables has several advantages:
-
-- all information is stored only once, avoiding repetition and conserving memory
-- all information is updated only once and in one place, improving consistency and avoiding errors that may result from updating the same value in multiple locations
-- all information is organized by topic and segmented into smaller tables that are easier to handle
-
-Separation of data, thus, helps with data quality, and explains the continuing popularity of relational databases in production-level data management.
-
-The downside of this approach is that it is harder to merge together information from different data sources and to identify which entities refer to the same object, a common task when modelling or plotting data.
-To be mapped uniquely, the entities would need to be designated as _keys_, and the separate tables collated together through a process called _joining_. 
-
-In R, there already exist packages that support handling inter-linked tables but the code is complex and requires multiple command sequences.
-The goal of the {dm} package is to simplify the data management processes in R while keeping the advantages of relational data models and the core concept of splitting one table into multiple tables.
-In this way, you can have the best of both worlds: manage your data as a collection of linked tables, then flatten multiple tables into one for an analysis with {dplyr} or other packages, on an as-needed basis.
-
-Although {dm} is built upon relational data models, it is not a database itself.
-It can work transparently with both relational database systems and in-memory data, and copy data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy).
-
-
-## Example {#example}
-
-As an example, consider the [`nycflights13`](https://github.com/hadley/nycflights13) dataset about the flights that departed New York City airports in 2013.
-The dataset contains five tables: the main `flights` table with links to the `airlines`, `planes` and `airports` tables, and the `weather` table without explicit links.
-
-Assume that your task is to merge all tables, except the `weather` table.
-
-```{r draw, echo = FALSE}
-dm_nycflights13(cycle = TRUE) %>%
-  dm_draw()
-```
-
-In the classical [{dplyr}](https://dplyr.tidyverse.org) notation, you would need three `left_join()` calls to merge the `flights` table gradually to the `airlines`, `planes` and `airports` tables to create one wide data frame:
-
-```{r}
-library(tidyverse)
-library(nycflights13)
-
-flights %>%
-  left_join(airlines, by = "carrier") %>%
-  left_join(planes, by = "tailnum") %>%
-  left_join(airports, by = c("origin" = "faa"))
-```
-
-With the {dm} package, you would create [a `dm` object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html).
-After that you would be able to use the links between the tables as often as you wish, without explicitly referring to the relations ever again.
-
-For the example data set, you can use `dm_nycflights13()` to create the `dm` object, and a single command for merging the tables.
-The task of joining the four `flights`, `airlines`, `planes` and `airports` tables then boils down to:
-
-```{r dm}
-library(dm)
-
-dm_nycflights13() %>%
-  dm_flatten_to_tbl(start = flights)
-```
-
-The example data model for {nycflights13} is integrated in {dm} and defines primary and foreign keys to identify the common points between the tables.
-For data other than the example data, the `dm` object would need to be created by using the `dm()` constructor and by adding keys using `dm_add_pk()` and `dm_add_fk()`.
-
+dm objects encapsulate relational data models constructed from local data frames or lazy tables connected to an RDBMS.
+dm objects support the full suite of dplyr data manipulation verbs along with additional methods for constructing and verifying relational data models, including key selection, key creation, and rigorous constraint checking.
+Once a data model is complete, dm provides methods for deploying it to an RDBMS.
+This allows it to scale from datasets that fit in memory to databases with billions of rows.
 
 ## Features
 
-The {dm} package helps with the challenges that arise with working with relational data models.
+dm makes it easy to bring an existing relational data model into your R session.
+As the dm object behaves like a named list of tables it requires little change to incorporate it within existing workflows.
+The dm interface and behavior is modeled after dplyr, so you may already be familiar with many of its verbs.
+dm also offers:
 
-### Compound object
+- visualization to help you understand relationships between entities represented by the tables
+- simpler joins that "know" how tables are related, including a "flatten" operation that automatically follows keys and performs column name disambiguation
+- consistency and constraint checks to help you understand (and fix) the limitations of your data
 
-The `dm` class manages several related tables.
-It stores both the **data** and the **metadata** in a compound object.
+That's just the tip of the iceberg.
+See [Getting started](https://cynkra.github.io/dm/articles/dm.html) to hit the ground running and explore all the features.
 
-- data: a table source storing all tables
-- metadata: table names, column names, primary and foreign keys
-
-This concept helps separating the join logic from the code: declare your relationships once, as part of your data, then use them in your code without repeating yourself.
-
-Various operations on `dm` objects are implemented.
-They either affect the data (e.g., a filter), or the metadata (e.g., definition of keys), or both (e.g., creation of a new table).
-
-
-### Storage agnostic
-
-The {dm} package augments [{dplyr}](https://dplyr.tidyverse.org/)/[{dbplyr}](https://dbplyr.tidyverse.org/) workflows.
-Generally, if you can use {dplyr} on your data, it's likely that you can use {dm} too.
-This includes local data frames, relational database systems, and many more.
-
-
-### Data preparation
-
-A battery of utilities helps with creating a tidy relational data model.
-
-- Splitting and rejoining tables
-- Determining key candidates
-- Checking keys and cardinalities
-
-
-### Filtering and joining {#filter}
-
-Similarly to `dplyr::filter()`, a filtering function `dm_filter()` is available for `dm` objects.
-You need to provide the `dm` object, the table whose rows you want to filter, and the filter expression.
-The actual effect of the filtering will only be realized once you use `dm_apply_filters`.
-Before that, the filter conditions are merely stored within the `dm`.
-After using `dm_apply_filters()` a `dm` object is returned whose tables only contain rows that are related to the reduced rows in the filtered table.
-This currently only works for cycle-free relationships between the tables.
-
-```{r}
-dm_nycflights13(cycle = FALSE) %>%
-  dm_get_tables() %>%
-  map_int(nrow)
-
-dm_nycflights13(cycle = FALSE) %>%
-  dm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
-  dm_apply_filters() %>%
-  dm_get_tables() %>%
-  map_int(nrow)
-```
-
-For joining two tables using their relationship defined in the `dm`, you can use `dm_join_to_tbl()`:
-
-```{r}
-dm_nycflights13(cycle = FALSE) %>%
-  dm_join_to_tbl(airports, flights, join = semi_join)
-```
-
-In our `dm`, the `origin` column of the `flights` table points to the `airports` table.
-Since all `nycflights13`-flights depart from New York, only these airports are included in the semi-join.
-
-### From and to databases
-
-In order to transfer an existing `dm` object to a DB, you can call `dm_copy_to()` with the target DB and the `dm` object:
-
-```{r}
-src_sqlite <- src_sqlite(":memory:", create = TRUE)
-src_sqlite
-nycflights13_remote <- dm_copy_to(src_sqlite, dm_nycflights13(cycle = TRUE))
-nycflights13_remote
-```
-
-The key constraints from the original object are also copied to the newly created object.
-With the default setting `set_key_constraints = TRUE` for `dm_copy_to()`, key constraints are also established on the target DB.
-Currently this feature is only supported for MSSQL and Postgres database management systems (DBMS).
-
-It is also possible to automatically create a `dm` object from the permanent tables of a DB.
-Again, for now just MSSQL and Postgres are supported for this feature, so the next chunk is not evaluated.
-The support for other DBMS will be implemented in a future update.
-
-```{r eval=FALSE}
-src_postgres <- src_postgres()
-nycflights13_from_remote <- dm_learn_from_db(src_postgres)
-```
 
 ## Installation
 
-The latest (development) version of {dm} can be installed from GitHub.
-
-```r
-# install.packages("devtools")
-devtools::install_github("krlmlr/dm")
-```
-
-The {dm} package will also be made available on [CRAN](https://cran.r-project.org/web/packages/), from where it can be installed with the command
+The latest stable version of the {dm} package can be obtained from [CRAN](https://CRAN.R-project.org/package=dm) with the command
 
 ```r
 install.packages("dm")
 ```
 
+The latest development version of {dm} can be installed from GitHub.
 
-## More information
+```r
+# install.packages("devtools")
+devtools::install_github("cynkra/dm")
+```
 
-For an introduction into relational data models and to jump-start working with {dm}, please see the article ["Introduction to Relational Data Models"](https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models.html).
+## Usage
 
-If you would like to learn more about {dm}, the [Intro article](https://krlmlr.github.io/dm/articles/dm.html) is a good place to start.
+Create a dm object (see [Getting started](https://cynkra.github.io/dm/articles/dm.html) for details).
 
-Further resources:
+```{r}
+library(dm)
+dm <- dm_nycflights13()
+dm
+```
 
-- [Function reference](https://krlmlr.github.io/dm/reference/index.html)
-- [Introduction to Relational Data Models](https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-model.html) article
-- [Joining](https://krlmlr.github.io/dm/articles/dm-joining.html) article
-- [Filtering](https://krlmlr.github.io/dm/articles/dm-filtering.html) article
-- [Class 'dm' and basic operations](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html) article
-- [Visualizing 'dm' objects](https://krlmlr.github.io/dm/articles/dm-visualization.html) article
-- [Low-level operations](https://krlmlr.github.io/dm/articles/dm-low-level.html) article
-<!-- FIXME: vignettes missing;  once there, needs to be linked -->
+dm is a named list of tables:
 
-## Standing on the shoulders of giants
+```{r}
+names(dm)
+nrow(dm$airports)
+dm$flights %>%
+  count(origin)
+```
 
-The {dm} package follows the tidyverse principles:
+Visualize relationships at any time:
 
-- `dm` objects are immutable (your data will never be overwritten in place)
-- many functions used on `dm` objects are pipeable (i.e., return new `dm` objects)
-- tidy evaluation is used (unquoted function parameters are supported)
+```{r draw, screenshot.force = FALSE}
+dm %>%
+  dm_draw()
+```
 
-The {dm} package builds heavily upon the [{datamodelr} package](https://github.com/bergant/datamodelr), and upon the [tidyverse](https://www.tidyverse.org/).
-We're looking forward to a good collaboration!
+Simple joins:
 
-The [{polyply} package](https://github.com/russHyde/polyply) has a similar intent with a slightly different interface.
+```{r}
+dm %>%
+  dm_flatten_to_tbl(flights)
+```
 
-The [{data.cube} package](https://github.com/jangorecki/data.cube) has quite the same intent using `array`-like interface.
+Check consistency:
 
-Articles in the [{rquery} package](https://github.com/WinVector/rquery) discuss [join controllers](https://github.com/WinVector/rquery/blob/master/extras/JoinController.md) and [join dependency sorting](https://github.com/WinVector/rquery/blob/master/extras/DependencySorting.md), with the intent to move the declaration of table relationships from code to data.
+```{r}
+dm %>%
+  dm_examine_constraints()
+```
 
-The [{tidygraph} package](https://github.com/thomasp85/tidygraph) stores a network as two related tables of `nodes` and `edges`, compatible with {dplyr} workflows.
+Learn more in the [Getting started](https://cynkra.github.io/dm/articles/dm.html) article.
 
-In object-oriented programming languages, [object-relational mapping](https://en.wikipedia.org/wiki/Object-relational_mapping) is a similar concept that attempts to map a set of related tables to a class hierarchy.
+## Getting help
 
+If you encounter a clear bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/cynkra/dm/issues).
+For questions and other discussion, please use [community.rstudio.com](https://community.rstudio.com/).
 
 
 ---
@@ -269,12 +141,12 @@ License: MIT © cynkra GmbH.
 
 Funded by:
 
-[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch)
+[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch/de/)
 <span style="padding-right:50px">
 </span>
 [![cynkra](man/figures/cynkra-72.png)](https://www.cynkra.com/)
 
 ---
 
-Please note that the 'dm' project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+Please note that the 'dm' project is released with a [Contributor Code of Conduct](https://cynkra.github.io/dm/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.

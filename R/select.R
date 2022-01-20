@@ -1,4 +1,4 @@
-#' Rename one or more columns of a [`dm`] table
+#' Rename columns
 #'
 #' Rename the columns of your [`dm`] using syntax that is similar to `dplyr::rename()`.
 #'
@@ -21,19 +21,21 @@
 #'
 #' @return An updated `dm` with the columns of `table` renamed.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_rename(airports, code = faa, altitude = alt)
 #' @export
 dm_rename <- function(dm, table, ...) {
-  table_name <- as_string(ensym(table))
+  check_not_zoomed(dm)
+  table_name <- dm_tbl_name(dm, {{ table }})
 
-  dm_zoom_to_tbl(dm, !!table_name) %>%
+  dm %>%
+    dm_zoom_to(!!table_name) %>%
     rename(...) %>%
-    dm_update_zoomed_tbl()
+    dm_update_zoomed()
 }
 
-#' Select and/or rename one or more columns of a [`dm`] table
+#' Select columns
 #'
 #' Select columns of your [`dm`] using syntax that is similar to `dplyr::select()`.
 #'
@@ -43,22 +45,16 @@ dm_rename <- function(dm, table, ...) {
 #'
 #' @return An updated `dm` with the columns of `table` reduced and/or renamed.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_select(airports, code = faa, altitude = alt)
 #' @export
 dm_select <- function(dm, table, ...) {
-  table_name <- as_string(ensym(table))
+  check_not_zoomed(dm)
+  table_name <- dm_tbl_name(dm, {{ table }})
 
-  dm_zoom_to_tbl(dm, !!table_name) %>%
+  dm %>%
+    dm_zoom_to(!!table_name) %>%
     select(...) %>%
-    dm_update_zoomed_tbl()
-}
-
-get_all_keys <- function(dm, table_name) {
-  fks <- dm_get_all_fks(dm) %>%
-    filter(child_table == !!table_name) %>%
-    pull(child_fk_col)
-  pk <- dm_get_pk(dm, !!table_name)
-  set_names(unique(c(pk, fks)))
+    dm_update_zoomed()
 }

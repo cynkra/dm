@@ -2,7 +2,7 @@
 % Please edit documentation in R/select.R
 \name{dm_rename}
 \alias{dm_rename}
-\title{Rename one or more columns of a \code{\link{dm}} table}
+\title{Rename columns}
 \usage{
 dm_rename(dm, table, ...)
 }
@@ -35,6 +35,8 @@ Rename the columns of your \code{\link{dm}} using syntax that is similar to \cod
 If key columns are renamed, then the meta-information of the \code{dm} is updated accordingly.
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_rename(airports, code = faa, altitude = alt)
+\dontshow{\}) # examplesIf}
 }

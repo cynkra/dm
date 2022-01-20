@@ -2,34 +2,35 @@
 % Please edit documentation in R/primary-keys.R
 \name{dm_has_pk}
 \alias{dm_has_pk}
-\title{Does a table of a \code{\link{dm}} object have a column set as primary key?}
+\title{Check for primary key}
 \usage{
-dm_has_pk(dm, table)
+dm_has_pk(dm, table, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A logical value: \code{TRUE} if the given table has a primary key, \code{FALSE} otherwise.
 }
 \description{
-\code{dm_has_pk()} checks in the \code{data_model} part
-of the \code{\link{dm}} object if a given table has a column marked as its primary key.
+\code{dm_has_pk()} checks if a given table has columns marked as its primary key.
 }
 \examples{
-library(dplyr)
-nycflights_dm <- dm_nycflights13()
-
-nycflights_dm \%>\%
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_has_pk(flights)
+dm_nycflights13() \%>\%
   dm_has_pk(planes)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other primary key functions: 
 \code{\link{dm_add_pk}()},
 \code{\link{dm_get_all_pks}()},
-\code{\link{dm_get_pk}()},
 \code{\link{dm_rm_pk}()},
 \code{\link{enum_pk_candidates}()}
 }

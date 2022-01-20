@@ -2,7 +2,7 @@
 % Please edit documentation in R/key-helpers.R
 \name{check_key}
 \alias{check_key}
-\title{Test if a column (combination) is unique key of a table}
+\title{Check if column(s) can be used as keys}
 \usage{
 check_key(.data, ...)
 }

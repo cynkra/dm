@@ -2,18 +2,21 @@
 % Please edit documentation in R/primary-keys.R
 \name{dm_add_pk}
 \alias{dm_add_pk}
-\title{Mark a column of a table in a \code{\link{dm}} object as its primary key}
+\title{Add a primary key}
 \usage{
-dm_add_pk(dm, table, column, check = FALSE, force = FALSE)
+dm_add_pk(dm, table, columns, ..., check = FALSE, force = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.}
 
-\item{column}{A column of that table.}
+\item{columns}{Table columns, unquoted.
+To define a compound key, use \code{c(col1, col2)}.}
 
-\item{check}{Boolean, if \code{TRUE}, a check is made if the column is a unique key of the table.}
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
 
 \item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key
 set for this table.
@@ -23,29 +26,40 @@ If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 An updated \code{dm} with an additional primary key.
 }
 \description{
-\code{dm_add_pk()} marks the specified column as the primary key of the specified table.
+\code{dm_add_pk()} marks the specified columns as the primary key of the specified table.
 If \code{check == TRUE}, then it will first check if
-the given column is a unique key of the table.
+the given combination of columns is a unique key of the table.
 If \code{force == TRUE}, the function will replace an already
-set key.
+set key, without altering foreign keys previously pointing to that primary key.
 }
 \examples{
-library(dplyr)
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+nycflights_dm <- dm(
+  planes = nycflights13::planes,
+  airports = nycflights13::airports,
+  weather = nycflights13::weather
+)
 
-nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
+nycflights_dm \%>\%
+  dm_draw()
 
-# the following works
-dm_add_pk(nycflights_dm, planes, tailnum)
-dm_add_pk(nycflights_dm, airports, faa, check = TRUE)
-dm_add_pk(nycflights_dm, planes, manufacturer)
+# Create primary keys:
+nycflights_dm \%>\%
+  dm_add_pk(planes, tailnum) \%>\%
+  dm_add_pk(airports, faa, check = TRUE) \%>\%
+  dm_add_pk(weather, c(origin, time_hour)) \%>\%
+  dm_draw()
 
-# the following does not work (throws an error)
-try(dm_add_pk(nycflights_dm, planes, manufacturer, check = TRUE))
+# Keys can be checked during creation:
+try(
+  nycflights_dm \%>\%
+    dm_add_pk(planes, manufacturer, check = TRUE)
+)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other primary key functions: 
 \code{\link{dm_get_all_pks}()},
-\code{\link{dm_get_pk}()},
 \code{\link{dm_has_pk}()},
 \code{\link{dm_rm_pk}()},
 \code{\link{enum_pk_candidates}()}

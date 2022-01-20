@@ -2,7 +2,7 @@
 % Please edit documentation in R/graph.R
 \name{dm_get_referencing_tables}
 \alias{dm_get_referencing_tables}
-\title{Get the names of the tables of a \code{\link{dm}} that reference a given table.}
+\title{Get the names of referencing tables}
 \usage{
 dm_get_referencing_tables(dm, table)
 }
@@ -12,15 +12,20 @@ dm_get_referencing_tables(dm, table)
 \item{table}{A table in the \code{dm}.}
 }
 \value{
-Character vector of the names of the tables that point to the primary
+A character vector of the names of the tables that point to the primary
 key of \code{table}.
 }
 \description{
-Get the names of the tables of a \code{\link{dm}} that reference a given table.
+This function returns the names of all tables that point to the primary key
+of a table.
 }
 \examples{
-dm_get_referencing_tables(dm_nycflights13(), airports)
-dm_get_referencing_tables(dm_nycflights13(), flights)
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_get_referencing_tables(airports)
+dm_nycflights13() \%>\%
+  dm_get_referencing_tables(flights)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other functions utilizing foreign key relations: 

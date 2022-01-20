@@ -2,25 +2,25 @@
 % Please edit documentation in R/key-helpers.R
 \name{check_set_equality}
 \alias{check_set_equality}
-\title{Test if the value sets of two different columns in two different tables are the same}
+\title{Check column values for set equality}
 \usage{
 check_set_equality(t1, c1, t2, c2)
 }
 \arguments{
-\item{t1}{The data frame that contains column \code{c1}.}
+\item{t1}{The data frame that contains the columns \code{c1}.}
 
-\item{c1}{The column of \code{t1} that should only contain values that are also present in column \code{c2} of data frame \code{t2}.}
+\item{c1}{The columns of \code{t1} that should only contain values that are also present in columns \code{c2} of data frame \code{t2}. Multiple columns can be chosen using \code{c(col1, col2)}.}
 
-\item{t2}{The data frame that contains column \code{c2}.}
+\item{t2}{The data frame that contains the columns \code{c2}.}
 
-\item{c2}{The column of \code{t2} that should only contain values that are also present in column \code{c1} of data frame \code{t1}.}
+\item{c2}{The columns of \code{t2} that should only contain values that are also present in columns \code{c1} of data frame \code{t1}. Multiple columns can be chosen using \code{c(col1, col2)}.}
 }
 \value{
 Returns \code{t1}, invisibly, if the check is passed.
 Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
-\code{check_set_equality()} is a wrapper of \code{check_if_subset()}.
+\code{check_set_equality()} is a wrapper of \code{check_subset()}.
 It tests if one value set is a subset of another and vice versa, i.e., if both sets are the same.
 If not, it throws an error.
 }

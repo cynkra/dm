@@ -3,26 +3,30 @@
 \name{enum_pk_candidates}
 \alias{enum_pk_candidates}
 \alias{dm_enum_pk_candidates}
-\title{Which columns are candidates for a primary key column?}
+\title{Primary key candidate}
 \usage{
-enum_pk_candidates(table)
+enum_pk_candidates(table, ...)
 
-dm_enum_pk_candidates(dm, table)
+dm_enum_pk_candidates(dm, table, ...)
 }
 \arguments{
 \item{table}{A table in the \code{dm}.}
 
+\item{...}{These dots are for future extensions and must be empty.}
+
 \item{dm}{A \code{dm} object.}
 }
 \value{
-A table with columns_
-\itemize{
-\item \code{column} (column of \code{table}),
-\item \code{candidate} (boolean),
-\item \code{why} (if not a candidate for a primary key column, explanation for this).
+A tibble with the following columns:
+\describe{
+\item{\code{columns}}{columns of \code{table},}
+\item{\code{candidate}}{boolean: are these columns a candidate for a primary key,}
+\item{\code{why}}{if not a candidate for a primary key column, explanation for this.}
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
+
 \code{enum_pk_candidates()} checks for each column of a
 table if the column contains only unique values, and is thus
 a suitable candidate for a primary key of the table.
@@ -30,17 +34,30 @@ a suitable candidate for a primary key of the table.
 \code{dm_enum_pk_candidates()} performs these checks
 for a table in a \link{dm} object.
 }
-\examples{
-nycflights13::flights \%>\% enum_pk_candidates()
+\section{Life cycle}{
 
-dm_nycflights13() \%>\% dm_enum_pk_candidates(flights)
-dm_nycflights13() \%>\% dm_enum_pk_candidates(airports)
+These functions are marked "questioning" because we are not yet sure about
+the interface, in particular if we need both \code{dm_enum...()} and \code{enum...()}
+variants.
+Changing the interface later seems harmless because these functions are
+most likely used interactively.
+}
+
+\examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+nycflights13::flights \%>\%
+  enum_pk_candidates()
+\dontshow{\}) # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+
+dm_nycflights13() \%>\%
+  dm_enum_pk_candidates(airports)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other primary key functions: 
 \code{\link{dm_add_pk}()},
 \code{\link{dm_get_all_pks}()},
-\code{\link{dm_get_pk}()},
 \code{\link{dm_has_pk}()},
 \code{\link{dm_rm_pk}()}
 }

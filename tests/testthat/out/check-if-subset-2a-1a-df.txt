@@ -1,4 +1,0 @@
-# A tibble: 1 x 3
-      a     b     c
-  <dbl> <dbl> <dbl>
-1     3     6     9

@@ -2,7 +2,7 @@
 % Please edit documentation in R/select.R
 \name{dm_select}
 \alias{dm_select}
-\title{Select and/or rename one or more columns of a \code{\link{dm}} table}
+\title{Select columns}
 \usage{
 dm_select(dm, table, ...)
 }
@@ -36,6 +36,8 @@ If key columns are renamed, then the meta-information of the \code{dm} is update
 If key columns are removed, then all related relations are dropped as well.
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_select(airports, code = faa, altitude = alt)
+\dontshow{\}) # examplesIf}
 }

@@ -1,0 +1,241 @@
+---
+title: "Class dm and basic operations"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Technical: Class dm and basic operations}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+
+``````{r setup, include = FALSE}
+source("setup/setup.R")
+``````
+
+The goal of the {dm} package and the `dm` class that comes with it, is to make your life easier when you are dealing with data from several different tables.
+
+Let's take a look at the `dm` class.
+
+## Class `dm`
+
+The `dm` class consists of a collection of tables and metadata about the tables, such as
+
+- the names of the tables
+- the names of the columns of the tables
+- the primary and foreign keys of the tables to link the tables together
+- the data (either as data frames or as references to database tables)
+
+All tables in a `dm` must be obtained from the same data source;
+csv files and spreadsheets would need to be imported to data frames in R.
+
+
+## Examples of `dm` objects {#ex_dm}
+
+There are currently three options available for creating a `dm` object.
+The relevant functions for creating `dm` objects are:
+
+1. `dm()`
+2. `as_dm()`
+3. `new_dm()`
+4. `dm_from_src()`
+
+To illustrate these options, we will now create the same `dm` in several different ways.
+We can use the tables from the well-known {nycflights13} package.
+
+### Pass the tables directly
+
+Create a `dm` object directly by providing data frames to `dm()`:
+
+```{r}
+library(nycflights13)
+library(dm)
+dm(airlines, airports, flights, planes, weather)
+```
+
+### Start with an empty `dm`
+
+Start with an empty `dm` object that has been created with `dm()` or `new_dm()`, and add tables to that object:
+
+```{r}
+library(nycflights13)
+library(dm)
+empty_dm <- dm()
+empty_dm
+dm_add_tbl(empty_dm, airlines, airports, flights, planes, weather)
+```
+
+### Coerce a list of tables
+
+Turn a named list of tables into a `dm` with `as_dm()`:
+```{r}
+as_dm(list(airlines = airlines,
+           airports = airports,
+           flights = flights,
+           planes = planes,
+           weather = weather))
+```
+
+### Turn tables from a `src` into a `dm`
+
+Squeeze all (or a subset of) tables belonging to a `src` object into a `dm` using `dm_from_src()`:
+
+```{r message=FALSE}
+sqlite_src <- dbplyr::nycflights13_sqlite()
+
+flights_dm <- dm_from_src(sqlite_src)
+flights_dm
+```
+
+
+The function `dm_from_src(src, table_names = NULL)` includes all available tables on a source in the `dm` object.
+This means that you can use this, for example, on a postgres database that you access via `src_postgres()` (with the appropriate arguments `dbname`, `host`, `port`, ...), to produce a `dm` object with all the tables on the database.
+
+### Low-level construction
+
+Another way of creating a `dm` object is calling `new_dm()` on a list of `tbl` objects:
+
+```{r}
+base_dm <- new_dm(list(trees = trees, mtcars = mtcars))
+base_dm
+```
+
+This constructor is optimized for speed and does not perform integrity checks.
+Use with caution, validate using `validate_dm()` if necessary.
+
+```{r}
+validate_dm(base_dm)
+```
+
+## Access tables
+
+We can get the list of tables with `dm_get_tables()` and the `src` object with `dm_get_src()`.
+
+In order to pull a specific table from a `dm`, use:
+```{r}
+tbl(flights_dm, "airports")
+```
+
+But how can we use {dm}-functions to manage the primary keys of the tables in a `dm` object?
+
+## Primary keys of `dm` objects {#pk}
+
+Some useful functions for managing primary key settings are:
+
+1. `dm_add_pk()`
+1. `dm_get_all_pks()`
+1. `dm_rm_pk()`
+1. `dm_enum_pk_candidates()`
+
+If you created a `dm` object according to the examples in ["Examples of `dm` objects"](#ex_dm), your object does not yet have any primary keys set.
+So let's add one.
+
+We use the `nycflights13` tables, i.e. `flights_dm` from above.
+
+```{r}
+dm_has_pk(flights_dm, airports)
+flights_dm_with_key <- dm_add_pk(flights_dm, airports, faa)
+flights_dm_with_key
+```
+
+The `dm` now has a primary key:
+
+```{r}
+dm_has_pk(flights_dm_with_key, airports)
+```
+
+To get an overview over all tables with primary keys, use `dm_get_all_pks()`:
+
+```{r}
+dm_get_all_pks(flights_dm_with_key)
+```
+
+Remove a primary key:
+```{r}
+dm_rm_pk(flights_dm_with_key, airports) %>%
+  dm_has_pk(airports)
+```
+
+If you still need to get to know your data better, and it is already available in the form of a `dm` object, you can use the  `dm_enum_pk_candidates()` function in order to get information about which columns of the table are unique keys:
+```{r}
+dm_enum_pk_candidates(flights_dm_with_key, airports)
+```
+The `flights` table does not have any one-column primary key candidates:
+```{r}
+dm_enum_pk_candidates(flights_dm_with_key, flights) %>% dplyr::count(candidate)
+```
+
+`dm_add_pk()` has a `check` argument.
+If set to `TRUE`, the function checks if the column of the table given by the user is unique.
+For performance reasons, the default is `check = FALSE`.
+See also [dm_examine_constraints()] for checking all constraints in a `dm`.
+
+```{r error = TRUE}
+dm_add_pk(flights_dm, airports, tzone, check = TRUE)
+```
+
+
+## Foreign keys
+
+Useful functions for managing foreign key relations include:
+
+1. `dm_add_fk()`
+1. `dm_get_all_fks()`
+1. `dm_rm_fk()`
+1. `dm_enum_fk_candidates()`
+
+Now it gets (even more) interesting: we want to define relations between different tables.
+With the `dm_add_fk()` function you can define which column of which table points to another table's column.
+
+This is done by choosing a foreign key from one table that will point to a primary key of another table.
+The primary key of the referred table must be set with `dm_add_pk()`.
+`dm_add_fk()` will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.
+
+```{r}
+flights_dm_with_key %>% dm_add_fk(flights, origin, airports)
+```
+This will throw an error:
+```{r error=TRUE}
+flights_dm %>% dm_add_fk(flights, origin, airports)
+```
+Let's create a `dm` object with a foreign key relation to work with later on:
+```{r}
+flights_dm_with_fk <- dm_add_fk(flights_dm_with_key, flights, origin, airports)
+```
+What if we tried to add another foreign key relation from `flights` to `airports` to the object? Column `dest` might work, since it also contains airport codes:
+```{r error=TRUE}
+flights_dm_with_fk %>% dm_add_fk(flights, dest, airports, check = TRUE)
+```
+
+Checks are opt-in and executed only if `check = TRUE`.
+You can still add a foreign key with the default `check = FALSE`.
+See also [dm_examine_constraints()] for checking all constraints in a `dm`.
+
+Get an overview of all foreign key relations with`dm_get_all_fks()`:
+
+```{r}
+dm_get_all_fks(dm_nycflights13(cycle = TRUE))
+```
+
+Remove foreign key relations with `dm_rm_fk()` (parameter `columns = NULL` means that all relations will be removed, with a message):
+```{r error=TRUE}
+flights_dm_with_fk %>%
+  dm_rm_fk(table = flights, column = dest, ref_table = airports) %>%
+  dm_get_fk(flights, airports)
+flights_dm_with_fk %>%
+  dm_rm_fk(flights, origin, airports) %>%
+  dm_get_fk(flights, airports)
+flights_dm_with_fk %>%
+  dm_rm_fk(flights, columns = NULL, airports) %>%
+  dm_get_fk(flights, airports)
+```
+
+Since the primary keys are defined in the `dm` object, you do not usually need to provide the referenced column name of `ref_table`.
+
+Another function for getting to know your data better (cf. `dm_enum_pk_candidates()` in ["Primary keys of `dm` objects"](#pk)) is `dm_enum_fk_candidates()`. Use it to get an overview over foreign key candidates that point from one table to another:
+
+```{r}
+dm_enum_fk_candidates(flights_dm_with_key, weather, airports)
+```

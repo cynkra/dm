@@ -2,7 +2,7 @@
 % Please edit documentation in R/graph.R
 \name{dm_is_referenced}
 \alias{dm_is_referenced}
-\title{Is a table of a \code{\link{dm}} referenced by another table?}
+\title{Check foreign key reference}
 \usage{
 dm_is_referenced(dm, table)
 }
@@ -19,8 +19,12 @@ key of the \code{table} argument, \code{FALSE} otherwise.
 Is a table of a \code{\link{dm}} referenced by another table?
 }
 \examples{
-dm_is_referenced(dm_nycflights13(), airports)
-dm_is_referenced(dm_nycflights13(), flights)
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_is_referenced(airports)
+dm_nycflights13() \%>\%
+  dm_is_referenced(flights)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other functions utilizing foreign key relations: 

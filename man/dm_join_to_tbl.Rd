@@ -2,7 +2,7 @@
 % Please edit documentation in R/flatten.R
 \name{dm_join_to_tbl}
 \alias{dm_join_to_tbl}
-\title{Perform a join between two tables of a \code{\link{dm}}}
+\title{Join two tables}
 \usage{
 dm_join_to_tbl(dm, table_1, table_2, join = left_join)
 }
@@ -13,7 +13,7 @@ dm_join_to_tbl(dm, table_1, table_2, join = left_join)
 
 \item{table_2}{The second table of the join.}
 
-\item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}.}
+\item{join}{The type of join to be performed, see \code{\link[dplyr:mutate-joins]{dplyr::join()}}.}
 }
 \value{
 The resulting table of the join.
@@ -25,12 +25,20 @@ Since this function is a wrapper around \code{\link[=dm_flatten_to_tbl]{dm_flatt
 the join will always be a "child table", i.e. a table referencing the other table.
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_join_to_tbl(airports, flights)
 
-dm_join_to_tbl(dm_nycflights13(), airports, flights)
 # same result is achieved with:
-dm_join_to_tbl(dm_nycflights13(), flights, airports)
+dm_nycflights13() \%>\%
+  dm_join_to_tbl(flights, airports)
+
 # this gives an error, because the tables are not directly linked to each other:
-try(dm_join_to_tbl(dm_nycflights13(), airlines, airports))
+try(
+  dm_nycflights13() \%>\%
+    dm_join_to_tbl(airlines, airports)
+)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other flattening functions: 

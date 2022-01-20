@@ -1,0 +1,188 @@
+---
+title: "Updating tables and dm objects"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Updating tables dm objects}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+fansi::set_knit_hooks(knitr::knit_hooks)
+options(crayon.enabled = TRUE, width = 75, cli.width = 75)
+
+knit_print.grViz <- function(x, ...) {
+  x %>%
+    DiagrammeRsvg::export_svg() %>%
+    c("`````{=html}\n", ., "\n`````\n") %>%
+    knitr::asis_output()
+}
+library(nycflights13)
+library(tidyverse)
+library(dm)
+```
+
+This draft describes update operations on tables and dm objects.
+The generics for the table operations can be private in dm for now and move to dplyr later.
+Contains parts from <https://github.com/tidyverse/dplyr/issues/4654>.
+
+## Tables
+
+In dplyr, operations on tables in dplyr are generally transient or ephemeral.
+Resulting table objects must be stored in a new object, otherwise they are lost.
+All operations by default return a new table object that is disconnected from the original.
+
+
+### Operations
+
+The operations are modeled after existing database statements, with the exception of the new "patch".
+
+* insert new rows — would error if keys already exist, similar to `tibble::add_row()`.
+
+* update values — overrides existing values. (Similar to https://github.com/tidyverse/tidyr/issues/183)
+
+* patch values — like update, but only replaces missing values (Also similar to https://github.com/tidyverse/tidyr/issues/183)
+
+* upsert — update or insert depending on presence/absence of keys
+
+All operations would either take multiple named inputs or a single unnamed data frame.
+Additional restrictions and options may apply on other backends, these will be specified with arguments that start with a dot.
+For extensibility, named inputs that start with a dot are silently discarded.
+
+All operations require specification of a `.key` argument.
+Unlike `by` with joins, the `.key` argument is mandatory, because RHS column names must be a subset of the LHS column names.
+Keys must have the same name in the target and the input.
+If the table container knows its keys (e.g., grouped data frames or data.table), `.key` may be omitted.
+
+Both target table and source columns/table must be compatible:
+
+- Source has no extra tables and columns.
+- Key columns must be present in source.
+
+
+### Mutable backends
+
+Some *mutable* backends, most notably databases, Google sheets and data.table, permit in-place update of the source data.
+Update operations on mutable backends should optionally allow updating the source data.
+Because this is a potentially destructive exception from the dplyr guarantees, in-place updates must be "opt in".
+The default result always will be a "lazy" table.
+This allows previewing the results of an update operation before materializing.
+
+On these backends, the following additional operations are useful:
+
+* delete — remove rows that match keys, a variant of `anti_join()`
+
+* truncate — remove all rows
+
+Databases will require that the data is already on the database or ask the user to supply a `copy` argument.
+
+On mutable backends, update operations return the input, invisibly, if the update was carried out in-place.
+
+Challenges:
+
+- How to make compatible with `sql_render()`?
+
+
+## dm
+
+Operations on a dm object are generally transient or ephemeral.
+Resulting dm or table objects must be stored in a new object, otherwise they are lost.
+
+
+### Design
+
+- records from tables from a source dm are appended/updated/upserted/removed/replaced/... from the target dm
+- both dm must be compatible
+    - same source
+    - source is a subset of target tables
+- dry run supported: use transient operations instead of materialization
+    - check integrity constraints are still valid after running
+    - compare before-after state
+- transactions out of scope, caller can use `DBI::withTransaction()`
+- some operations need top-down, others need bottom-up
+    - fixed set of operations, each op knows its "direction"
+
+### Logic of operation
+
+- check compatibility
+- persist tables one by one, topologically sorted
+- put back into dm if necessary
+
+
+### API draft
+
+```{r}
+dm_insert <- function(target_dm, dm, ..., dry_run = FALSE) {
+  check_dots_empty()
+
+  dm_persist(target_dm, dm, operation = tbl_insert, top_down = TRUE, dry_run = dry_run)
+}
+
+dm_update <- function(target_dm, dm, ..., dry_run = FALSE) {
+  check_dots_empty()
+
+  dm_persist(target_dm, dm, operation = tbl_update, top_down = TRUE, dry_run = dry_run)
+}
+
+dm_upsert <- function(target_dm, dm, ..., dry_run = FALSE) {
+  check_dots_empty()
+
+  dm_persist(target_dm, dm, operation = tbl_upsert, top_down = TRUE, dry_run = dry_run)
+}
+
+dm_delete <- function(target_dm, dm, ..., dry_run = FALSE) {
+  check_dots_empty()
+
+  dm_persist(target_dm, dm, operation = tbl_delete, top_down = FALSE, dry_run = dry_run)
+}
+
+dm_truncate <- function(target_dm, dm, ..., dry_run = FALSE) {
+  check_dots_empty()
+
+  dm_persist(target_dm, dm, operation = tbl_truncate, top_down = FALSE, dry_run = dry_run)
+}
+
+dm_persist <- function(target_dm, dm, operation, top_down, dry_run = FALSE) {
+  dm_check_persist(target_dm, dm)
+
+  dm_run_persist(target_dm, dm, operation, top_down, dry_run)
+}
+
+dm_check_persist <- function(target_dm, dm) {
+  check_not_zoomed(target_dm)
+  check_not_zoomed(dm)
+
+  check_same_src(target_dm, dm)
+  walk2(dm_get_tables(target_dm), dm_get_tables(dm), check_columns_superset)
+  check_keys_compatible(target_dm, dm)
+}
+
+dm_run_persist <- function(target_dm, dm, operation, top_down, dry_run) {
+  # topologically sort tables
+  # run operation(target_tbl, source_tbl, dry_run = dry_run) for each table
+  # operation() always returns tbl, only need to patch if not the same tbl
+  # new_tables is list of non-NULL operation() values
+
+  target_dm %>%
+    dm_patch_tbl(!!!new_tables)
+}
+
+dm_patch_tbl <- function(dm, ...) {
+  check_not_zoomed(dm)
+
+  new_tables <- list2(...)
+
+  # FIXME: Better error message for unknown tables
+
+  def <- dm_get_def(dm)
+  idx <- match(names(new_tables), def$table)
+  def[idx, "data"] <- unname(new_tables)
+  new_dm3(def)
+}
+```

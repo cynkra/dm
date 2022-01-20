@@ -1,10 +1,11 @@
-#' Copy a `dm`-object to a different data source
+#' Copy data model to data source
 #'
-#' `dm_copy_to()` takes a [dplyr::src_dbi] object or a [`DBI::DBIConnection-class`] object as its first argument
+#' `copy_dm_to()` takes a [dplyr::src_dbi] object or a [`DBI::DBIConnection-class`] object as its first argument
 #' and a [`dm`] object as its second argument.
 #' The latter is copied to the former.
-#' By default, temporary tables will be created and the key constraints will be set
-#' (currently only on MSSQL and Postgres databases).
+#' The default is to create temporary tables, set `temporary = FALSE` to create permanent tables.
+#' Unless `set_key_constraints` is `FALSE`, primary key constraints are set on all databases,
+#' and in addition foreign key constraints are set on MSSQL and Postgres databases.
 #'
 #' No tables will be overwritten; passing `overwrite = TRUE` to the function will give an error.
 #' Types are determined separately for each table, setting the `types` argument will
@@ -12,43 +13,100 @@
 #' The arguments are included in the signature to avoid passing them via the
 #' `...` ellipsis.
 #'
+#' @inheritParams dm_examine_constraints
+#'
 #' @param dest An object of class `"src"` or `"DBIConnection"`.
 #' @param dm A `dm` object.
-#' @param table_names A named character vector, containing the names that you want the tables in the `dm` to have
-#'   after copying them to the database.
-#'   The table names within the `dm` will remain unchanged.
-#'   The name of each element of the vector needs to be one of the table names of the `dm`.
-#'   Those tables of the `dm` that are not addressed will be called by their original name on the database.
 #' @param overwrite,types,indexes,unique_indexes Must remain `NULL`.
-#' @param set_key_constraints Boolean variable, if `TRUE` will mirror `dm` key constraints on a database.
-#' @param unique_table_names Boolean, if `FALSE` (default), the original table names will be used, if `TRUE`,
-#'   unique table names will be created based on the original table names.
-#' @param temporary Boolean variable, if `TRUE`, only temporary tables will be created.
+#' @param set_key_constraints If `TRUE` will mirror `dm` primary and foreign key constraints on a database
+#'   and create unique indexes.
+#'   Set to `FALSE` if your data model currently does not satisfy primary or foreign key constraints.
+#' @param unique_table_names Deprecated.
+#' @param temporary If `TRUE`, only temporary tables will be created.
 #'   These tables will vanish when disconnecting from the database.
-#' @param ... Possible further arguments passed to [dplyr::copy_to()], which is used on each table.
+#' @param schema Name of schema to copy the `dm` to.
+#' If `schema` is provided, an error will be thrown if `temporary = FALSE` or
+#' `table_names` is not `NULL`.
+#'
+#' Not all DBMS are supported.
+#' @param table_names Desired names for the tables on `dest`; the names within the `dm` remain unchanged.
+#'   Can be `NULL`, a named character vector, a function or a one-sided formula.
+#'
+#'   If left `NULL` (default), the names will be determined automatically depending on the `temporary` argument:
+#'
+#'   1. `temporary = TRUE` (default): unique table names based on the names of the tables in the `dm` are created.
+#'   1. `temporary = FALSE`: the table names in the `dm` are used as names for the tables on `dest`.
+#'
+#'   If a function or one-sided formula, `table_names` is converted to a function
+#'   using [rlang::as_function()].
+#'   This function is called with the unquoted table names of the `dm` object
+#'   as the only argument.
+#'   The output of this function is processed by [DBI::dbQuoteIdentifier()],
+#'   that result should be a vector of identifiers of the same length
+#'   as the original table names.
+#'
+#'   Use a variant of
+#'   `table_names = ~ DBI::SQL(paste0("schema_name", ".", .x))`
+#'   to specify the same schema for all tables.
+#'   Use `table_names = identity` with `temporary = TRUE`
+#'   to avoid giving temporary tables unique names.
+#'
+#'   If a named character vector,
+#'   the names of this vector need to correspond to the table names in the `dm`,
+#'   and its values are the desired names on `dest`.
+#'   The value is processed by [DBI::dbQuoteIdentifier()],
+#'   that result should be a vector of identifiers of the same length
+#'   as the original table names.
+#'
+#'   Use qualified names corresponding to your database's syntax
+#'   to specify e.g. database and schema for your tables.
+#' @param copy_to By default, [dplyr::copy_to()] is called to upload the
+#'   individual tables to the target data source.
+#'   This argument allows overriding the standard behavior in cases
+#'   when the default does not work as expected, such as spatial data frames
+#'   or other tables with special data types.
+#'   If not `NULL`, this argument is processed with [rlang::as_function()].
+#' @param ... Passed on to [dplyr::copy_to()] or to the function specified
+#'   by the `copy_to` argument.
 #'
 #' @family DB interaction functions
 #'
-#' @return A `dm` object on the given `src`.
+#' @return A `dm` object on the given `src` with the same table names
+#'   as the input `dm`.
 #'
-#' @examples
-#' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
-#' iris_dm <- dm_copy_to(
-#'   src_sqlite,
-#'   as_dm(list(iris = iris)),
+#' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
+#' con <- DBI::dbConnect(RSQLite::SQLite())
+#'
+#' # Copy to temporary tables, unique table names by default:
+#' temp_dm <- copy_dm_to(
+#'   con,
+#'   dm_nycflights13(),
 #'   set_key_constraints = FALSE
 #' )
+#'
+#' # Persist, explicitly specify table names:
+#' persistent_dm <- copy_dm_to(
+#'   con,
+#'   dm_nycflights13(),
+#'   temporary = FALSE,
+#'   table_names = ~ paste0("flights_", .x)
+#' )
+#' dbplyr::remote_name(persistent_dm$planes)
+#'
+#' DBI::dbDisconnect(con)
 #' @export
-dm_copy_to <- function(dest, dm, ...,
+copy_dm_to <- function(dest, dm, ...,
                        types = NULL, overwrite = NULL,
                        indexes = NULL, unique_indexes = NULL,
-                       set_key_constraints = TRUE, unique_table_names = FALSE,
+                       set_key_constraints = TRUE, unique_table_names = NULL,
                        table_names = NULL,
-                       temporary = TRUE) {
+                       temporary = TRUE,
+                       schema = NULL,
+                       progress = NA,
+                       copy_to = NULL) {
   # for the time being, we will be focusing on MSSQL
-  # we expect the src (dest) to already point to the correct schema
   # we want to
-  #   1. change `dm_get_src(dm)` to `dest`
+  #   1. change `dm_get_src_impl(dm)` to `dest`
   #   2. copy the tables to `dest`
   #   3. implement the key situation within our `dm` on the DB
 
@@ -68,87 +126,159 @@ dm_copy_to <- function(dest, dm, ...,
     abort_no_unique_indexes()
   }
 
-  if (!is.null(table_names)) {
-    if (unique_table_names) {
-      abort_unique_table_names_or_table_names()
-    }
+  if (!is.null(unique_table_names)) {
+    deprecate_soft(
+      "0.1.4", "dm::copy_dm_to(unique_table_names = )",
+      details = "Use `table_names = identity` to use unchanged names for temporary tables."
+    )
 
-    not_found <- setdiff(names2(table_names), src_tbls(dm))
-    if (has_length(not_found)) {
-      if (any(not_found == "")) abort_need_named_vec(src_tbls(dm))
-      abort_table_not_in_dm(unique(not_found), src_tbls(dm))
+    if (is.null(table_names) && temporary && !unique_table_names) {
+      table_names <- identity
     }
   }
-
-  # FIXME: if same_src(), can use compute() but need to set NOT NULL
-  # constraints
 
   dest <- src_from_src_or_con(dest)
-  dm <- collect(dm)
+  src_names <- src_tbls_impl(dm)
 
-  copy_data <- build_copy_data(dm, dest, table_names, unique_table_names)
+  if (is_db(dest)) {
+    dest_con <- con_from_src_or_con(dest)
 
-  new_tables <- copy_list_of_tables_to(
-    dest,
-    copy_data = copy_data,
-    temporary = temporary,
-    overwrite = FALSE,
-    ...
+    # in case `table_names` was chosen by the user, check if the input makes sense:
+    # 1. is there one name per dm-table?
+    # 2. are there any duplicated table names?
+    # 3. is it a named character or ident_q vector with the correct names?
+    if (is.null(table_names)) {
+      table_names_out <- repair_table_names_for_db(src_names, temporary, dest_con, schema)
+      # https://github.com/tidyverse/dbplyr/issues/487
+      if (is_mssql(dest)) {
+        temporary <- FALSE
+      }
+    } else {
+      if (!is.null(schema)) abort_one_of_schema_table_names()
+      if (is_function(table_names) || is_bare_formula(table_names)) {
+        table_name_fun <- as_function(table_names)
+        table_names_out <- set_names(table_name_fun(src_names), src_names)
+      } else {
+        table_names_out <- table_names
+      }
+      check_naming(names(table_names_out), src_names)
+
+      if (anyDuplicated(table_names_out)) {
+        problem <- table_names_out[duplicated(table_names_out)][[1]]
+        abort_copy_dm_to_table_names_duplicated(problem)
+      }
+
+      table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, unclass(table_names_out[src_names])))
+      names(table_names_out) <- src_names
+    }
+
+    # create `ident`-class objects from the table names
+    table_names_out <- map(table_names_out, dbplyr::ident_q)
+  } else {
+    # FIXME: Other data sources than local and database possible
+    deprecate_soft(
+      "0.1.6", "dm::copy_dm_to(dest = 'must refer to a remote data source')",
+      "dm::collect.dm()"
+    )
+    table_names_out <- set_names(src_names)
+  }
+
+  check_not_zoomed(dm)
+
+  # FIXME: if same_src(), can use compute() but need to set NOT NULL and other
+  # constraints
+
+  dm <- collect(dm, progress = progress)
+
+  # Shortcut necessary to avoid copying into .GlobalEnv
+  if (!is_db(dest)) {
+    return(dm)
+  }
+
+  queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
+
+  # create tables
+  walk(queries$sql_table, ~ {
+    DBI::dbExecute(dest_con, .x, immediate = TRUE)
+  })
+
+  # populate tables
+  pwalk(
+    queries[c("name", "remote_name")],
+    ~ db_append_table(dest_con, .y, dm[[.x]])
   )
 
-  def <- dm_get_def(dm)
-  def$data <- new_tables
-  remote_dm <- new_dm3(def)
+  # create indexes
+  walk(unlist(queries$sql_index), ~ {
+    DBI::dbExecute(dest_con, .x, immediate = TRUE)
+  })
 
-  if (set_key_constraints && is_src_db(remote_dm)) {
-    dm_set_key_constraints(remote_dm)
-  }
+  # build remote dm
+  remote_tables <-
+    queries$remote_name %>%
+    set_names(queries$name) %>%
+    map(tbl, src = dest_con)
+  # remote dm is same as source dm with replaced data
+  def <- dm_get_def(dm)
+  def$data <- unname(remote_tables[names(dm)])
+  remote_dm <- new_dm3(def)
 
   invisible(debug_validate_dm(remote_dm))
 }
 
-#' Set key constraints on a DB for a `dm`-obj with keys
-#'
-#' @description `dm_set_key_constraints()` takes a `dm` object that is constructed from tables in a database
-#' (this is currently only implemented for MSSQL and Postgres databases), and mirrors the `dm` key constraints
-#' on the database.
-#'
-#' @inheritParams dm_copy_to
-#'
-#' @family DB interaction functions
-#'
-#' @return Returns the `dm`, invisibly. Side effect: installing key constraints on DB.
-#'
-#' @examples
-#' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
-#' iris_dm <- dm_copy_to(
-#'   src_sqlite,
-#'   as_dm(list(iris = iris)),
-#'   set_key_constraints = FALSE
-#' )
-#'
-#' # there are no key constraints in `as_dm(list(iris = iris))`
-#' # but if there were, and if we had already implemented setting key
-#' # constraints for SQLite, the following command would do something:
-#' dm_set_key_constraints(iris_dm)
-#' @noRd
-dm_set_key_constraints <- nse(function(dm) {
-  if (!is_src_db(dm) && !is_this_a_test()) abort_src_not_db()
-  db_table_names <- get_db_table_names(dm)
+get_db_table_names <- function(dm) {
+  if (!is_src_db(dm)) {
+    return(tibble(table_name = src_tbls_impl(dm), remote_name = src_tbls_impl(dm)))
+  }
+  tibble(
+    table_name = src_tbls_impl(dm),
+    remote_name = map_chr(dm_get_tables_impl(dm), dbplyr::remote_name)
+  )
+}
 
-  tables_w_pk <- dm_get_all_pks(dm)
+check_naming <- function(table_names, dm_table_names) {
+  if (!identical(sort(table_names), sort(dm_table_names))) {
+    abort_copy_dm_to_table_names()
+  }
+}
 
-  fk_info <-
-    dm_get_all_fks(dm) %>%
-    left_join(tables_w_pk, by = c("parent_table" = "table")) %>%
-    left_join(db_table_names, by = c("child_table" = "table_name")) %>%
-    rename(db_child_table = remote_name) %>%
-    left_join(db_table_names, by = c("parent_table" = "table_name")) %>%
-    rename(db_parent_table = remote_name)
+db_append_table <- function(con, remote_table, table) {
+  if (is_mssql(con)) {
+    # https://github.com/r-dbi/odbc/issues/480
+    values <- as_tibble(map(table, map_chr, dbplyr::escape, con = con))
+    # chunks of 1000
+    idx <- as.integer((seq_len(nrow(values)) + 999L) / 1000L)
+    split <- vec_split(values, idx)
+    sql <- map_chr(split$val, ~ DBI::sqlAppendTable(con, DBI::SQL(remote_table), as.list(.x), row.names = FALSE))
+    walk(sql, ~ DBI::dbExecute(con, .x, immediate = TRUE))
+  } else if (is_postgres(con)) {
+    # https://github.com/r-dbi/RPostgres/issues/384
+    table <- as.data.frame(table)
+    # https://github.com/r-dbi/RPostgres/issues/382
+    DBI::dbAppendTable(con, DBI::SQL(remote_table), table, copy = FALSE)
+  } else {
+    DBI::dbAppendTable(con, DBI::SQL(remote_table), table)
+  }
+}
 
-  con <- con_from_src_or_con(dm_get_src(dm))
-  queries <- create_queries(con, fk_info)
-  walk(queries, ~ dbExecute(con, .))
 
-  invisible(dm)
-})
+# Errors ------------------------------------------------------------------
+
+abort_copy_dm_to_table_names <- function() {
+  abort(error_txt_copy_dm_to_table_names(), .subclass = dm_error_full("copy_dm_to_table_names"))
+}
+
+error_txt_copy_dm_to_table_names <- function() {
+  "`table_names` must have names that are the same as the table names in `dm`."
+}
+
+abort_copy_dm_to_table_names_duplicated <- function(problem) {
+  abort(error_txt_copy_dm_to_table_names_duplicated(problem), .subclass = dm_error_full("copy_dm_to_table_names_duplicated"))
+}
+
+error_txt_copy_dm_to_table_names_duplicated <- function(problem) {
+  c(
+    "`table_names` must be unique.",
+    i = paste0("Duplicate: ", tick(problem))
+  )
+}

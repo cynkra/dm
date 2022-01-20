@@ -1,88 +1,164 @@
-url: https://krlmlr.github.io/dm
+url: https://cynkra.github.io/dm
 
 template:
   assets:
   - pkgdown/assets
 
 reference:
-- title: Creating `dm` objects and basic functions
+- title: Basic
   contents:
   - dm
+  - dm_from_src
   - new_dm
-  - is_dm
   - as_dm
-  - dm_get_src
+  - is_dm
+  - validate_dm
   - dm_get_con
   - dm_get_tables
-  - dm_get_filter
+
+- title: Tables
+  contents:
+  - dm_add_tbl
+  - dm_rm_tbl
+  - dm_mutate_tbl
   - dm_select_tbl
+  - dm_rename_tbl
   - pull_tbl
+  - dm_bind
 
 - title: Primary keys
   contents:
   - dm_add_pk
   - dm_has_pk
-  - dm_get_pk
   - dm_get_all_pks
   - dm_rm_pk
   - dm_enum_pk_candidates
+  - enum_pk_candidates
 
 - title: Foreign keys
   contents:
   - dm_add_fk
-  - dm_has_fk
-  - dm_get_fk
   - dm_get_all_fks
   - dm_rm_fk
   - dm_enum_fk_candidates
+  - enum_fk_candidates
+  - dm_is_referenced
+  - dm_get_referencing_tables
 
-- title: Visualization
+- title: Visualize
   contents:
   - dm_draw
   - dm_set_colors
   - dm_get_colors
   - dm_get_available_colors
+  - dm_paste
 
-- title: Flattening
+- title: Select columns
+  contents:
+  - dm_select
+  - dm_rename
+
+- title: Flatten
   contents:
   - dm_flatten_to_tbl
+  - dm_squash_to_tbl
   - dm_join_to_tbl
+  - dm_disambiguate_cols
 
-- title: Filtering
+- title: Zoom
+  contents:
+  - dm_zoom_to
+  - dm_insert_zoomed
+  - dm_update_zoomed
+  - dm_discard_zoomed
+  - arrange.zoomed_dm
+  - distinct.zoomed_dm
+  - filter.zoomed_dm
+  - group_by.zoomed_dm
+  - mutate.zoomed_dm
+  - relocate.zoomed_dm
+  - rename.zoomed_dm
+  - select.zoomed_dm
+  - slice.zoomed_dm
+  - summarise.zoomed_dm
+  - transmute.zoomed_dm
+  - ungroup.zoomed_dm
+  - compute.zoomed_dm
+  - separate.zoomed_dm
+  - unite.zoomed_dm
+  - anti_join.zoomed_dm
+  - full_join.zoomed_dm
+  - inner_join.zoomed_dm
+  - left_join.zoomed_dm
+  - right_join.zoomed_dm
+  - semi_join.zoomed_dm
+  - head.zoomed_dm
+  - tail.zoomed_dm
+
+- title: Wrap
+  contents:
+  - dm_wrap
+  - dm_unwrap
+  - dm_nest_tbl
+  - dm_pack_tbl
+  - dm_unnest_tbl
+  - dm_unpack_tbl
+
+- title: Materialize
+  contents:
+  - compute.dm
+  - collect.dm
+
+- title: Upload
+  contents:
+  - copy_dm_to
+  - dm_rows_insert
+  - rows-db
+  - rows-dm
+  - rows_truncate
+  - get_returned_rows
+
+- title: Filter
   contents:
   - dm_filter
   - dm_apply_filters
+  - dm_apply_filters_to_tbl
+  - dm_get_filters
 
 - title: Normalization
   contents:
   - dm_separate_tbl
   - dm_unite_tbls
 
-- title: Interaction with DBs
-  contents:
-  - dm_copy_to
-  - dm_learn_from_db
-
-- title: Utilizing foreign key relations
-  contents:
-  - dm_is_referenced
-  - dm_get_referencing_tables
-
 - title: Check keys and cardinalities
   contents:
+  - dm_examine_constraints
+  - dm_examine_cardinalities
+  - examine_cardinality
   - check_key
-  - check_if_subset
+  - check_subset
   - check_set_equality
-  - check_cardinality
   - check_cardinality_0_n
   - check_cardinality_1_n
   - check_cardinality_0_1
   - check_cardinality_1_1
 
+- title: Database schemas
+  contents:
+  - db_schema_create
+  - db_schema_drop
+  - db_schema_exists
+  - db_schema_list
+
 - title: Miscellaneous
   contents:
   - dm_nycflights13
+  - dm_financial
+  - dm_financial_sqlite
+  - dm_pixarfilms
   - dm_nrow
+  - dm_ptype
+  - pack_join
 
 navbar:
   title: ~
@@ -92,37 +168,51 @@ navbar:
     href: articles/dm.html
   - text: Reference
     href: reference/index.html
-  - text: Articles
+  - text: Tutorials
     menu:
+    - text: Introduction to relational data models
+      href: articles/howto-dm-theory.html
+    - text: Create a dm object from data frames
+      href: articles/howto-dm-df.html
+    - text: Create a dm object from a database
+      href: articles/howto-dm-db.html
+    - text: Copy data to and from a database
+      href: articles/howto-dm-copy.html
+    - text: Insert, update or remove rows in a database
+      href: articles/howto-dm-rows.html
+  - text: Technical articles
+    menu:
+    - text: Joining in relational data models
+      href: articles/tech-dm-join.html
+    - text: Zooming and manipulating tables
+      href: articles/tech-dm-zoom.html
+    - text: Filtering in relational data models
+      href: articles/tech-dm-filter.html
+    - text: Visualizing dm objects
+      href: articles/tech-dm-draw.html
+    - text: Model verification - keys, constraints and normalization
+      href: articles/tech-dm-low-level.html
     - text: Class 'dm' and basic operations
-      href: articles/dm-class-and-basic-operations.html
-    - text: Defining a 'dm' object for your data
-      href: articles/dm-setup.html
-    - text: Introduction to Relational Data Models
-      href: articles/dm-introduction-relational-data-models.html
-    - text: Joining in Relational Data Models
-      href: articles/dm-joining.html
-    - text: Filtering in Relational Data Models
-      href: articles/dm-filtering.html
-    - text: Visualizing 'dm' objects
-      href: articles/dm-visualization.html
-    - text: Low level operations
-      href: articles/dm-low-level.html
+      href: articles/tech-dm-class.html
+    - text: Function naming logic
+      href: articles/tech-dm-naming.html
+    - text: 'Migration guide: ''cdm'' -> ''dm'''
+      href: articles/tech-dm-cdm.html
   - text: News
     href: news/index.html
   right:
   - icon: fa-github fa-lg
-    href: https://github.com/krlmlr/dm
+    href: https://github.com/cynkra/dm
 
 development:
-  mode: unreleased
+  mode: auto
 
 authors:
   Kirill Müller:
     href: http://krlmlr.info
   energie360° AG:
-    html: '<img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/>'
-    href: https://www.energie360.ch
+    html: '<img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"/>'
+    href: https://www.energie360.ch/de/
   cynkra GmbH:
-    html: '<img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/>'
+    html: '<img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"/>'
     href: https://www.cynkra.com

@@ -1,0 +1,61 @@
+name: 'Action to create pull requests for updated snapshots'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Test files
+      run: |
+        rx <- "^test-(.*)[.][rR]$"
+        files <- dir("tests/testthat", pattern = rx)
+        has_snapshot <- vapply(files, function(.x) any(grepl("snapshot", readLines(file.path("tests/testthat", .x)), fixed = TRUE)), logical(1))
+        if (any(has_snapshot)) {
+          patterns <- gsub(rx, "^\\1$", files[has_snapshot])
+          pattern <- paste0(patterns, collapse = "|")
+          tryCatch(
+            {
+              result <- as.data.frame(testthat::test_local(pattern = pattern, reporter = "silent", stop_on_failure = FALSE))
+              failures <- result[result$failed > 0, ]
+              if (nrow(failures) > 0) {
+                writeLines("Tests failed")
+                print(failures[names(failures) != "result"])
+                print(failures$result)
+                testthat::snapshot_accept()
+              }
+            },
+            error = print
+          )
+        }
+      shell: Rscript {0}
+
+    - name: Check changed files
+      id: check-changed
+      run: |
+        echo "::set-output name=changed::$(git status --porcelain -- tests/testthat/_snaps)"
+      shell: bash
+
+    - name: Derive branch name
+      if: ${{ steps.check-changed.outputs.changed }}
+      id: matrix-desc
+      run: |
+        config=$(echo '${{ toJSON(matrix) }}' | jq -c .)
+        echo "::set-output name=text::$(echo ${config})"
+        echo "::set-output name=branch::$(echo ${config} | sed -r 's/[^0-9a-zA-Z]+/-/g;s/^-//;s/-$//')"
+      shell: bash
+
+    - name: Create pull request
+      if: ${{ steps.check-changed.outputs.changed }}
+      id: cpr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        base: ${{ github.head_ref }}
+        branch: snapshot-${{ github.ref_name }}-${{ github.job }}-${{ steps.matrix-desc.outputs.branch }}
+        delete-branch: true
+        title: Snapshot updates for ${{ github.job }} (${{ steps.matrix-desc.outputs.text }})
+        add-paths: |
+          tests/testthat/_snaps
+
+    - name: Fail if pull request created
+      if: ${{ steps.cpr.outputs.pull-request-number }}
+      run: |
+        false
+      shell: bash

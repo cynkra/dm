@@ -1,34 +1,30 @@
-MAX_COMMAS <- 6L
-
-commas <- function(x) {
-  if (is_empty(x)) {
-    x <- ""
-  } else if (length(x) > MAX_COMMAS) {
-    x[[MAX_COMMAS]] <- paste0(cli::symbol$ellipsis, " (", length(x), " total)")
-    length(x) <- MAX_COMMAS
-  }
-
-  glue_collapse(x, sep = ", ")
+#' \pkg{utils} table manipulation methods for `zoomed_dm` objects
+#'
+#' Extract the first or last rows from a table.
+#' Use these methods without the '.zoomed_dm' suffix (see examples).
+#' The methods for regular `dm` objects extract the first or last tables.
+#'
+#' @param x object of class `zoomed_dm`
+#' @inheritParams utils::head
+#' @rdname utils_table_manipulation
+#'
+#' @return A `zoomed_dm` object.
+#'
+#' @details see manual for the corresponding functions in \pkg{utils}.
+#'
+#' @examplesIf rlang::is_installed("nycflights13")
+#' zoomed <- dm_nycflights13() %>%
+#'   dm_zoom_to(flights) %>%
+#'   head(4)
+#' zoomed
+#' dm_insert_zoomed(zoomed, new_tbl_name = "head_flights")
+#' @export
+head.zoomed_dm <- function(x, n = 6L, ...) { # dm method provided by utils
+  replace_zoomed_tbl(x, head(tbl_zoomed(x), n, ...))
 }
 
-tick <- function(x) {
-  if (is_empty(x)) {
-    return(character())
-  }
-  paste0("`", x, "`")
-}
-
-default_local_src <- function() {
-  src_df(env = .GlobalEnv)
-}
-
-# next 2 are borrowed from {tibble}:
-tick_if_needed <- function(x) {
-  needs_ticks <- !is_syntactic(x)
-  x[needs_ticks] <- tick(x[needs_ticks])
-  x
-}
-
-is_syntactic <- function(x) {
-  x == make.names(x)
+#' @rdname utils_table_manipulation
+#' @export
+tail.zoomed_dm <- function(x, n = 6L, ...) { # dm method provided by utils
+  replace_zoomed_tbl(x, tail(tbl_zoomed(x), n, ...))
 }

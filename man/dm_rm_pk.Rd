@@ -2,47 +2,45 @@
 % Please edit documentation in R/primary-keys.R
 \name{dm_rm_pk}
 \alias{dm_rm_pk}
-\title{Remove a primary key from a table in a \code{\link{dm}} object}
+\title{Remove a primary key}
 \usage{
-dm_rm_pk(dm, table, rm_referencing_fks = FALSE)
+dm_rm_pk(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}.}
+\item{table}{A table in the \code{dm}.
+Pass \code{NULL} to remove all matching keys.}
 
-\item{rm_referencing_fks}{Boolean: if \code{FALSE} (default), will throw an error if
-there are foreign keys addressing the primary key that is to be removed.
-If \code{TRUE}, the function will
-remove, in addition to the primary key of the \code{table} argument, also all foreign key constraints
-that are pointing to it.}
+\item{columns}{Table columns, unquoted.
+To refer to a compound key, use \code{c(col1, col2)}.
+Pass \code{NULL} (the default) to remove all matching keys.}
+
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{fail_fk}{Boolean: if \code{TRUE} (default), will throw an error
+if there are foreign keys addressing the primary key that is to be removed.}
 }
 \value{
-An updated \code{dm} without the indicated primary key.
+An updated \code{dm} without the indicated primary key(s).
 }
 \description{
-\code{dm_rm_pk()} removes a primary key from a table in the
-underlying \code{data_model}-object; leaves the \code{\link{dm}} object unaltered otherwise.
-
-Foreign keys that point to the table from other tables, can be optionally removed as well.
+\code{dm_rm_pk()} removes one or more primary keys from a table and leaves the \code{\link{dm}} object otherwise unaltered.
+An error is thrown if no private key matches the selection criteria.
+If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
+Foreign keys are never removed.
 }
 \examples{
-library(dplyr)
-nycflights_dm <- dm_nycflights13()
-
-nycflights_dm \%>\%
-  dm_rm_pk(airports, rm_referencing_fks = TRUE) \%>\%
-  dm_has_pk(planes)
-
-nycflights_dm \%>\%
-  dm_rm_pk(planes, rm_referencing_fks = TRUE) \%>\%
-  dm_has_pk(planes)
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_rm_pk(airports, fail_fk = FALSE) \%>\%
+  dm_draw()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other primary key functions: 
 \code{\link{dm_add_pk}()},
 \code{\link{dm_get_all_pks}()},
-\code{\link{dm_get_pk}()},
 \code{\link{dm_has_pk}()},
 \code{\link{enum_pk_candidates}()}
 }

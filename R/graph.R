@@ -1,3 +1,5 @@
+#' Check foreign key reference
+#'
 #' Is a table of a [`dm`] referenced by another table?
 #'
 #' @inheritParams dm_add_pk
@@ -7,30 +9,38 @@
 #'
 #' @family functions utilizing foreign key relations
 #'
-#' @examples
-#' dm_is_referenced(dm_nycflights13(), airports)
-#' dm_is_referenced(dm_nycflights13(), flights)
 #' @export
+#' @examplesIf rlang::is_installed("nycflights13")
+#' dm_nycflights13() %>%
+#'   dm_is_referenced(airports)
+#' dm_nycflights13() %>%
+#'   dm_is_referenced(flights)
 dm_is_referenced <- function(dm, table) {
+  check_not_zoomed(dm)
   has_length(dm_get_referencing_tables(dm, !!ensym(table)))
 }
 
-#' Get the names of the tables of a [`dm`] that reference a given table.
+#' Get the names of referencing tables
+#'
+#' This function returns the names of all tables that point to the primary key
+#' of a table.
 #'
 #' @inheritParams dm_is_referenced
 #'
-#' @return Character vector of the names of the tables that point to the primary
-#' key of `table`.
+#' @return A character vector of the names of the tables that point to the primary
+#'   key of `table`.
 #'
 #' @family functions utilizing foreign key relations
 #'
-#' @examples
-#' dm_get_referencing_tables(dm_nycflights13(), airports)
-#' dm_get_referencing_tables(dm_nycflights13(), flights)
+#' @examplesIf rlang::is_installed("nycflights13")
+#' dm_nycflights13() %>%
+#'   dm_get_referencing_tables(airports)
+#' dm_nycflights13() %>%
+#'   dm_get_referencing_tables(flights)
 #' @export
 dm_get_referencing_tables <- function(dm, table) {
-  table <- as_name(ensym(table))
-  check_correct_input(dm, table)
+  check_not_zoomed(dm)
+  table <- dm_tbl_name(dm, {{ table }})
 
   def <- dm_get_def(dm)
   i <- which(def$table == table)
@@ -41,7 +51,7 @@ create_graph_from_dm <- function(dm, directed = FALSE) {
   def <- dm_get_def(dm)
   def %>%
     select(ref_table = table, fks) %>%
-    unnest(fks) %>%
+    unnest_list_of_df("fks") %>%
     select(table, ref_table) %>%
     igraph::graph_from_data_frame(directed = directed, vertices = def$table)
 }

@@ -5,7 +5,7 @@
 #' It is inspired by [datamodelr](https://github.com/bergant/datamodelr),
 #' and extends the idea by offering operations to access the data in the tables.
 #'
-#' `dm()` creates a `dm` object from one or multiple [tbl] objects
+#' `dm()` creates a `dm` object from [tbl] objects
 #' (tibbles or lazy data objects).
 #'
 #' @param ... Tables to add to the `dm` object.
@@ -13,47 +13,48 @@
 #'   are auto-named.
 #' @param .name_repair Options for name repair.
 #'   Forwarded as `repair` to [vctrs::vec_as_names()].
-#' @param src A \pkg{dplyr} table source object.
-#' @param table_names A character vector of the names of the tables to include.
 #'
-#' @return For `dm()`, `dm_from_src()`, `new_dm()`, `as_dm()`: A `dm` object.
+#' @return For `dm()`, `new_dm()`, `as_dm()`: A `dm` object.
 #'
 #' @seealso
 #'
-#' - [dm_add_pk()] and [dm_add_fk()] add primary and foreign keys
-#' - [dm_copy_to()] and [dm_learn_from_db()] for DB interaction
+#' - [dm_from_src()] for connecting to all tables in a database
+#'   and importing the primary and foreign keys
+#' - [dm_add_pk()] and [dm_add_fk()] for adding primary and foreign keys
+#' - [copy_dm_to()] for DB interaction
 #' - [dm_draw()] for visualization
 #' - [dm_join_to_tbl()] for flattening
 #' - [dm_filter()] for filtering
 #' - [dm_select_tbl()] for creating a `dm` with only a subset of the tables
 #' - [dm_separate_tbl()] as one example of the normalization family
-#' - [check_key()] and [check_if_subset()] for checking for key properties
-#' - [check_cardinality()] for checking the cardinality of the relation between two tables
 #' - [dm_nycflights13()]  for creating an example `dm` object
+#' - [decompose_table()] for table surgery
+#' - [check_key()] and [check_subset()] for checking for key properties
+#' - [examine_cardinality()] for checking the cardinality of the relation between two tables
 #'
+#' @export
 #' @examples
-#' library(dplyr)
-#' dm(iris, mtcars)
-#' dm_from_src(dplyr::src_df(pkg = "nycflights13"))
-#' new_dm(list(iris = iris, mtcars = mtcars))
-#' as_dm(list(iris = iris, mtcars = mtcars))
+#' dm(trees, mtcars)
+#' new_dm(list(trees = trees, mtcars = mtcars))
+#' as_dm(list(trees = trees, mtcars = mtcars))
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
 #'
-#' dm_nycflights13() %>% tbl("airports")
-#' dm_nycflights13() %>% src_tbls()
-#' dm_nycflights13() %>% dm_get_src()
-#' # this works only when tables of `dm` are on DB
-#' if (FALSE) {
-#'   dm_copy_to(dbplyr::src_memdb(), dm_nycflights13()) %>%
-#'     dm_get_con()
-#' }
+#' dm_nycflights13()$airports
+#' dm_nycflights13() %>% names()
+#'
+#' copy_dm_to(
+#'   dbplyr::src_memdb(),
+#'   dm_nycflights13()
+#' ) %>%
+#'   dm_get_con()
+#'
 #' dm_nycflights13() %>% dm_get_tables()
-#' dm_nycflights13() %>% dm_get_filter()
+#' dm_nycflights13() %>% dm_get_filters()
 #' dm_nycflights13() %>% validate_dm()
 #' is_dm(dm_nycflights13())
 #' dm_nycflights13()["airports"]
 #' dm_nycflights13()[["airports"]]
 #' dm_nycflights13()$airports
-#' @export
 dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "minimal")) {
   quos <- enquos(...)
 
@@ -62,99 +63,96 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
   if (has_length(quos)) {
     src_index <- c(which(names(quos) == "src"), 1)[[1]]
     if (is.src(tbls[[src_index]])) {
-      lifecycle::deprecate_soft("0.0.4.9001", "dm::dm(src = )", "dm_from_src()")
+      deprecate_soft("0.0.4.9001", "dm::dm(src = )", "dm_from_src()")
       return(invoke(dm_from_src, tbls))
     }
   }
 
-  names(tbls) <- vctrs::vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
+  names(tbls) <- vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
   dm <- new_dm(tbls)
   validate_dm(dm)
   dm
 }
-
-#' dm_from_src()
-#'
-#' `dm_from_src()` creates a `dm` from some or all tables in a [src]
-#' (a database or an environment).
-#'
-#' @rdname dm
-#' @export
-dm_from_src <- nse(function(src = NULL, table_names = NULL) {
-  if (is_null(src)) {
-    return(empty_dm())
-  }
-  src_tbl_names <- src_tbls(src)
-
-  if (is_null(table_names)) {
-    table_names <- src_tbl_names
-  } else if (!all(table_names %in% src_tbl_names)) {
-    abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
-  }
-
-  tbls <- map(set_names(table_names), tbl, src = src)
-
-  new_dm(tbls)
-})
 
 #' A low-level constructor
 #'
 #' @description
 #' `new_dm()` is a low-level constructor that creates a new `dm` object.
 #'
-#' If called without arguments, it will create an empty `dm`.
+#' - If called without arguments, it will create an empty `dm`.
 #'
-#' If called with arguments, no validation checks will be made to ascertain that
-#' the inputs are of the expected class and internally consistent;
-#' use `validate_dm()` to double-check the returned object.
+#' - If called with arguments, no validation checks will be made to ascertain that
+#'   the inputs are of the expected class and internally consistent;
+#'   use `validate_dm()` to double-check the returned object.
 #'
-#' @param tables A named list of the tables (tibble-objects, not names) .
+#' @param tables A named list of the tables (tibble-objects, not names),
 #'   to be included in the `dm` object.
 #'
 #' @rdname dm
 #' @export
 new_dm <- function(tables = list()) {
+  new_dm2(tables)
+}
+
+new_dm2 <- function(tables = list(),
+                    pks = structure(list(), names = character()),
+                    fks = structure(list(), names = character()),
+                    validate = TRUE) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
+
+  stopifnot(!is.null(names(pks)), all(names(pks) %in% table))
+  stopifnot(!is.null(names(fks)), all(names(fks) %in% table))
+
   zoom <- new_zoom()
-  key_tracker_zoom <- new_key_tracker_zoom()
+  col_tracker_zoom <- new_col_tracker_zoom()
 
-  pks <-
-    tibble(
-      table = table,
-      pks = vctrs::list_of(new_pk())
-    )
+  pks_df <- enframe(pks, "table", "pks")
 
-  fks <-
-    tibble(
-      table = table,
-      fks = vctrs::list_of(new_fk())
-    )
+  fks_df <- enframe(fks, "table", "fks")
 
   filters <-
     tibble(
       table = table,
-      filters = vctrs::list_of(new_filter())
+      filters = list_of(new_filter())
     )
 
   def <-
     tibble(table, data, segment = NA_character_, display = NA_character_) %>%
-    left_join(pks, by = "table") %>%
-    left_join(fks, by = "table") %>%
-    left_join(filters, by = "table") %>%
+    left_join(pks_df, by = "table") %>%
+    mutate(pks = as_list_of(map(pks, `%||%`, new_pk()), .ptype = new_pk())) %>%
+    left_join(fks_df, by = "table") %>%
+    mutate(fks = as_list_of(map(fks, `%||%`, new_fk()), .ptype = new_fk())) %>%
+    mutate(filters = list_of(new_filter())) %>%
     left_join(zoom, by = "table") %>%
-    left_join(key_tracker_zoom, by = "table")
+    left_join(col_tracker_zoom, by = "table")
 
-  new_dm3(def)
+  new_dm3(def, validate = validate)
 }
 
-new_dm3 <- function(def, zoomed = FALSE) {
+new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
   class <- c(
     if (zoomed) "zoomed_dm",
     "dm"
   )
-  structure(list(def = def), class = class)
+  out <- structure(list(def = def), class = class, version = 2L)
+
+  # Enable for strict tests (search for INSTRUMENT in .github/workflows):
+  # if (validate) { validate_dm(out) } # INSTRUMENT: validate
+
+  out
+}
+
+dm_get_def <- function(x, quiet = FALSE) {
+  # FIXME: Move that check to callers, for speed
+  # Most callers already call it, but not all
+  check_dm(x)
+
+  if (!identical(attr(x, "version"), 2L)) {
+    x <- dm_upgrade(x, quiet)
+  }
+  unclass(x)$def
 }
 
 new_pk <- function(column = list()) {
@@ -162,9 +160,9 @@ new_pk <- function(column = list()) {
   tibble(column = column)
 }
 
-new_fk <- function(table = character(), column = list()) {
-  stopifnot(is.list(column))
-  tibble(table = table, column = column)
+new_fk <- function(ref_column = list(), table = character(), column = list(), on_delete = character()) {
+  stopifnot(is.list(column), is.list(ref_column), length(table) == length(column), length(table) == length(ref_column), length(on_delete) %in% c(1L, length(table)))
+  tibble(ref_column, table, column, on_delete)
 }
 
 new_filter <- function(quos = list(), zoomed = logical()) {
@@ -180,106 +178,23 @@ new_zoom <- function() {
   tibble(table = character(), zoom = list())
 }
 
-new_key_tracker_zoom <- function() {
-  tibble(table = character(), key_tracker_zoom = list())
+new_col_tracker_zoom <- function() {
+  tibble(table = character(), col_tracker_zoom = list())
 }
 
-#' Validator
-#'
-#' `validate_dm()` checks the internal consistency of a `dm` object.
-#'
-#' @param x An object.
-#'
-#' @return For `validate_dm()`: Returns the `dm`, invisibly, after finishing all checks.
-#'
-#' @rdname dm
-#' @export
-validate_dm <- function(x) {
-  check_dm(x)
-
-  if (!identical(names(unclass(x)), "def")) abort_dm_invalid("A `dm` needs to be a list of one item named `def`.")
-  def <- dm_get_def(x)
-
-  table_names <- def$table
-  if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
-  check_col_classes(def)
-
-  if (!all(map_lgl(def$data, ~ {
-    inherits(., "data.frame") || inherits(., "tbl_dbi")
-  }))) {
-    abort_dm_invalid(
-      "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `dm_get_tables()`."
-    )
-  }
-  if (!all_same_source(def$data)) abort_dm_invalid(error_not_same_src())
-
-  if (nrow(def) == 0) {
-    return(invisible(x))
-  }
-  if (ncol(def) != 9) {
-    abort_dm_invalid(
-      glue(
-        "Number of columns of tibble defining `dm` is wrong: {as.character(ncol(def))} ",
-        "instead of 9."
-      )
-    )
-  }
-
-  inner_names <- map(def, names)
-  if (!all(map_lgl(inner_names, is.null))) {
-    abort_dm_invalid("`def` must not have inner names.")
-  }
-
-  fks <- def$fks %>%
-    map_dfr(I) %>%
-    unnest(column)
-  check_fk_child_tables(fks$table, table_names)
-  dm_col_names <- set_names(map(def$data, colnames), table_names)
-  check_colnames(fks, dm_col_names, "FK")
-  pks <- select(def, table, pks) %>%
-    unnest(pks) %>%
-    unnest(column)
-  check_colnames(pks, dm_col_names, "PK")
-  check_one_zoom(def, is_zoomed(x))
-  if (!all(map_lgl(def$zoom, ~ {
-    inherits(., "data.frame") || inherits(., "tbl_dbi") || inherits(., "NULL")
-  }))) {
-    abort_dm_invalid(
-      "Not all entries in `def$zoom` are of class `data.frame`, `tbl_dbi` or `NULL`."
-    )
-  }
-  invisible(x)
-}
-
-debug_validate_dm <- function(dm) {
-  # Uncomment to enable validation for troubleshooting
-  # validate_dm(dm)
-  dm
-}
-
-#' Get source
-#'
-#' `dm_get_src()` returns the \pkg{dplyr} source for a `dm` object.
-#' All tables in a `dm` object must be from the same source,
-#' i.e. either they are all data frames, or they all are stored on the same
-#' database.
-#'
-#' @rdname dm
-#'
-#' @return For `dm_get_src()`: the \pkg{dplyr} source for a `dm` object.
-#'
-#' @export
-dm_get_src <- function(x) {
-  check_dm(x)
-  tables <- dm_get_tables(x)
+dm_get_src_impl <- function(x) {
+  tables <- dm_get_tables_impl(x)
   tbl_src(tables[1][[1]])
 }
 
 #' Get connection
 #'
-#' `dm_get_con()` returns the [`DBI::DBIConnection-class`] for `dm` objects.
+#' `dm_get_con()` returns the DBI connection for a `dm` object.
 #' This works only if the tables are stored on a database, otherwise an error
 #' is thrown.
+#'
+#' All lazy tables in a dm object must be stored on the same database server
+#' and accessed through the same connection.
 #'
 #' @rdname dm
 #'
@@ -287,7 +202,8 @@ dm_get_src <- function(x) {
 #'
 #' @export
 dm_get_con <- function(x) {
-  src <- dm_get_src(x)
+  check_not_zoomed(x)
+  src <- dm_get_src_impl(x)
   if (!inherits(src, "src_dbi")) abort_con_only_for_dbi()
   src$con
 }
@@ -305,80 +221,54 @@ dm_get_con <- function(x) {
 #'
 #' @export
 dm_get_tables <- function(x) {
-  def <- dm_get_def(x)
+  check_not_zoomed(x)
+  dm_get_tables_impl(x)
+}
+
+dm_get_tables_impl <- function(x, quiet = FALSE) {
+  def <- dm_get_def(x, quiet)
   set_names(def$data, def$table)
 }
 
-dm_get_def <- function(x) {
-  unclass(x)$def
-}
+unnest_pks <- function(def) {
+  # Optimized
+  pk_df <- tibble(
+    table = rep(def$table, map_int(def$pks, nrow))
+  )
 
-dm_get_data_model_pks <- function(x) {
-  # FIXME: Obliterate
-
-  pk_df <-
-    dm_get_def(x) %>%
-    select(table, pks) %>%
-    unnest(pks)
+  pk_df <- vec_cbind(pk_df, vec_rbind(!!!def$pks))
 
   # FIXME: Should work better with dplyr 0.9.0
   if (!("column" %in% names(pk_df))) {
     pk_df$column <- character()
-  } else {
-    # This is expected to break with compound keys
-    pk_df$column <- flatten_chr(pk_df$column)
   }
 
   pk_df
 }
 
-dm_get_data_model_fks <- function(x) {
-  # FIXME: Obliterate
-
-  fk_df <-
-    dm_get_def(x) %>%
-    select(ref = table, fks, pks) %>%
-    filter(map_lgl(fks, has_length)) %>%
-    unnest(pks)
-
-  if (nrow(fk_df) == 0) {
-    return(tibble(
-      table = character(), column = character(),
-      ref = character(), ref_col = character()
-    ))
-  }
-
-  fk_df %>%
-    # This is expected to break with compound keys
-    mutate(ref_col = flatten_chr(column)) %>%
-    select(-column) %>%
-    unnest(fks) %>%
-    mutate(column = flatten_chr(column)) %>%
-    select(ref, column, table, ref_col)
-}
-
 #' Get filter expressions
 #'
-#' `dm_get_filter()` returns the filter expressions that have been applied to a `dm` object.
+#' `dm_get_filters()` returns the filter expressions that have been applied to a `dm` object.
 #' These filter expressions are not intended for evaluation, only for
 #' information.
 #'
-#' @rdname dm
+#' @inheritParams dm
 #'
-#' @return For `dm_get_filter()`: A tibble with columns:
-#'
-#' - "table": table that was filtered,
-#' - "filter": the filter expression,
-#' - "zoomed": logical, does the filter condition relate to the zoomed table.
+#' @return A tibble with the following columns:
+#'   \describe{
+#'     \item{`table`}{table that was filtered,}
+#'     \item{`filter`}{the filter expression,}
+#'     \item{`zoomed`}{logical, does the filter condition relate to the zoomed table.}
+#'   }
 #'
 #' @export
-dm_get_filter <- function(x) {
-  # FIXME: Obliterate
+dm_get_filters <- function(x) {
+  check_not_zoomed(x)
 
   filter_df <-
     dm_get_def(x) %>%
     select(table, filters) %>%
-    unnest(filters)
+    unnest_list_of_df("filters")
 
   # FIXME: Should work better with dplyr 0.9.0
   if (!("filter_expr" %in% names(filter_df))) {
@@ -386,13 +276,20 @@ dm_get_filter <- function(x) {
   }
 
   filter_df %>%
-    rename(filter = filter_expr)
+    rename(filter = filter_expr) %>%
+    mutate(filter = unname(filter))
 }
 
-dm_get_zoomed_tbl <- function(x) {
-  dm_get_def(x) %>%
-    filter(!map_lgl(zoom, is_null)) %>%
-    select(table, zoom)
+dm_get_zoom <- function(x, cols = c("table", "zoom"), quiet = FALSE) {
+  # Performance
+  def <- dm_get_def(x, quiet)
+  zoom <- def$zoom
+  where <- which(!map_lgl(zoom, is.null))
+  if (length(where) != 1) {
+    # FIXME: Better error message?
+    abort_not_pulling_multiple_zoomed()
+  }
+  def[where, cols]
 }
 
 #' Check class
@@ -426,7 +323,7 @@ as_dm.default <- function(x) {
   }
 
   # Automatic name repair
-  names(x) <- vctrs::vec_as_names(names2(x), repair = "unique")
+  names(x) <- vec_as_names(names2(x), repair = "unique")
   dm <- new_dm(x)
   validate_dm(dm)
   dm
@@ -434,9 +331,9 @@ as_dm.default <- function(x) {
 
 tbl_src <- function(x) {
   if (is_empty(x) || is.data.frame(x)) {
-    default_local_src()
+    NULL
   } else if (inherits(x, "tbl_sql")) {
-    x$src
+    dbplyr::remote_src(x)
   } else {
     abort_what_a_weird_object(class(x)[[1]])
   }
@@ -448,34 +345,8 @@ as_dm.src <- function(x) {
 }
 
 #' @export
-format.dm <- function(x, ...) {
-  abort("NYI")
-}
-
-#' @export
-#' @import cli
-print.dm <- function(x, ...) {
-  cat_rule("Table source", col = "green")
-  src <- dm_get_src(x)
-
-  db_info <- strsplit(format(src), "\n")[[1]][[1]]
-
-  cat_line(db_info)
-
-  cat_rule("Metadata", col = "violet")
-
-  def <- dm_get_def(x)
-  cat_line("Tables: ", commas(tick(def$table)))
-  cat_line("Columns: ", sum(map_int(map(def$data, colnames), length)))
-  cat_line("Primary keys: ", sum(map_int(def$pks, vctrs::vec_size)))
-  cat_line("Foreign keys: ", sum(map_int(def$fks, vctrs::vec_size)))
-
-  filters <- dm_get_filter(x)
-  if (nrow(filters) > 0) {
-    cat_rule("Filters", col = "orange")
-    walk2(filters$table, filters$filter, ~ cat_line(paste0(.x, ": ", as_label(.y))))
-  }
-
+print.dm <- function(x, ...) { # for both dm and zoomed_dm
+  show_dm(x)
   invisible(x)
 }
 
@@ -484,20 +355,82 @@ print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   format(x, ..., n = NULL, width = NULL, n_extra = NULL)
 }
 
+show_dm <- function(x) {
+  def <- dm_get_def(x)
+  if (nrow(def) == 0) {
+    cat_line("dm()")
+    return()
+  }
+
+  src <- dm_get_src_impl(x)
+  if (!is.null(src)) {
+    cat_rule("Table source", col = "green")
+    db_info <- NULL
+
+    # FIXME: change to pillar::tbl_sum() once it's there
+    tbl_str <- tibble::tbl_sum(def$data[[1]])
+    if ("Database" %in% names(tbl_str)) {
+      db_info <- paste0("src:  ", tbl_str[["Database"]])
+    }
+    if (is.null(db_info)) {
+      db_info <- strsplit(format(src), "\n")[[1]][[1]]
+    }
+
+    cat_line(db_info)
+  }
+
+  cat_rule("Metadata", col = "violet")
+
+  cat_line("Tables: ", commas(tick(def$table)))
+  cat_line("Columns: ", def_get_n_columns(def))
+  cat_line("Primary keys: ", def_get_n_pks(def))
+  cat_line("Foreign keys: ", def_get_n_fks(def))
+
+  filters <- dm_get_filters(x)
+  if (nrow(filters) > 0) {
+    cat_rule("Filters", col = "orange")
+    walk2(filters$table, filters$filter, ~ cat_line(paste0(.x, ": ", as_label(.y))))
+  }
+}
+
+#' @export
+format.dm <- function(x, ...) { # for both dm and zoomed_dm
+  def <- dm_get_def(x)
+  glue("dm: {def_get_n_tables(def)} tables, {def_get_n_columns(def)} columns, {def_get_n_pks(def)} primary keys, {def_get_n_fks(def)} foreign keys")
+}
+
 #' @export
 format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
-  df <- get_zoomed_tbl(x)
-  zoomed_filters <- dm_get_filter(x) %>%
-    filter(zoomed == TRUE)
-  filters <- if_else(nrow(zoomed_filters) > 0, TRUE, FALSE)
   # so far only 1 table can be zoomed on
-  zoomed_df <- new_zoomed_df(
-    df,
-    name_df = orig_name_zoomed(x),
-    filters = filters
-  )
+  zoomed_df <- as_zoomed_df(x)
   cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
   invisible(x)
+}
+
+def_get_n_tables <- function(def) {
+  nrow(def)
+}
+
+def_get_n_columns <- function(def) {
+  sum(map_int(map(def$data, colnames), length))
+}
+
+def_get_n_pks <- function(def) {
+  sum(map_int(def$pks, vec_size))
+}
+
+def_get_n_fks <- function(def) {
+  sum(map_int(def$fks, vec_size))
+}
+
+as_zoomed_df <- function(x) {
+  zoomed <- dm_get_zoom(x)
+
+  # for tests
+  new_zoomed_df(
+    zoomed$zoom[[1]],
+    name_df = zoomed$table
+  )
 }
 
 new_zoomed_df <- function(x, ...) {
@@ -533,36 +466,48 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 #' @export
-`$.dm` <- function(x, name) {
-  table <- as_string(name)
-  tbl(x, table)
+`$.dm` <- function(x, name) { # for both dm and zoomed_dm
+  table <- dm_tbl_name(x, {{ name }})
+  tbl_impl(x, table)
 }
 
+#' @export
+`$.zoomed_dm` <- function(x, name) {
+  name <- ensym(name)
+  eval_tidy(quo(`$`(tbl_zoomed(x), !!name)))
+}
 
 #' @export
 `$<-.dm` <- function(x, name, value) {
   abort_update_not_supported()
 }
 
-
 #' @export
-`[[.dm` <- function(x, id) {
-  if (is.numeric(id)) id <- src_tbls(x)[id] else id <- as_string(id)
-  tbl(x, id)
+`[[.dm` <- function(x, id) { # for both dm and zoomed_dm
+  if (is.numeric(id)) id <- src_tbls_impl(x)[id] else id <- as_string(id)
+  tbl_impl(x, id, quiet = TRUE)
 }
 
+#' @export
+`[[.zoomed_dm` <- function(x, id) {
+  `[[`(tbl_zoomed(x, quiet = TRUE), id)
+}
 
 #' @export
 `[[<-.dm` <- function(x, name, value) {
   abort_update_not_supported()
 }
 
-
 #' @export
 `[.dm` <- function(x, id) {
-  if (is.numeric(id)) id <- src_tbls(x)[id]
+  if (is.numeric(id)) id <- src_tbls_impl(x)[id]
   id <- as.character(id)
   dm_select_tbl(x, !!!id)
+}
+
+#' @export
+`[.zoomed_dm` <- function(x, id) { # for both dm and zoomed_dm
+  `[`(tbl_zoomed(x), id)
 }
 
 
@@ -571,10 +516,14 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   abort_update_not_supported()
 }
 
+#' @export
+names.dm <- function(x) { # for both dm and zoomed_dm
+  src_tbls_impl(x, quiet = TRUE)
+}
 
 #' @export
-names.dm <- function(x) {
-  src_tbls(x)
+names.zoomed_dm <- function(x) {
+  names(tbl_zoomed(x, quiet = TRUE))
 }
 
 
@@ -584,8 +533,13 @@ names.dm <- function(x) {
 }
 
 #' @export
-length.dm <- function(x) {
-  length(src_tbls(x))
+length.dm <- function(x) { # for both dm and zoomed_dm
+  length(src_tbls_impl(x, quiet = TRUE))
+}
+
+#' @export
+length.zoomed_dm <- function(x) {
+  length(tbl_zoomed(x, quiet = TRUE))
 }
 
 #' @export
@@ -594,100 +548,126 @@ length.dm <- function(x) {
 }
 
 #' @export
-str.dm <- function(object, ...) {
-  object <- dm_get_def(object) %>%
+str.dm <- function(object, ...) { # for both dm and zoomed_dm
+  object <-
+    dm_get_def(object, quiet = TRUE) %>%
     select(table, pks, fks, filters)
   str(object)
 }
 
 #' @export
 str.zoomed_dm <- function(object, ...) {
-  object <- dm_get_def(object) %>%
+  object <-
+    dm_get_def(object, quiet = TRUE) %>%
     mutate(zoom = if_else(map_lgl(zoom, is_null), NA_character_, table)) %>%
     select(zoom, table, pks, fks, filters)
   str(object)
 }
 
-#' @export
-tbl.dm <- function(src, from, ...) {
-  # The src argument here is a dm object
-  dm <- src
-  check_not_zoomed(dm)
-  check_correct_input(dm, from, 1L)
+tbl_impl <- function(dm, from, quiet = FALSE) {
+  out <- dm_get_tables_impl(dm, quiet)[[from]]
 
-  dm_get_tables(dm)[[from]]
+  if (is.null(out)) {
+    abort_table_not_in_dm(from, src_tbls_impl(dm))
+  }
+
+  out
 }
 
+src_tbls_impl <- function(dm, quiet = FALSE) {
+  dm_get_def(dm, quiet)$table
+}
+
+#' Materialize
+#'
+#' `compute()` materializes all tables in a `dm` to new (temporary or permanent)
+#' tables on the database.
+#'
+#' @details
+#' Called on a `dm` object, these methods create a copy of all tables in the `dm`.
+#' Depending on the size of your data this may take a long time.
+#'
+#' @param x A `dm`.
+#' @param ... Passed on to [compute()].
+#' @return A `dm` object of the same structure as the input.
+#' @name materialize
 #' @export
-compute.dm <- function(x, ...) {
-  dm_apply_filters(x) %>%
+#' @examplesIf dm:::dm_has_financial()
+#' financial <- dm_financial_sqlite()
+#'
+#' financial %>%
+#'   pull_tbl(districts) %>%
+#'   dbplyr::remote_name()
+#'
+#' # compute() copies the data to new tables:
+#' financial %>%
+#'   compute() %>%
+#'   pull_tbl(districts) %>%
+#'   dbplyr::remote_name()
+#'
+#' # collect() returns a local dm:
+#' financial %>%
+#'   collect() %>%
+#'   pull_tbl(districts) %>%
+#'   class()
+compute.dm <- function(x, ...) { # for both dm and zoomed_dm
+  x %>%
+    dm_apply_filters() %>%
     dm_get_def() %>%
     mutate(data = map(data, compute, ...)) %>%
     new_dm3()
 }
 
+#' Materialize
+#'
+#' `collect()` downloads the tables in a `dm` object as local [tibble]s.
+#'
+#' @inheritParams dm_examine_constraints
+#'
+#' @rdname materialize
 #' @export
-compute.zoomed_dm <- function(x, ...) {
-  zoomed_df <- get_zoomed_tbl(x) %>%
-    compute(zoomed_df, ...)
-  replace_zoomed_tbl(x, zoomed_df)
-}
-
-
-#' @export
-src_tbls.dm <- function(x) {
-  # The x argument here is a dm object
-  dm <- x
-  names(dm_get_tables(dm))
-}
-
-#' @export
-copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
-  if (!(inherits(df, "data.frame") || inherits(df, "tbl_dbi"))) abort_only_data_frames_supported()
-  if (overwrite) abort_no_overwrite()
-  if (length(name) != 1) abort_one_name_for_copy_to(name)
-  # src: if `df` on a different src:
-  # if `df_list` is on DB and `dest` is local, collect `df_list`
-  # if `df_list` is local and `dest` is on DB, copy `df_list` to respective DB
-  df <- copy_to(dm_get_src(dest), df, unique_db_table_name(name), temporary = temporary, ...)
-  # FIXME: should we allow `overwrite` argument?
-  names_list <- repair_table_names(src_tbls(dest), name, repair, quiet)
-  # rename old tables with potentially new names
-  dest <- dm_rename_tbl(dest, !!!names_list$new_old_names)
-  # `repair` argument is `unique` by default
-  dm_add_tbl_impl(dest, list(df), names_list$new_names)
-}
-
-#' @export
-copy_to.zoomed_dm <- function(dest, df, name, overwrite, ...) {
-  check_not_zoomed(.data)
-}
-
-#' @export
-collect.dm <- function(x, ...) {
-  x <-
-    x %>%
-    dm_apply_filters()
+collect.dm <- function(x, ..., progress = NA) { # for both dm and zoomed_dm
+  x <- dm_apply_filters(x)
 
   def <- dm_get_def(x)
-  def$data <- map(def$data, collect, ...)
-  new_dm3(def)
+
+  ticker <- new_ticker("downloading data", nrow(def), progress = progress)
+  def$data <- map(def$data, ticker(collect), ...)
+  new_dm3(def, zoomed = is_zoomed(x))
 }
+
+#' @export
+collect.zoomed_dm <- function(x, ...) {
+  message("Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.")
+
+  collect(pull_tbl(x))
+}
+
 
 # FIXME: what about 'dim.dm()'?
 #' @export
-dim.zoomed_dm <- function(x) {
-  dim(get_zoomed_tbl(x))
+dim.zoomed_dm <- function(x) { # dm method provided by base
+  dim(tbl_zoomed(x, quiet = TRUE))
 }
 
 #' @export
-dimnames.zoomed_dm <- function(x) {
-  dimnames(get_zoomed_tbl(x))
+dimnames.zoomed_dm <- function(x) { # dm method provided by base
+  dimnames(tbl_zoomed(x))
+}
+
+#' @export
+tbl_vars.dm <- function(x) {
+  check_zoomed(x)
+}
+
+#' @export
+tbl_vars.zoomed_dm <- function(x) {
+  tbl_vars(tbl_zoomed(x))
 }
 
 dm_reset_all_filters <- function(dm) {
   def <- dm_get_def(dm)
-  def$filters <- vctrs::list_of(new_filter())
+  def$filters <- list_of(new_filter())
   new_dm3(def)
 }
 
@@ -697,7 +677,7 @@ all_same_source <- function(tables) {
   is.null(detect(tables[-1], ~ !same_src(., first_table)))
 }
 
-# creates an empty `dm`-object, `src` is defined by implementation of `dm_get_src()`.
+# creates an empty `dm`-object, `src` is defined by implementation of `dm_get_src_impl()`.
 empty_dm <- function() {
   new_dm3(
     tibble(
@@ -705,16 +685,16 @@ empty_dm <- function() {
       data = list(),
       segment = character(),
       display = character(),
-      pks = vctrs::list_of(new_pk()),
-      fks = vctrs::list_of(new_fk()),
-      filters = vctrs::list_of(new_filter()),
+      pks = list_of(new_pk()),
+      fks = list_of(new_fk()),
+      filters = list_of(new_filter()),
       zoom = list(),
-      key_tracker_zoom = list()
+      col_tracker_zoom = list()
     )
   )
 }
 
-#' Retrieve a table from a `dm` or a `zoomed_dm`
+#' Retrieve a table
 #'
 #' This function has methods for both `dm` classes:
 #' 1. With `pull_tbl.dm()` you can chose which table of the `dm` you want to retrieve.
@@ -725,12 +705,14 @@ empty_dm <- function() {
 #'
 #' @return The requested table
 #'
-#' @examples
-#' # both examples lead to the same tibble:
+#' @examplesIf rlang::is_installed("nycflights13")
+#' # For an unzoomed dm you need to specify the table to pull:
 #' dm_nycflights13() %>%
-#'   pull_tbl(airlines)
+#'   pull_tbl(airports)
+#'
+#' # If zoomed, pulling detaches the zoomed table from the dm:
 #' dm_nycflights13() %>%
-#'   dm_zoom_to_tbl(airlines) %>%
+#'   dm_zoom_to(airports) %>%
 #'   pull_tbl()
 #' @export
 pull_tbl <- function(dm, table) {
@@ -738,24 +720,90 @@ pull_tbl <- function(dm, table) {
 }
 
 #' @export
-pull_tbl.dm <- function(dm, table) {
+pull_tbl.dm <- function(dm, table) { # for both dm and zoomed_dm
   # FIXME: shall we issue a special error in case someone tries sth. like: `pull_tbl(dm_for_filter, c(t4, t3))`?
   table_name <- as_string(enexpr(table))
   if (table_name == "") abort_no_table_provided()
-  tbl(dm, table_name)
+  tbl_impl(dm, table_name)
 }
 
 #' @export
 pull_tbl.zoomed_dm <- function(dm, table) {
   table_name <- as_string(enexpr(table))
-  tbl_zoomed <- dm_get_zoomed_tbl(dm)
+  zoomed <- dm_get_zoom(dm)
   if (table_name == "") {
-    if (nrow(tbl_zoomed) == 1) tbl_zoomed$zoom[[1]] else abort_not_pulling_multiple_zoomed()
-  } else if (!(table_name %in% tbl_zoomed$table)) {
-    abort_table_not_zoomed(table_name, tbl_zoomed$table)
+    if (nrow(zoomed) == 1) {
+      zoomed$zoom[[1]]
+    } else {
+      abort_not_pulling_multiple_zoomed()
+    }
+  } else if (!(table_name %in% zoomed$table)) {
+    abort_table_not_zoomed(table_name, zoomed$table)
   } else {
-    filter(tbl_zoomed, table == table_name) %>%
-      pull(zoom) %>%
-      pluck(1)
+    zoomed$zoom[[1]]
   }
+}
+
+#' @export
+as.list.dm <- function(x, ...) { # for both dm and zoomed_dm
+  dm_get_tables_impl(x)
+}
+
+#' @export
+as.list.zoomed_dm <- function(x, ...) {
+  as.list(tbl_zoomed(x))
+}
+
+#' @export
+glimpse.dm <- function(x, width = NULL, ...) {
+  glimpse_width <- if (is.null(width)) {
+    getOption("width")
+  } else {
+    width
+  }
+  table_list <- dm_get_tables_impl(x)
+  if (length(table_list) == 0) {
+    cat_line(trim_width("dm of 0 tables", glimpse_width))
+    return(invisible(x))
+  }
+  cat_line(
+    trim_width(
+      paste0("dm of ", length(table_list), " tables: ", toString(tick(names(table_list)))),
+      glimpse_width
+    )
+  )
+
+  all_fks <- dm_get_all_fks_impl(x)
+  iwalk(table_list, function(table, table_name) {
+    cat_line("\n", trim_width(paste0("Table: ", tick(table_name)), glimpse_width))
+    pk <- dm_get_pk_impl(x, table_name) %>%
+      map_chr(~ paste0("(", paste0(tick(.x), collapse = ", "), ")"))
+    if (!is_empty(pk)) {
+      # FIXME: needs to change if #622 is solved
+      cat_line(trim_width(paste0("Primary key: ", pk), glimpse_width))
+    }
+    fk <- all_fks %>%
+      filter(child_table == table_name) %>%
+      select(-child_table) %>%
+      pmap_chr(
+        function(child_fk_cols, parent_table, parent_key_cols, on_delete) {
+          trim_width(
+            paste0(
+              "  (",
+              paste0(tick(child_fk_cols), collapse = ", "), ")",
+              " -> ",
+              "(`", paste0(parent_table, "$", parent_key_cols, collapse = "`, `"), "`) ",
+              on_delete
+            ),
+            glimpse_width
+          )
+        }
+      )
+    if (!is_empty(fk)) {
+      cat_line(length(fk), " outgoing foreign key(s):")
+      cat_line(fk)
+    }
+    glimpse(table, width = width, ...)
+  })
+  invisible(x)
 }

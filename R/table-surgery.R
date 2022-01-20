@@ -1,6 +1,9 @@
 #' Decompose a table into two linked tables
 #'
-#' @description Extract a lookup table from a table in a `dm`, linking the original table and the new table by a key.
+#' @description
+#' `r lifecycle::badge("questioning")`
+#'
+#' Extract a lookup table from a table in a `dm`, linking the original table and the new table by a key.
 #'
 #' `dm_separate_table()` accepts a `dm`, an unquoted table name, a name for the new column
 #' which will be created to link the two tables and the names of the columns that will be
@@ -23,6 +26,10 @@
 #' @return A `dm` with one of its tables split into two tables which are linked by
 #' a foreign key relation.
 #'
+#' @section Life cycle:
+#' This function is marked "questioning" because it feels more useful
+#' when applied to a table in a dm object.
+#'
 #' @examples
 #' dm_nycflights13() %>%
 #'   dm_separate_tbl(flights, ymd, year, month, day)
@@ -35,7 +42,7 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
 
   .data <- tbl(dm, table_name)
   avail_cols <- colnames(.data)
-  sel_vars <- tidyselect::vars_select(avail_cols, ...)
+  sel_vars <- eval_select_both(quo(c(...)), avail_cols)
 
   old_primary_key <- dm_get_pk(dm, !!table_name)
   if (has_length(old_primary_key) && old_primary_key %in% sel_vars) {
@@ -65,23 +72,24 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
   table_name <- prep_recode(names_list$new_old_names)[table_name]
 
   parent_table <-
-    select(.data, !!!sel_vars) %>%
+    select(.data, !!!sel_vars$indices) %>%
     distinct() %>%
     # Without as.integer(), RPostgres creates integer64 column (#15)
-    arrange(!!!syms(names(sel_vars))) %>%
-    mutate(!!id_col_q := as.integer(row_number())) %>%
+    mutate(!!id_col_q := as.integer(coalesce(row_number(!!sym(names(sel_vars$indices)[[1]])), 0L))) %>%
     select(!!id_col_q, everything())
 
-  non_key_names <-
-    setdiff(avail_cols, sel_vars)
+  non_key_indices <-
+    setdiff(seq_along(avail_cols), sel_vars$indices)
 
   child_table <-
     .data %>%
     left_join(
       parent_table,
-      by = prep_recode(sel_vars)
+      by = prep_recode(sel_vars$names)
     ) %>%
-    select(non_key_names, !!id_col_q)
+    select(!!!non_key_indices, !!id_col_q)
+  # FIXME: Think about a good place for the target column,
+  # perhaps if this operation is run in a data model?
 
   old_foreign_keys <- dm_get_all_fks(dm) %>%
     filter(child_table == table_name)
@@ -114,7 +122,10 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
 
 #' Merge two tables that are linked by a foreign key relation
 #'
-#' @description Join two tables together by their foreign key and update the
+#' @description
+#' `r lifecycle::badge("questioning")`
+#'
+#' Join two tables together by their foreign key and update the
 #' `dm` accordingly. This is similar to `dm_join_to_tbl()`, only that the resulting
 #' table will be part of the `dm`. The name of the child table (the table with the
 #' foreign key relation pointing away from it) will be used for the resulting table.
@@ -131,6 +142,11 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
 #'
 #' @return The original `dm` with two of its tables merged into one.
 #'
+#' @section Life cycle:
+#' These functions are marked "questioning" because they feel more useful
+#' when applied to a table in a dm object.
+#'
+#' @export
 #' @examples
 #' dm_nycflights13() %>%
 #'   dm_unite_tbls(flights, planes)

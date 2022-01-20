@@ -13,3 +13,15 @@
 ^dm\.Rcheck$
 ^dm.*\.tar\.gz$
 ^dm.*\.tgz$
+^cran-comments\.md$
+^man/figures/logo\.png$
+^CRAN-RELEASE$
+^vignettes/wip$
+^Makefile$
+^\.ccache$
+^\.github$
+^example$
+^vignettes/abstracts$
+^vignettes/out$
+^TODO\.md$
+^data-raw$

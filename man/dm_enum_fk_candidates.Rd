@@ -3,11 +3,11 @@
 \name{dm_enum_fk_candidates}
 \alias{dm_enum_fk_candidates}
 \alias{enum_fk_candidates}
-\title{Find foreign key candidates in a table}
+\title{Foreign key candidates}
 \usage{
-dm_enum_fk_candidates(dm, table, ref_table)
+dm_enum_fk_candidates(dm, table, ref_table, ...)
 
-enum_fk_candidates(zoomed_dm, ref_table)
+enum_fk_candidates(zoomed_dm, ref_table, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -16,13 +16,21 @@ enum_fk_candidates(zoomed_dm, ref_table)
 
 \item{ref_table}{A table with a primary key.}
 
+\item{...}{These dots are for future extensions and must be empty.}
+
 \item{zoomed_dm}{A \code{dm} with a zoomed table.}
 }
 \value{
-A table with columns \code{column} (column of \code{table}), \code{candidate} (boolean) and \code{why}
-(if not a candidate for a foreign key, explanation for this).
+A tibble with the following columns:
+\describe{
+\item{\code{columns}}{columns of \code{table},}
+\item{\code{candidate}}{boolean: are these columns a candidate for a foreign key,}
+\item{\code{why}}{if not a candidate for a foreign key, explanation for for this.}
+}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
+
 Determine which columns would be good candidates to be used as foreign keys of a table,
 to reference the primary key column of another table of the \code{\link{dm}} object.
 }
@@ -43,18 +51,29 @@ The outcome of the join operation determines the value of the \code{why} column 
 
 \code{enum_fk_candidates()} works like \code{dm_enum_fk_candidates()} with the zoomed table as \code{table}.
 }
-\examples{
-dm_enum_fk_candidates(dm_nycflights13(), flights, airports)
+\section{Life cycle}{
 
-dm_zoom_to_tbl(dm_nycflights13(), flights) \%>\%
+These functions are marked "questioning" because we are not yet sure about
+the interface, in particular if we need both \code{dm_enum...()} and \code{enum...()}
+variants.
+Changing the interface later seems harmless because these functions are
+most likely used interactively.
+}
+
+\examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_enum_fk_candidates(flights, airports)
+
+dm_nycflights13() \%>\%
+  dm_zoom_to(flights) \%>\%
   enum_fk_candidates(airports)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other foreign key functions: 
 \code{\link{dm_add_fk}()},
 \code{\link{dm_get_all_fks}()},
-\code{\link{dm_get_fk}()},
-\code{\link{dm_has_fk}()},
 \code{\link{dm_rm_fk}()}
 }
 \concept{foreign key functions}

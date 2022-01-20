@@ -1,0 +1,39 @@
+name: 'Custom steps to run after R packages are installed'
+
+runs:
+  using: "composite"
+  steps:
+    - uses: ankane/setup-postgres@v1
+      if: env.DM_TEST_SRC == 'test-postgres'
+
+    - name: Create database
+      if: env.DM_TEST_SRC == 'test-postgres'
+      run: |
+        createdb ${USER}
+      shell: bash
+
+    - name: Create database (MariaDB), set it to UTF-8, add time zone info
+      if: env.DM_TEST_SRC == 'test-mariadb'
+      run: |
+        mysql -e "CREATE DATABASE IF NOT EXISTS test; ALTER DATABASE test CHARACTER SET 'utf8'; FLUSH PRIVILEGES;"
+        # Time zone info necessary?
+        mysql -e "SET GLOBAL time_zone = 'Europe/Zurich';"
+      shell: bash
+
+    - uses: ankane/setup-sqlserver@v1
+      if: env.DM_TEST_SRC == 'test-mssql'
+      with:
+        accept-eula: true
+
+    - name: Create database (SQL Server)
+      if: env.DM_TEST_SRC == 'test-mssql'
+      run: |
+        sqlcmd -U SA -P 'YourStrong!Passw0rd' -Q 'CREATE DATABASE test;'
+      shell: bash
+
+    - name: Set ODBCSYSINI (SQL Server)
+      if: env.DM_TEST_SRC == 'test-mssql'
+      run: |
+        ln -s /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.*.so.* /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.so
+        echo "ODBCSYSINI=${{ github.workspace }}/.github/odbc" | tee -a $GITHUB_ENV
+      shell: bash

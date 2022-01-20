@@ -207,7 +207,8 @@ dm_nyc_filtered %>%
   dm_apply_filters()
 
 # If a filter condition is phrased wrongly it will only fail, once the filter is being applied
-(dm_nyc_fail <- dm_nycflights13() %>%
+(dm_nyc_fail <-
+  dm_nycflights13() %>%
   dm_filter(airports, origin == "EWR"))
 try(
   tbl(dm_nyc_fail, "flights")
@@ -259,7 +260,7 @@ nycflights13_sqlite <-
   dm_select_tbl(-planes) %>%
   dm_filter(flights, month == 1) %>%
   dm_apply_filters() %>%
-  dm_copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE)
+  copy_dm_to(dbplyr::src_memdb(), ., unique_table_names = TRUE)
 
 nycflights13_sqlite
 
@@ -455,7 +456,7 @@ try({
     dm_nycflights13() %>%
     dm_select_tbl(-planes) %>%
     dm_filter(flights, month == 1) %>%
-    dm_copy_to(src_postgres(), ., temporary = FALSE)
+    copy_dm_to(src_postgres(), ., temporary = FALSE)
 
   dm_from_pq <-
     dm_learn_from_db(src_postgres())

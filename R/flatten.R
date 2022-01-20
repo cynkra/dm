@@ -12,7 +12,7 @@
 #' The order of the tables here determines
 #'   the order of the joins.
 #'   If the argument is empty, all tables that can be reached will be included.
-#'   If this includes tables that are not direct neighbours of `start`,
+#'   If this includes tables that are not direct neighbors of `start`,
 #'   it will only work with `dm_squash_to_tbl()` (given one of the allowed join-methods).
 #'   `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #' @family flattening functions
@@ -52,31 +52,32 @@
 #'
 #' @return A single table that results from consecutively joining all affected tables to the `start` table.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_select_tbl(-weather) %>%
 #'   dm_flatten_to_tbl(flights)
 #' @export
 dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
+  check_not_zoomed(dm)
   join_name <- deparse(substitute(join))
-  start <- as_string(ensym(start))
+  start <- dm_tbl_name(dm, {{ start }})
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
 }
 
 #' @rdname dm_flatten_to_tbl
 #' @export
 dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
+  check_not_zoomed(dm)
   join_name <- deparse(substitute(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
-  start <- as_string(ensym(start))
+  start <- dm_tbl_name(dm, {{ start }})
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
 }
 
 
 dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
-  check_correct_input(dm, start)
-  vars <- setdiff(tidyselect_table_names(dm), start)
-  list_of_pts <- dm_try_tables(tidyselect::vars_select(vars, ...), src_tbls(dm))
+  vars <- setdiff(src_tbls_impl(dm), start)
+  list_of_pts <- eval_select_table(quo(c(...)), vars)
 
   if (join_name == "nest_join") abort_no_flatten_with_nest_join()
 
@@ -111,13 +112,13 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   order_df <-
     tibble(
       name = names(dfs[["order"]]),
-      pred = names(V(g))[ unclass(dfs[["father"]])[name] ]
+      pred = names(V(g))[unclass(dfs[["father"]])[name]]
     )
 
   # function to detect any reason for abort()
   check_flatten_to_tbl(
     join_name,
-    (nrow(dm_get_filter(dm)) > 0) && !is_empty(list_of_pts),
+    (nrow(dm_get_filters(dm)) > 0) && !is_empty(list_of_pts),
     anyNA(order_df$name),
     g,
     auto_detect,
@@ -134,19 +135,21 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # in the case of only one table in the `dm` (table "start"), all code below is a no-op
   order_df <- order_df[-1, ]
   # the order given in the ellipsis determines the join-list; if empty ellipsis, this is a no-op.
-  order_df <- left_join(tibble(name = list_of_pts), order_df, by = "name")
+  # `unname()` to avoid warning (tibble version ‘2.99.99.9012’ retains names in column vectors)
+  order_df <- left_join(tibble(name = unname(list_of_pts)), order_df, by = "name")
 
   # list of join partners
-  ordered_table_list <- prep_dm %>%
+  ordered_table_list <-
+    prep_dm %>%
     dm_get_tables() %>%
     extract(order_df$name)
   by <- map2(order_df$pred, order_df$name, ~ get_by(prep_dm, .x, .y))
 
   # perform the joins according to the list, starting with table `initial_LHS`
-  reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = tbl(prep_dm, start))
+  reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = tbl_impl(prep_dm, start))
 }
 
-#' Perform a join between two tables of a [`dm`]
+#' Join two tables
 #'
 #' @description A join of a desired type is performed between `table_1` and `table_2`.
 #' The two tables need to be directly connected by a foreign key relation.
@@ -162,21 +165,28 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #'
 #' @family flattening functions
 #'
-#' @examples
-#'
-#' dm_join_to_tbl(dm_nycflights13(), airports, flights)
-#' # same result is achieved with:
-#' dm_join_to_tbl(dm_nycflights13(), flights, airports)
-#' # this gives an error, because the tables are not directly linked to each other:
-#' try(dm_join_to_tbl(dm_nycflights13(), airlines, airports))
 #' @export
+#' @examplesIf rlang::is_installed("nycflights13")
+#' dm_nycflights13() %>%
+#'   dm_join_to_tbl(airports, flights)
+#'
+#' # same result is achieved with:
+#' dm_nycflights13() %>%
+#'   dm_join_to_tbl(flights, airports)
+#'
+#' # this gives an error, because the tables are not directly linked to each other:
+#' try(
+#'   dm_nycflights13() %>%
+#'     dm_join_to_tbl(airlines, airports)
+#' )
 dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
+  check_not_zoomed(dm)
   force(join)
   stopifnot(is_function(join))
   join_name <- deparse(substitute(join))
 
-  t1_name <- as_string(ensym(table_1))
-  t2_name <- as_string(ensym(table_2))
+  t1_name <- dm_tbl_name(dm, {{ table_1 }})
+  t2_name <- dm_tbl_name(dm, {{ table_2 }})
 
   rel <- parent_child_table(dm, {{ table_1 }}, {{ table_2 }})
   start <- rel$child_table
@@ -186,8 +196,8 @@ dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
 }
 
 parent_child_table <- function(dm, table_1, table_2) {
-  t1_name <- as_string(ensym(table_1))
-  t2_name <- as_string(ensym(table_2))
+  t1_name <- dm_tbl_name(dm, {{ table_1 }})
+  t2_name <- dm_tbl_name(dm, {{ table_2 }})
 
   rel <-
     dm_get_all_fks(dm) %>%
@@ -197,18 +207,17 @@ parent_child_table <- function(dm, table_1, table_2) {
     )
 
   if (nrow(rel) == 0) {
-    abort_tables_not_neighbours(t1_name, t2_name)
+    abort_tables_not_neighbors(t1_name, t2_name)
   }
 
   if (nrow(rel) > 1) {
-    abort_no_cycles()
+    abort_no_cycles(create_graph_from_dm(dm))
   }
 
   rel
 }
 
-check_flatten_to_tbl <- function(
-                                 join_name,
+check_flatten_to_tbl <- function(join_name,
                                  part_cond_abort_filters,
                                  any_not_reachable,
                                  g,
@@ -225,7 +234,7 @@ check_flatten_to_tbl <- function(
 
   # Cycles not yet supported
   if (length(V(g)) - 1 != length(E(g))) {
-    abort_no_cycles()
+    abort_no_cycles(g)
   }
   if (join_name == "nest_join") abort_no_flatten_with_nest_join()
   if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) abort_apply_filters_first(join_name)
@@ -234,7 +243,7 @@ check_flatten_to_tbl <- function(
 
 
   # If called by `dm_join_to_tbl()` or `dm_flatten_to_tbl()`, the argument `squash = FALSE`.
-  # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
+  # Then only one level of hierarchy is allowed (direct neighbors to table `start`).
   if (!squash && has_grandparent) {
     abort_only_parents()
   }
@@ -255,7 +264,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
   # renaming will be minimized if we reduce the `dm` to the necessary tables here
   red_dm <-
     dm_reset_all_filters(dm) %>%
-    dm_select_tbl(tables)
+    dm_select_tbl(!!!tables)
   # Only need to compute `tbl(dm, start)`, `dm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, because of possible filter conditions.
   start_tbl <- dm_get_filtered_table(dm, start)
