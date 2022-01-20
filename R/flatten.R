@@ -258,19 +258,21 @@ check_flatten_to_tbl <- function(join_name,
   }
 }
 
-prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
+prepare_dm_for_flatten <- function(dm, tables, gotta_rename, reduce_dm = TRUE) {
   start <- tables[1]
   # filters need to be empty, for the disambiguation to work
   # renaming will be minimized if we reduce the `dm` to the necessary tables here
-  red_dm <-
-    dm_reset_all_filters(dm) %>%
-    dm_select_tbl(!!!tables)
+  red_dm <- dm_reset_all_filters(dm)
+  if (reduce_dm) {
+    red_dm <- red_dm %>% dm_select_tbl(!!!tables)
+  }
+
   # Only need to compute `tbl(dm, start)`, `dm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, because of possible filter conditions.
   start_tbl <- dm_get_filtered_table(dm, start)
 
   if (gotta_rename) {
-    table_colnames <- get_table_colnames(red_dm)
+    table_colnames <- get_table_colnames(red_dm %>% dm_select_tbl(!!!tables))
     recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".")
     explain_col_rename(recipe)
     # prepare `dm` by disambiguating columns (on a reduced dm)
