@@ -20,6 +20,7 @@
 #' @param new_table_name Unquoted name for the new table. If `NULL`, the name will be
 #' `table` with the suffix `_lookup`.
 #' @inheritParams dm_add_tbl
+#' @inheritParams dm_add_fk
 #'
 #' @family normalization
 #'
@@ -34,9 +35,8 @@
 #' dm_nycflights13() %>%
 #'   dm_separate_tbl(flights, ymd, year, month, day)
 #' @export
-dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NULL, repair = "check_unique", quiet = FALSE) {
+dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NULL, repair = "check_unique", quiet = FALSE, on_delete = c("no_action", "cascade")) {
   table_name <- as_string(ensym(table))
-  check_correct_input(dm, table_name)
   check_no_filter(dm)
   check_not_zoomed(dm)
 
