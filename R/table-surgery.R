@@ -1,8 +1,6 @@
 #' Decompose a table into two linked tables
 #'
 #' @description
-#' `r lifecycle::badge("questioning")`
-#'
 #' Extract a lookup table from a table in a `dm`, linking the original table and the new table by a key.
 #'
 #' `dm_separate_table()` accepts a `dm`, an unquoted table name, a name for the new column
@@ -26,10 +24,6 @@
 #'
 #' @return A `dm` with one of its tables split into two tables which are linked by
 #' a foreign key relation.
-#'
-#' @section Life cycle:
-#' This function is marked "questioning" because it feels more useful
-#' when applied to a table in a dm object.
 #'
 #' @examples
 #' dm_nycflights13() %>%
@@ -124,8 +118,6 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
 #' Merge two tables that are linked by a foreign key relation
 #'
 #' @description
-#' `r lifecycle::badge("questioning")`
-#'
 #' Join two tables together by their foreign key and update the
 #' `dm` accordingly. This is similar to `dm_join_to_tbl()`, only that the resulting
 #' table will be part of the `dm`. The name of the child table (the table with the
@@ -142,10 +134,6 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
 #' @family normalization
 #'
 #' @return The original `dm` with two of its tables merged into one.
-#'
-#' @section Life cycle:
-#' These functions are marked "questioning" because they feel more useful
-#' when applied to a table in a dm object.
 #'
 #' @export
 #' @examples
