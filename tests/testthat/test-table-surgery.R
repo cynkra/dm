@@ -2,7 +2,7 @@ iris_1_pt <-
   iris_1() %>%
   select(starts_with("Sepal"), Species) %>%
   distinct() %>%
-  mutate(Species_Sepal =  as.integer(coalesce(row_number(Sepal.Length), 0L))) %>%
+  mutate(Species_Sepal = as.integer(coalesce(row_number(Sepal.Length), 0L))) %>%
   select(Species_Sepal, everything())
 
 iris_1_ct <-

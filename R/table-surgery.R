@@ -41,7 +41,9 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
 
   split_data <- decompose_table_impl(.data, !!enexpr(new_col_name), table_name, sel_vars)
 
-  old_primary_key <- dm_get_all_pks(dm) %>% filter(table == table_name) %>% pull(pk_col)
+  old_primary_key <- dm_get_all_pks(dm) %>%
+    filter(table == table_name) %>%
+    pull(pk_col)
   if (has_length(old_primary_key) && old_primary_key %in% sel_vars$names) {
     abort_no_pk_in_separate_tbl(old_primary_key, table_name)
   }
