@@ -500,7 +500,7 @@ error_txt_not_pulling_multiple_zoomed <- function() {
 # errors for `dm_separate_tbl()` --------------------------------------------
 
 abort_no_pk_in_separate_tbl <- function(pk_col, table_name) {
-  abort(error_txt_no_pk_in_separate_tbl(pk_col, table_name), .subclass = dm_error_full("no_pk_in_separate_tbl"))
+  abort(error_txt_no_pk_in_separate_tbl(pk_col, table_name), class = dm_error_full("no_pk_in_separate_tbl"))
 }
 
 error_txt_no_pk_in_separate_tbl <- function(pk_col, table_name) {
