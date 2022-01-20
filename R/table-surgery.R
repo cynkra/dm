@@ -45,7 +45,7 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
   sel_vars <- eval_select_both(quo(c(...)), avail_cols)
 
   old_primary_key <- dm_get_all_pks(dm) %>% filter(table == table_name) %>% pull(pk_col)
-  if (has_length(old_primary_key) && old_primary_key %in% sel_vars) {
+  if (has_length(old_primary_key) && old_primary_key %in% sel_vars$names) {
     abort_no_pk_in_separate_tbl(old_primary_key, table_name)
   }
 
@@ -94,7 +94,8 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
   old_foreign_keys <- dm_get_all_fks(dm) %>%
     filter(child_table == table_name)
 
-  affected_fks <- filter(old_foreign_keys, child_fk_col %in% sel_vars)
+  affected_fks <- filter(old_foreign_keys, child_fk_cols %in% sel_vars$names)
+  on_delete = arg_match(on_delete)
 
   dm_get_def(dm) %>%
     mutate(
