@@ -171,8 +171,8 @@ dm_unite_tbls <- function(dm, table_1, table_2, rm_key_col = TRUE) {
   )
 
   if (rm_key_col) {
-    key_col <- rel$child_fk_col
-    res_tbl <- select(res_tbl, -!!key_col)
+    key_col <- as.list(rel$child_fk_cols)
+    res_tbl <- select(res_tbl, -!!key_col[[1]])
   }
 
   dm %>%
