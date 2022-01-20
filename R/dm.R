@@ -28,7 +28,6 @@
 #' - [dm_select_tbl()] for creating a `dm` with only a subset of the tables
 #' - [dm_separate_tbl()] as one example of the normalization family
 #' - [dm_nycflights13()]  for creating an example `dm` object
-#' - [decompose_table()] for table surgery
 #' - [check_key()] and [check_subset()] for checking for key properties
 #' - [examine_cardinality()] for checking the cardinality of the relation between two tables
 #'
