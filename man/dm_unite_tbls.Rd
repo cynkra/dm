@@ -20,8 +20,6 @@ joining the two tables. Otherwise the key column of the child table is kept.}
 The original \code{dm} with two of its tables merged into one.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
-
 Join two tables together by their foreign key and update the
 \code{dm} accordingly. This is similar to \code{dm_join_to_tbl()}, only that the resulting
 table will be part of the \code{dm}. The name of the child table (the table with the
@@ -29,18 +27,14 @@ foreign key relation pointing away from it) will be used for the resulting table
 
 Foreign key relations are kept whenever possible.
 }
-\section{Life cycle}{
-
-These functions are marked "questioning" because they feel more useful
-when applied to a table in a dm object.
-}
-
 \examples{
 dm_nycflights13() \%>\%
   dm_unite_tbls(flights, planes)
 }
 \seealso{
 Other normalization: 
-\code{\link{dm_separate_tbl}()}
+\code{\link{decompose_table}()},
+\code{\link{dm_separate_tbl}()},
+\code{\link{reunite_parent_child}()}
 }
 \concept{normalization}

@@ -119,7 +119,6 @@ and importing the primary and foreign keys
 \item \code{\link[=dm_select_tbl]{dm_select_tbl()}} for creating a \code{dm} with only a subset of the tables
 \item \code{\link[=dm_separate_tbl]{dm_separate_tbl()}} as one example of the normalization family
 \item \code{\link[=dm_nycflights13]{dm_nycflights13()}}  for creating an example \code{dm} object
-\item \code{\link[=decompose_table]{decompose_table()}} for table surgery
 \item \code{\link[=check_key]{check_key()}} and \code{\link[=check_subset]{check_subset()}} for checking for key properties
 \item \code{\link[=examine_cardinality]{examine_cardinality()}} for checking the cardinality of the relation between two tables
 }

@@ -66,8 +66,6 @@ A \code{dm} with one of its tables split into two tables which are linked by
 a foreign key relation.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
-
 Extract a lookup table from a table in a \code{dm}, linking the original table and the new table by a key.
 
 \code{dm_separate_table()} accepts a \code{dm}, an unquoted table name, a name for the new column
@@ -77,18 +75,14 @@ used in order to form the new table.
 In addition you can specify the name of the newly created table and how possible
 conflicts with existing table names should be handled.
 }
-\section{Life cycle}{
-
-This function is marked "questioning" because it feels more useful
-when applied to a table in a dm object.
-}
-
 \examples{
 dm_nycflights13() \%>\%
   dm_separate_tbl(flights, ymd, year, month, day)
 }
 \seealso{
 Other normalization: 
-\code{\link{dm_unite_tbls}()}
+\code{\link{decompose_table}()},
+\code{\link{dm_unite_tbls}()},
+\code{\link{reunite_parent_child}()}
 }
 \concept{normalization}
