@@ -135,7 +135,7 @@ check_one_zoom <- function(def, zoomed) {
 # dm invalid --------------------------------------------------------------
 
 abort_dm_invalid <- function(why) {
-  abort(error_txt_dm_invalid(why), .subclass = dm_error_full("dm_invalid"))
+  abort(error_txt_dm_invalid(why), class = dm_error_full("dm_invalid"))
 }
 
 error_txt_dm_invalid <- function(why) {

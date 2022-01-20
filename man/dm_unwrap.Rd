@@ -24,7 +24,7 @@ on the dm.
 
 roundtrip <-
   dm_nycflights13() \%>\%
-  dm_wrap(root = flights, silent = TRUE) \%>\%
+  dm_wrap(root = flights) \%>\%
   dm_unwrap(ptype = dm_ptype(dm_nycflights13()))
 roundtrip
 

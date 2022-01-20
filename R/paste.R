@@ -242,7 +242,7 @@ dquote <- function(x) {
 # Errors ------------------------------------------------------------------
 
 abort_unknown_option <- function(options, all_options) {
-  abort(error_txt_unknown_option(options, all_options), .subclass = dm_error_full("unknown_option"))
+  abort(error_txt_unknown_option(options, all_options), class = dm_error_full("unknown_option"))
 }
 
 error_txt_unknown_option <- function(options, all_options) {
