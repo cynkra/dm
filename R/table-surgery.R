@@ -125,26 +125,26 @@ dm_unite_tbls <- function(dm, table_1, table_2, rm_key_col = TRUE) {
   check_no_filter(dm)
 
   rel <- parent_child_table(dm, {{ table_1 }}, {{ table_2 }})
-  start <- rel$child_table
-  other <- rel$parent_table
+  child <- rel$child_table
+  parent <- rel$parent_table
+
+  # rename cols if necessary
+  temp_dm <- prepare_dm_for_flatten(dm, c(child, parent), TRUE, FALSE)
+
   # only FKs need to be transferred, because PK-column is lost anyway
-  keys_to_transfer <- dm_get_all_fks(dm) %>%
-    filter(child_table == other)
+  keys_to_transfer <- dm_get_all_fks(temp_dm) %>%
+    filter(child_table == parent)
 
-  res_tbl <- dm_flatten_to_tbl_impl(
-    dm, start, !!other,
-    join = left_join, join_name = "left_join", squash = FALSE
-  )
+  tables_in_dm <- dm_get_tables_impl(temp_dm)
+  child_data <- tables_in_dm[[child]]
+  parent_data <- tables_in_dm[[parent]]
+  by <- get_by(temp_dm, rel$child_table, rel$parent_table)
+  res_tbl <- reunite_parent_child_impl(child_data, parent_data, by, rm_key_col)
 
-  if (rm_key_col) {
-    key_col <- as.list(rel$child_fk_cols)
-    res_tbl <- select(res_tbl, -!!key_col[[1]])
-  }
-
-  dm %>%
-    dm_rm_tbl(!!other) %>%
+  temp_dm %>%
+    dm_rm_tbl(parent) %>%
     dm_get_def() %>%
-    mutate(data = if_else(table == start, list(res_tbl), data)) %>%
+    mutate(data = if_else(table == child, list(res_tbl), data)) %>%
     new_dm3() %>%
     reduce2(keys_to_transfer$child_fk_cols,
       keys_to_transfer$parent_table,
@@ -182,4 +182,15 @@ decompose_table_impl <- function(.data, new_id_column, table_name, sel_vars) {
   # perhaps if this operation is run in a data model?
 
   list("child_table" = child_table, "parent_table" = parent_table)
+}
+
+reunite_parent_child_impl <- function(child_table, parent_table, by, rm_key_col) {
+  res_tbl <- child_table %>%
+    left_join(parent_table, by = by)
+
+  if (rm_key_col) {
+    res_tbl <- select(res_tbl, -names(by))
+  }
+
+  res_tbl
 }
