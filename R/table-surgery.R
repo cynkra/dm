@@ -40,11 +40,11 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
   check_no_filter(dm)
   check_not_zoomed(dm)
 
-  .data <- tbl(dm, table_name)
+  .data <- dm[[table_name]]
   avail_cols <- colnames(.data)
   sel_vars <- eval_select_both(quo(c(...)), avail_cols)
 
-  old_primary_key <- dm_get_pk(dm, !!table_name)
+  old_primary_key <- dm_get_all_pks(dm) %>% filter(table == table_name) %>% pull(pk_col)
   if (has_length(old_primary_key) && old_primary_key %in% sel_vars) {
     abort_no_pk_in_separate_tbl(old_primary_key, table_name)
   }
@@ -54,7 +54,7 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
   } else {
     as_string(enexpr(new_table_name))
   }
-  old_names <- src_tbls(dm)
+  old_names <- dm_get_def(dm)$table
   names_list <- repair_table_names(old_names, new_table_name, repair, quiet)
   # rename old tables in case name repair changed their names
   dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
@@ -76,7 +76,7 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
     distinct() %>%
     # Without as.integer(), RPostgres creates integer64 column (#15)
     mutate(!!id_col_q := as.integer(coalesce(row_number(!!sym(names(sel_vars$indices)[[1]])), 0L))) %>%
-    select(!!id_col_q, everything())
+    relocate(!!id_col_q)
 
   non_key_indices <-
     setdiff(seq_along(avail_cols), sel_vars$indices)
