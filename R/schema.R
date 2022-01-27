@@ -56,13 +56,14 @@ db_schema_list.src_dbi <- function(con, include_default = TRUE, ...) {
     paste0(DBI::dbQuoteIdentifier(con, dbname), ".")
   }
   default_if_true <- if_else(include_default, "", " AND NOT s.name = 'dbo'")
-  DBI::dbGetQuery(con, glue::glue("SELECT s.name as schema_name,
-    u.name AS schema_owner
+  # ignore built-in schemas for backward compatibility:
+  # https://docs.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver15
+  DBI::dbGetQuery(con, glue::glue("SELECT s.name as schema_name
     FROM {dbname_sql}sys.schemas s
-    INNER JOIN {dbname_sql}sys.sysusers u
-    ON u.uid = s.principal_id
-    WHERE u.issqluser = 1
-    AND u.name NOT IN ('sys', 'guest', 'INFORMATION_SCHEMA'){default_if_true}")) %>%
+    WHERE s.name NOT IN ('sys', 'INFORMATION_SCHEMA', 'db_accessadmin',
+          'db_backupoperator', 'db_datareader', 'db_datawriter', 'db_ddladmin',
+          'db_denydatareader', 'db_denydatawriter', 'db_owner',
+          'db_securityadmin'){default_if_true}")) %>%
     as_tibble()
 }
 
