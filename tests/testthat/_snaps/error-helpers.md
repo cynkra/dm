@@ -242,14 +242,6 @@
     Output
       NULL
     Code
-      abort_no_schema_exists("table_1")
-    Error <dm_error_no_schema_exists>
-      No schema named `table_1` exists.
-    Code
-      abort_no_schema_exists("fastfood", "gala_dinner")
-    Error <dm_error_no_schema_exists>
-      No schema named `fastfood` exists on database `gala_dinner`.
-    Code
       abort_no_schemas_supported("FantasticDatabaseManagementSystem",
         "hyperconnection")
     Error <dm_error_no_schemas_supported>

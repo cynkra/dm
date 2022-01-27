@@ -263,9 +263,6 @@ sql_schema_table_list_mssql <- function(con, schema = NULL, dbname = NULL) {
     check_param_class(schema, "character")
     check_param_length(schema)
   }
-  if (!is_null(schema) && !db_schema_exists(src$con, schema, dbname)) {
-    abort_no_schema_exists(sql_to_character(src$con, schema), dbname)
-  }
   if (!is_null(dbname)) {
     check_param_class(dbname, "character")
     check_param_length(dbname)
@@ -285,9 +282,6 @@ sql_schema_table_list_postgres <- function(con, schema = NULL) {
   if (!is_null(schema)) {
     check_param_class(schema, "character")
     check_param_length(schema)
-  }
-  if (!is_null(schema) && !db_schema_exists(src$con, schema)) {
-    abort_no_schema_exists(sql_to_character(src$con, schema))
   }
   enframe(
     get_src_tbl_names(src, schema = sql_to_character(src$con, schema)),
@@ -339,9 +333,6 @@ db_schema_drop <- function(con, schema, force = FALSE, ...) {
     deprecate_soft("0.2.5", 'dm::db_schema_drop(con = "must be a DBI connection, not a dbplyr source,")', )
   }
 
-  if (!db_schema_exists(con, schema, ...)) {
-    abort_no_schema_exists(sql_to_character(con_from_src_or_con(con), schema), ...)
-  }
   UseMethod("db_schema_drop")
 }
 
