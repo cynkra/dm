@@ -60,7 +60,7 @@ db_schema_list.src_dbi <- function(con, include_default = TRUE, ...) {
   # https://docs.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver15
   DBI::dbGetQuery(con, glue::glue("SELECT s.name as schema_name
     FROM {dbname_sql}sys.schemas s
-    WHERE s.name NOT IN ('sys', 'INFORMATION_SCHEMA', 'db_accessadmin',
+    WHERE s.name NOT IN ('sys', 'guest', 'INFORMATION_SCHEMA', 'db_accessadmin',
           'db_backupoperator', 'db_datareader', 'db_datawriter', 'db_ddladmin',
           'db_denydatareader', 'db_denydatawriter', 'db_owner',
           'db_securityadmin'){default_if_true}")) %>%
