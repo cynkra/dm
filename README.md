@@ -130,12 +130,4 @@ If you encounter a clear bug, please file an issue with a minimal reproducible e
 
 ------------------------------------------------------------------------
 
-License: MIT © cynkra GmbH.
-
-Funded by:
-
-[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch/de/) <span style="padding-right:50px"> </span> [![cynkra](man/figures/cynkra-72.png)](https://www.cynkra.com/)
-
-------------------------------------------------------------------------
-
 Please note that the ‘dm’ project is released with a [Contributor Code of Conduct](https://cynkra.github.io/dm/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
