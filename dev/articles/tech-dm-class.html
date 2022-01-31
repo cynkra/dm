@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Class dm and basic operations</h1>
             
-            <h4 data-toc-skip class="date">2022-01-19</h4>
+            <h4 data-toc-skip class="date">2022-01-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-class.Rmd" class="external-link"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-class.Rmd</code></div>
@@ -227,7 +227,7 @@
 <span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">sqlite_src</span><span class="op">)</span>
 <span class="va">flights_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.37.0 [/tmp/RtmpcSg7Lr/nycflights13.sqlite]</span>
+<span class="co">#&gt; src:  sqlite 3.37.0 [/tmp/RtmpwMbcgu/nycflights13.sqlite]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span>
 <span class="co">#&gt; Columns: 62</span>
@@ -262,19 +262,19 @@
 <span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span>
 <span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`airports`&gt; [?? x 8]</span>
-<span class="co">#&gt; # Database: sqlite 3.37.0 [/tmp/RtmpcSg7Lr/nycflights13.sqlite]</span>
-<span class="co">#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        </span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;        </span>
-<span class="co">#&gt;  1 04G   Lansdowne Airport      41.1  -80.6  1044    -5 A     America/New_…</span>
-<span class="co">#&gt;  2 06A   Moton Field Municipa…  32.5  -85.7   264    -6 A     America/Chic…</span>
-<span class="co">#&gt;  3 06C   Schaumburg Regional    42.0  -88.1   801    -6 A     America/Chic…</span>
-<span class="co">#&gt;  4 06N   Randall Airport        41.4  -74.4   523    -5 A     America/New_…</span>
-<span class="co">#&gt;  5 09J   Jekyll Island Airport  31.1  -81.4    11    -5 A     America/New_…</span>
-<span class="co">#&gt;  6 0A9   Elizabethton Municip…  36.4  -82.2  1593    -5 A     America/New_…</span>
-<span class="co">#&gt;  7 0G6   Williams County Airp…  41.5  -84.5   730    -5 A     America/New_…</span>
-<span class="co">#&gt;  8 0G7   Finger Lakes Regiona…  42.9  -76.8   492    -5 A     America/New_…</span>
-<span class="co">#&gt;  9 0P2   Shoestring Aviation …  39.8  -76.6  1000    -5 U     America/New_…</span>
-<span class="co">#&gt; 10 0S9   Jefferson County Intl  48.1 -123.    108    -8 A     America/Los_…</span>
+<span class="co">#&gt; # Database: sqlite 3.37.0 [/tmp/RtmpwMbcgu/nycflights13.sqlite]</span>
+<span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span>
+<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span>
+<span class="co">#&gt;  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…</span>
+<span class="co">#&gt;  2 06A   Moton Field Municipal Airport  32.5  -85.7   264    -6 A     Amer…</span>
+<span class="co">#&gt;  3 06C   Schaumburg Regional            42.0  -88.1   801    -6 A     Amer…</span>
+<span class="co">#&gt;  4 06N   Randall Airport                41.4  -74.4   523    -5 A     Amer…</span>
+<span class="co">#&gt;  5 09J   Jekyll Island Airport          31.1  -81.4    11    -5 A     Amer…</span>
+<span class="co">#&gt;  6 0A9   Elizabethton Municipal Airpo…  36.4  -82.2  1593    -5 A     Amer…</span>
+<span class="co">#&gt;  7 0G6   Williams County Airport        41.5  -84.5   730    -5 A     Amer…</span>
+<span class="co">#&gt;  8 0G7   Finger Lakes Regional Airport  42.9  -76.8   492    -5 A     Amer…</span>
+<span class="co">#&gt;  9 0P2   Shoestring Aviation Airfield   39.8  -76.6  1000    -5 U     Amer…</span>
+<span class="co">#&gt; 10 0S9   Jefferson County Intl          48.1 -123.    108    -8 A     Amer…</span>
 <span class="co">#&gt; # … with more rows</span></code></pre>
 <p>But how can we use {dm}-functions to manage the primary keys of the tables in a <code>dm</code> object?</p>
 </div>
@@ -296,7 +296,7 @@
 <span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span>
 <span class="va">flights_dm_with_key</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.37.0 [/tmp/RtmpcSg7Lr/nycflights13.sqlite]</span>
+<span class="co">#&gt; src:  sqlite 3.37.0 [/tmp/RtmpwMbcgu/nycflights13.sqlite]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span>
 <span class="co">#&gt; Columns: 62</span>
@@ -342,7 +342,8 @@
 <p><code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> has a <code>check</code> argument. If set to <code>TRUE</code>, the function checks if the column of the table given by the user is unique. For performance reasons, the default is <code>check = FALSE</code>. See also [dm_examine_constraints()] for checking all constraints in a <code>dm</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">tzone</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; Error: (`tzone`) not a unique key of `airports`.</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in </span><span style="color: #262626; background-color: #DADADA; font-weight: bold;">`abort_not_unique_key()`</span><span style="font-weight: bold;"> at dm/R/key-helpers.R:52:4:</span></span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> (`tzone`) not a unique key of `airports`.</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="foreign-keys">Foreign keys<a class="anchor" aria-label="anchor" href="#foreign-keys"></a>
@@ -359,7 +360,7 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_key</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.37.0 [/tmp/RtmpcSg7Lr/nycflights13.sqlite]</span>
+<span class="co">#&gt; src:  sqlite 3.37.0 [/tmp/RtmpwMbcgu/nycflights13.sqlite]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span>
 <span class="co">#&gt; Columns: 62</span>
@@ -368,14 +369,16 @@
 <p>This will throw an error:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span>
-<span class="co">#&gt; Error: ref_table `airports` needs a primary key first. Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key.</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in </span><span style="color: #262626; background-color: #DADADA; font-weight: bold;">`abort_ref_tbl_has_no_pk()`</span><span style="font-weight: bold;"> at dm/R/foreign-keys.R:80:6:</span></span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> ref_table `airports` needs a primary key first. Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key.</span></code></pre></div>
 <p>Let’s create a <code>dm</code> object with a foreign key relation to work with later on:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_fk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
 <p>What if we tried to add another foreign key relation from <code>flights</code> to <code>airports</code> to the object? Column <code>dest</code> might work, since it also contains airport codes:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">dest</span>, <span class="va">airports</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; Error: Column (`dest`) of table `flights` contains values (see examples above) that are not present in column (`faa`) of table `airports`.</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in </span><span style="color: #262626; background-color: #DADADA; font-weight: bold;">`abort_not_subset_of()`</span><span style="font-weight: bold;"> at dm/R/foreign-keys.R:93:6:</span></span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`dest`) of table `flights` contains values (see examples above) that are not present in column (`faa`) of table `airports`.</span></code></pre></div>
 <p>Checks are opt-in and executed only if <code>check = TRUE</code>. You can still add a foreign key with the default <code>check = FALSE</code>. See also [dm_examine_constraints()] for checking all constraints in a <code>dm</code>.</p>
 <p>Get an overview of all foreign key relations with<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -393,7 +396,8 @@
 <code class="sourceCode R"><span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">flights</span>, column <span class="op">=</span> <span class="va">dest</span>, ref_table <span class="op">=</span> <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_has_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span>
-<span class="co">#&gt; Error: No foreign keys to remove.</span>
+<span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in </span><span style="color: #262626; background-color: #DADADA; font-weight: bold;">`abort_is_not_fkc()`</span><span style="font-weight: bold;"> at dm/R/foreign-keys.R:367:4:</span></span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> No foreign keys to remove.</span>
 <span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_has_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span>

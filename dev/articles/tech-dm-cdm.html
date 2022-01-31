@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Migration guide: ‘cdm’ -&gt; ‘dm’</h1>
             
-            <h4 data-toc-skip class="date">2022-01-19</h4>
+            <h4 data-toc-skip class="date">2022-01-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-cdm.Rmd" class="external-link"><code>vignettes/tech-dm-cdm.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-cdm.Rmd</code></div>
@@ -173,34 +173,34 @@
 <span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span>
 <span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 86 × 8</span>
-<span class="co">#&gt;    faa   name                     lat    lon   alt    tz dst   tzone       </span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;       </span>
-<span class="co">#&gt;  1 ALB   Albany Intl             42.7  -73.8   285    -5 A     America/New…</span>
-<span class="co">#&gt;  2 ATL   Hartsfield Jackson At…  33.6  -84.4  1026    -5 A     America/New…</span>
-<span class="co">#&gt;  3 AUS   Austin Bergstrom Intl   30.2  -97.7   542    -6 A     America/Chi…</span>
-<span class="co">#&gt;  4 BDL   Bradley Intl            41.9  -72.7   173    -5 A     America/New…</span>
-<span class="co">#&gt;  5 BHM   Birmingham Intl         33.6  -86.8   644    -6 A     America/Chi…</span>
-<span class="co">#&gt;  6 BNA   Nashville Intl          36.1  -86.7   599    -6 A     America/Chi…</span>
-<span class="co">#&gt;  7 BOS   General Edward Lawren…  42.4  -71.0    19    -5 A     America/New…</span>
-<span class="co">#&gt;  8 BTV   Burlington Intl         44.5  -73.2   335    -5 A     America/New…</span>
-<span class="co">#&gt;  9 BUF   Buffalo Niagara Intl    42.9  -78.7   724    -5 A     America/New…</span>
-<span class="co">#&gt; 10 BUR   Bob Hope                34.2 -118.    778    -8 A     America/Los…</span>
+<span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span>
+<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span>
+<span class="co">#&gt;  1 ALB   Albany Intl                    42.7  -73.8   285    -5 A     Amer…</span>
+<span class="co">#&gt;  2 ATL   Hartsfield Jackson Atlanta I…  33.6  -84.4  1026    -5 A     Amer…</span>
+<span class="co">#&gt;  3 AUS   Austin Bergstrom Intl          30.2  -97.7   542    -6 A     Amer…</span>
+<span class="co">#&gt;  4 BDL   Bradley Intl                   41.9  -72.7   173    -5 A     Amer…</span>
+<span class="co">#&gt;  5 BHM   Birmingham Intl                33.6  -86.8   644    -6 A     Amer…</span>
+<span class="co">#&gt;  6 BNA   Nashville Intl                 36.1  -86.7   599    -6 A     Amer…</span>
+<span class="co">#&gt;  7 BOS   General Edward Lawrence Loga…  42.4  -71.0    19    -5 A     Amer…</span>
+<span class="co">#&gt;  8 BTV   Burlington Intl                44.5  -73.2   335    -5 A     Amer…</span>
+<span class="co">#&gt;  9 BUF   Buffalo Niagara Intl           42.9  -78.7   724    -5 A     Amer…</span>
+<span class="co">#&gt; 10 BUR   Bob Hope                       34.2 -118.    778    -8 A     Amer…</span>
 <span class="co">#&gt; # … with 76 more rows</span></code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm</span><span class="op">$</span><span class="va">planes</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 945 × 9</span>
-<span class="co">#&gt;    tailnum  year type       manufacturer  model  engines seats speed engine</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;         &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; </span>
-<span class="co">#&gt;  1 N10156   2004 Fixed win… EMBRAER       EMB-1…       2    55    NA Turbo…</span>
-<span class="co">#&gt;  2 N104UW   1999 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…</span>
-<span class="co">#&gt;  3 N10575   2002 Fixed win… EMBRAER       EMB-1…       2    55    NA Turbo…</span>
-<span class="co">#&gt;  4 N105UW   1999 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…</span>
-<span class="co">#&gt;  5 N110UW   1999 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…</span>
-<span class="co">#&gt;  6 N11106   2002 Fixed win… EMBRAER       EMB-1…       2    55    NA Turbo…</span>
-<span class="co">#&gt;  7 N11107   2002 Fixed win… EMBRAER       EMB-1…       2    55    NA Turbo…</span>
-<span class="co">#&gt;  8 N11109   2002 Fixed win… EMBRAER       EMB-1…       2    55    NA Turbo…</span>
-<span class="co">#&gt;  9 N11121   2003 Fixed win… EMBRAER       EMB-1…       2    55    NA Turbo…</span>
-<span class="co">#&gt; 10 N11137   2003 Fixed win… EMBRAER       EMB-1…       2    55    NA Turbo…</span>
+<span class="co">#&gt;    tailnum  year type         manufacturer model engines seats speed engine</span>
+<span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; </span>
+<span class="co">#&gt;  1 N10156   2004 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
+<span class="co">#&gt;  2 N104UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span>
+<span class="co">#&gt;  3 N10575   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
+<span class="co">#&gt;  4 N105UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span>
+<span class="co">#&gt;  5 N110UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span>
+<span class="co">#&gt;  6 N11106   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
+<span class="co">#&gt;  7 N11107   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
+<span class="co">#&gt;  8 N11109   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
+<span class="co">#&gt;  9 N11121   2003 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
+<span class="co">#&gt; 10 N11137   2003 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
 <span class="co">#&gt; # … with 935 more rows</span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm</span><span class="op">[[</span><span class="st">"weather"</span><span class="op">]</span><span class="op">]</span></code></pre></div>

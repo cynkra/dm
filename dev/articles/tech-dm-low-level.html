@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Model verification - keys, constraints and normalization</h1>
             
-            <h4 data-toc-skip class="date">2022-01-19</h4>
+            <h4 data-toc-skip class="date">2022-01-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-low-level.Rmd" class="external-link"><code>vignettes/tech-dm-low-level.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-low-level.Rmd</code></div>
@@ -174,7 +174,8 @@
 <p>and you want to know if <code>a</code> is a primary key for <code>data_1</code>, you can use the <code><a href="../reference/check_key.html">check_key()</a></code> function:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/check_key.html">check_key</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span><span class="op">)</span>
-<span class="co">#&gt; Error: (`a`) not a unique key of `data_1`.</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in </span><span style="color: #262626; background-color: #DADADA; font-weight: bold;">`abort_not_unique_key()`</span><span style="font-weight: bold;"> at dm/R/key-helpers.R:52:4:</span></span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> (`a`) not a unique key of `data_1`.</span></code></pre></div>
 <p>Mind the error message when a test is not passed.</p>
 <p>For <code>data_2</code>, column <code>a</code> is a key:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -189,7 +190,8 @@
 <span class="co">#&gt;       a     b     c</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt; 1     3     6     9</span></code></pre>
-<pre><code><span class="co">#&gt; Error: Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></code></pre>
+<pre><code><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in </span><span style="color: #262626; background-color: #DADADA; font-weight: bold;">`abort_not_subset_of()`</span><span style="font-weight: bold;"> at dm/R/key-helpers.R:193:2:</span></span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></code></pre>
 <p>It should be kept in mind that <code><a href="../reference/check_subset.html">check_subset()</a></code> does not test if column <code>c2</code> is a unique key of table <code>t2</code>. In order to find out if a (child) table <code>t1</code> contains a column <code>c1</code> that is a foreign key to a (parent) table <code>t2</code> with the corresponding column <code>c2</code>, the following method should be used:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/check_key.html">check_key</a></span><span class="op">(</span><span class="va">t2</span>, <span class="va">c2</span><span class="op">)</span>
@@ -201,7 +203,8 @@
 <span class="co">#&gt;       a     b     c</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt; 1     3     6     9</span></code></pre>
-<pre><code><span class="co">#&gt; Error: Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></code></pre>
+<pre><code><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in </span><span style="color: #262626; background-color: #DADADA; font-weight: bold;">`abort_sets_not_equal()`</span><span style="font-weight: bold;"> at dm/R/key-helpers.R:148:4:</span></span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></code></pre>
 <p>Introducing one more table enables us to show how it looks when the test is passed:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>, c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span><span class="op">)</span>
@@ -246,14 +249,16 @@
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># This does not pass, `c` is not unique key of d2:</span>
 <span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_n</a></span><span class="op">(</span><span class="va">d2</span>, <span class="va">c</span>, <span class="va">d1</span>, <span class="va">a</span><span class="op">)</span>
-<span class="co">#&gt; Error: (`c`) not a unique key of `d2`.</span>
+<span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in </span><span style="color: #262626; background-color: #DADADA; font-weight: bold;">`abort_not_unique_key()`</span><span style="font-weight: bold;"> at dm/R/key-helpers.R:52:4:</span></span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> (`c`) not a unique key of `d2`.</span>
 
 <span class="co"># This passes, multiple values in d2$c are allowed:</span>
 <span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_n</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d2</span>, <span class="va">c</span><span class="op">)</span>
 
 <span class="co"># This does not pass, injectivity is violated:</span>
 <span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_1_1</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d2</span>, <span class="va">c</span><span class="op">)</span>
-<span class="co">#&gt; Error: 1..1 cardinality (bijectivity) is not given: Column (`c`) in table `d2` contains duplicate values.</span>
+<span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in </span><span style="color: #262626; background-color: #DADADA; font-weight: bold;">`abort_not_bijective()`</span><span style="font-weight: bold;"> at dm/R/check-cardinalities.R:130:2:</span></span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> 1..1 cardinality (bijectivity) is not given: Column (`c`) in table `d2` contains duplicate values.</span>
 
 <span class="co"># This passes:</span>
 <span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_1</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d3</span>, <span class="va">c</span><span class="op">)</span></code></pre></div>

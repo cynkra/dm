@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Create a dm object from data frames</h1>
             
-            <h4 data-toc-skip class="date">2022-01-19</h4>
+            <h4 data-toc-skip class="date">2022-01-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-df.Rmd" class="external-link"><code>vignettes/howto-dm-df.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-df.Rmd</code></div>
@@ -176,18 +176,18 @@
 
 <span class="va">airports</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1,458 × 8</span>
-<span class="co">#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        </span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;        </span>
-<span class="co">#&gt;  1 04G   Lansdowne Airport      41.1  -80.6  1044    -5 A     America/New_…</span>
-<span class="co">#&gt;  2 06A   Moton Field Municipa…  32.5  -85.7   264    -6 A     America/Chic…</span>
-<span class="co">#&gt;  3 06C   Schaumburg Regional    42.0  -88.1   801    -6 A     America/Chic…</span>
-<span class="co">#&gt;  4 06N   Randall Airport        41.4  -74.4   523    -5 A     America/New_…</span>
-<span class="co">#&gt;  5 09J   Jekyll Island Airport  31.1  -81.4    11    -5 A     America/New_…</span>
-<span class="co">#&gt;  6 0A9   Elizabethton Municip…  36.4  -82.2  1593    -5 A     America/New_…</span>
-<span class="co">#&gt;  7 0G6   Williams County Airp…  41.5  -84.5   730    -5 A     America/New_…</span>
-<span class="co">#&gt;  8 0G7   Finger Lakes Regiona…  42.9  -76.8   492    -5 A     America/New_…</span>
-<span class="co">#&gt;  9 0P2   Shoestring Aviation …  39.8  -76.6  1000    -5 U     America/New_…</span>
-<span class="co">#&gt; 10 0S9   Jefferson County Intl  48.1 -123.    108    -8 A     America/Los_…</span>
+<span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span>
+<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span>
+<span class="co">#&gt;  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…</span>
+<span class="co">#&gt;  2 06A   Moton Field Municipal Airport  32.5  -85.7   264    -6 A     Amer…</span>
+<span class="co">#&gt;  3 06C   Schaumburg Regional            42.0  -88.1   801    -6 A     Amer…</span>
+<span class="co">#&gt;  4 06N   Randall Airport                41.4  -74.4   523    -5 A     Amer…</span>
+<span class="co">#&gt;  5 09J   Jekyll Island Airport          31.1  -81.4    11    -5 A     Amer…</span>
+<span class="co">#&gt;  6 0A9   Elizabethton Municipal Airpo…  36.4  -82.2  1593    -5 A     Amer…</span>
+<span class="co">#&gt;  7 0G6   Williams County Airport        41.5  -84.5   730    -5 A     Amer…</span>
+<span class="co">#&gt;  8 0G7   Finger Lakes Regional Airport  42.9  -76.8   492    -5 A     Amer…</span>
+<span class="co">#&gt;  9 0P2   Shoestring Aviation Airfield   39.8  -76.6  1000    -5 U     Amer…</span>
+<span class="co">#&gt; 10 0S9   Jefferson County Intl          48.1 -123.    108    -8 A     Amer…</span>
 <span class="co">#&gt; # … with 1,448 more rows</span></code></pre>
 <p>Your own data will probably not be available as an R package. Whatever format it is in, you will need to be able to load it as data frames into your R session. If the data is too large, consider using dm to connect to the database instead. See <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> for details on using dm with databases.</p>
 </div>
@@ -217,18 +217,18 @@
 <span class="co">#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather"</span>
 <span class="va">flights_dm_no_keys</span><span class="op">$</span><span class="va">airports</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1,458 × 8</span>
-<span class="co">#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        </span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;        </span>
-<span class="co">#&gt;  1 04G   Lansdowne Airport      41.1  -80.6  1044    -5 A     America/New_…</span>
-<span class="co">#&gt;  2 06A   Moton Field Municipa…  32.5  -85.7   264    -6 A     America/Chic…</span>
-<span class="co">#&gt;  3 06C   Schaumburg Regional    42.0  -88.1   801    -6 A     America/Chic…</span>
-<span class="co">#&gt;  4 06N   Randall Airport        41.4  -74.4   523    -5 A     America/New_…</span>
-<span class="co">#&gt;  5 09J   Jekyll Island Airport  31.1  -81.4    11    -5 A     America/New_…</span>
-<span class="co">#&gt;  6 0A9   Elizabethton Municip…  36.4  -82.2  1593    -5 A     America/New_…</span>
-<span class="co">#&gt;  7 0G6   Williams County Airp…  41.5  -84.5   730    -5 A     America/New_…</span>
-<span class="co">#&gt;  8 0G7   Finger Lakes Regiona…  42.9  -76.8   492    -5 A     America/New_…</span>
-<span class="co">#&gt;  9 0P2   Shoestring Aviation …  39.8  -76.6  1000    -5 U     America/New_…</span>
-<span class="co">#&gt; 10 0S9   Jefferson County Intl  48.1 -123.    108    -8 A     America/Los_…</span>
+<span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span>
+<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span>
+<span class="co">#&gt;  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…</span>
+<span class="co">#&gt;  2 06A   Moton Field Municipal Airport  32.5  -85.7   264    -6 A     Amer…</span>
+<span class="co">#&gt;  3 06C   Schaumburg Regional            42.0  -88.1   801    -6 A     Amer…</span>
+<span class="co">#&gt;  4 06N   Randall Airport                41.4  -74.4   523    -5 A     Amer…</span>
+<span class="co">#&gt;  5 09J   Jekyll Island Airport          31.1  -81.4    11    -5 A     Amer…</span>
+<span class="co">#&gt;  6 0A9   Elizabethton Municipal Airpo…  36.4  -82.2  1593    -5 A     Amer…</span>
+<span class="co">#&gt;  7 0G6   Williams County Airport        41.5  -84.5   730    -5 A     Amer…</span>
+<span class="co">#&gt;  8 0G7   Finger Lakes Regional Airport  42.9  -76.8   492    -5 A     Amer…</span>
+<span class="co">#&gt;  9 0P2   Shoestring Aviation Airfield   39.8  -76.6  1000    -5 U     Amer…</span>
+<span class="co">#&gt; 10 0S9   Jefferson County Intl          48.1 -123.    108    -8 A     Amer…</span>
 <span class="co">#&gt; # … with 1,448 more rows</span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_no_keys</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"airports"</span>, <span class="st">"flights"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
