@@ -60,8 +60,6 @@ test_that("output", {
     abort_parameter_not_correct_class("number", correct_class = "numeric", class = "logical")
     abort_parameter_not_correct_length("length_1_parameter", 1, letters[1:26])
     warn_if_arg_not("NULL", c("MSSQL", "Postgres"), arg_name = "dbms_dependent_arg")
-    abort_no_schema_exists("table_1")
-    abort_no_schema_exists("fastfood", "gala_dinner")
     abort_no_schemas_supported("FantasticDatabaseManagementSystem", "hyperconnection")
     abort_no_schemas_supported(con = 1)
     abort_no_schemas_supported()
