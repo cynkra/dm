@@ -6,16 +6,18 @@
 #' *terminal child table*).
 #'
 #' @param dm A dm.
-#' @param table A table.
-#' @param into The table to wrap `table` into, optional as it can be guessed
+#' @param child_tables A table. Support for nesting multiple tables at once
+#'   is planned but not implemented yet.
+#' @param into The table to wrap `child_tables` into, optional as it can be guessed
 #'   from the foreign keys unambiguously but useful to be explicit.
 #'
 #' @seealso [dm::dm_wrap_tbl()], [dm::dm_unwrap_tbl()]
 #' @export
-dm_nest_tbl <- function(dm, table, into = NULL) {
+dm_nest_tbl <- function(dm, child_tables, into = NULL) {
   # process args
   into <- enquo(into)
-  table_name <- dm_tbl_name(dm, {{ table }})
+  # FIXME: Rename table_name to child_tables_name
+  table_name <- dm_tbl_name(dm, {{ child_tables }})
 
   # retrieve fk and parent_name
   fks <- dm_get_all_fks(dm)
@@ -25,14 +27,14 @@ dm_nest_tbl <- function(dm, table, into = NULL) {
   fks <- dm_get_all_fks(dm)
   children <-
     fks %>%
-    filter(parent_table == table_name) %>%
+    filter(parent_table == !!table_name) %>%
     pull(child_table)
-  fk <- filter(fks, child_table == table_name)
+  fk <- filter(fks, child_table == !!table_name)
   parent_fk <- unlist(fk$parent_key_cols)
   child_fk <- unlist(fk$child_fk_cols)
   child_pk <-
     dm_get_all_pks(dm) %>%
-    filter(table == table_name) %>%
+    filter(table == !!table_name) %>%
     pull(pk_col) %>%
     unlist()
   parent_name <- pull(fk, parent_table)

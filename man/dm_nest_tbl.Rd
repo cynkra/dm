@@ -5,16 +5,17 @@
 \alias{dm_pack_tbl}
 \title{Nest or pack a table inside its dm}
 \usage{
-dm_nest_tbl(dm, table, into = NULL)
+dm_nest_tbl(dm, child_tables, into = NULL)
 
 dm_pack_tbl(dm, table, into = NULL)
 }
 \arguments{
 \item{dm}{A dm.}
 
-\item{table}{A table.}
+\item{child_tables}{A table. Support for nesting multiple tables at once
+is planned but not implemented yet.}
 
-\item{into}{The table to wrap \code{table} into, optional as it can be guessed
+\item{into}{The table to wrap \code{child_tables} into, optional as it can be guessed
 from the foreign keys unambiguously but useful to be explicit.}
 }
 \description{
