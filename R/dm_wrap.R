@@ -1,5 +1,8 @@
 #' Wrap dm into a single tibble dm
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' `dm_wrap_tbl()` creates a single tibble dm containing the `root` table
 #' enhanced with all the data related to it
 #' through the relationships stored in the dm.
@@ -76,6 +79,8 @@ dm_wrap_tbl_impl <- function(dm, root, strict = TRUE) {
 #' Unwrap a single table dm
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' `dm_unwrap_tbl()` unwraps all tables in a dm object so that the resulting dm
 #' matches a given ptype dm.
 #' It runs a sequence of [dm_unnest_tbl()] and [dm_unpack_tbl()] operations

@@ -1,5 +1,8 @@
 #' Pack Join
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' `pack_join()` returns all rows and columns in `x` with a new packed column
 #' that contains all matches from `y`.
 #' @inheritParams dplyr::nest_join

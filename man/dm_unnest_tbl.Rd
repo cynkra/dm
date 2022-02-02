@@ -22,6 +22,8 @@ dm_unpack_tbl(dm, table, col, ptype)
 A dm.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{dm_unnest_tbl()} target a specific column to unnest
 from the given table in a given dm.
 A ptype or a set of keys should be given, not both.

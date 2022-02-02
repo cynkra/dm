@@ -16,6 +16,8 @@ is planned but not implemented yet.}
 from the foreign keys unambiguously but useful to be explicit.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{dm_nest_tbl()} converts a child table to a nested column in its parent
 table.
 The child table should not have children itself (i.e. it needs to be a

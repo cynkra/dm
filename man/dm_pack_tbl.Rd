@@ -16,6 +16,8 @@ is planned but not implemented yet.}
 from the foreign keys unambiguously but useful to be explicit.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{dm_pack_tbl()} converts a parent table to a packed column in its child
 table.
 The parent table should not have parent tables itself (i.e. it needs to be a

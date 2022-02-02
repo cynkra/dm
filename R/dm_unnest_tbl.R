@@ -1,9 +1,13 @@
 #' Unnest or unpack columns from a wrapped table
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' `dm_unnest_tbl()` target a specific column to unnest
 #' from the given table in a given dm.
 #' A ptype or a set of keys should be given, not both.
 #'
+#' @details
 #' [dm_nest_tbl()] is an inverse operation to `dm_unnest_tbl()`
 #' if differences in row and column order are ignored.
 #' The opposite is true if referential constraints between both tables

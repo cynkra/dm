@@ -1,5 +1,8 @@
 #' Nest a table inside its dm
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' `dm_nest_tbl()` converts a child table to a nested column in its parent
 #' table.
 #' The child table should not have children itself (i.e. it needs to be a
@@ -91,6 +94,9 @@ dm_nest_tbl <- function(dm, child_tables, into = NULL) {
 }
 
 #' dm_pack_tbl()
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
 #' `dm_pack_tbl()` converts a parent table to a packed column in its child
 #' table.
