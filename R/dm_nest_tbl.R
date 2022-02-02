@@ -1,4 +1,4 @@
-#' Nest or pack a table inside its dm
+#' Nest a table inside its dm
 #'
 #' `dm_nest_tbl()` converts a child table to a nested column in its parent
 #' table.
@@ -8,11 +8,19 @@
 #' @param dm A dm.
 #' @param child_tables A table. Support for nesting multiple tables at once
 #'   is planned but not implemented yet.
-#' @param into The table to wrap `child_tables` into, optional as it can be guessed
+#' @param into The table to nest `child_tables` into, optional as it can be guessed
 #'   from the foreign keys unambiguously but useful to be explicit.
 #'
-#' @seealso [dm::dm_wrap_tbl()], [dm::dm_unwrap_tbl()]
+#' @seealso [dm::dm_wrap_tbl()], [dm::dm_unwrap_tbl()], [dm_pack_tbl()]
 #' @export
+#' @examples
+#' nested_dm <-
+#'   dm_nycflights13() %>%
+#'   dm_select_tbl(airlines, flights) %>%
+#'   dm_nest_tbl(flights)
+#'
+#' nested_dm
+#' nested_dm$airlines
 dm_nest_tbl <- function(dm, child_tables, into = NULL) {
   # process args
   into <- enquo(into)
@@ -89,26 +97,41 @@ dm_nest_tbl <- function(dm, child_tables, into = NULL) {
 #' The parent table should not have parent tables itself (i.e. it needs to be a
 #' *terminal parent table*).
 #'
+#' @param dm A dm.
+#' @param parent_tables A table. Support for packing multiple tables at once
+#'   is planned but not implemented yet.
+#' @param into The table to pack `parent_tables` into, optional as it can be guessed
+#'   from the foreign keys unambiguously but useful to be explicit.
+#'
+#' @seealso [dm::dm_wrap_tbl()], [dm::dm_unwrap_tbl()], [dm_nest_tbl()].
 #' @export
-#' @rdname dm_nest_tbl
-dm_pack_tbl <- function(dm, table, into = NULL) {
+#' @examples
+#' dm_packed <-
+#'   dm_nycflights13() %>%
+#'   dm_pack_tbl(planes)
+#'
+#' dm_packed
+#' dm_packed$flights
+#' dm_packed$flights$planes
+dm_pack_tbl <- function(dm, parent_tables, into = NULL) {
   # process args
   into <- enquo(into)
-  table_name <- dm_tbl_name(dm, {{ table }})
+  # FIXME: Rename to parent_tables_name
+  table_name <- dm_tbl_name(dm, {{ parent_tables }})
 
   # retrieve keys, child and parent
   # FIXME: fix redundancies and DRY when we decide what we export
   fks <- dm_get_all_fks(dm)
   parents <-
     fks %>%
-    filter(child_table == table_name) %>%
+    filter(child_table == !!table_name) %>%
     pull(parent_table)
-  fk <- filter(fks, parent_table == table_name)
+  fk <- filter(fks, parent_table == !!table_name)
   child_fk <- unlist(fk$child_fk_cols)
   parent_fk <- unlist(fk$parent_key_cols)
   parent_pk <-
     dm_get_all_pks(dm) %>%
-    filter(table == table_name) %>%
+    filter(table == !!table_name) %>%
     pull(pk_col) %>%
     unlist()
   child_name <- pull(fk, child_table)
