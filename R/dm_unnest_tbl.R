@@ -35,7 +35,7 @@
 #'
 #' airlines_wrapped %>%
 #'   dm_unnest_tbl(airlines, flights, ptype)
-dm_unnest_tbl <- function(dm, parent_table, col, ptype, ...) {
+dm_unnest_tbl <- function(dm, parent_table, col, ptype) {
   # process args and build names
   parent_table_name <- dm_tbl_name(dm, {{ parent_table }})
   table <- dm_get_tables_impl(dm)[[parent_table_name]]

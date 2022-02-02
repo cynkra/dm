@@ -4,7 +4,7 @@
 \alias{dm_unnest_tbl}
 \title{Unnest columns from a wrapped table}
 \usage{
-dm_unnest_tbl(dm, parent_table, col, ptype, ...)
+dm_unnest_tbl(dm, parent_table, col, ptype)
 }
 \arguments{
 \item{dm}{A dm.}
