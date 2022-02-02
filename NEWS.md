@@ -4,13 +4,13 @@
 
 - `db_schema_...()` functions no longer pro-actively check for schema existence; 
 - `db_schema_list.Microsoft SQL Server` no longer ignoring schemas for which the owner cannot be found
-- `dm_wrap()` loses no-op `silent` arg (#755).
+- `dm_wrap_tbl()` loses no-op `silent` arg (#755).
 - Establish compatibility with rlang 1.0.0 (#756).
 
 
 # dm 0.2.6.9003
 
-- New `dm_wrap()`, `dm_unwrap()`, `dm_nest_tbl()`, `dm_unnest_tbl()`, `dm_pack_tbl()` and `dm_unpack_tbl()` (#595, #733, #737).
+- New `dm_wrap_tbl()`, `dm_unwrap_tbl()`, `dm_nest_tbl()`, `dm_unnest_tbl()`, `dm_pack_tbl()` and `dm_unpack_tbl()` (#595, #733, #737).
 
 
 # dm 0.2.6.9002

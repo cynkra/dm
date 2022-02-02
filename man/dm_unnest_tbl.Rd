@@ -47,7 +47,7 @@ i.e. if the relationship is of cardinality 1:n or 1:1.
 \examples{
 airlines_wrapped <-
   dm_nycflights13() \%>\%
-  dm_wrap(airlines)
+  dm_wrap_tbl(airlines)
 
 # The ptype is required for reconstruction.
 # It can be an empty dm, only primary and foreign keys are considered.
@@ -60,7 +60,7 @@ airlines_wrapped \%>\%
   dm_unpack_tbl(flights, airports, ptype)
 }
 \seealso{
-\code{\link[=dm_unwrap]{dm_unwrap()}}, \code{\link[=dm_nest_tbl]{dm_nest_tbl()}}, \code{\link[=dm_pack_tbl]{dm_pack_tbl()}}, \code{\link[=dm_wrap]{dm_wrap()}},
+\code{\link[=dm_unwrap_tbl]{dm_unwrap_tbl()}}, \code{\link[=dm_nest_tbl]{dm_nest_tbl()}}, \code{\link[=dm_pack_tbl]{dm_pack_tbl()}}, \code{\link[=dm_wrap_tbl]{dm_wrap_tbl()}},
 \code{\link[=dm_examine_constraints]{dm_examine_constraints()}}, \code{\link[=dm_examine_cardinalities]{dm_examine_cardinalities()}},
 \code{\link[=dm_ptype]{dm_ptype()}}.
 }

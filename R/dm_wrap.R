@@ -1,6 +1,6 @@
 #' Wrap dm into a single tibble dm
 #'
-#' `dm_wrap()` creates a single tibble dm containing the `root` table
+#' `dm_wrap_tbl()` creates a single tibble dm containing the `root` table
 #' enhanced with all the data related to it
 #' through the relationships stored in the dm.
 #' It runs a sequence of [dm_nest_tbl()] and [dm_pack_tbl()] operations
@@ -12,11 +12,11 @@
 #' @param root Table to wrap the dm into (unquoted).
 #'
 #' @details
-#' `dm_wrap()` is an inverse to `dm_unwrap()`,
+#' `dm_wrap_tbl()` is an inverse to `dm_unwrap_tbl()`,
 #' i.e., wrapping after unwrapping returns the same information
 #' (disregarding row and column order).
 #' The opposite is not generally true:
-#' since `dm_wrap()` keeps only rows related directly or indirectly to
+#' since `dm_wrap_tbl()` keeps only rows related directly or indirectly to
 #' rows in the `root` table.
 #' Even if all referential constraints are satisfied,
 #' unwrapping after wrapping loses rows in parent tables
@@ -24,17 +24,17 @@
 #'
 #' @return A dm.
 #' @export
-#' @seealso [dm_unwrap()], [dm_nest_tbl()],
+#' @seealso [dm_unwrap_tbl()], [dm_nest_tbl()],
 #'   [dm_examine_constraints()],
 #'   [dm_examine_cardinalities()].
 #' @examples
 #' dm_nycflights13() %>%
-#'   dm_wrap(root = airlines)
-dm_wrap <- function(dm, root, strict = TRUE) {
-  dm_wrap_impl(dm, {{ root }}, strict = strict)
+#'   dm_wrap_tbl(root = airlines)
+dm_wrap_tbl <- function(dm, root, strict = TRUE) {
+  dm_wrap_tbl_impl(dm, {{ root }}, strict = strict)
 }
 
-dm_wrap_impl <- function(dm, root, strict = TRUE) {
+dm_wrap_tbl_impl <- function(dm, root, strict = TRUE) {
   # process args
   root_name <- dm_tbl_name(dm, {{ root }})
 
@@ -76,7 +76,7 @@ dm_wrap_impl <- function(dm, root, strict = TRUE) {
 #' Unwrap a single table dm
 #'
 #' @description
-#' `dm_unwrap()` unwraps all tables in a dm object so that the resulting dm
+#' `dm_unwrap_tbl()` unwraps all tables in a dm object so that the resulting dm
 #' matches a given ptype dm.
 #' It runs a sequence of [dm_unnest_tbl()] and [dm_unpack_tbl()] operations
 #' on the dm.
@@ -84,7 +84,7 @@ dm_wrap_impl <- function(dm, root, strict = TRUE) {
 #' @param dm A dm.
 #' @param ptype A dm, only used to query names of primary and foreign keys.
 #' @return A dm.
-#' @seealso [dm_wrap()], [dm_unnest_tbl()],
+#' @seealso [dm_wrap_tbl()], [dm_unnest_tbl()],
 #'   [dm_examine_constraints()],
 #'   [dm_examine_cardinalities()],
 #'   [dm_ptype()].
@@ -93,14 +93,14 @@ dm_wrap_impl <- function(dm, root, strict = TRUE) {
 #'
 #' roundtrip <-
 #'   dm_nycflights13() %>%
-#'   dm_wrap(root = flights) %>%
-#'   dm_unwrap(ptype = dm_ptype(dm_nycflights13()))
+#'   dm_wrap_tbl(root = flights) %>%
+#'   dm_unwrap_tbl(ptype = dm_ptype(dm_nycflights13()))
 #' roundtrip
 #'
 #' # The roundtrip has the same structure but fewer rows:
 #' dm_nrow(dm_nycflights13())
 #' dm_nrow(roundtrip)
-dm_unwrap <- function(dm, ptype) {
+dm_unwrap_tbl <- function(dm, ptype) {
   check_dm(ptype)
   # unwrap all tables and their unwrapped children/parents
   unwrapped_table_names <- character(0)
@@ -108,13 +108,13 @@ dm_unwrap <- function(dm, ptype) {
     to_unwrap <- setdiff(names(dm), unwrapped_table_names)[1]
     done_unwrapping <- is.na(to_unwrap)
     if (done_unwrapping) break
-    dm <- dm_unwrap1(dm, !!to_unwrap, ptype)
+    dm <- dm_unwrap_tbl1(dm, !!to_unwrap, ptype)
     unwrapped_table_names <- c(unwrapped_table_names, to_unwrap)
   }
   dm
 }
 
-dm_unwrap1 <- function(dm, table, ptype) {
+dm_unwrap_tbl1 <- function(dm, table, ptype) {
   # process args and build names
   table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[table_name]]

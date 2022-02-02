@@ -2,19 +2,17 @@
 % Please edit documentation in R/dm_nest_tbl.R
 \name{dm_nest_tbl}
 \alias{dm_nest_tbl}
-\alias{dm_pack_tbl}
-\title{Nest or pack a table inside its dm}
+\title{Nest a table inside its dm}
 \usage{
-dm_nest_tbl(dm, table, into = NULL)
-
-dm_pack_tbl(dm, table, into = NULL)
+dm_nest_tbl(dm, child_tables, into = NULL)
 }
 \arguments{
 \item{dm}{A dm.}
 
-\item{table}{A table.}
+\item{child_tables}{A table. Support for nesting multiple tables at once
+is planned but not implemented yet.}
 
-\item{into}{The table to wrap \code{table} into, optional as it can be guessed
+\item{into}{The table to nest \code{child_tables} into, optional as it can be guessed
 from the foreign keys unambiguously but useful to be explicit.}
 }
 \description{
@@ -22,12 +20,16 @@ from the foreign keys unambiguously but useful to be explicit.}
 table.
 The child table should not have children itself (i.e. it needs to be a
 \emph{terminal child table}).
+}
+\examples{
+nested_dm <-
+  dm_nycflights13() \%>\%
+  dm_select_tbl(airlines, flights) \%>\%
+  dm_nest_tbl(flights)
 
-\code{dm_pack_tbl()} converts a parent table to a packed column in its child
-table.
-The parent table should not have parent tables itself (i.e. it needs to be a
-\emph{terminal parent table}).
+nested_dm
+nested_dm$airlines
 }
 \seealso{
-\link{dm_wrap}, \link{dm_unwrap}
+\code{\link[=dm_wrap_tbl]{dm_wrap_tbl()}}, \code{\link[=dm_unwrap_tbl]{dm_unwrap_tbl()}}, \code{\link[=dm_pack_tbl]{dm_pack_tbl()}}
 }

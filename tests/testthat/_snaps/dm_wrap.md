@@ -1,7 +1,7 @@
-# `dm_wrap()` and `dm_unwrap()` work
+# `dm_wrap_tbl()` and `dm_unwrap_tbl()` work
 
     Code
-      wrapped <- dm_wrap(dm_for_filter(), tf_4)
+      wrapped <- dm_wrap_tbl(dm_for_filter(), tf_4)
       wrapped
     Output
       -- Metadata --------------------------------------------------------------------
@@ -39,7 +39,7 @@
 ---
 
     Code
-      unwrapped <- dm_unwrap(dm_wrap(dm_for_filter(), tf_4), dm_for_filter())
+      unwrapped <- dm_unwrap_tbl(dm_wrap_tbl(dm_for_filter(), tf_4), dm_for_filter())
       unwrapped
     Output
       -- Metadata --------------------------------------------------------------------

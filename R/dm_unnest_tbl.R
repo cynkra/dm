@@ -9,12 +9,12 @@
 #' The opposite is true if referential constraints between both tables
 #' are satisfied.
 #'
-#' @inheritParams dm_unwrap
+#' @inheritParams dm_unwrap_tbl
 #' @param table A table.
 #' @param col The column to unpack or unnest (unquoted).
 #'
 #' @return A dm.
-#' @seealso [dm_unwrap()], [dm_nest_tbl()], [dm_pack_tbl()], [dm_wrap()],
+#' @seealso [dm_unwrap_tbl()], [dm_nest_tbl()], [dm_pack_tbl()], [dm_wrap_tbl()],
 #'   [dm_examine_constraints()], [dm_examine_cardinalities()],
 #'   [dm_ptype()].
 #' @export
@@ -22,7 +22,7 @@
 #' @examples
 #' airlines_wrapped <-
 #'   dm_nycflights13() %>%
-#'   dm_wrap(airlines)
+#'   dm_wrap_tbl(airlines)
 #'
 #' # The ptype is required for reconstruction.
 #' # It can be an empty dm, only primary and foreign keys are considered.
