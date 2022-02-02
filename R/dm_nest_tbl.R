@@ -9,8 +9,7 @@
 #' *terminal child table*).
 #'
 #' @param dm A dm.
-#' @param child_tables A table. Support for nesting multiple tables at once
-#'   is planned but not implemented yet.
+#' @param child_table A terminal table with one parent table.
 #' @param into The table to nest `child_tables` into, optional as it can be guessed
 #'   from the foreign keys unambiguously but useful to be explicit.
 #'
@@ -24,11 +23,11 @@
 #'
 #' nested_dm
 #' nested_dm$airlines
-dm_nest_tbl <- function(dm, child_tables, into = NULL) {
+dm_nest_tbl <- function(dm, child_table, into = NULL) {
   # process args
   into <- enquo(into)
   # FIXME: Rename table_name to child_tables_name
-  table_name <- dm_tbl_name(dm, {{ child_tables }})
+  table_name <- dm_tbl_name(dm, {{ child_table }})
 
   # retrieve fk and parent_name
   fks <- dm_get_all_fks(dm)
@@ -104,8 +103,7 @@ dm_nest_tbl <- function(dm, child_tables, into = NULL) {
 #' *terminal parent table*).
 #'
 #' @param dm A dm.
-#' @param parent_tables A table. Support for packing multiple tables at once
-#'   is planned but not implemented yet.
+#' @param parent_table A terminal table with one child table.
 #' @param into The table to pack `parent_tables` into, optional as it can be guessed
 #'   from the foreign keys unambiguously but useful to be explicit.
 #'
@@ -119,11 +117,11 @@ dm_nest_tbl <- function(dm, child_tables, into = NULL) {
 #' dm_packed
 #' dm_packed$flights
 #' dm_packed$flights$planes
-dm_pack_tbl <- function(dm, parent_tables, into = NULL) {
+dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   # process args
   into <- enquo(into)
   # FIXME: Rename to parent_tables_name
-  table_name <- dm_tbl_name(dm, {{ parent_tables }})
+  table_name <- dm_tbl_name(dm, {{ parent_table }})
 
   # retrieve keys, child and parent
   # FIXME: fix redundancies and DRY when we decide what we export

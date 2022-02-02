@@ -4,13 +4,12 @@
 \alias{dm_pack_tbl}
 \title{dm_pack_tbl()}
 \usage{
-dm_pack_tbl(dm, parent_tables, into = NULL)
+dm_pack_tbl(dm, parent_table, into = NULL)
 }
 \arguments{
 \item{dm}{A dm.}
 
-\item{parent_tables}{A table. Support for packing multiple tables at once
-is planned but not implemented yet.}
+\item{parent_table}{A terminal table with one child table.}
 
 \item{into}{The table to pack \code{parent_tables} into, optional as it can be guessed
 from the foreign keys unambiguously but useful to be explicit.}
