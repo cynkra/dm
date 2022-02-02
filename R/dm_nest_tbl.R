@@ -10,7 +10,7 @@
 #' @param into The table to wrap `table` into, optional as it can be guessed
 #'   from the foreign keys unambiguously but useful to be explicit.
 #'
-#' @seealso [dm::dm_wrap_tbl()], [dm::dm_unwrap()]
+#' @seealso [dm::dm_wrap_tbl()], [dm::dm_unwrap_tbl()]
 #' @export
 dm_nest_tbl <- function(dm, table, into = NULL) {
   # process args

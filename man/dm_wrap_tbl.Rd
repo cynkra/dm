@@ -25,7 +25,7 @@ It runs a sequence of \code{\link[=dm_nest_tbl]{dm_nest_tbl()}} and \code{\link[
 on the dm.
 }
 \details{
-\code{dm_wrap_tbl()} is an inverse to \code{dm_unwrap()},
+\code{dm_wrap_tbl()} is an inverse to \code{dm_unwrap_tbl()},
 i.e., wrapping after unwrapping returns the same information
 (disregarding row and column order).
 The opposite is not generally true:
@@ -40,7 +40,7 @@ dm_nycflights13() \%>\%
   dm_wrap_tbl(root = airlines)
 }
 \seealso{
-\code{\link[=dm_unwrap]{dm_unwrap()}}, \code{\link[=dm_nest_tbl]{dm_nest_tbl()}},
+\code{\link[=dm_unwrap_tbl]{dm_unwrap_tbl()}}, \code{\link[=dm_nest_tbl]{dm_nest_tbl()}},
 \code{\link[=dm_examine_constraints]{dm_examine_constraints()}},
 \code{\link[=dm_examine_cardinalities]{dm_examine_cardinalities()}}.
 }

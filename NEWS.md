@@ -10,7 +10,7 @@
 
 # dm 0.2.6.9003
 
-- New `dm_wrap_tbl()`, `dm_unwrap()`, `dm_nest_tbl()`, `dm_unnest_tbl()`, `dm_pack_tbl()` and `dm_unpack_tbl()` (#595, #733, #737).
+- New `dm_wrap_tbl()`, `dm_unwrap_tbl()`, `dm_nest_tbl()`, `dm_unnest_tbl()`, `dm_pack_tbl()` and `dm_unpack_tbl()` (#595, #733, #737).
 
 
 # dm 0.2.6.9002

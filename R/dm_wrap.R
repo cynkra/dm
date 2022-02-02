@@ -12,7 +12,7 @@
 #' @param root Table to wrap the dm into (unquoted).
 #'
 #' @details
-#' `dm_wrap_tbl()` is an inverse to `dm_unwrap()`,
+#' `dm_wrap_tbl()` is an inverse to `dm_unwrap_tbl()`,
 #' i.e., wrapping after unwrapping returns the same information
 #' (disregarding row and column order).
 #' The opposite is not generally true:
@@ -24,7 +24,7 @@
 #'
 #' @return A dm.
 #' @export
-#' @seealso [dm_unwrap()], [dm_nest_tbl()],
+#' @seealso [dm_unwrap_tbl()], [dm_nest_tbl()],
 #'   [dm_examine_constraints()],
 #'   [dm_examine_cardinalities()].
 #' @examples
@@ -76,7 +76,7 @@ dm_wrap_tbl_impl <- function(dm, root, strict = TRUE) {
 #' Unwrap a single table dm
 #'
 #' @description
-#' `dm_unwrap()` unwraps all tables in a dm object so that the resulting dm
+#' `dm_unwrap_tbl()` unwraps all tables in a dm object so that the resulting dm
 #' matches a given ptype dm.
 #' It runs a sequence of [dm_unnest_tbl()] and [dm_unpack_tbl()] operations
 #' on the dm.
@@ -94,13 +94,13 @@ dm_wrap_tbl_impl <- function(dm, root, strict = TRUE) {
 #' roundtrip <-
 #'   dm_nycflights13() %>%
 #'   dm_wrap_tbl(root = flights) %>%
-#'   dm_unwrap(ptype = dm_ptype(dm_nycflights13()))
+#'   dm_unwrap_tbl(ptype = dm_ptype(dm_nycflights13()))
 #' roundtrip
 #'
 #' # The roundtrip has the same structure but fewer rows:
 #' dm_nrow(dm_nycflights13())
 #' dm_nrow(roundtrip)
-dm_unwrap <- function(dm, ptype) {
+dm_unwrap_tbl <- function(dm, ptype) {
   check_dm(ptype)
   # unwrap all tables and their unwrapped children/parents
   unwrapped_table_names <- character(0)
@@ -108,13 +108,13 @@ dm_unwrap <- function(dm, ptype) {
     to_unwrap <- setdiff(names(dm), unwrapped_table_names)[1]
     done_unwrapping <- is.na(to_unwrap)
     if (done_unwrapping) break
-    dm <- dm_unwrap1(dm, !!to_unwrap, ptype)
+    dm <- dm_unwrap_tbl1(dm, !!to_unwrap, ptype)
     unwrapped_table_names <- c(unwrapped_table_names, to_unwrap)
   }
   dm
 }
 
-dm_unwrap1 <- function(dm, table, ptype) {
+dm_unwrap_tbl1 <- function(dm, table, ptype) {
   # process args and build names
   table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[table_name]]
