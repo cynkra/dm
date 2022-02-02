@@ -39,7 +39,7 @@ flights_wrapped <-
 ptype <- dm_ptype(dm_nycflights13())
 
 flights_wrapped \%>\%
-  dm_unnest_tbl(flights, airlines, ptype)
+  dm_unpack_tbl(flights, airlines, ptype)
 }
 \seealso{
 \code{\link[=dm_unwrap_tbl]{dm_unwrap_tbl()}}, \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}},

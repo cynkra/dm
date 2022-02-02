@@ -106,7 +106,7 @@ dm_unnest_tbl <- function(dm, parent_table, col, ptype) {
 #' ptype <- dm_ptype(dm_nycflights13())
 #'
 #' flights_wrapped %>%
-#'   dm_unnest_tbl(flights, airlines, ptype)
+#'   dm_unpack_tbl(flights, airlines, ptype)
 dm_unpack_tbl <- function(dm, child_table, col, ptype) {
   # process args and build names
   child_table_name <- dm_tbl_name(dm, {{ child_table }})
