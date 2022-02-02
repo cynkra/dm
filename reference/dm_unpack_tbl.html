@@ -157,8 +157,12 @@ i.e. if the relationship is of cardinality 1:n or 1:1.</p>
 <span class="r-in"><span class="va">ptype</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm_ptype.html">dm_ptype</a></span><span class="op">(</span><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">flights_wrapped</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="dm_unnest_tbl.html">dm_unnest_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, <span class="va">ptype</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in set_names(parent_fk_names, child_fk_names):</span> `x` must be a vector</span>
+<span class="r-in">  <span class="fu">dm_unpack_tbl</span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, <span class="va">ptype</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `flights`, `airlines`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Primary keys: 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Foreign keys: 1</span>
 </code></pre></div>
     </div>
   </div>
