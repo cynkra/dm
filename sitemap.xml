@@ -136,6 +136,9 @@
     <loc>https://cynkra.github.io/dm/reference/dm_enum_fk_candidates.html</loc>
   </url>
   <url>
+    <loc>https://cynkra.github.io/dm/reference/dm_examine_cardinalities.html</loc>
+  </url>
+  <url>
     <loc>https://cynkra.github.io/dm/reference/dm_examine_constraints.html</loc>
   </url>
   <url>
@@ -181,13 +184,22 @@
     <loc>https://cynkra.github.io/dm/reference/dm_mutate_tbl.html</loc>
   </url>
   <url>
+    <loc>https://cynkra.github.io/dm/reference/dm_nest_tbl.html</loc>
+  </url>
+  <url>
     <loc>https://cynkra.github.io/dm/reference/dm_nrow.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/dm_nycflights13.html</loc>
   </url>
   <url>
+    <loc>https://cynkra.github.io/dm/reference/dm_pack_tbl.html</loc>
+  </url>
+  <url>
     <loc>https://cynkra.github.io/dm/reference/dm_paste.html</loc>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/dm/reference/dm_pixarfilms.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/dm_ptype.html</loc>
@@ -212,6 +224,15 @@
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/dm_set_colors.html</loc>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/dm/reference/dm_unnest_tbl.html</loc>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/dm/reference/dm_unwrap_tbl.html</loc>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/dm/reference/dm_wrap_tbl.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/dm_zoom_to.html</loc>
@@ -239,6 +260,9 @@
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/materialize.html</loc>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/dm/reference/pack_join.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/pull_tbl.html</loc>

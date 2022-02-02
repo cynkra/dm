@@ -20,7 +20,7 @@ the join will always be a "child table", i.e. a table referencing the other tabl
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
       </span>
     </div>
 
@@ -189,7 +189,8 @@ the join will always be a "child table", i.e. a table referencing the other tabl
 <span class="r-in">  <span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">    <span class="fu">dm_join_to_tbl</span><span class="op">(</span><span class="va">airlines</span>, <span class="va">airports</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error : Tables `airlines` and `airports` are not directly linked by a foreign key relation.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_tables_not_neighbors(t1_name, t2_name) : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Tables `airlines` and `airports` are not directly linked by a foreign key relation.</span>
 </code></pre></div>
     </div>
   </div>
@@ -204,7 +205,7 @@ the join will always be a "child table", i.e. a table referencing the other tabl
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
 </div>
 
       </footer></div>

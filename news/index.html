@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
       </span>
     </div>
 
@@ -104,10 +104,50 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.7" id="dm-027">dm 0.2.7<a class="anchor" aria-label="anchor" href="#dm-027"></a></h2>
+<ul><li>Same as previous version.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.6.9005" id="dm-0269005">dm 0.2.6.9005<a class="anchor" aria-label="anchor" href="#dm-0269005"></a></h2>
+<ul><li>Same as previous version.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.6.9004" id="dm-0269004">dm 0.2.6.9004<a class="anchor" aria-label="anchor" href="#dm-0269004"></a></h2>
+<ul><li>
+<code>db_schema_...()</code> functions no longer pro-actively check for schema existence;</li>
+<li>
+<code>db_schema_list.Microsoft SQL Server</code> no longer ignoring schemas for which the owner cannot be found</li>
+<li>
+<code><a href="../reference/dm_wrap_tbl.html">dm_wrap_tbl()</a></code> loses no-op <code>silent</code> arg (<a href="https://github.com/cynkra/dm/issues/755" class="external-link">#755</a>).</li>
+<li>Establish compatibility with rlang 1.0.0 (<a href="https://github.com/cynkra/dm/issues/756" class="external-link">#756</a>).</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.6.9003" id="dm-0269003">dm 0.2.6.9003<a class="anchor" aria-label="anchor" href="#dm-0269003"></a></h2>
+<ul><li>New <code><a href="../reference/dm_wrap_tbl.html">dm_wrap_tbl()</a></code>, <code><a href="../reference/dm_unwrap_tbl.html">dm_unwrap_tbl()</a></code>, <code><a href="../reference/dm_nest_tbl.html">dm_nest_tbl()</a></code>, <code><a href="../reference/dm_unnest_tbl.html">dm_unnest_tbl()</a></code>, <code><a href="../reference/dm_pack_tbl.html">dm_pack_tbl()</a></code> and <code><a href="../reference/dm_unnest_tbl.html">dm_unpack_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/595" class="external-link">#595</a>, <a href="https://github.com/cynkra/dm/issues/733" class="external-link">#733</a>, <a href="https://github.com/cynkra/dm/issues/737" class="external-link">#737</a>).</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.6.9002" id="dm-0269002">dm 0.2.6.9002<a class="anchor" aria-label="anchor" href="#dm-0269002"></a></h2>
+<ul><li>New <code>dm_examine_cardinality()</code> (<a href="https://github.com/cynkra/dm/issues/264" class="external-link">#264</a>, <a href="https://github.com/cynkra/dm/issues/735" class="external-link">#735</a>).</li>
+<li>New <code><a href="../reference/pack_join.html">pack_join()</a></code> generic and method for data frames, the same to <code><a href="https://tidyr.tidyverse.org/reference/pack.html" class="external-link">tidyr::pack()</a></code> as <code><a href="https://dplyr.tidyverse.org/reference/nest_join.html" class="external-link">dplyr::nest_join()</a></code> is to <code><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">tidyr::nest()</a></code> (<a href="https://github.com/cynkra/dm/issues/721" class="external-link">#721</a>, <a href="https://github.com/cynkra/dm/issues/722" class="external-link">#722</a>).</li>
+<li>
+<code><a href="../reference/dm_pixarfilms.html">dm_pixarfilms()</a></code> gains a <code>consistent = FALSE</code> argument, if <code>TRUE</code> the data is modified so that all referential constraints are satisfied (<a href="https://github.com/cynkra/dm/issues/707" class="external-link">#707</a>, <a href="https://github.com/cynkra/dm/issues/708" class="external-link">#708</a>).</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.6.9001" id="dm-0269001">dm 0.2.6.9001<a class="anchor" aria-label="anchor" href="#dm-0269001"></a></h2>
+<ul><li>
+<code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> works with DuckDB again, the SQL statements to define the tables and indexes are now created by us (<a href="https://github.com/cynkra/dm/issues/701" class="external-link">#701</a>, <a href="https://github.com/cynkra/dm/issues/709" class="external-link">#709</a>).</li>
+<li>Simplify database checks on GitHub Actions (<a href="https://github.com/cynkra/dm/issues/712" class="external-link">#712</a>).</li>
+<li>Export <code><a href="../reference/dm_pixarfilms.html">dm_pixarfilms()</a></code> (<a href="https://github.com/cynkra/dm/issues/703" class="external-link">#703</a>, <a href="https://github.com/erictleung" class="external-link">@erictleung</a>).</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.6.9000" id="dm-0269000">dm 0.2.6.9000<a class="anchor" aria-label="anchor" href="#dm-0269000"></a></h2>
+<ul><li>Same as previous version.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.6" id="dm-026">dm 0.2.6<small>2021-11-21</small><a class="anchor" aria-label="anchor" href="#dm-026"></a></h2>
 <div class="section level3">
 <h3 id="features-0-2-6">Features<a class="anchor" aria-label="anchor" href="#features-0-2-6"></a></h3>
-<ul><li>New <code>dm_pixarfilms()</code> creates a dm object with data from the {pixarfilms} package (<a href="https://github.com/cynkra/dm/issues/600" class="external-link">#600</a>, <a href="https://github.com/erictleung" class="external-link">@erictleung</a>).</li>
+<ul><li>New <code><a href="../reference/dm_pixarfilms.html">dm_pixarfilms()</a></code> creates a dm object with data from the {pixarfilms} package (<a href="https://github.com/cynkra/dm/issues/600" class="external-link">#600</a>, <a href="https://github.com/erictleung" class="external-link">@erictleung</a>).</li>
 <li>
 <code><a href="../reference/examine_cardinality.html">check_cardinality_0_1()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_0_n()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_1_1()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_1_n()</a></code>, and <code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> now support compound keys (<a href="https://github.com/cynkra/dm/issues/524" class="external-link">#524</a>).</li>
 <li>
@@ -824,7 +864,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
 </div>
 
       </footer></div>

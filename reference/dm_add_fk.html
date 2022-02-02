@@ -22,7 +22,7 @@ of the values of the key in table ref_table."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
       </span>
     </div>
 
@@ -204,7 +204,8 @@ and might be considered by <code><a href="rows-dm.html">dm_rows_delete()</a></co
 <span class="r-in">    <span class="fu"><a href="dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">planes</span>, <span class="va">tailnum</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">    <span class="fu">dm_add_fk</span><span class="op">(</span><span class="va">flights</span>, <span class="va">tailnum</span>, <span class="va">planes</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error : Column (`tailnum`) of table `flights` contains values (see examples above) that are not present in column (`tailnum`) of table `planes`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_not_subset_of(table_name, col_name, ref_table_name, ref_col_name) : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Column (`tailnum`) of table `flights` contains values (see examples above) that are not present in column (`tailnum`) of table `planes`.</span>
 </code></pre></div>
     </div>
   </div>
@@ -219,7 +220,7 @@ and might be considered by <code><a href="rows-dm.html">dm_rows_delete()</a></co
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
 </div>
 
       </footer></div>
