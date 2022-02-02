@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.6.9005
+
+- Same as previous version.
+
+
 # dm 0.2.6.9004
 
 - `db_schema_...()` functions no longer pro-actively check for schema existence; 
