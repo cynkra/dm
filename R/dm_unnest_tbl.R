@@ -1,4 +1,4 @@
-#' Unnest or unpack columns from a wrapped table
+#' Unnest columns from a wrapped table
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
@@ -14,11 +14,12 @@
 #' are satisfied.
 #'
 #' @inheritParams dm_unwrap_tbl
-#' @param table A table.
-#' @param col The column to unpack or unnest (unquoted).
+#' @param parent_table A table in the dm with nested columns.
+#' @param col The column to unnest (unquoted).
 #'
 #' @return A dm.
-#' @seealso [dm_unwrap_tbl()], [dm_nest_tbl()], [dm_pack_tbl()], [dm_wrap_tbl()],
+#' @seealso [dm_unwrap_tbl()], [dm_unpack_tbl()],
+#'   [dm_nest_tbl()], [dm_pack_tbl()], [dm_wrap_tbl()],
 #'   [dm_examine_constraints()], [dm_examine_cardinalities()],
 #'   [dm_ptype()].
 #' @export
@@ -33,13 +34,10 @@
 #' ptype <- dm_ptype(dm_nycflights13())
 #'
 #' airlines_wrapped %>%
-#'   dm_unnest_tbl(airlines, flights, ptype) %>%
-#'   dm_unpack_tbl(flights, weather, ptype) %>%
-#'   dm_unpack_tbl(flights, planes, ptype) %>%
-#'   dm_unpack_tbl(flights, airports, ptype)
-dm_unnest_tbl <- function(dm, table, col, ptype) {
+#'   dm_unnest_tbl(airlines, flights, ptype)
+dm_unnest_tbl <- function(dm, parent_table, col, ptype, ...) {
   # process args and build names
-  parent_table_name <- dm_tbl_name(dm, {{ table }})
+  parent_table_name <- dm_tbl_name(dm, {{ parent_table }})
   table <- dm_get_tables_impl(dm)[[parent_table_name]]
   col_expr <- enexpr(col)
   new_child_table_name <- names(eval_select_indices(col_expr, colnames(table)))
@@ -75,7 +73,7 @@ dm_unnest_tbl <- function(dm, table, col, ptype) {
   dm
 }
 
-#' dm_unpack_tbl()
+#' Unpack columns from a wrapped table
 #'
 #' `dm_unpack_tbl()` targets a specific column to unpack
 #' from the given table in a given dm.
@@ -89,11 +87,29 @@ dm_unnest_tbl <- function(dm, table, col, ptype) {
 #' and if all rows in the parent table have at least one child row,
 #' i.e. if the relationship is of cardinality 1:n or 1:1.
 #'
+#' @inheritParams dm_unwrap_tbl
+#' @param child_table A table in the dm with packed columns.
+#' @param col The column to unpack (unquoted).
+#'
+#' @seealso [dm_unwrap_tbl()], [dm_unnest_tbl()],
+#'   [dm_nest_tbl()], [dm_pack_tbl()], [dm_wrap_tbl()],
+#'   [dm_examine_constraints()], [dm_examine_cardinalities()],
+#'   [dm_ptype()].
 #' @export
-#' @rdname dm_unnest_tbl
-dm_unpack_tbl <- function(dm, table, col, ptype) {
+#' @examples
+#' flights_wrapped <-
+#'   dm_nycflights13() %>%
+#'   dm_wrap_tbl(flights)
+#'
+#' # The ptype is required for reconstruction.
+#' # It can be an empty dm, only primary and foreign keys are considered.
+#' ptype <- dm_ptype(dm_nycflights13())
+#'
+#' flights_wrapped %>%
+#'   dm_unnest_tbl(flights, airlines, ptype)
+dm_unpack_tbl <- function(dm, child_table, col, ptype) {
   # process args and build names
-  child_table_name <- dm_tbl_name(dm, {{ table }})
+  child_table_name <- dm_tbl_name(dm, {{ child_table }})
   table <- dm_get_tables_impl(dm)[[child_table_name]]
   col_expr <- enexpr(col)
   new_parent_table_name <- names(eval_select_indices(col_expr, colnames(table)))
