@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.6.9003</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.6.9004</span>
       </span>
     </div>
 
@@ -103,6 +103,16 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.6.9004" id="dm-0269004">dm 0.2.6.9004<a class="anchor" aria-label="anchor" href="#dm-0269004"></a></h2>
+<ul><li>
+<code>db_schema_...()</code> functions no longer pro-actively check for schema existence;</li>
+<li>
+<code>db_schema_list.Microsoft SQL Server</code> no longer ignoring schemas for which the owner cannot be found</li>
+<li>
+<code><a href="../reference/dm_wrap.html">dm_wrap()</a></code> loses no-op <code>silent</code> arg (<a href="https://github.com/cynkra/dm/issues/755" class="external-link">#755</a>).</li>
+<li>Establish compatibility with rlang 1.0.0 (<a href="https://github.com/cynkra/dm/issues/756" class="external-link">#756</a>).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.6.9003" id="dm-0269003">dm 0.2.6.9003<a class="anchor" aria-label="anchor" href="#dm-0269003"></a></h2>
 <ul><li>New <code><a href="../reference/dm_wrap.html">dm_wrap()</a></code>, <code><a href="../reference/dm_unwrap.html">dm_unwrap()</a></code>, <code><a href="../reference/dm_nest_tbl.html">dm_nest_tbl()</a></code>, <code><a href="../reference/dm_unnest_tbl.html">dm_unnest_tbl()</a></code>, <code><a href="../reference/dm_nest_tbl.html">dm_pack_tbl()</a></code> and <code><a href="../reference/dm_unnest_tbl.html">dm_unpack_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/595" class="external-link">#595</a>, <a href="https://github.com/cynkra/dm/issues/733" class="external-link">#733</a>, <a href="https://github.com/cynkra/dm/issues/737" class="external-link">#737</a>).</li>
