@@ -190,6 +190,9 @@
     <loc>https://cynkra.github.io/dm/reference/dm_nycflights13.html</loc>
   </url>
   <url>
+    <loc>https://cynkra.github.io/dm/reference/dm_pack_tbl.html</loc>
+  </url>
+  <url>
     <loc>https://cynkra.github.io/dm/reference/dm_paste.html</loc>
   </url>
   <url>
@@ -223,10 +226,10 @@
     <loc>https://cynkra.github.io/dm/reference/dm_unnest_tbl.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/reference/dm_unwrap.html</loc>
+    <loc>https://cynkra.github.io/dm/reference/dm_unwrap_tbl.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/reference/dm_wrap.html</loc>
+    <loc>https://cynkra.github.io/dm/reference/dm_wrap_tbl.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/dm_zoom_to.html</loc>

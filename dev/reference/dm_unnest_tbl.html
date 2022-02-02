@@ -23,7 +23,7 @@ not both."><meta property="og:image" content="https://cynkra.github.io/dm/logo.p
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.6.9004</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.7.9000</span>
       </span>
     </div>
 
@@ -147,7 +147,7 @@ not both.</p>
 if differences in row and column order are ignored.
 The opposite is true if referential constraints between both tables
 are satisfied.</p>
-<p><code><a href="dm_nest_tbl.html">dm_pack_tbl()</a></code> is an inverse operation to <code>dm_unpack_tbl()</code>
+<p><code><a href="dm_pack_tbl.html">dm_pack_tbl()</a></code> is an inverse operation to <code>dm_unpack_tbl()</code>
 if differences in row and column order are ignored.
 The opposite is true if referential constraints between both tables
 are satisfied
@@ -156,7 +156,7 @@ i.e. if the relationship is of cardinality 1:n or 1:1.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="dm_unwrap.html">dm_unwrap()</a></code>, <code><a href="dm_nest_tbl.html">dm_nest_tbl()</a></code>, <code><a href="dm_nest_tbl.html">dm_pack_tbl()</a></code>, <code><a href="dm_wrap.html">dm_wrap()</a></code>,
+    <div class="dont-index"><p><code><a href="dm_unwrap_tbl.html">dm_unwrap_tbl()</a></code>, <code><a href="dm_nest_tbl.html">dm_nest_tbl()</a></code>, <code><a href="dm_pack_tbl.html">dm_pack_tbl()</a></code>, <code><a href="dm_wrap_tbl.html">dm_wrap_tbl()</a></code>,
 <code><a href="dm_examine_constraints.html">dm_examine_constraints()</a></code>, <code><a href="dm_examine_cardinalities.html">dm_examine_cardinalities()</a></code>,
 <code><a href="dm_ptype.html">dm_ptype()</a></code>.</p></div>
     </div>
@@ -165,7 +165,7 @@ i.e. if the relationship is of cardinality 1:n or 1:1.</p>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">airlines_wrapped</span> <span class="op">&lt;-</span></span>
 <span class="r-in">  <span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="dm_wrap.html">dm_wrap</a></span><span class="op">(</span><span class="va">airlines</span><span class="op">)</span></span>
+<span class="r-in">  <span class="fu"><a href="dm_wrap_tbl.html">dm_wrap_tbl</a></span><span class="op">(</span><span class="va">airlines</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># The ptype is required for reconstruction.</span></span>
 <span class="r-in"><span class="co"># It can be an empty dm, only primary and foreign keys are considered.</span></span>
