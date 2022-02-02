@@ -29,6 +29,7 @@ nested_dm <-
   dm_nest_tbl(flights)
 
 nested_dm
+
 nested_dm$airlines
 }
 \seealso{

@@ -28,7 +28,9 @@ dm_packed <-
   dm_pack_tbl(planes)
 
 dm_packed
+
 dm_packed$flights
+
 dm_packed$flights$planes
 }
 \seealso{

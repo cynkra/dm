@@ -22,6 +22,7 @@
 #'   dm_nest_tbl(flights)
 #'
 #' nested_dm
+#'
 #' nested_dm$airlines
 dm_nest_tbl <- function(dm, child_table, into = NULL) {
   # process args
@@ -115,7 +116,9 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
 #'   dm_pack_tbl(planes)
 #'
 #' dm_packed
+#'
 #' dm_packed$flights
+#'
 #' dm_packed$flights$planes
 dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   # process args
