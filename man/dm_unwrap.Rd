@@ -24,7 +24,7 @@ on the dm.
 
 roundtrip <-
   dm_nycflights13() \%>\%
-  dm_wrap(root = flights) \%>\%
+  dm_wrap_tbl(root = flights) \%>\%
   dm_unwrap(ptype = dm_ptype(dm_nycflights13()))
 roundtrip
 
@@ -33,7 +33,7 @@ dm_nrow(dm_nycflights13())
 dm_nrow(roundtrip)
 }
 \seealso{
-\code{\link[=dm_wrap]{dm_wrap()}}, \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}},
+\code{\link[=dm_wrap_tbl]{dm_wrap_tbl()}}, \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}},
 \code{\link[=dm_examine_constraints]{dm_examine_constraints()}},
 \code{\link[=dm_examine_cardinalities]{dm_examine_cardinalities()}},
 \code{\link[=dm_ptype]{dm_ptype()}}.

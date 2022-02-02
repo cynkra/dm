@@ -1,8 +1,8 @@
-test_that("`dm_wrap()` and `dm_unwrap()` work", {
+test_that("`dm_wrap_tbl()` and `dm_unwrap()` work", {
   skip_if_remote_src()
 
   dm1 <- dm_for_filter()
-  dm_wrapped <- dm_wrap(dm1, tf_4)
+  dm_wrapped <- dm_wrap_tbl(dm1, tf_4)
   expect_length(dm_wrapped, 1)
   expect_equal(names(dm_wrapped), "tf_4")
   dm_unwrapped <- dm_unwrap(dm_wrapped, dm1)
@@ -10,7 +10,7 @@ test_that("`dm_wrap()` and `dm_unwrap()` work", {
 
   # to tibble
   expect_snapshot({
-    wrapped <- dm_wrap(dm_for_filter(), tf_4)
+    wrapped <- dm_wrap_tbl(dm_for_filter(), tf_4)
     wrapped
     wrapped$tf_4
     wrapped$tf_4$tf_3$tf_2[[3]]
@@ -19,7 +19,7 @@ test_that("`dm_wrap()` and `dm_unwrap()` work", {
 
   # back to dm
   expect_snapshot({
-    unwrapped <- dm_unwrap(dm_wrap(dm_for_filter(), tf_4), dm_for_filter())
+    unwrapped <- dm_unwrap(dm_wrap_tbl(dm_for_filter(), tf_4), dm_for_filter())
     unwrapped
     unwrapped$tf_4
     unwrapped$tf_1
@@ -27,7 +27,7 @@ test_that("`dm_wrap()` and `dm_unwrap()` work", {
   })
 })
 
-test_that("`dm_wrap()` and `dm_unwrap()` round trip", {
+test_that("`dm_wrap_tbl()` and `dm_unwrap()` round trip", {
   skip_if_remote_src()
 
   dm <- dm_for_filter()
@@ -35,7 +35,7 @@ test_that("`dm_wrap()` and `dm_unwrap()` round trip", {
     dm %>%
     dm_filter(tf_1, TRUE) %>%
     dm_apply_filters()
-  roundtrip_dm <- dm_unwrap(dm_wrap(dm, tf_1), dm)
+  roundtrip_dm <- dm_unwrap(dm_wrap_tbl(dm, tf_1), dm)
   expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
 
   dm <- dm_for_filter()
@@ -43,7 +43,7 @@ test_that("`dm_wrap()` and `dm_unwrap()` round trip", {
     dm %>%
     dm_filter(tf_2, TRUE) %>%
     dm_apply_filters()
-  roundtrip_dm <- dm_unwrap(dm_wrap(dm, tf_2), dm)
+  roundtrip_dm <- dm_unwrap(dm_wrap_tbl(dm, tf_2), dm)
   expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
 
   dm <- dm_for_filter()
@@ -51,7 +51,7 @@ test_that("`dm_wrap()` and `dm_unwrap()` round trip", {
     dm %>%
     dm_filter(tf_3, TRUE) %>%
     dm_apply_filters()
-  roundtrip_dm <- dm_unwrap(dm_wrap(dm, tf_3), dm)
+  roundtrip_dm <- dm_unwrap(dm_wrap_tbl(dm, tf_3), dm)
   expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
 
   dm <- dm_for_filter()
@@ -59,7 +59,7 @@ test_that("`dm_wrap()` and `dm_unwrap()` round trip", {
     dm %>%
     dm_filter(tf_4, TRUE) %>%
     dm_apply_filters()
-  roundtrip_dm <- dm_unwrap(dm_wrap(dm, tf_4), dm)
+  roundtrip_dm <- dm_unwrap(dm_wrap_tbl(dm, tf_4), dm)
   expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
 
   dm <- dm_for_filter()
@@ -67,7 +67,7 @@ test_that("`dm_wrap()` and `dm_unwrap()` round trip", {
     dm %>%
     dm_filter(tf_5, TRUE) %>%
     dm_apply_filters()
-  roundtrip_dm <- dm_unwrap(dm_wrap(dm, tf_5), dm)
+  roundtrip_dm <- dm_unwrap(dm_wrap_tbl(dm, tf_5), dm)
   expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
 
   dm <- dm_for_filter()
@@ -75,7 +75,7 @@ test_that("`dm_wrap()` and `dm_unwrap()` round trip", {
     dm %>%
     dm_filter(tf_6, TRUE) %>%
     dm_apply_filters()
-  roundtrip_dm <- dm_unwrap(dm_wrap(dm, tf_6), dm)
+  roundtrip_dm <- dm_unwrap(dm_wrap_tbl(dm, tf_6), dm)
   expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
 })
 

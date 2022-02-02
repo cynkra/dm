@@ -29,5 +29,5 @@ The parent table should not have parent tables itself (i.e. it needs to be a
 \emph{terminal parent table}).
 }
 \seealso{
-\link{dm_wrap}, \link{dm_unwrap}
+\code{\link[=dm_wrap_tbl]{dm_wrap_tbl()}}, \code{\link[=dm_unwrap]{dm_unwrap()}}
 }

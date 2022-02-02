@@ -97,7 +97,7 @@ reference:
 
 - title: Wrap
   contents:
-  - dm_wrap
+  - dm_wrap_tbl
   - dm_unwrap
   - dm_nest_tbl
   - dm_pack_tbl
