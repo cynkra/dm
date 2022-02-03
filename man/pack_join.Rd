@@ -47,6 +47,8 @@ If \code{NULL} the name of \code{y} is used.}
 \item{...}{Other parameters passed onto methods.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{pack_join()} returns all rows and columns in \code{x} with a new packed column
 that contains all matches from \code{y}.
 }

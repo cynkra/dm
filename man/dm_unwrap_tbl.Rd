@@ -15,6 +15,8 @@ dm_unwrap_tbl(dm, ptype)
 A dm.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{dm_unwrap_tbl()} unwraps all tables in a dm object so that the resulting dm
 matches a given ptype dm.
 It runs a sequence of \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}} and \code{\link[=dm_unpack_tbl]{dm_unpack_tbl()}} operations

@@ -4,18 +4,19 @@
 \alias{dm_nest_tbl}
 \title{Nest a table inside its dm}
 \usage{
-dm_nest_tbl(dm, child_tables, into = NULL)
+dm_nest_tbl(dm, child_table, into = NULL)
 }
 \arguments{
 \item{dm}{A dm.}
 
-\item{child_tables}{A table. Support for nesting multiple tables at once
-is planned but not implemented yet.}
+\item{child_table}{A terminal table with one parent table.}
 
 \item{into}{The table to nest \code{child_tables} into, optional as it can be guessed
 from the foreign keys unambiguously but useful to be explicit.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{dm_nest_tbl()} converts a child table to a nested column in its parent
 table.
 The child table should not have children itself (i.e. it needs to be a
@@ -28,6 +29,7 @@ nested_dm <-
   dm_nest_tbl(flights)
 
 nested_dm
+
 nested_dm$airlines
 }
 \seealso{

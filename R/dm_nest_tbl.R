@@ -1,13 +1,15 @@
 #' Nest a table inside its dm
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' `dm_nest_tbl()` converts a child table to a nested column in its parent
 #' table.
 #' The child table should not have children itself (i.e. it needs to be a
 #' *terminal child table*).
 #'
 #' @param dm A dm.
-#' @param child_tables A table. Support for nesting multiple tables at once
-#'   is planned but not implemented yet.
+#' @param child_table A terminal table with one parent table.
 #' @param into The table to nest `child_tables` into, optional as it can be guessed
 #'   from the foreign keys unambiguously but useful to be explicit.
 #'
@@ -20,12 +22,13 @@
 #'   dm_nest_tbl(flights)
 #'
 #' nested_dm
+#'
 #' nested_dm$airlines
-dm_nest_tbl <- function(dm, child_tables, into = NULL) {
+dm_nest_tbl <- function(dm, child_table, into = NULL) {
   # process args
   into <- enquo(into)
   # FIXME: Rename table_name to child_tables_name
-  table_name <- dm_tbl_name(dm, {{ child_tables }})
+  table_name <- dm_tbl_name(dm, {{ child_table }})
 
   # retrieve fk and parent_name
   fks <- dm_get_all_fks(dm)
@@ -92,14 +95,16 @@ dm_nest_tbl <- function(dm, child_tables, into = NULL) {
 
 #' dm_pack_tbl()
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' `dm_pack_tbl()` converts a parent table to a packed column in its child
 #' table.
 #' The parent table should not have parent tables itself (i.e. it needs to be a
 #' *terminal parent table*).
 #'
 #' @param dm A dm.
-#' @param parent_tables A table. Support for packing multiple tables at once
-#'   is planned but not implemented yet.
+#' @param parent_table A terminal table with one child table.
 #' @param into The table to pack `parent_tables` into, optional as it can be guessed
 #'   from the foreign keys unambiguously but useful to be explicit.
 #'
@@ -111,13 +116,15 @@ dm_nest_tbl <- function(dm, child_tables, into = NULL) {
 #'   dm_pack_tbl(planes)
 #'
 #' dm_packed
+#'
 #' dm_packed$flights
+#'
 #' dm_packed$flights$planes
-dm_pack_tbl <- function(dm, parent_tables, into = NULL) {
+dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   # process args
   into <- enquo(into)
   # FIXME: Rename to parent_tables_name
-  table_name <- dm_tbl_name(dm, {{ parent_tables }})
+  table_name <- dm_tbl_name(dm, {{ parent_table }})
 
   # retrieve keys, child and parent
   # FIXME: fix redundancies and DRY when we decide what we export

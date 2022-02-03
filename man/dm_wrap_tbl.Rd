@@ -18,6 +18,8 @@ single table, if \code{FALSE} a partially wrapped dm will be returned.}
 A dm.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{dm_wrap_tbl()} creates a single tibble dm containing the \code{root} table
 enhanced with all the data related to it
 through the relationships stored in the dm.

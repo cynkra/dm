@@ -4,18 +4,19 @@
 \alias{dm_pack_tbl}
 \title{dm_pack_tbl()}
 \usage{
-dm_pack_tbl(dm, parent_tables, into = NULL)
+dm_pack_tbl(dm, parent_table, into = NULL)
 }
 \arguments{
 \item{dm}{A dm.}
 
-\item{parent_tables}{A table. Support for packing multiple tables at once
-is planned but not implemented yet.}
+\item{parent_table}{A terminal table with one child table.}
 
 \item{into}{The table to pack \code{parent_tables} into, optional as it can be guessed
 from the foreign keys unambiguously but useful to be explicit.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{dm_pack_tbl()} converts a parent table to a packed column in its child
 table.
 The parent table should not have parent tables itself (i.e. it needs to be a
@@ -27,7 +28,9 @@ dm_packed <-
   dm_pack_tbl(planes)
 
 dm_packed
+
 dm_packed$flights
+
 dm_packed$flights$planes
 }
 \seealso{
