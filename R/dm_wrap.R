@@ -70,7 +70,7 @@ dm_wrap_tbl_impl <- function(dm, root, strict = TRUE) {
     wrap_sequence$table,
     function(dm, f, table) eval(rlang::call2(f, dm, table)),
     .init = dm
-    )
+  )
 
   # inform or fail if we have a cycle
   if (length(wrapped_dm) > 1) {
