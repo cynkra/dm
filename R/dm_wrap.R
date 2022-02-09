@@ -34,10 +34,6 @@
 #' dm_nycflights13() %>%
 #'   dm_wrap_tbl(root = airlines)
 dm_wrap_tbl <- function(dm, root, strict = TRUE) {
-  dm_wrap_tbl_impl(dm, {{ root }}, strict = strict)
-}
-
-dm_wrap_tbl_impl <- function(dm, root, strict = TRUE) {
   # process args
   root_name <- dm_tbl_name(dm, {{ root }})
 
