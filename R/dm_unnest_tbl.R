@@ -75,6 +75,9 @@ dm_unnest_tbl <- function(dm, parent_table, col, ptype) {
 
 #' Unpack columns from a wrapped table
 #'
+#' #' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' `dm_unpack_tbl()` targets a specific column to unpack
 #' from the given table in a given dm.
 #' A ptype or a set of keys should be given,

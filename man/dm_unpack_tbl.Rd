@@ -16,12 +16,15 @@ dm_unpack_tbl(dm, child_table, col, ptype)
 \item{ptype}{A dm, only used to query names of primary and foreign keys.}
 }
 \description{
+#' @description
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 \code{dm_unpack_tbl()} targets a specific column to unpack
 from the given table in a given dm.
 A ptype or a set of keys should be given,
 not both.
-}
-\details{
+
 \code{\link[=dm_pack_tbl]{dm_pack_tbl()}} is an inverse operation to \code{dm_unpack_tbl()}
 if differences in row and column order are ignored.
 The opposite is true if referential constraints between both tables
