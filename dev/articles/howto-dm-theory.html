@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Introduction to relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2022-02-03</h4>
+            <h4 data-toc-skip class="date">2022-02-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-theory.Rmd</code></div>
@@ -194,7 +194,7 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-message"><code><span class="co">#&gt; ── Attaching packages ────────────────────────────────── tidyverse 1.3.1 ──</span></code></pre>
 <pre class="fansi fansi-message"><code><span class="co">#&gt; ✔ ggplot2 3.3.5     ✔ purrr   0.3.4</span>
-<span class="co">#&gt; ✔ tibble  3.1.6     ✔ dplyr   1.0.7</span>
+<span class="co">#&gt; ✔ tibble  3.1.6     ✔ dplyr   1.0.8</span>
 <span class="co">#&gt; ✔ tidyr   1.2.0     ✔ stringr 1.4.0</span>
 <span class="co">#&gt; ✔ readr   2.1.2     ✔ forcats 0.5.1</span></code></pre>
 <pre class="fansi fansi-message"><code><span class="co">#&gt; ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──</span>
@@ -368,8 +368,8 @@
 <span class="co"># ...propagates to all related records</span>
 <span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airlines</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">flight</span>, <span class="va">name</span><span class="op">)</span>
-<span class="co">#&gt; Joining, by = "carrier"</span></code></pre></div>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">flight</span>, <span class="va">name</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-message"><code><span class="co">#&gt; Joining, by = "carrier"</span></code></pre>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 336,776 × 2</span>
 <span class="co">#&gt;    flight name                    </span>
 <span class="co">#&gt;     &lt;int&gt; &lt;chr&gt;                   </span>
