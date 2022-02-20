@@ -2,7 +2,7 @@
 
     Code
       pack_join(df1, df2)
-    Message <rlang_message>
+    Message
       Joining, by = "key"
     Output
       # A tibble: 2 x 3
@@ -15,7 +15,7 @@
 
     Code
       pack_join(df1, df2, name = "packed_col")
-    Message <rlang_message>
+    Message
       Joining, by = "key"
     Output
       # A tibble: 2 x 3
