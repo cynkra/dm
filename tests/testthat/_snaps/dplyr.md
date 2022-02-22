@@ -4,7 +4,7 @@
       # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
       zoomed_dm() %>% left_join(tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>%
         get_all_keys()
-    Message <simpleMessage>
+    Message
       Renaming ambiguous columns: %>%
         dm_rename(tf_2, tf_2.d = d) %>%
         dm_rename(tf_3, tf_3.d = d)
@@ -492,7 +492,7 @@
       [1] "EWR" "JFK" "LGA"
     Code
       zoomed_comp_dm %>% slice(c(1:3, 5:3))
-    Message <simpleMessage>
+    Message
       Keeping PK column, but `slice.zoomed_dm()` can potentially damage the uniqueness of PK columns (duplicated indices). Set argument `.keep_pk` to `TRUE` or `FALSE` to ensure the behavior you intended.
     Output
       # Zoomed table: weather
@@ -518,7 +518,7 @@
         "pressure"      "visib"  "time_hour" 
     Code
       zoomed_comp_dm %>% left_join(flights) %>% nrow()
-    Message <simpleMessage>
+    Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, weather.year = year) %>%
         dm_rename(weather, weather.month = month) %>%
@@ -532,7 +532,7 @@
       [1] 1800
     Code
       zoomed_comp_dm %>% right_join(flights) %>% nrow()
-    Message <simpleMessage>
+    Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, weather.year = year) %>%
         dm_rename(weather, weather.month = month) %>%
@@ -546,7 +546,7 @@
       [1] 1761
     Code
       zoomed_comp_dm %>% inner_join(flights) %>% nrow()
-    Message <simpleMessage>
+    Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, weather.year = year) %>%
         dm_rename(weather, weather.month = month) %>%
@@ -560,7 +560,7 @@
       [1] 1761
     Code
       zoomed_comp_dm %>% full_join(flights) %>% nrow()
-    Message <simpleMessage>
+    Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, weather.year = year) %>%
         dm_rename(weather, weather.month = month) %>%

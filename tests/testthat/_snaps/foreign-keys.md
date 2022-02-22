@@ -21,7 +21,7 @@
 
     Code
       dm_for_filter() %>% dm_rm_fk(tf_5) %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_5, l, tf_4) %>%
         dm_rm_fk(tf_5, m, tf_6, n))
@@ -47,7 +47,7 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk(columns = l) %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_5, l, tf_4)
     Output
@@ -73,7 +73,7 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk(columns = c(e, e1)) %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_2, c(e, e1), tf_3)
     Output
@@ -99,7 +99,7 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk(ref_table = tf_3) %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_2, c(e, e1), tf_3) %>%
         dm_rm_fk(tf_4, c(j, j1), tf_3)
@@ -125,7 +125,7 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk(ref_columns = c(f, f1)) %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_2, c(e, e1), tf_3) %>%
         dm_rm_fk(tf_4, c(j, j1), tf_3)
@@ -151,7 +151,7 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk() %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_2, d, tf_1) %>%
         dm_rm_fk(tf_2, c(e, e1), tf_3) %>%
@@ -176,35 +176,6 @@
       #   parent_table <chr>, parent_key_cols <keys>, on_delete <chr>
       
 
-# dm_enum_fk_candidates() works as intended?
-
-    Code
-      dm_nycflights13() %>% dm_enum_fk_candidates(flights, airports) %>% mutate(why = if_else(
-        why != "", "<reason>", ""))
-    Output
-      # A tibble: 19 x 3
-         columns        candidate why       
-         <keys>         <lgl>     <chr>     
-       1 origin         TRUE      ""        
-       2 year           FALSE     "<reason>"
-       3 month          FALSE     "<reason>"
-       4 day            FALSE     "<reason>"
-       5 dep_time       FALSE     "<reason>"
-       6 sched_dep_time FALSE     "<reason>"
-       7 dep_delay      FALSE     "<reason>"
-       8 arr_time       FALSE     "<reason>"
-       9 sched_arr_time FALSE     "<reason>"
-      10 arr_delay      FALSE     "<reason>"
-      11 carrier        FALSE     "<reason>"
-      12 flight         FALSE     "<reason>"
-      13 tailnum        FALSE     "<reason>"
-      14 dest           FALSE     "<reason>"
-      15 air_time       FALSE     "<reason>"
-      16 distance       FALSE     "<reason>"
-      17 hour           FALSE     "<reason>"
-      18 minute         FALSE     "<reason>"
-      19 time_hour      FALSE     "<reason>"
-
 # can add foreign key with cascade
 
     Code
@@ -220,10 +191,12 @@
 
     Code
       dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_add_fk(a, x, b, x, on_delete = "bogus")
-    Error <rlang_error>
-      `on_delete` must be one of "no_action" or "cascade", not "bogus".
+    Condition
+      Error in `dm_add_fk()`:
+      ! `on_delete` must be one of "no_action" or "cascade", not "bogus".
     Code
       dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_add_fk(a, x, b, x, on_delete = letters)
-    Error <rlang_error>
-      `on_delete` must be one of "no_action" or "cascade", not "a".
+    Condition
+      Error in `dm_add_fk()`:
+      ! `on_delete` must be one of "no_action" or "cascade", not "a".
 

@@ -40,7 +40,7 @@
     Code
       dm_nycflights13() %>% dm_rm_fk() %>% waldo::compare(dm_nycflights13(),
       max_diffs = 10)
-    Message <simpleMessage>
+    Message
       Removing foreign keys: %>%
         dm_rm_fk(flights, carrier, airlines) %>%
         dm_rm_fk(flights, origin, airports) %>%
@@ -84,7 +84,7 @@
     Code
       dm_nycflights13() %>% dm_rm_pk(fail_fk = FALSE) %>% waldo::compare(
         dm_nycflights13(), max_diffs = 10)
-    Message <simpleMessage>
+    Message
       Removing primary keys: %>%
         dm_rm_pk(airlines) %>%
         dm_rm_pk(airports) %>%

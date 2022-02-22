@@ -71,7 +71,8 @@
       
     Code
       dm_for_filter() %>% dm_rm_pk(tf_4, rm_referencing_fks = TRUE) %>% get_all_keys()
-    Warning <lifecycle_warning_deprecated>
+    Condition
+      Warning:
       The `rm_referencing_fks` argument of `dm_rm_pk()` is deprecated as of dm 0.2.1.
       Please use the `fail_fk` argument instead.
       Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed.
@@ -98,7 +99,7 @@
       
     Code
       dm_for_filter() %>% dm_rm_pk(columns = c) %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing primary keys: %>%
         dm_rm_pk(tf_2)
     Output
@@ -125,7 +126,7 @@
     Code
       dm_for_filter() %>% dm_rm_pk(columns = c(f, f1), fail_fk = FALSE) %>%
         get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing primary keys: %>%
         dm_rm_pk(tf_3)
     Output
@@ -151,7 +152,7 @@
       
     Code
       dm_for_filter() %>% dm_rm_pk(fail_fk = FALSE) %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing primary keys: %>%
         dm_rm_pk(tf_1) %>%
         dm_rm_pk(tf_2) %>%
@@ -175,44 +176,13 @@
       5 tf_5        m             tf_6         n               no_action
       
 
-# dm_enum_pk_candidates() works properly?
-
-    Code
-      dm_enum_pk_candidates(dm_test_obj(), dm_table_1)
-    Output
-      # A tibble: 2 x 3
-        columns candidate why  
-        <keys>  <lgl>     <chr>
-      1 a       TRUE      ""   
-      2 b       TRUE      ""   
-    Code
-      dm_enum_pk_candidates(dm_test_obj(), dm_table_2)
-    Output
-      # A tibble: 1 x 3
-        columns candidate why                        
-        <keys>  <lgl>     <chr>                      
-      1 c       FALSE     has duplicate values: 5 (2)
-    Code
-      dm_enum_pk_candidates(dm_test_obj(), dm_table_5)
-    Output
-      # A tibble: 1 x 3
-        columns candidate why                 
-        <keys>  <lgl>     <chr>               
-      1 c       FALSE     has 1 missing values
-    Code
-      dm_enum_pk_candidates(dm_test_obj(), dm_table_6)
-    Output
-      # A tibble: 1 x 3
-        columns candidate why                                              
-        <keys>  <lgl>     <chr>                                            
-      1 c       FALSE     has 1 missing values, and duplicate values: 3 (2)
-
 # output
 
     Code
       dm(x = tibble(a = c(1, 1))) %>% dm_add_pk(x, a, check = TRUE)
-    Error <dm_error_not_unique_key>
-      (`a`) not a unique key of `x`.
+    Condition
+      Error in `abort_not_unique_key()`:
+      ! (`a`) not a unique key of `x`.
 
 # dm_get_all_pks() with compound keys
 

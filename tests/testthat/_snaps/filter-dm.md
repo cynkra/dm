@@ -2,7 +2,7 @@
 
     Code
       dm_more_complex() %>% dm_paste(options = c("select", "keys"))
-    Message <cliMessage>
+    Message
       dm::dm(
         tf_1,
         tf_2,

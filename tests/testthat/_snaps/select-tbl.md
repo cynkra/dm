@@ -3,7 +3,7 @@
     Code
       dm_nycflights_small() %>% dm_add_fk(flights, origin, airports) %>%
         dm_select_tbl(airports, flights) %>% dm_paste()
-    Message <cliMessage>
+    Message
       dm::dm(
         airports,
         flights,
