@@ -30,7 +30,8 @@
 
     Code
       copy_to(nyc_comp(), mtcars, "car_table")
-    Warning <lifecycle_warning_deprecated>
+    Condition
+      Warning:
       `copy_to.dm()` was deprecated in dm 0.2.0.
       Use `copy_to(dm_get_con(dm), ...)` and `dm_add_tbl()`.
     Output
@@ -82,7 +83,7 @@
       5 weat~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()
-    Message <simpleMessage>
+    Message
       Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.
     Output
       # A tibble: 144 x 15

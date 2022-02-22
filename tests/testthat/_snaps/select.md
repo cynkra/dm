@@ -60,7 +60,7 @@
     Code
       dm_select(dm_for_flatten(), fact, dim_1_key_1, dim_1_key_2) %>% dm_paste(
         options = c("select", "keys"))
-    Message <cliMessage>
+    Message
       dm::dm(
         fact,
         dim_1,
@@ -81,7 +81,7 @@
     Code
       dm_select(dm_for_flatten(), dim_1, dim_1_pk_1, dim_1_pk_2) %>% dm_paste(
         options = c("select", "keys"))
-    Message <cliMessage>
+    Message
       dm::dm(
         fact,
         dim_1,
@@ -105,7 +105,7 @@
     Code
       dm_select(dm_for_flatten(), fact, -dim_1_key_1) %>% dm_paste(options = c(
         "select", "keys"))
-    Message <cliMessage>
+    Message
       dm::dm(
         fact,
         dim_1,
@@ -128,7 +128,7 @@
     Code
       dm_select(dm_for_flatten(), dim_1, -dim_1_pk_1) %>% dm_paste(options = c(
         "select", "keys"))
-    Message <cliMessage>
+    Message
       dm::dm(
         fact,
         dim_1,

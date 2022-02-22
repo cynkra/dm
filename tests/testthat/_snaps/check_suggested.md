@@ -33,10 +33,12 @@
 
     Code
       check_suggested("iurtnkjvmomweicopbt", TRUE, top_level_fun = "foo")
-    Error <rlang_error>
-      `foo()` needs the 'iurtnkjvmomweicopbt' package. Do you need `install.packages("iurtnkjvmomweicopbt")` ?
+    Condition
+      Error in `check_suggested()`:
+      ! `foo()` needs the 'iurtnkjvmomweicopbt' package. Do you need `install.packages("iurtnkjvmomweicopbt")` ?
     Code
       check_suggested("iurtnkjvmomweicopbt", TRUE, message = "not installed!")
-    Error <rlang_error>
-      not installed!
+    Condition
+      Error in `check_suggested()`:
+      ! not installed!
 
