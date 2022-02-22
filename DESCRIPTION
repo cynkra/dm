@@ -81,7 +81,7 @@ Suggests:
     rmarkdown,
     RPostgres,
     RSQLite (>= 2.2.8),
-    testthat (>= 3.0.2),
+    testthat (>= 3.1.2),
     tidyverse,
     waldo,
     withr
