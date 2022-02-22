@@ -3,13 +3,14 @@
     Code
       dm_for_flatten() %>% dm_disambiguate_cols() %>% dm_paste(options = c("select",
         "keys"))
-    Message
+    Message <simpleMessage>
       Renaming ambiguous columns: %>%
         dm_rename(fact, fact.something = something) %>%
         dm_rename(dim_1, dim_1.something = something) %>%
         dm_rename(dim_2, dim_2.something = something) %>%
         dm_rename(dim_3, dim_3.something = something) %>%
         dm_rename(dim_4, dim_4.something = something)
+    Message <cliMessage>
       dm::dm(
         fact,
         dim_1,

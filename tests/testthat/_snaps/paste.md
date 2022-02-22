@@ -3,13 +3,13 @@
     Code
       # empty
       empty_dm() %>% dm_paste()
-    Message
+    Message <cliMessage>
       dm::dm(
       )
     Code
       # empty table
       dm(a = tibble()) %>% dm_paste(options = "tables")
-    Message
+    Message <cliMessage>
       a <- tibble::tibble(
       )
       dm::dm(
@@ -18,7 +18,7 @@
     Code
       # baseline
       dm_for_filter() %>% dm_paste()
-    Message
+    Message <cliMessage>
       dm::dm(
         tf_1,
         tf_2,
@@ -41,7 +41,7 @@
     Code
       # changing the tab width
       dm_for_filter() %>% dm_paste(tab_width = 4)
-    Message
+    Message <cliMessage>
       dm::dm(
           tf_1,
           tf_2,
@@ -64,7 +64,7 @@
     Code
       # we don't care if the tables really exist
       dm_for_filter() %>% dm_rename_tbl(tf_1_new = tf_1) %>% dm_paste()
-    Message
+    Message <cliMessage>
       dm::dm(
         tf_1_new,
         tf_2,
@@ -88,7 +88,7 @@
       # produce `dm_select()` statements in addition to the rest
       dm_for_filter() %>% dm_select(tf_5, k = k, m) %>% dm_select(tf_1, a) %>%
         dm_add_tbl(x = copy_to_my_test_src(tibble(q = 1L), qq)) %>% dm_paste(options = "select")
-    Message
+    Message <cliMessage>
       dm::dm(
         tf_1,
         tf_2,
@@ -109,7 +109,7 @@
       # produce code with colors
       dm_for_filter() %>% dm_set_colors(orange = tf_1:tf_3, darkgreen = tf_5:tf_6) %>%
         dm_paste()
-    Message
+    Message <cliMessage>
       dm::dm(
         tf_1,
         tf_2,
@@ -141,7 +141,7 @@
       dm(a) %>% dm_zoom_to(a) %>% dm_insert_zoomed("a b") %>% dm_add_pk(a, "a b") %>%
         dm_add_fk("a b", "a b", a) %>% dm_set_colors(green = "a b") %>% dm_paste(
         options = "all")
-    Message
+    Message <cliMessage>
       a <- tibble::tibble(
         `a b` = numeric(0),
       )
@@ -161,7 +161,7 @@
       c <- tibble(x = "A", y = "A")
       dm(b, c) %>% dm_add_pk(c, x) %>% dm_add_fk(b, y, c) %>% dm_add_fk(b, z, c, y) %>%
         dm_paste()
-    Message
+    Message <cliMessage>
       dm::dm(
         b,
         c,
@@ -173,7 +173,7 @@
       # on_delete if needed
       dm(b, c) %>% dm_add_pk(c, x) %>% dm_add_fk(b, y, c, on_delete = "cascade") %>%
         dm_add_fk(b, z, c, y, on_delete = "no_action") %>% dm_paste()
-    Message
+    Message <cliMessage>
       dm::dm(
         b,
         c,
@@ -184,7 +184,7 @@
     Code
       # all of nycflights13
       dm_nycflights13() %>% dm_paste(options = "all")
-    Message
+    Message <cliMessage>
       airlines <- tibble::tibble(
         carrier = character(0),
         name = character(0),
@@ -271,11 +271,10 @@
     Code
       # deprecation warning for select argument
       dm() %>% dm_paste(select = TRUE)
-    Condition
-      Warning:
+    Warning <lifecycle_warning_deprecated>
       The `select` argument of `dm_paste()` is deprecated as of dm 0.1.2.
       Please use the `options` argument instead.
-    Message
+    Message <cliMessage>
       dm::dm(
       )
     Code

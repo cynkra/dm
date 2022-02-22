@@ -44,7 +44,7 @@
     Code
       dm_bind(dm_for_filter(), dm_for_flatten()) %>% dm_paste(options = c("select",
         "keys"))
-    Message
+    Message <cliMessage>
       dm::dm(
         tf_1,
         tf_2,
@@ -91,7 +91,7 @@
     Code
       dm_bind(dm_for_flatten(), dm_for_filter()) %>% dm_paste(options = c("select",
         "keys"))
-    Message
+    Message <cliMessage>
       dm::dm(
         fact,
         dim_1,
