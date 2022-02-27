@@ -1,5 +1,11 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.7.9001
+
+- Avoid calling `dbAppendTable()` for zero-row tables (#847).
+- Require rlang 1.0.1 (#840).
+
+
 # dm 0.2.7.9000
 
 - Same as previous version.
