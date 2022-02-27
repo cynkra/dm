@@ -243,6 +243,10 @@ check_naming <- function(table_names, dm_table_names) {
 }
 
 db_append_table <- function(con, remote_table, table) {
+  if (nrow(table) == 0) {
+    return(invisible())
+  }
+
   if (is_mssql(con)) {
     # https://github.com/r-dbi/odbc/issues/480
     values <- as_tibble(map(table, map_chr, dbplyr::escape, con = con))
@@ -259,6 +263,8 @@ db_append_table <- function(con, remote_table, table) {
   } else {
     DBI::dbAppendTable(con, DBI::SQL(remote_table), table)
   }
+
+  invisible()
 }
 
 
