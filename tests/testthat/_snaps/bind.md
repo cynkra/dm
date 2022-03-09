@@ -44,7 +44,7 @@
     Code
       dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique") %>%
         collect()
-    Message <rlib_message_name_repair>
+    Message
       New names:
       * `tf_1` -> `tf_1...1`
       * `tf_2` -> `tf_2...2`
@@ -70,7 +70,7 @@
     Code
       dm_bind(dm_for_filter(), dm_for_flatten()) %>% dm_paste(options = c("select",
         "keys"))
-    Message <cliMessage>
+    Message
       dm::dm(
         tf_1,
         tf_2,
@@ -117,7 +117,7 @@
     Code
       dm_bind(dm_for_flatten(), dm_for_filter()) %>% dm_paste(options = c("select",
         "keys"))
-    Message <cliMessage>
+    Message
       dm::dm(
         fact,
         dim_1,
@@ -167,7 +167,7 @@
     Code
       dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>% dm_paste(
         options = c("select", "keys"))
-    Message <rlib_message_name_repair>
+    Message
       New names:
       * `fact` -> `fact...1`
       * `dim_1` -> `dim_1...2`
@@ -179,7 +179,6 @@
       * `dim_2` -> `dim_2...8`
       * `dim_3` -> `dim_3...9`
       * `dim_4` -> `dim_4...10`
-    Message <cliMessage>
       dm::dm(
         fact...1,
         dim_1...2,

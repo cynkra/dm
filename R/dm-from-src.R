@@ -145,7 +145,7 @@ quote_ids <- function(x, con, schema = NULL) {
 # Errors ------------------------------------------------------------------
 
 abort_learn_keys <- function() {
-  abort(error_txt_learn_keys(), .subclass = dm_error_full("learn_keys"))
+  abort(error_txt_learn_keys(), class = dm_error_full("learn_keys"))
 }
 
 error_txt_learn_keys <- function() {

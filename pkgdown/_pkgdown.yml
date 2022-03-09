@@ -95,6 +95,15 @@ reference:
   - head.zoomed_dm
   - tail.zoomed_dm
 
+- title: Wrap
+  contents:
+  - dm_wrap_tbl
+  - dm_unwrap_tbl
+  - dm_nest_tbl
+  - dm_pack_tbl
+  - dm_unnest_tbl
+  - dm_unpack_tbl
+
 - title: Materialize
   contents:
   - compute.dm
@@ -125,6 +134,7 @@ reference:
 - title: Check keys and cardinalities
   contents:
   - dm_examine_constraints
+  - dm_examine_cardinalities
   - examine_cardinality
   - check_key
   - check_subset
@@ -149,6 +159,7 @@ reference:
   - dm_pixarfilms
   - dm_nrow
   - dm_ptype
+  - pack_join
 
 navbar:
   title: ~

@@ -243,6 +243,10 @@ check_naming <- function(table_names, dm_table_names) {
 }
 
 db_append_table <- function(con, remote_table, table) {
+  if (nrow(table) == 0) {
+    return(invisible())
+  }
+
   if (is_mssql(con)) {
     # https://github.com/r-dbi/odbc/issues/480
     values <- as_tibble(map(table, map_chr, dbplyr::escape, con = con))
@@ -259,13 +263,15 @@ db_append_table <- function(con, remote_table, table) {
   } else {
     DBI::dbAppendTable(con, DBI::SQL(remote_table), table)
   }
+
+  invisible()
 }
 
 
 # Errors ------------------------------------------------------------------
 
 abort_copy_dm_to_table_names <- function() {
-  abort(error_txt_copy_dm_to_table_names(), .subclass = dm_error_full("copy_dm_to_table_names"))
+  abort(error_txt_copy_dm_to_table_names(), class = dm_error_full("copy_dm_to_table_names"))
 }
 
 error_txt_copy_dm_to_table_names <- function() {
@@ -273,7 +279,7 @@ error_txt_copy_dm_to_table_names <- function() {
 }
 
 abort_copy_dm_to_table_names_duplicated <- function(problem) {
-  abort(error_txt_copy_dm_to_table_names_duplicated(problem), .subclass = dm_error_full("copy_dm_to_table_names_duplicated"))
+  abort(error_txt_copy_dm_to_table_names_duplicated(problem), class = dm_error_full("copy_dm_to_table_names_duplicated"))
 }
 
 error_txt_copy_dm_to_table_names_duplicated <- function(problem) {

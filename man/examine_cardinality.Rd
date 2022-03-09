@@ -105,3 +105,8 @@ check_cardinality_0_1(d1, a, d3, c)
 # Returns the kind of cardinality
 examine_cardinality(d1, a, d2, c)
 }
+\seealso{
+Other cardinality functions: 
+\code{\link{dm_examine_cardinalities}()}
+}
+\concept{cardinality functions}

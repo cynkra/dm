@@ -25,3 +25,4 @@
 ^vignettes/out$
 ^TODO\.md$
 ^data-raw$
+^CRAN-SUBMISSION$

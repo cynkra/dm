@@ -35,7 +35,7 @@ test_that("schema handling on MSSQL and Postgres works", {
   )
   expect_true(db_schema_exists(con_db, "1-dm_schema_TEST"))
   expect_message(db_schema_drop(con_db, "1-dm_schema_TEST"), "Dropped schema")
-  expect_dm_error(db_schema_drop(con_db, "1-dm_schema_TEST"), "no_schema_exists")
+  expect_error(db_schema_drop(con_db, "1-dm_schema_TEST"))
   expect_false(db_schema_exists(con_db, "1-dm_schema_TEST"))
 
   expect_deprecated(expect_message(db_schema_create(src_db, "1-dm_schema_TEST"), "created"))

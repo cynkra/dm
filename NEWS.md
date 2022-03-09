@@ -1,15 +1,35 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
-# dm 0.2.6.9001
+# dm 0.2.7.9001
 
-- `copy_dm_to()` works with DuckDB again, the SQL statements to define the tables and indexes are now created by us (#701, #709).
-- Simplify database checks on GitHub Actions (#712).
-- Export `dm_pixarfilms()` (#703, @erictleung).
+- Avoid calling `dbAppendTable()` for zero-row tables (#847).
+- Require rlang 1.0.1 (#840).
 
 
-# dm 0.2.6.9000
+# dm 0.2.7.9000
 
 - Same as previous version.
+
+
+# dm 0.2.7
+
+## Features
+
+- New `dm_wrap_tbl()`, `dm_unwrap_tbl()`, `dm_nest_tbl()`, `dm_unnest_tbl()`, `dm_pack_tbl()` and `dm_unpack_tbl()` (#595, #733, #737).
+- New `dm_examine_cardinality()` (#264, #735). 
+- New `pack_join()` generic and method for data frames, the same to `tidyr::pack()` as `dplyr::nest_join()` is to `tidyr::nest()` (#721, #722).
+- `dm_pixarfilms()` is exported and gains a `consistent = FALSE` argument; if `TRUE` the data is modified so that all referential constraints are satisfied (#703, #707, #708, @erictleung).
+
+## Bug fixes
+
+- `db_schema_...()` functions no longer pro-actively check for schema existence (#672, #815, #771).
+- `db_schema_list.Microsoft SQL Server` no longer ignoring schemas for which the owner cannot be found (#815, #771).
+- `copy_dm_to()` works with DuckDB again, the SQL statements to define the tables and indexes are now created by us (#701, #709).
+
+## Internal
+
+- Establish compatibility with rlang 1.0.0 (#756).
+- Simplify database checks on GitHub Actions (#712).
 
 
 # dm 0.2.6
