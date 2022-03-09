@@ -12,7 +12,7 @@ mssql_sys_db <- function(con, dbname, name) {
 }
 
 mssql_sys_all_db <- function(con, dbname, name, warn = FALSE) {
-  lazy <- map(dbname, ~tryCatch(
+  lazy <- map(dbname, ~ tryCatch(
     mssql_sys_db(con, .x, name),
     error = function(e) {
       if (warn) {
@@ -64,7 +64,7 @@ mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
 
   sys_fkc_column_usage <-
     fkc %>%
-    left_join(columns, by = c("catalog",  "referenced_object_id" = "object_id", "referenced_column_id" = "column_id")) %>%
+    left_join(columns, by = c("catalog", "referenced_object_id" = "object_id", "referenced_column_id" = "column_id")) %>%
     left_join(tables, by = c("catalog", "referenced_object_id" = "object_id")) %>%
     left_join(schemas, by = c("catalog", "schema_id")) %>%
     left_join(objects, by = c("constraint_object_id" = "object_id")) %>%

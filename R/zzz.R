@@ -17,7 +17,7 @@
   check_version_on_load("RSQLite", "2.2.8", "to use the {.code returning} argument in {.code dm::rows_*()}")
 
   # rigg(enum_pk_candidates_impl)
-  #rigg(mssql_sys_all_db)
+  # rigg(mssql_sys_all_db)
   # rigg(build_copy_data)
   # rigg(dm_insert_zoomed_outgoing_fks)
   # rigg(dm_upgrade)
