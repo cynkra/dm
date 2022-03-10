@@ -224,7 +224,7 @@ copy_dm_to <- function(dest, dm, ...,
 
   ticker_index <- new_ticker(
     "creating indexes",
-    n = length(queries$sql_index),
+    n = sum(lengths(queries$sql_index)),
     progress = progress,
     top_level_fun = "copy_dm_to"
   )
