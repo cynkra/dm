@@ -197,21 +197,42 @@ copy_dm_to <- function(dest, dm, ...,
 
   queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
 
+  ticker_create <- new_ticker(
+    "creating tables",
+    n = length(queries$sql_table),
+    progress = progress,
+    top_level_fun = "copy_dm_to"
+  )
+
   # create tables
-  walk(queries$sql_table, ~ {
+  walk(queries$sql_table, ticker_create(~ {
     DBI::dbExecute(dest_con, .x, immediate = TRUE)
-  })
+  }))
+
+  ticker_populate <- new_ticker(
+    "populating tables",
+    n = length(queries$name),
+    progress = progress,
+    top_level_fun = "copy_dm_to"
+  )
 
   # populate tables
   pwalk(
     queries[c("name", "remote_name")],
-    ~ db_append_table(dest_con, .y, dm[[.x]])
+    ticker_populate(~ db_append_table(dest_con, .y, dm[[.x]], progress))
+  )
+
+  ticker_index <- new_ticker(
+    "creating indexes",
+    n = length(queries$sql_index),
+    progress = progress,
+    top_level_fun = "copy_dm_to"
   )
 
   # create indexes
-  walk(unlist(queries$sql_index), ~ {
+  walk(unlist(queries$sql_index), ticker_index(~ {
     DBI::dbExecute(dest_con, .x, immediate = TRUE)
-  })
+  }))
 
   # build remote dm
   remote_tables <-
@@ -242,19 +263,31 @@ check_naming <- function(table_names, dm_table_names) {
   }
 }
 
-db_append_table <- function(con, remote_table, table) {
-  if (nrow(table) == 0) {
+db_append_table <- function(con, remote_table, table, progress, top_level_fun = "copy_dm_to") {
+  if (nrow(table) == 0 || ncol(table) == 0) {
     return(invisible())
   }
 
   if (is_mssql(con)) {
-    # https://github.com/r-dbi/odbc/issues/480
-    values <- as_tibble(map(table, map_chr, dbplyr::escape, con = con))
-    # chunks of 1000
-    idx <- as.integer((seq_len(nrow(values)) + 999L) / 1000L)
-    split <- vec_split(values, idx)
-    sql <- map_chr(split$val, ~ DBI::sqlAppendTable(con, DBI::SQL(remote_table), as.list(.x), row.names = FALSE))
-    walk(sql, ~ DBI::dbExecute(con, .x, immediate = TRUE))
+    # FIXME: Make adaptive
+    chunk_size <- 1000L
+    n_chunks <- ceiling(nrow(table) / chunk_size)
+
+    ticker <- new_ticker(
+      paste0("inserting into ", remote_table),
+      n = n_chunks,
+      progress = progress,
+      top_level_fun = top_level_fun
+    )
+
+    walk(seq_len(n_chunks), ticker(~ {
+      end <- .x * chunk_size
+      idx <- seq2(end - (chunk_size - 1), min(end, nrow(table)))
+      values <- as_tibble(map(table[idx, ], dbplyr::escape, parens = FALSE, collapse = NULL, con = con))
+      # https://github.com/r-dbi/odbc/issues/480
+      sql <- DBI::sqlAppendTable(con, DBI::SQL(remote_table), as.list(values), row.names = FALSE)
+      DBI::dbExecute(con, sql, immediate = TRUE)
+    }))
   } else if (is_postgres(con)) {
     # https://github.com/r-dbi/RPostgres/issues/384
     table <- as.data.frame(table)
