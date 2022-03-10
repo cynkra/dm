@@ -10,6 +10,10 @@
 
   dm_has_financial <<- memoise::memoise(dm_has_financial, cache = cache_attach())
 
+  if (!identical(Sys.getenv("TESTTHAT"), "true")) {
+    check_suggested <<- memoise::memoise(check_suggested)
+  }
+
   register_pkgdown_methods()
 
   s3_register("waldo::compare_proxy", "dm")
