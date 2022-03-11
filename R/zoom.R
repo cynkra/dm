@@ -249,15 +249,20 @@ update_zoomed_pk <- function(dm) {
 update_zoomed_incoming_fks <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- col_tracker_zoomed(dm)
-  orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
+  def <- dm_get_def(dm)
 
-  if (has_length(orig_pk) && all(get_key_cols(orig_pk) %in% tracked_cols)) {
-    def <- dm_get_def(dm)
-    # Nothing to recode here -- updating zoomed table
-    def$fks[[which(def$table == old_tbl_name)]]
-  } else {
-    new_fk()
-  }
+  orig_idx <- which(def$table == old_tbl_name)
+  orig_fk <- def$fks[[orig_idx]]
+
+  orig_fk$ref_column <- map(orig_fk$ref_column, ~ {
+    if (all(.x %in% tracked_cols)) {
+      recode2(.x, tracked_cols)
+    } else {
+      NULL
+    }
+  })
+
+  orig_fk[lengths(orig_fk$ref_column) > 0]
 }
 
 update_zoomed_outgoing <- function(fks, tbl_name, tracked_cols) {
