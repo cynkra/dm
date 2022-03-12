@@ -262,7 +262,7 @@ update_zoomed_incoming_fks <- function(dm) {
     }
   })
 
-  orig_fk[lengths(orig_fk$ref_column) > 0]
+  orig_fk[lengths(orig_fk$ref_column) > 0,]
 }
 
 update_zoomed_outgoing <- function(fks, tbl_name, tracked_cols) {
