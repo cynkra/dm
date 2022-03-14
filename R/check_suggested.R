@@ -9,7 +9,7 @@
 #' @return whether check was triggered and all packages are installed
 #' @noRd
 check_suggested <- function(packages, use, top_level_fun = NULL, message = NULL) {
-  # If NA, inform that package isn't install, but only in interactive mode
+  # If NA, inform that package isn't installed, but only in interactive mode
   if (is.na(use)) {
     use <- is_interactive()
     if (!use) {
