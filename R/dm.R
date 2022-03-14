@@ -109,7 +109,11 @@ new_dm2 <- function(tables = list(),
 
   pks_df <- enframe(pks, "table", "pks")
 
-  fks_df <- enframe(fks, "table", "fks")
+  fks_df <-
+    enframe(fks, "table", "fks") %>%
+    group_by(table) %>%
+    summarize(fks = list(bind_rows(fks))) %>%
+    ungroup()
 
   filters <-
     tibble(
