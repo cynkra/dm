@@ -24,24 +24,7 @@ mssql_sys_all_db <- function(con, dbname, name, warn = FALSE) {
   reduce(compact(lazy), union_all)
 }
 
-mssql_sys_databases <- function(con, dbname) {
-  if (is.null(dbname)) {
-    dbname <-
-      tbl(con, dbplyr::ident_q("sys.databases")) %>%
-      select(name) %>%
-      collect() %>%
-      pull()
-  } else if (is.na(dbname)) {
-    dbname <- NA_character_
-  } else {
-    stopifnot(is.character(dbname))
-  }
-  dbname
-}
-
 mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
-  dbname <- mssql_sys_databases(con, dbname)
-
   info_fkc <-
     table_constraints %>%
     select(constraint_catalog, constraint_schema, constraint_name, constraint_type) %>%
