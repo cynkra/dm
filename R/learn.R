@@ -114,7 +114,16 @@ dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_forma
     left_join(columns, select = c(column_name, dm_name, table_catalog, table_schema, table_name)) %>%
     dm_update_zoomed() %>%
     dm_select_tbl(-columns) %>%
-    dm_disambiguate_cols(quiet = TRUE) %>%
+    dm_rename(constraint_column_usage, constraint_column_usage.table_catalog = table_catalog) %>%
+    dm_rename(constraint_column_usage, constraint_column_usage.table_schema = table_schema) %>%
+    dm_rename(constraint_column_usage, constraint_column_usage.table_name = table_name) %>%
+    dm_rename(constraint_column_usage, constraint_column_usage.column_name = column_name) %>%
+    dm_rename(constraint_column_usage, constraint_column_usage.dm_name = dm_name) %>%
+    dm_rename(key_column_usage, key_column_usage.table_catalog = table_catalog) %>%
+    dm_rename(key_column_usage, key_column_usage.table_schema = table_schema) %>%
+    dm_rename(key_column_usage, key_column_usage.table_name = table_name) %>%
+    dm_rename(key_column_usage, key_column_usage.column_name = column_name) %>%
+    dm_rename(key_column_usage, key_column_usage.dm_name = dm_name) %>%
     dm_flatten_to_tbl(constraint_column_usage) %>%
     select(
       constraint_catalog,
