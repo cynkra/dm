@@ -9,7 +9,7 @@ test_that("dm_rows_insert()", {
 
   skip_if_not_installed("nycflights13")
   skip_if_not_installed("RSQLite")
-  scoped_options(lifecycle_verbosity = "quiet")
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_snapshot({
     # Entire dataset with all dimension tables populated
