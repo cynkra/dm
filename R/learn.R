@@ -359,61 +359,9 @@ schema_if <- function(schema, table, con, dbname = NULL) {
 }
 
 db_learn_query <- function(dest, dbname, ...) {
-  if (is_mssql(dest)) {
-    return(mssql_learn_query(dest, dbname = dbname, ...))
-  }
   if (is_postgres(dest)) {
     return(postgres_learn_query(dest, ...))
   }
-}
-
-mssql_learn_query <- function(con, schema = "dbo", dbname = NULL) { # taken directly from {datamodelr} and subsequently tweaked a little
-  dbname_sql <- if (is_null(dbname)) {
-    ""
-  } else {
-    paste0(DBI::dbQuoteIdentifier(con, dbname), ".")
-  }
-  glue::glue(
-    "select
-    schemas.name as [schema],
-    tabs.name as [table],
-    cols.name as [column],
-    isnull(ind_col.column_id, 0) as [key],
-    ref_tabs.name AS ref,
-    ref_cols.name AS ref_col,
-    1 - cols.is_nullable as mandatory,
-    types.name as [type],
-    cols.max_length,
-    cols.precision,
-    cols.scale
-  from
-    {dbname_sql}sys.all_columns cols
-    inner join {dbname_sql}sys.tables tabs on
-      cols.object_id = tabs.object_id
-    inner join {dbname_sql}sys.schemas schemas on
-      tabs.schema_id = schemas.schema_id
-    left outer join {dbname_sql}sys.foreign_key_columns ref on
-      ref.parent_object_id = tabs.object_id
-      and ref.parent_column_id = cols.column_id
-    left outer join {dbname_sql}sys.indexes ind on
-      ind.object_id = tabs.object_id
-      and ind.is_primary_key = 1
-    left outer join {dbname_sql}sys.index_columns ind_col on
-      ind_col.object_id = ind.object_id
-      and ind_col.index_id = ind.index_id
-      and ind_col.column_id = cols.column_id
-    left outer join {dbname_sql}sys.systypes [types] on
-      types.xusertype = cols.system_type_id
-    left outer join {dbname_sql}sys.tables ref_tabs on
-      ref_tabs.object_id = ref.referenced_object_id
-    left outer join {dbname_sql}sys.all_columns ref_cols on
-      ref_cols.object_id = ref.referenced_object_id
-      and ref_cols.column_id = ref.referenced_column_id
-  where schemas.name = {DBI::dbQuoteString(con, schema)}
-  order by
-    tabs.create_date,
-    cols.column_id"
-  )
 }
 
 postgres_learn_query <- function(con, schema = "public", table_type = "BASE TABLE") {
