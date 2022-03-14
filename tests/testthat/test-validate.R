@@ -145,7 +145,6 @@ test_that("validator speaks up when something's wrong", {
       validate_dm(),
     "dm_invalid"
   )
-
 })
 
 test_that("validator speaks up (sqlite())", {
