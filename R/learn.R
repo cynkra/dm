@@ -91,7 +91,7 @@ dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_forma
   tables <- map2(table_info$from, table_info$vars, ~ tbl(con, dbplyr::ident_q(.x), vars = .y))
   names(tables) <- table_info$dm_name
 
-  pks <-
+  pks_df <-
     df_key_info %>%
     dm_zoom_to(key_column_usage) %>%
     anti_join(constraint_column_usage) %>%
@@ -100,12 +100,11 @@ dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_forma
     dm_squash_to_tbl(key_column_usage) %>%
     select(constraint_catalog, constraint_schema, constraint_name, dm_name, column_name) %>%
     group_by(constraint_catalog, constraint_schema, constraint_name, dm_name) %>%
-    summarize(data = list(tibble(column = list(column_name)))) %>%
+    summarize(pks = list(tibble(column = list(column_name)))) %>%
     ungroup() %>%
-    select(dm_name, data) %>%
-    deframe()
+    select(table = dm_name, pks)
 
-  fks <-
+  fks_df <-
     df_key_info %>%
     dm_zoom_to(key_column_usage) %>%
     left_join(columns, select = c(column_name, dm_name, table_catalog, table_schema, table_name)) %>%
@@ -149,7 +148,7 @@ dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_forma
       constraint_name,
       ref_table,
     ) %>%
-    summarize(data = list(tibble(
+    summarize(fks = list(tibble(
       ref_column = list(ref_column),
       table = if (length(table) > 0) table[[1]] else NA_character_,
       column = list(column),
@@ -157,9 +156,11 @@ dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_forma
     ))) %>%
     ungroup() %>%
     select(-(1:3)) %>%
-    deframe()
+    group_by(table = ref_table) %>%
+    summarize(fks = list(bind_rows(fks))) %>%
+    ungroup()
 
-  new_dm2(tables, pks, fks)
+  new_dm2(tables, pks_df, fks_df)
 }
 
 dm_meta <- function(con, catalog = NA, schema = NULL) {
