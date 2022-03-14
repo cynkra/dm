@@ -91,9 +91,6 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 test_that("Learning from specific schema on MSSQL or Postgres works?", {
   skip_if_src_not(c("mssql", "postgres"))
 
-  # FIXME: COMPOUND: Need to fix implementation
-  skip_if_remote_src()
-
   src_db <- my_test_src()
   con_db <- src_db$con
 
@@ -105,10 +102,13 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     src_db,
     dm_for_disambiguate(),
     temporary = FALSE,
-    table_names = ~ DBI::SQL(paste0(schema_name_q, ".", .x))
+    schema = schema_name
   )
   order_of_deletion <- c("iris_3", "iris_2", "iris_1")
-  remote_tbl_names <- set_names(paste0(schema_name_q, ".\"", order_of_deletion, "\""), order_of_deletion)
+  remote_tbl_names <- set_names(
+    paste0(schema_name_q, ".\"", order_of_deletion, "\""),
+    order_of_deletion
+  )
 
   withr::defer({
     walk(
