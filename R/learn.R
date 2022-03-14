@@ -150,7 +150,10 @@ dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_forma
       ref_table,
     ) %>%
     summarize(data = list(tibble(
-      ref_column = list(ref_column), table = table[[1]], column = list(column), on_delete = "no_action"
+      ref_column = list(ref_column),
+      table = if (length(table) > 0) table[[1]] else NA_character_,
+      column = list(column),
+      on_delete = "no_action"
     ))) %>%
     ungroup() %>%
     select(-(1:3)) %>%
