@@ -342,7 +342,7 @@ dm_learn_from_db_legacy <- function(con, dbname, ...) {
 
 schema_if <- function(schema, table, con, dbname = NULL) {
   table_sql <- DBI::dbQuoteIdentifier(con, table)
-  if (is_null(dbname) || dbname == "") {
+  if (is_null(dbname) || is.na(dbname) || dbname == "") {
     if_else(
       are_na(schema),
       table_sql,
