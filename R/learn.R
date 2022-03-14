@@ -163,10 +163,29 @@ dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_forma
 }
 
 dm_meta <- function(con, catalog = NA, schema = NULL) {
+  if (is_mssql(con)) {
+    if (is.null(catalog)) {
+      # FIXME: Classed error message?
+      abort("SQL server only supports learning from one database.")
+    }
+
+    if (!is.na(catalog)) {
+      message("Temporarily switching to database ", tick(catalog), ".")
+      old_dbname <- dbGetQuery(con, "SELECT DB_NAME()")[[1]]
+      sql <- paste0("USE ", dbQuoteIdentifier(con, catalog))
+      old_sql <- paste0("USE ", dbQuoteIdentifier(con, old_dbname))
+      dbExecute(con, sql, immediate = TRUE)
+      withr::defer({
+        dbExecute(con, old_sql, immediate = TRUE)
+      })
+    }
+  }
+
   con %>%
     dm_meta_raw(catalog) %>%
     select_dm_meta() %>%
-    filter_dm_meta(catalog, schema)
+    filter_dm_meta(catalog, schema) %>%
+    collect()
 }
 
 dm_meta_raw <- function(con, catalog) {
