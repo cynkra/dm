@@ -15,5 +15,4 @@ test_that("dm_disentangle() works", {
     ) %>%
       dm_get_all_fks()
   })
-
 })

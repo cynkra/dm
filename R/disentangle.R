@@ -6,7 +6,7 @@ dm_disentangle <- function(dm) {
   g <- create_graph_from_dm(dm, directed = TRUE) %>%
     igraph::decompose()
   # if there is no cycle in any of the components we don't need to do anything
-  no_cycles <- map_lgl(g, ~length(E(.)) < length(V(.)))
+  no_cycles <- map_lgl(g, ~ length(E(.)) < length(V(.)))
   if (all(no_cycles)) {
     message("No cycle detected, returning original `dm`.")
     return(dm)
@@ -15,7 +15,7 @@ dm_disentangle <- function(dm) {
   # get all incoming edges, recreate the vertices (parent tables) with more than 1 incoming edge
   # as often as there are incoming edges and use one foreign key relation per vertex
   all_edges_in <- map(
-    g[!no_cycles], ~igraph::incident_edges(., V(.), mode = "in")
+    g[!no_cycles], ~ igraph::incident_edges(., V(.), mode = "in")
   ) %>%
     flatten()
   num_edges_in <- map_int(all_edges_in, length)
