@@ -18,6 +18,7 @@ utils::globalVariables(c(
   "time_hour",
   #
   # dm
+  "any_mult_path",
   "any_na",
   "arrange_col",
   "candidate",
@@ -30,6 +31,7 @@ utils::globalVariables(c(
   "column",
   "columns",
   "constraint",
+  "create_new_table",
   "ct_name",
   "day",
   "dest",
@@ -51,6 +53,8 @@ utils::globalVariables(c(
   "need_ref",
   "new_display",
   "new_name",
+  "new_pt_name",
+  "num_paths",
   "node",
   "old",
   "origin",
