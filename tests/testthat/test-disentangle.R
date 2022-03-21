@@ -81,7 +81,7 @@ test_that("dm_disentangle() works", {
 
 test_that("In case of endless cycles", {
   expect_snapshot({
-    dm_disentangle(dm_for_card())
+    dm_disentangle(dm_for_card()) %>% dm_get_all_fks()
     dm_disentangle(
       dm_bind(
         dm_for_card(),
@@ -89,7 +89,7 @@ test_that("In case of endless cycles", {
           dm_rename_tbl(dc_1_2 = dc_1, dc_2_2 = dc_2, dc_3_2 = dc_3, dc_4_2 = dc_4, dc_5_2 = dc_5, dc_6_2 = dc_6),
         dm_for_filter()
       )
-    )
+    ) %>%
+      dm_get_all_fks()
   })
-
 })
