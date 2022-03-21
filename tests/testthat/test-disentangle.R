@@ -50,11 +50,21 @@ test_that("dm_disentangle() works", {
       dm_add_fk(tf_2, c(e, e1), tf_3_1) %>%
       dm_add_fk(tf_4, c(j, j1), tf_3_2)
   )
+
+  dm_for_filter_w_cycle() %>% dm_add_tbl(tf_8 = tibble(r = 1)) %>% dm_add_fk(tf_8, r, tf_1) %>% dm_add_tbl("tf_9" = dm_for_filter_w_cycle()$tf_3) %>% dm_add_fk(tf_9, c(f, f1), tf_3) %>% dm_disentangle() %>% dm_draw
 })
 
 test_that("In case of endless cycles", {
-  expect_snapshot(
-    dm_disentangle(dm_for_card()) %>%
-      dm_get_all_fks()
-  )
+  expect_snapshot({
+    dm_disentangle(dm_for_card())
+    dm_disentangle(
+      dm_bind(
+        dm_for_card(),
+        dm_for_card() %>%
+          dm_rename_tbl(dc_1_2 = dc_1, dc_2_2 = dc_2, dc_3_2 = dc_3, dc_4_2 = dc_4, dc_5_2 = dc_5, dc_6_2 = dc_6),
+        dm_for_filter()
+      )
+    )
+  })
+
 })

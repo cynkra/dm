@@ -50,19 +50,28 @@ dm_disentangle <- function(dm) {
     filter(any_mult_path) %>%
     pull(parent_table)
 
-  # if `action_needed` is empty, that means that there are cycles (cf. above),
-  # but there are either:
-  # - no parent tables with 2 or more incoming FKs available
-  # - or if there are such parent tables available, then for each such FK relation there
-  #   is only that one path possible between parent and child table
+  # if for any graph component with a cycle no action is needed for any parent table,
+  # that means that for this component there are either:
+  # - no parent tables with 2 or more incoming FKs
+  # - or if there are such parent tables, then for each such FK relation there
+  #   is only that one (direct) path possible between parent and child table
   # This implies, that the detected cycle must be an "endless" cycle, i.e. you can
   # walk in the direction of the arrows endlessly -> this case does not have a unique
   # solution, therefore the original `dm` is returned.
-  if (is_empty(action_needed)) {
-    cli::cli_alert_warning("Returning original `dm`, cannot disentangle cycles of types:")
+  endless_cycles <- map_lgl(g[!no_cycles], ~ !any(action_needed %in% names(igraph::V(.))))
+  if (any(endless_cycles)) {
+    failed_components <- map_chr(g[!no_cycles][endless_cycles], ~ commas(tick(names(igraph::V(.)))))
+    cli::cli_alert_warning(
+      glue(
+        "Returning original `dm`, endless cycle{s_if_plural(failed_components)['n']} ",
+        "detected in component{s_if_plural(failed_components)['n']}:\n(",
+        paste(map_chr(g[!no_cycles][endless_cycles], ~ commas(tick(names(igraph::V(.))))), collapse = ")\n("),
+        ")\nNot supported are cycles of types:"
+      )
+    )
     cli::cat_bullet(
-      c("`tbl_1` -> `tbl_2` -> `tbl_3` -> `tbl_1`", "`tbl_1` -> `tbl_2` -> `tbl_1`"),
-      bullet_col = "red"
+      c('`tbl_1` -> `tbl_2` -> `tbl_3` -> `tbl_1`', '`tbl_1` -> `tbl_2` -> `tbl_1`'),
+      bullet_col = 'red'
     )
     return(dm)
   }
