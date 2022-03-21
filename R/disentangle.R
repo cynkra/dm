@@ -1,3 +1,29 @@
+#' Remove cycles from a [`dm`]
+#'
+#' Produce a cycle-free [`dm`] by multiplying parent tables
+#'
+#' @inheritParams dm_add_pk
+#'
+#' @details Starting from the graph representation of the [`dm`], it is tested which
+#' of the graph's components (connected undirectional subgraphs) has a cycle.
+#' Now taking the direction of the relations into account, for components with a cycle
+#' it is now it is determined which vertices (here: parent tables) have both:
+#' - 2 or more incoming foreign keys
+#' - multiple possible (undirected) paths between the participating tables in at last one of those foreign keys
+#'
+#' Those tables are copied and reinserted into the [`dm`] with a new name while distributing the
+#' foreign keys among the newly created tables.
+#'
+#' This function is a no-op if:
+#' - no cycles are detected.
+#' - at least one "endless" cycles is detected (possible to walk endlessly in direction of arrows).
+#'
+#' @return A cycle-free [`dm`] object.
+#' @export
+#'
+#' @examples
+#' dm_disentangle(dm_nycflights13())
+#' dm_disentangle(dm_nycflights13(cycle = TRUE))
 dm_disentangle <- function(dm) {
   # if not all tables are connected, the condition
   # length(E(g)) < length(V(g))
