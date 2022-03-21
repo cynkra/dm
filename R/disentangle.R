@@ -132,7 +132,7 @@ rm_cycle_one_pt <- function(dm, recipe_tbl) {
     mutate(fks = if_else(table == unique(recipe_tbl$parent_table), list_of(new_fk()), fks)) %>%
     new_dm3() %>%
     reduce(
-      distinct(recipe_tbl, new_pt_name) %>% pull(),
+      unique(recipe_tbl$new_pt_name),
       insert_new_pts,
       old_pt_name = unique(recipe_tbl$parent_table),
       .init = .
