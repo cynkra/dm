@@ -3,8 +3,8 @@ dm_disentangle <- function(dm) {
   # length(E(g)) < length(V(g))
   # is not enough to determine that there is no cycle
   # we need to break up the graph into independent subgraphs using igraph::decompose()
-  g <- create_graph_from_dm(dm, directed = TRUE) %>%
-    igraph::decompose()
+  full_g <- create_graph_from_dm(dm, directed = TRUE)
+  g <- igraph::decompose(full_g)
   # if there is no cycle in any of the components we don't need to do anything
   no_cycles <- map_lgl(g, ~ length(E(.)) < length(V(.)))
   if (all(no_cycles)) {
@@ -13,42 +13,111 @@ dm_disentangle <- function(dm) {
   }
 
   # get all incoming edges, recreate the vertices (parent tables) with more than 1 incoming edge
-  # as often as there are incoming edges and use one foreign key relation per vertex
+  # as often as there are incoming edges and use one foreign key relation per vertex,
+  # unless there is just 1 path between the two vertices
   all_edges_in <- map(
     g[!no_cycles], ~ igraph::incident_edges(., V(.), mode = "in")
   ) %>%
     flatten()
+
   num_edges_in <- map_int(all_edges_in, length)
   multiple_edges_in <- all_edges_in[num_edges_in > 1]
-  purrr::reduce(names(multiple_edges_in), make_in_edges_unique, .init = dm)
+
+  # see https://github.com/cynkra/dm/pull/862#issuecomment-1070989387
+  # need to determine which edges are acceptable as they are
+  # (those still might need to be re-implemented if the vertex is replaced)
+  edge_participants <- map(multiple_edges_in, attr, "vnames") %>%
+    map(strsplit, split = "\\|") %>%
+    enframe(name = "parent_table", value = "child_table") %>%
+    unnest(child_table) %>%
+    mutate(child_table = map_chr(child_table, ~ .x[1])) %>%
+    # igraph::all_simple_paths() counts multiple edges between two vertices as one path:
+    # in this case we use the number of foreign keys
+    mutate(num_paths = map2_int(
+      parent_table,
+      child_table,
+      ~ max(
+        length(dm_get_all_fks_impl(dm) %>% filter(parent_table == .x, child_table == .y) %>% pull()),
+        length(igraph::all_simple_paths(full_g, .x, .y, mode = "all"))
+      )
+    ))
+
+  # only those parent tables have to be recreated who have at least one entry
+  # with multiple simple paths between the related tables
+  action_needed <- edge_participants %>%
+    group_by(parent_table) %>%
+    summarize(any_mult_path = any(num_paths > 1), .groups = "drop") %>%
+    filter(any_mult_path) %>%
+    pull(parent_table)
+
+  # if `action_needed` is empty, that means that there are cycles (cf. above),
+  # but there are either:
+  # - no parent tables with 2 or more incoming FKs available
+  # - or if there are such parent tables available, then for each such FK relation there
+  #   is only that one path possible between parent and child table
+  # This implies, that the detected cycle must be an "endless" cycle, i.e. you can
+  # walk in the direction of the arrows endlessly -> this case does not have a unique
+  # solution, therefore the original `dm` is returned.
+  if (is_empty(action_needed)) {
+    cli::cli_alert_warning("Returning original `dm`, cannot disentangle cycles of types:")
+    cli::cat_bullet(
+      c("`tbl_1` -> `tbl_2` -> `tbl_3` -> `tbl_1`", "`tbl_1` -> `tbl_2` -> `tbl_1`"),
+      bullet_col = "red"
+    )
+    return(dm)
+  }
+
+  recipe <- edge_participants %>%
+    filter(parent_table %in% !!action_needed) %>%
+    left_join(dm_get_all_fks_impl(dm), by = c("parent_table", "child_table")) %>%
+    distinct() %>%
+    group_by(parent_table) %>%
+    mutate(create_new_table = num_paths > 1) %>%
+    arrange(desc(create_new_table)) %>%
+    # create table names for new parent tables
+    # for those relations where no new parent table is required we're using the first newly created table
+    mutate(new_pt_name = if_else(create_new_table, paste0(parent_table, "_", row_number()), NA_character_)) %>%
+    mutate(new_pt_name = if_else(!create_new_table, new_pt_name[1], new_pt_name)) %>%
+    select(-num_paths) %>%
+    group_split()
+
+  rm_cycles(dm, recipe)
 }
 
-make_in_edges_unique <- function(dm, pt_name) {
-  new_fks <- dm_get_all_fks(dm) %>%
-    filter(parent_table == pt_name) %>%
-    mutate(parent_table = paste0(parent_table, "_", row_number()))
-  dm_new <- dm_get_def(dm) %>%
-    mutate(fks = if_else(table == pt_name, list_of(new_fk()), fks)) %>%
+rm_cycles <- function(dm, recipe) {
+  for (i in seq_len(length(recipe))) {
+    dm <- rm_cycle_one_pt(dm, recipe[[i]])
+  }
+  dm
+}
+
+rm_cycle_one_pt <- function(dm, recipe_tbl) {
+  # remove all FKs from original parent table (otherwise dm_insert_zoomed will make use of them)
+  new_dm <- dm_get_def(dm) %>%
+    mutate(fks = if_else(table == unique(recipe_tbl$parent_table), list_of(new_fk()), fks)) %>%
     new_dm3() %>%
-    reduce2(rep(pt_name, nrow(new_fks)), new_fks$parent_table, insert_new_pts, .init = .) %>%
-    dm_rm_tbl(!!pt_name) %>%
-    dm_add_new_fks(new_fks)
+    reduce(
+      distinct(recipe_tbl, new_pt_name) %>% pull(),
+      insert_new_pts,
+      old_pt_name = unique(recipe_tbl$parent_table),
+      .init = .
+    ) %>%
+    dm_rm_tbl(unique(recipe_tbl$parent_table))
+
+  for (i in seq_len(nrow(recipe_tbl))) {
+    new_dm <- dm_add_fk_impl(
+      new_dm,
+      recipe_tbl$child_table[i],
+      recipe_tbl$child_fk_cols[i],
+      recipe_tbl$new_pt_name[i],
+      recipe_tbl$parent_key_cols[i],
+      on_delete = recipe_tbl$on_delete[i]
+    )
+  }
+  new_dm
 }
 
 insert_new_pts <- function(dm, old_pt_name, new_pt_name) {
   dm_zoom_to(dm, !!old_pt_name) %>%
     dm_insert_zoomed(!!new_pt_name)
-}
-
-dm_add_new_fks <- function(dm, new_fks) {
-  for (i in seq_len(nrow(new_fks))) {
-    dm <- dm_add_fk(
-      dm,
-      table = !!new_fks$child_table[i],
-      columns = !!unlist(new_fks$child_fk_cols[i]),
-      ref_table = !!new_fks$parent_table[i],
-      ref_columns = !!unlist(new_fks$parent_key_cols[i])
-    )
-  }
-  dm
 }
