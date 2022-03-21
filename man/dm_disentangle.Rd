@@ -10,7 +10,7 @@ dm_disentangle(dm, naming_template = NULL, quiet = FALSE)
 \item{dm}{A \code{dm} object.}
 
 \item{naming_template}{Naming template for the tables to be created as a length 1 character variable.
-Default \code{NULL} leads to names of the form: \verb{<parent_table>_<row_number>}
+Default \code{NULL} leads to names of the form: \verb{<parent_table>_<row_number>}.
 Keywords are:
 \itemize{
 \item \code{.pt}  : original name of parent table

@@ -4,7 +4,7 @@
 #'
 #' @inheritParams dm_disambiguate_cols
 #' @param naming_template Naming template for the tables to be created as a length 1 character variable.
-#' Default `NULL` leads to names of the form: `<parent_table>_<row_number>`
+#' Default `NULL` leads to names of the form: `<parent_table>_<row_number>`.
 #' Keywords are:
 #' - `.pt`  : original name of parent table
 #' - `.pkc` : primary key column name(s) of original parent table. Multiple columns are separated by an underscore.
