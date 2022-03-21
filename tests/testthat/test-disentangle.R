@@ -32,7 +32,7 @@ test_that("dm_disentangle() works", {
           dm_for_filter_w_cycle(),
           dm_nycflights_small_cycle()
         ),
-        verbose = FALSE
+        quiet = TRUE
       ),
       dm_bind(
         dm_for_disambiguate(),

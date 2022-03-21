@@ -4,19 +4,33 @@
 \alias{dm_disentangle}
 \title{Remove cycles from a \code{\link{dm}}}
 \usage{
-dm_disentangle(dm)
+dm_disentangle(dm, naming_template = NULL, quiet = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
+
+\item{naming_template}{Naming template for the tables to be created as a length 1 character variable.
+Default \code{NULL} leads to names of the form: \verb{<parent_table>_<row_number>}
+Keywords are:
+\itemize{
+\item \code{.pt}  : original name of parent table
+\item \code{.pkc} : primary key column name(s) of original parent table. Multiple columns are separated by an underscore.
+\item \code{.ct}  : name of child table
+\item \code{.fkc} : foreign key column name(s). Multiple columns are separated by an underscore
+\item \code{.num} : integer counting the tables based on each original parent table
+}}
+
+\item{quiet}{Boolean.
+By default, this function lists the renamed columns in a message, pass \code{TRUE} to suppress this message.}
 }
 \value{
-A cycle-free \code{\link{dm}} object.
+A cycle-free \code{dm} object.
 }
 \description{
 Produce a cycle-free \code{\link{dm}} by multiplying parent tables
 }
 \details{
-Starting from the graph representation of the \code{\link{dm}}, it is tested which
+Starting from the graph representation of the \code{dm}, it is tested which
 of the graph's components (connected undirectional subgraphs) has a cycle.
 Now taking the direction of the relations into account, for components with a cycle
 it is now it is determined which vertices (here: parent tables) have both:
@@ -25,7 +39,7 @@ it is now it is determined which vertices (here: parent tables) have both:
 \item multiple possible (undirected) paths between the participating tables in at last one of those foreign keys
 }
 
-Those tables are copied and reinserted into the \code{\link{dm}} with a new name while distributing the
+Those tables are copied and reinserted into the \code{dm} with a new name while distributing the
 foreign keys among the newly created tables.
 
 This function is a no-op if:
@@ -37,4 +51,5 @@ This function is a no-op if:
 \examples{
 dm_disentangle(dm_nycflights13())
 dm_disentangle(dm_nycflights13(cycle = TRUE))
+dm_disentangle(dm_nycflights13(cycle = TRUE), naming_template = ".pt..fkc")
 }
