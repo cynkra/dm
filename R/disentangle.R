@@ -24,7 +24,7 @@
 #' @examples
 #' dm_disentangle(dm_nycflights13())
 #' dm_disentangle(dm_nycflights13(cycle = TRUE))
-dm_disentangle <- function(dm) {
+dm_disentangle <- function(dm, verbose = TRUE) {
   # if not all tables are connected, the condition
   # length(E(g)) < length(V(g))
   # is not enough to determine that there is no cycle
@@ -116,17 +116,17 @@ dm_disentangle <- function(dm) {
     select(-num_paths) %>%
     group_split()
 
-  rm_cycles(dm, recipe)
+  rm_cycles(dm, recipe, verbose)
 }
 
-rm_cycles <- function(dm, recipe) {
+rm_cycles <- function(dm, recipe, verbose) {
   for (i in seq_len(length(recipe))) {
-    dm <- rm_cycle_one_pt(dm, recipe[[i]])
+    dm <- rm_cycle_one_pt(dm, recipe[[i]], verbose)
   }
   dm
 }
 
-rm_cycle_one_pt <- function(dm, recipe_tbl) {
+rm_cycle_one_pt <- function(dm, recipe_tbl, verbose) {
   # remove all FKs from original parent table (otherwise dm_insert_zoomed will make use of them)
   new_dm <- dm_get_def(dm) %>%
     mutate(fks = if_else(table == unique(recipe_tbl$parent_table), list_of(new_fk()), fks)) %>%
@@ -138,6 +138,11 @@ rm_cycle_one_pt <- function(dm, recipe_tbl) {
       .init = .
     ) %>%
     dm_rm_tbl(unique(recipe_tbl$parent_table))
+  if (verbose) {
+    message(glue::glue(
+      "Replaced table {tick(unique(recipe_tbl$parent_table))} with ",
+      "{commas(tick(unique(recipe_tbl$new_pt_name)))}."))
+  }
 
   for (i in seq_len(nrow(recipe_tbl))) {
     new_dm <- dm_add_fk_impl(
