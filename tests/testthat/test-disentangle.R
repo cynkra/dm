@@ -93,3 +93,33 @@ test_that("In case of endless cycles", {
       dm_get_all_fks()
   })
 })
+
+test_that("test naming templates", {
+  expect_message(
+    expect_equivalent_dm(
+      dm_disentangle(dm_for_filter_w_cycle(), naming_template = ".pt_.num"),
+      dm_disentangle(dm_for_filter_w_cycle(), quiet = TRUE)
+    ),
+    "`tf_3` with `tf_3_1`, `tf_3_2`"
+  )
+
+  expect_message(
+    expect_equivalent_dm(
+      dm_disentangle(dm_for_filter_w_cycle(), naming_template = ".pt..pkc_.fkc"),
+      dm_disentangle(dm_for_filter_w_cycle(), quiet = TRUE) %>%
+        dm_rename_tbl(tf_3.f_f1_e_e1 = tf_3_1) %>%
+        dm_rename_tbl(tf_3.f_f1_j_j1 = tf_3_2)
+    ),
+    "`tf_3` with `tf_3.f_f1_e_e1`, `tf_3.f_f1_j_j1`"
+  )
+
+  expect_message(
+    expect_equivalent_dm(
+      dm_disentangle(dm_for_filter_w_cycle(), naming_template = ".ct_lookup_.num"),
+      dm_disentangle(dm_for_filter_w_cycle(), quiet = TRUE) %>%
+        dm_rename_tbl(tf_2_lookup_1 = tf_3_1) %>%
+        dm_rename_tbl(tf_4_lookup_2 = tf_3_2)
+    ),
+    "`tf_3` with `tf_2_lookup_1`, `tf_4_lookup_2`"
+  )
+})
