@@ -33,7 +33,7 @@ Produce a cycle-free \code{\link{dm}} by multiplying parent tables
 Starting from the graph representation of the \code{dm}, it is tested which
 of the graph's components (connected undirectional subgraphs) has a cycle.
 Now taking the direction of the relations into account, for components with a cycle
-it is now it is determined which vertices (here: parent tables) have both:
+it is determined which vertices (here: parent tables) have both:
 \itemize{
 \item 2 or more incoming foreign keys
 \item multiple possible (undirected) paths between the participating tables in at last one of those foreign keys
