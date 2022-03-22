@@ -183,10 +183,10 @@ create_new_pt_name <- function(naming_template) {
   if (is.null(naming_template)) {
     "{parent_table}_{row_number()}"
   } else {
-    gsub(".pt", "{parent_table}", naming_template) %>%
-      gsub(".pkc", "{parent_key_cols_char}", .) %>%
-      gsub(".ct", "{child_table}", .) %>%
-      gsub(".fkc", "{child_fk_cols_char}", .) %>%
-      gsub(".num", "{row_number()}", .)
+    gsub(".pt", "{parent_table}", naming_template, fixed = TRUE) %>%
+      gsub(".pkc", "{parent_key_cols_char}", ., fixed = TRUE) %>%
+      gsub(".ct", "{child_table}", ., fixed = TRUE) %>%
+      gsub(".fkc", "{child_fk_cols_char}", ., fixed = TRUE) %>%
+      gsub(".num", "{row_number()}", ., fixed = TRUE)
   }
 }
