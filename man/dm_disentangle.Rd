@@ -17,7 +17,7 @@ Keywords are:
 \item \code{.pkc} : primary key column name(s) of original parent table. Multiple columns are separated by an underscore.
 \item \code{.ct}  : name of child table
 \item \code{.fkc} : foreign key column name(s). Multiple columns are separated by an underscore
-\item \code{.num} : integer counting the tables based on each original parent table
+\item \code{.ntn} : new table number: integer counting the tables based on each original parent table
 }}
 
 \item{quiet}{Boolean.
