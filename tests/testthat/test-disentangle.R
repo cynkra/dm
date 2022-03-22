@@ -133,5 +133,4 @@ test_that("more iterations needed", {
       dm_disentangle(naming_template = ".pt_.pkc_.ntn") %>%
       dm_get_all_fks()
   })
-
 })
