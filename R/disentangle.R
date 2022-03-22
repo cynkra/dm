@@ -10,7 +10,7 @@
 #' - `.pkc` : primary key column name(s) of original parent table. Multiple columns are separated by an underscore.
 #' - `.ct`  : name of child table
 #' - `.fkc` : foreign key column name(s). Multiple columns are separated by an underscore
-#' - `.num` : integer counting the tables based on each original parent table
+#' - `.ntn` : new table number: integer counting the tables based on each original parent table
 #'
 #' @details Starting from the graph representation of the `dm`, it is tested which
 #' of the graph's components (connected undirectional subgraphs) has a cycle.
@@ -188,6 +188,6 @@ create_new_pt_name <- function(naming_template) {
       gsub(".pkc", "{parent_key_cols_char}", ., fixed = TRUE) %>%
       gsub(".ct", "{child_table}", ., fixed = TRUE) %>%
       gsub(".fkc", "{child_fk_cols_char}", ., fixed = TRUE) %>%
-      gsub(".num", "{row_number()}", ., fixed = TRUE)
+      gsub(".ntn", "{row_number()}", ., fixed = TRUE)
   }
 }
