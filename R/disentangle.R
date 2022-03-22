@@ -82,7 +82,7 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
     crossing(
       pt1 = unique(edge_participants$parent_table),
       pt2 = unique(edge_participants$parent_table)
-      ) %>%
+    ) %>%
       filter(pt1 != pt2) %>%
       mutate(num_simple_paths = map2_int(
         pt1,
@@ -116,8 +116,8 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
     filter(any_mult_path)
   action_needed <- if (nrow(action_needed_prep) > 0) {
     action_needed_prep %>%
-    filter(sum_num_paths_gt_1 == max(sum_num_paths_gt_1)) %>%
-    pull(parent_table)
+      filter(sum_num_paths_gt_1 == max(sum_num_paths_gt_1)) %>%
+      pull(parent_table)
   } else {
     character(0)
   }
