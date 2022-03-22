@@ -101,7 +101,7 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
   # example: entangled_dm_2()
   # Having said that, there is no proof that this leads to the best results.
   # Might want to revisit that later on.
-  action_needed <- edge_participants %>%
+  action_needed_prep <- edge_participants %>%
     filter(parent_table %in% min_directed_paths_from) %>%
     group_by(parent_table) %>%
     # in addition to the condition
@@ -110,9 +110,14 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
       sum_num_paths_gt_1 = sum(num_paths[num_paths > 1]),
       .groups = "drop"
     ) %>%
-    filter(any_mult_path) %>%
+    filter(any_mult_path)
+  action_needed <- if (nrow(action_needed_prep) > 0) {
+    action_needed_prep %>%
     filter(sum_num_paths_gt_1 == max(sum_num_paths_gt_1)) %>%
     pull(parent_table)
+  } else {
+    character(0)
+  }
 
   # if for any graph component with a cycle no action is needed for any parent table,
   # that means that for this component there are either:

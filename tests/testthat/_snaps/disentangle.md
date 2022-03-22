@@ -56,11 +56,11 @@
     Code
       entangled_dm() %>% dm_disentangle() %>% dm_get_all_fks()
     Message
-      Replaced table `d` with `d_1`, `d_2`.
       Replaced table `g` with `g_1`, `g_2`.
+      Replaced table `h` with `h_1`, `h_2`.
+      Replaced table `d` with `d_1`, `d_2`.
       Replaced table `e` with `e_1`, `e_2`.
       Replaced table `f` with `f_1`, `f_2`.
-      Replaced table `h` with `h_1`, `h_2`.
       Replaced table `g_1` with `g_1_1`, `g_1_2`.
       Replaced table `g_2` with `g_2_1`, `g_2_2`.
       Replaced table `h_1` with `h_1_1`, `h_1_2`.
@@ -89,11 +89,11 @@
       entangled_dm() %>% dm_disentangle(naming_template = ".pt_.pkc_.ntn") %>%
         dm_get_all_fks()
     Message
-      Replaced table `d` with `d_d_1`, `d_d_2`.
       Replaced table `g` with `g_g_1`, `g_g_2`.
+      Replaced table `h` with `h_h_1`, `h_h_2`.
+      Replaced table `d` with `d_d_1`, `d_d_2`.
       Replaced table `e` with `e_e_1`, `e_e_2`.
       Replaced table `f` with `f_f_1`, `f_f_2`.
-      Replaced table `h` with `h_h_1`, `h_h_2`.
       Replaced table `g_g_1` with `g_g_1_g_1`, `g_g_1_g_2`.
       Replaced table `g_g_2` with `g_g_2_g_1`, `g_g_2_g_2`.
       Replaced table `h_h_1` with `h_h_1_h_1`, `h_h_1_h_2`.
