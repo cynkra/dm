@@ -70,12 +70,48 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
       )
     ))
 
-  # only those parent tables have to be recreated who have at least one entry
+  # one more tool to decide which PT to deal with first:
+  # check if there is a directed path between any two PT considered here
+  # choose to first deal with the PT with the lowest total number in this category
+  min_directed_paths_from <- if (length(unique(edge_participants$parent_table)) == 1) {
+    unique(edge_participants$parent_table)
+  } else {
+    crossing(
+      pt1 = unique(edge_participants$parent_table),
+      pt2 = unique(edge_participants$parent_table)
+      ) %>%
+      filter(pt1 != pt2) %>%
+      mutate(num_simple_paths = map2_int(
+        pt1,
+        pt2,
+        ~ length(igraph::all_simple_paths(cycle_info$full_g, .x, .y, mode = "out"))
+      )) %>%
+      group_by(pt1) %>%
+      summarize(num_paths_from = sum(num_simple_paths)) %>%
+      filter(num_paths_from == min(num_paths_from)) %>%
+      pull(pt1)
+  }
+  # 1. only those parent tables have to be recreated who have at least one entry
   # with multiple simple paths between the related tables
+  # 2. also, if there is only one child table that has multiple paths to the parent table
+  # then the problem is often solved when not multiplying this parent table
+  # 3. in addition we should start here with the most "central" parent table,
+  # that means in this case the one with the highest number of paths between it and its child tables.
+  # Under certain circumstances disentangling this table resolves already the whole problem.
+  # example: entangled_dm_2()
+  # Having said that, there is no proof that this leads to the best results.
+  # Might want to revisit that later on.
   action_needed <- edge_participants %>%
+    filter(parent_table %in% min_directed_paths_from) %>%
     group_by(parent_table) %>%
-    summarize(any_mult_path = any(num_paths > 1), .groups = "drop") %>%
+    # in addition to the condition
+    summarize(
+      any_mult_path = any(num_paths > 1) && sum(num_paths > 1) != 1,
+      sum_num_paths_gt_1 = sum(num_paths[num_paths > 1]),
+      .groups = "drop"
+    ) %>%
     filter(any_mult_path) %>%
+    filter(sum_num_paths_gt_1 == max(sum_num_paths_gt_1)) %>%
     pull(parent_table)
 
   # if for any graph component with a cycle no action is needed for any parent table,
