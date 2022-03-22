@@ -94,6 +94,31 @@ test_that("dm_disentangle() works", {
       dm_add_fk(d, d, e_2) %>%
       dm_add_fk(a, a, e_1)
   )
+
+  # special case only 2 PT-CT pairs have multiple simple paths between them
+  # but it can be solved by multiplying the one first that
+  # has a directed path leading to it from the other PT
+  expect_message(
+    expect_equivalent_dm(
+      entangled_dm_2() %>%
+        dm_add_fk(b, b, e) %>%
+        dm_disentangle(),
+      entangled_dm_2() %>%
+        dm_rm_tbl(e) %>%
+        dm_add_tbl(
+          e_1 = tf_5() %>% rename(e = k),
+          e_2 = tf_5() %>% rename(e = k),
+          e_3 = tf_5() %>% rename(e = k)
+        ) %>%
+        dm_add_pk(e_1, e) %>%
+        dm_add_pk(e_2, e) %>%
+        dm_add_pk(e_3, e) %>%
+        dm_add_fk(a, a, e_1) %>%
+        dm_add_fk(b, b, e_2) %>%
+        dm_add_fk(d, d, e_3)
+    ),
+    "`e` with `e_1`, `e_2`, `e_3`"
+  )
 })
 
 test_that("In case of endless cycles", {
