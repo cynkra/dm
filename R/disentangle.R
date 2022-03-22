@@ -34,15 +34,8 @@
 #' dm_disentangle(dm_nycflights13(cycle = TRUE))
 #' dm_disentangle(dm_nycflights13(cycle = TRUE), naming_template = ".pt..fkc")
 dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
-  # if not all tables are connected, the condition
-  # length(E(g)) < length(V(g))
-  # is not enough to determine that there is no cycle
-  # we need to break up the graph into independent subgraphs using igraph::decompose()
-  full_g <- create_graph_from_dm(dm, directed = TRUE)
-  g <- igraph::decompose(full_g)
-  # if there is no cycle in any of the components we don't need to do anything
-  no_cycles <- map_lgl(g, ~ length(E(.)) < length(V(.)))
-  if (all(no_cycles)) {
+  cycle_info <- check_cycles_in_components(dm)
+  if (all(cycle_info$no_cycles)) {
     message("No cycle detected, returning original `dm`.")
     return(dm)
   }
@@ -51,7 +44,7 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
   # as often as there are incoming edges and use one foreign key relation per vertex,
   # unless there is just 1 path between the two vertices
   all_edges_in <- map(
-    g[!no_cycles], ~ igraph::incident_edges(., V(.), mode = "in")
+    cycle_info$g[!cycle_info$no_cycles], ~ igraph::incident_edges(., V(.), mode = "in")
   ) %>%
     flatten()
 
@@ -73,7 +66,7 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
       child_table,
       ~ max(
         length(dm_get_all_fks_impl(dm) %>% filter(parent_table == .x, child_table == .y) %>% pull()),
-        length(igraph::all_simple_paths(full_g, .x, .y, mode = "all"))
+        length(igraph::all_simple_paths(cycle_info$full_g, .x, .y, mode = "all"))
       )
     ))
 
@@ -93,14 +86,14 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
   # This implies, that the detected cycle must be an "endless" cycle, i.e. you can
   # walk in the direction of the arrows endlessly -> this case does not have a unique
   # solution, therefore the original `dm` is returned.
-  endless_cycles <- map_lgl(g[!no_cycles], ~ !any(action_needed %in% names(igraph::V(.))))
+  endless_cycles <- map_lgl(cycle_info$g[!cycle_info$no_cycles], ~ !any(action_needed %in% names(igraph::V(.))))
   if (any(endless_cycles)) {
-    failed_components <- map_chr(g[!no_cycles][endless_cycles], ~ commas(tick(names(igraph::V(.)))))
+    failed_components <- map_chr(cycle_info$g[!cycle_info$no_cycles][endless_cycles], ~ commas(tick(names(igraph::V(.)))))
     cli::cli_alert_warning(
       glue(
         "Returning original `dm`, endless cycle{s_if_plural(failed_components)['n']} ",
         "detected in component{s_if_plural(failed_components)['n']}:\n(",
-        paste(map_chr(g[!no_cycles][endless_cycles], ~ commas(tick(names(igraph::V(.))))), collapse = ")\n("),
+        paste(map_chr(cycle_info$g[!cycle_info$no_cycles][endless_cycles], ~ commas(tick(names(igraph::V(.))))), collapse = ")\n("),
         ")\nNot supported are cycles of types:"
       )
     )
@@ -133,7 +126,14 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
     select(-num_paths) %>%
     group_split()
 
-  rm_cycles(dm, recipe, quiet)
+  new_dm <- rm_cycles(dm, recipe, quiet)
+
+  no_cycles <- check_cycles_in_components(new_dm)$no_cycles
+  if (!all(no_cycles)) {
+    dm_disentangle(new_dm, naming_template, quiet)
+  } else {
+    new_dm
+  }
 }
 
 rm_cycles <- function(dm, recipe, quiet) {
@@ -190,4 +190,16 @@ create_new_pt_name <- function(naming_template) {
       gsub(".fkc", "{child_fk_cols_char}", ., fixed = TRUE) %>%
       gsub(".ntn", "{row_number()}", ., fixed = TRUE)
   }
+}
+
+check_cycles_in_components <- function(dm) {
+  # if not all tables are connected, the condition
+  # length(E(g)) < length(V(g))
+  # is not enough to determine that there is no cycle
+  # we need to break up the graph into independent subgraphs using igraph::decompose()
+  full_g <- create_graph_from_dm(dm, directed = TRUE)
+  g <- igraph::decompose(full_g)
+  # if there is no cycle in any of the components we don't need to do anything
+  no_cycles <- map_lgl(g, ~ length(E(.)) < length(V(.)))
+  list(full_g = full_g, g = g, no_cycles = no_cycles)
 }

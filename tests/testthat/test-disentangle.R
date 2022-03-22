@@ -123,3 +123,15 @@ test_that("test naming templates", {
     "`tf_3` with `tf_2_lookup_1`, `tf_4_lookup_2`"
   )
 })
+
+test_that("more iterations needed", {
+  expect_snapshot({
+    entangled_dm() %>%
+      dm_disentangle() %>%
+      dm_get_all_fks()
+    entangled_dm() %>%
+      dm_disentangle(naming_template = ".pt_.pkc_.ntn") %>%
+      dm_get_all_fks()
+  })
+
+})

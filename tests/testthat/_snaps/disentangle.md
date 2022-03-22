@@ -51,3 +51,71 @@
       16 tf_5        l             tf_4         h               cascade  
       17 tf_5        m             tf_6         n               no_action
 
+# more iterations needed
+
+    Code
+      entangled_dm() %>% dm_disentangle() %>% dm_get_all_fks()
+    Message
+      Replaced table `d` with `d_1`, `d_2`.
+      Replaced table `g` with `g_1`, `g_2`.
+      Replaced table `e` with `e_1`, `e_2`.
+      Replaced table `f` with `f_1`, `f_2`.
+      Replaced table `h` with `h_1`, `h_2`.
+      Replaced table `g_1` with `g_1_1`, `g_1_2`.
+      Replaced table `g_2` with `g_2_1`, `g_2_2`.
+      Replaced table `h_1` with `h_1_1`, `h_1_2`.
+      Replaced table `h_2` with `h_2_1`, `h_2_2`.
+    Output
+      # A tibble: 16 x 5
+         child_table child_fk_cols parent_table parent_key_cols on_delete
+         <chr>       <keys>        <chr>        <keys>          <chr>    
+       1 a           a             b            b               no_action
+       2 a           a             c            c               no_action
+       3 b           b             d_1          d               no_action
+       4 c           c             d_2          d               no_action
+       5 d_1         d             e_1          e               no_action
+       6 d_2         d             e_2          e               no_action
+       7 d_1         d             f_1          f               no_action
+       8 d_2         d             f_2          f               no_action
+       9 e_1         e             g_1_1        g               no_action
+      10 e_2         e             g_1_2        g               no_action
+      11 f_1         f             g_2_1        g               no_action
+      12 f_2         f             g_2_2        g               no_action
+      13 g_1_1       g             h_1_1        h               no_action
+      14 g_1_2       g             h_1_2        h               no_action
+      15 g_2_1       g             h_2_1        h               no_action
+      16 g_2_2       g             h_2_2        h               no_action
+    Code
+      entangled_dm() %>% dm_disentangle(naming_template = ".pt_.pkc_.ntn") %>%
+        dm_get_all_fks()
+    Message
+      Replaced table `d` with `d_d_1`, `d_d_2`.
+      Replaced table `g` with `g_g_1`, `g_g_2`.
+      Replaced table `e` with `e_e_1`, `e_e_2`.
+      Replaced table `f` with `f_f_1`, `f_f_2`.
+      Replaced table `h` with `h_h_1`, `h_h_2`.
+      Replaced table `g_g_1` with `g_g_1_g_1`, `g_g_1_g_2`.
+      Replaced table `g_g_2` with `g_g_2_g_1`, `g_g_2_g_2`.
+      Replaced table `h_h_1` with `h_h_1_h_1`, `h_h_1_h_2`.
+      Replaced table `h_h_2` with `h_h_2_h_1`, `h_h_2_h_2`.
+    Output
+      # A tibble: 16 x 5
+         child_table child_fk_cols parent_table parent_key_cols on_delete
+         <chr>       <keys>        <chr>        <keys>          <chr>    
+       1 a           a             b            b               no_action
+       2 a           a             c            c               no_action
+       3 b           b             d_d_1        d               no_action
+       4 c           c             d_d_2        d               no_action
+       5 d_d_1       d             e_e_1        e               no_action
+       6 d_d_2       d             e_e_2        e               no_action
+       7 d_d_1       d             f_f_1        f               no_action
+       8 d_d_2       d             f_f_2        f               no_action
+       9 e_e_1       e             g_g_1_g_1    g               no_action
+      10 e_e_2       e             g_g_1_g_2    g               no_action
+      11 f_f_1       f             g_g_2_g_1    g               no_action
+      12 f_f_2       f             g_g_2_g_2    g               no_action
+      13 g_g_1_g_1   g             h_h_1_h_1    h               no_action
+      14 g_g_1_g_2   g             h_h_1_h_2    h               no_action
+      15 g_g_2_g_1   g             h_h_2_h_1    h               no_action
+      16 g_g_2_g_2   g             h_h_2_h_2    h               no_action
+
