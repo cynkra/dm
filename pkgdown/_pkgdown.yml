@@ -25,6 +25,7 @@ reference:
   - dm_rename_tbl
   - pull_tbl
   - dm_bind
+  - dm_disentangle
 
 - title: Primary keys
   contents:
