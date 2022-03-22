@@ -39,8 +39,11 @@ it is determined which vertices (here: parent tables) have both:
 \item multiple possible (undirected) paths between the participating tables in at last one of those foreign keys
 }
 
-Those tables are copied and reinserted into the \code{dm} with a new name while distributing the
+Certain other conditions are checked and the tables in the resulting list are copied and
+reinserted into the \code{dm} with a new name while distributing the
 foreign keys among the newly created tables.
+
+This function will undergo several iterations if necessary to remove all cycles.
 
 This function is a no-op if:
 \itemize{
