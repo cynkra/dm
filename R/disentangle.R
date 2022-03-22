@@ -127,8 +127,8 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
     mutate(new_pt_name = if_else(
       create_new_table,
       glue::glue(create_new_pt_name(naming_template)),
-      NA_character_)
-    ) %>%
+      NA_character_
+    )) %>%
     mutate(new_pt_name = if_else(!create_new_table, new_pt_name[1], new_pt_name)) %>%
     select(-num_paths) %>%
     group_split()
@@ -158,7 +158,8 @@ rm_cycle_one_pt <- function(dm, recipe_tbl, quiet) {
   if (!quiet) {
     message(glue::glue(
       "Replaced table {tick(unique(recipe_tbl$parent_table))} with ",
-      "{commas(tick(unique(recipe_tbl$new_pt_name)))}."))
+      "{commas(tick(unique(recipe_tbl$new_pt_name)))}."
+    ))
   }
 
   for (i in seq_len(nrow(recipe_tbl))) {
