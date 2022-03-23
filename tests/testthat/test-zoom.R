@@ -163,3 +163,19 @@ test_that("dm_get_zoom() works to zoom on empty tables", {
     tibble(table = "x", zoom = list(tibble()))
   )
 })
+
+
+# test that inserting a zoomed table retains the color --------------------
+
+test_that("dm_insert_zoomed() retains color", {
+  expect_identical(
+    dm_for_filter() %>%
+      dm_set_colors("cyan" = tf_2) %>%
+      dm_zoom_to(tf_2) %>%
+      dm_insert_zoomed("tf_2_new") %>%
+      dm_get_def() %>%
+      filter(table == "tf_2_new") %>%
+      pull(display),
+    "#00FFFFFF"
+  )
+})
