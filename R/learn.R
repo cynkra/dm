@@ -59,8 +59,9 @@ dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_forma
   dm_name <-
     df_info$tables %>%
     select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
-    mutate(name = glue(name_format)) %>%
+    mutate(name = glue(!!name_format)) %>%
     pull() %>%
+    unclass() %>%
     vec_as_names(repair = "unique")
 
   from <-
