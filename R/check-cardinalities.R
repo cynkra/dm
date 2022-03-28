@@ -206,11 +206,9 @@ examine_cardinality_impl <- function(parent_table, parent_key_cols, child_table,
 
   if (min_1 && max_1) {
     return("bijective mapping (child: 1 -> parent: 1)")
-  } else
-  if (min_1) {
+  } else if (min_1) {
     return("surjective mapping (child: 1 to n -> parent: 1)")
-  } else
-  if (max_1) {
+  } else if (max_1) {
     return("injective mapping (child: 0 or 1 -> parent: 1)")
   }
   "generic mapping (child: 0 to n -> parent: 1)"
