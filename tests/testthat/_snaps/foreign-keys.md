@@ -21,7 +21,7 @@
 
     Code
       dm_for_filter() %>% dm_rm_fk(tf_5) %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_5, l, tf_4) %>%
         dm_rm_fk(tf_5, m, tf_6, n))
@@ -47,7 +47,7 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk(columns = l) %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_5, l, tf_4)
     Output
@@ -73,7 +73,7 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk(columns = c(e, e1)) %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_2, c(e, e1), tf_3)
     Output
@@ -99,7 +99,7 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk(ref_table = tf_3) %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_2, c(e, e1), tf_3) %>%
         dm_rm_fk(tf_4, c(j, j1), tf_3)
@@ -125,7 +125,7 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk(ref_columns = c(f, f1)) %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_2, c(e, e1), tf_3) %>%
         dm_rm_fk(tf_4, c(j, j1), tf_3)
@@ -151,7 +151,7 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk() %>% get_all_keys()
-    Message <simpleMessage>
+    Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_2, d, tf_1) %>%
         dm_rm_fk(tf_2, c(e, e1), tf_3) %>%
@@ -220,10 +220,12 @@
 
     Code
       dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_add_fk(a, x, b, x, on_delete = "bogus")
-    Error <rlang_error>
-      `on_delete` must be one of "no_action" or "cascade", not "bogus".
+    Condition
+      Error in `dm_add_fk()`:
+      ! `on_delete` must be one of "no_action" or "cascade", not "bogus".
     Code
       dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_add_fk(a, x, b, x, on_delete = letters)
-    Error <rlang_error>
-      `on_delete` must be one of "no_action" or "cascade", not "a".
+    Condition
+      Error in `dm_add_fk()`:
+      ! `on_delete` must be one of "no_action" or "cascade", not "a".
 

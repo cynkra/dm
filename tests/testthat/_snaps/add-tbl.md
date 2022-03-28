@@ -3,7 +3,7 @@
     Code
       dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(
         options = c("select", "keys"))
-    Message <cliMessage>
+    Message
       dm::dm(
         fact,
         dim_1,
@@ -28,7 +28,7 @@
         dm::dm_add_fk(fact, dim_4_key, dim_4)
     Code
       dm_rm_tbl(dm_for_flatten(), dim_1) %>% dm_paste(options = c("select", "keys"))
-    Message <cliMessage>
+    Message
       dm::dm(
         fact,
         dim_2,
@@ -47,7 +47,7 @@
         dm::dm_add_fk(fact, dim_4_key, dim_4)
     Code
       dm_rm_tbl(dm_for_flatten(), fact) %>% dm_paste(options = c("select", "keys"))
-    Message <cliMessage>
+    Message
       dm::dm(
         dim_1,
         dim_2,

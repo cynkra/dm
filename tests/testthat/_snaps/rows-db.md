@@ -12,7 +12,7 @@
       3      3 <NA>     2.5
     Code
       rows_insert(data, test_db_src_frame(select = 4, where = "z"))
-    Message <rlang_message>
+    Message
       Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.
     Output
         select where exists
@@ -191,10 +191,6 @@
       data %>% arrange(select)
     Output
       # ... with 3 variables: select <int>, where <chr>, exists <dbl>
-
-# duckdb errors for returning argument
-
-    DuckDB does not support the `returning` argument.
 
 # update
 
@@ -475,8 +471,4 @@
       3      3 y        2.5
       4      4 o        3.5
       5      5 p        3.5
-
-# upsert errors for duckdb
-
-    upsert is not supported for DuckDB
 

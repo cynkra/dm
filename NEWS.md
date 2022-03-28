@@ -1,5 +1,19 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.7.9002
+
+- Messages that suggest the installation of optional packages are shown only once per session (#852).
+- `copy_dm_to()` shows progress bars again (#850, #855).
+- `copy_dm_to()` consumes less memory and is faster when writing to SQL Server (#855).
+- Progress bars use the console width (#853).
+
+
+# dm 0.2.7.9001
+
+- Avoid calling `dbAppendTable()` for zero-row tables (#847).
+- Require rlang 1.0.1 (#840).
+
+
 # dm 0.2.7.9000
 
 - Same as previous version.

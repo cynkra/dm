@@ -11,7 +11,7 @@ new_ticker <- function(label, n, progress = NA, top_level_fun = NULL) {
       "  %s [:bar] :percent in :elapsed",
       label
     ),
-    total = n, clear = FALSE, width = 60
+    total = n, clear = FALSE
   )
   # output a function that curries f to tick, updating pb
   function(f) {
