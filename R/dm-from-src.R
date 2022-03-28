@@ -78,11 +78,11 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
         inform("Keys queried successfully, use `learn_keys = TRUE` to mute this message.")
       }
 
-      tbls_in_dm <- src_tbls_impl(dm_learned)
-
       if (is_null(table_names)) {
         return(dm_learned)
       }
+
+      tbls_in_dm <- src_tbls_impl(dm_learned)
 
       if (!all(table_names %in% tbls_in_dm)) {
         abort_tbl_access(setdiff(table_names, tbls_in_dm))
