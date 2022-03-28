@@ -25,7 +25,7 @@ pack_join.data.frame <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, na
   y_packed <- tidyr::pack(y_local, !!name_var_unique := -all_of(by2))
   joined <- left_join(x, y_packed, by = by, copy = copy, keep = keep, ...)
   # overwrite existing column silently in x if collision, not very safe but consistent with dplyr::nest_join
-  if(name_var %in% x_nms) {
+  if (name_var %in% x_nms) {
     joined[[name_var]] <- NULL
   }
   rename(joined, !!name_var := !!name_var_unique)
