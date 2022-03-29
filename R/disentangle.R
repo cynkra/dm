@@ -122,13 +122,13 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
     character(0)
   }
 
-  endless_cycles <- check_endless_cycles(dm, cycle_info, action_needed)
-  if (endless_cycles$error) {
+  endless_cycles <- check_endless_cycles(dm, cycle_info)
+  if (!is_empty(endless_cycles)) {
     cli::cli_alert_warning(
       glue(
-        "Returning original `dm`, endless cycle{s_if_plural(endless_cycles$failed_components)['n']} ",
-        "detected in component{s_if_plural(endless_cycles$failed_components)['n']}:\n(",
-        paste(endless_cycles$failed_components, sep = "", collapse = ")\n("),
+        "Returning original `dm`, endless cycle{s_if_plural(endless_cycles)['n']} ",
+        "detected in component{s_if_plural(endless_cycles)['n']}:\n(",
+        paste(endless_cycles, sep = "", collapse = ")\n("),
         ")\nNot supported are cycles of types:"
       )
     )
@@ -251,24 +251,31 @@ reciprocal_key <- function(dm, g_with_cycle) {
   map_lgl(g_with_cycle, ~ any(rec_key_table$child_table %in% names(igraph::V(.x))))
 }
 
-check_endless_cycles <- function(dm, cycle_info, action_needed) {
-  # if for any graph component with a cycle no action is needed for any parent table,
-  # that means that for this component there are either:
-  # - no parent tables with 2 or more incoming FKs
-  # - or if there are such parent tables, then for each such FK relation there
-  #   is only that one (direct) path possible between parent and child table
+check_endless_cycles <- function(dm, cycle_info) {
+  # Checking for endless cycles of type: `t1` -> `t2` -> `t3` -> `t1`
   # This implies, that the detected cycle must be an "endless" cycle, i.e. you can
   # walk in the direction of the arrows endlessly -> this case does not have a unique
   # solution, therefore the original `dm` is returned.
-  which_endless_1 <- map_lgl(cycle_info$g[!cycle_info$no_cycles], ~ !any(action_needed %in% names(igraph::V(.))))
-  # the above test would also detect reciprocal keys (t1 -> t2 -> t1), but if there are
-  # other cycles in addition, it would only do so after a few iterations.
+  which_endless_1 <- map_lgl(cycle_info$g[!cycle_info$no_cycles], has_endless_cycle)
+  # the above test would not detect reciprocal keys (t1 -> t2 -> t1),
   # therefore we test for such endless cycles directly:
   which_endless_2 <- reciprocal_key(dm, cycle_info$g[!cycle_info$no_cycles])
   which_endless <- map2_lgl(which_endless_1, which_endless_2, ~ any(.x, .y))
-  failed_components <- map_chr(cycle_info$g[!cycle_info$no_cycles][which_endless], ~ commas(tick(names(igraph::V(.)))))
-  list(
-    error = any(which_endless),
-    failed_components = failed_components
-  )
+  map_chr(cycle_info$g[!cycle_info$no_cycles][which_endless], ~ commas(tick(names(igraph::V(.)))))
+}
+
+has_endless_cycle <- function(g) {
+  distances <- igraph::distances(g, mode = "out")
+  num_tables <- dim(distances)[1]
+  test_tibble <- crossing(t1 = seq_len(num_tables), t2 = seq_len(num_tables)) %>%
+    filter(t1 != t2) %>%
+    mutate(dist_lt_inf = map2_lgl(t1, t2, ~ distances[.x, .y] < Inf))
+  left_join(
+    test_tibble,
+    rename(test_tibble, dist_lt_inf_inv = dist_lt_inf),
+    by = c("t1" = "t2", "t2" = "t1")
+  ) %>%
+    mutate(endless_cycle = map2_lgl(dist_lt_inf, dist_lt_inf_inv, ~ all(.x, .y))) %>%
+    pull() %>%
+    any()
 }

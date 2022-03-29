@@ -37,6 +37,8 @@ utils::globalVariables(c(
   "dest",
   "df",
   "display",
+  "dist_lt_inf",
+  "dist_lt_inf_inv",
   "filter_expr",
   "filters",
   "fks",
