@@ -252,8 +252,7 @@ reciprocal_key <- function(dm, g_with_cycle) {
 }
 
 check_endless_cycles <- function(dm, cycle_info) {
-  # Checking for endless cycles of type: `t1` -> `t2` -> `t3` -> `t1`
-  # This implies, that the detected cycle must be an "endless" cycle, i.e. you can
+  # Checking for endless cycles of type: `t1` -> `t2` -> `t3` -> `t1`, i.e. you can
   # walk in the direction of the arrows endlessly -> this case does not have a unique
   # solution, therefore the original `dm` is returned.
   which_endless_1 <- map_lgl(cycle_info$g[!cycle_info$no_cycles], has_endless_cycle)
