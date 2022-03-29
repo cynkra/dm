@@ -239,27 +239,11 @@ check_cycles_in_components <- function(dm) {
   list(full_g = full_g, g = g, no_cycles = no_cycles)
 }
 
-# testing if there are FKs between tables in both directions
-reciprocal_key <- function(dm, g_with_cycle) {
-  all_fk_tables <- dm_get_all_fks(dm) %>%
-    select(child_table, parent_table)
-  rec_key_table <- semi_join(
-    all_fk_tables,
-    all_fk_tables,
-    by = c("child_table" = "parent_table", "parent_table" = "child_table")
-  )
-  map_lgl(g_with_cycle, ~ any(rec_key_table$child_table %in% names(igraph::V(.x))))
-}
-
 check_endless_cycles <- function(dm, cycle_info) {
-  # Checking for endless cycles of type: `t1` -> `t2` -> `t3` -> `t1`, i.e. you can
-  # walk in the direction of the arrows endlessly -> this case does not have a unique
-  # solution, therefore the original `dm` is returned.
-  which_endless_1 <- map_lgl(cycle_info$g[!cycle_info$no_cycles], has_endless_cycle)
-  # the above test would not detect reciprocal keys (t1 -> t2 -> t1),
-  # therefore we test for such endless cycles directly:
-  which_endless_2 <- reciprocal_key(dm, cycle_info$g[!cycle_info$no_cycles])
-  which_endless <- map2_lgl(which_endless_1, which_endless_2, ~ any(.x, .y))
+  # Checking for endless cycles of all types (`t1` -> `t2` -> `t3` -> `t1`) or
+  # (`t1` -> `t2` -> `t3`), i.e. you can walk in the direction of the arrows
+  # endlessly -> this case does not have a unique solution, therefore the original `dm` is returned.
+  which_endless <- map_lgl(cycle_info$g[!cycle_info$no_cycles], has_endless_cycle)
   map_chr(cycle_info$g[!cycle_info$no_cycles][which_endless], ~ commas(tick(names(igraph::V(.)))))
 }
 
