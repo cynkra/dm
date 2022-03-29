@@ -50,6 +50,51 @@
       15 tf_4        j, j1         tf_3         f, f1           no_action
       16 tf_5        l             tf_4         h               cascade  
       17 tf_5        m             tf_6         n               no_action
+    Code
+      entangled_dm() %>% dm_add_pk(a, a) %>% dm_add_fk(h, h, a) %>% dm_disentangle() %>%
+        dm_get_all_fks()
+    Message
+      ! Returning original `dm`, endless cycle detected in component:
+      (`a`, `b`, `c`, `d`, `e`, ... (8 total))
+      Not supported are cycles of types:
+    Output
+      * `tbl_1` -> `tbl_2` -> `tbl_3` -> `tbl_1`
+      * `tbl_1` -> `tbl_2` -> `tbl_1`
+      # A tibble: 10 x 5
+         child_table child_fk_cols parent_table parent_key_cols on_delete
+         <chr>       <keys>        <chr>        <keys>          <chr>    
+       1 h           h             a            a               no_action
+       2 a           a             b            b               no_action
+       3 a           a             c            c               no_action
+       4 b           b             d            d               no_action
+       5 c           c             d            d               no_action
+       6 d           d             e            e               no_action
+       7 d           d             f            f               no_action
+       8 e           e             g            g               no_action
+       9 f           f             g            g               no_action
+      10 g           g             h            h               no_action
+    Code
+      entangled_dm() %>% dm_add_fk(h, h, g) %>% dm_disentangle() %>% dm_get_all_fks()
+    Message
+      ! Returning original `dm`, endless cycle detected in component:
+      (`a`, `b`, `c`, `d`, `e`, ... (8 total))
+      Not supported are cycles of types:
+    Output
+      * `tbl_1` -> `tbl_2` -> `tbl_3` -> `tbl_1`
+      * `tbl_1` -> `tbl_2` -> `tbl_1`
+      # A tibble: 10 x 5
+         child_table child_fk_cols parent_table parent_key_cols on_delete
+         <chr>       <keys>        <chr>        <keys>          <chr>    
+       1 a           a             b            b               no_action
+       2 a           a             c            c               no_action
+       3 b           b             d            d               no_action
+       4 c           c             d            d               no_action
+       5 d           d             e            e               no_action
+       6 d           d             f            f               no_action
+       7 e           e             g            g               no_action
+       8 f           f             g            g               no_action
+       9 h           h             g            g               no_action
+      10 g           g             h            h               no_action
 
 # more iterations needed
 

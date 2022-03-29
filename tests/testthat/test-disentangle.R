@@ -133,6 +133,15 @@ test_that("In case of endless cycles", {
       )
     ) %>%
       dm_get_all_fks()
+    entangled_dm() %>%
+      dm_add_pk(a, a) %>%
+      dm_add_fk(h, h, a) %>%
+      dm_disentangle() %>%
+      dm_get_all_fks()
+    entangled_dm() %>%
+      dm_add_fk(h, h, g) %>%
+      dm_disentangle() %>%
+      dm_get_all_fks()
   })
 })
 
