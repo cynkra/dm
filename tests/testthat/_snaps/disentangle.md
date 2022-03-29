@@ -86,7 +86,7 @@
       15 g_2_1       g             h_2_1        h               no_action
       16 g_2_2       g             h_2_2        h               no_action
     Code
-      entangled_dm() %>% dm_disentangle(naming_template = ".pt_.pkc_.ntn") %>%
+      entangled_dm() %>% dm_disentangle(naming_template = "{.pt}_{.pkc}_{.n}") %>%
         dm_get_all_fks()
     Message
       Replaced table `g` with `g_g_1`, `g_g_2`.

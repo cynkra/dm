@@ -5,12 +5,12 @@
 #' @inheritParams dm_disambiguate_cols
 #' @param naming_template Naming template for the tables to be created as a length 1 character variable.
 #' Default `NULL` leads to names of the form: `<parent_table>_<row_number>`.
-#' Keywords are:
-#' - `.pt`  : original name of parent table
-#' - `.pkc` : primary key column name(s) of original parent table. Multiple columns are separated by an underscore.
-#' - `.ct`  : name of child table
-#' - `.fkc` : foreign key column name(s). Multiple columns are separated by an underscore
-#' - `.ntn` : new table number: integer counting the tables based on each original parent table
+#' Keywords are given in {glue}-style:
+#' - `{.pt}`  : original name of parent table
+#' - `{.pkc}` : primary key column name(s) of original parent table. Multiple columns are separated by an underscore.
+#' - `{.ct}`  : name of child table
+#' - `{.fkc}` : foreign key column name(s). Multiple columns are separated by an underscore
+#' - `{.n}` : new table number: integer counting the tables based on each original parent table
 #'
 #' @details Starting from the graph representation of the `dm`, it is tested which
 #' of the graph's components (connected undirectional subgraphs) has a cycle.
@@ -35,7 +35,7 @@
 #' @examples
 #' dm_disentangle(dm_nycflights13())
 #' dm_disentangle(dm_nycflights13(cycle = TRUE))
-#' dm_disentangle(dm_nycflights13(cycle = TRUE), naming_template = ".pt..fkc")
+#' dm_disentangle(dm_nycflights13(cycle = TRUE), naming_template = "{.pt}.{.fkc}")
 dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
   cycle_info <- check_cycles_in_components(dm)
   if (all(cycle_info$no_cycles)) {
@@ -219,11 +219,11 @@ create_new_pt_name <- function(naming_template) {
   if (is.null(naming_template)) {
     "{parent_table}_{row_number()}"
   } else {
-    gsub(".pt", "{parent_table}", naming_template, fixed = TRUE) %>%
-      gsub(".pkc", "{parent_key_cols_char}", ., fixed = TRUE) %>%
-      gsub(".ct", "{child_table}", ., fixed = TRUE) %>%
-      gsub(".fkc", "{child_fk_cols_char}", ., fixed = TRUE) %>%
-      gsub(".ntn", "{row_number()}", ., fixed = TRUE)
+    gsub("{.pt}", "{parent_table}", naming_template, fixed = TRUE) %>%
+      gsub("{.pkc}", "{parent_key_cols_char}", ., fixed = TRUE) %>%
+      gsub("{.ct}", "{child_table}", ., fixed = TRUE) %>%
+      gsub("{.fkc}", "{child_fk_cols_char}", ., fixed = TRUE) %>%
+      gsub("{.n}", "{row_number()}", ., fixed = TRUE)
   }
 }
 

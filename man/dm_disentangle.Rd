@@ -11,13 +11,13 @@ dm_disentangle(dm, naming_template = NULL, quiet = FALSE)
 
 \item{naming_template}{Naming template for the tables to be created as a length 1 character variable.
 Default \code{NULL} leads to names of the form: \verb{<parent_table>_<row_number>}.
-Keywords are:
+Keywords are given in {glue}-style:
 \itemize{
-\item \code{.pt}  : original name of parent table
-\item \code{.pkc} : primary key column name(s) of original parent table. Multiple columns are separated by an underscore.
-\item \code{.ct}  : name of child table
-\item \code{.fkc} : foreign key column name(s). Multiple columns are separated by an underscore
-\item \code{.ntn} : new table number: integer counting the tables based on each original parent table
+\item \code{{.pt}}  : original name of parent table
+\item \code{{.pkc}} : primary key column name(s) of original parent table. Multiple columns are separated by an underscore.
+\item \code{{.ct}}  : name of child table
+\item \code{{.fkc}} : foreign key column name(s). Multiple columns are separated by an underscore
+\item \code{{.n}} : new table number: integer counting the tables based on each original parent table
 }}
 
 \item{quiet}{Boolean.
@@ -54,5 +54,5 @@ This function is a no-op if:
 \examples{
 dm_disentangle(dm_nycflights13())
 dm_disentangle(dm_nycflights13(cycle = TRUE))
-dm_disentangle(dm_nycflights13(cycle = TRUE), naming_template = ".pt..fkc")
+dm_disentangle(dm_nycflights13(cycle = TRUE), naming_template = "{.pt}.{.fkc}")
 }

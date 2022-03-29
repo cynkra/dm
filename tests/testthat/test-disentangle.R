@@ -139,7 +139,7 @@ test_that("In case of endless cycles", {
 test_that("test naming templates", {
   expect_message(
     expect_equivalent_dm(
-      dm_disentangle(dm_for_filter_w_cycle(), naming_template = ".pt_.ntn"),
+      dm_disentangle(dm_for_filter_w_cycle(), naming_template = "{.pt}_{.n}"),
       dm_disentangle(dm_for_filter_w_cycle(), quiet = TRUE)
     ),
     "`tf_3` with `tf_3_1`, `tf_3_2`"
@@ -147,7 +147,7 @@ test_that("test naming templates", {
 
   expect_message(
     expect_equivalent_dm(
-      dm_disentangle(dm_for_filter_w_cycle(), naming_template = ".pt..pkc_.fkc"),
+      dm_disentangle(dm_for_filter_w_cycle(), naming_template = "{.pt}.{.pkc}_{.fkc}"),
       dm_disentangle(dm_for_filter_w_cycle(), quiet = TRUE) %>%
         dm_rename_tbl(tf_3.f_f1_e_e1 = tf_3_1) %>%
         dm_rename_tbl(tf_3.f_f1_j_j1 = tf_3_2)
@@ -157,7 +157,7 @@ test_that("test naming templates", {
 
   expect_message(
     expect_equivalent_dm(
-      dm_disentangle(dm_for_filter_w_cycle(), naming_template = ".ct_lookup_.ntn"),
+      dm_disentangle(dm_for_filter_w_cycle(), naming_template = "{.ct}_lookup_{.n}"),
       dm_disentangle(dm_for_filter_w_cycle(), quiet = TRUE) %>%
         dm_rename_tbl(tf_2_lookup_1 = tf_3_1) %>%
         dm_rename_tbl(tf_4_lookup_2 = tf_3_2)
@@ -172,7 +172,7 @@ test_that("more iterations needed", {
       dm_disentangle() %>%
       dm_get_all_fks()
     entangled_dm() %>%
-      dm_disentangle(naming_template = ".pt_.pkc_.ntn") %>%
+      dm_disentangle(naming_template = "{.pt}_{.pkc}_{.n}") %>%
       dm_get_all_fks()
   })
 })
