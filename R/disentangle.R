@@ -122,22 +122,13 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
     character(0)
   }
 
-  # if for any graph component with a cycle no action is needed for any parent table,
-  # that means that for this component there are either:
-  # - no parent tables with 2 or more incoming FKs
-  # - or if there are such parent tables, then for each such FK relation there
-  #   is only that one (direct) path possible between parent and child table
-  # This implies, that the detected cycle must be an "endless" cycle, i.e. you can
-  # walk in the direction of the arrows endlessly -> this case does not have a unique
-  # solution, therefore the original `dm` is returned.
-  endless_cycles <- map_lgl(cycle_info$g[!cycle_info$no_cycles], ~ !any(action_needed %in% names(igraph::V(.))))
-  if (any(endless_cycles)) {
-    failed_components <- map_chr(cycle_info$g[!cycle_info$no_cycles][endless_cycles], ~ commas(tick(names(igraph::V(.)))))
+  endless_cycles <- check_endless_cycles(dm, cycle_info, action_needed)
+  if (endless_cycles$error) {
     cli::cli_alert_warning(
       glue(
-        "Returning original `dm`, endless cycle{s_if_plural(failed_components)['n']} ",
-        "detected in component{s_if_plural(failed_components)['n']}:\n(",
-        paste(map_chr(cycle_info$g[!cycle_info$no_cycles][endless_cycles], ~ commas(tick(names(igraph::V(.))))), collapse = ")\n("),
+        "Returning original `dm`, endless cycle{s_if_plural(endless_cycles$failed_components)['n']} ",
+        "detected in component{s_if_plural(endless_cycles$failed_components)['n']}:\n(",
+        paste(endless_cycles$failed_components, sep = "", collapse = ")\n("),
         ")\nNot supported are cycles of types:"
       )
     )
@@ -246,4 +237,38 @@ check_cycles_in_components <- function(dm) {
   # if there is no cycle in any of the components we don't need to do anything
   no_cycles <- map_lgl(g, ~ length(E(.)) < length(V(.)))
   list(full_g = full_g, g = g, no_cycles = no_cycles)
+}
+
+# testing if there are FKs between tables in both directions
+reciprocal_key <- function(dm, g_with_cycle) {
+  all_fk_tables <- dm_get_all_fks(dm) %>%
+    select(child_table, parent_table)
+  rec_key_table <- semi_join(
+    all_fk_tables,
+    all_fk_tables,
+    by = c("child_table" = "parent_table", "parent_table" = "child_table")
+  )
+  map_lgl(g_with_cycle, ~ any(rec_key_table$child_table %in% names(igraph::V(.x))))
+}
+
+check_endless_cycles <- function(dm, cycle_info, action_needed) {
+  # if for any graph component with a cycle no action is needed for any parent table,
+  # that means that for this component there are either:
+  # - no parent tables with 2 or more incoming FKs
+  # - or if there are such parent tables, then for each such FK relation there
+  #   is only that one (direct) path possible between parent and child table
+  # This implies, that the detected cycle must be an "endless" cycle, i.e. you can
+  # walk in the direction of the arrows endlessly -> this case does not have a unique
+  # solution, therefore the original `dm` is returned.
+  which_endless_1 <- map_lgl(cycle_info$g[!cycle_info$no_cycles], ~ !any(action_needed %in% names(igraph::V(.))))
+  # the above test would also detect reciprocal keys (t1 -> t2 -> t1), but if there are
+  # other cycles in addition, it would only do so after a few iterations.
+  # therefore we test for such endless cycles directly:
+  which_endless_2 <- reciprocal_key(dm, cycle_info$g[!cycle_info$no_cycles])
+  which_endless <- map2_lgl(which_endless_1, which_endless_2, ~ any(.x, .y))
+  failed_components <- map_chr(cycle_info$g[!cycle_info$no_cycles][which_endless], ~ commas(tick(names(igraph::V(.)))))
+  list(
+    error = any(which_endless),
+    failed_components = failed_components
+  )
 }
