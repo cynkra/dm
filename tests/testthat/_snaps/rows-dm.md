@@ -27,7 +27,7 @@
     Code
       flights_hour10_sqlite <- copy_dm_to(sqlite, flights_hour10)
       out <- dm_rows_insert(flights_sqlite, flights_hour10_sqlite)
-    Message <simpleMessage>
+    Message
       Not persisting, use `in_place = FALSE` to turn off this message.
     Code
       print(dm_nrow(flights_sqlite))
@@ -58,10 +58,10 @@
             15       86       43      945        3 
     Code
       flights_new %>% dm_examine_constraints()
-    Message <cliMessage>
+    Message
       ! Unsatisfied constraints:
     Output
-      * Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N0EGMQ (1), N3BCAA (1), N3CCAA (1), N3CFAA (1), N3EHAA (1), ...
+      * Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N0EGMQ (1), N3BCAA (1), N3CCAA (1), N3CFAA (1), N3EHAA (1), ...
     Code
       dm_rows_insert(flights_sqlite, flights_hour11_sqlite, in_place = TRUE)
       print(dm_nrow(flights_sqlite))
@@ -93,7 +93,7 @@
       6     7 cat      F         6
     Code
       dm_copy %>% dm_rows_update(dm_update_copy) %>% pull_tbl(tf_2) %>% arrange_all()
-    Message <simpleMessage>
+    Message
       Not persisting, use `in_place = FALSE` to turn off this message.
     Output
             d c        e        e1
@@ -284,7 +284,7 @@
     Code
       dm_copy %>% dm_rows_truncate(dm_truncate_copy) %>% pull_tbl(tf_2) %>%
         arrange_all()
-    Message <simpleMessage>
+    Message
       Not persisting, use `in_place = FALSE` to turn off this message.
     Output
       # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>

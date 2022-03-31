@@ -76,6 +76,7 @@ reference:
   - filter.zoomed_dm
   - group_by.zoomed_dm
   - mutate.zoomed_dm
+  - relocate.zoomed_dm
   - rename.zoomed_dm
   - select.zoomed_dm
   - slice.zoomed_dm
@@ -93,6 +94,15 @@ reference:
   - semi_join.zoomed_dm
   - head.zoomed_dm
   - tail.zoomed_dm
+
+- title: Wrap
+  contents:
+  - dm_wrap_tbl
+  - dm_unwrap_tbl
+  - dm_nest_tbl
+  - dm_pack_tbl
+  - dm_unnest_tbl
+  - dm_unpack_tbl
 
 - title: Materialize
   contents:
@@ -124,6 +134,7 @@ reference:
 - title: Check keys and cardinalities
   contents:
   - dm_examine_constraints
+  - dm_examine_cardinalities
   - examine_cardinality
   - check_key
   - check_subset
@@ -135,18 +146,20 @@ reference:
 
 - title: Database schemas
   contents:
-  - sql_schema_create
-  - sql_schema_drop
-  - sql_schema_exists
-  - sql_schema_list
+  - db_schema_create
+  - db_schema_drop
+  - db_schema_exists
+  - db_schema_list
 
 - title: Miscellaneous
   contents:
   - dm_nycflights13
   - dm_financial
   - dm_financial_sqlite
+  - dm_pixarfilms
   - dm_nrow
   - dm_ptype
+  - pack_join
 
 navbar:
   title: ~

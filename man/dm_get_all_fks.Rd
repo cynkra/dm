@@ -22,6 +22,7 @@ A tibble with the following columns:
 \item{\code{child_fk_cols}}{foreign key column(s) in child table as list of character vectors,}
 \item{\code{parent_table}}{parent table,}
 \item{\code{parent_key_cols}}{key column(s) in parent table as list of character vectors.}
+\item{\code{on_delete}}{behavior on deletion of rows in the parent table.}
 }
 }
 \description{

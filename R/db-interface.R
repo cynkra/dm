@@ -168,8 +168,8 @@ copy_dm_to <- function(dest, dm, ...,
         abort_copy_dm_to_table_names_duplicated(problem)
       }
 
-      table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, table_names_out[src_names]))
-      # names(table_names_out) <- src_names
+      table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, unclass(table_names_out[src_names])))
+      names(table_names_out) <- src_names
     }
 
     # create `ident`-class objects from the table names
@@ -183,15 +183,9 @@ copy_dm_to <- function(dest, dm, ...,
     table_names_out <- set_names(src_names)
   }
 
-  if (is.null(copy_to)) {
-    copy_to <- dplyr::copy_to
-  } else {
-    copy_to <- as_function(copy_to)
-  }
-
   check_not_zoomed(dm)
 
-  # FIXME: if same_src(), can use compute() but need to set NOT NULL
+  # FIXME: if same_src(), can use compute() but need to set NOT NULL and other
   # constraints
 
   dm <- collect(dm, progress = progress)
@@ -201,70 +195,56 @@ copy_dm_to <- function(dest, dm, ...,
     return(dm)
   }
 
-  copy_data <- build_copy_data(dm, dest, table_names_out, set_key_constraints, dest_con)
+  queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
 
-  ticker <- new_ticker("uploading data", nrow(copy_data), progress = progress)
-  new_tables <- pmap(
-    copy_data, ticker(copy_to),
-    dest = dest,
-    temporary = temporary,
-    overwrite = FALSE,
-    ...
+  ticker_create <- new_ticker(
+    "creating tables",
+    n = length(queries$sql_table),
+    progress = progress,
+    top_level_fun = "copy_dm_to"
   )
 
+  # create tables
+  walk(queries$sql_table, ticker_create(~ {
+    DBI::dbExecute(dest_con, .x, immediate = TRUE)
+  }))
+
+  ticker_populate <- new_ticker(
+    "populating tables",
+    n = length(queries$name),
+    progress = progress,
+    top_level_fun = "copy_dm_to"
+  )
+
+  # populate tables
+  pwalk(
+    queries[c("name", "remote_name")],
+    ticker_populate(~ db_append_table(dest_con, .y, dm[[.x]], progress))
+  )
+
+  ticker_index <- new_ticker(
+    "creating indexes",
+    n = sum(lengths(queries$sql_index)),
+    progress = progress,
+    top_level_fun = "copy_dm_to"
+  )
+
+  # create indexes
+  walk(unlist(queries$sql_index), ticker_index(~ {
+    DBI::dbExecute(dest_con, .x, immediate = TRUE)
+  }))
+
+  # build remote dm
+  remote_tables <-
+    queries$remote_name %>%
+    set_names(queries$name) %>%
+    map(tbl, src = dest_con)
+  # remote dm is same as source dm with replaced data
   def <- dm_get_def(dm)
-  def$data <- new_tables
+  def$data <- unname(remote_tables[names(dm)])
   remote_dm <- new_dm3(def)
 
-  if (set_key_constraints && is_src_db(remote_dm)) {
-    dm_set_key_constraints(remote_dm)
-  }
-
   invisible(debug_validate_dm(remote_dm))
-}
-
-#' Set key constraints on a DB for a `dm`-obj with keys
-#'
-#' @description `dm_set_key_constraints()` takes a `dm` object that is constructed from tables in a database,
-#' and mirrors the foreign key constraints in the dm on the database.
-#' This is currently only implemented for MSSQL and Postgres databases.
-#'
-#' @inheritParams copy_dm_to
-#'
-#' @family DB interaction functions
-#'
-#' @return Returns the `dm`, invisibly. Side effect: installing key constraints on DB.
-#'
-#' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13")
-#' # Setting key constraints not yet supported on SQLite,
-#' # try this with SQL Server or Postgres instead:
-#' sqlite <- DBI::dbConnect(RSQLite::SQLite())
-#'
-#' flights_dm <- copy_dm_to(
-#'   sqlite,
-#'   dm_nycflights13(),
-#'   set_key_constraints = FALSE
-#' )
-#'
-#' dm_set_key_constraints(flights_dm)
-#' DBI::dbDisconnect(sqlite)
-#' @noRd
-dm_set_key_constraints <- function(dm) {
-  if (!is_src_db(dm) && !is_this_a_test()) abort_key_constraints_need_db()
-  db_table_names <- get_db_table_names(dm)
-
-  fk_info <-
-    dm_get_all_fks(dm) %>%
-    left_join(db_table_names, by = c("child_table" = "table_name")) %>%
-    rename(db_child_table = remote_name) %>%
-    left_join(db_table_names, by = c("parent_table" = "table_name")) %>%
-    rename(db_parent_table = remote_name)
-
-  con <- con_from_src_or_con(dm_get_src_impl(dm))
-  queries <- create_queries(con, fk_info)
-  walk(queries, ~ dbExecute(con, .))
-
-  invisible(dm)
 }
 
 get_db_table_names <- function(dm) {
@@ -283,11 +263,48 @@ check_naming <- function(table_names, dm_table_names) {
   }
 }
 
+db_append_table <- function(con, remote_table, table, progress, top_level_fun = "copy_dm_to") {
+  if (nrow(table) == 0 || ncol(table) == 0) {
+    return(invisible())
+  }
+
+  if (is_mssql(con)) {
+    # FIXME: Make adaptive
+    chunk_size <- 1000L
+    n_chunks <- ceiling(nrow(table) / chunk_size)
+
+    ticker <- new_ticker(
+      paste0("inserting into ", remote_table),
+      n = n_chunks,
+      progress = progress,
+      top_level_fun = top_level_fun
+    )
+
+    walk(seq_len(n_chunks), ticker(~ {
+      end <- .x * chunk_size
+      idx <- seq2(end - (chunk_size - 1), min(end, nrow(table)))
+      values <- map(table[idx, ], dbplyr::escape, parens = FALSE, collapse = NULL, con = con)
+      # Can't use dbAppendTable(): https://github.com/r-dbi/odbc/issues/480
+      sql <- DBI::sqlAppendTable(con, DBI::SQL(remote_table), values, row.names = FALSE)
+      DBI::dbExecute(con, sql, immediate = TRUE)
+    }))
+  } else if (is_postgres(con)) {
+    # https://github.com/r-dbi/RPostgres/issues/384
+    table <- as.data.frame(table)
+    # https://github.com/r-dbi/RPostgres/issues/382
+    DBI::dbAppendTable(con, DBI::SQL(remote_table), table, copy = FALSE)
+  } else {
+    DBI::dbAppendTable(con, DBI::SQL(remote_table), table)
+  }
+
+  invisible()
+}
+
 
 # Errors ------------------------------------------------------------------
 
 abort_copy_dm_to_table_names <- function() {
-  abort(error_txt_copy_dm_to_table_names(), .subclass = dm_error_full("copy_dm_to_table_names"))
+  abort(error_txt_copy_dm_to_table_names(), class = dm_error_full("copy_dm_to_table_names"))
 }
 
 error_txt_copy_dm_to_table_names <- function() {
@@ -295,7 +312,7 @@ error_txt_copy_dm_to_table_names <- function() {
 }
 
 abort_copy_dm_to_table_names_duplicated <- function(problem) {
-  abort(error_txt_copy_dm_to_table_names_duplicated(problem), .subclass = dm_error_full("copy_dm_to_table_names_duplicated"))
+  abort(error_txt_copy_dm_to_table_names_duplicated(problem), class = dm_error_full("copy_dm_to_table_names_duplicated"))
 }
 
 error_txt_copy_dm_to_table_names_duplicated <- function(problem) {

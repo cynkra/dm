@@ -461,7 +461,7 @@ sql_rows_insert.tbl_sql <- function(x, y, ..., returning_cols = NULL) {
 
   sql <- paste0(
     "INSERT INTO ", name, " (", columns_qq, ")\n",
-    sql_output_cols(x, returning_cols),
+    sql_output_cols(x, returning_cols), "\n",
     dbplyr::remote_query(y),
     sql_returning_cols(x, returning_cols)
   )
@@ -779,7 +779,7 @@ sql_rows_delete.tbl_sql <- function(x, y, by, ..., returning_cols = NULL) {
 
   sql <- paste0(
     "DELETE FROM ", p$name, "\n",
-    sql_output_cols(x, returning_cols, delete = TRUE),
+    sql_output_cols(x, returning_cols, output_delete = TRUE),
     "WHERE EXISTS (\n",
     "  SELECT * FROM (\n",
     "    ", dbplyr::sql_render(y), "\n",
@@ -929,14 +929,6 @@ sql_returning_cols.tbl_duckdb_connection <- function(x, returning_cols, ...) {
 }
 
 #' @export
-sql_returning_cols.tbl_SQLiteConnection <- function(x, returning_cols, ...) {
-  con <- dbplyr::remote_con(x)
-  returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x), force_names = TRUE)
-
-  paste0("RETURNING ", returning_cols)
-}
-
-#' @export
 `sql_returning_cols.tbl_Microsoft SQL Server` <- function(x, returning_cols, ...) {
   NULL
 }
@@ -969,14 +961,9 @@ sql_output_cols.default <- function(x, returning_cols, output_delete = FALSE, ..
   paste0("OUTPUT ", returning_cols)
 }
 
-sql_named_cols <- function(con, cols, table = NULL, force_names = FALSE) {
+sql_named_cols <- function(con, cols, table = NULL) {
   nms <- names2(cols)
   nms[nms == cols] <- ""
-  # Workaround for incorrect column names after `RETURNING`
-  # https://github.com/r-dbi/RSQLite/issues/381
-  if (force_names) {
-    nms[nms == ""] <- cols[nms == ""]
-  }
 
   cols <- DBI::dbQuoteIdentifier(con, cols)
   if (!is.null(table)) {

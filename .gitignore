@@ -11,3 +11,4 @@ dm*.tgz
 .ccache
 CRAN-RELEASE
 *.log
+CRAN-SUBMISSION

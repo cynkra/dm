@@ -1,4 +1,18 @@
+test_that("insert + delete + truncate message", {
+  skip_if_not_installed("rlang", "0.99.0.9000")
+
+  expect_snapshot({
+    data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
+    data
+
+    rows_insert(data, test_db_src_frame(select = 4, where = "z"))
+    data %>% arrange(select)
+  })
+})
+
 test_that("insert + delete + truncate", {
+  skip_if_not_installed("dplyr", "1.0.7.9000")
+
   expect_snapshot({
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
     data
@@ -6,8 +20,6 @@ test_that("insert + delete + truncate", {
     writeLines(conditionMessage(expect_error(
       rows_insert(data, tibble(select = 4, where = "z"))
     )))
-    rows_insert(data, test_db_src_frame(select = 4, where = "z"))
-    data %>% arrange(select)
     rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = FALSE)
     data %>% arrange(select)
     rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = TRUE)
@@ -53,7 +65,7 @@ test_that("insert + delete with returning argument (#607)", {
 
   expect_warning(
     out <- rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = everything()),
-    "returning"
+    if (packageVersion("dplyr") >= "1.0.7.9000") NA else "returning"
   )
   expect_equal(
     get_returned_rows(out),
@@ -65,21 +77,43 @@ test_that("insert + delete with returning argument (#607)", {
       get_returned_rows(),
     tibble(sl = 4L)
   )
+
+  expect_equal(
+    rows_delete(target, test_db_src_frame(where = "z"), in_place = TRUE, returning = quote(select)) %>%
+      get_returned_rows(),
+    tibble(select = rep(4L, 3))
+  )
 })
 
 test_that("insert + delete with returning argument and in_place = FALSE", {
   target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
 
   expect_equal(
+    rows_delete(target, test_db_src_frame(select = 3:4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
+      get_returned_rows(),
+    tibble(select = 3L, where = NA_character_, exists = 2.5)
+  )
+
+  skip_if_src(c("df", "sqlite"))
+  skip_if(packageVersion("dbplyr") > "2.1.1")
+  expect_equal(
     rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
       get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA_real_)
   )
+})
 
+test_that("insert + delete with returning argument and in_place = FALSE, SQLite variant", {
+  target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
+
+  # Introduced in https://github.com/tidyverse/dbplyr/commit/ebe9a079a56522abb6f919bf42105ae05ca87951,
+  # sqlite isn't type stable, perhaps the underlying query has changed in a subtle way
+  skip_if_src_not(c("df", "sqlite"))
+  skip_if(packageVersion("dbplyr") <= "2.1.1")
   expect_equal(
-    rows_delete(target, test_db_src_frame(select = 3:4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
       get_returned_rows(),
-    tibble(select = 3L, where = NA_character_, exists = 2.5)
+    tibble(select = 4L, where = "z", exists = NA)
   )
 })
 

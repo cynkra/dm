@@ -109,7 +109,7 @@ check_param_length <- function(param_value, correct_length = 1, param_name = dep
 # general error: table not part of `dm` -----------------------------------
 
 abort_table_missing <- function(arg_name) {
-  abort(error_txt_table_missing(arg_name), .subclass = dm_error_full("table_missing"))
+  abort(error_txt_table_missing(arg_name), class = dm_error_full("table_missing"))
 }
 
 error_txt_table_missing <- function(arg_name) {
@@ -117,7 +117,7 @@ error_txt_table_missing <- function(arg_name) {
 }
 
 abort_table_not_in_dm <- function(table_name, dm_tables) {
-  abort(error_txt_table_not_in_dm(table_name, dm_tables), .subclass = dm_error_full("table_not_in_dm"))
+  abort(error_txt_table_not_in_dm(table_name, dm_tables), class = dm_error_full("table_not_in_dm"))
 }
 
 error_txt_table_not_in_dm <- function(table_name, dm_tables) {

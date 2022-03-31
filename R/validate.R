@@ -39,12 +39,21 @@ validate_dm <- function(x) {
 
   dm_col_names <- set_names(map(def$data, colnames), table_names)
 
-  fks <- c_list_of(def$fks)
+  fks <-
+    def %>%
+    select(ref_table = table, fks) %>%
+    unnest_list_of_df("fks")
+
   check_fk_child_tables(fks$table, table_names)
 
   fks %>%
     unnest_col("column", character()) %>%
     check_colnames(dm_col_names, "FK")
+
+  fks %>%
+    unnest_col("ref_column", character()) %>%
+    select(table = ref_table, column = ref_column) %>%
+    check_colnames(dm_col_names, "Parent key")
 
   pks <-
     def %>%
@@ -135,7 +144,7 @@ check_one_zoom <- function(def, zoomed) {
 # dm invalid --------------------------------------------------------------
 
 abort_dm_invalid <- function(why) {
-  abort(error_txt_dm_invalid(why), .subclass = dm_error_full("dm_invalid"))
+  abort(error_txt_dm_invalid(why), class = dm_error_full("dm_invalid"))
 }
 
 error_txt_dm_invalid <- function(why) {
