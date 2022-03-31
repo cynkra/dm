@@ -2,7 +2,7 @@
 
     Code
       pack_join(df1, df2)
-    Message <rlang_message>
+    Message
       Joining, by = "key"
     Output
       # A tibble: 2 x 3
@@ -15,7 +15,7 @@
 
     Code
       pack_join(df1, df2, name = "packed_col")
-    Message <rlang_message>
+    Message
       Joining, by = "key"
     Output
       # A tibble: 2 x 3
@@ -60,4 +60,20 @@
         <int> <chr>                         <int> <chr>            <int>
       1     1 a                                18 POPLATEK MESICNE  9213
       2     2 b                                 1 POPLATEK MESICNE  8457
+
+---
+
+    Code
+      pack_join(df4, df5, by = c(df5 = "col"))
+    Output
+      # A tibble: 0 x 1
+      # ... with 1 variable: df5 <tibble[,0]>
+
+---
+
+    Code
+      pack_join(df5, df6, by = c(col = "df6"))
+    Output
+      # A tibble: 0 x 2
+      # ... with 2 variables: col <int>, df6 <tibble[,0]>
 

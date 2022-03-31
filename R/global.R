@@ -51,6 +51,7 @@ utils::globalVariables(c(
   "need_ref",
   "new_display",
   "new_name",
+  "node",
   "old",
   "origin",
   "parent",

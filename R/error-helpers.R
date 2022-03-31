@@ -607,19 +607,6 @@ warn_if_arg_not <- function(arg,
 
 # Errors for schema handling functions ------------------------------------
 
-abort_no_schema_exists <- function(schema, dbname = NULL) {
-  abort(error_txt_no_schema_exists(schema, dbname),
-    class = dm_error_full("no_schema_exists")
-  )
-}
-
-error_txt_no_schema_exists <- function(schema, dbname) {
-  msg_suffix <- fix_msg(dbname)
-  glue(
-    "No schema named {tick(schema)} exists{msg_suffix}."
-  )
-}
-
 abort_no_schemas_supported <- function(dbms = NULL, con = NULL) {
   abort(
     error_txt_no_schemas_supported(dbms, con),

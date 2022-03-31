@@ -112,7 +112,7 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
     new_tbl_name_chr <- as_string(enexpr(new_tbl_name))
   }
 
-  zoomed <- dm_get_zoom(dm, c("table", "zoom", "filters", "col_tracker_zoom"))
+  zoomed <- dm_get_zoom(dm, c("table", "display", "zoom", "filters", "col_tracker_zoom"))
   old_tbl_name <- zoomed$table
   new_tbl <- zoomed$zoom
   # filters need to be split: old_filters belong to the old table, new filters to the inserted table
@@ -156,8 +156,14 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
 
   # outgoing FKs: potentially in several rows, based on the old table;
   # renamed(?) FK columns if they still exist
-  dm_wo_outgoing_fks %>%
+  new_dm <- dm_wo_outgoing_fks %>%
     dm_insert_zoomed_outgoing_fks(new_tbl_name_chr, old_tbl_name, zoomed$col_tracker_zoom[[1]])
+  if (!is.na(zoomed$display)) {
+    new_dm %>%
+      dm_set_colors(!!!set_names(new_tbl_name_chr, zoomed$display))
+  } else {
+    new_dm
+  }
 }
 
 #' @rdname dm_zoom_to
@@ -249,15 +255,20 @@ update_zoomed_pk <- function(dm) {
 update_zoomed_incoming_fks <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- col_tracker_zoomed(dm)
-  orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
+  def <- dm_get_def(dm)
 
-  if (has_length(orig_pk) && all(get_key_cols(orig_pk) %in% tracked_cols)) {
-    def <- dm_get_def(dm)
-    # Nothing to recode here -- updating zoomed table
-    def$fks[[which(def$table == old_tbl_name)]]
-  } else {
-    new_fk()
-  }
+  orig_idx <- which(def$table == old_tbl_name)
+  orig_fk <- def$fks[[orig_idx]]
+
+  orig_fk$ref_column <- map(orig_fk$ref_column, ~ {
+    if (all(.x %in% tracked_cols)) {
+      recode2(.x, tracked_cols)
+    } else {
+      NULL
+    }
+  })
+
+  orig_fk[lengths(orig_fk$ref_column) > 0, ]
 }
 
 update_zoomed_outgoing <- function(fks, tbl_name, tracked_cols) {
