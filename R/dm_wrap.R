@@ -34,6 +34,28 @@
 #' dm_nycflights13() %>%
 #'   dm_wrap_tbl(root = airlines)
 dm_wrap_tbl <- function(dm, root, strict = TRUE) {
+
+  wrap_sequence <- dm_wrap_tbl_plan(dm, {{root}})
+
+  wrapped_dm <- purrr::reduce2(
+    wrap_sequence$action,
+    wrap_sequence$table,
+    function(dm, f, table) eval(rlang::call2(f, dm, table)),
+    .init = dm
+  )
+
+  # inform or fail if we have a cycle
+  if (length(wrapped_dm) > 1) {
+    if (strict) {
+      # FIXME: Detect earlier
+      abort("The `dm` is not cycle free and can't be wrapped into a single tibble.")
+    }
+  }
+
+  wrapped_dm
+}
+
+dm_wrap_tbl_plan <- function(dm, root) {
   # process args
   root_name <- dm_tbl_name(dm, {{ root }})
 
@@ -60,23 +82,7 @@ dm_wrap_tbl <- function(dm, root, strict = TRUE) {
     }
     if (!has_terminal_child && !has_terminal_parent) break
   }
-
-  wrapped_dm <- purrr::reduce2(
-    wrap_sequence$action,
-    wrap_sequence$table,
-    function(dm, f, table) eval(rlang::call2(f, dm, table)),
-    .init = dm
-  )
-
-  # inform or fail if we have a cycle
-  if (length(wrapped_dm) > 1) {
-    if (strict) {
-      # FIXME: Detect earlier
-      abort("The `dm` is not cycle free and can't be wrapped into a single tibble.")
-    }
-  }
-
-  wrapped_dm
+  wrap_sequence
 }
 
 
