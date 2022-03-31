@@ -192,7 +192,7 @@ test_that("dm_clone_pt() works", {
       dm_clone_pt(dm_nycflights_small_cycle(), flights),
       dm_nycflights_small_cycle()
     ),
-    "No cycle detected"
+    "No reason found to clone `flights` returning original `dm`."
   )
   expect_message(
     expect_equivalent_dm(

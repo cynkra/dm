@@ -108,7 +108,7 @@ dm_clone_pt <- function(
   recipe <- create_recipe_clone_pt(dm, cycle_info, naming_template, table_name)
 
   if (!has_length(recipe)) {
-    message("No cycle detected, returning original `dm`.")
+    message(glue::glue("No reason found to clone {tick(table_name)} returning original `dm`."))
     return(dm)
   }
 
