@@ -148,7 +148,7 @@
 </h2>
 <p>Are you using multiple data frames or database tables in R? Organize them with dm.</p>
 <ul>
-<li>Use it today (if only like a list of tables).</li>
+<li>Use it for data analysis today.</li>
 <li>Build data models tomorrow.</li>
 <li>Deploy the data models to your organization’s RDBMS the day after.</li>
 </ul>
@@ -179,7 +179,7 @@
 <p>The latest development version of {dm} can be installed from GitHub.</p>
 <pre class="chroma">
 <span class="c"># install.packages("devtools")</span>
-<span class="nf">devtools</span><span class="nf">::</span><span class="nf"><a href="https://devtools.r-lib.org//reference/remote-reexports.html" class="external-link">install_github</a></span><span class="o">(</span><span class="s">"cynkra/dm"</span><span class="o">)</span></pre>
+<span class="nf">devtools</span><span class="nf">::</span><span class="nf"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="o">(</span><span class="s">"cynkra/dm"</span><span class="o">)</span></pre>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -189,7 +189,7 @@
 <span class="kr"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="o">(</span><span class="nv"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="o">)</span>
 <span class="nv">dm</span> <span class="o">&lt;-</span> <span class="nf"><a href="https://cynkra.github.io/dm/reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="o">(</span><span class="o">)</span>
 <span class="nv">dm</span>
-<span class="c">#&gt; <span style="color: #555555;">──</span> <span style="color: #555555;">Metadata</span> <span style="color: #555555;">────────────────────────────────────────────────────────────────────</span></span>
+<span class="c">#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="c">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
 <span class="c">#&gt; Columns: 53</span>
 <span class="c">#&gt; Primary keys: 4</span>
@@ -202,12 +202,12 @@
 <span class="c">#&gt; [1] 86</span>
 <span class="nv">dm</span><span class="o">$</span><span class="nv">flights</span> <span class="o"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="nf">count</span><span class="o">(</span><span class="nv">origin</span><span class="o">)</span>
-<span class="c">#&gt; <span style="color: #555555;"># A tibble: 3 × 2</span></span>
+<span class="c">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span>
 <span class="c">#&gt;   <span style="font-weight: bold;">origin</span>     <span style="font-weight: bold;">n</span></span>
-<span class="c">#&gt;   <span style="color: #555555; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #555555; font-style: italic;">&lt;int&gt;</span></span>
-<span class="c">#&gt; <span style="color: #555555;">1</span> EWR      641</span>
-<span class="c">#&gt; <span style="color: #555555;">2</span> JFK      602</span>
-<span class="c">#&gt; <span style="color: #555555;">3</span> LGA      518</span></pre>
+<span class="c">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="c">#&gt; <span style="color: #BCBCBC;">1</span> EWR      641</span>
+<span class="c">#&gt; <span style="color: #BCBCBC;">2</span> JFK      602</span>
+<span class="c">#&gt; <span style="color: #BCBCBC;">3</span> LGA      518</span></pre>
 <p>Visualize relationships at any time:</p>
 <pre class="chroma">
 <span class="nv">dm</span> <span class="o"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -217,38 +217,44 @@
 <pre class="chroma">
 <span class="nv">dm</span> <span class="o"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="nf"><a href="https://cynkra.github.io/dm/reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="o">(</span><span class="nv">flights</span><span class="o">)</span>
-<span class="c">#&gt; Renamed columns:</span>
-<span class="c">#&gt; * year -&gt; flights.year, planes.year, weather.year</span>
-<span class="c">#&gt; * month -&gt; flights.month, weather.month</span>
-<span class="c">#&gt; * day -&gt; flights.day, weather.day</span>
-<span class="c">#&gt; * hour -&gt; flights.hour, weather.hour</span>
-<span class="c">#&gt; * name -&gt; airlines.name, airports.name</span>
-<span class="c">#&gt; <span style="color: #555555;"># A tibble: 1,761 × 48</span></span>
-<span class="c">#&gt;    <span style="font-weight: bold;">flights.year</span> <span style="font-weight: bold;">flights.month</span> <span style="font-weight: bold;">flights.day</span> <span style="font-weight: bold;">dep_time</span> <span style="font-weight: bold;">sched_dep_time</span> <span style="font-weight: bold;">dep_delay</span></span>
-<span class="c">#&gt;           <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>         <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>       <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>    <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>          <span style="color: #555555; font-style: italic;">&lt;int&gt;</span>     <span style="color: #555555; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="c">#&gt; <span style="color: #555555;"> 1</span>         <span style="text-decoration: underline;">2</span>013             1          10        3           <span style="text-decoration: underline;">2</span>359         4</span>
-<span class="c">#&gt; <span style="color: #555555;"> 2</span>         <span style="text-decoration: underline;">2</span>013             1          10       16           <span style="text-decoration: underline;">2</span>359        17</span>
-<span class="c">#&gt; <span style="color: #555555;"> 3</span>         <span style="text-decoration: underline;">2</span>013             1          10      450            500       -<span style="color: #BB0000;">10</span></span>
-<span class="c">#&gt; <span style="color: #555555;"> 4</span>         <span style="text-decoration: underline;">2</span>013             1          10      520            525        -<span style="color: #BB0000;">5</span></span>
-<span class="c">#&gt; <span style="color: #555555;"> 5</span>         <span style="text-decoration: underline;">2</span>013             1          10      530            530         0</span>
-<span class="c">#&gt; <span style="color: #555555;"> 6</span>         <span style="text-decoration: underline;">2</span>013             1          10      531            540        -<span style="color: #BB0000;">9</span></span>
-<span class="c">#&gt; <span style="color: #555555;"> 7</span>         <span style="text-decoration: underline;">2</span>013             1          10      535            540        -<span style="color: #BB0000;">5</span></span>
-<span class="c">#&gt; <span style="color: #555555;"> 8</span>         <span style="text-decoration: underline;">2</span>013             1          10      546            600       -<span style="color: #BB0000;">14</span></span>
-<span class="c">#&gt; <span style="color: #555555;"> 9</span>         <span style="text-decoration: underline;">2</span>013             1          10      549            600       -<span style="color: #BB0000;">11</span></span>
-<span class="c">#&gt; <span style="color: #555555;">10</span>         <span style="text-decoration: underline;">2</span>013             1          10      550            600       -<span style="color: #BB0000;">10</span></span>
-<span class="c">#&gt; <span style="color: #555555;"># … with 1,751 more rows, and 42 more variables: </span><span style="color: #555555; font-weight: bold;">arr_time</span><span style="color: #555555;"> &lt;int&gt;,</span></span>
-<span class="c">#&gt; <span style="color: #555555;">#   </span><span style="color: #555555; font-weight: bold;">sched_arr_time</span><span style="color: #555555;"> &lt;int&gt;, </span><span style="color: #555555; font-weight: bold;">arr_delay</span><span style="color: #555555;"> &lt;dbl&gt;, </span><span style="color: #555555; font-weight: bold;">carrier</span><span style="color: #555555;"> &lt;chr&gt;, </span><span style="color: #555555; font-weight: bold;">flight</span><span style="color: #555555;"> &lt;int&gt;,</span></span>
-<span class="c">#&gt; <span style="color: #555555;">#   </span><span style="color: #555555; font-weight: bold;">tailnum</span><span style="color: #555555;"> &lt;chr&gt;, </span><span style="color: #555555; font-weight: bold;">origin</span><span style="color: #555555;"> &lt;chr&gt;, </span><span style="color: #555555; font-weight: bold;">dest</span><span style="color: #555555;"> &lt;chr&gt;, </span><span style="color: #555555; font-weight: bold;">air_time</span><span style="color: #555555;"> &lt;dbl&gt;, </span><span style="color: #555555; font-weight: bold;">distance</span><span style="color: #555555;"> &lt;dbl&gt;,</span></span>
-<span class="c">#&gt; <span style="color: #555555;">#   </span><span style="color: #555555; font-weight: bold;">flights.hour</span><span style="color: #555555;"> &lt;dbl&gt;, </span><span style="color: #555555; font-weight: bold;">minute</span><span style="color: #555555;"> &lt;dbl&gt;, </span><span style="color: #555555; font-weight: bold;">time_hour</span><span style="color: #555555;"> &lt;dttm&gt;, </span><span style="color: #555555; font-weight: bold;">airlines.name</span><span style="color: #555555;"> &lt;chr&gt;,</span></span>
-<span class="c">#&gt; <span style="color: #555555;">#   </span><span style="color: #555555; font-weight: bold;">airports.name</span><span style="color: #555555;"> &lt;chr&gt;, </span><span style="color: #555555; font-weight: bold;">lat</span><span style="color: #555555;"> &lt;dbl&gt;, </span><span style="color: #555555; font-weight: bold;">lon</span><span style="color: #555555;"> &lt;dbl&gt;, </span><span style="color: #555555; font-weight: bold;">alt</span><span style="color: #555555;"> &lt;dbl&gt;, </span><span style="color: #555555; font-weight: bold;">tz</span><span style="color: #555555;"> &lt;dbl&gt;, </span><span style="color: #555555; font-weight: bold;">dst</span><span style="color: #555555;"> &lt;chr&gt;,</span></span>
-<span class="c">#&gt; <span style="color: #555555;">#   </span><span style="color: #555555; font-weight: bold;">tzone</span><span style="color: #555555;"> &lt;chr&gt;, </span><span style="color: #555555; font-weight: bold;">planes.year</span><span style="color: #555555;"> &lt;int&gt;, </span><span style="color: #555555; font-weight: bold;">type</span><span style="color: #555555;"> &lt;chr&gt;, </span><span style="color: #555555; font-weight: bold;">manufacturer</span><span style="color: #555555;"> &lt;chr&gt;,</span></span>
-<span class="c">#&gt; <span style="color: #555555;">#   </span><span style="color: #555555; font-weight: bold;">model</span><span style="color: #555555;"> &lt;chr&gt;, </span><span style="color: #555555; font-weight: bold;">engines</span><span style="color: #555555;"> &lt;int&gt;, </span><span style="color: #555555; font-weight: bold;">seats</span><span style="color: #555555;"> &lt;int&gt;, </span><span style="color: #555555; font-weight: bold;">speed</span><span style="color: #555555;"> &lt;int&gt;, </span><span style="color: #555555; font-weight: bold;">engine</span><span style="color: #555555;"> &lt;chr&gt;, …</span></span></pre>
+<span class="c">#&gt; Renaming ambiguous columns: %&gt;%</span>
+<span class="c">#&gt;   dm_rename(flights, flights.year = year) %&gt;%</span>
+<span class="c">#&gt;   dm_rename(flights, flights.month = month) %&gt;%</span>
+<span class="c">#&gt;   dm_rename(flights, flights.day = day) %&gt;%</span>
+<span class="c">#&gt;   dm_rename(flights, flights.hour = hour) %&gt;%</span>
+<span class="c">#&gt;   dm_rename(airlines, airlines.name = name) %&gt;%</span>
+<span class="c">#&gt;   dm_rename(airports, airports.name = name) %&gt;%</span>
+<span class="c">#&gt;   dm_rename(planes, planes.year = year) %&gt;%</span>
+<span class="c">#&gt;   dm_rename(weather, weather.year = year) %&gt;%</span>
+<span class="c">#&gt;   dm_rename(weather, weather.month = month) %&gt;%</span>
+<span class="c">#&gt;   dm_rename(weather, weather.day = day) %&gt;%</span>
+<span class="c">#&gt;   dm_rename(weather, weather.hour = hour)</span>
+<span class="c">#&gt; <span style="color: #949494;"># A tibble: 1,761 × 48</span></span>
+<span class="c">#&gt;    <span style="font-weight: bold;">flight…</span> <span style="font-weight: bold;">fligh…</span> <span style="font-weight: bold;">fligh…</span> <span style="font-weight: bold;">dep_t…</span> <span style="font-weight: bold;">sched…</span> <span style="font-weight: bold;">dep_d…</span> <span style="font-weight: bold;">arr_t…</span> <span style="font-weight: bold;">sched…</span> <span style="font-weight: bold;">arr_d…</span> <span style="font-weight: bold;">carri…</span> <span style="font-weight: bold;">flight</span></span>
+<span class="c">#&gt;      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="c">#&gt; <span style="color: #BCBCBC;"> 1</span>    <span style="text-decoration: underline;">2</span>013      1     10      3   <span style="text-decoration: underline;">2</span>359      4    426    437    -<span style="color: #BB0000;">11</span> B6        727</span>
+<span class="c">#&gt; <span style="color: #BCBCBC;"> 2</span>    <span style="text-decoration: underline;">2</span>013      1     10     16   <span style="text-decoration: underline;">2</span>359     17    447    444      3 B6        739</span>
+<span class="c">#&gt; <span style="color: #BCBCBC;"> 3</span>    <span style="text-decoration: underline;">2</span>013      1     10    450    500    -<span style="color: #BB0000;">10</span>    634    648    -<span style="color: #BB0000;">14</span> US       <span style="text-decoration: underline;">1</span>117</span>
+<span class="c">#&gt; <span style="color: #BCBCBC;"> 4</span>    <span style="text-decoration: underline;">2</span>013      1     10    520    525     -<span style="color: #BB0000;">5</span>    813    820     -<span style="color: #BB0000;">7</span> UA       <span style="text-decoration: underline;">1</span>018</span>
+<span class="c">#&gt; <span style="color: #BCBCBC;"> 5</span>    <span style="text-decoration: underline;">2</span>013      1     10    530    530      0    824    829     -<span style="color: #BB0000;">5</span> UA        404</span>
+<span class="c">#&gt; <span style="color: #BCBCBC;"> 6</span>    <span style="text-decoration: underline;">2</span>013      1     10    531    540     -<span style="color: #BB0000;">9</span>    832    850    -<span style="color: #BB0000;">18</span> AA       <span style="text-decoration: underline;">1</span>141</span>
+<span class="c">#&gt; <span style="color: #BCBCBC;"> 7</span>    <span style="text-decoration: underline;">2</span>013      1     10    535    540     -<span style="color: #BB0000;">5</span>   <span style="text-decoration: underline;">1</span>015   <span style="text-decoration: underline;">1</span>017     -<span style="color: #BB0000;">2</span> B6        725</span>
+<span class="c">#&gt; <span style="color: #BCBCBC;"> 8</span>    <span style="text-decoration: underline;">2</span>013      1     10    546    600    -<span style="color: #BB0000;">14</span>    645    709    -<span style="color: #BB0000;">24</span> B6        380</span>
+<span class="c">#&gt; <span style="color: #BCBCBC;"> 9</span>    <span style="text-decoration: underline;">2</span>013      1     10    549    600    -<span style="color: #BB0000;">11</span>    652    724    -<span style="color: #BB0000;">32</span> EV       <span style="text-decoration: underline;">6</span>055</span>
+<span class="c">#&gt; <span style="color: #BCBCBC;">10</span>    <span style="text-decoration: underline;">2</span>013      1     10    550    600    -<span style="color: #BB0000;">10</span>    649    703    -<span style="color: #BB0000;">14</span> US       <span style="text-decoration: underline;">2</span>114</span>
+<span class="c">#&gt; <span style="color: #949494;"># … with 1,751 more rows, and 37 more variables: </span><span style="color: #949494; font-weight: bold;">tailnum</span><span style="color: #949494;"> &lt;chr&gt;, </span><span style="color: #949494; font-weight: bold;">origin</span><span style="color: #949494;"> &lt;chr&gt;,</span></span>
+<span class="c">#&gt; <span style="color: #949494;">#   </span><span style="color: #949494; font-weight: bold;">dest</span><span style="color: #949494;"> &lt;chr&gt;, </span><span style="color: #949494; font-weight: bold;">air_time</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">distance</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">flights.hour</span><span style="color: #949494;"> &lt;dbl&gt;,</span></span>
+<span class="c">#&gt; <span style="color: #949494;">#   </span><span style="color: #949494; font-weight: bold;">minute</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">time_hour</span><span style="color: #949494;"> &lt;dttm&gt;, </span><span style="color: #949494; font-weight: bold;">airlines.name</span><span style="color: #949494;"> &lt;chr&gt;, </span><span style="color: #949494; font-weight: bold;">airports.name</span><span style="color: #949494;"> &lt;chr&gt;,</span></span>
+<span class="c">#&gt; <span style="color: #949494;">#   </span><span style="color: #949494; font-weight: bold;">lat</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">lon</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">alt</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">tz</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">dst</span><span style="color: #949494;"> &lt;chr&gt;, </span><span style="color: #949494; font-weight: bold;">tzone</span><span style="color: #949494;"> &lt;chr&gt;,</span></span>
+<span class="c">#&gt; <span style="color: #949494;">#   </span><span style="color: #949494; font-weight: bold;">planes.year</span><span style="color: #949494;"> &lt;int&gt;, </span><span style="color: #949494; font-weight: bold;">type</span><span style="color: #949494;"> &lt;chr&gt;, </span><span style="color: #949494; font-weight: bold;">manufacturer</span><span style="color: #949494;"> &lt;chr&gt;, </span><span style="color: #949494; font-weight: bold;">model</span><span style="color: #949494;"> &lt;chr&gt;,</span></span>
+<span class="c">#&gt; <span style="color: #949494;">#   </span><span style="color: #949494; font-weight: bold;">engines</span><span style="color: #949494;"> &lt;int&gt;, </span><span style="color: #949494; font-weight: bold;">seats</span><span style="color: #949494;"> &lt;int&gt;, </span><span style="color: #949494; font-weight: bold;">speed</span><span style="color: #949494;"> &lt;int&gt;, </span><span style="color: #949494; font-weight: bold;">engine</span><span style="color: #949494;"> &lt;chr&gt;, </span><span style="color: #949494; font-weight: bold;">weather.year</span><span style="color: #949494;"> &lt;int&gt;,</span></span>
+<span class="c">#&gt; <span style="color: #949494;">#   </span><span style="color: #949494; font-weight: bold;">weather.month</span><span style="color: #949494;"> &lt;int&gt;, </span><span style="color: #949494; font-weight: bold;">weather.day</span><span style="color: #949494;"> &lt;int&gt;, </span><span style="color: #949494; font-weight: bold;">weather.hour</span><span style="color: #949494;"> &lt;int&gt;, </span><span style="color: #949494; font-weight: bold;">temp</span><span style="color: #949494;"> &lt;dbl&gt;, …</span></span></pre>
 <p>Check consistency:</p>
 <pre class="chroma">
 <span class="nv">dm</span> <span class="o"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="nf"><a href="https://cynkra.github.io/dm/reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="o">(</span><span class="o">)</span>
 <span class="c">#&gt; <span style="color: #BBBB00;">!</span> Unsatisfied constraints:</span>
-<span class="c">#&gt; <span style="color: #BB0000;">•</span> Table `flights`: foreign key tailnum into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</span></pre>
+<span class="c">#&gt; <span style="color: #BB0000;">•</span> Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</span></pre>
 <p>Learn more in the <a href="https://cynkra.github.io/dm/articles/dm.html">Getting started</a> article.</p>
 </div>
 <div class="section level2">
