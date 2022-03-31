@@ -41,7 +41,7 @@ options(cli.num_colors = 256)
 
 Are you using multiple data frames or database tables in R? Organize them with dm.
 
-- Use it today (if only like a list of tables).
+- Use it for data analysis today.
 - Build data models tomorrow.
 - Deploy the data models to your organization's RDBMS the day after.
 
