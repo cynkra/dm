@@ -112,7 +112,7 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
     new_tbl_name_chr <- as_string(enexpr(new_tbl_name))
   }
 
-  zoomed <- dm_get_zoom(dm, c("table", "zoom", "filters", "col_tracker_zoom"))
+  zoomed <- dm_get_zoom(dm, c("table", "display", "zoom", "filters", "col_tracker_zoom"))
   old_tbl_name <- zoomed$table
   new_tbl <- zoomed$zoom
   # filters need to be split: old_filters belong to the old table, new filters to the inserted table
@@ -156,8 +156,14 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
 
   # outgoing FKs: potentially in several rows, based on the old table;
   # renamed(?) FK columns if they still exist
-  dm_wo_outgoing_fks %>%
+  new_dm <- dm_wo_outgoing_fks %>%
     dm_insert_zoomed_outgoing_fks(new_tbl_name_chr, old_tbl_name, zoomed$col_tracker_zoom[[1]])
+  if (!is.na(zoomed$display)) {
+    new_dm %>%
+      dm_set_colors(!!!set_names(new_tbl_name_chr, zoomed$display))
+  } else {
+    new_dm
+  }
 }
 
 #' @rdname dm_zoom_to
