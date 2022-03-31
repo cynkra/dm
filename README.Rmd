@@ -1,14 +1,12 @@
 ---
-output:
-  downlit::readme_document:
-    html_preview: false
+output: downlit::readme_document
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include = FALSE}
 library(tidyverse)
-pkgload::load_all()
+library(dm)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -25,6 +23,8 @@ knit_print.grViz <- function(x, ..., options) {
   knitr::asis_output(paste0('<img src="', path, '" />'))
 }
 vctrs::s3_register("knitr::knit_print", "grViz")
+
+options(cli.num_colors = 256)
 ```
 
 # [dm](https://cynkra.github.io/dm/)
