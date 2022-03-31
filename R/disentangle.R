@@ -43,6 +43,23 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
     return(dm)
   }
 
+  endless_cycles <- check_endless_cycles(dm, cycle_info)
+  if (!is_empty(endless_cycles)) {
+    cli::cli_alert_warning(
+      glue(
+        "Returning original `dm`, endless cycle{s_if_plural(endless_cycles)['n']} ",
+        "detected in component{s_if_plural(endless_cycles)['n']}:\n(",
+        paste(endless_cycles, sep = "", collapse = ")\n("),
+        ")\nNot supported are cycles of types:"
+      )
+    )
+    cli::cat_bullet(
+      c('`tbl_1` -> `tbl_2` -> `tbl_3` -> `tbl_1`', '`tbl_1` -> `tbl_2` -> `tbl_1`'),
+      bullet_col = 'red'
+    )
+    return(dm)
+  }
+
   # get all incoming edges, recreate the vertices (parent tables) with more than 1 incoming edge
   # as often as there are incoming edges and use one foreign key relation per vertex,
   # unless there is just 1 path between the two vertices
@@ -120,23 +137,6 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
       pull(parent_table)
   } else {
     character(0)
-  }
-
-  endless_cycles <- check_endless_cycles(dm, cycle_info)
-  if (!is_empty(endless_cycles)) {
-    cli::cli_alert_warning(
-      glue(
-        "Returning original `dm`, endless cycle{s_if_plural(endless_cycles)['n']} ",
-        "detected in component{s_if_plural(endless_cycles)['n']}:\n(",
-        paste(endless_cycles, sep = "", collapse = ")\n("),
-        ")\nNot supported are cycles of types:"
-      )
-    )
-    cli::cat_bullet(
-      c('`tbl_1` -> `tbl_2` -> `tbl_3` -> `tbl_1`', '`tbl_1` -> `tbl_2` -> `tbl_1`'),
-      bullet_col = 'red'
-    )
-    return(dm)
   }
 
   recipe <- edge_participants %>%
