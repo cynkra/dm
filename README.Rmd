@@ -1,14 +1,12 @@
 ---
-output:
-  downlit::readme_document:
-    html_preview: false
+output: downlit::readme_document
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include = FALSE}
 library(tidyverse)
-pkgload::load_all()
+library(dm)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -18,12 +16,15 @@ knitr::opts_chunk$set(
 
 knit_print.grViz <- function(x, ..., options) {
   svg <- DiagrammeRsvg::export_svg(x)
+  svg <- sub('[<]polygon fill="#ffffff"[^/]+/[>]\n', "", svg)
   path <- paste0(options$fig.path, options$label, ".svg")
   writeLines(svg, path)
   
   knitr::asis_output(paste0('<img src="', path, '" />'))
 }
 vctrs::s3_register("knitr::knit_print", "grViz")
+
+options(cli.num_colors = 256)
 ```
 
 # [dm](https://cynkra.github.io/dm/)
@@ -40,7 +41,7 @@ vctrs::s3_register("knitr::knit_print", "grViz")
 
 Are you using multiple data frames or database tables in R? Organize them with dm.
 
-- Use it today (if only like a list of tables).
+- Use it for data analysis today.
 - Build data models tomorrow.
 - Deploy the data models to your organization's RDBMS the day after.
 
