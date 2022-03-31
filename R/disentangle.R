@@ -29,7 +29,9 @@
 #' - no cycles are detected.
 #' - at least one "endless" cycles is detected (possible to walk endlessly in direction of arrows).
 #'
+#' @family remove cyclic FK relations
 #' @return A cycle-free `dm` object.
+#'
 #' @export
 #'
 #' @examples
@@ -71,6 +73,30 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
   }
 }
 
+#' Remove cycles from a [`dm`]
+#'
+#' Multiply a specific parent table based on its foreign key relations
+#'
+#' @family remove cyclic FK relations
+#' @inheritParams dm_disentangle
+#' @param parent_table A table of the `dm` with incoming foreign keys
+#'
+#' @details Firstly, a plan for the multiplication of the given `parent_table` is created.
+#' This depends on the number of incoming foreign keys and the number of possible paths
+#' between the `parent_table` and its child tables.
+#'
+#' Subsequently the table is being cloned as many times as is necessary to avoid
+#' cycles in the graph representation of the `dm` originating from this table,
+#' distributing the originally incoming foreign keys among the clones.
+#'
+#' For more details about the multiplication plan see [`dm_disentangle`].
+#'
+#' @return A `dm` object with untangled foreign key relations regarding `parent_table`.
+#' @export
+#'
+#' @examples
+#' dm_clone_pt(dm_nycflights13(), flights)
+#' dm_clone_pt(dm_nycflights13(), airports)
 dm_clone_pt <- function(
     dm,
     parent_table,

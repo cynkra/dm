@@ -56,3 +56,8 @@ dm_disentangle(dm_nycflights13())
 dm_disentangle(dm_nycflights13(cycle = TRUE))
 dm_disentangle(dm_nycflights13(cycle = TRUE), naming_template = "{.pt}.{.fkc}")
 }
+\seealso{
+Other remove cyclic FK relations: 
+\code{\link{dm_clone_pt}()}
+}
+\concept{remove cyclic FK relations}
