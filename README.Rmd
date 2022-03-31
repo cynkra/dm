@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 
 knit_print.grViz <- function(x, ..., options) {
   svg <- DiagrammeRsvg::export_svg(x)
+  svg <- sub('[<]polygon fill="#ffffff"[^/]+/[>]\n', "", svg)
   path <- paste0(options$fig.path, options$label, ".svg")
   writeLines(svg, path)
   
