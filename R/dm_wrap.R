@@ -35,11 +35,11 @@
 #'   dm_wrap_tbl(root = airlines)
 dm_wrap_tbl <- function(dm, root, strict = TRUE) {
 
-  wrap_sequence <- dm_wrap_tbl_plan(dm, {{root}})
+  wrap_plan <- dm_wrap_tbl_plan(dm, {{root}})
 
   wrapped_dm <- reduce2(
-    wrap_sequence$action,
-    wrap_sequence$table,
+    wrap_plan$action,
+    wrap_plan$table,
     function(dm, f, table) exec(f, dm, table),
     .init = dm
   )
@@ -63,26 +63,26 @@ dm_wrap_tbl_plan <- function(dm, root) {
   graph <- create_graph_from_dm(dm, directed = TRUE)
   positions <- node_type_from_graph(graph, drop = root_name)
 
-  # build sequence of actions to wrap terminal nodes as long as they're not the root
-  wrap_sequence <- tibble(action = character(0), table = character(0))
+  # build plan of actions to wrap terminal nodes as long as they're not the root
+  wrap_plan <- tibble(action = character(0), table = character(0))
   repeat {
     child_name <- names(positions)[positions == "terminal child"][1]
     has_terminal_child <- !is.na(child_name)
     if (has_terminal_child) {
-      wrap_sequence <- add_row(wrap_sequence, action = "dm_nest_tbl", table = child_name)
+      wrap_plan <- add_row(wrap_plan, action = "dm_nest_tbl", table = child_name)
       graph <- igraph::delete.vertices(graph, child_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }
     parent_name <- names(positions)[positions == "terminal parent"][1]
     has_terminal_parent <- !is.na(parent_name)
     if (has_terminal_parent) {
-      wrap_sequence <- add_row(wrap_sequence, action = "dm_pack_tbl", table = parent_name)
+      wrap_plan <- add_row(wrap_plan, action = "dm_pack_tbl", table = parent_name)
       graph <- igraph::delete.vertices(graph, parent_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }
     if (!has_terminal_child && !has_terminal_parent) break
   }
-  wrap_sequence
+  wrap_plan
 }
 
 
