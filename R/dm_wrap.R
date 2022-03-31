@@ -37,10 +37,10 @@ dm_wrap_tbl <- function(dm, root, strict = TRUE) {
 
   wrap_sequence <- dm_wrap_tbl_plan(dm, {{root}})
 
-  wrapped_dm <- purrr::reduce2(
+  wrapped_dm <- reduce2(
     wrap_sequence$action,
     wrap_sequence$table,
-    function(dm, f, table) eval(rlang::call2(f, dm, table)),
+    function(dm, f, table) exec(f, dm, table),
     .init = dm
   )
 
