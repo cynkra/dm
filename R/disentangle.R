@@ -97,11 +97,10 @@ dm_disentangle <- function(dm, naming_template = NULL, quiet = FALSE) {
 #' @examples
 #' dm_clone_pt(dm_nycflights13(), flights)
 #' dm_clone_pt(dm_nycflights13(), airports)
-dm_clone_pt <- function(
-    dm,
-    parent_table,
-    naming_template = NULL,
-    quiet = FALSE) {
+dm_clone_pt <- function(dm,
+                        parent_table,
+                        naming_template = NULL,
+                        quiet = FALSE) {
   table_name <- dm_tbl_name(dm, {{ parent_table }})
   cycle_info <- check_cycles_in_components(dm)
 
@@ -200,11 +199,10 @@ has_endless_cycle <- function(g) {
     any()
 }
 
-create_recipe_clone_pt <- function(
-    dm,
-    cycle_info,
-    naming_template,
-    parent_table = NULL) {
+create_recipe_clone_pt <- function(dm,
+                                   cycle_info,
+                                   naming_template,
+                                   parent_table = NULL) {
   # get all incoming edges, recreate the vertices (parent tables) with more than 1 incoming edge
   # as often as there are incoming edges and use one foreign key relation per vertex,
   # unless there is just 1 path between the two vertices
