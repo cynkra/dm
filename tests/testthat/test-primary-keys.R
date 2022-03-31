@@ -1,7 +1,8 @@
 test_that("dm_add_pk() works as intended?", {
   expect_silent(
     dm_test_obj() %>%
-      dm_add_pk(dm_table_1, a))
+      dm_add_pk(dm_table_1, a)
+  )
 
   expect_silent(
     dm_test_obj() %>%

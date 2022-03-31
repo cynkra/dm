@@ -21,22 +21,22 @@ examine_cardinality(parent_table, pk_column, child_table, fk_column)
 \arguments{
 \item{parent_table}{Data frame.}
 
-\item{pk_column}{Column of \code{parent_table} that has to be one of its unique keys.}
+\item{pk_column}{Columns of \code{parent_table} that have to be one of its unique keys, for multiple columns use \code{c(col1, col2)}.}
 
 \item{child_table}{Data frame.}
 
-\item{fk_column}{Column of \code{child_table} that has to be a foreign key to \code{pk_column} in \code{parent_table}.}
+\item{fk_column}{Columns of \code{child_table} that have to be a foreign key candidate to \code{pk_column} in \code{parent_table}, for multiple columns use \code{c(col1, col2)}.}
 }
 \value{
-For \verb{check_cardinality_?_?()}: Functions return \code{parent_table}, invisibly, if the check is passed, to support pipes.
+For \verb{check_cardinality_*()}: Functions return \code{parent_table}, invisibly, if the check is passed, to support pipes.
 Otherwise an error is thrown and the reason for it is explained.
 
 For \code{examine_cardinality()}: Returns a character variable specifying the type of relationship between the two columns.
 }
 \description{
-All \verb{check_cardinality_?_?()} functions test the following conditions:
+All \verb{check_cardinality_*()} functions test the following conditions:
 \enumerate{
-\item Is \code{pk_column} is a unique key for \code{parent_table}?
+\item Is \code{pk_column} a unique key for \code{parent_table}?
 \item Is the set of values in \code{fk_column} of \code{child_table} a subset of the set of values of \code{pk_column}?
 \item Does the relation between the two tables of the data model meet the cardinality requirements?
 }
@@ -44,41 +44,45 @@ All \verb{check_cardinality_?_?()} functions test the following conditions:
 \code{examine_cardinality()} also checks the first two points and subsequently determines the type of cardinality.
 }
 \details{
-All cardinality-functions accept a \verb{parent table} (data frame), a column name of this table,
-a \verb{child table}, and a column name of the child table.
-The given column of the \verb{parent table} has to be one of its
+All cardinality-functions accept a \code{parent_table} (data frame), column names of this table,
+a \code{child_table}, and column names of the child table.
+The given columns of the \code{parent_table} have to be one of its
 unique keys (no duplicates are allowed).
-Furthermore, in all cases, the set of values of the child table's column has to be a subset of the set of values of
-the parent table's column.
+Furthermore, in all cases, the set of combinations of the child table's columns have
+to be a subset of the combinations of values of the parent table's columns.
 
-The cardinality specifications \verb{0_n}, \verb{1_n}, \verb{0_1}, \verb{1_1} refer to the expected relation that the child table has with the parent table.
-The numbers \code{0}, \code{1} and \code{n} refer to the number of values in the column of the child table that correspond to each value of the
-column of the parent table.
-\code{n} means "more than one" in this context, with no upper limit.
+The cardinality specifications "0_n", "1_n", "0_1", "1_1" refer to the expected relation that the child table has with the parent table.
+"0", "1" and "n" refer to the occurrences of value combinations
+in the columns of the child table that correspond to each combination in the
+columns of the parent table.
+"n" means "more than one" in this context, with no upper limit.
 
-\verb{0_n} means, that each value of the \code{pk_column} has at least \code{0} and at most
-\code{n} corresponding values in the column of the child table (which translates to no further restrictions).
+\strong{"0_n"}: each combination of \code{pk_column} values has at least 0 and at most
+n corresponding occurrences in the columns of the child table
+(which translates to no further restrictions).
 
-\verb{1_n} means, that each value of the \code{pk_column} has at least \code{1} and at most
-\code{n} corresponding values in the column of the child table.
+\strong{"1_n"}: each combination of \code{pk_column} values has at least 1 and at most
+n corresponding occurrences in the columns of the child table.
 This means that there is a "surjective" mapping from the child table
-to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.
+to the parent table w.r.t. the specified columns, i.e. each combination in the
+parent table columns exists at least once in the child table columns.
 
-\verb{0_1} means, that each value of the \code{pk_column} has at least \code{0} and at most
-\code{1} corresponding values in the column of the child table.
+\strong{"0_1"}: each combination of \code{pk_column} values has at least 0 and at most
+1 corresponding occurrence in the column of the child table.
 This means that there is a "injective" mapping from the child table
-to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times.
-But not all of the parent table
-column values have to be referred to.
+to the parent table w.r.t. the specified columns, i.e. no combination of values in the
+parent table columns is addressed multiple times.
+But not all of the parent table column values have to be referred to.
 
-\verb{1_1} means, that each value of the \code{pk_column} has exactly
-\code{1}  corresponding value in the column of the child table.
+\strong{"1_1"}: each combination of \code{pk_column} values occurs exactly once
+in the corresponding columns of the child table.
 This means that there is a "bijective" ("injective" AND "surjective") mapping
-between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
-there are no duplicates in either of them.
+between the child table and the parent table w.r.t. the specified columns, i.e. the
+respective sets of combinations within the two sets of columns are equal and there
+are no duplicates in either of them.
 
 Finally, \code{examine_cardinality()} tests for and returns the nature of the relationship (injective, surjective, bijective, or none of these)
-between the two given columns. If either \code{pk_column} is not a unique key of \code{parent_table} or the values of \code{fk_column} are
+between the two given sets of columns. If either \code{pk_column} is not a unique key of \code{parent_table} or the values of \code{fk_column} are
 not a subset of the values in \code{pk_column}, the requirements for a cardinality test is not fulfilled. No error will be thrown, but
 the result will contain the information which prerequisite was violated.
 }
@@ -101,3 +105,8 @@ check_cardinality_0_1(d1, a, d3, c)
 # Returns the kind of cardinality
 examine_cardinality(d1, a, d2, c)
 }
+\seealso{
+Other cardinality functions: 
+\code{\link{dm_examine_cardinalities}()}
+}
+\concept{cardinality functions}

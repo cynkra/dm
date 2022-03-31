@@ -94,3 +94,9 @@ test_that("table surgery functions fail in the expected ways?", {
     class = "dupl_new_id_col_name"
   )
 })
+
+test_that("decompose_table() doesn't create NAs in key column", {
+  data <- tibble(a = c(1, 2, NA, 3), b = letters[1:4])
+  decomposed <- decompose_table(data, id, a)
+  expect_true(!anyNA(decomposed$parent_table$id))
+})

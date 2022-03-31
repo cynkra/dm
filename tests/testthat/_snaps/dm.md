@@ -30,7 +30,8 @@
 
     Code
       copy_to(nyc_comp(), mtcars, "car_table")
-    Warning <lifecycle_warning_deprecated>
+    Condition
+      Warning:
       `copy_to.dm()` was deprecated in dm 0.2.0.
       Use `copy_to(dm_get_con(dm), ...)` and `dm_add_tbl()`.
     Output
@@ -60,29 +61,29 @@
         dm_get_def()
     Output
       # A tibble: 5 x 9
-        table    data   segment display     pks     fks filters zoom  col_tracker_zoom
-        <chr>    <list> <chr>   <chr>   <list<> <list<> <list<> <lis> <list>          
-      1 airlines <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      2 airports <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      3 flights  <tibb~ <NA>    <NA>    [0 x 1] [0 x 3] [0 x 2] <NUL~ <NULL>          
-      4 planes   <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      5 weather  <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+        table data     segment display     pks     fks filters zoom   col_tracker_zoom
+        <chr> <list>   <chr>   <chr>   <list<> <list<> <list<> <list> <list>          
+      1 airl~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
+      2 airp~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
+      3 flig~ <tibble> <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL>          
+      4 plan~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
+      5 weat~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% mutate(origin_new = paste0(origin,
         " airport")) %>% compute() %>% dm_update_zoomed() %>% collect() %>%
         dm_get_def()
     Output
       # A tibble: 5 x 9
-        table    data   segment display     pks     fks filters zoom  col_tracker_zoom
-        <chr>    <list> <chr>   <chr>   <list<> <list<> <list<> <lis> <list>          
-      1 airlines <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      2 airports <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      3 flights  <tibb~ <NA>    <NA>    [0 x 1] [0 x 3] [0 x 2] <NUL~ <NULL>          
-      4 planes   <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      5 weather  <tibb~ <NA>    <NA>    [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+        table data     segment display     pks     fks filters zoom   col_tracker_zoom
+        <chr> <list>   <chr>   <chr>   <list<> <list<> <list<> <list> <list>          
+      1 airl~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
+      2 airp~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
+      3 flig~ <tibble> <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL>          
+      4 plan~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
+      5 weat~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()
-    Message <simpleMessage>
+    Message
       Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.
     Output
       # A tibble: 144 x 15
@@ -161,7 +162,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        (`key`) -> (`iris_1$key`)
+        (`key`) -> (`iris_1$key`) no_action
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -201,7 +202,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        (`key`) -> (`iris_1$key`)
+        (`key`) -> (`iris_1$key`) no_action
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6,~

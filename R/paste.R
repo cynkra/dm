@@ -100,7 +100,7 @@ dm_paste_impl <- function(dm, options, tab_width) {
   code_tables <- if ("tables" %in% options) dm_paste_tables(dm, tab)
 
   # code for including the tables
-  code_construct <- dm_paste_construct(dm)
+  code_construct <- dm_paste_construct(dm, tab)
 
   # adding code for selection of columns
   code_select <- if ("select" %in% options) dm_paste_select(dm)
@@ -142,8 +142,16 @@ dm_paste_tables <- function(dm, tab) {
   )
 }
 
-dm_paste_construct <- function(dm) {
-  glue("dm::dm({glue_collapse1(tick_if_needed(src_tbls_impl(dm)), ', ')})")
+dm_paste_construct <- function(dm, tab) {
+  if (length(dm) == 0) {
+    return("dm::dm(\n)")
+  }
+
+  paste0(
+    "dm::dm(\n",
+    paste0(tab, tick_if_needed(src_tbls_impl(dm)), ",\n", collapse = ""),
+    ")"
+  )
 }
 
 dm_paste_select <- function(dm) {
@@ -180,7 +188,13 @@ dm_paste_fks <- function(dm) {
   fpks$non_default_parent_key_cols <- ""
   fpks$non_default_parent_key_cols[need_non_default] <- paste0(", ", deparse_keys(fpks$parent_key_cols[need_non_default]))
 
-  glue("dm::dm_add_fk({tick_if_needed(fpks$child_table)}, {deparse_keys(fpks$child_fk_cols)}, {tick_if_needed(fpks$parent_table)}{fpks$non_default_parent_key_cols})")
+  on_delete <- if_else(
+    fpks$on_delete != "no_action",
+    glue(", on_delete = \"{fpks$on_delete}\""),
+    ""
+  )
+
+  glue("dm::dm_add_fk({tick_if_needed(fpks$child_table)}, {deparse_keys(fpks$child_fk_cols)}, {tick_if_needed(fpks$parent_table)}{fpks$non_default_parent_key_cols}{on_delete})")
 }
 
 dm_paste_color <- function(dm) {
@@ -192,18 +206,20 @@ dm_paste_color <- function(dm) {
 df_paste <- function(x, tab) {
   cols <- map_chr(x, deparse_line)
   if (is_empty(x)) {
-    cols <- ""
+    cols <- character()
   } else {
-    cols <- paste0(
-      paste0("\n", tab, tick_if_needed(names(cols)), " = ", cols, collapse = ","),
-      "\n"
-    )
+    cols <- paste0(tab, tick_if_needed(names(cols)), " = ", cols, ",\n", collapse = "")
   }
 
-  paste0("tibble::tibble(", cols, ")")
+  paste0("tibble::tibble(\n", cols, ")")
 }
 
 deparse_line <- function(x) {
+  attrs <- attributes(x)
+  # Workaround necessary for R < 3.5:
+  if (length(attrs) > 0) {
+    attributes(x) <- attrs[sort(names(attrs))]
+  }
   x <- deparse(x, width.cutoff = 500, backtick = TRUE)
   gsub(" *\n *", " ", x)
 }
@@ -226,7 +242,7 @@ dquote <- function(x) {
 # Errors ------------------------------------------------------------------
 
 abort_unknown_option <- function(options, all_options) {
-  abort(error_txt_unknown_option(options, all_options), .subclass = dm_error_full("unknown_option"))
+  abort(error_txt_unknown_option(options, all_options), class = dm_error_full("unknown_option"))
 }
 
 error_txt_unknown_option <- function(options, all_options) {

@@ -56,7 +56,11 @@ copy_to_my_test_src <- function(rhs, lhs) {
 }
 
 my_test_src_name <- {
-  src <- Sys.getenv("DM_TEST_SRC", "df")
+  src <- Sys.getenv("DM_TEST_SRC")
+  # Allow set but empty DM_TEST_SRC environment variable
+  if (src == "") {
+    src <- "df"
+  }
   name <- gsub("^.*-", "", src)
   inform(crayon::green(paste0("Testing on ", name)))
   name
@@ -160,6 +164,26 @@ data_card_7 %<-% tibble::tibble(c = c(1:5, 5L, 6L))
 data_card_8 %<-% tibble::tibble(c = c(1:6))
 data_card_9 %<-% tibble::tibble(c = c(1:5, NA))
 data_card_10 %<-% tibble::tibble(c = c(1:3, 4:3, NA))
+data_card_11 %<-% tibble::tibble(a = 1:4, b = letters[1:4])
+data_card_12 %<-% tibble::tibble(a = c(1:5, 5L), b = letters[c(1:5, 5L)])
+data_card_13 %<-% tibble::tibble(a = 1:6, b = letters[1:6])
+
+dm_for_card %<--% {
+  dm(
+    dc_1 = data_card_1(),
+    dc_2 = data_card_11(),
+    dc_3 = data_card_12(),
+    dc_4 = data_card_13(),
+    dc_5 = data_card_1(),
+    dc_6 = data_card_7()
+  ) %>%
+    dm_add_fk(dc_2, c(a, b), dc_1, c(a, b)) %>%
+    dm_add_fk(dc_3, c(a, b), dc_1, c(a, b)) %>%
+    dm_add_fk(dc_3, c(b, a), dc_4, c(b, a)) %>%
+    dm_add_fk(dc_4, c(b, a), dc_3, c(b, a)) %>%
+    dm_add_fk(dc_5, c(b, a), dc_1, c(b, a)) %>%
+    dm_add_fk(dc_6, c, dc_1, a)
+}
 
 # for check_key() ---------------------------------------------------------
 
@@ -281,7 +305,7 @@ dm_for_filter_w_cycle %<-% {
     dm_add_fk(tf_6, o, tf_7) %>%
     #
     dm_add_pk(tf_5, k) %>%
-    dm_add_fk(tf_5, l, tf_4) %>%
+    dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
     dm_add_fk(tf_5, m, tf_6, n)
 }
 

@@ -256,7 +256,7 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
     test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
 
-  dm_db_learned <- expect_message(dm_from_src(src_db, dbname = "test_database_dm"))
+  expect_message(dm_db_learned <- dm_from_src(src_db, dbname = "test_database_dm"))
   dm_learned <- dm_db_learned %>% collect()
   expect_equivalent_dm(
     dm_learned,
@@ -340,10 +340,10 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
 
-  dm_db_learned <- expect_message(dm_from_src(src_db, schema = "dm_test", dbname = "test_database_dm"))
+  expect_message(dm_db_learned <- dm_from_src(src_db, schema = "dm_test", dbname = "test_database_dm"))
   dm_learned <- dm_db_learned %>% collect()
   expect_equivalent_dm(
-    dm_learned,
+    dm_learned[c("test_1", "test_2")],
     dm_local_no_keys %>%
       dm_add_pk(test_1, b) %>%
       dm_add_fk(test_2, c, test_1)

@@ -1,46 +1,118 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
-# dm 0.2.3.9006
+# dm 0.2.7.9002
 
-- Better error message for `dm_rows_update()` and related functions for dm objects with tables without primary key (#592).
-- `dm_from_src()` supports `pool::Pool` objects (#599, @moodymudskipper).
-
-
-# dm 0.2.3.9005
-
-- Suggest manually quoting the returning argument (#627).
-- `glimpse()` is implemented for dm objects (#605).
-- Support DuckDB in `rows_insert()`, `rows_update()` and `rows_delete()` (#617, @mgirlich).
-- Implement `rows_patch()` for DBI connections (#610, @mgirlich).
-- Use `check_suggested()` everywhere (#572, @moodymudskipper).
+- Messages that suggest the installation of optional packages are shown only once per session (#852).
+- `copy_dm_to()` shows progress bars again (#850, #855).
+- `copy_dm_to()` consumes less memory and is faster when writing to SQL Server (#855).
+- Progress bars use the console width (#853).
 
 
-# dm 0.2.3.9004
+# dm 0.2.7.9001
 
-- Establish compatibility with vctrs > 0.3.8.
-- Establish compatibility with rlang > 0.4.11 (#613).
-
-
-# dm 0.2.3.9003
-
-- `rows_insert()`, `rows_update()` and `rows_delete()` gain `returning` argument. In combination with `in_place = TRUE` this argument makes the newly inserted rows accessible via `get_returning_rows()` after the operation completes (#593, @mgirlich).
+- Avoid calling `dbAppendTable()` for zero-row tables (#847).
+- Require rlang 1.0.1 (#840).
 
 
-# dm 0.2.3.9002
-
-- Update tests for pillar 1.6.2.
-- Add CI run for validating all new `dm` objects (#597).
-- Avoid generating invalid `dm` objects in some corner cases (#596).
-
-
-# dm 0.2.3.9001
-
-- Use `NO ACTION` instead of `CASCADE` in foreign key constraints to permit self-references.
-
-
-# dm 0.2.3.9000
+# dm 0.2.7.9000
 
 - Same as previous version.
+
+
+# dm 0.2.7
+
+## Features
+
+- New `dm_wrap_tbl()`, `dm_unwrap_tbl()`, `dm_nest_tbl()`, `dm_unnest_tbl()`, `dm_pack_tbl()` and `dm_unpack_tbl()` (#595, #733, #737).
+- New `dm_examine_cardinality()` (#264, #735). 
+- New `pack_join()` generic and method for data frames, the same to `tidyr::pack()` as `dplyr::nest_join()` is to `tidyr::nest()` (#721, #722).
+- `dm_pixarfilms()` is exported and gains a `consistent = FALSE` argument; if `TRUE` the data is modified so that all referential constraints are satisfied (#703, #707, #708, @erictleung).
+
+## Bug fixes
+
+- `db_schema_...()` functions no longer pro-actively check for schema existence (#672, #815, #771).
+- `db_schema_list.Microsoft SQL Server` no longer ignoring schemas for which the owner cannot be found (#815, #771).
+- `copy_dm_to()` works with DuckDB again, the SQL statements to define the tables and indexes are now created by us (#701, #709).
+
+## Internal
+
+- Establish compatibility with rlang 1.0.0 (#756).
+- Simplify database checks on GitHub Actions (#712).
+
+
+# dm 0.2.6
+
+## Features
+
+- New `dm_pixarfilms()` creates a dm object with data from the {pixarfilms} package (#600, @erictleung).
+- `check_cardinality_0_1()`, `check_cardinality_0_n()`, `check_cardinality_1_1()`, `check_cardinality_1_n()`, and `examine_cardinality()` now support compound keys (#524).
+- `check_subset()` and `check_set_equality()` support compound keys (#523).
+- `dm_paste()` adds the `on_delete` argument to `dm_add_fk()` (#673).
+- `dm_disambiguate_cols()` also disambiguates columns used in keys, to support correct disambiguation for compound keys  (#662).
+- `dm_disambiguate_cols()` now emits the source code equivalent of a renaming operation (#684).
+- `dm_examine_constraints()` uses backticks to surround table names (#687).
+
+## Bug fixes
+
+- `decompose_table()` now avoids creating `NA` values in the key column (#580).
+- `dm_draw()` works with empty tables (#585).
+
+## Internal
+
+- Fix compatibility with dplyr 1.0.8 (#698).
+
+
+# dm 0.2.5
+
+## Features
+
+- `mutate()`, `transmute()`, `distinct()` and `summarize()` now support `dplyr::across()` and extra arguments (#640).
+- Key tracking for the first three verbs is less strict and based on name equality (#663).
+- `relocate()` now works on zoomed `dm` objects (#666).
+- `dm_add_fk()` gains `on_delete` argument which `copy_dm_to()` picks up and translates to an `ON DELETE CASCADE` or `ON DELETE NO ACTION` specification for the foreign key (#649).
+- `dm_copy_to()` defines foreign keys during table creation, for all databases except DuckDB. Tables are created in topological order (#658). For cyclic relationship graphs, table creation is attempted in the original order and may fail (#664).
+- `waldo::compare()` shows better output for dm objects (#642).
+- `dm_paste()` output uses trailing commas in the `dm::dm()` and `tibble::tibble()` calls, and sorts column attributes by name, for better modularity (#641).
+
+## Breaking changes
+
+- New `db_schema_create()`, `db_schema_drop()`, `db_schema_exists()` and `db_schema_list()` replace the corresponding `sql_schema_*()` functions, the latter are soft-deprecated (#670). The connection argument to `db_schema_*()` is called `con`, not `dest` (#668).
+
+## Bug fixes
+
+- `copy_dm_to()` and `sql_create_schema()` no longer actively check for schema existence (#644, #660).
+- Add newline after `OUTPUT` clause for SQL Server (#647).
+- Fix `sql_rows_delete()` with `returning` argument for SQL Server (#645).
+
+## Internal
+
+- Remove method only needed for RSQLite < 2.2.8, add warning if loaded RSQLite version is <= 2.2.8 (#632).
+- Adapt MSSQL tests to testthat update (#648).
+
+
+# dm 0.2.4
+
+## Features
+
+- `rows_insert()`, `rows_update()` and `rows_delete()` gain `returning` argument. In combination with `in_place = TRUE` this argument makes the newly inserted rows accessible via `get_returning_rows()` after the operation completes (#593, @mgirlich).
+- Implement `rows_patch()` for DBI connections (#610, @mgirlich).
+- Use `NO ACTION` instead of `CASCADE` in foreign key constraints to permit self-references.
+- `dm_from_src()` supports `pool::Pool` objects (#599, @moodymudskipper).
+- Better error message for `dm_rows_update()` and related functions for dm objects with tables without primary key (#592).
+- `glimpse()` is implemented for `dm` objects (#605).
+- Support DuckDB in `rows_insert()`, `rows_update()` and `rows_delete()` (#617, @mgirlich).
+
+## Bug fixes
+
+- Fix `dm_zoom_to()` for `dm` objects with an empty table (#626, @moodymudskipper).
+- Avoid generating invalid `dm` objects in some corner cases (#596).
+
+## Internal
+
+- `sql_schema_list()` supports `pool::Pool` objects (#633, @brancengregory).
+- Establish compatibility with pillar 1.6.2, vctrs > 0.3.8 and rlang > 0.4.11 (#613).
+- Use `check_suggested()` everywhere (#572, @moodymudskipper).
+- Add CI run for validating all new `dm` objects (#597).
 
 
 # dm 0.2.3

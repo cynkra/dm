@@ -5,7 +5,7 @@ test_that("output", {
     abort_not_unique_key("Christmas", c("elves", "Rudolph", "mulled_wine"))
     abort_table_not_in_dm("laziness", "hard_work")
     abort_not_subset_of("playing", "game", "hunting", "game")
-    abort_sets_not_equal(c("A problem occurred", "And another, even worse problem, occurred shortly after"))
+    abort_sets_not_equal(c("A problem occurred.", "And another, even worse problem, occurred shortly after."))
     # The mentioned reasons for not being bijective and injective are the same, but this is intended:
     # If surjectivity is not given during the test for bijectivity it will fail earlier
     abort_not_bijective("child_table_name", "fk_col_name")
@@ -60,10 +60,6 @@ test_that("output", {
     abort_parameter_not_correct_class("number", correct_class = "numeric", class = "logical")
     abort_parameter_not_correct_length("length_1_parameter", 1, letters[1:26])
     warn_if_arg_not("NULL", c("MSSQL", "Postgres"), arg_name = "dbms_dependent_arg")
-    abort_schema_exists("silhouette")
-    abort_schema_exists("silhouette", "exhibition")
-    abort_no_schema_exists("table_1")
-    abort_no_schema_exists("fastfood", "gala_dinner")
     abort_no_schemas_supported("FantasticDatabaseManagementSystem", "hyperconnection")
     abort_no_schemas_supported(con = 1)
     abort_no_schemas_supported()

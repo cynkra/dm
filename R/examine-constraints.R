@@ -83,7 +83,7 @@ print.dm_examine_constraints <- function(x, ...) {
       # FIXME: Use cli styles
       mutate(text = paste0(
         "Table ", tick(table), ": ",
-        kind_to_long(kind), " ", format(columns),
+        kind_to_long(kind), " ", format(map(problem_df$columns, tick)),
         into,
         ": ", problem
       )) %>%
@@ -111,14 +111,15 @@ check_pk_constraints <- function(dm, progress = NA, pk_repair = NULL, top_level_
     ))
   }
   table_names <- pks$table
-  columns     <- pks$pk_col
+  columns <- pks$pk_col
 
 
   ticker <- new_ticker(
     "checking pk constraints",
     n = length(table_names),
     progress = progress,
-    top_level_fun = top_level_fun)
+    top_level_fun = top_level_fun
+  )
 
   candidates <- map2(set_names(table_names), columns, ticker(~ {
     tbl <- tbl_impl(dm, .x)
@@ -151,10 +152,11 @@ check_fk_constraints <- function(dm, progress = NA, fk_repair = NULL, sample = T
     select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = parent_key_cols)
 
   ticker <- new_ticker(
-    "checking pk constraints",
+    "checking fk constraints",
     n = nrow(fks_tibble),
     progress = progress,
-    top_level_fun = top_level_fun)
+    top_level_fun = top_level_fun
+  )
 
   problems <-
     pmap_dfr(fks_tibble, ticker(check_fk), fk_repair = fk_repair, sample = sample)
