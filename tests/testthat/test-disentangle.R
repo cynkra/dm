@@ -185,3 +185,45 @@ test_that("more iterations needed", {
       dm_get_all_fks()
   })
 })
+
+test_that("dm_clone_pt() works", {
+  expect_message(
+    expect_equivalent_dm(
+      dm_clone_pt(dm_nycflights_small_cycle(), flights),
+      dm_nycflights_small_cycle()
+    ),
+    "No cycle detected"
+  )
+  expect_message(
+    expect_equivalent_dm(
+      dm_clone_pt(dm_nycflights_small_cycle(), airports),
+      dm_nycflights_small_cycle() %>%
+        dm_rm_tbl(airports) %>%
+        dm_add_tbl(
+          airports_1 = dm_nycflights_small_cycle()$airports,
+          airports_2 = dm_nycflights_small_cycle()$airports
+        ) %>%
+        dm_add_pk(airports_1, faa) %>%
+        dm_add_pk(airports_2, faa) %>%
+        dm_add_fk(flights, dest, airports_1) %>%
+        dm_add_fk(flights, origin, airports_2)
+    ),
+    "Replaced table `airports` with `airports_1`, `airports_2`."
+  )
+  expect_message(
+    expect_equivalent_dm(
+      dm_clone_pt(dm_nycflights_small_cycle(), airports, "{.pt}_{.ct}_{.fkc}_{.n}"),
+      dm_nycflights_small_cycle() %>%
+        dm_rm_tbl(airports) %>%
+        dm_add_tbl(
+          airports_flights_dest_1 = dm_nycflights_small_cycle()$airports,
+          airports_flights_origin_2 = dm_nycflights_small_cycle()$airports
+        ) %>%
+        dm_add_pk(airports_flights_dest_1, faa) %>%
+        dm_add_pk(airports_flights_origin_2, faa) %>%
+        dm_add_fk(flights, dest, airports_flights_dest_1) %>%
+        dm_add_fk(flights, origin, airports_flights_origin_2)
+    ),
+    "Replaced table `airports` with `airports_flights_dest_1`, `airports_flights_origin_2`."
+  )
+})
