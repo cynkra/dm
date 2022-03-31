@@ -89,31 +89,31 @@ test_that("insert + delete with returning argument and in_place = FALSE", {
   target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
 
   expect_equal(
-    rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
-      get_returned_rows(),
-    tibble(select = 4L, where = "z", exists = NA_real_)
-  )
-
-  expect_equal(
     rows_delete(target, test_db_src_frame(select = 3:4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
       get_returned_rows(),
     tibble(select = 3L, where = NA_character_, exists = 2.5)
+  )
+
+  skip_if_src(c("df", "sqlite"))
+  skip_if(packageVersion("dbplyr") > "2.1.1")
+  expect_equal(
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
+      get_returned_rows(),
+    tibble(select = 4L, where = "z", exists = NA_real_)
   )
 })
 
-test_that("insert + delete with returning argument and in_place = FALSE", {
+test_that("insert + delete with returning argument and in_place = FALSE, SQLite variant", {
   target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
 
+  # Introduced in https://github.com/tidyverse/dbplyr/commit/ebe9a079a56522abb6f919bf42105ae05ca87951,
+  # sqlite isn't type stable, perhaps the underlying query has changed in a subtle way
+  skip_if_src_not(c("df", "sqlite"))
+  skip_if(packageVersion("dbplyr") <= "2.1.1")
   expect_equal(
     rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
       get_returned_rows(),
-    tibble(select = 4L, where = "z", exists = NA_real_)
-  )
-
-  expect_equal(
-    rows_delete(target, test_db_src_frame(select = 3:4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
-      get_returned_rows(),
-    tibble(select = 3L, where = NA_character_, exists = 2.5)
+    tibble(select = 4L, where = "z", exists = NA)
   )
 })
 

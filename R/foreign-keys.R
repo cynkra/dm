@@ -238,7 +238,7 @@ dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
   dm_get_all_fks_impl(dm, parent_table)
 }
 
-dm_get_all_fks_impl <- function(dm, parent_table = NULL) {
+dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE) {
   def <- dm_get_def(dm)
 
   sub_def <- def[c("table", "fks")]
@@ -253,7 +253,7 @@ dm_get_all_fks_impl <- function(dm, parent_table = NULL) {
   names(flat) <- c("parent_table", "parent_key_cols", "child_table", "child_fk_cols", "on_delete")
   flat[[2]] <- new_keys(flat[[2]])
   flat[[4]] <- new_keys(flat[[4]])
-  flat[c(3:4, 1:2, 5L)]
+  flat[c(3:4, 1:2, if (!ignore_on_delete) 5L)]
 }
 
 #' Remove foreign keys
@@ -576,13 +576,13 @@ abort_fk_exists <- function(child_table_name, colnames, parent_table_name) {
     error_txt_fk_exists(
       child_table_name, colnames, parent_table_name
     ),
-    .subclass = dm_error_full("fk_exists")
+    class = dm_error_full("fk_exists")
   )
 }
 
 error_txt_fk_exists <- function(child_table_name, colnames, parent_table_name) {
   glue(
-    "({commas(tick(colnames))}) is alreay a foreign key of table ",
+    "({commas(tick(colnames))}) is already a foreign key of table ",
     "{tick(child_table_name)} into table {tick(parent_table_name)}."
   )
 }
@@ -590,7 +590,7 @@ error_txt_fk_exists <- function(child_table_name, colnames, parent_table_name) {
 abort_is_not_fkc <- function() {
   abort(
     error_txt_is_not_fkc(),
-    .subclass = dm_error_full("is_not_fkc")
+    class = dm_error_full("is_not_fkc")
   )
 }
 

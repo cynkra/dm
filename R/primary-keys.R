@@ -410,7 +410,7 @@ check_pk <- function(table, columns) {
 # Error -------------------------------------------------------------------
 
 abort_pk_not_defined <- function() {
-  abort(error_txt_pk_not_defined(), .subclass = dm_error_full("pk_not_defined"))
+  abort(error_txt_pk_not_defined(), class = dm_error_full("pk_not_defined"))
 }
 
 error_txt_pk_not_defined <- function() {
@@ -418,7 +418,7 @@ error_txt_pk_not_defined <- function() {
 }
 
 abort_key_set_force_false <- function(table) {
-  abort(error_txt_key_set_force_false(table), .subclass = dm_error_full("key_set_force_false"))
+  abort(error_txt_key_set_force_false(table), class = dm_error_full("key_set_force_false"))
 }
 
 error_txt_key_set_force_false <- function(table) {
@@ -426,7 +426,7 @@ error_txt_key_set_force_false <- function(table) {
 }
 
 abort_first_rm_fks <- function(table, fk_tables) {
-  abort(error_txt_first_rm_fks(table, fk_tables), .subclass = dm_error_full("first_rm_fks"))
+  abort(error_txt_first_rm_fks(table, fk_tables), class = dm_error_full("first_rm_fks"))
 }
 
 error_txt_first_rm_fks <- function(table, fk_tables) {

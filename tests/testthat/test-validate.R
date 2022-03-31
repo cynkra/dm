@@ -125,6 +125,26 @@ test_that("validator speaks up when something's wrong", {
       validate_dm(),
     "dm_invalid"
   )
+
+  # FK metadata wrong (`column` doesn't exist)
+  expect_dm_error(
+    dm_for_filter() %>%
+      dm_get_def() %>%
+      mutate(fks = if_else(table == "tf_1", list_of(new_fk(list("a"), "tf_2", list("z"), "no_action")), fks)) %>%
+      new_dm3() %>%
+      validate_dm(),
+    "dm_invalid"
+  )
+
+  # FK metadata wrong (`ref_column` doesn't exist)
+  expect_dm_error(
+    dm_for_filter() %>%
+      dm_get_def() %>%
+      mutate(fks = if_else(table == "tf_1", list_of(new_fk(list("z"), "tf_2", list("d"), "no_action")), fks)) %>%
+      new_dm3() %>%
+      validate_dm(),
+    "dm_invalid"
+  )
 })
 
 test_that("validator speaks up (sqlite())", {

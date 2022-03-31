@@ -21,6 +21,7 @@ utils::globalVariables(c(
   "any_na",
   "arrange_col",
   "candidate",
+  "cardinality",
   "child_fk_cols",
   "child_table",
   "colname",
@@ -29,6 +30,7 @@ utils::globalVariables(c(
   "column",
   "columns",
   "constraint",
+  "ct_name",
   "day",
   "dest",
   "df",
@@ -49,6 +51,7 @@ utils::globalVariables(c(
   "need_ref",
   "new_display",
   "new_name",
+  "node",
   "old",
   "origin",
   "parent",
@@ -58,6 +61,7 @@ utils::globalVariables(c(
   "pk_col",
   "pks",
   "problem",
+  "pt_name",
   "ref",
   "ref_col",
   "ref_column",
@@ -119,5 +123,8 @@ utils::globalVariables(c(
   "index_name",
   "remote_table",
   "remote_table_unquoted",
-  "unique_def"
+  "unique_def",
+  #
+  # keep this to avoid dealing with trailing commas
+  NULL
 ))

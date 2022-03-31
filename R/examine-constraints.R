@@ -140,7 +140,7 @@ check_fk_constraints <- function(dm, progress = NA, top_level_fun = top_level_fu
     select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = parent_key_cols)
 
   ticker <- new_ticker(
-    "checking pk constraints",
+    "checking fk constraints",
     n = nrow(fks_tibble),
     progress = progress,
     top_level_fun = top_level_fun

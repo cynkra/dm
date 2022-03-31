@@ -53,6 +53,8 @@
 #' @param child_table Data frame.
 #' @param fk_column Columns of `child_table` that have to be a foreign key candidate to `pk_column` in `parent_table`, for multiple columns use `c(col1, col2)`.
 #'
+#' @family cardinality functions
+#'
 #' @name examine_cardinality
 #'
 #' @return For `check_cardinality_*()`: Functions return `parent_table`, invisibly, if the check is passed, to support pipes.
@@ -176,36 +178,37 @@ examine_cardinality <- function(parent_table, pk_column, child_table, fk_column)
   ctq <- enquo(child_table)
   fkcq <- enexpr(fk_column)
   fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ctq))))
-  if (!is_unique_key(eval_tidy(ptq), !!pkc)$unique) {
-    plural <- s_if_plural(pkc)
+
+  examine_cardinality_impl(eval_tidy(ptq), pkc, eval_tidy(ctq), fkc, as_label(ptq), as_label(ctq))
+}
+
+examine_cardinality_impl <- function(parent_table, parent_key_cols, child_table, child_fk_cols, pt_name, ct_name) {
+  if (!is_unique_key(parent_table, !!parent_key_cols)$unique) {
+    plural <- s_if_plural(parent_key_cols)
     return(
       glue(
-        "Column{plural['n']} ({commas(tick(pkc))}) not ",
-        "a unique key of {tick(as_label(ptq))}."
+        "Column{plural['n']} ({commas(tick(parent_key_cols))}) not ",
+        "a unique key of {tick(pt_name)}."
       )
     )
   }
-
-  if (!is_subset(eval_tidy(ctq), !!fkc, eval_tidy(ptq), !!pkc)) {
-    plural <- s_if_plural(pkc)
+  if (!is_subset(child_table, !!child_fk_cols, parent_table, !!parent_key_cols)) {
+    plural <- s_if_plural(parent_key_cols)
     return(
       glue(
-        "Column{plural['n']} ({commas(tick(fkc))}) of table {tick(as_label(ctq))} not ",
-        "a subset of column{plural['n']} ({commas(tick(pkc))}) of table {tick(as_label(ptq))}."
+        "Column{plural['n']} ({commas(tick(child_fk_cols))}) of table {tick(ct_name)} not ",
+        "a subset of column{plural['n']} ({commas(tick(parent_key_cols))}) of table {tick(pt_name)}."
       )
     )
   }
-
-  min_1 <- is_subset(eval_tidy(ptq), !!pkc, eval_tidy(ctq), !!fkc)
-  max_1 <- pull(is_unique_key(eval_tidy(ctq), !!fkc), unique)
+  min_1 <- is_subset(parent_table, !!parent_key_cols, child_table, !!child_fk_cols)
+  max_1 <- pull(is_unique_key(child_table, !!child_fk_cols), unique)
 
   if (min_1 && max_1) {
     return("bijective mapping (child: 1 -> parent: 1)")
-  } else
-  if (min_1) {
+  } else if (min_1) {
     return("surjective mapping (child: 1 to n -> parent: 1)")
-  } else
-  if (max_1) {
+  } else if (max_1) {
     return("injective mapping (child: 0 or 1 -> parent: 1)")
   }
   "generic mapping (child: 0 to n -> parent: 1)"
