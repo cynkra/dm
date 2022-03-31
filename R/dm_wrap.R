@@ -34,8 +34,7 @@
 #' dm_nycflights13() %>%
 #'   dm_wrap_tbl(root = airlines)
 dm_wrap_tbl <- function(dm, root, strict = TRUE) {
-
-  wrap_plan <- dm_wrap_tbl_plan(dm, {{root}})
+  wrap_plan <- dm_wrap_tbl_plan(dm, {{ root }})
 
   wrapped_dm <- reduce2(
     wrap_plan$action,
