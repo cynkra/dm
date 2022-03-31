@@ -45,11 +45,9 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
   max_1 <- pull(is_unique_key(eval_tidy(ct), !!fkc), unique)
   if (min_1 && max_1) {
     return("bijective mapping (child: 1 -> parent: 1)")
-  }
-  else if (min_1) {
+  } else if (min_1) {
     return("surjective mapping (child: 1 to n -> parent: 1)")
-  }
-  else if (max_1) {
+  } else if (max_1) {
     return("injective mapping (child: 0 or 1 -> parent: 1)")
   }
   "generic mapping (child: 0 to n -> parent: 1)"
@@ -335,8 +333,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
   }
   if (quo_is_null(column_quo)) {
     cols <- get_key_cols(fk_cols)
-  }
-  else {
+  } else {
     cols <- as_name(ensym(columns))
     if (!all(cols %in% fk_cols)) {
       abort_is_not_fkc()
@@ -403,7 +400,7 @@ cdm_learn_from_db <- function(dest) {
 #' @export
 cdm_check_constraints <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_check_constraints()", "dm::dm_examine_constraints()")
-  dm_examine_constraints_impl(dm = dm, progress = FALSE)
+  dm_examine_constraints_impl(dm = dm, progress = FALSE, top_level_fun = "cdm_check_constraints")
 }
 
 #' @rdname deprecated
@@ -564,8 +561,7 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   check_zoomed(dm)
   if (is_null(enexpr(new_tbl_name))) {
     new_tbl_name_chr <- orig_name_zoomed(dm)
-  }
-  else {
+  } else {
     if (is_symbol(enexpr(new_tbl_name))) {
       warning("The argument `new_tbl_name` in `dm_insert_zoomed()` should be of class `character`.")
     }
@@ -575,7 +571,7 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
     old_names = src_tbls_impl(dm),
     new_names = new_tbl_name_chr, repair, quiet
   )
-  dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
+  dm <- dm_select_tbl_zoomed_impl(dm, names_list$new_old_names)
   new_tbl_name_chr <- names_list$new_names
   old_tbl_name <- orig_name_zoomed(dm)
   new_tbl <- list(tbl_zoomed(dm))
@@ -590,18 +586,44 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   dm_wo_outgoing_fks <-
     dm %>%
     update_filter(old_tbl_name, list_of(old_filters)) %>%
-    dm_add_tbl_impl(new_tbl, new_tbl_name_chr, list_of(new_filters)) %>%
+    dm_add_tbl_zoomed_impl(new_tbl, new_tbl_name_chr, list_of(new_filters)) %>%
     dm_get_def() %>%
     mutate(
       pks = if_else(table == new_tbl_name_chr, !!upd_pk, pks),
       fks = if_else(table == new_tbl_name_chr, !!upd_inc_fks, fks)
     ) %>%
-    new_dm3(zoomed = TRUE)
+    new_dm3(zoomed = TRUE, validate = FALSE)
 
   dm_wo_outgoing_fks %>%
     dm_insert_zoomed_outgoing_fks(new_tbl_name_chr, names_list$old_new_names[old_tbl_name], col_tracker_zoomed(dm)) %>%
     dm_clean_zoomed()
 }
+
+dm_select_tbl_zoomed_impl <- function(dm, selected) {
+  if (anyDuplicated(names(selected))) abort_need_unique_names(names(selected[duplicated(names(selected))]))
+
+  def <-
+    dm_get_def(dm) %>%
+    filter_recode_table_def(selected) %>%
+    filter_recode_table_fks(selected)
+
+  new_dm3(def, zoomed = TRUE)
+}
+
+dm_add_tbl_zoomed_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()),
+                                   pks = list_of(new_pk()), fks = list_of(new_fk())) {
+  def <- dm_get_def(dm)
+
+  def_0 <- def[rep_along(table_name, NA_integer_), ]
+  def_0$table <- table_name
+  def_0$data <- unname(tbls)
+  def_0$pks <- pks
+  def_0$fks <- fks
+  def_0$filters <- filters
+
+  new_dm3(vec_rbind(def, def_0), zoomed = TRUE)
+}
+
 
 #' @rdname deprecated
 #' @keywords internal
@@ -621,7 +643,7 @@ cdm_zoom_out <- function(dm) {
 
 
 abort_rm_fk_col_missing <- function() {
-  abort(error_txt_rm_fk_col_missing(), .subclass = dm_error_full("rm_fk_col_missing"))
+  abort(error_txt_rm_fk_col_missing(), class = dm_error_full("rm_fk_col_missing"))
 }
 
 error_txt_rm_fk_col_missing <- function() {

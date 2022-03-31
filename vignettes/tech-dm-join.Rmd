@@ -51,7 +51,7 @@ dm <- dm_nycflights13()
 
 ## Joining a `dm` object {#join}
 
-{dm} allows you to join two tables of a `dm` object based on a shared column. You can use all join functions that you know from the [{dplyr} package](https://dplyr.tidyverse.org/reference/join.html).
+{dm} allows you to join two tables of a `dm` object based on a shared column. You can use all join functions that you know from the {dplyr} package.
 Currently {dplyr} supports four types of mutating joins, two types of filtering joins, and a nesting join.
 See `?dplyr::join` for details.
 

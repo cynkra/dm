@@ -65,12 +65,13 @@ test_that("dm_get_zoom() and tbl_zoomed() works", {
 test_that("dm_insert_zoomed() works", {
   # test that a new tbl is inserted, based on the requested one
   expect_equivalent_dm(
-    dm_zoom_to(dm_for_filter(), tf_4) %>% dm_insert_zoomed("tf_4_new"),
+    dm_zoom_to(dm_for_filter(), tf_4) %>%
+      dm_insert_zoomed("tf_4_new"),
     dm_for_filter() %>%
       dm_add_tbl(tf_4_new = tf_4()) %>%
       dm_add_pk(tf_4_new, h) %>%
       dm_add_fk(tf_4_new, c(j, j1), tf_3) %>%
-      dm_add_fk(tf_5, l, tf_4_new)
+      dm_add_fk(tf_5, l, tf_4_new, on_delete = "cascade")
   )
 
   # test that an error is thrown if 'repair = check_unique' and duplicate table names
@@ -90,7 +91,7 @@ test_that("dm_insert_zoomed() works", {
       dm_add_tbl(tf_4...7 = tf_4()) %>%
       dm_add_pk(tf_4...7, h) %>%
       dm_add_fk(tf_4...7, c(j, j1), tf_3) %>%
-      dm_add_fk(tf_5, l, tf_4...7)
+      dm_add_fk(tf_5, l, tf_4...7, on_delete = "cascade")
   )
 })
 
@@ -153,4 +154,28 @@ test_that("zoom output for compound keys", {
       get_all_keys()
     attr(igraph::E(create_graph_from_dm(nyc_comp_3)), "vnames")
   })
+})
+
+test_that("dm_get_zoom() works to zoom on empty tables", {
+  zdm <- dm(x = tibble()) %>% dm_zoom_to(x)
+  expect_identical(
+    dm_get_zoom(zdm),
+    tibble(table = "x", zoom = list(tibble()))
+  )
+})
+
+
+# test that inserting a zoomed table retains the color --------------------
+
+test_that("dm_insert_zoomed() retains color", {
+  expect_identical(
+    dm_for_filter() %>%
+      dm_set_colors("cyan" = tf_2) %>%
+      dm_zoom_to(tf_2) %>%
+      dm_insert_zoomed("tf_2_new") %>%
+      dm_get_def() %>%
+      filter(table == "tf_2_new") %>%
+      pull(display),
+    "#00FFFFFF"
+  )
 })

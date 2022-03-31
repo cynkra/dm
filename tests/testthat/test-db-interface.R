@@ -6,10 +6,15 @@ test_that("data source found", {
 skip_if_not_installed("dbplyr")
 
 test_that("copy_dm_to() copies data frames to databases", {
-  skip_if_local_src()
+  skip_if_ide()
 
   expect_equivalent_dm(
-    copy_dm_to(my_test_src(), collect(dm_for_filter())),
+    copy_dm_to(my_db_test_src(), collect(dm_for_filter())),
+    dm_for_filter()
+  )
+
+  expect_equivalent_dm(
+    copy_dm_to(my_db_test_src(), dm_for_filter()),
     dm_for_filter()
   )
 
@@ -18,29 +23,10 @@ test_that("copy_dm_to() copies data frames to databases", {
 
 test_that("copy_dm_to() copies data frames from any source", {
   expect_equivalent_dm(
-    expect_deprecated(
+    expect_deprecated_obj(
       copy_dm_to(default_local_src(), dm_for_filter())
     ),
     dm_for_filter()
-  )
-})
-
-test_that("copy_dm_to() copies to SQLite", {
-  skip_if_not_installed("RSQLite")
-
-  expect_equivalent_dm(
-    copy_dm_to(test_src_sqlite(), dm_for_filter()),
-    dm_for_filter()
-  )
-})
-
-test_that("copy_dm_to() copies from SQLite", {
-  skip_if_local_src()
-  skip_if_not_installed("RSQLite")
-
-  expect_equivalent_dm(
-    copy_dm_to(my_test_src(), dm_for_filter_sqlite()),
-    dm_for_filter_sqlite()
   )
 })
 
@@ -60,21 +46,17 @@ test_that("copy_dm_to() rejects overwrite and types arguments", {
 })
 
 test_that("copy_dm_to() fails with duplicate table names", {
-  skip_if_local_src()
-
   bad_names <- set_names(names(dm_for_filter()))
   bad_names[[2]] <- bad_names[[1]]
 
   expect_dm_error(
-    copy_dm_to(my_test_src(), dm_for_filter(), table_names = bad_names),
+    copy_dm_to(my_db_test_src(), dm_for_filter(), table_names = bad_names),
     class = "copy_dm_to_table_names_duplicated"
   )
 })
 
 test_that("default table repair works", {
-  skip_if_local_src()
-
-  con <- con_from_src_or_con(my_test_src())
+  con <- con_from_src_or_con(my_db_test_src())
 
   table_names <- c("t1", "t2", "t3")
 
@@ -98,32 +80,43 @@ test_that("default table repair works", {
 })
 
 test_that("table identifiers are quoted", {
-  skip_if_local_src()
-
-  # Implicitly created with copy_dm_to()
-  dm <- dm_test_obj()
+  dm <- dm_for_filter_sqlite()
   remote_names <-
     dm %>%
     dm_get_tables() %>%
     map_chr(dbplyr::remote_name)
 
   con <- dm_get_con(dm)
-  pattern <- unclass(DBI::dbQuoteIdentifier(con, "[a-z0-9_#]+"))
+  pattern <- paste0("^", unclass(DBI::dbQuoteIdentifier(con, "[a-z0-9_#]+")), "$")
   expect_true(all(grepl(pattern, remote_names)))
 })
 
-test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
+test_that("copy_dm_to() fails legibly if target schema missing for MSSQL & Postgres", {
   skip_if_src_not(c("mssql", "postgres"))
 
   src_db <- my_test_src()
   local_dm <- dm_for_filter() %>% collect()
 
-  expect_dm_error(
-    copy_dm_to(src_db, local_dm, schema = "copy_dm_to_schema", temporary = FALSE),
-    "no_schema_exists"
-  )
+  expect_deprecated(expect_false(db_schema_exists(src_db, "copy_dm_to_schema")))
 
-  sql_schema_create(src_db, "copy_dm_to_schema")
+  expect_error(
+    copy_dm_to(src_db, local_dm, schema = "copy_dm_to_schema", temporary = FALSE)
+  )
+})
+
+test_that("copy_dm_to() fails legibly with schema argument for MSSQL & Postgres", {
+  skip_if_src_not(c("mssql", "postgres"))
+
+  src_db <- my_test_src()
+  local_dm <- dm_for_filter() %>% collect()
+
+  expect_false(db_schema_exists(src_db$con, "copy_dm_to_schema"))
+
+  db_schema_create(src_db$con, "copy_dm_to_schema")
+
+  withr::defer({
+    try(dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
+  })
 
   expect_dm_error(
     copy_dm_to(src_db, local_dm, schema = "copy_dm_to_schema"),
@@ -140,15 +133,17 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
     ),
     "one_of_schema_table_names"
   )
+})
 
-  expect_silent(
-    remote_dm <- copy_dm_to(
-      src_db,
-      local_dm,
-      schema = "copy_dm_to_schema",
-      temporary = FALSE
-    )
-  )
+test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
+  skip_if_src_not(c("mssql", "postgres"))
+
+  src_db <- my_test_src()
+  local_dm <- dm_for_filter() %>% collect()
+
+  expect_false(db_schema_exists(src_db$con, "copy_dm_to_schema"))
+
+  db_schema_create(src_db$con, "copy_dm_to_schema")
 
   withr::defer({
     order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
@@ -158,6 +153,15 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
     )
     try(dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
   })
+
+  expect_silent(
+    remote_dm <- copy_dm_to(
+      src_db,
+      local_dm,
+      schema = "copy_dm_to_schema",
+      temporary = FALSE
+    )
+  )
 
   if (is_postgres(src_db)) {
     table_tibble <- sql_schema_table_list_postgres(src_db, "copy_dm_to_schema")
@@ -178,7 +182,7 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
   )
 })
 
-test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
+test_that("copy_dm_to() fails with schema argument for databases other than MSSQL & Postgres", {
   skip_if_src("mssql", "postgres")
 
   local_dm <- dm_for_filter() %>% collect()
@@ -191,5 +195,74 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
       schema = "test"
     ),
     "no_schemas_supported"
+  )
+})
+
+
+test_that("build_copy_queries snapshot test for pixarfilms", {
+  src_db <- my_db_test_src()
+
+  # build regular dm from `dm_pixarfilms()`
+  pixar_dm <-
+    # fetch sample dm
+    dm_pixarfilms() %>%
+    # make it regular
+    dm_filter(pixar_films, !is.na(film)) %>%
+    dm_apply_filters() %>%
+    dm_select_tbl(-pixar_people)
+
+  skip_if_not_installed("testthat", "3.1.1")
+
+  expect_snapshot(
+    variant = my_test_src_name,
+    {
+      pixar_dm %>%
+        build_copy_queries(
+          src_db,
+          .,
+          table_names = names(.) %>%
+            repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
+            map(dbplyr::ident_q)
+        ) %>%
+        as.list() # to print full queries
+    }
+  )
+})
+
+
+test_that("build_copy_queries avoids duplicate indexes", {
+  src_db <- my_db_test_src()
+
+  # build a dm whose index might be duplicated if naively build (child__a__key)
+  ambiguous_dm <- dm(
+    parent1 = tibble(key = 1),
+    parent2 = tibble(a__key = 1),
+    child = tibble(a__key = 1),
+    child__a = tibble(key = 1)
+  ) %>%
+    dm_add_pk(parent1, key) %>%
+    dm_add_pk(parent2, a__key) %>%
+    dm_add_fk(child, a__key, parent2) %>%
+    dm_add_fk(child__a, key, parent2)
+
+  queries <-
+    build_copy_queries(
+      src_db,
+      ambiguous_dm,
+      table_names =
+        names(ambiguous_dm) %>%
+          repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
+          map(dbplyr::ident_q)
+    )
+
+  expect_equal(anyDuplicated(unlist(queries$index_name)), 0)
+
+  skip_if_not_installed("testthat", "3.1.1")
+
+  expect_snapshot(
+    variant = my_test_src_name,
+    {
+      as.list(queries)
+    }
   )
 })

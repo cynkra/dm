@@ -1,7 +1,5 @@
 test_that("table identifiers are quoted", {
-  skip_if_local_src()
-
-  src_db <- my_test_src()
+  src_db <- my_db_test_src()
 
   test_dm <- copy_dm_to(
     src_db,
@@ -12,35 +10,34 @@ test_that("table identifiers are quoted", {
     temporary = FALSE,
     table_names = ~ DBI::SQL(unique_db_table_name(.x))
   )
-  remote_tbl_names_copied <- map_chr(
-    src_tbls_impl(test_dm),
-    ~ dbplyr::remote_name(test_dm[[.x]])
-  )
 
-  withr::defer(
+  remote_tbl_names_copied <- map_chr(dm_get_tables(test_dm), dbplyr::remote_name)
+
+  on.exit({
     walk(
       remote_tbl_names_copied,
       ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", .x)))
     )
-  )
+  })
 
   dm <-
     suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE)) %>%
-    dm_select_tbl(!!!remote_tbl_names_copied)
+    dm_select_tbl(!!!map(
+      DBI::dbUnquoteIdentifier(src_db$con, DBI::SQL(remote_tbl_names_copied)),
+      ~ .x@name[["table"]]
+    ))
 
   remote_tbl_names_learned <-
     dm %>%
     dm_get_tables() %>%
     map_chr(dbplyr::remote_name)
 
-  con <- dm_get_con(dm)
   # `gsub()`, cause schema names are part of the remote_names (also standard schemas "dbo" for MSSQL and "public" for Postgres).
-  expect_equal(gsub("^.*\\.", "", unname(remote_tbl_names_learned)), unclass(DBI::dbQuoteIdentifier(con, names(dm))))
+  expect_setequal(gsub("^.*\\.", "", unname(remote_tbl_names_learned)), unclass(DBI::dbQuoteIdentifier(src_db$con, names(dm))))
 })
 
 test_that("table identifiers are quoted with learn_keys = FALSE", {
-  skip_if_local_src()
-  src_db <- my_test_src()
+  src_db <- my_db_test_src()
 
   test_dm <- copy_dm_to(
     src_db,
@@ -56,12 +53,12 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
     ~ dbplyr::remote_name(test_dm[[.x]])
   )
 
-  withr::defer(
+  on.exit({
     walk(
       remote_tbl_names_copied,
       ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", .x)))
     )
-  )
+  })
 
   dm <- suppress_mssql_warning(dm_from_src(src_db, learn_keys = FALSE))
   remote_names <-
@@ -75,12 +72,11 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
 
 test_that("copy_dm_to() and dm_from_src() output for compound keys", {
   # FIXME: COMPOUND:: both copy_dm_to() and dm_from_src() cannot deal with compound keys yet
-  skip_if_local_src()
-  src_db <- my_test_src()
+  src_db <- my_db_test_src()
   skip("FIXME")
 
   nyc_comp_permanent <- copy_dm_to(src_db, dm_nycflights13(compound = TRUE), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
-  withr::defer({
+  on.exit({
     walk(
       dm_get_tables_impl(nyc_comp_permanent)[c("flights", "airlines", "planes", "airports", "weather")],
       ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x))))

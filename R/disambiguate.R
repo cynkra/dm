@@ -26,13 +26,13 @@ dm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
 }
 
 dm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
-  table_colnames <- get_table_colnames(dm, tables)
+  table_colnames <- get_table_colnames(dm, tables, exclude_pk = FALSE)
   recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = sep)
   if (!quiet) explain_col_rename(recipe)
   col_rename(dm, recipe)
 }
 
-get_table_colnames <- function(dm, tables = NULL) {
+get_table_colnames <- function(dm, tables = NULL, exclude_pk = TRUE) {
   def <- dm_get_def(dm)
 
   if (!is.null(tables)) {
@@ -43,50 +43,69 @@ get_table_colnames <- function(dm, tables = NULL) {
     tibble(table = def$table, column = map(def$data, colnames)) %>%
     unnest_col("column", character())
 
-  pks <- dm_get_all_pks_def_impl(def)
+  if (exclude_pk) {
+    pks <- dm_get_all_pks_def_impl(def)
 
-  keep_colnames <-
-    pks[c("table", "pk_col")] %>%
-    set_names(c("table", "column")) %>%
-    unnest_col("column", character())
+    keep_colnames <-
+      pks[c("table", "pk_col")] %>%
+      set_names(c("table", "column")) %>%
+      unnest_col("column", character())
 
-  table_colnames %>%
-    # in case of flattening, the primary key columns will never be responsible for the name
-    # of the resulting column in the end, so they do not need to be disambiguated
-    anti_join(keep_colnames, by = c("table", "column"))
+    table_colnames <-
+      table_colnames %>%
+      # in case of flattening, the primary key columns will never be responsible for the name
+      # of the resulting column in the end, so they do not need to be disambiguated
+      anti_join(keep_colnames, by = c("table", "column"))
+  }
+
+  table_colnames
 }
 
+#' create a disambiguation recipe tibble
+#'
+#' It will contain :
+#'   * table: the table name
+#'   * renames: a list of named symbols to be substituted in
+#'     `db_rename(dm, tbl, new = old)`
+#'   * name and a list of tibbles containing character cols `new_name` and `column`
+#'     that will be used to print`db_rename` instructions through explain_col_rename
+#' @param table_colnames a table containing table name and col names of dm
+#' @param sep separator used to create new names for dupe cols
+#' @noRd
 compute_disambiguate_cols_recipe <- function(table_colnames, sep) {
   dupes <- vec_duplicate_detect(table_colnames$column)
   dup_colnames <- table_colnames[dupes, ]
 
   dup_colnames$new_name <- paste0(dup_colnames$table, sep, dup_colnames$column)
   dup_data <- dup_colnames[c("new_name", "column")]
-  dup_data$column <- syms(dup_data$column)
+  dup_data$column_sym <- syms(dup_data$column)
 
   dup_nested <-
     vec_split(dup_data, dup_colnames$table) %>%
     set_names("table", "renames")
 
-  dup_nested$renames <- map(dup_nested$renames, deframe)
+  dup_nested$names <- map(dup_nested$renames, select, new_name, column)
+  dup_nested$renames <- map(dup_nested$renames, ~ deframe(select(., -column)))
   as_tibble(dup_nested)
 }
 
+
+#' Describe renaming of cols by printing code
+#'
+#' @param recipe created by `compute_disambiguate_cols_recipe`
+#' @noRd
 explain_col_rename <- function(recipe) {
   if (nrow(recipe) == 0) {
     return()
   }
 
-  msg_base <-
+  disambiguation <-
     recipe %>%
-    mutate(renames = map(renames, ~ enframe(., "new", "old"))) %>%
-    unnest_df("renames", tibble(new = character(), old = syms(character()))) %>%
-    nest(data = -old)
+    unnest(names) %>%
+    mutate(text = glue("dm_rename({tick_if_needed(table)}, {tick_if_needed(new_name)} = {tick_if_needed(column)})")) %>%
+    pull(text)
 
-  sub_text <- map_chr(msg_base$data, ~ paste0(.x$new, collapse = ", "))
-  msg_core <- paste0("* ", msg_base$old, " -> ", sub_text)
-
-  message("Renamed columns:\n", paste(msg_core, collapse = "\n"))
+  message("Renaming ambiguous columns: %>%\n  ", glue_collapse(disambiguation, " %>%\n  "))
 }
 
 col_rename <- function(dm, recipe) {

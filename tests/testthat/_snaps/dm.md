@@ -30,7 +30,8 @@
 
     Code
       copy_to(nyc_comp(), mtcars, "car_table")
-    Warning <lifecycle_warning_deprecated>
+    Condition
+      Warning:
       `copy_to.dm()` was deprecated in dm 0.2.0.
       Use `copy_to(dm_get_con(dm), ...)` and `dm_add_tbl()`.
     Output
@@ -60,29 +61,29 @@
         dm_get_def()
     Output
       # A tibble: 5 x 9
-        table  data    segment display      pks     fks filters zoom  col_tracker_zoom
-        <chr>  <list>  <chr>   <chr>   <list<t> <list<> <list<> <lis> <list>          
-      1 airli~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      2 airpo~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      3 fligh~ <tibbl~ <NA>    <NA>     [0 x 1] [0 x 3] [0 x 2] <NUL~ <NULL>          
-      4 planes <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      5 weath~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+        table data     segment display     pks     fks filters zoom   col_tracker_zoom
+        <chr> <list>   <chr>   <chr>   <list<> <list<> <list<> <list> <list>          
+      1 airl~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
+      2 airp~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
+      3 flig~ <tibble> <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL>          
+      4 plan~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
+      5 weat~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% mutate(origin_new = paste0(origin,
         " airport")) %>% compute() %>% dm_update_zoomed() %>% collect() %>%
         dm_get_def()
     Output
       # A tibble: 5 x 9
-        table  data    segment display      pks     fks filters zoom  col_tracker_zoom
-        <chr>  <list>  <chr>   <chr>   <list<t> <list<> <list<> <lis> <list>          
-      1 airli~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      2 airpo~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      3 fligh~ <tibbl~ <NA>    <NA>     [0 x 1] [0 x 3] [0 x 2] <NUL~ <NULL>          
-      4 planes <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
-      5 weath~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 3] [0 x 2] <NUL~ <NULL>          
+        table data     segment display     pks     fks filters zoom   col_tracker_zoom
+        <chr> <list>   <chr>   <chr>   <list<> <list<> <list<> <list> <list>          
+      1 airl~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
+      2 airp~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
+      3 flig~ <tibble> <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL>          
+      4 plan~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
+      5 weat~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()
-    Message <simpleMessage>
+    Message
       Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.
     Output
       # A tibble: 144 x 15
@@ -136,4 +137,138 @@
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
       # ... with 134 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
       #   pressure <dbl>, visib <dbl>, time_hour <dttm>
+
+# glimpse.dm() works
+
+    Code
+      glimpse(empty_dm())
+    Output
+      dm of 0 tables
+    Code
+      glimpse(dm_for_disambiguate())
+    Output
+      dm of 3 tables: `iris_1`, `iris_2`, `iris_3`
+      
+      Table: `iris_1`
+      Primary key: (`key`)
+      Rows: 150
+      Columns: 6
+      $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
+      $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.~
+      $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
+      $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.~
+      $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.~
+      $ Species      <fct> setosa, setosa, setosa, setosa, setosa, setosa, setosa, s~
+      
+      Table: `iris_2`
+      1 outgoing foreign key(s):
+        (`key`) -> (`iris_1$key`) no_action
+      Rows: 150
+      Columns: 7
+      $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
+      $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.~
+      $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
+      $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.~
+      $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.~
+      $ Species      <fct> setosa, setosa, setosa, setosa, setosa, setosa, setosa, s~
+      $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
+      
+      Table: `iris_3`
+      Rows: 150
+      Columns: 8
+      $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
+      $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.~
+      $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
+      $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.~
+      $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.~
+      $ Species      <fct> setosa, setosa, setosa, setosa, setosa, setosa, setosa, s~
+      $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
+      $ one_more_col <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
+    Code
+      glimpse(dm_for_disambiguate(), width = 40)
+    Output
+      dm of 3 tables: `iris_1`, `iris_2`, `iri...
+      
+      Table: `iris_1`
+      Primary key: (`key`)
+      Rows: 150
+      Columns: 6
+      $ key          <int> 1, 2, 3, 4, 5, 6,~
+      $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.~
+      $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.~
+      $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.~
+      $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.~
+      $ Species      <fct> setosa, setosa, s~
+      
+      Table: `iris_2`
+      1 outgoing foreign key(s):
+        (`key`) -> (`iris_1$key`) no_action
+      Rows: 150
+      Columns: 7
+      $ key          <int> 1, 2, 3, 4, 5, 6,~
+      $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.~
+      $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.~
+      $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.~
+      $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.~
+      $ Species      <fct> setosa, setosa, s~
+      $ other_col    <int> 1, 1, 1, 1, 1, 1,~
+      
+      Table: `iris_3`
+      Rows: 150
+      Columns: 8
+      $ key          <int> 1, 2, 3, 4, 5, 6,~
+      $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.~
+      $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.~
+      $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.~
+      $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.~
+      $ Species      <fct> setosa, setosa, s~
+      $ other_col    <int> 1, 1, 1, 1, 1, 1,~
+      $ one_more_col <dbl> 1, 1, 1, 1, 1, 1,~
+    Code
+      getOption("width")
+    Output
+      [1] 80
+    Code
+      glimpse(dm_for_disambiguate() %>% dm_rename(iris_1,
+        gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd = key) %>%
+        dm_rename_tbl(
+          gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd = iris_1))
+    Output
+      dm of 3 tables: `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrj...
+      
+      Table: `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoie...
+      Primary key: (`gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjih...
+      Rows: 150
+      Columns: 6
+      $ gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd <int> ~
+      $ Sepal.Length                                                                                                                                          <dbl> ~
+      $ Sepal.Width                                                                                                                                           <dbl> ~
+      $ Petal.Length                                                                                                                                          <dbl> ~
+      $ Petal.Width                                                                                                                                           <dbl> ~
+      $ Species                                                                                                                                               <fct> ~
+      
+      Table: `iris_2`
+      1 outgoing foreign key(s):
+        (`key`) -> (`gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjih...
+      Rows: 150
+      Columns: 7
+      $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
+      $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.~
+      $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
+      $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.~
+      $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.~
+      $ Species      <fct> setosa, setosa, setosa, setosa, setosa, setosa, setosa, s~
+      $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
+      
+      Table: `iris_3`
+      Rows: 150
+      Columns: 8
+      $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
+      $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.~
+      $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
+      $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.~
+      $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.~
+      $ Species      <fct> setosa, setosa, setosa, setosa, setosa, setosa, setosa, s~
+      $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
+      $ one_more_col <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
 

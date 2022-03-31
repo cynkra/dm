@@ -25,10 +25,12 @@ test_that("`dm_set_colors()` works", {
       dm_get_colors()
   })
 
+  skip_if_not_installed("testthat", "3.1.1")
+
   colset <- c(blue = "flights", green = "airports")
 
   # test splicing
-  expect_snapshot({
+  expect_snapshot(variant = if (packageVersion("testthat") > "3.1.0") "testthat-new" else "testthat-legacy", {
     dm_nycflights_small() %>%
       dm_set_colors(!!!colset) %>%
       dm_get_colors()
@@ -127,20 +129,8 @@ test_that("helpers", {
 test_that("output", {
   skip_if_not_installed("DiagrammeRsvg")
   skip_if_not_installed("nycflights13")
+  skip_if_not_installed("testthat", "3.1.1")
 
-  # Loose table
-  expect_snapshot_diagram(
-    dm_nycflights13(compound = FALSE) %>%
-      dm_draw(),
-    "nycflight-dm-loose.svg"
-  )
-
-  # Default view
-  expect_snapshot_diagram(
-    dm_nycflights13() %>%
-      dm_draw(),
-    "nycflight-dm.svg"
-  )
 
   # 444: types
   expect_snapshot_diagram(
@@ -149,19 +139,30 @@ test_that("output", {
     "nycflight-dm-types.svg"
   )
 
-  # Multi-fk (#37)
   expect_snapshot_diagram(
-    dm_nycflights13() %>%
+    dm_nycflights13(cycle = TRUE) %>%
       dm_zoom_to(planes) %>%
+      # Multi-fk (#37)
       dm_insert_zoomed("planes_copy") %>%
+      # Loose table
+      dm_add_tbl(loose = tibble(a = 1)) %>%
+      # Non-default fk (#402)
+      dm_add_tbl(agency = tibble(airline_name = character())) %>%
+      dm_add_fk(agency, airline_name, airlines, name) %>%
       dm_draw(),
-    "nycflight-dm-copy.svg"
+    "nycflight-dm.svg"
   )
 
-  # Non-default fk (#402)
+  # empty table corner cases
   expect_snapshot_diagram(
-    dm_for_filter() %>%
+    dm(a = tibble()) %>%
       dm_draw(),
-    "dm-for-filter.svg"
+    "single-empty-table-dm.svg"
+  )
+
+  expect_snapshot_diagram(
+    dm(x = tibble(a = 1), y = tibble(b = 1), a = tibble()) %>%
+      dm_draw(view_type = "all"),
+    "empty-table-in-dm.svg"
   )
 })

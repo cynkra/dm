@@ -164,9 +164,7 @@ test_that("Learning from SQLite works (#288)?", {
 
 
 test_that("'schema_if()' works", {
-  skip_if_local_src()
-
-  con_db <- my_test_src()$con
+  con_db <- my_db_test_src()$con
 
   # all 3 naming parameters set ('table' is required)
   expect_match(
@@ -239,7 +237,7 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
   DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_1] ALTER COLUMN [b] INTEGER NOT NULL")
   DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_1] ADD PRIMARY KEY ([b])")
   # set FK relation
-  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dbo].[test_1] ([b]) ON DELETE CASCADE ON UPDATE CASCADE")
+  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dbo].[test_1] ([b]) ON DELETE NO ACTION ON UPDATE NO ACTION")
 
 
   # test 'get_src_tbl_names()'
@@ -258,7 +256,7 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
     test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
 
-  dm_db_learned <- expect_message(dm_from_src(src_db, dbname = "test_database_dm"))
+  expect_message(dm_db_learned <- dm_from_src(src_db, dbname = "test_database_dm"))
   dm_learned <- dm_db_learned %>% collect()
   expect_equivalent_dm(
     dm_learned,
@@ -314,7 +312,7 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
   # set FK relation
   DBI::dbExecute(
     con_db,
-    "ALTER TABLE [test_database_dm].[dm_test].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dm_test].[test_1] ([b]) ON DELETE CASCADE ON UPDATE CASCADE"
+    "ALTER TABLE [test_database_dm].[dm_test].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dm_test].[test_1] ([b]) ON DELETE NO ACTION ON UPDATE NO ACTION"
   )
 
 
@@ -342,10 +340,10 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
 
-  dm_db_learned <- expect_message(dm_from_src(src_db, schema = "dm_test", dbname = "test_database_dm"))
+  expect_message(dm_db_learned <- dm_from_src(src_db, schema = "dm_test", dbname = "test_database_dm"))
   dm_learned <- dm_db_learned %>% collect()
   expect_equivalent_dm(
-    dm_learned,
+    dm_learned[c("test_1", "test_2")],
     dm_local_no_keys %>%
       dm_add_pk(test_1, b) %>%
       dm_add_fk(test_2, c, test_1)

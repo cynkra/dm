@@ -31,15 +31,15 @@
 dm_examine_constraints <- function(dm, progress = NA) {
   check_not_zoomed(dm)
   dm %>%
-    dm_examine_constraints_impl(progress = progress) %>%
+    dm_examine_constraints_impl(progress = progress, top_level_fun = "dm_examine_constraints") %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns)) %>%
     new_dm_examine_constraints()
 }
 
-dm_examine_constraints_impl <- function(dm, progress = NA) {
-  pk_results <- check_pk_constraints(dm, progress)
-  fk_results <- check_fk_constraints(dm, progress)
+dm_examine_constraints_impl <- function(dm, progress = NA, top_level_fun = NULL) {
+  pk_results <- check_pk_constraints(dm, progress, top_level_fun = top_level_fun)
+  fk_results <- check_fk_constraints(dm, progress, top_level_fun = top_level_fun)
   bind_rows(
     pk_results,
     fk_results
@@ -75,7 +75,7 @@ print.dm_examine_constraints <- function(x, ...) {
       # FIXME: Use cli styles
       mutate(text = paste0(
         "Table ", tick(table), ": ",
-        kind_to_long(kind), " ", format(columns),
+        kind_to_long(kind), " ", format(map(problem_df$columns, tick)),
         into,
         ": ", problem
       )) %>%
@@ -90,7 +90,7 @@ kind_to_long <- function(kind) {
   if_else(kind == "PK", "primary key", "foreign key")
 }
 
-check_pk_constraints <- function(dm, progress = NA) {
+check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
   pks <- dm_get_all_pks_impl(dm)
   if (nrow(pks) == 0) {
     return(tibble(
@@ -103,9 +103,15 @@ check_pk_constraints <- function(dm, progress = NA) {
     ))
   }
   table_names <- pks$table
-  columns     <- pks$pk_col
+  columns <- pks$pk_col
 
-  ticker <- new_ticker("checking pk constraints", length(table_names), progress = progress)
+  ticker <- new_ticker(
+    "checking pk constraints",
+    n = length(table_names),
+    progress = progress,
+    top_level_fun = top_level_fun
+  )
+
   candidates <- map2(set_names(table_names), columns, ticker(~ {
     tbl <- tbl_impl(dm, .x)
     enum_pk_candidates_impl(tbl, list(.y))
@@ -125,15 +131,20 @@ check_pk_constraints <- function(dm, progress = NA) {
     left_join(tbl_is_pk, by = c("table", "column"))
 }
 
-check_fk_constraints <- function(dm, progress = NA) {
+check_fk_constraints <- function(dm, progress = NA, top_level_fun = top_level_fun) {
   fks <- dm_get_all_fks_impl(dm)
-  pts <- pull(fks, parent_table) %>% map(tbl_impl, dm = dm)
-  cts <- pull(fks, child_table) %>% map(tbl_impl, dm = dm)
+  pts <- map(fks$parent_table, tbl_impl, dm = dm)
+  cts <- map(fks$child_table, tbl_impl, dm = dm)
   fks_tibble <-
     mutate(fks, t1 = cts, t2 = pts) %>%
     select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = parent_key_cols)
 
-  ticker <- new_ticker("checking pk constraints", nrow(fks_tibble), progress = progress)
+  ticker <- new_ticker(
+    "checking fk constraints",
+    n = nrow(fks_tibble),
+    progress = progress,
+    top_level_fun = top_level_fun
+  )
 
   fks_tibble %>%
     mutate(

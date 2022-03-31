@@ -2,7 +2,7 @@
 on:
   push:
     branches:
-      - "revdep*"
+      - "revdep*" # never run automatically on main branch
 
 name: revdep
 
@@ -107,11 +107,12 @@ jobs:
           if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
         shell: Rscript {0}
 
-      - uses: r-lib/actions/setup-pandoc@v1
+      - uses: r-lib/actions/setup-pandoc@v2
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
+          sudo apt-get update -y
           Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "18.04")); package <- "${{ matrix.package }}"; deps <- tools::package_dependencies(package, which = "Suggests")[[1]]; lapply(c(package, deps), function(x) { writeLines(remotes::system_requirements("ubuntu", "18.04", package = x)) })' | sort | uniq > .github/deps.sh
           cat .github/deps.sh
           sudo sh < .github/deps.sh

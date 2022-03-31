@@ -177,6 +177,7 @@ test_that("dm_rm_fk() works with partial matching", {
 
 
 test_that("dm_enum_fk_candidates() works as intended?", {
+  skip_if_ide()
 
   # `anti_join()` doesn't distinguish between `dbl` and `int`
   tbl_fk_candidates_tf_1_tf_4 <- tribble(
@@ -247,4 +248,23 @@ test_that("enum_fk_candidates() works properly", {
       dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1)
     )
   )
+})
+
+test_that("can add foreign key with cascade", {
+  expect_snapshot({
+    dm(a = tibble(x = 1), b = tibble(x = 1)) %>%
+      dm_add_fk(a, x, b, x, on_delete = "cascade") %>%
+      dm_get_all_fks()
+  })
+})
+
+test_that("bogus arguments are rejected", {
+  skip_if_not_installed("rlang", "0.99.0.9000")
+
+  expect_snapshot(error = TRUE, {
+    dm(a = tibble(x = 1), b = tibble(x = 1)) %>%
+      dm_add_fk(a, x, b, x, on_delete = "bogus")
+    dm(a = tibble(x = 1), b = tibble(x = 1)) %>%
+      dm_add_fk(a, x, b, x, on_delete = letters)
+  })
 })

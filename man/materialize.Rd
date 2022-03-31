@@ -8,12 +8,16 @@
 \usage{
 \method{compute}{dm}(x, ...)
 
-\method{collect}{dm}(x, ...)
+\method{collect}{dm}(x, ..., progress = NA)
 }
 \arguments{
 \item{x}{A \code{dm}.}
 
 \item{...}{Passed on to \code{\link[=compute]{compute()}}.}
+
+\item{progress}{Whether to display a progress bar, if \code{NA} (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.}
 }
 \value{
 A \code{dm} object of the same structure as the input.

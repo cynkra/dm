@@ -90,23 +90,26 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #' @rdname dm
 #' @export
 new_dm <- function(tables = list()) {
+  new_dm2(tables)
+}
+
+new_dm2 <- function(tables = list(),
+                    pks = structure(list(), names = character()),
+                    fks = structure(list(), names = character()),
+                    validate = TRUE) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
+
+  stopifnot(!is.null(names(pks)), all(names(pks) %in% table))
+  stopifnot(!is.null(names(fks)), all(names(fks) %in% table))
+
   zoom <- new_zoom()
   col_tracker_zoom <- new_col_tracker_zoom()
 
-  pks <-
-    tibble(
-      table = table,
-      pks = list_of(new_pk())
-    )
+  pks_df <- enframe(pks, "table", "pks")
 
-  fks <-
-    tibble(
-      table = table,
-      fks = list_of(new_fk())
-    )
+  fks_df <- enframe(fks, "table", "fks")
 
   filters <-
     tibble(
@@ -116,13 +119,15 @@ new_dm <- function(tables = list()) {
 
   def <-
     tibble(table, data, segment = NA_character_, display = NA_character_) %>%
-    left_join(pks, by = "table") %>%
-    left_join(fks, by = "table") %>%
-    left_join(filters, by = "table") %>%
+    left_join(pks_df, by = "table") %>%
+    mutate(pks = as_list_of(map(pks, `%||%`, new_pk()), .ptype = new_pk())) %>%
+    left_join(fks_df, by = "table") %>%
+    mutate(fks = as_list_of(map(fks, `%||%`, new_fk()), .ptype = new_fk())) %>%
+    mutate(filters = list_of(new_filter())) %>%
     left_join(zoom, by = "table") %>%
     left_join(col_tracker_zoom, by = "table")
 
-  new_dm3(def, validate = FALSE)
+  new_dm3(def, validate = validate)
 }
 
 new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
@@ -130,18 +135,20 @@ new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
     if (zoomed) "zoomed_dm",
     "dm"
   )
-  out <- structure(list(def = def), class = class, version = 1L)
+  out <- structure(list(def = def), class = class, version = 2L)
 
-  # Enable for strict tests:
-  # if (validate) {
-  #   validate_dm(out)
-  # }
+  # Enable for strict tests (search for INSTRUMENT in .github/workflows):
+  # if (validate) { validate_dm(out) } # INSTRUMENT: validate
 
   out
 }
 
 dm_get_def <- function(x, quiet = FALSE) {
-  if (!identical(attr(x, "version"), 1L)) {
+  # FIXME: Move that check to callers, for speed
+  # Most callers already call it, but not all
+  check_dm(x)
+
+  if (!identical(attr(x, "version"), 2L)) {
     x <- dm_upgrade(x, quiet)
   }
   unclass(x)$def
@@ -152,9 +159,9 @@ new_pk <- function(column = list()) {
   tibble(column = column)
 }
 
-new_fk <- function(ref_column = list(), table = character(), column = list()) {
-  stopifnot(is.list(column), is.list(ref_column), length(table) == length(column), length(table) == length(ref_column))
-  tibble(ref_column = ref_column, table = table, column = column)
+new_fk <- function(ref_column = list(), table = character(), column = list(), on_delete = character()) {
+  stopifnot(is.list(column), is.list(ref_column), length(table) == length(column), length(table) == length(ref_column), length(on_delete) %in% c(1L, length(table)))
+  tibble(ref_column, table, column, on_delete)
 }
 
 new_filter <- function(quos = list(), zoomed = logical()) {
@@ -276,7 +283,7 @@ dm_get_zoom <- function(x, cols = c("table", "zoom"), quiet = FALSE) {
   # Performance
   def <- dm_get_def(x, quiet)
   zoom <- def$zoom
-  where <- which(lengths(zoom) != 0)
+  where <- which(!map_lgl(zoom, is.null))
   if (length(where) != 1) {
     # FIXME: Better error message?
     abort_not_pulling_multiple_zoomed()
@@ -614,13 +621,17 @@ compute.dm <- function(x, ...) { # for both dm and zoomed_dm
 #'
 #' `collect()` downloads the tables in a `dm` object as local [tibble]s.
 #'
+#' @inheritParams dm_examine_constraints
+#'
 #' @rdname materialize
 #' @export
-collect.dm <- function(x, ...) { # for both dm and zoomed_dm
+collect.dm <- function(x, ..., progress = NA) { # for both dm and zoomed_dm
   x <- dm_apply_filters(x)
 
   def <- dm_get_def(x)
-  def$data <- map(def$data, collect, ...)
+
+  ticker <- new_ticker("downloading data", nrow(def), progress = progress)
+  def$data <- map(def$data, ticker(collect), ...)
   new_dm3(def, zoomed = is_zoomed(x))
 }
 
@@ -740,4 +751,58 @@ as.list.dm <- function(x, ...) { # for both dm and zoomed_dm
 #' @export
 as.list.zoomed_dm <- function(x, ...) {
   as.list(tbl_zoomed(x))
+}
+
+#' @export
+glimpse.dm <- function(x, width = NULL, ...) {
+  glimpse_width <- if (is.null(width)) {
+    getOption("width")
+  } else {
+    width
+  }
+  table_list <- dm_get_tables_impl(x)
+  if (length(table_list) == 0) {
+    cat_line(trim_width("dm of 0 tables", glimpse_width))
+    return(invisible(x))
+  }
+  cat_line(
+    trim_width(
+      paste0("dm of ", length(table_list), " tables: ", toString(tick(names(table_list)))),
+      glimpse_width
+    )
+  )
+
+  all_fks <- dm_get_all_fks_impl(x)
+  iwalk(table_list, function(table, table_name) {
+    cat_line("\n", trim_width(paste0("Table: ", tick(table_name)), glimpse_width))
+    pk <- dm_get_pk_impl(x, table_name) %>%
+      map_chr(~ paste0("(", paste0(tick(.x), collapse = ", "), ")"))
+    if (!is_empty(pk)) {
+      # FIXME: needs to change if #622 is solved
+      cat_line(trim_width(paste0("Primary key: ", pk), glimpse_width))
+    }
+    fk <- all_fks %>%
+      filter(child_table == table_name) %>%
+      select(-child_table) %>%
+      pmap_chr(
+        function(child_fk_cols, parent_table, parent_key_cols, on_delete) {
+          trim_width(
+            paste0(
+              "  (",
+              paste0(tick(child_fk_cols), collapse = ", "), ")",
+              " -> ",
+              "(`", paste0(parent_table, "$", parent_key_cols, collapse = "`, `"), "`) ",
+              on_delete
+            ),
+            glimpse_width
+          )
+        }
+      )
+    if (!is_empty(fk)) {
+      cat_line(length(fk), " outgoing foreign key(s):")
+      cat_line(fk)
+    }
+    glimpse(table, width = width, ...)
+  })
+  invisible(x)
 }
