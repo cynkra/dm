@@ -11,9 +11,9 @@
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_insert(data, test_db_src_frame(select = 4, where = "z"))
+      rows_insert(data, test_db_src_frame(select = 4, where = "z"), conflict = "ignore")
     Message
-      Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.
+      Matching, by = "select"
     Output
         select where exists
          <dbl> <chr>  <dbl>
@@ -44,12 +44,15 @@
       3      3 <NA>     2.5
     Code
       writeLines(conditionMessage(expect_error(rows_insert(data, tibble(select = 4,
-        where = "z")))))
+        where = "z"), conflict = "ignore"))))
     Output
       `x` and `y` must share the same src.
       i set `copy` = TRUE (may be slow).
     Code
-      rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = FALSE)
+      rows_insert(data, test_db_src_frame(select = 4, where = "z"), conflict = "ignore",
+      in_place = FALSE)
+    Message
+      Matching, by = "select"
     Output
         select where exists
          <dbl> <chr>  <dbl>
@@ -67,6 +70,10 @@
       3      3 <NA>     2.5
     Code
       rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = TRUE)
+    Message
+      Matching, by = "select"
+      Duplicated rows only produce an error if there is a unique constraint on `x`.
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -77,6 +84,8 @@
       4      4 z       NA  
     Code
       rows_delete(data, test_db_src_frame(select = 2), in_place = FALSE)
+    Message
+      Matching, by = "select"
     Output
         select where exists
          <int> <chr>  <dbl>
@@ -94,6 +103,9 @@
       4      4 z       NA  
     Code
       rows_delete(data, test_db_src_frame(select = 2), in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -131,6 +143,8 @@
     Code
       rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = "where",
       in_place = FALSE)
+    Message
+      Ignoring extra `y` columns: `select`
     Output
         select where exists
          <int> <chr>  <dbl>
@@ -148,6 +162,9 @@
     Code
       rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = "where",
       in_place = TRUE)
+    Message
+      Ignoring extra `y` columns: `select`
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -157,6 +174,9 @@
       3      4 z       NA  
     Code
       rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), in_place = FALSE)
+    Message
+      Matching, by = "select"
+      Ignoring extra `y` columns: `where`
     Output
         select where exists
          <int> <chr>  <dbl>
@@ -171,6 +191,10 @@
       3      4 z       NA  
     Code
       rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), in_place = TRUE)
+    Message
+      Matching, by = "select"
+      Ignoring extra `y` columns: `where`
+    Code
       data %>% arrange(select)
     Output
         select where exists

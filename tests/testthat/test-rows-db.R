@@ -5,7 +5,7 @@ test_that("insert + delete + truncate message", {
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
     data
 
-    rows_insert(data, test_db_src_frame(select = 4, where = "z"))
+    rows_insert(data, test_db_src_frame(select = 4, where = "z"), conflict = "ignore")
     data %>% arrange(select)
   })
 })
@@ -18,9 +18,9 @@ test_that("insert + delete + truncate", {
     data
 
     writeLines(conditionMessage(expect_error(
-      rows_insert(data, tibble(select = 4, where = "z"))
+      rows_insert(data, tibble(select = 4, where = "z"), conflict = "ignore")
     )))
-    rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = FALSE)
+    rows_insert(data, test_db_src_frame(select = 4, where = "z"), conflict = "ignore", in_place = FALSE)
     data %>% arrange(select)
     rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = TRUE)
     data %>% arrange(select)
@@ -97,7 +97,7 @@ test_that("insert + delete with returning argument and in_place = FALSE", {
   skip_if_src(c("df", "sqlite"))
   skip_if(packageVersion("dbplyr") > "2.1.1")
   expect_equal(
-    rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), conflict = "ignore", in_place = FALSE, returning = quote(everything())) %>%
       dbplyr::get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA_real_)
   )
@@ -110,8 +110,10 @@ test_that("insert + delete with returning argument and in_place = FALSE, SQLite 
   # sqlite isn't type stable, perhaps the underlying query has changed in a subtle way
   skip_if_src_not(c("df", "sqlite"))
   skip_if(packageVersion("dbplyr") <= "2.1.1")
+  skip_if(packageVersion("dbplyr") > "2.1.1")
+
   expect_equal(
-    rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), conflict = "ignore", in_place = FALSE, returning = quote(everything())) %>%
       dbplyr::get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA)
   )
