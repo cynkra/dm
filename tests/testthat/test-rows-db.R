@@ -59,7 +59,7 @@ test_that("insert + delete with returning argument (#607)", {
 
   expect_equal(
     rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = quote(everything())) %>%
-      get_returned_rows(),
+      dbplyr::get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA_real_)
   )
 
@@ -68,19 +68,19 @@ test_that("insert + delete with returning argument (#607)", {
     if (packageVersion("dplyr") >= "1.0.7.9000") NA else "returning"
   )
   expect_equal(
-    get_returned_rows(out),
+    dbplyr::get_returned_rows(out),
     tibble(select = 4L, where = "z", exists = NA_real_)
   )
 
   expect_equal(
     rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = quote(c(sl = select))) %>%
-      get_returned_rows(),
+      dbplyr::get_returned_rows(),
     tibble(sl = 4L)
   )
 
   expect_equal(
     rows_delete(target, test_db_src_frame(where = "z"), in_place = TRUE, returning = quote(select)) %>%
-      get_returned_rows(),
+      dbplyr::get_returned_rows(),
     tibble(select = rep(4L, 3))
   )
 })
@@ -90,7 +90,7 @@ test_that("insert + delete with returning argument and in_place = FALSE", {
 
   expect_equal(
     rows_delete(target, test_db_src_frame(select = 3:4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
-      get_returned_rows(),
+      dbplyr::get_returned_rows(),
     tibble(select = 3L, where = NA_character_, exists = 2.5)
   )
 
@@ -98,7 +98,7 @@ test_that("insert + delete with returning argument and in_place = FALSE", {
   skip_if(packageVersion("dbplyr") > "2.1.1")
   expect_equal(
     rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
-      get_returned_rows(),
+      dbplyr::get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA_real_)
   )
 })
@@ -112,7 +112,7 @@ test_that("insert + delete with returning argument and in_place = FALSE, SQLite 
   skip_if(packageVersion("dbplyr") <= "2.1.1")
   expect_equal(
     rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
-      get_returned_rows(),
+      dbplyr::get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA)
   )
 })
@@ -180,7 +180,7 @@ test_that("update with returning argument (#607)", {
     suppressMessages(
       rows_update(target, y, copy = TRUE, in_place = FALSE, returning = quote(everything()))
     ) %>%
-      get_returned_rows() %>%
+      dbplyr::get_returned_rows() %>%
       arrange(select),
     expected
   )
@@ -195,7 +195,7 @@ test_that("update with returning argument (#607)", {
     suppressMessages(
       rows_update(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything()))
     ) %>%
-      get_returned_rows() %>%
+      dbplyr::get_returned_rows() %>%
       arrange(select),
     expected
   )
@@ -210,7 +210,7 @@ test_that("patch with returning argument (#607)", {
     suppressMessages(
       rows_patch(target, y, copy = TRUE, in_place = FALSE, returning = quote(everything()))
     ) %>%
-      get_returned_rows() %>%
+      dbplyr::get_returned_rows() %>%
       arrange(select),
     expected
   )
@@ -225,7 +225,7 @@ test_that("patch with returning argument (#607)", {
     suppressMessages(
       rows_patch(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything()))
     ) %>%
-      get_returned_rows() %>%
+      dbplyr::get_returned_rows() %>%
       arrange(select),
     expected
   )
@@ -289,7 +289,7 @@ test_that("upsert with returning argument (#607)", {
 
   expect_equal(
     rows_upsert(target, y, copy = TRUE, in_place = FALSE, returning = quote(everything())) %>%
-      get_returned_rows(),
+      dbplyr::get_returned_rows(),
     expected
   )
 
@@ -305,7 +305,7 @@ test_that("upsert with returning argument (#607)", {
     suppressMessages(
       rows_upsert(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything()))
     ) %>%
-      get_returned_rows() %>%
+      dbplyr::get_returned_rows() %>%
       arrange(select),
     expected
   )
