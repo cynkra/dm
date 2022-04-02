@@ -248,6 +248,9 @@
       3      3 <NA>     2.5
     Code
       rows_update(data, test_db_src_frame(select = 2:3, where = "w"), in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -258,6 +261,9 @@
     Code
       rows_update(data, test_db_src_frame(select = 2, where = "w", exists = 3.5),
       in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -267,6 +273,9 @@
       3      3 w        2.5
     Code
       rows_update(data, test_db_src_frame(select = 2:3), in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -340,6 +349,9 @@
       3      3 <NA> 
     Code
       rows_patch(data, test_db_src_frame(select = 2:3, where = "patched"), in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where  
@@ -350,6 +362,9 @@
     Code
       data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)])
       rows_patch(data, test_db_src_frame(select = 2:3), in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where
@@ -383,6 +398,8 @@
     Code
       rows_upsert(data, tibble(select = 2:4, where = c("x", "y", "z")), copy = TRUE,
       in_place = FALSE)
+    Message
+      Matching, by = "select"
     Output
         select where exists
          <int> <chr>  <dbl>
@@ -392,6 +409,8 @@
       4      4 z       NA  
     Code
       rows_upsert(data, tibble(select = 2:4), copy = TRUE, in_place = FALSE)
+    Message
+      Matching, by = "select"
     Output
         select where exists
          <int> <chr>  <dbl>
@@ -428,6 +447,9 @@
     Code
       rows_upsert(data, test_db_src_frame(select = 2:4, where = c("x", "y", "z")),
       in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -439,6 +461,9 @@
     Code
       rows_upsert(data, test_db_src_frame(select = 4:5, where = c("o", "p"), exists = 3.5),
       in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -450,6 +475,9 @@
       5      5 p        3.5
     Code
       rows_upsert(data, test_db_src_frame(select = 2:3), in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
