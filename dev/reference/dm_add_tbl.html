@@ -18,7 +18,7 @@ Existing tables are not overwritten."><meta property="og:image" content="https:/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.7.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.7.9003</span>
       </span>
     </div>
 
@@ -139,7 +139,9 @@ Instead, an error is raised if the names don't suit the
 <dd><p>By default, the user is informed of any renaming
 caused by repairing the names. This only concerns unique and
 universal repairing. Set <code>quiet</code> to <code>TRUE</code> to silence the
-messages.</p></dd>
+messages.</p>
+<p>Users can silence the name repair messages by setting the
+<code>"rlib_name_repair_verbosity"</code> global option to <code>"quiet"</code>.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -164,8 +166,8 @@ messages.</p></dd>
 <span class="r-in"><span class="fu"><a href="dm.html">dm</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dm_add_tbl</span><span class="op">(</span>new_tbl <span class="op">=</span> <span class="va">mtcars</span>, new_tbl <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> New names:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * new_tbl -&gt; new_tbl...1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * new_tbl -&gt; new_tbl...2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `new_tbl` -&gt; `new_tbl...1`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `new_tbl` -&gt; `new_tbl...2`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `new_tbl...1`, `new_tbl...2`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 16</span>

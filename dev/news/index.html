@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.7.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.7.9003</span>
       </span>
     </div>
 
@@ -103,6 +103,15 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.7.9003" id="dm-0279003">dm 0.2.7.9003<a class="anchor" aria-label="anchor" href="#dm-0279003"></a></h2>
+<ul><li>Remove extra spaces in output when examining constraints with compound keys (<a href="https://github.com/cynkra/dm/issues/868" class="external-link">#868</a>).</li>
+<li>
+<code><a href="../reference/pack_join.html">pack_join()</a></code> works correctly if <code>name</code> is the same as an existing column in either table. In some cases a column is overwritten, this is consistent with <code><a href="https://dplyr.tidyverse.org/reference/nest_join.html" class="external-link">nest_join()</a></code> behavior (<a href="https://github.com/cynkra/dm/issues/864" class="external-link">#864</a>, <a href="https://github.com/cynkra/dm/issues/865" class="external-link">#865</a>).</li>
+<li>
+<code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code> uses the color from the zoomed table for the new table (<a href="https://github.com/cynkra/dm/issues/750" class="external-link">#750</a>, <a href="https://github.com/cynkra/dm/issues/863" class="external-link">#863</a>).</li>
+<li>Fix column tracking for foreign keys (<a href="https://github.com/cynkra/dm/issues/856" class="external-link">#856</a>, <a href="https://github.com/cynkra/dm/issues/857" class="external-link">#857</a>).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.7.9002" id="dm-0279002">dm 0.2.7.9002<a class="anchor" aria-label="anchor" href="#dm-0279002"></a></h2>
 <ul><li>Messages that suggest the installation of optional packages are shown only once per session (<a href="https://github.com/cynkra/dm/issues/852" class="external-link">#852</a>).</li>
