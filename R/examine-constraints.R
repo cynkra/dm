@@ -83,7 +83,8 @@ print.dm_examine_constraints <- function(x, ...) {
       # FIXME: Use cli styles
       mutate(text = paste0(
         "Table ", tick(table), ": ",
-        kind_to_long(kind), " ", format(map(problem_df$columns, tick)),
+        kind_to_long(kind), " ",
+        format(map(problem_df$columns, tick), justify = "none"),
         into,
         ": ", problem
       )) %>%
