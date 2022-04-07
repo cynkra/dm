@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Tutorials
      
     <span class="caret"></span>
@@ -51,7 +51,7 @@
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Technical articles
      
     <span class="caret"></span>
@@ -104,7 +104,38 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.7" id="dm-027">dm 0.2.7<a class="anchor" aria-label="anchor" href="#dm-027"></a></h2>
+<h2 class="page-header" data-toc-text="0.2.8" id="dm-028">dm 0.2.8<a class="anchor" aria-label="anchor" href="#dm-028"></a></h2>
+<ul><li>Same as previous version.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.7.9003" id="dm-0279003">dm 0.2.7.9003<a class="anchor" aria-label="anchor" href="#dm-0279003"></a></h2>
+<ul><li>Remove extra spaces in output when examining constraints with compound keys (<a href="https://github.com/cynkra/dm/issues/868" class="external-link">#868</a>).</li>
+<li>
+<code><a href="../reference/pack_join.html">pack_join()</a></code> works correctly if <code>name</code> is the same as an existing column in either table. In some cases a column is overwritten, this is consistent with <code><a href="https://dplyr.tidyverse.org/reference/nest_join.html" class="external-link">nest_join()</a></code> behavior (<a href="https://github.com/cynkra/dm/issues/864" class="external-link">#864</a>, <a href="https://github.com/cynkra/dm/issues/865" class="external-link">#865</a>).</li>
+<li>
+<code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code> uses the color from the zoomed table for the new table (<a href="https://github.com/cynkra/dm/issues/750" class="external-link">#750</a>, <a href="https://github.com/cynkra/dm/issues/863" class="external-link">#863</a>).</li>
+<li>Fix column tracking for foreign keys (<a href="https://github.com/cynkra/dm/issues/856" class="external-link">#856</a>, <a href="https://github.com/cynkra/dm/issues/857" class="external-link">#857</a>).</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.7.9002" id="dm-0279002">dm 0.2.7.9002<a class="anchor" aria-label="anchor" href="#dm-0279002"></a></h2>
+<ul><li>Messages that suggest the installation of optional packages are shown only once per session (<a href="https://github.com/cynkra/dm/issues/852" class="external-link">#852</a>).</li>
+<li>
+<code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> shows progress bars again (<a href="https://github.com/cynkra/dm/issues/850" class="external-link">#850</a>, <a href="https://github.com/cynkra/dm/issues/855" class="external-link">#855</a>).</li>
+<li>
+<code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> consumes less memory and is faster when writing to SQL Server (<a href="https://github.com/cynkra/dm/issues/855" class="external-link">#855</a>).</li>
+<li>Progress bars use the console width (<a href="https://github.com/cynkra/dm/issues/853" class="external-link">#853</a>).</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.7.9001" id="dm-0279001">dm 0.2.7.9001<a class="anchor" aria-label="anchor" href="#dm-0279001"></a></h2>
+<ul><li>Avoid calling <code><a href="https://dbi.r-dbi.org/reference/dbAppendTable.html" class="external-link">dbAppendTable()</a></code> for zero-row tables (<a href="https://github.com/cynkra/dm/issues/847" class="external-link">#847</a>).</li>
+<li>Require rlang 1.0.1 (<a href="https://github.com/cynkra/dm/issues/840" class="external-link">#840</a>).</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.7.9000" id="dm-0279000">dm 0.2.7.9000<a class="anchor" aria-label="anchor" href="#dm-0279000"></a></h2>
+<ul><li>Same as previous version.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.7" id="dm-027">dm 0.2.7<small>2022-02-03</small><a class="anchor" aria-label="anchor" href="#dm-027"></a></h2>
 <div class="section level3">
 <h3 id="features-0-2-7">Features<a class="anchor" aria-label="anchor" href="#features-0-2-7"></a></h3>
 <ul><li>New <code><a href="../reference/dm_wrap_tbl.html">dm_wrap_tbl()</a></code>, <code><a href="../reference/dm_unwrap_tbl.html">dm_unwrap_tbl()</a></code>, <code><a href="../reference/dm_nest_tbl.html">dm_nest_tbl()</a></code>, <code><a href="../reference/dm_unnest_tbl.html">dm_unnest_tbl()</a></code>, <code><a href="../reference/dm_pack_tbl.html">dm_pack_tbl()</a></code> and <code><a href="../reference/dm_unpack_tbl.html">dm_unpack_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/595" class="external-link">#595</a>, <a href="https://github.com/cynkra/dm/issues/733" class="external-link">#733</a>, <a href="https://github.com/cynkra/dm/issues/737" class="external-link">#737</a>).</li>
