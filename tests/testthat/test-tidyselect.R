@@ -19,6 +19,8 @@ test_that("tidyselecting tables works", {
 })
 
 test_that("output", {
+  skip_if_not_installed("vctrs", "0.4.0")
+
   expect_snapshot(error = TRUE, {
     dm_for_filter() %>%
       dm_select_tbl(tf_7)

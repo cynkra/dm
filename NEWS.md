@@ -1,5 +1,13 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.7.9003
+
+- Remove extra spaces in output when examining constraints with compound keys (#868).
+- `pack_join()` works correctly if `name` is the same as an existing column in either table. In some cases a column is overwritten, this is consistent with `nest_join()` behavior (#864, #865).
+- `dm_insert_zoomed()` uses the color from the zoomed table for the new table (#750, #863).
+- Fix column tracking for foreign keys (#856, #857).
+
+
 # dm 0.2.7.9002
 
 - Messages that suggest the installation of optional packages are shown only once per session (#852).

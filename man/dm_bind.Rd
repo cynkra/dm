@@ -30,7 +30,10 @@ Instead, an error is raised if the names don't suit the
 \item{quiet}{By default, the user is informed of any renaming
 caused by repairing the names. This only concerns unique and
 universal repairing. Set \code{quiet} to \code{TRUE} to silence the
-messages.}
+messages.
+
+Users can silence the name repair messages by setting the
+\code{"rlib_name_repair_verbosity"} global option to \code{"quiet"}.}
 }
 \value{
 \code{dm} containing the tables and key relations of all \code{dm} objects.

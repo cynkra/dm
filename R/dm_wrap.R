@@ -34,6 +34,27 @@
 #' dm_nycflights13() %>%
 #'   dm_wrap_tbl(root = airlines)
 dm_wrap_tbl <- function(dm, root, strict = TRUE) {
+  wrap_plan <- dm_wrap_tbl_plan(dm, {{ root }})
+
+  wrapped_dm <- reduce2(
+    wrap_plan$action,
+    wrap_plan$table,
+    function(dm, f, table) exec(f, dm, table),
+    .init = dm
+  )
+
+  # inform or fail if we have a cycle
+  if (length(wrapped_dm) > 1) {
+    if (strict) {
+      # FIXME: Detect earlier
+      abort("The `dm` is not cycle free and can't be wrapped into a single tibble.")
+    }
+  }
+
+  wrapped_dm
+}
+
+dm_wrap_tbl_plan <- function(dm, root) {
   # process args
   root_name <- dm_tbl_name(dm, {{ root }})
 
@@ -41,34 +62,26 @@ dm_wrap_tbl <- function(dm, root, strict = TRUE) {
   graph <- create_graph_from_dm(dm, directed = TRUE)
   positions <- node_type_from_graph(graph, drop = root_name)
 
-  # wrap terminal nodes as long as they're not the root
+  # build plan of actions to wrap terminal nodes as long as they're not the root
+  wrap_plan <- tibble(action = character(0), table = character(0))
   repeat {
     child_name <- names(positions)[positions == "terminal child"][1]
     has_terminal_child <- !is.na(child_name)
     if (has_terminal_child) {
-      dm <- dm_nest_tbl(dm, !!child_name)
+      wrap_plan <- add_row(wrap_plan, action = "dm_nest_tbl", table = child_name)
       graph <- igraph::delete.vertices(graph, child_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }
     parent_name <- names(positions)[positions == "terminal parent"][1]
     has_terminal_parent <- !is.na(parent_name)
     if (has_terminal_parent) {
-      dm <- dm_pack_tbl(dm, !!parent_name)
+      wrap_plan <- add_row(wrap_plan, action = "dm_pack_tbl", table = parent_name)
       graph <- igraph::delete.vertices(graph, parent_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }
     if (!has_terminal_child && !has_terminal_parent) break
   }
-
-  # inform or fail if we have a cycle
-  if (length(dm) > 1) {
-    if (strict) {
-      # FIXME: Detect earlier
-      abort("The `dm` is not cycle free and can't be wrapped into a single tibble.")
-    }
-  }
-
-  dm
+  wrap_plan
 }
 
 
