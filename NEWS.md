@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.8
+
+- Same as previous version.
+
+
 # dm 0.2.7.9003
 
 - Remove extra spaces in output when examining constraints with compound keys (#868).
