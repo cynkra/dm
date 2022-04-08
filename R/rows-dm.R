@@ -237,7 +237,7 @@ check_keys_compatible <- function(x, y) {
 
 get_dm_rows_op <- function(operation_name) {
   switch(operation_name,
-    "insert"   = list(fun = rows_insert, pb_label = "inserting rows"),
+    "insert"   = list(fun = function(x, y, by = NULL, ...) rows_insert(x, y, ..., conflict = "ignore", by = by %||% colnames(y)), pb_label = "inserting rows"),
     "update"   = list(fun = rows_update, pb_label = "updating rows"),
     "patch"    = list(fun = rows_patch, pb_label = "patching rows"),
     "upsert"   = list(fun = rows_upsert, pb_label = "upserting rows"),
