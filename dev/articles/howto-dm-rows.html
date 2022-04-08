@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.7.9003</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.8.9000</span>
       </span>
     </div>
 
@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Insert, update or remove rows in a database dm</h1>
                         <h4 data-toc-skip class="author">James Wondrasek</h4>
             
-            <h4 data-toc-skip class="date">2022-04-02</h4>
+            <h4 data-toc-skip class="date">2022-04-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-rows.Rmd" class="external-link"><code>vignettes/howto-dm-rows.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-rows.Rmd</code></div>
@@ -276,7 +276,7 @@
 <span class="va">demo_sql</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">sqlite_db</span>, <span class="va">demo_dm</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="va">demo_sql</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.38.0 []</span>
+<span class="co">#&gt; src:  sqlite 3.38.2 []</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `parent`, `child`</span>
 <span class="co">#&gt; Columns: 5</span>
@@ -318,7 +318,7 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_insert_out</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   lazy query [?? x 3]</span>
-<span class="co">#&gt; # Database: sqlite 3.38.0 []</span>
+<span class="co">#&gt; # Database: sqlite 3.38.2 []</span>
 <span class="co">#&gt;   value    pk    fk</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 a         1     1</span>
@@ -328,7 +328,7 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`child`&gt; [?? x 3]</span>
-<span class="co">#&gt; # Database: sqlite 3.38.0 []</span>
+<span class="co">#&gt; # Database: sqlite 3.38.2 []</span>
 <span class="co">#&gt;   value    pk    fk</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;int&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 a         1     1</span>
@@ -342,7 +342,7 @@
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`child`&gt; [?? x 3]</span>
-<span class="co">#&gt; # Database: sqlite 3.38.0 []</span>
+<span class="co">#&gt; # Database: sqlite 3.38.2 []</span>
 <span class="co">#&gt;   value    pk    fk</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;int&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 a         1     1</span>
@@ -373,7 +373,7 @@
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`child`&gt; [?? x 3]</span>
-<span class="co">#&gt; # Database: sqlite 3.38.0 []</span>
+<span class="co">#&gt; # Database: sqlite 3.38.2 []</span>
 <span class="co">#&gt;   value    pk    fk</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;int&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 a         1     1</span>
@@ -504,7 +504,7 @@
   <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">child</span><span class="op">)</span>
 <span class="va">dm_trunc_in</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.38.0 []</span>
+<span class="co">#&gt; src:  sqlite 3.38.2 []</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `child`</span>
 <span class="co">#&gt; Columns: 3</span>
@@ -517,7 +517,7 @@
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`child`&gt; [?? x 3]</span>
-<span class="co">#&gt; # Database: sqlite 3.38.0 []</span>
+<span class="co">#&gt; # Database: sqlite 3.38.2 []</span>
 <span class="co">#&gt; # … with 3 variables: value &lt;chr&gt;, pk &lt;int&gt;, fk &lt;dbl&gt;</span></code></pre>
 <p>When done, do not forget to disconnect:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
