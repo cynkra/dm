@@ -28,8 +28,8 @@ dbedu_con <- function() {
   DBI::dbConnect(
     RMariaDB::MariaDB(),
     username = "student",
-    password = "tx5mvyRQqD",
-    dbname = "loan_application",
+    password = "uQCy30sNP5arqMBGHVLZ",
+    dbname = "financial",
     host = "databases.pacha.dev"
   )
 }
