@@ -30,8 +30,9 @@ json_pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep =
   check_dots_empty()
   name_var <- name %||% as_label(enexpr(y))
   pack_join(x, y, by, copy, keep, name_var, ...) %>%
-    mutate(!!name_var := map(
-      unname(split(!!sym(name_var)), seq2(1, n())),
+    mutate(
+      !!name_var := map(
+      unname(split(!!sym(name_var), seq2(1, n()))),
       jsonlite::toJSON,
       digits = NA)
     )
