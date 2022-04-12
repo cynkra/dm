@@ -5,9 +5,9 @@
 \alias{json_pack_join}
 \title{JSON joins}
 \usage{
-json_nest_join(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...)
+json_nest_join(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL)
 
-json_pack_join(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...)
+json_pack_join(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL)
 }
 \arguments{
 \item{x}{A pair of data frames, data frame extensions (e.g. a tibble), or
@@ -36,6 +36,8 @@ For example, \code{by = c("a" = "b", "c" = "d")} will match \code{x$a} to \code{
 To perform a cross-join, generating all combinations of \code{x} and \code{y},
 use \code{by = character()}.}
 
+\item{...}{Other parameters passed onto methods.}
+
 \item{copy}{If \code{x} and \code{y} are not from the same data source,
 and \code{copy} is \code{TRUE}, then \code{y} will be copied into the
 same src as \code{x}.  This allows you to join tables across srcs, but
@@ -46,8 +48,6 @@ output?}
 
 \item{name}{The name of the list column nesting joins create.
 If \code{NULL} the name of \code{y} is used.}
-
-\item{...}{Other parameters passed onto methods.}
 }
 \description{
 These are wrappers around \code{pack_join()} and \code{dplyr::nest_join()} which store
