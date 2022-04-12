@@ -28,5 +28,5 @@ json_pack_join <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, name = N
 json_pack_join.data.frame <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...) {
   name_var <- name %||% as_label(enexpr(y))
   pack_join(x, y, by, copy, keep, name_var, ...) %>%
-    mutate(!!name_var := map(split(!!sym(name_var), 1:n()), jsonlite::toJSON))
+    mutate(!!name_var := map(split(!!sym(name_var), seq2(1, n())), jsonlite::toJSON))
 }
