@@ -36,14 +36,6 @@ get_changed <- function(recipe) {
     distinct()
 }
 
-get_new_pks <- function(dm, recipe) {
-  browser()
-  changed <- get_changed(recipe) %>%
-    mutate(pks = map(table, function(table) {
-      browser(); dm_get_pk_impl(dm, table)
-    }))
-}
-
 insert_new_pts <- function(dm, old_pt_name, new_pt_name) {
   dm_zoom_to(dm, !!old_pt_name) %>%
     dm_insert_zoomed(!!new_pt_name)
