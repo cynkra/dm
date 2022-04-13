@@ -1,4 +1,5 @@
 dm_disentangle <- function(dm, start) {
+  start <- dm_tbl_name_null(dm, {{ start }})
   recipe <- enumerate_all_paths(dm, start)
   changed <- get_changed(recipe)
 
