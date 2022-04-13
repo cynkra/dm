@@ -526,6 +526,60 @@ dim_4_clean %<-% {
     rename(dim_4.something = something)
 }
 
+# dm for testing dm_disentangle() -----------------------------------------
+
+entangled_dm %<-% {
+  dm(
+    a = tf_5() %>% rename(a = k),
+    b = tf_5() %>% rename(b = k),
+    c = tf_5() %>% rename(c = k),
+    d = tf_5() %>% rename(d = k),
+    e = tf_5() %>% rename(e = k),
+    f = tf_5() %>% rename(f = k),
+    g = tf_5() %>% rename(g = k),
+    h = tf_5() %>% rename(h = k)
+  ) %>%
+    dm_add_pk(b, b) %>%
+    dm_add_pk(c, c) %>%
+    dm_add_pk(d, d) %>%
+    dm_add_pk(e, e) %>%
+    dm_add_pk(f, f) %>%
+    dm_add_pk(g, g) %>%
+    dm_add_pk(h, h) %>%
+    dm_add_fk(a, a, b) %>%
+    dm_add_fk(a, a, c) %>%
+    dm_add_fk(b, b, d) %>%
+    dm_add_fk(c, c, d) %>%
+    dm_add_fk(d, d, e) %>%
+    dm_add_fk(d, d, f) %>%
+    dm_add_fk(e, e, g) %>%
+    dm_add_fk(f, f, g) %>%
+    dm_add_fk(g, g, h)
+}
+
+entangled_dm_2 %<-% {
+  dm(
+    a = tf_5() %>% rename(a = k),
+    b = tf_5() %>% rename(b = k),
+    c = tf_5() %>% rename(c = k),
+    d = tf_5() %>% rename(d = k),
+    e = tf_5() %>% rename(e = k),
+    f = tf_5() %>% rename(f = k)
+  ) %>%
+    dm_add_pk(b, b) %>%
+    dm_add_pk(c, c) %>%
+    dm_add_pk(d, d) %>%
+    dm_add_pk(e, e) %>%
+    dm_add_pk(f, f) %>%
+    dm_add_fk(a, a, d) %>%
+    dm_add_fk(b, b, d) %>%
+    dm_add_fk(c, c, d) %>%
+    dm_add_fk(a, a, e) %>%
+    dm_add_fk(d, d, e)
+}
+
+# dm_flatten() ------------------------------------------------------------
+
 dm_for_flatten %<-% {
   as_dm(list(
     fact = fact(),
