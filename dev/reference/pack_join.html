@@ -113,19 +113,13 @@ that contains all matches from <code>y</code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">pack_join</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, by <span class="op">=</span> <span class="cn">NULL</span>, copy <span class="op">=</span> <span class="cn">FALSE</span>, keep <span class="op">=</span> <span class="cn">FALSE</span>, name <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">pack_join</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, by <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span>, copy <span class="op">=</span> <span class="cn">FALSE</span>, keep <span class="op">=</span> <span class="cn">FALSE</span>, name <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>x</dt>
-<dd><p>A pair of data frames, data frame extensions (e.g. a tibble), or
-lazy data frames (e.g. from dbplyr or dtplyr). See <em>Methods</em>, below, for
-more details.</p></dd>
-<dt>y</dt>
-<dd><p>A pair of data frames, data frame extensions (e.g. a tibble), or
-lazy data frames (e.g. from dbplyr or dtplyr). See <em>Methods</em>, below, for
-more details.</p></dd>
+    <dl><dt>x, y</dt>
+<dd><p>A pair of data frames or data frame extensions (e.g. a tibble).</p></dd>
 <dt>by</dt>
 <dd><p>A character vector of variables to join by.</p>
 <p>If <code>NULL</code>, the default, <code>*_join()</code> will perform a natural join, using all
@@ -140,6 +134,8 @@ For example, <code>by = c("a" = "b", "c" = "d")</code> will match <code>x$a</cod
 <code>x$c</code> to <code>y$d</code>.</p>
 <p>To perform a cross-join, generating all combinations of <code>x</code> and <code>y</code>,
 use <code>by = character()</code>.</p></dd>
+<dt>...</dt>
+<dd><p>Other parameters passed onto methods.</p></dd>
 <dt>copy</dt>
 <dd><p>If <code>x</code> and <code>y</code> are not from the same data source,
 and <code>copy</code> is <code>TRUE</code>, then <code>y</code> will be copied into the
@@ -151,10 +147,27 @@ output?</p></dd>
 <dt>name</dt>
 <dd><p>The name of the list column nesting joins create.
 If <code>NULL</code> the name of <code>y</code> is used.</p></dd>
-<dt>...</dt>
-<dd><p>Other parameters passed onto methods.</p></dd>
 </dl></div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p><a href="https://dplyr.tidyverse.org/reference/nest_join.html" class="external-link">dplyr::nest_join</a>, <a href="https://tidyr.tidyverse.org/reference/pack.html" class="external-link">tidyr::pack</a></p></div>
+    </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"first"</span>, <span class="st">"second"</span>, <span class="st">"third"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">pack_join</span><span class="op">(</span><span class="va">df1</span>, <span class="va">df2</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       x df2$y </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 first </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     1 second</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     2 third </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     3 <span style="color: #BB0000;">NA</span>    </span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
