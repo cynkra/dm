@@ -29,15 +29,13 @@ enumerate_all_paths <- function(dm, start) {
     remove_unique()
 }
 
-enumerate_all_paths_impl <- function(
-    node,
-    node_key_cols = character(),
-    former_node = character(),
-    former_key_cols = character(),
-    path = character(),
-    graph_df_ud,
-    helper_env
-) {
+enumerate_all_paths_impl <- function(node,
+                                     node_key_cols = character(),
+                                     former_node = character(),
+                                     former_key_cols = character(),
+                                     path = character(),
+                                     graph_df_ud,
+                                     helper_env) {
   if (length(path) > 0) {
     # increase tbl_node[[node]] by 1, return this index in a suffix
     usage_idx <- inc_tbl_node(node, helper_env)
@@ -49,7 +47,8 @@ enumerate_all_paths_impl <- function(
       former_key_cols,
       new_former_node = names(path)[[length(path)]],
       usage_idx,
-      helper_env)
+      helper_env
+    )
   } else {
     usage_idx <- ""
   }
@@ -95,16 +94,14 @@ inc_tbl_node <- function(node, helper_env) {
   paste0("-", tbl_node[[node]])
 }
 
-add_path_to_all_paths <- function(
-    graph_df_ud,
-    node,
-    node_key_cols,
-    former_node,
-    former_key_cols,
-    new_former_node,
-    usage_idx,
-    helper_env
-) {
+add_path_to_all_paths <- function(graph_df_ud,
+                                  node,
+                                  node_key_cols,
+                                  former_node,
+                                  former_key_cols,
+                                  new_former_node,
+                                  usage_idx,
+                                  helper_env) {
   all_paths <- get("all_paths", helper_env)
   path_element <- graph_df_ud %>% filter(
     (
@@ -121,13 +118,14 @@ add_path_to_all_paths <- function(
       )
   )
   assign("all_paths",
-         bind_rows(
-           all_paths,
-           slice(path_element, 1) %>%
-             mutate(
-               new_child_table = if_else(child_table == node, paste0(node, usage_idx), new_former_node),
-               new_parent_table = if_else(parent_table == node, paste0(node, usage_idx), new_former_node)
-             )
-         ),
-         envir = helper_env)
+    bind_rows(
+      all_paths,
+      slice(path_element, 1) %>%
+        mutate(
+          new_child_table = if_else(child_table == node, paste0(node, usage_idx), new_former_node),
+          new_parent_table = if_else(parent_table == node, paste0(node, usage_idx), new_former_node)
+        )
+    ),
+    envir = helper_env
+  )
 }
