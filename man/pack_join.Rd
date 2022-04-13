@@ -4,16 +4,10 @@
 \alias{pack_join}
 \title{Pack Join}
 \usage{
-pack_join(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...)
+pack_join(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL)
 }
 \arguments{
-\item{x}{A pair of data frames, data frame extensions (e.g. a tibble), or
-lazy data frames (e.g. from dbplyr or dtplyr). See \emph{Methods}, below, for
-more details.}
-
-\item{y}{A pair of data frames, data frame extensions (e.g. a tibble), or
-lazy data frames (e.g. from dbplyr or dtplyr). See \emph{Methods}, below, for
-more details.}
+\item{x, y}{A pair of data frames or data frame extensions (e.g. a tibble).}
 
 \item{by}{A character vector of variables to join by.
 
@@ -33,6 +27,8 @@ For example, \code{by = c("a" = "b", "c" = "d")} will match \code{x$a} to \code{
 To perform a cross-join, generating all combinations of \code{x} and \code{y},
 use \code{by = character()}.}
 
+\item{...}{Other parameters passed onto methods.}
+
 \item{copy}{If \code{x} and \code{y} are not from the same data source,
 and \code{copy} is \code{TRUE}, then \code{y} will be copied into the
 same src as \code{x}.  This allows you to join tables across srcs, but
@@ -43,12 +39,18 @@ output?}
 
 \item{name}{The name of the list column nesting joins create.
 If \code{NULL} the name of \code{y} is used.}
-
-\item{...}{Other parameters passed onto methods.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \code{pack_join()} returns all rows and columns in \code{x} with a new packed column
 that contains all matches from \code{y}.
+}
+\examples{
+df1 <- tibble(x = 1:3)
+df2 <- tibble(x = c(1, 1, 2), y = c("first", "second", "third"))
+pack_join(df1, df2)
+}
+\seealso{
+\link[dplyr:nest_join]{dplyr::nest_join}, \link[tidyr:pack]{tidyr::pack}
 }
