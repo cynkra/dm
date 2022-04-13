@@ -20,7 +20,7 @@ Naming conventions are described in : https://cynkra.github.io/dm/articles/tech-
 Some existing functions might not follow these rules for legacy reason but we
 strive to apply them on all new functions.
 
-## guidelines
+## Guidelines
 
 * We generally adhere to the tidyverse style guide and design guide
 * We strive to use {rlang} and {tidyverse} functions over base ones, this means
@@ -28,15 +28,16 @@ strive to apply them on all new functions.
   `data.frame()` etc
 * We prefer `glue::glue()` over `paste()` and `sprintf()`
 
-## dependency guidelines
+## Dependency guidelines
 
 * All `@import` and `@importFrom` calls are located in "import.R". 
 * Don't `@import` new packages without a strong reason, don't `@importFrom` new 
   functions unless they are used multiple times, use `pkg::fun` notation in these
   cases
 * Don't use `pkg::fun` notation if `@import` and `@importFrom` were used
+* Use `check_suggested()` to check if a suggested package is installed
   
-## test guidelines  
+## Test guidelines  
   
 * We use {testthat}
 * All exported functions should be tested
@@ -56,7 +57,12 @@ strive to apply them on all new functions.
   be useful for instance if a feature is not supported on some databases
 * When using `expect_snapshot()` on a DBMS dependent call (i.e a call that uses `dm_for_filter()`
   or copies to `my_db_test_src()`), 
-  the `variant` argument should be   set to `my_test_src_name` (a global 
+  the `variant` argument should be set to `my_test_src_name` (a global 
   variable created when loading helpers) so that the snapshots end up in different 
   directories.
+
+## Before submitting a PR
+
+* Run tests (`devtools::test()` or CTRL/CMD + SHIFT + T in RStudio)
+* Run checks (`devtools::check()` or CTRL/CMD + SHIFT + E in RStudio)
 
