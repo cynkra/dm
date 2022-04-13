@@ -47,8 +47,8 @@ A wrapper around \code{pack_join()} which stores the joined data into a JSON col
 \code{json_pack_join()} returns all rows and columns in \code{x} with a new JSON columns that contains all packed matches from \code{y}.
 }
 \examples{
-df1 <- tibble(x = 1:3)
-df2 <- tibble(x = c(1, 1, 2), y = c("first", "second", "third"))
+df1 <- tibble::tibble(x = 1:3)
+df2 <- tibble::tibble(x = c(1, 1, 2), y = c("first", "second", "third"))
 df3 <- json_pack_join(df1, df2)
 df3
 df3$df2
