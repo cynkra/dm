@@ -11,8 +11,8 @@
 #' @export
 #' @seealso [dplyr::nest_join], [tidyr::pack]
 #' @examples
-#' df1 <- tibble(x = 1:3)
-#' df2 <- tibble(x = c(1, 1, 2), y = c("first", "second", "third"))
+#' df1 <- tibble::tibble(x = 1:3)
+#' df2 <- tibble::tibble(x = c(1, 1, 2), y = c("first", "second", "third"))
 #' pack_join(df1, df2)
 pack_join <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
   UseMethod("pack_join")
