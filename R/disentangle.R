@@ -21,7 +21,8 @@ dm_disentangle <- function(dm, start) {
       !!get_key_cols(recipe$child_cols[i]),
       !!recipe$new_parent_table[i],
       !!get_key_cols(recipe$parent_cols[i]),
-      on_delete = recipe$on_delete[i])
+      on_delete = recipe$on_delete[i]
+    )
   }
   new_dm
 }
@@ -38,8 +39,9 @@ get_changed <- function(recipe) {
 get_new_pks <- function(dm, recipe) {
   browser()
   changed <- get_changed(recipe) %>%
-    mutate(pks = map(table, function(table) {browser(); dm_get_pk_impl(dm, table)}))
-
+    mutate(pks = map(table, function(table) {
+      browser(); dm_get_pk_impl(dm, table)
+    }))
 }
 
 insert_new_pts <- function(dm, old_pt_name, new_pt_name) {
