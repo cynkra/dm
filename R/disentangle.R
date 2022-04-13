@@ -48,7 +48,7 @@ dm_rm_all_fk_for_changed_child <- function(dm, changed_tables) {
   for (i in seq_len(nrow(all_changed_children))) {
     dm <- dm_rm_fk_impl(
       dm,
-      table = all_changed_children$child_table[i],
+      table_name = all_changed_children$child_table[i],
       cols = get_key_cols(all_changed_children$child_fk_cols[i]),
       ref_table_name = all_changed_children$parent_table[i],
       ref_cols = get_key_cols(all_changed_children$parent_key_cols[i])
