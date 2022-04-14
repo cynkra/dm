@@ -1,30 +1,30 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
-# dm 0.2.7.9003
-
-- Remove extra spaces in output when examining constraints with compound keys (#868).
-- `pack_join()` works correctly if `name` is the same as an existing column in either table. In some cases a column is overwritten, this is consistent with `nest_join()` behavior (#864, #865).
-- `dm_insert_zoomed()` uses the color from the zoomed table for the new table (#750, #863).
-- Fix column tracking for foreign keys (#856, #857).
-
-
-# dm 0.2.7.9002
-
-- Messages that suggest the installation of optional packages are shown only once per session (#852).
-- `copy_dm_to()` shows progress bars again (#850, #855).
-- `copy_dm_to()` consumes less memory and is faster when writing to SQL Server (#855).
-- Progress bars use the console width (#853).
-
-
-# dm 0.2.7.9001
-
-- Avoid calling `dbAppendTable()` for zero-row tables (#847).
-- Require rlang 1.0.1 (#840).
-
-
-# dm 0.2.7.9000
+# dm 0.2.8.9000
 
 - Same as previous version.
+
+
+# dm 0.2.8
+
+## Features
+
+- `pack_join()` works correctly if `name` is the same as an existing column in either table. In some cases a column is overwritten, this is consistent with `nest_join()` behavior (#864, #865).
+- Messages that suggest the installation of optional packages are shown only once per session (#852).
+- `dm_insert_zoomed()` uses the color from the zoomed table for the new table (#750, #863).
+- `copy_dm_to()` consumes less memory and is faster when writing to SQL Server (#855).
+
+## Bug fixes
+
+- Remove extra spaces in output when examining constraints with compound keys (#868).
+- Fix column tracking for foreign keys (#856, #857).
+- `copy_dm_to()` shows progress bars again (#850, #855).
+- Progress bars use the console width (#853).
+- Avoid calling `dbAppendTable()` for zero-row tables (#847).
+
+## Internal
+
+- Require rlang 1.0.1 (#840).
 
 
 # dm 0.2.7
