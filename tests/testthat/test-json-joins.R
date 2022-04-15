@@ -20,3 +20,25 @@ test_that("json joins work", {
   expect_equal(jsonlite::fromJSON(packed$df2[[3]])[["col2"]], pi)
   expect_equal(jsonlite::fromJSON(nested$df2[[2]])[["col2"]], pi)
 })
+
+test_that("`json_pack()` works", {
+  skip_if_not_installed("rlang", "0.99.0.9003")
+
+  expect_snapshot({
+    df <- tibble::tibble(x1 = 1:3, x2 = 4:6, x3 = 7:9, y = 1:3)
+    packed <- json_pack(df, x = c(x1, x2, x3), y = y)
+    packed
+    packed$x
+  })
+})
+
+test_that("`json_nest()` works", {
+  skip_if_not_installed("rlang", "0.99.0.9003")
+
+  expect_snapshot({
+    df <- tibble::tibble(x = c(1, 1, 1, 2, 2, 3), y = 1:6, z = 6:1)
+    nested <- json_nest(df, data = c(y, z))
+    nested
+    nested$data
+  })
+})
