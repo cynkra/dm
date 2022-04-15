@@ -24,7 +24,6 @@ A wrapper around \code{\link[tidyr:nest]{tidyr::nest()}} which stores the nested
 df <- tibble::tibble(x = c(1, 1, 1, 2, 2, 3), y = 1:6, z = 6:1)
 nested <- json_nest(df, data = c(y, z))
 nested
-nested$data
 }
 \seealso{
 \link[tidyr:nest]{tidyr::nest}, \link{json_nest_join}

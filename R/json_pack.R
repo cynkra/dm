@@ -16,7 +16,6 @@
 #' df <- tibble::tibble(x1 = 1:3, x2 = 4:6, x3 = 7:9, y = 1:3)
 #' packed <- json_pack(df, x = c(x1, x2, x3), y = y)
 #' packed
-#' packed$x
 json_pack <- function(.data, ..., .names_sep = NULL) {
   UseMethod("json_nest")
 }
@@ -25,5 +24,5 @@ json_pack <- function(.data, ..., .names_sep = NULL) {
 json_pack.data.frame <- function(.data, ..., .names_sep = NULL) {
   dot_nms <- ...names()
   tidyr::pack(.data, ..., .names_sep = .names_sep) %>%
-    mutate(across(all_of(dot_nms), ~ map(., jsonlite::toJSON, digits = NA)))
+    mutate(across(all_of(dot_nms), ~ map_chr(., sonlite::toJSON, digits = NA)))
 }

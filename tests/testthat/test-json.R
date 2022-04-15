@@ -28,7 +28,6 @@ test_that("`json_pack()` works", {
     df <- tibble::tibble(x1 = 1:3, x2 = 4:6, x3 = 7:9, y = 1:3)
     packed <- json_pack(df, x = c(x1, x2, x3), y = y)
     packed
-    packed$x
   })
 })
 
@@ -39,6 +38,5 @@ test_that("`json_nest()` works", {
     df <- tibble::tibble(x = c(1, 1, 1, 2, 2, 3), y = 1:6, z = 6:1)
     nested <- json_nest(df, data = c(y, z))
     nested
-    nested$data
   })
 })

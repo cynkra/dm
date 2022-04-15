@@ -16,7 +16,6 @@
 #' df <- tibble::tibble(x = c(1, 1, 1, 2, 2, 3), y = 1:6, z = 6:1)
 #' nested <- json_nest(df, data = c(y, z))
 #' nested
-#' nested$data
 json_nest <- function(.data, ..., .names_sep = NULL) {
   UseMethod("json_nest")
 }
@@ -30,5 +29,5 @@ json_nest.data.frame <- function(.data, ..., .names_sep = NULL) {
     abort("All elements of `...` must be named.")
   }
   tidyr::nest(.data, ..., .names_sep = .names_sep) %>%
-    mutate(across(all_of(dot_nms), ~ map(., jsonlite::toJSON, digits = NA)))
+    mutate(across(all_of(dot_nms), ~ map_chr(., jsonlite::toJSON, digits = NA)))
 }
