@@ -7,35 +7,18 @@
 json_nest(.data, ..., .names_sep = NULL)
 }
 \arguments{
-\item{.data}{A data frame.}
+\item{.data}{A data frame, a data frame extension (e.g. a tibble), or  a lazy data frame (e.g. from dbplyr or dtplyr).}
 
-\item{...}{<\code{\link[tidyr:tidyr_tidy_select]{tidy-select}}> Columns to nest, specified
+\item{...}{<\code{\link[=tidyr_tidy_select]{tidy-select}}> Columns to pack, specified
 using name-variable pairs of the form \code{new_col = c(col1, col2, col3)}.
-The right hand side can be any valid tidy select expression.
+The right hand side can be any valid tidy select expression.}
 
-\ifelse{{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}:
-previously you could write \code{df \%>\% nest(x, y, z)} and \code{df \%>\% unnest(x, y, z)}. Convert to \code{df \%>\% nest(data = c(x, y, z))}.
-and \code{df \%>\% unnest(c(x, y, z))}.
-
-If you previously created new variable in \code{unnest()} you'll now need to
-do it explicitly with \code{mutate()}. Convert \code{df \%>\% unnest(y = fun(x, y, z))}
-to \code{df \%>\% mutate(y = fun(x, y, z)) \%>\% unnest(y)}.}
-
-\item{.names_sep}{If \code{NULL}, the default, the names will be left
-as is. In \code{nest()}, inner names will come from the former outer names;
-in \code{unnest()}, the new outer names will come from the inner names.
-
-If a string, the inner and outer names will be used together. In
-\code{unnest()}, the names of the new outer columns will be formed by pasting
-together the outer and the inner column names, separated by \code{names_sep}. In
-\code{nest()}, the new inner names will have the outer names + \code{names_sep}
-automatically stripped. This makes \code{names_sep} roughly symmetric between
-nesting and unnesting.}
+\item{.names_sep}{If \code{NULL}, the default, the names will be left as is.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-A wrapper around \code{tidyr::nest()} which stores the nested data into JSON columns.
+A wrapper around \code{\link[tidyr:nest]{tidyr::nest()}} which stores the nested data into JSON columns.
 }
 \examples{
 df <- tibble::tibble(x = c(1, 1, 1, 2, 2, 3), y = 1:6, z = 6:1)

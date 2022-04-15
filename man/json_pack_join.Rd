@@ -43,7 +43,7 @@ If \code{NULL} the name of \code{y} is used.}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-A wrapper around \code{pack_join()} which stores the joined data into a JSON column.
+A wrapper around \code{\link[=pack_join]{pack_join()}} which stores the joined data into a JSON column.
 \code{json_pack_join()} returns all rows and columns in \code{x} with a new JSON columns that contains all packed matches from \code{y}.
 }
 \examples{

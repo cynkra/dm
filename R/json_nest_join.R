@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' A wrapper around `dplyr::nest_join()` which stores the joined data into a JSON column.
+#' A wrapper around [dplyr::nest_join()] which stores the joined data into a JSON column.
 #' `json_nest_join()` returns all rows and columns in `x` with a new JSON columns that contains all nested matches from `y`.
 #'
 #' @inheritParams dplyr::nest_join

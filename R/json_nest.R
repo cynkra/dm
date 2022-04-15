@@ -1,13 +1,15 @@
-# FIXME: once tbl_lazy method is implemented, update doc of `.data` arg
-
 #' JSON nest
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' A wrapper around `tidyr::nest()` which stores the nested data into JSON columns.
+#' A wrapper around [tidyr::nest()] which stores the nested data into JSON columns.
 #'
-#' @inheritParams tidyr::nest
+#' @param .data A data frame, a data frame extension (e.g. a tibble), or  a lazy data frame (e.g. from dbplyr or dtplyr).
+#' @param .names_sep If `NULL`, the default, the names will be left as is.
+#' @param ... <[`tidy-select`][tidyr_tidy_select]> Columns to pack, specified
+#'   using name-variable pairs of the form `new_col = c(col1, col2, col3)`.
+#'   The right hand side can be any valid tidy select expression.
 #' @seealso [tidyr::nest], [json_nest_join]
 #' @export
 #' @examples
