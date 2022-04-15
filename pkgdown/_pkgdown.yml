@@ -104,7 +104,7 @@ reference:
   - dm_unnest_tbl
   - dm_unpack_tbl
 
-- title: Data frames operations
+- title: Operations on data frames and lazy tables
   contents:
   - pack_join
   - json_pack_join
