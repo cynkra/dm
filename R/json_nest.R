@@ -22,6 +22,7 @@ json_nest <- function(.data, ..., .names_sep = NULL) {
 
 #' @export
 json_nest.data.frame <- function(.data, ..., .names_sep = NULL) {
+  check_suggested("jsonlite", TRUE)
   dot_nms <- ...names()
   # `{tidyr}` only warns but since we don't need backward compatibility we're
   #   better off failing
