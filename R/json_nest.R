@@ -30,4 +30,3 @@ json_nest.data.frame <- function(.data, ..., .names_sep = NULL) {
   tidyr::nest(.data, ..., .names_sep = .names_sep) %>%
     mutate(across(all_of(dot_nms), ~ map(., jsonlite::toJSON, digits = NA)))
 }
-
