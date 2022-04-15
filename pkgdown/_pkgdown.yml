@@ -104,11 +104,13 @@ reference:
   - dm_unnest_tbl
   - dm_unpack_tbl
 
-- title: Join data frames
+- title: Data frames operations
   contents:
   - pack_join
   - json_pack_join
   - json_nest_join
+  - json_pack
+  - json_nest
 
 - title: Materialize
   contents:
