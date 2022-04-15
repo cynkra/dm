@@ -24,6 +24,6 @@ json_nest_join <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, nam
 json_nest_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
   check_dots_empty()
   name_var <- name %||% as_label(enexpr(y))
-  dplyr::nest_join(x, y, by, copy, keep, name_var, ...) %>%
+  dplyr::nest_join(x, y, by, copy = copy, keep = keep, name = name_var, ...) %>%
     mutate(!!name_var := map(!!sym(name_var), jsonlite::toJSON, digits = NA))
 }

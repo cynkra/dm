@@ -24,7 +24,7 @@ json_pack_join <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, nam
 json_pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
   check_dots_empty()
   name_var <- name %||% as_label(enexpr(y))
-  pack_join(x, y, by, copy, keep, name_var, ...) %>%
+  pack_join(x, y, by, ..., copy = copy, keep = keep, name = name_var) %>%
     mutate(
       !!name_var := map(
         unname(split(!!sym(name_var), seq.int(n()))),
