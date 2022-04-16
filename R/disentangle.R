@@ -1,31 +1,23 @@
 dm_disentangle <- function(dm, start) {
   start <- dm_tbl_name_null(dm, {{ start }})
-  recipe <- enumerate_all_paths(dm, start)
-  changed <- get_changed(recipe)
-
-  new_dm <- dm_rm_all_fk_for_changed_child(dm, changed$table) %>%
-    dm_get_def() %>%
-    mutate(fks = if_else(table %in% unique(changed$table), list_of(new_fk()), fks)) %>%
-    new_dm3() %>%
-    reduce2(
-      changed$table,
-      changed$new_table,
-      insert_new_pts,
-      .init = .
-    ) %>%
-    dm_rm_tbl(unique(changed$table))
-
-  for (i in seq_len(nrow(recipe))) {
-    new_dm <- dm_add_fk(
-      new_dm,
-      !!recipe$new_child_table[i],
-      !!get_key_cols(recipe$child_cols[i]),
-      !!recipe$new_parent_table[i],
-      !!get_key_cols(recipe$parent_cols[i]),
-      on_delete = recipe$on_delete[i]
-    )
-  }
-  new_dm
+  recipes <- enumerate_all_paths(dm, start)
+  changed <- arrange(recipes$table_mapping, table, new_table)
+  fk_table <- fk_table_to_class_key(
+    recipes$new_fks,
+    child_table = "new_child_table",
+    child_fk_cols = "child_cols",
+    parent_table = "new_parent_table",
+    parent_key_cols = "parent_cols"
+  ) %>%
+    rename(new_fks = fks)
+  dm_get_def(dm) %>%
+    full_join(changed, by = "table") %>%
+    mutate(table = coalesce(new_table, table)) %>%
+    select(-new_table) %>%
+    left_join(fk_table, by = c("table" = "new_parent_table")) %>%
+    select(-fks) %>%
+    relocate(fks = new_fks, .after = pks) %>%
+    new_dm3()
 }
 
 get_changed <- function(recipe) {

@@ -26,7 +26,8 @@ enumerate_all_paths <- function(dm, start) {
   ), envir = helper_env)
   enumerate_all_paths_impl(start, graph_df_ud = graph_df_ud, helper_env = helper_env)
   get("all_paths", envir = helper_env) %>%
-    remove_unique()
+    rename_unique() %>%
+    split_to_dm()
 }
 
 enumerate_all_paths_impl <- function(node,
@@ -68,7 +69,7 @@ enumerate_all_paths_impl <- function(node,
   pwalk(out, enumerate_all_paths_impl, path, graph_df_ud, helper_env)
 }
 
-remove_unique <- function(all_paths) {
+rename_unique <- function(all_paths) {
   all_names <- bind_rows(
     select(all_paths, table = child_table, new_table = new_child_table),
     select(all_paths, table = parent_table, new_table = new_parent_table)
@@ -83,8 +84,7 @@ remove_unique <- function(all_paths) {
       new_child_table = if_else(n_c == 1, child_table, new_child_table),
       new_parent_table = if_else(n_p == 1, parent_table, new_parent_table)
     ) %>%
-    select(-n_c, -n_p) %>%
-    filter(child_table != new_child_table | parent_table != new_parent_table)
+    select(-n_c, -n_p)
 }
 
 inc_tbl_node <- function(node, helper_env) {
@@ -128,4 +128,23 @@ add_path_to_all_paths <- function(graph_df_ud,
     ),
     envir = helper_env
   )
+}
+
+split_to_dm <- function(all_paths) {
+  table_mapping <- bind_rows(
+    select(all_paths, new_table = new_child_table, table = child_table),
+    select(all_paths, new_table = new_parent_table, table = parent_table)
+  ) %>%
+    filter(new_table != table) %>%
+    distinct() %>%
+    arrange()
+
+  new_fks <- select(
+    all_paths,
+    new_child_table,
+    child_cols,
+    new_parent_table,
+    parent_cols,
+    on_delete)
+  dm(table_mapping, new_fks)
 }
