@@ -564,18 +564,21 @@ entangled_dm_2 %<-% {
     c = tf_5() %>% rename(c = k),
     d = tf_5() %>% rename(d = k),
     e = tf_5() %>% rename(e = k),
-    f = tf_5() %>% rename(f = k)
+    f = tf_5() %>% rename(f = k),
+    g = tf_5() %>% rename(g = k)
   ) %>%
     dm_add_pk(b, b) %>%
     dm_add_pk(c, c) %>%
     dm_add_pk(d, d) %>%
     dm_add_pk(e, e) %>%
     dm_add_pk(f, f) %>%
+    dm_add_pk(g, g) %>%
     dm_add_fk(a, a, d) %>%
     dm_add_fk(b, b, d) %>%
     dm_add_fk(c, c, d) %>%
     dm_add_fk(a, a, e) %>%
-    dm_add_fk(d, d, e)
+    dm_add_fk(d, d, e) %>%
+    dm_add_fk(f, f, g)
 }
 
 # dm_flatten() ------------------------------------------------------------
