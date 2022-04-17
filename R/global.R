@@ -53,6 +53,7 @@ utils::globalVariables(c(
   "name",
   "need_ref",
   "new_child_table",
+  "new_fks",
   "new_parent_table",
   "new_display",
   "new_name",
