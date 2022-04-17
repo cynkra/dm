@@ -568,7 +568,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   )
 }
 
-fk_table_to_class_key <- function(table,
+fk_table_to_def_fks <- function(table,
                                   child_table = "child_table",
                                   child_fk_cols = "child_fks_cols",
                                   parent_table = "parent_table",

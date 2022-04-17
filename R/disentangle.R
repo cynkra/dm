@@ -3,7 +3,7 @@ dm_disentangle <- function(dm, start) {
   start <- dm_tbl_name_null(dm, {{ start }})
   recipes <- enumerate_all_paths(dm, start)
   changed <- arrange(recipes$table_mapping, table, new_table)
-  fk_table <- fk_table_to_class_key(
+  fk_table <- fk_table_to_def_fks(
     recipes$new_fks,
     child_table = "new_child_table",
     child_fk_cols = "child_cols",
