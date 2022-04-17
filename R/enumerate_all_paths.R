@@ -25,8 +25,17 @@ enumerate_all_paths <- function(dm, start) {
     new_parent_table = character()
   ), envir = helper_env)
   enumerate_all_paths_impl(start, graph_df_ud = graph_df_ud, helper_env = helper_env)
-  get("all_paths", envir = helper_env) %>%
+  all_paths <- get("all_paths", envir = helper_env)
+  # need to take into account FKs from unconnected components (graph representation)
+  fks_from_unconnected <- anti_join(
+    all_fks,
+    all_paths,
+    by = c("child_table", "parent_table")
+  ) %>%
+    mutate(new_child_table = child_table, new_parent_table = parent_table)
+  all_paths %>%
     rename_unique() %>%
+    bind_rows(fks_from_unconnected) %>%
     split_to_list()
 }
 
