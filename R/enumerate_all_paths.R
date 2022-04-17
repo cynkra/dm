@@ -27,7 +27,7 @@ enumerate_all_paths <- function(dm, start) {
   enumerate_all_paths_impl(start, graph_df_ud = graph_df_ud, helper_env = helper_env)
   get("all_paths", envir = helper_env) %>%
     rename_unique() %>%
-    split_to_dm()
+    split_to_list()
 }
 
 enumerate_all_paths_impl <- function(node,
@@ -130,7 +130,7 @@ add_path_to_all_paths <- function(graph_df_ud,
   )
 }
 
-split_to_dm <- function(all_paths) {
+split_to_list <- function(all_paths) {
   table_mapping <- bind_rows(
     select(all_paths, new_table = new_child_table, table = child_table),
     select(all_paths, new_table = new_parent_table, table = parent_table)
@@ -146,5 +146,5 @@ split_to_dm <- function(all_paths) {
     new_parent_table,
     parent_cols,
     on_delete)
-  dm(table_mapping, new_fks)
+  list(table_mapping = table_mapping, new_fks = new_fks)
 }
