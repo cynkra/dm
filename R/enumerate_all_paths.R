@@ -154,6 +154,7 @@ split_to_list <- function(all_paths) {
     child_cols,
     new_parent_table,
     parent_cols,
-    on_delete)
+    on_delete
+  )
   list(table_mapping = table_mapping, new_fks = new_fks)
 }

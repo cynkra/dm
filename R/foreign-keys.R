@@ -569,18 +569,19 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
 }
 
 fk_table_to_def_fks <- function(table,
-                                  child_table = "child_table",
-                                  child_fk_cols = "child_fks_cols",
-                                  parent_table = "parent_table",
-                                  parent_key_cols = "parent_key_cols") {
+                                child_table = "child_table",
+                                child_fk_cols = "child_fks_cols",
+                                parent_table = "parent_table",
+                                parent_key_cols = "parent_key_cols") {
   group_by(table, !!ensym(parent_table)) %>%
     summarize(
       fks = list_of(new_fk(
-      ref_column = as.list(!!ensym(parent_key_cols)),
-      table = !!ensym(child_table),
-      column = as.list(!!ensym(child_fk_cols)),
-      on_delete = on_delete)
-    ))
+        ref_column = as.list(!!ensym(parent_key_cols)),
+        table = !!ensym(child_table),
+        column = as.list(!!ensym(child_fk_cols)),
+        on_delete = on_delete
+      ))
+    )
 }
 
 # Errors ------------------------------------------------------------------
