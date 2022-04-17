@@ -570,9 +570,10 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
 
 fk_table_to_def_fks <- function(table,
                                 child_table = "child_table",
-                                child_fk_cols = "child_fks_cols",
+                                child_fk_cols = "child_fk_cols",
                                 parent_table = "parent_table",
                                 parent_key_cols = "parent_key_cols") {
+
   group_by(table, !!ensym(parent_table)) %>%
     summarize(
       fks = list_of(new_fk(
