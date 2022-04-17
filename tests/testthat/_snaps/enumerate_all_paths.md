@@ -3,99 +3,196 @@
     Code
       enumerate_all_paths(dm_for_filter_w_cycle(), "tf_1")
     Output
-      # A tibble: 10 x 7
-         child_table child_cols parent_table parent_cols new_child_table
-         <chr>       <keys>     <chr>        <keys>      <chr>          
-       1 tf_2        e, e1      tf_3         f, f1       tf_2           
-       2 tf_4        j, j1      tf_3         f, f1       tf_4-1         
-       3 tf_5        l          tf_4         h           tf_5-1         
-       4 tf_5        m          tf_6         n           tf_5-1         
-       5 tf_6        o          tf_7         p           tf_6-1         
-       6 tf_7        q          tf_2         c           tf_7-2         
-       7 tf_6        o          tf_7         p           tf_6-2         
-       8 tf_5        m          tf_6         n           tf_5-2         
-       9 tf_5        l          tf_4         h           tf_5-2         
-      10 tf_4        j, j1      tf_3         f, f1       tf_4-2         
-      # ... with 2 more variables: new_parent_table <chr>, on_delete <chr>
+      $table_mapping
+      # A tibble: 10 x 2
+         new_table table
+         <chr>     <chr>
+       1 tf_4-1    tf_4 
+       2 tf_5-1    tf_5 
+       3 tf_6-1    tf_6 
+       4 tf_7-2    tf_7 
+       5 tf_6-2    tf_6 
+       6 tf_5-2    tf_5 
+       7 tf_4-2    tf_4 
+       8 tf_3-1    tf_3 
+       9 tf_7-1    tf_7 
+      10 tf_3-2    tf_3 
+      
+      $new_fks
+      # A tibble: 11 x 5
+         new_child_table child_cols new_parent_table parent_cols on_delete
+         <chr>           <keys>     <chr>            <keys>      <chr>    
+       1 tf_2            d          tf_1             a           no_action
+       2 tf_2            e, e1      tf_3-1           f, f1       no_action
+       3 tf_4-1          j, j1      tf_3-1           f, f1       no_action
+       4 tf_5-1          l          tf_4-1           h           cascade  
+       5 tf_5-1          m          tf_6-1           n           no_action
+       6 tf_6-1          o          tf_7-1           p           no_action
+       7 tf_7-2          q          tf_2             c           no_action
+       8 tf_6-2          o          tf_7-2           p           no_action
+       9 tf_5-2          m          tf_6-2           n           no_action
+      10 tf_5-2          l          tf_4-2           h           cascade  
+      11 tf_4-2          j, j1      tf_3-2           f, f1       no_action
+      
     Code
       enumerate_all_paths(dm_for_filter_w_cycle(), "tf_5")
     Output
-      # A tibble: 12 x 7
-         child_table child_cols parent_table parent_cols new_child_table
-         <chr>       <keys>     <chr>        <keys>      <chr>          
-       1 tf_5        l          tf_4         h           tf_5           
-       2 tf_4        j, j1      tf_3         f, f1       tf_4-1         
-       3 tf_2        e, e1      tf_3         f, f1       tf_2-1         
-       4 tf_2        d          tf_1         a           tf_2-1         
-       5 tf_7        q          tf_2         c           tf_7-1         
-       6 tf_6        o          tf_7         p           tf_6-1         
-       7 tf_5        m          tf_6         n           tf_5           
-       8 tf_6        o          tf_7         p           tf_6-2         
-       9 tf_7        q          tf_2         c           tf_7-2         
-      10 tf_2        d          tf_1         a           tf_2-2         
-      11 tf_2        e, e1      tf_3         f, f1       tf_2-2         
-      12 tf_4        j, j1      tf_3         f, f1       tf_4-2         
-      # ... with 2 more variables: new_parent_table <chr>, on_delete <chr>
+      $table_mapping
+      # A tibble: 12 x 2
+         new_table table
+         <chr>     <chr>
+       1 tf_4-1    tf_4 
+       2 tf_2-1    tf_2 
+       3 tf_7-1    tf_7 
+       4 tf_6-1    tf_6 
+       5 tf_6-2    tf_6 
+       6 tf_7-2    tf_7 
+       7 tf_2-2    tf_2 
+       8 tf_4-2    tf_4 
+       9 tf_3-1    tf_3 
+      10 tf_1-1    tf_1 
+      11 tf_1-2    tf_1 
+      12 tf_3-2    tf_3 
+      
+      $new_fks
+      # A tibble: 12 x 5
+         new_child_table child_cols new_parent_table parent_cols on_delete
+         <chr>           <keys>     <chr>            <keys>      <chr>    
+       1 tf_5            l          tf_4-1           h           cascade  
+       2 tf_4-1          j, j1      tf_3-1           f, f1       no_action
+       3 tf_2-1          e, e1      tf_3-1           f, f1       no_action
+       4 tf_2-1          d          tf_1-1           a           no_action
+       5 tf_7-1          q          tf_2-1           c           no_action
+       6 tf_6-1          o          tf_7-1           p           no_action
+       7 tf_5            m          tf_6-2           n           no_action
+       8 tf_6-2          o          tf_7-2           p           no_action
+       9 tf_7-2          q          tf_2-2           c           no_action
+      10 tf_2-2          d          tf_1-2           a           no_action
+      11 tf_2-2          e, e1      tf_3-2           f, f1       no_action
+      12 tf_4-2          j, j1      tf_3-2           f, f1       no_action
+      
     Code
       enumerate_all_paths(entangled_dm(), "a")
     Output
-      # A tibble: 22 x 7
-         child_table child_cols parent_table parent_cols new_child_table
-         <chr>       <keys>     <chr>        <keys>      <chr>          
-       1 a           a          b            b           a              
-       2 b           b          d            d           b-1            
-       3 d           d          e            e           d-1            
-       4 e           e          g            g           e-1            
-       5 g           g          h            h           g-1            
-       6 f           f          g            g           f-1            
-       7 d           d          f            f           d-1            
-       8 f           f          g            g           f-2            
-       9 g           g          h            h           g-2            
-      10 e           e          g            g           e-2            
-      # ... with 12 more rows, and 2 more variables: new_parent_table <chr>,
-      #   on_delete <chr>
+      $table_mapping
+      # A tibble: 22 x 2
+         new_table table
+         <chr>     <chr>
+       1 b-1       b    
+       2 d-1       d    
+       3 e-1       e    
+       4 g-1       g    
+       5 f-1       f    
+       6 f-2       f    
+       7 g-2       g    
+       8 e-2       e    
+       9 c-1       c    
+      10 c-2       c    
+      # ... with 12 more rows
+      
+      $new_fks
+      # A tibble: 22 x 5
+         new_child_table child_cols new_parent_table parent_cols on_delete
+         <chr>           <keys>     <chr>            <keys>      <chr>    
+       1 a               a          b-1              b           no_action
+       2 b-1             b          d-1              d           no_action
+       3 d-1             d          e-1              e           no_action
+       4 e-1             e          g-1              g           no_action
+       5 g-1             g          h-1              h           no_action
+       6 f-1             f          g-1              g           no_action
+       7 d-1             d          f-2              f           no_action
+       8 f-2             f          g-2              g           no_action
+       9 g-2             g          h-2              h           no_action
+      10 e-2             e          g-2              g           no_action
+      # ... with 12 more rows
+      
     Code
       enumerate_all_paths(entangled_dm(), "c")
     Output
-      # A tibble: 22 x 7
-         child_table child_cols parent_table parent_cols new_child_table
-         <chr>       <keys>     <chr>        <keys>      <chr>          
-       1 c           c          d            d           c              
-       2 d           d          e            e           d-1            
-       3 e           e          g            g           e-1            
-       4 g           g          h            h           g-1            
-       5 f           f          g            g           f-1            
-       6 d           d          f            f           d-1            
-       7 f           f          g            g           f-2            
-       8 g           g          h            h           g-2            
-       9 e           e          g            g           e-2            
-      10 b           b          d            d           b-1            
-      # ... with 12 more rows, and 2 more variables: new_parent_table <chr>,
-      #   on_delete <chr>
+      $table_mapping
+      # A tibble: 22 x 2
+         new_table table
+         <chr>     <chr>
+       1 d-1       d    
+       2 e-1       e    
+       3 g-1       g    
+       4 f-1       f    
+       5 f-2       f    
+       6 g-2       g    
+       7 e-2       e    
+       8 b-1       b    
+       9 a-1       a    
+      10 a-2       a    
+      # ... with 12 more rows
+      
+      $new_fks
+      # A tibble: 22 x 5
+         new_child_table child_cols new_parent_table parent_cols on_delete
+         <chr>           <keys>     <chr>            <keys>      <chr>    
+       1 c               c          d-1              d           no_action
+       2 d-1             d          e-1              e           no_action
+       3 e-1             e          g-1              g           no_action
+       4 g-1             g          h-1              h           no_action
+       5 f-1             f          g-1              g           no_action
+       6 d-1             d          f-2              f           no_action
+       7 f-2             f          g-2              g           no_action
+       8 g-2             g          h-2              h           no_action
+       9 e-2             e          g-2              g           no_action
+      10 b-1             b          d-1              d           no_action
+      # ... with 12 more rows
+      
     Code
       enumerate_all_paths(entangled_dm_2(), "a")
     Output
-      # A tibble: 8 x 7
-        child_table child_cols parent_table parent_cols new_child_table
-        <chr>       <keys>     <chr>        <keys>      <chr>          
-      1 a           a          d            d           a              
-      2 d           d          e            e           d-1            
-      3 b           b          d            d           b-1            
-      4 c           c          d            d           c-1            
-      5 a           a          e            e           a              
-      6 d           d          e            e           d-2            
-      7 b           b          d            d           b-2            
-      8 c           c          d            d           c-2            
-      # ... with 2 more variables: new_parent_table <chr>, on_delete <chr>
+      $table_mapping
+      # A tibble: 8 x 2
+        new_table table
+        <chr>     <chr>
+      1 d-1       d    
+      2 b-1       b    
+      3 c-1       c    
+      4 d-2       d    
+      5 b-2       b    
+      6 c-2       c    
+      7 e-1       e    
+      8 e-2       e    
+      
+      $new_fks
+      # A tibble: 9 x 5
+        new_child_table child_cols new_parent_table parent_cols on_delete
+        <chr>           <keys>     <chr>            <keys>      <chr>    
+      1 a               a          d-1              d           no_action
+      2 d-1             d          e-1              e           no_action
+      3 b-1             b          d-1              d           no_action
+      4 c-1             c          d-1              d           no_action
+      5 a               a          e-2              e           no_action
+      6 d-2             d          e-2              e           no_action
+      7 b-2             b          d-2              d           no_action
+      8 c-2             c          d-2              d           no_action
+      9 f               f          g                g           no_action
+      
     Code
       enumerate_all_paths(entangled_dm_2(), "d")
     Output
-      # A tibble: 4 x 7
-        child_table child_cols parent_table parent_cols new_child_table
-        <chr>       <keys>     <chr>        <keys>      <chr>          
-      1 d           d          e            e           d              
-      2 a           a          e            e           a-1            
-      3 a           a          d            d           a-2            
-      4 a           a          e            e           a-2            
-      # ... with 2 more variables: new_parent_table <chr>, on_delete <chr>
+      $table_mapping
+      # A tibble: 4 x 2
+        new_table table
+        <chr>     <chr>
+      1 a-1       a    
+      2 a-2       a    
+      3 e-1       e    
+      4 e-2       e    
+      
+      $new_fks
+      # A tibble: 7 x 5
+        new_child_table child_cols new_parent_table parent_cols on_delete
+        <chr>           <keys>     <chr>            <keys>      <chr>    
+      1 d               d          e-1              e           no_action
+      2 a-1             a          e-1              e           no_action
+      3 a-2             a          d                d           no_action
+      4 a-2             a          e-2              e           no_action
+      5 b               b          d                d           no_action
+      6 c               c          d                d           no_action
+      7 f               f          g                g           no_action
+      
 
