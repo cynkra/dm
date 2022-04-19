@@ -1,6 +1,7 @@
 # json joins work
 
     Code
+      packed <- json_pack_join(df1, df2, by = "key")
       packed
     Output
       # A tibble: 3 x 3
@@ -25,6 +26,7 @@
 ---
 
     Code
+      nested <- json_nest_join(df1, df2, by = "key")
       nested
     Output
       # A tibble: 2 x 3
