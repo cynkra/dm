@@ -259,8 +259,6 @@ test_that("can add foreign key with cascade", {
 })
 
 test_that("bogus arguments are rejected", {
-  skip_if_not_installed("rlang", "0.99.0.9000")
-
   expect_snapshot(error = TRUE, {
     dm(a = tibble(x = 1), b = tibble(x = 1)) %>%
       dm_add_fk(a, x, b, x, on_delete = "bogus")
