@@ -8,7 +8,7 @@
 #'
 #' @inheritParams dplyr::nest_join
 #' @param x,y A pair of data frames or data frame extensions (e.g. a tibble).
-#' @seealso [pack_join], [json_nest_join]
+#' @seealso [pack_join()], [json_nest_join()]
 #' @export
 #' @examples
 #' df1 <- tibble::tibble(x = 1:3)

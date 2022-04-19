@@ -26,5 +26,5 @@ packed <- json_pack(df, x = c(x1, x2, x3), y = y)
 packed
 }
 \seealso{
-\link[tidyr:pack]{tidyr::pack}, \link{json_pack_join}
+\code{\link[tidyr:pack]{tidyr::pack()}}, \code{\link[=json_pack_join]{json_pack_join()}}
 }

@@ -26,5 +26,5 @@ nested <- json_nest(df, data = c(y, z))
 nested
 }
 \seealso{
-\link[tidyr:nest]{tidyr::nest}, \link{json_nest_join}
+\code{\link[tidyr:nest]{tidyr::nest()}}, \code{\link[=json_nest_join]{json_nest_join()}}
 }

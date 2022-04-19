@@ -10,7 +10,7 @@
 #' @param ... <[`tidy-select`][tidyr_tidy_select]> Columns to pack, specified
 #'   using name-variable pairs of the form `new_col = c(col1, col2, col3)`.
 #'   The right hand side can be any valid tidy select expression.
-#' @seealso [tidyr::pack], [json_pack_join]
+#' @seealso [tidyr::pack()], [json_pack_join()]
 #' @export
 #' @examples
 #' df <- tibble::tibble(x1 = 1:3, x2 = 4:6, x3 = 7:9, y = 1:3)
