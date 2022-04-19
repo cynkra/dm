@@ -22,7 +22,7 @@ json_nest_join <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, nam
 
 #' @export
 json_nest_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
-  check_suggested("jsonlite", TRUE)
+  check_suggested("jsonlite", use = TRUE, top_level_fun = "json_nest_join")
   check_dots_empty()
   name_var <- name %||% as_label(enexpr(y))
   dplyr::nest_join(x, y, by, copy = copy, keep = keep, name = name_var, ...) %>%
