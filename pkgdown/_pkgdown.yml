@@ -104,6 +104,14 @@ reference:
   - dm_unnest_tbl
   - dm_unpack_tbl
 
+- title: Operations on data frames and lazy tables
+  contents:
+  - pack_join
+  - json_pack_join
+  - json_nest_join
+  - json_pack
+  - json_nest
+
 - title: Materialize
   contents:
   - compute.dm
@@ -159,7 +167,6 @@ reference:
   - dm_pixarfilms
   - dm_nrow
   - dm_ptype
-  - pack_join
 
 navbar:
   title: ~
