@@ -1,8 +1,15 @@
-dm_disentangle <- function(dm, start) {
+dm_disentangle <- function(dm, start, quiet = FALSE) {
   check_not_zoomed(dm)
   start <- dm_tbl_name_null(dm, {{ start }})
   recipes <- enumerate_all_paths(dm, start)
   changed <- arrange(recipes$table_mapping, table, new_table)
+  if (!quiet) {
+    msgs <- group_by(changed, table) %>%
+      summarize(
+        msg = glue::glue("Replaced table {tick(unique(table))} with {commas(tick(new_table))}.")
+      )
+    walk(msgs$msg, message)
+  }
   fk_table <- fk_table_to_def_fks(
     recipes$new_fks,
     child_table = "new_child_table",

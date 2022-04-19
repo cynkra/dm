@@ -2,6 +2,12 @@
 
     Code
       dm_disentangle(dm_for_filter_w_cycle(), tf_1) %>% dm_get_all_fks()
+    Message
+      Replaced table `tf_3` with `tf_3-1`, `tf_3-2`.
+      Replaced table `tf_4` with `tf_4-1`, `tf_4-2`.
+      Replaced table `tf_5` with `tf_5-1`, `tf_5-2`.
+      Replaced table `tf_6` with `tf_6-1`, `tf_6-2`.
+      Replaced table `tf_7` with `tf_7-1`, `tf_7-2`.
     Output
       # A tibble: 11 x 5
          child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -19,6 +25,13 @@
       11 tf_6-2      o             tf_7-2       p               no_action
     Code
       dm_disentangle(dm_for_filter_w_cycle(), tf_5) %>% dm_get_all_fks()
+    Message
+      Replaced table `tf_1` with `tf_1-1`, `tf_1-2`.
+      Replaced table `tf_2` with `tf_2-1`, `tf_2-2`.
+      Replaced table `tf_3` with `tf_3-1`, `tf_3-2`.
+      Replaced table `tf_4` with `tf_4-1`, `tf_4-2`.
+      Replaced table `tf_6` with `tf_6-1`, `tf_6-2`.
+      Replaced table `tf_7` with `tf_7-1`, `tf_7-2`.
     Output
       # A tibble: 12 x 5
          child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -36,7 +49,7 @@
       11 tf_6-1      o             tf_7-1       p               no_action
       12 tf_6-2      o             tf_7-2       p               no_action
     Code
-      dm_disentangle(entangled_dm(), a) %>% dm_get_all_fks()
+      dm_disentangle(entangled_dm(), a, quiet = TRUE) %>% dm_get_all_fks()
     Output
       # A tibble: 22 x 5
          child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -54,6 +67,14 @@
       # ... with 12 more rows
     Code
       dm_disentangle(entangled_dm(), c) %>% dm_get_all_fks()
+    Message
+      Replaced table `a` with `a-1`, `a-2`.
+      Replaced table `b` with `b-1`, `b-2`.
+      Replaced table `d` with `d-1`, `d-2`.
+      Replaced table `e` with `e-1`, `e-2`, `e-3`, `e-4`.
+      Replaced table `f` with `f-1`, `f-2`, `f-3`, `f-4`.
+      Replaced table `g` with `g-1`, `g-2`, `g-3`, `g-4`.
+      Replaced table `h` with `h-1`, `h-2`, `h-3`, `h-4`.
     Output
       # A tibble: 22 x 5
          child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -71,6 +92,11 @@
       # ... with 12 more rows
     Code
       dm_disentangle(entangled_dm_2(), a) %>% dm_get_all_fks()
+    Message
+      Replaced table `b` with `b-1`, `b-2`.
+      Replaced table `c` with `c-1`, `c-2`.
+      Replaced table `d` with `d-1`, `d-2`.
+      Replaced table `e` with `e-1`, `e-2`.
     Output
       # A tibble: 9 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -85,7 +111,7 @@
       8 d-2         d             e-2          e               no_action
       9 f           f             g            g               no_action
     Code
-      dm_disentangle(entangled_dm_2(), d) %>% dm_get_all_fks()
+      dm_disentangle(entangled_dm_2(), d, quiet = TRUE) %>% dm_get_all_fks()
     Output
       # A tibble: 7 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete

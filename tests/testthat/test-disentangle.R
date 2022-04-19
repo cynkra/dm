@@ -4,13 +4,13 @@ test_that("dm_disentangle() works", {
       dm_get_all_fks()
     dm_disentangle(dm_for_filter_w_cycle(), tf_5) %>%
       dm_get_all_fks()
-    dm_disentangle(entangled_dm(), a) %>%
+    dm_disentangle(entangled_dm(), a, quiet = TRUE) %>%
       dm_get_all_fks()
     dm_disentangle(entangled_dm(), c) %>%
       dm_get_all_fks()
     dm_disentangle(entangled_dm_2(), a) %>%
       dm_get_all_fks()
-    dm_disentangle(entangled_dm_2(), d) %>%
+    dm_disentangle(entangled_dm_2(), d, quiet = TRUE) %>%
       dm_get_all_fks()
   })
 
