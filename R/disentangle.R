@@ -12,7 +12,7 @@ dm_disentangle <- function(dm, start) {
   ) %>%
     rename(new_fks = fks)
   dm_get_def(dm) %>%
-    full_join(changed, by = "table") %>%
+    left_join(changed, by = "table") %>%
     mutate(table = coalesce(new_table, table)) %>%
     select(-new_table) %>%
     left_join(fk_table, by = c("table" = "new_parent_table")) %>%
