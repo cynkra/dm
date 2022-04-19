@@ -52,5 +52,5 @@ df2 <- tibble::tibble(x = c(1, 1, 2), y = c("first", "second", "third"))
 pack_join(df1, df2)
 }
 \seealso{
-\link[dplyr:nest_join]{dplyr::nest_join}, \link[tidyr:pack]{tidyr::pack}
+\code{\link[dplyr:nest_join]{dplyr::nest_join()}}, \code{\link[tidyr:pack]{tidyr::pack()}}
 }

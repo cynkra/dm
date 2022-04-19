@@ -54,5 +54,5 @@ df3
 df3$df2
 }
 \seealso{
-\link[dplyr:nest_join]{dplyr::nest_join}, \link{json_pack_join}
+\code{\link[dplyr:nest_join]{dplyr::nest_join()}}, \code{\link[=json_pack_join]{json_pack_join()}}
 }

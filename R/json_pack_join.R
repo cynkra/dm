@@ -8,7 +8,7 @@
 #'
 #' @inheritParams dplyr::nest_join
 #' @param x,y A pair of data frames or data frame extensions (e.g. a tibble).
-#' @seealso [pack_join], [json_nest_join]
+#' @seealso [pack_join()], [json_nest_join()]
 #' @export
 #' @examples
 #' df1 <- tibble::tibble(x = 1:3)
@@ -22,7 +22,7 @@ json_pack_join <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, nam
 
 #' @export
 json_pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
-  check_suggested("jsonlite", TRUE)
+  check_suggested("jsonlite", use = TRUE, top_level_fun = "json_pack_join")
   check_dots_empty()
   name_var <- name %||% as_label(enexpr(y))
   pack_join(x, y, by, ..., copy = copy, keep = keep, name = name_var) %>%

@@ -54,5 +54,5 @@ df3
 df3$df2
 }
 \seealso{
-\link{pack_join}, \link{json_nest_join}
+\code{\link[=pack_join]{pack_join()}}, \code{\link[=json_nest_join]{json_nest_join()}}
 }

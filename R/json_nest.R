@@ -10,7 +10,7 @@
 #' @param ... <[`tidy-select`][tidyr_tidy_select]> Columns to pack, specified
 #'   using name-variable pairs of the form `new_col = c(col1, col2, col3)`.
 #'   The right hand side can be any valid tidy select expression.
-#' @seealso [tidyr::nest], [json_nest_join]
+#' @seealso [tidyr::nest()], [json_nest_join()]
 #' @export
 #' @examples
 #' df <- tibble::tibble(x = c(1, 1, 1, 2, 2, 3), y = 1:6, z = 6:1)
@@ -22,7 +22,7 @@ json_nest <- function(.data, ..., .names_sep = NULL) {
 
 #' @export
 json_nest.data.frame <- function(.data, ..., .names_sep = NULL) {
-  check_suggested("jsonlite", TRUE)
+  check_suggested("jsonlite", use = TRUE, top_level_fun = "json_nest")
   dot_nms <- ...names()
   # `{tidyr}` only warns but since we don't need backward compatibility we're
   #   better off failing
