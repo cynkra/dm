@@ -67,7 +67,7 @@ enumerate_all_paths_impl <- function(node,
   out <-
     graph_df_ud %>%
     filter(child_table == !!node) %>%
-    filter(!(parent_table %in% path)) %>%
+    filter(!(parent_table %in% !!path)) %>%
     rename(node = parent_table, node_key_cols = parent_cols, former_node = child_table, former_key_cols = child_cols) %>%
     select(-on_delete)
 
