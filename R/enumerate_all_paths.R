@@ -2,7 +2,8 @@ enumerate_all_paths <- function(dm, start) {
   all_fks <-
     dm %>%
     dm_get_all_fks() %>%
-    rename(child_cols = child_fk_cols, parent_cols = parent_key_cols)
+    rename(child_cols = child_fk_cols, parent_cols = parent_key_cols) %>%
+    mutate(edge_id = row_number())
 
   helper_env <- new_environment()
   helper_env$tbl_node <- list()
@@ -33,10 +34,8 @@ enumerate_all_paths <- function(dm, start) {
 }
 
 enumerate_all_paths_impl <- function(node,
-                                     node_key_cols = character(),
-                                     former_node = character(),
-                                     former_key_cols = character(),
-                                     path = character(),
+                                     edge_id,
+                                     path,
                                      all_fks,
                                      helper_env) {
   # increase tbl_node[[node]] by 1, return this index in a suffix
@@ -44,10 +43,8 @@ enumerate_all_paths_impl <- function(node,
   new_node <- paste0(node, usage_idx)
   add_path_to_all_paths(
     all_fks,
+    edge_id,
     node,
-    node_key_cols,
-    former_node,
-    former_key_cols,
     new_node,
     new_former_node = names(path)[[length(path)]],
     helper_env
@@ -63,8 +60,7 @@ enumerate_in_paths_impl <- function(node, path = set_names(node), all_fks, helpe
     all_fks %>%
     filter(parent_table == !!node) %>%
     filter(!(child_table %in% !!path)) %>%
-    rename(node = child_table, node_key_cols = child_cols, former_node = parent_table, former_key_cols = parent_cols) %>%
-    select(-on_delete)
+    select(node = child_table, edge_id)
 
   pwalk(out, enumerate_all_paths_impl, path, all_fks, helper_env)
 }
@@ -74,8 +70,7 @@ enumerate_out_paths_impl <- function(node, path = set_names(node), all_fks, help
     all_fks %>%
     filter(child_table == !!node) %>%
     filter(!(parent_table %in% !!path)) %>%
-    rename(node = parent_table, node_key_cols = parent_cols, former_node = child_table, former_key_cols = child_cols) %>%
-    select(-on_delete)
+    select(node = parent_table, edge_id)
 
   pwalk(out, enumerate_all_paths_impl, path, all_fks, helper_env)
 }
@@ -106,35 +101,19 @@ inc_tbl_node <- function(node, helper_env) {
 }
 
 add_path_to_all_paths <- function(all_fks,
+                                  edge_id,
                                   node,
-                                  node_key_cols,
-                                  former_node,
-                                  former_key_cols,
                                   new_node,
                                   new_former_node,
                                   helper_env) {
   all_paths <- helper_env$all_paths
   path_element <-
     all_fks %>%
-    filter(
-      (
-        child_table == node &
-          map_lgl(child_cols, ~ identical(.x, !!node_key_cols)) &
-          parent_table == former_node &
-          map_lgl(parent_cols, ~ identical(.x, !!former_key_cols))
-      ) |
-        (
-          parent_table == node &
-            map_lgl(parent_cols, ~ identical(.x, !!node_key_cols)) &
-            child_table == former_node &
-            map_lgl(child_cols, ~ identical(.x, !!former_key_cols))
-        )
-    )
+    filter(edge_id == !!edge_id)
 
   helper_env$all_paths <- bind_rows(
     all_paths,
     path_element %>%
-      slice(1) %>%
       mutate(
         new_child_table = if_else(child_table == node, !!new_node, !!new_former_node),
         new_parent_table = if_else(parent_table == node, !!new_node, !!new_former_node)
