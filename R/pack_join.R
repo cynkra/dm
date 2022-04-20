@@ -9,7 +9,7 @@
 #' @param x,y A pair of data frames or data frame extensions (e.g. a tibble).
 #'
 #' @export
-#' @seealso [dplyr::nest_join], [tidyr::pack]
+#' @seealso [dplyr::nest_join()], [tidyr::pack()]
 #' @examples
 #' df1 <- tibble::tibble(x = 1:3)
 #' df2 <- tibble::tibble(x = c(1, 1, 2), y = c("first", "second", "third"))
