@@ -40,7 +40,7 @@ enumerate_all_paths_impl <- function(node,
   if (!is.null(edge_id)) {
     # increase tbl_node[[node]] by 1, return this index in a suffix
     usage_idx <- inc_tbl_node(node, helper_env)
-    new_node <- paste0(node, usage_idx)
+    new_node <- paste0(node, "-", usage_idx)
     # new nodes appended to the front
     path <- c(set_names(node, new_node), path)
     # the first two elements serve as (reverse) lookup for new table names
@@ -90,7 +90,7 @@ inc_tbl_node <- function(node, helper_env) {
   out <- (tbl_node[[node]] %||% 0) + 1
   tbl_node[[node]] <- out
   helper_env$tbl_node <- tbl_node
-  paste0("-", out)
+  out
 }
 
 add_path_to_all_paths <- function(all_fks,
