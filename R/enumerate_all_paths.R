@@ -42,16 +42,16 @@ enumerate_all_paths_impl <- function(node,
     # increase tbl_node[[node]] by 1, return this index in a suffix
     usage_idx <- inc_tbl_node(node, helper_env)
     new_node <- paste0(node, usage_idx)
+    # new nodes appended to the front
+    path <- c(set_names(node, new_node), path)
+
     add_path_to_all_paths(
       all_fks,
       edge_id,
-      node,
-      new_node,
-      new_former_node = names(path)[[length(path)]],
+      # the first two elements serve as lookup for new table names
+      node_lookup = prep_recode(path[1:2]),
       helper_env
     )
-
-    path <- c(path, set_names(node, new_node))
   }
 
   in_edges <-
@@ -98,9 +98,7 @@ inc_tbl_node <- function(node, helper_env) {
 
 add_path_to_all_paths <- function(all_fks,
                                   edge_id,
-                                  node,
-                                  new_node,
-                                  new_former_node,
+                                  node_lookup,
                                   helper_env) {
   all_paths <- helper_env$all_paths
   path_element <-
@@ -111,8 +109,8 @@ add_path_to_all_paths <- function(all_fks,
     all_paths,
     path_element %>%
       mutate(
-        new_child_table = if_else(child_table == node, !!new_node, !!new_former_node),
-        new_parent_table = if_else(parent_table == node, !!new_node, !!new_former_node)
+        new_child_table = (!!node_lookup)[child_table],
+        new_parent_table = (!!node_lookup)[parent_table]
       )
   )
 }
