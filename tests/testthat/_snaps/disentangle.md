@@ -13,9 +13,9 @@
          child_table child_fk_cols parent_table parent_key_cols on_delete
          <chr>       <keys>        <chr>        <keys>          <chr>    
        1 tf_2        d             tf_1         a               no_action
-       2 tf_7-2      q             tf_2         c               no_action
-       3 tf_2        e, e1         tf_3-1       f, f1           no_action
-       4 tf_4-1      j, j1         tf_3-1       f, f1           no_action
+       2 tf_7-1      q             tf_2         c               no_action
+       3 tf_4-1      j, j1         tf_3-1       f, f1           no_action
+       4 tf_2        e, e1         tf_3-2       f, f1           no_action
        5 tf_4-2      j, j1         tf_3-2       f, f1           no_action
        6 tf_5-1      l             tf_4-1       h               cascade  
        7 tf_5-2      l             tf_4-2       h               cascade  
@@ -81,9 +81,9 @@
          <chr>       <keys>        <chr>        <keys>          <chr>    
        1 a-1         a             b-1          b               no_action
        2 a-2         a             b-2          b               no_action
-       3 a-2         a             c            c               no_action
-       4 c           c             d-1          d               no_action
-       5 b-1         b             d-1          d               no_action
+       3 a-1         a             c            c               no_action
+       4 b-1         b             d-1          d               no_action
+       5 c           c             d-2          d               no_action
        6 b-2         b             d-2          d               no_action
        7 d-1         d             e-1          e               no_action
        8 d-2         d             e-3          e               no_action
@@ -116,11 +116,11 @@
       # A tibble: 7 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
         <chr>       <keys>        <chr>        <keys>          <chr>    
-      1 a-2         a             d            d               no_action
+      1 a-1         a             d            d               no_action
       2 b           b             d            d               no_action
       3 c           c             d            d               no_action
-      4 d           d             e-1          e               no_action
-      5 a-1         a             e-1          e               no_action
+      4 a-1         a             e-1          e               no_action
+      5 d           d             e-2          e               no_action
       6 a-2         a             e-2          e               no_action
       7 f           f             g            g               no_action
 
