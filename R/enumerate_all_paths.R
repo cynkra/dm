@@ -16,8 +16,7 @@ enumerate_all_paths <- function(dm, start) {
     new_parent_table = character()
   )
 
-  enumerate_in_paths_impl(start, all_fks = all_fks, helper_env = helper_env)
-  enumerate_out_paths_impl(start, all_fks = all_fks, helper_env = helper_env)
+  enumerate_all_paths_impl(start, all_fks = all_fks, helper_env = helper_env)
 
   all_paths <- helper_env$all_paths
   # need to take into account FKs from unconnected components (graph representation)
@@ -34,45 +33,42 @@ enumerate_all_paths <- function(dm, start) {
 }
 
 enumerate_all_paths_impl <- function(node,
-                                     edge_id,
-                                     path,
+                                     edge_id = NULL,
+                                     path = set_names(node),
                                      all_fks,
                                      helper_env) {
-  # increase tbl_node[[node]] by 1, return this index in a suffix
-  usage_idx <- inc_tbl_node(node, helper_env)
-  new_node <- paste0(node, usage_idx)
-  add_path_to_all_paths(
-    all_fks,
-    edge_id,
-    node,
-    new_node,
-    new_former_node = names(path)[[length(path)]],
-    helper_env
-  )
 
-  path <- c(path, set_names(node, new_node))
-  enumerate_in_paths_impl(node, path, all_fks, helper_env)
-  enumerate_out_paths_impl(node, path, all_fks, helper_env)
-}
+  if (!is.null(edge_id)) {
+    # increase tbl_node[[node]] by 1, return this index in a suffix
+    usage_idx <- inc_tbl_node(node, helper_env)
+    new_node <- paste0(node, usage_idx)
+    add_path_to_all_paths(
+      all_fks,
+      edge_id,
+      node,
+      new_node,
+      new_former_node = names(path)[[length(path)]],
+      helper_env
+    )
 
-enumerate_in_paths_impl <- function(node, path = set_names(node), all_fks, helper_env) {
-  out <-
+    path <- c(path, set_names(node, new_node))
+  }
+
+  in_edges <-
     all_fks %>%
     filter(parent_table == !!node) %>%
     filter(!(child_table %in% !!path)) %>%
     select(node = child_table, edge_id)
 
-  pwalk(out, enumerate_all_paths_impl, path, all_fks, helper_env)
-}
+  pwalk(in_edges, enumerate_all_paths_impl, path, all_fks, helper_env)
 
-enumerate_out_paths_impl <- function(node, path = set_names(node), all_fks, helper_env) {
-  out <-
+  out_edges <-
     all_fks %>%
     filter(child_table == !!node) %>%
     filter(!(parent_table %in% !!path)) %>%
     select(node = parent_table, edge_id)
 
-  pwalk(out, enumerate_all_paths_impl, path, all_fks, helper_env)
+  pwalk(out_edges, enumerate_all_paths_impl, path, all_fks, helper_env)
 }
 
 rename_unique <- function(all_paths) {
