@@ -72,20 +72,23 @@ enumerate_all_paths_impl <- function(node,
 }
 
 rename_unique <- function(all_paths) {
-  all_names <- bind_rows(
-    select(all_paths, table = child_table, new_table = new_child_table),
-    select(all_paths, table = parent_table, new_table = new_parent_table)
-  ) %>%
+  node_lookup <-
+    bind_rows(
+      select(all_paths, new_table = new_child_table, table = child_table),
+      select(all_paths, new_table = new_parent_table, table = parent_table)
+    ) %>%
     distinct() %>%
     arrange(table, new_table) %>%
-    count(table)
-  left_join(all_paths, rename(all_names, n_c = n), by = c("child_table" = "table")) %>%
-    left_join(rename(all_names, n_p = n), by = c("parent_table" = "table")) %>%
+    add_count(table) %>%
+    mutate(table = if_else(n == 1L, table, new_table)) %>%
+    select(new_table, table) %>%
+    deframe()
+
+  all_paths %>%
     mutate(
-      new_child_table = if_else(n_c == 1, child_table, new_child_table),
-      new_parent_table = if_else(n_p == 1, parent_table, new_parent_table)
-    ) %>%
-    select(-n_c, -n_p)
+      new_child_table = (!!node_lookup)[new_child_table],
+      new_parent_table = (!!node_lookup)[new_parent_table]
+    )
 }
 
 inc_tbl_node <- function(node, helper_env) {
