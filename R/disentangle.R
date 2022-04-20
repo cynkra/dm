@@ -1,6 +1,6 @@
 dm_disentangle <- function(dm, start, quiet = FALSE) {
   check_not_zoomed(dm)
-  start <- dm_tbl_name_null(dm, {{ start }})
+  start <- dm_tbl_name(dm, {{ start }})
   recipes <- enumerate_all_paths(dm, start)
   changed <- arrange(recipes$table_mapping, table, new_table)
 

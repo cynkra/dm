@@ -19,4 +19,9 @@ test_that("dm_disentangle() works", {
       dm_zoom_to(tf_1) %>%
       dm_disentangle(tf_1)
   })
+
+  expect_snapshot_error({
+    dm_for_filter_w_cycle() %>%
+      dm_disentangle()
+  })
 })
