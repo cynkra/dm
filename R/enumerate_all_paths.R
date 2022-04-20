@@ -24,7 +24,7 @@ enumerate_all_paths <- function(dm, start) {
     new_child_table = character(),
     new_parent_table = character()
   )
-  enumerate_all_paths_impl(start, graph_df_ud = graph_df_ud, helper_env = helper_env)
+  enumerate_out_paths_impl(start, graph_df_ud = graph_df_ud, helper_env = helper_env)
   all_paths <- helper_env$all_paths
   # need to take into account FKs from unconnected components (graph representation)
   fks_from_unconnected <- anti_join(
@@ -46,24 +46,24 @@ enumerate_all_paths_impl <- function(node,
                                      path = character(),
                                      graph_df_ud,
                                      helper_env) {
-  if (length(path) > 0) {
-    # increase tbl_node[[node]] by 1, return this index in a suffix
-    usage_idx <- inc_tbl_node(node, helper_env)
-    add_path_to_all_paths(
-      graph_df_ud,
-      node,
-      node_key_cols,
-      former_node,
-      former_key_cols,
-      new_former_node = names(path)[[length(path)]],
-      usage_idx,
-      helper_env
-    )
-  } else {
-    usage_idx <- ""
-  }
+  # increase tbl_node[[node]] by 1, return this index in a suffix
+  usage_idx <- inc_tbl_node(node, helper_env)
+  add_path_to_all_paths(
+    graph_df_ud,
+    node,
+    node_key_cols,
+    former_node,
+    former_key_cols,
+    new_former_node = names(path)[[length(path)]],
+    usage_idx,
+    helper_env
+  )
 
   path <- c(path, set_names(node, paste0(node, usage_idx)))
+  enumerate_out_paths_impl(node, path, graph_df_ud, helper_env)
+}
+
+enumerate_out_paths_impl <- function(node, path = set_names(node), graph_df_ud, helper_env) {
   out <-
     graph_df_ud %>%
     filter(child_table == !!node) %>%
