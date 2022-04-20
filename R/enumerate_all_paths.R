@@ -56,15 +56,14 @@ enumerate_all_paths_impl <- function(node,
     filter(!(child_table %in% !!path)) %>%
     select(node = child_table, edge_id)
 
-  pwalk(in_edges, enumerate_all_paths_impl, path, all_fks, helper_env)
-
   out_edges <-
     all_fks %>%
     filter(child_table == !!node) %>%
     filter(!(parent_table %in% !!path)) %>%
     select(node = parent_table, edge_id)
 
-  pwalk(out_edges, enumerate_all_paths_impl, path, all_fks, helper_env)
+  bind_rows(in_edges, out_edges) %>%
+    pwalk(enumerate_all_paths_impl, path, all_fks, helper_env)
 }
 
 rename_unique <- function(all_paths) {
