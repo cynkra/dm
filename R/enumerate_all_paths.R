@@ -41,18 +41,19 @@ enumerate_all_paths_impl <- function(node,
                                      helper_env) {
   # increase tbl_node[[node]] by 1, return this index in a suffix
   usage_idx <- inc_tbl_node(node, helper_env)
+  new_node <- paste0(node, usage_idx)
   add_path_to_all_paths(
     all_fks,
     node,
     node_key_cols,
     former_node,
     former_key_cols,
+    new_node,
     new_former_node = names(path)[[length(path)]],
-    usage_idx,
     helper_env
   )
 
-  path <- c(path, set_names(node, paste0(node, usage_idx)))
+  path <- c(path, set_names(node, new_node))
   enumerate_in_paths_impl(node, path, all_fks, helper_env)
   enumerate_out_paths_impl(node, path, all_fks, helper_env)
 }
@@ -109,8 +110,8 @@ add_path_to_all_paths <- function(all_fks,
                                   node_key_cols,
                                   former_node,
                                   former_key_cols,
+                                  new_node,
                                   new_former_node,
-                                  usage_idx,
                                   helper_env) {
   all_paths <- helper_env$all_paths
   path_element <-
@@ -135,8 +136,8 @@ add_path_to_all_paths <- function(all_fks,
     path_element %>%
       slice(1) %>%
       mutate(
-        new_child_table = if_else(child_table == node, paste0(node, usage_idx), new_former_node),
-        new_parent_table = if_else(parent_table == node, paste0(node, usage_idx), new_former_node)
+        new_child_table = if_else(child_table == node, !!new_node, !!new_former_node),
+        new_parent_table = if_else(parent_table == node, !!new_node, !!new_former_node)
       )
   )
 }
