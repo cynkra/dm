@@ -113,15 +113,15 @@ add_path_to_all_paths <- function(graph_df_ud,
     filter(
       (
         child_table == node &
-          map_lgl(child_cols, ~ identical(sort(.x), !!sort(node_key_cols))) &
+          map_lgl(child_cols, ~ identical(.x, !!node_key_cols)) &
           parent_table == former_node &
-          map_lgl(parent_cols, ~ identical(sort(.x), !!sort(former_key_cols)))
+          map_lgl(parent_cols, ~ identical(.x, !!former_key_cols))
       ) |
         (
           parent_table == node &
-            map_lgl(parent_cols, ~ identical(sort(.x), !!sort(node_key_cols))) &
+            map_lgl(parent_cols, ~ identical(.x, !!node_key_cols)) &
             child_table == former_node &
-            map_lgl(child_cols, ~ identical(sort(.x), !!sort(former_key_cols)))
+            map_lgl(child_cols, ~ identical(.x, !!former_key_cols))
         )
     )
 
