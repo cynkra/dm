@@ -573,7 +573,8 @@ fk_table_to_def_fks <- function(table,
                                 child_fk_cols = "child_fk_cols",
                                 parent_table = "parent_table",
                                 parent_key_cols = "parent_key_cols") {
-  group_by(table, !!ensym(parent_table)) %>%
+  table %>%
+    group_by(!!ensym(parent_table)) %>%
     summarize(
       fks = list_of(new_fk(
         ref_column = as.list(!!ensym(parent_key_cols)),

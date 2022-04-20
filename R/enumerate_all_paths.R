@@ -71,10 +71,6 @@ enumerate_all_paths_impl <- function(node,
     rename(node = parent_table, node_key_cols = parent_cols, former_node = child_table, former_key_cols = child_cols) %>%
     select(-on_delete)
 
-  if (nrow(out) == 0) {
-    return()
-  }
-
   pwalk(out, enumerate_all_paths_impl, path, graph_df_ud, helper_env)
 }
 
@@ -85,8 +81,7 @@ rename_unique <- function(all_paths) {
   ) %>%
     distinct() %>%
     arrange(table, new_table) %>%
-    group_by(table) %>%
-    count()
+    count(table)
   left_join(all_paths, rename(all_names, n_c = n), by = c("child_table" = "table")) %>%
     left_join(rename(all_names, n_p = n), by = c("parent_table" = "table")) %>%
     mutate(
