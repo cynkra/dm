@@ -3,11 +3,16 @@ dm_disentangle <- function(dm, start, quiet = FALSE) {
   start <- dm_tbl_name_null(dm, {{ start }})
   recipes <- enumerate_all_paths(dm, start)
   changed <- arrange(recipes$table_mapping, table, new_table)
+
   if (!quiet) {
-    msgs <- group_by(changed, table) %>%
+    msgs <-
+      changed %>%
+      group_by(table) %>%
       summarize(
         msg = glue::glue("Replaced table {tick(unique(table))} with {commas(tick(new_table))}.")
-      )
+      ) %>%
+      ungroup()
+
     walk(msgs$msg, message)
   }
   fk_table <- fk_table_to_def_fks(
@@ -18,6 +23,7 @@ dm_disentangle <- function(dm, start, quiet = FALSE) {
     parent_key_cols = "parent_cols"
   ) %>%
     rename(new_fks = fks)
+
   dm_get_def(dm) %>%
     left_join(changed, by = "table") %>%
     mutate(table = coalesce(new_table, table)) %>%
