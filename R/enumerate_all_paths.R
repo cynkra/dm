@@ -44,14 +44,10 @@ enumerate_all_paths_impl <- function(node,
     new_node <- paste0(node, usage_idx)
     # new nodes appended to the front
     path <- c(set_names(node, new_node), path)
+    # the first two elements serve as (reverse) lookup for new table names
+    node_lookup <- prep_recode(path[1:2])
 
-    add_path_to_all_paths(
-      all_fks,
-      edge_id,
-      # the first two elements serve as lookup for new table names
-      node_lookup = prep_recode(path[1:2]),
-      helper_env
-    )
+    add_path_to_all_paths(all_fks, edge_id, node_lookup, helper_env)
   }
 
   in_edges <-
