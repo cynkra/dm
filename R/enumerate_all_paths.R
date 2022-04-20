@@ -15,17 +15,17 @@ enumerate_all_paths <- function(dm, start) {
     bind_rows(all_fks, .)
 
   helper_env <- new_environment()
-  assign("tbl_node", list(), envir = helper_env)
-  assign("all_paths", tibble(
+  helper_env$tbl_node <- list()
+  helper_env$all_paths <- tibble(
     child_table = character(),
     child_cols = new_keys(),
     parent_table = character(),
     parent_cols = new_keys(),
     new_child_table = character(),
     new_parent_table = character()
-  ), envir = helper_env)
+  )
   enumerate_all_paths_impl(start, graph_df_ud = graph_df_ud, helper_env = helper_env)
-  all_paths <- get("all_paths", envir = helper_env)
+  all_paths <- helper_env$all_paths
   # need to take into account FKs from unconnected components (graph representation)
   fks_from_unconnected <- anti_join(
     all_fks,
@@ -92,10 +92,11 @@ rename_unique <- function(all_paths) {
 }
 
 inc_tbl_node <- function(node, helper_env) {
-  tbl_node <- get("tbl_node", envir = helper_env)
-  tbl_node[[node]] <- (tbl_node[[node]] %||% 0) + 1
-  assign("tbl_node", tbl_node, envir = helper_env)
-  paste0("-", tbl_node[[node]])
+  tbl_node <- helper_env$tbl_node
+  out <- (tbl_node[[node]] %||% 0) + 1
+  tbl_node[[node]] <- out
+  helper_env$tbl_node <- tbl_node
+  paste0("-", out)
 }
 
 add_path_to_all_paths <- function(graph_df_ud,
@@ -106,31 +107,32 @@ add_path_to_all_paths <- function(graph_df_ud,
                                   new_former_node,
                                   usage_idx,
                                   helper_env) {
-  all_paths <- get("all_paths", helper_env)
-  path_element <- graph_df_ud %>% filter(
-    (
-      child_table == node &
-        map_lgl(child_cols, ~ identical(sort(.x), sort(node_key_cols))) &
-        parent_table == former_node &
-        map_lgl(parent_cols, ~ identical(sort(.x), sort(former_key_cols)))
-    ) |
+  all_paths <- helper_env$all_paths
+  path_element <-
+    graph_df_ud %>%
+    filter(
       (
-        parent_table == node &
-          map_lgl(parent_cols, ~ identical(sort(.x), sort(node_key_cols))) &
-          child_table == former_node &
-          map_lgl(child_cols, ~ identical(sort(.x), sort(former_key_cols)))
-      )
-  )
-  assign("all_paths",
-    bind_rows(
-      all_paths,
-      slice(path_element, 1) %>%
-        mutate(
-          new_child_table = if_else(child_table == node, paste0(node, usage_idx), new_former_node),
-          new_parent_table = if_else(parent_table == node, paste0(node, usage_idx), new_former_node)
+        child_table == node &
+          map_lgl(child_cols, ~ identical(sort(.x), !!sort(node_key_cols))) &
+          parent_table == former_node &
+          map_lgl(parent_cols, ~ identical(sort(.x), !!sort(former_key_cols)))
+      ) |
+        (
+          parent_table == node &
+            map_lgl(parent_cols, ~ identical(sort(.x), !!sort(node_key_cols))) &
+            child_table == former_node &
+            map_lgl(child_cols, ~ identical(sort(.x), !!sort(former_key_cols)))
         )
-    ),
-    envir = helper_env
+    )
+
+  helper_env$all_paths <- bind_rows(
+    all_paths,
+    path_element %>%
+      slice(1) %>%
+      mutate(
+        new_child_table = if_else(child_table == node, paste0(node, usage_idx), new_former_node),
+        new_parent_table = if_else(parent_table == node, paste0(node, usage_idx), new_former_node)
+      )
   )
 }
 
