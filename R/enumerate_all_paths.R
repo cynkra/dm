@@ -4,16 +4,6 @@ enumerate_all_paths <- function(dm, start) {
     dm_get_all_fks() %>%
     rename(child_cols = child_fk_cols, parent_cols = parent_key_cols)
 
-  graph_df_ud <-
-    all_fks %>%
-    rename(
-      child_table = parent_table,
-      child_cols = parent_cols,
-      parent_table = child_table,
-      parent_cols = child_cols,
-    ) %>%
-    bind_rows(all_fks, .)
-
   helper_env <- new_environment()
   helper_env$tbl_node <- list()
   helper_env$all_paths <- tibble(
@@ -24,7 +14,10 @@ enumerate_all_paths <- function(dm, start) {
     new_child_table = character(),
     new_parent_table = character()
   )
-  enumerate_out_paths_impl(start, graph_df_ud = graph_df_ud, helper_env = helper_env)
+
+  enumerate_in_paths_impl(start, all_fks = all_fks, helper_env = helper_env)
+  enumerate_out_paths_impl(start, all_fks = all_fks, helper_env = helper_env)
+
   all_paths <- helper_env$all_paths
   # need to take into account FKs from unconnected components (graph representation)
   fks_from_unconnected <- anti_join(
@@ -44,12 +37,12 @@ enumerate_all_paths_impl <- function(node,
                                      former_node = character(),
                                      former_key_cols = character(),
                                      path = character(),
-                                     graph_df_ud,
+                                     all_fks,
                                      helper_env) {
   # increase tbl_node[[node]] by 1, return this index in a suffix
   usage_idx <- inc_tbl_node(node, helper_env)
   add_path_to_all_paths(
-    graph_df_ud,
+    all_fks,
     node,
     node_key_cols,
     former_node,
@@ -60,18 +53,30 @@ enumerate_all_paths_impl <- function(node,
   )
 
   path <- c(path, set_names(node, paste0(node, usage_idx)))
-  enumerate_out_paths_impl(node, path, graph_df_ud, helper_env)
+  enumerate_in_paths_impl(node, path, all_fks, helper_env)
+  enumerate_out_paths_impl(node, path, all_fks, helper_env)
 }
 
-enumerate_out_paths_impl <- function(node, path = set_names(node), graph_df_ud, helper_env) {
+enumerate_in_paths_impl <- function(node, path = set_names(node), all_fks, helper_env) {
   out <-
-    graph_df_ud %>%
+    all_fks %>%
+    filter(parent_table == !!node) %>%
+    filter(!(child_table %in% !!path)) %>%
+    rename(node = child_table, node_key_cols = child_cols, former_node = parent_table, former_key_cols = parent_cols) %>%
+    select(-on_delete)
+
+  pwalk(out, enumerate_all_paths_impl, path, all_fks, helper_env)
+}
+
+enumerate_out_paths_impl <- function(node, path = set_names(node), all_fks, helper_env) {
+  out <-
+    all_fks %>%
     filter(child_table == !!node) %>%
     filter(!(parent_table %in% !!path)) %>%
     rename(node = parent_table, node_key_cols = parent_cols, former_node = child_table, former_key_cols = child_cols) %>%
     select(-on_delete)
 
-  pwalk(out, enumerate_all_paths_impl, path, graph_df_ud, helper_env)
+  pwalk(out, enumerate_all_paths_impl, path, all_fks, helper_env)
 }
 
 rename_unique <- function(all_paths) {
@@ -99,7 +104,7 @@ inc_tbl_node <- function(node, helper_env) {
   paste0("-", out)
 }
 
-add_path_to_all_paths <- function(graph_df_ud,
+add_path_to_all_paths <- function(all_fks,
                                   node,
                                   node_key_cols,
                                   former_node,
@@ -109,7 +114,7 @@ add_path_to_all_paths <- function(graph_df_ud,
                                   helper_env) {
   all_paths <- helper_env$all_paths
   path_element <-
-    graph_df_ud %>%
+    all_fks %>%
     filter(
       (
         child_table == node &
