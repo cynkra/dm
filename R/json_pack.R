@@ -27,4 +27,3 @@ json_pack.data.frame <- function(.data, ..., .names_sep = NULL) {
   tidyr::pack(.data, ..., .names_sep = .names_sep) %>%
     mutate(across(all_of(dot_nms), ~ map_chr(split(., seq.int(nrow(.))), jsonlite::toJSON, digits = NA)))
 }
-}
