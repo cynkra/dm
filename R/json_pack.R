@@ -26,6 +26,7 @@ json_pack.data.frame <- function(.data, ..., .names_sep = NULL) {
   dot_nms <- ...names()
   tidyr::pack(.data, ..., .names_sep = .names_sep) %>%
     mutate(across(all_of(dot_nms), ~ map_chr(., jsonlite::toJSON, digits = NA)))
+}
 
 json_pack_tbl_lazy_impl <- function(.data, dots, tidyselect_env, group_cols, .names_sep) {
   con <- dbplyr::remote_con(.data)
