@@ -32,3 +32,22 @@ json_nest.data.frame <- function(.data, ..., .names_sep = NULL) {
   tidyr::nest(.data, ..., .names_sep = .names_sep) %>%
     mutate(across(all_of(dot_nms), ~ map_chr(., jsonlite::toJSON, digits = NA)))
 }
+
+#' @export
+json_nest.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
+  dots <- enquos(...)
+  tidyselect_env <- set_names(colnames(.data))
+  all_cols_to_nest <- tidyselect::eval_select(
+    expr = expr(c(!!!unname(dots))),
+    data = tidyselect_env) %>%
+    names()
+  group_cols <- setdiff(tidyselect_env, all_cols_to_nest)
+
+  packed_data <- json_pack_tbl_lazy_impl(.data, dots, tidyselect_env, group_cols, .names_sep)
+
+  nested_data <- packed_data %>%
+    group_by(across(!!group_cols)) %>%
+    summarize(across(!!names(dots), JSON_AGG))
+
+  nested_data
+}
