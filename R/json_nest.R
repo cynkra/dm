@@ -39,7 +39,8 @@ json_nest.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
   tidyselect_env <- set_names(colnames(.data))
   all_cols_to_nest <- tidyselect::eval_select(
     expr = expr(c(!!!unname(dots))),
-    data = tidyselect_env) %>%
+    data = tidyselect_env
+  ) %>%
     names()
   group_cols <- setdiff(tidyselect_env, all_cols_to_nest)
 

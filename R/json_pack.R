@@ -30,14 +30,14 @@ json_pack.data.frame <- function(.data, ..., .names_sep = NULL) {
 
 json_pack_tbl_lazy_impl <- function(.data, dots, tidyselect_env, group_cols, .names_sep) {
   con <- dbplyr::remote_con(.data)
-  if(is_mssql(con)) {
+  if (is_mssql(con)) {
     dbms <- "mssql"
-  } else if(is_postgres(con)) {
+  } else if (is_postgres(con)) {
     dbms <- "postgres"
   } else {
     abort("Unsupported DBMS")
   }
-  #FIXME: move dot checking in generic (also for df methods), that's what `nest` does
+  # FIXME: move dot checking in generic (also for df methods), that's what `nest` does
   dot_nms <- names(dots)
   if (is_null(dot_nms) || "" %in% dot_nms) {
     abort("All elements of `...` must be named.")
@@ -49,10 +49,10 @@ json_pack_tbl_lazy_impl <- function(.data, dots, tidyselect_env, group_cols, .na
     # columns to nest for current `...` arg
     cols_to_pack <- names(tidyselect::eval_select(dots[[i]], tidyselect_env))
 
-    #FIXME: should we escape names using dbplyr functions ? `sql()` ? not sure how to do it here
+    # FIXME: should we escape names using dbplyr functions ? `sql()` ? not sure how to do it here
     if (dbms == "postgres") {
       if (is.null(.names_sep)) {
-        select_subquery <- paste("SELECT", toString(paste0('"',cols_to_pack,'"')))
+        select_subquery <- paste("SELECT", toString(paste0('"', cols_to_pack, '"')))
       } else {
         prefix <- paste0(dot_nms[[i]], .names_sep)
         prefixed_lgl <- startsWith(cols_to_pack, prefix)
@@ -60,10 +60,11 @@ json_pack_tbl_lazy_impl <- function(.data, dots, tidyselect_env, group_cols, .na
         cols_to_pack_new <- replace(
           cols_to_pack,
           prefixed_lgl,
-          substr(cols_to_pack[prefixed_lgl], nchar(prefix)+1, nchar(cols_to_pack[prefixed_lgl]))
+          substr(cols_to_pack[prefixed_lgl], nchar(prefix) + 1, nchar(cols_to_pack[prefixed_lgl]))
         )
         select_subquery <- paste("SELECT", toString(paste(
-          paste0('"',cols_to_pack,'"'), " AS ", paste0('"',cols_to_pack_new,'"'))))
+          paste0('"', cols_to_pack, '"'), " AS ", paste0('"', cols_to_pack_new, '"')
+        )))
       }
       to_json_subquery <- sprintf("TO_JSON((SELECT d FROM (%s) d))", select_subquery)
       packed_data <-
@@ -86,7 +87,8 @@ json_pack.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
   tidyselect_env <- set_names(colnames(.data))
   all_cols_to_pack <- tidyselect::eval_select(
     expr = expr(c(!!!unname(dots))),
-    data = tidyselect_env) %>%
+    data = tidyselect_env
+  ) %>%
     names()
   group_cols <- setdiff(tidyselect_env, all_cols_to_pack)
 
