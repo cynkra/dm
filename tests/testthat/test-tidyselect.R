@@ -19,7 +19,7 @@ test_that("tidyselecting tables works", {
 })
 
 test_that("output", {
-  skip_if_not_installed("vctrs", "0.4.0")
+  skip_if_not_installed("vctrs", "0.4.1")
   skip_if_not_installed("tidyselect", "1.1.2.9000")
 
   expect_snapshot(error = TRUE, {
