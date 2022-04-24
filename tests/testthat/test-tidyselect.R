@@ -1,7 +1,7 @@
-table_names <- c("table_1", "table_2", "table_3")
-quo <- quo(c(table_3_new = table_3, table_1_new = table_1))
-
 test_that("tidyselecting tables works", {
+  table_names <- c("table_1", "table_2", "table_3")
+  quo <- quo(c(table_3_new = table_3, table_1_new = table_1))
+
   expect_identical(
     eval_select_table_indices(quo, table_names),
     c(table_3_new = 3L, table_1_new = 1L)
@@ -20,6 +20,7 @@ test_that("tidyselecting tables works", {
 
 test_that("output", {
   skip_if_not_installed("vctrs", "0.4.0")
+  skip_if_not_installed("tidyselect", "1.1.2.9000")
 
   expect_snapshot(error = TRUE, {
     dm_for_filter() %>%
