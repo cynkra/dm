@@ -17,7 +17,7 @@
 #' packed <- json_pack(df, x = c(x1, x2, x3), y = y)
 #' packed
 json_pack <- function(.data, ..., .names_sep = NULL) {
-  UseMethod("json_nest")
+  UseMethod("json_pack")
 }
 
 #' @export
@@ -25,5 +25,12 @@ json_pack.data.frame <- function(.data, ..., .names_sep = NULL) {
   check_suggested("jsonlite", use = TRUE, top_level_fun = "json_pack")
   dot_nms <- ...names()
   tidyr::pack(.data, ..., .names_sep = .names_sep) %>%
-    mutate(across(all_of(dot_nms), ~ map_chr(., jsonlite::toJSON, digits = NA)))
+    mutate(across(all_of(dot_nms), to_packed_json))
+}
+
+to_packed_json <- function(x) {
+  con <- textConnection(NULL, open = "w")
+  on.exit(close(con))
+  jsonlite::stream_out(x, con, digits = NA)
+  textConnectionValue(con)
 }
