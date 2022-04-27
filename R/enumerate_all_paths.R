@@ -119,6 +119,7 @@ split_to_list <- function(all_paths) {
   ) %>%
     filter(new_table != table) %>%
     distinct() %>%
+    mutate(new_table = unname(new_table)) %>%    
     arrange()
 
   new_fks <- select(
