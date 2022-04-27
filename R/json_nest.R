@@ -47,8 +47,8 @@ json_nest.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
   packed_data <- json_pack_tbl_lazy_impl(.data, dots, tidyselect_env, group_cols, .names_sep)
 
   nested_data <- packed_data %>%
-    group_by(across(!!group_cols)) %>%
-    summarize(across(!!names(dots), JSON_AGG)) %>%
+    group_by(across(all_of(group_cols))) %>%
+    summarize(across(all_of(names(dots)), JSON_AGG)) %>%
     ungroup()
 
   nested_data

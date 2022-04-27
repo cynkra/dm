@@ -78,7 +78,7 @@ json_pack_tbl_lazy_impl <- function(.data, dots, tidyselect_env, group_cols, .na
         packed_data %>%
         mutate(!!dot_nms[[i]] := sql(to_json_subquery)) %>%
         # don't remove cols that have or will be overwritten
-        select(-!!setdiff(cols_to_pack, dot_nms))
+        select(-all_of(setdiff(cols_to_pack, dot_nms)))
     } else if (dbms == "mssql") {
       abort("mssql not implemented yet")
       # to_json_subquery <- paste0("(", query, " FOR JSON PATH)")
