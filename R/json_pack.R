@@ -45,8 +45,8 @@ json_pack_tbl_lazy_impl <- function(.data, dots, tidyselect_env, group_cols, .na
     abort("Unsupported DBMS")
   }
   # FIXME: move dot checking in generic (also for df methods), that's what `nest` does
-  dot_nms <- names(dots)
-  if (is_null(dot_nms) || "" %in% dot_nms) {
+  dot_nms <- names2(dots)
+  if ("" %in% dot_nms) {
     abort("All elements of `...` must be named.")
   }
 
