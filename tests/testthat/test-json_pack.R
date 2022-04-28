@@ -11,15 +11,11 @@ test_that("`json_pack()` works remotely", {
   skip_if_src_not("postgres")
   con <- my_test_src()$con
 
-  withr::defer(
-    try(dbExecute(con, "DROP TABLE iris"))
-  )
+  local <- tibble(grp = c(1, 1, 2, 2), a_i = letters[1:4], a_j = LETTERS[1:4])
+  remote <- test_db_src_frame(!!!local)
 
-  dbWriteTable(con, "iris", iris)
-  iris_remote <- tbl(con, "iris")
-
-  expect_snapshot({
-    json_pack(iris_remote, Sepal = 1:2, Petal = starts_with("Petal"))
-    json_pack(iris_remote, Sepal = 1:2, Petal = starts_with("Petal"), .names_sep = ".")
+  expect_snapshot(variant = my_test_src_name, {
+    json_pack(remote, A = starts_with("a"))
+    json_pack(remote, A = starts_with("a"), .names_sep = "_")
   })
 })
