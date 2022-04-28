@@ -35,69 +35,69 @@ to_packed_json <- function(x) {
   textConnectionValue(con)
 }
 
-json_pack_tbl_lazy_impl <- function(.data, dots, tidyselect_env, group_cols, .names_sep) {
-  con <- dbplyr::remote_con(.data)
-  if (is_mssql(con)) {
-    dbms <- "mssql"
-  } else if (is_postgres(con)) {
-    dbms <- "postgres"
-  } else {
-    abort("Unsupported DBMS")
-  }
-  # FIXME: move dot checking in generic (also for df methods), that's what `nest` does
-  dot_nms <- names2(dots)
-  if ("" %in% dot_nms) {
+#' @export
+json_pack.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
+  dots <- quos(...)
+  if ("" %in% names2(dots)) {
     abort("All elements of `...` must be named.")
   }
 
-  # go through sets of columns to nest
-  packed_data <- .data
-  for (i in seq_along(dots)) {
-    # columns to nest for current `...` arg
-    cols_to_pack <- names(tidyselect::eval_select(dots[[i]], tidyselect_env))
+  col_nms <- colnames(.data)
+  pack_cols <- purrr::map(dots, ~ tidyselect::vars_select(col_nms, !!.x))
+  id_cols <- setdiff(col_nms, unlist(unique(pack_cols)))
 
-    # FIXME: should we escape names using dbplyr functions ? `sql()` ? not sure how to do it here
-    if (dbms == "postgres") {
-      if (is.null(.names_sep)) {
-        select_subquery <- paste("SELECT", toString(paste0('"', cols_to_pack, '"')))
-      } else {
-        prefix <- paste0(dot_nms[[i]], .names_sep)
-        prefixed_lgl <- startsWith(cols_to_pack, prefix)
-        # `substr()` rather than `sub()` to avoid escaping special regex chars
-        cols_to_pack_new <- replace(
-          cols_to_pack,
-          prefixed_lgl,
-          substr(cols_to_pack[prefixed_lgl], nchar(prefix) + 1, nchar(cols_to_pack[prefixed_lgl]))
-        )
-        select_subquery <- paste("SELECT", toString(paste(
-          paste0('"', cols_to_pack, '"'), " AS ", paste0('"', cols_to_pack_new, '"')
-        )))
-      }
-      to_json_subquery <- sprintf("TO_JSON((SELECT d FROM (%s) d))", select_subquery)
-      packed_data <-
-        packed_data %>%
-        mutate(!!dot_nms[[i]] := sql(to_json_subquery)) %>%
-        # don't remove cols that have or will be overwritten
-        select(-all_of(setdiff(cols_to_pack, dot_nms)))
-    } else if (dbms == "mssql") {
-      abort("mssql not implemented yet")
-      # to_json_subquery <- paste0("(", query, " FOR JSON PATH)")
-    }
-  }
-  packed_data
+  sql_exprs <- purrr::imap(pack_cols, ~ sql_json_pack(
+    dbplyr::remote_con(.data),
+    cols = names(.x),
+    names_sep = .names_sep,
+    packed_col =.y))
+
+  .data %>%
+    #rowwise() %>% # group_by(across(all_of(group_cols))) %>%
+    transmute(!!!syms(id_cols), !!!sql_exprs) #%>%
+    #ungroup()
 }
 
+sql_json_pack <- function(con, cols, names_sep, packed_col) {
+  UseMethod("sql_json_pack")
+}
 
-#' @export
-json_pack.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
-  dots <- enquos(...)
-  tidyselect_env <- set_names(colnames(.data))
-  all_cols_to_pack <- tidyselect::eval_select(
-    expr = expr(c(!!!unname(dots))),
-    data = tidyselect_env
-  ) %>%
-    names()
-  group_cols <- setdiff(tidyselect_env, all_cols_to_pack)
+# sql_json_pack.PqConnection <- function(con, cols, names_sep, packed_col) {
+#   if (is.null(names_sep)) {
+#     inside_cols <- cols
+#   } else {
+#     prefix <- paste0(packed_col, names_sep)
+#     prefixed_lgl <- startsWith(cols, prefix)
+#     # `substr()` rather than `sub()` to avoid escaping special regex chars
+#     inside_cols <- replace(
+#       cols,
+#       prefixed_lgl,
+#       substr(cols[prefixed_lgl], nchar(prefix) + 1, nchar(cols[prefixed_lgl]))
+#     )
+#   }
+#
+#   inside_cols <- dbplyr::ident(inside_cols)
+#   n <- length(inside_cols)
+#   # alternate names and expressions for `json_build_object`
+#   exprs <- c(syms(cols), inside_cols)[rep(1:n, each = 2) + c(n, 0)]
+#   dbplyr::translate_sql(JSON_AGG(JSON_BUILD_OBJECT(!!!exprs)), con = con)
+# }
 
-  json_pack_tbl_lazy_impl(.data, dots, tidyselect_env, group_cols, .names_sep)
+
+sql_json_pack.PqConnection <- function(con, cols, names_sep, packed_col) {
+  inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
+  inside_cols_idented <- dbplyr::ident(inside_cols)
+  n <- length(inside_cols)
+  # alternate names and expressions for `json_build_object`
+  exprs <- c(syms(cols), inside_cols_idented)[rep(1:n, each = 2) + c(n, 0)]
+  dbplyr::translate_sql(JSON_BUILD_OBJECT(!!!exprs), con = con)
+}
+
+remove_prefix_and_sep <- function(x, prefix, sep) {
+  if (is.null(sep)) return(x)
+  prefix_and_sep <- paste0(prefix, sep)
+  prefixed_lgl <- startsWith(x, prefix_and_sep)
+  # `substr()` rather than `sub()` to avoid escaping special regex chars
+  replacements <- substr(cols[prefixed_lgl], nchar(prefix_and_sep) + 1, nchar(cols[prefixed_lgl]))
+  replace(x, prefixed_lgl, replacements)
 }

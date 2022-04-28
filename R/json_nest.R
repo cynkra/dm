@@ -23,33 +23,44 @@ json_nest <- function(.data, ..., .names_sep = NULL) {
 #' @export
 json_nest.data.frame <- function(.data, ..., .names_sep = NULL) {
   check_suggested("jsonlite", use = TRUE, top_level_fun = "json_nest")
-  dot_nms <- ...names()
-  # `{tidyr}` only warns but since we don't need backward compatibility we're
-  #   better off failing
-  if (is_null(dot_nms) || "" %in% dot_nms) {
-    abort("All elements of `...` must be named.")
-  }
+
   tidyr::nest(.data, ..., .names_sep = .names_sep) %>%
     mutate(across(all_of(dot_nms), ~ map_chr(., jsonlite::toJSON, digits = NA)))
 }
 
 #' @export
 json_nest.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
-  dots <- enquos(...)
-  tidyselect_env <- set_names(colnames(.data))
-  all_cols_to_nest <- tidyselect::eval_select(
-    expr = expr(c(!!!unname(dots))),
-    data = tidyselect_env
-  ) %>%
-    names()
-  group_cols <- setdiff(tidyselect_env, all_cols_to_nest)
+  dots <- quos(...)
+  if ("" %in% names2(dots)) {
+    abort("All elements of `...` must be named.")
+  }
 
-  packed_data <- json_pack_tbl_lazy_impl(.data, dots, tidyselect_env, group_cols, .names_sep)
+  col_nms <- colnames(.data)
+  nest_cols <- purrr::map(dots, ~ tidyselect::vars_select(col_nms, !!.x))
+  id_cols <- setdiff(col_nms, unlist(unique(nest_cols)))
 
-  nested_data <- packed_data %>%
-    group_by(across(all_of(group_cols))) %>%
-    summarize(across(all_of(names(dots)), JSON_AGG)) %>%
+  sql_exprs <- purrr::imap(nest_cols, ~ sql_json_nest(
+    dbplyr::remote_con(.data),
+    cols = names(.x),
+    names_sep = .names_sep,
+    packed_col =.y))
+
+  .data %>%
+    group_by(across(all_of(id_cols))) %>%
+    summarize(!!!sql_exprs) %>%
     ungroup()
-
-  nested_data
 }
+
+sql_json_nest <- function(con, cols, names_sep, packed_col) {
+  UseMethod("sql_json_nest")
+}
+
+sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col) {
+  inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
+  inside_cols_idented <- dbplyr::ident(inside_cols)
+  n <- length(inside_cols)
+  # alternate names and expressions for `json_build_object`
+  exprs <- c(syms(cols), inside_cols_idented)[rep(1:n, each = 2) + c(n, 0)]
+  dbplyr::translate_sql(JSON_AGG(JSON_BUILD_OBJECT(!!!exprs)), con = con)
+}
+
