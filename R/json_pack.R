@@ -31,7 +31,7 @@ json_pack.data.frame <- function(.data, ..., .names_sep = NULL) {
 to_packed_json <- function(x) {
   con <- textConnection(NULL, open = "w")
   on.exit(close(con))
-  jsonlite::stream_out(x, con, digits = NA)
+  jsonlite::stream_out(x, con, digits = NA, verbose = FALSE)
   textConnectionValue(con)
 }
 
