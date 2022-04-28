@@ -67,7 +67,7 @@ sql_json_pack.PqConnection <- function(con, cols, names_sep, packed_col) {
   inside_cols_idented <- dbplyr::ident(inside_cols)
   n <- length(inside_cols)
   # alternate names and expressions for `json_build_object`
-  exprs <- c(syms(cols), inside_cols_idented)[rep(1:n, each = 2) + c(n, 0)]
+  exprs <- c(syms(cols), inside_cols_idented)[rep(seq_len(n), each = 2) + c(n, 0)]
   dbplyr::translate_sql(JSON_BUILD_OBJECT(!!!exprs), con = con)
 }
 
