@@ -60,6 +60,7 @@ sql_json_pack <- function(con, cols, names_sep, packed_col) {
   UseMethod("sql_json_pack")
 }
 
+#' @export
 sql_json_pack.PqConnection <- function(con, cols, names_sep, packed_col) {
   inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
   inside_cols_idented <- dbplyr::ident(inside_cols)
