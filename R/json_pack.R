@@ -76,6 +76,6 @@ remove_prefix_and_sep <- function(x, prefix, sep) {
   prefix_and_sep <- paste0(prefix, sep)
   prefixed_lgl <- startsWith(x, prefix_and_sep)
   # `substr()` rather than `sub()` to avoid escaping special regex chars
-  replacements <- substr(cols[prefixed_lgl], nchar(prefix_and_sep) + 1, nchar(cols[prefixed_lgl]))
+  replacements <- substr(x[prefixed_lgl], nchar(prefix_and_sep) + 1, nchar(x[prefixed_lgl]))
   replace(x, prefixed_lgl, replacements)
 }
