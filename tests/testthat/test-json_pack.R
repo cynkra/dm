@@ -24,7 +24,3 @@ test_that("`json_pack()` works remotely", {
     remote %>% json_pack(A = starts_with("a")) %>% collect() %>% unjson_nested()
   )
 })
-
-
-
-
