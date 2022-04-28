@@ -53,36 +53,12 @@ json_pack.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
     packed_col =.y))
 
   .data %>%
-    #rowwise() %>% # group_by(across(all_of(group_cols))) %>%
-    transmute(!!!syms(id_cols), !!!sql_exprs) #%>%
-    #ungroup()
+    transmute(!!!syms(id_cols), !!!sql_exprs)
 }
 
 sql_json_pack <- function(con, cols, names_sep, packed_col) {
   UseMethod("sql_json_pack")
 }
-
-# sql_json_pack.PqConnection <- function(con, cols, names_sep, packed_col) {
-#   if (is.null(names_sep)) {
-#     inside_cols <- cols
-#   } else {
-#     prefix <- paste0(packed_col, names_sep)
-#     prefixed_lgl <- startsWith(cols, prefix)
-#     # `substr()` rather than `sub()` to avoid escaping special regex chars
-#     inside_cols <- replace(
-#       cols,
-#       prefixed_lgl,
-#       substr(cols[prefixed_lgl], nchar(prefix) + 1, nchar(cols[prefixed_lgl]))
-#     )
-#   }
-#
-#   inside_cols <- dbplyr::ident(inside_cols)
-#   n <- length(inside_cols)
-#   # alternate names and expressions for `json_build_object`
-#   exprs <- c(syms(cols), inside_cols)[rep(1:n, each = 2) + c(n, 0)]
-#   dbplyr::translate_sql(JSON_AGG(JSON_BUILD_OBJECT(!!!exprs)), con = con)
-# }
-
 
 sql_json_pack.PqConnection <- function(con, cols, names_sep, packed_col) {
   inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
