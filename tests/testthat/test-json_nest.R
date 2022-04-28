@@ -18,4 +18,9 @@ test_that("`json_nest()` works remotely", {
     json_nest(remote, A = starts_with("a"))
     json_nest(remote, A = starts_with("a"), .names_sep = "_")
   })
+
+  expect_identical(
+    local %>% json_nest(A = starts_with("a")) %>% unjson_nested(),
+    remote %>% json_nest(A = starts_with("a")) %>% collect() %>% unjson_nested()
+  )
 })

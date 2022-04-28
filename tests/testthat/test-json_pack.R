@@ -18,4 +18,13 @@ test_that("`json_pack()` works remotely", {
     json_pack(remote, A = starts_with("a"))
     json_pack(remote, A = starts_with("a"), .names_sep = "_")
   })
+
+  expect_identical(
+    local %>% json_pack(A = starts_with("a")) %>% unjson_nested(),
+    remote %>% json_pack(A = starts_with("a")) %>% collect() %>% unjson_nested()
+  )
 })
+
+
+
+
