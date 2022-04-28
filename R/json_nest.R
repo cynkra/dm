@@ -43,7 +43,8 @@ json_nest.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
     dbplyr::remote_con(.data),
     cols = names(.x),
     names_sep = .names_sep,
-    packed_col =.y))
+    packed_col = .y
+  ))
 
   .data %>%
     group_by(across(all_of(id_cols))) %>%
@@ -63,4 +64,3 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col) {
   exprs <- c(syms(cols), inside_cols_idented)[rep(1:n, each = 2) + c(n, 0)]
   dbplyr::translate_sql(JSON_AGG(JSON_BUILD_OBJECT(!!!exprs)), con = con)
 }
-

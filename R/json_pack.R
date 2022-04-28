@@ -50,7 +50,8 @@ json_pack.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
     dbplyr::remote_con(.data),
     cols = names(.x),
     names_sep = .names_sep,
-    packed_col =.y))
+    packed_col = .y
+  ))
 
   .data %>%
     transmute(!!!syms(id_cols), !!!sql_exprs)
