@@ -278,7 +278,7 @@ do_rows_patch <- function(x, y, by = NULL, ...) {
 }
 
 do_rows_upsert <- function(x, y, by = NULL, ...) {
-  rows_upsert(x, y, by = by, ..., unmatched = "ignore")
+  rows_upsert(x, y, by = by, ...)
 }
 
 do_rows_delete <- function(x, y, by = NULL, ...) {
