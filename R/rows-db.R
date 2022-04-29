@@ -54,7 +54,6 @@
 #' data
 NULL
 
-#' @export
 #' @rdname rows-db
 rows_insert.tbl_lazy <- function(x, y, by = NULL, ...,
                                  in_place = FALSE,
@@ -99,7 +98,6 @@ rows_insert.tbl_lazy <- function(x, y, by = NULL, ...,
   }
 }
 
-#' @export
 #' @rdname rows-db
 rows_append.tbl_lazy <- function(x, y, ...,
                                  in_place = FALSE,
@@ -139,7 +137,6 @@ rows_append.tbl_lazy <- function(x, y, ...,
   }
 }
 
-#' @export
 #' @rdname rows-db
 rows_update.tbl_lazy <- function(x, y, by = NULL, ...,
                                  in_place = FALSE,
@@ -201,7 +198,6 @@ rows_update.tbl_lazy <- function(x, y, by = NULL, ...,
   }
 }
 
-#' @export
 #' @rdname rows-db
 rows_patch.tbl_lazy <- function(x, y, by = NULL, ...,
                                 in_place = FALSE,
@@ -271,7 +267,6 @@ rows_patch.tbl_lazy <- function(x, y, by = NULL, ...,
   }
 }
 
-#' @export
 #' @rdname rows-db
 rows_upsert.tbl_lazy <- function(x, y, by = NULL, ...,
                                  in_place = FALSE,
@@ -331,7 +326,6 @@ rows_upsert.tbl_lazy <- function(x, y, by = NULL, ...,
   }
 }
 
-#' @export
 #' @rdname rows-db
 rows_delete.tbl_lazy <- function(x, y, by = NULL, ...,
                                  in_place = FALSE,
@@ -434,7 +428,6 @@ check_returning_cols_possible <- function(returning_cols, in_place) {
 #'   to return, created from the `returning` argument.
 #'   Methods for database that do not support this should raise an error.
 #'
-#' @export
 #' @rdname rows-db
 sql_rows_insert <- function(x, y, ..., returning_cols = NULL) {
   ellipsis::check_dots_used()
@@ -460,7 +453,6 @@ sql_rows_insert.tbl_sql <- function(x, y, ..., returning_cols = NULL) {
   glue::as_glue(sql)
 }
 
-#' @export
 #' @rdname rows-db
 sql_rows_update <- function(x, y, by, ..., returning_cols = NULL) {
   ellipsis::check_dots_used()
@@ -669,7 +661,6 @@ sql_rows_upsert.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols 
   glue::as_glue(sql)
 }
 
-#' @export
 #' @rdname rows-db
 sql_rows_patch <- function(x, y, by, ..., returning_cols = NULL) {
   ellipsis::check_dots_used()
@@ -754,7 +745,6 @@ sql_coalesce <- function(x, y) {
   paste0("COALESCE(", x, ",", y, ")")
 }
 
-#' @export
 #' @rdname rows-db
 sql_rows_delete <- function(x, y, by, ..., returning_cols = NULL) {
   ellipsis::check_dots_used()
@@ -895,7 +885,6 @@ has_returned_rows <- function(x) {
 #' Two methods are required, because the syntax for SQL Server
 #' (and some other databases) is vastly different from Postgres and other
 #' more standardized DBs.
-#' @export
 #' @rdname rows-db
 sql_returning_cols <- function(x, returning_cols, ...) {
   if (is_empty(returning_cols)) {
@@ -924,7 +913,6 @@ sql_returning_cols.tbl_duckdb_connection <- function(x, returning_cols, ...) {
   NULL
 }
 
-#' @export
 #' @param output_delete For `sql_output_cols()`, construct the SQL
 #'   for a `DELETE` operation.
 #' @rdname rows-db
