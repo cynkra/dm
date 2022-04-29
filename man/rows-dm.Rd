@@ -67,6 +67,8 @@ By default, an informative message is given.
 
 \code{dm_rows_insert()} adds new records via \code{\link[=rows_insert]{rows_insert()}} with \code{conflict = "ignore"}.
 Duplicate records will be silently discarded.
+This operation requires primary keys on all tables, use \code{dm_rows_append()}
+to insert unconditionally.
 
 \code{dm_rows_append()} adds new records via \code{\link[=rows_append]{rows_append()}}.
 The primary keys must differ from existing records.

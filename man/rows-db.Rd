@@ -27,15 +27,7 @@
   returning = NULL
 )
 
-\method{rows_append}{tbl_lazy}(
-  x,
-  y,
-  ...,
-  in_place = FALSE,
-  conflict = NULL,
-  copy = FALSE,
-  returning = NULL
-)
+\method{rows_append}{tbl_lazy}(x, y, ..., in_place = FALSE, copy = FALSE, returning = NULL)
 
 \method{rows_update}{tbl_lazy}(
   x,
