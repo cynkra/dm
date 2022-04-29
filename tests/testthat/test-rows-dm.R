@@ -43,11 +43,11 @@ test_that("dm_rows_insert()", {
     flights_hour10_sqlite <- copy_dm_to(sqlite, flights_hour10)
 
     # Dry run by default:
-    out <- dm_rows_insert(flights_sqlite, flights_hour10_sqlite)
+    out <- dm_rows_append(flights_sqlite, flights_hour10_sqlite)
     print(dm_nrow(flights_sqlite))
 
     # Explicitly request persistence:
-    dm_rows_insert(flights_sqlite, flights_hour10_sqlite, in_place = TRUE)
+    dm_rows_append(flights_sqlite, flights_hour10_sqlite, in_place = TRUE)
     print(dm_nrow(flights_sqlite))
 
     # Second update:
@@ -65,7 +65,7 @@ test_that("dm_rows_insert()", {
     flights_hour11_sqlite <- copy_dm_to(sqlite, flights_hour11)
 
     # Explicit dry run:
-    flights_new <- dm_rows_insert(
+    flights_new <- dm_rows_append(
       flights_sqlite,
       flights_hour11_sqlite,
       in_place = FALSE
@@ -78,7 +78,7 @@ test_that("dm_rows_insert()", {
       dm_examine_constraints()
 
     # Apply:
-    dm_rows_insert(flights_sqlite, flights_hour11_sqlite, in_place = TRUE)
+    dm_rows_append(flights_sqlite, flights_hour11_sqlite, in_place = TRUE)
     print(dm_nrow(flights_sqlite))
 
     # Disconnect
