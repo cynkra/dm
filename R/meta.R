@@ -27,11 +27,34 @@ dm_meta <- function(con, catalog = NA, schema = NULL) {
 dm_meta_raw <- function(con, catalog) {
   src <- src_from_src_or_con(con)
 
-  schemata <- tbl_lc(src, dbplyr::ident_q("information_schema.schemata"))
-  tables <- tbl_lc(src, dbplyr::ident_q("information_schema.tables"))
-  columns <- tbl_lc(src, dbplyr::ident_q("information_schema.columns"))
-  table_constraints <- tbl_lc(src, dbplyr::ident_q("information_schema.table_constraints"))
-  key_column_usage <- tbl_lc(src, dbplyr::ident_q("information_schema.key_column_usage"))
+  local_options(digits.secs = 6)
+
+  schemata <- tbl(src, dbplyr::ident_q("information_schema.schemata"), vars = c(
+    "catalog_name", "schema_name", "schema_owner", "default_character_set_catalog",
+    "default_character_set_schema", "default_character_set_name"
+  ))
+  tables <- tbl(src, dbplyr::ident_q("information_schema.tables"), vars = c(
+    "table_catalog", "table_schema", "table_name", "table_type"
+  ))
+  columns <- tbl(src, dbplyr::ident_q("information_schema.columns"), vars = c(
+    "table_catalog", "table_schema", "table_name", "column_name",
+    "ordinal_position", "column_default", "is_nullable", "data_type",
+    "character_maximum_length", "character_octet_length", "numeric_precision",
+    "numeric_precision_radix", "numeric_scale", "datetime_precision",
+    "character_set_catalog", "character_set_schema", "character_set_name",
+    "collation_catalog", "collation_schema", "collation_name", "domain_catalog",
+    "domain_schema", "domain_name"
+  ))
+  table_constraints <- tbl(src, dbplyr::ident_q("information_schema.table_constraints"), vars = c(
+    "constraint_catalog", "constraint_schema", "constraint_name",
+    "table_catalog", "table_schema", "table_name", "constraint_type",
+    "is_deferrable", "initially_deferred"
+  ))
+  key_column_usage <- tbl(src, dbplyr::ident_q("information_schema.key_column_usage"), vars = c(
+    "constraint_catalog", "constraint_schema", "constraint_name",
+    "table_catalog", "table_schema", "table_name", "column_name",
+    "ordinal_position"
+  ))
 
   if (is_postgres(src)) {
     info_fkc <-
