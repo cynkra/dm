@@ -64,11 +64,11 @@
 #' flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan)
 #'
 #' # Dry run by default:
-#' dm_rows_insert(flights_sqlite, flights_jan_sqlite)
+#' dm_rows_append(flights_sqlite, flights_jan_sqlite)
 #' print(dm_nrow(flights_sqlite))
 #'
 #' # Explicitly request persistence:
-#' dm_rows_insert(flights_sqlite, flights_jan_sqlite, in_place = TRUE)
+#' dm_rows_append(flights_sqlite, flights_jan_sqlite, in_place = TRUE)
 #' print(dm_nrow(flights_sqlite))
 #'
 #' # Second update:
@@ -86,7 +86,7 @@
 #' flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb)
 #'
 #' # Explicit dry run:
-#' flights_new <- dm_rows_insert(
+#' flights_new <- dm_rows_append(
 #'   flights_sqlite,
 #'   flights_feb_sqlite,
 #'   in_place = FALSE
@@ -99,7 +99,7 @@
 #'   dm_examine_constraints()
 #'
 #' # Apply:
-#' dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
+#' dm_rows_append(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
 #' print(dm_nrow(flights_sqlite))
 #'
 #' DBI::dbDisconnect(sqlite)
