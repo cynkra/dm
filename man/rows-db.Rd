@@ -20,9 +20,9 @@
   y,
   by = NULL,
   ...,
-  in_place = NULL,
+  in_place = FALSE,
+  conflict = NULL,
   copy = FALSE,
-  check = NULL,
   returning = NULL
 )
 
@@ -31,9 +31,9 @@
   y,
   by = NULL,
   ...,
-  in_place = NULL,
+  in_place = FALSE,
+  unmatched = NULL,
   copy = FALSE,
-  check = NULL,
   returning = NULL
 )
 
@@ -42,9 +42,9 @@
   y,
   by = NULL,
   ...,
-  in_place = NULL,
+  in_place = FALSE,
+  unmatched = NULL,
   copy = FALSE,
-  check = NULL,
   returning = NULL
 )
 
@@ -53,9 +53,9 @@
   y,
   by = NULL,
   ...,
-  in_place = NULL,
+  in_place = FALSE,
+  unmatched = NULL,
   copy = FALSE,
-  check = NULL,
   returning = NULL
 )
 
@@ -64,9 +64,9 @@
   y,
   by = NULL,
   ...,
-  in_place = NULL,
+  in_place = FALSE,
+  unmatched = NULL,
   copy = FALSE,
-  check = NULL,
   returning = NULL
 )
 
@@ -105,15 +105,22 @@ relevant for mutable backends (e.g. databases, data.tables).
 When \code{TRUE}, a modified version of \code{x} is returned invisibly;
 when \code{FALSE}, a new object representing the resulting changes is returned.}
 
+\item{conflict}{For \code{rows_insert()}, how should keys in \code{y} that conflict
+with keys in \code{x} be handled? A conflict arises if there is a key in \code{y}
+that already exists in \code{x}.
+
+One of:
+\itemize{
+\item \code{"error"}, the default, will error if there are any keys in \code{y} that
+conflict with keys in \code{x}.
+\item \code{"ignore"} will ignore rows in \code{y} with keys that conflict with keys in
+\code{x}.
+}}
+
 \item{copy}{If \code{x} and \code{y} are not from the same data source,
 and \code{copy} is \code{TRUE}, then \code{y} will be copied into the
 same src as \code{x}.  This allows you to join tables across srcs, but
 it is a potentially expensive operation so you must opt into it.}
-
-\item{check}{Set to \code{TRUE} to always check keys, or \code{FALSE} to never check.
-The default is to check only if \code{in_place} is \code{TRUE} or \code{NULL}.
-
-Currently these checks are no-ops and need yet to be implemented.}
 
 \item{returning}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 <\code{\link[=tidyr_tidy_select]{tidy-select}}> Columns to return of the inserted data.
@@ -124,6 +131,17 @@ Due to upstream limitations, a warning is given if this argument
 is passed unquoted.
 To avoid the warning, quote the argument manually:
 use e.g. \code{returning = quote(everything())} .}
+
+\item{unmatched}{For \code{rows_update()}, \code{rows_patch()}, and \code{rows_delete()},
+how should keys in \code{y} that are unmatched by the keys in \code{x} be handled?
+
+One of:
+\itemize{
+\item \code{"error"}, the default, will error if there are any keys in \code{y} that
+are unmatched by the keys in \code{x}.
+\item \code{"ignore"} will ignore rows in \code{y} with keys that are unmatched by the
+keys in \code{x}.
+}}
 
 \item{returning_cols}{A character vector of unquote column names
 to return, created from the \code{returning} argument.

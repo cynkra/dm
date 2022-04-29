@@ -20,11 +20,6 @@
 #' Unlike [compute()] or [copy_to()], no new tables are created.
 #'
 #' @inheritParams dplyr::rows_insert
-#' @param check
-#'   Set to `TRUE` to always check keys, or `FALSE` to never check.
-#'   The default is to check only if `in_place` is `TRUE` or `NULL`.
-#'
-#'   Currently these checks are no-ops and need yet to be implemented.
 #' @param returning `r lifecycle::badge("experimental")`
 #'   <[`tidy-select`][tidyr_tidy_select]> Columns to return of the inserted data.
 #'   Note that also columns not in `y` but automatically created when inserting
@@ -62,8 +57,12 @@ NULL
 #' @export
 #' @rdname rows-db
 rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
-                                in_place = NULL, copy = FALSE, check = NULL,
+                                in_place = FALSE,
+                                conflict = NULL,
+                                copy = FALSE,
                                 returning = NULL) {
+
+  stopifnot(identical(conflict, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
@@ -115,8 +114,12 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
 #' @export
 #' @rdname rows-db
 rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
-                                in_place = NULL, copy = FALSE, check = NULL,
+                                in_place = FALSE,
+                                unmatched = NULL,
+                                copy = FALSE,
                                 returning = NULL) {
+
+  stopifnot(identical(unmatched, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
@@ -183,8 +186,12 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
 #' @export
 #' @rdname rows-db
 rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
-                               in_place = NULL, copy = FALSE, check = NULL,
+                               in_place = FALSE,
+                               unmatched = NULL,
+                               copy = FALSE,
                                returning = NULL) {
+
+  stopifnot(identical(unmatched, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
@@ -259,8 +266,12 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
 #' @export
 #' @rdname rows-db
 rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
-                                in_place = NULL, copy = FALSE, check = NULL,
+                                in_place = FALSE,
+                                unmatched = NULL,
+                                copy = FALSE,
                                 returning = NULL) {
+
+  stopifnot(identical(unmatched, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
@@ -327,8 +338,12 @@ rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
 #' @export
 #' @rdname rows-db
 rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
-                                in_place = NULL, copy = FALSE, check = NULL,
+                                in_place = FALSE,
+                                unmatched = NULL,
+                                copy = FALSE,
                                 returning = NULL) {
+
+  stopifnot(identical(unmatched, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
