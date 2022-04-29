@@ -83,6 +83,9 @@
       dm_update_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_update_local))
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
+      # Source:     SQL [6 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: d, c, e, e1
             d c        e        e1
         <int> <chr>    <chr> <int>
       1     2 elephant D         4
@@ -96,6 +99,9 @@
     Message
       Not persisting, use `in_place = FALSE` to turn off this message.
     Output
+      # Source:     SQL [6 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: d, c, e, e1
             d c        e        e1
         <int> <chr>    <chr> <int>
       1     2 elephant D         4
@@ -107,6 +113,9 @@
     Code
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
+      # Source:     SQL [6 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: d, c, e, e1
             d c        e        e1
         <int> <chr>    <chr> <int>
       1     2 elephant D         4
@@ -119,6 +128,9 @@
       dm_copy %>% dm_rows_update(dm_update_copy, in_place = FALSE) %>% pull_tbl(tf_2) %>%
         arrange_all()
     Output
+      # Source:     SQL [6 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: d, c, e, e1
             d c        e        e1
         <int> <chr>    <chr> <int>
       1     2 elephant D         4
@@ -131,6 +143,9 @@
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
       $tf_1
+      # Source:     SQL [10 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: a, b
              a b    
          <int> <chr>
        1     1 A    
@@ -145,6 +160,9 @@
       10    10 J    
       
       $tf_2
+      # Source:     SQL [6 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: d, c, e, e1
             d c        e        e1
         <int> <chr>    <chr> <int>
       1     2 elephant D         4
@@ -155,6 +173,9 @@
       6     7 cat      F         6
       
       $tf_3
+      # Source:     SQL [10 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: f, f1, g
          f        f1 g    
          <chr> <int> <chr>
        1 C         2 one  
@@ -169,6 +190,9 @@
       10 K        11 ten  
       
       $tf_4
+      # Source:     SQL [5 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: i, h, j, j1
         i     h     j        j1
         <chr> <chr> <chr> <int>
       1 five  c     E         5
@@ -178,6 +202,9 @@
       5 three a     C         3
       
       $tf_5
+      # Source:     SQL [4 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: l, m, k
         l     m              k
         <chr> <chr>      <int>
       1 b     house          1
@@ -186,6 +213,9 @@
       4 e     streetlamp     4
       
       $tf_6
+      # Source:     SQL [5 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: n, o
         n          o    
         <chr>      <chr>
       1 garden     i    
@@ -199,6 +229,9 @@
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
       $tf_1
+      # Source:     SQL [10 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: a, b
              a b    
          <int> <chr>
        1     1 A    
@@ -213,6 +246,9 @@
       10    10 J    
       
       $tf_2
+      # Source:     SQL [6 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: d, c, e, e1
             d c        e        e1
         <int> <chr>    <chr> <int>
       1     2 elephant D         4
@@ -223,6 +259,9 @@
       6    10 worm     G         7
       
       $tf_3
+      # Source:     SQL [10 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: f, f1, g
          f        f1 g    
          <chr> <int> <chr>
        1 C         2 one  
@@ -237,6 +276,9 @@
       10 K        11 ten  
       
       $tf_4
+      # Source:     SQL [5 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: i, h, j, j1
         i      h     j        j1
         <chr>  <chr> <chr> <int>
       1 five   c     E         5
@@ -246,6 +288,9 @@
       5 three  a     C         3
       
       $tf_5
+      # Source:     SQL [4 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: l, m, k
         l     m              k
         <chr> <chr>      <int>
       1 b     house          1
@@ -254,6 +299,9 @@
       4 e     streetlamp     4
       
       $tf_6
+      # Source:     SQL [5 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: n, o
         n          o    
         <chr>      <chr>
       1 garden     i    
@@ -273,6 +321,9 @@
       dm_truncate_local))
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
+      # Source:     SQL [6 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: c, d, e, e1
         c            d e        e1
         <chr>    <int> <chr> <int>
       1 cat          7 F         6
@@ -287,10 +338,16 @@
     Message
       Not persisting, use `in_place = FALSE` to turn off this message.
     Output
+      # Source:     SQL [0 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: c, d, e, e1
       # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
     Code
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
+      # Source:     SQL [6 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: c, d, e, e1
         c            d e        e1
         <chr>    <int> <chr> <int>
       1 cat          7 F         6
@@ -303,11 +360,17 @@
       dm_copy %>% dm_rows_truncate(dm_truncate_copy, in_place = FALSE) %>% pull_tbl(
         tf_2) %>% arrange_all()
     Output
+      # Source:     SQL [0 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: c, d, e, e1
       # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
     Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
       $tf_1
+      # Source:     SQL [10 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: a, b
              a b    
          <int> <chr>
        1     1 A    
@@ -322,6 +385,9 @@
       10    10 J    
       
       $tf_2
+      # Source:     SQL [6 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: c, d, e, e1
         c            d e        e1
         <chr>    <int> <chr> <int>
       1 cat          7 F         6
@@ -332,6 +398,9 @@
       6 worm         5 G         7
       
       $tf_3
+      # Source:     SQL [10 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: f, f1, g
          f        f1 g    
          <chr> <int> <chr>
        1 C         2 one  
@@ -346,6 +415,9 @@
       10 K        11 ten  
       
       $tf_4
+      # Source:     SQL [5 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: h, i, j, j1
         h     i     j        j1
         <chr> <chr> <chr> <int>
       1 a     three C         3
@@ -355,6 +427,9 @@
       5 e     seven F         6
       
       $tf_5
+      # Source:     SQL [4 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: k, l, m
             k l     m         
         <int> <chr> <chr>     
       1     1 b     house     
@@ -363,6 +438,9 @@
       4     4 e     streetlamp
       
       $tf_6
+      # Source:     SQL [5 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: n, o
         n          o    
         <chr>      <chr>
       1 garden     i    
@@ -376,6 +454,9 @@
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
       $tf_1
+      # Source:     SQL [10 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: a, b
              a b    
          <int> <chr>
        1     1 A    
@@ -390,9 +471,15 @@
       10    10 J    
       
       $tf_2
+      # Source:     SQL [0 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: c, d, e, e1
       # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
       
       $tf_3
+      # Source:     SQL [10 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: f, f1, g
          f        f1 g    
          <chr> <int> <chr>
        1 C         2 one  
@@ -407,6 +494,9 @@
       10 K        11 ten  
       
       $tf_4
+      # Source:     SQL [5 x 4]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: h, i, j, j1
         h     i     j        j1
         <chr> <chr> <chr> <int>
       1 a     three C         3
@@ -416,9 +506,15 @@
       5 e     seven F         6
       
       $tf_5
+      # Source:     SQL [0 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: k, l, m
       # ... with 3 variables: k <int>, l <chr>, m <chr>
       
       $tf_6
+      # Source:     SQL [5 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: n, o
         n          o    
         <chr>      <chr>
       1 garden     i    

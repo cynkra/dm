@@ -5,6 +5,8 @@
         0:2)
       data
     Output
+      # Source:   table<test_frame_2022_04_29_00_30_41_11922_16> [3 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -15,6 +17,8 @@
     Message
       Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.
     Output
+      # Source:   SQL [4 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <dbl> <chr>  <dbl>
       1      1 a        0.5
@@ -24,6 +28,9 @@
     Code
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -37,6 +44,8 @@
         0:2)
       data
     Output
+      # Source:   table<test_frame_2022_04_29_00_30_42_11922_18> [3 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -51,6 +60,8 @@
     Code
       rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = FALSE)
     Output
+      # Source:   SQL [4 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <dbl> <chr>  <dbl>
       1      1 a        0.5
@@ -60,6 +71,9 @@
     Code
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -69,6 +83,9 @@
       rows_insert(data, test_db_src_frame(select = 4, where = "z"), in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [4 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -78,6 +95,8 @@
     Code
       rows_delete(data, test_db_src_frame(select = 2), in_place = FALSE)
     Output
+      # Source:   SQL [3 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -86,6 +105,9 @@
     Code
       data %>% arrange(select)
     Output
+      # Source:     SQL [4 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -96,6 +118,9 @@
       rows_delete(data, test_db_src_frame(select = 2), in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -105,6 +130,8 @@
       rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = c("select",
         "where"), in_place = FALSE)
     Output
+      # Source:   SQL [3 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -113,6 +140,9 @@
     Code
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -123,6 +153,9 @@
         "where"), in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -132,6 +165,8 @@
       rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = "where",
       in_place = FALSE)
     Output
+      # Source:   SQL [3 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -140,6 +175,9 @@
     Code
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -150,6 +188,9 @@
       in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -158,12 +199,17 @@
     Code
       rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), in_place = FALSE)
     Output
+      # Source:   SQL [1 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      4 z         NA
     Code
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -173,16 +219,24 @@
       rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [1 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      4 z         NA
     Code
       rows_truncate(data, in_place = FALSE)
     Output
+      # Source:   SQL [0 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
       # ... with 3 variables: select <int>, where <chr>, exists <dbl>
     Code
       data %>% arrange(select)
     Output
+      # Source:     SQL [1 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      4 z         NA
@@ -190,6 +244,9 @@
       rows_truncate(data, in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [0 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
       # ... with 3 variables: select <int>, where <chr>, exists <dbl>
 
 # update
@@ -199,6 +256,8 @@
         0:2)
       data
     Output
+      # Source:   table<test_frame_2022_04_29_00_30_44_11922_38> [3 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -208,6 +267,8 @@
       suppressMessages(rows_update(data, tibble(select = 2:3, where = "w"), copy = TRUE,
       in_place = FALSE))
     Output
+      # Source:   SQL [3 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -216,6 +277,8 @@
     Code
       suppressMessages(rows_update(data, tibble(select = 2:3), copy = TRUE, in_place = FALSE))
     Output
+      # Source:   table<test_frame_2022_04_29_00_30_44_11922_38> [3 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -224,6 +287,9 @@
     Code
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -233,6 +299,8 @@
       rows_update(data, test_db_src_frame(select = 0L, where = "a"), by = "where",
       in_place = FALSE)
     Output
+      # Source:   SQL [3 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      2 b        1.5
@@ -241,6 +309,9 @@
     Code
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -250,6 +321,9 @@
       rows_update(data, test_db_src_frame(select = 2:3, where = "w"), in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -260,6 +334,9 @@
       in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -269,6 +346,9 @@
       rows_update(data, test_db_src_frame(select = 2:3), in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -279,6 +359,9 @@
       in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      0 a        0.5
@@ -291,6 +374,8 @@
       data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)])
       data
     Output
+      # Source:   table<test_frame_2022_04_29_00_30_45_11922_44> [3 x 2]
+      # Database: sqlite 3.38.2 [:memory:]
         select where
          <int> <chr>
       1      1 a    
@@ -300,6 +385,9 @@
       suppressMessages(rows_patch(data, tibble(select = 2:3, where = "patched"),
       copy = TRUE, in_place = FALSE) %>% arrange(select))
     Output
+      # Source:     SQL [3 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where  
          <int> <chr>  
       1      1 a      
@@ -308,6 +396,8 @@
     Code
       suppressMessages(rows_patch(data, tibble(select = 2:3), copy = TRUE, in_place = FALSE))
     Output
+      # Source:   table<test_frame_2022_04_29_00_30_45_11922_44> [3 x 2]
+      # Database: sqlite 3.38.2 [:memory:]
         select where
          <int> <chr>
       1      1 a    
@@ -316,6 +406,9 @@
     Code
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where
          <int> <chr>
       1      1 a    
@@ -325,6 +418,8 @@
       rows_patch(data, test_db_src_frame(select = 0L, where = "patched"), by = "where",
       in_place = FALSE)
     Output
+      # Source:   SQL [3 x 2]
+      # Database: sqlite 3.38.2 [:memory:]
         select where
          <int> <chr>
       1      1 a    
@@ -333,6 +428,9 @@
     Code
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where
          <int> <chr>
       1      1 a    
@@ -342,6 +440,9 @@
       rows_patch(data, test_db_src_frame(select = 2:3, where = "patched"), in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where  
          <int> <chr>  
       1      1 a      
@@ -352,6 +453,9 @@
       rows_patch(data, test_db_src_frame(select = 2:3), in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where
          <int> <chr>
       1      1 a    
@@ -362,6 +466,9 @@
       in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 2]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where
          <int> <chr>
       1      1 a    
@@ -375,6 +482,8 @@
         0:2, .unique_indexes = list("select", "where"))
       data
     Output
+      # Source:   table<test_frame_2022_04_29_00_30_46_11922_52> [3 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -384,6 +493,8 @@
       rows_upsert(data, tibble(select = 2:4, where = c("x", "y", "z")), copy = TRUE,
       in_place = FALSE)
     Output
+      # Source:   SQL [4 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -393,6 +504,8 @@
     Code
       rows_upsert(data, tibble(select = 2:4), copy = TRUE, in_place = FALSE)
     Output
+      # Source:   SQL [4 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -402,6 +515,9 @@
     Code
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -411,6 +527,8 @@
       rows_upsert(data, test_db_src_frame(select = 0L, where = c("a", "d")), by = "where",
       in_place = FALSE)
     Output
+      # Source:   SQL [4 x 3]
+      # Database: sqlite 3.38.2 [:memory:]
         select where exists
          <int> <chr>  <dbl>
       1      2 b        1.5
@@ -420,6 +538,9 @@
     Code
       data %>% arrange(select)
     Output
+      # Source:     SQL [3 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -430,6 +551,9 @@
       in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [4 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -441,6 +565,9 @@
       in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [5 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -452,6 +579,9 @@
       rows_upsert(data, test_db_src_frame(select = 2:3), in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [5 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
@@ -464,6 +594,9 @@
       in_place = TRUE)
       data %>% arrange(select)
     Output
+      # Source:     SQL [5 x 3]
+      # Database:   sqlite 3.38.2 [:memory:]
+      # Ordered by: select
         select where exists
          <int> <chr>  <dbl>
       1      0 a        0.5
