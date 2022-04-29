@@ -15,8 +15,12 @@ test_that("`json_nest()` works remotely", {
   remote <- test_db_src_frame(!!!local)
 
   expect_snapshot(variant = my_test_src_name, {
-    json_nest(remote, A = starts_with("a")) %>% arrange(grp) %>% collect()
-    json_nest(remote, A = starts_with("a"), .names_sep = "_") %>% arrange(grp) %>% collect()
+    json_nest(remote, A = starts_with("a")) %>%
+      arrange(grp) %>%
+      collect()
+    json_nest(remote, A = starts_with("a"), .names_sep = "_") %>%
+      arrange(grp) %>%
+      collect()
   })
 
   expect_equivalent_tbl(
