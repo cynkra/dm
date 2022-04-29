@@ -11,7 +11,8 @@
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_insert(data, test_db_src_frame(select = 4, where = "z"), conflict = "ignore")
+      rows_insert(data, test_db_src_frame(select = 4, where = "z"), by = "select",
+      conflict = "ignore")
     Output
         select where exists
          <dbl> <chr>  <dbl>
@@ -42,13 +43,13 @@
       3      3 <NA>     2.5
     Code
       writeLines(conditionMessage(expect_error(rows_insert(data, tibble(select = 4,
-        where = "z"), conflict = "ignore"))))
+        where = "z"), by = "select", conflict = "ignore"))))
     Output
       `x` and `y` must share the same src.
       i set `copy` = TRUE (may be slow).
     Code
-      rows_insert(data, test_db_src_frame(select = 4, where = "z"), conflict = "ignore",
-      in_place = FALSE)
+      rows_insert(data, test_db_src_frame(select = 4, where = "z"), by = "select",
+      conflict = "ignore", in_place = FALSE)
     Output
         select where exists
          <dbl> <chr>  <dbl>
@@ -65,8 +66,8 @@
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_insert(data, test_db_src_frame(select = 4, where = "z"), conflict = "ignore",
-      in_place = TRUE)
+      rows_insert(data, test_db_src_frame(select = 4, where = "z"), by = "select",
+      conflict = "ignore", in_place = TRUE)
       data %>% arrange(select)
     Output
         select where exists
@@ -76,7 +77,7 @@
       3      3 <NA>     2.5
       4      4 z       NA  
     Code
-      rows_delete(data, test_db_src_frame(select = 2), unmatched = "ignore",
+      rows_delete(data, test_db_src_frame(select = 2), by = "select", unmatched = "ignore",
       in_place = FALSE)
     Output
         select where exists
@@ -94,7 +95,7 @@
       3      3 <NA>     2.5
       4      4 z       NA  
     Code
-      rows_delete(data, test_db_src_frame(select = 2), unmatched = "ignore",
+      rows_delete(data, test_db_src_frame(select = 2), by = "select", unmatched = "ignore",
       in_place = TRUE)
       data %>% arrange(select)
     Output
@@ -131,8 +132,8 @@
       2      3 <NA>     2.5
       3      4 z       NA  
     Code
-      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = "where",
-      unmatched = "ignore", in_place = FALSE)
+      rows_delete(data, test_db_src_frame(where = "q"), by = "where", unmatched = "ignore",
+      in_place = FALSE)
     Output
         select where exists
          <int> <chr>  <dbl>
@@ -148,8 +149,8 @@
       2      3 <NA>     2.5
       3      4 z       NA  
     Code
-      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = "where",
-      unmatched = "ignore", in_place = TRUE)
+      rows_delete(data, test_db_src_frame(where = "q"), by = "where", unmatched = "ignore",
+      in_place = TRUE)
       data %>% arrange(select)
     Output
         select where exists
@@ -158,7 +159,7 @@
       2      3 <NA>     2.5
       3      4 z       NA  
     Code
-      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), unmatched = "ignore",
+      rows_delete(data, test_db_src_frame(select = 1:3), by = "select", unmatched = "ignore",
       in_place = FALSE)
     Output
         select where exists
@@ -173,7 +174,7 @@
       2      3 <NA>     2.5
       3      4 z       NA  
     Code
-      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), unmatched = "ignore",
+      rows_delete(data, test_db_src_frame(select = 1:3), by = "select", unmatched = "ignore",
       in_place = TRUE)
       data %>% arrange(select)
     Output
@@ -252,8 +253,8 @@
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_update(data, test_db_src_frame(select = 2:3, where = "w"), unmatched = "ignore",
-      in_place = TRUE)
+      rows_update(data, test_db_src_frame(select = 2:3, where = "w"), by = "select",
+      unmatched = "ignore", in_place = TRUE)
       data %>% arrange(select)
     Output
         select where exists
@@ -262,7 +263,7 @@
       2      2 w        1.5
       3      3 w        2.5
     Code
-      rows_update(data, test_db_src_frame(select = 2, where = "w", exists = 3.5),
+      rows_update(data, test_db_src_frame(select = 2, where = "w", exists = 3.5), by = "select",
       unmatched = "ignore", in_place = TRUE)
       data %>% arrange(select)
     Output
@@ -272,7 +273,7 @@
       2      2 w        3.5
       3      3 w        2.5
     Code
-      rows_update(data, test_db_src_frame(select = 2:3), unmatched = "ignore",
+      rows_update(data, test_db_src_frame(select = 2:3), by = "select", unmatched = "ignore",
       in_place = TRUE)
       data %>% arrange(select)
     Output
@@ -347,8 +348,8 @@
       2      2 b    
       3      3 <NA> 
     Code
-      rows_patch(data, test_db_src_frame(select = 2:3, where = "patched"), unmatched = "ignore",
-      in_place = TRUE)
+      rows_patch(data, test_db_src_frame(select = 2:3, where = "patched"), by = "select",
+      unmatched = "ignore", in_place = TRUE)
       data %>% arrange(select)
     Output
         select where  
@@ -358,7 +359,7 @@
       3      3 patched
     Code
       data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)])
-      rows_patch(data, test_db_src_frame(select = 2:3), unmatched = "ignore",
+      rows_patch(data, test_db_src_frame(select = 2:3), by = "select", unmatched = "ignore",
       in_place = TRUE)
       data %>% arrange(select)
     Output
@@ -391,8 +392,8 @@
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_upsert(data, tibble(select = 2:4, where = c("x", "y", "z")), copy = TRUE,
-      in_place = FALSE)
+      rows_upsert(data, tibble(select = 2:4, where = c("x", "y", "z")), by = "select",
+      copy = TRUE, in_place = FALSE)
     Output
         select where exists
          <int> <chr>  <dbl>
@@ -401,7 +402,7 @@
       3      3 y        2.5
       4      4 z       NA  
     Code
-      rows_upsert(data, tibble(select = 2:4), copy = TRUE, in_place = FALSE)
+      rows_upsert(data, tibble(select = 2:4), by = "select", copy = TRUE, in_place = FALSE)
     Output
         select where exists
          <int> <chr>  <dbl>
@@ -437,7 +438,7 @@
       3      3 <NA>     2.5
     Code
       rows_upsert(data, test_db_src_frame(select = 2:4, where = c("x", "y", "z")),
-      in_place = TRUE)
+      by = "select", in_place = TRUE)
       data %>% arrange(select)
     Output
         select where exists
@@ -448,7 +449,7 @@
       4      4 z       NA  
     Code
       rows_upsert(data, test_db_src_frame(select = 4:5, where = c("o", "p"), exists = 3.5),
-      in_place = TRUE)
+      by = "select", in_place = TRUE)
       data %>% arrange(select)
     Output
         select where exists
@@ -459,7 +460,7 @@
       4      4 o        3.5
       5      5 p        3.5
     Code
-      rows_upsert(data, test_db_src_frame(select = 2:3), in_place = TRUE)
+      rows_upsert(data, test_db_src_frame(select = 2:3), by = "select", in_place = TRUE)
       data %>% arrange(select)
     Output
         select where exists

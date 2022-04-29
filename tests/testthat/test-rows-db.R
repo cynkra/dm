@@ -3,7 +3,7 @@ test_that("insert + delete + truncate message", {
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
     data
 
-    rows_insert(data, test_db_src_frame(select = 4, where = "z"), conflict = "ignore")
+    rows_insert(data, test_db_src_frame(select = 4, where = "z"), by = "select", conflict = "ignore")
     data %>% arrange(select)
   })
 })
@@ -14,27 +14,27 @@ test_that("insert + delete + truncate", {
     data
 
     writeLines(conditionMessage(expect_error(
-      rows_insert(data, tibble(select = 4, where = "z"), conflict = "ignore")
+      rows_insert(data, tibble(select = 4, where = "z"), by = "select", conflict = "ignore")
     )))
-    rows_insert(data, test_db_src_frame(select = 4, where = "z"), conflict = "ignore", in_place = FALSE)
+    rows_insert(data, test_db_src_frame(select = 4, where = "z"), by = "select", conflict = "ignore", in_place = FALSE)
     data %>% arrange(select)
-    rows_insert(data, test_db_src_frame(select = 4, where = "z"), conflict = "ignore", in_place = TRUE)
+    rows_insert(data, test_db_src_frame(select = 4, where = "z"), by = "select", conflict = "ignore", in_place = TRUE)
     data %>% arrange(select)
-    rows_delete(data, test_db_src_frame(select = 2), unmatched = "ignore", in_place = FALSE)
+    rows_delete(data, test_db_src_frame(select = 2), by = "select", unmatched = "ignore", in_place = FALSE)
     data %>% arrange(select)
-    rows_delete(data, test_db_src_frame(select = 2), unmatched = "ignore", in_place = TRUE)
+    rows_delete(data, test_db_src_frame(select = 2), by = "select", unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
     rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = c("select", "where"), unmatched = "ignore", in_place = FALSE)
     data %>% arrange(select)
     rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = c("select", "where"), unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
-    rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = "where", unmatched = "ignore", in_place = FALSE)
+    rows_delete(data, test_db_src_frame(where = "q"), by = "where", unmatched = "ignore", in_place = FALSE)
     data %>% arrange(select)
-    rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = "where", unmatched = "ignore", in_place = TRUE)
+    rows_delete(data, test_db_src_frame(where = "q"), by = "where", unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
-    rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), unmatched = "ignore", in_place = FALSE)
+    rows_delete(data, test_db_src_frame(select = 1:3), by = "select", unmatched = "ignore", in_place = FALSE)
     data %>% arrange(select)
-    rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), unmatched = "ignore", in_place = TRUE)
+    rows_delete(data, test_db_src_frame(select = 1:3), by = "select", unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
 
     rows_truncate(data, in_place = FALSE)
@@ -71,7 +71,7 @@ test_that("insert + delete with returning argument (#607)", {
   )
 
   expect_equal(
-    rows_delete(target, test_db_src_frame(where = "z"), unmatched = "ignore", in_place = TRUE, returning = select) %>%
+    rows_delete(target, test_db_src_frame(where = "z"), by = "where", unmatched = "ignore", in_place = TRUE, returning = select) %>%
       dbplyr::get_returned_rows(),
     tibble(select = 4L)
   )
@@ -81,7 +81,7 @@ test_that("insert + delete with returning argument and in_place = FALSE", {
   target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
 
   expect_equal(
-    rows_delete(target, test_db_src_frame(select = 3:4, where = "z"), in_place = FALSE, unmatched = "ignore", returning = everything()) %>%
+    rows_delete(target, test_db_src_frame(select = 3:4, where = "z"), by = "select", in_place = FALSE, unmatched = "ignore", returning = everything()) %>%
       dbplyr::get_returned_rows(),
     tibble(select = 3L, where = NA_character_, exists = 2.5)
   )
@@ -89,12 +89,12 @@ test_that("insert + delete with returning argument and in_place = FALSE", {
   skip_if_src(c("df", "sqlite"))
   skip_if(packageVersion("dbplyr") > "2.1.1")
   expect_equal(
-    rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = everything()) %>%
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), by = "select", in_place = FALSE, returning = everything()) %>%
       dbplyr::get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA_real_)
   )
   expect_equal(
-    rows_append(target, test_db_src_frame(select = 4, where = "q"), in_place = FALSE, returning = everything()) %>%
+    rows_append(target, test_db_src_frame(select = 4, where = "q"), by = "select", in_place = FALSE, returning = everything()) %>%
       dbplyr::get_returned_rows(),
     tibble(select = 4L, where = "q", exists = NA_real_)
   )
@@ -109,13 +109,13 @@ test_that("insert + delete with returning argument and in_place = FALSE, SQLite 
   skip_if(packageVersion("dbplyr") <= "2.1.1")
 
   expect_equal(
-    rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = everything()) %>%
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), by = "select", in_place = FALSE, returning = everything()) %>%
       dbplyr::get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA)
   )
 
   expect_equal(
-    rows_append(target, test_db_src_frame(select = 4, where = "q"), in_place = FALSE, returning = everything()) %>%
+    rows_append(target, test_db_src_frame(select = 4, where = "q"), by = "select", in_place = FALSE, returning = everything()) %>%
       dbplyr::get_returned_rows(),
     tibble(select = 4L, where = "q", exists = NA)
   )
@@ -142,11 +142,11 @@ test_that("update", {
 
     rows_update(data, test_db_src_frame(select = 0L, where = "a"), by = "where", unmatched = "ignore", in_place = FALSE)
     data %>% arrange(select)
-    rows_update(data, test_db_src_frame(select = 2:3, where = "w"), unmatched = "ignore", in_place = TRUE)
+    rows_update(data, test_db_src_frame(select = 2:3, where = "w"), by = "select", unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
-    rows_update(data, test_db_src_frame(select = 2, where = "w", exists = 3.5), unmatched = "ignore", in_place = TRUE)
+    rows_update(data, test_db_src_frame(select = 2, where = "w", exists = 3.5), by = "select", unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
-    rows_update(data, test_db_src_frame(select = 2:3), unmatched = "ignore", in_place = TRUE)
+    rows_update(data, test_db_src_frame(select = 2:3), by = "select", unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
     rows_update(data, test_db_src_frame(select = 0L, where = "a"), by = "where", unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
@@ -164,11 +164,11 @@ test_that("patch", {
 
     rows_patch(data, test_db_src_frame(select = 0L, where = "patched"), by = "where", unmatched = "ignore", in_place = FALSE)
     data %>% arrange(select)
-    rows_patch(data, test_db_src_frame(select = 2:3, where = "patched"), unmatched = "ignore", in_place = TRUE)
+    rows_patch(data, test_db_src_frame(select = 2:3, where = "patched"), by = "select", unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
 
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)])
-    rows_patch(data, test_db_src_frame(select = 2:3), unmatched = "ignore", in_place = TRUE)
+    rows_patch(data, test_db_src_frame(select = 2:3), by = "select", unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
     rows_patch(data, test_db_src_frame(select = 0L, where = "a"), by = "where", unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
@@ -247,17 +247,17 @@ test_that("upsert", {
     )
     data
 
-    rows_upsert(data, tibble(select = 2:4, where = c("x", "y", "z")), copy = TRUE, in_place = FALSE)
-    rows_upsert(data, tibble(select = 2:4), copy = TRUE, in_place = FALSE)
+    rows_upsert(data, tibble(select = 2:4, where = c("x", "y", "z")), by = "select", copy = TRUE, in_place = FALSE)
+    rows_upsert(data, tibble(select = 2:4), by = "select", copy = TRUE, in_place = FALSE)
     data %>% arrange(select)
     rows_upsert(data, test_db_src_frame(select = 0L, where = c("a", "d")), by = "where", in_place = FALSE)
     data %>% arrange(select)
 
-    rows_upsert(data, test_db_src_frame(select = 2:4, where = c("x", "y", "z")), in_place = TRUE)
+    rows_upsert(data, test_db_src_frame(select = 2:4, where = c("x", "y", "z")), by = "select", in_place = TRUE)
     data %>% arrange(select)
-    rows_upsert(data, test_db_src_frame(select = 4:5, where = c("o", "p"), exists = 3.5), in_place = TRUE)
+    rows_upsert(data, test_db_src_frame(select = 4:5, where = c("o", "p"), exists = 3.5), by = "select", in_place = TRUE)
     data %>% arrange(select)
-    rows_upsert(data, test_db_src_frame(select = 2:3), in_place = TRUE)
+    rows_upsert(data, test_db_src_frame(select = 2:3), by = "select", in_place = TRUE)
     data %>% arrange(select)
     rows_upsert(data, test_db_src_frame(select = 0L, where = "a"), by = "where", in_place = TRUE)
     data %>% arrange(select)
