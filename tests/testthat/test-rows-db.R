@@ -87,7 +87,7 @@ test_that("insert + delete with returning argument and in_place = FALSE", {
   target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
 
   expect_equal(
-    rows_delete(target, test_db_src_frame(select = 3:4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
+    rows_delete(target, test_db_src_frame(select = 3:4, where = "z"), in_place = FALSE, unmatched = "ignore", returning = quote(everything())) %>%
       dbplyr::get_returned_rows(),
     tibble(select = 3L, where = NA_character_, exists = 2.5)
   )
@@ -95,9 +95,14 @@ test_that("insert + delete with returning argument and in_place = FALSE", {
   skip_if_src(c("df", "sqlite"))
   skip_if(packageVersion("dbplyr") > "2.1.1")
   expect_equal(
-    rows_insert(target, test_db_src_frame(select = 4, where = "z"), conflict = "ignore", in_place = FALSE, returning = quote(everything())) %>%
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
       dbplyr::get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA_real_)
+  )
+  expect_equal(
+    rows_append(target, test_db_src_frame(select = 4, where = "q"), in_place = FALSE, returning = quote(everything())) %>%
+      dbplyr::get_returned_rows(),
+    tibble(select = 4L, where = "q", exists = NA_real_)
   )
 })
 
@@ -108,12 +113,17 @@ test_that("insert + delete with returning argument and in_place = FALSE, SQLite 
   # sqlite isn't type stable, perhaps the underlying query has changed in a subtle way
   skip_if_src_not(c("df", "sqlite"))
   skip_if(packageVersion("dbplyr") <= "2.1.1")
-  skip_if(packageVersion("dbplyr") > "2.1.1")
 
   expect_equal(
-    rows_insert(target, test_db_src_frame(select = 4, where = "z"), conflict = "ignore", in_place = FALSE, returning = quote(everything())) %>%
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = quote(everything())) %>%
       dbplyr::get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA)
+  )
+
+  expect_equal(
+    rows_append(target, test_db_src_frame(select = 4, where = "q"), in_place = FALSE, returning = quote(everything())) %>%
+      dbplyr::get_returned_rows(),
+    tibble(select = 4L, where = "q", exists = NA)
   )
 })
 
@@ -132,19 +142,19 @@ test_that("update", {
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
     data
 
-    suppressMessages(rows_update(data, tibble(select = 2:3, where = "w"), copy = TRUE, in_place = FALSE))
-    suppressMessages(rows_update(data, tibble(select = 2:3), copy = TRUE, in_place = FALSE))
+    suppressMessages(rows_update(data, tibble(select = 2:3, where = "w"), copy = TRUE, unmatched = "ignore", in_place = FALSE))
+    suppressMessages(rows_update(data, tibble(select = 2:3), copy = TRUE, unmatched = "ignore", in_place = FALSE))
     data %>% arrange(select)
 
-    rows_update(data, test_db_src_frame(select = 0L, where = "a"), by = "where", in_place = FALSE)
+    rows_update(data, test_db_src_frame(select = 0L, where = "a"), by = "where", unmatched = "ignore", in_place = FALSE)
     data %>% arrange(select)
-    rows_update(data, test_db_src_frame(select = 2:3, where = "w"), in_place = TRUE)
+    rows_update(data, test_db_src_frame(select = 2:3, where = "w"), unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
-    rows_update(data, test_db_src_frame(select = 2, where = "w", exists = 3.5), in_place = TRUE)
+    rows_update(data, test_db_src_frame(select = 2, where = "w", exists = 3.5), unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
-    rows_update(data, test_db_src_frame(select = 2:3), in_place = TRUE)
+    rows_update(data, test_db_src_frame(select = 2:3), unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
-    rows_update(data, test_db_src_frame(select = 0L, where = "a"), by = "where", in_place = TRUE)
+    rows_update(data, test_db_src_frame(select = 0L, where = "a"), by = "where", unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
   })
 })
@@ -154,19 +164,19 @@ test_that("patch", {
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)])
     data
 
-    suppressMessages(rows_patch(data, tibble(select = 2:3, where = "patched"), copy = TRUE, in_place = FALSE) %>% arrange(select))
-    suppressMessages(rows_patch(data, tibble(select = 2:3), copy = TRUE, in_place = FALSE))
+    suppressMessages(rows_patch(data, tibble(select = 2:3, where = "patched"), copy = TRUE, unmatched = "ignore", in_place = FALSE) %>% arrange(select))
+    suppressMessages(rows_patch(data, tibble(select = 2:3), copy = TRUE, unmatched = "ignore", in_place = FALSE))
     data %>% arrange(select)
 
-    rows_patch(data, test_db_src_frame(select = 0L, where = "patched"), by = "where", in_place = FALSE)
+    rows_patch(data, test_db_src_frame(select = 0L, where = "patched"), by = "where", unmatched = "ignore", in_place = FALSE)
     data %>% arrange(select)
-    rows_patch(data, test_db_src_frame(select = 2:3, where = "patched"), in_place = TRUE)
+    rows_patch(data, test_db_src_frame(select = 2:3, where = "patched"), unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
 
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)])
-    rows_patch(data, test_db_src_frame(select = 2:3), in_place = TRUE)
+    rows_patch(data, test_db_src_frame(select = 2:3), unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
-    rows_patch(data, test_db_src_frame(select = 0L, where = "a"), by = "where", in_place = TRUE)
+    rows_patch(data, test_db_src_frame(select = 0L, where = "a"), by = "where", unmatched = "ignore", in_place = TRUE)
     data %>% arrange(select)
   })
 })
@@ -178,7 +188,7 @@ test_that("update with returning argument (#607)", {
 
   expect_equal(
     suppressMessages(
-      rows_update(target, y, copy = TRUE, in_place = FALSE, returning = quote(everything()))
+      rows_update(target, y, copy = TRUE, unmatched = "ignore", in_place = FALSE, returning = quote(everything()))
     ) %>%
       dbplyr::get_returned_rows() %>%
       arrange(select),
@@ -193,7 +203,7 @@ test_that("update with returning argument (#607)", {
 
   expect_equal(
     suppressMessages(
-      rows_update(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything()))
+      rows_update(target, y, copy = TRUE, unmatched = "ignore", in_place = TRUE, returning = quote(everything()))
     ) %>%
       dbplyr::get_returned_rows() %>%
       arrange(select),
@@ -208,7 +218,7 @@ test_that("patch with returning argument (#607)", {
 
   expect_equal(
     suppressMessages(
-      rows_patch(target, y, copy = TRUE, in_place = FALSE, returning = quote(everything()))
+      rows_patch(target, y, copy = TRUE, unmatched = "ignore", in_place = FALSE, returning = quote(everything()))
     ) %>%
       dbplyr::get_returned_rows() %>%
       arrange(select),
@@ -223,7 +233,7 @@ test_that("patch with returning argument (#607)", {
 
   expect_equal(
     suppressMessages(
-      rows_patch(target, y, copy = TRUE, in_place = TRUE, returning = quote(everything()))
+      rows_patch(target, y, copy = TRUE, unmatched = "ignore", in_place = TRUE, returning = quote(everything()))
     ) %>%
       dbplyr::get_returned_rows() %>%
       arrange(select),
