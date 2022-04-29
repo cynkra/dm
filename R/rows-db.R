@@ -56,7 +56,7 @@ NULL
 
 #' @export
 #' @rdname rows-db
-rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
+rows_insert.tbl_lazy <- function(x, y, by = NULL, ...,
                                 in_place = FALSE,
                                 conflict = NULL,
                                 copy = FALSE,
@@ -101,7 +101,7 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
 
 #' @export
 #' @rdname rows-db
-rows_append.tbl_dbi <- function(x, y, ...,
+rows_append.tbl_lazy <- function(x, y, ...,
                                 in_place = FALSE,
                                 conflict = NULL,
                                 copy = FALSE,
@@ -143,7 +143,7 @@ rows_append.tbl_dbi <- function(x, y, ...,
 
 #' @export
 #' @rdname rows-db
-rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
+rows_update.tbl_lazy <- function(x, y, by = NULL, ...,
                                 in_place = FALSE,
                                 unmatched = NULL,
                                 copy = FALSE,
@@ -205,7 +205,7 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
 
 #' @export
 #' @rdname rows-db
-rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
+rows_patch.tbl_lazy <- function(x, y, by = NULL, ...,
                                in_place = FALSE,
                                unmatched = NULL,
                                copy = FALSE,
@@ -275,7 +275,7 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
 
 #' @export
 #' @rdname rows-db
-rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
+rows_upsert.tbl_lazy <- function(x, y, by = NULL, ...,
                                 in_place = FALSE,
                                 copy = FALSE,
                                 returning = NULL) {
@@ -335,7 +335,7 @@ rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
 
 #' @export
 #' @rdname rows-db
-rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
+rows_delete.tbl_lazy <- function(x, y, by = NULL, ...,
                                 in_place = FALSE,
                                 unmatched = NULL,
                                 copy = FALSE,
@@ -909,7 +909,7 @@ sql_returning_cols <- function(x, returning_cols, ...) {
 }
 
 #' @export
-sql_returning_cols.tbl_dbi <- function(x, returning_cols, ...) {
+sql_returning_cols.tbl_lazy <- function(x, returning_cols, ...) {
   con <- dbplyr::remote_con(x)
   returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x))
 

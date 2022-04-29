@@ -2,12 +2,12 @@
 % Please edit documentation in R/rows-db.R
 \name{rows-db}
 \alias{rows-db}
-\alias{rows_insert.tbl_dbi}
-\alias{rows_append.tbl_dbi}
-\alias{rows_update.tbl_dbi}
-\alias{rows_patch.tbl_dbi}
-\alias{rows_upsert.tbl_dbi}
-\alias{rows_delete.tbl_dbi}
+\alias{rows_insert.tbl_lazy}
+\alias{rows_append.tbl_lazy}
+\alias{rows_update.tbl_lazy}
+\alias{rows_patch.tbl_lazy}
+\alias{rows_upsert.tbl_lazy}
+\alias{rows_delete.tbl_lazy}
 \alias{sql_rows_insert}
 \alias{sql_rows_update}
 \alias{sql_rows_patch}
@@ -16,7 +16,7 @@
 \alias{sql_output_cols}
 \title{Updating database tables}
 \usage{
-\method{rows_insert}{tbl_dbi}(
+\method{rows_insert}{tbl_lazy}(
   x,
   y,
   by = NULL,
@@ -27,7 +27,7 @@
   returning = NULL
 )
 
-\method{rows_append}{tbl_dbi}(
+\method{rows_append}{tbl_lazy}(
   x,
   y,
   ...,
@@ -37,7 +37,7 @@
   returning = NULL
 )
 
-\method{rows_update}{tbl_dbi}(
+\method{rows_update}{tbl_lazy}(
   x,
   y,
   by = NULL,
@@ -48,7 +48,7 @@
   returning = NULL
 )
 
-\method{rows_patch}{tbl_dbi}(
+\method{rows_patch}{tbl_lazy}(
   x,
   y,
   by = NULL,
@@ -59,7 +59,7 @@
   returning = NULL
 )
 
-\method{rows_upsert}{tbl_dbi}(
+\method{rows_upsert}{tbl_lazy}(
   x,
   y,
   by = NULL,
@@ -69,7 +69,7 @@
   returning = NULL
 )
 
-\method{rows_delete}{tbl_dbi}(
+\method{rows_delete}{tbl_lazy}(
   x,
   y,
   by = NULL,

@@ -15,9 +15,17 @@
 
   register_pkgdown_methods()
 
+  check_version_on_load
   s3_register("waldo::compare_proxy", "dm")
 
   check_version_on_load("RSQLite", "2.2.8", "to use the {.code returning} argument in {.code dm::rows_*()}")
+
+  register_if_dbplyr_hasnt(rows_insert.tbl_lazy)
+  register_if_dbplyr_hasnt(rows_append.tbl_lazy)
+  register_if_dbplyr_hasnt(rows_update.tbl_lazy)
+  register_if_dbplyr_hasnt(rows_patch.tbl_lazy)
+  register_if_dbplyr_hasnt(rows_upsert.tbl_lazy)
+  register_if_dbplyr_hasnt(rows_delete.tbl_lazy)
 
   # rigg(enum_pk_candidates_impl)
   # rigg(build_copy_data)
