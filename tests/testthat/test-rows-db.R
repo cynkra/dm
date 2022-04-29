@@ -87,14 +87,14 @@ test_that("insert + delete with returning argument and in_place = FALSE", {
   )
 
   skip_if_src(c("df", "sqlite"))
-  skip_if(packageVersion("dbplyr") > "2.1.1")
+
   expect_equal(
-    rows_insert(target, test_db_src_frame(select = 4, where = "z"), by = "select", in_place = FALSE, returning = everything()) %>%
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), by = "select", conflict = "ignore", in_place = FALSE, returning = everything()) %>%
       get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA_real_)
   )
   expect_equal(
-    rows_append(target, test_db_src_frame(select = 4, where = "q"), by = "select", in_place = FALSE, returning = everything()) %>%
+    rows_append(target, test_db_src_frame(select = 4, where = "q"), by = "select", conflict = "ignore", in_place = FALSE, returning = everything()) %>%
       get_returned_rows(),
     tibble(select = 4L, where = "q", exists = NA_real_)
   )
