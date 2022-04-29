@@ -30,19 +30,33 @@ mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
     select(constraint_catalog, constraint_schema, constraint_name, constraint_type) %>%
     filter(constraint_type == "FOREIGN KEY")
 
-  fkc <-
-    mssql_sys_all_db(con, dbname, "sys.foreign_key_columns", warn = TRUE)
+  fkc <- mssql_sys_db(con, dbname, "sys.foreign_key_columns", vars = c(
+    "constraint_object_id", "constraint_column_id",
+    "referenced_object_id", "referenced_column_id"
+  ))
+
   columns <-
-    mssql_sys_all_db(con, dbname, "sys.columns") %>%
-    select(catalog = catalog, column_name = name, object_id, column_id)
+    mssql_sys_db(con, dbname, "sys.columns", vars = c(
+      "name", "object_id", "column_id"
+    )) %>%
+    rename(column_name = name)
+
   tables <-
-    mssql_sys_all_db(con, dbname, "sys.tables") %>%
-    select(catalog = catalog, schema_id, table_name = name, object_id)
+    mssql_sys_db(con, dbname, "sys.tables", vars = c(
+      "schema_id", "name", "object_id"
+    )) %>%
+    rename(table_name = name)
+
   schemas <-
-    mssql_sys_all_db(con, dbname, "sys.schemas") %>%
-    select(catalog = catalog, schema_id, table_schema = name)
+    mssql_sys_db(con, dbname, "sys.schemas", vars = c(
+      "schema_id", "name"
+    )) %>%
+    rename(table_schema = name)
+
   objects <-
-    mssql_sys_all_db(con, dbname, "sys.objects") %>%
+    mssql_sys_db(con, dbname, "sys.objects", vars = c(
+      "name", "object_id"
+    )) %>%
     select(constraint_name = name, object_id)
 
   sys_fkc_column_usage <-
