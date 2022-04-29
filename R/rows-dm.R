@@ -247,7 +247,7 @@ get_dm_rows_op <- function(operation_name) {
 }
 
 do_rows_insert <- function(x, y, by = NULL, ...) {
-  rows_insert(x, y, by = by, ..., conflict = "ignore")
+  rows_append(x, y, ...)
 }
 
 do_rows_update <- function(x, y, by = NULL, ...) {
