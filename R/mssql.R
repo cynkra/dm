@@ -11,19 +11,6 @@ mssql_sys_db <- function(con, dbname, name, vars = NULL) {
     select(catalog, everything())
 }
 
-mssql_sys_all_db <- function(con, dbname, name, warn = FALSE, vars = NULL) {
-  lazy <- map(dbname, ~ tryCatch(
-    mssql_sys_db(con, .x, name, vars),
-    error = function(e) {
-      if (warn) {
-        warn(paste0("Can't access database ", .x, ": ", conditionMessage(e)))
-      }
-      NULL
-    }
-  ))
-  reduce(compact(lazy), union_all)
-}
-
 mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
   info_fkc <-
     table_constraints %>%
