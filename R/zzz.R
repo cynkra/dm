@@ -1,5 +1,6 @@
 .onLoad <- function(libname, pkgname) {
   backports::import(pkgname, c("...length"))
+  backports::import(pkgname, c("...names"))
 
   if (getRversion() >= "3.4") {
     dm_financial <<- memoise::memoise(dm_financial, cache = cache_attach())
