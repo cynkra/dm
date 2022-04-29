@@ -1,4 +1,4 @@
-mssql_sys_db <- function(con, dbname, name) {
+mssql_sys_db <- function(con, dbname, name, vars = NULL) {
   if (is.na(dbname)) {
     fq_name <- name
     sql_name <- sql("DB_NAME()")
@@ -6,14 +6,14 @@ mssql_sys_db <- function(con, dbname, name) {
     fq_name <- paste0(dbname, ".", name)
     sql_name <- dbname
   }
-  tbl(con, dbplyr::ident_q(fq_name)) %>%
+  tbl(con, dbplyr::ident_q(fq_name), vars = vars) %>%
     mutate(catalog = !!sql_name) %>%
     select(catalog, everything())
 }
 
-mssql_sys_all_db <- function(con, dbname, name, warn = FALSE) {
+mssql_sys_all_db <- function(con, dbname, name, warn = FALSE, vars = NULL) {
   lazy <- map(dbname, ~ tryCatch(
-    mssql_sys_db(con, .x, name),
+    mssql_sys_db(con, .x, name, vars),
     error = function(e) {
       if (warn) {
         warn(paste0("Can't access database ", .x, ": ", conditionMessage(e)))
