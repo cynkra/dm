@@ -60,9 +60,6 @@ sql_json_nest <- function(con, cols, names_sep, packed_col) {
 sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col) {
   inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
   inside_cols_idented <- dbplyr::ident(inside_cols)
-  n <- length(inside_cols)
-  # alternate names and expressions for `json_build_object`
-  # FIXME: use `alternate()` once #982 is implemented
-  exprs <- c(syms(cols), inside_cols_idented)[rep(seq_len(n), each = 2) + c(n, 0)]
+  exprs <- vctrs::vec_interleave(as.list(inside_cols_idented), syms(cols))
   dbplyr::translate_sql(JSON_AGG(JSON_BUILD_OBJECT(!!!exprs)), con = con)
 }
