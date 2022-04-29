@@ -1,3 +1,16 @@
+replace_if_dbplyr_has <- function(fun) {
+  dbplyr_ns <- asNamespace("dbplyr")
+
+  fun <- as_string(ensym(fun))
+  value <- mget(fun, dbplyr_ns, mode = "function", ifnotfound = list(NULL))[[1]]
+  if (!is.null(value)) {
+    assign(fun, value, inherits = TRUE)
+    "dbplyr"
+  } else {
+    "dm"
+  }
+}
+
 register_if_dbplyr_hasnt <- function(...) {
   dbplyr_ns <- asNamespace("dbplyr")
 

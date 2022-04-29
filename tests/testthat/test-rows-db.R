@@ -55,24 +55,24 @@ test_that("insert + delete with returning argument (#607)", {
 
   out <- rows_insert(target, test_db_src_frame(select = 4, where = "z"), conflict = "ignore", in_place = TRUE, returning = everything())
   expect_equal(
-    dbplyr::get_returned_rows(out),
+    get_returned_rows(out),
     tibble(select = 4L, where = "z", exists = NA_real_)
   )
 
   # Not inserting duplicates
   # Suppress Postgres warning, buglet with RETURNING after inserting empty result set
   suppressWarnings(out <- rows_insert(target, test_db_src_frame(select = 4, where = "z"), conflict = "ignore", in_place = TRUE, returning = everything()))
-  expect_equal(nrow(dbplyr::get_returned_rows(out)), 0)
+  expect_equal(nrow(get_returned_rows(out)), 0)
 
   expect_equal(
     rows_insert(target, test_db_src_frame(select = 5, where = "w"), conflict = "ignore", in_place = TRUE, returning = c(sl = select)) %>%
-      dbplyr::get_returned_rows(),
+      get_returned_rows(),
     tibble(sl = 5L)
   )
 
   expect_equal(
     rows_delete(target, test_db_src_frame(where = "z"), by = "where", unmatched = "ignore", in_place = TRUE, returning = select) %>%
-      dbplyr::get_returned_rows(),
+      get_returned_rows(),
     tibble(select = 4L)
   )
 })
@@ -82,7 +82,7 @@ test_that("insert + delete with returning argument and in_place = FALSE", {
 
   expect_equal(
     rows_delete(target, test_db_src_frame(select = 3:4, where = "z"), by = "select", in_place = FALSE, unmatched = "ignore", returning = everything()) %>%
-      dbplyr::get_returned_rows(),
+      get_returned_rows(),
     tibble(select = 3L, where = NA_character_, exists = 2.5)
   )
 
@@ -90,12 +90,12 @@ test_that("insert + delete with returning argument and in_place = FALSE", {
   skip_if(packageVersion("dbplyr") > "2.1.1")
   expect_equal(
     rows_insert(target, test_db_src_frame(select = 4, where = "z"), by = "select", in_place = FALSE, returning = everything()) %>%
-      dbplyr::get_returned_rows(),
+      get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA_real_)
   )
   expect_equal(
     rows_append(target, test_db_src_frame(select = 4, where = "q"), by = "select", in_place = FALSE, returning = everything()) %>%
-      dbplyr::get_returned_rows(),
+      get_returned_rows(),
     tibble(select = 4L, where = "q", exists = NA_real_)
   )
 })
@@ -110,13 +110,13 @@ test_that("insert + delete with returning argument and in_place = FALSE, SQLite 
 
   expect_equal(
     rows_insert(target, test_db_src_frame(select = 4, where = "z"), by = "select", in_place = FALSE, returning = everything()) %>%
-      dbplyr::get_returned_rows(),
+      get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA)
   )
 
   expect_equal(
     rows_append(target, test_db_src_frame(select = 4, where = "q"), by = "select", in_place = FALSE, returning = everything()) %>%
-      dbplyr::get_returned_rows(),
+      get_returned_rows(),
     tibble(select = 4L, where = "q", exists = NA)
   )
 })
@@ -184,7 +184,7 @@ test_that("update with returning argument (#607)", {
     suppressMessages(
       rows_update(target, y, copy = TRUE, unmatched = "ignore", in_place = FALSE, returning = everything())
     ) %>%
-      dbplyr::get_returned_rows() %>%
+      get_returned_rows() %>%
       arrange(select),
     expected
   )
@@ -199,7 +199,7 @@ test_that("update with returning argument (#607)", {
     suppressMessages(
       rows_update(target, y, copy = TRUE, unmatched = "ignore", in_place = TRUE, returning = everything())
     ) %>%
-      dbplyr::get_returned_rows() %>%
+      get_returned_rows() %>%
       arrange(select),
     expected
   )
@@ -214,7 +214,7 @@ test_that("patch with returning argument (#607)", {
     suppressMessages(
       rows_patch(target, y, copy = TRUE, unmatched = "ignore", in_place = FALSE, returning = everything())
     ) %>%
-      dbplyr::get_returned_rows() %>%
+      get_returned_rows() %>%
       arrange(select),
     expected
   )
@@ -229,7 +229,7 @@ test_that("patch with returning argument (#607)", {
     suppressMessages(
       rows_patch(target, y, copy = TRUE, unmatched = "ignore", in_place = TRUE, returning = everything())
     ) %>%
-      dbplyr::get_returned_rows() %>%
+      get_returned_rows() %>%
       arrange(select),
     expected
   )
@@ -293,7 +293,7 @@ test_that("upsert with returning argument (#607)", {
 
   expect_equal(
     rows_upsert(target, y, copy = TRUE, in_place = FALSE, returning = everything()) %>%
-      dbplyr::get_returned_rows(),
+      get_returned_rows(),
     expected
   )
 
@@ -309,7 +309,7 @@ test_that("upsert with returning argument (#607)", {
     suppressMessages(
       rows_upsert(target, y, copy = TRUE, in_place = TRUE, returning = everything())
     ) %>%
-      dbplyr::get_returned_rows() %>%
+      get_returned_rows() %>%
       arrange(select),
     expected
   )

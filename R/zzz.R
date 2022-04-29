@@ -20,6 +20,9 @@
 
   check_version_on_load("RSQLite", "2.2.8", "to use the {.code returning} argument in {.code dm::rows_*()}")
 
+  replace_if_dbplyr_has(get_returned_rows)
+  replace_if_dbplyr_has(has_returned_rows)
+
   register_if_dbplyr_hasnt(rows_insert.tbl_lazy)
   register_if_dbplyr_hasnt(rows_append.tbl_lazy)
   register_if_dbplyr_hasnt(rows_update.tbl_lazy)
