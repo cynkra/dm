@@ -9,4 +9,6 @@ if (is_this_a_test()) {
     tbl_format_header.tbl_sql <- function(x, ...) invisible()
     s3_register("pillar::tbl_format_header", "tbl_sql", tbl_format_header.tbl_sql)
   }
+  # Not sure why this works without s3_register(), and is also required
+  tbl_sum.tbl_df <- function(x, ...) c()
 }
