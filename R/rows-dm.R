@@ -297,8 +297,8 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
 
   if (require_keys) {
     all_pks <- dm_get_all_pks(x)
-    if (!nrow(all_pks)) {
-      abort(glue("`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys but none were found."))
+    if (!(all(tables %in% all_pks$table))) {
+      abort(glue("`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys for all target tables."))
     }
     keys <- deframe(dm_get_all_pks(x))[tables]
   } else {
