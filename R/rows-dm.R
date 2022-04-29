@@ -108,16 +108,30 @@ NULL
 
 #' dm_rows_insert
 #'
-#' `dm_rows_insert()` adds new records via [rows_insert()].
-#' The primary keys must differ from existing records.
-#' This must be ensured by the caller and might be checked by the underlying database.
-#' Use `in_place = FALSE` and apply [dm_examine_constraints()] to check beforehand.
+#' `dm_rows_insert()` adds new records via [rows_insert()] with `conflict = "ignore"`.
+#' Duplicate records will be silently discarded.
+#' This operation requires primary keys on all tables, use `dm_rows_append()`
+#' to insert unconditionally.
 #' @rdname rows-dm
 #' @export
 dm_rows_insert <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, "insert", top_down = TRUE, in_place, require_keys = FALSE, progress = progress)
+  dm_rows(x, y, "insert", top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
+}
+
+#' dm_rows_append
+#'
+#' `dm_rows_append()` adds new records via [rows_append()].
+#' The primary keys must differ from existing records.
+#' This must be ensured by the caller and might be checked by the underlying database.
+#' Use `in_place = FALSE` and apply [dm_examine_constraints()] to check beforehand.
+#' @rdname rows-dm
+#' @export
+dm_rows_append <- function(x, y, ..., in_place = NULL, progress = NA) {
+  check_dots_empty()
+
+  dm_rows(x, y, "append", top_down = TRUE, in_place, require_keys = FALSE, progress = progress)
 }
 
 #' dm_rows_update
@@ -238,6 +252,7 @@ check_keys_compatible <- function(x, y) {
 get_dm_rows_op <- function(operation_name) {
   switch(operation_name,
     "insert"   = list(fun = do_rows_insert, pb_label = "inserting rows"),
+    "append"   = list(fun = do_rows_append, pb_label = "appending rows"),
     "update"   = list(fun = do_rows_update, pb_label = "updating rows"),
     "patch"    = list(fun = do_rows_patch, pb_label = "patching rows"),
     "upsert"   = list(fun = do_rows_upsert, pb_label = "upserting rows"),
@@ -247,6 +262,10 @@ get_dm_rows_op <- function(operation_name) {
 }
 
 do_rows_insert <- function(x, y, by = NULL, ...) {
+  rows_insert(x, y, by = by, ..., conflict = "ignore")
+}
+
+do_rows_append <- function(x, y, by = NULL, ...) {
   rows_append(x, y, ...)
 }
 

@@ -3,6 +3,7 @@
 \name{rows-dm}
 \alias{rows-dm}
 \alias{dm_rows_insert}
+\alias{dm_rows_append}
 \alias{dm_rows_update}
 \alias{dm_rows_patch}
 \alias{dm_rows_upsert}
@@ -11,6 +12,8 @@
 \title{Modifying rows for multiple tables}
 \usage{
 dm_rows_insert(x, y, ..., in_place = NULL, progress = NA)
+
+dm_rows_append(x, y, ..., in_place = NULL, progress = NA)
 
 dm_rows_update(x, y, ..., in_place = NULL, progress = NA)
 
@@ -62,7 +65,10 @@ may lead to irreversible changes to the underlying database.
 Therefore, in-place operation must be requested explicitly with \code{in_place = TRUE}.
 By default, an informative message is given.
 
-\code{dm_rows_insert()} adds new records via \code{\link[=rows_insert]{rows_insert()}}.
+\code{dm_rows_insert()} adds new records via \code{\link[=rows_insert]{rows_insert()}} with \code{conflict = "ignore"}.
+Duplicate records will be silently discarded.
+
+\code{dm_rows_append()} adds new records via \code{\link[=rows_append]{rows_append()}}.
 The primary keys must differ from existing records.
 This must be ensured by the caller and might be checked by the underlying database.
 Use \code{in_place = FALSE} and apply \code{\link[=dm_examine_constraints]{dm_examine_constraints()}} to check beforehand.

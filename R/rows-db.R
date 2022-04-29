@@ -103,10 +103,8 @@ rows_insert.tbl_lazy <- function(x, y, by = NULL, ...,
 #' @rdname rows-db
 rows_append.tbl_lazy <- function(x, y, ...,
                                  in_place = FALSE,
-                                 conflict = NULL,
                                  copy = FALSE,
                                  returning = NULL) {
-  stopifnot(identical(conflict, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
