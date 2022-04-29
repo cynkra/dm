@@ -68,6 +68,9 @@ dplyr::arrange
 dplyr::rows_insert
 
 #' @export
+dplyr::rows_append
+
+#' @export
 dplyr::rows_update
 
 #' @export
