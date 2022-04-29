@@ -57,10 +57,10 @@ NULL
 #' @export
 #' @rdname rows-db
 rows_insert.tbl_lazy <- function(x, y, by = NULL, ...,
-                                in_place = FALSE,
-                                conflict = NULL,
-                                copy = FALSE,
-                                returning = NULL) {
+                                 in_place = FALSE,
+                                 conflict = NULL,
+                                 copy = FALSE,
+                                 returning = NULL) {
   stopifnot(identical(conflict, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
@@ -102,10 +102,10 @@ rows_insert.tbl_lazy <- function(x, y, by = NULL, ...,
 #' @export
 #' @rdname rows-db
 rows_append.tbl_lazy <- function(x, y, ...,
-                                in_place = FALSE,
-                                conflict = NULL,
-                                copy = FALSE,
-                                returning = NULL) {
+                                 in_place = FALSE,
+                                 conflict = NULL,
+                                 copy = FALSE,
+                                 returning = NULL) {
   stopifnot(identical(conflict, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
@@ -144,10 +144,10 @@ rows_append.tbl_lazy <- function(x, y, ...,
 #' @export
 #' @rdname rows-db
 rows_update.tbl_lazy <- function(x, y, by = NULL, ...,
-                                in_place = FALSE,
-                                unmatched = NULL,
-                                copy = FALSE,
-                                returning = NULL) {
+                                 in_place = FALSE,
+                                 unmatched = NULL,
+                                 copy = FALSE,
+                                 returning = NULL) {
   stopifnot(identical(unmatched, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
@@ -206,10 +206,10 @@ rows_update.tbl_lazy <- function(x, y, by = NULL, ...,
 #' @export
 #' @rdname rows-db
 rows_patch.tbl_lazy <- function(x, y, by = NULL, ...,
-                               in_place = FALSE,
-                               unmatched = NULL,
-                               copy = FALSE,
-                               returning = NULL) {
+                                in_place = FALSE,
+                                unmatched = NULL,
+                                copy = FALSE,
+                                returning = NULL) {
   stopifnot(identical(unmatched, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
@@ -276,9 +276,9 @@ rows_patch.tbl_lazy <- function(x, y, by = NULL, ...,
 #' @export
 #' @rdname rows-db
 rows_upsert.tbl_lazy <- function(x, y, by = NULL, ...,
-                                in_place = FALSE,
-                                copy = FALSE,
-                                returning = NULL) {
+                                 in_place = FALSE,
+                                 copy = FALSE,
+                                 returning = NULL) {
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
@@ -336,10 +336,10 @@ rows_upsert.tbl_lazy <- function(x, y, by = NULL, ...,
 #' @export
 #' @rdname rows-db
 rows_delete.tbl_lazy <- function(x, y, by = NULL, ...,
-                                in_place = FALSE,
-                                unmatched = NULL,
-                                copy = FALSE,
-                                returning = NULL) {
+                                 in_place = FALSE,
+                                 unmatched = NULL,
+                                 copy = FALSE,
+                                 returning = NULL) {
   stopifnot(identical(unmatched, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
