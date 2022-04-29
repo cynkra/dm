@@ -9,8 +9,6 @@ test_that("insert + delete + truncate message", {
 })
 
 test_that("insert + delete + truncate", {
-  skip_if_not_installed("dplyr", "1.0.7.9000")
-
   expect_snapshot({
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
     data
@@ -63,7 +61,7 @@ test_that("insert + delete with returning argument (#607)", {
 
   expect_warning(
     out <- rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = TRUE, returning = everything()),
-    if (packageVersion("dplyr") >= "1.0.7.9000") NA else "returning"
+    NA
   )
   expect_equal(
     get_returned_rows(out),
