@@ -237,13 +237,33 @@ check_keys_compatible <- function(x, y) {
 
 get_dm_rows_op <- function(operation_name) {
   switch(operation_name,
-    "insert"   = list(fun = rows_insert, pb_label = "inserting rows"),
-    "update"   = list(fun = rows_update, pb_label = "updating rows"),
-    "patch"    = list(fun = rows_patch, pb_label = "patching rows"),
-    "upsert"   = list(fun = rows_upsert, pb_label = "upserting rows"),
-    "delete"   = list(fun = rows_delete, pb_label = "deleting rows"),
+    "insert"   = list(fun = do_rows_insert, pb_label = "inserting rows"),
+    "update"   = list(fun = do_rows_update, pb_label = "updating rows"),
+    "patch"    = list(fun = do_rows_patch, pb_label = "patching rows"),
+    "upsert"   = list(fun = do_rows_upsert, pb_label = "upserting rows"),
+    "delete"   = list(fun = do_rows_delete, pb_label = "deleting rows"),
     "truncate" = list(fun = rows_truncate_, pb_label = "truncating rows")
   )
+}
+
+do_rows_insert <- function(x, y, by = NULL, ...) {
+  rows_append(x, y, ...)
+}
+
+do_rows_update <- function(x, y, by = NULL, ...) {
+  rows_update(x, y, by = by, ..., unmatched = "ignore")
+}
+
+do_rows_patch <- function(x, y, by = NULL, ...) {
+  rows_patch(x, y, by = by, ..., unmatched = "ignore")
+}
+
+do_rows_upsert <- function(x, y, by = NULL, ...) {
+  rows_upsert(x, y, by = by, ..., unmatched = "ignore")
+}
+
+do_rows_delete <- function(x, y, by = NULL, ...) {
+  rows_delete(x, y, by = by, ..., unmatched = "ignore")
 }
 
 dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, progress = NA) {

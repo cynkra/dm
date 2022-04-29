@@ -3,6 +3,7 @@
 \name{rows-db}
 \alias{rows-db}
 \alias{rows_insert.tbl_dbi}
+\alias{rows_append.tbl_dbi}
 \alias{rows_update.tbl_dbi}
 \alias{rows_patch.tbl_dbi}
 \alias{rows_upsert.tbl_dbi}
@@ -19,6 +20,16 @@
   x,
   y,
   by = NULL,
+  ...,
+  in_place = FALSE,
+  conflict = NULL,
+  copy = FALSE,
+  returning = NULL
+)
+
+\method{rows_append}{tbl_dbi}(
+  x,
+  y,
   ...,
   in_place = FALSE,
   conflict = NULL,
@@ -54,7 +65,6 @@
   by = NULL,
   ...,
   in_place = FALSE,
-  unmatched = NULL,
   copy = FALSE,
   returning = NULL
 )
