@@ -128,6 +128,9 @@ utils::globalVariables(c(
   # SQL functions
   "JSON_AGG",
   "JSON_BUILD_OBJECT",
+  #
+  # tidyselect
+  "where",
   # keep this to avoid dealing with trailing commas
   NULL
 ))
