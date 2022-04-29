@@ -47,7 +47,7 @@ json_nest.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
   ))
 
   .data %>%
-    group_by(across(all_of(id_cols))) %>%
+    group_by(across(!!!syms(id_cols))) %>%
     summarize(!!!sql_exprs) %>%
     ungroup()
 }
