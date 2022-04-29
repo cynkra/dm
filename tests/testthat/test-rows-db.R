@@ -1,6 +1,4 @@
 test_that("insert + delete + truncate message", {
-  skip_if_not_installed("rlang", "0.99.0.9000")
-
   expect_snapshot({
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
     data
