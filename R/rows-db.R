@@ -61,7 +61,6 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
                                 conflict = NULL,
                                 copy = FALSE,
                                 returning = NULL) {
-
   stopifnot(identical(conflict, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
@@ -107,7 +106,6 @@ rows_append.tbl_dbi <- function(x, y, ...,
                                 conflict = NULL,
                                 copy = FALSE,
                                 returning = NULL) {
-
   stopifnot(identical(conflict, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
@@ -150,7 +148,6 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
                                 unmatched = NULL,
                                 copy = FALSE,
                                 returning = NULL) {
-
   stopifnot(identical(unmatched, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
@@ -213,7 +210,6 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
                                unmatched = NULL,
                                copy = FALSE,
                                returning = NULL) {
-
   stopifnot(identical(unmatched, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
@@ -344,7 +340,6 @@ rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
                                 unmatched = NULL,
                                 copy = FALSE,
                                 returning = NULL) {
-
   stopifnot(identical(unmatched, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
