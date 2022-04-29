@@ -41,16 +41,22 @@
 #' data <- dbplyr::memdb_frame(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)
 #' data
 #'
-#' try(rows_insert(data, tibble::tibble(a = 4, b = "z")))
-#' rows_insert(data, tibble::tibble(a = 4, b = "z"), copy = TRUE)
-#' rows_update(data, tibble::tibble(a = 2:3, b = "w"), copy = TRUE, in_place = FALSE)
-#' rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = FALSE)
+#' try(rows_insert(data, tibble::tibble(a = 4, b = "z"), conflict = "ignore"))
+#' rows_insert(data, tibble::tibble(a = 4, b = "z"), conflict = "ignore", copy = TRUE)
+#' rows_append(data, tibble::tibble(a = 4, b = "v"), copy = TRUE)
+#' rows_update(data, tibble::tibble(a = 2:3, b = "w"), unmatched = "ignore", copy = TRUE)
+#' rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), unmatched = "ignore")
+#' rows_delete(data, dbplyr::memdb_frame(a = 2L), unmatched = "ignore")
 #'
-#' rows_insert(data, dbplyr::memdb_frame(a = 4, b = "z"), in_place = TRUE)
+#' rows_insert(data, dbplyr::memdb_frame(a = 4, b = "z"), conflict = "ignore", in_place = TRUE)
 #' data
-#' rows_update(data, dbplyr::memdb_frame(a = 2:3, b = "w"), in_place = TRUE)
+#' rows_append(data, dbplyr::memdb_frame(a = 4, b = "v"), in_place = TRUE)
 #' data
-#' rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = TRUE)
+#' rows_update(data, dbplyr::memdb_frame(a = 2:3, b = "w"), unmatched = "ignore", in_place = TRUE)
+#' data
+#' rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), unmatched = "ignore", in_place = TRUE)
+#' data
+#' rows_delete(data, dbplyr::memdb_frame(a = 2L), unmatched = "ignore", in_place = TRUE)
 #' data
 NULL
 
