@@ -20,8 +20,7 @@ dm_meta <- function(con, catalog = NA, schema = NULL) {
   con %>%
     dm_meta_raw(catalog) %>%
     select_dm_meta() %>%
-    filter_dm_meta(catalog, schema) %>%
-    collect()
+    filter_dm_meta(catalog, schema)
 }
 
 dm_meta_raw <- function(con, catalog) {
