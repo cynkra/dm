@@ -32,8 +32,9 @@ test_src_mssql <- function() {
   } else {
     con <- DBI::dbConnect(
       odbc::odbc(),
-      "mssql-test",
-      uid = "kirill", pwd = keyring::key_get("mssql", "kirill")
+      "dm-test",
+      uid = keyring::key_get("mssql", "dm-test-user"),
+      pwd = keyring::key_get("mssql", "dm-test-password")
     )
   }
 
