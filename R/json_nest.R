@@ -43,23 +43,58 @@ json_nest.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
     dbplyr::remote_con(.data),
     cols = names(.x),
     names_sep = .names_sep,
-    packed_col = .y
+    packed_col = .y,
+    id_cols = id_cols,
+    data = .data
   ))
 
-  .data %>%
+  json_nest_aggregate(dbplyr::remote_con(.data), .data, id_cols, sql_exprs)
+}
+
+json_nest_aggregate <- function(con, data, id_cols, sql_exprs) {
+  UseMethod("json_nest_aggregate")
+}
+
+#' @export
+json_nest_aggregate.default <- function(con, data, id_cols, sql_exprs) {
+  data %>%
     group_by(across(all_of(id_cols))) %>%
     summarize(!!!sql_exprs) %>%
     ungroup()
 }
 
-sql_json_nest <- function(con, cols, names_sep, packed_col) {
+#' @export
+`json_nest_aggregate.Microsoft SQL Server` <- function(con, data, id_cols, sql_exprs) {
+  query <-
+    json_nest_aggregate.default(con, data, id_cols, sql_exprs) %>%
+    dbplyr::sql_render()
+  # fetch subquery alias and use in place of the placeholder
+  select_subquery_alias <- sub('.* "(.*)"[[:space:]]+GROUP BY "[^"]+"$', "\\1", query)
+  query <- gsub('" = PLACEHOLDER\\."', glue('" = "{select_subquery_alias}"."'), query)
+  tbl(dbplyr::remote_con(data), sql(query))
+}
+
+sql_json_nest <- function(con, cols, names_sep, packed_col, id_cols, data) {
   UseMethod("sql_json_nest")
 }
 
 #' @export
-sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col) {
+sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols, data) {
   inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
   inside_cols_idented <- dbplyr::ident(inside_cols)
   exprs <- vctrs::vec_interleave(as.list(inside_cols_idented), syms(cols))
   dbplyr::translate_sql(JSON_AGG(JSON_BUILD_OBJECT(!!!exprs)), con = con)
+}
+
+#' @export
+`sql_json_nest.Microsoft SQL Server` <- function(con, cols, names_sep, packed_col, id_cols, data) {
+  inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
+  join_subquery <- glue_collapse(glue('"{id_cols}" = PLACEHOLDER."{id_cols}"'), " AND ")
+  filter_select_subquery <-
+    data %>%
+    filter(sql(join_subquery)) %>%
+    select(!!!set_names(syms(cols), inside_cols)) %>%
+    dbplyr::sql_render()
+  query <- glue("({filter_select_subquery} FOR JSON PATH)")
+  sql(query)
 }
