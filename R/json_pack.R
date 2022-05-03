@@ -50,24 +50,38 @@ json_pack.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
     dbplyr::remote_con(.data),
     cols = names(.x),
     names_sep = .names_sep,
-    packed_col = .y
+    packed_col = .y,
+    data = .data
   ))
 
   .data %>%
     transmute(!!!syms(id_cols), !!!sql_exprs)
 }
 
-sql_json_pack <- function(con, cols, names_sep, packed_col) {
+sql_json_pack <- function(con, cols, names_sep, packed_col, data) {
   UseMethod("sql_json_pack")
 }
 
 #' @export
-sql_json_pack.PqConnection <- function(con, cols, names_sep, packed_col) {
+sql_json_pack.PqConnection <- function(con, cols, names_sep, packed_col, data) {
   inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
   inside_cols_idented <- dbplyr::ident(inside_cols)
   exprs <- vctrs::vec_interleave(as.list(inside_cols_idented), syms(cols))
   dbplyr::translate_sql(JSON_BUILD_OBJECT(!!!exprs), con = con)
 }
+
+#' @export
+`sql_json_pack.Microsoft SQL Server` <- function(con, cols, names_sep, packed_col, data) {
+  inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
+  subquery <-
+    data %>%
+    select(!!!set_names(syms(cols), inside_cols)) %>%
+    dbplyr::sql_render()
+  subquery_trimmed <- sub('FROM "[^"]+"$', "", subquery)
+  query <- glue("(SELECT value FROM OPENJSON(({subquery_trimmed} FOR JSON PATH)))")
+  sql(query)
+}
+
 
 remove_prefix_and_sep <- function(x, prefix, sep) {
   if (is.null(sep)) return(x)
