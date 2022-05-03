@@ -1,8 +1,14 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.8.9002
+
+- Fix compatibility with dev dbplyr (#986).
+- Fix `json_pack()` (#973, #974).
+
+
 # dm 0.2.8.9001
 
-* New `json_pack_join()`, `json_nest_join()`, `json_pack()` and `json_nest()`, similar to `pack_join()`, `dplyr::nest_join()`, `tidyr::pack()` AND `tidyr::nest()`, but create character columns (#917, #918)
+* New `json_pack_join()`, `json_nest_join()`, `json_pack()` and `json_nest()`, similar to `pack_join()`, `dplyr::nest_join()`, `tidyr::pack()` AND `tidyr::nest()`, but create character columns (#917, #918).
 - `pack_join()` arguments moved past the ellipsis (#920, #921).
 - Update credentials to fallback databases for `dm_financial()` hosted on pacha.dev (#916, @pachadotdev).
 

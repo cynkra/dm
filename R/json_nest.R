@@ -58,7 +58,7 @@ json_nest_aggregate <- function(con, data, id_cols, sql_exprs) {
 #' @export
 json_nest_aggregate.default <- function(con, data, id_cols, sql_exprs) {
   data %>%
-    group_by(across(all_of(id_cols))) %>%
+    group_by(across(!!!syms(id_cols))) %>%
     summarize(!!!sql_exprs) %>%
     ungroup()
 }
