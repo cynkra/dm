@@ -7,8 +7,7 @@ test_that("`json_nest()` works", {
 })
 
 test_that("`json_nest()` works remotely", {
-  # FIXME: add "mssql" when ready
-  skip_if_src_not("postgres")
+  skip_if_src_not("postgres", "mssql")
   con <- my_test_src()$con
 
   local <- tibble(grp = c(1, 1, 2, 2), a_i = letters[1:4], a_j = LETTERS[1:4])
