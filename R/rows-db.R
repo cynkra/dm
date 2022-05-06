@@ -20,11 +20,6 @@
 #' Unlike [compute()] or [copy_to()], no new tables are created.
 #'
 #' @inheritParams dplyr::rows_insert
-#' @param check
-#'   Set to `TRUE` to always check keys, or `FALSE` to never check.
-#'   The default is to check only if `in_place` is `TRUE` or `NULL`.
-#'
-#'   Currently these checks are no-ops and need yet to be implemented.
 #' @param returning `r lifecycle::badge("experimental")`
 #'   <[`tidy-select`][tidyr_tidy_select]> Columns to return of the inserted data.
 #'   Note that also columns not in `y` but automatically created when inserting
@@ -46,24 +41,74 @@
 #' data <- dbplyr::memdb_frame(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)
 #' data
 #'
-#' try(rows_insert(data, tibble::tibble(a = 4, b = "z")))
-#' rows_insert(data, tibble::tibble(a = 4, b = "z"), copy = TRUE)
-#' rows_update(data, tibble::tibble(a = 2:3, b = "w"), copy = TRUE, in_place = FALSE)
-#' rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = FALSE)
+#' try(rows_insert(data, tibble::tibble(a = 4, b = "z"), conflict = "ignore"))
+#' rows_insert(data, tibble::tibble(a = 4, b = "z"), conflict = "ignore", copy = TRUE)
+#' rows_append(data, tibble::tibble(a = 4, b = "v"), copy = TRUE)
+#' rows_update(data, tibble::tibble(a = 2:3, b = "w"), unmatched = "ignore", copy = TRUE)
+#' rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), unmatched = "ignore")
+#' rows_delete(data, dbplyr::memdb_frame(a = 2L), unmatched = "ignore")
 #'
-#' rows_insert(data, dbplyr::memdb_frame(a = 4, b = "z"), in_place = TRUE)
+#' rows_insert(data, dbplyr::memdb_frame(a = 4, b = "z"), conflict = "ignore", in_place = TRUE)
 #' data
-#' rows_update(data, dbplyr::memdb_frame(a = 2:3, b = "w"), in_place = TRUE)
+#' rows_append(data, dbplyr::memdb_frame(a = 4, b = "v"), in_place = TRUE)
 #' data
-#' rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = TRUE)
+#' rows_update(data, dbplyr::memdb_frame(a = 2:3, b = "w"), unmatched = "ignore", in_place = TRUE)
+#' data
+#' rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), unmatched = "ignore", in_place = TRUE)
+#' data
+#' rows_delete(data, dbplyr::memdb_frame(a = 2L), unmatched = "ignore", in_place = TRUE)
 #' data
 NULL
 
-#' @export
 #' @rdname rows-db
-rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
-                                in_place = NULL, copy = FALSE, check = NULL,
-                                returning = NULL) {
+rows_insert.tbl_lazy <- function(x, y, by = NULL, ...,
+                                 in_place = FALSE,
+                                 conflict = NULL,
+                                 copy = FALSE,
+                                 returning = NULL) {
+  stopifnot(identical(conflict, "ignore"))
+
+  # Expect manual quote from user, silently fall back to enexpr()
+  returning_expr <- enexpr(returning)
+  returning_cols <- tryCatch(
+    eval_select_both(returning, colnames(x))$names,
+    error = function(e) {
+      eval_select_both(returning_expr, colnames(x))$names
+    }
+  )
+
+  y <- auto_copy(x, y, copy = copy)
+  y_key <- db_key(y, by)
+  by <- names(y_key)
+  x_key <- db_key(x, by)
+
+  name <- target_table_name(x, in_place)
+
+  if (!is_null(name)) {
+    con <- dbplyr::remote_con(x)
+    sql <- sql_rows_insert(x, y %>% anti_join(x, by = by), returning_cols = returning_cols)
+
+    rows_get_or_execute(x, con, sql, returning_cols)
+  } else {
+    returned_x <- union_all(x, y %>% anti_join(x, by = by))
+
+    if (!is_empty(returning_cols)) {
+      # Need to `union_all()` with `x` so that all columns of `x` exist in the result
+      returned_rows <- union_all(y, x %>% filter(0 == 1)) %>%
+        select(returning_cols) %>%
+        collect()
+      returned_x <- set_returned_rows(returned_x, returned_rows)
+    }
+
+    returned_x
+  }
+}
+
+#' @rdname rows-db
+rows_append.tbl_lazy <- function(x, y, ...,
+                                 in_place = FALSE,
+                                 copy = FALSE,
+                                 returning = NULL) {
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
@@ -75,29 +120,15 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
   returning_cols <- eval_select_both(returning_expr, colnames(x))$names
 
   y <- auto_copy(x, y, copy = copy)
-  y_key <- db_key(y, by)
-  by <- names(y_key)
-  x_key <- db_key(x, by)
 
   name <- target_table_name(x, in_place)
 
   if (!is_null(name)) {
-    # Checking optional, can rely on primary key constraint
-    if (is_true(check)) {
-      check_db_dupes(x, y, by)
-    }
-
     con <- dbplyr::remote_con(x)
     sql <- sql_rows_insert(x, y, returning_cols = returning_cols)
 
     rows_get_or_execute(x, con, sql, returning_cols)
   } else {
-    # Checking mandatory by default, opt-out
-    # FIXME: contrary to doc currently also checks if `in_place = FALSE`
-    if (is_null(check) || is_true(check)) {
-      check_db_dupes(x, y, by)
-    }
-
     returned_x <- union_all(x, y)
 
     if (!is_empty(returning_cols)) {
@@ -112,17 +143,21 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
   }
 }
 
-#' @export
 #' @rdname rows-db
-rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
-                                in_place = NULL, copy = FALSE, check = NULL,
-                                returning = NULL) {
+rows_update.tbl_lazy <- function(x, y, by = NULL, ...,
+                                 in_place = FALSE,
+                                 unmatched = NULL,
+                                 copy = FALSE,
+                                 returning = NULL) {
+  stopifnot(identical(unmatched, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
-  tryCatch(
-    returning_expr <- returning,
-    error = identity
+  returning_cols <- tryCatch(
+    eval_select_both(returning, colnames(x))$names,
+    error = function(e) {
+      eval_select_both(returning_expr, colnames(x))$names
+    }
   )
 
   returning_cols <- eval_select_both(returning_expr, colnames(x))$names
@@ -137,11 +172,6 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
   name <- target_table_name(x, in_place)
 
   if (!is_null(name)) {
-    # Checking optional, can rely on primary key constraint
-    if (is_true(check)) {
-      check_db_superset(x, y, by)
-    }
-
     if (is_empty(new_columns)) {
       return(invisible(x))
     }
@@ -151,12 +181,6 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
 
     rows_get_or_execute(x, con, sql, returning_cols)
   } else {
-    # Checking optional, can rely on primary key constraint
-    # FIXME: contrary to doc currently also checks if `in_place = FALSE`
-    if (is_null(check) || is_true(check)) {
-      check_db_superset(x, y, by)
-    }
-
     existing_columns <- setdiff(colnames(x), new_columns)
     updated <- x %>%
       select(!!!existing_columns) %>%
@@ -180,17 +204,21 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
   }
 }
 
-#' @export
 #' @rdname rows-db
-rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
-                               in_place = NULL, copy = FALSE, check = NULL,
-                               returning = NULL) {
+rows_patch.tbl_lazy <- function(x, y, by = NULL, ...,
+                                in_place = FALSE,
+                                unmatched = NULL,
+                                copy = FALSE,
+                                returning = NULL) {
+  stopifnot(identical(unmatched, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
-  tryCatch(
-    returning_expr <- returning,
-    error = identity
+  returning_cols <- tryCatch(
+    eval_select_both(returning, colnames(x))$names,
+    error = function(e) {
+      eval_select_both(returning_expr, colnames(x))$names
+    }
   )
 
   returning_cols <- eval_select_both(returning_expr, colnames(x))$names
@@ -205,11 +233,6 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
   name <- target_table_name(x, in_place)
 
   if (!is_null(name)) {
-    # Checking optional, can rely on primary key constraint
-    if (is_true(check)) {
-      check_db_superset(x, y, by)
-    }
-
     if (is_empty(new_columns)) {
       return(invisible(x))
     }
@@ -219,12 +242,6 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
 
     rows_get_or_execute(x, con, sql, returning_cols)
   } else {
-    # Checking optional, can rely on primary key constraint
-    # FIXME: contrary to doc currently also checks if `in_place = FALSE`
-    if (is_null(check) || is_true(check)) {
-      check_db_superset(x, y, by)
-    }
-
     to_patch <- inner_join(
       x, y,
       by = by,
@@ -256,17 +273,19 @@ rows_patch.tbl_dbi <- function(x, y, by = NULL, ...,
   }
 }
 
-#' @export
 #' @rdname rows-db
-rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
-                                in_place = NULL, copy = FALSE, check = NULL,
-                                returning = NULL) {
+rows_upsert.tbl_lazy <- function(x, y, by = NULL, ...,
+                                 in_place = FALSE,
+                                 copy = FALSE,
+                                 returning = NULL) {
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
-  tryCatch(
-    returning_expr <- returning,
-    error = identity
+  returning_cols <- tryCatch(
+    eval_select_both(returning, colnames(x))$names,
+    error = function(e) {
+      eval_select_both(returning_expr, colnames(x))$names
+    }
   )
 
   returning_cols <- eval_select_both(enquo(returning), colnames(x))$names
@@ -281,11 +300,6 @@ rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
   name <- target_table_name(x, in_place)
 
   if (!is_null(name)) {
-    # Checking optional, can rely on primary key constraint
-    if (is_true(check)) {
-      check_db_superset(x, y, by)
-    }
-
     if (is_empty(new_columns)) {
       return(invisible(x))
     }
@@ -295,12 +309,6 @@ rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
 
     rows_get_or_execute(x, con, sql, returning_cols)
   } else {
-    # Checking optional, can rely on primary key constraint
-    # FIXME: contrary to doc currently also checks if `in_place = FALSE`
-    if (is_null(check) || is_true(check)) {
-      check_db_superset(x, y, by)
-    }
-
     existing_columns <- setdiff(colnames(x), new_columns)
 
     unchanged <- anti_join(x, y, by = by)
@@ -324,20 +332,22 @@ rows_upsert.tbl_dbi <- function(x, y, by = NULL, ...,
   }
 }
 
-#' @export
 #' @rdname rows-db
-rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
-                                in_place = NULL, copy = FALSE, check = NULL,
-                                returning = NULL) {
+rows_delete.tbl_lazy <- function(x, y, by = NULL, ...,
+                                 in_place = FALSE,
+                                 unmatched = NULL,
+                                 copy = FALSE,
+                                 returning = NULL) {
+  stopifnot(identical(unmatched, "ignore"))
 
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
-  tryCatch(
-    returning_expr <- returning,
-    error = identity
+  returning_cols <- tryCatch(
+    eval_select_both(returning, colnames(x))$names,
+    error = function(e) {
+      eval_select_both(returning_expr, colnames(x))$names
+    }
   )
-
-  returning_cols <- eval_select_both(returning_expr, colnames(x))$names
 
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
@@ -347,21 +357,10 @@ rows_delete.tbl_dbi <- function(x, y, by = NULL, ...,
   name <- target_table_name(x, in_place)
 
   if (!is_null(name)) {
-    # Checking optional, can rely on primary key constraint
-    if (is_true(check)) {
-      check_db_superset(x, y, by)
-    }
-
     con <- dbplyr::remote_con(x)
     sql <- sql_rows_delete(x, y, by, returning_cols = returning_cols)
     rows_get_or_execute(x, con, sql, returning_cols)
   } else {
-    # Checking optional, can rely on primary key constraint
-    # FIXME: contrary to doc currently also checks if `in_place = FALSE`
-    if (is_null(check) || is_true(check)) {
-      check_db_superset(x, y, by)
-    }
-
     returned_x <- anti_join(x, y, by = by)
 
     if (!is_empty(returning_cols)) {
@@ -435,7 +434,6 @@ check_returning_cols_possible <- function(returning_cols, in_place) {
 #'   to return, created from the `returning` argument.
 #'   Methods for database that do not support this should raise an error.
 #'
-#' @export
 #' @rdname rows-db
 sql_rows_insert <- function(x, y, ..., returning_cols = NULL) {
   ellipsis::check_dots_used()
@@ -461,7 +459,6 @@ sql_rows_insert.tbl_sql <- function(x, y, ..., returning_cols = NULL) {
   glue::as_glue(sql)
 }
 
-#' @export
 #' @rdname rows-db
 sql_rows_update <- function(x, y, by, ..., returning_cols = NULL) {
   ellipsis::check_dots_used()
@@ -670,7 +667,6 @@ sql_rows_upsert.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols 
   glue::as_glue(sql)
 }
 
-#' @export
 #' @rdname rows-db
 sql_rows_patch <- function(x, y, by, ..., returning_cols = NULL) {
   ellipsis::check_dots_used()
@@ -755,7 +751,6 @@ sql_coalesce <- function(x, y) {
   paste0("COALESCE(", x, ",", y, ")")
 }
 
-#' @export
 #' @rdname rows-db
 sql_rows_delete <- function(x, y, by, ..., returning_cols = NULL) {
   ellipsis::check_dots_used()
@@ -896,7 +891,6 @@ has_returned_rows <- function(x) {
 #' Two methods are required, because the syntax for SQL Server
 #' (and some other databases) is vastly different from Postgres and other
 #' more standardized DBs.
-#' @export
 #' @rdname rows-db
 sql_returning_cols <- function(x, returning_cols, ...) {
   if (is_empty(returning_cols)) {
@@ -908,7 +902,7 @@ sql_returning_cols <- function(x, returning_cols, ...) {
 }
 
 #' @export
-sql_returning_cols.tbl_dbi <- function(x, returning_cols, ...) {
+sql_returning_cols.tbl_lazy <- function(x, returning_cols, ...) {
   con <- dbplyr::remote_con(x)
   returning_cols <- sql_named_cols(con, returning_cols, table = dbplyr::remote_name(x))
 
@@ -925,7 +919,6 @@ sql_returning_cols.tbl_duckdb_connection <- function(x, returning_cols, ...) {
   NULL
 }
 
-#' @export
 #' @param output_delete For `sql_output_cols()`, construct the SQL
 #'   for a `DELETE` operation.
 #' @rdname rows-db
