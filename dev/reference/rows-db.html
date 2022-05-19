@@ -151,63 +151,65 @@ more standardized DBs.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for tbl_dbi</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for tbl_lazy</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert</a></span><span class="op">(</span>
   <span class="va">x</span>,
   <span class="va">y</span>,
   by <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>,
-  in_place <span class="op">=</span> <span class="cn">NULL</span>,
+  in_place <span class="op">=</span> <span class="cn">FALSE</span>,
+  conflict <span class="op">=</span> <span class="cn">NULL</span>,
   copy <span class="op">=</span> <span class="cn">FALSE</span>,
-  check <span class="op">=</span> <span class="cn">NULL</span>,
   returning <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span>
 
-<span class="co"># S3 method for tbl_dbi</span>
+<span class="co"># S3 method for tbl_lazy</span>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_append</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span>, in_place <span class="op">=</span> <span class="cn">FALSE</span>, copy <span class="op">=</span> <span class="cn">FALSE</span>, returning <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+
+<span class="co"># S3 method for tbl_lazy</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update</a></span><span class="op">(</span>
   <span class="va">x</span>,
   <span class="va">y</span>,
   by <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>,
-  in_place <span class="op">=</span> <span class="cn">NULL</span>,
+  in_place <span class="op">=</span> <span class="cn">FALSE</span>,
+  unmatched <span class="op">=</span> <span class="cn">NULL</span>,
   copy <span class="op">=</span> <span class="cn">FALSE</span>,
-  check <span class="op">=</span> <span class="cn">NULL</span>,
   returning <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span>
 
-<span class="co"># S3 method for tbl_dbi</span>
+<span class="co"># S3 method for tbl_lazy</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_patch</a></span><span class="op">(</span>
   <span class="va">x</span>,
   <span class="va">y</span>,
   by <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>,
-  in_place <span class="op">=</span> <span class="cn">NULL</span>,
+  in_place <span class="op">=</span> <span class="cn">FALSE</span>,
+  unmatched <span class="op">=</span> <span class="cn">NULL</span>,
   copy <span class="op">=</span> <span class="cn">FALSE</span>,
-  check <span class="op">=</span> <span class="cn">NULL</span>,
   returning <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span>
 
-<span class="co"># S3 method for tbl_dbi</span>
+<span class="co"># S3 method for tbl_lazy</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_upsert</a></span><span class="op">(</span>
   <span class="va">x</span>,
   <span class="va">y</span>,
   by <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>,
-  in_place <span class="op">=</span> <span class="cn">NULL</span>,
+  in_place <span class="op">=</span> <span class="cn">FALSE</span>,
   copy <span class="op">=</span> <span class="cn">FALSE</span>,
-  check <span class="op">=</span> <span class="cn">NULL</span>,
   returning <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span>
 
-<span class="co"># S3 method for tbl_dbi</span>
+<span class="co"># S3 method for tbl_lazy</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_delete</a></span><span class="op">(</span>
   <span class="va">x</span>,
   <span class="va">y</span>,
   by <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>,
-  in_place <span class="op">=</span> <span class="cn">NULL</span>,
+  in_place <span class="op">=</span> <span class="cn">FALSE</span>,
+  unmatched <span class="op">=</span> <span class="cn">NULL</span>,
   copy <span class="op">=</span> <span class="cn">FALSE</span>,
-  check <span class="op">=</span> <span class="cn">NULL</span>,
   returning <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span>
 
@@ -226,10 +228,7 @@ more standardized DBs.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>x</dt>
-<dd><p>A pair of data frames or data frame extensions (e.g. a tibble).
-<code>y</code> must have the same columns of <code>x</code> or a subset.</p></dd>
-<dt>y</dt>
+    <dl><dt>x, y</dt>
 <dd><p>A pair of data frames or data frame extensions (e.g. a tibble).
 <code>y</code> must have the same columns of <code>x</code> or a subset.</p></dd>
 <dt>by</dt>
@@ -246,15 +245,20 @@ a reasonable place to put an identifier variable.</p></dd>
 relevant for mutable backends (e.g. databases, data.tables).</p>
 <p>When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
 when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></dd>
+<dt>conflict</dt>
+<dd><p>For <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert()</a></code>, how should keys in <code>y</code> that conflict
+with keys in <code>x</code> be handled? A conflict arises if there is a key in <code>y</code>
+that already exists in <code>x</code>.</p>
+<p>One of:</p><ul><li><p><code>"error"</code>, the default, will error if there are any keys in <code>y</code> that
+conflict with keys in <code>x</code>.</p></li>
+<li><p><code>"ignore"</code> will ignore rows in <code>y</code> with keys that conflict with keys in
+<code>x</code>.</p></li>
+</ul></dd>
 <dt>copy</dt>
 <dd><p>If <code>x</code> and <code>y</code> are not from the same data source,
 and <code>copy</code> is <code>TRUE</code>, then <code>y</code> will be copied into the
 same src as <code>x</code>.  This allows you to join tables across srcs, but
 it is a potentially expensive operation so you must opt into it.</p></dd>
-<dt>check</dt>
-<dd><p>Set to <code>TRUE</code> to always check keys, or <code>FALSE</code> to never check.
-The default is to check only if <code>in_place</code> is <code>TRUE</code> or <code>NULL</code>.</p>
-<p>Currently these checks are no-ops and need yet to be implemented.</p></dd>
 <dt>returning</dt>
 <dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a>
 &lt;<code>tidy-select</code>&gt; Columns to return of the inserted data.
@@ -264,6 +268,14 @@ into <code>x</code> can be returned, for example the <code>id</code> column.</p>
 is passed unquoted.
 To avoid the warning, quote the argument manually:
 use e.g. <code>returning = quote(everything())</code> .</p></dd>
+<dt>unmatched</dt>
+<dd><p>For <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_patch()</a></code>, and <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_delete()</a></code>,
+how should keys in <code>y</code> that are unmatched by the keys in <code>x</code> be handled?</p>
+<p>One of:</p><ul><li><p><code>"error"</code>, the default, will error if there are any keys in <code>y</code> that
+are unmatched by the keys in <code>x</code>.</p></li>
+<li><p><code>"ignore"</code> will ignore rows in <code>y</code> with keys that are unmatched by the
+keys in <code>x</code>.</p></li>
+</ul></dd>
 <dt>returning_cols</dt>
 <dd><p>A character vector of unquote column names
 to return, created from the <code>returning</code> argument.
@@ -286,74 +298,112 @@ and <code>x</code> is returned, invisibly. If return columns are specified with
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, b <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">]</span>, c <span class="op">=</span> <span class="fl">0.5</span> <span class="op">+</span> <span class="fl">0</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.2 [:memory:]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 a       0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 b       1.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 <span style="color: #BB0000;">NA</span>      2.5</span>
 <span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">4</span>, b <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">4</span>, b <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span>, conflict <span class="op">=</span> <span class="st">"ignore"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in auto_copy(x, y, copy = copy) : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   `x` and `y` must share the same src.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> set `copy` = TRUE (may be slow).</span>
-<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">4</span>, b <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span>, copy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.</span>
+<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">4</span>, b <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span>, conflict <span class="op">=</span> <span class="st">"ignore"</span>, copy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   lazy query [?? x 3]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.2 [:memory:]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 a       0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 b       1.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 <span style="color: #BB0000;">NA</span>      2.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 z      <span style="color: #BB0000;">NA</span>  </span>
-<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, b <span class="op">=</span> <span class="st">"w"</span><span class="op">)</span>, copy <span class="op">=</span> <span class="cn">TRUE</span>, in_place <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_append</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">4</span>, b <span class="op">=</span> <span class="st">"v"</span><span class="op">)</span>, copy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   lazy query [?? x 3]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.2 [:memory:]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 a       0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 b       1.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 <span style="color: #BB0000;">NA</span>      2.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 v      <span style="color: #BB0000;">NA</span>  </span>
+<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, b <span class="op">=</span> <span class="st">"w"</span><span class="op">)</span>, unmatched <span class="op">=</span> <span class="st">"ignore"</span>, copy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   lazy query [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 a       0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 w       1.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 w       2.5</span>
-<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_patch</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, c <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>, in_place <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_patch</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, c <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>, unmatched <span class="op">=</span> <span class="st">"ignore"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   lazy query [?? x 3]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.2 [:memory:]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 a       0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 b       1.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 <span style="color: #BB0000;">NA</span>      2.5</span>
+<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_delete</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span>, unmatched <span class="op">=</span> <span class="st">"ignore"</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   lazy query [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 a       0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     3 <span style="color: #BB0000;">NA</span>      2.5</span>
 <span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">4</span>, b <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">4</span>, b <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span>, conflict <span class="op">=</span> <span class="st">"ignore"</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.2 [:memory:]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 a       0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 b       1.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 <span style="color: #BB0000;">NA</span>      2.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 z      <span style="color: #BB0000;">NA</span>  </span>
-<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, b <span class="op">=</span> <span class="st">"w"</span><span class="op">)</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_append</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">4</span>, b <span class="op">=</span> <span class="st">"v"</span><span class="op">)</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.2 [:memory:]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 a       0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 b       1.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 <span style="color: #BB0000;">NA</span>      2.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 z      <span style="color: #BB0000;">NA</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>     4 v      <span style="color: #BB0000;">NA</span>  </span>
+<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, b <span class="op">=</span> <span class="st">"w"</span><span class="op">)</span>, unmatched <span class="op">=</span> <span class="st">"ignore"</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">data</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 a       0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 w       1.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 w       2.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 z      <span style="color: #BB0000;">NA</span>  </span>
-<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_patch</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, c <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>     4 v      <span style="color: #BB0000;">NA</span>  </span>
+<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_patch</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, c <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>, unmatched <span class="op">=</span> <span class="st">"ignore"</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.2 [:memory:]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 a       0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 w       1.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 w       2.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 z       0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>     4 v       0  </span>
+<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_delete</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span>, unmatched <span class="op">=</span> <span class="st">"ignore"</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">data</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 a       0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     3 w       2.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     4 z       0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 v       0  </span>
 </code></pre></div>
     </div>
   </div>
