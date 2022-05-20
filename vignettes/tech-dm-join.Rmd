@@ -95,12 +95,10 @@ As you can see below, the `dm_joined` dataframe has one more column than the `fl
 The difference is the `name` column from the `airlines` table.
 
 ```{r}
-dm %>%
-  .[["flights"]] %>%
+dm$flights %>%
   names()
 
-dm %>%
-  .[["airlines"]] %>%
+dm$airlines %>%
   names()
 
 dm_joined %>%
