@@ -96,11 +96,11 @@ The difference is the `name` column from the `airlines` table.
 
 ```{r}
 dm %>%
-  tbl("flights") %>%
+  .[["flights"]] %>%
   names()
 
 dm %>%
-  tbl("airlines") %>%
+  .[["airlines"]] %>%
   names()
 
 dm_joined %>%
