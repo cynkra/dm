@@ -31,7 +31,7 @@
 #' Then all involved foreign tables are joined to the `start` table successively, with the join function given in the `join` argument.
 #'
 #' **Case 2**, filter conditions are set for at least one table that is connected to `start`:
-#' First, disambiguation will be performed if necessary. The `start` table is then calculated using `dm[["start"]]`.
+#' First, disambiguation will be performed if necessary. The `start` table is then calculated using `dm[[start]]`.
 #' This implies
 #' that the effect of the filters on this table is taken into account.
 #' For `right_join`, `full_join` and `nest_join`, an error
