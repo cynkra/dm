@@ -49,7 +49,7 @@ The necessary disambiguations of the column names are performed first.
 Then all involved foreign tables are joined to the \code{start} table successively, with the join function given in the \code{join} argument.
 
 \strong{Case 2}, filter conditions are set for at least one table that is connected to \code{start}:
-First, disambiguation will be performed if necessary. The \code{start} table is then calculated using \code{tbl(dm, "start")}.
+First, disambiguation will be performed if necessary. The \code{start} table is then calculated using \code{dm[["start"]]}.
 This implies
 that the effect of the filters on this table is taken into account.
 For \code{right_join}, \code{full_join} and \code{nest_join}, an error
