@@ -153,7 +153,7 @@ Use the <code>...</code> argument if you would like to control which tables shou
 The necessary disambiguations of the column names are performed first.
 Then all involved foreign tables are joined to the <code>start</code> table successively, with the join function given in the <code>join</code> argument.</p>
 <p><strong>Case 2</strong>, filter conditions are set for at least one table that is connected to <code>start</code>:
-First, disambiguation will be performed if necessary. The <code>start</code> table is then calculated using <code>tbl(dm, "start")</code>.
+First, disambiguation will be performed if necessary. The <code>start</code> table is then calculated using <code>dm[[start]]</code>.
 This implies
 that the effect of the filters on this table is taken into account.
 For <code>right_join</code>, <code>full_join</code> and <code>nest_join</code>, an error
