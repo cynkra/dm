@@ -111,7 +111,7 @@ validate_dm(base_dm)
 
 ## Access tables
 
-We can get the list of tables with `dm_get_tables()` and the `src` object with `dm_get_src()`.
+We can get the list of tables with `dm_get_tables()` and the `src` object with `dm_get_con()`.
 
 In order to pull a specific table from a `dm`, use:
 ```{r}

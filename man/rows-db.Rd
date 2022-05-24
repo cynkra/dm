@@ -2,11 +2,12 @@
 % Please edit documentation in R/rows-db.R
 \name{rows-db}
 \alias{rows-db}
-\alias{rows_insert.tbl_dbi}
-\alias{rows_update.tbl_dbi}
-\alias{rows_patch.tbl_dbi}
-\alias{rows_upsert.tbl_dbi}
-\alias{rows_delete.tbl_dbi}
+\alias{rows_insert.tbl_lazy}
+\alias{rows_append.tbl_lazy}
+\alias{rows_update.tbl_lazy}
+\alias{rows_patch.tbl_lazy}
+\alias{rows_upsert.tbl_lazy}
+\alias{rows_delete.tbl_lazy}
 \alias{sql_rows_insert}
 \alias{sql_rows_update}
 \alias{sql_rows_patch}
@@ -15,58 +16,59 @@
 \alias{sql_output_cols}
 \title{Updating database tables}
 \usage{
-\method{rows_insert}{tbl_dbi}(
+\method{rows_insert}{tbl_lazy}(
   x,
   y,
   by = NULL,
   ...,
-  in_place = NULL,
+  in_place = FALSE,
+  conflict = NULL,
   copy = FALSE,
-  check = NULL,
   returning = NULL
 )
 
-\method{rows_update}{tbl_dbi}(
+\method{rows_append}{tbl_lazy}(x, y, ..., in_place = FALSE, copy = FALSE, returning = NULL)
+
+\method{rows_update}{tbl_lazy}(
   x,
   y,
   by = NULL,
   ...,
-  in_place = NULL,
+  in_place = FALSE,
+  unmatched = NULL,
   copy = FALSE,
-  check = NULL,
   returning = NULL
 )
 
-\method{rows_patch}{tbl_dbi}(
+\method{rows_patch}{tbl_lazy}(
   x,
   y,
   by = NULL,
   ...,
-  in_place = NULL,
+  in_place = FALSE,
+  unmatched = NULL,
   copy = FALSE,
-  check = NULL,
   returning = NULL
 )
 
-\method{rows_upsert}{tbl_dbi}(
+\method{rows_upsert}{tbl_lazy}(
   x,
   y,
   by = NULL,
   ...,
-  in_place = NULL,
+  in_place = FALSE,
   copy = FALSE,
-  check = NULL,
   returning = NULL
 )
 
-\method{rows_delete}{tbl_dbi}(
+\method{rows_delete}{tbl_lazy}(
   x,
   y,
   by = NULL,
   ...,
-  in_place = NULL,
+  in_place = FALSE,
+  unmatched = NULL,
   copy = FALSE,
-  check = NULL,
   returning = NULL
 )
 
@@ -83,10 +85,7 @@ sql_returning_cols(x, returning_cols, ...)
 sql_output_cols(x, returning_cols, output_delete = FALSE, ...)
 }
 \arguments{
-\item{x}{A pair of data frames or data frame extensions (e.g. a tibble).
-\code{y} must have the same columns of \code{x} or a subset.}
-
-\item{y}{A pair of data frames or data frame extensions (e.g. a tibble).
+\item{x, y}{A pair of data frames or data frame extensions (e.g. a tibble).
 \code{y} must have the same columns of \code{x} or a subset.}
 
 \item{by}{An unnamed character vector giving the key columns. The key columns
@@ -105,15 +104,22 @@ relevant for mutable backends (e.g. databases, data.tables).
 When \code{TRUE}, a modified version of \code{x} is returned invisibly;
 when \code{FALSE}, a new object representing the resulting changes is returned.}
 
+\item{conflict}{For \code{rows_insert()}, how should keys in \code{y} that conflict
+with keys in \code{x} be handled? A conflict arises if there is a key in \code{y}
+that already exists in \code{x}.
+
+One of:
+\itemize{
+\item \code{"error"}, the default, will error if there are any keys in \code{y} that
+conflict with keys in \code{x}.
+\item \code{"ignore"} will ignore rows in \code{y} with keys that conflict with keys in
+\code{x}.
+}}
+
 \item{copy}{If \code{x} and \code{y} are not from the same data source,
 and \code{copy} is \code{TRUE}, then \code{y} will be copied into the
 same src as \code{x}.  This allows you to join tables across srcs, but
 it is a potentially expensive operation so you must opt into it.}
-
-\item{check}{Set to \code{TRUE} to always check keys, or \code{FALSE} to never check.
-The default is to check only if \code{in_place} is \code{TRUE} or \code{NULL}.
-
-Currently these checks are no-ops and need yet to be implemented.}
 
 \item{returning}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 <\code{\link[=tidyr_tidy_select]{tidy-select}}> Columns to return of the inserted data.
@@ -124,6 +130,17 @@ Due to upstream limitations, a warning is given if this argument
 is passed unquoted.
 To avoid the warning, quote the argument manually:
 use e.g. \code{returning = quote(everything())} .}
+
+\item{unmatched}{For \code{rows_update()}, \code{rows_patch()}, and \code{rows_delete()},
+how should keys in \code{y} that are unmatched by the keys in \code{x} be handled?
+
+One of:
+\itemize{
+\item \code{"error"}, the default, will error if there are any keys in \code{y} that
+are unmatched by the keys in \code{x}.
+\item \code{"ignore"} will ignore rows in \code{y} with keys that are unmatched by the
+keys in \code{x}.
+}}
 
 \item{returning_cols}{A character vector of unquote column names
 to return, created from the \code{returning} argument.
@@ -173,16 +190,22 @@ more standardized DBs.
 data <- dbplyr::memdb_frame(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)
 data
 
-try(rows_insert(data, tibble::tibble(a = 4, b = "z")))
-rows_insert(data, tibble::tibble(a = 4, b = "z"), copy = TRUE)
-rows_update(data, tibble::tibble(a = 2:3, b = "w"), copy = TRUE, in_place = FALSE)
-rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = FALSE)
+try(rows_insert(data, tibble::tibble(a = 4, b = "z"), conflict = "ignore"))
+rows_insert(data, tibble::tibble(a = 4, b = "z"), conflict = "ignore", copy = TRUE)
+rows_append(data, tibble::tibble(a = 4, b = "v"), copy = TRUE)
+rows_update(data, tibble::tibble(a = 2:3, b = "w"), unmatched = "ignore", copy = TRUE)
+rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), unmatched = "ignore")
+rows_delete(data, dbplyr::memdb_frame(a = 2L), unmatched = "ignore")
 
-rows_insert(data, dbplyr::memdb_frame(a = 4, b = "z"), in_place = TRUE)
+rows_insert(data, dbplyr::memdb_frame(a = 4, b = "z"), conflict = "ignore", in_place = TRUE)
 data
-rows_update(data, dbplyr::memdb_frame(a = 2:3, b = "w"), in_place = TRUE)
+rows_append(data, dbplyr::memdb_frame(a = 4, b = "v"), in_place = TRUE)
 data
-rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), in_place = TRUE)
+rows_update(data, dbplyr::memdb_frame(a = 2:3, b = "w"), unmatched = "ignore", in_place = TRUE)
+data
+rows_patch(data, dbplyr::memdb_frame(a = 1:4, c = 0), unmatched = "ignore", in_place = TRUE)
+data
+rows_delete(data, dbplyr::memdb_frame(a = 2L), unmatched = "ignore", in_place = TRUE)
 data
 \dontshow{\}) # examplesIf}
 }

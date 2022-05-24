@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.8.9003
+
+- `dm_disentangle()` based on `enumerate_all_paths()` (#923).
+
+
 # dm 0.2.8.9002
 
 - Fix compatibility with dev dbplyr (#986).
