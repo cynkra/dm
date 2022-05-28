@@ -1,4 +1,6 @@
 dm_meta <- function(con, catalog = NA, schema = NULL) {
+  need_collect <- FALSE
+
   if (is_mssql(con)) {
     if (is.null(catalog)) {
       # FIXME: Classed error message?
@@ -14,13 +16,23 @@ dm_meta <- function(con, catalog = NA, schema = NULL) {
       withr::defer({
         dbExecute(con, old_sql, immediate = TRUE)
       })
+      need_collect <- TRUE
     }
   }
 
-  con %>%
+  out <-
+    con %>%
     dm_meta_raw(catalog) %>%
     select_dm_meta() %>%
     filter_dm_meta(catalog, schema)
+
+  if (need_collect) {
+    out <-
+      out %>%
+      collect()
+  }
+
+  out
 }
 
 dm_meta_raw <- function(con, catalog) {
