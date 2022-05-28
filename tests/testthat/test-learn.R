@@ -371,12 +371,3 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     dm_local_no_keys
   )
 })
-
-test_that("dm_meta() data model", {
-  skip_if_src_not("mssql")
-
-  expect_snapshot({
-    dm_meta(my_test_src()) %>%
-      dm_paste(options = c("select", "keys", "color"))
-  })
-})
