@@ -55,7 +55,10 @@ mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
     # table_schema is used twice
     transmute(constraint_catalog = catalog, constraint_schema = table_schema, constraint_name, table_schema, table_name, column_name, ordinal_position = constraint_column_id)
 
-  tbl_lc(con, dbplyr::ident_q("information_schema.constraint_column_usage")) %>%
+  tbl_lc(con, "information_schema.constraint_column_usage", vars = c(
+    "table_catalog", "table_schema", "table_name", "column_name",
+    "constraint_catalog", "constraint_schema", "constraint_name"
+  )) %>%
     semi_join(info_fkc, by = c("constraint_catalog", "constraint_schema", "constraint_name")) %>%
     select(-table_schema, -table_name, -column_name) %>%
     distinct() %>%

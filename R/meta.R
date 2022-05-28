@@ -40,14 +40,14 @@ dm_meta_raw <- function(con, catalog) {
 
   local_options(digits.secs = 6)
 
-  schemata <- tbl(src, dbplyr::ident_q("information_schema.schemata"), vars = c(
+  schemata <- tbl_lc(src, "information_schema.schemata", vars = c(
     "catalog_name", "schema_name", "schema_owner", "default_character_set_catalog",
     "default_character_set_schema", "default_character_set_name"
   ))
-  tables <- tbl(src, dbplyr::ident_q("information_schema.tables"), vars = c(
+  tables <- tbl_lc(src, "information_schema.tables", vars = c(
     "table_catalog", "table_schema", "table_name", "table_type"
   ))
-  columns <- tbl(src, dbplyr::ident_q("information_schema.columns"), vars = c(
+  columns <- tbl_lc(src, "information_schema.columns", vars = c(
     "table_catalog", "table_schema", "table_name", "column_name",
     "ordinal_position", "column_default", "is_nullable", "data_type",
     "character_maximum_length", "character_octet_length", "numeric_precision",
@@ -56,12 +56,12 @@ dm_meta_raw <- function(con, catalog) {
     "collation_catalog", "collation_schema", "collation_name", "domain_catalog",
     "domain_schema", "domain_name"
   ))
-  table_constraints <- tbl(src, dbplyr::ident_q("information_schema.table_constraints"), vars = c(
+  table_constraints <- tbl_lc(src, "information_schema.table_constraints", vars = c(
     "constraint_catalog", "constraint_schema", "constraint_name",
     "table_catalog", "table_schema", "table_name", "constraint_type",
     "is_deferrable", "initially_deferred"
   ))
-  key_column_usage <- tbl(src, dbplyr::ident_q("information_schema.key_column_usage"), vars = c(
+  key_column_usage <- tbl_lc(src, "information_schema.key_column_usage", vars = c(
     "constraint_catalog", "constraint_schema", "constraint_name",
     "table_catalog", "table_schema", "table_name", "column_name",
     "ordinal_position"
@@ -118,14 +118,14 @@ dm_meta_add_keys <- function(dm_meta) {
     dm_set_colors(brown = c(tables, columns), blue = schemata, green4 = ends_with("_constraints"), orange = ends_with("_usage"))
 }
 
-tbl_lc <- function(con, name) {
-  out <- tbl(con, name)
-  names <- colnames(out)
-  names_lc <- tolower(names)
-  if (all(names == names_lc)) {
-    return(out)
-  }
-  out %>% rename(!!!set_names(syms(names), names_lc))
+tbl_lc <- function(con, name, vars) {
+  from <- paste0(
+    "SELECT ",
+    paste0(DBI::dbQuoteIdentifier(con_from_src_or_con(con), vars), collapse = ", "),
+    "\nFROM ", name
+  )
+
+  tbl(con, sql(from), vars = vars)
 }
 
 select_dm_meta <- function(dm_meta) {
