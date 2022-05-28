@@ -74,7 +74,10 @@ dm_meta_raw <- function(con, catalog) {
       filter(constraint_type == "FOREIGN KEY")
 
     constraint_column_usage <-
-      tbl_lc(src, dbplyr::ident_q("information_schema.constraint_column_usage")) %>%
+      tbl_lc(src, dbplyr::ident_q("information_schema.constraint_column_usage"), vars = c(
+        "table_catalog", "table_schema", "table_name", "column_name",
+        "constraint_catalog", "constraint_schema", "constraint_name"
+      )) %>%
       group_by(constraint_catalog, constraint_schema, constraint_name) %>%
       mutate(ordinal_position = row_number()) %>%
       ungroup() %>%
