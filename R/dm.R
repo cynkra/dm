@@ -94,22 +94,18 @@ new_dm <- function(tables = list()) {
 }
 
 new_dm2 <- function(tables = list(),
-                    pks = structure(list(), names = character()),
-                    fks = structure(list(), names = character()),
+                    pks_df = tibble(table = character(), pks = list()),
+                    fks_df = tibble(table = character(), fks = list()),
                     validate = TRUE) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
 
-  stopifnot(!is.null(names(pks)), all(names(pks) %in% table))
-  stopifnot(!is.null(names(fks)), all(names(fks) %in% table))
+  stopifnot(all(pks_df$table %in% table))
+  stopifnot(all(fks_df$table %in% table))
 
   zoom <- new_zoom()
   col_tracker_zoom <- new_col_tracker_zoom()
-
-  pks_df <- enframe(pks, "table", "pks")
-
-  fks_df <- enframe(fks, "table", "fks")
 
   filters <-
     tibble(

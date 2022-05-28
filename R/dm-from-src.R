@@ -62,6 +62,8 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   src <- src_from_src_or_con(src)
   con <- con_from_src_or_con(src)
 
+  # FIXME: Get rid of legacy method once it works for all
+
   if (is.null(learn_keys) || isTRUE(learn_keys)) {
     dm_learned <- dm_learn_from_db(src, ...)
 
@@ -76,11 +78,11 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
         inform("Keys queried successfully, use `learn_keys = TRUE` to mute this message.")
       }
 
-      tbls_in_dm <- src_tbls_impl(dm_learned)
-
       if (is_null(table_names)) {
         return(dm_learned)
       }
+
+      tbls_in_dm <- src_tbls_impl(dm_learned)
 
       if (!all(table_names %in% tbls_in_dm)) {
         abort_tbl_access(setdiff(table_names, tbls_in_dm))
@@ -123,7 +125,9 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
 }
 
 quote_ids <- function(x, con, schema = NULL) {
-  if (is.null(con)) return(x)
+  if (is.null(con)) {
+    return(x)
+  }
 
   if (is_null(schema)) {
     map(

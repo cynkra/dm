@@ -49,7 +49,7 @@ rigg <- function(fun) {
 
   rig <- get("rig", asNamespace("boomer"), mode = "function")
 
-  assign(name, rig(fun, ignore = c("~", "{", "(", "<-", "<<-")), getNamespace("dm"))
+  assign(name, rig(fun, ignore = c("~", "{", "(")), getNamespace("dm"))
 }
 
 check_version_on_load <- function(package, version, reason) {

@@ -13,8 +13,8 @@ schema_name <- random_schema()
 test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
   skip_if_src_not(c("mssql", "postgres"))
 
-  # FIXME: COMPOUND: Need to fix implementation
-  skip_if_remote_src()
+  # FIXME: Enable when fixed
+  skip_if_src("postgres")
 
   # dm_learn_from_mssql() --------------------------------------------------
   src_db <- my_test_src()
@@ -34,7 +34,12 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     map_chr(
       dm_get_tables(dm_for_filter_copied)[order_of_deletion],
       dbplyr::remote_name
-    )
+    ) %>%
+    SQL() %>%
+    DBI::dbUnquoteIdentifier(conn = src_db$con) %>%
+    map_chr(~ .x@name[["table"]])
+
+  remote_tbl_map <- set_names(remote_tbl_names, gsub("^(tf_.).*$", "\\1", remote_tbl_names))
 
   # test 'get_src_tbl_names()'
   src_tbl_names <- sort(unname(gsub("^.*\\.", "", get_src_tbl_names(src_db))))
@@ -44,20 +49,22 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     sort(dbQuoteIdentifier(src_db$con, remote_tbl_names))
   )
 
-  dm_db_learned_all <- expect_message(dm_from_src(src_db))
+  expect_message(dm_db_learned_all <- dm_from_src(src_db))
 
-  # in case there happen to be other tables in schema "dbo" or "public"
+  # Select and fix table names
   dm_db_learned <-
     dm_db_learned_all %>%
-    dm_select_tbl(!!!remote_tbl_names)
+    dm_select_tbl(!!!remote_tbl_map)
 
   expect_equivalent_dm(
     dm_db_learned,
-    dm_for_filter()[order_of_deletion]
+    dm_for_filter()[order_of_deletion],
+    # FIXME: Enable fetching of on_delete information
+    ignore_on_delete = TRUE
   )
 
   # learning without keys:
-  dm_db_learned_no_keys <- expect_silent(dm_from_src(src_db, learn_keys = FALSE))
+  expect_silent(dm_db_learned_no_keys <- dm_from_src(src_db, learn_keys = FALSE))
 
   # for learning from DB without learning the key relations
   dm_for_filter_no_keys <-
@@ -69,10 +76,10 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     ) %>%
     new_dm3()
 
-  # in case there happen to be other tables in schema "dbo" or "public"
+  # Select and fix table names
   dm_db_learned_no_keys <-
     dm_db_learned_no_keys %>%
-    dm_select_tbl(!!!remote_tbl_names)
+    dm_select_tbl(!!!remote_tbl_map)
 
   expect_equivalent_dm(
     dm_db_learned_no_keys,
@@ -83,9 +90,6 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 
 test_that("Learning from specific schema on MSSQL or Postgres works?", {
   skip_if_src_not(c("mssql", "postgres"))
-
-  # FIXME: COMPOUND: Need to fix implementation
-  skip_if_remote_src()
 
   src_db <- my_test_src()
   con_db <- src_db$con
@@ -98,10 +102,13 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     src_db,
     dm_for_disambiguate(),
     temporary = FALSE,
-    table_names = ~ DBI::SQL(paste0(schema_name_q, ".", .x))
+    schema = schema_name
   )
   order_of_deletion <- c("iris_3", "iris_2", "iris_1")
-  remote_tbl_names <- set_names(paste0(schema_name_q, ".\"", order_of_deletion, "\""), order_of_deletion)
+  remote_tbl_names <- set_names(
+    paste0(schema_name_q, ".\"", order_of_deletion, "\""),
+    order_of_deletion
+  )
 
   withr::defer({
     walk(
@@ -365,6 +372,11 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
   )
 })
 
-# tests for compound keys -------------------------------------------------
+test_that("dm_meta() data model", {
+  skip_if_src_not("mssql")
 
-# test is already done in test-dm-from-src.R
+  expect_snapshot({
+    dm_meta(my_test_src()) %>%
+      dm_paste(options = c("select", "keys", "color"))
+  })
+})
