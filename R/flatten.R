@@ -31,7 +31,7 @@
 #' Then all involved foreign tables are joined to the `start` table successively, with the join function given in the `join` argument.
 #'
 #' **Case 2**, filter conditions are set for at least one table that is connected to `start`:
-#' First, disambiguation will be performed if necessary. The `start` table is then calculated using `tbl(dm, "start")`.
+#' First, disambiguation will be performed if necessary. The `start` table is then calculated using `dm[[start]]`.
 #' This implies
 #' that the effect of the filters on this table is taken into account.
 #' For `right_join`, `full_join` and `nest_join`, an error
@@ -265,7 +265,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
   red_dm <-
     dm_reset_all_filters(dm) %>%
     dm_select_tbl(!!!tables)
-  # Only need to compute `tbl(dm, start)`, `dm_apply_filters()` not necessary
+  # Only need to compute `dm[[start]]`, `dm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, because of possible filter conditions.
   start_tbl <- dm_get_filtered_table(dm, start)
 
