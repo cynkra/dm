@@ -372,6 +372,11 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
   )
 })
 
-# tests for compound keys -------------------------------------------------
+test_that("dm_meta() data model", {
+  skip_if_src_not("mssql")
 
-# test is already done in test-dm-from-src.R
+  expect_snapshot({
+    dm_meta(my_test_src()) %>%
+      dm_paste(options = c("select", "keys", "color"))
+  })
+})
