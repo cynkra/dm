@@ -43,5 +43,5 @@ postgres_column_constraints <- "SELECT current_database()::information_schema.sq
                 CASE c.contype
                     WHEN 'f'::\"char\" THEN c.confkey
                     ELSE c.conkey
-                END)) AND NOT a.attisdropped AND (c.contype = ANY (ARRAY['p'::\"char\", 'u'::\"char\", 'f'::\"char\"])) AND (r.relkind = ANY (ARRAY['r'::\"char\", 'p'::\"char\"]))) x(tblschema, tblname, tblowner, colname, colnum, cstrschema, cstrname)
+                END)) AND NOT a.attisdropped AND (c.contype = ANY (ARRAY['f'::\"char\"])) AND (r.relkind = ANY (ARRAY['r'::\"char\", 'p'::\"char\"]))) x(tblschema, tblname, tblowner, colname, colnum, cstrschema, cstrname)
   WHERE pg_has_role(x.tblowner, 'USAGE'::text)"
