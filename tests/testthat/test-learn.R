@@ -3,9 +3,6 @@
 test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
   skip_if_src_not(c("mssql", "postgres"))
 
-  # FIXME: Enable when fixed
-  skip_if_src("postgres")
-
   # dm_learn_from_mssql() --------------------------------------------------
   src_db <- my_test_src()
 

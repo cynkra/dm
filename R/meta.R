@@ -68,22 +68,22 @@ dm_meta_raw <- function(con, catalog) {
   ))
 
   if (is_postgres(src)) {
-    info_fkc <-
+    info_pkc <-
       table_constraints %>%
       select(constraint_catalog, constraint_schema, constraint_name, constraint_type) %>%
-      filter(constraint_type == "FOREIGN KEY")
+      filter(constraint_type %in% c("PRIMARY KEY", "FOREIGN KEY"))
 
+    key_column_usage <-
+      key_column_usage %>%
+      semi_join(info_pkc, by = c("constraint_catalog", "constraint_schema", "constraint_name"))
+
+    # Need hand-crafted query for now
     constraint_column_usage <-
-      tbl_lc(src, dbplyr::ident_q("information_schema.constraint_column_usage"), vars = c(
+      tbl(src, sql(postgres_column_constraints), vars = c(
         "table_catalog", "table_schema", "table_name", "column_name",
-        "constraint_catalog", "constraint_schema", "constraint_name"
-      )) %>%
-      group_by(constraint_catalog, constraint_schema, constraint_name) %>%
-      mutate(ordinal_position = row_number()) %>%
-      ungroup() %>%
-      semi_join(info_fkc, by = c("constraint_catalog", "constraint_schema", "constraint_name"))
-
-    # FIXME: Also has `position_in_unique_constraint`, used elsewhere?
+        "constraint_catalog", "constraint_schema", "constraint_name",
+        "ordinal_position"
+      ))
   } else if (is_mssql(src)) {
     constraint_column_usage <- mssql_constraint_column_usage(src, table_constraints, catalog)
   }
