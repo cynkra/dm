@@ -1,15 +1,5 @@
 # FIXME: #313: learn only from current source
 
-# produces a randomized schema name with a length of 4-10 characters
-# consisting of the symbols in `reservoir`
-random_schema <- function() {
-  reservoir <- c(letters, LETTERS, "'", "-", "_", as.character(0:9))
-  how_long <- sample(4:10, 1)
-  paste0(reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)], collapse = "")
-}
-
-schema_name <- random_schema()
-
 test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
   skip_if_src_not(c("mssql", "postgres"))
 
@@ -90,6 +80,16 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 
 test_that("Learning from specific schema on MSSQL or Postgres works?", {
   skip_if_src_not(c("mssql", "postgres"))
+
+  # produces a randomized schema name with a length of 4-10 characters
+  # consisting of the symbols in `reservoir`
+  random_schema <- function() {
+    reservoir <- c(letters, LETTERS, "'", "-", "_", as.character(0:9))
+    how_long <- sample(4:10, 1)
+    paste0(reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)], collapse = "")
+  }
+
+  schema_name <- random_schema()
 
   src_db <- my_test_src()
   con_db <- src_db$con
