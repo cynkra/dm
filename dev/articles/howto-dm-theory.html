@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.8.9003</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.8.9004</span>
       </span>
     </div>
 
@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Introduction to relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2022-05-28</h4>
+            <h4 data-toc-skip class="date">2022-05-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-theory.Rmd</code></div>
@@ -443,19 +443,20 @@
 
 <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">con_sqlite</span>, <span class="va">dm</span><span class="op">)</span>
 <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html" class="external-link">dbListTables</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
-<span class="co">#&gt; [1] "airlines_2020_08_28_07_13_03_12345_1"</span>
-<span class="co">#&gt; [2] "airports_2020_08_28_07_13_03_12345_1"</span>
-<span class="co">#&gt; [3] "flights_2020_08_28_07_13_03_12345_1" </span>
-<span class="co">#&gt; [4] "planes_2020_08_28_07_13_03_12345_1"  </span>
-<span class="co">#&gt; [5] "weather_2020_08_28_07_13_03_12345_1"</span></code></pre></div>
+<span class="co">#&gt; [1] "airlines_1_2020_08_28_07_13_03_12345"</span>
+<span class="co">#&gt; [2] "airports_1_2020_08_28_07_13_03_12345"</span>
+<span class="co">#&gt; [3] "flights_1_2020_08_28_07_13_03_12345" </span>
+<span class="co">#&gt; [4] "planes_1_2020_08_28_07_13_03_12345"  </span>
+<span class="co">#&gt; [5] "weather_1_2020_08_28_07_13_03_12345"</span></code></pre></div>
 <p>In the opposite direction, <code>dm</code> can also be populated with data from a DB. Unfortunately, keys currently can be learned only for MSSQL and Postgres, but not for SQLite. Therefore, the dm contains the tables but not the keys:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
-<span class="co">#&gt; Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span></code></pre></div>
+<span class="co">#&gt; Keys could not be queried: object 'constraint_column_usage' not found. Use</span>
+<span class="co">#&gt; `learn_keys = FALSE` to mute this message.</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; src:  sqlite 3.38.5 []</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines_2020_08_28_07_13_03_12345_1`, `airports_2020_08_28_07_13_03_12345_1`, `flights_2020_08_28_07_13_03_12345_1`, `planes_2020_08_28_07_13_03_12345_1`, `weather_2020_08_28_07_13_03_12345_1`</span>
+<span class="co">#&gt; Tables: `airlines_1_2020_08_28_07_13_03_12345`, `airports_1_2020_08_28_07_13_03_12345`, `flights_1_2020_08_28_07_13_03_12345`, `planes_1_2020_08_28_07_13_03_12345`, `weather_1_2020_08_28_07_13_03_12345`</span>
 <span class="co">#&gt; Columns: 53</span>
 <span class="co">#&gt; Primary keys: 0</span>
 <span class="co">#&gt; Foreign keys: 0</span></code></pre>
