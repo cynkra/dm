@@ -37,7 +37,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   )
 
   expect_snapshot({
-    dm_from_src(src_db)
+    dm_from_src(src_db)[integer()]
   })
 })
 
