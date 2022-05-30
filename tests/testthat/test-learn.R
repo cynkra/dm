@@ -39,7 +39,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   expect_snapshot({
     dm_from_src(src_db)
   })
-}
+})
 
 test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
   skip_if_src_not(c("mssql", "postgres"))
