@@ -36,7 +36,40 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     sort(dbQuoteIdentifier(src_db$con, remote_tbl_names))
   )
 
-  expect_message(dm_db_learned_all <- dm_from_src(src_db))
+  expect_snapshot({
+    dm_from_src(src_db)
+  })
+}
+
+test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
+  skip_if_src_not(c("mssql", "postgres"))
+
+  # dm_learn_from_mssql() --------------------------------------------------
+  src_db <- my_test_src()
+
+  # create an object on the MSSQL-DB that can be learned
+  withr::defer(
+    try(walk(
+      remote_tbl_names,
+      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", .x)))
+    ))
+  )
+
+  dm_for_filter_copied <- copy_dm_to(src_db, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
+  order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
+
+  remote_tbl_names <-
+    map_chr(
+      dm_get_tables(dm_for_filter_copied)[order_of_deletion],
+      dbplyr::remote_name
+    ) %>%
+    SQL() %>%
+    DBI::dbUnquoteIdentifier(conn = src_db$con) %>%
+    map_chr(~ .x@name[["table"]])
+
+  remote_tbl_map <- set_names(remote_tbl_names, gsub("^(tf_.).*$", "\\1", remote_tbl_names))
+
+  expect_silent(dm_db_learned_all <- dm_from_src(src_db, learn_keys = TRUE))
 
   # Select and fix table names
   dm_db_learned <-
