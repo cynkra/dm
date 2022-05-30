@@ -107,10 +107,8 @@ dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_forma
     left_join(columns, select = c(column_name, dm_name, table_catalog, table_schema, table_name)) %>%
     dm_update_zoomed() %>%
     dm_zoom_to(constraint_column_usage) %>%
-
     # inner_join(): Matching column sometimes not found on Postgres
     inner_join(columns, select = c(column_name, dm_name, table_catalog, table_schema, table_name)) %>%
-
     dm_update_zoomed() %>%
     dm_select_tbl(-columns) %>%
     dm_rename(constraint_column_usage, constraint_column_usage.table_catalog = table_catalog) %>%
