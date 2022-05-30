@@ -41,13 +41,7 @@ dm_learn_from_db <- function(dest, dbname = NA, ...) {
     return()
   }
 
-  # FIXME: Try to make it work everywhere
-  tryCatch(
-    dm_learn_from_db_meta(con, catalog = dbname, ...),
-    error = function(e) {
-      NULL
-    }
-  )
+  dm_learn_from_db_meta(con, catalog = dbname, ...)
 }
 
 dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_format = "{table}") {
