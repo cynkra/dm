@@ -155,7 +155,7 @@ abort_learn_keys <- function(reason) {
 error_txt_learn_keys <- function(reason) {
   # FIXME: Use new-style error messages.
   paste0(
-    "Failed to learn keys from database:", reason,
+    "Failed to learn keys from database: ", reason,
     ". Use `learn_keys = FALSE` to work around."
   )
 }
