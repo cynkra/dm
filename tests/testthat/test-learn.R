@@ -1,20 +1,7 @@
 # FIXME: #313: learn only from current source
 
-# produces a randomized schema name with a length of 4-10 characters
-# consisting of the symbols in `reservoir`
-random_schema <- function() {
-  reservoir <- c(letters, LETTERS, "'", "-", "_", as.character(0:9))
-  how_long <- sample(4:10, 1)
-  paste0(reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)], collapse = "")
-}
-
-schema_name <- random_schema()
-
 test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
   skip_if_src_not(c("mssql", "postgres"))
-
-  # FIXME: Enable when fixed
-  skip_if_src("postgres")
 
   # dm_learn_from_mssql() --------------------------------------------------
   src_db <- my_test_src()
@@ -49,7 +36,40 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     sort(dbQuoteIdentifier(src_db$con, remote_tbl_names))
   )
 
-  expect_message(dm_db_learned_all <- dm_from_src(src_db))
+  expect_snapshot({
+    dm_from_src(src_db)[integer()]
+  })
+})
+
+test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
+  skip_if_src_not(c("mssql", "postgres"))
+
+  # dm_learn_from_mssql() --------------------------------------------------
+  src_db <- my_test_src()
+
+  # create an object on the MSSQL-DB that can be learned
+  withr::defer(
+    try(walk(
+      remote_tbl_names,
+      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", .x)))
+    ))
+  )
+
+  dm_for_filter_copied <- copy_dm_to(src_db, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
+  order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
+
+  remote_tbl_names <-
+    map_chr(
+      dm_get_tables(dm_for_filter_copied)[order_of_deletion],
+      dbplyr::remote_name
+    ) %>%
+    SQL() %>%
+    DBI::dbUnquoteIdentifier(conn = src_db$con) %>%
+    map_chr(~ .x@name[["table"]])
+
+  remote_tbl_map <- set_names(remote_tbl_names, gsub("^(tf_.).*$", "\\1", remote_tbl_names))
+
+  expect_silent(dm_db_learned_all <- dm_from_src(src_db, learn_keys = TRUE))
 
   # Select and fix table names
   dm_db_learned <-
@@ -90,6 +110,16 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 
 test_that("Learning from specific schema on MSSQL or Postgres works?", {
   skip_if_src_not(c("mssql", "postgres"))
+
+  # produces a randomized schema name with a length of 4-10 characters
+  # consisting of the symbols in `reservoir`
+  random_schema <- function() {
+    reservoir <- c(letters, LETTERS, "'", "-", "_", as.character(0:9))
+    how_long <- sample(4:10, 1)
+    paste0(reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)], collapse = "")
+  }
+
+  schema_name <- random_schema()
 
   src_db <- my_test_src()
   con_db <- src_db$con
@@ -370,13 +400,4 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     dm_learned_no_keys[c("test_1", "test_2")],
     dm_local_no_keys
   )
-})
-
-test_that("dm_meta() data model", {
-  skip_if_src_not("mssql")
-
-  expect_snapshot({
-    dm_meta(my_test_src()) %>%
-      dm_paste(options = c("select", "keys", "color"))
-  })
 })

@@ -1,10 +1,6 @@
 
 # data_model code directly from {datamodelr} --------------------------------------
 
-is.data_model <- function(x) {
-  inherits(x, "data_model")
-}
-
 bdm_create_references <- function(col_table) {
   if (!inherits(col_table, "data.frame")) stop("Input must be a data frame.")
 

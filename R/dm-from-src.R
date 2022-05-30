@@ -65,32 +65,36 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   # FIXME: Get rid of legacy method once it works for all
 
   if (is.null(learn_keys) || isTRUE(learn_keys)) {
-    dm_learned <- dm_learn_from_db(src, ...)
+    # FIXME: Try to make it work everywhere
+    tryCatch(
+      {
+        dm_learned <- dm_learn_from_db(src, ...)
+        if (is_null(learn_keys)) {
+          inform("Keys queried successfully, use `learn_keys = TRUE` to mute this message.")
+        }
 
-    if (is.null(dm_learned)) {
-      if (isTRUE(learn_keys)) {
-        abort_learn_keys()
+        if (is_null(table_names)) {
+          return(dm_learned)
+        }
+
+        tbls_in_dm <- src_tbls_impl(dm_learned)
+
+        if (!all(table_names %in% tbls_in_dm)) {
+          abort_tbl_access(setdiff(table_names, tbls_in_dm))
+        }
+        tbls_req <- intersect(tbls_in_dm, table_names)
+
+        return(dm_learned %>% dm_select_tbl(!!!tbls_req))
+      },
+      error = function(e) {
+        if (isTRUE(learn_keys)) {
+          abort_learn_keys(conditionMessage(e))
+        }
+        # FIXME: Use new-style error messages.
+        inform(paste0("Keys could not be queried: ", conditionMessage(e), ". Use `learn_keys = FALSE` to mute this message."))
+        NULL
       }
-
-      inform("Keys could not be queried, use `learn_keys = FALSE` to mute this message.")
-    } else {
-      if (is_null(learn_keys)) {
-        inform("Keys queried successfully, use `learn_keys = TRUE` to mute this message.")
-      }
-
-      if (is_null(table_names)) {
-        return(dm_learned)
-      }
-
-      tbls_in_dm <- src_tbls_impl(dm_learned)
-
-      if (!all(table_names %in% tbls_in_dm)) {
-        abort_tbl_access(setdiff(table_names, tbls_in_dm))
-      }
-      tbls_req <- intersect(tbls_in_dm, table_names)
-
-      return(dm_learned %>% dm_select_tbl(!!!tbls_req))
-    }
+    )
   }
 
   if (is_null(table_names)) {
@@ -144,12 +148,16 @@ quote_ids <- function(x, con, schema = NULL) {
 
 # Errors ------------------------------------------------------------------
 
-abort_learn_keys <- function() {
-  abort(error_txt_learn_keys(), class = dm_error_full("learn_keys"))
+abort_learn_keys <- function(reason) {
+  abort(error_txt_learn_keys(reason), class = dm_error_full("learn_keys"))
 }
 
-error_txt_learn_keys <- function() {
-  "Failed to learn keys from database. Use `learn_keys = FALSE` to work around."
+error_txt_learn_keys <- function(reason) {
+  # FIXME: Use new-style error messages.
+  paste0(
+    "Failed to learn keys from database: ", reason,
+    ". Use `learn_keys = FALSE` to work around."
+  )
 }
 
 abort_tbl_access <- function(bad) {
