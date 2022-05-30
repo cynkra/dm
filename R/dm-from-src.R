@@ -66,12 +66,25 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
 
   if (is.null(learn_keys) || isTRUE(learn_keys)) {
     # FIXME: Try to make it work everywhere
-    dm_learned <- tryCatch(
+    tryCatch(
       {
+        dm_learned <- dm_learn_from_db(src, ...)
         if (is_null(learn_keys)) {
           inform("Keys queried successfully, use `learn_keys = TRUE` to mute this message.")
         }
-        dm_learn_from_db(src, ...)
+
+        if (is_null(table_names)) {
+          return(dm_learned)
+        }
+
+        tbls_in_dm <- src_tbls_impl(dm_learned)
+
+        if (!all(table_names %in% tbls_in_dm)) {
+          abort_tbl_access(setdiff(table_names, tbls_in_dm))
+        }
+        tbls_req <- intersect(tbls_in_dm, table_names)
+
+        return(dm_learned %>% dm_select_tbl(!!!tbls_req))
       },
       error = function(e) {
         if (isTRUE(learn_keys)) {
@@ -82,19 +95,6 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
         NULL
       }
     )
-
-    if (is_null(table_names)) {
-      return(dm_learned)
-    }
-
-    tbls_in_dm <- src_tbls_impl(dm_learned)
-
-    if (!all(table_names %in% tbls_in_dm)) {
-      abort_tbl_access(setdiff(table_names, tbls_in_dm))
-    }
-    tbls_req <- intersect(tbls_in_dm, table_names)
-
-    return(dm_learned %>% dm_select_tbl(!!!tbls_req))
   }
 
   if (is_null(table_names)) {
