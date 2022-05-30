@@ -153,6 +153,10 @@ dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_forma
     ))) %>%
     ungroup() %>%
     select(-(1:3)) %>%
+
+    # FIXME: Where does this come from?
+    filter(!is.na(ref_table)) %>%
+
     group_by(table = ref_table) %>%
     summarize(fks = list(bind_rows(fks))) %>%
     ungroup()
