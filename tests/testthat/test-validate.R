@@ -149,7 +149,11 @@ test_that("validator speaks up when something's wrong", {
   expect_dm_error(
     dm_for_filter() %>%
       dm_get_def() %>%
-      mutate(fks = vctrs::as_list_of(map2(fks, table, ~ if (.y == "tf_2") {NULL} else {.x}))) %>%
+      mutate(fks = vctrs::as_list_of(map2(fks, table, ~ if (.y == "tf_2") {
+        NULL
+      } else {
+        .x
+      }))) %>%
       new_dm3() %>%
       validate_dm(),
     "dm_invalid"
@@ -158,7 +162,11 @@ test_that("validator speaks up when something's wrong", {
   expect_dm_error(
     dm_for_filter() %>%
       dm_get_def() %>%
-      mutate(pks = vctrs::as_list_of(map2(pks, table, ~ if (.y == "tf_2") {NULL} else {.x}))) %>%
+      mutate(pks = vctrs::as_list_of(map2(pks, table, ~ if (.y == "tf_2") {
+        NULL
+      } else {
+        .x
+      }))) %>%
       new_dm3() %>%
       validate_dm(),
     "dm_invalid"
@@ -167,7 +175,11 @@ test_that("validator speaks up when something's wrong", {
   expect_dm_error(
     dm_for_filter() %>%
       dm_get_def() %>%
-      mutate(filters = vctrs::as_list_of(map2(filters, table, ~ if (.y == "tf_2") {NULL} else {.x}))) %>%
+      mutate(filters = vctrs::as_list_of(map2(filters, table, ~ if (.y == "tf_2") {
+        NULL
+      } else {
+        .x
+      }))) %>%
       new_dm3() %>%
       validate_dm(),
     "dm_invalid"
