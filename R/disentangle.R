@@ -31,10 +31,6 @@ dm_disentangle <- function(dm, start, quiet = FALSE) {
     left_join(fk_table, by = c("table" = "new_parent_table")) %>%
     select(-fks) %>%
     relocate(fks = new_fks, .after = pks) %>%
-    mutate(fks = vctrs::as_list_of(map(fks, ~ if (is.null(.x)) {
-      new_fk()
-    } else {
-      .x
-    }))) %>%
+    mutate(fks = vctrs::as_list_of(map(fks, ~ .x %||% new_fk()))) %>%
     new_dm3()
 }
