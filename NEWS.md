@@ -1,5 +1,13 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.8.9004
+
+## Features 
+
+- Use dm_meta() to learn from Postgres, fixes learning of compound keys (#342, #1006).
+- New internal `dm_meta()` for learning a data model from the database, for now for SQL Server only, fixes learning of compound keys (#342).
+
+
 # dm 0.2.8.9003
 
 - `dm_disentangle()` based on `enumerate_all_paths()` (#923).
