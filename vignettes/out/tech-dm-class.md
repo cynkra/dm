@@ -28,7 +28,7 @@ The relevant functions for creating `dm` objects are:
 1.  `dm()`
 2.  `as_dm()`
 3.  `new_dm()`
-4.  `dm_from_src()`
+4.  `dm_from_con()`
 
 To illustrate these options, we will now create the same `dm` in several
 different ways. We can use the tables from the well-known {nycflights13}
@@ -88,12 +88,12 @@ as_dm(list(airlines = airlines,
 ### Turn tables from a `src` into a `dm`
 
 Squeeze all (or a subset of) tables belonging to a `src` object into a
-`dm` using `dm_from_src()`:
+`dm` using `dm_from_con()`:
 
 ``` r
 sqlite_src <- dbplyr::nycflights13_sqlite()
 
-flights_dm <- dm_from_src(sqlite_src)
+flights_dm <- dm_from_con(sqlite_src)
 flights_dm
 #> ── Table source ───────────────────────────────────────────────────────────
 #> src:  sqlite 3.35.5 [/tmp/RtmpGalley/nycflights13.sqlite]
