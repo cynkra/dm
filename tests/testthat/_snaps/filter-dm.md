@@ -23,9 +23,9 @@
         dm::dm_select(tf_2, c, d, e, e1) %>%
         dm::dm_select(tf_3, f, f1, g) %>%
         dm::dm_select(tf_4, h, i, j, j1) %>%
-        dm::dm_select(tf_5, k, l, m) %>%
+        dm::dm_select(tf_5, zz, k, l, m) %>%
         dm::dm_select(tf_6, zz, n, o) %>%
-        dm::dm_select(tf_7, zz, p, q) %>%
+        dm::dm_select(tf_7, p, q) %>%
         dm::dm_select(tf_6_2, p, f, f1) %>%
         dm::dm_select(tf_4_2, r, s, t) %>%
         dm::dm_select(a, a_1, a_2) %>%
