@@ -39,18 +39,18 @@
       3 e     seven F         6
       
       $tf_5
-      # A tibble: 3 x 3
-            k l     m         
-        <int> <chr> <chr>     
-      1     2 c     tree      
-      2     3 d     streetlamp
-      3     4 e     streetlamp
+      # A tibble: 3 x 4
+           ww     k l     m         
+        <int> <int> <chr> <chr>     
+      1     2     2 c     tree      
+      2     2     3 d     streetlamp
+      3     2     4 e     streetlamp
       
       $tf_6
-      # A tibble: 2 x 2
-        n          o    
-        <chr>      <chr>
-      1 tree       f    
-      2 streetlamp h    
+      # A tibble: 2 x 3
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 tree       f    
+      2     1 streetlamp h    
       
 

@@ -32,7 +32,7 @@
 #'   # the `dm` from the SQLite DB
 #'   iris_dm_learned <- dm_learn_from_db(src_sqlite)
 #' }
-dm_learn_from_db <- function(dest, dbname = NA, ...) {
+dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{table}") {
   # assuming that we will not try to learn from (globally) temporary tables, which do not appear in sys.table
   con <- con_from_src_or_con(dest)
   src <- src_from_src_or_con(dest)
@@ -41,11 +41,7 @@ dm_learn_from_db <- function(dest, dbname = NA, ...) {
     return()
   }
 
-  dm_learn_from_db_meta(con, catalog = dbname, ...)
-}
-
-dm_learn_from_db_meta <- function(con, catalog = NULL, schema = NULL, name_format = "{table}") {
-  info <- dm_meta(con, catalog = catalog, schema = schema)
+  info <- dm_meta(con, catalog = dbname, schema = schema)
 
   df_info <-
     info %>%
