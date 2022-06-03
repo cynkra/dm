@@ -120,38 +120,22 @@ are imported from the database.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>src</dt>
-<dd><p>A <span class="pkg">dplyr</span> table source object or a
-<code><a href="https://dbi.r-dbi.org/reference/DBIConnection-class.html" class="external-link">DBI::DBIConnection</a></code> object is accepted.</p></dd>
-<dt>table_names</dt>
-<dd><p>A character vector of the names of the tables to include.</p></dd>
-<dt>learn_keys</dt>
-<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
-<p>Set to <code>TRUE</code> to query the definition of primary and
-foreign keys from the database.
-Currently works only for Postgres and SQL Server databases.
-The default attempts to query and issues an informative message.</p></dd>
-<dt>...</dt>
-<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
-<p>Additional parameters for the schema learning query.</p><ul><li><p><code>schema</code>: supported for MSSQL (default: <code>"dbo"</code>), Postgres (default: <code>"public"</code>), and MariaDB/MySQL
-(default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).</p></li>
-<li><p><code>dbname</code>: supported for MSSQL. Access different databases on the connected MSSQL-server;
-default: active database.</p></li>
-<li><p><code>table_type</code>: supported for Postgres (default: <code>"BASE TABLE"</code>). Specify the table type. Options are:</p><ol><li><p><code>"BASE TABLE"</code> for a persistent table (normal table type)</p></li>
-<li><p><code>"VIEW"</code> for a view</p></li>
-<li><p><code>"FOREIGN TABLE"</code> for a foreign table</p></li>
-<li><p><code>"LOCAL TEMPORARY"</code> for a temporary table</p></li>
-</ol></li>
-</ul></dd>
-</dl></div>
+    <p></p>
+<p></p>
+<p></p>
+<p></p>
+    </div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>dm</code> object.</p>
+    
+
+<p>A <code>dm</code> object.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># dm:::dm_has_financial()</span></span>
+<span class="r-in"><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span></span>
 <span class="r-in">  <span class="fu">RMariaDB</span><span class="fu">::</span><span class="fu"><a href="https://rmariadb.r-dbi.org/reference/dbConnect-MariaDBDriver-method.html" class="external-link">MariaDB</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span class="r-in">  username <span class="op">=</span> <span class="st">"guest"</span>,</span>
 <span class="r-in">  password <span class="op">=</span> <span class="st">"relational"</span>,</span>
@@ -160,16 +144,9 @@ default: active database.</p></li>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">dm_from_src</span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Keys could not be queried: object 'constraint_column_usage' not found. Use `learn_keys = FALSE` to mute this message.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">────────────────────────────────────────────────────────────────</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 57</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Primary keys: 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Foreign keys: 0</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>

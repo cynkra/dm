@@ -228,65 +228,22 @@ more standardized DBs.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>x, y</dt>
-<dd><p>A pair of data frames or data frame extensions (e.g. a tibble).
-<code>y</code> must have the same columns of <code>x</code> or a subset.</p></dd>
-<dt>by</dt>
-<dd><p>An unnamed character vector giving the key columns. The key columns
-must exist in both <code>x</code> and <code>y</code>. Keys typically uniquely identify each row,
-but this is only enforced for the key values of <code>y</code> when <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update()</a></code>,
-<code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_patch()</a></code>, or <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_upsert()</a></code> are used.</p>
-<p>By default, we use the first column in <code>y</code>, since the first column is
-a reasonable place to put an identifier variable.</p></dd>
-<dt>...</dt>
-<dd><p>Other parameters passed onto methods.</p></dd>
-<dt>in_place</dt>
-<dd><p>Should <code>x</code> be modified in place? This argument is only
-relevant for mutable backends (e.g. databases, data.tables).</p>
-<p>When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
-when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></dd>
-<dt>conflict</dt>
-<dd><p>For <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert()</a></code>, how should keys in <code>y</code> that conflict
-with keys in <code>x</code> be handled? A conflict arises if there is a key in <code>y</code>
-that already exists in <code>x</code>.</p>
-<p>One of:</p><ul><li><p><code>"error"</code>, the default, will error if there are any keys in <code>y</code> that
-conflict with keys in <code>x</code>.</p></li>
-<li><p><code>"ignore"</code> will ignore rows in <code>y</code> with keys that conflict with keys in
-<code>x</code>.</p></li>
-</ul></dd>
-<dt>copy</dt>
-<dd><p>If <code>x</code> and <code>y</code> are not from the same data source,
-and <code>copy</code> is <code>TRUE</code>, then <code>y</code> will be copied into the
-same src as <code>x</code>.  This allows you to join tables across srcs, but
-it is a potentially expensive operation so you must opt into it.</p></dd>
-<dt>returning</dt>
-<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a>
-&lt;<code>tidy-select</code>&gt; Columns to return of the inserted data.
-Note that also columns not in <code>y</code> but automatically created when inserting
-into <code>x</code> can be returned, for example the <code>id</code> column.</p>
-<p>Due to upstream limitations, a warning is given if this argument
-is passed unquoted.
-To avoid the warning, quote the argument manually:
-use e.g. <code>returning = quote(everything())</code> .</p></dd>
-<dt>unmatched</dt>
-<dd><p>For <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_patch()</a></code>, and <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_delete()</a></code>,
-how should keys in <code>y</code> that are unmatched by the keys in <code>x</code> be handled?</p>
-<p>One of:</p><ul><li><p><code>"error"</code>, the default, will error if there are any keys in <code>y</code> that
-are unmatched by the keys in <code>x</code>.</p></li>
-<li><p><code>"ignore"</code> will ignore rows in <code>y</code> with keys that are unmatched by the
-keys in <code>x</code>.</p></li>
-</ul></dd>
-<dt>returning_cols</dt>
-<dd><p>A character vector of unquote column names
-to return, created from the <code>returning</code> argument.
-Methods for database that do not support this should raise an error.</p></dd>
-<dt>output_delete</dt>
-<dd><p>For <code>sql_output_cols()</code>, construct the SQL
-for a <code>DELETE</code> operation.</p></dd>
-</dl></div>
+    <p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+    </div>
     <div id="value">
     <h2>Value</h2>
-    <p>A tbl object of the same structure as <code>x</code>.
+    
+
+<p>A tbl object of the same structure as <code>x</code>.
 If <code>in_place = TRUE</code>, the underlying data is updated as a side effect,
 and <code>x</code> is returned, invisibly. If return columns are specified with
 <code>returning</code> then the resulting tibble is stored in the attribute
@@ -297,7 +254,7 @@ and <code>x</code> is returned, invisibly. If return columns are specified with
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, b <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">]</span>, c <span class="op">=</span> <span class="fl">0.5</span> <span class="op">+</span> <span class="fl">0</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -353,7 +310,7 @@ and <code>x</code> is returned, invisibly. If return columns are specified with
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">4</span>, b <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span>, conflict <span class="op">=</span> <span class="st">"ignore"</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -363,7 +320,7 @@ and <code>x</code> is returned, invisibly. If return columns are specified with
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 z      <span style="color: #BB0000;">NA</span>  </span>
 <span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_append</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">4</span>, b <span class="op">=</span> <span class="st">"v"</span><span class="op">)</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -374,7 +331,7 @@ and <code>x</code> is returned, invisibly. If return columns are specified with
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>     4 v      <span style="color: #BB0000;">NA</span>  </span>
 <span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, b <span class="op">=</span> <span class="st">"w"</span><span class="op">)</span>, unmatched <span class="op">=</span> <span class="st">"ignore"</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -385,7 +342,7 @@ and <code>x</code> is returned, invisibly. If return columns are specified with
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>     4 v      <span style="color: #BB0000;">NA</span>  </span>
 <span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_patch</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, c <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>, unmatched <span class="op">=</span> <span class="st">"ignore"</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -396,7 +353,7 @@ and <code>x</code> is returned, invisibly. If return columns are specified with
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>     4 v       0  </span>
 <span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_delete</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">memdb_frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span>, unmatched <span class="op">=</span> <span class="st">"ignore"</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_009&gt; [?? x 3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.38.5 [:memory:]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       a b         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>

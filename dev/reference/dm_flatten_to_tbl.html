@@ -118,27 +118,16 @@ Both functions perform a disambiguation of column names and a cascade of joins.<
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>dm</dt>
-<dd><p>A <code><a href="dm.html">dm</a></code> object.</p></dd>
-<dt>start</dt>
-<dd><p>The table from which all outgoing foreign key relations are considered
-when establishing a processing order for the joins.
-An interesting choice could be
-for example a fact table in a star schema.</p></dd>
-<dt>...</dt>
-<dd><p>Unquoted names of the tables to be included in addition to the <code>start</code> table.
-The order of the tables here determines
-the order of the joins.
-If the argument is empty, all tables that can be reached will be included.
-If this includes tables that are not direct neighbors of <code>start</code>,
-it will only work with <code>dm_squash_to_tbl()</code> (given one of the allowed join-methods).
-<code>tidyselect</code> is supported, see <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> for details on the semantics.</p></dd>
-<dt>join</dt>
-<dd><p>The type of join to be performed, see <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::join()</a></code>.</p></dd>
-</dl></div>
+    <p></p>
+<p></p>
+<p></p>
+<p></p>
+    </div>
     <div id="value">
     <h2>Value</h2>
-    <p>A single table that results from consecutively joining all affected tables to the <code>start</code> table.</p>
+    
+
+<p>A single table that results from consecutively joining all affected tables to the <code>start</code> table.</p>
     </div>
     <div id="details">
     <h2>Details</h2>

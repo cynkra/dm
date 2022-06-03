@@ -133,37 +133,20 @@ of the values of the key in table <code>ref_table</code>.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>dm</dt>
-<dd><p>A <code>dm</code> object.</p></dd>
-<dt>table</dt>
-<dd><p>A table in the <code>dm</code>.</p></dd>
-<dt>columns</dt>
-<dd><p>The columns of <code>table</code> which are to become the foreign key columns that
-reference <code>ref_table</code>.
-To define a compound key, use <code>c(col1, col2)</code>.</p></dd>
-<dt>ref_table</dt>
-<dd><p>The table which <code>table</code> will be referencing.</p></dd>
-<dt>ref_columns</dt>
-<dd><p>The column(s) of <code>table</code> which are to become the referenced column(s) in <code>ref_table</code>.
-By default, the primary key is used.
-To define a compound key, use <code>c(col1, col2)</code>.</p></dd>
-<dt>...</dt>
-<dd><p>These dots are for future extensions and must be empty.</p></dd>
-<dt>check</dt>
-<dd><p>Boolean, if <code>TRUE</code>, a check will be performed to determine if the values of
-<code>columns</code> are a subset of the values of the key column(s) of <code>ref_table</code>.</p></dd>
-<dt>on_delete</dt>
-<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
-<p>Defines behavior if a row in the parent table is deleted.
-- <code>"no_action"</code>, the default, means that no action is taken
-and the operation is aborted if child rows exist
-- <code>"cascade"</code> means that the child row is also deleted
-This setting is picked up by <code><a href="copy_dm_to.html">copy_dm_to()</a></code> with <code>set_key_constraints = TRUE</code>,
-and might be considered by <code><a href="rows-dm.html">dm_rows_delete()</a></code> in a future version.</p></dd>
-</dl></div>
+    <p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+    </div>
     <div id="value">
     <h2>Value</h2>
-    <p>An updated <code>dm</code> with an additional foreign key relation.</p>
+    
+
+<p>An updated <code>dm</code> with an additional foreign key relation.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

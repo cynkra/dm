@@ -114,33 +114,15 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>...</dt>
-<dd><p><code>dm</code> objects to bind together.</p></dd>
-<dt>repair</dt>
-<dd><p>Either a string or a function. If a string, it must
-be one of <code>"check_unique"</code>, <code>"minimal"</code>, <code>"unique"</code>, or <code>"universal"</code>.
-If a function, it is invoked with a vector of minimal names and must
-return minimal names, otherwise an error is thrown.</p><ul><li><p>Minimal names are never <code>NULL</code> or <code>NA</code>. When an element doesn't
-have a name, its minimal name is an empty string.</p></li>
-<li><p>Unique names are unique. A suffix is appended to duplicate
-names to make them unique.</p></li>
-<li><p>Universal names are unique and syntactic, meaning that you can
-safely use the names as variables without causing a syntax
-error.</p></li>
-</ul><p>The <code>"check_unique"</code> option doesn't perform any name repair.
-Instead, an error is raised if the names don't suit the
-<code>"unique"</code> criteria.</p></dd>
-<dt>quiet</dt>
-<dd><p>By default, the user is informed of any renaming
-caused by repairing the names. This only concerns unique and
-universal repairing. Set <code>quiet</code> to <code>TRUE</code> to silence the
-messages.</p>
-<p>Users can silence the name repair messages by setting the
-<code>"rlib_name_repair_verbosity"</code> global option to <code>"quiet"</code>.</p></dd>
-</dl></div>
+    <p></p>
+<p></p>
+<p></p>
+    </div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>dm</code> containing the tables and key relations of all <code>dm</code> objects.</p>
+    
+
+<p><code>dm</code> containing the tables and key relations of all <code>dm</code> objects.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
