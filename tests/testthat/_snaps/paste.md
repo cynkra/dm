@@ -103,7 +103,7 @@
         dm::dm_select(tf_3, f, f1, g) %>%
         dm::dm_select(tf_4, h, i, j, j1) %>%
         dm::dm_select(tf_5, k, m) %>%
-        dm::dm_select(tf_6, n, o) %>%
+        dm::dm_select(tf_6, zz, n, o) %>%
         dm::dm_select(x, q)
     Code
       # produce code with colors

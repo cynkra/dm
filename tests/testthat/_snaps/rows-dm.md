@@ -186,13 +186,13 @@
       4 e     streetlamp     4
       
       $tf_6
-        n          o    
-        <chr>      <chr>
-      1 garden     i    
-      2 hill       g    
-      3 house      e    
-      4 streetlamp h    
-      5 tree       f    
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 garden     i    
+      2     1 hill       g    
+      3     1 house      e    
+      4     1 streetlamp h    
+      5     1 tree       f    
       
     Code
       dm_copy %>% dm_rows_update(dm_update_copy, in_place = TRUE)
@@ -254,13 +254,13 @@
       4 e     streetlamp     4
       
       $tf_6
-        n          o    
-        <chr>      <chr>
-      1 garden     i    
-      2 hill       g    
-      3 house      e    
-      4 streetlamp h    
-      5 tree       f    
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 garden     i    
+      2     1 hill       g    
+      3     1 house      e    
+      4     1 streetlamp h    
+      5     1 tree       f    
       
 
 # dm_rows_truncate()
@@ -363,13 +363,13 @@
       4     4 e     streetlamp
       
       $tf_6
-        n          o    
-        <chr>      <chr>
-      1 garden     i    
-      2 hill       g    
-      3 house      e    
-      4 streetlamp h    
-      5 tree       f    
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 garden     i    
+      2     1 hill       g    
+      3     1 house      e    
+      4     1 streetlamp h    
+      5     1 tree       f    
       
     Code
       dm_copy %>% dm_rows_truncate(dm_truncate_copy, in_place = TRUE)
@@ -419,12 +419,12 @@
       # ... with 3 variables: k <int>, l <chr>, m <chr>
       
       $tf_6
-        n          o    
-        <chr>      <chr>
-      1 garden     i    
-      2 hill       g    
-      3 house      e    
-      4 streetlamp h    
-      5 tree       f    
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 garden     i    
+      2     1 hill       g    
+      3     1 house      e    
+      4     1 streetlamp h    
+      5     1 tree       f    
       
 

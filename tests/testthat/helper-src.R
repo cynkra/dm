@@ -275,6 +275,7 @@ tf_5 %<-% tibble(
 )
 
 tf_6 %<-% tibble(
+  zz = 1L,
   n = c("house", "tree", "hill", "streetlamp", "garden"),
   o = letters[5:9]
 )

@@ -24,7 +24,7 @@
         dm::dm_select(tf_3, f, f1, g) %>%
         dm::dm_select(tf_4, h, i, j, j1) %>%
         dm::dm_select(tf_5, k, l, m) %>%
-        dm::dm_select(tf_6, n, o) %>%
+        dm::dm_select(tf_6, zz, n, o) %>%
         dm::dm_select(tf_7, p, q) %>%
         dm::dm_select(tf_6_2, p, f, f1) %>%
         dm::dm_select(tf_4_2, r, s, t) %>%
@@ -107,11 +107,11 @@
       3     4 e     streetlamp
       
       $tf_6
-      # A tibble: 2 x 2
-        n          o    
-        <chr>      <chr>
-      1 streetlamp h    
-      2 tree       f    
+      # A tibble: 2 x 3
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 streetlamp h    
+      2     1 tree       f    
       
 
 # dm_filter() works as intended for reversed dm
@@ -121,11 +121,11 @@
         dm_get_tables() %>% map(harmonize_tbl)
     Output
       $tf_6
-      # A tibble: 2 x 2
-        n          o    
-        <chr>      <chr>
-      1 streetlamp h    
-      2 tree       f    
+      # A tibble: 2 x 3
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 streetlamp h    
+      2     1 tree       f    
       
       $tf_5
       # A tibble: 3 x 3
@@ -211,10 +211,10 @@
       2     4 e     streetlamp
       
       $tf_6
-      # A tibble: 1 x 2
-        n          o    
-        <chr>      <chr>
-      1 streetlamp h    
+      # A tibble: 1 x 3
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 streetlamp h    
       
 
 # dm_filter() output for compound keys
