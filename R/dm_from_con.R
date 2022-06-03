@@ -120,6 +120,13 @@ dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
   new_dm(tbls)
 }
 
+#' Load a dm from a remote data source
+#'
+#' Deprecated  in dm 0.3.0 in favor of [dm_from_con()].
+#'
+#' @inheritParams dm_from_con
+#' @param src A dbplyr source, DBI connection object or a Pool object.
+#'
 #' @export
 #' @keywords internal
 dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
