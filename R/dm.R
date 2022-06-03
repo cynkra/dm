@@ -336,7 +336,12 @@ tbl_src <- function(x) {
 
 #' @export
 as_dm.src <- function(x) {
-  dm_from_src(src = x, table_names = NULL)
+  dm_from_con(con = con_from_src_or_con(x), table_names = NULL)
+}
+
+#' @export
+as_dm.DBIConnection <- function(x) {
+  dm_from_con(con =x, table_names = NULL)
 }
 
 #' @export
