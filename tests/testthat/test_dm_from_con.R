@@ -69,3 +69,10 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
   con <- dm_get_con(dm)
   expect_equal(gsub("^.*\\.", "", unname(remote_names)), unclass(DBI::dbQuoteIdentifier(con, names(dm))))
 })
+
+
+test_that("dm_from_src() deprecated", {
+  con_db <- my_db_test_con()
+
+  expect_deprecated(dm_from_src(src_from_src_or_con(con_db), learn_keys = FALSE))
+})
