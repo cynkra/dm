@@ -4,17 +4,17 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   skip_if_src_not(c("mssql", "postgres"))
 
   # dm_learn_from_mssql() --------------------------------------------------
-  src_db <- my_test_src()
+  con_db <- my_test_con()
 
   # create an object on the MSSQL-DB that can be learned
   withr::defer(
     try(walk(
       remote_tbl_names,
-      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", .x)))
+      ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
     ))
   )
 
-  dm_for_filter_copied <- copy_dm_to(src_db, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
+  dm_for_filter_copied <- copy_dm_to(con_db, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
   order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
 
   remote_tbl_names <-
@@ -23,21 +23,21 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
       dbplyr::remote_name
     ) %>%
     SQL() %>%
-    DBI::dbUnquoteIdentifier(conn = src_db$con) %>%
+    DBI::dbUnquoteIdentifier(conn = con_db) %>%
     map_chr(~ .x@name[["table"]])
 
   remote_tbl_map <- set_names(remote_tbl_names, gsub("^(tf_.).*$", "\\1", remote_tbl_names))
 
   # test 'get_src_tbl_names()'
-  src_tbl_names <- sort(unname(gsub("^.*\\.", "", get_src_tbl_names(src_db))))
+  src_tbl_names <- sort(unname(gsub("^.*\\.", "", get_src_tbl_names(con_db))))
   expect_identical(
     # fail if there are other tables in the default schema
     src_tbl_names[grep("tf_._", src_tbl_names)],
-    sort(dbQuoteIdentifier(src_db$con, remote_tbl_names))
+    sort(dbQuoteIdentifier(con_db, remote_tbl_names))
   )
 
   expect_snapshot({
-    dm_from_src(src_db)[integer()]
+    dm_from_con(con_db)[integer()]
   })
 })
 
@@ -45,17 +45,17 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   skip_if_src_not(c("mssql", "postgres"))
 
   # dm_learn_from_mssql() --------------------------------------------------
-  src_db <- my_test_src()
+  con_db <- my_test_con()
 
   # create an object on the MSSQL-DB that can be learned
   withr::defer(
     try(walk(
       remote_tbl_names,
-      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", .x)))
+      ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
     ))
   )
 
-  dm_for_filter_copied <- copy_dm_to(src_db, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
+  dm_for_filter_copied <- copy_dm_to(con_db, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
   order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
 
   remote_tbl_names <-
@@ -64,12 +64,12 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
       dbplyr::remote_name
     ) %>%
     SQL() %>%
-    DBI::dbUnquoteIdentifier(conn = src_db$con) %>%
+    DBI::dbUnquoteIdentifier(conn = con_db) %>%
     map_chr(~ .x@name[["table"]])
 
   remote_tbl_map <- set_names(remote_tbl_names, gsub("^(tf_.).*$", "\\1", remote_tbl_names))
 
-  expect_silent(dm_db_learned_all <- dm_from_src(src_db, learn_keys = TRUE))
+  expect_silent(dm_db_learned_all <- dm_from_con(con_db, learn_keys = TRUE))
 
   # Select and fix table names
   dm_db_learned <-
@@ -84,7 +84,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   )
 
   # learning without keys:
-  expect_silent(dm_db_learned_no_keys <- dm_from_src(src_db, learn_keys = FALSE))
+  expect_silent(dm_db_learned_no_keys <- dm_from_con(con_db, learn_keys = FALSE))
 
   # for learning from DB without learning the key relations
   dm_for_filter_no_keys <-
@@ -121,15 +121,14 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
 
   schema_name <- random_schema()
 
-  src_db <- my_test_src()
-  con_db <- src_db$con
+  con_db <- my_test_con()
 
   schema_name_q <- DBI::dbQuoteIdentifier(con_db, schema_name)
 
   DBI::dbExecute(con_db, paste0("CREATE SCHEMA ", schema_name_q))
 
   dm_for_disambiguate_copied <- copy_dm_to(
-    src_db,
+    con_db,
     dm_for_disambiguate(),
     temporary = FALSE,
     schema = schema_name
@@ -150,13 +149,13 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
 
   # test 'get_src_tbl_names()'
   expect_identical(
-    sort(get_src_tbl_names(src_db, schema = schema_name)),
+    sort(get_src_tbl_names(con_db, schema = schema_name)),
     SQL(sort(remote_tbl_names))
   )
 
   # learning with keys:
   dm_db_learned <-
-    dm_from_src(src_db, schema = schema_name, learn_keys = TRUE) %>%
+    dm_from_con(con_db, schema = schema_name, learn_keys = TRUE) %>%
     dm_select_tbl(!!!order_of_deletion)
 
   expect_equivalent_dm(
@@ -166,7 +165,7 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
 
   # learning without keys:
   dm_db_learned_no_keys <-
-    expect_silent(dm_from_src(src_db, schema = schema_name, learn_keys = FALSE)) %>%
+    expect_silent(dm_from_con(con_db, schema = schema_name, learn_keys = FALSE)) %>%
     dm_select_tbl(!!!order_of_deletion)
 
   dm_for_disambiguate_no_keys <-
@@ -192,7 +191,7 @@ test_that("Learning from SQLite works (#288)?", {
 
   expect_equivalent_dm(
     src_sqlite() %>%
-      dm_from_src() %>%
+      dm_from_con() %>%
       dm_select_tbl(test) %>%
       collect(),
     dm(test = tibble(a = 1:3))
@@ -248,8 +247,7 @@ test_that("'schema_if()' works", {
 test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
   skip_if_src_not("mssql")
   # dm_learn_from_mssql() --------------------------------------------------
-  src_db <- my_test_src()
-  con_db <- src_db$con
+  con_db <- my_test_con()
 
   # delete database after test
   withr::defer({
@@ -278,7 +276,7 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
 
 
   # test 'get_src_tbl_names()'
-  src_tbl_names <- unname(get_src_tbl_names(src_db, dbname = "test_database_dm"))
+  src_tbl_names <- unname(get_src_tbl_names(con_db, dbname = "test_database_dm"))
   expect_identical(
     src_tbl_names,
     sort(DBI::SQL(paste0(
@@ -293,7 +291,7 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
     test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
 
-  expect_message(dm_db_learned <- dm_from_src(src_db, dbname = "test_database_dm"))
+  expect_message(dm_db_learned <- dm_from_con(con_db, dbname = "test_database_dm"))
   dm_learned <- dm_db_learned %>% collect()
   expect_equivalent_dm(
     dm_learned,
@@ -304,8 +302,8 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
 
   # learning without keys:
   dm_learned_no_keys <- expect_silent(
-    dm_from_src(
-      src_db,
+    dm_from_con(
+      con_db,
       dbname = "test_database_dm",
       learn_keys = FALSE
     ) %>%
@@ -322,8 +320,7 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
 test_that("Learning from a specific schema in another DB for MSSQL works?", {
   skip_if_src_not("mssql")
   # dm_learn_from_mssql() --------------------------------------------------
-  src_db <- my_test_src()
-  con_db <- src_db$con
+  con_db <- my_test_con()
 
   original_dbname <- attributes(con_db)$info$dbname
 
@@ -362,7 +359,7 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
   })
 
   # test 'get_src_tbl_names()'
-  src_tbl_names <- unname(get_src_tbl_names(src_db, schema = "dm_test", dbname = "test_database_dm"))
+  src_tbl_names <- unname(get_src_tbl_names(con_db, schema = "dm_test", dbname = "test_database_dm"))
   expect_identical(
     src_tbl_names,
     sort(DBI::SQL(paste0(
@@ -377,7 +374,7 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
 
-  expect_message(dm_db_learned <- dm_from_src(src_db, schema = "dm_test", dbname = "test_database_dm"))
+  expect_message(dm_db_learned <- dm_from_con(con_db, schema = "dm_test", dbname = "test_database_dm"))
   dm_learned <- dm_db_learned %>% collect()
   expect_equivalent_dm(
     dm_learned[c("test_1", "test_2")],
@@ -388,8 +385,8 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
 
   # learning without keys:
   dm_learned_no_keys <- expect_silent(
-    dm_from_src(
-      src_db,
+    dm_from_con(
+      con_db,
       schema = "dm_test",
       dbname = "test_database_dm",
       learn_keys = FALSE
