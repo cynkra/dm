@@ -106,6 +106,10 @@ my_db_test_src <- function() {
   }
 }
 
+my_db_test_con <- function() {
+  con_from_src_or_con(my_db_test_src())
+}
+
 test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(), .unique_indexes = NULL) {
   src <- my_test_src()
 
