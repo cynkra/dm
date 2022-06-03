@@ -1,6 +1,6 @@
 #' Load a dm from a remote data source
 #'
-#' `dm_from_src()` creates a [dm] from some or all tables in a [src]
+#' `dm_from_con()` creates a [dm] from some or all tables in a [src]
 #' (a database or an environment) or which are accessible via a DBI-Connection.
 #' For Postgres and SQL Server databases, primary and foreign keys
 #' are imported from the database.
