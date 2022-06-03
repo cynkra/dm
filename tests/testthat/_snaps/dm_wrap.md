@@ -32,7 +32,7 @@
       wrapped$tf_4$tf_5[[2]]
     Output
       # A tibble: 1 x 4
-           zz     k m     tf_6$zz $o   
+           ww     k m     tf_6$zz $o   
         <int> <int> <chr>   <int> <chr>
       1     2     1 house       1 e    
 

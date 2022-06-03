@@ -23,7 +23,7 @@
         dm::dm_select(tf_2, c, d, e, e1) %>%
         dm::dm_select(tf_3, f, f1, g) %>%
         dm::dm_select(tf_4, h, i, j, j1) %>%
-        dm::dm_select(tf_5, zz, k, l, m) %>%
+        dm::dm_select(tf_5, ww, k, l, m) %>%
         dm::dm_select(tf_6, zz, n, o) %>%
         dm::dm_select(tf_7, p, q) %>%
         dm::dm_select(tf_6_2, p, f, f1) %>%
@@ -100,7 +100,7 @@
       
       $tf_5
       # A tibble: 3 x 4
-           zz     k l     m         
+           ww     k l     m         
         <int> <int> <chr> <chr>     
       1     2     2 c     tree      
       2     2     3 d     streetlamp
@@ -129,7 +129,7 @@
       
       $tf_5
       # A tibble: 3 x 4
-           zz     k l     m         
+           ww     k l     m         
         <int> <int> <chr> <chr>     
       1     2     2 c     tree      
       2     2     3 d     streetlamp
@@ -205,7 +205,7 @@
       
       $tf_5
       # A tibble: 2 x 4
-           zz     k l     m         
+           ww     k l     m         
         <int> <int> <chr> <chr>     
       1     2     3 d     streetlamp
       2     2     4 e     streetlamp

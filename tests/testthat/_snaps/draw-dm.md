@@ -36,7 +36,7 @@
       11  tf_4      i  2  chr   0 <NA>    <NA>
       12  tf_4      j  3  chr   0 <NA>    <NA>
       13  tf_4     j1  4  int   0 <NA>    <NA>
-      14  tf_5     zz  1  int   0 <NA>    <NA>
+      14  tf_5     ww  1  int   0 <NA>    <NA>
       15  tf_5      k  2  int   1 <NA>    <NA>
       16  tf_5      l  3  chr   0 tf_4       h
       17  tf_5      m  4  chr   0 tf_6       n
@@ -81,7 +81,7 @@
       11 tf_4  i          2
       12 tf_4  j          3
       13 tf_4  j1         4
-      14 tf_5  zz         1
+      14 tf_5  ww         1
       15 tf_5  k          2
       16 tf_5  l          3
       17 tf_5  m          4
@@ -110,7 +110,7 @@
       11 tf_4  i          2 chr  
       12 tf_4  j          3 chr  
       13 tf_4  j1         4 int  
-      14 tf_5  zz         1 int  
+      14 tf_5  ww         1 int  
       15 tf_5  k          2 int  
       16 tf_5  l          3 chr  
       17 tf_5  m          4 chr  

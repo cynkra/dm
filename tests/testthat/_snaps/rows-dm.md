@@ -178,7 +178,7 @@
       5 three a     C         3
       
       $tf_5
-        l     m             zz     k
+        l     m             ww     k
         <chr> <chr>      <int> <int>
       1 b     house          2     1
       2 c     tree           2     2
@@ -246,7 +246,7 @@
       5 three  a     C         3
       
       $tf_5
-        l     m             zz     k
+        l     m             ww     k
         <chr> <chr>      <int> <int>
       1 b     house          2     1
       2 c     tree           2     2
@@ -355,7 +355,7 @@
       5 e     seven F         6
       
       $tf_5
-           zz     k l     m         
+           ww     k l     m         
         <int> <int> <chr> <chr>     
       1     2     1 b     house     
       2     2     2 c     tree      
@@ -416,7 +416,7 @@
       5 e     seven F         6
       
       $tf_5
-      # ... with 4 variables: zz <int>, k <int>, l <chr>, m <chr>
+      # ... with 4 variables: ww <int>, k <int>, l <chr>, m <chr>
       
       $tf_6
            zz n          o    

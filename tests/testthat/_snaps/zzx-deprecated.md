@@ -40,7 +40,7 @@
       
       $tf_5
       # A tibble: 3 x 4
-           zz     k l     m         
+           ww     k l     m         
         <int> <int> <chr> <chr>     
       1     2     2 c     tree      
       2     2     3 d     streetlamp

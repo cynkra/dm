@@ -88,7 +88,7 @@
         dm::dm_select(tf_2, c, d, e, e1) %>%
         dm::dm_select(tf_3, f, f1, g) %>%
         dm::dm_select(tf_4, h, i, j, j1) %>%
-        dm::dm_select(tf_5, zz, k, l, m) %>%
+        dm::dm_select(tf_5, ww, k, l, m) %>%
         dm::dm_select(tf_6, zz, n, o) %>%
         dm::dm_select(fact, fact, dim_1_key_1, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) %>%
         dm::dm_select(dim_1, dim_1_pk_1, dim_1_pk_2, something) %>%
@@ -140,7 +140,7 @@
         dm::dm_select(tf_2, c, d, e, e1) %>%
         dm::dm_select(tf_3, f, f1, g) %>%
         dm::dm_select(tf_4, h, i, j, j1) %>%
-        dm::dm_select(tf_5, zz, k, l, m) %>%
+        dm::dm_select(tf_5, ww, k, l, m) %>%
         dm::dm_select(tf_6, zz, n, o) %>%
         dm::dm_add_pk(dim_1, c(dim_1_pk_1, dim_1_pk_2)) %>%
         dm::dm_add_pk(dim_2, dim_2_pk) %>%
