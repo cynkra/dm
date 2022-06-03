@@ -83,7 +83,7 @@ as_dm(list(airlines = airlines,
 Squeeze all (or a subset of) tables belonging to a `src` object into a `dm` using `dm_from_con()`:
 
 ```{r message=FALSE}
-sqlite_con <- dbplyr::remote_con(dbplyr::nycflights13_sqlite())
+sqlite_con <- dbplyr::nycflights13_sqlite()
 
 flights_dm <- dm_from_con(sqlite_con)
 flights_dm
