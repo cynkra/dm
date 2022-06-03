@@ -159,11 +159,11 @@
   dbname <span class="op">=</span> <span class="st">"Financial_ijs"</span>,
   host <span class="op">=</span> <span class="st">"relational.fit.cvut.cz"</span>
 <span class="op">)</span></code></pre></div>
-<p>Creating a dm object takes a single call to <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> with the DBI connection object as its argument.</p>
+<p>Creating a dm object takes a single call to <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> with the DBI connection object as its argument.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
 
-<span class="va">my_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">my_db</span><span class="op">)</span>
+<span class="va">my_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">my_db</span><span class="op">)</span>
 <span class="va">my_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
@@ -208,7 +208,7 @@
 <li>Add a foreign key <code>account_id</code> to the <code>loans</code> table referencing the <code>accounts</code> table</li>
 </ol>
 <p>Then we assign colors to the tables and draw the structure of the dm.</p>
-<p>Note that when the foreign key is created the primary key in the referenced table does not need to be specified, but the primary key must already be defined. And, as mentioned above, primary and foreign key constraints on the database are currently only imported for Postgres and SQL Server databases, and only when <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> is used. This process of key definition needs to be done manually for other databases.</p>
+<p>Note that when the foreign key is created the primary key in the referenced table does not need to be specified, but the primary key must already be defined. And, as mentioned above, primary and foreign key constraints on the database are currently only imported for Postgres and SQL Server databases, and only when <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> is used. This process of key definition needs to be done manually for other databases.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_keys</span> <span class="op">&lt;-</span>
   <span class="va">my_manual_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>

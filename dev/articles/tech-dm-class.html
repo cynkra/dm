@@ -167,7 +167,7 @@
 <li><code><a href="../reference/dm.html">dm()</a></code></li>
 <li><code><a href="../reference/dm.html">as_dm()</a></code></li>
 <li><code><a href="../reference/dm.html">new_dm()</a></code></li>
-<li><code><a href="../reference/dm_from_src.html">dm_from_src()</a></code></li>
+<li><code><a href="../reference/dm_from_con.html">dm_from_con()</a></code></li>
 </ol>
 <p>To illustrate these options, we will now create the same <code>dm</code> in several different ways. We can use the tables from the well-known {nycflights13} package.</p>
 <div class="section level3">
@@ -220,20 +220,20 @@
 <div class="section level3">
 <h3 id="turn-tables-from-a-src-into-a-dm">Turn tables from a <code>src</code> into a <code>dm</code><a class="anchor" aria-label="anchor" href="#turn-tables-from-a-src-into-a-dm"></a>
 </h3>
-<p>Squeeze all (or a subset of) tables belonging to a <code>src</code> object into a <code>dm</code> using <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code>:</p>
+<p>Squeeze all (or a subset of) tables belonging to a <code>src</code> object into a <code>dm</code> using <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sqlite_src</span> <span class="op">&lt;-</span> <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/nycflights13.html" class="external-link">nycflights13_sqlite</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">sqlite_con</span> <span class="op">&lt;-</span> <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/nycflights13.html" class="external-link">nycflights13_sqlite</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">sqlite_src</span><span class="op">)</span>
+<span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">sqlite_con</span><span class="op">)</span>
 <span class="va">flights_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.38.5 [/tmp/RtmpL2LOF5/nycflights13.sqlite]</span>
+<span class="co">#&gt; src:  sqlite 3.38.5 [/tmp/RtmpbuWaCa/nycflights13.sqlite]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span>
 <span class="co">#&gt; Columns: 62</span>
 <span class="co">#&gt; Primary keys: 0</span>
 <span class="co">#&gt; Foreign keys: 0</span></code></pre>
-<p>The function <code>dm_from_src(src, table_names = NULL)</code> includes all available tables on a source in the <code>dm</code> object. This means that you can use this, for example, on a postgres database that you access via <code><a href="https://dplyr.tidyverse.org/reference/src_dbi.html" class="external-link">src_postgres()</a></code> (with the appropriate arguments <code>dbname</code>, <code>host</code>, <code>port</code>, …), to produce a <code>dm</code> object with all the tables on the database.</p>
+<p>The function <code>dm_from_con(con, table_names = NULL)</code> includes all available tables on a source in the <code>dm</code> object. This means that you can use this, for example, on a postgres database that you access via <code>DBI::dbConnect(RPostgres::Postgres())</code> (with the appropriate arguments <code>dbname</code>, <code>host</code>, <code>port</code>, …), to produce a <code>dm</code> object with all the tables on the database.</p>
 </div>
 <div class="section level3">
 <h3 id="low-level-construction">Low-level construction<a class="anchor" aria-label="anchor" href="#low-level-construction"></a>
@@ -262,7 +262,7 @@
 <span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span>
 <span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`airports`&gt; [?? x 8]</span>
-<span class="co">#&gt; # Database: sqlite 3.38.5 [/tmp/RtmpL2LOF5/nycflights13.sqlite]</span>
+<span class="co">#&gt; # Database: sqlite 3.38.5 [/tmp/RtmpbuWaCa/nycflights13.sqlite]</span>
 <span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span>
 <span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span>
 <span class="co">#&gt;  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…</span>
@@ -296,7 +296,7 @@
 <span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span>
 <span class="va">flights_dm_with_key</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.38.5 [/tmp/RtmpL2LOF5/nycflights13.sqlite]</span>
+<span class="co">#&gt; src:  sqlite 3.38.5 [/tmp/RtmpbuWaCa/nycflights13.sqlite]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span>
 <span class="co">#&gt; Columns: 62</span>
@@ -360,7 +360,7 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_key</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.38.5 [/tmp/RtmpL2LOF5/nycflights13.sqlite]</span>
+<span class="co">#&gt; src:  sqlite 3.38.5 [/tmp/RtmpbuWaCa/nycflights13.sqlite]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span>
 <span class="co">#&gt; Columns: 62</span>
