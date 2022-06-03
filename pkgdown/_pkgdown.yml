@@ -8,7 +8,7 @@ reference:
 - title: Basic
   contents:
   - dm
-  - dm_from_src
+  - dm_from_con
   - new_dm
   - as_dm
   - is_dm
