@@ -15,11 +15,11 @@
       # A tibble: 5 x 6
         h     i     j        j1 tf_3$g $tf_2            tf_5            
         <chr> <chr> <chr> <int> <chr>  <nested>         <nested>        
-      1 a     three C         3 two    <tibble [0 x 3]> <tibble [0 x 3]>
-      2 b     four  D         4 three  <tibble [1 x 3]> <tibble [1 x 3]>
-      3 c     five  E         5 four   <tibble [2 x 3]> <tibble [1 x 3]>
-      4 d     six   F         6 five   <tibble [2 x 3]> <tibble [1 x 3]>
-      5 e     seven F         6 five   <tibble [2 x 3]> <tibble [1 x 3]>
+      1 a     three C         3 two    <tibble [0 x 3]> <tibble [0 x 4]>
+      2 b     four  D         4 three  <tibble [1 x 3]> <tibble [1 x 4]>
+      3 c     five  E         5 four   <tibble [2 x 3]> <tibble [1 x 4]>
+      4 d     six   F         6 five   <tibble [2 x 3]> <tibble [1 x 4]>
+      5 e     seven F         6 five   <tibble [2 x 3]> <tibble [1 x 4]>
     Code
       wrapped$tf_4$tf_3$tf_2[[3]]
     Output
@@ -31,10 +31,10 @@
     Code
       wrapped$tf_4$tf_5[[2]]
     Output
-      # A tibble: 1 x 3
-            k m     tf_6$o
-        <int> <chr> <chr> 
-      1     1 house e     
+      # A tibble: 1 x 4
+           zz     k m     tf_6$zz $o   
+        <int> <int> <chr>   <int> <chr>
+      1     2     1 house       1 e    
 
 ---
 
@@ -44,7 +44,7 @@
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_4`, `tf_5`, `tf_3`, `tf_6`, `tf_2`, `tf_1`
-      Columns: 18
+      Columns: 20
       Primary keys: 6
       Foreign keys: 5
     Code
@@ -72,12 +72,12 @@
     Code
       unwrapped$tf_6
     Output
-      # A tibble: 3 x 2
-        n          o    
-        <chr>      <chr>
-      1 house      e    
-      2 tree       f    
-      3 streetlamp h    
+      # A tibble: 3 x 3
+        n             zz o    
+        <chr>      <int> <chr>
+      1 house          1 e    
+      2 tree           1 f    
+      3 streetlamp     1 h    
 
 # `node_type_from_graph()` works
 
