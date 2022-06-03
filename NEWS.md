@@ -1,5 +1,20 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.8.9005
+
+## Bug fixes 
+
+- Learning for PostgreSQL, regression introduced in 0.2.8.9004 (#1016).
+
+- Avoid NULL if no fks after disentangle (#1012).
+
+
+
+## API 
+
+- New `dm_from_con()`, soft-deprecated `dm_from_src()` (#1018).
+
+
 # dm 0.2.8.9004
 
 ## Features 
