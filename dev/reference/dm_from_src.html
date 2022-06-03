@@ -134,8 +134,7 @@ are imported from the database.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># dm:::dm_has_financial()</span></span>
-<span class="r-in"><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span></span>
 <span class="r-in">  <span class="fu">RMariaDB</span><span class="fu">::</span><span class="fu"><a href="https://rmariadb.r-dbi.org/reference/dbConnect-MariaDBDriver-method.html" class="external-link">MariaDB</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span class="r-in">  username <span class="op">=</span> <span class="st">"guest"</span>,</span>
 <span class="r-in">  password <span class="op">=</span> <span class="st">"relational"</span>,</span>
@@ -144,9 +143,16 @@ are imported from the database.</p>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">dm_from_src</span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Keys could not be queried: object 'constraint_column_usage' not found. Use `learn_keys = FALSE` to mute this message.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">────────────────────────────────────────────────────────────────</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Primary keys: 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Foreign keys: 0</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>
