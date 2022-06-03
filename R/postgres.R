@@ -27,7 +27,7 @@ postgres_column_constraints <- "SELECT current_database()::information_schema.sq
             r.relname,
             r.relowner,
             a.attname,
-            a.attnum,
+            unnest(c.conkey) AS attnum,
             nc.nspname,
             c.conname
            FROM pg_namespace nr,
