@@ -62,8 +62,6 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   src <- src_from_src_or_con(src)
   con <- con_from_src_or_con(src)
 
-  # FIXME: Get rid of legacy method once it works for all
-
   if (is.null(learn_keys) || isTRUE(learn_keys)) {
     # FIXME: Try to make it work everywhere
     tryCatch(
