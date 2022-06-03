@@ -62,7 +62,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
   if (has_length(quos)) {
     src_index <- c(which(names(quos) == "src"), 1)[[1]]
     if (is.src(tbls[[src_index]])) {
-      deprecate_soft("0.0.4.9001", "dm::dm(src = )", "dm_from_src()")
+      deprecate_soft("0.0.4.9001", "dm::dm(src = )")
       return(invoke(dm_from_src, tbls))
     }
   }
