@@ -47,7 +47,6 @@
 #' DBI::dbDisconnect(con)
 dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
                         ...) {
-
   stopifnot(is(con, "DBIConnection") || inherits(con, "Pool"))
 
   if (inherits(con, "Pool")) {
@@ -125,7 +124,6 @@ dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
 #' @keywords internal
 dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
                         ...) {
-
   if (is_null(src)) {
     return(empty_dm())
   }
