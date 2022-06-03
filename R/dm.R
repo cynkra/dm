@@ -18,7 +18,7 @@
 #'
 #' @seealso
 #'
-#' - [dm_from_src()] for connecting to all tables in a database
+#' - [dm_from_con()] for connecting to all tables in a database
 #'   and importing the primary and foreign keys
 #' - [dm_add_pk()] and [dm_add_fk()] for adding primary and foreign keys
 #' - [copy_dm_to()] for DB interaction
