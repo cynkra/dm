@@ -109,13 +109,13 @@ test_that("insert + delete with returning argument and in_place = FALSE, SQLite 
   skip_if(packageVersion("dbplyr") <= "2.1.1")
 
   expect_equal(
-    rows_insert(target, test_db_src_frame(select = 4, where = "z"), by = "select", in_place = FALSE, returning = everything()) %>%
+    rows_insert(target, test_db_src_frame(select = 4, where = "z"), by = "select", in_place = FALSE, conflict = "ignore", returning = everything()) %>%
       get_returned_rows(),
     tibble(select = 4L, where = "z", exists = NA)
   )
 
   expect_equal(
-    rows_append(target, test_db_src_frame(select = 4, where = "q"), by = "select", in_place = FALSE, returning = everything()) %>%
+    rows_append(target, test_db_src_frame(select = 4, where = "q"), in_place = FALSE, returning = everything()) %>%
       get_returned_rows(),
     tibble(select = 4L, where = "q", exists = NA)
   )

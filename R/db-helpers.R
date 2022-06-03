@@ -107,7 +107,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
     return(src_tbls(src))
   }
 
-  con <- src$con
+  con <- con_from_src_or_con(src)
 
   if (!is.null(schema)) {
     check_param_class(schema, "character")

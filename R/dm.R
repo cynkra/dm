@@ -18,7 +18,7 @@
 #'
 #' @seealso
 #'
-#' - [dm_from_src()] for connecting to all tables in a database
+#' - [dm_from_con()] for connecting to all tables in a database
 #'   and importing the primary and foreign keys
 #' - [dm_add_pk()] and [dm_add_fk()] for adding primary and foreign keys
 #' - [copy_dm_to()] for DB interaction
@@ -62,7 +62,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
   if (has_length(quos)) {
     src_index <- c(which(names(quos) == "src"), 1)[[1]]
     if (is.src(tbls[[src_index]])) {
-      deprecate_soft("0.0.4.9001", "dm::dm(src = )", "dm_from_src()")
+      deprecate_soft("0.0.4.9001", "dm::dm(src = )")
       return(invoke(dm_from_src, tbls))
     }
   }
@@ -336,7 +336,12 @@ tbl_src <- function(x) {
 
 #' @export
 as_dm.src <- function(x) {
-  dm_from_src(src = x, table_names = NULL)
+  dm_from_con(con = con_from_src_or_con(x), table_names = NULL)
+}
+
+#' @export
+as_dm.DBIConnection <- function(x) {
+  dm_from_con(con = x, table_names = NULL)
 }
 
 #' @export

@@ -96,6 +96,11 @@ my_test_src <- function() {
   )
 }
 
+my_test_con <- function() {
+  # FIXME: Remove my_test_src()
+  con_from_src_or_con(my_test_src())
+}
+
 sqlite_test_src %<--% dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
 
 my_db_test_src <- function() {
@@ -104,6 +109,10 @@ my_db_test_src <- function() {
   } else {
     sqlite_test_src()
   }
+}
+
+my_db_test_con <- function() {
+  con_from_src_or_con(my_db_test_src())
 }
 
 test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(), .unique_indexes = NULL) {

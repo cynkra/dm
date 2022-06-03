@@ -242,7 +242,7 @@ In the opposite direction, `dm` can also be populated with data from a DB. Unfor
 Therefore, the dm contains the tables but not the keys:
 
 ```{r}
-dm_from_src(con_sqlite)
+dm_from_con(con_sqlite)
 ```
 
 Remember to terminate the database connection:

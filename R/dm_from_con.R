@@ -1,12 +1,11 @@
 #' Load a dm from a remote data source
 #'
-#' `dm_from_src()` creates a [dm] from some or all tables in a [src]
+#' `dm_from_con()` creates a [dm] from some or all tables in a [src]
 #' (a database or an environment) or which are accessible via a DBI-Connection.
 #' For Postgres and SQL Server databases, primary and foreign keys
 #' are imported from the database.
 #'
-#' @param src A \pkg{dplyr} table source object or a
-#'   [`DBI::DBIConnection-class`] object is accepted.
+#' @param con A [`DBI::DBIConnection-class`] or a `Pool` object.
 #' @param table_names
 #'   A character vector of the names of the tables to include.
 #' @param learn_keys
@@ -46,21 +45,16 @@
 #' dm_from_src(con)
 #'
 #' DBI::dbDisconnect(con)
-dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
+dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
                         ...) {
-  if (is_null(src)) {
-    # FIXME: Check empty arguments and ellipsis
-    return(empty_dm())
+  stopifnot(is(con, "DBIConnection") || inherits(con, "Pool"))
+
+  if (inherits(con, "Pool")) {
+    con <- pool_con <- pool::poolCheckout(con)
+    on.exit(pool::poolReturn(pool_con))
   }
 
-  if (inherits(src, "Pool")) {
-    src <- pool_src <- pool::poolCheckout(src)
-    on.exit(pool::poolReturn(pool_src))
-  }
-
-  # both DBI-Connection and {dplyr}-src object are accepted
-  src <- src_from_src_or_con(src)
-  con <- con_from_src_or_con(src)
+  src <- src_from_src_or_con(con)
 
   if (is.null(learn_keys) || isTRUE(learn_keys)) {
     # FIXME: Try to make it work everywhere
@@ -124,6 +118,25 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   }
 
   new_dm(tbls)
+}
+
+#' Load a dm from a remote data source
+#'
+#' Deprecated  in dm 0.3.0 in favor of [dm_from_con()].
+#'
+#' @inheritParams dm_from_con
+#' @param src A dbplyr source, DBI connection object or a Pool object.
+#'
+#' @export
+#' @keywords internal
+dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
+                        ...) {
+  if (is_null(src)) {
+    return(empty_dm())
+  }
+
+  deprecate_soft("0.3.0", "dm::dm_from_src()", "dm::dm_from_con()")
+  dm_from_con(con = con_from_src_or_con(src), table_names, learn_keys, ...)
 }
 
 quote_ids <- function(x, con, schema = NULL) {
