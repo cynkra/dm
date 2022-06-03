@@ -91,9 +91,9 @@ Squeeze all (or a subset of) tables belonging to a `src` object into a
 `dm` using `dm_from_con()`:
 
 ``` r
-sqlite_src <- dbplyr::nycflights13_sqlite()
+sqlite_con <- dbplyr::remote_con(dbplyr::nycflights13_sqlite())
 
-flights_dm <- dm_from_con(sqlite_src)
+flights_dm <- dm_from_con(sqlite_con)
 flights_dm
 #> ── Table source ───────────────────────────────────────────────────────────
 #> src:  sqlite 3.35.5 [/tmp/RtmpGalley/nycflights13.sqlite]
@@ -104,10 +104,10 @@ flights_dm
 #> Foreign keys: 0
 ```
 
-The function `dm_from_src(src, table_names = NULL)` includes all
+The function `dm_from_con(con, table_names = NULL)` includes all
 available tables on a source in the `dm` object. This means that you can
-use this, for example, on a postgres database that you access via
-`src_postgres()` (with the appropriate arguments `dbname`, `host`,
+use this, for example, on a Postgres database that you access via
+`DBI::dbConnect(RPostgres::Postgres())` (with the appropriate arguments `dbname`, `host`,
 `port`, …), to produce a `dm` object with all the tables on the
 database.
 
