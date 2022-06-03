@@ -27,7 +27,13 @@ postgres_column_constraints <- "SELECT current_database()::information_schema.sq
             r.relname,
             r.relowner,
             a.attname,
-            unnest(c.conkey) AS attnum,
+            array_position(
+              CASE c.contype
+                    WHEN 'f'::\"char\" THEN c.confkey
+                    ELSE c.conkey
+              END,
+              a.attnum
+            ) AS attnum,
             nc.nspname,
             c.conname
            FROM pg_namespace nr,
@@ -46,3 +52,5 @@ postgres_column_constraints <- "SELECT current_database()::information_schema.sq
                 END)) AND NOT a.attisdropped AND (c.contype = ANY (ARRAY['f'::\"char\"])) AND (r.relkind = ANY (ARRAY['r'::\"char\", 'p'::\"char\"]))) x(tblschema, tblname, tblowner, colname, colnum, cstrschema, cstrname)
   WHERE pg_has_role(x.tblowner, 'USAGE'::text)
 "
+
+# FIXME: Slightly redundant `array_position()` and `a.attnum = ANY`
