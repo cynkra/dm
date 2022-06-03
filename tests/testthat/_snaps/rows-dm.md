@@ -178,12 +178,12 @@
       5 three a     C         3
       
       $tf_5
-        l     m              k
-        <chr> <chr>      <int>
-      1 b     house          1
-      2 c     tree           2
-      3 d     streetlamp     3
-      4 e     streetlamp     4
+        l     m             zz     k
+        <chr> <chr>      <int> <int>
+      1 b     house          2     1
+      2 c     tree           2     2
+      3 d     streetlamp     2     3
+      4 e     streetlamp     2     4
       
       $tf_6
            zz n          o    
@@ -246,12 +246,12 @@
       5 three  a     C         3
       
       $tf_5
-        l     m              k
-        <chr> <chr>      <int>
-      1 b     house          1
-      2 c     tree           2
-      3 d     tree           3
-      4 e     streetlamp     4
+        l     m             zz     k
+        <chr> <chr>      <int> <int>
+      1 b     house          2     1
+      2 c     tree           2     2
+      3 d     tree           2     3
+      4 e     streetlamp     2     4
       
       $tf_6
            zz n          o    
@@ -355,12 +355,12 @@
       5 e     seven F         6
       
       $tf_5
-            k l     m         
-        <int> <chr> <chr>     
-      1     1 b     house     
-      2     2 c     tree      
-      3     3 d     streetlamp
-      4     4 e     streetlamp
+           zz     k l     m         
+        <int> <int> <chr> <chr>     
+      1     2     1 b     house     
+      2     2     2 c     tree      
+      3     2     3 d     streetlamp
+      4     2     4 e     streetlamp
       
       $tf_6
            zz n          o    
@@ -416,7 +416,7 @@
       5 e     seven F         6
       
       $tf_5
-      # ... with 3 variables: k <int>, l <chr>, m <chr>
+      # ... with 4 variables: zz <int>, k <int>, l <chr>, m <chr>
       
       $tf_6
            zz n          o    

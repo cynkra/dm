@@ -269,6 +269,7 @@ tf_4 %<-% tibble(
 )
 
 tf_5 %<-% tibble(
+  zz = 2L,
   k = 1:4,
   l = letters[2:5],
   m = c("house", "tree", "streetlamp", "streetlamp")
