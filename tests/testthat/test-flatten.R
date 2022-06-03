@@ -56,7 +56,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   # for flatten: columns from tf_5 + tf_4 + tf_4_2 + tf_6 are combined in one table, 8 cols in total
   expect_identical(
     ncol(dm_flatten_to_tbl(dm_more_complex(), tf_5)),
-    10L
+    11L
   )
 })
 
@@ -151,7 +151,7 @@ test_that("`dm_squash_to_tbl()` does the right things", {
   # for flatten: columns from tf_5 + tf_4 + tf_3 + tf_4_2 + tf_6 are combined in one table, 10 cols in total
   expect_identical(
     ncol(dm_squash_to_tbl(dm_more_complex(), tf_5)),
-    11L
+    12L
   )
 
 
