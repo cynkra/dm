@@ -528,6 +528,11 @@
         dm_rename(flights, flights.month = month) %>%
         dm_rename(flights, flights.day = day) %>%
         dm_rename(flights, flights.hour = hour)
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 6 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
     Output
       [1] 1800
     Code
@@ -542,6 +547,11 @@
         dm_rename(flights, flights.month = month) %>%
         dm_rename(flights, flights.day = day) %>%
         dm_rename(flights, flights.hour = hour)
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 6 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
     Output
       [1] 1761
     Code
@@ -556,6 +566,11 @@
         dm_rename(flights, flights.month = month) %>%
         dm_rename(flights, flights.day = day) %>%
         dm_rename(flights, flights.hour = hour)
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 6 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
     Output
       [1] 1761
     Code
@@ -570,6 +585,11 @@
         dm_rename(flights, flights.month = month) %>%
         dm_rename(flights, flights.day = day) %>%
         dm_rename(flights, flights.hour = hour)
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 6 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
     Output
       [1] 1800
     Code
