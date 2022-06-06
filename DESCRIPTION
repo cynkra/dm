@@ -63,7 +63,7 @@ Suggests:
     brio,
     covr,
     crayon,
-    dbplyr,
+    dbplyr (>= 2.2.0),
     DiagrammeR,
     DiagrammeRsvg,
     digest,
