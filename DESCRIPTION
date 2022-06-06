@@ -97,4 +97,4 @@ Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm, draw-dm,
 Config/autostyle/scope: line_breaks
 Config/autostyle/strict: true
 Remotes: 
-    tidyverse/dbplyr@rows-update
+    cran/dbplyr
