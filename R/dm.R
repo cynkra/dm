@@ -81,7 +81,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #'
 #' - If called with arguments, no validation checks will be made to ascertain that
 #'   the inputs are of the expected class and internally consistent;
-#'   use `dm_validate()` to double-check the returned object.
+#'   use [dm_validate()] to double-check the returned object.
 #'
 #' @param tables A named list of the tables (tibble-objects, not names),
 #'   to be included in the `dm` object.

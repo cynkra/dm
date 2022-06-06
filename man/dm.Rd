@@ -58,7 +58,7 @@ and extends the idea by offering operations to access the data in the tables.
 \item If called without arguments, it will create an empty \code{dm}.
 \item If called with arguments, no validation checks will be made to ascertain that
 the inputs are of the expected class and internally consistent;
-use \code{dm_validate()} to double-check the returned object.
+use \code{\link[=dm_validate]{dm_validate()}} to double-check the returned object.
 }
 
 \code{dm_get_con()} returns the DBI connection for a \code{dm} object.
