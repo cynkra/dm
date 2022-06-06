@@ -78,7 +78,7 @@ default_local_src <- function() {
 #' @export
 cdm_get_con <- function(x) {
   deprecate_soft("0.1.0", "dm::cdm_get_con()", "dm::dm_get_con()")
-  dm_get_con(x = x)
+  dm_get_con(dm = x)
 }
 
 #' @rdname deprecated
