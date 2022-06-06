@@ -12,15 +12,17 @@
 #' and accessed through the same connection, because a large part
 #' of the package's functionality relies on efficient joins.
 #'
+#' @inheritParams dm_add_pk
+#'
 #' @return The [`DBI::DBIConnection-class`] object for a `dm` object.
 #'
 #' @export
 #' @examplesIf dm:::dm_has_financial()
 #' dm_financial() %>%
 #'   dm_get_con()
-dm_get_con <- function(x) {
-  check_not_zoomed(x)
-  src <- dm_get_src_impl(x)
+dm_get_con <- function(dm) {
+  check_not_zoomed(dm)
+  src <- dm_get_src_impl(dm)
   if (!inherits(src, "src_dbi")) abort_con_only_for_dbi()
   src$con
 }

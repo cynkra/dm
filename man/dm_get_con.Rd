@@ -4,7 +4,10 @@
 \alias{dm_get_con}
 \title{Get connection}
 \usage{
-dm_get_con(x)
+dm_get_con(dm)
+}
+\arguments{
+\item{dm}{A \code{dm} object.}
 }
 \value{
 The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object for a \code{dm} object.
