@@ -48,13 +48,7 @@ are imported from the database.
 }
 \examples{
 \dontshow{if (dm:::dm_has_financial()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-con <- DBI::dbConnect(
-  RMariaDB::MariaDB(),
-  username = "guest",
-  password = "relational",
-  dbname = "Financial_ijs",
-  host = "relational.fit.cvut.cz"
-)
+con <- dm_get_con(dm_financial())
 
 dm_from_src(con)
 
