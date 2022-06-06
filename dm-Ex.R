@@ -381,52 +381,6 @@ dm_nycflights13() %>%
 
 
 cleanEx()
-nameEx("dm_examine_cardinalities")
-### * dm_examine_cardinalities
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_examine_cardinalities
-### Title: Learn about your data model
-### Aliases: dm_examine_cardinalities
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-dm_nycflights13() %>%
-  dm_examine_cardinalities()
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
-nameEx("dm_examine_constraints")
-### * dm_examine_constraints
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_examine_constraints
-### Title: Validate your data model
-### Aliases: dm_examine_constraints
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-dm_nycflights13() %>%
-  dm_examine_constraints()
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
 nameEx("dm_from_con")
 ### * dm_from_con
 
