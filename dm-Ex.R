@@ -112,62 +112,6 @@ DBI::dbDisconnect(con)
 
 
 cleanEx()
-nameEx("decompose_table")
-### * decompose_table
-
-flush(stderr()); flush(stdout())
-
-### Name: decompose_table
-### Title: Decompose a table into two linked tables
-### Aliases: decompose_table
-
-### ** Examples
-
-decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
-decomposed_table$child_table
-decomposed_table$parent_table
-
-
-
-cleanEx()
-nameEx("dm")
-### * dm
-
-flush(stderr()); flush(stdout())
-
-### Name: dm
-### Title: Data model class
-### Aliases: dm new_dm dm_get_tables is_dm as_dm
-
-### ** Examples
-
-dm(trees, mtcars)
-
-new_dm(list(trees = trees, mtcars = mtcars))
-
-as_dm(list(trees = trees, mtcars = mtcars))
-## Don't show: 
-if (rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-
-is_dm(dm_nycflights13())
-
-dm_nycflights13()$airports
-
-dm_nycflights13()["airports"]
-
-dm_nycflights13()[["airports"]]
-
-dm_nycflights13() %>% names()
-
-dm_nycflights13() %>% dm_get_tables()
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
 nameEx("dm_from_con")
 ### * dm_from_con
 
