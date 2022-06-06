@@ -317,7 +317,7 @@
 <p>This gives us a warning that changes will not be persisted. Inspecting the <code>child</code> table of the resulting <code>dm_insert_out</code> and <code>demo_sql</code>, we can see that’s exactly what happened. {dm} returned to us a dm object with our inserted rows in place, but the underlying database has not changed.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_insert_out</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   lazy query [?? x 3]</span>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   SQL [4 x 3]</span>
 <span class="co">#&gt; # Database: sqlite 3.38.5 []</span>
 <span class="co">#&gt;   value    pk    fk</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
@@ -327,7 +327,7 @@
 <span class="co">#&gt; 4 d         4     4</span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`child`&gt; [?? x 3]</span>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`child`&gt; [3 x 3]</span>
 <span class="co">#&gt; # Database: sqlite 3.38.5 []</span>
 <span class="co">#&gt;   value    pk    fk</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;int&gt; &lt;dbl&gt;</span>
@@ -341,7 +341,7 @@
   <span class="fu"><a href="../reference/rows-dm.html">dm_rows_insert</a></span><span class="op">(</span><span class="va">dm_insert_in</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`child`&gt; [?? x 3]</span>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`child`&gt; [4 x 3]</span>
 <span class="co">#&gt; # Database: sqlite 3.38.5 []</span>
 <span class="co">#&gt;   value    pk    fk</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;int&gt; &lt;dbl&gt;</span>
@@ -372,7 +372,7 @@
   <span class="fu"><a href="../reference/rows-dm.html">dm_rows_update</a></span><span class="op">(</span><span class="va">dm_update_in</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`child`&gt; [?? x 3]</span>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`child`&gt; [4 x 3]</span>
 <span class="co">#&gt; # Database: sqlite 3.38.5 []</span>
 <span class="co">#&gt;   value    pk    fk</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;int&gt; &lt;dbl&gt;</span>
@@ -516,7 +516,7 @@
   <span class="fu"><a href="../reference/rows-dm.html">dm_rows_truncate</a></span><span class="op">(</span><span class="va">dm_trunc_in</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`child`&gt; [?? x 3]</span>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`child`&gt; [0 x 3]</span>
 <span class="co">#&gt; # Database: sqlite 3.38.5 []</span>
 <span class="co">#&gt; # … with 3 variables: value &lt;chr&gt;, pk &lt;int&gt;, fk &lt;dbl&gt;</span></code></pre>
 <p>When done, do not forget to disconnect:</p>

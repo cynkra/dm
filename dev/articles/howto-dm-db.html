@@ -275,8 +275,8 @@
 <span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span>
 <span class="co">#&gt;   dm_rename(loans, loans.date = date) %&gt;%</span>
 <span class="co">#&gt;   dm_rename(accounts, accounts.date = date)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   lazy query [?? x 10]</span>
-<span class="co">#&gt; # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   SQL [?? x 10]</span>
+<span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt;       id account_id loans.date amount duration payments status district_id</span>
 <span class="co">#&gt;    &lt;int&gt;      &lt;int&gt; &lt;date&gt;      &lt;dbl&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;        &lt;int&gt;</span>
 <span class="co">#&gt;  1  4959          2 1994-01-05  80952       24     3373 A                1</span>
@@ -299,12 +299,33 @@
 <span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span>
 <span class="co">#&gt;   dm_rename(loans, loans.date = date) %&gt;%</span>
 <span class="co">#&gt;   dm_rename(accounts, accounts.date = date)</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT `LHS`.`id` AS `id`, `account_id`, `loans.date`, `amount`, `duration`, `payments`, `status`, `district_id`, `frequency`, `accounts.date`</span>
-<span class="co">#&gt; FROM (SELECT `id`, `account_id`, `date` AS `loans.date`, `amount`, `duration`, `payments`, `status`</span>
-<span class="co">#&gt; FROM `loans`) `LHS`</span>
-<span class="co">#&gt; LEFT JOIN (SELECT `id`, `district_id`, `frequency`, `date` AS `accounts.date`</span>
-<span class="co">#&gt; FROM `accounts`) `RHS`</span>
-<span class="co">#&gt; ON (`LHS`.`account_id` = `RHS`.`id`)</span></code></pre></div>
+<span class="co">#&gt; &lt;SQL&gt; SELECT</span>
+<span class="co">#&gt;   `LHS`.`id` AS `id`,</span>
+<span class="co">#&gt;   `account_id`,</span>
+<span class="co">#&gt;   `loans.date`,</span>
+<span class="co">#&gt;   `amount`,</span>
+<span class="co">#&gt;   `duration`,</span>
+<span class="co">#&gt;   `payments`,</span>
+<span class="co">#&gt;   `status`,</span>
+<span class="co">#&gt;   `district_id`,</span>
+<span class="co">#&gt;   `frequency`,</span>
+<span class="co">#&gt;   `accounts.date`</span>
+<span class="co">#&gt; FROM (</span>
+<span class="co">#&gt;   SELECT</span>
+<span class="co">#&gt;     `id`,</span>
+<span class="co">#&gt;     `account_id`,</span>
+<span class="co">#&gt;     `date` AS `loans.date`,</span>
+<span class="co">#&gt;     `amount`,</span>
+<span class="co">#&gt;     `duration`,</span>
+<span class="co">#&gt;     `payments`,</span>
+<span class="co">#&gt;     `status`</span>
+<span class="co">#&gt;   FROM `loans`</span>
+<span class="co">#&gt; ) `LHS`</span>
+<span class="co">#&gt; LEFT JOIN (</span>
+<span class="co">#&gt;   SELECT `id`, `district_id`, `frequency`, `date` AS `accounts.date`</span>
+<span class="co">#&gt;   FROM `accounts`</span>
+<span class="co">#&gt; ) `RHS`</span>
+<span class="co">#&gt;   ON (`LHS`.`account_id` = `RHS`.`id`)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="performing-operations-on-tables-by-zooming">Performing operations on tables by “zooming”<a class="anchor" aria-label="anchor" href="#performing-operations-on-tables-by-zooming"></a>
@@ -338,8 +359,8 @@
 <path fill="none" stroke="#555555" d="M66.5,-11C83.675,-11 83.6705,-30.4257 94.1348,-38.0138"></path><polygon fill="#555555" stroke="#555555" points="93.4148,-41.4526 104,-41 95.4429,-34.7529 93.4148,-41.4526"></polygon></g></g></svg><p>The resulting table <code>total_loans</code> can be accessed like any other table in the dm object.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_total</span><span class="op">$</span><span class="va">total_loans</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   lazy query [?? x 2]</span>
-<span class="co">#&gt; # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   SQL [?? x 2]</span>
+<span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt;    account_id total_amount</span>
 <span class="co">#&gt;         &lt;int&gt;        &lt;dbl&gt;</span>
 <span class="co">#&gt;  1          2        80952</span>

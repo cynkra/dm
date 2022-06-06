@@ -102,7 +102,7 @@ information."><meta property="og:image" content="https://cynkra.github.io/dm/log
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get filter expressions</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/dm.R" class="external-link"><code>R/dm.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/filter-dm.R" class="external-link"><code>R/filter-dm.R</code></a></small>
     <div class="hidden name"><code>dm_get_filters.Rd</code></div>
     </div>
 
@@ -113,7 +113,7 @@ information.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_get_filters</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_get_filters</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -135,7 +135,35 @@ information.</p>
 
 
 </dl></div>
+    <div id="life-cycle">
+    <h2>Life cycle</h2>
+    
 
+<p>This function is marked "questioning" because it feels wrong
+to tightly couple filtering with the data model.
+On the one hand, an overview of active filters is useful
+when specifying the base data set for an analysis in terms of column selections
+and row filters.
+However, these filter condition should be only of informative nature
+and never affect the results of other operations.
+We are working on formalizing the semantics of the underlying operations
+in order to present them in a cleaner interface.</p>
+<p>Use <code><a href="dm_zoom_to.html">dm_zoom_to()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code> to filter rows without registering
+the filter.</p>
+    </div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p><code><a href="dm_filter.html">dm_filter()</a></code>, <code><a href="dm_filter.html">dm_apply_filters()</a></code></p></div>
+    </div>
+
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">dm_get_filters</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 0 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3 variables: table &lt;chr&gt;, filter &lt;list&gt;, zoomed &lt;lgl&gt;</span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

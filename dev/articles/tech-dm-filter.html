@@ -370,47 +370,65 @@
   <span class="fu"><a href="../reference/dm.html">dm_get_tables</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fu">dbplyr</span><span class="fu">::</span><span class="va"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render</a></span><span class="op">)</span>
 <span class="co">#&gt; $flights</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT * FROM `flights_1_2020_08_28_07_13_03_12345` AS `LHS`</span>
+<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (</span>
+<span class="co">#&gt;   SELECT * FROM `flights_1_2020_08_28_07_13_03_12345` AS `LHS`</span>
+<span class="co">#&gt;   WHERE EXISTS (</span>
+<span class="co">#&gt;     SELECT 1 FROM (</span>
+<span class="co">#&gt;     SELECT *</span>
+<span class="co">#&gt;     FROM `airlines_1_2020_08_28_07_13_03_12345`</span>
+<span class="co">#&gt;     WHERE (`name` = 'Delta Air Lines Inc.')</span>
+<span class="co">#&gt; ) AS `RHS`</span>
+<span class="co">#&gt;     WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
+<span class="co">#&gt;   )</span>
+<span class="co">#&gt; ) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airlines_1_2020_08_28_07_13_03_12345`</span>
-<span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span>
-<span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
-<span class="co">#&gt; )) AS `LHS`</span>
-<span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airports_1_2020_08_28_07_13_03_12345`</span>
-<span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span>
+<span class="co">#&gt;   SELECT 1 FROM (</span>
+<span class="co">#&gt;   SELECT *</span>
+<span class="co">#&gt;   FROM `airports_1_2020_08_28_07_13_03_12345`</span>
+<span class="co">#&gt;   WHERE (`name` != 'John F Kennedy Intl')</span>
+<span class="co">#&gt; ) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span>
 <span class="co">#&gt; )</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $airlines</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airlines_1_2020_08_28_07_13_03_12345`</span>
-<span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `LHS`</span>
+<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (</span>
+<span class="co">#&gt;   SELECT *</span>
+<span class="co">#&gt;   FROM `airlines_1_2020_08_28_07_13_03_12345`</span>
+<span class="co">#&gt;   WHERE (`name` = 'Delta Air Lines Inc.')</span>
+<span class="co">#&gt; ) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_1_2020_08_28_07_13_03_12345` AS `LHS`</span>
-<span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airports_1_2020_08_28_07_13_03_12345`</span>
-<span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span>
-<span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span>
-<span class="co">#&gt; )) AS `RHS`</span>
+<span class="co">#&gt;   SELECT 1 FROM (</span>
+<span class="co">#&gt;   SELECT * FROM `flights_1_2020_08_28_07_13_03_12345` AS `LHS`</span>
+<span class="co">#&gt;   WHERE EXISTS (</span>
+<span class="co">#&gt;     SELECT 1 FROM (</span>
+<span class="co">#&gt;     SELECT *</span>
+<span class="co">#&gt;     FROM `airports_1_2020_08_28_07_13_03_12345`</span>
+<span class="co">#&gt;     WHERE (`name` != 'John F Kennedy Intl')</span>
+<span class="co">#&gt; ) AS `RHS`</span>
+<span class="co">#&gt;     WHERE (`LHS`.`origin` = `RHS`.`faa`)</span>
+<span class="co">#&gt;   )</span>
+<span class="co">#&gt; ) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
 <span class="co">#&gt; )</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $airports</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airports_1_2020_08_28_07_13_03_12345`</span>
-<span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `LHS`</span>
+<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (</span>
+<span class="co">#&gt;   SELECT *</span>
+<span class="co">#&gt;   FROM `airports_1_2020_08_28_07_13_03_12345`</span>
+<span class="co">#&gt;   WHERE (`name` != 'John F Kennedy Intl')</span>
+<span class="co">#&gt; ) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_1_2020_08_28_07_13_03_12345` AS `LHS`</span>
-<span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airlines_1_2020_08_28_07_13_03_12345`</span>
-<span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span>
-<span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
-<span class="co">#&gt; )) AS `RHS`</span>
+<span class="co">#&gt;   SELECT 1 FROM (</span>
+<span class="co">#&gt;   SELECT * FROM `flights_1_2020_08_28_07_13_03_12345` AS `LHS`</span>
+<span class="co">#&gt;   WHERE EXISTS (</span>
+<span class="co">#&gt;     SELECT 1 FROM (</span>
+<span class="co">#&gt;     SELECT *</span>
+<span class="co">#&gt;     FROM `airlines_1_2020_08_28_07_13_03_12345`</span>
+<span class="co">#&gt;     WHERE (`name` = 'Delta Air Lines Inc.')</span>
+<span class="co">#&gt; ) AS `RHS`</span>
+<span class="co">#&gt;     WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
+<span class="co">#&gt;   )</span>
+<span class="co">#&gt; ) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`faa` = `RHS`.`origin`)</span>
 <span class="co">#&gt; )</span></code></pre></div>
 <p>Further reading: {dm}’s function for copying data <a href="https://cynkra.github.io/dm/articles/dm.html#copy">from and to databases</a>.</p>

@@ -12,9 +12,6 @@ the inputs are of the expected class and internally consistent;
 use validate_dm() to double-check the returned object.
 
 
-dm_get_con() returns the DBI connection for a dm object.
-This works only if the tables are stored on a database, otherwise an error
-is thrown.
 dm_get_tables() returns a named list of dplyr tbl objects
 of a dm object.
 Filtering expressions defined by dm_filter() are NOT evaluated at this stage.
@@ -137,10 +134,7 @@ and extends the idea by offering operations to access the data in the tables.</p
 <li><p>If called with arguments, no validation checks will be made to ascertain that
 the inputs are of the expected class and internally consistent;
 use <code>validate_dm()</code> to double-check the returned object.</p></li>
-</ul><p><code>dm_get_con()</code> returns the DBI connection for a <code>dm</code> object.
-This works only if the tables are stored on a database, otherwise an error
-is thrown.</p>
-<p><code>dm_get_tables()</code> returns a named list of <span class="pkg">dplyr</span> <a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a> objects
+</ul><p><code>dm_get_tables()</code> returns a named list of <span class="pkg">dplyr</span> <a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a> objects
 of a <code>dm</code> object.
 Filtering expressions defined by <code><a href="dm_filter.html">dm_filter()</a></code> are NOT evaluated at this stage.
 To get a filtered table, use <code><a href="dm_filter.html">dm_apply_filters_to_tbl()</a></code>, to apply filters to all tables use <code><a href="dm_filter.html">dm_apply_filters()</a></code>.</p>
@@ -153,8 +147,6 @@ To get a filtered table, use <code><a href="dm_filter.html">dm_apply_filters_to_
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dm</span><span class="op">(</span><span class="va">...</span>, .name_repair <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"check_unique"</span>, <span class="st">"unique"</span>, <span class="st">"universal"</span>, <span class="st">"minimal"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu">new_dm</span><span class="op">(</span>tables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">dm_get_con</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
 <span class="fu">dm_get_tables</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
@@ -179,9 +171,6 @@ To get a filtered table, use <code><a href="dm_filter.html">dm_apply_filters_to_
 <p>For <code>dm()</code>, <code>new_dm()</code>, <code>as_dm()</code>: A <code>dm</code> object.</p>
 
 
-<p>For <code>dm_get_con()</code>: The <code><a href="https://dbi.r-dbi.org/reference/DBIConnection-class.html" class="external-link">DBI::DBIConnection</a></code> for <code>dm</code> objects.</p>
-
-
 <p>For <code>dm_get_tables()</code>: A named list with the tables constituting the <code>dm</code>.</p>
 
 
@@ -189,11 +178,6 @@ To get a filtered table, use <code><a href="dm_filter.html">dm_apply_filters_to_
 
 
 <p>For <code>validate_dm()</code>: Returns the <code>dm</code>, invisibly, after finishing all checks.</p>
-    </div>
-    <div id="details">
-    <h2>Details</h2>
-    <p>All lazy tables in a dm object must be stored on the same database server
-and accessed through the same connection.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

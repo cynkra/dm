@@ -190,7 +190,7 @@
 <span class="co">#&gt; [7] "orders"    "tkeys"     "trans"</span>
 <span class="va">fin_dm</span><span class="op">$</span><span class="va">loans</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`Financial_ijs`.`loans`&gt; [?? x 7]</span>
-<span class="co">#&gt; # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt;       id account_id date       amount duration payments status</span>
 <span class="co">#&gt;    &lt;int&gt;      &lt;int&gt; &lt;date&gt;      &lt;dbl&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt; </span>
 <span class="co">#&gt;  1  4959          2 1994-01-05  80952       24     3373 A     </span>
@@ -206,8 +206,8 @@
 <span class="co">#&gt; # … with more rows</span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">fin_dm</span><span class="op">$</span><span class="va">trans</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   lazy query [?? x 1]</span>
-<span class="co">#&gt; # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   SQL [1 x 1]</span>
+<span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt;         n</span>
 <span class="co">#&gt;   &lt;int64&gt;</span>
 <span class="co">#&gt; 1 1056320</span></code></pre>
@@ -266,8 +266,8 @@
 <span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span>
 <span class="co">#&gt;   dm_rename(loans, loans.date = date) %&gt;%</span>
 <span class="co">#&gt;   dm_rename(accounts, accounts.date = date)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   lazy query [?? x 25]</span>
-<span class="co">#&gt; # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   SQL [?? x 25]</span>
+<span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt;       id account_id loans.date amount duration payments status district_id</span>
 <span class="co">#&gt;    &lt;int&gt;      &lt;int&gt; &lt;date&gt;      &lt;dbl&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;        &lt;int&gt;</span>
 <span class="co">#&gt;  1  4959          2 1994-01-05  80952       24     3373 A                1</span>
@@ -325,8 +325,8 @@
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"total_loans"</span><span class="op">)</span>
 
 <span class="va">fin_dm_total</span><span class="op">$</span><span class="va">total_loans</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   lazy query [?? x 2]</span>
-<span class="co">#&gt; # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   SQL [?? x 2]</span>
+<span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt;    account_id total_amount</span>
 <span class="co">#&gt;         &lt;int&gt;        &lt;dbl&gt;</span>
 <span class="co">#&gt;  1          2        80952</span>
