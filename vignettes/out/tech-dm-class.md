@@ -127,10 +127,10 @@ base_dm
 ```
 
 This constructor is optimized for speed and does not perform integrity
-checks. Use with caution, validate using `validate_dm()` if necessary.
+checks. Use with caution, validate using `dm_validate()` if necessary.
 
 ``` r
-validate_dm(base_dm)
+dm_validate(base_dm)
 ```
 
 ## Access tables
