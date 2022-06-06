@@ -3,7 +3,6 @@
 \name{dm}
 \alias{dm}
 \alias{new_dm}
-\alias{dm_get_con}
 \alias{dm_get_tables}
 \alias{is_dm}
 \alias{as_dm}
@@ -13,8 +12,6 @@
 dm(..., .name_repair = c("check_unique", "unique", "universal", "minimal"))
 
 new_dm(tables = list())
-
-dm_get_con(x)
 
 dm_get_tables(x)
 
@@ -40,8 +37,6 @@ to be included in the \code{dm} object.}
 \value{
 For \code{dm()}, \code{new_dm()}, \code{as_dm()}: A \code{dm} object.
 
-For \code{dm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
-
 For \code{dm_get_tables()}: A named list with the tables constituting the \code{dm}.
 
 For \code{is_dm()}: A scalar logical, \code{TRUE} if is this object is a \code{dm}.
@@ -66,10 +61,6 @@ the inputs are of the expected class and internally consistent;
 use \code{validate_dm()} to double-check the returned object.
 }
 
-\code{dm_get_con()} returns the DBI connection for a \code{dm} object.
-This works only if the tables are stored on a database, otherwise an error
-is thrown.
-
 \code{dm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
 of a \code{dm} object.
 Filtering expressions defined by \code{\link[=dm_filter]{dm_filter()}} are NOT evaluated at this stage.
@@ -80,10 +71,6 @@ To get a filtered table, use \code{\link[=dm_apply_filters_to_tbl]{dm_apply_filt
 \code{as_dm()} coerces objects to the \code{dm} class
 
 \code{validate_dm()} checks the internal consistency of a \code{dm} object.
-}
-\details{
-All lazy tables in a dm object must be stored on the same database server
-and accessed through the same connection.
 }
 \examples{
 dm(trees, mtcars)
