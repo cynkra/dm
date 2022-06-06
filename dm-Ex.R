@@ -168,50 +168,6 @@ dm_nycflights13() %>% dm_get_tables()
 
 
 cleanEx()
-nameEx("dm_add_fk")
-### * dm_add_fk
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_add_fk
-### Title: Add foreign keys
-### Aliases: dm_add_fk
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-nycflights_dm <- dm(
-  planes = nycflights13::planes,
-  flights = nycflights13::flights,
-  weather = nycflights13::weather
-)
-
-nycflights_dm %>%
-  dm_draw()
-
-# Create foreign keys:
-nycflights_dm %>%
-  dm_add_pk(planes, tailnum) %>%
-  dm_add_fk(flights, tailnum, planes) %>%
-  dm_add_pk(weather, c(origin, time_hour)) %>%
-  dm_add_fk(flights, c(origin, time_hour), weather) %>%
-  dm_draw()
-
-# Keys can be checked during creation:
-try(
-  nycflights_dm %>%
-    dm_add_pk(planes, tailnum) %>%
-    dm_add_fk(flights, tailnum, planes, check = TRUE)
-)
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
 nameEx("dm_from_con")
 ### * dm_from_con
 
