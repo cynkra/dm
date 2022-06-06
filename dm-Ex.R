@@ -427,57 +427,6 @@ dm_nycflights13() %>%
 
 
 cleanEx()
-nameEx("dm_filter")
-### * dm_filter
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_filter
-### Title: Filtering
-### Aliases: dm_filter dm_apply_filters dm_apply_filters_to_tbl
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-dm_nyc <- dm_nycflights13()
-dm_nyc_filtered <-
-  dm_nycflights13() %>%
-  dm_filter(airports, name == "John F Kennedy Intl")
-
-dm_apply_filters_to_tbl(dm_nyc_filtered, flights)
-
-dm_nyc_filtered %>%
-  dm_apply_filters()
-
-# If you want to keep only those rows in the parent tables
-# whose primary key values appear as foreign key values in
-# `flights`, you can set a `TRUE` filter in `flights`:
-dm_nyc %>%
-  dm_filter(flights, 1 == 1) %>%
-  dm_apply_filters() %>%
-  dm_nrow()
-# note that in this example, the only affected table is
-# `airports` because the departure airports in `flights` are
-# only the three New York airports.
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-## Don't show: 
-if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-
-dm_nyc %>%
-  dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
-  compute()
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
 nameEx("dm_from_con")
 ### * dm_from_con
 
