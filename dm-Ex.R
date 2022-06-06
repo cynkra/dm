@@ -6,27 +6,6 @@ library('dm')
 base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
 base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
 cleanEx()
-nameEx("check_key")
-### * check_key
-
-flush(stderr()); flush(stdout())
-
-### Name: check_key
-### Title: Check if column(s) can be used as keys
-### Aliases: check_key
-
-### ** Examples
-
-data <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
-# this is failing:
-try(check_key(data, a, b))
-
-# this is passing:
-check_key(data, a, c)
-
-
-
-cleanEx()
 nameEx("dm_from_con")
 ### * dm_from_con
 
