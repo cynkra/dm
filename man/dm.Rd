@@ -31,6 +31,8 @@ Forwarded as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_name
 
 \item{tables}{A named list of the tables (tibble-objects, not names),
 to be included in the \code{dm} object.}
+
+\item{x}{An object.}
 }
 \value{
 For \code{dm()}, \code{new_dm()}, \code{as_dm()}: A \code{dm} object.

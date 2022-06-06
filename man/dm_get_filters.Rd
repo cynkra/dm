@@ -6,6 +6,9 @@
 \usage{
 dm_get_filters(x)
 }
+\arguments{
+\item{x}{An object.}
+}
 \value{
 A tibble with the following columns:
 \describe{

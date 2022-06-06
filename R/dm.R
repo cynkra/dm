@@ -290,6 +290,8 @@ dm_get_zoom <- function(x, cols = c("table", "zoom"), quiet = FALSE) {
 #'
 #' `is_dm()` returns `TRUE` if the input is of class `dm`.
 #'
+#' @param x An object.
+#'
 #' @rdname dm
 #'
 #' @return For `is_dm()`: Boolean, is this object a `dm`.
