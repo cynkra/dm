@@ -35,6 +35,8 @@ To refer to a compound key, use \code{c(col1, col2)}.}
 An updated \code{dm} without the matching foreign key relation(s).
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 \code{dm_rm_fk()} can remove either one reference between two tables, or multiple references at once (with a message).
 An error is thrown if no matching foreign key is found.
 }

@@ -4,9 +4,17 @@
 \alias{dm_nycflights13}
 \title{Creates a dm object for the \pkg{nycflights13} data}
 \usage{
-dm_nycflights13(cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE)
+dm_nycflights13(
+  ...,
+  cycle = FALSE,
+  color = TRUE,
+  subset = TRUE,
+  compound = TRUE
+)
 }
 \arguments{
+\item{...}{These dots are for future extensions and must be empty.}
+
 \item{cycle}{Boolean.
 If \code{FALSE} (default), only one foreign key relation
 (from \code{flights$origin} to \code{airports$faa}) between the \code{flights} table and the \code{airports} table is
@@ -26,6 +34,8 @@ because this requires compound keys.}
 A \code{dm} object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Creates an example \code{\link{dm}} object from the tables in \pkg{nycflights13},
 along with the references.
 See \link[nycflights13:flights]{nycflights13::flights} for a description of the data.

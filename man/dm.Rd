@@ -41,9 +41,11 @@ For \code{dm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnec
 
 For \code{dm_get_tables()}: A named list with the tables constituting the \code{dm}.
 
-For \code{is_dm()}: Boolean, is this object a \code{dm}.
+For \code{is_dm()}: A scalar logical, \code{TRUE} if is this object is a \code{dm}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 The \code{dm} class holds a list of tables and their relationships.
 It is inspired by \href{https://github.com/bergant/datamodelr}{datamodelr},
 and extends the idea by offering operations to access the data in the tables.
@@ -65,8 +67,8 @@ is thrown.
 
 \code{dm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
 of a \code{dm} object.
-Filtering expressions are NOT evaluated at this stage.
-To get a filtered table, use \code{dm_apply_filters_to_tbl()}, to apply filters to all tables use \code{dm_apply_filters()}
+Filtering expressions defined by \code{\link[=dm_filter]{dm_filter()}} are NOT evaluated at this stage.
+To get a filtered table, use \code{\link[=dm_apply_filters_to_tbl]{dm_apply_filters_to_tbl()}}, to apply filters to all tables use \code{\link[=dm_apply_filters]{dm_apply_filters()}}.
 
 \code{is_dm()} returns \code{TRUE} if the input is of class \code{dm}.
 
@@ -78,25 +80,23 @@ and accessed through the same connection.
 }
 \examples{
 dm(trees, mtcars)
+
 new_dm(list(trees = trees, mtcars = mtcars))
+
 as_dm(list(trees = trees, mtcars = mtcars))
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
+is_dm(dm_nycflights13())
+
 dm_nycflights13()$airports
+
+dm_nycflights13()["airports"]
+
+dm_nycflights13()[["airports"]]
+
 dm_nycflights13() \%>\% names()
 
-copy_dm_to(
-  dbplyr::src_memdb(),
-  dm_nycflights13()
-) \%>\%
-  dm_get_con()
-
 dm_nycflights13() \%>\% dm_get_tables()
-dm_nycflights13() \%>\% dm_get_filters()
-is_dm(dm_nycflights13())
-dm_nycflights13()["airports"]
-dm_nycflights13()[["airports"]]
-dm_nycflights13()$airports
 \dontshow{\}) # examplesIf}
 }
 \seealso{

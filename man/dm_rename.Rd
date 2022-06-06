@@ -29,6 +29,8 @@ See select helpers for more details, and the examples about tidyselect helpers, 
 An updated \code{dm} with the columns of \code{table} renamed.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Rename the columns of your \code{\link{dm}} using syntax that is similar to \code{dplyr::rename()}.
 }
 \details{

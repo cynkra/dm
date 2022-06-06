@@ -22,11 +22,16 @@ Allowed colors are all hex coded colors (quoted) and the color names from \code{
 \value{
 For \code{dm_set_colors()}: the updated data model.
 
-For \code{dm_get_colors()}, a two-column tibble with one row per table.
+For \code{dm_get_colors()}, a named character vector of table names
+with the colors in the names.
+This allows calling \code{dm_set_colors(!!!dm_get_colors(...))}.
+Use \code{\link[tibble:enframe]{tibble::enframe()}} to convert this to a tibble.
 
 For \code{dm_get_available_colors()}, a vector with the available colors.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 \code{dm_set_colors()} allows to define the colors that will be used to display the tables of the data model with \code{\link[=dm_draw]{dm_draw()}}.
 The colors can either be either specified with hex color codes or using the names of the built-in R colors.
 An overview of the colors corresponding to the standard color names can be found at
