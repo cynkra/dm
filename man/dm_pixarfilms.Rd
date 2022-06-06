@@ -4,7 +4,7 @@
 \alias{dm_pixarfilms}
 \title{Creates a dm object for the \pkg{pixarfilms} data}
 \usage{
-dm_pixarfilms(color = TRUE, consistent = FALSE)
+dm_pixarfilms(..., color = TRUE, consistent = FALSE)
 }
 \arguments{
 \item{color}{Boolean, if \code{TRUE} (default), the resulting \code{dm} object will
@@ -20,6 +20,8 @@ A \code{dm} object consisting of {pixarfilms} tables, complete with
 primary and foreign keys and optionally colored.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Creates an example \code{\link{dm}} object from the tables in
 \pkg{pixarfilms}, along with the references.
 }
