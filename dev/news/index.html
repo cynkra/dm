@@ -630,7 +630,7 @@
 <li>
 <code><a href="https://rdrr.io/r/utils/str.html" class="external-link">str()</a></code> shows simplified views (<a href="https://github.com/cynkra/dm/issues/123" class="external-link">#123</a>).</li>
 <li>Edits to README (<a href="https://github.com/cynkra/dm/issues/172" class="external-link">#172</a>, <a href="https://github.com/bbecane" class="external-link">@bbecane</a>).</li>
-<li>Extend <code><a href="../reference/dm.html">validate_dm()</a></code> (<a href="https://github.com/cynkra/dm/issues/173" class="external-link">#173</a>).</li>
+<li>Extend <code><a href="../reference/deprecated.html">validate_dm()</a></code> (<a href="https://github.com/cynkra/dm/issues/173" class="external-link">#173</a>).</li>
 <li>Fix zooming into table that uses an FK column as primary key (<a href="https://github.com/cynkra/dm/issues/193" class="external-link">#193</a>).</li>
 <li>Fix corner case in <code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code> (<a href="https://github.com/cynkra/dm/issues/175" class="external-link">#175</a>).</li>
 <li>More efficient <code><a href="../reference/check_key.html">check_key()</a></code> for databases (<a href="https://github.com/cynkra/dm/issues/208" class="external-link">#208</a>).</li>
@@ -653,7 +653,7 @@
 <code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code> works with zoomed dm-s (<a href="https://github.com/cynkra/dm/issues/156" class="external-link">#156</a>).</li>
 <li>New <code><a href="../reference/dm_enum_fk_candidates.html">enum_fk_candidates()</a></code> (<a href="https://github.com/cynkra/dm/issues/156" class="external-link">#156</a>).</li>
 <li>Add name repair argument for both <code><a href="../reference/deprecated.html">cdm_insert_zoomed_tbl()</a></code> and <code><a href="../reference/deprecated.html">cdm_add_tbl()</a></code>, defaulting to renaming of old and new tables when adding tables with duplicate names (<a href="https://github.com/cynkra/dm/issues/132" class="external-link">#132</a>).</li>
-<li>Redesign constructors and validators: <code><a href="../reference/dm.html">dm()</a></code> is akin to <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble()</a></code>, <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> works like <code><a href="../reference/dm.html">dm()</a></code> did previously, <code><a href="../reference/dm.html">new_dm()</a></code> only accepts a list of tables and no longer validates, <code><a href="../reference/dm.html">validate_dm()</a></code> checks internal consistency (<a href="https://github.com/cynkra/dm/issues/69" class="external-link">#69</a>).</li>
+<li>Redesign constructors and validators: <code><a href="../reference/dm.html">dm()</a></code> is akin to <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble()</a></code>, <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> works like <code><a href="../reference/dm.html">dm()</a></code> did previously, <code><a href="../reference/dm.html">new_dm()</a></code> only accepts a list of tables and no longer validates, <code><a href="../reference/deprecated.html">validate_dm()</a></code> checks internal consistency (<a href="https://github.com/cynkra/dm/issues/69" class="external-link">#69</a>).</li>
 <li>
 <code><a href="../reference/materialize.html">compute.dm()</a></code> applies filters and calls <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> on all tables (<a href="https://github.com/cynkra/dm/issues/135" class="external-link">#135</a>).</li>
 </ul></div>
@@ -809,7 +809,7 @@
 <h3 id="creating-dm-objects-and-basic-functions-0-0-1">Creating <code>dm</code> objects and basic functions:<a class="anchor" aria-label="anchor" href="#creating-dm-objects-and-basic-functions-0-0-1"></a></h3>
 <ul><li><code><a href="../reference/dm.html">dm()</a></code></li>
 <li><code><a href="../reference/dm.html">new_dm()</a></code></li>
-<li><code><a href="../reference/dm.html">validate_dm()</a></code></li>
+<li><code><a href="../reference/deprecated.html">validate_dm()</a></code></li>
 <li><code><a href="../reference/deprecated.html">cdm_get_src()</a></code></li>
 <li><code><a href="../reference/deprecated.html">cdm_get_tables()</a></code></li>
 <li><code>cdm_get_data_model()</code></li>

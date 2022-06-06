@@ -9,7 +9,7 @@ new_dm() is a low-level constructor that creates a new dm object.
 If called without arguments, it will create an empty dm.
 If called with arguments, no validation checks will be made to ascertain that
 the inputs are of the expected class and internally consistent;
-use validate_dm() to double-check the returned object.
+use dm_validate() to double-check the returned object.
 
 
 dm_get_tables() returns a named list of dplyr tbl objects
@@ -17,8 +17,7 @@ of a dm object.
 Filtering expressions defined by dm_filter() are NOT evaluated at this stage.
 To get a filtered table, use dm_apply_filters_to_tbl(), to apply filters to all tables use dm_apply_filters().
 is_dm() returns TRUE if the input is of class dm.
-as_dm() coerces objects to the dm class
-validate_dm() checks the internal consistency of a dm object."><meta property="og:image" content="https://cynkra.github.io/dm/logo.png"><meta name="robots" content="noindex"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+as_dm() coerces objects to the dm class"><meta property="og:image" content="https://cynkra.github.io/dm/logo.png"><meta name="robots" content="noindex"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
@@ -119,7 +118,7 @@ validate_dm() checks the internal consistency of a dm object."><meta property="o
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Data model class</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/dm.R" class="external-link"><code>R/dm.R</code></a>, <a href="https://github.com/cynkra/dm/blob/HEAD/R/validate.R" class="external-link"><code>R/validate.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/dm.R" class="external-link"><code>R/dm.R</code></a></small>
     <div class="hidden name"><code>dm.Rd</code></div>
     </div>
 
@@ -133,14 +132,13 @@ and extends the idea by offering operations to access the data in the tables.</p
 <p><code>new_dm()</code> is a low-level constructor that creates a new <code>dm</code> object.</p><ul><li><p>If called without arguments, it will create an empty <code>dm</code>.</p></li>
 <li><p>If called with arguments, no validation checks will be made to ascertain that
 the inputs are of the expected class and internally consistent;
-use <code>validate_dm()</code> to double-check the returned object.</p></li>
+use <code><a href="dm_validate.html">dm_validate()</a></code> to double-check the returned object.</p></li>
 </ul><p><code>dm_get_tables()</code> returns a named list of <span class="pkg">dplyr</span> <a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a> objects
 of a <code>dm</code> object.
 Filtering expressions defined by <code><a href="dm_filter.html">dm_filter()</a></code> are NOT evaluated at this stage.
 To get a filtered table, use <code><a href="dm_filter.html">dm_apply_filters_to_tbl()</a></code>, to apply filters to all tables use <code><a href="dm_filter.html">dm_apply_filters()</a></code>.</p>
 <p><code>is_dm()</code> returns <code>TRUE</code> if the input is of class <code>dm</code>.</p>
 <p><code>as_dm()</code> coerces objects to the <code>dm</code> class</p>
-<p><code>validate_dm()</code> checks the internal consistency of a <code>dm</code> object.</p>
     </div>
 
     <div id="ref-usage">
@@ -152,9 +150,7 @@ To get a filtered table, use <code><a href="dm_filter.html">dm_apply_filters_to_
 
 <span class="fu">is_dm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
-<span class="fu">as_dm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">validate_dm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+<span class="fu">as_dm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -175,9 +171,6 @@ To get a filtered table, use <code><a href="dm_filter.html">dm_apply_filters_to_
 
 
 <p>For <code>is_dm()</code>: A scalar logical, <code>TRUE</code> if is this object is a <code>dm</code>.</p>
-
-
-<p>For <code>validate_dm()</code>: Returns the <code>dm</code>, invisibly, after finishing all checks.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

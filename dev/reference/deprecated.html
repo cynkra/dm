@@ -3,7 +3,8 @@
 Most functions with the cdm_ prefix have an identical alternative
 with a dm_ prefix.
 sql_schema_*() functions have been replaced with the corresponding
-db_schema_*() functions."><meta property="og:image" content="https://cynkra.github.io/dm/logo.png"><meta name="robots" content="noindex"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+db_schema_*() functions.
+validate_dm() has been replaced by dm_validate() for consistency."><meta property="og:image" content="https://cynkra.github.io/dm/logo.png"><meta name="robots" content="noindex"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
@@ -104,7 +105,7 @@ db_schema_*() functions."><meta property="og:image" content="https://cynkra.gith
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Deprecated functions</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/deprecated.R" class="external-link"><code>R/deprecated.R</code></a>, <a href="https://github.com/cynkra/dm/blob/HEAD/R/zzx-deprecated.R" class="external-link"><code>R/zzx-deprecated.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/deprecated.R" class="external-link"><code>R/deprecated.R</code></a>, <a href="https://github.com/cynkra/dm/blob/HEAD/R/validate.R" class="external-link"><code>R/validate.R</code></a>, <a href="https://github.com/cynkra/dm/blob/HEAD/R/zzx-deprecated.R" class="external-link"><code>R/zzx-deprecated.R</code></a></small>
     <div class="hidden name"><code>deprecated.Rd</code></div>
     </div>
 
@@ -114,6 +115,7 @@ Most functions with the <code>cdm_</code> prefix have an identical alternative
 with a <code>dm_</code> prefix.</p>
 <p><code>sql_schema_*()</code> functions have been replaced with the corresponding
 <code>db_schema_*()</code> functions.</p>
+<p><code>validate_dm()</code> has been replaced by <code><a href="dm_validate.html">dm_validate()</a></code> for consistency.</p>
     </div>
 
     <div id="ref-usage">
@@ -124,6 +126,8 @@ with a <code>dm_</code> prefix.</p>
 <span class="fu">sql_schema_exists</span><span class="op">(</span><span class="va">dest</span>, <span class="va">schema</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="fu">sql_schema_list</span><span class="op">(</span><span class="va">dest</span>, include_default <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
+
+<span class="fu">validate_dm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
 <span class="fu">check_if_subset</span><span class="op">(</span><span class="va">t1</span>, <span class="va">c1</span>, <span class="va">t2</span>, <span class="va">c2</span><span class="op">)</span>
 
@@ -248,6 +252,10 @@ with a <code>dm_</code> prefix.</p>
 <span class="fu">cdm_zoom_out</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></code></pre></div>
     </div>
 
+    <div id="arguments">
+    <h2>Arguments</h2>
+    <p></p>
+    </div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
