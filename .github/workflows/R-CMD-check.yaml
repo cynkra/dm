@@ -56,6 +56,9 @@ jobs:
       - uses: ./.github/workflows/custom/after-install
         if: hashFiles('.github/workflows/custom/after-install/action.yml') != ''
 
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+
       - uses: ./.github/workflows/check
         with:
           results: ${{ runner.os }}-smoke-test
