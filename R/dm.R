@@ -1,6 +1,8 @@
 #' Data model class
 #'
 #' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' The `dm` class holds a list of tables and their relationships.
 #' It is inspired by [datamodelr](https://github.com/bergant/datamodelr),
 #' and extends the idea by offering operations to access the data in the tables.
@@ -34,26 +36,23 @@
 #' @export
 #' @examples
 #' dm(trees, mtcars)
+#'
 #' new_dm(list(trees = trees, mtcars = mtcars))
+#'
 #' as_dm(list(trees = trees, mtcars = mtcars))
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
 #'
+#' is_dm(dm_nycflights13())
+#'
 #' dm_nycflights13()$airports
+#'
+#' dm_nycflights13()["airports"]
+#'
+#' dm_nycflights13()[["airports"]]
+#'
 #' dm_nycflights13() %>% names()
 #'
-#' copy_dm_to(
-#'   dbplyr::src_memdb(),
-#'   dm_nycflights13()
-#' ) %>%
-#'   dm_get_con()
-#'
 #' dm_nycflights13() %>% dm_get_tables()
-#' dm_nycflights13() %>% dm_get_filters()
-#' dm_nycflights13() %>% validate_dm()
-#' is_dm(dm_nycflights13())
-#' dm_nycflights13()["airports"]
-#' dm_nycflights13()[["airports"]]
-#' dm_nycflights13()$airports
 dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "minimal")) {
   quos <- enquos(...)
 
@@ -207,8 +206,8 @@ dm_get_con <- function(x) {
 #'
 #' `dm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
 #' of a `dm` object.
-#' Filtering expressions are NOT evaluated at this stage.
-#' To get a filtered table, use `dm_apply_filters_to_tbl()`, to apply filters to all tables use `dm_apply_filters()`
+#' Filtering expressions defined by [dm_filter()] are NOT evaluated at this stage.
+#' To get a filtered table, use [dm_apply_filters_to_tbl()], to apply filters to all tables use [dm_apply_filters()].
 #'
 #' @rdname dm
 #'
@@ -293,7 +292,7 @@ dm_get_zoom <- function(x, cols = c("table", "zoom"), quiet = FALSE) {
 #'
 #' @rdname dm
 #'
-#' @return For `is_dm()`: Boolean, is this object a `dm`.
+#' @return For `is_dm()`: A scalar logical, `TRUE` if is this object is a `dm`.
 #'
 #' @export
 is_dm <- function(x) {
