@@ -322,65 +322,6 @@ dm_nycflights13() %>%
 
 
 cleanEx()
-nameEx("dm_draw")
-### * dm_draw
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_draw
-### Title: Draw a diagram of the data model
-### Aliases: dm_draw
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-dm_nycflights13() %>%
-  dm_draw()
-
-dm_nycflights13(cycle = TRUE) %>%
-  dm_draw(view_type = "title_only")
-
-head(dm_get_available_colors())
-length(dm_get_available_colors())
-
-dm_nycflights13() %>%
-  dm_get_colors()
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
-nameEx("dm_enum_fk_candidates")
-### * dm_enum_fk_candidates
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_enum_fk_candidates
-### Title: Foreign key candidates
-### Aliases: dm_enum_fk_candidates enum_fk_candidates
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-dm_nycflights13() %>%
-  dm_enum_fk_candidates(flights, airports)
-
-dm_nycflights13() %>%
-  dm_zoom_to(flights) %>%
-  enum_fk_candidates(airports)
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
 nameEx("dm_from_con")
 ### * dm_from_con
 
