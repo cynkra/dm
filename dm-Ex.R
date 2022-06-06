@@ -32,29 +32,6 @@ DBI::dbDisconnect(con)
 
 
 cleanEx()
-nameEx("dm_get_all_fks")
-### * dm_get_all_fks
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_get_all_fks
-### Title: Get foreign key constraints
-### Aliases: dm_get_all_fks
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-dm_nycflights13() %>%
-  dm_get_all_fks()
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
 nameEx("dm_get_con")
 ### * dm_get_con
 
