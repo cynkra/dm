@@ -17,12 +17,11 @@ when establishing a processing order for the joins.
 An interesting choice could be
 for example a fact table in a star schema.}
 
-\item{...}{Unquoted names of the tables to be included in addition to the \code{start} table.
-The order of the tables here determines
-the order of the joins.
+\item{...}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+Unquoted names of the tables to be included in addition to the \code{start} table.
+The order of the tables here determines the order of the joins.
 If the argument is empty, all tables that can be reached will be included.
-If this includes tables that are not direct neighbors of \code{start},
-it will only work with \code{dm_squash_to_tbl()} (given one of the allowed join-methods).
+Only \code{dm_squash_to_tbl()} allows using tables that are not direct neighbors of \code{start}.
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 
 \item{join}{The type of join to be performed, see \code{\link[dplyr:mutate-joins]{dplyr::join()}}.}
