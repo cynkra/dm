@@ -41,8 +41,6 @@ reference:
   - dm_rm_fk
   - dm_enum_fk_candidates
   - enum_fk_candidates
-  - dm_is_referenced
-  - dm_get_referencing_tables
 
 - title: Visualize
   contents:
@@ -61,7 +59,6 @@ reference:
   contents:
   - dm_flatten_to_tbl
   - dm_squash_to_tbl
-  - dm_join_to_tbl
   - dm_disambiguate_cols
 
 - title: Zoom
