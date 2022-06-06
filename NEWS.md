@@ -12,7 +12,7 @@
 
 ## API 
 
-- New `dm_from_con()`, soft-deprecated `dm_from_src()` (#1018).
+- New `dm_from_con()`, soft-deprecated `dm_from_src()` (#1014, #1018).
 
 
 # dm 0.2.8.9004

@@ -48,6 +48,8 @@ and might be considered by \code{\link[=dm_rows_delete]{dm_rows_delete()}} in a 
 An updated \code{dm} with an additional foreign key relation.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 \code{dm_add_fk()} marks the specified \code{columns} as the foreign key of table \code{table} with
 respect to a key of table \code{ref_table}.
 Usually the referenced columns are a primary key in \code{ref_table},

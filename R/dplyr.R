@@ -1,5 +1,8 @@
 #' \pkg{dplyr} table manipulation methods for zoomed dm objects
 #'
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' Use these methods without the '.zoomed_dm' suffix (see examples).
 #' @param .data object of class `zoomed_dm`
 #' @param ... see corresponding function in package \pkg{dplyr} or \pkg{tidyr}

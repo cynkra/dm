@@ -4,10 +4,12 @@
 \alias{dm_examine_constraints}
 \title{Validate your data model}
 \usage{
-dm_examine_constraints(dm, progress = NA)
+dm_examine_constraints(dm, ..., progress = NA)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 
 \item{progress}{Whether to display a progress bar, if \code{NA} (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
@@ -25,6 +27,8 @@ A tibble with the following columns:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This function returns a tibble with information about
 which key constraints are met (\code{is_key = TRUE}) or violated (\code{FALSE}).
 The printing for this object is special, use \code{\link[=as_tibble]{as_tibble()}}
