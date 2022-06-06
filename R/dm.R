@@ -49,7 +49,6 @@
 #'
 #' dm_nycflights13() %>% dm_get_tables()
 #' dm_nycflights13() %>% dm_get_filters()
-#' dm_nycflights13() %>% validate_dm()
 #' is_dm(dm_nycflights13())
 #' dm_nycflights13()["airports"]
 #' dm_nycflights13()[["airports"]]
@@ -69,7 +68,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 
   names(tbls) <- vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
   dm <- new_dm(tbls)
-  validate_dm(dm)
+  dm_validate(dm)
   dm
 }
 
@@ -82,7 +81,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #'
 #' - If called with arguments, no validation checks will be made to ascertain that
 #'   the inputs are of the expected class and internally consistent;
-#'   use `validate_dm()` to double-check the returned object.
+#'   use `dm_validate()` to double-check the returned object.
 #'
 #' @param tables A named list of the tables (tibble-objects, not names),
 #'   to be included in the `dm` object.
@@ -134,7 +133,7 @@ new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
   out <- structure(list(def = def), class = class, version = 2L)
 
   # Enable for strict tests (search for INSTRUMENT in .github/workflows):
-  # if (validate) { validate_dm(out) } # INSTRUMENT: validate
+  # if (validate) { dm_validate(out) } # INSTRUMENT: validate
 
   out
 }
@@ -320,7 +319,7 @@ as_dm.default <- function(x) {
   # Automatic name repair
   names(x) <- vec_as_names(names2(x), repair = "unique")
   dm <- new_dm(x)
-  validate_dm(dm)
+  dm_validate(dm)
   dm
 }
 

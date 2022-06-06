@@ -12,7 +12,6 @@ reference:
   - new_dm
   - as_dm
   - is_dm
-  - validate_dm
   - dm_get_con
   - dm_get_tables
 
@@ -167,6 +166,7 @@ reference:
   - dm_pixarfilms
   - dm_nrow
   - dm_ptype
+  - dm_validate
 
 navbar:
   title: ~
