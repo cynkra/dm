@@ -241,40 +241,6 @@ unnest_pks <- function(def) {
   pk_df
 }
 
-#' Get filter expressions
-#'
-#' `dm_get_filters()` returns the filter expressions that have been applied to a `dm` object.
-#' These filter expressions are not intended for evaluation, only for
-#' information.
-#'
-#' @inheritParams dm
-#'
-#' @return A tibble with the following columns:
-#'   \describe{
-#'     \item{`table`}{table that was filtered,}
-#'     \item{`filter`}{the filter expression,}
-#'     \item{`zoomed`}{logical, does the filter condition relate to the zoomed table.}
-#'   }
-#'
-#' @export
-dm_get_filters <- function(x) {
-  check_not_zoomed(x)
-
-  filter_df <-
-    dm_get_def(x) %>%
-    select(table, filters) %>%
-    unnest_list_of_df("filters")
-
-  # FIXME: Should work better with dplyr 0.9.0
-  if (!("filter_expr" %in% names(filter_df))) {
-    filter_df$filter_expr <- list()
-  }
-
-  filter_df %>%
-    rename(filter = filter_expr) %>%
-    mutate(filter = unname(filter))
-}
-
 dm_get_zoom <- function(x, cols = c("table", "zoom"), quiet = FALSE) {
   # Performance
   def <- dm_get_def(x, quiet)
