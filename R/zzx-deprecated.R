@@ -94,7 +94,7 @@ cdm_get_tables <- function(x) {
 #' @export
 cdm_get_filter <- function(x) {
   deprecate_soft("0.1.0", "dm::cdm_get_filter()", "dm::dm_get_filters()")
-  dm_get_filters(x = x)
+  dm_get_filters(dm = x)
 }
 
 #' @rdname deprecated

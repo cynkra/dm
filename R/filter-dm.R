@@ -197,6 +197,60 @@ dm_get_filtered_table <- function(dm, from) {
   list_of_tables[[from]]
 }
 
+
+#' Get filter expressions
+#'
+#' `dm_get_filters()` returns the filter expressions that have been applied to a `dm` object.
+#' These filter expressions are not intended for evaluation, only for
+#' information.
+#'
+#' @section Life cycle:
+#' This function is marked "questioning" because it feels wrong
+#' to tightly couple filtering with the data model.
+#' On the one hand, an overview of active filters is useful
+#' when specifying the base data set for an analysis in terms of column selections
+#' and row filters.
+#' However, these filter condition should be only of informative nature
+#' and never affect the results of other operations.
+#' We are working on formalizing the semantics of the underlying operations
+#' in order to present them in a cleaner interface.
+#'
+#' Use [dm_zoom_to()] and [dplyr::filter()] to filter rows without registering
+#' the filter.
+#'
+#' @inheritParams dm_filter
+#'
+#' @seealso [dm_filter()], [dm_apply_filters()]
+#'
+#' @return A tibble with the following columns:
+#'   \describe{
+#'     \item{`table`}{table that was filtered,}
+#'     \item{`filter`}{the filter expression,}
+#'     \item{`zoomed`}{logical, does the filter condition relate to the zoomed table.}
+#'   }
+#'
+#' @export
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
+#' dm_nycflights13() %>%
+#'   dm_get_filters()
+dm_get_filters <- function(dm) {
+  check_not_zoomed(dm)
+
+  filter_df <-
+    dm_get_def(dm) %>%
+    select(table, filters) %>%
+    unnest_list_of_df("filters")
+
+  # FIXME: Should work better with dplyr 0.9.0
+  # if (!("filter_expr" %in% names(filter_df))) {
+  #   filter_df$filter_expr <- list()
+  # }
+
+  filter_df %>%
+    rename(filter = filter_expr) %>%
+    mutate(filter = unname(filter))
+}
+
 get_all_filtered_connected <- function(dm, table) {
   filtered_tables <- unique(dm_get_filters(dm)$table)
   graph <- create_graph_from_dm(dm)
