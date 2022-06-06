@@ -478,53 +478,6 @@ dm_nyc %>%
 
 
 cleanEx()
-nameEx("dm_financial")
-### * dm_financial
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_financial
-### Title: Creates a dm object for the Financial data
-### Aliases: dm_financial dm_financial_sqlite
-
-### ** Examples
-
-## Don't show: 
-if (dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-dm_financial() %>%
-  dm_draw()
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
-nameEx("dm_flatten_to_tbl")
-### * dm_flatten_to_tbl
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_flatten_to_tbl
-### Title: Flatten a part of a 'dm' into a wide table
-### Aliases: dm_flatten_to_tbl dm_squash_to_tbl
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-dm_nycflights13() %>%
-  dm_select_tbl(-weather) %>%
-  dm_flatten_to_tbl(flights)
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
 nameEx("dm_from_con")
 ### * dm_from_con
 
