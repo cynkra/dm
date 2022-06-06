@@ -457,7 +457,7 @@ Postgres, but not for SQLite. Therefore, the dm contains the tables but
 not the keys:
 
 ``` r
-dm_from_src(con_sqlite)
+dm_from_con(con_sqlite)
 #> Keys could not be queried, use `learn_keys = FALSE` to mute this message.
 #> ── Table source ───────────────────────────────────────────────────────────
 #> src:  sqlite 3.35.5 []

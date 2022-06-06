@@ -38,13 +38,13 @@ my_db <- dbConnect(
 )
 ```
 
-Creating a dm object takes a single call to `dm_from_src()` with the DBI
+Creating a dm object takes a single call to `dm_from_con()` with the DBI
 connection object as its argument.
 
 ``` r
 library(dm)
 
-my_dm <- dm_from_src(my_db)
+my_dm <- dm_from_con(my_db)
 my_dm
 #> ── Table source ───────────────────────────────────────────────────────────
 #> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
@@ -127,7 +127,7 @@ Note that when the foreign key is created the primary key in the
 referenced table does not need to be specified, but the primary key must
 already be defined. And, as mentioned above, primary and foreign key
 constraints on the database are currently only imported for Postgres and
-SQL Server databases, and only when `dm_from_src()` is used. This
+SQL Server databases, and only when `dm_from_con()` is used. This
 process of key definition needs to be done manually for other databases.
 
 ``` r

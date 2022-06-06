@@ -23,7 +23,7 @@ dm_financial <- function() {
   my_db <- financial_db_con()
 
   my_dm <-
-    dm_from_src(my_db, learn_keys = FALSE) %>%
+    dm_from_con(my_db, learn_keys = FALSE) %>%
     dm_add_pk(districts, id) %>%
     dm_add_pk(accounts, id) %>%
     dm_add_pk(clients, id) %>%

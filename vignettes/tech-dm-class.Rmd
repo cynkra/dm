@@ -40,7 +40,7 @@ The relevant functions for creating `dm` objects are:
 1. `dm()`
 2. `as_dm()`
 3. `new_dm()`
-4. `dm_from_src()`
+4. `dm_from_con()`
 
 To illustrate these options, we will now create the same `dm` in several different ways.
 We can use the tables from the well-known {nycflights13} package.
@@ -80,18 +80,18 @@ as_dm(list(airlines = airlines,
 
 ### Turn tables from a `src` into a `dm`
 
-Squeeze all (or a subset of) tables belonging to a `src` object into a `dm` using `dm_from_src()`:
+Squeeze all (or a subset of) tables belonging to a `src` object into a `dm` using `dm_from_con()`:
 
 ```{r message=FALSE}
-sqlite_src <- dbplyr::nycflights13_sqlite()
+sqlite_con <- dbplyr::nycflights13_sqlite()
 
-flights_dm <- dm_from_src(sqlite_src)
+flights_dm <- dm_from_con(sqlite_con)
 flights_dm
 ```
 
 
-The function `dm_from_src(src, table_names = NULL)` includes all available tables on a source in the `dm` object.
-This means that you can use this, for example, on a postgres database that you access via `src_postgres()` (with the appropriate arguments `dbname`, `host`, `port`, ...), to produce a `dm` object with all the tables on the database.
+The function `dm_from_con(con, table_names = NULL)` includes all available tables on a source in the `dm` object.
+This means that you can use this, for example, on a postgres database that you access via `DBI::dbConnect(RPostgres::Postgres())` (with the appropriate arguments `dbname`, `host`, `port`, ...), to produce a `dm` object with all the tables on the database.
 
 ### Low-level construction
 
@@ -111,7 +111,7 @@ validate_dm(base_dm)
 
 ## Access tables
 
-We can get the list of tables with `dm_get_tables()` and the `src` object with `dm_get_src()`.
+We can get the list of tables with `dm_get_tables()` and the `src` object with `dm_get_con()`.
 
 In order to pull a specific table from a `dm`, use:
 ```{r}

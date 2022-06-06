@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.2.8.9002
-Date: 2022-04-29
+Version: 0.2.8.9005
+Date: 2022-06-03
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -90,7 +90,7 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd"))
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm, draw-dm, bind, rows-dm
