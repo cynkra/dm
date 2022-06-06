@@ -70,6 +70,11 @@ test_that("insert + delete with returning argument (#607)", {
     tibble(sl = 5L)
   )
 
+  # Not inserting duplicates
+  # Suppress Postgres warning, buglet with RETURNING after inserting empty result set
+  suppressWarnings(out <- rows_insert(target, test_db_src_frame(select = 4, where = "z"), conflict = "ignore", in_place = TRUE, returning = everything()))
+  expect_equal(nrow(get_returned_rows(out)), 0)
+
   expect_equal(
     rows_delete(target, test_db_src_frame(where = "z"), unmatched = "ignore", in_place = TRUE, returning = select) %>%
       dbplyr::get_returned_rows(),
@@ -87,7 +92,7 @@ test_that("insert + delete with returning argument and in_place = FALSE", {
   )
 
   skip_if_src(c("df", "sqlite"))
-  skip_if(packageVersion("dbplyr") > "2.1.1")
+
   expect_equal(
     rows_insert(target, test_db_src_frame(select = 4, where = "z"), in_place = FALSE, returning = everything()) %>%
       dbplyr::get_returned_rows(),
@@ -247,17 +252,17 @@ test_that("upsert", {
     )
     data
 
-    rows_upsert(data, tibble(select = 2:4, where = c("x", "y", "z")), copy = TRUE, in_place = FALSE)
-    rows_upsert(data, tibble(select = 2:4), copy = TRUE, in_place = FALSE)
+    rows_upsert(data, tibble(select = 2:4, where = c("x", "y", "z")), by = "select", copy = TRUE, in_place = FALSE)
+    rows_upsert(data, tibble(select = 2:4), by = "select", copy = TRUE, in_place = FALSE)
     data %>% arrange(select)
     rows_upsert(data, test_db_src_frame(select = 0L, where = c("a", "d")), by = "where", in_place = FALSE)
     data %>% arrange(select)
 
-    rows_upsert(data, test_db_src_frame(select = 2:4, where = c("x", "y", "z")), in_place = TRUE)
+    rows_upsert(data, test_db_src_frame(select = 2:4, where = c("x", "y", "z")), by = "select", in_place = TRUE)
     data %>% arrange(select)
-    rows_upsert(data, test_db_src_frame(select = 4:5, where = c("o", "p"), exists = 3.5), in_place = TRUE)
+    rows_upsert(data, test_db_src_frame(select = 4:5, where = c("o", "p"), exists = 3.5), by = "select", in_place = TRUE)
     data %>% arrange(select)
-    rows_upsert(data, test_db_src_frame(select = 2:3), in_place = TRUE)
+    rows_upsert(data, test_db_src_frame(select = 2:3), by = "select", in_place = TRUE)
     data %>% arrange(select)
     rows_upsert(data, test_db_src_frame(select = 0L, where = "a"), by = "where", in_place = TRUE)
     data %>% arrange(select)

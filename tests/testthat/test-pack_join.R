@@ -7,8 +7,9 @@ test_that("`pack_join()` works", {
   expect_snapshot(pack_join(df1, df3, by = c(key = "key3")))
   expect_snapshot(pack_join(df1, df3, by = c(key = "key3"), keep = TRUE))
 
+
   # fails with remote table
-  dm_fin <- dm_financial_sqlite()
+  dm_fin <- skip_if_error(dm_financial_sqlite())
   expect_snapshot_error(pack_join(df1, dm_fin$accounts, by = c(col1 = "id")))
   # unless copy = TRUE
   expect_snapshot(pack_join(df1, dm_fin$accounts, by = c(col1 = "id"), copy = TRUE))

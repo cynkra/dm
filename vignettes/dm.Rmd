@@ -40,12 +40,12 @@ fin_db <- dbConnect(
 )
 ``````
 
-We create a dm object from an RDBMS using `dm_from_src()`, passing in the connection object we just created as the first argument.
+We create a dm object from an RDBMS using `dm_from_con()`, passing in the connection object we just created as the first argument.
 
 ``````{r load, message = FALSE}
 library(dm)
 
-fin_dm <- dm_from_src(fin_db)
+fin_dm <- dm_from_con(fin_db)
 fin_dm
 ``````
 
@@ -76,7 +76,7 @@ fin_dm_small <-
 
 ## Linking tables by adding keys
 
-In many cases, `dm_from_src()` already returns a dm with all keys set.
+In many cases, `dm_from_con()` already returns a dm with all keys set.
 If not, dm allows us to define primary and foreign keys ourselves.
 
 In our data model, `id` columns uniquely identify records in the `accounts` and `loans` table, a primary key is added with `dm_add_pk()`.

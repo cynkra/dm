@@ -6,7 +6,7 @@
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
-      Columns: 17
+      Columns: 19
       Primary keys: 5
       Foreign keys: 4
     Code
@@ -15,7 +15,7 @@
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_3`, `tf_4`, `tf_5`, `tf_6`
-      Columns: 13
+      Columns: 15
       Primary keys: 4
       Foreign keys: 3
     Code
@@ -24,7 +24,7 @@
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_3`, `tf_4`, `tf_5`, `tf_6`, `tf_2`
-      Columns: 17
+      Columns: 19
       Primary keys: 5
       Foreign keys: 4
     Code
@@ -34,7 +34,7 @@
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_3`, `tf_4`, `tf_5`, `tf_6`, `tf_2`, `tf_1`
-      Columns: 18
+      Columns: 20
       Primary keys: 6
       Foreign keys: 5
 

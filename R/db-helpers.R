@@ -3,16 +3,19 @@ unique_db_table_name <- local({
 
   function(table_name) {
     i <<- i + 1
-    glue("{table_name}_", systime_convenient(), "_", get_pid(), "_", as.character(i))
+    glue("{table_name}_", as.character(i), "_", systime_convenient(), "_", get_pid())
   }
 })
 
 systime_convenient <- function() {
+  # FIXME: Race condition here, but fast enough
+  local_options(digits.secs = 6)
+
   if (Sys.getenv("IN_PKGDOWN") != "") {
     "2020_08_28_07_13_03"
   } else {
     time <- as.character(Sys.time())
-    gsub("[-: ]", "_", time)
+    gsub("[-:. ]", "_", time)
   }
 }
 
@@ -104,7 +107,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
     return(src_tbls(src))
   }
 
-  con <- src$con
+  con <- con_from_src_or_con(src)
 
   if (!is.null(schema)) {
     check_param_class(schema, "character")

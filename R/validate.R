@@ -71,6 +71,8 @@ validate_dm <- function(x) {
     )
   }
 
+  check_no_nulls(def)
+
   invisible(x)
 }
 
@@ -138,6 +140,18 @@ check_one_zoom <- function(def, zoomed) {
     if (sum(!map_lgl(def$col_tracker_zoom, is_null)) != 0) {
       abort_dm_invalid("Key tracker for zoomed table activated despite `dm` not a `zoomed_dm`.")
     }
+  }
+}
+
+check_no_nulls <- function(def) {
+  check_no_nulls_col(def$fks, "foreign keys")
+  check_no_nulls_col(def$pks, "primary keys")
+  check_no_nulls_col(def$filters, "filter conditions")
+}
+
+check_no_nulls_col <- function(x, where) {
+  if (any(map_lgl(x, is.null))) {
+    abort_dm_invalid(paste0("Found `NULL` entry in ", where, "."))
   }
 }
 

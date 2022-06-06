@@ -26,7 +26,7 @@
            43       3 
     Code
       flights_hour10_sqlite <- copy_dm_to(sqlite, flights_hour10)
-      out <- dm_rows_insert(flights_sqlite, flights_hour10_sqlite)
+      out <- dm_rows_append(flights_sqlite, flights_hour10_sqlite)
     Message
       Not persisting, use `in_place = FALSE` to turn off this message.
     Code
@@ -35,7 +35,7 @@
       airlines airports  flights   planes  weather 
             15       86        0      945        0 
     Code
-      dm_rows_insert(flights_sqlite, flights_hour10_sqlite, in_place = TRUE)
+      dm_rows_append(flights_sqlite, flights_hour10_sqlite, in_place = TRUE)
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
@@ -46,7 +46,7 @@
         dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(month == 1, day == 10,
       hour == 11) %>% dm_update_zoomed()
       flights_hour11_sqlite <- copy_dm_to(sqlite, flights_hour11)
-      flights_new <- dm_rows_insert(flights_sqlite, flights_hour11_sqlite, in_place = FALSE)
+      flights_new <- dm_rows_append(flights_sqlite, flights_hour11_sqlite, in_place = FALSE)
       print(dm_nrow(flights_new))
     Output
       airlines airports  flights   planes  weather 
@@ -63,7 +63,7 @@
     Output
       * Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N0EGMQ (1), N3BCAA (1), N3CCAA (1), N3CFAA (1), N3EHAA (1), ...
     Code
-      dm_rows_insert(flights_sqlite, flights_hour11_sqlite, in_place = TRUE)
+      dm_rows_append(flights_sqlite, flights_hour11_sqlite, in_place = TRUE)
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
@@ -178,21 +178,21 @@
       5 three a     C         3
       
       $tf_5
-        l     m              k
-        <chr> <chr>      <int>
-      1 b     house          1
-      2 c     tree           2
-      3 d     streetlamp     3
-      4 e     streetlamp     4
+        l     m             ww     k
+        <chr> <chr>      <int> <int>
+      1 b     house          2     1
+      2 c     tree           2     2
+      3 d     streetlamp     2     3
+      4 e     streetlamp     2     4
       
       $tf_6
-        n          o    
-        <chr>      <chr>
-      1 garden     i    
-      2 hill       g    
-      3 house      e    
-      4 streetlamp h    
-      5 tree       f    
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 garden     i    
+      2     1 hill       g    
+      3     1 house      e    
+      4     1 streetlamp h    
+      5     1 tree       f    
       
     Code
       dm_copy %>% dm_rows_update(dm_update_copy, in_place = TRUE)
@@ -246,21 +246,21 @@
       5 three  a     C         3
       
       $tf_5
-        l     m              k
-        <chr> <chr>      <int>
-      1 b     house          1
-      2 c     tree           2
-      3 d     tree           3
-      4 e     streetlamp     4
+        l     m             ww     k
+        <chr> <chr>      <int> <int>
+      1 b     house          2     1
+      2 c     tree           2     2
+      3 d     tree           2     3
+      4 e     streetlamp     2     4
       
       $tf_6
-        n          o    
-        <chr>      <chr>
-      1 garden     i    
-      2 hill       g    
-      3 house      e    
-      4 streetlamp h    
-      5 tree       f    
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 garden     i    
+      2     1 hill       g    
+      3     1 house      e    
+      4     1 streetlamp h    
+      5     1 tree       f    
       
 
 # dm_rows_truncate()
@@ -355,21 +355,21 @@
       5 e     seven F         6
       
       $tf_5
-            k l     m         
-        <int> <chr> <chr>     
-      1     1 b     house     
-      2     2 c     tree      
-      3     3 d     streetlamp
-      4     4 e     streetlamp
+           ww     k l     m         
+        <int> <int> <chr> <chr>     
+      1     2     1 b     house     
+      2     2     2 c     tree      
+      3     2     3 d     streetlamp
+      4     2     4 e     streetlamp
       
       $tf_6
-        n          o    
-        <chr>      <chr>
-      1 garden     i    
-      2 hill       g    
-      3 house      e    
-      4 streetlamp h    
-      5 tree       f    
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 garden     i    
+      2     1 hill       g    
+      3     1 house      e    
+      4     1 streetlamp h    
+      5     1 tree       f    
       
     Code
       dm_copy %>% dm_rows_truncate(dm_truncate_copy, in_place = TRUE)
@@ -416,15 +416,15 @@
       5 e     seven F         6
       
       $tf_5
-      # ... with 3 variables: k <int>, l <chr>, m <chr>
+      # ... with 4 variables: ww <int>, k <int>, l <chr>, m <chr>
       
       $tf_6
-        n          o    
-        <chr>      <chr>
-      1 garden     i    
-      2 hill       g    
-      3 house      e    
-      4 streetlamp h    
-      5 tree       f    
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 garden     i    
+      2     1 hill       g    
+      3     1 house      e    
+      4     1 streetlamp h    
+      5     1 tree       f    
       
 

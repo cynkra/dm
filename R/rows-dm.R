@@ -64,11 +64,11 @@
 #' flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan)
 #'
 #' # Dry run by default:
-#' dm_rows_insert(flights_sqlite, flights_jan_sqlite)
+#' dm_rows_append(flights_sqlite, flights_jan_sqlite)
 #' print(dm_nrow(flights_sqlite))
 #'
 #' # Explicitly request persistence:
-#' dm_rows_insert(flights_sqlite, flights_jan_sqlite, in_place = TRUE)
+#' dm_rows_append(flights_sqlite, flights_jan_sqlite, in_place = TRUE)
 #' print(dm_nrow(flights_sqlite))
 #'
 #' # Second update:
@@ -86,7 +86,7 @@
 #' flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb)
 #'
 #' # Explicit dry run:
-#' flights_new <- dm_rows_insert(
+#' flights_new <- dm_rows_append(
 #'   flights_sqlite,
 #'   flights_feb_sqlite,
 #'   in_place = FALSE
@@ -99,7 +99,7 @@
 #'   dm_examine_constraints()
 #'
 #' # Apply:
-#' dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
+#' dm_rows_append(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
 #' print(dm_nrow(flights_sqlite))
 #'
 #' DBI::dbDisconnect(sqlite)
@@ -108,16 +108,30 @@ NULL
 
 #' dm_rows_insert
 #'
-#' `dm_rows_insert()` adds new records via [rows_insert()].
-#' The primary keys must differ from existing records.
-#' This must be ensured by the caller and might be checked by the underlying database.
-#' Use `in_place = FALSE` and apply [dm_examine_constraints()] to check beforehand.
+#' `dm_rows_insert()` adds new records via [rows_insert()] with `conflict = "ignore"`.
+#' Duplicate records will be silently discarded.
+#' This operation requires primary keys on all tables, use `dm_rows_append()`
+#' to insert unconditionally.
 #' @rdname rows-dm
 #' @export
 dm_rows_insert <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, "insert", top_down = TRUE, in_place, require_keys = FALSE, progress = progress)
+  dm_rows(x, y, "insert", top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
+}
+
+#' dm_rows_append
+#'
+#' `dm_rows_append()` adds new records via [rows_append()].
+#' The primary keys must differ from existing records.
+#' This must be ensured by the caller and might be checked by the underlying database.
+#' Use `in_place = FALSE` and apply [dm_examine_constraints()] to check beforehand.
+#' @rdname rows-dm
+#' @export
+dm_rows_append <- function(x, y, ..., in_place = NULL, progress = NA) {
+  check_dots_empty()
+
+  dm_rows(x, y, "append", top_down = TRUE, in_place, require_keys = FALSE, progress = progress)
 }
 
 #' dm_rows_update
@@ -278,8 +292,8 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
 
   if (require_keys) {
     all_pks <- dm_get_all_pks(x)
-    if (!nrow(all_pks)) {
-      abort(glue("`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys but none were found."))
+    if (!(all(tables %in% all_pks$table))) {
+      abort(glue("`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys for all target tables."))
     }
     keys <- deframe(dm_get_all_pks(x))[tables]
   } else {
