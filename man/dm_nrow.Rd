@@ -13,6 +13,8 @@ dm_nrow(dm)
 A named vector with the number of rows for each table.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Returns a named vector with the number of rows for each table.
 }
 \examples{

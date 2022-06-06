@@ -172,6 +172,9 @@ dm_get_all_column_types <- function(x) {
 
 #' Color in database diagrams
 #'
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model with [dm_draw()].
 #' The colors can either be either specified with hex color codes or using the names of the built-in R colors.
 #' An overview of the colors corresponding to the standard color names can be found at
@@ -250,7 +253,10 @@ color_quos_to_display <- function(...) {
 #'
 #' `dm_get_colors()` returns the colors defined for a data model.
 #'
-#' @return For `dm_get_colors()`, a two-column tibble with one row per table.
+#' @return For `dm_get_colors()`, a named character vector of table names
+#'   with the colors in the names.
+#'   This allows calling `dm_set_colors(!!!dm_get_colors(...))`.
+#'   Use [tibble::enframe()] to convert this to a tibble.
 #'
 #' @rdname dm_set_colors
 #' @export

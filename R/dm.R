@@ -580,6 +580,9 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 
 #' Materialize
 #'
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' `compute()` materializes all tables in a `dm` to new (temporary or permanent)
 #' tables on the database.
 #'
@@ -696,7 +699,10 @@ empty_dm <- function() {
 
 #' Retrieve a table
 #'
-#' This function has methods for both `dm` classes:
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
+#' This generic has methods for both `dm` classes:
 #' 1. With `pull_tbl.dm()` you can chose which table of the `dm` you want to retrieve.
 #' 1. With `pull_tbl.zoomed_dm()` you will retrieve the zoomed table in the current state.
 #'

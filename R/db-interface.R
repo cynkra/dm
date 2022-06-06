@@ -1,5 +1,8 @@
 #' Copy data model to data source
 #'
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' `copy_dm_to()` takes a [dplyr::src_dbi] object or a [`DBI::DBIConnection-class`] object as its first argument
 #' and a [`dm`] object as its second argument.
 #' The latter is copied to the former.
@@ -7,6 +10,7 @@
 #' Unless `set_key_constraints` is `FALSE`, primary key constraints are set on all databases,
 #' and in addition foreign key constraints are set on MSSQL and Postgres databases.
 #'
+#' @details
 #' No tables will be overwritten; passing `overwrite = TRUE` to the function will give an error.
 #' Types are determined separately for each table, setting the `types` argument will
 #' also throw an error.
