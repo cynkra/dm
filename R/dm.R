@@ -177,32 +177,6 @@ new_col_tracker_zoom <- function() {
   tibble(table = character(), col_tracker_zoom = list())
 }
 
-dm_get_src_impl <- function(x) {
-  tables <- dm_get_tables_impl(x)
-  tbl_src(tables[1][[1]])
-}
-
-#' Get connection
-#'
-#' `dm_get_con()` returns the DBI connection for a `dm` object.
-#' This works only if the tables are stored on a database, otherwise an error
-#' is thrown.
-#'
-#' All lazy tables in a dm object must be stored on the same database server
-#' and accessed through the same connection.
-#'
-#' @rdname dm
-#'
-#' @return For `dm_get_con()`: The [`DBI::DBIConnection-class`] for `dm` objects.
-#'
-#' @export
-dm_get_con <- function(x) {
-  check_not_zoomed(x)
-  src <- dm_get_src_impl(x)
-  if (!inherits(src, "src_dbi")) abort_con_only_for_dbi()
-  src$con
-}
-
 #' Get tables
 #'
 #' `dm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
