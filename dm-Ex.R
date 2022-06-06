@@ -212,69 +212,6 @@ try(
 
 
 cleanEx()
-nameEx("dm_add_pk")
-### * dm_add_pk
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_add_pk
-### Title: Add a primary key
-### Aliases: dm_add_pk
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-nycflights_dm <- dm(
-  planes = nycflights13::planes,
-  airports = nycflights13::airports,
-  weather = nycflights13::weather
-)
-
-nycflights_dm %>%
-  dm_draw()
-
-# Create primary keys:
-nycflights_dm %>%
-  dm_add_pk(planes, tailnum) %>%
-  dm_add_pk(airports, faa, check = TRUE) %>%
-  dm_add_pk(weather, c(origin, time_hour)) %>%
-  dm_draw()
-
-# Keys can be checked during creation:
-try(
-  nycflights_dm %>%
-    dm_add_pk(planes, manufacturer, check = TRUE)
-)
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
-nameEx("dm_add_tbl")
-### * dm_add_tbl
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_add_tbl
-### Title: Add tables to a 'dm'
-### Aliases: dm_add_tbl
-
-### ** Examples
-
-dm() %>%
-  dm_add_tbl(mtcars, flowers = iris)
-
-# renaming table names if necessary (depending on the `repair` argument)
-dm() %>%
-  dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
-
-
-
-cleanEx()
 nameEx("dm_from_con")
 ### * dm_from_con
 
