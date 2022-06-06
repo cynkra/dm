@@ -50,68 +50,6 @@ check_set_equality(data_1, a, data_3, a)
 
 
 cleanEx()
-nameEx("check_subset")
-### * check_subset
-
-flush(stderr()); flush(stdout())
-
-### Name: check_subset
-### Title: Check column values for subset
-### Aliases: check_subset
-
-### ** Examples
-
-data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
-data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
-# this is passing:
-check_subset(data_1, a, data_2, a)
-
-# this is failing:
-try(check_subset(data_2, a, data_1, a))
-
-
-
-cleanEx()
-nameEx("copy_dm_to")
-### * copy_dm_to
-
-flush(stderr()); flush(stdout())
-
-### Name: copy_dm_to
-### Title: Copy data model to data source
-### Aliases: copy_dm_to
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-con <- DBI::dbConnect(RSQLite::SQLite())
-
-# Copy to temporary tables, unique table names by default:
-temp_dm <- copy_dm_to(
-  con,
-  dm_nycflights13(),
-  set_key_constraints = FALSE
-)
-
-# Persist, explicitly specify table names:
-persistent_dm <- copy_dm_to(
-  con,
-  dm_nycflights13(),
-  temporary = FALSE,
-  table_names = ~ paste0("flights_", .x)
-)
-dbplyr::remote_name(persistent_dm$planes)
-
-DBI::dbDisconnect(con)
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
 nameEx("dm_from_con")
 ### * dm_from_con
 
