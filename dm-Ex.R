@@ -574,29 +574,6 @@ dm_nycflights13() %>%
 
 
 cleanEx()
-nameEx("dm_get_all_pks")
-### * dm_get_all_pks
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_get_all_pks
-### Title: Get all primary keys of a 'dm' object
-### Aliases: dm_get_all_pks
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-dm_nycflights13() %>%
-  dm_get_all_pks()
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
 nameEx("dm_get_con")
 ### * dm_get_con
 
