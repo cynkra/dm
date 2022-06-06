@@ -52,20 +52,19 @@
 #'
 #' dm_nycflights13() %>%
 #'   dm_get_colors()
-dm_draw <- function(
-    dm,
-    rankdir = "LR",
-    ...,
-    col_attr = NULL,
-    view_type = c("keys_only", "all", "title_only"),
-    columnArrows = TRUE,
-    graph_attrs = "",
-    node_attrs = "",
-    edge_attrs = "",
-    focus = NULL,
-    graph_name = "Data Model",
-    column_types = NULL,
-    backend = "DiagrammeR") {
+dm_draw <- function(dm,
+                    rankdir = "LR",
+                    ...,
+                    col_attr = NULL,
+                    view_type = c("keys_only", "all", "title_only"),
+                    columnArrows = TRUE,
+                    graph_attrs = "",
+                    node_attrs = "",
+                    edge_attrs = "",
+                    focus = NULL,
+                    graph_name = "Data Model",
+                    column_types = NULL,
+                    backend = "DiagrammeR") {
   #
   check_not_zoomed(dm)
   check_dots_empty()

@@ -13,6 +13,8 @@ dm_nycflights13(
 )
 }
 \arguments{
+\item{...}{These dots are for future extensions and must be empty.}
+
 \item{cycle}{Boolean.
 If \code{FALSE} (default), only one foreign key relation
 (from \code{flights$origin} to \code{airports$faa}) between the \code{flights} table and the \code{airports} table is
