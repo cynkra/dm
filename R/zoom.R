@@ -2,6 +2,8 @@
 #' Mark table for manipulation
 #'
 #' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' Zooming to a table of a [`dm`] allows for the use of many `dplyr`-verbs directly on this table, while retaining the
 #' context of the `dm` object.
 #'

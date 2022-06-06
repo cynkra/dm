@@ -1,6 +1,8 @@
 #' Add a primary key
 #'
 #' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' `dm_add_pk()` marks the specified columns as the primary key of the specified table.
 #' If `check == TRUE`, then it will first check if
 #' the given combination of columns is a unique key of the table.
@@ -84,7 +86,10 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 
 #' Check for primary key
 #'
-#' @description `dm_has_pk()` checks if a given table has columns marked as its primary key.
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
+#' `dm_has_pk()` checks if a given table has columns marked as its primary key.
 #'
 #' @inheritParams dm_add_pk
 #'
@@ -139,7 +144,10 @@ dm_get_pk_impl <- function(dm, table_name) {
 
 #' Get all primary keys of a [`dm`] object
 #'
-#' @description `dm_get_all_pks()` checks the `dm` object for set primary keys and
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
+#' `dm_get_all_pks()` checks the `dm` object for set primary keys and
 #' returns the tables, the respective primary key columns and their classes.
 #'
 #' @family primary key functions
@@ -191,6 +199,9 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 
 
 #' Remove a primary key
+#'
+#' @description
+#' `r lifecycle::badge("stable")`
 #'
 #' `dm_rm_pk()` removes one or more primary keys from a table and leaves the [`dm`] object otherwise unaltered.
 #' An error is thrown if no private key matches the selection criteria.

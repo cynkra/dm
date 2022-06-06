@@ -23,6 +23,8 @@ A tibble with the following columns:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 \code{dm_get_all_pks()} checks the \code{dm} object for set primary keys and
 returns the tables, the respective primary key columns and their classes.
 }
