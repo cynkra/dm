@@ -1,6 +1,8 @@
 #' Add tables to a [`dm`]
 #'
 #' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' Adds one or more new tables to a [`dm`].
 #' Existing tables are not overwritten.
 #'
@@ -21,7 +23,7 @@
 #' dm() %>%
 #'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 #' @export
-dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
+dm_add_tbl <- function(dm, ..., .repair = "unique", .quiet = FALSE) {
   check_not_zoomed(dm)
 
   new_names <- names(exprs(..., .named = TRUE))

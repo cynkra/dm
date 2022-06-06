@@ -32,7 +32,7 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_constraints()
-dm_examine_constraints <- function(dm, ..., progress = NA) {
+dm_examine_constraints <- function(dm, ..., .progress = NA) {
   check_not_zoomed(dm)
   dm %>%
     dm_examine_constraints_impl(progress = progress, top_level_fun = "dm_examine_constraints") %>%

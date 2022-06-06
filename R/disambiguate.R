@@ -25,7 +25,7 @@
 #' dm_nycflights13() %>%
 #'   dm_disambiguate_cols()
 #' @export
-dm_disambiguate_cols <- function(dm, sep = ".", ..., quiet = FALSE) {
+dm_disambiguate_cols <- function(dm, sep = ".", ..., .quiet = FALSE) {
   check_not_zoomed(dm)
   check_dots_empty()
   dm_disambiguate_cols_impl(dm, tables = NULL, sep = sep, quiet = quiet)

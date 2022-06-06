@@ -1,6 +1,14 @@
 #' Merge several `dm`
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Create a single `dm` from two or more `dm` objects.
+#'
+#' @section Life cycle:
+#'
+#' This function will become superseded when [dm()] supports processing whole
+#' dm objects, see [#826](https://github.com/cynkra/dm/issues/826).
 #'
 #' @param ... `dm` objects to bind together.
 #' @inheritParams dm_add_tbl
@@ -14,7 +22,7 @@
 #' dm_1 <- dm_nycflights13()
 #' dm_2 <- dm(mtcars, iris)
 #' dm_bind(dm_1, dm_2)
-dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
+dm_bind <- function(..., .repair = "check_unique", .quiet = FALSE) {
   # special case empty ellipsis, cause otherwise we get an empty data.frame of class `dm`
   if (dots_n(...) == 0) return(dm())
   dms <- list2(...)

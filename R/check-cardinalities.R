@@ -1,6 +1,9 @@
 #' Check table relations
 #'
-#' @description All `check_cardinality_*()` functions test the following conditions:
+#' @description
+#' `r lifecycle::badge("questioning")`
+#'
+#' All `check_cardinality_*()` functions test the following conditions:
 #' 1. Is `pk_column` a unique key for `parent_table`?
 #' 1. Is the set of values in `fk_column` of `child_table` a subset of the set of values of `pk_column`?
 #' 1. Does the relation between the two tables of the data model meet the cardinality requirements?
@@ -48,6 +51,12 @@
 #' between the two given sets of columns. If either `pk_column` is not a unique key of `parent_table` or the values of `fk_column` are
 #' not a subset of the values in `pk_column`, the requirements for a cardinality test is not fulfilled. No error will be thrown, but
 #' the result will contain the information which prerequisite was violated.
+#'
+#' @section Life cycle:
+#'
+#' The interface would become much simpler without the `pk_column` and
+#' `fk_column` arguments, but this affects the usefulness of the return value.
+#'
 #' @param parent_table Data frame.
 #' @param pk_column Columns of `parent_table` that have to be one of its unique keys, for multiple columns use `c(col1, col2)`.
 #' @param child_table Data frame.
@@ -78,7 +87,7 @@
 #'
 #' # This passes:
 #' check_cardinality_0_1(d1, a, d3, c)
-check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_column) {
+check_cardinality_0_n <- function(x, y, ...) {
   pt <- enquo(parent_table)
   pkcq <- enexpr(pk_column)
   pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
@@ -96,7 +105,7 @@ check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_colum
 
 #' @rdname examine_cardinality
 #' @export
-check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_column) {
+check_cardinality_1_n <- function(x, y, ...) {
   pt <- enquo(parent_table)
   pkcq <- enexpr(pk_column)
   pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
@@ -114,7 +123,7 @@ check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_colum
 
 #' @rdname examine_cardinality
 #' @export
-check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_column) {
+check_cardinality_1_1 <- function(x, y, ...) {
   pt <- enquo(parent_table)
   pkcq <- enexpr(pk_column)
   pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
@@ -140,7 +149,7 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
 
 #' @rdname examine_cardinality
 #' @export
-check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_column) {
+check_cardinality_0_1 <- function(x, y, ...) {
   pt <- enquo(parent_table)
   pkcq <- enexpr(pk_column)
   pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
@@ -170,7 +179,7 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
 #'
 #' # Returns the kind of cardinality
 #' examine_cardinality(d1, a, d2, c)
-examine_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
+examine_cardinality <- function(x, y, ...) {
   ptq <- enquo(parent_table)
   pkcq <- enexpr(pk_column)
   pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(ptq))))

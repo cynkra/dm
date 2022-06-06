@@ -1,9 +1,17 @@
 #' Check if column(s) can be used as keys
 #'
-#' @description `check_key()` accepts a data frame and, optionally, columns.
+#' @description
+#' `r lifecycle::badge("questioning")`
+#'
+#' `check_key()` accepts a data frame and, optionally, columns.
 #' It throws an error
 #' if the specified columns are NOT a unique key of the data frame.
 #' If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
+#'
+#' @section Life cycle:
+#'
+#' The interface would become much simpler without the `...`, but this affects
+#' the usefulness of the return value.
 #'
 #' @param .data The data frame whose columns should be tested for key properties.
 #' @param ... The names of the columns to be checked.
@@ -30,7 +38,7 @@
 #'
 #' # this is passing:
 #' check_key(data, a, c)
-check_key <- function(.data, ...) {
+check_key <- function(x, ..., .data = NULL) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
 
@@ -97,9 +105,18 @@ is_unique_key_se <- function(.data, colname) {
 
 #' Check column values for set equality
 #'
-#' @description `check_set_equality()` is a wrapper of `check_subset()`.
-#' It tests if one value set is a subset of another and vice versa, i.e., if both sets are the same.
+#' @description
+#' `r lifecycle::badge("questioning")`
+#'
+#' `check_set_equality()` is a wrapper of `check_subset()`.
+#' It tests if one value set is a subset of another and vice versa, i.e.,
+#' if both sets are the same.
 #' If not, it throws an error.
+#'
+#' @section Life cycle:
+#'
+#' The interface would become much simpler without the `c1` and `c2` arguments,
+#' but this affects the usefulness of the return value.
 #'
 #' @param t1 The data frame that contains the columns `c1`.
 #' @param c1 The columns of `t1` that should only contain values that are also present in columns `c2` of data frame `t2`. Multiple columns can be chosen using `c(col1, col2)`.
@@ -119,7 +136,7 @@ is_unique_key_se <- function(.data, colname) {
 #' data_3 <- tibble::tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
 #' check_set_equality(data_1, a, data_3, a)
-check_set_equality <- function(t1, c1, t2, c2) {
+check_set_equality <- function(x, y, ...) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
@@ -153,7 +170,10 @@ check_set_equality <- function(t1, c1, t2, c2) {
 
 #' Check column values for subset
 #'
-#' @description `check_subset()` tests if the values of the chosen columns `c1` of data frame `t1` are a subset of the values
+#' @description
+#' `r lifecycle::badge("questioning")`
+#'
+#' `check_subset()` tests if the values of the chosen columns `c1` of data frame `t1` are a subset of the values
 #' of columns `c2` of data frame `t2`.
 #'
 #' @inheritParams check_set_equality
@@ -171,7 +191,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
 #'
 #' # this is failing:
 #' try(check_subset(data_2, a, data_1, a))
-check_subset <- function(t1, c1, t2, c2) {
+check_subset <- function(x, y, ...) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 

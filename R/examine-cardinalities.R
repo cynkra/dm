@@ -27,7 +27,7 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_cardinalities()
-dm_examine_cardinalities <- function(dm, progress = NA) {
+dm_examine_cardinalities <- function(dm, ..., .progress = NA) {
   check_not_zoomed(dm)
   dm %>%
     dm_examine_cardinalities_impl(progress = progress, top_level_fun = "dm_examine_cardinalities") %>%
