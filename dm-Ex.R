@@ -668,28 +668,3 @@ dm_nycflights13() %>%
 
 
 cleanEx()
-nameEx("dm_has_pk")
-### * dm_has_pk
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_has_pk
-### Title: Check for primary key
-### Aliases: dm_has_pk
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-dm_nycflights13() %>%
-  dm_has_pk(flights)
-dm_nycflights13() %>%
-  dm_has_pk(planes)
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
