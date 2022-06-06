@@ -275,53 +275,6 @@ dm() %>%
 
 
 cleanEx()
-nameEx("dm_bind")
-### * dm_bind
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_bind
-### Title: Merge several 'dm'
-### Aliases: dm_bind
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-dm_1 <- dm_nycflights13()
-dm_2 <- dm(mtcars, iris)
-dm_bind(dm_1, dm_2)
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
-nameEx("dm_disambiguate_cols")
-### * dm_disambiguate_cols
-
-flush(stderr()); flush(stdout())
-
-### Name: dm_disambiguate_cols
-### Title: Resolve column name ambiguities
-### Aliases: dm_disambiguate_cols
-
-### ** Examples
-
-## Don't show: 
-if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
-## End(Don't show)
-dm_nycflights13() %>%
-  dm_disambiguate_cols()
-## Don't show: 
-}) # examplesIf
-## End(Don't show)
-
-
-
-cleanEx()
 nameEx("dm_from_con")
 ### * dm_from_con
 
