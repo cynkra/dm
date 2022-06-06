@@ -609,12 +609,10 @@ flush(stderr()); flush(stdout())
 ### ** Examples
 
 ## Don't show: 
-if (dm:::dm_has_financial()) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
 ## End(Don't show)
 dm_financial() %>%
   dm_get_con()
 ## Don't show: 
-}) # examplesIf
 ## End(Don't show)
 
 
