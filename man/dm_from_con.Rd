@@ -52,6 +52,6 @@ con <- dm_get_con(dm_financial())
 
 dm_from_src(con)
 
-DBI::dbDisconnect(con)
+# Avoid DBI::dbDisconnect() here, because we don't own the connection
 \dontshow{\}) # examplesIf}
 }
