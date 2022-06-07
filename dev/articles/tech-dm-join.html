@@ -217,7 +217,9 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_joined</span> <span class="op">&lt;-</span>
   <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/deprecated.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span>
+<span class="co">#&gt; Warning: `dm_join_to_tbl()` was deprecated in dm 0.3.0.</span>
+<span class="co">#&gt; Please use `dm_flatten_to_tbl()` instead.</span>
 <span class="va">dm_joined</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1,761 × 20</span>
 <span class="co">#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time</span>
@@ -267,7 +269,9 @@
 <p>We expect the flights data from {nycflights13} package to be clean and well organized, so no flights should remain. You can check this with an <code>anti_join</code>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, join <span class="op">=</span> <span class="va">anti_join</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/deprecated.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, join <span class="op">=</span> <span class="va">anti_join</span><span class="op">)</span>
+<span class="co">#&gt; Warning: `dm_join_to_tbl()` was deprecated in dm 0.3.0.</span>
+<span class="co">#&gt; Please use `dm_flatten_to_tbl()` instead.</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 0 × 19</span>
 <span class="co">#&gt; # … with 19 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,</span>
 <span class="co">#&gt; #   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span>
@@ -282,7 +286,9 @@
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"Delta Air Lines Inc."</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/deprecated.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span>
+<span class="co">#&gt; Warning: `dm_join_to_tbl()` was deprecated in dm 0.3.0.</span>
+<span class="co">#&gt; Please use `dm_flatten_to_tbl()` instead.</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 0 × 26</span>
 <span class="co">#&gt; # … with 26 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,</span>
 <span class="co">#&gt; #   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span>

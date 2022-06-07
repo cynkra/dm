@@ -169,19 +169,10 @@
     <loc>https://cynkra.github.io/dm/reference/dm_get_pk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/reference/dm_get_referencing_tables.html</loc>
-  </url>
-  <url>
     <loc>https://cynkra.github.io/dm/reference/dm_has_fk.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/dm_has_pk.html</loc>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/dm/reference/dm_is_referenced.html</loc>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/dm/reference/dm_join_to_tbl.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/dm_mutate_tbl.html</loc>

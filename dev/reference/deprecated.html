@@ -4,6 +4,11 @@ Most functions with the cdm_ prefix have an identical alternative
 with a dm_ prefix.
 sql_schema_*() functions have been replaced with the corresponding
 db_schema_*() functions.
+dm_join_to_tbl() is deprecated in favor of dm_flatten_to_tbl().
+dm_is_referenced() is soft-deprecated, use the information returned from
+dm_get_all_fks() instead.
+dm_get_referencing_tables() is soft-deprecated, use the information
+returned from dm_get_all_fks() instead.
 validate_dm() has been replaced by dm_validate() for consistency."><meta property="og:image" content="https://cynkra.github.io/dm/logo.png"><meta name="robots" content="noindex"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -105,7 +110,7 @@ validate_dm() has been replaced by dm_validate() for consistency."><meta propert
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Deprecated functions</h1>
-    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/deprecated.R" class="external-link"><code>R/deprecated.R</code></a>, <a href="https://github.com/cynkra/dm/blob/HEAD/R/validate.R" class="external-link"><code>R/validate.R</code></a>, <a href="https://github.com/cynkra/dm/blob/HEAD/R/zzx-deprecated.R" class="external-link"><code>R/zzx-deprecated.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/deprecated.R" class="external-link"><code>R/deprecated.R</code></a>, <a href="https://github.com/cynkra/dm/blob/HEAD/R/flatten.R" class="external-link"><code>R/flatten.R</code></a>, <a href="https://github.com/cynkra/dm/blob/HEAD/R/graph.R" class="external-link"><code>R/graph.R</code></a>, and 2 more</small>
     <div class="hidden name"><code>deprecated.Rd</code></div>
     </div>
 
@@ -115,6 +120,11 @@ Most functions with the <code>cdm_</code> prefix have an identical alternative
 with a <code>dm_</code> prefix.</p>
 <p><code>sql_schema_*()</code> functions have been replaced with the corresponding
 <code>db_schema_*()</code> functions.</p>
+<p><code>dm_join_to_tbl()</code> is deprecated in favor of <code><a href="dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code>.</p>
+<p><code>dm_is_referenced()</code> is soft-deprecated, use the information returned from
+<code><a href="dm_get_all_fks.html">dm_get_all_fks()</a></code> instead.</p>
+<p><code>dm_get_referencing_tables()</code> is soft-deprecated, use the information
+returned from <code><a href="dm_get_all_fks.html">dm_get_all_fks()</a></code> instead.</p>
 <p><code>validate_dm()</code> has been replaced by <code><a href="dm_validate.html">dm_validate()</a></code> for consistency.</p>
     </div>
 
@@ -126,6 +136,12 @@ with a <code>dm_</code> prefix.</p>
 <span class="fu">sql_schema_exists</span><span class="op">(</span><span class="va">dest</span>, <span class="va">schema</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="fu">sql_schema_list</span><span class="op">(</span><span class="va">dest</span>, include_default <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
+
+<span class="fu">dm_join_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table_1</span>, <span class="va">table_2</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span>
+
+<span class="fu">dm_is_referenced</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span>
+
+<span class="fu">dm_get_referencing_tables</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span>
 
 <span class="fu">validate_dm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
@@ -255,6 +271,15 @@ with a <code>dm_</code> prefix.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
     </div>
 
   </div>
