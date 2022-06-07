@@ -37,17 +37,11 @@
 #'
 #' @export
 #' @examplesIf dm:::dm_has_financial()
-#' con <- DBI::dbConnect(
-#'   RMariaDB::MariaDB(),
-#'   username = "guest",
-#'   password = "relational",
-#'   dbname = "Financial_ijs",
-#'   host = "relational.fit.cvut.cz"
-#' )
+#' con <- dm_get_con(dm_financial())
 #'
 #' dm_from_src(con)
 #'
-#' DBI::dbDisconnect(con)
+#' # Avoid DBI::dbDisconnect() here, because we don't own the connection
 dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
                         ...) {
   stopifnot(is(con, "DBIConnection") || inherits(con, "Pool"))
