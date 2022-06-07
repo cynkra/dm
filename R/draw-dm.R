@@ -24,7 +24,7 @@
 #' @param edge_attrs Additional edge attributes.
 #' @param focus A list of parameters for rendering (table filter).
 #' @param columnArrows Edges from columns to columns (default: `TRUE`).
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @param column_types Set to `TRUE` to show column types.
 #' @param backend Currently, only the default `"DiagrammeR"` is accepted.
 #'   Pass this value explicitly if your code not only uses this function
