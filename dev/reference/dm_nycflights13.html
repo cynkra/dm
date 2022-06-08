@@ -132,12 +132,33 @@ data integrity constraints.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+
+
+<dt>cycle</dt>
+<dd><p>Boolean.
+If <code>FALSE</code> (default), only one foreign key relation
+(from <code>flights$origin</code> to <code>airports$faa</code>) between the <code>flights</code> table and the <code>airports</code> table is
+established.
+If <code>TRUE</code>, a <code>dm</code> object with a double reference
+between those tables will be produced.</p></dd>
+
+
+<dt>color</dt>
+<dd><p>Boolean, if <code>TRUE</code> (default), the resulting <code>dm</code> object will have
+colors assigned to different tables for visualization with <code><a href="dm_draw.html">dm_draw()</a></code>.</p></dd>
+
+
+<dt>subset</dt>
+<dd><p>Boolean, if <code>TRUE</code> (default), the <code>flights</code> table is reduced to flights with column <code>day</code> equal to 10.</p></dd>
+
+
+<dt>compound</dt>
+<dd><p>Boolean, if <code>FALSE</code>, no link will be established between tables <code>flights</code> and <code>weather</code>,
+because this requires compound keys.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     

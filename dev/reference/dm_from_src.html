@@ -114,11 +114,36 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>src</dt>
+<dd><p>A dbplyr source, DBI connection object or a Pool object.</p></dd>
+
+
+<dt>table_names</dt>
+<dd><p>A character vector of the names of the tables to include.</p></dd>
+
+
+<dt>learn_keys</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
+<p>Set to <code>TRUE</code> to query the definition of primary and
+foreign keys from the database.
+Currently works only for Postgres and SQL Server databases.
+The default attempts to query and issues an informative message.</p></dd>
+
+
+<dt>...</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
+<p>Additional parameters for the schema learning query.</p><ul><li><p><code>schema</code>: supported for MSSQL (default: <code>"dbo"</code>), Postgres (default: <code>"public"</code>), and MariaDB/MySQL
+(default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).</p></li>
+<li><p><code>dbname</code>: supported for MSSQL. Access different databases on the connected MSSQL-server;
+default: active database.</p></li>
+<li><p><code>table_type</code>: supported for Postgres (default: <code>"BASE TABLE"</code>). Specify the table type. Options are:</p><ol><li><p><code>"BASE TABLE"</code> for a persistent table (normal table type)</p></li>
+<li><p><code>"VIEW"</code> for a view</p></li>
+<li><p><code>"FOREIGN TABLE"</code> for a foreign table</p></li>
+<li><p><code>"LOCAL TEMPORARY"</code> for a temporary table</p></li>
+</ol></li>
+</ul></dd>
+
+</dl></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

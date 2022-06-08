@@ -124,10 +124,19 @@ on the dm.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>dm</dt>
+<dd><p>A cycle free dm object.</p></dd>
+
+
+<dt>root</dt>
+<dd><p>Table to wrap the dm into (unquoted).</p></dd>
+
+
+<dt>strict</dt>
+<dd><p>Whether to fail for cyclic dms that cannot be wrapped into a
+single table, if <code>FALSE</code> a partially wrapped dm will be returned.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     

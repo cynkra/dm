@@ -130,10 +130,25 @@ These conditions will be stored in the <code><a href="dm.html">dm</a></code>, an
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+
+
+<dt>table</dt>
+<dd><p>A table in the <code>dm</code>.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Logical predicates defined in terms of the variables in <code>.data</code>, passed on to <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code>.
+Multiple conditions are combined with <code>&amp;</code> or <code>,</code>.
+Only the rows where the condition evaluates
+to <code>TRUE</code> are kept.</p>
+<p>The arguments in ... are automatically quoted and evaluated in the context of
+the data frame. They support unquoting and splicing.
+See <code><a href="https://dplyr.tidyverse.org/articles/programming.html" class="external-link">vignette("programming", package = "dplyr")</a></code>
+for an introduction to these concepts.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     

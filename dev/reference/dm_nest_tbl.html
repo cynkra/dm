@@ -122,10 +122,19 @@ The child table should not have children itself (i.e. it needs to be a
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>dm</dt>
+<dd><p>A dm.</p></dd>
+
+
+<dt>child_table</dt>
+<dd><p>A terminal table with one parent table.</p></dd>
+
+
+<dt>into</dt>
+<dd><p>The table to nest <code>child_tables</code> into, optional as it can be guessed
+from the foreign keys unambiguously but useful to be explicit.</p></dd>
+
+</dl></div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="dm_wrap_tbl.html">dm_wrap_tbl()</a></code>, <code><a href="dm_unwrap_tbl.html">dm_unwrap_tbl()</a></code>, <code><a href="dm_pack_tbl.html">dm_pack_tbl()</a></code></p></div>

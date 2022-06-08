@@ -116,10 +116,27 @@ Select columns of your dm using syntax that is similar to dplyr::select()."><met
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+
+
+<dt>table</dt>
+<dd><p>A table in the <code>dm</code>.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>One or more unquoted expressions separated by commas.
+You can treat
+variable names as if they were positions, and use expressions like x:y
+to select the ranges of variables.</p>
+<p>Use named arguments, e.g. new_name = old_name, to rename the selected variables.</p>
+<p>The arguments in ... are automatically quoted and evaluated in a context where
+column names represent column positions.
+They also support unquoting and splicing.
+See <code><a href="https://dplyr.tidyverse.org/articles/programming.html" class="external-link">vignette("programming", package = "dplyr")</a></code> for an introduction to those concepts.</p>
+<p>See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     

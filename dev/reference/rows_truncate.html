@@ -120,10 +120,21 @@ This operation corresponds to <code>TRUNCATE</code> in SQL.
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>x</dt>
+<dd><p>A data frame or data frame extension (e.g. a tibble).</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Other parameters passed onto methods.</p></dd>
+
+
+<dt>in_place</dt>
+<dd><p>Should <code>x</code> be modified in place? This argument is only
+relevant for mutable backends (e.g. databases, data.tables).</p>
+<p>When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
+when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></dd>
+
+</dl></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -124,13 +124,33 @@ set key, without altering foreign keys previously pointing to that primary key.<
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+
+
+<dt>table</dt>
+<dd><p>A table in the <code>dm</code>.</p></dd>
+
+
+<dt>columns</dt>
+<dd><p>Table columns, unquoted.
+To define a compound key, use <code>c(col1, col2)</code>.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+
+
+<dt>check</dt>
+<dd><p>Boolean, if <code>TRUE</code>, a check is made if the combination of columns is a unique key of the table.</p></dd>
+
+
+<dt>force</dt>
+<dd><p>Boolean, if <code>FALSE</code> (default), an error will be thrown if there is already a primary key
+set for this table.
+If <code>TRUE</code>, a potential old <code>pk</code> is deleted before setting a new one.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     

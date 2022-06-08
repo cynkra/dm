@@ -192,12 +192,31 @@ The order in which the tables are processed is reversed.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>x</dt>
+<dd><p>Target <code>dm</code> object.</p></dd>
+
+
+<dt>y</dt>
+<dd><p><code>dm</code> object with new data.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+
+
+<dt>in_place</dt>
+<dd><p>Should <code>x</code> be modified in place? This argument is only
+relevant for mutable backends (e.g. databases, data.tables).</p>
+<p>When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
+when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></dd>
+
+
+<dt>progress</dt>
+<dd><p>Whether to display a progress bar, if <code>NA</code> (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     

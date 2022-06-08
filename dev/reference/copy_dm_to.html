@@ -141,18 +141,87 @@ and in addition foreign key constraints are set on MSSQL and Postgres databases.
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>dest</dt>
+<dd><p>An object of class <code>"src"</code> or <code>"DBIConnection"</code>.</p></dd>
+
+
+<dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Passed on to <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">dplyr::copy_to()</a></code> or to the function specified
+by the <code>copy_to</code> argument.</p></dd>
+
+
+<dt>overwrite, types, indexes, unique_indexes</dt>
+<dd><p>Must remain <code>NULL</code>.</p></dd>
+
+
+<dt>set_key_constraints</dt>
+<dd><p>If <code>TRUE</code> will mirror <code>dm</code> primary and foreign key constraints on a database
+and create unique indexes.
+Set to <code>FALSE</code> if your data model currently does not satisfy primary or foreign key constraints.</p></dd>
+
+
+<dt>unique_table_names</dt>
+<dd><p>Deprecated.</p></dd>
+
+
+<dt>table_names</dt>
+<dd><p>Desired names for the tables on <code>dest</code>; the names within the <code>dm</code> remain unchanged.
+Can be <code>NULL</code>, a named character vector, a function or a one-sided formula.</p>
+<p>If left <code>NULL</code> (default), the names will be determined automatically depending on the <code>temporary</code> argument:</p><ol><li><p><code>temporary = TRUE</code> (default): unique table names based on the names of the tables in the <code>dm</code> are created.</p></li>
+<li><p><code>temporary = FALSE</code>: the table names in the <code>dm</code> are used as names for the tables on <code>dest</code>.</p></li>
+</ol><p>If a function or one-sided formula, <code>table_names</code> is converted to a function
+using <code><a href="https://rlang.r-lib.org/reference/as_function.html" class="external-link">rlang::as_function()</a></code>.
+This function is called with the unquoted table names of the <code>dm</code> object
+as the only argument.
+The output of this function is processed by <code><a href="https://dbi.r-dbi.org/reference/dbQuoteIdentifier.html" class="external-link">DBI::dbQuoteIdentifier()</a></code>,
+that result should be a vector of identifiers of the same length
+as the original table names.</p>
+<p>Use a variant of
+<code>table_names = ~ DBI::SQL(paste0("schema_name", ".", .x))</code>
+to specify the same schema for all tables.
+Use <code>table_names = identity</code> with <code>temporary = TRUE</code>
+to avoid giving temporary tables unique names.</p>
+<p>If a named character vector,
+the names of this vector need to correspond to the table names in the <code>dm</code>,
+and its values are the desired names on <code>dest</code>.
+The value is processed by <code><a href="https://dbi.r-dbi.org/reference/dbQuoteIdentifier.html" class="external-link">DBI::dbQuoteIdentifier()</a></code>,
+that result should be a vector of identifiers of the same length
+as the original table names.</p>
+<p>Use qualified names corresponding to your database's syntax
+to specify e.g. database and schema for your tables.</p></dd>
+
+
+<dt>temporary</dt>
+<dd><p>If <code>TRUE</code>, only temporary tables will be created.
+These tables will vanish when disconnecting from the database.</p></dd>
+
+
+<dt>schema</dt>
+<dd><p>Name of schema to copy the <code>dm</code> to.
+If <code>schema</code> is provided, an error will be thrown if <code>temporary = FALSE</code> or
+<code>table_names</code> is not <code>NULL</code>.</p>
+<p>Not all DBMS are supported.</p></dd>
+
+
+<dt>progress</dt>
+<dd><p>Whether to display a progress bar, if <code>NA</code> (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.</p></dd>
+
+
+<dt>copy_to</dt>
+<dd><p>By default, <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">dplyr::copy_to()</a></code> is called to upload the
+individual tables to the target data source.
+This argument allows overriding the standard behavior in cases
+when the default does not work as expected, such as spatial data frames
+or other tables with special data types.
+If not <code>NULL</code>, this argument is processed with <code><a href="https://rlang.r-lib.org/reference/as_function.html" class="external-link">rlang::as_function()</a></code>.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     

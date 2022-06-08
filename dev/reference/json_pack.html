@@ -116,10 +116,20 @@ A wrapper around tidyr::pack() which stores the packed data into JSON columns.">
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>.data</dt>
+<dd><p>A data frame, a data frame extension (e.g. a tibble), or  a lazy data frame (e.g. from dbplyr or dtplyr).</p></dd>
+
+
+<dt>...</dt>
+<dd><p>&lt;<code>tidy-select</code>&gt; Columns to pack, specified
+using name-variable pairs of the form <code>new_col = c(col1, col2, col3)</code>.
+The right hand side can be any valid tidy select expression.</p></dd>
+
+
+<dt>.names_sep</dt>
+<dd><p>If <code>NULL</code>, the default, the names will be left as is.</p></dd>
+
+</dl></div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="https://tidyr.tidyverse.org/reference/pack.html" class="external-link">tidyr::pack()</a></code>, <code><a href="json_pack_join.html">json_pack_join()</a></code></p></div>

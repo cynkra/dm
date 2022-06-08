@@ -122,12 +122,30 @@ Foreign keys are never removed.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
+
+
+<dt>table</dt>
+<dd><p>A table in the <code>dm</code>.
+Pass <code>NULL</code> to remove all matching keys.</p></dd>
+
+
+<dt>columns</dt>
+<dd><p>Table columns, unquoted.
+To refer to a compound key, use <code>c(col1, col2)</code>.
+Pass <code>NULL</code> (the default) to remove all matching keys.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+
+
+<dt>fail_fk</dt>
+<dd><p>Boolean: if <code>TRUE</code> (default), will throw an error
+if there are foreign keys addressing the primary key that is to be removed.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     

@@ -130,20 +130,62 @@ dm_draw() draws a diagram, a visual representation of the data model."><meta pro
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>dm</dt>
+<dd><p>A <code><a href="dm.html">dm</a></code> object.</p></dd>
+
+
+<dt>rankdir</dt>
+<dd><p>Graph attribute for direction (e.g., 'BT' = bottom --&gt; top).</p></dd>
+
+
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+
+
+<dt>col_attr</dt>
+<dd><p>Deprecated, use <code>colummn_types</code> instead.</p></dd>
+
+
+<dt>view_type</dt>
+<dd><p>Can be "keys_only" (default), "all" or "title_only".
+It defines the level of details for rendering tables
+(only primary and foreign keys, all columns, or no columns).</p></dd>
+
+
+<dt>columnArrows</dt>
+<dd><p>Edges from columns to columns (default: <code>TRUE</code>).</p></dd>
+
+
+<dt>graph_attrs</dt>
+<dd><p>Additional graph attributes.</p></dd>
+
+
+<dt>node_attrs</dt>
+<dd><p>Additional node attributes.</p></dd>
+
+
+<dt>edge_attrs</dt>
+<dd><p>Additional edge attributes.</p></dd>
+
+
+<dt>focus</dt>
+<dd><p>A list of parameters for rendering (table filter).</p></dd>
+
+
+<dt>graph_name</dt>
+<dd><p>The name of the graph.</p></dd>
+
+
+<dt>column_types</dt>
+<dd><p>Set to <code>TRUE</code> to show column types.</p></dd>
+
+
+<dt>backend</dt>
+<dd><p>Currently, only the default <code>"DiagrammeR"</code> is accepted.
+Pass this value explicitly if your code not only uses this function
+to display a data model but relies on the type of the return value.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     
