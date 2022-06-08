@@ -9,7 +9,7 @@
 #' If `force == TRUE`, the function will replace an already
 #' set key, without altering foreign keys previously pointing to that primary key.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
 #' @param columns Table columns, unquoted.

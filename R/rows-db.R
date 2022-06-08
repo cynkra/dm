@@ -436,7 +436,7 @@ check_returning_cols_possible <- function(returning_cols, in_place) {
 #'
 #' @rdname rows-db
 sql_rows_insert <- function(x, y, ..., returning_cols = NULL) {
-  ellipsis::check_dots_used()
+  check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_insert")
 }
@@ -461,7 +461,7 @@ sql_rows_insert.tbl_sql <- function(x, y, ..., returning_cols = NULL) {
 
 #' @rdname rows-db
 sql_rows_update <- function(x, y, by, ..., returning_cols = NULL) {
-  ellipsis::check_dots_used()
+  check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_update")
 }
@@ -540,7 +540,7 @@ sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols 
 }
 
 sql_rows_upsert <- function(x, y, by, ..., returning_cols = NULL) {
-  ellipsis::check_dots_used()
+  check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_upsert")
 }
@@ -669,7 +669,7 @@ sql_rows_upsert.tbl_MariaDBConnection <- function(x, y, by, ..., returning_cols 
 
 #' @rdname rows-db
 sql_rows_patch <- function(x, y, by, ..., returning_cols = NULL) {
-  ellipsis::check_dots_used()
+  check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_patch")
 }
@@ -753,7 +753,7 @@ sql_coalesce <- function(x, y) {
 
 #' @rdname rows-db
 sql_rows_delete <- function(x, y, by, ..., returning_cols = NULL) {
-  ellipsis::check_dots_used()
+  check_dots_used()
   # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_delete")
 }

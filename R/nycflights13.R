@@ -10,7 +10,7 @@
 #' between the `flights` table and the `planes` tables is "weak", it does not satisfy
 #' data integrity constraints.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @param cycle Boolean.
 #'   If `FALSE` (default), only one foreign key relation
 #'   (from `flights$origin` to `airports$faa`) between the `flights` table and the `airports` table is

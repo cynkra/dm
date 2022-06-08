@@ -6,7 +6,7 @@
 #' Creates an example [`dm`] object from the tables in
 #' \pkg{pixarfilms}, along with the references.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @param color Boolean, if `TRUE` (default), the resulting `dm` object will
 #'   have colors assigned to different tables for visualization with
 #'   `dm_draw()`.
