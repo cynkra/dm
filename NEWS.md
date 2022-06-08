@@ -1,5 +1,38 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.8.9006
+
+## Chore 
+
+- Remove all uses of dm_from_src() (#1044).
+
+- Use dbplyr 2.2.0 and rlang 1.0.2 (#1024).
+
+- Fix dm_from_src() example if relational.fit is down (#993).
+
+- License year (#1029).
+
+
+
+## API 
+
+- Deprecate dm_join_to_tbl(), dm_is_referenced() and dm_get_referencing_tables() (#1038).
+
+- New `dm_validate()` replaces now deprecated `validate_dm()` (#1033).
+
+- `dm_get_filters()` uses `dm` as argument name (#1036).
+
+- `dm_get_con()` uses `dm` as argument name (#1034).
+
+- `dm()` and related functions are stable (#1040).
+
+- Mark `...` in `dm_flatten_to_tbl()` as experimental (#1037).
+
+- Add ellipses to `dm_disambiguate_cols()`, `dm_draw()`, `dm_examine_constraints()`, `dm_nycflights13()` and `dm_pixarfilms()` (#1035).
+
+- Mark functions as stable (#1032).
+
+
 # dm 0.2.8.9005
 
 ## Bug fixes 
