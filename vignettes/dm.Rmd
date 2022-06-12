@@ -3,8 +3,8 @@ title: "Getting started with dm"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{First read: Getting started with dm}
   %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{First read: Getting started with dm}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
@@ -25,7 +25,7 @@ Links to detailed documentation are provided at the end.
 
 dm objects can be created from individual tables or loaded directly from a relational data model on an RDBMS (relational database management system).
 
-For this demonstration we're going work with a model hosted on a public server.
+For this demonstration, we're going to work with a model hosted on a public server.
 The first thing we need is a connection to the RDBMS hosting the data.
 
 ``````{r connect}
@@ -63,7 +63,7 @@ fin_dm$loans
 dplyr::count(fin_dm$trans)
 ```
 
-At the same time, most `dm` functions are pipe-friendly and support tidy evaluation.
+Additionally, most `dm` functions are pipe-friendly and support tidy evaluation.
 We can use `[` or the `dm_select_tbl()` verb to derive a smaller dm with the `loans`, `accounts`, `districts` and `trans` tables:
 
 ```{r select}
@@ -79,7 +79,7 @@ fin_dm_small <-
 In many cases, `dm_from_con()` already returns a dm with all keys set.
 If not, dm allows us to define primary and foreign keys ourselves.
 
-In our data model, `id` columns uniquely identify records in the `accounts` and `loans` table, a primary key is added with `dm_add_pk()`.
+In our data model, `id` columns uniquely identify records in the `accounts` and `loans` table, and can be used as a primary key. A primary key is added with `dm_add_pk()`.
 Each loan is linked to one account via the `account_id` column in the `loans` table, the relationship is established with `dm_add_fk()`.
 
 ```{r keys}
@@ -98,9 +98,9 @@ fin_dm_keys <-
 
 Having a diagram of the data model is the quickest way to verify we're on the right track.
 We can display a visual summary of the dm at any time.
-The default is to display the table name, any defined keys and their links to other tables.
+The default is to display the table name, any defined keys, and their links to other tables.
 
-Visualizing the dm in its current state we see the keys we have created and how they link the tables together.
+Visualizing the dm in its current state, we can see the keys we have created and how they link the tables together.
 Color guides the eye.
 
 ```{r visualize_keys}
@@ -111,7 +111,7 @@ fin_dm_keys %>%
 
 ## Accessing a data model as a table
 
-If we want to perform modeling or analysis on this relational model we need to transform it into a tabular format that R functions can work with.
+If we want to perform modeling or analysis on this relational model, we need to transform it into a tabular format that R functions can work with.
 `dm_squash_to_tbl()` will automatically follow foreign keys across tables to gather all the available columns into a single table.
 
 ```{r squash}
@@ -138,11 +138,11 @@ model
 ## Operations on table data within a dm
 
 We don't need to take the extra step of exporting the data to work with it.
-Through the dm object we have complete access to dplyr's data manipulation verbs.
+Through the dm object, we have complete access to dplyr's data manipulation verbs.
 These operate on the data within individual tables.
 
 To work with a particular table we use `dm_zoom_to()` to set the context to our chosen table.
-Then we can perform any of the operations we want.
+Then we can perform any of the dplyr operations we want.
 
 ```{r zoom}
 fin_dm_total <-
@@ -156,9 +156,9 @@ fin_dm_total <-
 fin_dm_total$total_loans
 ```
 
-Note that in the above example we use `dm_insert_zoomed()` to add the results as a new table to our data model.
+Note that, in the above example, we use `dm_insert_zoomed()` to add the results as a new table to our data model.
 This table is temporary and will be deleted when our session ends.
-If you want to make permanent changes to your data model on an RDBMS please see the "Persisting results" section in `vignette("howto-dm-db")`.
+If you want to make permanent changes to your data model on an RDBMS, please see the "Persisting results" section in `vignette("howto-dm-db")`.
 
 
 ## Checking constraints
@@ -189,7 +189,7 @@ If your data is in data frames, then you want to read `vignette("howto-dm-df")` 
 
 If you feel you need to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
 
-If you're familiar with relational data models but want to know how to work with them in dm, then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.
+If you're familiar with relational data models, but want to know how to work with them in dm, then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.
 
 ## Further reading
 
@@ -221,7 +221,7 @@ The {dm} package follows the tidyverse principles:
 
 - `dm` objects are immutable (your data will never be overwritten in place)
 - most functions used on `dm` objects are pipeable (i.e., return new `dm` or table objects)
-- tidy evaluation is used (unquoted function parameters are supported)
+- tidy evaluation is used (unquoted function arguments are supported)
 
 The {dm} package builds heavily upon the [{datamodelr} package](https://github.com/bergant/datamodelr), and upon the [tidyverse](https://www.tidyverse.org/).
 We're looking forward to a good collaboration!
