@@ -79,7 +79,8 @@ fin_dm_small <-
 In many cases, `dm_from_con()` already returns a dm with all keys set.
 If not, dm allows us to define primary and foreign keys ourselves.
 
-In our data model, `id` columns uniquely identify records in the `accounts` and `loans` table, and can be used as a primary key. A primary key is added with `dm_add_pk()`.
+In our data model, `id` columns uniquely identify records in the `accounts` and `loans` tables, and can be used as a primary key.
+A primary key is defined with `dm_add_pk()`.
 Each loan is linked to one account via the `account_id` column in the `loans` table, the relationship is established with `dm_add_fk()`.
 
 ```{r keys}
