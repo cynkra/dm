@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting started with dm</h1>
             
-            <h4 data-toc-skip class="date">2022-06-08</h4>
+            <h4 data-toc-skip class="date">2022-06-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/dm.Rmd" class="external-link"><code>vignettes/dm.Rmd</code></a></small>
       <div class="hidden name"><code>dm.Rmd</code></div>
@@ -154,7 +154,7 @@
 <h2 id="creating-a-dm-object">Creating a dm object<a class="anchor" aria-label="anchor" href="#creating-a-dm-object"></a>
 </h2>
 <p>dm objects can be created from individual tables or loaded directly from a relational data model on an RDBMS (relational database management system).</p>
-<p>For this demonstration we’re going work with a model hosted on a public server. The first thing we need is a connection to the RDBMS hosting the data.</p>
+<p>For this demonstration, we’re going to work with a model hosted on a public server. The first thing we need is a connection to the RDBMS hosting the data.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rmariadb.r-dbi.org" class="external-link">RMariaDB</a></span><span class="op">)</span>
 
@@ -211,7 +211,7 @@
 <span class="co">#&gt;         n</span>
 <span class="co">#&gt;   &lt;int64&gt;</span>
 <span class="co">#&gt; 1 1056320</span></code></pre>
-<p>At the same time, most <code>dm</code> functions are pipe-friendly and support tidy evaluation. We can use <code>[</code> or the <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> verb to derive a smaller dm with the <code>loans</code>, <code>accounts</code>, <code>districts</code> and <code>trans</code> tables:</p>
+<p>Additionally, most <code>dm</code> functions are pipe-friendly and support tidy evaluation. We can use <code>[</code> or the <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> verb to derive a smaller dm with the <code>loans</code>, <code>accounts</code>, <code>districts</code> and <code>trans</code> tables:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_small</span> <span class="op">&lt;-</span> <span class="va">fin_dm</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"loans"</span>, <span class="st">"accounts"</span>, <span class="st">"districts"</span>, <span class="st">"trans"</span><span class="op">)</span><span class="op">]</span>
 <span class="va">fin_dm_small</span> <span class="op">&lt;-</span>
@@ -222,7 +222,7 @@
 <h2 id="linking-tables-by-adding-keys">Linking tables by adding keys<a class="anchor" aria-label="anchor" href="#linking-tables-by-adding-keys"></a>
 </h2>
 <p>In many cases, <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> already returns a dm with all keys set. If not, dm allows us to define primary and foreign keys ourselves.</p>
-<p>In our data model, <code>id</code> columns uniquely identify records in the <code>accounts</code> and <code>loans</code> table, a primary key is added with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. Each loan is linked to one account via the <code>account_id</code> column in the <code>loans</code> table, the relationship is established with <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code>.</p>
+<p>In our data model, <code>id</code> columns uniquely identify records in the <code>accounts</code> and <code>loans</code> tables, and can be used as a primary key. A primary key is defined with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. Each loan is linked to one account via the <code>account_id</code> column in the <code>loans</code> table, the relationship is established with <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op">&lt;-</span>
   <span class="va">fin_dm_small</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -237,8 +237,8 @@
 <div class="section level2">
 <h2 id="visualizing-a-data-model">Visualizing a data model<a class="anchor" aria-label="anchor" href="#visualizing-a-data-model"></a>
 </h2>
-<p>Having a diagram of the data model is the quickest way to verify we’re on the right track. We can display a visual summary of the dm at any time. The default is to display the table name, any defined keys and their links to other tables.</p>
-<p>Visualizing the dm in its current state we see the keys we have created and how they link the tables together. Color guides the eye.</p>
+<p>Having a diagram of the data model is the quickest way to verify we’re on the right track. We can display a visual summary of the dm at any time. The default is to display the table name, any defined keys, and their links to other tables.</p>
+<p>Visualizing the dm in its current state, we can see the keys we have created and how they link the tables together. Color guides the eye.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_set_colors.html">dm_set_colors</a></span><span class="op">(</span>green <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">accounts</span><span class="op">)</span>, darkblue <span class="op">=</span> <span class="va">trans</span>, grey <span class="op">=</span> <span class="va">districts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -259,7 +259,7 @@
 <div class="section level2">
 <h2 id="accessing-a-data-model-as-a-table">Accessing a data model as a table<a class="anchor" aria-label="anchor" href="#accessing-a-data-model-as-a-table"></a>
 </h2>
-<p>If we want to perform modeling or analysis on this relational model we need to transform it into a tabular format that R functions can work with. <code><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl()</a></code> will automatically follow foreign keys across tables to gather all the available columns into a single table.</p>
+<p>If we want to perform modeling or analysis on this relational model, we need to transform it into a tabular format that R functions can work with. <code><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl()</a></code> will automatically follow foreign keys across tables to gather all the available columns into a single table.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span>
@@ -313,8 +313,8 @@
 <div class="section level2">
 <h2 id="operations-on-table-data-within-a-dm">Operations on table data within a dm<a class="anchor" aria-label="anchor" href="#operations-on-table-data-within-a-dm"></a>
 </h2>
-<p>We don’t need to take the extra step of exporting the data to work with it. Through the dm object we have complete access to dplyr’s data manipulation verbs. These operate on the data within individual tables.</p>
-<p>To work with a particular table we use <code><a href="../reference/dm_zoom_to.html">dm_zoom_to()</a></code> to set the context to our chosen table. Then we can perform any of the operations we want.</p>
+<p>We don’t need to take the extra step of exporting the data to work with it. Through the dm object, we have complete access to dplyr’s data manipulation verbs. These operate on the data within individual tables.</p>
+<p>To work with a particular table we use <code><a href="../reference/dm_zoom_to.html">dm_zoom_to()</a></code> to set the context to our chosen table. Then we can perform any of the dplyr operations we want.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_total</span> <span class="op">&lt;-</span>
   <span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -340,7 +340,7 @@
 <span class="co">#&gt;  9        105       352704</span>
 <span class="co">#&gt; 10        110       162576</span>
 <span class="co">#&gt; # … with more rows</span></code></pre>
-<p>Note that in the above example we use <code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code> to add the results as a new table to our data model. This table is temporary and will be deleted when our session ends. If you want to make permanent changes to your data model on an RDBMS please see the “Persisting results” section in <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code>.</p>
+<p>Note that, in the above example, we use <code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code> to add the results as a new table to our data model. This table is temporary and will be deleted when our session ends. If you want to make permanent changes to your data model on an RDBMS, please see the “Persisting results” section in <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="checking-constraints">Checking constraints<a class="anchor" aria-label="anchor" href="#checking-constraints"></a>
@@ -360,7 +360,7 @@
 <p>Is your data in an RDBMS? Then move on to <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> for a more detailed looking at working with an existing relational data model.</p>
 <p>If your data is in data frames, then you want to read <code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code> next.</p>
 <p>If you feel you need to know more about relational data models in order to get the most out of dm, check out <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
-<p>If you’re familiar with relational data models but want to know how to work with them in dm, then any of <code><a href="../articles/tech-dm-join.html">vignette("tech-dm-join")</a></code>, <code><a href="../articles/tech-dm-filter.html">vignette("tech-dm-filter")</a></code>, or <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> is a good next step.</p>
+<p>If you’re familiar with relational data models, but want to know how to work with them in dm, then any of <code><a href="../articles/tech-dm-join.html">vignette("tech-dm-join")</a></code>, <code><a href="../articles/tech-dm-filter.html">vignette("tech-dm-filter")</a></code>, or <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> is a good next step.</p>
 </div>
 <div class="section level2">
 <h2 id="further-reading">Further reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
@@ -385,7 +385,7 @@
 <li>
 <code>dm</code> objects are immutable (your data will never be overwritten in place)</li>
 <li>most functions used on <code>dm</code> objects are pipeable (i.e., return new <code>dm</code> or table objects)</li>
-<li>tidy evaluation is used (unquoted function parameters are supported)</li>
+<li>tidy evaluation is used (unquoted function arguments are supported)</li>
 </ul>
 <p>The {dm} package builds heavily upon the <a href="https://github.com/bergant/datamodelr" class="external-link">{datamodelr} package</a>, and upon the <a href="https://www.tidyverse.org/" class="external-link">tidyverse</a>. We’re looking forward to a good collaboration!</p>
 <p>The <a href="https://github.com/russHyde/polyply" class="external-link">{polyply} package</a> has a similar intent with a slightly different interface.</p>
@@ -413,7 +413,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.9000.</p>
 </div>
 
       </footer>
