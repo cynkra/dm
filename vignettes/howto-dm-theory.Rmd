@@ -100,7 +100,7 @@ dm %>%
   dm_draw()
 ```
 
-The `flights` table is linked to three other tables: `airlines`, `planes`, and `airports`. <!-- What about `weather` table? -->
+The `flights` table is linked to four other tables: `airlines`, `planes`, `weather`, and `airports`. 
 By using directed arrows, the visualization shows explicitly the connection between different columns (they are called attributes in the relational data sphere).
 
 For example: The column `carrier` in `flights` can be joined with the column `carrier` from the `airlines` table.
