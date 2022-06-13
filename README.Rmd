@@ -79,7 +79,21 @@ The latest stable version of the {dm} package can be obtained from [CRAN](https:
 install.packages("dm")
 ```
 
-The latest development version of {dm} can be installed from GitHub.
+The latest development version of {dm} can be installed from R-universe:
+
+```r
+# Enable repository from cynkra
+options(
+  repos = c(
+    cynkra = 'https://cynkra.r-universe.dev',
+    CRAN = 'https://cloud.r-project.org'
+  )
+)
+# Download and install dm in R
+install.packages('dm')
+```
+
+or from GitHub:
 
 ```r
 # install.packages("devtools")
