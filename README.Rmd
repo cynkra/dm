@@ -85,8 +85,8 @@ The latest development version of {dm} can be installed from R-universe:
 # Enable repository from cynkra
 options(
   repos = c(
-    cynkra = 'https://cynkra.r-universe.dev',
-    CRAN = 'https://cloud.r-project.org'
+    cynkra = "https://cynkra.r-universe.dev",
+    CRAN = "https://cloud.r-project.org"
   )
 )
 # Download and install dm in R
