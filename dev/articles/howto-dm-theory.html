@@ -110,7 +110,7 @@
 
     
     
-<p>Multiple, linked tables are common within computer science. Because many R users have backgrounds in other disciplines, we present <strong>six important terms in relational data modeling</strong> to help you to jump-start working with {dm}. These terms are:</p>
+<p>Computer scientists are familiar with multiple, linked tables. But, because many R users tend to have backgrounds in other disciplines, we present <strong>six important terms in relational data modeling</strong> to help you to jump-start working with {dm}. These terms are:</p>
 <ol style="list-style-type: decimal">
 <li><a href="#tables">Data Frames and Tables</a></li>
 <li><a href="#model">Data Model</a></li>
@@ -123,7 +123,7 @@
 <div class="section level2">
 <h2 id="data-frames-and-tables">1. Data Frames and Tables<a class="anchor" aria-label="anchor" href="#data-frames-and-tables"></a>
 </h2>
-<p>A data frame is a fundamental data structure in R. Columns represent variables, rows represent observations. In more technical terms: a data frame is a list of variables of identical length and unique row names. If you imagine it visually, the result is a typical table structure. That is why working with data from spreadsheets is so convenient and the users of the popular <a href="https://dplyr.tidyverse.org" class="external-link">{dplyr}</a> package for data wrangling mainly rely on data frames.</p>
+<p>A data frame is a fundamental data structure in R. Columns represent variables, rows represent observations. In more technical terms, a data frame is a list of variables of identical length and unique row names. If you imagine it visually, the result is a typical table structure. That is why working with data from spreadsheets is so convenient and the users of the popular <a href="https://dplyr.tidyverse.org" class="external-link">{dplyr}</a> package for data wrangling mainly rely on data frames.</p>
 <p>The downside is that data frames and flat file systems like spreadsheets can result in bloated tables because they hold many repetitive values. In the worst case, a data frame can contain multiple columns with only a single value different in each row.</p>
 <p>This calls for better data organization by utilizing the resemblance between data frames and database tables, which also consist of columns and rows. The elements are just named differently:</p>
 <table class="table">
@@ -134,26 +134,27 @@
 <tbody>
 <tr class="odd">
 <td>Column</td>
-<td>Attribute</td>
+<td>Attribute (or Field)</td>
 </tr>
 <tr class="even">
 <td>Row</td>
-<td>Tuple</td>
+<td>Tuple (or Record)</td>
 </tr>
 </tbody>
 </table>
+<p>Additionally, number of rows and columns for a data frame are, respectively, analogous to the <em>cardinality</em> and <em>degree</em> of the table.</p>
 <p>Relational databases, unlike data frames, do not keep all data in one large table but instead split it into multiple smaller tables. That separation into sub-tables has several advantages:</p>
 <ul>
 <li>all information is stored only once, avoiding redundancy and conserving memory</li>
-<li>all information needs to be updated only once and in one place, improving consistency and avoiding errors that may result from updating the same value in multiple locations</li>
+<li>all information needs to be updated only once and in one place, improving consistency and avoiding errors that may result from updating (or forgetting to update) the same value in multiple locations</li>
 <li>all information is organized by topic and segmented into smaller tables that are easier to handle</li>
 </ul>
 <p>It is for these reasons that separation of data helps with data quality, and they explain the popularity of relational databases in production-level data management.</p>
 <p>The downside of this approach is that it is harder to merge together information from different data sources and to identify which entities refer to the same object, a common task when modeling or plotting data.</p>
-<p>Thus, to take full advantage of the relational database approach, an associated data model is needed to overcome the challenges that arise when working with multiple tables.</p>
-<p>Let’s illustrate this challenge with the data from the <a href="https://github.com/tidyverse/nycflights13" class="external-link"><code>nycflights13</code> dataset</a> that contains detailed information about the 336776 flights that departed from New York City in 2013. The information is stored in five tables.</p>
+<p>Thus, to take full advantage of the relational database approach, an associated <strong>data model</strong> is needed to overcome the challenges that arise when working with multiple tables.</p>
+<p>Let’s illustrate this challenge with the data from the <a href="https://github.com/tidyverse/nycflights13" class="external-link"><code>nycflights13</code> dataset</a> that contains detailed information about the 336,776 flights that departed from New York City in 2013. The information is stored in five tables.</p>
 <p>Details like the full name of an airport are not available immediately; these can only be obtained by joining or merging the constituent tables, which can result in long and inflated pipe chains full of <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code> and other forms of data merging.</p>
-<p>In classical {dplyr} notation, you will need three <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code> calls to merge the <code>flights</code> table gradually to <code>airlines</code>, <code>planes</code>, <code>airports</code> and <code>weather</code> tables to create one wide data frame.</p>
+<p>In classical {dplyr} notation, you will need three <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code> calls to merge the <code>flights</code> table gradually to <code>airlines</code>, <code>planes</code>, <code>airports</code>, and <code>weather</code> tables to create one wide data frame.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-message"><code><span class="co">#&gt; ── Attaching packages ────────────────────────────────── tidyverse 1.3.1 ──</span></code></pre>
@@ -194,13 +195,13 @@
 <span class="co">#&gt; #   engines &lt;int&gt;, seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;, name.y &lt;chr&gt;,</span>
 <span class="co">#&gt; #   lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;, …</span></code></pre>
 <p>{dm} offers a more elegant and shorter way to combine tables while augmenting {dplyr}/{dbplyr} workflows.</p>
-<p>It is possible to have the best of both worlds: manage your data with {dm} as linked tables, then flatten multiple tables into one for your analysis with {dplyr} on an as-needed basis.</p>
+<p>It is possible to have the best of both worlds: manage your data with {dm} as linked tables, and, when necessary, flatten multiple tables into a single data frame for analysis with {dplyr}.</p>
 <p>The next step is to create a <a href="#model">data model</a> based on multiple tables:</p>
 </div>
 <div class="section level2">
 <h2 id="model">2. Data Model<a class="anchor" aria-label="anchor" href="#model"></a>
 </h2>
-<p>A data model shows the structure between multiple tables that can be linked together.</p>
+<p>A data model shows the structure between multiple tables that are linked together.</p>
 <p>The <code>nycflights13</code> relations can be transferred into the following graphical representation:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
@@ -221,7 +222,7 @@
 <polygon fill="#ed7d31" stroke="transparent" points="167.5,-141 167.5,-161 213.5,-161 213.5,-141 167.5,-141"></polygon><text text-anchor="start" x="172.6178" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text><polygon fill="#fbe5d5" stroke="transparent" points="167.5,-121 167.5,-141 213.5,-141 213.5,-121 167.5,-121"></polygon><text text-anchor="start" x="169.1115" y="-127.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="166.5,-120 166.5,-162 214.5,-162 214.5,-120 166.5,-120"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge4" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M102.5,-111C128.9473,-111 135.7361,-126.3125 157.2687,-130.1406"></path><polygon fill="#555555" stroke="#555555" points="157.2421,-133.6506 167.5,-131 157.8281,-126.6752 157.2421,-133.6506"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
 <polygon fill="#70ad47" stroke="transparent" points="140.5,-21 140.5,-41 241.5,-41 241.5,-21 140.5,-21"></polygon><text text-anchor="start" x="168.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="#e2eeda" stroke="transparent" points="140.5,-1 140.5,-21 241.5,-21 241.5,-1 140.5,-1"></polygon><text text-anchor="start" x="142.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="139,0 139,-42 242,-42 242,0 139,0"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge5" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title>
-<path fill="none" stroke="#555555" d="M102.5,-51C122.8065,-51 118.7241,-23.5684 130.6469,-14.1387"></path><polygon fill="#555555" stroke="#555555" points="132.0341,-17.3702 140.5,-11 129.9094,-10.7004 132.0341,-17.3702"></polygon></g></g></svg><p>The <code>flights</code> table is linked to three other tables: <code>airlines</code>, <code>planes</code> and <code>airports</code>. By using directed arrows, the visualization shows explicitly the connection between different columns (they are called attributes in the relational data sphere).</p>
+<path fill="none" stroke="#555555" d="M102.5,-51C122.8065,-51 118.7241,-23.5684 130.6469,-14.1387"></path><polygon fill="#555555" stroke="#555555" points="132.0341,-17.3702 140.5,-11 129.9094,-10.7004 132.0341,-17.3702"></polygon></g></g></svg><p>The <code>flights</code> table is linked to four other tables: <code>airlines</code>, <code>planes</code>, <code>weather</code>, and <code>airports</code>. By using directed arrows, the visualization shows explicitly the connection between different columns (they are called attributes in the relational data sphere).</p>
 <p>For example: The column <code>carrier</code> in <code>flights</code> can be joined with the column <code>carrier</code> from the <code>airlines</code> table.</p>
 <p>The links between the tables are established through <a href="#pk">primary keys</a> and <a href="#fk">foreign keys</a>.</p>
 <p>Further Reading: The {dm} methods for <a href="https://cynkra.github.io/dm/articles/tech-dm-draw.html">visualizing data models</a>.</p>
@@ -229,7 +230,7 @@
 <div class="section level2">
 <h2 id="pk">3. Primary Keys<a class="anchor" aria-label="anchor" href="#pk"></a>
 </h2>
-<p>In a relational data model, each table should have <strong>one or several columns that uniquely identifies a row</strong>. These columns define the <em>primary key</em> (abbreviated with “pk”). If the key consists of a single column, it is called <em>simple key</em>. A key consisting of more than one column is called a <em>compound key</em>.</p>
+<p>In a relational data model, each table should have <strong>one or several columns that uniquely identify a row</strong>. These columns define the <em>primary key</em> (abbreviated with “pk”). If the key consists of a single column, it is called a <em>simple key</em>. A key consisting of more than one column is called a <em>compound key</em>.</p>
 <p>Example: In the <code>airlines</code> table of <code>nycflights13</code> the column <code>carrier</code> is the primary key, a simple key. The <code>weather</code> table has the combination of <code>origin</code> and <code>time_hour</code> as primary key, a compound key.</p>
 <p>You can get all primary keys in a <code>dm</code> by calling <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -242,7 +243,7 @@
 <span class="co">#&gt; 2 airports faa              </span>
 <span class="co">#&gt; 3 planes   tailnum          </span>
 <span class="co">#&gt; 4 weather  origin, time_hour</span></code></pre>
-<p><code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> checks all columns if they are suitable as a simple primary key:</p>
+<p><code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> checks suitability of each column to serve as a simple primary key:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span><span class="va">airports</span><span class="op">)</span></code></pre></div>
@@ -264,7 +265,7 @@
 </h2>
 <p>The <strong>counterpart of a primary key in one table is the foreign key in another table</strong>. In order to join two tables, the primary key of the first table needs to be referenced from the second table. This column or these columns are called the <em>foreign key</em> (abbreviated with “fk”).</p>
 <p>For example, if you want to link the <code>airlines</code> table to the <code>flights</code> table, the primary key in <code>airlines</code> needs to match the foreign key in <code>flights</code>. This condition is satisfied because the column <code>carrier</code> is present as a primary key in the <code>airlines</code> table as well as a foreign key in the <code>flights</code> table. In the case of compound keys, the <code>origin</code> and <code>time_hour</code> columns (which form the primary key of the <code>weather</code> table) are also present in the <code>flights</code> table.</p>
-<p>You can find foreign key candidates for simple keys with the function <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>, they are marked with <code>TRUE</code> in the <code>candidate</code> column.</p>
+<p>You can find foreign key candidates for simple keys with the function <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>; they are marked with <code>TRUE</code> in the <code>candidate</code> column.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span><span class="op">)</span></code></pre></div>
@@ -290,26 +291,37 @@
 <span class="co">#&gt; 17 hour           FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
 <span class="co">#&gt; 18 minute         FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
 <span class="co">#&gt; 19 time_hour      FALSE     "Can't combine `value1` &lt;datetime&lt;America/New_…</span></code></pre>
+<p>Additionally, you can also extract a summary of all foreign key relations present in a <code>dm</code> object using <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 5 × 5</span>
+<span class="co">#&gt;   child_table child_fk_cols     parent_table parent_key_cols   on_delete</span>
+<span class="co">#&gt;   &lt;chr&gt;       &lt;keys&gt;            &lt;chr&gt;        &lt;keys&gt;            &lt;chr&gt;    </span>
+<span class="co">#&gt; 1 flights     carrier           airlines     carrier           no_action</span>
+<span class="co">#&gt; 2 flights     origin            airports     faa               no_action</span>
+<span class="co">#&gt; 3 flights     dest              airports     faa               no_action</span>
+<span class="co">#&gt; 4 flights     tailnum           planes       tailnum           no_action</span>
+<span class="co">#&gt; 5 flights     origin, time_hour weather      origin, time_hour no_action</span></code></pre>
 <p>Further Reading: All {dm} functions for working with <a href="https://cynkra.github.io/dm/articles/tech-dm-class.html#foreign-keys">foreign keys</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="referential-integrity">5. Referential Integrity<a class="anchor" aria-label="anchor" href="#referential-integrity"></a>
 </h2>
-<p>A data set has referential integrity if all relations between tables are valid. That is, every foreign key holds a primary key that is present in the parent table. If a foreign key contains a reference where the corresponding row in the parent table is not availabe, that row is an orphan row and the database no longer has referential integrity.</p>
+<p>A data set has referential integrity if all relations between tables are valid. That is, every foreign key holds a primary key that is present in the parent table. If a foreign key contains a reference where the corresponding row in the parent table is not available, that row is an orphan row and the database no longer has referential integrity.</p>
 <p>{dm} allows checking referential integrity with the <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> function. The following conditions are checked:</p>
 <ul>
-<li>All primary key values must be unique.</li>
-<li>All primary key values must be set, <code>NA</code> values are not allowed.</li>
+<li>All primary key values must be unique and not missing (i.e., <code>NA</code>s are not allowed).</li>
 <li>Each foreign key value must have a corresponding primary key value.</li>
 </ul>
 <p>In the example data model, for a substantial share of the flights, detailed information for the corresponding airplane is not available:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-message"><code><span class="co">#&gt; ! Unsatisfied constraints:</span></code></pre>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; • Table `flights`: foreign key `dest` into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (30), BQN (6), STT (4), PSE (2)</span>
 <span class="co">#&gt; • Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</span></code></pre>
-<p>Establishing referential integrity is important for providing clean data for analysis or downstream users. See <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code> for more information on adding, deleting or updating individual rows, and <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> for operations on the data in a data model.</p>
+<p>Establishing referential integrity is important for providing clean data for analysis or downstream users. See <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code> for more information on adding, deleting, or updating individual rows, and <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> for operations on the data in a data model.</p>
 </div>
 <div class="section level2">
 <h2 id="normalization">6. Normalization<a class="anchor" aria-label="anchor" href="#normalization"></a>
@@ -317,7 +329,7 @@
 <p>Normalization is a technical term that describes the <strong>central design principle of a relational data model</strong>: splitting data into multiple tables.</p>
 <p>A normalized data schema consists of several relations (tables) that are linked with attributes (columns). The relations can be joined together by means of <a href="#pk">primary</a> and <a href="#fk">foreign keys</a>. The main goal of normalization is to keep data organization as clean and simple as possible by avoiding redundant data entries.</p>
 <p>For example, if you want to change the name of one airport in the <code>nycflights13</code> dataset, you will only need to update a single data value. This principle is sometimes called the <em>single point of truth</em>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#  Update in one single location...</span>
 <span class="va">airlines</span><span class="op">[</span><span class="va">airlines</span><span class="op">$</span><span class="va">carrier</span> <span class="op">==</span> <span class="st">"UA"</span>, <span class="st">"name"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"United broke my guitar"</span>
 
@@ -327,7 +339,7 @@
 <span class="co">#&gt;   carrier name                  </span>
 <span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;                 </span>
 <span class="co">#&gt; 1 UA      United broke my guitar</span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># ...propagates to all related records</span>
 <span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -352,9 +364,9 @@
 <p>Let’s look at the <code>planes</code> table, which consists of 3322 individual tail numbers and corresponding information for the specific airplane, like the year it was manufactured or the average cruising speed.</p>
 <p>The function <code><a href="../reference/decompose_table.html">decompose_table()</a></code> extracts two new tables and creates a new key <code>model_id</code>, that links both tables.</p>
 <p>This results in a <code>parent_table</code> and a <code>child_table</code> that differ massively in the number of rows:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">planes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">model_id</span>, <span class="va">model</span>, <span class="va">manufacturer</span>, <span class="va">type</span>, <span class="va">engines</span>, <span class="va">seats</span>, <span class="va">manufacturer</span>, <span class="va">speed</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">model_id</span>, <span class="va">model</span>, <span class="va">manufacturer</span>, <span class="va">type</span>, <span class="va">engines</span>, <span class="va">seats</span>, <span class="va">speed</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; $child_table</span>
 <span class="co">#&gt; # A tibble: 3,322 × 4</span>
 <span class="co">#&gt;    tailnum  year engine    model_id</span>
@@ -392,11 +404,11 @@
 <div class="section level2">
 <h2 id="relational-databases">7. Relational Databases<a class="anchor" aria-label="anchor" href="#relational-databases"></a>
 </h2>
-<p>{dm} is built upon relational data models but it is not a database itself. Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres. As you can guess from the names of the databases, SQL, short for Structured Querying Language, plays an important role: it was invented for the purpose of querying relational databases.</p>
+<p>{dm} is built upon relational data models but it is not a database itself. Databases are systems for data management and many of them are constructed as relational databases (e.g., SQLite, MySQL, MSSQL, Postgres, etc.). As you can guess from the names of the databases, SQL, short for Structured Querying Language, plays an important role: it was invented for the purpose of querying relational databases.</p>
 <p>In production, the data is stored in a relational database and {dm} is used to work with the data.</p>
 <p>Therefore, {dm} can copy data <a href="https://cynkra.github.io/dm/articles/dm.html#copy">from and to databases</a>, and works transparently with both in-memory data and with relational database systems.</p>
 <p>For example, let’s create a local SQLite database and copy the <code>dm</code> object to it:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">con_sqlite</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">con_sqlite</span>
 <span class="co">#&gt; &lt;SQLiteConnection&gt;</span>
@@ -412,8 +424,8 @@
 <span class="co">#&gt; [3] "flights_1_2020_08_28_07_13_03_12345" </span>
 <span class="co">#&gt; [4] "planes_1_2020_08_28_07_13_03_12345"  </span>
 <span class="co">#&gt; [5] "weather_1_2020_08_28_07_13_03_12345"</span></code></pre></div>
-<p>In the opposite direction, <code>dm</code> can also be populated with data from a DB. Unfortunately, keys currently can be learned only for MSSQL and Postgres, but not for SQLite. Therefore, the dm contains the tables but not the keys:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<p>In the opposite direction, <code>dm</code> can also be populated with data from a database. Unfortunately, keys currently can be learned only for Microsoft SQL Server and Postgres, but not for SQLite. Therefore, the <code>dm</code> contains the tables but not the keys:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
 <span class="co">#&gt; Keys could not be queried: object 'constraint_column_usage' not found. Use</span>
 <span class="co">#&gt; `learn_keys = FALSE` to mute this message.</span></code></pre></div>
@@ -425,7 +437,7 @@
 <span class="co">#&gt; Primary keys: 0</span>
 <span class="co">#&gt; Foreign keys: 0</span></code></pre>
 <p>Remember to terminate the database connection:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
