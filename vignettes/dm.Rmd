@@ -63,7 +63,7 @@ fin_dm$loans
 dplyr::count(fin_dm$trans)
 ```
 
-Additionally, most `dm` functions are pipe-friendly and support tidy evaluation.
+Additionally, most `dm` functions are [pipe-friendly](https://r4ds.had.co.nz/pipes.html) and support [tidy evaluation](https://adv-r.hadley.nz/metaprogramming.html).
 We can use `[` or the `dm_select_tbl()` verb to derive a smaller dm with the `loans`, `accounts`, `districts` and `trans` tables:
 
 ```{r select}
