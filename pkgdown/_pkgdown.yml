@@ -167,48 +167,42 @@ reference:
   - dm_validate
 
 navbar:
-  title: ~
-  type: default
-  left:
-  - text: Intro
-    href: articles/dm.html
-  - text: Reference
-    href: reference/index.html
-  - text: Tutorials
-    menu:
-    - text: Introduction to relational data models
-      href: articles/howto-dm-theory.html
-    - text: Create a dm object from data frames
-      href: articles/howto-dm-df.html
-    - text: Create a dm object from a database
-      href: articles/howto-dm-db.html
-    - text: Copy data to and from a database
-      href: articles/howto-dm-copy.html
-    - text: Insert, update or remove rows in a database
-      href: articles/howto-dm-rows.html
-  - text: Technical articles
-    menu:
-    - text: Joining in relational data models
-      href: articles/tech-dm-join.html
-    - text: Zooming and manipulating tables
-      href: articles/tech-dm-zoom.html
-    - text: Filtering in relational data models
-      href: articles/tech-dm-filter.html
-    - text: Visualizing dm objects
-      href: articles/tech-dm-draw.html
-    - text: Model verification - keys, constraints and normalization
-      href: articles/tech-dm-low-level.html
-    - text: Class 'dm' and basic operations
-      href: articles/tech-dm-class.html
-    - text: Function naming logic
-      href: articles/tech-dm-naming.html
-    - text: 'Migration guide: ''cdm'' -> ''dm'''
-      href: articles/tech-dm-cdm.html
-  - text: News
-    href: news/index.html
-  right:
-  - icon: fa-github fa-lg
-    href: https://github.com/cynkra/dm
+  structure:
+    left:  [intro, reference, tutorials, tech, news]
+    right: [search, github]
+  components:
+    tutorials:
+      text: Tutorials
+      menu:
+      - text: Introduction to relational data models
+        href: articles/howto-dm-theory.html
+      - text: Create a dm object from data frames
+        href: articles/howto-dm-df.html
+      - text: Create a dm object from a database
+        href: articles/howto-dm-db.html
+      - text: Copy data to and from a database
+        href: articles/howto-dm-copy.html
+      - text: Insert, update or remove rows in a database
+        href: articles/howto-dm-rows.html
+    tech:
+      text: Technical articles
+      menu:
+      - text: Joining in relational data models
+        href: articles/tech-dm-join.html
+      - text: Zooming and manipulating tables
+        href: articles/tech-dm-zoom.html
+      - text: Filtering in relational data models
+        href: articles/tech-dm-filter.html
+      - text: Visualizing dm objects
+        href: articles/tech-dm-draw.html
+      - text: Model verification - keys, constraints and normalization
+        href: articles/tech-dm-low-level.html
+      - text: Class 'dm' and basic operations
+        href: articles/tech-dm-class.html
+      - text: Function naming logic
+        href: articles/tech-dm-naming.html
+      - text: 'Migration guide: ''cdm'' -> ''dm'''
+        href: articles/tech-dm-cdm.html
 
 development:
   mode: auto
