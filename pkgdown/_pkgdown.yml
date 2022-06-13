@@ -1,6 +1,7 @@
 url: https://cynkra.github.io/dm
 
 template:
+  bootstrap: 5
   assets:
   - pkgdown/assets
 
