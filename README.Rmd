@@ -37,13 +37,11 @@ options(cli.num_colors = 256)
 [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
 
-## TL;DR
-
-Are you using multiple data frames or database tables in R? Organize them with dm.
+> Are you using multiple data frames or database tables in R? Organize them with dm.
 
 - Use it for data analysis today.
 - Build data models tomorrow.
-- Deploy the data models to your organization's RDBMS the day after.
+- Deploy the data models to your organization's Relational Database Management System (RDBMS) the day after.
 
 
 ## Overview
