@@ -74,11 +74,12 @@ library(tidyverse)
 library(dm)
 library(nycflights13)
 
-flights %>%
+(nycflights13_df <- 
+  flights %>%
   left_join(airlines, by = "carrier") %>%
   left_join(planes, by = "tailnum") %>%
   left_join(airports, by = c("origin" = "faa")) %>%
-  left_join(weather, by = c("origin", "time_hour"))
+  left_join(weather, by = c("origin", "time_hour")))
 ```
 
 {dm} offers a more elegant and shorter way to combine tables while augmenting {dplyr}/{dbplyr} workflows.
@@ -106,6 +107,14 @@ By using directed arrows, the visualization shows explicitly the connection betw
 For example: The column `carrier` in `flights` can be joined with the column `carrier` from the `airlines` table.
 
 The links between the tables are established through [primary keys](#pk) and [foreign keys](#fk).
+
+As an aside, we can also now see how avoiding redundant data by building data models with multiple tables can save memory compared to storing data in single a data frame:
+
+```{r}
+object.size(dm)
+
+object.size(nycflights13_df)
+```
 
 Further Reading: The {dm} methods for [visualizing data models](https://cynkra.github.io/dm/articles/tech-dm-draw.html).
 
