@@ -50,6 +50,9 @@
       12 tf_6-2      o             tf_7-2       p               no_action
     Code
       dm_disentangle(entangled_dm(), a, quiet = TRUE) %>% dm_get_all_fks()
+    Condition
+      Warning:
+      duckdb doesn't support foreign keys, these won't be set in the remote database but are preserved in the `dm`
     Output
       # A tibble: 22 x 5
          child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -92,6 +95,9 @@
       # ... with 12 more rows
     Code
       dm_disentangle(entangled_dm_2(), a) %>% dm_get_all_fks()
+    Condition
+      Warning:
+      duckdb doesn't support foreign keys, these won't be set in the remote database but are preserved in the `dm`
     Message
       Replaced table `b` with `b-1`, `b-2`.
       Replaced table `c` with `c-1`, `c-2`.
