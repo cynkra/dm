@@ -197,6 +197,10 @@
     Output
       # ... with 3 variables: select <int>, where <chr>, exists <dbl>
 
+# duckdb errors for returning argument
+
+    identical(conflict, "ignore") is not TRUE
+
 # update
 
     Code
@@ -482,4 +486,8 @@
       3      3 y        2.5
       4      4 o        3.5
       5      5 p        3.5
+
+# upsert errors for duckdb
+
+    upsert is not supported for DuckDB
 
