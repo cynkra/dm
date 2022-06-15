@@ -1,4 +1,4 @@
-dm_meta <- function(con, catalog = NA, schema = NULL) {
+dm_meta <- function(con, catalog = NA, schema = NULL, simple = FALSE) {
   need_collect <- FALSE
 
   if (is_mssql(con)) {
@@ -20,11 +20,16 @@ dm_meta <- function(con, catalog = NA, schema = NULL) {
     }
   }
 
-  out <-
-    con %>%
-    dm_meta_raw(catalog) %>%
-    select_dm_meta() %>%
-    filter_dm_meta(catalog, schema)
+  if (simple) {
+    out <-
+      dm_meta_simple_raw(con) %>%
+      filter_dm_meta_simple(catalog, schema)
+  } else {
+    out <-
+      dm_meta_raw(con, catalog) %>%
+      select_dm_meta() %>%
+      filter_dm_meta(catalog, schema)
+  }
 
   if (need_collect) {
     out <-
@@ -94,11 +99,7 @@ dm_meta_raw <- function(con, catalog) {
 
 dm_meta_add_keys <- function(dm_meta) {
   dm_meta %>%
-    dm_add_pk(schemata, c(catalog_name, schema_name)) %>%
-    dm_add_pk(tables, c(table_catalog, table_schema, table_name)) %>%
-    dm_add_fk(tables, c(table_catalog, table_schema), schemata) %>%
-    dm_add_pk(columns, c(table_catalog, table_schema, table_name, column_name)) %>%
-    dm_add_fk(columns, c(table_catalog, table_schema, table_name), tables) %>%
+    dm_meta_simple_add_keys() %>%
     # dm_add_fk(table_constraints, table_schema, schemata) %>%
     dm_add_pk(table_constraints, c(constraint_catalog, constraint_schema, constraint_name)) %>%
     dm_add_fk(table_constraints, c(table_catalog, table_schema, table_name), tables) %>%
@@ -118,7 +119,38 @@ dm_meta_add_keys <- function(dm_meta) {
     dm_add_fk(constraint_column_usage, c(constraint_catalog, constraint_schema, constraint_name), table_constraints) %>%
     dm_add_fk(constraint_column_usage, c(constraint_catalog, constraint_schema, constraint_name, ordinal_position), key_column_usage) %>%
     #
-    dm_set_colors(brown = c(tables, columns), blue = schemata, green4 = ends_with("_constraints"), orange = ends_with("_usage"))
+    dm_set_colors(green4 = ends_with("_constraints"), orange = ends_with("_usage"))
+}
+
+dm_meta_simple_raw <- function(con) {
+  src <- src_from_src_or_con(con)
+
+  local_options(digits.secs = 6)
+
+  schemata <- tbl_lc(src, "information_schema.schemata", vars = c(
+    "catalog_name", "schema_name"
+  ))
+  tables <- tbl_lc(src, "information_schema.tables", vars = c(
+    "table_catalog", "table_schema", "table_name", "table_type"
+  ))
+  columns <- tbl_lc(src, "information_schema.columns", vars = c(
+    "table_catalog", "table_schema", "table_name", "column_name",
+    "ordinal_position", "column_default", "is_nullable", "data_type"
+  ))
+
+  dm(schemata, tables, columns) %>%
+    dm_meta_simple_add_keys()
+}
+
+dm_meta_simple_add_keys <- function(dm_meta) {
+  dm_meta %>%
+    dm_add_pk(schemata, c(catalog_name, schema_name)) %>%
+    dm_add_pk(tables, c(table_catalog, table_schema, table_name)) %>%
+    dm_add_fk(tables, c(table_catalog, table_schema), schemata) %>%
+    dm_add_pk(columns, c(table_catalog, table_schema, table_name, column_name)) %>%
+    dm_add_fk(columns, c(table_catalog, table_schema, table_name), tables) %>%
+    #
+    dm_set_colors(brown = c(tables, columns), blue = schemata)
 }
 
 tbl_lc <- function(con, name, vars) {
@@ -179,4 +211,28 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
     constraint_column_usage
   ) %>%
     dm_meta_add_keys()
+}
+
+filter_dm_meta_simple <- function(dm_meta, catalog = NULL, schema = NULL) {
+  force(catalog)
+  force(schema)
+
+  schemata <- dm_meta$schemata
+  tables <- dm_meta$tables
+  columns <- dm_meta$columns
+
+  if (!is.null(catalog) && !is.na(catalog)) {
+    schemata <- schemata %>% filter(catalog_name %in% !!catalog)
+    tables <- tables %>% filter(table_catalog %in% !!catalog)
+    columns <- columns %>% filter(table_catalog %in% !!catalog)
+  }
+
+  if (!is.null(schema)) {
+    schemata <- schemata %>% filter(schema_name %in% !!schema)
+    tables <- tables %>% filter(table_schema %in% !!schema)
+    columns <- columns %>% filter(table_schema %in% !!schema)
+  }
+
+  dm(schemata, tables, columns) %>%
+    dm_meta_simple_add_keys()
 }
