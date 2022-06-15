@@ -73,7 +73,8 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       summarize(unique_defs = paste(unique_def, collapse = ",\n  "))
 
     # foreign key definitions and indexing queries
-    if (is_duckdb(con)) {
+    # https://github.com/r-lib/rlang/issues/1422
+    if (is_duckdb(con) && asNamespace("duckdb")$.__NAMESPACE__.$spec[["version"]] < "0.3.4.1") {
       if (nrow(fks)) {
         warn("duckdb doesn't support foreign keys, these won't be set in the remote database but are preserved in the `dm`")
       }
