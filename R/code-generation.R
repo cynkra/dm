@@ -2,10 +2,10 @@ dm_f_list <- function(f_list = list()) {
   structure(f_list, class = c("dm_f_list", class(f_list)))
 }
 
-add_call <- function(fn_list, fn_call) {
+add_call <- function(f_list, fn_call) {
   fn <- function(.) NULL
   body(fn) <- fn_call
-  dm_f_list(append(fn_list, fn))
+  dm_f_list(append(f_list, fn))
 }
 
 print.dm_f_list <- function(x, ...) {
@@ -25,7 +25,7 @@ call_to_char <- function(body) {
     gsub("\\s+", " ", .)
 }
 
-add_foreign_key_code <- function(fn_list = dm_f_list(),
+add_foreign_key_code <- function(f_list = dm_f_list(),
                                  table,
                                  columns,
                                  ref_table,
@@ -44,10 +44,10 @@ add_foreign_key_code <- function(fn_list = dm_f_list(),
       on_delete = !!on_delete
     )
   )
-  add_call(fn_list, fn_call)
+  add_call(f_list, fn_call)
 }
 
-rm_foreign_key_code <- function(fn_list = dm_f_list(),
+rm_foreign_key_code <- function(f_list = dm_f_list(),
                                 table,
                                 columns,
                                 ref_table,
@@ -61,5 +61,5 @@ rm_foreign_key_code <- function(fn_list = dm_f_list(),
       ref_columns = !!enexpr(ref_columns)
     )
   )
-  add_call(fn_list, fn_call)
+  add_call(f_list, fn_call)
 }
