@@ -21,6 +21,7 @@ test_that("dm_meta(simple = TRUE) columns", {
       dm_meta(simple = TRUE) %>%
       .$columns %>%
       filter(tolower(table_schema) == "information_schema") %>%
+      arrange(table_name, column_name) %>%
       collect(),
     error = function(e) {
       skip(conditionMessage(e))
