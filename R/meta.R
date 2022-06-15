@@ -35,14 +35,14 @@ dm_meta <- function(con, catalog = NA, schema = NULL) {
   out
 }
 
-dm_meta_raw <- function(con, catalog) {
+dm_meta_raw <- function(con) {
   src <- src_from_src_or_con(con)
 
   local_options(digits.secs = 6)
 
   schemata <- tbl_lc(src, "information_schema.schemata", vars = c(
-    "catalog_name", "schema_name", "schema_owner", "default_character_set_catalog",
-    "default_character_set_schema", "default_character_set_name"
+    "catalog_name", "schema_name", "schema_owner",
+    "default_character_set_catalog", "default_character_set_schema", "default_character_set_name"
   ))
   tables <- tbl_lc(src, "information_schema.tables", vars = c(
     "table_catalog", "table_schema", "table_name", "table_type"
@@ -85,7 +85,7 @@ dm_meta_raw <- function(con, catalog) {
         "ordinal_position"
       ))
   } else if (is_mssql(src)) {
-    constraint_column_usage <- mssql_constraint_column_usage(src, table_constraints, catalog)
+    constraint_column_usage <- mssql_constraint_column_usage(src, table_constraints)
   }
 
   dm(schemata, tables, columns, table_constraints, key_column_usage, constraint_column_usage) %>%

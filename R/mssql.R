@@ -11,7 +11,7 @@ mssql_sys_db <- function(con, dbname, name, vars = NULL) {
     select(catalog, everything())
 }
 
-mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
+mssql_constraint_column_usage <- function(con, table_constraints, dbname = NA_character_) {
   info_fkc <-
     table_constraints %>%
     select(constraint_catalog, constraint_schema, constraint_name, constraint_type) %>%
