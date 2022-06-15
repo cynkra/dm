@@ -18,7 +18,7 @@ editor_options:
 source("setup/setup.R")
 ``````
 
-{dm} was designed to make connecting to and working with an relational database management system (RDBMS) as straightforward as possible.
+{dm} was designed to make connecting to and working with a relational database management system (RDBMS) as straightforward as possible.
 To this end, a dm object can be created from any database that has a {[DBI](https://dbi.r-dbi.org/)} backend available ([see list](https://github.com/r-dbi/backends)).
 
 When a dm object is created via a DBI connection to an RDBMS, it can import all the tables in the database, the active schema, or a limited set.
