@@ -38,10 +38,10 @@ options(cli.num_colors = 256)
 <!-- badges: end -->
 
 > Are you using multiple data frames or database tables in R? Organize them with dm.
-
-- Use it for data analysis today.
-- Build data models tomorrow.
-- Deploy the data models to your organization's Relational Database Management System (RDBMS) the day after.
+>
+> - Use it for data analysis today.
+> - Build data models tomorrow.
+> - Deploy the data models to your organization's Relational Database Management System (RDBMS) the day after.
 
 
 ## Overview
