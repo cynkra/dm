@@ -27,7 +27,7 @@ test_that("dm_meta(simple = TRUE) columns", {
   )
 
   path <- tempfile(fileext = ".csv")
-  readr::write_csv(columns, path, na = "")
+  write.csv(columns, path, na = "")
 
   expect_snapshot_file(path, name = "columns.csv", variant = my_test_src_name)
 })
