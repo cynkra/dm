@@ -12,8 +12,9 @@ print.dm_f_list <- function(x, ...) {
   if (is_empty(x)) {
     invisible(x)
   } else {
-    purrr::map_chr(x,  ~ body(.) %>% call_to_char()) %>%
-      paste0("  ", ., collapse = " %>%\n") %>% cat()
+    purrr::map_chr(x, ~ body(.) %>% call_to_char()) %>%
+      paste0("  ", ., collapse = " %>%\n") %>%
+      cat()
     invisible(x)
   }
 }
@@ -24,16 +25,14 @@ call_to_char <- function(body) {
     gsub("\\s+", " ", .)
 }
 
-add_foreign_key_code <- function(
-    fn_list = dm_f_list(),
-    table,
-    columns,
-    ref_table,
-    ref_columns = NULL,
-    ...,
-    check = FALSE,
-    on_delete = c("no_action", "cascade")
-  ) {
+add_foreign_key_code <- function(fn_list = dm_f_list(),
+                                 table,
+                                 columns,
+                                 ref_table,
+                                 ref_columns = NULL,
+                                 ...,
+                                 check = FALSE,
+                                 on_delete = c("no_action", "cascade")) {
   fn_call <- expr(
     dm_add_fk(
       .,
@@ -48,13 +47,11 @@ add_foreign_key_code <- function(
   add_call(fn_list, fn_call)
 }
 
-rm_foreign_key_code <- function(
-    fn_list = dm_f_list(),
-    table,
-    columns,
-    ref_table,
-    ref_columns = NULL
-) {
+rm_foreign_key_code <- function(fn_list = dm_f_list(),
+                                table,
+                                columns,
+                                ref_table,
+                                ref_columns = NULL) {
   fn_call <- expr(
     dm_rm_fk(
       .,
