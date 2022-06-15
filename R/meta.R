@@ -26,7 +26,7 @@ dm_meta <- function(con, catalog = NA, schema = NULL, simple = FALSE) {
       filter_dm_meta_simple(catalog, schema)
   } else {
     out <-
-      dm_meta_raw(con) %>%
+      dm_meta_raw(con, catalog) %>%
       select_dm_meta() %>%
       filter_dm_meta(catalog, schema)
   }
