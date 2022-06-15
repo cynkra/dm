@@ -20,6 +20,7 @@ test_that("dm_meta(simple = TRUE) columns", {
       my_db_test_src() %>%
       dm_meta(simple = TRUE) %>%
       .$columns %>%
+      filter(tolower(table_schema) == "information_schema") %>%
       collect(),
     error = function(e) {
       skip(conditionMessage(e))
