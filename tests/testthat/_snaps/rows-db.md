@@ -487,7 +487,3 @@
       4      4 o        3.5
       5      5 p        3.5
 
-# upsert errors for duckdb
-
-    upsert is not supported for DuckDB
-
