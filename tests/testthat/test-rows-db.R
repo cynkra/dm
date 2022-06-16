@@ -121,7 +121,8 @@ test_that("insert + delete with returning argument and in_place = FALSE, SQLite 
   )
 })
 
-test_that("duckdb errors for returning argument", {
+test_that("duckdb errors for returning argument (duckdb/duckdb#3875)", {
+  # https://github.com/duckdb/duckdb/issues/3875
   skip_if_src_not("duckdb")
 
   target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
