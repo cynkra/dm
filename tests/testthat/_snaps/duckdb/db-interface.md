@@ -4,9 +4,6 @@
       pixar_dm %>% build_copy_queries(src_db, ., table_names = names(.) %>%
         repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
         map(dbplyr::ident_q)) %>% as.list()
-    Condition
-      Warning:
-      duckdb doesn't support foreign keys, these won't be set in the remote database but are preserved in the `dm`
     Output
       $name
       [1] "pixar_films"     "academy"         "box_office"      "genres"         
@@ -61,7 +58,8 @@
         "film" STRING,
         "award_type" STRING,
         "status" STRING,
-        PRIMARY KEY ("film", "award_type")
+        PRIMARY KEY ("film", "award_type"),
+        FOREIGN KEY ("film") REFERENCES "pixar_films" ("film")
       )
       <SQL> CREATE TEMP TABLE "box_office" (
         "film" STRING,
@@ -69,12 +67,14 @@
         "box_office_us_canada" DOUBLE,
         "box_office_other" DOUBLE,
         "box_office_worldwide" DOUBLE,
-        PRIMARY KEY ("film")
+        PRIMARY KEY ("film"),
+        FOREIGN KEY ("film") REFERENCES "pixar_films" ("film")
       )
       <SQL> CREATE TEMP TABLE "genres" (
         "film" STRING,
         "genre" STRING,
-        PRIMARY KEY ("film", "genre")
+        PRIMARY KEY ("film", "genre"),
+        FOREIGN KEY ("film") REFERENCES "pixar_films" ("film")
       )
       <SQL> CREATE TEMP TABLE "public_response" (
         "film" STRING,
@@ -82,7 +82,8 @@
         "metacritic" DOUBLE,
         "cinema_score" STRING,
         "critics_choice" DOUBLE,
-        PRIMARY KEY ("film")
+        PRIMARY KEY ("film"),
+        FOREIGN KEY ("film") REFERENCES "pixar_films" ("film")
       )
       
       $sql_index
@@ -90,16 +91,16 @@
       NULL
       
       $sql_index[[2]]
-      NULL
+      <SQL> CREATE INDEX academy__film ON "academy" ("film")
       
       $sql_index[[3]]
-      NULL
+      <SQL> CREATE INDEX box_office__film ON "box_office" ("film")
       
       $sql_index[[4]]
-      NULL
+      <SQL> CREATE INDEX genres__film ON "genres" ("film")
       
       $sql_index[[5]]
-      NULL
+      <SQL> CREATE INDEX public_response__film ON "public_response" ("film")
       
       
       $index_name
@@ -107,16 +108,16 @@
       NULL
       
       $index_name[[2]]
-      NULL
+      [1] "academy__film"
       
       $index_name[[3]]
-      NULL
+      [1] "box_office__film"
       
       $index_name[[4]]
-      NULL
+      [1] "genres__film"
       
       $index_name[[5]]
-      NULL
+      [1] "public_response__film"
       
       
 
@@ -166,10 +167,12 @@
         PRIMARY KEY ("a__key")
       )
       <SQL> CREATE TEMP TABLE "child" (
-        "a__key" DOUBLE
+        "a__key" DOUBLE,
+        FOREIGN KEY ("a__key") REFERENCES "parent2" ("a__key")
       )
       <SQL> CREATE TEMP TABLE "child__a" (
-        "key" DOUBLE
+        "key" DOUBLE,
+        FOREIGN KEY ("key") REFERENCES "parent2" ("a__key")
       )
       
       $sql_index
@@ -180,10 +183,10 @@
       NULL
       
       $sql_index[[3]]
-      NULL
+      <SQL> CREATE INDEX child__a__key ON "child" ("a__key")
       
       $sql_index[[4]]
-      NULL
+      <SQL> CREATE INDEX child__a__key__1 ON "child__a" ("key")
       
       
       $index_name
@@ -194,10 +197,10 @@
       NULL
       
       $index_name[[3]]
-      NULL
+      [1] "child__a__key"
       
       $index_name[[4]]
-      NULL
+      [1] "child__a__key__1"
       
       
 
