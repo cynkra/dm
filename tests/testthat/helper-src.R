@@ -438,6 +438,7 @@ dm_more_complex %<-% {
 iris_1 %<-% {
   datasets::iris %>%
     as_tibble() %>%
+    mutate(Species = as.character(Species)) %>%
     mutate(key = row_number()) %>%
     select(key, everything())
 }
