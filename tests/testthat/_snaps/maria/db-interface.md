@@ -47,43 +47,39 @@
       
       $sql_table
       <SQL> CREATE TEMPORARY TABLE `pixar_films` (
-        `number` TEXT,
-        `film` TEXT,
+        `number` VARCHAR(255),
+        `film` VARCHAR(255),
         `release_date` DATE,
         `run_time` DOUBLE,
-        `film_rating` TEXT,
+        `film_rating` VARCHAR(255),
         PRIMARY KEY (`film`)
       )
       <SQL> CREATE TEMPORARY TABLE `academy` (
-        `film` TEXT,
-        `award_type` TEXT,
-        `status` TEXT,
-        PRIMARY KEY (`film`, `award_type`),
-        FOREIGN KEY (`film`) REFERENCES `pixar_films` (`film`)
+        `film` VARCHAR(255),
+        `award_type` VARCHAR(255),
+        `status` VARCHAR(255),
+        PRIMARY KEY (`film`, `award_type`)
       )
       <SQL> CREATE TEMPORARY TABLE `box_office` (
-        `film` TEXT,
+        `film` VARCHAR(255),
         `budget` DOUBLE,
         `box_office_us_canada` DOUBLE,
         `box_office_other` DOUBLE,
         `box_office_worldwide` DOUBLE,
-        PRIMARY KEY (`film`),
-        FOREIGN KEY (`film`) REFERENCES `pixar_films` (`film`)
+        PRIMARY KEY (`film`)
       )
       <SQL> CREATE TEMPORARY TABLE `genres` (
-        `film` TEXT,
-        `genre` TEXT,
-        PRIMARY KEY (`film`, `genre`),
-        FOREIGN KEY (`film`) REFERENCES `pixar_films` (`film`)
+        `film` VARCHAR(255),
+        `genre` VARCHAR(255),
+        PRIMARY KEY (`film`, `genre`)
       )
       <SQL> CREATE TEMPORARY TABLE `public_response` (
-        `film` TEXT,
+        `film` VARCHAR(255),
         `rotten_tomatoes` DOUBLE,
         `metacritic` DOUBLE,
-        `cinema_score` TEXT,
+        `cinema_score` VARCHAR(255),
         `critics_choice` DOUBLE,
-        PRIMARY KEY (`film`),
-        FOREIGN KEY (`film`) REFERENCES `pixar_films` (`film`)
+        PRIMARY KEY (`film`)
       )
       
       $sql_index
@@ -91,16 +87,16 @@
       NULL
       
       $sql_index[[2]]
-      <SQL> CREATE INDEX academy__film ON `academy` (`film`)
+      NULL
       
       $sql_index[[3]]
-      <SQL> CREATE INDEX box_office__film ON `box_office` (`film`)
+      NULL
       
       $sql_index[[4]]
-      <SQL> CREATE INDEX genres__film ON `genres` (`film`)
+      NULL
       
       $sql_index[[5]]
-      <SQL> CREATE INDEX public_response__film ON `public_response` (`film`)
+      NULL
       
       
       $index_name
@@ -108,16 +104,16 @@
       NULL
       
       $index_name[[2]]
-      [1] "academy__film"
+      NULL
       
       $index_name[[3]]
-      [1] "box_office__film"
+      NULL
       
       $index_name[[4]]
-      [1] "genres__film"
+      NULL
       
       $index_name[[5]]
-      [1] "public_response__film"
+      NULL
       
       
 
@@ -167,12 +163,10 @@
         PRIMARY KEY (`a__key`)
       )
       <SQL> CREATE TEMPORARY TABLE `child` (
-        `a__key` DOUBLE,
-        FOREIGN KEY (`a__key`) REFERENCES `parent2` (`a__key`)
+        `a__key` DOUBLE
       )
       <SQL> CREATE TEMPORARY TABLE `child__a` (
-        `key` DOUBLE,
-        FOREIGN KEY (`key`) REFERENCES `parent2` (`a__key`)
+        `key` DOUBLE
       )
       
       $sql_index
@@ -183,10 +177,10 @@
       NULL
       
       $sql_index[[3]]
-      <SQL> CREATE INDEX child__a__key ON `child` (`a__key`)
+      NULL
       
       $sql_index[[4]]
-      <SQL> CREATE INDEX child__a__key__1 ON `child__a` (`key`)
+      NULL
       
       
       $index_name
@@ -197,10 +191,10 @@
       NULL
       
       $index_name[[3]]
-      [1] "child__a__key"
+      NULL
       
       $index_name[[4]]
-      [1] "child__a__key__1"
+      NULL
       
       
 
