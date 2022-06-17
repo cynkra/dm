@@ -64,7 +64,7 @@ These involve constraints on primary key values that uniquely identify rows.
 
 To ensure the integrity of all relations during the process, all methods automatically determine the correct processing order for the tables involved.
 For operations that create records, parent tables (which hold primary keys) are processed before child tables (which hold foreign keys).
-For `dm_rows_delete()` and `dm_rows_truncate()`, child tables are processed before their parent tables.
+For `dm_rows_delete()`, child tables are processed before their parent tables.
 For more details on this see `vignette("howto-dm-theory")` and `vignette("howto-dm-db")`.
 
 ## Usage {#usage}
