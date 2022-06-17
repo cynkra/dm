@@ -46,8 +46,7 @@ dm_meta_raw <- function(con, catalog) {
   local_options(digits.secs = 6)
 
   schemata <- tbl_lc(src, "information_schema.schemata", vars = c(
-    "catalog_name", "schema_name", "schema_owner", "default_character_set_catalog",
-    "default_character_set_schema", "default_character_set_name"
+    "catalog_name", "schema_name", "default_character_set_name"
   ))
   tables <- tbl_lc(src, "information_schema.tables", vars = c(
     "table_catalog", "table_schema", "table_name", "table_type"
@@ -56,16 +55,15 @@ dm_meta_raw <- function(con, catalog) {
     "table_catalog", "table_schema", "table_name", "column_name",
     "ordinal_position", "column_default", "is_nullable", "data_type",
     "character_maximum_length", "character_octet_length", "numeric_precision",
-    "numeric_precision_radix", "numeric_scale", "datetime_precision",
-    "character_set_catalog", "character_set_schema", "character_set_name",
-    "collation_catalog", "collation_schema", "collation_name", "domain_catalog",
-    "domain_schema", "domain_name"
+    "numeric_scale", "datetime_precision",
+    "character_set_name",
+    "collation_name"
   ))
   table_constraints <- tbl_lc(src, "information_schema.table_constraints", vars = c(
     "constraint_catalog", "constraint_schema", "constraint_name",
-    "table_catalog", "table_schema", "table_name", "constraint_type",
-    "is_deferrable", "initially_deferred"
-  ))
+    "table_name", "constraint_type"
+  )) %>%
+    mutate(table_catalog = constraint_catalog, table_schema = constraint_schema, .before = table_name)
   key_column_usage <- tbl_lc(src, "information_schema.key_column_usage", vars = c(
     "constraint_catalog", "constraint_schema", "constraint_name",
     "table_catalog", "table_schema", "table_name", "column_name",
@@ -82,6 +80,20 @@ dm_meta_raw <- function(con, catalog) {
       ))
   } else if (is_mssql(src)) {
     constraint_column_usage <- mssql_constraint_column_usage(src, table_constraints, catalog)
+  } else {
+    constraint_column_usage <-
+      tbl_lc(src, "information_schema.key_column_usage", vars = c(
+        "table_catalog",
+        "referenced_table_schema", "referenced_table_name", "referenced_column_name",
+        "constraint_catalog", "constraint_schema", "constraint_name",
+        "ordinal_position"
+      )) %>%
+      filter(!is.na(referenced_table_name)) %>%
+      rename(
+        table_schema = referenced_table_schema,
+        table_name = referenced_table_name,
+        column_name = referenced_column_name,
+      )
   }
 
   dm(schemata, tables, columns, table_constraints, key_column_usage, constraint_column_usage) %>%
@@ -145,13 +157,18 @@ dm_meta_simple_add_keys <- function(dm_meta) {
 }
 
 tbl_lc <- function(con, name, vars) {
-  from <- paste0(
-    "SELECT ",
-    paste0(DBI::dbQuoteIdentifier(con_from_src_or_con(con), vars), collapse = ", "),
-    "\nFROM ", name
-  )
+  # For discovery only!
+  if (is.null(vars)) {
+    from <- name
+  } else {
+    from <- sql(paste0(
+      "SELECT ",
+      paste0(DBI::dbQuoteIdentifier(con_from_src_or_con(con), vars), collapse = ", "),
+      "\nFROM ", name
+    ))
+  }
 
-  tbl(con, sql(from), vars = vars)
+  tbl(con, from, vars = vars)
 }
 
 select_dm_meta <- function(dm_meta) {
