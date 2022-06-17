@@ -109,7 +109,7 @@
     
     
 <p>This vignette describes the logic behind the names of the {dm}-functions.</p>
-<p>In general the functions are implemented in such a way, that no function can handle both <code>dm</code> classes (<code>dm</code> and <code>zoomed_dm</code>) as an argument. A <code>zoomed_dm</code> behaves in most situations like a table and there are mostly no explicit functions available for this class, but rather methods (see vignette <a href="https://cynkra.github.io/dm/articles/tech-dm-zoom.html">“Zooming and manipulating tables”</a>.</p>
+<p>In general, the functions are implemented in such a way that no function can handle instances of both <code>dm</code> classes (<code>dm</code> and <code>zoomed_dm</code>) as an argument. In most situations, a <code>zoomed_dm</code> behaves like a table and there are mostly no explicit functions available for this class, but rather methods (see vignette <a href="https://cynkra.github.io/dm/articles/tech-dm-zoom.html">“Zooming and manipulating tables”</a>.</p>
 <div class="section level2">
 <h2 id="prefixes">Prefixes<a class="anchor" aria-label="anchor" href="#prefixes"></a>
 </h2>
@@ -145,21 +145,21 @@
 </h2>
 <ol style="list-style-type: decimal">
 <li>
-<code>_dm</code>: Validators, checkers or coercers</li>
+<code>_dm</code>: Validators, checkers, or coercers</li>
 <li>
 <code>_to_tbl</code>: Data from a <code>dm</code> is processed in a way that a tibble is produced</li>
 <li>
 <code>_candidates</code>: If key-candidates are to be calculated and presented in tibble-form</li>
 <li>
-<code>_pk(s)</code>: Relates to primary key</li>
+<code>_pk(s)</code>: Relates to primary key(s)</li>
 <li>
-<code>_fk(s)</code>: Relates to foreign key</li>
+<code>_fk(s)</code>: Relates to foreign key(s)</li>
 <li>
-<code>_tbl</code>: Add/remove/select/rename a tibble to/from/within a dm</li>
+<code>_tbl</code>: Add/remove/select/rename a tibble to/from/within a <code>dm</code> object</li>
 <li>
-<code>_colors</code>: Relates to the colors for the visualization of the dm</li>
+<code>_colors</code>: Relates to the colors for the visualization of a <code>dm</code> object</li>
 <li>
-<code>_zoomed</code>: Insert, update or discard the zoomed table. In combination with the prefix <code>dm_</code> this indicates, that the first argument is a <code>zoomed_dm</code> rather than a <code>dm</code>.</li>
+<code>_zoomed</code>: Insert, update, or discard the zoomed table. In combination with the prefix <code>dm_</code>, this indicates that the first argument is a <code>zoomed_dm</code> rather than a <code>dm</code>.</li>
 </ol>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
