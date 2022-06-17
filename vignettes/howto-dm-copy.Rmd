@@ -161,8 +161,7 @@ For more information on key creation, see `vignette("howto-dm-db")` and `vignett
 
 ``````{r}
 my_dm_sqlite_resid <-
-  deployed_dm %>%
-  copy_to(loans_residuals, temporary = FALSE) %>%
+  copy_to(deployed_dm, loans_residuals, temporary = FALSE) %>%
   dm_add_pk(loans_residuals, id) %>%
   dm_add_fk(loans_residuals, id, loans)
 
