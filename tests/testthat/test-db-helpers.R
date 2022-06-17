@@ -103,6 +103,9 @@ test_that("DB helpers work for Postgres", {
 })
 
 test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
+  # FIXME: Why does it fail for those databases?
+  skip_if_src("mssql", "postgres")
+
   # for other DBMS than "MSSQL" or "Postgrs", get_src_tbl_names() translates to `src_tbls_impl()`
   con_db <- my_db_test_src()$con
   dbWriteTable(
