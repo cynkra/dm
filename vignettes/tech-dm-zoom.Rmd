@@ -60,7 +60,9 @@ flights_zoomed
 
 flights_zoomed_mutate <-
   flights_zoomed %>%
-  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm"), .after = "dep_time")
+  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>%
+  # in order to see our changes in the output we use `select()` for reordering the columns
+  select(year:dep_time, am_pm_dep, everything())
 
 flights_zoomed_mutate
 
