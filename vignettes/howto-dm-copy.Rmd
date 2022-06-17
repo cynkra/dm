@@ -245,7 +245,7 @@ DBI::dbDisconnect(local_db)
 ## Conclusion
 
 `dm` makes it straightforward to deploy your complete relational model to an RDBMS using the `copy_dm_to()` function.
-For tables that are created from a relational model during analysis or development, `compute()` and `copy_to()` can be used to persist them between sessions or to copy local tables to a database `dm.`
+For tables that are created from a relational model during analysis or development, `compute()` and `copy_to()` can be used to persist them between sessions or to copy local tables to a database `dm`.
 The `collect()` method downloads an entire `dm` object that fits into memory from the database.
 
 
