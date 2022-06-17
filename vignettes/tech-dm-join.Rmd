@@ -152,4 +152,4 @@ dm_nycflights13() %>%
 ```
 
 Be aware that all column names need to be unique.
-The `dm_flatten_to_tbl` takes cares of this by automatically renaming the relevant columns and informs the user if any names were changed, e.g. `name -> airlines.name`.
+The `dm_flatten_to_tbl` takes care of this by automatically renaming the relevant columns and informs the user if any names were changed, e.g. `name -> airlines.name`.
