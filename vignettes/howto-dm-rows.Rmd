@@ -32,15 +32,13 @@ There are 6 methods:
 
 All six methods take the same arguments and using them follows the same process:
 
-1. Create a temporary *changeset dm* object that defines the intended changes on the RDBMS <!-- The technical term "changeset" needs to be explained here -->
+1. Create a temporary *changeset dm* object that defines the intended changes on the RDBMS <!-- TODO The technical term "changeset" needs to be explained here -->
 1. If desired, simulate changes with `in_place = FALSE` to double-check
 1. Apply changes with `in_place = TRUE`.
 
-<!-- TODO: the following explanation is difficult to follow in prose, 
-brainstorm if we can come up with a visual illustration instead -->
 
-To start, a dm object is created containing the tables and rows that you want to change.
-This changeset dm is then copied into the same source as the dm you want to modify.
+To start, a `dm` object is created containing the tables and rows that you want to change.
+This changeset `dm` is then copied into the same source as the dm you want to modify.
 With the dm in the same RDBMS as the destination dm, you call the appropriate method, such as `dm_rows_insert()`, to make your planned changes, along with an argument of `in_place = FALSE` so you can confirm you achieve the changes that you want.
 
 This verification can be done visually, looking at row counts and the like, or using {dm}'s constraint checking method, `dm_examine_constraints()`.
