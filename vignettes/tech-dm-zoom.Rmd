@@ -60,9 +60,8 @@ flights_zoomed
 
 flights_zoomed_mutate <-
   flights_zoomed %>%
-  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>%
-  # in order to see our changes in the output we use `select()` for reordering the columns
-  select(year:dep_time, am_pm_dep, everything())
+  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm"), .after = "dep_time")
+
 flights_zoomed_mutate
 
 # To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:
@@ -82,6 +81,7 @@ We can do this for the `weather` table.
 
 ```{r}
 library(tidyr)
+
 weather_zoomed <-
   flights_dm %>%
   dm_zoom_to(weather)
@@ -126,8 +126,10 @@ One column stands for the departure airport and the other for the arrival airpor
 ```{r}
 dm_draw(dm_nycflights13(cycle = TRUE))
 ```
-In such cases it can be beneficial, to "disentangle" the `dm` by duplicating the referred table.
+
+In such cases, it can be beneficial to "disentangle" the `dm` by duplicating the referred table.
 One way to do this in the {dm}-framework is as follows:
+
 ```{r}
 disentangled_flights_dm <-
   dm_nycflights13(cycle = TRUE) %>%
@@ -143,7 +145,7 @@ disentangled_flights_dm <-
 dm_draw(disentangled_flights_dm)
 ```
 
-In a future update we will provide a more convenient way to "disentangle" `dm` objects, so that the individual steps will be done automatically.
+In a future update, we will provide a more convenient way to "disentangle" `dm` objects, so that the individual steps will be done automatically.
 
 ### Use case 4: Add summary table to `dm`
 
@@ -182,7 +184,7 @@ dm_draw(joined_flights_dm)
 
 ### Tip: Accessing the zoomed table
 
-At each point you can retrieve the zoomed table by calling `pull_tbl()` on a `zoomed_dm`.
+At each point, you can retrieve the zoomed table by calling `pull_tbl()` on a `zoomed_dm`.
 To use our last example once more:
 
 ```{r}
@@ -195,18 +197,18 @@ flights_dm %>%
 
 ### Possible pitfalls and caveats
 
-1. Currently not all of the {dplyr}-verbs have their own method for a `zoomed_dm`, so be aware that in some cases it will still be necessary to resort to extracting one or more tables from a `dm` and reinserting a transformed version of theirs into the `dm` eventually.
+1. Currently, not all {dplyr}-verbs have their own method for a `zoomed_dm` object, so be aware that in some cases it will still be necessary to resort to extracting one or more tables from a `dm` and reinserting a transformed version back into the `dm` object.
 The supported functions are:
-`group_by()`, `ungroup()`, `summarise()`, `mutate()`, `transmute()`, `filter()`, `select()`, `relocate()`, `rename()`, `distinct()`, `arrange()`, `slice()`, `left_join()`, `inner_join()`, `full_join()`, `right_join()`, `semi_join()` and `anti_join()`.
+`group_by()`, `ungroup()`, `summarise()`, `mutate()`, `transmute()`, `filter()`, `select()`, `relocate()`, `rename()`, `distinct()`, `arrange()`, `slice()`, `left_join()`, `inner_join()`, `full_join()`, `right_join()`, `semi_join()`, and `anti_join()`.
 
 1. The same is true for {tidyr}-functions.
 Methods are provided for: `unite()` and `separate()`.
 
 1. There might be situations when you would like the key relations to remain intact, but they are dropped nevertheless.
 This is because a rigid logic is implemented, that does drop a key when its associated column is acted upon with e.g. a `mutate()` call.
-In these cases the key relations will need to be established once more after finishing with the manipulations.
+In these cases, the key relations will need to be re-established after finishing with the manipulations.
 
-1. For each implemented {dplyr}-verb there is a logic for tracking key relations between the tables.
+1. For each implemented {dplyr}-verb, there is a logic for tracking key relations between the tables.
 Up to {dm} version 0.2.4 we tried to track the columns in a very detailed manner. This has become increasingly difficult, especially with `dplyr::across()`. As of {dm} 0.2.5, we give more responsibility to the {dm} user:
 Now those columns are tracked whose **names** remain in the resulting table.
 Affected by these changes are the methods for: `mutate()`, `transmute()`, `distinct()`.
