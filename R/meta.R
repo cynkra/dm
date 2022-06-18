@@ -66,11 +66,20 @@ dm_meta_raw <- function(con, catalog) {
     # "collation_catalog", "collation_schema", "domain_catalog",
     # "domain_schema", "domain_name"
   ))
-  table_constraints <- tbl_lc(src, "information_schema.table_constraints", vars = c(
-    "constraint_catalog", "constraint_schema", "constraint_name",
-    "table_name", "constraint_type"
-  )) %>%
-    mutate(table_catalog = constraint_catalog, table_schema = constraint_schema, .before = table_name)
+
+  if (is_mariadb(src)) {
+    table_constraints <- tbl_lc(src, "information_schema.table_constraints", vars = vec_c(
+      "constraint_catalog", "constraint_schema", "constraint_name",
+      "table_name", "constraint_type"
+    )) %>%
+      mutate(table_catalog = constraint_catalog, table_schema = constraint_schema, .before = table_name)
+  } else {
+    table_constraints <- tbl_lc(src, "information_schema.table_constraints", vars = vec_c(
+      "constraint_catalog", "constraint_schema", "constraint_name",
+      "table_catalog", "table_schema", "table_name", "constraint_type",
+      "is_deferrable", "initially_deferred",
+    ))
+  }
   key_column_usage <- tbl_lc(src, "information_schema.key_column_usage", vars = c(
     "constraint_catalog", "constraint_schema", "constraint_name",
     "table_catalog", "table_schema", "table_name", "column_name",
