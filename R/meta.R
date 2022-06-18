@@ -72,7 +72,8 @@ dm_meta_raw <- function(con, catalog) {
       "constraint_catalog", "constraint_schema", "constraint_name",
       "table_name", "constraint_type"
     )) %>%
-      mutate(table_catalog = constraint_catalog, table_schema = constraint_schema, .before = table_name)
+      mutate(table_catalog = constraint_catalog, table_schema = constraint_schema, .before = table_name) %>%
+      mutate(constraint_name = if_else(constraint_type == "PRIMARY KEY", paste0("pk_", table_name), constraint_name))
   } else {
     table_constraints <- tbl_lc(src, "information_schema.table_constraints", vars = vec_c(
       "constraint_catalog", "constraint_schema", "constraint_name",
@@ -80,10 +81,11 @@ dm_meta_raw <- function(con, catalog) {
       "is_deferrable", "initially_deferred",
     ))
   }
-  key_column_usage <- tbl_lc(src, "information_schema.key_column_usage", vars = c(
+
+  key_column_usage <- tbl_lc(src, "information_schema.key_column_usage", vars = vec_c(
     "constraint_catalog", "constraint_schema", "constraint_name",
     "table_catalog", "table_schema", "table_name", "column_name",
-    "ordinal_position"
+    "ordinal_position",
   ))
 
   if (is_postgres(src)) {
@@ -97,6 +99,22 @@ dm_meta_raw <- function(con, catalog) {
   } else if (is_mssql(src)) {
     constraint_column_usage <- mssql_constraint_column_usage(src, table_constraints, catalog)
   } else {
+    # Alternate constraint names for uniqueness
+    key_column_usage <-
+      key_column_usage %>%
+      left_join(
+        tbl_lc(src, "information_schema.table_constraints", vars = vec_c(
+          "constraint_catalog", "constraint_schema", "constraint_name",
+          "table_name", "constraint_type"
+        )),
+        by = vec_c(
+          "constraint_catalog", "constraint_schema", "constraint_name",
+          "table_name",
+        )
+      ) %>%
+      mutate(constraint_name = if_else(constraint_type == "PRIMARY KEY", paste0("pk_", table_name), constraint_name)) %>%
+      select(-constraint_type)
+
     constraint_column_usage <-
       tbl_lc(src, "information_schema.key_column_usage", vars = c(
         "table_catalog",
