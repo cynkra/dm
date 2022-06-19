@@ -72,6 +72,12 @@ test_that("dm_meta() contents", {
   constraints <- dm_examine_constraints(meta, progress = FALSE)
   expect_true(all(constraints$is_key))
 
+  arrange_all_but_constraint_name <- function(.x) {
+    names <- setdiff(colnames(.x), "constraint_name")
+    .x %>%
+      arrange(!!!syms(names))
+  }
+
   expect_snapshot({
     meta %>%
       dm_select_tbl(-schemata) %>%
@@ -79,9 +85,14 @@ test_that("dm_meta() contents", {
       filter(constraint_type %in% c("PRIMARY KEY", "FOREIGN KEY")) %>%
       dm_update_zoomed() %>%
       dm_get_tables() %>%
-      map(select, -any_of("constraint_name"), -any_of("column_default"), -contains("catalog"), -contains("schema")) %>%
-      map(arrange_all) %>%
+      map(select, -any_of("column_default"), -contains("catalog"), -contains("schema")) %>%
+      map(arrange_all_but_constraint_name) %>%
       map(collect) %>%
+      map(~ if ("constraint_name" %in% colnames(.x)) {
+        .x %>% mutate(constraint_name = as.integer(forcats::fct_inorder(constraint_name)))
+      } else {
+        .x
+      }) %>%
       jsonlite::toJSON(pretty = TRUE) %>%
       gsub(schema_name, "schema_name", .) %>%
       gsub('(_catalog": ")[^"]*(")', "\\1catalog\\2", .) %>%
