@@ -319,6 +319,11 @@
           },
           {
             "table_name": "tf_6",
+            "column_name": "n",
+            "ordinal_position": 1
+          },
+          {
+            "table_name": "tf_6",
             "column_name": "o",
             "ordinal_position": 1
           }
