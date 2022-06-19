@@ -79,7 +79,7 @@ test_that("dm_meta() contents", {
       map(collect) %>%
       jsonlite::toJSON(pretty = TRUE) %>%
       gsub(schema_name, "schema_name", .) %>%
-      gsub('(_catalog": ").*(")', "\\1catalog\\2", .) %>%
+      gsub('(_catalog": ")[^"]*(")', "\\1catalog\\2", .) %>%
       writeLines()
   })
 })
