@@ -28,16 +28,22 @@ dm objects can be created from individual tables or loaded directly from a relat
 For this demonstration, we're going to work with a model hosted on a public server.
 The first thing we need is a connection to the RDBMS hosting the data.
 
-``````{r connect}
+``````{r connect, eval = FALSE}
 library(RMariaDB)
 
 fin_db <- dbConnect(
   MariaDB(),
-  username = 'guest',
-  password = 'relational',
-  dbname = 'Financial_ijs',
-  host = 'relational.fit.cvut.cz'
+  username = "guest",
+  password = "relational",
+  dbname = "Financial_ijs",
+  host = "relational.fit.cvut.cz"
 )
+``````
+
+``````{r connect-real}
+library(RMariaDB)
+
+fin_db <- dm:::financial_db_con()
 ``````
 
 We create a dm object from an RDBMS using `dm_from_con()`, passing in the connection object we just created as the first argument.
