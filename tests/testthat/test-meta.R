@@ -72,10 +72,11 @@ test_that("dm_meta() contents", {
   constraints <- dm_examine_constraints(meta, progress = FALSE)
   expect_true(all(constraints$is_key))
 
-  expect_snapshot(variant = my_test_src_name, {
+  expect_snapshot({
     meta %>%
+      dm_select_tbl(-schemata) %>%
       dm_get_tables() %>%
-      map(select, -any_of("constraint_name"), -contains("catalog")) %>%
+      map(select, -any_of("constraint_name"), -contains("catalog"), -contains("schema")) %>%
       map(arrange_all) %>%
       map(collect) %>%
       jsonlite::toJSON(pretty = TRUE) %>%
