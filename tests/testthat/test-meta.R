@@ -80,6 +80,7 @@ test_that("dm_meta() contents", {
       jsonlite::toJSON(pretty = TRUE) %>%
       gsub(schema_name, "schema_name", .) %>%
       gsub('(_catalog": ")[^"]*(")', "\\1catalog\\2", .) %>%
+      gsub('(constraint_name": ")[^"]*(")', "\\1constraint\\2", .) %>%
       writeLines()
   })
 })
