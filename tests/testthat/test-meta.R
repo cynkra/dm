@@ -75,8 +75,11 @@ test_that("dm_meta() contents", {
   expect_snapshot({
     meta %>%
       dm_select_tbl(-schemata) %>%
+      dm_zoom_to(table_constraints) %>%
+      filter(constraint_type %in% c("PRIMARY KEY", "FOREIGN KEY")) %>%
+      dm_update_zoomed() %>%
       dm_get_tables() %>%
-      map(select, -any_of("constraint_name"), -contains("catalog"), -contains("schema")) %>%
+      map(select, -any_of("constraint_name"), -any_of("column_default"), -contains("catalog"), -contains("schema")) %>%
       map(arrange_all) %>%
       map(collect) %>%
       jsonlite::toJSON(pretty = TRUE) %>%
