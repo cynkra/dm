@@ -73,7 +73,10 @@ dm_meta_raw <- function(con, catalog) {
       "table_name", "constraint_type"
     )) %>%
       mutate(table_catalog = constraint_catalog, table_schema = constraint_schema, .before = table_name) %>%
-      mutate(constraint_name = if_else(constraint_type == "PRIMARY KEY", paste0("pk_", table_name), constraint_name))
+      mutate(constraint_name = if_else(constraint_type == "PRIMARY KEY", paste0("pk_", table_name), constraint_name)) %>%
+      # WAT
+      mutate(constraint_schema = tolower(constraint_schema)) %>%
+      mutate(table_schema = tolower(table_schema))
   } else {
     table_constraints <- tbl_lc(src, "information_schema.table_constraints", vars = vec_c(
       "constraint_catalog", "constraint_schema", "constraint_name",
@@ -127,7 +130,10 @@ dm_meta_raw <- function(con, catalog) {
         table_schema = referenced_table_schema,
         table_name = referenced_table_name,
         column_name = referenced_column_name,
-      )
+      ) %>%
+      # WAT
+      mutate(constraint_schema = tolower(constraint_schema)) %>%
+      mutate(table_schema = tolower(table_schema))
   }
 
   dm(schemata, tables, columns, table_constraints, key_column_usage, constraint_column_usage) %>%
