@@ -463,6 +463,11 @@ anti_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
 }
 
 #' @export
+pack_join.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
+#' @export
 nest_join.dm <- function(.data, ...) {
   check_zoomed(.data)
 }

@@ -18,11 +18,6 @@ pack_join <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = N
   UseMethod("pack_join")
 }
 
-#' @export
-pack_join.dm <- function(.data, ...) {
-  check_zoomed(.data)
-}
-
 #' @rdname pack_join
 #' @export
 pack_join.zoomed_dm <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
