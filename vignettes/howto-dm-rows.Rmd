@@ -19,14 +19,13 @@ source("setup/setup.R")
 ## Introduction {#intro}
 
 This tutorial introduces the methods {dm} provides for modifying the data in the tables of a relational model.
-There are 6 methods:
+There are 5 methods:
 
 * [`dm_rows_insert()`](#insert) - adds new rows
 * [`dm_rows_update()`](#update) - changes values in rows
 * [`dm_rows_patch()`](#patch) - fills in missing values
 * [`dm_rows_upsert()`](#upsert) - adds new rows or changes values if pre-existing
 * [`dm_rows_delete()`](#delete) - deletes rows
-* [`dm_rows_truncate()`](#truncate) - removes all rows, leaving table structure intact
 
 ## The dm_rows_* process
 
@@ -59,7 +58,6 @@ These involve constraints on primary key values that uniquely identify rows.
 | `dm_rows_patch()` | Updates missing values in existing records. Primary keys must match for all records to be patched.|
 | `dm_rows_upsert()` | Updates existing records and adds new records, based on the primary key.|
 | `dm_rows_delete()` | Removes matching records based on the primary key. Primary keys must match for all records to be deleted.|
-| `dm_rows_truncate()` | Removes all records, only for tables in the changeset dm.|
 
 To ensure the integrity of all relations during the process, all methods automatically determine the correct processing order for the tables involved.
 For operations that create records, parent tables (which hold primary keys) are processed before child tables (which hold foreign keys).
@@ -231,27 +229,6 @@ dm_upserted <-
 dm_upserted$parent
 dm_upserted$child
 ``````
-
-## `dm_rows_truncate()` {#truncate}
-
-`dm_rows_truncate()` deletes all the rows in a table while leaving all other related information intact, including column names, column types, and key relations.
-The function derives its name from the SQL `TRUNCATE TABLE` statement, so we will return to our SQLite database to demonstrate its use.
-The example below truncates only the `child` table.
-Note how a modified version of the destination dm is used as "changeset dm": the rows in the changeset dm do not matter here.
-
-``````{r }
-dm_trunc_in <-
-  demo_sql %>%
-  dm_select_tbl(child)
-dm_trunc_in
-dm_trunc_out <-
-  demo_sql %>%
-  dm_rows_truncate(dm_trunc_in, in_place = TRUE)
-
-demo_sql$child
-``````
-
-
 
 When done, do not forget to disconnect:
 
