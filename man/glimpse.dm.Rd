@@ -6,6 +6,14 @@
 \usage{
 \method{glimpse}{dm}(x, width = NULL, ...)
 }
+\arguments{
+\item{x}{A \code{dm} object.}
+
+\item{width}{Controls the maximum number of columns on a line used in
+printing. If \code{NULL}, \code{getOption("width")} will be consulted.}
+
+\item{...}{Passed to \code{\link[pillar:glimpse]{pillar::glimpse()}}.}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

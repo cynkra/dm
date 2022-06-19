@@ -703,6 +703,11 @@ as.list.zoomed_dm <- function(x, ...) {
 
 #' Get a glimpse of `dm` object
 #'
+#' @param x A `dm` object.
+#' @param width Controls the maximum number of columns on a line used in
+#'   printing. If `NULL`, `getOption("width")` will be consulted.
+#' @param ... Passed to [pillar::glimpse()].
+#'
 #' @description
 #' `r lifecycle::badge("stable")`
 #'
