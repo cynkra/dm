@@ -1,3 +1,5 @@
+skip_if_src("maria")
+
 test_that("insert + delete + truncate message", {
   expect_snapshot({
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
