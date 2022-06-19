@@ -208,7 +208,13 @@ tbl_lc <- function(con, name, vars) {
     ))
   }
 
-  tbl(con, from, vars = vars)
+  out <- tbl(con, from, vars = vars)
+  if (is.null(vars)) {
+    out <-
+      out %>%
+      rename(!!!set_names(colnames(out), tolower(colnames(out))))
+  }
+  out
 }
 
 select_dm_meta <- function(dm_meta) {
