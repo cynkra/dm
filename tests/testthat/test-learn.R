@@ -147,10 +147,14 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     try(dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q)))
   })
 
+  normalize_table_name <- function(x) {
+    tolower(gsub('["`]', "", x))
+  }
+
   # test 'get_src_tbl_names()'
   expect_identical(
-    sort(get_src_tbl_names(con_db, schema = schema_name)),
-    SQL(sort(remote_tbl_names))
+    sort(normalize_table_name(get_src_tbl_names(con_db, schema = schema_name))),
+    SQL(sort(normalize_table_name(remote_tbl_names)))
   )
 
   # learning with keys:
