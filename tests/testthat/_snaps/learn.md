@@ -7,11 +7,6 @@
     Output
       dm()
 
----
-
-    Code
-      dm_db_learned_all <- dm_from_con(con_db, learn_keys = TRUE)
-
 # dm_meta() contents
 
     Code

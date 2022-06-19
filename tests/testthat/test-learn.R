@@ -69,9 +69,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 
   remote_tbl_map <- set_names(remote_tbl_names, gsub("^(tf_.).*$", "\\1", remote_tbl_names))
 
-  expect_snapshot({
-    dm_db_learned_all <- dm_from_con(con_db, learn_keys = TRUE)
-  })
+  expect_silent(dm_db_learned_all <- dm_from_con(con_db, learn_keys = TRUE))
 
   # Select and fix table names
   dm_db_learned <-
