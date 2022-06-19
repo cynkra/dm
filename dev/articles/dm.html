@@ -101,7 +101,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Getting started with dm</h1>
             
-            <h4 data-toc-skip class="date">2022-06-17</h4>
+            <h4 data-toc-skip class="date">2022-06-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/dm.Rmd" class="external-link"><code>vignettes/dm.Rmd</code></a></small>
       <div class="d-none name"><code>dm.Rmd</code></div>
@@ -124,21 +124,25 @@
 
 <span class="va">fin_db</span> <span class="op">&lt;-</span> <span class="fu">dbConnect</span><span class="op">(</span>
   <span class="fu"><a href="https://rmariadb.r-dbi.org/reference/dbConnect-MariaDBDriver-method.html" class="external-link">MariaDB</a></span><span class="op">(</span><span class="op">)</span>,
-  username <span class="op">=</span> <span class="st">'guest'</span>,
-  password <span class="op">=</span> <span class="st">'relational'</span>,
-  dbname <span class="op">=</span> <span class="st">'Financial_ijs'</span>,
-  host <span class="op">=</span> <span class="st">'relational.fit.cvut.cz'</span>
+  username <span class="op">=</span> <span class="st">"guest"</span>,
+  password <span class="op">=</span> <span class="st">"relational"</span>,
+  dbname <span class="op">=</span> <span class="st">"Financial_ijs"</span>,
+  host <span class="op">=</span> <span class="st">"relational.fit.cvut.cz"</span>
 <span class="op">)</span></code></pre></div>
-<p>We create a dm object from an RDBMS using <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code>, passing in the connection object we just created as the first argument.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rmariadb.r-dbi.org" class="external-link">RMariaDB</a></span><span class="op">)</span>
+
+<span class="va">fin_db</span> <span class="op">&lt;-</span> <span class="fu">dm</span><span class="fu">:::</span><span class="fu">financial_db_con</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>We create a dm object from an RDBMS using <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code>, passing in the connection object we just created as the first argument.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
 
 <span class="va">fin_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">fin_db</span><span class="op">)</span>
 <span class="va">fin_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<span class="co">#&gt; src:  mysql  [student@databases.pacha.dev:NA/financial]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)</span>
+<span class="co">#&gt; Tables: `trans`, `disps`, `loans`, `tkeys`, `districts`, … (9 total)</span>
 <span class="co">#&gt; Columns: 57</span>
 <span class="co">#&gt; Primary keys: 0</span>
 <span class="co">#&gt; Foreign keys: 0</span></code></pre>
@@ -148,13 +152,13 @@
 <h2 id="selecting-tables">Selecting tables<a class="anchor" aria-label="anchor" href="#selecting-tables"></a>
 </h2>
 <p>The dm object can be accessed like a named list of tables:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fin_dm</span><span class="op">)</span>
-<span class="co">#&gt; [1] "accounts"  "cards"     "clients"   "disps"     "districts" "loans"    </span>
-<span class="co">#&gt; [7] "orders"    "tkeys"     "trans"</span>
+<span class="co">#&gt; [1] "trans"     "disps"     "loans"     "tkeys"     "districts" "clients"  </span>
+<span class="co">#&gt; [7] "accounts"  "cards"     "orders"</span>
 <span class="va">fin_dm</span><span class="op">$</span><span class="va">loans</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`Financial_ijs`.`loans`&gt; [?? x 7]</span>
-<span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;`financial`.`loans`&gt; [?? x 7]</span>
+<span class="co">#&gt; # Database: mysql  [student@databases.pacha.dev:NA/financial]</span>
 <span class="co">#&gt;       id account_id date       amount duration payments status</span>
 <span class="co">#&gt;    &lt;int&gt;      &lt;int&gt; &lt;date&gt;      &lt;dbl&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt; </span>
 <span class="co">#&gt;  1  4959          2 1994-01-05  80952       24     3373 A     </span>
@@ -168,15 +172,15 @@
 <span class="co">#&gt;  9  4989        105 1998-12-05 352704       48     7348 C     </span>
 <span class="co">#&gt; 10  4990        110 1997-09-08 162576       36     4516 C     </span>
 <span class="co">#&gt; # … with more rows</span></code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">fin_dm</span><span class="op">$</span><span class="va">trans</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   SQL [1 x 1]</span>
-<span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<span class="co">#&gt; # Database: mysql  [student@databases.pacha.dev:NA/financial]</span>
 <span class="co">#&gt;         n</span>
 <span class="co">#&gt;   &lt;int64&gt;</span>
 <span class="co">#&gt; 1 1056320</span></code></pre>
 <p>Additionally, most <code>dm</code> functions are <a href="https://r4ds.had.co.nz/pipes.html" class="external-link">pipe-friendly</a> and support <a href="https://adv-r.hadley.nz/metaprogramming.html" class="external-link">tidy evaluation</a>. We can use <code>[</code> or the <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> verb to derive a smaller dm with the <code>loans</code>, <code>accounts</code>, <code>districts</code> and <code>trans</code> tables:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_small</span> <span class="op">&lt;-</span> <span class="va">fin_dm</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"loans"</span>, <span class="st">"accounts"</span>, <span class="st">"districts"</span>, <span class="st">"trans"</span><span class="op">)</span><span class="op">]</span>
 <span class="va">fin_dm_small</span> <span class="op">&lt;-</span>
   <span class="va">fin_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -187,7 +191,7 @@
 </h2>
 <p>In many cases, <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> already returns a dm with all keys set. If not, dm allows us to define primary and foreign keys ourselves.</p>
 <p>In our data model, <code>id</code> columns uniquely identify records in the <code>accounts</code> and <code>loans</code> tables, and can be used as a primary key. A primary key is defined with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. Each loan is linked to one account via the <code>account_id</code> column in the <code>loans</code> table, the relationship is established with <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op">&lt;-</span>
   <span class="va">fin_dm_small</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">accounts</span>, columns <span class="op">=</span> <span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -203,7 +207,7 @@
 </h2>
 <p>Having a diagram of the data model is the quickest way to verify we’re on the right track. We can display a visual summary of the dm at any time. The default is to display the table name, any defined keys, and their links to other tables.</p>
 <p>Visualizing the dm in its current state, we can see the keys we have created and how they link the tables together. Color guides the eye.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_set_colors.html">dm_set_colors</a></span><span class="op">(</span>green <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">accounts</span><span class="op">)</span>, darkblue <span class="op">=</span> <span class="va">trans</span>, grey <span class="op">=</span> <span class="va">districts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -224,14 +228,14 @@
 <h2 id="accessing-a-data-model-as-a-table">Accessing a data model as a table<a class="anchor" aria-label="anchor" href="#accessing-a-data-model-as-a-table"></a>
 </h2>
 <p>If we want to perform modeling or analysis on this relational model, we need to transform it into a tabular format that R functions can work with. <code><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl()</a></code> will automatically follow foreign keys across tables to gather all the available columns into a single table.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span>
 <span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span>
 <span class="co">#&gt;   dm_rename(loans, loans.date = date) %&gt;%</span>
 <span class="co">#&gt;   dm_rename(accounts, accounts.date = date)</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   SQL [?? x 25]</span>
-<span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<span class="co">#&gt; # Database: mysql  [student@databases.pacha.dev:NA/financial]</span>
 <span class="co">#&gt;       id account_id loans.date amount duration payments status district_id</span>
 <span class="co">#&gt;    &lt;int&gt;      &lt;int&gt; &lt;date&gt;      &lt;dbl&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;        &lt;int&gt;</span>
 <span class="co">#&gt;  1  4959          2 1994-01-05  80952       24     3373 A                1</span>
@@ -249,7 +253,7 @@
 <span class="co">#&gt; #   A6 &lt;int&gt;, A7 &lt;int&gt;, A8 &lt;int&gt;, A9 &lt;int&gt;, A10 &lt;dbl&gt;, A11 &lt;int&gt;,</span>
 <span class="co">#&gt; #   A12 &lt;dbl&gt;, A13 &lt;dbl&gt;, A14 &lt;int&gt;, A15 &lt;int&gt;, A16 &lt;int&gt;</span></code></pre>
 <p>Apart from the rows printed above, no data has been fetched from the database. Use <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> to reduce the number of columns fetched, and <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> to retrieve the entire result for local processing.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">loans_df</span> <span class="op">&lt;-</span>
   <span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -279,7 +283,7 @@
 </h2>
 <p>We don’t need to take the extra step of exporting the data to work with it. Through the dm object, we have complete access to dplyr’s data manipulation verbs. These operate on the data within individual tables.</p>
 <p>To work with a particular table we use <code><a href="../reference/dm_zoom_to.html">dm_zoom_to()</a></code> to set the context to our chosen table. Then we can perform any of the dplyr operations we want.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_total</span> <span class="op">&lt;-</span>
   <span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -290,7 +294,7 @@
 
 <span class="va">fin_dm_total</span><span class="op">$</span><span class="va">total_loans</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   SQL [?? x 2]</span>
-<span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
+<span class="co">#&gt; # Database: mysql  [student@databases.pacha.dev:NA/financial]</span>
 <span class="co">#&gt;    account_id total_amount</span>
 <span class="co">#&gt;         &lt;int&gt;        &lt;dbl&gt;</span>
 <span class="co">#&gt;  1          2        80952</span>
@@ -311,7 +315,7 @@
 </h2>
 <p>It’s always smart to check that your data model follows its specifications. When building our own model or changing existing models by adding tables or keys, it is even more important that the new model is validated.</p>
 <p><code>dm_examine_constrains()</code> checks all primary and foreign keys and reports if they violate their expected constraints.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-message"><code><span class="co">#&gt; ℹ All constraints satisfied.</span></code></pre>
