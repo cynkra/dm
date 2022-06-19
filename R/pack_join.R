@@ -19,6 +19,23 @@ pack_join <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = N
 }
 
 #' @export
+pack_join.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
+#' @rdname pack_join
+#' @export
+pack_join.zoomed_dm <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
+  y_name <- dm_tbl_name(x, {{ y }})
+  zoomed <- dm_get_zoom(x, c("table", "zoom", "col_tracker_zoom"))
+  x_tbl <- zoomed$zoom[[1]]
+  y_tbl <- dm_get_tables_impl(x)[[y_name]]
+
+  joined_tbl <- pack_join(x_tbl, y_tbl, by, ..., copy = copy, keep = keep, name = name)
+  replace_zoomed_tbl(x, joined_tbl)
+}
+
+#' @export
 pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
   check_dots_empty()
   name_var <- name %||% as_label(enexpr(y))

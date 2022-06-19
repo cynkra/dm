@@ -24,3 +24,18 @@ test_that("`pack_join()` works", {
   df6 <- tibble(df6 = integer())
   expect_snapshot(pack_join(df5, df6, by = c(col = "df6")))
 })
+
+test_that("`pack_join()` works with zoomed_dm", {
+  dm_nyc <- dm_nycflights13()
+
+  dm_nyc_new <- dm_nyc %>%
+    dm_zoom_to(airlines) %>%
+    pack_join(flights, by = "carrier", name = "packed_flights") %>%
+    dm_update_zoomed()
+
+  expect_equal(get_all_keys(dm_nyc), get_all_keys(dm_nyc_new))
+
+  expect_equal(colnames(dm_nyc_new$airlines), c("carrier", "name", "packed_flights"))
+  expect_equal(dim(dm_nyc_new$airlines), c(1761L, 3L))
+  expect_equal(dim(dm_nyc_new$airlines$packed_flights), c(1761L, 18L))
+})

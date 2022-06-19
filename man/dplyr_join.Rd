@@ -8,6 +8,7 @@
 \alias{right_join.zoomed_dm}
 \alias{semi_join.zoomed_dm}
 \alias{anti_join.zoomed_dm}
+\alias{nest_join.zoomed_dm}
 \title{\pkg{dplyr} join methods for zoomed dm objects}
 \usage{
 \method{left_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
@@ -21,6 +22,8 @@
 \method{semi_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
 
 \method{anti_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{nest_join}{zoomed_dm}(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...)
 }
 \arguments{
 \item{x, y}{tbls to join. \code{x} is the \code{zoomed_dm} and \code{y} is another table in the \code{dm}.}
