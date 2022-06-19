@@ -46,7 +46,7 @@
       
       
       $sql_table
-      <SQL> CREATE TEMP TABLE "pixar_films" (
+      <SQL> CREATE TEMPORARY TABLE "pixar_films" (
         "number" STRING,
         "film" STRING,
         "release_date" DATE,
@@ -54,14 +54,14 @@
         "film_rating" STRING,
         PRIMARY KEY ("film")
       )
-      <SQL> CREATE TEMP TABLE "academy" (
+      <SQL> CREATE TEMPORARY TABLE "academy" (
         "film" STRING,
         "award_type" STRING,
         "status" STRING,
         PRIMARY KEY ("film", "award_type"),
         FOREIGN KEY ("film") REFERENCES "pixar_films" ("film")
       )
-      <SQL> CREATE TEMP TABLE "box_office" (
+      <SQL> CREATE TEMPORARY TABLE "box_office" (
         "film" STRING,
         "budget" DOUBLE,
         "box_office_us_canada" DOUBLE,
@@ -70,13 +70,13 @@
         PRIMARY KEY ("film"),
         FOREIGN KEY ("film") REFERENCES "pixar_films" ("film")
       )
-      <SQL> CREATE TEMP TABLE "genres" (
+      <SQL> CREATE TEMPORARY TABLE "genres" (
         "film" STRING,
         "genre" STRING,
         PRIMARY KEY ("film", "genre"),
         FOREIGN KEY ("film") REFERENCES "pixar_films" ("film")
       )
-      <SQL> CREATE TEMP TABLE "public_response" (
+      <SQL> CREATE TEMPORARY TABLE "public_response" (
         "film" STRING,
         "rotten_tomatoes" DOUBLE,
         "metacritic" DOUBLE,
@@ -158,19 +158,19 @@
       
       
       $sql_table
-      <SQL> CREATE TEMP TABLE "parent1" (
+      <SQL> CREATE TEMPORARY TABLE "parent1" (
         "key" DOUBLE,
         PRIMARY KEY ("key")
       )
-      <SQL> CREATE TEMP TABLE "parent2" (
+      <SQL> CREATE TEMPORARY TABLE "parent2" (
         "a__key" DOUBLE,
         PRIMARY KEY ("a__key")
       )
-      <SQL> CREATE TEMP TABLE "child" (
+      <SQL> CREATE TEMPORARY TABLE "child" (
         "a__key" DOUBLE,
         FOREIGN KEY ("a__key") REFERENCES "parent2" ("a__key")
       )
-      <SQL> CREATE TEMP TABLE "child__a" (
+      <SQL> CREATE TEMPORARY TABLE "child__a" (
         "key" DOUBLE,
         FOREIGN KEY ("key") REFERENCES "parent2" ("a__key")
       )
