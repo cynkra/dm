@@ -459,6 +459,7 @@ test_that("dm_meta() contents", {
       } else {
         .x
       }) %>%
+      map(arrange_all) %>%
       jsonlite::toJSON(pretty = TRUE) %>%
       gsub(schema_name, "schema_name", .) %>%
       gsub('(_catalog": ")[^"]*(")', "\\1catalog\\2", .) %>%

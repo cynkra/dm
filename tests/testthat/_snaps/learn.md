@@ -19,8 +19,9 @@
           constraint_name)))
       } else {
         .x
-      }) %>% jsonlite::toJSON(pretty = TRUE) %>% gsub(schema_name, "schema_name", .) %>%
-        gsub("(_catalog\": \")[^\"]*(\")", "\\1catalog\\2", .) %>% writeLines()
+      }) %>% map(arrange_all) %>% jsonlite::toJSON(pretty = TRUE) %>% gsub(
+        schema_name, "schema_name", .) %>% gsub("(_catalog\": \")[^\"]*(\")",
+        "\\1catalog\\2", .) %>% writeLines()
     Output
       {
         "tables": [
