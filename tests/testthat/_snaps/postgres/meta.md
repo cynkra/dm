@@ -1,10 +1,10 @@
 # dm_meta() contents
 
     Code
-      meta %>% dm_get_tables() %>% map(arrange_all) %>% map(collect) %>% jsonlite::toJSON(
-        pretty = TRUE) %>% gsub(schema_name, "schema_name", .) %>% gsub(
-        "(_catalog\": \")[^\"]*(\")", "\\1catalog\\2", .) %>% gsub(
-        "(constraint_name\": \")[^\"]*(\")", "\\1constraint\\2", .) %>% writeLines()
+      meta %>% dm_get_tables() %>% map(select, -any_of("constraint_name")) %>% map(
+        arrange_all) %>% map(collect) %>% jsonlite::toJSON(pretty = TRUE) %>% gsub(
+        schema_name, "schema_name", .) %>% gsub("(_catalog\": \")[^\"]*(\")",
+        "\\1catalog\\2", .) %>% writeLines()
     Output
       {
         "schemata": [
@@ -217,7 +217,6 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_1",
@@ -226,7 +225,46 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_1",
+            "constraint_type": "PRIMARY KEY"
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_2",
+            "constraint_type": "CHECK"
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_2",
+            "constraint_type": "FOREIGN KEY"
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_2",
+            "constraint_type": "FOREIGN KEY"
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_2",
+            "constraint_type": "PRIMARY KEY"
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_3",
@@ -235,7 +273,6 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_3",
@@ -244,7 +281,70 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_3",
+            "constraint_type": "PRIMARY KEY"
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_4",
+            "constraint_type": "CHECK"
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_4",
+            "constraint_type": "FOREIGN KEY"
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_4",
+            "constraint_type": "PRIMARY KEY"
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_5",
+            "constraint_type": "CHECK"
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_5",
+            "constraint_type": "FOREIGN KEY"
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_5",
+            "constraint_type": "FOREIGN KEY"
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_5",
+            "constraint_type": "PRIMARY KEY"
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_6",
@@ -253,144 +353,24 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
-            "table_name": "tf_2",
-            "constraint_type": "CHECK"
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_4",
-            "constraint_type": "CHECK"
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_5",
-            "constraint_type": "CHECK"
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_1",
+            "table_name": "tf_6",
             "constraint_type": "PRIMARY KEY"
           },
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_2",
-            "constraint_type": "FOREIGN KEY"
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_2",
-            "constraint_type": "FOREIGN KEY"
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_2",
-            "constraint_type": "PRIMARY KEY"
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_3",
-            "constraint_type": "PRIMARY KEY"
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_4",
-            "constraint_type": "FOREIGN KEY"
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_4",
-            "constraint_type": "PRIMARY KEY"
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_5",
-            "constraint_type": "FOREIGN KEY"
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_5",
-            "constraint_type": "FOREIGN KEY"
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_5",
-            "constraint_type": "PRIMARY KEY"
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_6",
             "constraint_type": "UNIQUE"
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_6",
-            "constraint_type": "PRIMARY KEY"
           }
         ],
         "key_column_usage": [
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_1",
@@ -400,37 +380,6 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_2",
-            "column_name": "d",
-            "ordinal_position": 1
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_2",
-            "column_name": "e",
-            "ordinal_position": 1
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_2",
-            "column_name": "e1",
-            "ordinal_position": 2
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_2",
@@ -440,7 +389,33 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_2",
+            "column_name": "d",
+            "ordinal_position": 1
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_2",
+            "column_name": "e",
+            "ordinal_position": 1
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_2",
+            "column_name": "e1",
+            "ordinal_position": 2
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_3",
@@ -450,7 +425,6 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_3",
@@ -460,27 +434,6 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_4",
-            "column_name": "j",
-            "ordinal_position": 1
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
-            "table_catalog": "catalog",
-            "table_schema": "schema_name",
-            "table_name": "tf_4",
-            "column_name": "j1",
-            "ordinal_position": 2
-          },
-          {
-            "constraint_catalog": "catalog",
-            "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_4",
@@ -490,27 +443,24 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
-            "table_name": "tf_5",
-            "column_name": "l",
+            "table_name": "tf_4",
+            "column_name": "j",
             "ordinal_position": 1
           },
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
-            "table_name": "tf_5",
-            "column_name": "m",
-            "ordinal_position": 1
+            "table_name": "tf_4",
+            "column_name": "j1",
+            "ordinal_position": 2
           },
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_5",
@@ -520,7 +470,24 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_5",
+            "column_name": "l",
+            "ordinal_position": 1
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
+            "table_catalog": "catalog",
+            "table_schema": "schema_name",
+            "table_name": "tf_5",
+            "column_name": "m",
+            "ordinal_position": 1
+          },
+          {
+            "constraint_catalog": "catalog",
+            "constraint_schema": "schema_name",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_6",
@@ -536,7 +503,6 @@
             "column_name": "a",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "ordinal_position": 1
           },
           {
@@ -546,7 +512,6 @@
             "column_name": "f",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "ordinal_position": 1
           },
           {
@@ -556,7 +521,6 @@
             "column_name": "f",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "ordinal_position": 1
           },
           {
@@ -566,7 +530,6 @@
             "column_name": "f1",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "ordinal_position": 2
           },
           {
@@ -576,7 +539,6 @@
             "column_name": "f1",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "ordinal_position": 2
           },
           {
@@ -586,7 +548,6 @@
             "column_name": "h",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "ordinal_position": 1
           },
           {
@@ -596,7 +557,6 @@
             "column_name": "n",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "constraint",
             "ordinal_position": 1
           }
         ]
