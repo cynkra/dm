@@ -33,8 +33,9 @@ Below, we open a connection to the publicly accessible database server using the
 Connection details vary from database to database. Before connecting to your own RDBMS, you may want to read `vignette("DBI", package = "DBI")` for further information.
 
 
-``````{r }
+``````{r eval = FALSE}
 library(RMariaDB)
+
 my_db <- dbConnect(
   MariaDB(),
   username = "guest",
@@ -42,6 +43,11 @@ my_db <- dbConnect(
   dbname = "Financial_ijs",
   host = "relational.fit.cvut.cz"
 )
+``````
+
+``````{r }
+library(RMariaDB)
+my_db <- dm:::financial_db_con()
 ``````
 
 Creating a dm object takes a single call to `dm_from_con()` with the DBI connection object as its argument.
