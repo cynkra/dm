@@ -335,8 +335,8 @@ test_that("tests with 'bad_dm' work (2)", {
   # can't create bad_dm() on Postgres due to strict constraint checks
   skip_if_src("postgres")
 
-  # full & right join not available on SQLite
-  skip_if_src("sqlite")
+  # full & right join not available on SQLite and MariaDB
+  skip_if_src("sqlite", "maria")
 
   bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
 
@@ -347,6 +347,16 @@ test_that("tests with 'bad_dm' work (2)", {
       full_join(tbl_2(), by = c("a" = "id", "x")) %>%
       full_join(tbl_3(), by = c("b" = "id"))
   )
+})
+
+test_that("tests with 'bad_dm' work (3)", {
+  # can't create bad_dm() on Postgres due to strict constraint checks
+  skip_if_src("postgres")
+
+  # full & right join not available on SQLite
+  skip_if_src("sqlite")
+
+  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
 
   # filtered `dm`
   expect_dm_error(

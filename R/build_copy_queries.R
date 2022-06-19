@@ -24,6 +24,9 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
   get_sql_col_types <- function(x) {
     tbl <- tbl_impl(dm, x)
     types <- DBI::dbDataType(con, tbl)
+    if (is_mariadb(dest)) {
+      types[types == "TEXT"] <- "VARCHAR(255)"
+    }
     enframe(types, "col", "type")
   }
 
@@ -77,6 +80,10 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       if (nrow(fks)) {
         warn("duckdb doesn't support foreign keys, these won't be set in the remote database but are preserved in the `dm`")
       }
+    } else if (is_mariadb(con) && temporary) {
+      if (nrow(fks) > 0 && !is_testing()) {
+        warn("MySQL and MariaDB don't support foreign keys for temporary tables, these won't be set in the remote database but are preserved in the `dm`")
+      }
     } else {
       fk_defs <-
         fks %>%
@@ -119,6 +126,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
         )
     }
   }
+
   ## compile `CREATE TABLE ...` queries
   create_table_queries <-
     col_defs %>%
@@ -138,7 +146,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     ) %>%
     ungroup() %>%
     transmute(name, remote_name, columns, sql_table = DBI::SQL(glue(
-      "CREATE {if (temporary) 'TEMP ' else ''}TABLE {unlist(remote_name)} (\n  {all_defs}\n)"
+      "CREATE {if (temporary) 'TEMPORARY ' else ''}TABLE {unlist(remote_name)} (\n  {all_defs}\n)"
     )))
 
   queries <- left_join(create_table_queries, index_queries, by = "name")
