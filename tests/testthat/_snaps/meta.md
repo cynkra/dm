@@ -48,8 +48,10 @@
 # dm_meta() contents
 
     Code
-      meta %>% dm_select_tbl(-schemata) %>% dm_get_tables() %>% map(select, -any_of(
-        "constraint_name"), -contains("catalog"), -contains("schema")) %>% map(
+      meta %>% dm_select_tbl(-schemata) %>% dm_zoom_to(table_constraints) %>% filter(
+        constraint_type %in% c("PRIMARY KEY", "FOREIGN KEY")) %>% dm_update_zoomed() %>%
+        dm_get_tables() %>% map(select, -any_of("constraint_name"), -any_of(
+        "column_default"), -contains("catalog"), -contains("schema")) %>% map(
         arrange_all) %>% map(collect) %>% jsonlite::toJSON(pretty = TRUE) %>% gsub(
         schema_name, "schema_name", .) %>% gsub("(_catalog\": \")[^\"]*(\")",
         "\\1catalog\\2", .) %>% writeLines()
@@ -206,15 +208,7 @@
         "table_constraints": [
           {
             "table_name": "tf_1",
-            "constraint_type": "CHECK"
-          },
-          {
-            "table_name": "tf_1",
             "constraint_type": "PRIMARY KEY"
-          },
-          {
-            "table_name": "tf_2",
-            "constraint_type": "CHECK"
           },
           {
             "table_name": "tf_2",
@@ -230,19 +224,7 @@
           },
           {
             "table_name": "tf_3",
-            "constraint_type": "CHECK"
-          },
-          {
-            "table_name": "tf_3",
-            "constraint_type": "CHECK"
-          },
-          {
-            "table_name": "tf_3",
             "constraint_type": "PRIMARY KEY"
-          },
-          {
-            "table_name": "tf_4",
-            "constraint_type": "CHECK"
           },
           {
             "table_name": "tf_4",
@@ -251,10 +233,6 @@
           {
             "table_name": "tf_4",
             "constraint_type": "PRIMARY KEY"
-          },
-          {
-            "table_name": "tf_5",
-            "constraint_type": "CHECK"
           },
           {
             "table_name": "tf_5",
@@ -270,15 +248,7 @@
           },
           {
             "table_name": "tf_6",
-            "constraint_type": "CHECK"
-          },
-          {
-            "table_name": "tf_6",
             "constraint_type": "PRIMARY KEY"
-          },
-          {
-            "table_name": "tf_6",
-            "constraint_type": "UNIQUE"
           }
         ],
         "key_column_usage": [
