@@ -9,7 +9,7 @@
       {
         "schemata": [
           {
-            "catalog_name": "kirill",
+            "catalog_name": "runner",
             "schema_name": "schema_name"
           }
         ],
