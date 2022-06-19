@@ -41,6 +41,12 @@ This argument is specific for the \code{join}-methods for \code{zoomed_dm}.
 The table's \code{by} column(s) are automatically added if missing in the selection.}
 
 \item{...}{see \code{\link[dplyr:mutate-joins]{dplyr::join}}}
+
+\item{keep}{Should the join keys from both \code{x} and \code{y} be preserved in the
+output?}
+
+\item{name}{The name of the list column nesting joins create.
+If \code{NULL} the name of \code{y} is used.}
 }
 \description{
 Use these methods without the '.zoomed_dm' suffix (see examples).

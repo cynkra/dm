@@ -468,6 +468,7 @@ nest_join.dm <- function(.data, ...) {
 }
 
 #' @rdname dplyr_join
+#' @inheritParams dplyr::nest_join
 #' @export
 nest_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...) {
   y_name <- as_string(enexpr(y))
