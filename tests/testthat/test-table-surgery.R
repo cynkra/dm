@@ -1,4 +1,6 @@
 test_that("decompose_table() decomposes tables nicely on chosen source", {
+  skip_if_src("maria")
+
   out <- decompose_table(data_ts(), aef_id, a, e, f)
   expect_equivalent_tbl(
     out$parent_table,
