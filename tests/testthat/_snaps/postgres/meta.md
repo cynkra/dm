@@ -3,7 +3,8 @@
     Code
       meta %>% dm_get_tables() %>% map(arrange_all) %>% map(collect) %>% jsonlite::toJSON(
         pretty = TRUE) %>% gsub(schema_name, "schema_name", .) %>% gsub(
-        "(_catalog\": \")[^\"]*(\")", "\\1catalog\\2", .) %>% writeLines()
+        "(_catalog\": \")[^\"]*(\")", "\\1catalog\\2", .) %>% gsub(
+        "(constraint_name\": \")[^\"]*(\")", "\\1constraint\\2", .) %>% writeLines()
     Output
       {
         "schemata": [
@@ -216,7 +217,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "222531_222734_1_not_null",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_1",
@@ -225,7 +226,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "222531_222741_1_not_null",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_3",
@@ -234,7 +235,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "222531_222741_2_not_null",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_3",
@@ -243,7 +244,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "222531_222748_3_not_null",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_6",
@@ -252,7 +253,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "222531_222757_1_not_null",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_2",
@@ -261,7 +262,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "222531_222774_1_not_null",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_4",
@@ -270,7 +271,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "222531_222786_2_not_null",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_5",
@@ -279,7 +280,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_1_pkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_1",
@@ -288,7 +289,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_2_d_fkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_2",
@@ -297,7 +298,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_2_e_e1_fkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_2",
@@ -306,7 +307,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_2_pkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_2",
@@ -315,7 +316,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_3_pkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_3",
@@ -324,7 +325,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_4_j_j1_fkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_4",
@@ -333,7 +334,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_4_pkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_4",
@@ -342,7 +343,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_5_l_fkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_5",
@@ -351,7 +352,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_5_m_fkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_5",
@@ -360,7 +361,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_5_pkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_5",
@@ -369,7 +370,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_6_n_key",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_6",
@@ -378,7 +379,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_6_pkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_6",
@@ -389,7 +390,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_1_pkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_1",
@@ -399,7 +400,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_2_d_fkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_2",
@@ -409,7 +410,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_2_e_e1_fkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_2",
@@ -419,7 +420,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_2_e_e1_fkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_2",
@@ -429,7 +430,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_2_pkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_2",
@@ -439,7 +440,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_3_pkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_3",
@@ -449,7 +450,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_3_pkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_3",
@@ -459,7 +460,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_4_j_j1_fkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_4",
@@ -469,7 +470,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_4_j_j1_fkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_4",
@@ -479,7 +480,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_4_pkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_4",
@@ -489,7 +490,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_5_l_fkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_5",
@@ -499,7 +500,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_5_m_fkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_5",
@@ -509,7 +510,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_5_pkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_5",
@@ -519,7 +520,7 @@
           {
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_6_pkey",
+            "constraint_name": "constraint",
             "table_catalog": "catalog",
             "table_schema": "schema_name",
             "table_name": "tf_6",
@@ -535,7 +536,7 @@
             "column_name": "a",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_2_d_fkey",
+            "constraint_name": "constraint",
             "ordinal_position": 1
           },
           {
@@ -545,7 +546,7 @@
             "column_name": "f",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_2_e_e1_fkey",
+            "constraint_name": "constraint",
             "ordinal_position": 1
           },
           {
@@ -555,7 +556,7 @@
             "column_name": "f",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_4_j_j1_fkey",
+            "constraint_name": "constraint",
             "ordinal_position": 1
           },
           {
@@ -565,7 +566,7 @@
             "column_name": "f1",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_2_e_e1_fkey",
+            "constraint_name": "constraint",
             "ordinal_position": 2
           },
           {
@@ -575,7 +576,7 @@
             "column_name": "f1",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_4_j_j1_fkey",
+            "constraint_name": "constraint",
             "ordinal_position": 2
           },
           {
@@ -585,7 +586,7 @@
             "column_name": "h",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_5_l_fkey",
+            "constraint_name": "constraint",
             "ordinal_position": 1
           },
           {
@@ -595,7 +596,7 @@
             "column_name": "n",
             "constraint_catalog": "catalog",
             "constraint_schema": "schema_name",
-            "constraint_name": "tf_5_m_fkey",
+            "constraint_name": "constraint",
             "ordinal_position": 1
           }
         ]
