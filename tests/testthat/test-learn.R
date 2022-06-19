@@ -1,7 +1,7 @@
 # FIXME: #313: learn only from current source
 
 test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
-  skip_if_src_not(c("mssql", "postgres"))
+  skip_if_src_not(c("mssql", "postgres", "maria"))
 
   # dm_learn_from_mssql() --------------------------------------------------
   con_db <- my_test_con()
@@ -42,7 +42,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 })
 
 test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
-  skip_if_src_not(c("mssql", "postgres"))
+  skip_if_src_not(c("mssql", "postgres", "maria"))
 
   # dm_learn_from_mssql() --------------------------------------------------
   con_db <- my_test_con()
@@ -109,7 +109,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 
 
 test_that("Learning from specific schema on MSSQL or Postgres works?", {
-  skip_if_src_not(c("mssql", "postgres"))
+  skip_if_src_not(c("mssql", "postgres", "maria"))
 
   # produces a randomized schema name with a length of 4-10 characters
   # consisting of the symbols in `reservoir`
