@@ -15,6 +15,7 @@ reference:
   - is_dm
   - dm_get_con
   - dm_get_tables
+  - schema_supported_dbs
 
 - title: Tables
   contents:
