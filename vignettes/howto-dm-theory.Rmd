@@ -269,3 +269,13 @@ Remember to terminate the database connection:
 ```{r disconnect}
 DBI::dbDisconnect(con_sqlite)
 ```
+
+## Conclusion {#conclusion}
+
+In this article, we have learned about some of the most fundamental concepts and data structures associated with the relational database management system (RDBMS).
+
+## Further reading
+
+`vignette("howto-dm-db")` - This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
+
+`vignette("howto-dm-df")` - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.
