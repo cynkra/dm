@@ -74,7 +74,7 @@ schema_supported_dbs <- function() {
     ~ db_name, ~ id_function, ~ test_shortcut,
     "SQL Server", "is_mssql", "mssql",
     "Postgres", "is_postgres","postgres",
-    "MariaDB", "is_mariadb", "maria"
+    "MariaDB", "is_mariadb", "maria",
   )
 }
 
