@@ -1,0 +1,67 @@
+library(tidyverse)
+library(rlang)
+devtools::load_all()
+
+parent <- tibble(a = c(1L, 1:3), b = -1)
+child <- tibble(a = 1:4, c = 3)
+
+dm <- dm(parent, child)
+
+enum_ops <- function(dm = NULL, ..., op_name = NULL) {
+  if (is.null(op_name)) {
+    list(
+      op_name = c(
+        "dm_add_pk", # only if not all tables have PK
+        "dm_add_fk",
+        NULL
+      )
+    )
+  } else {
+    list2(
+      op_name = op_name,
+      !!!exec(paste0("enum_ops_", op_name), dm = dm, ...)
+    )
+  }
+}
+
+enum_ops_dm_add_pk <- function(dm = NULL, ..., table_name = NULL) {
+  if (is.null(table_name)) {
+    # enumerate all tables that don't have a pk
+    list(table_name = names(dm))
+  } else {
+    list2(
+      table_name = table_name,
+      !!!enum_ops_dm_add_pk_table(dm, ..., table_name = table_name)
+    )
+  }
+}
+
+enum_ops_dm_add_pk_table <- function(dm = NULL, ..., table_name, column_names = NULL) {
+  if (is.null(column_names)) {
+    # enumerate all columns that are not list
+    list(column_names = colnames(dm[[table_name]]))
+  } else {
+    list2(
+      column_names = column_names,
+      call = expr(dm_add_pk(., !!sym(table_name), !!!syms(column_names)))
+    )
+  }
+}
+
+ops <- enum_ops(dm)
+ops
+
+enum_ops(dm, op_name = "dm_add_pk")
+enum_ops(dm, op_name = "dm_add_pk", table_name = "parent")
+
+final_ops <- enum_ops(dm, op_name = "dm_add_pk", table_name = "parent", column_names = "a")
+final_ops
+
+cg_block <- new_cg_block(dm)
+
+cg_block %>%
+  cg_add_call(!!final_ops$call)
+
+cg_block %>%
+  cg_add_call(!!final_ops$call) %>%
+  cg_eval_block()
