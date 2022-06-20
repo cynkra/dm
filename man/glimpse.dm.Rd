@@ -2,7 +2,7 @@
 % Please edit documentation in R/dm.R
 \name{glimpse.dm}
 \alias{glimpse.dm}
-\title{Get a glimpse of \code{dm} object}
+\title{Get a glimpse of your \code{dm} object}
 \usage{
 \method{glimpse}{dm}(x, width = NULL, ...)
 }
