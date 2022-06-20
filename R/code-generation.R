@@ -14,8 +14,8 @@ print.cg_code_block <- function(x, ...) {
   show_cg_f_list(x$cg_f_list)
 }
 
-show_cg_input_object <- function(x, has_f_call) {
-  if (has_f_call) {
+show_cg_input_object <- function(x, has_no_f_call) {
+  if (has_no_f_call) {
     if (!is_empty(x$cg_input_object)) {
       cat(trimws(expr_deparse(x$cg_input_object)))
     }
