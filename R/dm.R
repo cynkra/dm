@@ -701,7 +701,7 @@ as.list.zoomed_dm <- function(x, ...) {
   as.list(tbl_zoomed(x))
 }
 
-#' Get a glimpse of `dm` object
+#' Get a glimpse of your `dm` object
 #'
 #' @param x A `dm` object.
 #' @param width Controls the maximum number of columns on a line used in
