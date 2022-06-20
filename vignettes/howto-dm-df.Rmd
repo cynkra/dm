@@ -1,11 +1,10 @@
 ---
 title: "Create a dm object from data frames"
-#/Using dm with data frames/Data frames and dm/Dumping your data frames into dm/Getting data frames into dm/From data frame to data model with dm/Turn your data frame into a datamodel with dm/Building data models from data frames with dm
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{How to: Create a dm object from data frames}
   %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{How to: Create a dm object from data frames}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
@@ -16,10 +15,10 @@ editor_options:
 source("setup/setup.R")
 ``````
 
-# Building data models from data frames with dm
+# Building data models from data frames with {dm}
 
 dm allows you to create your own relational data models from local data frames.
-Once your data model is complete, you can deploy it to a range of DBMSs using dm.
+Once your data model is complete, you can deploy it to a range of database management systems (DBMS) using {dm}.
 
 ## Creating a dm object from data frames
 
@@ -66,7 +65,7 @@ The `as_dm()` function is an alternative that works if you already have a list o
 dm objects behave like lists with a user- and console-friendly print format.
 In fact, using a dm as a nicer list for organizing your data frames in your environment is an easy first step towards using dm and its data modeling functionality.
 
-Member referencing, by subscript and by name, and list and slice manipulation functions work just as you would expect on a dm object.
+Subsetting syntax for a `dm` object (either by subscript or by name) is similar to syntax for lists, and so you don't need to learn any additional syntax to work with `dm` objects.
 
 ```{r listlike}
 names(flights_dm_no_keys)
@@ -77,7 +76,7 @@ flights_dm_no_keys[c("airports", "flights")]
 ## Defining Keys
 
 Even though we now have a `dm` object that contains all our data, we have not specified how our five tables are connected.
-To do this we need to define primary keys and foreign keys on the tables.
+To do this, we need to define primary keys and foreign keys on the tables.
 
 Primary keys and foreign keys are how relational database tables are linked with each other.
 A primary key is a column or column tuple that has a unique value for each row within a table.
@@ -88,7 +87,8 @@ For more information on keys and a crash course on databases, see `vignette("how
 
 ## Primary Keys
 
-`dm` offers `dm_enum_pk_candidates()` to identify viable primary keys, and `dm_add_pk()` to add them.
+`dm` offers `dm_enum_pk_candidates()` to identify viable primary keys for a table in the `dm` object, and `dm_add_pk()` to add them.
+
 ```{r}
 dm_enum_pk_candidates(
   dm = flights_dm_no_keys,
@@ -96,24 +96,25 @@ dm_enum_pk_candidates(
 )
 ```
 
-Now, we add the primary keys that we have identified:
+Now, we can add the identified primary keys:
 
 ```{r}
 flights_dm_only_pks <-
   flights_dm_no_keys %>%
   dm_add_pk(table = airlines, columns = carrier) %>%
   dm_add_pk(airports, faa) %>%
-  dm_add_pk(planes, tailnum)
+  dm_add_pk(planes, tailnum) %>%
+  dm_add_pk(weather, c(origin, time_hour))
 flights_dm_only_pks
 ```
 
-Note that we demonstrate both named and positional arguments above.
+Note that {dm} functions work with both named and positional argument specification, and compound keys can be specified using a vector argument.
 
 ## Foreign Keys
 
 To define how our tables are related, we use `dm_add_fk()` to add foreign keys.
-In calling `dm_add_fk()` the `table` argument is the table that needs a foreign key to link it to a second table.
-`ref_table` is the table to be linked to and it needs a primary key already defined for it.
+Naturally, this function will deal with two tables: a table *looking for* a reference, and a table that is *providing* the reference.
+Accordingly, while calling `dm_add_fk()`, the `table` argument specifies the table that needs a foreign key to link it to a second table, and the `ref_table` argument specifies the table to be linked to, which needs a primary key already defined for it.
 
 ```{r}
 dm_enum_fk_candidates(
@@ -133,7 +134,8 @@ flights_dm_all_keys <-
   flights_dm_only_pks %>%
   dm_add_fk(table = flights, columns = tailnum, ref_table = planes) %>%
   dm_add_fk(flights, carrier, airlines) %>%
-  dm_add_fk(flights, origin, airports)
+  dm_add_fk(flights, origin, airports) %>%
+  dm_add_fk(flights, c(origin, time_hour), weather)
 flights_dm_all_keys
 ```
 
@@ -147,15 +149,24 @@ We can use `dm_draw()` at any stage of the process to generate a visual represen
 ```{r}
 flights_dm_no_keys %>%
   dm_draw(rankdir = "TB", view_type = "all")
+```
 
+
+```{r}
 flights_dm_no_keys %>%
   dm_add_pk(airlines, carrier) %>%
   dm_draw()
+```
 
+
+```{r}
 flights_dm_only_pks %>%
   dm_add_fk(flights, tailnum, planes) %>%
   dm_draw()
+```
 
+
+```{r}
 flights_dm_all_keys %>%
   dm_draw()
 ```
@@ -183,14 +194,14 @@ The results are presented in a human-readable form, and available as a tibble fo
 
 Helper functions are available to access details on keys and check results.
 
-`dm_get_all_pks()` returns a data frame with our primary keys:
+A data frame of primary keys is retrieved with `dm_get_all_pks()`:
 
 ```{r}
 flights_dm_only_pks %>%
   dm_get_all_pks()
 ```
 
-A data frame of foreign keys is retrieved with `dm_get_all_fks()`:
+Similarly, a data frame of foreign keys is retrieved with `dm_get_all_fks()`:
 
 ```{r}
 flights_dm_all_keys %>%

@@ -2,9 +2,9 @@
 title: "Function naming logic"
 output: rmarkdown::html_vignette
 vignette: >
+  %\VignetteEncoding{UTF-8}
   %\VignetteIndexEntry{Technical: Function naming logic}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 editor_options:
   chunk_output_type: console
 ---
@@ -16,8 +16,8 @@ source("setup/setup.R")
 
 This vignette describes the logic behind the names of the {dm}-functions.
 
-In general the functions are implemented in such a way, that no function can handle both `dm` classes (`dm` and `zoomed_dm`) as an argument.
-A `zoomed_dm` behaves in most situations like a table and there are mostly no explicit functions available for this class, but rather methods (see vignette ["Zooming and manipulating tables"](https://cynkra.github.io/dm/articles/tech-dm-zoom.html).
+In general, the functions are implemented in such a way that no function can handle instances of both `dm` classes (`dm` and `zoomed_dm`) as an argument.
+In most situations, a `zoomed_dm` behaves like a table and there are mostly no explicit functions available for this class, but rather methods (see vignette ["Zooming and manipulating tables"](https://cynkra.github.io/dm/articles/tech-dm-zoom.html).
 
 ## Prefixes
 
@@ -36,11 +36,11 @@ Most important extended prefixes `dm_..._`:
 
 ## Suffixes
 
-1. `_dm`: Validators, checkers or coercers
+1. `_dm`: Validators, checkers, or coercers
 1. `_to_tbl`: Data from a `dm` is processed in a way that a tibble is produced
 1. `_candidates`: If key-candidates are to be calculated and presented in tibble-form
-1. `_pk(s)`: Relates to primary key
-1. `_fk(s)`: Relates to foreign key
-1. `_tbl`: Add/remove/select/rename a tibble to/from/within a dm
-1. `_colors`: Relates to the colors for the visualization of the dm
-1. `_zoomed`: Insert, update or discard the zoomed table. In combination with the prefix `dm_` this indicates, that the first argument is a `zoomed_dm` rather than a `dm`.
+1. `_pk(s)`: Relates to primary key(s)
+1. `_fk(s)`: Relates to foreign key(s)
+1. `_tbl`: Add/remove/select/rename a tibble to/from/within a `dm` object
+1. `_colors`: Relates to the colors for the visualization of a `dm` object
+1. `_zoomed`: Insert, update, or discard the zoomed table. In combination with the prefix `dm_`, this indicates that the first argument is a `zoomed_dm` rather than a `dm`.
