@@ -73,15 +73,6 @@ dm_meta_raw <- function(con, catalog) {
   ))
 
   if (is_postgres(src)) {
-    info_pkc <-
-      table_constraints %>%
-      select(constraint_catalog, constraint_schema, constraint_name, constraint_type) %>%
-      filter(constraint_type %in% c("PRIMARY KEY", "FOREIGN KEY"))
-
-    key_column_usage <-
-      key_column_usage %>%
-      semi_join(info_pkc, by = c("constraint_catalog", "constraint_schema", "constraint_name"))
-
     # Need hand-crafted query for now
     constraint_column_usage <-
       tbl(src, sql(postgres_column_constraints), vars = c(
