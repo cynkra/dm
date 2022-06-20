@@ -60,7 +60,7 @@ runs:
         GITHUB_PAT: ${{ inputs.token }}
       with:
         needs: ${{ inputs.needs }}
-        extra-packages: ${{ inputs.extra-packages }} ${{ matrix.config.covr && 'any::covr' }} ${{ steps.get-extra.outputs.packages }}
+        extra-packages: ${{ inputs.extra-packages }} ${{ ( matrix.config.covr && 'any::covr' ) || '' }} ${{ steps.get-extra.outputs.packages }}
         cache-version: ${{ inputs.cache-version }}
 
     - name: Add pkg.lock to .gitignore
