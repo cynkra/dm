@@ -4,7 +4,7 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{Technical: Model verification - keys, constraints and normalization}
+  %\VignetteIndexEntry{Model verification - keys, constraints and normalization}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console

@@ -7,7 +7,7 @@ output:
     md_extensions: -autolink_bare_uris
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{How to: Create a dm object from a database}
+  %\VignetteIndexEntry{Create a dm object from a database}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console

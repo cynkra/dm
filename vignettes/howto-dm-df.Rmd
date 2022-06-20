@@ -4,7 +4,7 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{How to: Create a dm object from data frames}
+  %\VignetteIndexEntry{Create a dm object from data frames}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
@@ -15,9 +15,7 @@ editor_options:
 source("setup/setup.R")
 ``````
 
-# Building data models from data frames with {dm}
-
-dm allows you to create your own relational data models from local data frames.
+{dm} allows you to create your own relational data models from local data frames.
 Once your data model is complete, you can deploy it to a range of database management systems (DBMS) using {dm}.
 
 ## Creating a dm object from data frames

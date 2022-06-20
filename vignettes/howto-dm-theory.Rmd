@@ -4,7 +4,7 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{How to: Understand relational data models}
+  %\VignetteIndexEntry{Understand relational data models}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console

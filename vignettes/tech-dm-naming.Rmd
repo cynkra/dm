@@ -3,7 +3,7 @@ title: "Function naming logic"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{Technical: Function naming logic}
+  %\VignetteIndexEntry{Function naming logic}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console

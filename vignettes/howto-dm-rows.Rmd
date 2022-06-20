@@ -5,7 +5,7 @@ author: James Wondrasek
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{How to: Insert, update or remove rows in a database}
+  %\VignetteIndexEntry{Insert, update or remove rows in a database}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
@@ -15,8 +15,6 @@ editor_options:
 ``````{r setup, include = FALSE}
 source("setup/setup.R")
 ``````
-
-## Introduction {#intro}
 
 This tutorial introduces the methods {dm} provides for modifying the data in the tables of a relational model.
 There are 6 methods:

@@ -3,7 +3,7 @@ title: "Joining in relational data models"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Technical: Joining in relational data models}
+  %\VignetteIndexEntry{Joining in relational data models}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:

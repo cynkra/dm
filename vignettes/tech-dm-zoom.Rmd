@@ -2,7 +2,7 @@
 title: "Zooming and manipulating tables"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Technical: Zooming and manipulating tables}
+  %\VignetteIndexEntry{Zooming and manipulating tables}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

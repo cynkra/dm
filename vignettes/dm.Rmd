@@ -4,7 +4,7 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{First read: Getting started with dm}
+  %\VignetteIndexEntry{Getting started with dm}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
@@ -14,9 +14,7 @@ editor_options:
 source("setup/setup.R")
 ``````
 
-## Introduction
-
-In this article we're going show you how easy it is to move from connecting to the database holding your data to producing the results you need.
+In this article, we're going show you how easy it is to move from connecting to the database holding your data to producing the results you need.
 It's meant to be a quick and friendly introduction to {dm}, so it is low on details and caveats.
 Links to detailed documentation are provided at the end.
 (If your data is in data frames instead of a database and you're in a hurry, jump over to `vignette("howto-dm-df")`.)

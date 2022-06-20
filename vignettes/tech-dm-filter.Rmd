@@ -3,7 +3,7 @@ title: "Filtering in relational data models"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Technical: Filtering in relational data models}
+  %\VignetteIndexEntry{Filtering in relational data models}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
