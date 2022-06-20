@@ -25,6 +25,7 @@
 #'
 #'   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres (default: `"public"`), and MariaDB/MySQL
 #'     (default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).
+#'     If NULL, tables from `"information_schema"` are not included.
 #'   - `dbname`: supported for MSSQL. Access different databases on the connected MSSQL-server;
 #'     default: active database.
 #'   - `table_type`: supported for Postgres (default: `"BASE TABLE"`). Specify the table type. Options are:

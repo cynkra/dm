@@ -254,6 +254,13 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
     table_constraints <- table_constraints %>% filter(table_schema %in% !!schema)
     key_column_usage <- key_column_usage %>% filter(table_schema %in% !!schema)
     constraint_column_usage <- constraint_column_usage %>% filter(table_schema %in% !!schema)
+  } else {
+    schemata <- schemata %>% filter(schema_name != "information_schema")
+    tables <- tables %>% filter(table_schema != "information_schema")
+    columns <- columns %>% filter(table_schema != "information_schema")
+    table_constraints <- table_constraints %>% filter(table_schema != "information_schema")
+    key_column_usage <- key_column_usage %>% filter(table_schema != "information_schema")
+    constraint_column_usage <- constraint_column_usage %>% filter(table_schema != "information_schema")
   }
 
   dm(
@@ -285,6 +292,10 @@ filter_dm_meta_simple <- function(dm_meta, catalog = NULL, schema = NULL) {
     schemata <- schemata %>% filter(schema_name %in% !!schema)
     tables <- tables %>% filter(table_schema %in% !!schema)
     columns <- columns %>% filter(table_schema %in% !!schema)
+  } else {
+    schemata <- schemata %>% filter(schema_name != "information_schema")
+    tables <- tables %>% filter(table_schema != "information_schema")
+    columns <- columns %>% filter(table_schema != "information_schema")
   }
 
   dm(schemata, tables, columns) %>%
