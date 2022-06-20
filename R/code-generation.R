@@ -40,5 +40,9 @@ call_to_char <- function(body) {
 }
 
 cg_eval_block <- function(cg_block) {
-  freduce(eval(cg_block$cg_input_object), cg_block$cg_f_list)
+  if (is_empty(cg_block$cg_f_list)) {
+    eval(cg_block$cg_input_object)
+  } else {
+    freduce(eval(cg_block$cg_input_object), cg_block$cg_f_list)
+  }
 }
