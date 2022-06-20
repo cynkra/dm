@@ -102,7 +102,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Create a dm object from a database</h1>
                         <h4 data-toc-skip class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2022-06-19</h4>
+            <h4 data-toc-skip class="date">2022-06-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-db.Rmd" class="external-link"><code>vignettes/howto-dm-db.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-db.Rmd</code></div>
@@ -134,9 +134,9 @@
 <span class="va">my_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">my_db</span><span class="op">)</span>
 <span class="va">my_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  mysql  [student@databases.pacha.dev:NA/financial]</span>
+<span class="co">#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `trans`, `disps`, `loans`, `tkeys`, `districts`, … (9 total)</span>
+<span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)</span>
 <span class="co">#&gt; Columns: 57</span>
 <span class="co">#&gt; Primary keys: 0</span>
 <span class="co">#&gt; Foreign keys: 0</span></code></pre>
@@ -148,8 +148,8 @@
 <p>Below, we use the <code>$</code> notation to extract two tables from the financial database. Then we create our dm by passing the tables in as arguments. Note that the tables arguments have to all be from the same source, in this case <code>my_db</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">dbListTables</span><span class="op">(</span><span class="va">my_db</span><span class="op">)</span>
-<span class="co">#&gt; [1] "trans"     "disps"     "loans"     "tkeys"     "districts" "clients"  </span>
-<span class="co">#&gt; [7] "accounts"  "cards"     "orders"</span>
+<span class="co">#&gt; [1] "accounts"  "cards"     "clients"   "disps"     "districts" "loans"    </span>
+<span class="co">#&gt; [7] "orders"    "tkeys"     "trans"</span>
 
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a></span><span class="op">)</span>
 <span class="va">loans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">my_db</span>, <span class="st">"loans"</span><span class="op">)</span>
@@ -158,7 +158,7 @@
 <span class="va">my_manual_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">accounts</span><span class="op">)</span>
 <span class="va">my_manual_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  mysql  [student@databases.pacha.dev:NA/financial]</span>
+<span class="co">#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `loans`, `accounts`</span>
 <span class="co">#&gt; Columns: 11</span>
@@ -201,7 +201,7 @@
 <span class="va">my_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_add_tbl.html">dm_add_tbl</a></span><span class="op">(</span><span class="va">trans</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  mysql  [student@databases.pacha.dev:NA/financial]</span>
+<span class="co">#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `loans`, `accounts`, `trans`</span>
 <span class="co">#&gt; Columns: 21</span>
@@ -216,7 +216,7 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_keys</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  mysql  [student@databases.pacha.dev:NA/financial]</span>
+<span class="co">#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `loans`, `accounts`</span>
 <span class="co">#&gt; Columns: 11</span>
@@ -230,7 +230,7 @@
 
 <span class="va">my_dm_trans</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  mysql  [student@databases.pacha.dev:NA/financial]</span>
+<span class="co">#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `loans`, `accounts`, `trans`</span>
 <span class="co">#&gt; Columns: 21</span>
@@ -244,7 +244,7 @@
 <span class="co">#&gt;   dm_rename(loans, loans.date = date) %&gt;%</span>
 <span class="co">#&gt;   dm_rename(accounts, accounts.date = date)</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   SQL [?? x 10]</span>
-<span class="co">#&gt; # Database: mysql  [student@databases.pacha.dev:NA/financial]</span>
+<span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt;       id account_id loans.date amount duration payments status district_id</span>
 <span class="co">#&gt;    &lt;int&gt;      &lt;int&gt; &lt;date&gt;      &lt;dbl&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;        &lt;int&gt;</span>
 <span class="co">#&gt;  1  4959          2 1994-01-05  80952       24     3373 A                1</span>
@@ -328,7 +328,7 @@
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_total</span><span class="op">$</span><span class="va">total_loans</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   SQL [?? x 2]</span>
-<span class="co">#&gt; # Database: mysql  [student@databases.pacha.dev:NA/financial]</span>
+<span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt;    account_id total_amount</span>
 <span class="co">#&gt;         &lt;int&gt;        &lt;dbl&gt;</span>
 <span class="co">#&gt;  1          2        80952</span>
