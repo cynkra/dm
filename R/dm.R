@@ -715,6 +715,27 @@ as.list.zoomed_dm <- function(x, ...) {
   as.list(tbl_zoomed(x))
 }
 
+#' Get a glimpse of your `dm` object
+#'
+#' @param x A `dm` object.
+#' @param width Controls the maximum number of columns on a line used in
+#'   printing. If `NULL`, `getOption("width")` will be consulted.
+#' @param ... Passed to [pillar::glimpse()].
+#'
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
+#' `glimpse()` provides an overview (dimensions, column data types, primary
+#' keys, etc.) of all tables included in the `dm` object. It will additionally
+#' print details about outgoing foreign keys for the child table.
+#'
+#' `glimpse()` is provided by the pillar package, and re-exported by {dm}.
+#'  See [pillar::glimpse()] for more details.
+#'
+#' @examples
+#'
+#' dm_nycflights13() %>% glimpse()
+#'
 #' @export
 glimpse.dm <- function(x, width = NULL, ...) {
   glimpse_width <- if (is.null(width)) {
