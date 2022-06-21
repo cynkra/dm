@@ -1,4 +1,4 @@
-enum_ops <- function(dm = NULL, ..., table_names = NULL, op_name = NULL) {
+enum_ops <- function(dm = NULL, ..., table_names = NULL, column_names = NULL, op_name = NULL) {
   # FIXME: Implement choosing dm or connection object from .GlobalEnv
   stopifnot(!is.null(dm))
 
@@ -8,10 +8,17 @@ enum_ops <- function(dm = NULL, ..., table_names = NULL, op_name = NULL) {
         input = list2(
           dm = dm,
           table_names = table_names,
+          column_names = column_names,
           op_name = op_name,
           ...,
         ),
-        !!!exec(paste0("enum_ops_", op_name), dm = dm, ..., table_names = table_names, op_name = op_name)
+        !!!exec(
+          paste0("enum_ops_", op_name),
+          dm = dm, ...,
+          table_names = table_names,
+          column_names = column_names,
+          op_name = op_name
+        )
       )
     )
   }
@@ -28,7 +35,7 @@ enum_ops <- function(dm = NULL, ..., table_names = NULL, op_name = NULL) {
       op_name <- c(op_name, "dm_add_fk")
     }
 
-    if (length(dm) > 0) {
+    if (length(dm) > 0 && is.null(column_names)) {
       op_name <- c(op_name, "dm_rm_fk")
     }
   } else {
@@ -41,17 +48,29 @@ enum_ops <- function(dm = NULL, ..., table_names = NULL, op_name = NULL) {
 
     table_names <- names(eval_tidy(dm))
   } else {
+    if (length(table_names) == 1) {
+      if (is.null(column_names)) {
+        column_names <- colnames(eval_tidy(dm)[[table_names]])
+      } else {
+        input <- c(input, column_names = column_names)
+        column_names <- NULL
+      }
+    } else {
+      stopifnot(is.null(column_names))
+    }
+
     input <- c(input, table_names = table_names)
     table_names <- NULL
   }
 
   list(
     input = input,
-    single = compact(list(
-      op_name = op_name
+    single = compact(list2(
+      op_name = op_name,
     )),
-    multiple = compact(list(
-      table_names = table_names
+    multiple = compact(list2(
+      table_names = table_names,
+      column_names = column_names,
     ))
   )
 }
@@ -61,7 +80,7 @@ enum_ops_dm_add_pk <- function(dm = NULL, ..., table_names = NULL) {
     check_dots_empty()
     # enumerate all tables that don't have a pk
     list(single = list(
-        table_names = names(dm)
+      table_names = names(dm)
     ))
   } else {
     stopifnot(length(table_names) == 1)
