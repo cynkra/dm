@@ -12,9 +12,9 @@ ops <- enum_ops(dm)
 ops
 
 enum_ops(dm, op_name = "dm_add_pk")
-enum_ops(dm, op_name = "dm_add_pk", table_name = "parent")
+enum_ops(dm, op_name = "dm_add_pk", table_names = "parent")
 
-final_ops <- enum_ops(dm, op_name = "dm_add_pk", table_name = "parent", column_names = "a")
+final_ops <- enum_ops(dm, op_name = "dm_add_pk", table_names = "parent", column_names = "a")
 final_ops
 
 cg_block <- new_cg_block(quo(dm))
