@@ -51,10 +51,10 @@ Imports:
     magrittr,
     memoise,
     methods,
-    pillar (>= 1.6.2),
+    pillar (>= 1.7.0),
     purrr,
     rlang (>= 1.0.2),
-    tibble,
+    tibble (>= 3.0.0),
     tidyr (>= 1.0.0),
     tidyselect (>= 1.0.1),
     vctrs (>= 0.3.2)
