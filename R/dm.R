@@ -309,8 +309,7 @@ show_dm <- function(x) {
     cat_rule("Table source", col = "green")
     db_info <- NULL
 
-    # FIXME: change to pillar::tbl_sum() once it's there
-    tbl_str <- tibble::tbl_sum(def$data[[1]])
+    tbl_str <- pillar::tbl_sum(def$data[[1]])
     if ("Database" %in% names(tbl_str)) {
       db_info <- paste0("src:  ", tbl_str[["Database"]])
     }
@@ -384,10 +383,7 @@ new_zoomed_df <- function(x, ...) {
   # in print method for local tibbles
   new_tibble(
     x,
-    # need setdiff(...), because we want to keep everything "special" (like groups etc.) but drop
-    # all classes, that a `tbl` has anyway
-    # FIXME: Remove setdiff() when tibble >= 3.0.0 is on CRAN
-    class = c("zoomed_df", setdiff(class(x), c("tbl_df", "tbl", "data.frame"))),
+    class = c("zoomed_df", class(x), c("tbl_df", "tbl", "data.frame")),
     nrow = nrow(x),
     ...
   )
@@ -715,6 +711,27 @@ as.list.zoomed_dm <- function(x, ...) {
   as.list(tbl_zoomed(x))
 }
 
+#' Get a glimpse of your `dm` object
+#'
+#' @param x A `dm` object.
+#' @param width Controls the maximum number of columns on a line used in
+#'   printing. If `NULL`, `getOption("width")` will be consulted.
+#' @param ... Passed to [pillar::glimpse()].
+#'
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
+#' `glimpse()` provides an overview (dimensions, column data types, primary
+#' keys, etc.) of all tables included in the `dm` object. It will additionally
+#' print details about outgoing foreign keys for the child table.
+#'
+#' `glimpse()` is provided by the pillar package, and re-exported by {dm}.
+#'  See [pillar::glimpse()] for more details.
+#'
+#' @examples
+#'
+#' dm_nycflights13() %>% glimpse()
+#'
 #' @export
 glimpse.dm <- function(x, width = NULL, ...) {
   glimpse_width <- if (is.null(width)) {

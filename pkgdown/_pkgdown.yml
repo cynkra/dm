@@ -28,27 +28,16 @@ reference:
 
 - title: Primary keys
   contents:
-  - dm_add_pk
-  - dm_has_pk
-  - dm_get_all_pks
-  - dm_rm_pk
-  - dm_enum_pk_candidates
-  - enum_pk_candidates
+  - matches("_pk")
 
 - title: Foreign keys
   contents:
-  - dm_add_fk
-  - dm_get_all_fks
-  - dm_rm_fk
-  - dm_enum_fk_candidates
-  - enum_fk_candidates
+  - matches("_fk")
 
 - title: Visualize
   contents:
   - dm_draw
-  - dm_set_colors
-  - dm_get_colors
-  - dm_get_available_colors
+  - ends_with("_colors")
   - dm_paste
 
 - title: Select columns
@@ -65,32 +54,8 @@ reference:
 - title: Zoom
   contents:
   - dm_zoom_to
-  - dm_insert_zoomed
-  - dm_update_zoomed
-  - dm_discard_zoomed
-  - arrange.zoomed_dm
-  - distinct.zoomed_dm
-  - filter.zoomed_dm
-  - group_by.zoomed_dm
-  - mutate.zoomed_dm
-  - relocate.zoomed_dm
-  - rename.zoomed_dm
-  - select.zoomed_dm
-  - slice.zoomed_dm
-  - summarise.zoomed_dm
-  - transmute.zoomed_dm
-  - ungroup.zoomed_dm
-  - compute.zoomed_dm
-  - separate.zoomed_dm
-  - unite.zoomed_dm
-  - anti_join.zoomed_dm
-  - full_join.zoomed_dm
-  - inner_join.zoomed_dm
-  - left_join.zoomed_dm
-  - right_join.zoomed_dm
-  - semi_join.zoomed_dm
-  - head.zoomed_dm
-  - tail.zoomed_dm
+  - ends_with("_zoomed")
+  - ends_with(".zoomed_dm")
 
 - title: Wrap
   contents:
@@ -104,10 +69,7 @@ reference:
 - title: Operations on data frames and lazy tables
   contents:
   - pack_join
-  - json_pack_join
-  - json_nest_join
-  - json_pack
-  - json_nest
+  - starts_with("json_")
 
 - title: Materialize
   contents:
@@ -117,18 +79,11 @@ reference:
 - title: Upload
   contents:
   - copy_dm_to
-  - dm_rows_insert
-  - rows-db
-  - rows-dm
-  - rows_truncate
-  - get_returned_rows
+  - contains("rows")
 
 - title: Filter
   contents:
-  - dm_filter
-  - dm_apply_filters
-  - dm_apply_filters_to_tbl
-  - dm_get_filters
+  - matches("_filter")
 
 - title: Table surgery
   contents:
@@ -138,23 +93,13 @@ reference:
 
 - title: Check keys and cardinalities
   contents:
+  - matches("cardinality|cardinalities")
   - dm_examine_constraints
-  - dm_examine_cardinalities
-  - examine_cardinality
-  - check_key
-  - check_subset
-  - check_set_equality
-  - check_cardinality_0_n
-  - check_cardinality_1_n
-  - check_cardinality_0_1
-  - check_cardinality_1_1
+  - starts_with("check_")
 
 - title: Database schemas
   contents:
-  - db_schema_create
-  - db_schema_drop
-  - db_schema_exists
-  - db_schema_list
+  - starts_with("db_schema_")
 
 - title: Example dm objects
   contents:
@@ -168,6 +113,7 @@ reference:
   - dm_nrow
   - dm_ptype
   - dm_validate
+  - glimpse.dm
 
 navbar:
   structure:
@@ -179,33 +125,79 @@ navbar:
       menu:
       - text: Introduction to relational data models
         href: articles/howto-dm-theory.html
+        desc: |
+          Do you know all about data frames but very little about relational data
+          models? This quick introduction will walk you through the key similarities
+          and differences, and show you how to move from individual data frames
+          to a relational data model.
       - text: Create a dm object from data frames
         href: articles/howto-dm-df.html
+        desc: |
+          Is your data in local data frames? This article covers creating a data
+          model from your local data frames, including building the relationships
+          in your data model, verifying your model, and leveraging the power of
+          dplyr to operate on your data model.
       - text: Create a dm object from a database
         href: articles/howto-dm-db.html
+        desc: |
+          This article covers accessing and working with RDBMSs within your
+          R session, including manipulating data, filling in missing relationships
+          between tables, getting data out of the RDBMS and into your model, and
+          deploying your data model to an RDBMS.
       - text: Copy data to and from a database
         href: articles/howto-dm-copy.html
-      - text: Insert, update or remove rows in a database
+        desc: |
+          This article covers methods and techniques for copying individual tables
+          and entire relational data models into an RDBMS.
+      - text: Insert, update, or remove rows in a database
         href: articles/howto-dm-rows.html
+        desc: |
+          This tutorial introduces the methods {dm} provides for modifying the data
+          in the tables of a relational model.
     tech:
       text: Technical articles
       menu:
       - text: Joining in relational data models
         href: articles/tech-dm-join.html
+        desc: |
+         Joining is how separate, linked tables are virtually combined in order
+         to perform operations, generate summaries, or prepare data for extraction.
+         This article covers dm's methods for creating the different kind of joins
+         along with usage examples.
       - text: Zooming and manipulating tables
         href: articles/tech-dm-zoom.html
+        desc: |
+          Learn how to manipulate the data in the tables in your dm using dplyr verbs.
       - text: Filtering in relational data models
         href: articles/tech-dm-filter.html
+        desc: |
+          Need a subset of your data across tables? This introduction to dm's
+          filtering methods will show you how to apply them to data that is separated
+          into multiple tables.
       - text: Visualizing dm objects
         href: articles/tech-dm-draw.html
+        desc: |
+          A quick guide to dm's methods for drawing your data model for exploration,
+          verification, or documentation purposes. Learn how to customize the diagrams.
       - text: Model verification - keys, constraints and normalization
         href: articles/tech-dm-low-level.html
+        desc: |
+          If your data model needs to be rock solid, this article covers the dm methods
+          for checking every aspect of the model. It covers key constraints, cardinalities
+          between tables, and methods for normalization as you construct your data model.
       - text: Class 'dm' and basic operations
         href: articles/tech-dm-class.html
+        desc: |
+          A detailed overview of the `"dm"` class.
       - text: Function naming logic
         href: articles/tech-dm-naming.html
+        desc: |
+          Making sense of dm's API.
       - text: 'Migration guide: ''cdm'' -> ''dm'''
         href: articles/tech-dm-cdm.html
+        desc: |
+          If you were an early adopter, used dm version 0.0.5 or lower and want to
+          migrate your code, this is for you.
 
 development:
   mode: auto
