@@ -40,10 +40,15 @@ enum_ops_dm_add_pk_table <- function(dm = NULL, ..., table_name, column_names = 
   if (is.null(column_names)) {
     # enumerate all columns that are not list
     list(column_names = colnames(dm[[table_name]]))
+  } else if (length(column_names) > 1) {
+    list2(
+      column_names = column_names,
+      call = expr(dm_add_pk(., !!sym(table_name), c(!!!syms(column_names))))
+    )
   } else {
     list2(
       column_names = column_names,
-      call = expr(dm_add_pk(., !!sym(table_name), !!!syms(column_names)))
+      call = expr(dm_add_pk(., !!sym(table_name), !!sym(column_names)))
     )
   }
 }
