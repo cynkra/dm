@@ -38,7 +38,7 @@ fin_db <- dbConnect(
 )
 ``````
 
-``````{r connect-real}
+``````{r connect-real, show = FALSE}
 library(RMariaDB)
 
 fin_db <- dm:::financial_db_con()
@@ -46,15 +46,14 @@ fin_db <- dm:::financial_db_con()
 
 We create a dm object from an RDBMS using `dm_from_con()`, passing in the connection object we just created as the first argument.
 
-``````{r load, message = FALSE}
+``````{r load-full}
 library(dm)
 
 fin_dm <- dm_from_con(fin_db)
 fin_dm
 ``````
 
-The dm object interrogates the RDBMS for table and column information and, where implemented, primary and foreign keys.
-Currently, primary and foreign keys are only available from Postgres and SQL Server.
+The dm object interrogates the RDBMS for table and column information, and primary and foreign keys.
 
 
 ## Selecting tables
@@ -82,6 +81,15 @@ fin_dm_small <-
 
 In many cases, `dm_from_con()` already returns a dm with all keys set.
 If not, dm allows us to define primary and foreign keys ourselves.
+For this, we use `learn_keys = FALSE` to obtain a `dm` object with only the tables.
+
+``````{r load}
+library(dm)
+
+fin_dm_small <- 
+  dm_from_con(fin_db, learn_keys = FALSE) %>% 
+  dm_select_tbl(loans, accounts, districts, trans)
+``````
 
 In our data model, `id` columns uniquely identify records in the `accounts` and `loans` tables, and can be used as a primary key.
 A primary key is defined with `dm_add_pk()`.
@@ -195,30 +203,6 @@ If your data is in data frames, then you want to read `vignette("howto-dm-df")` 
 If you feel you need to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
 
 If you're familiar with relational data models, but want to know how to work with them in dm, then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.
-
-## Further reading
-
-`vignette("howto-dm-db")` - This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
-
-`vignette("howto-dm-df")` - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.
-
-`vignette("howto-dm-theory")` - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.
-
-`vignette("tech-dm-join")` - Joining is how separate, linked tables are virtually combined in order to perform operations, generate summaries, or prepare data for extraction. This article covers dm's methods for creating the different kind of joins along with usage examples.
-
-`vignette("tech-dm-zoom")` - Learn how to manipulate the data in the tables in your dm using dplyr verbs.
-
-`vignette("tech-dm-filter")` - Need a subset of your data across tables? This introduction to dm's filtering methods will show you how to apply them to data that is separated into multiple tables.
-
-`vignette("tech-dm-draw")` - A quick guide to dm's methods for drawing your data model for exploration, verification or documentation purposes. Learn how to customize the diagrams.
-
-`vignette("tech-dm-low-level")` - If your data model needs to be rock solid, this article covers the dm methods for checking every aspect of the model. It covers key constraints, cardinalities between tables, and methods for normalization as you construct your data model.
-
-`vignette("tech-dm-class")` - A detailed overview of the `"dm"` class.
-
-`vignette("tech-dm-naming")` - Making sense of dm's API.
-
-`vignette("tech-dm-cdm")` - If you're an early adopter, used dm version 0.0.5 or lower and want to migrate your code, this is for you.
 
 ## Standing on the shoulders of giants
 

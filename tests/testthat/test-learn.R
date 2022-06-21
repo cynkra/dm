@@ -1,7 +1,7 @@
 # FIXME: #313: learn only from current source
 
 test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
-  skip_if_src_not(c("mssql", "postgres"))
+  skip_if_src_not(c("mssql", "postgres", "maria"))
 
   # dm_learn_from_mssql() --------------------------------------------------
   con_db <- my_test_con()
@@ -42,7 +42,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 })
 
 test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
-  skip_if_src_not(c("mssql", "postgres"))
+  skip_if_src_not(c("mssql", "postgres", "maria"))
 
   # dm_learn_from_mssql() --------------------------------------------------
   con_db <- my_test_con()
@@ -109,13 +109,13 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 
 
 test_that("Learning from specific schema on MSSQL or Postgres works?", {
-  skip_if_src_not(c("mssql", "postgres"))
+  skip_if_src_not(c("mssql", "postgres", "maria"))
 
   # produces a randomized schema name with a length of 4-10 characters
   # consisting of the symbols in `reservoir`
   random_schema <- function() {
-    reservoir <- c(letters, LETTERS, "'", "-", "_", as.character(0:9))
-    how_long <- sample(4:10, 1)
+    reservoir <- c(letters)
+    how_long <- 10
     paste0(reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)], collapse = "")
   }
 
@@ -147,10 +147,14 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     try(dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q)))
   })
 
+  normalize_table_name <- function(x) {
+    tolower(gsub('["`]', "", x))
+  }
+
   # test 'get_src_tbl_names()'
   expect_identical(
-    sort(get_src_tbl_names(con_db, schema = schema_name)),
-    SQL(sort(remote_tbl_names))
+    sort(normalize_table_name(get_src_tbl_names(con_db, schema = schema_name))),
+    SQL(sort(normalize_table_name(remote_tbl_names)))
   )
 
   # learning with keys:
@@ -407,8 +411,8 @@ test_that("dm_meta() contents", {
   # produces a randomized schema name with a length of 4-10 characters
   # consisting of the symbols in `reservoir`
   random_schema <- function() {
-    reservoir <- c(letters, LETTERS, "'", "-", "_", as.character(0:9))
-    how_long <- sample(4:10, 1)
+    reservoir <- c(letters)
+    how_long <- 10
     paste0(reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)], collapse = "")
   }
 

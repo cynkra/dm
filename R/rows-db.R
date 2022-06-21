@@ -109,7 +109,6 @@ rows_append.tbl_lazy <- function(x, y, ...,
                                  in_place = FALSE,
                                  copy = FALSE,
                                  returning = NULL) {
-
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
   tryCatch(
@@ -278,7 +277,6 @@ rows_upsert.tbl_lazy <- function(x, y, by = NULL, ...,
                                  in_place = FALSE,
                                  copy = FALSE,
                                  returning = NULL) {
-
   # Expect manual quote from user, silently fall back to enexpr()
   returning_expr <- enexpr(returning)
   returning_cols <- tryCatch(

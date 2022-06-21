@@ -210,7 +210,6 @@ check_flatten_to_tbl <- function(join_name,
                                  more_than_1_pt,
                                  has_grandparent,
                                  squash) {
-
   # argument checking, or filter and recompute induced subgraph
   # for subsequent check
   if (any_not_reachable) {

@@ -209,7 +209,7 @@
       abort_learn_keys("some reason")
     Condition
       Error in `abort_learn_keys()`:
-      ! Failed to learn keys from database: some reason. Use `learn_keys = FALSE` to work around.
+      ! Failed to learn keys from database: some reason. Use `learn_keys = FALSE` to work around, or `dm:::dm_learn_from_db()` to debug.
     Code
       abort_tbl_access("accessdenied")
     Condition
