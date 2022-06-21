@@ -70,9 +70,9 @@ is_mariadb <- function(dest) {
 
 schema_supported_dbs <- function() {
   tibble::tribble(
-    ~ db_name, ~ id_function, ~ test_shortcut,
+    ~db_name, ~id_function, ~test_shortcut,
     "SQL Server", "is_mssql", "mssql",
-    "Postgres", "is_postgres","postgres",
+    "Postgres", "is_postgres", "postgres",
     "MariaDB", "is_mariadb", "maria",
   )
 }
