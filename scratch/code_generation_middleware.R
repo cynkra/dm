@@ -48,6 +48,7 @@ enum_ops_dm_add_pk_table <- function(dm = NULL, ..., table_name, column_names = 
   }
 }
 
+# This is done by the Shiny app
 ops <- enum_ops(dm)
 ops
 
