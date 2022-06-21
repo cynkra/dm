@@ -65,8 +65,7 @@ is_postgres <- function(dest) {
 }
 
 is_mariadb <- function(dest) {
-  inherits(dest, "src_MariaDBConnection") ||
-    inherits(dest, "MariaDBConnection")
+  inherits_any(dest, c("src_MariaDBConnection", "MariaDBConnection", "src_DoltConnection", "src_DoltLocalConnection"))
 }
 
 src_from_src_or_con <- function(dest) {
