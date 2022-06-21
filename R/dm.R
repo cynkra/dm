@@ -286,7 +286,8 @@ as_dm.DBIConnection <- function(x) {
 }
 
 #' @export
-print.dm <- function(x, ...) { # for both dm and zoomed_dm
+print.dm <- function(x, ...) {
+  # for both dm and zoomed_dm
   show_dm(x)
   invisible(x)
 }
@@ -335,7 +336,8 @@ show_dm <- function(x) {
 }
 
 #' @export
-format.dm <- function(x, ...) { # for both dm and zoomed_dm
+format.dm <- function(x, ...) {
+  # for both dm and zoomed_dm
   def <- dm_get_def(x)
   glue("dm: {def_get_n_tables(def)} tables, {def_get_n_columns(def)} columns, {def_get_n_pks(def)} primary keys, {def_get_n_fks(def)} foreign keys")
 }
@@ -407,7 +409,8 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 #' @export
-`$.dm` <- function(x, name) { # for both dm and zoomed_dm
+`$.dm` <- function(x, name) {
+  # for both dm and zoomed_dm
   table <- dm_tbl_name(x, {{ name }})
   tbl_impl(x, table)
 }
@@ -424,7 +427,8 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 #' @export
-`[[.dm` <- function(x, id) { # for both dm and zoomed_dm
+`[[.dm` <- function(x, id) {
+  # for both dm and zoomed_dm
   if (is.numeric(id)) id <- src_tbls_impl(x)[id] else id <- as_string(id)
   tbl_impl(x, id, quiet = TRUE)
 }
@@ -447,7 +451,8 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 #' @export
-`[.zoomed_dm` <- function(x, id) { # for both dm and zoomed_dm
+`[.zoomed_dm` <- function(x, id) {
+  # for both dm and zoomed_dm
   `[`(tbl_zoomed(x), id)
 }
 
@@ -458,7 +463,8 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 #' @export
-names.dm <- function(x) { # for both dm and zoomed_dm
+names.dm <- function(x) {
+  # for both dm and zoomed_dm
   src_tbls_impl(x, quiet = TRUE)
 }
 
@@ -474,7 +480,8 @@ names.zoomed_dm <- function(x) {
 }
 
 #' @export
-length.dm <- function(x) { # for both dm and zoomed_dm
+length.dm <- function(x) {
+  # for both dm and zoomed_dm
   length(src_tbls_impl(x, quiet = TRUE))
 }
 
@@ -489,7 +496,8 @@ length.zoomed_dm <- function(x) {
 }
 
 #' @export
-str.dm <- function(object, ...) { # for both dm and zoomed_dm
+str.dm <- function(object, ...) {
+  # for both dm and zoomed_dm
   object <-
     dm_get_def(object, quiet = TRUE) %>%
     select(table, pks, fks, filters)
@@ -554,7 +562,8 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 #'   collect() %>%
 #'   pull_tbl(districts) %>%
 #'   class()
-compute.dm <- function(x, ...) { # for both dm and zoomed_dm
+compute.dm <- function(x, ...) {
+  # for both dm and zoomed_dm
   x %>%
     dm_apply_filters() %>%
     dm_get_def() %>%
@@ -570,7 +579,8 @@ compute.dm <- function(x, ...) { # for both dm and zoomed_dm
 #'
 #' @rdname materialize
 #' @export
-collect.dm <- function(x, ..., progress = NA) { # for both dm and zoomed_dm
+collect.dm <- function(x, ..., progress = NA) {
+  # for both dm and zoomed_dm
   x <- dm_apply_filters(x)
 
   def <- dm_get_def(x)
@@ -590,12 +600,14 @@ collect.zoomed_dm <- function(x, ...) {
 
 # FIXME: what about 'dim.dm()'?
 #' @export
-dim.zoomed_dm <- function(x) { # dm method provided by base
+dim.zoomed_dm <- function(x) {
+  # dm method provided by base
   dim(tbl_zoomed(x, quiet = TRUE))
 }
 
 #' @export
-dimnames.zoomed_dm <- function(x) { # dm method provided by base
+dimnames.zoomed_dm <- function(x) {
+  # dm method provided by base
   dimnames(tbl_zoomed(x))
 }
 
@@ -667,7 +679,8 @@ pull_tbl <- function(dm, table) {
 }
 
 #' @export
-pull_tbl.dm <- function(dm, table) { # for both dm and zoomed_dm
+pull_tbl.dm <- function(dm, table) {
+  # for both dm and zoomed_dm
   # FIXME: shall we issue a special error in case someone tries sth. like: `pull_tbl(dm_for_filter, c(t4, t3))`?
   table_name <- as_string(enexpr(table))
   if (table_name == "") abort_no_table_provided()
@@ -692,7 +705,8 @@ pull_tbl.zoomed_dm <- function(dm, table) {
 }
 
 #' @export
-as.list.dm <- function(x, ...) { # for both dm and zoomed_dm
+as.list.dm <- function(x, ...) {
+  # for both dm and zoomed_dm
   dm_get_tables_impl(x)
 }
 
@@ -701,6 +715,27 @@ as.list.zoomed_dm <- function(x, ...) {
   as.list(tbl_zoomed(x))
 }
 
+#' Get a glimpse of your `dm` object
+#'
+#' @param x A `dm` object.
+#' @param width Controls the maximum number of columns on a line used in
+#'   printing. If `NULL`, `getOption("width")` will be consulted.
+#' @param ... Passed to [pillar::glimpse()].
+#'
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
+#' `glimpse()` provides an overview (dimensions, column data types, primary
+#' keys, etc.) of all tables included in the `dm` object. It will additionally
+#' print details about outgoing foreign keys for the child table.
+#'
+#' `glimpse()` is provided by the pillar package, and re-exported by {dm}.
+#'  See [pillar::glimpse()] for more details.
+#'
+#' @examples
+#'
+#' dm_nycflights13() %>% glimpse()
+#'
 #' @export
 glimpse.dm <- function(x, width = NULL, ...) {
   glimpse_width <- if (is.null(width)) {

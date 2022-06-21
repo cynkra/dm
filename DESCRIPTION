@@ -78,7 +78,7 @@ Suggests:
     pixarfilms,
     pool,
     progress,
-    RMariaDB (>= 1.0.10),
+    RMariaDB (>= 1.2.2),
     rmarkdown,
     RPostgres,
     RSQLite (>= 2.2.8),

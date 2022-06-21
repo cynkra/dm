@@ -580,4 +580,8 @@
       zoomed_comp_dm %>% anti_join(flights) %>% nrow()
     Output
       [1] 39
+    Code
+      zoomed_comp_dm %>% nest_join(flights) %>% nrow()
+    Output
+      [1] 144
 
