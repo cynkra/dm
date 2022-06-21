@@ -6,7 +6,7 @@
 
 - New `simple` argument to `dm_meta()` (#1083).
 
-
+- `nest_join()` and `pack_join()` support `zoomed_dm` objects (#1119, @IndrajeetPatil).
 
 ## Documentation 
 
