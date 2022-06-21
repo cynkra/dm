@@ -37,20 +37,20 @@
 #' dm() %>%
 #'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 #' @export
-dm_add_tbl <- function(dm, ..., .repair = "unique", .quiet = FALSE) {
-  check_not_zoomed(dm)
+dm_add_tbl <- function(.dm, ..., .repair = "unique", .quiet = FALSE) {
+  check_not_zoomed(.dm)
 
   new_names <- names(exprs(..., .named = TRUE))
   new_tables <- list2(...)
 
-  check_new_tbls(dm, new_tables)
+  check_new_tbls(.dm, new_tables)
 
-  old_names <- src_tbls_impl(dm)
+  old_names <- src_tbls_impl(.dm)
   names_list <- repair_table_names(old_names, new_names, .repair, .quiet)
   # rename old tables in case name repair changed their names
 
-  dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
-  dm_add_tbl_impl(dm, new_tables, names_list$new_names)
+  .dm <- dm_select_tbl_impl(.dm, names_list$new_old_names)
+  dm_add_tbl_impl(.dm, new_tables, names_list$new_names)
 }
 
 repair_names_vec <- function(names, repair, quiet) {
