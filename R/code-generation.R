@@ -17,10 +17,10 @@ print.cg_code_block <- function(x, ...) {
 show_cg_input_object <- function(x, has_no_f_call) {
   if (has_no_f_call) {
     if (!is_empty(x$cg_input_object)) {
-      cat(trimws(expr_deparse(x$cg_input_object)))
+      cat(cg_clean_in_obj_text(x))
     }
   } else {
-    cat(paste0(trimws(expr_deparse(x$cg_input_object)), " %>%\n"))
+    cat(paste0(cg_clean_in_obj_text(x), " %>%\n"))
   }
 }
 
@@ -41,8 +41,13 @@ call_to_char <- function(body) {
 
 cg_eval_block <- function(cg_block) {
   if (is_empty(cg_block$cg_f_list)) {
-    eval(cg_block$cg_input_object)
+    eval_tidy(cg_block$cg_input_object)
   } else {
-    freduce(eval(cg_block$cg_input_object), cg_block$cg_f_list)
+    freduce(eval_tidy(cg_block$cg_input_object), cg_block$cg_f_list)
   }
+}
+
+cg_clean_in_obj_text <- function(x) {
+  gsub("\033[39m", "", trimws(expr_deparse(x$cg_input_object)), fixed = TRUE) %>%
+    gsub("\\^", "", .)
 }
