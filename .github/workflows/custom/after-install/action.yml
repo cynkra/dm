@@ -13,7 +13,7 @@ runs:
       shell: bash
 
     - name: Create database (MariaDB), set it to UTF-8, add time zone info
-      if: env.DM_TEST_SRC == 'test-mariadb'
+      if: env.DM_TEST_SRC == 'test-maria'
       run: |
         mysql -e "CREATE DATABASE IF NOT EXISTS test; ALTER DATABASE test CHARACTER SET 'utf8'; FLUSH PRIVILEGES;"
         # Time zone info necessary?
