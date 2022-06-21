@@ -15,8 +15,9 @@
 #'
 #' @inheritParams dm_add_pk
 #' @inheritParams ellipsis::dots_empty
-#' @param sep The character variable that separates the names of the table and the names of the ambiguous columns.
-#' @param quiet Boolean.
+#' @param .dm A dm object.
+#' @param .sep The character variable that separates the names of the table and the names of the ambiguous columns.
+#' @param .quiet Boolean.
 #'   By default, this function lists the renamed columns in a message, pass `TRUE` to suppress this message.
 #'
 #' @return A `dm` whose column names are unambiguous.
@@ -25,10 +26,10 @@
 #' dm_nycflights13() %>%
 #'   dm_disambiguate_cols()
 #' @export
-dm_disambiguate_cols <- function(dm, sep = ".", ..., .quiet = FALSE) {
-  check_not_zoomed(dm)
+dm_disambiguate_cols <- function(.dm, .sep = ".", ..., .quiet = FALSE) {
+  check_not_zoomed(.dm)
   check_dots_empty()
-  dm_disambiguate_cols_impl(dm, tables = NULL, sep = sep, quiet = quiet)
+  dm_disambiguate_cols_impl(.dm, tables = NULL, sep = .sep, quiet = .quiet)
 }
 
 dm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
