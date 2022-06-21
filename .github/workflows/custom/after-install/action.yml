@@ -12,6 +12,13 @@ runs:
         createdb ${USER}
       shell: bash
 
+    # Must happen after installing system dependencies,
+    # https://github.com/ankane/setup-mariadb/issues/2
+    - uses: ankane/setup-mariadb@v1
+      if: env.DM_TEST_SRC == 'test-maria'
+      with:
+        mariadb-version: 10.5
+
     - name: Create database (MariaDB), set it to UTF-8, add time zone info
       if: env.DM_TEST_SRC == 'test-maria'
       run: |
