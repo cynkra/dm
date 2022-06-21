@@ -3,7 +3,7 @@
     Code
       dm_from_con(con_db)[integer()]
     Message
-      Keys queried successfully, use `learn_keys = TRUE` to mute this message.
+      Keys could not be queried: argument is of length zero. Use `learn_keys = FALSE` to mute this message.
     Output
       dm()
 
