@@ -222,6 +222,6 @@ In this tutorial, we have demonstrated how simple it is to create relational dat
 
 ## Further reading
 
-`vignette("howto-dm-db")` - This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
+`vignette("howto-dm-db")` -- This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
 
-`vignette("howto-dm-theory")` - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.
+`vignette("howto-dm-theory")` -- Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.
