@@ -31,7 +31,7 @@
     <a class="dropdown-item" href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
     <a class="dropdown-item" href="../articles/howto-dm-db.html">Create a dm object from a database</a>
     <a class="dropdown-item" href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
-    <a class="dropdown-item" href="../articles/howto-dm-rows.html">Insert, update or remove rows in a database</a>
+    <a class="dropdown-item" href="../articles/howto-dm-rows.html">Insert, update, or remove rows in a database</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -154,14 +154,14 @@
         <dd>Add a primary key</dd>
       </dl><dl><dt>
           
-          <code><a href="dm_has_pk.html">dm_has_pk()</a></code> 
-        </dt>
-        <dd>Check for primary key</dd>
-      </dl><dl><dt>
-          
           <code><a href="dm_get_all_pks.html">dm_get_all_pks()</a></code> 
         </dt>
         <dd>Get all primary keys of a <code>dm</code> object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dm_has_pk.html">dm_has_pk()</a></code> 
+        </dt>
+        <dd>Check for primary key</dd>
       </dl><dl><dt>
           
           <code><a href="dm_rm_pk.html">dm_rm_pk()</a></code> 
@@ -190,6 +190,11 @@
         <dd>Add foreign keys</dd>
       </dl><dl><dt>
           
+          <code><a href="dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code> <code><a href="dm_enum_fk_candidates.html">enum_fk_candidates()</a></code> 
+        </dt>
+        <dd>Foreign key candidates</dd>
+      </dl><dl><dt>
+          
           <code><a href="dm_get_all_fks.html">dm_get_all_fks()</a></code> 
         </dt>
         <dd>Get foreign key constraints</dd>
@@ -198,11 +203,6 @@
           <code><a href="dm_rm_fk.html">dm_rm_fk()</a></code> 
         </dt>
         <dd>Remove foreign keys</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code> <code><a href="dm_enum_fk_candidates.html">enum_fk_candidates()</a></code> 
-        </dt>
-        <dd>Foreign key candidates</dd>
       </dl></div><div class="section level2">
       <h2 id="visualize">Visualize<a class="anchor" aria-label="anchor" href="#visualize"></a></h2>
       
@@ -289,19 +289,24 @@
         <dd>Mark table for manipulation</dd>
       </dl><dl><dt>
           
+          <code><a href="dplyr_join.html">left_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">inner_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">full_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">right_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">semi_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">anti_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">nest_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> 
+        </dt>
+        <dd><span class="pkg">dplyr</span> join methods for zoomed dm objects</dd>
+      </dl><dl><dt>
+          
           <code><a href="dplyr_table_manipulation.html">filter(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">mutate(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">transmute(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">select(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">relocate(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">rename(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">distinct(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">arrange(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">slice(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">group_by(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">ungroup(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">summarise(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">count(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">tally(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">pull(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">compute(<i>&lt;zoomed_dm&gt;</i>)</a></code> 
         </dt>
         <dd><span class="pkg">dplyr</span> table manipulation methods for zoomed dm objects</dd>
       </dl><dl><dt>
           
+          <code><a href="pack_join.html">pack_join()</a></code> 
+        </dt>
+        <dd>Pack Join</dd>
+      </dl><dl><dt>
+          
           <code><a href="tidyr_table_manipulation.html">unite(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="tidyr_table_manipulation.html">separate(<i>&lt;zoomed_dm&gt;</i>)</a></code> 
         </dt>
         <dd><span class="pkg">tidyr</span> table manipulation methods for zoomed dm objects</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dplyr_join.html">left_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">inner_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">full_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">right_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">semi_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">anti_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">nest_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> 
-        </dt>
-        <dd><span class="pkg">dplyr</span> join methods for zoomed dm objects</dd>
       </dl><dl><dt>
           
           <code><a href="utils_table_manipulation.html">head(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="utils_table_manipulation.html">tail(<i>&lt;zoomed_dm&gt;</i>)</a></code> 
@@ -366,9 +371,9 @@
         <dd>Pack Join</dd>
       </dl><dl><dt>
           
-          <code><a href="json_pack_join.html">json_pack_join()</a></code> 
+          <code><a href="json_nest.html">json_nest()</a></code> 
         </dt>
-        <dd>JSON pack join</dd>
+        <dd>JSON nest</dd>
       </dl><dl><dt>
           
           <code><a href="json_nest_join.html">json_nest_join()</a></code> 
@@ -381,9 +386,9 @@
         <dd>JSON pack</dd>
       </dl><dl><dt>
           
-          <code><a href="json_nest.html">json_nest()</a></code> 
+          <code><a href="json_pack_join.html">json_pack_join()</a></code> 
         </dt>
-        <dd>JSON nest</dd>
+        <dd>JSON pack join</dd>
       </dl></div><div class="section level2">
       <h2 id="materialize">Materialize<a class="anchor" aria-label="anchor" href="#materialize"></a></h2>
       
@@ -418,9 +423,9 @@
         <dd>Copy data model to data source</dd>
       </dl><dl><dt>
           
-          <code><a href="rows-dm.html">dm_rows_insert()</a></code> <code><a href="rows-dm.html">dm_rows_append()</a></code> <code><a href="rows-dm.html">dm_rows_update()</a></code> <code><a href="rows-dm.html">dm_rows_patch()</a></code> <code><a href="rows-dm.html">dm_rows_upsert()</a></code> <code><a href="rows-dm.html">dm_rows_delete()</a></code> <code><a href="rows-dm.html">dm_rows_truncate()</a></code> 
+          <code><a href="get_returned_rows.html">get_returned_rows()</a></code> <code><a href="get_returned_rows.html">has_returned_rows()</a></code> 
         </dt>
-        <dd>Modifying rows for multiple tables</dd>
+        <dd>Extract and check the RETURNING rows</dd>
       </dl><dl><dt>
           
           <code><a href="rows-db.html">rows_insert(<i>&lt;tbl_lazy&gt;</i>)</a></code> <code><a href="rows-db.html">rows_append(<i>&lt;tbl_lazy&gt;</i>)</a></code> <code><a href="rows-db.html">rows_update(<i>&lt;tbl_lazy&gt;</i>)</a></code> <code><a href="rows-db.html">rows_patch(<i>&lt;tbl_lazy&gt;</i>)</a></code> <code><a href="rows-db.html">rows_upsert(<i>&lt;tbl_lazy&gt;</i>)</a></code> <code><a href="rows-db.html">rows_delete(<i>&lt;tbl_lazy&gt;</i>)</a></code> <code><a href="rows-db.html">sql_rows_insert()</a></code> <code><a href="rows-db.html">sql_rows_update()</a></code> <code><a href="rows-db.html">sql_rows_patch()</a></code> <code><a href="rows-db.html">sql_rows_delete()</a></code> <code><a href="rows-db.html">sql_returning_cols()</a></code> <code><a href="rows-db.html">sql_output_cols()</a></code> 
@@ -428,14 +433,14 @@
         <dd>Updating database tables</dd>
       </dl><dl><dt>
           
+          <code><a href="rows-dm.html">dm_rows_insert()</a></code> <code><a href="rows-dm.html">dm_rows_append()</a></code> <code><a href="rows-dm.html">dm_rows_update()</a></code> <code><a href="rows-dm.html">dm_rows_patch()</a></code> <code><a href="rows-dm.html">dm_rows_upsert()</a></code> <code><a href="rows-dm.html">dm_rows_delete()</a></code> <code><a href="rows-dm.html">dm_rows_truncate()</a></code> 
+        </dt>
+        <dd>Modifying rows for multiple tables</dd>
+      </dl><dl><dt>
+          
           <code><a href="rows_truncate.html">rows_truncate()</a></code> <code><a href="rows_truncate.html">sql_rows_truncate()</a></code> 
         </dt>
         <dd>Truncate all rows</dd>
-      </dl><dl><dt>
-          
-          <code><a href="get_returned_rows.html">get_returned_rows()</a></code> <code><a href="get_returned_rows.html">has_returned_rows()</a></code> 
-        </dt>
-        <dd>Extract and check the RETURNING rows</dd>
       </dl></div><div class="section level2">
       <h2 id="filter">Filter<a class="anchor" aria-label="anchor" href="#filter"></a></h2>
       
@@ -491,11 +496,6 @@
 
       <dl><dt>
           
-          <code><a href="dm_examine_constraints.html">dm_examine_constraints()</a></code> 
-        </dt>
-        <dd>Validate your data model</dd>
-      </dl><dl><dt>
-          
           <code><a href="dm_examine_cardinalities.html">dm_examine_cardinalities()</a></code> 
         </dt>
         <dd>Learn about your data model</dd>
@@ -506,19 +506,24 @@
         <dd>Check table relations</dd>
       </dl><dl><dt>
           
+          <code><a href="dm_examine_constraints.html">dm_examine_constraints()</a></code> 
+        </dt>
+        <dd>Validate your data model</dd>
+      </dl><dl><dt>
+          
           <code><a href="check_key.html">check_key()</a></code> 
         </dt>
         <dd>Check if column(s) can be used as keys</dd>
       </dl><dl><dt>
           
-          <code><a href="check_subset.html">check_subset()</a></code> 
-        </dt>
-        <dd>Check column values for subset</dd>
-      </dl><dl><dt>
-          
           <code><a href="check_set_equality.html">check_set_equality()</a></code> 
         </dt>
         <dd>Check column values for set equality</dd>
+      </dl><dl><dt>
+          
+          <code><a href="check_subset.html">check_subset()</a></code> 
+        </dt>
+        <dd>Check column values for subset</dd>
       </dl></div><div class="section level2">
       <h2 id="database-schemas">Database schemas<a class="anchor" aria-label="anchor" href="#database-schemas"></a></h2>
       
