@@ -23,8 +23,6 @@ runs:
       if: env.DM_TEST_SRC == 'test-maria'
       run: |
         mysql -e "CREATE DATABASE IF NOT EXISTS test; ALTER DATABASE test CHARACTER SET 'utf8'; FLUSH PRIVILEGES;"
-        # Time zone info necessary?
-        mysql -e "SET GLOBAL time_zone = 'Europe/Zurich';"
       shell: bash
 
     - uses: ankane/setup-sqlserver@v1
