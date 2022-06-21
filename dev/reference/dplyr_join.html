@@ -93,7 +93,10 @@
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, by <span class="op">=</span> <span class="cn">NULL</span>, copy <span class="op">=</span> <span class="cn">NULL</span>, suffix <span class="op">=</span> <span class="cn">NULL</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for zoomed_dm</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, by <span class="op">=</span> <span class="cn">NULL</span>, copy <span class="op">=</span> <span class="cn">NULL</span>, suffix <span class="op">=</span> <span class="cn">NULL</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, by <span class="op">=</span> <span class="cn">NULL</span>, copy <span class="op">=</span> <span class="cn">NULL</span>, suffix <span class="op">=</span> <span class="cn">NULL</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
+
+<span class="co"># S3 method for zoomed_dm</span>
+<span class="fu">nest_join</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, by <span class="op">=</span> <span class="cn">NULL</span>, copy <span class="op">=</span> <span class="cn">FALSE</span>, keep <span class="op">=</span> <span class="cn">FALSE</span>, name <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -124,6 +127,16 @@ The table's <code>by</code> column(s) are automatically added if missing in the 
 
 <dt>...</dt>
 <dd><p>see <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::join</a></code></p></dd>
+
+
+<dt>keep</dt>
+<dd><p>Should the join keys from both <code>x</code> and <code>y</code> be preserved in the
+output?</p></dd>
+
+
+<dt>name</dt>
+<dd><p>The name of the list column nesting joins create.
+If <code>NULL</code> the name of <code>y</code> is used.</p></dd>
 
 </dl></div>
 
