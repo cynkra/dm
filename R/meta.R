@@ -232,29 +232,33 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
   key_column_usage <- dm_meta$key_column_usage
   constraint_column_usage <- dm_meta$constraint_column_usage
 
-  if (!is.null(catalog) && !is.na(catalog)) {
-    schemata <- schemata %>% filter(catalog_name %in% !!catalog)
-    tables <- tables %>% filter(table_catalog %in% !!catalog)
-    columns <- columns %>% filter(table_catalog %in% !!catalog)
-    table_constraints <- table_constraints %>% filter(table_catalog %in% !!catalog)
-    key_column_usage <- key_column_usage %>% filter(table_catalog %in% !!catalog)
-    constraint_column_usage <- constraint_column_usage %>% filter(table_catalog %in% !!catalog)
+  if (!is.na(catalog)) {
+    if (!is.null(catalog)) {
+      schemata <- schemata %>% filter(catalog_name %in% !!catalog)
+      tables <- tables %>% filter(table_catalog %in% !!catalog)
+      columns <- columns %>% filter(table_catalog %in% !!catalog)
+      table_constraints <- table_constraints %>% filter(table_catalog %in% !!catalog)
+      key_column_usage <- key_column_usage %>% filter(table_catalog %in% !!catalog)
+      constraint_column_usage <- constraint_column_usage %>% filter(table_catalog %in% !!catalog)
+    }
   }
 
-  if (!is.null(schema)) {
-    schemata <- schemata %>% filter(schema_name %in% !!schema)
-    tables <- tables %>% filter(table_schema %in% !!schema)
-    columns <- columns %>% filter(table_schema %in% !!schema)
-    table_constraints <- table_constraints %>% filter(table_schema %in% !!schema)
-    key_column_usage <- key_column_usage %>% filter(table_schema %in% !!schema)
-    constraint_column_usage <- constraint_column_usage %>% filter(table_schema %in% !!schema)
-  } else if (is_mariadb(dm_get_con(dm_meta))) {
-    schemata <- schemata %>% filter(schema_name == DATABASE() | is.na(DATABASE()))
-    tables <- tables %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
-    columns <- columns %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
-    table_constraints <- table_constraints %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
-    key_column_usage <- key_column_usage %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
-    constraint_column_usage <- constraint_column_usage %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+  if (!is.na(schema)) {
+    if (!is.null(schema)) {
+      schemata <- schemata %>% filter(schema_name %in% !!schema)
+      tables <- tables %>% filter(table_schema %in% !!schema)
+      columns <- columns %>% filter(table_schema %in% !!schema)
+      table_constraints <- table_constraints %>% filter(table_schema %in% !!schema)
+      key_column_usage <- key_column_usage %>% filter(table_schema %in% !!schema)
+      constraint_column_usage <- constraint_column_usage %>% filter(table_schema %in% !!schema)
+    } else if (is_mariadb(dm_get_con(dm_meta))) {
+      schemata <- schemata %>% filter(schema_name == DATABASE() | is.na(DATABASE()))
+      tables <- tables %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+      columns <- columns %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+      table_constraints <- table_constraints %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+      key_column_usage <- key_column_usage %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+      constraint_column_usage <- constraint_column_usage %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+    }
   }
 
   dm(
@@ -276,20 +280,24 @@ filter_dm_meta_simple <- function(dm_meta, catalog = NULL, schema = NULL) {
   tables <- dm_meta$tables
   columns <- dm_meta$columns
 
-  if (!is.null(catalog) && !is.na(catalog)) {
-    schemata <- schemata %>% filter(catalog_name %in% !!catalog)
-    tables <- tables %>% filter(table_catalog %in% !!catalog)
-    columns <- columns %>% filter(table_catalog %in% !!catalog)
+  if (!is.na(catalog)) {
+    if (!is.null(catalog)) {
+      schemata <- schemata %>% filter(catalog_name %in% !!catalog)
+      tables <- tables %>% filter(table_catalog %in% !!catalog)
+      columns <- columns %>% filter(table_catalog %in% !!catalog)
+    }
   }
 
-  if (!is.null(schema)) {
-    schemata <- schemata %>% filter(schema_name %in% !!schema)
-    tables <- tables %>% filter(table_schema %in% !!schema)
-    columns <- columns %>% filter(table_schema %in% !!schema)
-  } else if (is_mariadb(dm_get_con(dm_meta))) {
-    schemata <- schemata %>% filter(schema_name == DATABASE() | is.na(DATABASE()))
-    tables <- tables %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
-    columns <- columns %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+  if (!is.na(schema)) {
+    if (!is.null(schema)) {
+      schemata <- schemata %>% filter(schema_name %in% !!schema)
+      tables <- tables %>% filter(table_schema %in% !!schema)
+      columns <- columns %>% filter(table_schema %in% !!schema)
+    } else if (is_mariadb(dm_get_con(dm_meta))) {
+      schemata <- schemata %>% filter(schema_name == DATABASE() | is.na(DATABASE()))
+      tables <- tables %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+      columns <- columns %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+    }
   }
 
   dm(schemata, tables, columns) %>%
