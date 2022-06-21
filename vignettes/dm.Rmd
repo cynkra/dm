@@ -56,7 +56,7 @@ fin_dm
 ``````
 
 The dm object interrogates the RDBMS for table and column information, and primary and foreign keys.
-Currently, primary and foreign keys are only available from `r glue::glue_collapse(schema_supported_dbs()[["db_name"]], sep = ", ", last = " and ")`.
+Currently, primary and foreign keys are only available from `r glue::glue_collapse(dm:::schema_supported_dbs()[["db_name"]], sep = ", ", last = " and ")`.
 
 
 ## Selecting tables

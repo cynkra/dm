@@ -68,11 +68,6 @@ is_mariadb <- function(dest) {
   inherits_any(dest, c("MariaDBConnection", "src_MariaDBConnection", "src_DoltConnection", "src_DoltLocalConnection"))
 }
 
-#' Databases for which primary and foreign keys guessing from schema is supported
-#'
-#' @export
-#' @examples
-#' schema_supported_dbs()
 schema_supported_dbs <- function() {
   tibble::tribble(
     ~ db_name, ~ id_function, ~ test_shortcut,
