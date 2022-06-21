@@ -1,5 +1,4 @@
 test_that("dm_add_tbl() works", {
-
   # is a table added?
   expect_identical(
     length(dm_get_tables(dm_add_tbl(dm_for_filter(), data_card_1()))),
