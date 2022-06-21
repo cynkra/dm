@@ -45,7 +45,7 @@ my_db <- dbConnect(
 )
 ``````
 
-``````{r }
+``````{r show = FALSE}
 library(RMariaDB)
 my_db <- dm:::financial_db_con()
 ``````
