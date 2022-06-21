@@ -1,5 +1,26 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.8.9007
+
+## Features 
+
+- New `simple` argument to `dm_meta()` (#1083).
+
+- `nest_join()` and `pack_join()` support `zoomed_dm` objects (#1119, @IndrajeetPatil).
+
+## Documentation 
+
+- simplify top of README (#1066, @maelle).
+
+- Minimal tweaks of intro vignette (#1075, @maelle).
+
+- Edits to dm theory vignette (#1079, @IndrajeetPatil).
+
+- BS5 for greater readability (#1067, @maelle).
+
+- Minor edits to the "Get Started" article (#1056, @IndrajeetPatil).
+
+
 # dm 0.2.8.9006
 
 ## Chore 

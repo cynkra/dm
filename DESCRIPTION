@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.2.8.9006
-Date: 2022-06-08
+Version: 0.2.8.9007
+Date: 2022-06-15
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -68,6 +68,7 @@ Suggests:
     digest,
     duckdb,
     fansi,
+    forcats,
     jsonlite,
     keyring,
     knitr,

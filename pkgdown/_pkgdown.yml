@@ -156,15 +156,19 @@ reference:
   - db_schema_exists
   - db_schema_list
 
-- title: Miscellaneous
+- title: Example dm objects
   contents:
   - dm_nycflights13
   - dm_financial
   - dm_financial_sqlite
   - dm_pixarfilms
+
+- title: Miscellaneous
+  contents:
   - dm_nrow
   - dm_ptype
   - dm_validate
+  - glimpse.dm
 
 navbar:
   structure:

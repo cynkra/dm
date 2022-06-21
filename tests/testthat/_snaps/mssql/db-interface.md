@@ -46,7 +46,7 @@
       
       
       $sql_table
-      <SQL> CREATE TEMP TABLE "pixar_films" (
+      <SQL> CREATE TEMPORARY TABLE "pixar_films" (
         "number" varchar(255),
         "film" varchar(255),
         "release_date" DATE,
@@ -54,14 +54,14 @@
         "film_rating" varchar(255),
         PRIMARY KEY ("film")
       )
-      <SQL> CREATE TEMP TABLE "academy" (
+      <SQL> CREATE TEMPORARY TABLE "academy" (
         "film" varchar(255),
         "award_type" varchar(255),
         "status" varchar(255),
         PRIMARY KEY ("film", "award_type"),
         FOREIGN KEY ("film") REFERENCES "pixar_films" ("film")
       )
-      <SQL> CREATE TEMP TABLE "box_office" (
+      <SQL> CREATE TEMPORARY TABLE "box_office" (
         "film" varchar(255),
         "budget" FLOAT,
         "box_office_us_canada" FLOAT,
@@ -70,13 +70,13 @@
         PRIMARY KEY ("film"),
         FOREIGN KEY ("film") REFERENCES "pixar_films" ("film")
       )
-      <SQL> CREATE TEMP TABLE "genres" (
+      <SQL> CREATE TEMPORARY TABLE "genres" (
         "film" varchar(255),
         "genre" varchar(255),
         PRIMARY KEY ("film", "genre"),
         FOREIGN KEY ("film") REFERENCES "pixar_films" ("film")
       )
-      <SQL> CREATE TEMP TABLE "public_response" (
+      <SQL> CREATE TEMPORARY TABLE "public_response" (
         "film" varchar(255),
         "rotten_tomatoes" FLOAT,
         "metacritic" FLOAT,
@@ -158,19 +158,19 @@
       
       
       $sql_table
-      <SQL> CREATE TEMP TABLE "parent1" (
+      <SQL> CREATE TEMPORARY TABLE "parent1" (
         "key" FLOAT,
         PRIMARY KEY ("key")
       )
-      <SQL> CREATE TEMP TABLE "parent2" (
+      <SQL> CREATE TEMPORARY TABLE "parent2" (
         "a__key" FLOAT,
         PRIMARY KEY ("a__key")
       )
-      <SQL> CREATE TEMP TABLE "child" (
+      <SQL> CREATE TEMPORARY TABLE "child" (
         "a__key" FLOAT,
         FOREIGN KEY ("a__key") REFERENCES "parent2" ("a__key")
       )
-      <SQL> CREATE TEMP TABLE "child__a" (
+      <SQL> CREATE TEMPORARY TABLE "child__a" (
         "key" FLOAT,
         FOREIGN KEY ("key") REFERENCES "parent2" ("a__key")
       )

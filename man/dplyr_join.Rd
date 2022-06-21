@@ -8,6 +8,7 @@
 \alias{right_join.zoomed_dm}
 \alias{semi_join.zoomed_dm}
 \alias{anti_join.zoomed_dm}
+\alias{nest_join.zoomed_dm}
 \title{\pkg{dplyr} join methods for zoomed dm objects}
 \usage{
 \method{left_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
@@ -21,6 +22,8 @@
 \method{semi_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
 
 \method{anti_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{nest_join}{zoomed_dm}(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...)
 }
 \arguments{
 \item{x, y}{tbls to join. \code{x} is the \code{zoomed_dm} and \code{y} is another table in the \code{dm}.}
@@ -38,6 +41,12 @@ This argument is specific for the \code{join}-methods for \code{zoomed_dm}.
 The table's \code{by} column(s) are automatically added if missing in the selection.}
 
 \item{...}{see \code{\link[dplyr:mutate-joins]{dplyr::join}}}
+
+\item{keep}{Should the join keys from both \code{x} and \code{y} be preserved in the
+output?}
+
+\item{name}{The name of the list column nesting joins create.
+If \code{NULL} the name of \code{y} is used.}
 }
 \description{
 Use these methods without the '.zoomed_dm' suffix (see examples).

@@ -1,5 +1,4 @@
 test_that("dm_zoom_to() works", {
-
   # no zoom in unzoomed `dm`
   expect_false(
     is_zoomed(dm_for_filter())
