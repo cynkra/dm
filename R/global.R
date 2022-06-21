@@ -165,6 +165,7 @@ utils::globalVariables(c(
   "unique_def",
   #
   # meta
+  "DATABASE",
   "referenced_column_name",
   "referenced_table_name",
   "referenced_table_schema",
