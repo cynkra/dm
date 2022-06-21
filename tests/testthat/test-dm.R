@@ -154,7 +154,6 @@ test_that("`pull_tbl()`-methods work (2)", {
 })
 
 test_that("numeric subsetting works", {
-
   # check specifically for the right output in one case
   expect_equivalent_tbl(dm_for_filter()[[4]], tf_4())
 

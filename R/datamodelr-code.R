@@ -43,7 +43,6 @@ bdm_create_references <- function(col_table) {
   num_col[num_col == 0L] <- 1L
 
   key_col_num <- {
-
     # create column index number
     rle1 <- rle(num_col)
     if (lengths(rle1)[1] > 0) {
@@ -124,7 +123,6 @@ bdm_create_graph_list <- function(data_model,
                                   focus = NULL,
                                   col_attr = "column",
                                   columnArrows = FALSE) {
-
   # hidden tables
 
   if (!is.null(focus) && is.list(focus)) {
