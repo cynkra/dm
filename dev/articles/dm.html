@@ -138,6 +138,8 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
 
 <span class="va">fin_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">fin_db</span><span class="op">)</span>
+<span class="co">#&gt; Keys could not be queried: missing value where TRUE/FALSE needed. Use</span>
+<span class="co">#&gt; `learn_keys = FALSE` to mute this message.</span>
 <span class="va">fin_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
@@ -146,7 +148,7 @@
 <span class="co">#&gt; Columns: 57</span>
 <span class="co">#&gt; Primary keys: 0</span>
 <span class="co">#&gt; Foreign keys: 0</span></code></pre>
-<p>The dm object interrogates the RDBMS for table and column information and, where implemented, primary and foreign keys. Currently, primary and foreign keys are only available from Postgres and SQL Server.</p>
+<p>The dm object interrogates the RDBMS for table and column information, and primary and foreign keys.</p>
 </div>
 <div class="section level2">
 <h2 id="selecting-tables">Selecting tables<a class="anchor" aria-label="anchor" href="#selecting-tables"></a>
@@ -189,9 +191,15 @@
 <div class="section level2">
 <h2 id="linking-tables-by-adding-keys">Linking tables by adding keys<a class="anchor" aria-label="anchor" href="#linking-tables-by-adding-keys"></a>
 </h2>
-<p>In many cases, <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> already returns a dm with all keys set. If not, dm allows us to define primary and foreign keys ourselves.</p>
-<p>In our data model, <code>id</code> columns uniquely identify records in the <code>accounts</code> and <code>loans</code> tables, and can be used as a primary key. A primary key is defined with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. Each loan is linked to one account via the <code>account_id</code> column in the <code>loans</code> table, the relationship is established with <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code>.</p>
+<p>In many cases, <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> already returns a dm with all keys set. If not, dm allows us to define primary and foreign keys ourselves. For this, we use <code>learn_keys = FALSE</code> to obtain a <code>dm</code> object with only the tables.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
+
+<span class="va">fin_dm_small</span> <span class="op">&lt;-</span> 
+  <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">fin_db</span>, learn_keys <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">accounts</span>, <span class="va">districts</span>, <span class="va">trans</span><span class="op">)</span></code></pre></div>
+<p>In our data model, <code>id</code> columns uniquely identify records in the <code>accounts</code> and <code>loans</code> tables, and can be used as a primary key. A primary key is defined with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. Each loan is linked to one account via the <code>account_id</code> column in the <code>loans</code> table, the relationship is established with <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code>.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op">&lt;-</span>
   <span class="va">fin_dm_small</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">accounts</span>, columns <span class="op">=</span> <span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -207,7 +215,7 @@
 </h2>
 <p>Having a diagram of the data model is the quickest way to verify we’re on the right track. We can display a visual summary of the dm at any time. The default is to display the table name, any defined keys, and their links to other tables.</p>
 <p>Visualizing the dm in its current state, we can see the keys we have created and how they link the tables together. Color guides the eye.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_set_colors.html">dm_set_colors</a></span><span class="op">(</span>green <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">accounts</span><span class="op">)</span>, darkblue <span class="op">=</span> <span class="va">trans</span>, grey <span class="op">=</span> <span class="va">districts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -228,7 +236,7 @@
 <h2 id="accessing-a-data-model-as-a-table">Accessing a data model as a table<a class="anchor" aria-label="anchor" href="#accessing-a-data-model-as-a-table"></a>
 </h2>
 <p>If we want to perform modeling or analysis on this relational model, we need to transform it into a tabular format that R functions can work with. <code><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl()</a></code> will automatically follow foreign keys across tables to gather all the available columns into a single table.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span>
 <span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span>
@@ -253,7 +261,7 @@
 <span class="co">#&gt; #   A6 &lt;int&gt;, A7 &lt;int&gt;, A8 &lt;int&gt;, A9 &lt;int&gt;, A10 &lt;dbl&gt;, A11 &lt;int&gt;,</span>
 <span class="co">#&gt; #   A12 &lt;dbl&gt;, A13 &lt;dbl&gt;, A14 &lt;int&gt;, A15 &lt;int&gt;, A16 &lt;int&gt;</span></code></pre>
 <p>Apart from the rows printed above, no data has been fetched from the database. Use <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> to reduce the number of columns fetched, and <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> to retrieve the entire result for local processing.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">loans_df</span> <span class="op">&lt;-</span>
   <span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -283,7 +291,7 @@
 </h2>
 <p>We don’t need to take the extra step of exporting the data to work with it. Through the dm object, we have complete access to dplyr’s data manipulation verbs. These operate on the data within individual tables.</p>
 <p>To work with a particular table we use <code><a href="../reference/dm_zoom_to.html">dm_zoom_to()</a></code> to set the context to our chosen table. Then we can perform any of the dplyr operations we want.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_total</span> <span class="op">&lt;-</span>
   <span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -315,7 +323,7 @@
 </h2>
 <p>It’s always smart to check that your data model follows its specifications. When building our own model or changing existing models by adding tables or keys, it is even more important that the new model is validated.</p>
 <p><code>dm_examine_constrains()</code> checks all primary and foreign keys and reports if they violate their expected constraints.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-message"><code><span class="co">#&gt; ℹ All constraints satisfied.</span></code></pre>

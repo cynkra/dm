@@ -437,7 +437,7 @@
 <p>In the opposite direction, <code>dm</code> can also be populated with data from a database. Unfortunately, keys currently can be learned only for Microsoft SQL Server and Postgres, but not for SQLite. Therefore, the <code>dm</code> contains the tables but not the keys:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
-<span class="co">#&gt; Keys could not be queried: object 'constraint_column_usage' not found. Use</span>
+<span class="co">#&gt; Keys could not be queried: no such table: information_schema.tables. Use</span>
 <span class="co">#&gt; `learn_keys = FALSE` to mute this message.</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; src:  sqlite 3.38.5 []</span>
