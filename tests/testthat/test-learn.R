@@ -114,8 +114,8 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
   # produces a randomized schema name with a length of 4-10 characters
   # consisting of the symbols in `reservoir`
   random_schema <- function() {
-    reservoir <- c(letters, LETTERS, "'", "-", "_", as.character(0:9))
-    how_long <- sample(4:10, 1)
+    reservoir <- c(letters)
+    how_long <- 10
     paste0(reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)], collapse = "")
   }
 
@@ -411,8 +411,8 @@ test_that("dm_meta() contents", {
   # produces a randomized schema name with a length of 4-10 characters
   # consisting of the symbols in `reservoir`
   random_schema <- function() {
-    reservoir <- c(letters, LETTERS, "'", "-", "_", as.character(0:9))
-    how_long <- sample(4:10, 1)
+    reservoir <- c(letters)
+    how_long <- 10
     paste0(reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)], collapse = "")
   }
 

@@ -65,8 +65,7 @@ is_postgres <- function(dest) {
 }
 
 is_mariadb <- function(dest) {
-  inherits(dest, "src_MariaDBConnection") ||
-    inherits(dest, "MariaDBConnection")
+  inherits_any(dest, c("MariaDBConnection", "src_MariaDBConnection", "src_DoltConnection", "src_DoltLocalConnection"))
 }
 
 #' Databases for which primary and foreign keys guessing from schema is supported

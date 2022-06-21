@@ -169,6 +169,7 @@ reference:
   - dm_nrow
   - dm_ptype
   - dm_validate
+  - glimpse.dm
 
 navbar:
   structure:

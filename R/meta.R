@@ -73,10 +73,7 @@ dm_meta_raw <- function(con, catalog) {
       "table_name", "constraint_type"
     )) %>%
       mutate(table_catalog = constraint_catalog, table_schema = constraint_schema, .before = table_name) %>%
-      mutate(constraint_name = if_else(constraint_type == "PRIMARY KEY", paste0("pk_", table_name), constraint_name)) %>%
-      # WAT
-      mutate(constraint_schema = tolower(constraint_schema)) %>%
-      mutate(table_schema = tolower(table_schema))
+      mutate(constraint_name = if_else(constraint_type == "PRIMARY KEY", paste0("pk_", table_name), constraint_name))
   } else {
     table_constraints <- tbl_lc(src, "information_schema.table_constraints", vars = vec_c(
       "constraint_catalog", "constraint_schema", "constraint_name",
@@ -130,10 +127,7 @@ dm_meta_raw <- function(con, catalog) {
         table_schema = referenced_table_schema,
         table_name = referenced_table_name,
         column_name = referenced_column_name,
-      ) %>%
-      # WAT
-      mutate(constraint_schema = tolower(constraint_schema)) %>%
-      mutate(table_schema = tolower(table_schema))
+      )
   }
 
   dm(schemata, tables, columns, table_constraints, key_column_usage, constraint_column_usage) %>%
@@ -247,13 +241,20 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
     constraint_column_usage <- constraint_column_usage %>% filter(table_catalog %in% !!catalog)
   }
 
-  if (!is.null(schema)) {
+  if (!is.null(schema) && !is.na(schema)) {
     schemata <- schemata %>% filter(schema_name %in% !!schema)
     tables <- tables %>% filter(table_schema %in% !!schema)
     columns <- columns %>% filter(table_schema %in% !!schema)
     table_constraints <- table_constraints %>% filter(table_schema %in% !!schema)
     key_column_usage <- key_column_usage %>% filter(table_schema %in% !!schema)
     constraint_column_usage <- constraint_column_usage %>% filter(table_schema %in% !!schema)
+  } else if (!is.na(schema) && is_mariadb(dm_get_con(dm_meta))) {
+    schemata <- schemata %>% filter(schema_name == DATABASE() | is.na(DATABASE()))
+    tables <- tables %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+    columns <- columns %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+    table_constraints <- table_constraints %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+    key_column_usage <- key_column_usage %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+    constraint_column_usage <- constraint_column_usage %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
   }
 
   dm(
@@ -285,6 +286,10 @@ filter_dm_meta_simple <- function(dm_meta, catalog = NULL, schema = NULL) {
     schemata <- schemata %>% filter(schema_name %in% !!schema)
     tables <- tables %>% filter(table_schema %in% !!schema)
     columns <- columns %>% filter(table_schema %in% !!schema)
+  } else if (!is.na(schema) && is_mariadb(dm_get_con(dm_meta))) {
+    schemata <- schemata %>% filter(schema_name == DATABASE() | is.na(DATABASE()))
+    tables <- tables %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+    columns <- columns %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
   }
 
   dm(schemata, tables, columns) %>%
