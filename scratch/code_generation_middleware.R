@@ -63,7 +63,7 @@ enum_ops(dm, op_name = "dm_add_pk", table_name = "parent")
 final_ops <- enum_ops(dm, op_name = "dm_add_pk", table_name = "parent", column_names = "a")
 final_ops
 
-cg_block <- new_cg_block(dm)
+cg_block <- new_cg_block(quo(dm))
 
 cg_block %>%
   cg_add_call(!!final_ops$call)
