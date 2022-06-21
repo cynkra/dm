@@ -95,16 +95,25 @@ enum_ops_dm_add_pk_table <- function(dm = NULL, ..., op_name, table_names, colum
   if (is.null(column_names)) {
     check_dots_empty()
     # enumerate all columns that are not list
-    list(multiple = list(
+    return(list(multiple = list(
       column_names = colnames(dm[[table_names]])
-    ))
-  } else if (length(column_names) > 1) {
-    list2(
+    )))
+  }
+
+  if (length(column_names) > 1) {
+    out <- list2(
       call = expr(dm_add_pk(., !!sym(table_names), c(!!!syms(column_names))))
     )
   } else {
-    list2(
+    out <- list2(
       call = expr(dm_add_pk(., !!sym(table_names), !!sym(column_names)))
     )
   }
+
+  if (dm_has_pk(eval_tidy(dm), !!sym(table_names))) {
+    out$call <- as.call(c(as.list(out$call), force = TRUE))
+    out$confirmation_message <- "This table already has a primary key. Please confirm overwriting the existing primary key."
+  }
+
+  out
 }
