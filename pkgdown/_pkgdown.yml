@@ -28,27 +28,16 @@ reference:
 
 - title: Primary keys
   contents:
-  - dm_add_pk
-  - dm_has_pk
-  - dm_get_all_pks
-  - dm_rm_pk
-  - dm_enum_pk_candidates
-  - enum_pk_candidates
+  - matches("_pk")
 
 - title: Foreign keys
   contents:
-  - dm_add_fk
-  - dm_get_all_fks
-  - dm_rm_fk
-  - dm_enum_fk_candidates
-  - enum_fk_candidates
+  - matches("_fk")
 
 - title: Visualize
   contents:
   - dm_draw
-  - dm_set_colors
-  - dm_get_colors
-  - dm_get_available_colors
+  - ends_with("_colors")
   - dm_paste
 
 - title: Select columns
@@ -65,32 +54,8 @@ reference:
 - title: Zoom
   contents:
   - dm_zoom_to
-  - dm_insert_zoomed
-  - dm_update_zoomed
-  - dm_discard_zoomed
-  - arrange.zoomed_dm
-  - distinct.zoomed_dm
-  - filter.zoomed_dm
-  - group_by.zoomed_dm
-  - mutate.zoomed_dm
-  - relocate.zoomed_dm
-  - rename.zoomed_dm
-  - select.zoomed_dm
-  - slice.zoomed_dm
-  - summarise.zoomed_dm
-  - transmute.zoomed_dm
-  - ungroup.zoomed_dm
-  - compute.zoomed_dm
-  - separate.zoomed_dm
-  - unite.zoomed_dm
-  - anti_join.zoomed_dm
-  - full_join.zoomed_dm
-  - inner_join.zoomed_dm
-  - left_join.zoomed_dm
-  - right_join.zoomed_dm
-  - semi_join.zoomed_dm
-  - head.zoomed_dm
-  - tail.zoomed_dm
+  - ends_with("_zoomed")
+  - ends_with(".zoomed_dm")
 
 - title: Wrap
   contents:
@@ -104,10 +69,7 @@ reference:
 - title: Operations on data frames and lazy tables
   contents:
   - pack_join
-  - json_pack_join
-  - json_nest_join
-  - json_pack
-  - json_nest
+  - starts_with("json_")
 
 - title: Materialize
   contents:
@@ -117,18 +79,11 @@ reference:
 - title: Upload
   contents:
   - copy_dm_to
-  - dm_rows_insert
-  - rows-db
-  - rows-dm
-  - rows_truncate
-  - get_returned_rows
+  - contains("rows")
 
 - title: Filter
   contents:
-  - dm_filter
-  - dm_apply_filters
-  - dm_apply_filters_to_tbl
-  - dm_get_filters
+  - matches("_filter")
 
 - title: Table surgery
   contents:
@@ -138,23 +93,13 @@ reference:
 
 - title: Check keys and cardinalities
   contents:
+  - matches("cardinality|cardinalities")
   - dm_examine_constraints
-  - dm_examine_cardinalities
-  - examine_cardinality
-  - check_key
-  - check_subset
-  - check_set_equality
-  - check_cardinality_0_n
-  - check_cardinality_1_n
-  - check_cardinality_0_1
-  - check_cardinality_1_1
+  - starts_with("check_")
 
 - title: Database schemas
   contents:
-  - db_schema_create
-  - db_schema_drop
-  - db_schema_exists
-  - db_schema_list
+  - starts_with("db_schema_")
 
 - title: Example dm objects
   contents:
