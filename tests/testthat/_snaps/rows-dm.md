@@ -28,7 +28,7 @@
       flights_hour10_sqlite <- copy_dm_to(sqlite, flights_hour10)
       out <- dm_rows_append(flights_sqlite, flights_hour10_sqlite)
     Message
-      Not persisting, use `in_place = FALSE` to turn off this message.
+      Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.
     Code
       print(dm_nrow(flights_sqlite))
     Output
@@ -94,7 +94,7 @@
     Code
       dm_copy %>% dm_rows_update(dm_update_copy) %>% pull_tbl(tf_2) %>% arrange_all()
     Message
-      Not persisting, use `in_place = FALSE` to turn off this message.
+      Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.
     Output
             d c        e        e1
         <int> <chr>    <chr> <int>
@@ -285,7 +285,7 @@
       dm_copy %>% dm_rows_truncate(dm_truncate_copy) %>% pull_tbl(tf_2) %>%
         arrange_all()
     Message
-      Not persisting, use `in_place = FALSE` to turn off this message.
+      Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.
     Output
       # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
     Code
