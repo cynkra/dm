@@ -60,15 +60,15 @@
       Primary keys: 0
       Foreign keys: 0
       
-      $input$table_names
-      [1] "parent"
-      
-      $input$column_names
-      NULL
-      
       $input$op_name
       [1] "dm_add_pk"
       
+      $input$table_names
+      [1] "parent"
+      
+      
+      $single
+      named list()
       
       $multiple
       $multiple$column_names
