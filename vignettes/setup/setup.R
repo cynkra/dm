@@ -21,7 +21,7 @@ knit_print.grViz <- function(x, ...) {
 
 # If input loads dm or tidyverse, we load it here to omit warnings
 input <- readLines(knitr::current_input())
-if (rlang::has_length(grep("^library[(]dm[)]", input))) {
+if (rlang::has_length(grep('^library[(]"?dm"?[)]', input))) {
   library(dm)
 }
 if (rlang::has_length(grep("^library[(]tidyverse[)]", input))) {
