@@ -16,7 +16,6 @@ editor_options:
 source("setup/setup.R")
 ``````
 
-## Introduction {#intro}
 
 This tutorial introduces the methods {dm} provides for modifying the data in the tables of a relational model.
 There are 6 methods:
