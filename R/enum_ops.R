@@ -2,7 +2,7 @@ enum_ops <- function(dm = NULL, ..., table_names = NULL, column_names = NULL, op
   # FIXME: Implement choosing dm or connection object from .GlobalEnv
   stopifnot(!is.null(dm))
 
-  if (!is.null(table_names) && !is.null(op_name)) {
+  if (!is.null(table_names) && !is.null(column_names) && !is.null(op_name)) {
     return(
       list2(
         input = list2(
