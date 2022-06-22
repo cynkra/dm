@@ -69,7 +69,7 @@ For more details on this see `vignette("howto-dm-theory")` and `vignette("howto-
 To demonstrate the use of these table modifying methods, we will create a simple `dm` object with two tables linked by a foreign key.
 Note that the `child` table has a foreign key missing (`NA`).
 
-``````{r }
+``````{r}
 library(tidyverse)
 library(dm)
 parent <- tibble(value = c("A", "B", "C"), pk = 1:3)
