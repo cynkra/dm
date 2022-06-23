@@ -28,7 +28,7 @@ add_single <- function(op, dm, tbls, cols) {
     }
     list(input = list(dm = dm), single = list(op_name = op))
   } else {
-    nil <- `names<-`(list(), character())
+    nil <- set_names(list(), character())
     list(input = list(dm = dm, op_name = op), single = nil)
   }
 }
