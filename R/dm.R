@@ -732,7 +732,9 @@ as.list.zoomed_dm <- function(x, ...) {
 #'
 #' dm_nycflights13() %>% glimpse()
 #'
-#' dm_nycflights13() %>% dm_zoom_to(flights) %>% glimpse()
+#' dm_nycflights13() %>%
+#'   dm_zoom_to(flights) %>%
+#'   glimpse()
 #'
 #' @export
 glimpse.dm <- function(x, width = NULL, ...) {
@@ -741,7 +743,7 @@ glimpse.dm <- function(x, width = NULL, ...) {
   table_names_list <- names(dm_get_tables_impl(x))
 
   print_glimpse_table_meta(x, glimpse_width)
-  walk(table_names_list, ~print_glimpse_table(x, .x, glimpse_width, ...))
+  walk(table_names_list, ~ print_glimpse_table(x, .x, glimpse_width, ...))
 
   invisible(x)
 }
@@ -807,7 +809,15 @@ print_glimpse_table_name <- function(table_name, width) {
 #' @keywords internal
 #' @noRd
 print_glimpse_table_pk <- function(x, table_name, width) {
-  pk <- dm_get_pk_impl(x, table_name) %>%
+  pk <- dm_get_pk_impl(x, table_name)
+
+  # anticipate that some key columns could have been removed by the user
+  if (is_zoomed(x)) {
+    pk <- pk %>%
+      map(~ keep(.x, .x %in% col_tracker_zoomed(x)))
+  }
+
+  pk <- pk %>%
     map_chr(~ paste0("(", paste0(tick(.x), collapse = ", "), ")"))
 
   if (!is_empty(pk)) {

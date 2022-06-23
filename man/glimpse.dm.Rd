@@ -31,6 +31,8 @@ See \code{\link[pillar:glimpse]{pillar::glimpse()}} for more details.
 
 dm_nycflights13() \%>\% glimpse()
 
-dm_nycflights13() \%>\% dm_zoom_to(flights) \%>\% glimpse()
+dm_nycflights13() \%>\%
+  dm_zoom_to(flights) \%>\%
+  glimpse()
 
 }
