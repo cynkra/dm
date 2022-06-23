@@ -73,5 +73,5 @@ enum_ops_dm_add_pk <- function(dm, tbls, cols) {
 }
 
 any_null <- function(...) {
-  any(vapply(list(...), is.null, TRUE))
+  detect_index(list(...), is.null) != 0
 }
