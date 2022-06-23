@@ -60,22 +60,16 @@ enum <- function(op) {
 }
 
 enum_ops_dm_add_pk <- function(dm, tbls, cols) {
-  stopifnot(is.null(tbls) || length(tbls) == 1)
-  if (is.null(tbls)) {
-    list(single = list(table_names = names(dm)))
-  } else if (is.null(cols)) {
-    list(multiple = list(column_names = colnames(dm[[tbls]])))
-  } else {
-    out <- list(call = expr(dm_add_pk(., !!sym(tbls), !!!syms(cols))))
-    if (dm_has_pk(eval_tidy(dm), !!sym(tbls))) {
-      out[["call"]] <- as.call(c(as.list(out[["call"]]), force = TRUE))
-      out[["confirmation_message"]] <- paste(
-        "This table already has a primary key.",
-        "Please confirm overwriting the existing primary key."
-      )
-    }
-    out
+  stopifnot(length(tbls) == 1)
+  out <- list(call = expr(dm_add_pk(., !!sym(tbls), !!!syms(cols))))
+  if (dm_has_pk(eval_tidy(dm), !!sym(tbls))) {
+    out[["call"]] <- as.call(c(as.list(out[["call"]]), force = TRUE))
+    out[["confirmation_message"]] <- paste(
+      "This table already has a primary key.",
+      "Please confirm overwriting the existing primary key."
+    )
   }
+  out
 }
 
 any_null <- function(...) {
