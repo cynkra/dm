@@ -351,8 +351,10 @@ test_that("glimpse.dm() works", {
 test_that("glimpse.zoomed_dm() works", {
   skip_if_remote_src()
   expect_snapshot({
+    # doesn't have foreign keys to print
     dm_nycflights13() %>% dm_zoom_to(airports) %>% glimpse()
 
+    # has foreign keys to print
     dm_nycflights13() %>% dm_zoom_to(flights) %>% glimpse()
   })
 })

@@ -757,9 +757,9 @@ glimpse.dm <- function(x, width = NULL, ...) {
 glimpse.zoomed_dm <- function(x, width = NULL, ...) {
   glimpse_width <- width %||% getOption("width")
 
-  zoomed_object <- dm_get_zoom(x)
-  table_name <- zoomed_object$table[[1]]
-  table <- zoomed_object$zoom[[1]]
+  zoomed_table <- dm_get_zoom(x)
+  table_name <- zoomed_table$table[[1]]
+  table <- zoomed_table$zoom[[1]]
 
   print_glimpse_table_meta(x, glimpse_width)
   print_glimpse_table_name(table_name, glimpse_width)
@@ -791,7 +791,7 @@ print_glimpse_table_meta <- function(x, width) {
   )
 }
 
-#' Print details about table name for a table in the `dm` object (zoomed or not)
+#' Print table name for a given table in the `dm` object (zoomed or not)
 #' @keywords internal
 #' @noRd
 print_glimpse_table_name <- function(table_name, width) {
