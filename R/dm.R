@@ -760,7 +760,7 @@ glimpse.zoomed_dm <- function(x, width = NULL, ...) {
 
   print_glimpse_table_meta(x, glimpse_width)
   print_glimpse_table(x, table_name, glimpse_width)
-  glimpse(table, width = width, ...)
+  glimpse(table, width = glimpse_width, ...)
 
   invisible(x)
 }

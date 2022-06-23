@@ -355,6 +355,6 @@ test_that("glimpse.zoomed_dm() works", {
     dm_nycflights13() %>% dm_zoom_to(airports) %>% glimpse()
 
     # has foreign keys to print
-    dm_nycflights13() %>% dm_zoom_to(flights) %>% glimpse()
+    dm_nycflights13() %>% dm_zoom_to(flights) %>% glimpse(width = 100)
   })
 })
