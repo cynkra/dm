@@ -1,119 +1,77 @@
-enum_ops <- function(dm = NULL, ..., table_names = NULL, column_names = NULL, op_name = NULL) {
-  # FIXME: Implement choosing dm or connection object from .GlobalEnv
-  stopifnot(!is.null(dm))
-
-  if (!is.null(table_names) && !is.null(column_names) && !is.null(op_name)) {
-    return(
-      list2(
-        input = list2(
-          dm = dm,
-          table_names = table_names,
-          column_names = column_names,
-          op_name = op_name,
-          ...,
-        ),
-        !!!exec(
-          paste0("enum_ops_", op_name),
-          dm = dm, ...,
-          table_names = table_names,
-          column_names = column_names,
-          op_name = op_name
-        )
-      )
-    )
-  }
-
+# FIXME: Implement choosing dm or connection object from .GlobalEnv
+enum_ops <- function(dm, ..., table_names = NULL, column_names = NULL, op_name = NULL) {
   check_dots_empty()
-
-  input <- list(dm = dm)
-
-  if (is.null(op_name)) {
-    op_name <- character()
-    if (length(table_names) == 1) {
-      op_name <- c(op_name, "dm_add_pk")
-    } else if (length(table_names) == 2) {
-      op_name <- c(op_name, "dm_add_fk")
-    }
-
-    if (length(dm) > 0 && is.null(column_names)) {
-      op_name <- c(op_name, "dm_rm_fk")
-    }
+  if (any_null(table_names, column_names, op_name)) {
+    enum_ops_(op_name, dm, table_names, column_names)
   } else {
-    input <- c(input, op_name = op_name)
-    op_name <- NULL
+    list2(input = list(dm = dm,
+                       table_names = table_names,
+                       column_names = column_names,
+                       op_name = op_name),
+          !!!enum(op_name)(dm, table_names, column_names))
   }
+}
 
-  if (is.null(table_names)) {
+enum_ops_ <- function(op, dm, tbls, cols) {
+  op %>% add_single(dm, tbls, cols) %>% add_multiple(dm, tbls, cols)
+}
+
+add_single <- function(op, dm, tbls, cols) {
+  if (is.null(op)) {
+    if (length(tbls) == 1) {
+      op <- "dm_add_pk"
+    } else if (length(tbls) == 2) {
+      op <- "dm_add_fk"
+    }
+    if (length(dm) > 0 && is.null(cols)) {
+      op <- c(op, "dm_rm_fk")
+    }
+    list(input = list(dm = dm), single = list(op_name = op))
+  } else {
+    nil <- set_names(list(), character())
+    list(input = list(dm = dm, op_name = op), single = nil)
+  }
+}
+
+add_multiple <- function(e, dm, tbls, cols) {
+  e[["multiple"]] <- list(table_names = NULL, column_names = NULL)
+  if (is.null(tbls)) {
     # FIXME: Restrict table_names based on selected operation
-
-    table_names <- names(eval_tidy(dm))
+    e[["multiple"]][["table_names"]] <- names(eval_tidy(dm))
+    e[["multiple"]][["column_names"]] <- cols
   } else {
-    if (length(table_names) == 1) {
-      if (is.null(column_names)) {
-        column_names <- colnames(eval_tidy(dm)[[table_names]])
+    if (length(tbls) == 1) {
+      if (is.null(cols)) {
+        e[["multiple"]][["column_names"]] <- colnames(eval_tidy(dm)[[tbls]])
       } else {
-        input <- c(input, column_names = column_names)
-        column_names <- NULL
+        e[["input"]][["column_names"]] <- cols
       }
-    } else {
-      stopifnot(is.null(column_names))
     }
-
-    input <- c(input, table_names = table_names)
-    table_names <- NULL
+    e[["input"]][["table_names"]] <- tbls
   }
-
-  list(
-    input = input,
-    single = compact(list2(
-      op_name = op_name,
-    )),
-    multiple = compact(list2(
-      table_names = table_names,
-      column_names = column_names,
-    ))
-  )
+  e[["multiple"]] <- compact(e[["multiple"]])
+  e
 }
 
-enum_ops_dm_add_pk <- function(dm = NULL, ..., table_names = NULL) {
-  if (is.null(table_names)) {
-    check_dots_empty()
-    # enumerate all tables that don't have a pk
-    list(single = list(
-      table_names = names(dm)
-    ))
-  } else {
-    stopifnot(length(table_names) == 1)
-
-    enum_ops_dm_add_pk_table(dm, ..., table_names = table_names)
-  }
+# TODO: Add more operators
+enum <- function(op) {
+  switch(op,
+         dm_add_pk = enum_ops_dm_add_pk)
 }
 
-enum_ops_dm_add_pk_table <- function(dm = NULL, ..., op_name, table_names, column_names = NULL) {
-  stopifnot(length(table_names) == 1)
-
-  if (is.null(column_names)) {
-    check_dots_empty()
-    # enumerate all columns that are not list
-    return(list(multiple = list(
-      column_names = colnames(dm[[table_names]])
-    )))
-  }
-
-  if (length(column_names) > 1) {
-    out <- list2(
-      call = expr(dm_add_pk(., !!sym(table_names), c(!!!syms(column_names))))
-    )
-  } else {
-    out <- list2(
-      call = expr(dm_add_pk(., !!sym(table_names), !!sym(column_names)))
+enum_ops_dm_add_pk <- function(dm, tbls, cols) {
+  stopifnot(length(tbls) == 1)
+  out <- list(call = expr(dm_add_pk(., !!sym(tbls), !!!syms(cols))))
+  if (dm_has_pk(eval_tidy(dm), !!sym(tbls))) {
+    out[["call"]] <- as.call(c(as.list(out[["call"]]), force = TRUE))
+    out[["confirmation_message"]] <- paste(
+      "This table already has a primary key.",
+      "Please confirm overwriting the existing primary key."
     )
   }
-
-  if (dm_has_pk(eval_tidy(dm), !!sym(table_names))) {
-    out$call <- as.call(c(as.list(out$call), force = TRUE))
-    out$confirmation_message <- "This table already has a primary key. Please confirm overwriting the existing primary key."
-  }
-
   out
+}
+
+any_null <- function(...) {
+  detect_index(list(...), is.null) != 0
 }
