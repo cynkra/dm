@@ -732,26 +732,17 @@ as.list.zoomed_dm <- function(x, ...) {
 #'
 #' dm_nycflights13() %>% glimpse()
 #'
+#' dm_nycflights13() %>% dm_zoom_to(flights) %>% glimpse()
+#'
 #' @export
 glimpse.dm <- function(x, width = NULL, ...) {
-  glimpse_width <- if (is.null(width)) {
-    getOption("width")
-  } else {
-    width
-  }
-  table_list <- dm_get_tables_impl(x)
-  if (length(table_list) == 0) {
-    cat_line(trim_width("dm of 0 tables", glimpse_width))
-    return(invisible(x))
-  }
-  cat_line(
-    trim_width(
-      paste0("dm of ", length(table_list), " tables: ", toString(tick(names(table_list)))),
-      glimpse_width
-    )
-  )
+  glimpse_width <- width %||% getOption("width")
+
+  print_glimpse_meta(x, glimpse_width)
 
   all_fks <- dm_get_all_fks_impl(x)
+  table_list <- dm_get_tables_impl(x)
+
   iwalk(table_list, function(table, table_name) {
     cat_line("\n", trim_width(paste0("Table: ", tick(table_name)), glimpse_width))
     pk <- dm_get_pk_impl(x, table_name) %>%
@@ -784,4 +775,75 @@ glimpse.dm <- function(x, width = NULL, ...) {
     glimpse(table, width = width, ...)
   })
   invisible(x)
+}
+
+#' @rdname glimpse.dm
+#' @export
+glimpse.zoomed_dm <- function(x, width = NULL, ...) {
+  glimpse_width <- width %||% getOption("width")
+
+  print_glimpse_meta(x, glimpse_width)
+
+  zoomed_object <- dm_get_zoom(x)
+  table_name <- zoomed_object$table[[1]]
+  table <- zoomed_object$zoom[[1]]
+
+  cat_line("\n", trim_width(paste0("Table: ", tick(table_name)), glimpse_width))
+
+  pk <- dm_get_pk_impl(x, table_name) %>%
+    map_chr(~ paste0("(", paste0(tick(.x), collapse = ", "), ")"))
+
+  if (!is_empty(pk)) {
+    # FIXME: needs to change if #622 is solved
+    cat_line(trim_width(paste0("Primary key: ", pk), glimpse_width))
+  }
+
+  all_fks <- dm_get_all_fks_impl(x)
+
+  fk <- all_fks %>%
+    filter(child_table == table_name) %>%
+    select(-child_table) %>%
+    pmap_chr(
+      function(child_fk_cols, parent_table, parent_key_cols, on_delete) {
+        trim_width(
+          paste0(
+            "  (",
+            paste0(tick(child_fk_cols), collapse = ", "), ")",
+            " -> ",
+            "(`", paste0(parent_table, "$", parent_key_cols, collapse = "`, `"), "`) ",
+            on_delete
+          ),
+          glimpse_width
+        )
+      }
+    )
+
+  if (!is_empty(fk)) {
+    cat_line(length(fk), " outgoing foreign key(s):")
+    cat_line(fk)
+  }
+
+  glimpse(table, width = width, ...)
+
+  invisible(x)
+}
+
+
+#' Print details about all tables included in the `dm` object (zoomed or not)
+#' @keywords internal
+#' @noRd
+print_glimpse_meta <- function(x, width) {
+  table_list <- dm_get_tables_impl(x)
+
+  if (length(table_list) == 0) {
+    cat_line(trim_width("dm of 0 tables", width))
+    return(invisible(x))
+  }
+
+  cat_line(
+    trim_width(
+      paste0("dm of ", length(table_list), " tables: ", toString(tick(names(table_list)))),
+      width
+    )
+  )
 }

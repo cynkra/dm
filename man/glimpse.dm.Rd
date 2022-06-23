@@ -2,9 +2,12 @@
 % Please edit documentation in R/dm.R
 \name{glimpse.dm}
 \alias{glimpse.dm}
+\alias{glimpse.zoomed_dm}
 \title{Get a glimpse of your \code{dm} object}
 \usage{
 \method{glimpse}{dm}(x, width = NULL, ...)
+
+\method{glimpse}{zoomed_dm}(x, width = NULL, ...)
 }
 \arguments{
 \item{x}{A \code{dm} object.}
@@ -27,5 +30,7 @@ See \code{\link[pillar:glimpse]{pillar::glimpse()}} for more details.
 \examples{
 
 dm_nycflights13() \%>\% glimpse()
+
+dm_nycflights13() \%>\% dm_zoom_to(flights) \%>\% glimpse()
 
 }

@@ -347,3 +347,12 @@ test_that("glimpse.dm() works", {
     )
   })
 })
+
+test_that("glimpse.zoomed_dm() works", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm_nycflights13() %>% dm_zoom_to(airports) %>% glimpse()
+
+    dm_nycflights13() %>% dm_zoom_to(flights) %>% glimpse()
+  })
+})
