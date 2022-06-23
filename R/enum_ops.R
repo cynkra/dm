@@ -61,7 +61,8 @@ enum <- function(op) {
 
 enum_ops_dm_add_pk <- function(dm, tbls, cols) {
   stopifnot(length(tbls) == 1)
-  out <- list(call = expr(dm_add_pk(., !!sym(tbls), !!!syms(cols))))
+  columns <- if (length(cols) == 1) sym(cols) else expr(c(!!!syms(cols)))
+  out <- list(call = expr(dm_add_pk(., !!sym(tbls), !!columns)))
   if (dm_has_pk(eval_tidy(dm), !!sym(tbls))) {
     out[["call"]] <- as.call(c(as.list(out[["call"]]), force = TRUE))
     out[["confirmation_message"]] <- paste(
