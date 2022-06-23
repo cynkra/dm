@@ -738,14 +738,14 @@ as.list.zoomed_dm <- function(x, ...) {
 glimpse.dm <- function(x, width = NULL, ...) {
   glimpse_width <- width %||% getOption("width")
 
-  print_glimpse_meta(x, glimpse_width)
+  print_glimpse_table_meta(x, glimpse_width)
 
   table_list <- dm_get_tables_impl(x)
 
   iwalk(table_list, function(table, table_name) {
     print_glimpse_table_name(table_name, glimpse_width)
-    print_glimpse_pk(x, table_name, glimpse_width)
-    print_glimpse_fk(x, table_name, glimpse_width)
+    print_glimpse_table_pk(x, table_name, glimpse_width)
+    print_glimpse_table_fk(x, table_name, glimpse_width)
     glimpse(table, width = glimpse_width, ...)
   })
 
@@ -761,10 +761,10 @@ glimpse.zoomed_dm <- function(x, width = NULL, ...) {
   table_name <- zoomed_object$table[[1]]
   table <- zoomed_object$zoom[[1]]
 
-  print_glimpse_meta(x, glimpse_width)
+  print_glimpse_table_meta(x, glimpse_width)
   print_glimpse_table_name(table_name, glimpse_width)
-  print_glimpse_pk(x, table_name, glimpse_width)
-  print_glimpse_fk(x, table_name, glimpse_width)
+  print_glimpse_table_pk(x, table_name, glimpse_width)
+  print_glimpse_table_fk(x, table_name, glimpse_width)
 
   glimpse(table, width = width, ...)
 
@@ -775,7 +775,7 @@ glimpse.zoomed_dm <- function(x, width = NULL, ...) {
 #' Print details about all tables included in the `dm` object (zoomed or not)
 #' @keywords internal
 #' @noRd
-print_glimpse_meta <- function(x, width) {
+print_glimpse_table_meta <- function(x, width) {
   table_list <- dm_get_tables_impl(x)
 
   if (length(table_list) == 0) {
@@ -801,7 +801,7 @@ print_glimpse_table_name <- function(table_name, width) {
 #' Print details about primary key for a given table in the `dm` object (zoomed or not)
 #' @keywords internal
 #' @noRd
-print_glimpse_pk <- function(x, table_name, width) {
+print_glimpse_table_pk <- function(x, table_name, width) {
   pk <- dm_get_pk_impl(x, table_name) %>%
     map_chr(~ paste0("(", paste0(tick(.x), collapse = ", "), ")"))
 
@@ -814,7 +814,7 @@ print_glimpse_pk <- function(x, table_name, width) {
 #' Print details about foreign keys for a given table in the `dm` object (zoomed or not)
 #' @keywords internal
 #' @noRd
-print_glimpse_fk <- function(x, table_name, width) {
+print_glimpse_table_fk <- function(x, table_name, width) {
   all_fks <- dm_get_all_fks_impl(x)
 
   fk <- all_fks %>%
