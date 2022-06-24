@@ -409,12 +409,12 @@ discusses manipulation of individual rows in a database.
 
 ## Further reading
 
-`vignette("howto-dm-df")` - Is your data in local data frames? This
+`vignette("howto-dm-df")` -- Is your data in local data frames? This
 article covers creating a data model from your local data frames,
 including building the relationships in your data model, verifying your
 model, and leveraging the power of dplyr to operate on your data model.
 
-`vignette("howto-dm-theory")` - Do you know all about data frames but
+`vignette("howto-dm-theory")` -- Do you know all about data frames but
 very little about relational data models? This quick introduction will
 walk you through the key similarities and differences, and show you how
 to move from individual data frames to a relational data model.
