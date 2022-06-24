@@ -345,6 +345,12 @@ test_that("glimpse.dm() works", {
           gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd = iris_1
         )
     )
+
+    # in case no primary keys are present, nothing about primary keys should be printed
+    dm_nycflights13() %>%
+      dm_select_tbl(weather) %>%
+      dm_select(weather, -origin) %>%
+      glimpse()
   })
 })
 

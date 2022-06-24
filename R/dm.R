@@ -809,6 +809,15 @@ print_glimpse_table_name <- function(table_name, width) {
 #' @keywords internal
 #' @noRd
 print_glimpse_table_pk <- function(x, table_name, width) {
+  # return early if there are no primary keys, since there is nothing to print here
+  if (!is_zoomed(x)) {
+    pk_df <- dm_get_all_pks(x)
+
+    if (nrow(pk_df) == 0L) {
+      return(invisible(x))
+    }
+  }
+
   pk <- dm_get_pk_impl(x, table_name)
 
   # anticipate that some key columns could have been removed by the user
@@ -830,6 +839,15 @@ print_glimpse_table_pk <- function(x, table_name, width) {
 #' @keywords internal
 #' @noRd
 print_glimpse_table_fk <- function(x, table_name, width) {
+  # return early if there are no foreign keys, since there is nothing to print here
+  if (!is_zoomed(x)) {
+    fk_df <- dm_get_all_fks(x)
+
+    if (nrow(fk_df) == 0L) {
+      return(invisible(x))
+    }
+  }
+
   all_fks <- dm_get_all_fks_impl(x)
 
   fk <- all_fks %>%
