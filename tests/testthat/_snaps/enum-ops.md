@@ -80,6 +80,11 @@
         call
     Output
       dm_add_pk(., parent, a)
+    Code
+      enum_ops(dm, op_name = "dm_add_pk", table_names = "parent", column_names = c(
+        "a", "b"))$call
+    Output
+      dm_add_pk(., parent, c(a, b))
 
 # snapshot of code_generation_middleware_2.R is unchanged
 
