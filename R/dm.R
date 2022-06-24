@@ -761,24 +761,6 @@ glimpse.zoomed_dm <- function(x, width = NULL, ...) {
   invisible(x)
 }
 
-#' Print glimpse for a single table included in the `dm` object (zoomed or not)
-#' @keywords internal
-#' @noRd
-print_glimpse_table <- function(x, table_name, width, ...) {
-  if (is_zoomed(x)) {
-    table <- dm_get_zoom(x)$zoom[[1]]
-  } else {
-    table <- x[[table_name]]
-  }
-
-  # `print_glimpse_table_meta()` is not part of this because it needs to be
-  # printed only once for the entire object
-  print_glimpse_table_name(table_name, width)
-  print_glimpse_table_pk(x, table_name, width)
-  print_glimpse_table_fk(x, table_name, width)
-  glimpse(table, width = width, ...)
-}
-
 #' Print details about all tables included in the `dm` object (zoomed or not)
 #' @keywords internal
 #' @noRd
@@ -796,6 +778,24 @@ print_glimpse_table_meta <- function(x, width) {
       width
     )
   )
+}
+
+#' Print glimpse for a single table included in the `dm` object (zoomed or not)
+#' @keywords internal
+#' @noRd
+print_glimpse_table <- function(x, table_name, width, ...) {
+  if (is_zoomed(x)) {
+    table <- dm_get_zoom(x)$zoom[[1]]
+  } else {
+    table <- x[[table_name]]
+  }
+
+  # `print_glimpse_table_meta()` is not part of this because it needs to be
+  # printed only once for the entire object
+  print_glimpse_table_name(table_name, width)
+  print_glimpse_table_pk(x, table_name, width)
+  print_glimpse_table_fk(x, table_name, width)
+  glimpse(table, width = width, ...)
 }
 
 #' Print table name for a given table in the `dm` object (zoomed or not)
