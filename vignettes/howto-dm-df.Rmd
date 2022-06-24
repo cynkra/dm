@@ -61,7 +61,7 @@ The `as_dm()` function is an alternative that works if you already have a list o
 
 ## A dm is a list
 
-dm objects behave like lists with a user- and console-friendly print format.
+`dm` objects behave like lists with a user- and console-friendly print format.
 In fact, using a dm as a nicer list for organizing your data frames in your environment is an easy first step towards using dm and its data modeling functionality.
 
 Subsetting syntax for a `dm` object (either by subscript or by name) is similar to syntax for lists, and so you don't need to learn any additional syntax to work with `dm` objects.
@@ -214,3 +214,13 @@ flights_dm_all_keys %>%
   dm_examine_constraints() %>%
   tibble::as_tibble()
 ```
+
+## Conclusion {#conclusion}
+
+In this tutorial, we have demonstrated how simple it is to create relational data models from local data frames using {dm}, including setting primary and foreign keys and visualizing the resulting relational model.
+
+## Further reading
+
+`vignette("howto-dm-db")` -- This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
+
+`vignette("howto-dm-theory")` -- Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.
