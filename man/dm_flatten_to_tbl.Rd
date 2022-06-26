@@ -70,7 +70,8 @@ each nested column entry would be a tibble of one row), an error will be thrown 
 Note that the difference between \code{dm_flatten_to_tbl()} and
 \code{dm_squash_to_tbl()} is that the former allows only one level of hierarchy
 (i.e., direct neighbors to table \code{start}), while the latter will go through
-all levels of hierarchy while joining (see the examples).
+all levels of hierarchy while joining (see the examples). Additionally,
+these functions differ from \code{dm_wrap_tbl()}, which always returns a \code{dm} object.
 }
 \examples{
 

@@ -55,7 +55,8 @@
 #' Note that the difference between `dm_flatten_to_tbl()` and
 #' `dm_squash_to_tbl()` is that the former allows only one level of hierarchy
 #' (i.e., direct neighbors to table `start`), while the latter will go through
-#' all levels of hierarchy while joining (see the examples).
+#' all levels of hierarchy while joining (see the examples). Additionally,
+#' these functions differ from `dm_wrap_tbl()`, which always returns a `dm` object.
 #'
 #' @return A single table that results from consecutively joining all affected tables to the `start` table.
 #'
