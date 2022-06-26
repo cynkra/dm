@@ -73,7 +73,6 @@ Note that the difference between \code{dm_flatten_to_tbl()} and
 all levels of hierarchy while joining (see the examples).
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 dm_financial() \%>\%
   dm_select_tbl(-loans) \%>\%
@@ -82,6 +81,6 @@ dm_financial() \%>\%
 dm_financial() \%>\%
   dm_select_tbl(-loans) \%>\%
   dm_squash_to_tbl(start = cards)
-\dontshow{\}) # examplesIf}
+
 }
 \concept{flattening functions}

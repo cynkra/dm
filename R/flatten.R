@@ -59,7 +59,7 @@
 #'
 #' @return A single table that results from consecutively joining all affected tables to the `start` table.
 #'
-#' @examplesIf rlang::is_installed("nycflights13")
+#' @examples
 #'
 #' dm_financial() %>%
 #'   dm_select_tbl(-loans) %>%
