@@ -66,12 +66,22 @@ Therefore, trying this will result in a warning.
 
 Since \code{join = nest_join()} does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
+
+Note that the difference between \code{dm_flatten_to_tbl()} and
+\code{dm_squash_to_tbl()} is that the former allows only one level of hierarchy
+(i.e., direct neighbors to table \code{start}), while the latter will go through
+all levels of hierarchy while joining (see the examples).
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-dm_nycflights13() \%>\%
-  dm_select_tbl(-weather) \%>\%
-  dm_flatten_to_tbl(flights)
+
+dm_financial() \%>\%
+  dm_select_tbl(-loans) \%>\%
+  dm_flatten_to_tbl(start = cards)
+
+dm_financial() \%>\%
+  dm_select_tbl(-loans) \%>\%
+  dm_squash_to_tbl(start = cards)
 \dontshow{\}) # examplesIf}
 }
 \concept{flattening functions}

@@ -52,12 +52,23 @@
 #' Since `join = nest_join()` does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 #' each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
 #'
+#' Note that the difference between `dm_flatten_to_tbl()` and
+#' `dm_squash_to_tbl()` is that the former allows only one level of hierarchy
+#' (i.e., direct neighbors to table `start`), while the latter will go through
+#' all levels of hierarchy while joining (see the examples).
+#'
 #' @return A single table that results from consecutively joining all affected tables to the `start` table.
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_select_tbl(-weather) %>%
-#'   dm_flatten_to_tbl(flights)
+#'
+#' dm_financial() %>%
+#'   dm_select_tbl(-loans) %>%
+#'   dm_flatten_to_tbl(start = cards)
+#'
+#' dm_financial() %>%
+#'   dm_select_tbl(-loans) %>%
+#'   dm_squash_to_tbl(start = cards)
+#'
 #' @export
 dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   check_not_zoomed(dm)
