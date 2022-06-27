@@ -151,5 +151,16 @@ dm_nycflights13() %>%
   dm_flatten_to_tbl(start = flights)
 ```
 
-Be aware that all column names need to be unique.
-The `dm_flatten_to_tbl` takes care of this by automatically renaming the relevant columns and informs the user if any names were changed, e.g. `name -> airlines.name`.
+To be more precise, `dm_flatten_to_tbl()` will join all tables from one level of hierarchy (i.e., direct neighbors to table `start`).
+If you want to cover tables from all levels of hierarchy, use `dm_squash_to_tbl()` instead.
+
+Also, be aware that all column names need to be unique.
+The `dm_flatten_to_tbl()` takes care of this by automatically renaming the relevant columns and informs the user if any names were changed, e.g. `name -> airlines.name`.
+
+If you want to merge all tables, but get a `dm` object in return, use `dm_wrap_tbl()` instead:
+
+```{r}
+dm_nycflights13() %>%
+  dm_wrap_tbl(root = flights)
+```
+
