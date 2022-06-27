@@ -10,7 +10,6 @@ create_exist <- function(dm, child, parent) {
   child <- ensym(child)
   parent <- ensym(parent)
   parent.exist <- sym(paste0(as.character(parent), ".exist"))
-  browser()
   pk_col <- sym(dm_get_pk(dm, !!parent))
 
   dm %>%
