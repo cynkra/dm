@@ -51,8 +51,8 @@ These involve constraints on primary key values that uniquely identify rows.
 
 | Method | Requirements |
 |--------|--------------|
-| `dm_rows_insert()` | Primary keys must be present for all tables.|
-| `dm_rows_append()` | Primary keys must differ from existing records.|
+| `dm_rows_insert()` | Records with existing primary keys are silently ignored (via `dplyr::rows_insert(conflict = "ignore")`). |
+| `dm_rows_append()` | All records are inserted, the underlying database might check for uniqueness of primary keys (and fail the operation) if a constraint is set. |
 | `dm_rows_update()` | Primary keys must match for all records to be updated.|
 | `dm_rows_patch()` | Updates missing values in existing records. Primary keys must match for all records to be patched.|
 | `dm_rows_upsert()` | Updates existing records and adds new records, based on the primary key.|
