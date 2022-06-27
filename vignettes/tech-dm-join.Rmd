@@ -87,7 +87,7 @@ Let's look at some examples:
 ```{r}
 dm_joined <-
   dm %>%
-  dm_join_to_tbl(flights, airlines, join = left_join)
+  dm_flatten_to_tbl(flights, airlines, join = left_join)
 dm_joined
 ```
 
@@ -121,7 +121,7 @@ You can check this with an `anti_join`:
 
 ```{r}
 dm %>%
-  dm_join_to_tbl(flights, airlines, join = anti_join)
+  dm_flatten_to_tbl(flights, airlines, join = anti_join)
 ```
 
 An example with filtering on a `dm` and then merging:
@@ -132,7 +132,7 @@ An example with filtering on a `dm` and then merging:
 dm_nycflights13() %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   dm_filter(flights, month == 5) %>%
-  dm_join_to_tbl(flights, airports, join = left_join)
+  dm_flatten_to_tbl(flights, airports, join = left_join)
 ```
 
 A last example:
