@@ -52,11 +52,16 @@
 #' Since `join = nest_join()` does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 #' each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
 #'
-#' Note that the difference between `dm_flatten_to_tbl()` and
-#' `dm_squash_to_tbl()` is that the former allows only one level of hierarchy
-#' (i.e., direct neighbors to table `start`), while the latter will go through
-#' all levels of hierarchy while joining (see the examples). Additionally,
-#' these functions differ from `dm_wrap_tbl()`, which always returns a `dm` object.
+#' The difference between `dm_flatten_to_tbl()` and `dm_squash_to_tbl()` is
+#' the following (see the examples):
+#'
+#' - `dm_flatten_to_tbl()` allows only one level of hierarchy
+#'   (i.e., direct neighbors to table `start`), while
+#'
+#' - `dm_squash_to_tbl()` will go through all levels of hierarchy while joining.
+#'
+#' Additionally, these functions differ from `dm_wrap_tbl()`, which always
+#' returns a `dm` object.
 #'
 #' @return A single table that results from consecutively joining all affected tables to the `start` table.
 #'
