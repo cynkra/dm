@@ -35,7 +35,7 @@ library(tidyverse)
 
 To explore filtering with {dm}, we'll use the {nycflights13} data with its tables `flights`, `planes`, `airlines` and `airports`.
 
-This dataset contains information about the 336 776 flights that departed from New York City in 2013, with 3322 different planes and 1458 airports involved.
+This dataset contains information about the 336,776 flights that departed from New York City in 2013, with 3322 different planes and 1458 airports involved.
 The data comes from the US Bureau of Transportation Statistics, and is documented in `?nycflights13`.
 
 First, we have to create a `dm` object from the {nycflights13} data.
@@ -155,7 +155,7 @@ To be more precise, `dm_flatten_to_tbl()` will join all tables from one level of
 If you want to cover tables from all levels of hierarchy, use `dm_squash_to_tbl()` instead.
 
 Also, be aware that all column names need to be unique.
-The `dm_flatten_to_tbl()` takes care of this by automatically renaming the relevant columns and informs the user if any names were changed, e.g. `name -> airlines.name`.
+The `dm_flatten_to_tbl()` takes care of this by automatically renaming the relevant columns and informs the user if any names were changed, e.g. `dm_rename(airlines, airlines.name = name)`.
 
 If you want to merge all tables, but get a `dm` object in return, use `dm_wrap_tbl()` instead:
 
