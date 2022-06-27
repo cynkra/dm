@@ -101,7 +101,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Create a dm object from data frames</h1>
             
-            <h4 data-toc-skip class="date">2022-06-22</h4>
+            <h4 data-toc-skip class="date">2022-06-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-df.Rmd" class="external-link"><code>vignettes/howto-dm-df.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-df.Rmd</code></div>
@@ -171,7 +171,7 @@
 <div class="section level2">
 <h2 id="a-dm-is-a-list">A dm is a list<a class="anchor" aria-label="anchor" href="#a-dm-is-a-list"></a>
 </h2>
-<p>dm objects behave like lists with a user- and console-friendly print format. In fact, using a dm as a nicer list for organizing your data frames in your environment is an easy first step towards using dm and its data modeling functionality.</p>
+<p><code>dm</code> objects behave like lists with a user- and console-friendly print format. In fact, using a dm as a nicer list for organizing your data frames in your environment is an easy first step towards using dm and its data modeling functionality.</p>
 <p>Subsetting syntax for a <code>dm</code> object (either by subscript or by name) is similar to syntax for lists, and so you don’t need to learn any additional syntax to work with <code>dm</code> objects.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">flights_dm_no_keys</span><span class="op">)</span>
@@ -416,6 +416,17 @@
 <span class="co">#&gt; 7 flights  FK    carrier           airlines  TRUE   ""                     </span>
 <span class="co">#&gt; 8 flights  FK    origin            airports  TRUE   ""</span></code></pre>
 </div>
+<div class="section level2">
+<h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
+</h2>
+<p>In this tutorial, we have demonstrated how simple it is to create relational data models from local data frames using {dm}, including setting primary and foreign keys and visualizing the resulting relational model.</p>
+</div>
+<div class="section level2">
+<h2 id="further-reading">Further reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
+</h2>
+<p><code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> – This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.</p>
+<p><code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code> – Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.</p>
+</div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>
@@ -429,7 +440,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
     </footer>

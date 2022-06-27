@@ -102,7 +102,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Create a dm object from a database</h1>
                         <h4 data-toc-skip class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2022-06-22</h4>
+            <h4 data-toc-skip class="date">2022-06-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-db.Rmd" class="external-link"><code>vignettes/howto-dm-db.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-db.Rmd</code></div>
@@ -132,16 +132,15 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
 
 <span class="va">my_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">my_db</span><span class="op">)</span>
-<span class="co">#&gt; Keys could not be queried: missing value where TRUE/FALSE needed. Use</span>
-<span class="co">#&gt; `learn_keys = FALSE` to mute this message.</span>
+<span class="co">#&gt; Keys queried successfully, use `learn_keys = TRUE` to mute this message.</span>
 <span class="va">my_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)</span>
 <span class="co">#&gt; Columns: 57</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre>
+<span class="co">#&gt; Primary keys: 9</span>
+<span class="co">#&gt; Foreign keys: 8</span></code></pre>
 <p>The components of the <code>my_dm</code> object are lazy tables powered by {<a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a>}. {dbplyr} translates the {<a href="https://dplyr.tidyverse.org/" class="external-link">dplyr</a>} grammar of data manipulation into queries the database server understands. Lazy tables defer downloading of table data until results are required for printing or local processing.</p>
 <div class="section level2">
 <h2 id="building-a-dm-from-a-subset-of-tables">Building a dm from a subset of tables<a class="anchor" aria-label="anchor" href="#building-a-dm-from-a-subset-of-tables"></a>
@@ -437,8 +436,8 @@
 <div class="section level2">
 <h2 id="further-reading">Further reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
 </h2>
-<p><code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code> - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.</p>
-<p><code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code> - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.</p>
+<p><code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code> – Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.</p>
+<p><code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code> – Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -453,7 +452,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
     </footer>
