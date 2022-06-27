@@ -205,6 +205,7 @@ If you feel you need to know more about relational data models in order to get t
 
 If you're familiar with relational data models, but want to know how to work with them in dm, then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.
 
+
 ## Standing on the shoulders of giants
 
 The {dm} package follows the tidyverse principles:

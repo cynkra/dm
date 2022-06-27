@@ -241,7 +241,7 @@ The `dm_rows_*` methods give you row-level granularity over the modifications yo
 Using the common `in_place` argument, they all can construct and verify your modifications before committing them.
 There are a few limitations, as mentioned in the tutorial, but these will be addressed in future updates to {dm}.
 
-## Next Steps
+## Further Reading
 
 If this tutorial answered some questions, but opened others, these resources might be of assistance.
 
