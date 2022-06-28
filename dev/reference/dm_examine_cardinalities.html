@@ -18,7 +18,7 @@ to print as a regular tibble."><meta property="og:image" content="https://cynkra
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9007</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,7 +89,7 @@ to print as a regular tibble.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_examine_cardinalities</span><span class="op">(</span><span class="va">dm</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dm_examine_cardinalities</span><span class="op">(</span><span class="va">dm</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -137,8 +137,8 @@ hide in non-interactive mode, show in interactive mode. Requires the
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_examine_cardinalities</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dm_examine_cardinalities</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #000000;">•</span> FK: flights$(`carrier`) -&gt; airlines$(`carrier`): surjective mapping (child: 1 to n -&gt; parent: 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #000000;">•</span> FK: flights$(`origin`) -&gt; airports$(`faa`): generic mapping (child: 0 to n -&gt; parent: 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #000000;">•</span> FK: flights$(`origin`, `time_hour`) -&gt; weather$(`origin`, `time_hour`): generic mapping (child: 0 to n -&gt; parent: 1)</span>

@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9007</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Visualizing dm objects</h1>
             
-            <h4 data-toc-skip class="date">2022-06-27</h4>
+            <h4 data-toc-skip class="date">2022-06-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-draw.Rmd" class="external-link"><code>vignettes/tech-dm-draw.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-draw.Rmd</code></div>
@@ -118,26 +118,26 @@
 </ol>
 <p>We use the prepared example <code>dm</code> object <code>dm_nycflights13(cycle = TRUE)</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="va">flights_dm_w_many_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span>, color <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">flights_dm_w_many_keys</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 4</span>
-<span class="co">#&gt; Foreign keys: 5</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span><span class="va">flights_dm_w_many_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span>, color <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">flights_dm_w_many_keys</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
+<span><span class="co">#&gt; Columns: 53</span></span>
+<span><span class="co">#&gt; Primary keys: 4</span></span>
+<span><span class="co">#&gt; Foreign keys: 5</span></span></code></pre>
 <p>The schema is drawn with <code><a href="../reference/dm_draw.html">dm_draw()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">flights_dm_w_many_keys</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">flights_dm_w_many_keys</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="250pt" height="230pt" viewbox="0.00 0.00 250.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 226)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -154,239 +154,239 @@
 <polygon fill="#efebdd" stroke="transparent" points="140.5,-21 140.5,-41 241.5,-41 241.5,-21 140.5,-21"></polygon><text text-anchor="start" x="168.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="#ffffff" stroke="transparent" points="140.5,-1 140.5,-21 241.5,-21 241.5,-1 140.5,-1"></polygon><text text-anchor="start" x="142.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#555555" points="139,0 139,-42 242,-42 242,0 139,0"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge5" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title>
 <path fill="none" stroke="#555555" d="M102.5,-51C122.8065,-51 118.7241,-23.5684 130.6469,-14.1387"></path><polygon fill="#555555" stroke="#555555" points="132.0341,-17.3702 140.5,-11 129.9094,-10.7004 132.0341,-17.3702"></polygon></g></g></svg><p>You can use colors to visually group your tables into families to reflect their logical grouping. The available colors are either hexcoded colors or the standard R color names. The function <code><a href="../reference/dm_set_colors.html">dm_get_available_colors()</a></code> forwards to <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_set_colors.html">dm_get_available_colors</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt;   [1] "default"              "white"                "aliceblue"           </span>
-<span class="co">#&gt;   [4] "antiquewhite"         "antiquewhite1"        "antiquewhite2"       </span>
-<span class="co">#&gt;   [7] "antiquewhite3"        "antiquewhite4"        "aquamarine"          </span>
-<span class="co">#&gt;  [10] "aquamarine1"          "aquamarine2"          "aquamarine3"         </span>
-<span class="co">#&gt;  [13] "aquamarine4"          "azure"                "azure1"              </span>
-<span class="co">#&gt;  [16] "azure2"               "azure3"               "azure4"              </span>
-<span class="co">#&gt;  [19] "beige"                "bisque"               "bisque1"             </span>
-<span class="co">#&gt;  [22] "bisque2"              "bisque3"              "bisque4"             </span>
-<span class="co">#&gt;  [25] "black"                "blanchedalmond"       "blue"                </span>
-<span class="co">#&gt;  [28] "blue1"                "blue2"                "blue3"               </span>
-<span class="co">#&gt;  [31] "blue4"                "blueviolet"           "brown"               </span>
-<span class="co">#&gt;  [34] "brown1"               "brown2"               "brown3"              </span>
-<span class="co">#&gt;  [37] "brown4"               "burlywood"            "burlywood1"          </span>
-<span class="co">#&gt;  [40] "burlywood2"           "burlywood3"           "burlywood4"          </span>
-<span class="co">#&gt;  [43] "cadetblue"            "cadetblue1"           "cadetblue2"          </span>
-<span class="co">#&gt;  [46] "cadetblue3"           "cadetblue4"           "chartreuse"          </span>
-<span class="co">#&gt;  [49] "chartreuse1"          "chartreuse2"          "chartreuse3"         </span>
-<span class="co">#&gt;  [52] "chartreuse4"          "chocolate"            "chocolate1"          </span>
-<span class="co">#&gt;  [55] "chocolate2"           "chocolate3"           "chocolate4"          </span>
-<span class="co">#&gt;  [58] "coral"                "coral1"               "coral2"              </span>
-<span class="co">#&gt;  [61] "coral3"               "coral4"               "cornflowerblue"      </span>
-<span class="co">#&gt;  [64] "cornsilk"             "cornsilk1"            "cornsilk2"           </span>
-<span class="co">#&gt;  [67] "cornsilk3"            "cornsilk4"            "cyan"                </span>
-<span class="co">#&gt;  [70] "cyan1"                "cyan2"                "cyan3"               </span>
-<span class="co">#&gt;  [73] "cyan4"                "darkblue"             "darkcyan"            </span>
-<span class="co">#&gt;  [76] "darkgoldenrod"        "darkgoldenrod1"       "darkgoldenrod2"      </span>
-<span class="co">#&gt;  [79] "darkgoldenrod3"       "darkgoldenrod4"       "darkgray"            </span>
-<span class="co">#&gt;  [82] "darkgreen"            "darkgrey"             "darkkhaki"           </span>
-<span class="co">#&gt;  [85] "darkmagenta"          "darkolivegreen"       "darkolivegreen1"     </span>
-<span class="co">#&gt;  [88] "darkolivegreen2"      "darkolivegreen3"      "darkolivegreen4"     </span>
-<span class="co">#&gt;  [91] "darkorange"           "darkorange1"          "darkorange2"         </span>
-<span class="co">#&gt;  [94] "darkorange3"          "darkorange4"          "darkorchid"          </span>
-<span class="co">#&gt;  [97] "darkorchid1"          "darkorchid2"          "darkorchid3"         </span>
-<span class="co">#&gt; [100] "darkorchid4"          "darkred"              "darksalmon"          </span>
-<span class="co">#&gt; [103] "darkseagreen"         "darkseagreen1"        "darkseagreen2"       </span>
-<span class="co">#&gt; [106] "darkseagreen3"        "darkseagreen4"        "darkslateblue"       </span>
-<span class="co">#&gt; [109] "darkslategray"        "darkslategray1"       "darkslategray2"      </span>
-<span class="co">#&gt; [112] "darkslategray3"       "darkslategray4"       "darkslategrey"       </span>
-<span class="co">#&gt; [115] "darkturquoise"        "darkviolet"           "deeppink"            </span>
-<span class="co">#&gt; [118] "deeppink1"            "deeppink2"            "deeppink3"           </span>
-<span class="co">#&gt; [121] "deeppink4"            "deepskyblue"          "deepskyblue1"        </span>
-<span class="co">#&gt; [124] "deepskyblue2"         "deepskyblue3"         "deepskyblue4"        </span>
-<span class="co">#&gt; [127] "dimgray"              "dimgrey"              "dodgerblue"          </span>
-<span class="co">#&gt; [130] "dodgerblue1"          "dodgerblue2"          "dodgerblue3"         </span>
-<span class="co">#&gt; [133] "dodgerblue4"          "firebrick"            "firebrick1"          </span>
-<span class="co">#&gt; [136] "firebrick2"           "firebrick3"           "firebrick4"          </span>
-<span class="co">#&gt; [139] "floralwhite"          "forestgreen"          "gainsboro"           </span>
-<span class="co">#&gt; [142] "ghostwhite"           "gold"                 "gold1"               </span>
-<span class="co">#&gt; [145] "gold2"                "gold3"                "gold4"               </span>
-<span class="co">#&gt; [148] "goldenrod"            "goldenrod1"           "goldenrod2"          </span>
-<span class="co">#&gt; [151] "goldenrod3"           "goldenrod4"           "gray"                </span>
-<span class="co">#&gt; [154] "gray0"                "gray1"                "gray2"               </span>
-<span class="co">#&gt; [157] "gray3"                "gray4"                "gray5"               </span>
-<span class="co">#&gt; [160] "gray6"                "gray7"                "gray8"               </span>
-<span class="co">#&gt; [163] "gray9"                "gray10"               "gray11"              </span>
-<span class="co">#&gt; [166] "gray12"               "gray13"               "gray14"              </span>
-<span class="co">#&gt; [169] "gray15"               "gray16"               "gray17"              </span>
-<span class="co">#&gt; [172] "gray18"               "gray19"               "gray20"              </span>
-<span class="co">#&gt; [175] "gray21"               "gray22"               "gray23"              </span>
-<span class="co">#&gt; [178] "gray24"               "gray25"               "gray26"              </span>
-<span class="co">#&gt; [181] "gray27"               "gray28"               "gray29"              </span>
-<span class="co">#&gt; [184] "gray30"               "gray31"               "gray32"              </span>
-<span class="co">#&gt; [187] "gray33"               "gray34"               "gray35"              </span>
-<span class="co">#&gt; [190] "gray36"               "gray37"               "gray38"              </span>
-<span class="co">#&gt; [193] "gray39"               "gray40"               "gray41"              </span>
-<span class="co">#&gt; [196] "gray42"               "gray43"               "gray44"              </span>
-<span class="co">#&gt; [199] "gray45"               "gray46"               "gray47"              </span>
-<span class="co">#&gt; [202] "gray48"               "gray49"               "gray50"              </span>
-<span class="co">#&gt; [205] "gray51"               "gray52"               "gray53"              </span>
-<span class="co">#&gt; [208] "gray54"               "gray55"               "gray56"              </span>
-<span class="co">#&gt; [211] "gray57"               "gray58"               "gray59"              </span>
-<span class="co">#&gt; [214] "gray60"               "gray61"               "gray62"              </span>
-<span class="co">#&gt; [217] "gray63"               "gray64"               "gray65"              </span>
-<span class="co">#&gt; [220] "gray66"               "gray67"               "gray68"              </span>
-<span class="co">#&gt; [223] "gray69"               "gray70"               "gray71"              </span>
-<span class="co">#&gt; [226] "gray72"               "gray73"               "gray74"              </span>
-<span class="co">#&gt; [229] "gray75"               "gray76"               "gray77"              </span>
-<span class="co">#&gt; [232] "gray78"               "gray79"               "gray80"              </span>
-<span class="co">#&gt; [235] "gray81"               "gray82"               "gray83"              </span>
-<span class="co">#&gt; [238] "gray84"               "gray85"               "gray86"              </span>
-<span class="co">#&gt; [241] "gray87"               "gray88"               "gray89"              </span>
-<span class="co">#&gt; [244] "gray90"               "gray91"               "gray92"              </span>
-<span class="co">#&gt; [247] "gray93"               "gray94"               "gray95"              </span>
-<span class="co">#&gt; [250] "gray96"               "gray97"               "gray98"              </span>
-<span class="co">#&gt; [253] "gray99"               "gray100"              "green"               </span>
-<span class="co">#&gt; [256] "green1"               "green2"               "green3"              </span>
-<span class="co">#&gt; [259] "green4"               "greenyellow"          "grey"                </span>
-<span class="co">#&gt; [262] "grey0"                "grey1"                "grey2"               </span>
-<span class="co">#&gt; [265] "grey3"                "grey4"                "grey5"               </span>
-<span class="co">#&gt; [268] "grey6"                "grey7"                "grey8"               </span>
-<span class="co">#&gt; [271] "grey9"                "grey10"               "grey11"              </span>
-<span class="co">#&gt; [274] "grey12"               "grey13"               "grey14"              </span>
-<span class="co">#&gt; [277] "grey15"               "grey16"               "grey17"              </span>
-<span class="co">#&gt; [280] "grey18"               "grey19"               "grey20"              </span>
-<span class="co">#&gt; [283] "grey21"               "grey22"               "grey23"              </span>
-<span class="co">#&gt; [286] "grey24"               "grey25"               "grey26"              </span>
-<span class="co">#&gt; [289] "grey27"               "grey28"               "grey29"              </span>
-<span class="co">#&gt; [292] "grey30"               "grey31"               "grey32"              </span>
-<span class="co">#&gt; [295] "grey33"               "grey34"               "grey35"              </span>
-<span class="co">#&gt; [298] "grey36"               "grey37"               "grey38"              </span>
-<span class="co">#&gt; [301] "grey39"               "grey40"               "grey41"              </span>
-<span class="co">#&gt; [304] "grey42"               "grey43"               "grey44"              </span>
-<span class="co">#&gt; [307] "grey45"               "grey46"               "grey47"              </span>
-<span class="co">#&gt; [310] "grey48"               "grey49"               "grey50"              </span>
-<span class="co">#&gt; [313] "grey51"               "grey52"               "grey53"              </span>
-<span class="co">#&gt; [316] "grey54"               "grey55"               "grey56"              </span>
-<span class="co">#&gt; [319] "grey57"               "grey58"               "grey59"              </span>
-<span class="co">#&gt; [322] "grey60"               "grey61"               "grey62"              </span>
-<span class="co">#&gt; [325] "grey63"               "grey64"               "grey65"              </span>
-<span class="co">#&gt; [328] "grey66"               "grey67"               "grey68"              </span>
-<span class="co">#&gt; [331] "grey69"               "grey70"               "grey71"              </span>
-<span class="co">#&gt; [334] "grey72"               "grey73"               "grey74"              </span>
-<span class="co">#&gt; [337] "grey75"               "grey76"               "grey77"              </span>
-<span class="co">#&gt; [340] "grey78"               "grey79"               "grey80"              </span>
-<span class="co">#&gt; [343] "grey81"               "grey82"               "grey83"              </span>
-<span class="co">#&gt; [346] "grey84"               "grey85"               "grey86"              </span>
-<span class="co">#&gt; [349] "grey87"               "grey88"               "grey89"              </span>
-<span class="co">#&gt; [352] "grey90"               "grey91"               "grey92"              </span>
-<span class="co">#&gt; [355] "grey93"               "grey94"               "grey95"              </span>
-<span class="co">#&gt; [358] "grey96"               "grey97"               "grey98"              </span>
-<span class="co">#&gt; [361] "grey99"               "grey100"              "honeydew"            </span>
-<span class="co">#&gt; [364] "honeydew1"            "honeydew2"            "honeydew3"           </span>
-<span class="co">#&gt; [367] "honeydew4"            "hotpink"              "hotpink1"            </span>
-<span class="co">#&gt; [370] "hotpink2"             "hotpink3"             "hotpink4"            </span>
-<span class="co">#&gt; [373] "indianred"            "indianred1"           "indianred2"          </span>
-<span class="co">#&gt; [376] "indianred3"           "indianred4"           "ivory"               </span>
-<span class="co">#&gt; [379] "ivory1"               "ivory2"               "ivory3"              </span>
-<span class="co">#&gt; [382] "ivory4"               "khaki"                "khaki1"              </span>
-<span class="co">#&gt; [385] "khaki2"               "khaki3"               "khaki4"              </span>
-<span class="co">#&gt; [388] "lavender"             "lavenderblush"        "lavenderblush1"      </span>
-<span class="co">#&gt; [391] "lavenderblush2"       "lavenderblush3"       "lavenderblush4"      </span>
-<span class="co">#&gt; [394] "lawngreen"            "lemonchiffon"         "lemonchiffon1"       </span>
-<span class="co">#&gt; [397] "lemonchiffon2"        "lemonchiffon3"        "lemonchiffon4"       </span>
-<span class="co">#&gt; [400] "lightblue"            "lightblue1"           "lightblue2"          </span>
-<span class="co">#&gt; [403] "lightblue3"           "lightblue4"           "lightcoral"          </span>
-<span class="co">#&gt; [406] "lightcyan"            "lightcyan1"           "lightcyan2"          </span>
-<span class="co">#&gt; [409] "lightcyan3"           "lightcyan4"           "lightgoldenrod"      </span>
-<span class="co">#&gt; [412] "lightgoldenrod1"      "lightgoldenrod2"      "lightgoldenrod3"     </span>
-<span class="co">#&gt; [415] "lightgoldenrod4"      "lightgoldenrodyellow" "lightgray"           </span>
-<span class="co">#&gt; [418] "lightgreen"           "lightgrey"            "lightpink"           </span>
-<span class="co">#&gt; [421] "lightpink1"           "lightpink2"           "lightpink3"          </span>
-<span class="co">#&gt; [424] "lightpink4"           "lightsalmon"          "lightsalmon1"        </span>
-<span class="co">#&gt; [427] "lightsalmon2"         "lightsalmon3"         "lightsalmon4"        </span>
-<span class="co">#&gt; [430] "lightseagreen"        "lightskyblue"         "lightskyblue1"       </span>
-<span class="co">#&gt; [433] "lightskyblue2"        "lightskyblue3"        "lightskyblue4"       </span>
-<span class="co">#&gt; [436] "lightslateblue"       "lightslategray"       "lightslategrey"      </span>
-<span class="co">#&gt; [439] "lightsteelblue"       "lightsteelblue1"      "lightsteelblue2"     </span>
-<span class="co">#&gt; [442] "lightsteelblue3"      "lightsteelblue4"      "lightyellow"         </span>
-<span class="co">#&gt; [445] "lightyellow1"         "lightyellow2"         "lightyellow3"        </span>
-<span class="co">#&gt; [448] "lightyellow4"         "limegreen"            "linen"               </span>
-<span class="co">#&gt; [451] "magenta"              "magenta1"             "magenta2"            </span>
-<span class="co">#&gt; [454] "magenta3"             "magenta4"             "maroon"              </span>
-<span class="co">#&gt; [457] "maroon1"              "maroon2"              "maroon3"             </span>
-<span class="co">#&gt; [460] "maroon4"              "mediumaquamarine"     "mediumblue"          </span>
-<span class="co">#&gt; [463] "mediumorchid"         "mediumorchid1"        "mediumorchid2"       </span>
-<span class="co">#&gt; [466] "mediumorchid3"        "mediumorchid4"        "mediumpurple"        </span>
-<span class="co">#&gt; [469] "mediumpurple1"        "mediumpurple2"        "mediumpurple3"       </span>
-<span class="co">#&gt; [472] "mediumpurple4"        "mediumseagreen"       "mediumslateblue"     </span>
-<span class="co">#&gt; [475] "mediumspringgreen"    "mediumturquoise"      "mediumvioletred"     </span>
-<span class="co">#&gt; [478] "midnightblue"         "mintcream"            "mistyrose"           </span>
-<span class="co">#&gt; [481] "mistyrose1"           "mistyrose2"           "mistyrose3"          </span>
-<span class="co">#&gt; [484] "mistyrose4"           "moccasin"             "navajowhite"         </span>
-<span class="co">#&gt; [487] "navajowhite1"         "navajowhite2"         "navajowhite3"        </span>
-<span class="co">#&gt; [490] "navajowhite4"         "navy"                 "navyblue"            </span>
-<span class="co">#&gt; [493] "oldlace"              "olivedrab"            "olivedrab1"          </span>
-<span class="co">#&gt; [496] "olivedrab2"           "olivedrab3"           "olivedrab4"          </span>
-<span class="co">#&gt; [499] "orange"               "orange1"              "orange2"             </span>
-<span class="co">#&gt; [502] "orange3"              "orange4"              "orangered"           </span>
-<span class="co">#&gt; [505] "orangered1"           "orangered2"           "orangered3"          </span>
-<span class="co">#&gt; [508] "orangered4"           "orchid"               "orchid1"             </span>
-<span class="co">#&gt; [511] "orchid2"              "orchid3"              "orchid4"             </span>
-<span class="co">#&gt; [514] "palegoldenrod"        "palegreen"            "palegreen1"          </span>
-<span class="co">#&gt; [517] "palegreen2"           "palegreen3"           "palegreen4"          </span>
-<span class="co">#&gt; [520] "paleturquoise"        "paleturquoise1"       "paleturquoise2"      </span>
-<span class="co">#&gt; [523] "paleturquoise3"       "paleturquoise4"       "palevioletred"       </span>
-<span class="co">#&gt; [526] "palevioletred1"       "palevioletred2"       "palevioletred3"      </span>
-<span class="co">#&gt; [529] "palevioletred4"       "papayawhip"           "peachpuff"           </span>
-<span class="co">#&gt; [532] "peachpuff1"           "peachpuff2"           "peachpuff3"          </span>
-<span class="co">#&gt; [535] "peachpuff4"           "peru"                 "pink"                </span>
-<span class="co">#&gt; [538] "pink1"                "pink2"                "pink3"               </span>
-<span class="co">#&gt; [541] "pink4"                "plum"                 "plum1"               </span>
-<span class="co">#&gt; [544] "plum2"                "plum3"                "plum4"               </span>
-<span class="co">#&gt; [547] "powderblue"           "purple"               "purple1"             </span>
-<span class="co">#&gt; [550] "purple2"              "purple3"              "purple4"             </span>
-<span class="co">#&gt; [553] "red"                  "red1"                 "red2"                </span>
-<span class="co">#&gt; [556] "red3"                 "red4"                 "rosybrown"           </span>
-<span class="co">#&gt; [559] "rosybrown1"           "rosybrown2"           "rosybrown3"          </span>
-<span class="co">#&gt; [562] "rosybrown4"           "royalblue"            "royalblue1"          </span>
-<span class="co">#&gt; [565] "royalblue2"           "royalblue3"           "royalblue4"          </span>
-<span class="co">#&gt; [568] "saddlebrown"          "salmon"               "salmon1"             </span>
-<span class="co">#&gt; [571] "salmon2"              "salmon3"              "salmon4"             </span>
-<span class="co">#&gt; [574] "sandybrown"           "seagreen"             "seagreen1"           </span>
-<span class="co">#&gt; [577] "seagreen2"            "seagreen3"            "seagreen4"           </span>
-<span class="co">#&gt; [580] "seashell"             "seashell1"            "seashell2"           </span>
-<span class="co">#&gt; [583] "seashell3"            "seashell4"            "sienna"              </span>
-<span class="co">#&gt; [586] "sienna1"              "sienna2"              "sienna3"             </span>
-<span class="co">#&gt; [589] "sienna4"              "skyblue"              "skyblue1"            </span>
-<span class="co">#&gt; [592] "skyblue2"             "skyblue3"             "skyblue4"            </span>
-<span class="co">#&gt; [595] "slateblue"            "slateblue1"           "slateblue2"          </span>
-<span class="co">#&gt; [598] "slateblue3"           "slateblue4"           "slategray"           </span>
-<span class="co">#&gt; [601] "slategray1"           "slategray2"           "slategray3"          </span>
-<span class="co">#&gt; [604] "slategray4"           "slategrey"            "snow"                </span>
-<span class="co">#&gt; [607] "snow1"                "snow2"                "snow3"               </span>
-<span class="co">#&gt; [610] "snow4"                "springgreen"          "springgreen1"        </span>
-<span class="co">#&gt; [613] "springgreen2"         "springgreen3"         "springgreen4"        </span>
-<span class="co">#&gt; [616] "steelblue"            "steelblue1"           "steelblue2"          </span>
-<span class="co">#&gt; [619] "steelblue3"           "steelblue4"           "tan"                 </span>
-<span class="co">#&gt; [622] "tan1"                 "tan2"                 "tan3"                </span>
-<span class="co">#&gt; [625] "tan4"                 "thistle"              "thistle1"            </span>
-<span class="co">#&gt; [628] "thistle2"             "thistle3"             "thistle4"            </span>
-<span class="co">#&gt; [631] "tomato"               "tomato1"              "tomato2"             </span>
-<span class="co">#&gt; [634] "tomato3"              "tomato4"              "turquoise"           </span>
-<span class="co">#&gt; [637] "turquoise1"           "turquoise2"           "turquoise3"          </span>
-<span class="co">#&gt; [640] "turquoise4"           "violet"               "violetred"           </span>
-<span class="co">#&gt; [643] "violetred1"           "violetred2"           "violetred3"          </span>
-<span class="co">#&gt; [646] "violetred4"           "wheat"                "wheat1"              </span>
-<span class="co">#&gt; [649] "wheat2"               "wheat3"               "wheat4"              </span>
-<span class="co">#&gt; [652] "whitesmoke"           "yellow"               "yellow1"             </span>
-<span class="co">#&gt; [655] "yellow2"              "yellow3"              "yellow4"             </span>
-<span class="co">#&gt; [658] "yellowgreen"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_set_colors.html">dm_get_available_colors</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   [1] "default"              "white"                "aliceblue"           </span></span>
+<span><span class="co">#&gt;   [4] "antiquewhite"         "antiquewhite1"        "antiquewhite2"       </span></span>
+<span><span class="co">#&gt;   [7] "antiquewhite3"        "antiquewhite4"        "aquamarine"          </span></span>
+<span><span class="co">#&gt;  [10] "aquamarine1"          "aquamarine2"          "aquamarine3"         </span></span>
+<span><span class="co">#&gt;  [13] "aquamarine4"          "azure"                "azure1"              </span></span>
+<span><span class="co">#&gt;  [16] "azure2"               "azure3"               "azure4"              </span></span>
+<span><span class="co">#&gt;  [19] "beige"                "bisque"               "bisque1"             </span></span>
+<span><span class="co">#&gt;  [22] "bisque2"              "bisque3"              "bisque4"             </span></span>
+<span><span class="co">#&gt;  [25] "black"                "blanchedalmond"       "blue"                </span></span>
+<span><span class="co">#&gt;  [28] "blue1"                "blue2"                "blue3"               </span></span>
+<span><span class="co">#&gt;  [31] "blue4"                "blueviolet"           "brown"               </span></span>
+<span><span class="co">#&gt;  [34] "brown1"               "brown2"               "brown3"              </span></span>
+<span><span class="co">#&gt;  [37] "brown4"               "burlywood"            "burlywood1"          </span></span>
+<span><span class="co">#&gt;  [40] "burlywood2"           "burlywood3"           "burlywood4"          </span></span>
+<span><span class="co">#&gt;  [43] "cadetblue"            "cadetblue1"           "cadetblue2"          </span></span>
+<span><span class="co">#&gt;  [46] "cadetblue3"           "cadetblue4"           "chartreuse"          </span></span>
+<span><span class="co">#&gt;  [49] "chartreuse1"          "chartreuse2"          "chartreuse3"         </span></span>
+<span><span class="co">#&gt;  [52] "chartreuse4"          "chocolate"            "chocolate1"          </span></span>
+<span><span class="co">#&gt;  [55] "chocolate2"           "chocolate3"           "chocolate4"          </span></span>
+<span><span class="co">#&gt;  [58] "coral"                "coral1"               "coral2"              </span></span>
+<span><span class="co">#&gt;  [61] "coral3"               "coral4"               "cornflowerblue"      </span></span>
+<span><span class="co">#&gt;  [64] "cornsilk"             "cornsilk1"            "cornsilk2"           </span></span>
+<span><span class="co">#&gt;  [67] "cornsilk3"            "cornsilk4"            "cyan"                </span></span>
+<span><span class="co">#&gt;  [70] "cyan1"                "cyan2"                "cyan3"               </span></span>
+<span><span class="co">#&gt;  [73] "cyan4"                "darkblue"             "darkcyan"            </span></span>
+<span><span class="co">#&gt;  [76] "darkgoldenrod"        "darkgoldenrod1"       "darkgoldenrod2"      </span></span>
+<span><span class="co">#&gt;  [79] "darkgoldenrod3"       "darkgoldenrod4"       "darkgray"            </span></span>
+<span><span class="co">#&gt;  [82] "darkgreen"            "darkgrey"             "darkkhaki"           </span></span>
+<span><span class="co">#&gt;  [85] "darkmagenta"          "darkolivegreen"       "darkolivegreen1"     </span></span>
+<span><span class="co">#&gt;  [88] "darkolivegreen2"      "darkolivegreen3"      "darkolivegreen4"     </span></span>
+<span><span class="co">#&gt;  [91] "darkorange"           "darkorange1"          "darkorange2"         </span></span>
+<span><span class="co">#&gt;  [94] "darkorange3"          "darkorange4"          "darkorchid"          </span></span>
+<span><span class="co">#&gt;  [97] "darkorchid1"          "darkorchid2"          "darkorchid3"         </span></span>
+<span><span class="co">#&gt; [100] "darkorchid4"          "darkred"              "darksalmon"          </span></span>
+<span><span class="co">#&gt; [103] "darkseagreen"         "darkseagreen1"        "darkseagreen2"       </span></span>
+<span><span class="co">#&gt; [106] "darkseagreen3"        "darkseagreen4"        "darkslateblue"       </span></span>
+<span><span class="co">#&gt; [109] "darkslategray"        "darkslategray1"       "darkslategray2"      </span></span>
+<span><span class="co">#&gt; [112] "darkslategray3"       "darkslategray4"       "darkslategrey"       </span></span>
+<span><span class="co">#&gt; [115] "darkturquoise"        "darkviolet"           "deeppink"            </span></span>
+<span><span class="co">#&gt; [118] "deeppink1"            "deeppink2"            "deeppink3"           </span></span>
+<span><span class="co">#&gt; [121] "deeppink4"            "deepskyblue"          "deepskyblue1"        </span></span>
+<span><span class="co">#&gt; [124] "deepskyblue2"         "deepskyblue3"         "deepskyblue4"        </span></span>
+<span><span class="co">#&gt; [127] "dimgray"              "dimgrey"              "dodgerblue"          </span></span>
+<span><span class="co">#&gt; [130] "dodgerblue1"          "dodgerblue2"          "dodgerblue3"         </span></span>
+<span><span class="co">#&gt; [133] "dodgerblue4"          "firebrick"            "firebrick1"          </span></span>
+<span><span class="co">#&gt; [136] "firebrick2"           "firebrick3"           "firebrick4"          </span></span>
+<span><span class="co">#&gt; [139] "floralwhite"          "forestgreen"          "gainsboro"           </span></span>
+<span><span class="co">#&gt; [142] "ghostwhite"           "gold"                 "gold1"               </span></span>
+<span><span class="co">#&gt; [145] "gold2"                "gold3"                "gold4"               </span></span>
+<span><span class="co">#&gt; [148] "goldenrod"            "goldenrod1"           "goldenrod2"          </span></span>
+<span><span class="co">#&gt; [151] "goldenrod3"           "goldenrod4"           "gray"                </span></span>
+<span><span class="co">#&gt; [154] "gray0"                "gray1"                "gray2"               </span></span>
+<span><span class="co">#&gt; [157] "gray3"                "gray4"                "gray5"               </span></span>
+<span><span class="co">#&gt; [160] "gray6"                "gray7"                "gray8"               </span></span>
+<span><span class="co">#&gt; [163] "gray9"                "gray10"               "gray11"              </span></span>
+<span><span class="co">#&gt; [166] "gray12"               "gray13"               "gray14"              </span></span>
+<span><span class="co">#&gt; [169] "gray15"               "gray16"               "gray17"              </span></span>
+<span><span class="co">#&gt; [172] "gray18"               "gray19"               "gray20"              </span></span>
+<span><span class="co">#&gt; [175] "gray21"               "gray22"               "gray23"              </span></span>
+<span><span class="co">#&gt; [178] "gray24"               "gray25"               "gray26"              </span></span>
+<span><span class="co">#&gt; [181] "gray27"               "gray28"               "gray29"              </span></span>
+<span><span class="co">#&gt; [184] "gray30"               "gray31"               "gray32"              </span></span>
+<span><span class="co">#&gt; [187] "gray33"               "gray34"               "gray35"              </span></span>
+<span><span class="co">#&gt; [190] "gray36"               "gray37"               "gray38"              </span></span>
+<span><span class="co">#&gt; [193] "gray39"               "gray40"               "gray41"              </span></span>
+<span><span class="co">#&gt; [196] "gray42"               "gray43"               "gray44"              </span></span>
+<span><span class="co">#&gt; [199] "gray45"               "gray46"               "gray47"              </span></span>
+<span><span class="co">#&gt; [202] "gray48"               "gray49"               "gray50"              </span></span>
+<span><span class="co">#&gt; [205] "gray51"               "gray52"               "gray53"              </span></span>
+<span><span class="co">#&gt; [208] "gray54"               "gray55"               "gray56"              </span></span>
+<span><span class="co">#&gt; [211] "gray57"               "gray58"               "gray59"              </span></span>
+<span><span class="co">#&gt; [214] "gray60"               "gray61"               "gray62"              </span></span>
+<span><span class="co">#&gt; [217] "gray63"               "gray64"               "gray65"              </span></span>
+<span><span class="co">#&gt; [220] "gray66"               "gray67"               "gray68"              </span></span>
+<span><span class="co">#&gt; [223] "gray69"               "gray70"               "gray71"              </span></span>
+<span><span class="co">#&gt; [226] "gray72"               "gray73"               "gray74"              </span></span>
+<span><span class="co">#&gt; [229] "gray75"               "gray76"               "gray77"              </span></span>
+<span><span class="co">#&gt; [232] "gray78"               "gray79"               "gray80"              </span></span>
+<span><span class="co">#&gt; [235] "gray81"               "gray82"               "gray83"              </span></span>
+<span><span class="co">#&gt; [238] "gray84"               "gray85"               "gray86"              </span></span>
+<span><span class="co">#&gt; [241] "gray87"               "gray88"               "gray89"              </span></span>
+<span><span class="co">#&gt; [244] "gray90"               "gray91"               "gray92"              </span></span>
+<span><span class="co">#&gt; [247] "gray93"               "gray94"               "gray95"              </span></span>
+<span><span class="co">#&gt; [250] "gray96"               "gray97"               "gray98"              </span></span>
+<span><span class="co">#&gt; [253] "gray99"               "gray100"              "green"               </span></span>
+<span><span class="co">#&gt; [256] "green1"               "green2"               "green3"              </span></span>
+<span><span class="co">#&gt; [259] "green4"               "greenyellow"          "grey"                </span></span>
+<span><span class="co">#&gt; [262] "grey0"                "grey1"                "grey2"               </span></span>
+<span><span class="co">#&gt; [265] "grey3"                "grey4"                "grey5"               </span></span>
+<span><span class="co">#&gt; [268] "grey6"                "grey7"                "grey8"               </span></span>
+<span><span class="co">#&gt; [271] "grey9"                "grey10"               "grey11"              </span></span>
+<span><span class="co">#&gt; [274] "grey12"               "grey13"               "grey14"              </span></span>
+<span><span class="co">#&gt; [277] "grey15"               "grey16"               "grey17"              </span></span>
+<span><span class="co">#&gt; [280] "grey18"               "grey19"               "grey20"              </span></span>
+<span><span class="co">#&gt; [283] "grey21"               "grey22"               "grey23"              </span></span>
+<span><span class="co">#&gt; [286] "grey24"               "grey25"               "grey26"              </span></span>
+<span><span class="co">#&gt; [289] "grey27"               "grey28"               "grey29"              </span></span>
+<span><span class="co">#&gt; [292] "grey30"               "grey31"               "grey32"              </span></span>
+<span><span class="co">#&gt; [295] "grey33"               "grey34"               "grey35"              </span></span>
+<span><span class="co">#&gt; [298] "grey36"               "grey37"               "grey38"              </span></span>
+<span><span class="co">#&gt; [301] "grey39"               "grey40"               "grey41"              </span></span>
+<span><span class="co">#&gt; [304] "grey42"               "grey43"               "grey44"              </span></span>
+<span><span class="co">#&gt; [307] "grey45"               "grey46"               "grey47"              </span></span>
+<span><span class="co">#&gt; [310] "grey48"               "grey49"               "grey50"              </span></span>
+<span><span class="co">#&gt; [313] "grey51"               "grey52"               "grey53"              </span></span>
+<span><span class="co">#&gt; [316] "grey54"               "grey55"               "grey56"              </span></span>
+<span><span class="co">#&gt; [319] "grey57"               "grey58"               "grey59"              </span></span>
+<span><span class="co">#&gt; [322] "grey60"               "grey61"               "grey62"              </span></span>
+<span><span class="co">#&gt; [325] "grey63"               "grey64"               "grey65"              </span></span>
+<span><span class="co">#&gt; [328] "grey66"               "grey67"               "grey68"              </span></span>
+<span><span class="co">#&gt; [331] "grey69"               "grey70"               "grey71"              </span></span>
+<span><span class="co">#&gt; [334] "grey72"               "grey73"               "grey74"              </span></span>
+<span><span class="co">#&gt; [337] "grey75"               "grey76"               "grey77"              </span></span>
+<span><span class="co">#&gt; [340] "grey78"               "grey79"               "grey80"              </span></span>
+<span><span class="co">#&gt; [343] "grey81"               "grey82"               "grey83"              </span></span>
+<span><span class="co">#&gt; [346] "grey84"               "grey85"               "grey86"              </span></span>
+<span><span class="co">#&gt; [349] "grey87"               "grey88"               "grey89"              </span></span>
+<span><span class="co">#&gt; [352] "grey90"               "grey91"               "grey92"              </span></span>
+<span><span class="co">#&gt; [355] "grey93"               "grey94"               "grey95"              </span></span>
+<span><span class="co">#&gt; [358] "grey96"               "grey97"               "grey98"              </span></span>
+<span><span class="co">#&gt; [361] "grey99"               "grey100"              "honeydew"            </span></span>
+<span><span class="co">#&gt; [364] "honeydew1"            "honeydew2"            "honeydew3"           </span></span>
+<span><span class="co">#&gt; [367] "honeydew4"            "hotpink"              "hotpink1"            </span></span>
+<span><span class="co">#&gt; [370] "hotpink2"             "hotpink3"             "hotpink4"            </span></span>
+<span><span class="co">#&gt; [373] "indianred"            "indianred1"           "indianred2"          </span></span>
+<span><span class="co">#&gt; [376] "indianred3"           "indianred4"           "ivory"               </span></span>
+<span><span class="co">#&gt; [379] "ivory1"               "ivory2"               "ivory3"              </span></span>
+<span><span class="co">#&gt; [382] "ivory4"               "khaki"                "khaki1"              </span></span>
+<span><span class="co">#&gt; [385] "khaki2"               "khaki3"               "khaki4"              </span></span>
+<span><span class="co">#&gt; [388] "lavender"             "lavenderblush"        "lavenderblush1"      </span></span>
+<span><span class="co">#&gt; [391] "lavenderblush2"       "lavenderblush3"       "lavenderblush4"      </span></span>
+<span><span class="co">#&gt; [394] "lawngreen"            "lemonchiffon"         "lemonchiffon1"       </span></span>
+<span><span class="co">#&gt; [397] "lemonchiffon2"        "lemonchiffon3"        "lemonchiffon4"       </span></span>
+<span><span class="co">#&gt; [400] "lightblue"            "lightblue1"           "lightblue2"          </span></span>
+<span><span class="co">#&gt; [403] "lightblue3"           "lightblue4"           "lightcoral"          </span></span>
+<span><span class="co">#&gt; [406] "lightcyan"            "lightcyan1"           "lightcyan2"          </span></span>
+<span><span class="co">#&gt; [409] "lightcyan3"           "lightcyan4"           "lightgoldenrod"      </span></span>
+<span><span class="co">#&gt; [412] "lightgoldenrod1"      "lightgoldenrod2"      "lightgoldenrod3"     </span></span>
+<span><span class="co">#&gt; [415] "lightgoldenrod4"      "lightgoldenrodyellow" "lightgray"           </span></span>
+<span><span class="co">#&gt; [418] "lightgreen"           "lightgrey"            "lightpink"           </span></span>
+<span><span class="co">#&gt; [421] "lightpink1"           "lightpink2"           "lightpink3"          </span></span>
+<span><span class="co">#&gt; [424] "lightpink4"           "lightsalmon"          "lightsalmon1"        </span></span>
+<span><span class="co">#&gt; [427] "lightsalmon2"         "lightsalmon3"         "lightsalmon4"        </span></span>
+<span><span class="co">#&gt; [430] "lightseagreen"        "lightskyblue"         "lightskyblue1"       </span></span>
+<span><span class="co">#&gt; [433] "lightskyblue2"        "lightskyblue3"        "lightskyblue4"       </span></span>
+<span><span class="co">#&gt; [436] "lightslateblue"       "lightslategray"       "lightslategrey"      </span></span>
+<span><span class="co">#&gt; [439] "lightsteelblue"       "lightsteelblue1"      "lightsteelblue2"     </span></span>
+<span><span class="co">#&gt; [442] "lightsteelblue3"      "lightsteelblue4"      "lightyellow"         </span></span>
+<span><span class="co">#&gt; [445] "lightyellow1"         "lightyellow2"         "lightyellow3"        </span></span>
+<span><span class="co">#&gt; [448] "lightyellow4"         "limegreen"            "linen"               </span></span>
+<span><span class="co">#&gt; [451] "magenta"              "magenta1"             "magenta2"            </span></span>
+<span><span class="co">#&gt; [454] "magenta3"             "magenta4"             "maroon"              </span></span>
+<span><span class="co">#&gt; [457] "maroon1"              "maroon2"              "maroon3"             </span></span>
+<span><span class="co">#&gt; [460] "maroon4"              "mediumaquamarine"     "mediumblue"          </span></span>
+<span><span class="co">#&gt; [463] "mediumorchid"         "mediumorchid1"        "mediumorchid2"       </span></span>
+<span><span class="co">#&gt; [466] "mediumorchid3"        "mediumorchid4"        "mediumpurple"        </span></span>
+<span><span class="co">#&gt; [469] "mediumpurple1"        "mediumpurple2"        "mediumpurple3"       </span></span>
+<span><span class="co">#&gt; [472] "mediumpurple4"        "mediumseagreen"       "mediumslateblue"     </span></span>
+<span><span class="co">#&gt; [475] "mediumspringgreen"    "mediumturquoise"      "mediumvioletred"     </span></span>
+<span><span class="co">#&gt; [478] "midnightblue"         "mintcream"            "mistyrose"           </span></span>
+<span><span class="co">#&gt; [481] "mistyrose1"           "mistyrose2"           "mistyrose3"          </span></span>
+<span><span class="co">#&gt; [484] "mistyrose4"           "moccasin"             "navajowhite"         </span></span>
+<span><span class="co">#&gt; [487] "navajowhite1"         "navajowhite2"         "navajowhite3"        </span></span>
+<span><span class="co">#&gt; [490] "navajowhite4"         "navy"                 "navyblue"            </span></span>
+<span><span class="co">#&gt; [493] "oldlace"              "olivedrab"            "olivedrab1"          </span></span>
+<span><span class="co">#&gt; [496] "olivedrab2"           "olivedrab3"           "olivedrab4"          </span></span>
+<span><span class="co">#&gt; [499] "orange"               "orange1"              "orange2"             </span></span>
+<span><span class="co">#&gt; [502] "orange3"              "orange4"              "orangered"           </span></span>
+<span><span class="co">#&gt; [505] "orangered1"           "orangered2"           "orangered3"          </span></span>
+<span><span class="co">#&gt; [508] "orangered4"           "orchid"               "orchid1"             </span></span>
+<span><span class="co">#&gt; [511] "orchid2"              "orchid3"              "orchid4"             </span></span>
+<span><span class="co">#&gt; [514] "palegoldenrod"        "palegreen"            "palegreen1"          </span></span>
+<span><span class="co">#&gt; [517] "palegreen2"           "palegreen3"           "palegreen4"          </span></span>
+<span><span class="co">#&gt; [520] "paleturquoise"        "paleturquoise1"       "paleturquoise2"      </span></span>
+<span><span class="co">#&gt; [523] "paleturquoise3"       "paleturquoise4"       "palevioletred"       </span></span>
+<span><span class="co">#&gt; [526] "palevioletred1"       "palevioletred2"       "palevioletred3"      </span></span>
+<span><span class="co">#&gt; [529] "palevioletred4"       "papayawhip"           "peachpuff"           </span></span>
+<span><span class="co">#&gt; [532] "peachpuff1"           "peachpuff2"           "peachpuff3"          </span></span>
+<span><span class="co">#&gt; [535] "peachpuff4"           "peru"                 "pink"                </span></span>
+<span><span class="co">#&gt; [538] "pink1"                "pink2"                "pink3"               </span></span>
+<span><span class="co">#&gt; [541] "pink4"                "plum"                 "plum1"               </span></span>
+<span><span class="co">#&gt; [544] "plum2"                "plum3"                "plum4"               </span></span>
+<span><span class="co">#&gt; [547] "powderblue"           "purple"               "purple1"             </span></span>
+<span><span class="co">#&gt; [550] "purple2"              "purple3"              "purple4"             </span></span>
+<span><span class="co">#&gt; [553] "red"                  "red1"                 "red2"                </span></span>
+<span><span class="co">#&gt; [556] "red3"                 "red4"                 "rosybrown"           </span></span>
+<span><span class="co">#&gt; [559] "rosybrown1"           "rosybrown2"           "rosybrown3"          </span></span>
+<span><span class="co">#&gt; [562] "rosybrown4"           "royalblue"            "royalblue1"          </span></span>
+<span><span class="co">#&gt; [565] "royalblue2"           "royalblue3"           "royalblue4"          </span></span>
+<span><span class="co">#&gt; [568] "saddlebrown"          "salmon"               "salmon1"             </span></span>
+<span><span class="co">#&gt; [571] "salmon2"              "salmon3"              "salmon4"             </span></span>
+<span><span class="co">#&gt; [574] "sandybrown"           "seagreen"             "seagreen1"           </span></span>
+<span><span class="co">#&gt; [577] "seagreen2"            "seagreen3"            "seagreen4"           </span></span>
+<span><span class="co">#&gt; [580] "seashell"             "seashell1"            "seashell2"           </span></span>
+<span><span class="co">#&gt; [583] "seashell3"            "seashell4"            "sienna"              </span></span>
+<span><span class="co">#&gt; [586] "sienna1"              "sienna2"              "sienna3"             </span></span>
+<span><span class="co">#&gt; [589] "sienna4"              "skyblue"              "skyblue1"            </span></span>
+<span><span class="co">#&gt; [592] "skyblue2"             "skyblue3"             "skyblue4"            </span></span>
+<span><span class="co">#&gt; [595] "slateblue"            "slateblue1"           "slateblue2"          </span></span>
+<span><span class="co">#&gt; [598] "slateblue3"           "slateblue4"           "slategray"           </span></span>
+<span><span class="co">#&gt; [601] "slategray1"           "slategray2"           "slategray3"          </span></span>
+<span><span class="co">#&gt; [604] "slategray4"           "slategrey"            "snow"                </span></span>
+<span><span class="co">#&gt; [607] "snow1"                "snow2"                "snow3"               </span></span>
+<span><span class="co">#&gt; [610] "snow4"                "springgreen"          "springgreen1"        </span></span>
+<span><span class="co">#&gt; [613] "springgreen2"         "springgreen3"         "springgreen4"        </span></span>
+<span><span class="co">#&gt; [616] "steelblue"            "steelblue1"           "steelblue2"          </span></span>
+<span><span class="co">#&gt; [619] "steelblue3"           "steelblue4"           "tan"                 </span></span>
+<span><span class="co">#&gt; [622] "tan1"                 "tan2"                 "tan3"                </span></span>
+<span><span class="co">#&gt; [625] "tan4"                 "thistle"              "thistle1"            </span></span>
+<span><span class="co">#&gt; [628] "thistle2"             "thistle3"             "thistle4"            </span></span>
+<span><span class="co">#&gt; [631] "tomato"               "tomato1"              "tomato2"             </span></span>
+<span><span class="co">#&gt; [634] "tomato3"              "tomato4"              "turquoise"           </span></span>
+<span><span class="co">#&gt; [637] "turquoise1"           "turquoise2"           "turquoise3"          </span></span>
+<span><span class="co">#&gt; [640] "turquoise4"           "violet"               "violetred"           </span></span>
+<span><span class="co">#&gt; [643] "violetred1"           "violetred2"           "violetred3"          </span></span>
+<span><span class="co">#&gt; [646] "violetred4"           "wheat"                "wheat1"              </span></span>
+<span><span class="co">#&gt; [649] "wheat2"               "wheat3"               "wheat4"              </span></span>
+<span><span class="co">#&gt; [652] "whitesmoke"           "yellow"               "yellow1"             </span></span>
+<span><span class="co">#&gt; [655] "yellow2"              "yellow3"              "yellow4"             </span></span>
+<span><span class="co">#&gt; [658] "yellowgreen"</span></span></code></pre></div>
 <p>Colors are assigned with <code><a href="../reference/dm_set_colors.html">dm_set_colors()</a></code> using syntax known in the {tidyverse} as {tidyselect}-syntax, here in the form: <code>color = table</code>. <a href="https://tidyselect.r-lib.org/reference/language.html" class="external-link">Select helper functions</a> are supported. The result of <code><a href="../reference/dm_set_colors.html">dm_set_colors()</a></code> is a <code>dm</code> object. The information about the color is stored together with the rest of the metadata.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_w_many_keys_and_colors</span> <span class="op">&lt;-</span>
-  <span class="va">flights_dm_w_many_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_set_colors.html">dm_set_colors</a></span><span class="op">(</span>
-    maroon4 <span class="op">=</span> <span class="va">flights</span>,
-    orange <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"air"</span><span class="op">)</span>,
-    <span class="st">"#5986C4"</span> <span class="op">=</span> <span class="va">planes</span>
-  <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">flights_dm_w_many_keys_and_colors</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">flights_dm_w_many_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_set_colors.html">dm_set_colors</a></span><span class="op">(</span></span>
+<span>    maroon4 <span class="op">=</span> <span class="va">flights</span>,</span>
+<span>    orange <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"air"</span><span class="op">)</span>,</span>
+<span>    <span class="st">"#5986C4"</span> <span class="op">=</span> <span class="va">planes</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>Draw the schema with <code><a href="../reference/dm_draw.html">dm_draw()</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">flights_dm_w_many_keys_and_colors</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">flights_dm_w_many_keys_and_colors</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="250pt" height="230pt" viewbox="0.00 0.00 250.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 226)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -403,13 +403,13 @@
 <polygon fill="#efebdd" stroke="transparent" points="140.5,-21 140.5,-41 241.5,-41 241.5,-21 140.5,-21"></polygon><text text-anchor="start" x="168.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="#ffffff" stroke="transparent" points="140.5,-1 140.5,-21 241.5,-21 241.5,-1 140.5,-1"></polygon><text text-anchor="start" x="142.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#555555" points="139,0 139,-42 242,-42 242,0 139,0"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge5" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title>
 <path fill="none" stroke="#555555" d="M102.5,-51C122.8065,-51 118.7241,-23.5684 130.6469,-14.1387"></path><polygon fill="#555555" stroke="#555555" points="132.0341,-17.3702 140.5,-11 129.9094,-10.7004 132.0341,-17.3702"></polygon></g></g></svg><p>The colors can be queried with <code><a href="../reference/dm_set_colors.html">dm_get_colors()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_set_colors.html">dm_get_colors</a></span><span class="op">(</span><span class="va">flights_dm_w_many_keys_and_colors</span><span class="op">)</span>
-<span class="co">#&gt;  #FFA500FF  #FFA500FF  #8B1C62FF  #5986C4FF    default </span>
-<span class="co">#&gt; "airlines" "airports"  "flights"   "planes"  "weather"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_set_colors.html">dm_get_colors</a></span><span class="op">(</span><span class="va">flights_dm_w_many_keys_and_colors</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  #FFA500FF  #FFA500FF  #8B1C62FF  #5986C4FF    default </span></span>
+<span><span class="co">#&gt; "airlines" "airports"  "flights"   "planes"  "weather"</span></span></code></pre></div>
 <p>See the documentation for <code><a href="../reference/dm_draw.html">dm_draw()</a></code> for further options. One important argument is <code>view_type</code>. Besides the default <code>"keys_only"</code>, it accepts <code>"all"</code> to display all columns, and <code>"title_only"</code> to show only the title of the table.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_w_many_keys_and_colors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span>view_type <span class="op">=</span> <span class="st">"title_only"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">flights_dm_w_many_keys_and_colors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span>view_type <span class="op">=</span> <span class="st">"title_only"</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="152pt" height="206pt" viewbox="0.00 0.00 152.00 206.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 202)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -426,9 +426,9 @@
 <polygon fill="#efebdd" stroke="transparent" points="93,-8 93,-28 141,-28 141,-8 93,-8"></polygon><text text-anchor="start" x="94.8492" y="-13.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="92,-7 92,-29 142,-29 142,-7 92,-7"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge5" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title>
 <path fill="none" stroke="#555555" d="M40.1474,-107.7912C52.4847,-91.0286 71.7252,-65.7013 90,-45 90.4936,-44.4409 90.9959,-43.8788 91.5052,-43.3151"></path><polygon fill="#555555" stroke="#555555" points="94.0816,-45.6844 98.3833,-36.0021 88.9826,-40.8886 94.0816,-45.6844"></polygon></g></g></svg><p>If you would like to visualize only some of the tables, use <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> before drawing:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_w_many_keys_and_colors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span>, <span class="va">planes</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">flights_dm_w_many_keys_and_colors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span>, <span class="va">planes</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="152pt" height="110pt" viewbox="0.00 0.00 152.00 110.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 106)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -441,11 +441,11 @@
 <polygon fill="#5986c4" stroke="transparent" points="94,-81 94,-101 140,-101 140,-81 94,-81"></polygon><text text-anchor="start" x="99.1178" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text><polygon fill="#dde6f3" stroke="transparent" points="94,-61 94,-81 140,-81 140,-61 94,-61"></polygon><text text-anchor="start" x="95.6115" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#3b5982" stroke-opacity="0.666667" points="93,-60 93,-102 141,-102 141,-60 93,-60"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge3" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M50,-51C67.4533,-51 71.4111,-64.2031 83.8035,-69.1543"></path><polygon fill="#555555" stroke="#555555" points="83.5365,-72.6628 94,-71 84.7834,-65.7747 83.5365,-72.6628"></polygon></g></g></svg><p>Finally, for exporting a drawing to <code>svg</code> you could use <code><a href="https://rdrr.io/pkg/DiagrammeRsvg/man/export_svg.html" class="external-link">DiagrammeRsvg::export_svg()</a></code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_w_many_keys_and_colors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span>, <span class="va">planes</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu">DiagrammeRsvg</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DiagrammeRsvg/man/export_svg.html" class="external-link">export_svg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://rdrr.io/r/base/write.html" class="external-link">write</a></span><span class="op">(</span><span class="st">"flights_dm_w_many_keys_and_color.svg"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">flights_dm_w_many_keys_and_colors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span>, <span class="va">planes</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu">DiagrammeRsvg</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DiagrammeRsvg/man/export_svg.html" class="external-link">export_svg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/write.html" class="external-link">write</a></span><span class="op">(</span><span class="st">"flights_dm_w_many_keys_and_color.svg"</span><span class="op">)</span></span></code></pre></div>
 
   </main>
 </div>

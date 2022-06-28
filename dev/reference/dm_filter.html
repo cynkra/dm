@@ -22,7 +22,7 @@ dm_apply_filters_to_tbl() retrieves one specific table of the dm that is updated
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9007</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,11 +95,11 @@ These conditions will be stored in the <code><a href="dm.html">dm</a></code>, an
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_filter</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">dm_apply_filters</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>
-
-<span class="fu">dm_apply_filters_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dm_filter</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dm_apply_filters</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dm_apply_filters_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -167,12 +167,12 @@ the filter.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dm_nyc</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dm_nyc_filtered</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_filter</span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">dm_apply_filters_to_tbl</span><span class="op">(</span><span class="va">dm_nyc_filtered</span>, <span class="va">flights</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dm_nyc</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dm_nyc_filtered</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dm_filter</span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">dm_apply_filters_to_tbl</span><span class="op">(</span><span class="va">dm_nyc_filtered</span>, <span class="va">flights</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 602 × 19</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
@@ -189,31 +189,31 @@ the filter.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 592 more rows, and 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">dm_nyc_filtered</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_apply_filters</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dm_nyc_filtered</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dm_apply_filters</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 53</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Primary keys: 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Foreign keys: 4</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If you want to keep only those rows in the parent tables</span></span>
-<span class="r-in"><span class="co"># whose primary key values appear as foreign key values in</span></span>
-<span class="r-in"><span class="co"># `flights`, you can set a `TRUE` filter in `flights`:</span></span>
-<span class="r-in"><span class="va">dm_nyc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_filter</span><span class="op">(</span><span class="va">flights</span>, <span class="fl">1</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_apply_filters</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If you want to keep only those rows in the parent tables</span></span></span>
+<span class="r-in"><span><span class="co"># whose primary key values appear as foreign key values in</span></span></span>
+<span class="r-in"><span><span class="co"># `flights`, you can set a `TRUE` filter in `flights`:</span></span></span>
+<span class="r-in"><span><span class="va">dm_nyc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dm_filter</span><span class="op">(</span><span class="va">flights</span>, <span class="fl">1</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dm_apply_filters</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> airlines airports  flights   planes  weather </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       15        3     1761      945      105 </span>
-<span class="r-in"><span class="co"># note that in this example, the only affected table is</span></span>
-<span class="r-in"><span class="co"># `airports` because the departure airports in `flights` are</span></span>
-<span class="r-in"><span class="co"># only the three New York airports.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">dm_nyc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_filter</span><span class="op">(</span><span class="va">planes</span>, <span class="va">engine</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Reciprocating"</span>, <span class="st">"4 Cycle"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># note that in this example, the only affected table is</span></span></span>
+<span class="r-in"><span><span class="co"># `airports` because the departure airports in `flights` are</span></span></span>
+<span class="r-in"><span><span class="co"># only the three New York airports.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dm_nyc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dm_filter</span><span class="op">(</span><span class="va">planes</span>, <span class="va">engine</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Reciprocating"</span>, <span class="st">"4 Cycle"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 53</span>

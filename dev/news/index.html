@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9007</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,6 +70,38 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.8.9008" id="dm-0289008">dm 0.2.8.9008<a class="anchor" aria-label="anchor" href="#dm-0289008"></a></h2>
+<div class="section level3">
+<h3 id="features-0-2-8-9008">Features<a class="anchor" aria-label="anchor" href="#features-0-2-8-9008"></a></h3>
+<ul><li><p><code>dm_from_con(learn_keys = TRUE)</code> works for MariaDB (<a href="https://github.com/cynkra/dm/issues/1106" class="external-link">#1106</a>, <a href="https://github.com/cynkra/dm/issues/1123" class="external-link">#1123</a>, <a href="https://github.com/cynkra/dm/issues/1169" class="external-link">#1169</a>, <a href="https://github.com/maelle" class="external-link">@maelle</a>).</p></li>
+<li><p>New <code><a href="https://dplyr.tidyverse.org/reference/nest_join.html" class="external-link">nest_join()</a></code> and <code><a href="../reference/pack_join.html">pack_join()</a></code> for zoomed dm objects (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1119" class="external-link">#1119</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-0-2-8-9008">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-2-8-9008"></a></h3>
+<ul><li><p>Use fallback db also for vignettes (<a href="https://github.com/cynkra/dm/issues/1118" class="external-link">#1118</a>).</p></li>
+<li><p>Edits to dm class vignette (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1158" class="external-link">#1158</a>).</p></li>
+<li><p>Add Conclusions to “how-to” tutorials (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1132" class="external-link">#1132</a>).</p></li>
+<li><p>Consistent captioning in articles (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1157" class="external-link">#1157</a>).</p></li>
+<li><p>Better message for learning error (<a href="https://github.com/cynkra/dm/issues/1081" class="external-link">#1081</a>).</p></li>
+<li><p>Moves “Further Reading” to article index (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1120" class="external-link">#1120</a>).</p></li>
+<li><p>Use selection helpers in <code>_pkgdown.yml</code> (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1138" class="external-link">#1138</a>).</p></li>
+<li><p>Document <code><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse()</a></code> S3 method for <code>dm</code> (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1121" class="external-link">#1121</a>).</p></li>
+<li><p>Edits to zoom vignette (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1112" class="external-link">#1112</a>).</p></li>
+<li><p>Edits to articles about dm from df and db (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1082" class="external-link">#1082</a>).</p></li>
+<li><p>Edits to dm draw vignette (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1101" class="external-link">#1101</a>).</p></li>
+<li><p>Edits to function naming logic (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1100" class="external-link">#1100</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-0-2-8-9008">Chore<a class="anchor" aria-label="anchor" href="#chore-0-2-8-9008"></a></h3>
+<ul><li><p>Draft of test expectations for enum_ops() (<a href="https://github.com/egnha" class="external-link">@egnha</a>, <a href="https://github.com/cynkra/dm/issues/1150" class="external-link">#1150</a>).</p></li>
+<li><p>Add tests for <code>dm_meta()</code> contents (<a href="https://github.com/cynkra/dm/issues/1114" class="external-link">#1114</a>).</p></li>
+<li><p>Middleware: Confirmation message if overwriting primary key (<a href="https://github.com/cynkra/dm/issues/1149" class="external-link">#1149</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="internal-0-2-8-9008">Internal<a class="anchor" aria-label="anchor" href="#internal-0-2-8-9008"></a></h3>
+<ul><li>Dynamic code generation (<a href="https://github.com/cynkra/dm/issues/1095" class="external-link">#1095</a>).</li></ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.8.9007" id="dm-0289007">dm 0.2.8.9007<a class="anchor" aria-label="anchor" href="#dm-0289007"></a></h2>
 <div class="section level3">

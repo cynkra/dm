@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9007</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Filtering in relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2022-06-27</h4>
+            <h4 data-toc-skip class="date">2022-06-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-filter.Rmd" class="external-link"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-filter.Rmd</code></div>
@@ -115,9 +115,9 @@
 <p>Our example data is drawn from the <a href="https://github.com/tidyverse/nycflights13" class="external-link">{nycflights13}</a> package that contains five inter-linked tables.</p>
 <p>First, we will load the packages that we need:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="data-nycflights13">Data: nycflights13<a class="anchor" aria-label="anchor" href="#data-nycflights13"></a>
 </h2>
@@ -128,18 +128,18 @@
 <p>A <a href="https://cynkra.github.io/dm/articles/tech-dm-class.html#class-dm">data model object</a> contains data from the source tables, and metadata about the tables.</p>
 <p>If you would like to create a <code>dm</code> object from tables other than the example data, you can use the <code><a href="../reference/dm.html">new_dm()</a></code>, <code><a href="../reference/dm.html">dm()</a></code> or <code><a href="../reference/dm.html">as_dm()</a></code> functions. See <code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code> for details.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The console output of the ’dm` object shows its data and metadata, and is colored for clarity:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 4</span>
-<span class="co">#&gt; Foreign keys: 4</span></code></pre>
+<code class="sourceCode R"><span><span class="va">dm</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
+<span><span class="co">#&gt; Columns: 53</span></span>
+<span><span class="co">#&gt; Primary keys: 4</span></span>
+<span><span class="co">#&gt; Foreign keys: 4</span></span></code></pre>
 <p>Now we know that there are five tables in our <code>dm</code> object. But how are they connected? These relations are best displayed as a visualization of the entity-relationship model:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="250pt" height="230pt" viewbox="0.00 0.00 250.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 226)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -155,23 +155,23 @@
 <polygon fill="#70ad47" stroke="transparent" points="140.5,-21 140.5,-41 241.5,-41 241.5,-21 140.5,-21"></polygon><text text-anchor="start" x="168.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="#e2eeda" stroke="transparent" points="140.5,-1 140.5,-21 241.5,-21 241.5,-1 140.5,-1"></polygon><text text-anchor="start" x="142.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="139,0 139,-42 242,-42 242,0 139,0"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge4" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title>
 <path fill="none" stroke="#555555" d="M102.5,-71C129.8727,-71 114.6101,-25.8792 130.6579,-13.8939"></path><polygon fill="#555555" stroke="#555555" points="131.8935,-17.1789 140.5,-11 129.9188,-10.4631 131.8935,-17.1789"></polygon></g></g></svg><p>You can look at a single table with <code>tbl</code>. To print the <code>airports</code> table, call</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">dm</span>, <span class="st">"airports"</span><span class="op">)</span>
-<span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span>
-<span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 86 × 8</span>
-<span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span>
-<span class="co">#&gt;  1 ALB   Albany Intl                    42.7  -73.8   285    -5 A     Amer…</span>
-<span class="co">#&gt;  2 ATL   Hartsfield Jackson Atlanta I…  33.6  -84.4  1026    -5 A     Amer…</span>
-<span class="co">#&gt;  3 AUS   Austin Bergstrom Intl          30.2  -97.7   542    -6 A     Amer…</span>
-<span class="co">#&gt;  4 BDL   Bradley Intl                   41.9  -72.7   173    -5 A     Amer…</span>
-<span class="co">#&gt;  5 BHM   Birmingham Intl                33.6  -86.8   644    -6 A     Amer…</span>
-<span class="co">#&gt;  6 BNA   Nashville Intl                 36.1  -86.7   599    -6 A     Amer…</span>
-<span class="co">#&gt;  7 BOS   General Edward Lawrence Loga…  42.4  -71.0    19    -5 A     Amer…</span>
-<span class="co">#&gt;  8 BTV   Burlington Intl                44.5  -73.2   335    -5 A     Amer…</span>
-<span class="co">#&gt;  9 BUF   Buffalo Niagara Intl           42.9  -78.7   724    -5 A     Amer…</span>
-<span class="co">#&gt; 10 BUR   Bob Hope                       34.2 -118.    778    -8 A     Amer…</span>
-<span class="co">#&gt; # … with 76 more rows</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">dm</span>, <span class="st">"airports"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span></span>
+<span><span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 86 × 8</span></span>
+<span><span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt;  1 ALB   Albany Intl                    42.7  -73.8   285    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  2 ATL   Hartsfield Jackson Atlanta I…  33.6  -84.4  1026    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  3 AUS   Austin Bergstrom Intl          30.2  -97.7   542    -6 A     Amer…</span></span>
+<span><span class="co">#&gt;  4 BDL   Bradley Intl                   41.9  -72.7   173    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  5 BHM   Birmingham Intl                33.6  -86.8   644    -6 A     Amer…</span></span>
+<span><span class="co">#&gt;  6 BNA   Nashville Intl                 36.1  -86.7   599    -6 A     Amer…</span></span>
+<span><span class="co">#&gt;  7 BOS   General Edward Lawrence Loga…  42.4  -71.0    19    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  8 BTV   Burlington Intl                44.5  -73.2   335    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  9 BUF   Buffalo Niagara Intl           42.9  -78.7   724    -5 A     Amer…</span></span>
+<span><span class="co">#&gt; 10 BUR   Bob Hope                       34.2 -118.    778    -8 A     Amer…</span></span>
+<span><span class="co">#&gt; # … with 76 more rows</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="filter">Filtering a <code>dm</code> object<a class="anchor" aria-label="anchor" href="#filter"></a>
@@ -200,117 +200,117 @@
 <p>Let’s see filtering in action:</p>
 <p><strong>We only want the data that is related to John F. Kennedy International Airport.</strong></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">filtered_dm</span> <span class="op">&lt;-</span>
-  <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span>
-<span class="va">filtered_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 4</span>
-<span class="co">#&gt; Foreign keys: 4</span>
-<span class="co">#&gt; ── Filters ────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; airports: name == "John F Kennedy Intl"</span></code></pre>
+<code class="sourceCode R"><span><span class="va">filtered_dm</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span></span>
+<span><span class="va">filtered_dm</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
+<span><span class="co">#&gt; Columns: 53</span></span>
+<span><span class="co">#&gt; Primary keys: 4</span></span>
+<span><span class="co">#&gt; Foreign keys: 4</span></span>
+<span><span class="co">#&gt; ── Filters ────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; airports: name == "John F Kennedy Intl"</span></span></code></pre>
 <p>The filter expression is listed in the print output.</p>
 <p>You can get the numbers of rows of each table with <code><a href="../reference/dm_nrow.html">dm_nrow()</a></code>. Before doing that, you will need to apply the filters using <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rows_per_table</span> <span class="op">&lt;-</span>
-  <span class="va">filtered_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">rows_per_table</span>
-<span class="co">#&gt; airlines airports  flights   planes  weather </span>
-<span class="co">#&gt;       10        1      602      336       38</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">rows_per_table</span><span class="op">)</span>
-<span class="co">#&gt; [1] 987</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">rows_per_table</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">filtered_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">rows_per_table</span></span>
+<span><span class="co">#&gt; airlines airports  flights   planes  weather </span></span>
+<span><span class="co">#&gt;       10        1      602      336       38</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">rows_per_table</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 987</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sum_nrow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span><span class="op">)</span>
-<span class="va">sum_nrow_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="va">filtered_dm</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sum_nrow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">sum_nrow_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="va">filtered_dm</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The total number of rows in the <code>dm</code> drops from 2 951 to 987 (the only unaffected table is the disconnected <code>weather</code> table).</p>
 <p>Next example:</p>
 <p><strong>Get a <code>dm</code> object containing data for flights from New York to the Dulles International Airport in Washington D.C., abbreviated with <code>IAD</code>.</strong></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">dest</span> <span class="op">==</span> <span class="st">"IAD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; airlines airports  flights   planes  weather </span>
-<span class="co">#&gt;        4        3       32       28       30</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">dest</span> <span class="op">==</span> <span class="st">"IAD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; airlines airports  flights   planes  weather </span></span>
+<span><span class="co">#&gt;        4        3       32       28       30</span></span></code></pre></div>
 <p>Chaining multiple filters on different tables is also supported.</p>
 <p>An example:</p>
 <p><strong>Get all flights from Delta Air Lines which didn’t depart from John F. Kennedy International Airport in May 2013.</strong></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op">&lt;-</span>
-  <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"Delta Air Lines Inc."</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">!=</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span>
-<span class="va">dm_delta_may</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 4</span>
-<span class="co">#&gt; Foreign keys: 4</span>
-<span class="co">#&gt; ── Filters ────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; airlines: name == "Delta Air Lines Inc."</span>
-<span class="co">#&gt; airports: name != "John F Kennedy Intl"</span>
-<span class="co">#&gt; flights: month == 5</span></code></pre>
+<code class="sourceCode R"><span><span class="va">dm_delta_may</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"Delta Air Lines Inc."</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">!=</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">dm_delta_may</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
+<span><span class="co">#&gt; Columns: 53</span></span>
+<span><span class="co">#&gt; Primary keys: 4</span></span>
+<span><span class="co">#&gt; Foreign keys: 4</span></span>
+<span><span class="co">#&gt; ── Filters ────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; airlines: name == "Delta Air Lines Inc."</span></span>
+<span><span class="co">#&gt; airports: name != "John F Kennedy Intl"</span></span>
+<span><span class="co">#&gt; flights: month == 5</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; airlines airports  flights   planes  weather </span>
-<span class="co">#&gt;        0        0        0        0        0</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; airlines airports  flights   planes  weather </span></span>
+<span><span class="co">#&gt;        0        0        0        0        0</span></span></code></pre></div>
 <p>You can inspect the filtered tables with <code><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl()</a></code>.</p>
 <p>In the <code>airlines</code> table, Delta is the only remaining carrier:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"airlines"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 0 × 2</span>
-<span class="co">#&gt; # … with 2 variables: carrier &lt;chr&gt;, name &lt;chr&gt;</span></code></pre>
+<code class="sourceCode R"><span><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"airlines"</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 0 × 2</span></span>
+<span><span class="co">#&gt; # … with 2 variables: carrier &lt;chr&gt;, name &lt;chr&gt;</span></span></code></pre>
 <p>Which planes were used to service these flights?</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"planes"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 0 × 9</span>
-<span class="co">#&gt; # … with 9 variables: tailnum &lt;chr&gt;, year &lt;int&gt;, type &lt;chr&gt;,</span>
-<span class="co">#&gt; #   manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,</span>
-<span class="co">#&gt; #   speed &lt;int&gt;, engine &lt;chr&gt;</span></code></pre>
+<code class="sourceCode R"><span><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"planes"</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 0 × 9</span></span>
+<span><span class="co">#&gt; # … with 9 variables: tailnum &lt;chr&gt;, year &lt;int&gt;, type &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   speed &lt;int&gt;, engine &lt;chr&gt;</span></span></code></pre>
 <p>And indeed, all included flights departed in May (<code>month == 5</code>):</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"flights"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 0 × 19</span>
-<span class="co">#&gt; # … with 19 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,</span>
-<span class="co">#&gt; #   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span>
-<span class="co">#&gt; #   sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,</span>
-<span class="co">#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></code></pre>
+<code class="sourceCode R"><span><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"flights"</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 0 × 19</span></span>
+<span><span class="co">#&gt; # … with 19 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span></code></pre>
 <p>For comparison, let’s review the equivalent manual query for <code>flights</code> in <code>dplyr</code> syntax:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">airlines_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"Delta Air Lines Inc."</span><span class="op">)</span>
-<span class="va">airports_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">!=</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span>
-<span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join</a></span><span class="op">(</span><span class="va">airlines_filtered</span>, by <span class="op">=</span> <span class="st">"carrier"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join</a></span><span class="op">(</span><span class="va">airports_filtered</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span> <span class="op">=</span> <span class="st">"faa"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 2,340 × 19</span>
-<span class="co">#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span>
-<span class="co">#&gt;  1  2013     5     1      554            600        -6      731</span>
-<span class="co">#&gt;  2  2013     5     1      555            600        -5      819</span>
-<span class="co">#&gt;  3  2013     5     1      603            610        -7      754</span>
-<span class="co">#&gt;  4  2013     5     1      622            630        -8      848</span>
-<span class="co">#&gt;  5  2013     5     1      654            700        -6      931</span>
-<span class="co">#&gt;  6  2013     5     1      655            700        -5      944</span>
-<span class="co">#&gt;  7  2013     5     1      656            705        -9     1005</span>
-<span class="co">#&gt;  8  2013     5     1      658            700        -2      925</span>
-<span class="co">#&gt;  9  2013     5     1      743            745        -2     1014</span>
-<span class="co">#&gt; 10  2013     5     1      755            800        -5      929</span>
-<span class="co">#&gt; # … with 2,330 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span>
-<span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
-<span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></code></pre>
+<code class="sourceCode R"><span><span class="va">airlines_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"Delta Air Lines Inc."</span><span class="op">)</span></span>
+<span><span class="va">airports_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">!=</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span></span>
+<span><span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join</a></span><span class="op">(</span><span class="va">airlines_filtered</span>, by <span class="op">=</span> <span class="st">"carrier"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join</a></span><span class="op">(</span><span class="va">airports_filtered</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span> <span class="op">=</span> <span class="st">"faa"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 2,340 × 19</span></span>
+<span><span class="co">#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1  2013     5     1      554            600        -6      731</span></span>
+<span><span class="co">#&gt;  2  2013     5     1      555            600        -5      819</span></span>
+<span><span class="co">#&gt;  3  2013     5     1      603            610        -7      754</span></span>
+<span><span class="co">#&gt;  4  2013     5     1      622            630        -8      848</span></span>
+<span><span class="co">#&gt;  5  2013     5     1      654            700        -6      931</span></span>
+<span><span class="co">#&gt;  6  2013     5     1      655            700        -5      944</span></span>
+<span><span class="co">#&gt;  7  2013     5     1      656            705        -9     1005</span></span>
+<span><span class="co">#&gt;  8  2013     5     1      658            700        -2      925</span></span>
+<span><span class="co">#&gt;  9  2013     5     1      743            745        -2     1014</span></span>
+<span><span class="co">#&gt; 10  2013     5     1      755            800        -5      929</span></span>
+<span><span class="co">#&gt; # … with 2,330 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span></code></pre>
 <p>The {dm} code is leaner because the foreign key information is encoded in the object.</p>
 </div>
 </div>
@@ -324,77 +324,77 @@
 <p>To show the SQL query behind a <code><a href="../reference/dm_filter.html">dm_filter()</a></code>, we copy the <code>flights</code>, <code>airlines</code> and <code>airports</code> tables from the <code>nyflights13</code> dataset to a temporary in-memory database using the built-in function <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> and <code><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">dbplyr::src_memdb</a></code>.</p>
 <p>Then we filter the data, and print the corresponding SQL statement with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">dbplyr::sql_render()</a></code>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">src_memdb</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"Delta Air Lines Inc."</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">!=</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm.html">dm_get_tables</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fu">dbplyr</span><span class="fu">::</span><span class="va"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render</a></span><span class="op">)</span>
-<span class="co">#&gt; $flights</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (</span>
-<span class="co">#&gt;   SELECT * FROM `flights_1_2020_08_28_07_13_03_12345` AS `LHS`</span>
-<span class="co">#&gt;   WHERE EXISTS (</span>
-<span class="co">#&gt;     SELECT 1 FROM (</span>
-<span class="co">#&gt;     SELECT *</span>
-<span class="co">#&gt;     FROM `airlines_1_2020_08_28_07_13_03_12345`</span>
-<span class="co">#&gt;     WHERE (`name` = 'Delta Air Lines Inc.')</span>
-<span class="co">#&gt; ) AS `RHS`</span>
-<span class="co">#&gt;     WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
-<span class="co">#&gt;   )</span>
-<span class="co">#&gt; ) AS `LHS`</span>
-<span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (</span>
-<span class="co">#&gt;   SELECT *</span>
-<span class="co">#&gt;   FROM `airports_1_2020_08_28_07_13_03_12345`</span>
-<span class="co">#&gt;   WHERE (`name` != 'John F Kennedy Intl')</span>
-<span class="co">#&gt; ) AS `RHS`</span>
-<span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span>
-<span class="co">#&gt; )</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $airlines</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (</span>
-<span class="co">#&gt;   SELECT *</span>
-<span class="co">#&gt;   FROM `airlines_1_2020_08_28_07_13_03_12345`</span>
-<span class="co">#&gt;   WHERE (`name` = 'Delta Air Lines Inc.')</span>
-<span class="co">#&gt; ) AS `LHS`</span>
-<span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (</span>
-<span class="co">#&gt;   SELECT * FROM `flights_1_2020_08_28_07_13_03_12345` AS `LHS`</span>
-<span class="co">#&gt;   WHERE EXISTS (</span>
-<span class="co">#&gt;     SELECT 1 FROM (</span>
-<span class="co">#&gt;     SELECT *</span>
-<span class="co">#&gt;     FROM `airports_1_2020_08_28_07_13_03_12345`</span>
-<span class="co">#&gt;     WHERE (`name` != 'John F Kennedy Intl')</span>
-<span class="co">#&gt; ) AS `RHS`</span>
-<span class="co">#&gt;     WHERE (`LHS`.`origin` = `RHS`.`faa`)</span>
-<span class="co">#&gt;   )</span>
-<span class="co">#&gt; ) AS `RHS`</span>
-<span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
-<span class="co">#&gt; )</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $airports</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (</span>
-<span class="co">#&gt;   SELECT *</span>
-<span class="co">#&gt;   FROM `airports_1_2020_08_28_07_13_03_12345`</span>
-<span class="co">#&gt;   WHERE (`name` != 'John F Kennedy Intl')</span>
-<span class="co">#&gt; ) AS `LHS`</span>
-<span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (</span>
-<span class="co">#&gt;   SELECT * FROM `flights_1_2020_08_28_07_13_03_12345` AS `LHS`</span>
-<span class="co">#&gt;   WHERE EXISTS (</span>
-<span class="co">#&gt;     SELECT 1 FROM (</span>
-<span class="co">#&gt;     SELECT *</span>
-<span class="co">#&gt;     FROM `airlines_1_2020_08_28_07_13_03_12345`</span>
-<span class="co">#&gt;     WHERE (`name` = 'Delta Air Lines Inc.')</span>
-<span class="co">#&gt; ) AS `RHS`</span>
-<span class="co">#&gt;     WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
-<span class="co">#&gt;   )</span>
-<span class="co">#&gt; ) AS `RHS`</span>
-<span class="co">#&gt;   WHERE (`LHS`.`faa` = `RHS`.`origin`)</span>
-<span class="co">#&gt; )</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">src_memdb</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"Delta Air Lines Inc."</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">!=</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm.html">dm_get_tables</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fu">dbplyr</span><span class="fu">::</span><span class="va"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; $flights</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (</span></span>
+<span><span class="co">#&gt;   SELECT * FROM `flights_1_2020_08_28_07_13_03_12345` AS `LHS`</span></span>
+<span><span class="co">#&gt;   WHERE EXISTS (</span></span>
+<span><span class="co">#&gt;     SELECT 1 FROM (</span></span>
+<span><span class="co">#&gt;     SELECT *</span></span>
+<span><span class="co">#&gt;     FROM `airlines_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;     WHERE (`name` = 'Delta Air Lines Inc.')</span></span>
+<span><span class="co">#&gt; ) AS `RHS`</span></span>
+<span><span class="co">#&gt;     WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span></span>
+<span><span class="co">#&gt;   )</span></span>
+<span><span class="co">#&gt; ) AS `LHS`</span></span>
+<span><span class="co">#&gt; WHERE EXISTS (</span></span>
+<span><span class="co">#&gt;   SELECT 1 FROM (</span></span>
+<span><span class="co">#&gt;   SELECT *</span></span>
+<span><span class="co">#&gt;   FROM `airports_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;   WHERE (`name` != 'John F Kennedy Intl')</span></span>
+<span><span class="co">#&gt; ) AS `RHS`</span></span>
+<span><span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span></span>
+<span><span class="co">#&gt; )</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $airlines</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (</span></span>
+<span><span class="co">#&gt;   SELECT *</span></span>
+<span><span class="co">#&gt;   FROM `airlines_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;   WHERE (`name` = 'Delta Air Lines Inc.')</span></span>
+<span><span class="co">#&gt; ) AS `LHS`</span></span>
+<span><span class="co">#&gt; WHERE EXISTS (</span></span>
+<span><span class="co">#&gt;   SELECT 1 FROM (</span></span>
+<span><span class="co">#&gt;   SELECT * FROM `flights_1_2020_08_28_07_13_03_12345` AS `LHS`</span></span>
+<span><span class="co">#&gt;   WHERE EXISTS (</span></span>
+<span><span class="co">#&gt;     SELECT 1 FROM (</span></span>
+<span><span class="co">#&gt;     SELECT *</span></span>
+<span><span class="co">#&gt;     FROM `airports_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;     WHERE (`name` != 'John F Kennedy Intl')</span></span>
+<span><span class="co">#&gt; ) AS `RHS`</span></span>
+<span><span class="co">#&gt;     WHERE (`LHS`.`origin` = `RHS`.`faa`)</span></span>
+<span><span class="co">#&gt;   )</span></span>
+<span><span class="co">#&gt; ) AS `RHS`</span></span>
+<span><span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span></span>
+<span><span class="co">#&gt; )</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $airports</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (</span></span>
+<span><span class="co">#&gt;   SELECT *</span></span>
+<span><span class="co">#&gt;   FROM `airports_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;   WHERE (`name` != 'John F Kennedy Intl')</span></span>
+<span><span class="co">#&gt; ) AS `LHS`</span></span>
+<span><span class="co">#&gt; WHERE EXISTS (</span></span>
+<span><span class="co">#&gt;   SELECT 1 FROM (</span></span>
+<span><span class="co">#&gt;   SELECT * FROM `flights_1_2020_08_28_07_13_03_12345` AS `LHS`</span></span>
+<span><span class="co">#&gt;   WHERE EXISTS (</span></span>
+<span><span class="co">#&gt;     SELECT 1 FROM (</span></span>
+<span><span class="co">#&gt;     SELECT *</span></span>
+<span><span class="co">#&gt;     FROM `airlines_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;     WHERE (`name` = 'Delta Air Lines Inc.')</span></span>
+<span><span class="co">#&gt; ) AS `RHS`</span></span>
+<span><span class="co">#&gt;     WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span></span>
+<span><span class="co">#&gt;   )</span></span>
+<span><span class="co">#&gt; ) AS `RHS`</span></span>
+<span><span class="co">#&gt;   WHERE (`LHS`.`faa` = `RHS`.`origin`)</span></span>
+<span><span class="co">#&gt; )</span></span></code></pre></div>
 <p>Further reading: {dm}’s function for copying data <a href="https://cynkra.github.io/dm/articles/dm.html#copy">from and to databases</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9007</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -191,73 +191,73 @@
 <h3 id="api-draft">API draft<a class="anchor" aria-label="anchor" href="#api-draft"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_insert</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">...</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">check_dots_empty</span><span class="op">(</span><span class="op">)</span>
-
-  <span class="fu">dm_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, operation <span class="op">=</span> <span class="va">tbl_insert</span>, top_down <span class="op">=</span> <span class="cn">TRUE</span>, dry_run <span class="op">=</span> <span class="va">dry_run</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">dm_update</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">...</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">check_dots_empty</span><span class="op">(</span><span class="op">)</span>
-
-  <span class="fu">dm_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, operation <span class="op">=</span> <span class="va">tbl_update</span>, top_down <span class="op">=</span> <span class="cn">TRUE</span>, dry_run <span class="op">=</span> <span class="va">dry_run</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">dm_upsert</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">...</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">check_dots_empty</span><span class="op">(</span><span class="op">)</span>
-
-  <span class="fu">dm_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, operation <span class="op">=</span> <span class="va">tbl_upsert</span>, top_down <span class="op">=</span> <span class="cn">TRUE</span>, dry_run <span class="op">=</span> <span class="va">dry_run</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">dm_delete</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">...</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">check_dots_empty</span><span class="op">(</span><span class="op">)</span>
-
-  <span class="fu">dm_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, operation <span class="op">=</span> <span class="va">tbl_delete</span>, top_down <span class="op">=</span> <span class="cn">FALSE</span>, dry_run <span class="op">=</span> <span class="va">dry_run</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">dm_truncate</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">...</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">check_dots_empty</span><span class="op">(</span><span class="op">)</span>
-
-  <span class="fu">dm_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, operation <span class="op">=</span> <span class="va">tbl_truncate</span>, top_down <span class="op">=</span> <span class="cn">FALSE</span>, dry_run <span class="op">=</span> <span class="va">dry_run</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">dm_persist</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">operation</span>, <span class="va">top_down</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">dm_check_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span><span class="op">)</span>
-
-  <span class="fu">dm_run_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">operation</span>, <span class="va">top_down</span>, <span class="va">dry_run</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">dm_check_persist</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">check_not_zoomed</span><span class="op">(</span><span class="va">target_dm</span><span class="op">)</span>
-  <span class="fu">check_not_zoomed</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>
-
-  <span class="fu">check_same_src</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span><span class="op">)</span>
-  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html" class="external-link">walk2</a></span><span class="op">(</span><span class="fu"><a href="../../reference/dm.html">dm_get_tables</a></span><span class="op">(</span><span class="va">target_dm</span><span class="op">)</span>, <span class="fu"><a href="../../reference/dm.html">dm_get_tables</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>, <span class="va">check_columns_superset</span><span class="op">)</span>
-  <span class="fu">check_keys_compatible</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">dm_run_persist</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">operation</span>, <span class="va">top_down</span>, <span class="va">dry_run</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co"># topologically sort tables</span>
-  <span class="co"># run operation(target_tbl, source_tbl, dry_run = dry_run) for each table</span>
-  <span class="co"># operation() always returns tbl, only need to patch if not the same tbl</span>
-  <span class="co"># new_tables is list of non-NULL operation() values</span>
-
-  <span class="va">target_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu">dm_patch_tbl</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">new_tables</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">dm_patch_tbl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dm</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">check_not_zoomed</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>
-
-  <span class="va">new_tables</span> <span class="op">&lt;-</span> <span class="fu">list2</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-  <span class="co"># FIXME: Better error message for unknown tables</span>
-
-  <span class="va">def</span> <span class="op">&lt;-</span> <span class="fu">dm_get_def</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>
-  <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">new_tables</span><span class="op">)</span>, <span class="va">def</span><span class="op">$</span><span class="va">table</span><span class="op">)</span>
-  <span class="va">def</span><span class="op">[</span><span class="va">idx</span>, <span class="st">"data"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">new_tables</span><span class="op">)</span>
-  <span class="fu">new_dm3</span><span class="op">(</span><span class="va">def</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dm_insert</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">...</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">check_dots_empty</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu">dm_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, operation <span class="op">=</span> <span class="va">tbl_insert</span>, top_down <span class="op">=</span> <span class="cn">TRUE</span>, dry_run <span class="op">=</span> <span class="va">dry_run</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">dm_update</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">...</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">check_dots_empty</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu">dm_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, operation <span class="op">=</span> <span class="va">tbl_update</span>, top_down <span class="op">=</span> <span class="cn">TRUE</span>, dry_run <span class="op">=</span> <span class="va">dry_run</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">dm_upsert</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">...</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">check_dots_empty</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu">dm_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, operation <span class="op">=</span> <span class="va">tbl_upsert</span>, top_down <span class="op">=</span> <span class="cn">TRUE</span>, dry_run <span class="op">=</span> <span class="va">dry_run</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">dm_delete</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">...</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">check_dots_empty</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu">dm_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, operation <span class="op">=</span> <span class="va">tbl_delete</span>, top_down <span class="op">=</span> <span class="cn">FALSE</span>, dry_run <span class="op">=</span> <span class="va">dry_run</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">dm_truncate</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">...</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">check_dots_empty</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu">dm_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, operation <span class="op">=</span> <span class="va">tbl_truncate</span>, top_down <span class="op">=</span> <span class="cn">FALSE</span>, dry_run <span class="op">=</span> <span class="va">dry_run</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">dm_persist</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">operation</span>, <span class="va">top_down</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">dm_check_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu">dm_run_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">operation</span>, <span class="va">top_down</span>, <span class="va">dry_run</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">dm_check_persist</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">check_not_zoomed</span><span class="op">(</span><span class="va">target_dm</span><span class="op">)</span></span>
+<span>  <span class="fu">check_not_zoomed</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu">check_same_src</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html" class="external-link">walk2</a></span><span class="op">(</span><span class="fu"><a href="../../reference/dm.html">dm_get_tables</a></span><span class="op">(</span><span class="va">target_dm</span><span class="op">)</span>, <span class="fu"><a href="../../reference/dm.html">dm_get_tables</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>, <span class="va">check_columns_superset</span><span class="op">)</span></span>
+<span>  <span class="fu">check_keys_compatible</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">dm_run_persist</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">operation</span>, <span class="va">top_down</span>, <span class="va">dry_run</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># topologically sort tables</span></span>
+<span>  <span class="co"># run operation(target_tbl, source_tbl, dry_run = dry_run) for each table</span></span>
+<span>  <span class="co"># operation() always returns tbl, only need to patch if not the same tbl</span></span>
+<span>  <span class="co"># new_tables is list of non-NULL operation() values</span></span>
+<span></span>
+<span>  <span class="va">target_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu">dm_patch_tbl</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">new_tables</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">dm_patch_tbl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dm</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">check_not_zoomed</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">new_tables</span> <span class="op">&lt;-</span> <span class="fu">list2</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># FIXME: Better error message for unknown tables</span></span>
+<span></span>
+<span>  <span class="va">def</span> <span class="op">&lt;-</span> <span class="fu">dm_get_def</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span>  <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">new_tables</span><span class="op">)</span>, <span class="va">def</span><span class="op">$</span><span class="va">table</span><span class="op">)</span></span>
+<span>  <span class="va">def</span><span class="op">[</span><span class="va">idx</span>, <span class="st">"data"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">new_tables</span><span class="op">)</span></span>
+<span>  <span class="fu">new_dm3</span><span class="op">(</span><span class="va">def</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

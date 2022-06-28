@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9007</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Migration guide: 'cdm' -&gt; 'dm'</h1>
             
-            <h4 data-toc-skip class="date">2022-06-27</h4>
+            <h4 data-toc-skip class="date">2022-06-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-cdm.Rmd" class="external-link"><code>vignettes/tech-dm-cdm.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-cdm.Rmd</code></div>
@@ -131,79 +131,79 @@
 <p>Here a short example for the different cases:</p>
 <p>Formerly you would access the “filtered” tables using the following syntax:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
-<span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="st">"airports"</span><span class="op">)</span>
-<span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span>
-<span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 86 × 8</span>
-<span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span>
-<span class="co">#&gt;  1 ALB   Albany Intl                    42.7  -73.8   285    -5 A     Amer…</span>
-<span class="co">#&gt;  2 ATL   Hartsfield Jackson Atlanta I…  33.6  -84.4  1026    -5 A     Amer…</span>
-<span class="co">#&gt;  3 AUS   Austin Bergstrom Intl          30.2  -97.7   542    -6 A     Amer…</span>
-<span class="co">#&gt;  4 BDL   Bradley Intl                   41.9  -72.7   173    -5 A     Amer…</span>
-<span class="co">#&gt;  5 BHM   Birmingham Intl                33.6  -86.8   644    -6 A     Amer…</span>
-<span class="co">#&gt;  6 BNA   Nashville Intl                 36.1  -86.7   599    -6 A     Amer…</span>
-<span class="co">#&gt;  7 BOS   General Edward Lawrence Loga…  42.4  -71.0    19    -5 A     Amer…</span>
-<span class="co">#&gt;  8 BTV   Burlington Intl                44.5  -73.2   335    -5 A     Amer…</span>
-<span class="co">#&gt;  9 BUF   Buffalo Niagara Intl           42.9  -78.7   724    -5 A     Amer…</span>
-<span class="co">#&gt; 10 BUR   Bob Hope                       34.2 -118.    778    -8 A     Amer…</span>
-<span class="co">#&gt; # … with 76 more rows</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></span>
+<span><span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="st">"airports"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span></span>
+<span><span class="co">#&gt; Use `dm[[table_name]]` instead to access a specific table.</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 86 × 8</span></span>
+<span><span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt;  1 ALB   Albany Intl                    42.7  -73.8   285    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  2 ATL   Hartsfield Jackson Atlanta I…  33.6  -84.4  1026    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  3 AUS   Austin Bergstrom Intl          30.2  -97.7   542    -6 A     Amer…</span></span>
+<span><span class="co">#&gt;  4 BDL   Bradley Intl                   41.9  -72.7   173    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  5 BHM   Birmingham Intl                33.6  -86.8   644    -6 A     Amer…</span></span>
+<span><span class="co">#&gt;  6 BNA   Nashville Intl                 36.1  -86.7   599    -6 A     Amer…</span></span>
+<span><span class="co">#&gt;  7 BOS   General Edward Lawrence Loga…  42.4  -71.0    19    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  8 BTV   Burlington Intl                44.5  -73.2   335    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  9 BUF   Buffalo Niagara Intl           42.9  -78.7   724    -5 A     Amer…</span></span>
+<span><span class="co">#&gt; 10 BUR   Bob Hope                       34.2 -118.    778    -8 A     Amer…</span></span>
+<span><span class="co">#&gt; # … with 76 more rows</span></span></code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm</span><span class="op">$</span><span class="va">planes</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 945 × 9</span>
-<span class="co">#&gt;    tailnum  year type         manufacturer model engines seats speed engine</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; </span>
-<span class="co">#&gt;  1 N10156   2004 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
-<span class="co">#&gt;  2 N104UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span>
-<span class="co">#&gt;  3 N10575   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
-<span class="co">#&gt;  4 N105UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span>
-<span class="co">#&gt;  5 N110UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span>
-<span class="co">#&gt;  6 N11106   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
-<span class="co">#&gt;  7 N11107   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
-<span class="co">#&gt;  8 N11109   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
-<span class="co">#&gt;  9 N11121   2003 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
-<span class="co">#&gt; 10 N11137   2003 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span>
-<span class="co">#&gt; # … with 935 more rows</span></code></pre>
+<code class="sourceCode R"><span><span class="va">flights_dm</span><span class="op">$</span><span class="va">planes</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 945 × 9</span></span>
+<span><span class="co">#&gt;    tailnum  year type         manufacturer model engines seats speed engine</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; </span></span>
+<span><span class="co">#&gt;  1 N10156   2004 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  2 N104UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span></span>
+<span><span class="co">#&gt;  3 N10575   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  4 N105UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span></span>
+<span><span class="co">#&gt;  5 N110UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span></span>
+<span><span class="co">#&gt;  6 N11106   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  7 N11107   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  8 N11109   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  9 N11121   2003 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt; 10 N11137   2003 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt; # … with 935 more rows</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm</span><span class="op">[[</span><span class="st">"weather"</span><span class="op">]</span><span class="op">]</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 144 × 15</span>
-<span class="co">#&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 EWR     2013     1    10     0  41    32    70.1      230       8.06</span>
-<span class="co">#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21</span>
-<span class="co">#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90</span>
-<span class="co">#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75</span>
-<span class="co">#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90</span>
-<span class="co">#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 </span>
-<span class="co">#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90</span>
-<span class="co">#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90</span>
-<span class="co">#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06</span>
-<span class="co">#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 </span>
-<span class="co">#&gt; # … with 134 more rows, and 5 more variables: wind_gust &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></code></pre>
+<code class="sourceCode R"><span><span class="va">flights_dm</span><span class="op">[[</span><span class="st">"weather"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 144 × 15</span></span>
+<span><span class="co">#&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 EWR     2013     1    10     0  41    32    70.1      230       8.06</span></span>
+<span><span class="co">#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21</span></span>
+<span><span class="co">#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90</span></span>
+<span><span class="co">#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75</span></span>
+<span><span class="co">#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90</span></span>
+<span><span class="co">#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 </span></span>
+<span><span class="co">#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90</span></span>
+<span><span class="co">#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90</span></span>
+<span><span class="co">#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06</span></span>
+<span><span class="co">#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 </span></span>
+<span><span class="co">#&gt; # … with 134 more rows, and 5 more variables: wind_gust &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span></code></pre>
 <p>After the update the same result is achieved by this type of function call:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airlines</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 15 × 2</span>
-<span class="co">#&gt;    carrier name                       </span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;                      </span>
-<span class="co">#&gt;  1 9E      Endeavor Air Inc.          </span>
-<span class="co">#&gt;  2 AA      American Airlines Inc.     </span>
-<span class="co">#&gt;  3 AS      Alaska Airlines Inc.       </span>
-<span class="co">#&gt;  4 B6      JetBlue Airways            </span>
-<span class="co">#&gt;  5 DL      Delta Air Lines Inc.       </span>
-<span class="co">#&gt;  6 EV      ExpressJet Airlines Inc.   </span>
-<span class="co">#&gt;  7 F9      Frontier Airlines Inc.     </span>
-<span class="co">#&gt;  8 FL      AirTran Airways Corporation</span>
-<span class="co">#&gt;  9 HA      Hawaiian Airlines Inc.     </span>
-<span class="co">#&gt; 10 MQ      Envoy Air                  </span>
-<span class="co">#&gt; 11 UA      United Air Lines Inc.      </span>
-<span class="co">#&gt; 12 US      US Airways Inc.            </span>
-<span class="co">#&gt; 13 VX      Virgin America             </span>
-<span class="co">#&gt; 14 WN      Southwest Airlines Co.     </span>
-<span class="co">#&gt; 15 YV      Mesa Airlines Inc.</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airlines</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 15 × 2</span></span>
+<span><span class="co">#&gt;    carrier name                       </span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;                      </span></span>
+<span><span class="co">#&gt;  1 9E      Endeavor Air Inc.          </span></span>
+<span><span class="co">#&gt;  2 AA      American Airlines Inc.     </span></span>
+<span><span class="co">#&gt;  3 AS      Alaska Airlines Inc.       </span></span>
+<span><span class="co">#&gt;  4 B6      JetBlue Airways            </span></span>
+<span><span class="co">#&gt;  5 DL      Delta Air Lines Inc.       </span></span>
+<span><span class="co">#&gt;  6 EV      ExpressJet Airlines Inc.   </span></span>
+<span><span class="co">#&gt;  7 F9      Frontier Airlines Inc.     </span></span>
+<span><span class="co">#&gt;  8 FL      AirTran Airways Corporation</span></span>
+<span><span class="co">#&gt;  9 HA      Hawaiian Airlines Inc.     </span></span>
+<span><span class="co">#&gt; 10 MQ      Envoy Air                  </span></span>
+<span><span class="co">#&gt; 11 UA      United Air Lines Inc.      </span></span>
+<span><span class="co">#&gt; 12 US      US Airways Inc.            </span></span>
+<span><span class="co">#&gt; 13 VX      Virgin America             </span></span>
+<span><span class="co">#&gt; 14 WN      Southwest Airlines Co.     </span></span>
+<span><span class="co">#&gt; 15 YV      Mesa Airlines Inc.</span></span></code></pre>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

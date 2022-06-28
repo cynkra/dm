@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9007</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Introduction to relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2022-06-27</h4>
+            <h4 data-toc-skip class="date">2022-06-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-theory.Rmd</code></div>
@@ -156,47 +156,47 @@
 <p>Details like the full name of an airport are not available immediately; these can only be obtained by joining or merging the constituent tables, which can result in long and inflated pipe chains full of <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code> and other forms of data merging.</p>
 <p>In classical {dplyr} notation, you will need three <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code> calls to merge the <code>flights</code> table gradually to <code>airlines</code>, <code>planes</code>, <code>airports</code>, and <code>weather</code> tables to create one wide data frame.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code><span class="co">#&gt; ── Attaching packages ────────────────────────────────── tidyverse 1.3.1 ──</span></code></pre>
-<pre class="fansi fansi-message"><code><span class="co">#&gt; ✔ ggplot2 3.3.6     ✔ purrr   0.3.4</span>
-<span class="co">#&gt; ✔ tibble  3.1.7     ✔ dplyr   1.0.9</span>
-<span class="co">#&gt; ✔ tidyr   1.2.0     ✔ stringr 1.4.0</span>
-<span class="co">#&gt; ✔ readr   2.1.2     ✔ forcats 0.5.1</span></code></pre>
-<pre class="fansi fansi-message"><code><span class="co">#&gt; ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──</span>
-<span class="co">#&gt; ✖ dplyr::filter() masks dm::filter(), stats::filter()</span>
-<span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-message"><code><span><span class="co">#&gt; ── Attaching packages ────────────────────────────────── tidyverse 1.3.1 ──</span></span></code></pre>
+<pre class="fansi fansi-message"><code><span><span class="co">#&gt; ✔ ggplot2 3.3.6     ✔ purrr   0.3.4</span></span>
+<span><span class="co">#&gt; ✔ tibble  3.1.7     ✔ dplyr   1.0.9</span></span>
+<span><span class="co">#&gt; ✔ tidyr   1.2.0     ✔ stringr 1.4.0</span></span>
+<span><span class="co">#&gt; ✔ readr   2.1.2     ✔ forcats 0.5.1</span></span></code></pre>
+<pre class="fansi fansi-message"><code><span><span class="co">#&gt; ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──</span></span>
+<span><span class="co">#&gt; ✖ dplyr::filter() masks dm::filter(), stats::filter()</span></span>
+<span><span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></span></code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
-
-<span class="va">nycflights13_df</span> <span class="op">&lt;-</span> 
-  <span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airlines</span>, by <span class="op">=</span> <span class="st">"carrier"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">planes</span>, by <span class="op">=</span> <span class="st">"tailnum"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airports</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span> <span class="op">=</span> <span class="st">"faa"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">weather</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span>, <span class="st">"time_hour"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">nycflights13_df</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 336,776 × 48</span>
-<span class="co">#&gt;    year.x month.x day.x dep_time sched_dep_time dep_delay arr_time</span>
-<span class="co">#&gt;     &lt;int&gt;   &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span>
-<span class="co">#&gt;  1   2013       1     1      517            515         2      830</span>
-<span class="co">#&gt;  2   2013       1     1      533            529         4      850</span>
-<span class="co">#&gt;  3   2013       1     1      542            540         2      923</span>
-<span class="co">#&gt;  4   2013       1     1      544            545        -1     1004</span>
-<span class="co">#&gt;  5   2013       1     1      554            600        -6      812</span>
-<span class="co">#&gt;  6   2013       1     1      554            558        -4      740</span>
-<span class="co">#&gt;  7   2013       1     1      555            600        -5      913</span>
-<span class="co">#&gt;  8   2013       1     1      557            600        -3      709</span>
-<span class="co">#&gt;  9   2013       1     1      557            600        -3      838</span>
-<span class="co">#&gt; 10   2013       1     1      558            600        -2      753</span>
-<span class="co">#&gt; # … with 336,766 more rows, and 41 more variables: sched_arr_time &lt;int&gt;,</span>
-<span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
-<span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   hour.x &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, name.x &lt;chr&gt;,</span>
-<span class="co">#&gt; #   year.y &lt;int&gt;, type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;,</span>
-<span class="co">#&gt; #   engines &lt;int&gt;, seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;, name.y &lt;chr&gt;,</span>
-<span class="co">#&gt; #   lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;, …</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">nycflights13_df</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airlines</span>, by <span class="op">=</span> <span class="st">"carrier"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">planes</span>, by <span class="op">=</span> <span class="st">"tailnum"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airports</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span> <span class="op">=</span> <span class="st">"faa"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">weather</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span>, <span class="st">"time_hour"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">nycflights13_df</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 336,776 × 48</span></span>
+<span><span class="co">#&gt;    year.x month.x day.x dep_time sched_dep_time dep_delay arr_time</span></span>
+<span><span class="co">#&gt;     &lt;int&gt;   &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1   2013       1     1      517            515         2      830</span></span>
+<span><span class="co">#&gt;  2   2013       1     1      533            529         4      850</span></span>
+<span><span class="co">#&gt;  3   2013       1     1      542            540         2      923</span></span>
+<span><span class="co">#&gt;  4   2013       1     1      544            545        -1     1004</span></span>
+<span><span class="co">#&gt;  5   2013       1     1      554            600        -6      812</span></span>
+<span><span class="co">#&gt;  6   2013       1     1      554            558        -4      740</span></span>
+<span><span class="co">#&gt;  7   2013       1     1      555            600        -5      913</span></span>
+<span><span class="co">#&gt;  8   2013       1     1      557            600        -3      709</span></span>
+<span><span class="co">#&gt;  9   2013       1     1      557            600        -3      838</span></span>
+<span><span class="co">#&gt; 10   2013       1     1      558            600        -2      753</span></span>
+<span><span class="co">#&gt; # … with 336,766 more rows, and 41 more variables: sched_arr_time &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   hour.x &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, name.x &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   year.y &lt;int&gt;, type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   engines &lt;int&gt;, seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;, name.y &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;, …</span></span></code></pre>
 <p>{dm} offers a more elegant and shorter way to combine tables while augmenting {dplyr}/{dbplyr} workflows.</p>
 <p>It is possible to have the best of both worlds: manage your data with {dm} as linked tables, and, when necessary, flatten multiple tables into a single data frame for analysis with {dplyr}.</p>
 <p>The next step is to create a <a href="#model">data model</a> based on multiple tables:</p>
@@ -207,10 +207,10 @@
 <p>A data model shows the structure between multiple tables that are linked together.</p>
 <p>The <code>nycflights13</code> relations can be transferred into the following graphical representation:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="250pt" height="230pt" viewbox="0.00 0.00 250.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 226)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -230,11 +230,11 @@
 <p>The links between the tables are established through <a href="#pk">primary keys</a> and <a href="#fk">foreign keys</a>.</p>
 <p>As an aside, we can also now see how avoiding redundant data by building data models with multiple tables can save memory compared to storing data in single a data frame:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>
-<span class="co">#&gt; 469048 bytes</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">nycflights13_df</span><span class="op">)</span>
-<span class="co">#&gt; 108020824 bytes</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 469048 bytes</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">nycflights13_df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 108020824 bytes</span></span></code></pre></div>
 <p>Further Reading: The {dm} methods for <a href="https://cynkra.github.io/dm/articles/tech-dm-draw.html">visualizing data models</a>.</p>
 </div>
 <div class="section level2">
@@ -244,30 +244,30 @@
 <p>Example: In the <code>airlines</code> table of <code>nycflights13</code> the column <code>carrier</code> is the primary key, a simple key. The <code>weather</code> table has the combination of <code>origin</code> and <code>time_hour</code> as primary key, a compound key.</p>
 <p>You can get all primary keys in a <code>dm</code> by calling <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 4 × 2</span>
-<span class="co">#&gt;   table    pk_col           </span>
-<span class="co">#&gt;   &lt;chr&gt;    &lt;keys&gt;           </span>
-<span class="co">#&gt; 1 airlines carrier          </span>
-<span class="co">#&gt; 2 airports faa              </span>
-<span class="co">#&gt; 3 planes   tailnum          </span>
-<span class="co">#&gt; 4 weather  origin, time_hour</span></code></pre>
+<code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 4 × 2</span></span>
+<span><span class="co">#&gt;   table    pk_col           </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;keys&gt;           </span></span>
+<span><span class="co">#&gt; 1 airlines carrier          </span></span>
+<span><span class="co">#&gt; 2 airports faa              </span></span>
+<span><span class="co">#&gt; 3 planes   tailnum          </span></span>
+<span><span class="co">#&gt; 4 weather  origin, time_hour</span></span></code></pre>
 <p><code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> checks suitability of each column to serve as a simple primary key:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span><span class="va">airports</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 8 × 3</span>
-<span class="co">#&gt;   columns candidate why                                                    </span>
-<span class="co">#&gt;   &lt;keys&gt;  &lt;lgl&gt;     &lt;chr&gt;                                                  </span>
-<span class="co">#&gt; 1 faa     TRUE      ""                                                     </span>
-<span class="co">#&gt; 2 name    TRUE      ""                                                     </span>
-<span class="co">#&gt; 3 lat     TRUE      ""                                                     </span>
-<span class="co">#&gt; 4 lon     TRUE      ""                                                     </span>
-<span class="co">#&gt; 5 alt     FALSE     "has duplicate values: 30 (4), 13 (3), 9 (2), 19 (2), …</span>
-<span class="co">#&gt; 6 tz      FALSE     "has duplicate values: -5 (48), -6 (21), -8 (12), -7 (…</span>
-<span class="co">#&gt; 7 dst     FALSE     "has duplicate values: A (84), N (2)"                  </span>
-<span class="co">#&gt; 8 tzone   FALSE     "has duplicate values: America/New_York (48), America/…</span></code></pre>
+<code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span><span class="va">airports</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 8 × 3</span></span>
+<span><span class="co">#&gt;   columns candidate why                                                    </span></span>
+<span><span class="co">#&gt;   &lt;keys&gt;  &lt;lgl&gt;     &lt;chr&gt;                                                  </span></span>
+<span><span class="co">#&gt; 1 faa     TRUE      ""                                                     </span></span>
+<span><span class="co">#&gt; 2 name    TRUE      ""                                                     </span></span>
+<span><span class="co">#&gt; 3 lat     TRUE      ""                                                     </span></span>
+<span><span class="co">#&gt; 4 lon     TRUE      ""                                                     </span></span>
+<span><span class="co">#&gt; 5 alt     FALSE     "has duplicate values: 30 (4), 13 (3), 9 (2), 19 (2), …</span></span>
+<span><span class="co">#&gt; 6 tz      FALSE     "has duplicate values: -5 (48), -6 (21), -8 (12), -7 (…</span></span>
+<span><span class="co">#&gt; 7 dst     FALSE     "has duplicate values: A (84), N (2)"                  </span></span>
+<span><span class="co">#&gt; 8 tzone   FALSE     "has duplicate values: America/New_York (48), America/…</span></span></code></pre>
 <p>Further Reading: The {dm} package offers several functions for dealing with <a href="https://cynkra.github.io/dm/articles/tech-dm-class.html#pk">primary keys</a>.</p>
 </div>
 <div class="section level2">
@@ -277,42 +277,42 @@
 <p>For example, if you want to link the <code>airlines</code> table to the <code>flights</code> table, the primary key in <code>airlines</code> needs to match the foreign key in <code>flights</code>. This condition is satisfied because the column <code>carrier</code> is present as a primary key in the <code>airlines</code> table as well as a foreign key in the <code>flights</code> table. In the case of compound keys, the <code>origin</code> and <code>time_hour</code> columns (which form the primary key of the <code>weather</code> table) are also present in the <code>flights</code> table.</p>
 <p>You can find foreign key candidates for simple keys with the function <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>; they are marked with <code>TRUE</code> in the <code>candidate</code> column.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 19 × 3</span>
-<span class="co">#&gt;    columns        candidate why                                            </span>
-<span class="co">#&gt;    &lt;keys&gt;         &lt;lgl&gt;     &lt;chr&gt;                                          </span>
-<span class="co">#&gt;  1 carrier        TRUE      ""                                             </span>
-<span class="co">#&gt;  2 year           FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt;  3 month          FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt;  4 day            FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt;  5 dep_time       FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt;  6 sched_dep_time FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt;  7 dep_delay      FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
-<span class="co">#&gt;  8 arr_time       FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt;  9 sched_arr_time FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt; 10 arr_delay      FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
-<span class="co">#&gt; 11 flight         FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt; 12 tailnum        FALSE     "values of `flights$tailnum` not in `airlines$…</span>
-<span class="co">#&gt; 13 origin         FALSE     "values of `flights$origin` not in `airlines$c…</span>
-<span class="co">#&gt; 14 dest           FALSE     "values of `flights$dest` not in `airlines$car…</span>
-<span class="co">#&gt; 15 air_time       FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
-<span class="co">#&gt; 16 distance       FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
-<span class="co">#&gt; 17 hour           FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
-<span class="co">#&gt; 18 minute         FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
-<span class="co">#&gt; 19 time_hour      FALSE     "Can't combine `value1` &lt;datetime&lt;America/New_…</span></code></pre>
+<code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 19 × 3</span></span>
+<span><span class="co">#&gt;    columns        candidate why                                            </span></span>
+<span><span class="co">#&gt;    &lt;keys&gt;         &lt;lgl&gt;     &lt;chr&gt;                                          </span></span>
+<span><span class="co">#&gt;  1 carrier        TRUE      ""                                             </span></span>
+<span><span class="co">#&gt;  2 year           FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt;  3 month          FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt;  4 day            FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt;  5 dep_time       FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt;  6 sched_dep_time FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt;  7 dep_delay      FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span></span>
+<span><span class="co">#&gt;  8 arr_time       FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt;  9 sched_arr_time FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt; 10 arr_delay      FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span></span>
+<span><span class="co">#&gt; 11 flight         FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt; 12 tailnum        FALSE     "values of `flights$tailnum` not in `airlines$…</span></span>
+<span><span class="co">#&gt; 13 origin         FALSE     "values of `flights$origin` not in `airlines$c…</span></span>
+<span><span class="co">#&gt; 14 dest           FALSE     "values of `flights$dest` not in `airlines$car…</span></span>
+<span><span class="co">#&gt; 15 air_time       FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span></span>
+<span><span class="co">#&gt; 16 distance       FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span></span>
+<span><span class="co">#&gt; 17 hour           FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span></span>
+<span><span class="co">#&gt; 18 minute         FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span></span>
+<span><span class="co">#&gt; 19 time_hour      FALSE     "Can't combine `value1` &lt;datetime&lt;America/New_…</span></span></code></pre>
 <p>Additionally, you can also extract a summary of all foreign key relations present in a <code>dm</code> object using <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 5 × 5</span>
-<span class="co">#&gt;   child_table child_fk_cols     parent_table parent_key_cols   on_delete</span>
-<span class="co">#&gt;   &lt;chr&gt;       &lt;keys&gt;            &lt;chr&gt;        &lt;keys&gt;            &lt;chr&gt;    </span>
-<span class="co">#&gt; 1 flights     carrier           airlines     carrier           no_action</span>
-<span class="co">#&gt; 2 flights     origin            airports     faa               no_action</span>
-<span class="co">#&gt; 3 flights     dest              airports     faa               no_action</span>
-<span class="co">#&gt; 4 flights     tailnum           planes       tailnum           no_action</span>
-<span class="co">#&gt; 5 flights     origin, time_hour weather      origin, time_hour no_action</span></code></pre>
+<code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 5 × 5</span></span>
+<span><span class="co">#&gt;   child_table child_fk_cols     parent_table parent_key_cols   on_delete</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;keys&gt;            &lt;chr&gt;        &lt;keys&gt;            &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt; 1 flights     carrier           airlines     carrier           no_action</span></span>
+<span><span class="co">#&gt; 2 flights     origin            airports     faa               no_action</span></span>
+<span><span class="co">#&gt; 3 flights     dest              airports     faa               no_action</span></span>
+<span><span class="co">#&gt; 4 flights     tailnum           planes       tailnum           no_action</span></span>
+<span><span class="co">#&gt; 5 flights     origin, time_hour weather      origin, time_hour no_action</span></span></code></pre>
 <p>Further Reading: All {dm} functions for working with <a href="https://cynkra.github.io/dm/articles/tech-dm-class.html#foreign-keys">foreign keys</a>.</p>
 </div>
 <div class="section level2">
@@ -326,11 +326,11 @@
 </ul>
 <p>In the example data model, for a substantial share of the flights, detailed information for the corresponding airplane is not available:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code><span class="co">#&gt; ! Unsatisfied constraints:</span></code></pre>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; • Table `flights`: foreign key `dest` into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (30), BQN (6), STT (4), PSE (2)</span>
-<span class="co">#&gt; • Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</span></code></pre>
+<code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-message"><code><span><span class="co">#&gt; ! Unsatisfied constraints:</span></span></code></pre>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; • Table `flights`: foreign key `dest` into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (30), BQN (6), STT (4), PSE (2)</span></span>
+<span><span class="co">#&gt; • Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</span></span></code></pre>
 <p>Establishing referential integrity is important for providing clean data for analysis or downstream users. See <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code> for more information on adding, deleting, or updating individual rows, and <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> for operations on the data in a data model.</p>
 </div>
 <div class="section level2">
@@ -340,74 +340,74 @@
 <p>A normalized data schema consists of several relations (tables) that are linked with attributes (columns). The relations can be joined together by means of <a href="#pk">primary</a> and <a href="#fk">foreign keys</a>. The main goal of normalization is to keep data organization as clean and simple as possible by avoiding redundant data entries.</p>
 <p>For example, if you want to change the name of one airport in the <code>nycflights13</code> dataset, you will only need to update a single data value. This principle is sometimes called the <em>single point of truth</em>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#  Update in one single location...</span>
-<span class="va">airlines</span><span class="op">[</span><span class="va">airlines</span><span class="op">$</span><span class="va">carrier</span> <span class="op">==</span> <span class="st">"UA"</span>, <span class="st">"name"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"United broke my guitar"</span>
-
-<span class="va">airlines</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">carrier</span> <span class="op">==</span> <span class="st">"UA"</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1 × 2</span>
-<span class="co">#&gt;   carrier name                  </span>
-<span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;                 </span>
-<span class="co">#&gt; 1 UA      United broke my guitar</span></code></pre>
+<code class="sourceCode R"><span><span class="co">#  Update in one single location...</span></span>
+<span><span class="va">airlines</span><span class="op">[</span><span class="va">airlines</span><span class="op">$</span><span class="va">carrier</span> <span class="op">==</span> <span class="st">"UA"</span>, <span class="st">"name"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"United broke my guitar"</span></span>
+<span></span>
+<span><span class="va">airlines</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">carrier</span> <span class="op">==</span> <span class="st">"UA"</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
+<span><span class="co">#&gt;   carrier name                  </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;                 </span></span>
+<span><span class="co">#&gt; 1 UA      United broke my guitar</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># ...propagates to all related records</span>
-<span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airlines</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">flight</span>, <span class="va">name</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code><span class="co">#&gt; Joining, by = "carrier"</span></code></pre>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 336,776 × 2</span>
-<span class="co">#&gt;    flight name                    </span>
-<span class="co">#&gt;     &lt;int&gt; &lt;chr&gt;                   </span>
-<span class="co">#&gt;  1   1545 United broke my guitar  </span>
-<span class="co">#&gt;  2   1714 United broke my guitar  </span>
-<span class="co">#&gt;  3   1141 American Airlines Inc.  </span>
-<span class="co">#&gt;  4    725 JetBlue Airways         </span>
-<span class="co">#&gt;  5    461 Delta Air Lines Inc.    </span>
-<span class="co">#&gt;  6   1696 United broke my guitar  </span>
-<span class="co">#&gt;  7    507 JetBlue Airways         </span>
-<span class="co">#&gt;  8   5708 ExpressJet Airlines Inc.</span>
-<span class="co">#&gt;  9     79 JetBlue Airways         </span>
-<span class="co">#&gt; 10    301 American Airlines Inc.  </span>
-<span class="co">#&gt; # … with 336,766 more rows</span></code></pre>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># ...propagates to all related records</span></span>
+<span><span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airlines</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">flight</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-message"><code><span><span class="co">#&gt; Joining, by = "carrier"</span></span></code></pre>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 336,776 × 2</span></span>
+<span><span class="co">#&gt;    flight name                    </span></span>
+<span><span class="co">#&gt;     &lt;int&gt; &lt;chr&gt;                   </span></span>
+<span><span class="co">#&gt;  1   1545 United broke my guitar  </span></span>
+<span><span class="co">#&gt;  2   1714 United broke my guitar  </span></span>
+<span><span class="co">#&gt;  3   1141 American Airlines Inc.  </span></span>
+<span><span class="co">#&gt;  4    725 JetBlue Airways         </span></span>
+<span><span class="co">#&gt;  5    461 Delta Air Lines Inc.    </span></span>
+<span><span class="co">#&gt;  6   1696 United broke my guitar  </span></span>
+<span><span class="co">#&gt;  7    507 JetBlue Airways         </span></span>
+<span><span class="co">#&gt;  8   5708 ExpressJet Airlines Inc.</span></span>
+<span><span class="co">#&gt;  9     79 JetBlue Airways         </span></span>
+<span><span class="co">#&gt; 10    301 American Airlines Inc.  </span></span>
+<span><span class="co">#&gt; # … with 336,766 more rows</span></span></code></pre>
 <p>Another way to demonstrate normalization is splitting a table into two parts.</p>
 <p>Let’s look at the <code>planes</code> table, which consists of 3322 individual tail numbers and corresponding information for the specific airplane, like the year it was manufactured or the average cruising speed.</p>
 <p>The function <code><a href="../reference/decompose_table.html">decompose_table()</a></code> extracts two new tables and creates a new key <code>model_id</code>, that links both tables.</p>
 <p>This results in a <code>parent_table</code> and a <code>child_table</code> that differ massively in the number of rows:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">planes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">model_id</span>, <span class="va">model</span>, <span class="va">manufacturer</span>, <span class="va">type</span>, <span class="va">engines</span>, <span class="va">seats</span>, <span class="va">speed</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; $child_table</span>
-<span class="co">#&gt; # A tibble: 3,322 × 4</span>
-<span class="co">#&gt;    tailnum  year engine    model_id</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;        &lt;int&gt;</span>
-<span class="co">#&gt;  1 N10156   2004 Turbo-fan      120</span>
-<span class="co">#&gt;  2 N102UW   1998 Turbo-fan       93</span>
-<span class="co">#&gt;  3 N103US   1999 Turbo-fan       93</span>
-<span class="co">#&gt;  4 N104UW   1999 Turbo-fan       93</span>
-<span class="co">#&gt;  5 N10575   2002 Turbo-fan      119</span>
-<span class="co">#&gt;  6 N105UW   1999 Turbo-fan       93</span>
-<span class="co">#&gt;  7 N107US   1999 Turbo-fan       93</span>
-<span class="co">#&gt;  8 N108UW   1999 Turbo-fan       93</span>
-<span class="co">#&gt;  9 N109UW   1999 Turbo-fan       93</span>
-<span class="co">#&gt; 10 N110UW   1999 Turbo-fan       93</span>
-<span class="co">#&gt; # … with 3,312 more rows</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $parent_table</span>
-<span class="co">#&gt; # A tibble: 147 × 7</span>
-<span class="co">#&gt;    model_id model       manufacturer     type           engines seats speed</span>
-<span class="co">#&gt;       &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;            &lt;int&gt; &lt;int&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1      120 EMB-145XR   EMBRAER          Fixed wing mu…       2    55    NA</span>
-<span class="co">#&gt;  2       93 A320-214    AIRBUS INDUSTRIE Fixed wing mu…       2   182    NA</span>
-<span class="co">#&gt;  3      119 EMB-145LR   EMBRAER          Fixed wing mu…       2    55    NA</span>
-<span class="co">#&gt;  4       39 737-824     BOEING           Fixed wing mu…       2   149    NA</span>
-<span class="co">#&gt;  5       68 767-332     BOEING           Fixed wing mu…       2   330    NA</span>
-<span class="co">#&gt;  6       52 757-224     BOEING           Fixed wing mu…       2   178    NA</span>
-<span class="co">#&gt;  7       94 A320-214    AIRBUS           Fixed wing mu…       2   182    NA</span>
-<span class="co">#&gt;  8      112 CL-600-2D24 BOMBARDIER INC   Fixed wing mu…       2    95    NA</span>
-<span class="co">#&gt;  9       30 737-724     BOEING           Fixed wing mu…       2   149    NA</span>
-<span class="co">#&gt; 10       27 737-524     BOEING           Fixed wing mu…       2   149    NA</span>
-<span class="co">#&gt; # … with 137 more rows</span></code></pre>
+<code class="sourceCode R"><span><span class="va">planes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">model_id</span>, <span class="va">model</span>, <span class="va">manufacturer</span>, <span class="va">type</span>, <span class="va">engines</span>, <span class="va">seats</span>, <span class="va">speed</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; $child_table</span></span>
+<span><span class="co">#&gt; # A tibble: 3,322 × 4</span></span>
+<span><span class="co">#&gt;    tailnum  year engine    model_id</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;        &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1 N10156   2004 Turbo-fan      120</span></span>
+<span><span class="co">#&gt;  2 N102UW   1998 Turbo-fan       93</span></span>
+<span><span class="co">#&gt;  3 N103US   1999 Turbo-fan       93</span></span>
+<span><span class="co">#&gt;  4 N104UW   1999 Turbo-fan       93</span></span>
+<span><span class="co">#&gt;  5 N10575   2002 Turbo-fan      119</span></span>
+<span><span class="co">#&gt;  6 N105UW   1999 Turbo-fan       93</span></span>
+<span><span class="co">#&gt;  7 N107US   1999 Turbo-fan       93</span></span>
+<span><span class="co">#&gt;  8 N108UW   1999 Turbo-fan       93</span></span>
+<span><span class="co">#&gt;  9 N109UW   1999 Turbo-fan       93</span></span>
+<span><span class="co">#&gt; 10 N110UW   1999 Turbo-fan       93</span></span>
+<span><span class="co">#&gt; # … with 3,312 more rows</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $parent_table</span></span>
+<span><span class="co">#&gt; # A tibble: 147 × 7</span></span>
+<span><span class="co">#&gt;    model_id model       manufacturer     type           engines seats speed</span></span>
+<span><span class="co">#&gt;       &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;            &lt;int&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1      120 EMB-145XR   EMBRAER          Fixed wing mu…       2    55    NA</span></span>
+<span><span class="co">#&gt;  2       93 A320-214    AIRBUS INDUSTRIE Fixed wing mu…       2   182    NA</span></span>
+<span><span class="co">#&gt;  3      119 EMB-145LR   EMBRAER          Fixed wing mu…       2    55    NA</span></span>
+<span><span class="co">#&gt;  4       39 737-824     BOEING           Fixed wing mu…       2   149    NA</span></span>
+<span><span class="co">#&gt;  5       68 767-332     BOEING           Fixed wing mu…       2   330    NA</span></span>
+<span><span class="co">#&gt;  6       52 757-224     BOEING           Fixed wing mu…       2   178    NA</span></span>
+<span><span class="co">#&gt;  7       94 A320-214    AIRBUS           Fixed wing mu…       2   182    NA</span></span>
+<span><span class="co">#&gt;  8      112 CL-600-2D24 BOMBARDIER INC   Fixed wing mu…       2    95    NA</span></span>
+<span><span class="co">#&gt;  9       30 737-724     BOEING           Fixed wing mu…       2   149    NA</span></span>
+<span><span class="co">#&gt; 10       27 737-524     BOEING           Fixed wing mu…       2   149    NA</span></span>
+<span><span class="co">#&gt; # … with 137 more rows</span></span></code></pre>
 <p>While <code>child_table</code> contains 3322 unique <code>tailnum</code> rows and therefore consists of 3322 rows, just like the original <code>planes</code> table, the <code>parent_table</code> shrunk to just 147 rows, enough to store all relevant combinations and avoid storing redundant information.</p>
 <p>Further Reading: See the <a href="https://simple.wikipedia.org/wiki/Database_normalisation" class="external-link">Simple English Wikipedia article on database normalization</a> for more details.</p>
 </div>
@@ -419,36 +419,36 @@
 <p>Therefore, {dm} can copy data <a href="https://cynkra.github.io/dm/articles/dm.html#copy">from and to databases</a>, and works transparently with both in-memory data and with relational database systems.</p>
 <p>For example, let’s create a local SQLite database and copy the <code>dm</code> object to it:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">con_sqlite</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="va">con_sqlite</span>
-<span class="co">#&gt; &lt;SQLiteConnection&gt;</span>
-<span class="co">#&gt;   Path: </span>
-<span class="co">#&gt;   Extensions: TRUE</span>
-<span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html" class="external-link">dbListTables</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
-<span class="co">#&gt; character(0)</span>
-
-<span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">con_sqlite</span>, <span class="va">dm</span><span class="op">)</span>
-<span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html" class="external-link">dbListTables</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
-<span class="co">#&gt; [1] "airlines_1_2020_08_28_07_13_03_12345"</span>
-<span class="co">#&gt; [2] "airports_1_2020_08_28_07_13_03_12345"</span>
-<span class="co">#&gt; [3] "flights_1_2020_08_28_07_13_03_12345" </span>
-<span class="co">#&gt; [4] "planes_1_2020_08_28_07_13_03_12345"  </span>
-<span class="co">#&gt; [5] "weather_1_2020_08_28_07_13_03_12345"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">con_sqlite</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">con_sqlite</span></span>
+<span><span class="co">#&gt; &lt;SQLiteConnection&gt;</span></span>
+<span><span class="co">#&gt;   Path: </span></span>
+<span><span class="co">#&gt;   Extensions: TRUE</span></span>
+<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html" class="external-link">dbListTables</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">con_sqlite</span>, <span class="va">dm</span><span class="op">)</span></span>
+<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html" class="external-link">dbListTables</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "airlines_1_2020_08_28_07_13_03_12345"</span></span>
+<span><span class="co">#&gt; [2] "airports_1_2020_08_28_07_13_03_12345"</span></span>
+<span><span class="co">#&gt; [3] "flights_1_2020_08_28_07_13_03_12345" </span></span>
+<span><span class="co">#&gt; [4] "planes_1_2020_08_28_07_13_03_12345"  </span></span>
+<span><span class="co">#&gt; [5] "weather_1_2020_08_28_07_13_03_12345"</span></span></code></pre></div>
 <p>In the opposite direction, <code>dm</code> can also be populated with data from a database. Unfortunately, keys currently can be learned only for Microsoft SQL Server and Postgres, but not for SQLite. Therefore, the <code>dm</code> contains the tables but not the keys:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
-<span class="co">#&gt; Keys could not be queried: no such table: information_schema.tables. Use</span>
-<span class="co">#&gt; `learn_keys = FALSE` to mute this message.</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.38.5 []</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines_1_2020_08_28_07_13_03_12345`, `airports_1_2020_08_28_07_13_03_12345`, `flights_1_2020_08_28_07_13_03_12345`, `planes_1_2020_08_28_07_13_03_12345`, `weather_1_2020_08_28_07_13_03_12345`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Keys could not be queried: no such table: information_schema.tables. Use</span></span>
+<span><span class="co">#&gt; `learn_keys = FALSE` to mute this message.</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.38.5 []</span></span>
+<span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `airlines_1_2020_08_28_07_13_03_12345`, `airports_1_2020_08_28_07_13_03_12345`, `flights_1_2020_08_28_07_13_03_12345`, `planes_1_2020_08_28_07_13_03_12345`, `weather_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt; Columns: 53</span></span>
+<span><span class="co">#&gt; Primary keys: 0</span></span>
+<span><span class="co">#&gt; Foreign keys: 0</span></span></code></pre>
 <p>Remember to terminate the database connection:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>

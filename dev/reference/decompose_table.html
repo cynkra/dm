@@ -22,7 +22,7 @@ columns from the original table, which is now called the 'child table, and adds 
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9007</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,7 +95,7 @@ columns from the original table, which is now called the 'child table, and adds 
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">decompose_table</span><span class="op">(</span><span class="va">.data</span>, <span class="va">new_id_column</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">decompose_table</span><span class="op">(</span><span class="va">.data</span>, <span class="va">new_id_column</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -143,8 +143,8 @@ when applied to a table in a dm object.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">decomposed_table</span> <span class="op">&lt;-</span> <span class="fu">decompose_table</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">new_id</span>, <span class="va">am</span>, <span class="va">gear</span>, <span class="va">carb</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">decomposed_table</span><span class="op">$</span><span class="va">child_table</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">decomposed_table</span> <span class="op">&lt;-</span> <span class="fu">decompose_table</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">new_id</span>, <span class="va">am</span>, <span class="va">gear</span>, <span class="va">carb</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">decomposed_table</span><span class="op">$</span><span class="va">child_table</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     mpg cyl  disp  hp drat    wt  qsec vs new_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  21.0   6 160.0 110 3.90 2.620 16.46  0      7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  21.0   6 160.0 110 3.90 2.875 17.02  0      7</span>
@@ -178,7 +178,7 @@ when applied to a table in a dm object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 30 19.7   6 145.0 175 3.62 2.770 15.50  0     12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 31 15.0   8 301.0 335 3.54 3.570 14.60  0     13</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 32 21.4   4 121.0 109 4.11 2.780 18.60  1      9</span>
-<span class="r-in"><span class="va">decomposed_table</span><span class="op">$</span><span class="va">parent_table</span></span>
+<span class="r-in"><span><span class="va">decomposed_table</span><span class="op">$</span><span class="va">parent_table</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   new_id am gear carb</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4              7  1    4    4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Datsun 710             8  1    4    1</span>

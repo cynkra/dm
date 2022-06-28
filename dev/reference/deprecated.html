@@ -30,7 +30,7 @@ validate_dm() has been replaced by dm_validate() for consistency."><meta propert
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9007</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,143 +107,143 @@ returned from <code><a href="dm_get_all_fks.html">dm_get_all_fks()</a></code> in
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sql_schema_create</span><span class="op">(</span><span class="va">dest</span>, <span class="va">schema</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">sql_schema_drop</span><span class="op">(</span><span class="va">dest</span>, <span class="va">schema</span>, force <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">sql_schema_exists</span><span class="op">(</span><span class="va">dest</span>, <span class="va">schema</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">sql_schema_list</span><span class="op">(</span><span class="va">dest</span>, include_default <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">dm_join_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table_1</span>, <span class="va">table_2</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span>
-
-<span class="fu">dm_is_referenced</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span>
-
-<span class="fu">dm_get_referencing_tables</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span>
-
-<span class="fu">validate_dm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">check_if_subset</span><span class="op">(</span><span class="va">t1</span>, <span class="va">c1</span>, <span class="va">t2</span>, <span class="va">c2</span><span class="op">)</span>
-
-<span class="fu">check_cardinality</span><span class="op">(</span><span class="va">parent_table</span>, <span class="va">pk_column</span>, <span class="va">child_table</span>, <span class="va">fk_column</span><span class="op">)</span>
-
-<span class="fu">cdm_get_src</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">cdm_get_con</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">cdm_get_tables</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">cdm_get_filter</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">cdm_add_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">...</span>, repair <span class="op">=</span> <span class="st">"unique"</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">cdm_rm_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">cdm_copy_to</span><span class="op">(</span>
-  <span class="va">dest</span>,
-  <span class="va">dm</span>,
-  <span class="va">...</span>,
-  types <span class="op">=</span> <span class="cn">NULL</span>,
-  overwrite <span class="op">=</span> <span class="cn">NULL</span>,
-  indexes <span class="op">=</span> <span class="cn">NULL</span>,
-  unique_indexes <span class="op">=</span> <span class="cn">NULL</span>,
-  set_key_constraints <span class="op">=</span> <span class="cn">TRUE</span>,
-  unique_table_names <span class="op">=</span> <span class="cn">FALSE</span>,
-  table_names <span class="op">=</span> <span class="cn">NULL</span>,
-  temporary <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-
-<span class="fu">cdm_disambiguate_cols</span><span class="op">(</span><span class="va">dm</span>, sep <span class="op">=</span> <span class="st">"."</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">cdm_draw</span><span class="op">(</span>
-  <span class="va">dm</span>,
-  rankdir <span class="op">=</span> <span class="st">"LR"</span>,
-  col_attr <span class="op">=</span> <span class="st">"column"</span>,
-  view_type <span class="op">=</span> <span class="st">"keys_only"</span>,
-  columnArrows <span class="op">=</span> <span class="cn">TRUE</span>,
-  graph_attrs <span class="op">=</span> <span class="st">""</span>,
-  node_attrs <span class="op">=</span> <span class="st">""</span>,
-  edge_attrs <span class="op">=</span> <span class="st">""</span>,
-  focus <span class="op">=</span> <span class="cn">NULL</span>,
-  graph_name <span class="op">=</span> <span class="st">"Data Model"</span>
-<span class="op">)</span>
-
-<span class="fu">cdm_set_colors</span><span class="op">(</span><span class="va">dm</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">cdm_get_colors</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>
-
-<span class="fu">cdm_get_available_colors</span><span class="op">(</span><span class="op">)</span>
-
-<span class="fu">cdm_filter</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">cdm_nrow</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>
-
-<span class="fu">cdm_flatten_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">start</span>, <span class="va">...</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span>
-
-<span class="fu">cdm_squash_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">start</span>, <span class="va">...</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span>
-
-<span class="fu">cdm_join_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table_1</span>, <span class="va">table_2</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span>
-
-<span class="fu">cdm_apply_filters</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>
-
-<span class="fu">cdm_apply_filters_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span>
-
-<span class="fu">cdm_add_pk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">column</span>, check <span class="op">=</span> <span class="cn">FALSE</span>, force <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">cdm_add_fk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">column</span>, <span class="va">ref_table</span>, check <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">cdm_has_fk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">ref_table</span><span class="op">)</span>
-
-<span class="fu">cdm_get_fk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">ref_table</span><span class="op">)</span>
-
-<span class="fu">cdm_get_all_fks</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>
-
-<span class="fu">cdm_rm_fk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">columns</span>, <span class="va">ref_table</span><span class="op">)</span>
-
-<span class="fu">cdm_enum_fk_candidates</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">ref_table</span><span class="op">)</span>
-
-<span class="fu">cdm_is_referenced</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span>
-
-<span class="fu">cdm_get_referencing_tables</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span>
-
-<span class="fu">cdm_learn_from_db</span><span class="op">(</span><span class="va">dest</span><span class="op">)</span>
-
-<span class="fu">cdm_check_constraints</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>
-
-<span class="fu">cdm_nycflights13</span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">FALSE</span>, color <span class="op">=</span> <span class="cn">TRUE</span>, subset <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">cdm_paste</span><span class="op">(</span><span class="va">dm</span>, select <span class="op">=</span> <span class="cn">FALSE</span>, tab_width <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-
-<span class="fu">cdm_has_pk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span>
-
-<span class="fu">cdm_get_pk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span>
-
-<span class="fu">cdm_get_all_pks</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>
-
-<span class="fu">cdm_rm_pk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, rm_referencing_fks <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">cdm_enum_pk_candidates</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span>
-
-<span class="fu">cdm_select_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">cdm_rename_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">cdm_select</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">cdm_rename</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">cdm_zoom_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span>
-
-<span class="fu">cdm_insert_zoomed_tbl</span><span class="op">(</span>
-  <span class="va">dm</span>,
-  new_tbl_name <span class="op">=</span> <span class="cn">NULL</span>,
-  repair <span class="op">=</span> <span class="st">"unique"</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">cdm_update_zoomed_tbl</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>
-
-<span class="fu">cdm_zoom_out</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sql_schema_create</span><span class="op">(</span><span class="va">dest</span>, <span class="va">schema</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sql_schema_drop</span><span class="op">(</span><span class="va">dest</span>, <span class="va">schema</span>, force <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sql_schema_exists</span><span class="op">(</span><span class="va">dest</span>, <span class="va">schema</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sql_schema_list</span><span class="op">(</span><span class="va">dest</span>, include_default <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dm_join_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table_1</span>, <span class="va">table_2</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dm_is_referenced</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dm_get_referencing_tables</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">validate_dm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">check_if_subset</span><span class="op">(</span><span class="va">t1</span>, <span class="va">c1</span>, <span class="va">t2</span>, <span class="va">c2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">check_cardinality</span><span class="op">(</span><span class="va">parent_table</span>, <span class="va">pk_column</span>, <span class="va">child_table</span>, <span class="va">fk_column</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_get_src</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_get_con</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_get_tables</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_get_filter</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_add_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">...</span>, repair <span class="op">=</span> <span class="st">"unique"</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_rm_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_copy_to</span><span class="op">(</span></span>
+<span>  <span class="va">dest</span>,</span>
+<span>  <span class="va">dm</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  types <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  indexes <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  unique_indexes <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  set_key_constraints <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  unique_table_names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  table_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  temporary <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_disambiguate_cols</span><span class="op">(</span><span class="va">dm</span>, sep <span class="op">=</span> <span class="st">"."</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_draw</span><span class="op">(</span></span>
+<span>  <span class="va">dm</span>,</span>
+<span>  rankdir <span class="op">=</span> <span class="st">"LR"</span>,</span>
+<span>  col_attr <span class="op">=</span> <span class="st">"column"</span>,</span>
+<span>  view_type <span class="op">=</span> <span class="st">"keys_only"</span>,</span>
+<span>  columnArrows <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  graph_attrs <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  node_attrs <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  edge_attrs <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  focus <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  graph_name <span class="op">=</span> <span class="st">"Data Model"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_set_colors</span><span class="op">(</span><span class="va">dm</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_get_colors</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_get_available_colors</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_filter</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_nrow</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_flatten_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">start</span>, <span class="va">...</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_squash_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">start</span>, <span class="va">...</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_join_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table_1</span>, <span class="va">table_2</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_apply_filters</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_apply_filters_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_add_pk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">column</span>, check <span class="op">=</span> <span class="cn">FALSE</span>, force <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_add_fk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">column</span>, <span class="va">ref_table</span>, check <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_has_fk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">ref_table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_get_fk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">ref_table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_get_all_fks</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_rm_fk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">columns</span>, <span class="va">ref_table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_enum_fk_candidates</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">ref_table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_is_referenced</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_get_referencing_tables</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_learn_from_db</span><span class="op">(</span><span class="va">dest</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_check_constraints</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_nycflights13</span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">FALSE</span>, color <span class="op">=</span> <span class="cn">TRUE</span>, subset <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_paste</span><span class="op">(</span><span class="va">dm</span>, select <span class="op">=</span> <span class="cn">FALSE</span>, tab_width <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_has_pk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_get_pk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_get_all_pks</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_rm_pk</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, rm_referencing_fks <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_enum_pk_candidates</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_select_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_rename_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_select</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_rename</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_zoom_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_insert_zoomed_tbl</span><span class="op">(</span></span>
+<span>  <span class="va">dm</span>,</span>
+<span>  new_tbl_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  repair <span class="op">=</span> <span class="st">"unique"</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_update_zoomed_tbl</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cdm_zoom_out</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">

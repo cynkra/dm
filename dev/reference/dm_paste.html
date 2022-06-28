@@ -12,7 +12,7 @@ dm_paste() takes an existing dm and emits the code necessary for its creation.">
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9007</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@ dm_paste() takes an existing dm and emits the code necessary for its creation.">
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dm_paste</span><span class="op">(</span><span class="va">dm</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span>, tab_width <span class="op">=</span> <span class="fl">2</span>, options <span class="op">=</span> <span class="cn">NULL</span>, path <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dm_paste</span><span class="op">(</span><span class="va">dm</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span>, tab_width <span class="op">=</span> <span class="fl">2</span>, options <span class="op">=</span> <span class="cn">NULL</span>, path <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -132,13 +132,13 @@ Data in the tables is never included, see <code><a href="dm_ptype.html">dm_ptype
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="dm.html">dm</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_paste</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="dm.html">dm</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dm_paste</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dm::<span style="color: #00BBBB;">dm</span><span style="color: #BBBB00;">(</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_paste</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dm_paste</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dm::<span style="color: #00BBBB;">dm</span><span style="color: #BBBB00;">(</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   airlines,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   airports,</span>
@@ -159,9 +159,9 @@ Data in the tables is never included, see <code><a href="dm_ptype.html">dm_ptype
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_set_colors</span><span style="color: #BBBB00;">(</span>`#5B9BD5FF` = flights<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_set_colors</span><span style="color: #BBBB00;">(</span>`#ED7D31FF` = planes<span style="color: #BBBB00;">)</span> <span style="color: #00BB00;">%&gt;%</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   dm::<span style="color: #00BBBB;">dm_set_colors</span><span style="color: #BBBB00;">(</span>`#70AD47FF` = weather<span style="color: #BBBB00;">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dm_paste</span><span class="op">(</span>options <span class="op">=</span> <span class="st">"select"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dm_paste</span><span class="op">(</span>options <span class="op">=</span> <span class="st">"select"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dm::<span style="color: #00BBBB;">dm</span><span style="color: #BBBB00;">(</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   airlines,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   airports,</span>

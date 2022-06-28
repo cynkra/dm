@@ -26,7 +26,7 @@ of the columns is not retained, and the original row names are lost)."><meta pro
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9007</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,9 +101,9 @@ of the columns is not retained, and the original row names are lost).</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">reunite_parent_child</span><span class="op">(</span><span class="va">child_table</span>, <span class="va">parent_table</span>, <span class="va">id_column</span><span class="op">)</span>
-
-<span class="fu">reunite_parent_child_from_list</span><span class="op">(</span><span class="va">list_of_parent_child_tables</span>, <span class="va">id_column</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reunite_parent_child</span><span class="op">(</span><span class="va">child_table</span>, <span class="va">parent_table</span>, <span class="va">id_column</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">reunite_parent_child_from_list</span><span class="op">(</span><span class="va">list_of_parent_child_tables</span>, <span class="va">id_column</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -146,11 +146,11 @@ when applied to a table in a dm object.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">decomposed_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">new_id</span>, <span class="va">am</span>, <span class="va">gear</span>, <span class="va">carb</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ct</span> <span class="op">&lt;-</span> <span class="va">decomposed_table</span><span class="op">$</span><span class="va">child_table</span></span>
-<span class="r-in"><span class="va">pt</span> <span class="op">&lt;-</span> <span class="va">decomposed_table</span><span class="op">$</span><span class="va">parent_table</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">reunite_parent_child</span><span class="op">(</span><span class="va">ct</span>, <span class="va">pt</span>, <span class="va">new_id</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">decomposed_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">new_id</span>, <span class="va">am</span>, <span class="va">gear</span>, <span class="va">carb</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ct</span> <span class="op">&lt;-</span> <span class="va">decomposed_table</span><span class="op">$</span><span class="va">child_table</span></span></span>
+<span class="r-in"><span><span class="va">pt</span> <span class="op">&lt;-</span> <span class="va">decomposed_table</span><span class="op">$</span><span class="va">parent_table</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">reunite_parent_child</span><span class="op">(</span><span class="va">ct</span>, <span class="va">pt</span>, <span class="va">new_id</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     mpg cyl  disp  hp drat    wt  qsec vs am gear carb</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4</span>
@@ -184,7 +184,7 @@ when applied to a table in a dm object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 30 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 31 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 32 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</span>
-<span class="r-in"><span class="fu">reunite_parent_child_from_list</span><span class="op">(</span><span class="va">decomposed_table</span>, <span class="va">new_id</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">reunite_parent_child_from_list</span><span class="op">(</span><span class="va">decomposed_table</span>, <span class="va">new_id</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     mpg cyl  disp  hp drat    wt  qsec vs am gear carb</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4</span>
