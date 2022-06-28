@@ -363,7 +363,10 @@ test_that("glimpse.zoomed_dm() works", {
     # has foreign keys to print
     dm_nycflights13() %>% dm_zoom_to(flights) %>% glimpse(width = 100)
 
-    # removed primary key (`origin`) is not displayed in glimpse
+    # if any primary key has been removed, no primary key is displayed
     dm_nycflights13() %>% dm_zoom_to(weather) %>% select(-origin) %>% glimpse()
+
+    # anticipate primary keys being renamed by users
+    dm_nycflights13() %>% dm_zoom_to(weather) %>% rename(origin_location = origin) %>% glimpse()
   })
 })

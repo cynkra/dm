@@ -352,7 +352,6 @@
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
       Table: `weather`
-      Primary key: (`time_hour`)
       Rows: 144
       Columns: 14
       $ year       <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013,~
@@ -369,4 +368,29 @@
       $ pressure   <dbl> 1024.6, 1025.9, 1026.9, 1027.5, 1028.2, 1029.0, 1030.0, 103~
       $ visib      <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,~
       $ time_hour  <dttm> 2013-01-10 00:00:00, 2013-01-10 01:00:00, 2013-01-10 02:00~
+    Code
+      dm_nycflights13() %>% dm_zoom_to(weather) %>% rename(origin_location = origin) %>%
+        glimpse()
+    Output
+      dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+      
+      Table: `weather`
+      Primary key: (`origin_location`, `time_hour`)
+      Rows: 144
+      Columns: 15
+      $ origin_location <chr> "EWR", "EWR", "EWR", "EWR", "EWR", "EWR", "EWR", "EWR"~
+      $ year            <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, ~
+      $ month           <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
+      $ day             <int> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10~
+      $ hour            <int> 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ~
+      $ temp            <dbl> 41.00, 39.02, 39.02, 39.92, 41.00, 41.00, 39.92, 41.00~
+      $ dewp            <dbl> 32.00, 30.02, 28.94, 26.96, 26.06, 26.06, 24.98, 24.98~
+      $ humid           <dbl> 70.08, 69.86, 66.85, 59.50, 54.97, 54.97, 54.81, 52.56~
+      $ wind_dir        <dbl> 230, 210, 230, 270, 320, 300, 280, 330, 330, 320, 320,~
+      $ wind_speed      <dbl> 8.05546, 9.20624, 6.90468, 5.75390, 6.90468, 12.65858,~
+      $ wind_gust       <dbl> NA, NA, NA, NA, NA, 20.71404, 17.26170, NA, NA, 26.467~
+      $ precip          <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
+      $ pressure        <dbl> 1024.6, 1025.9, 1026.9, 1027.5, 1028.2, 1029.0, 1030.0~
+      $ visib           <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10~
+      $ time_hour       <dttm> 2013-01-10 00:00:00, 2013-01-10 01:00:00, 2013-01-10 ~
 
