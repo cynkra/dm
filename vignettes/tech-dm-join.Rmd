@@ -91,7 +91,7 @@ dm_joined <-
 dm_joined
 ```
 
-As you can see below, the `dm_joined` dataframe has one more column than the `flights` table.
+As you can see below, the `dm_joined` data frame has one more column than the `flights` table.
 The difference is the `name` column from the `airlines` table.
 
 ```{r}
@@ -105,7 +105,7 @@ dm_joined %>%
   names()
 ```
 
-The result is not a `dm` object anymore, but a conventional dataframe:
+The result is not a `dm` object anymore, but a conventional data frame:
 
 ```{r}
 dm_joined %>%

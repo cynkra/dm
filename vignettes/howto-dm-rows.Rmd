@@ -30,7 +30,7 @@ There are 5 methods:
 
 All six methods take the same arguments and using them follows the same process:
 
-1. Create a temporary *changeset dm* object that defines the intended changes on the RDBMS <!-- TODO The technical term "changeset" needs to be explained here -->
+1. Create a temporary *changeset dm* object that defines the intended changes on the RDBMS
 1. If desired, simulate changes with `in_place = FALSE` to double-check
 1. Apply changes with `in_place = TRUE`.
 
@@ -61,6 +61,7 @@ These involve constraints on primary key values that uniquely identify rows.
 To ensure the integrity of all relations during the process, all methods automatically determine the correct processing order for the tables involved.
 For operations that create records, parent tables (which hold primary keys) are processed before child tables (which hold foreign keys).
 For `dm_rows_delete()`, child tables are processed before their parent tables.
+Note that the user is still responsible for setting transactions to ensure integrity of operations across multiple tables.
 For more details on this see `vignette("howto-dm-theory")` and `vignette("howto-dm-db")`.
 
 ## Usage {#usage}
