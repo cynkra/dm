@@ -275,17 +275,19 @@ test_that("tidyselect works for flatten", {
 })
 
 test_that("`dm_join_to_tbl()` works", {
-  expect_equivalent_tbl(
-    expect_message_obj(dm_join_to_tbl(dm_for_flatten(), fact, dim_3), "Renaming"),
-    left_join(
-      fact_clean(),
-      dim_3_clean(),
-      by = c("dim_3_key" = "dim_3_pk")
+  expect_deprecated(
+    expect_equivalent_tbl(
+      expect_message_obj(dm_join_to_tbl(dm_for_flatten(), fact, dim_3), "Renaming"),
+      left_join(
+        fact_clean(),
+        dim_3_clean(),
+        by = c("dim_3_key" = "dim_3_pk")
+      )
     )
   )
 
   expect_dm_error(
-    dm_join_to_tbl(dm_for_filter(), tf_7, tf_8),
+    expect_deprecated(dm_join_to_tbl(dm_for_filter(), tf_7, tf_8)),
     "table_not_in_dm"
   )
 })
