@@ -1,6 +1,6 @@
 test_that("`check_suggested()` works", {
   expect_snapshot({
-    check_suggested("dm", TRUE, top_level_fun = "foo")
+    check_suggested("rlang", TRUE, top_level_fun = "foo")
 
     check_suggested("dm", NA, top_level_fun = "foo")
     check_suggested("iurtnkjvmomweicopbt", NA, top_level_fun = "foo")
