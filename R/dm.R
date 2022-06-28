@@ -827,9 +827,8 @@ print_glimpse_table_pk <- function(x, table_name, width) {
   }
 }
 
-collapse_key_names <- function(keys, tab = FALSE, tick = FALSE) {
+collapse_key_names <- function(keys, tab = FALSE) {
   tab <- ifelse(tab, "  ", "")
-  tick <- ifelse(tick, "`", "")
   if (length(keys) > 1L) {
     paste0(tab, "(", paste0(tick(keys), collapse = ", "), ")")
   } else {
@@ -852,7 +851,8 @@ print_glimpse_table_fk <- function(x, table_name, width) {
           paste0(
             collapse_key_names(child_fk_cols, tab = TRUE),
             " -> ",
-            "(`", paste0(parent_table, "$", parent_key_cols, collapse = "`, `"), "`) ",
+            collapse_key_names(paste0(parent_table, "$", parent_key_cols)),
+            " ",
             on_delete
           ),
           width

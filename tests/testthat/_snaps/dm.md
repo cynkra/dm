@@ -162,7 +162,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        `key` -> (`iris_1$key`) no_action
+        `key` -> `iris_1$key` no_action
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -202,7 +202,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        `key` -> (`iris_1$key`) no_action
+        `key` -> `iris_1$key` no_action
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6,~
@@ -249,7 +249,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        `key` -> (`gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjr...
+        `key` -> `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjre...
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -321,9 +321,9 @@
       
       Table: `flights`
       4 outgoing foreign key(s):
-        `carrier` -> (`airlines$carrier`) no_action
-        `origin` -> (`airports$faa`) no_action
-        `tailnum` -> (`planes$tailnum`) no_action
+        `carrier` -> `airlines$carrier` no_action
+        `origin` -> `airports$faa` no_action
+        `tailnum` -> `planes$tailnum` no_action
         (`origin`, `time_hour`) -> (`weather$origin`, `weather$time_hour`) no_action
       Rows: 1,761
       Columns: 19
