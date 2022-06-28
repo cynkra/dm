@@ -819,11 +819,21 @@ print_glimpse_table_pk <- function(x, table_name, width) {
   }
 
   pk <- pk %>%
-    map_chr(~ paste0("(", paste0(tick(.x), collapse = ", "), ")"))
+    map_chr(~ collapse_key_names(.x))
 
   if (!is_empty(pk)) {
     # FIXME: needs to change if #622 is solved
     cat_line(trim_width(paste0("Primary key: ", pk), width))
+  }
+}
+
+collapse_key_names <- function(keys, tab = FALSE, tick = FALSE) {
+  tab <- ifelse(tab, "  ", "")
+  tick <- ifelse(tick, "`", "")
+  if (length(keys) > 1L) {
+    paste0(tab, "(", paste0(tick(keys), collapse = ", "), ")")
+  } else {
+    paste0(tab, tick(keys), collapse = ", ")
   }
 }
 
@@ -840,8 +850,7 @@ print_glimpse_table_fk <- function(x, table_name, width) {
       function(child_fk_cols, parent_table, parent_key_cols, on_delete) {
         trim_width(
           paste0(
-            "  (",
-            paste0(tick(child_fk_cols), collapse = ", "), ")",
+            collapse_key_names(child_fk_cols, tab = TRUE),
             " -> ",
             "(`", paste0(parent_table, "$", parent_key_cols, collapse = "`, `"), "`) ",
             on_delete

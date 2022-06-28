@@ -150,7 +150,7 @@
       dm of 3 tables: `iris_1`, `iris_2`, `iris_3`
       
       Table: `iris_1`
-      Primary key: (`key`)
+      Primary key: `key`
       Rows: 150
       Columns: 6
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -162,7 +162,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        (`key`) -> (`iris_1$key`) no_action
+        `key` -> (`iris_1$key`) no_action
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -190,7 +190,7 @@
       dm of 3 tables: `iris_1`, `iris_2`, `iri...
       
       Table: `iris_1`
-      Primary key: (`key`)
+      Primary key: `key`
       Rows: 150
       Columns: 6
       $ key          <int> 1, 2, 3, 4, 5, 6,~
@@ -202,7 +202,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        (`key`) -> (`iris_1$key`) no_action
+        `key` -> (`iris_1$key`) no_action
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6,~
@@ -237,7 +237,7 @@
       dm of 3 tables: `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrj...
       
       Table: `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoie...
-      Primary key: (`gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjih...
+      Primary key: `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihj...
       Rows: 150
       Columns: 6
       $ gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd <int> ~
@@ -249,7 +249,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        (`key`) -> (`gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjih...
+        `key` -> (`gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjr...
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -303,7 +303,7 @@
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
       Table: `airports`
-      Primary key: (`faa`)
+      Primary key: `faa`
       Rows: 86
       Columns: 8
       $ faa   <chr> "ALB", "ATL", "AUS", "BDL", "BHM", "BNA", "BOS", "BTV", "BUF", "~
@@ -321,9 +321,9 @@
       
       Table: `flights`
       4 outgoing foreign key(s):
-        (`carrier`) -> (`airlines$carrier`) no_action
-        (`origin`) -> (`airports$faa`) no_action
-        (`tailnum`) -> (`planes$tailnum`) no_action
+        `carrier` -> (`airlines$carrier`) no_action
+        `origin` -> (`airports$faa`) no_action
+        `tailnum` -> (`planes$tailnum`) no_action
         (`origin`, `time_hour`) -> (`weather$origin`, `weather$time_hour`) no_action
       Rows: 1,761
       Columns: 19
