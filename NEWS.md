@@ -1,5 +1,52 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.8.9008
+
+## Features
+
+- `dm_from_con(learn_keys = TRUE)` works for MariaDB (#1106, #1123, #1169, @maelle).
+
+- New `nest_join()` and `pack_join()` for zoomed dm objects (@IndrajeetPatil, #1119).
+
+## Documentation
+
+- Use fallback db also for vignettes (#1118).
+
+- Edits to dm class vignette (@IndrajeetPatil, #1158).
+
+- Add Conclusions to "how-to" tutorials (@IndrajeetPatil, #1132).
+
+- Consistent captioning in articles (@IndrajeetPatil, #1157).
+
+- Better message for learning error (#1081).
+
+- Moves "Further Reading" to article index (@IndrajeetPatil, #1120).
+
+- Use selection helpers in `_pkgdown.yml` (@IndrajeetPatil, #1138).
+
+- Document `glimpse()` S3 method for `dm` (@IndrajeetPatil, #1121).
+
+- Edits to zoom vignette (@IndrajeetPatil, #1112).
+
+- Edits to articles about dm from df and db (@IndrajeetPatil, #1082).
+
+- Edits to dm draw vignette (@IndrajeetPatil, #1101).
+
+- Edits to function naming logic (@IndrajeetPatil, #1100).
+
+## Chore
+
+- Draft of test expectations for enum_ops() (@egnha, #1150).
+
+- Add tests for `dm_meta()` contents (#1114).
+
+- Middleware: Confirmation message if overwriting primary key (#1149).
+
+## Internal
+
+- Dynamic code generation (#1095).
+
+
 # dm 0.2.8.9007
 
 ## Features 

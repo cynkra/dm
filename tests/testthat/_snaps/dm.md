@@ -158,7 +158,7 @@
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
       $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.~
       $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.~
-      $ Species      <fct> setosa, setosa, setosa, setosa, setosa, setosa, setosa, s~
+      $ Species      <chr> "setosa", "setosa", "setosa", "setosa", "setosa", "setosa~
       
       Table: `iris_2`
       1 outgoing foreign key(s):
@@ -170,7 +170,7 @@
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
       $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.~
       $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.~
-      $ Species      <fct> setosa, setosa, setosa, setosa, setosa, setosa, setosa, s~
+      $ Species      <chr> "setosa", "setosa", "setosa", "setosa", "setosa", "setosa~
       $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
       
       Table: `iris_3`
@@ -181,7 +181,7 @@
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
       $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.~
       $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.~
-      $ Species      <fct> setosa, setosa, setosa, setosa, setosa, setosa, setosa, s~
+      $ Species      <chr> "setosa", "setosa", "setosa", "setosa", "setosa", "setosa~
       $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
       $ one_more_col <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
     Code
@@ -198,7 +198,7 @@
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.~
       $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.~
       $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.~
-      $ Species      <fct> setosa, setosa, s~
+      $ Species      <chr> "setosa", "setosa~
       
       Table: `iris_2`
       1 outgoing foreign key(s):
@@ -210,7 +210,7 @@
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.~
       $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.~
       $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.~
-      $ Species      <fct> setosa, setosa, s~
+      $ Species      <chr> "setosa", "setosa~
       $ other_col    <int> 1, 1, 1, 1, 1, 1,~
       
       Table: `iris_3`
@@ -221,7 +221,7 @@
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.~
       $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.~
       $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.~
-      $ Species      <fct> setosa, setosa, s~
+      $ Species      <chr> "setosa", "setosa~
       $ other_col    <int> 1, 1, 1, 1, 1, 1,~
       $ one_more_col <dbl> 1, 1, 1, 1, 1, 1,~
     Code
@@ -245,7 +245,7 @@
       $ Sepal.Width                                                                                                                                           <dbl> ~
       $ Petal.Length                                                                                                                                          <dbl> ~
       $ Petal.Width                                                                                                                                           <dbl> ~
-      $ Species                                                                                                                                               <fct> ~
+      $ Species                                                                                                                                               <chr> ~
       
       Table: `iris_2`
       1 outgoing foreign key(s):
@@ -257,7 +257,7 @@
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
       $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.~
       $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.~
-      $ Species      <fct> setosa, setosa, setosa, setosa, setosa, setosa, setosa, s~
+      $ Species      <chr> "setosa", "setosa", "setosa", "setosa", "setosa", "setosa~
       $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
       
       Table: `iris_3`
@@ -268,7 +268,7 @@
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
       $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.~
       $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.~
-      $ Species      <fct> setosa, setosa, setosa, setosa, setosa, setosa, setosa, s~
+      $ Species      <chr> "setosa", "setosa", "setosa", "setosa", "setosa", "setosa~
       $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
       $ one_more_col <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
     Code

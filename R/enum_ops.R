@@ -4,16 +4,22 @@ enum_ops <- function(dm, ..., table_names = NULL, column_names = NULL, op_name =
   if (any_null(table_names, column_names, op_name)) {
     enum_ops_(op_name, dm, table_names, column_names)
   } else {
-    list2(input = list(dm = dm,
-                       table_names = table_names,
-                       column_names = column_names,
-                       op_name = op_name),
-          !!!enum(op_name)(dm, table_names, column_names))
+    list2(
+      input = list(
+        dm = dm,
+        table_names = table_names,
+        column_names = column_names,
+        op_name = op_name
+      ),
+      !!!enum(op_name)(dm, table_names, column_names)
+    )
   }
 }
 
 enum_ops_ <- function(op, dm, tbls, cols) {
-  op %>% add_single(dm, tbls, cols) %>% add_multiple(dm, tbls, cols)
+  op %>%
+    add_single(dm, tbls, cols) %>%
+    add_multiple(dm, tbls, cols)
 }
 
 add_single <- function(op, dm, tbls, cols) {
@@ -56,7 +62,8 @@ add_multiple <- function(e, dm, tbls, cols) {
 # TODO: Add more operators
 enum <- function(op) {
   switch(op,
-         dm_add_pk = enum_ops_dm_add_pk)
+    dm_add_pk = enum_ops_dm_add_pk
+  )
 }
 
 enum_ops_dm_add_pk <- function(dm, tbls, cols) {
