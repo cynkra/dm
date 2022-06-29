@@ -197,6 +197,10 @@
     Output
       # ... with 3 variables: select <int>, where <chr>, exists <dbl>
 
+# duckdb errors for returning argument (duckdb/duckdb#3875)
+
+    identical(conflict, "ignore") is not TRUE
+
 # update
 
     Code
