@@ -302,7 +302,7 @@
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
-      Table: `airports`
+      Zoomed table: `airports`
       Primary key: `faa`
       Rows: 86
       Columns: 8
@@ -319,7 +319,7 @@
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
-      Table: `flights`
+      Zoomed table: `flights`
       4 outgoing foreign key(s):
         `carrier` -> `airlines$carrier` no_action
         `origin` -> `airports$faa` no_action
@@ -351,7 +351,7 @@
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
-      Table: `weather`
+      Zoomed table: `weather`
       Rows: 144
       Columns: 14
       $ year       <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013,~
@@ -374,7 +374,7 @@
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
-      Table: `weather`
+      Zoomed table: `weather`
       Primary key: (`origin_location`, `time_hour`)
       Rows: 144
       Columns: 15
@@ -398,7 +398,7 @@
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
-      Table: `flights`
+      Zoomed table: `flights`
       3 outgoing foreign key(s):
         `origin` -> `airports$faa` no_action
         `tailnum` -> `planes$tailnum` no_action
@@ -428,7 +428,7 @@
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
-      Table: `flights`
+      Zoomed table: `flights`
       2 outgoing foreign key(s):
         `carrier` -> `airlines$carrier` no_action
         `tailnum` -> `planes$tailnum` no_action
@@ -458,7 +458,7 @@
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
-      Table: `flights`
+      Zoomed table: `flights`
       4 outgoing foreign key(s):
         `carrier` -> `airlines$carrier` no_action
         `origin_location` -> `airports$faa` no_action

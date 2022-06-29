@@ -792,7 +792,7 @@ print_glimpse_table <- function(x, table_name, width, ...) {
 
   # `print_glimpse_table_meta()` is not part of this because it needs to be
   # printed only once for the entire object
-  print_glimpse_table_name(table_name, width)
+  print_glimpse_table_name(x, table_name, width)
   print_glimpse_table_pk(x, table_name, width)
   print_glimpse_table_fk(x, table_name, width)
   glimpse(table, width = width, ...)
@@ -801,8 +801,12 @@ print_glimpse_table <- function(x, table_name, width, ...) {
 #' Print table name for a given table in the `dm` object (zoomed or not)
 #' @keywords internal
 #' @noRd
-print_glimpse_table_name <- function(table_name, width) {
-  cat_line("\n", trim_width(paste0("Table: ", tick(table_name)), width))
+print_glimpse_table_name <- function(x, table_name, width) {
+  if (is_zoomed(x)) {
+    cat_line("\n", trim_width(paste0("Zoomed table: ", tick(table_name)), width))
+  } else {
+    cat_line("\n", trim_width(paste0("Table: ", tick(table_name)), width))
+  }
 }
 
 #' Print details about primary key for a given table in the `dm` object (zoomed or not)
