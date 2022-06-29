@@ -394,11 +394,44 @@
       $ visib           <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10~
       $ time_hour       <dttm> 2013-01-10 00:00:00, 2013-01-10 01:00:00, 2013-01-10 ~
     Code
+      dm_nycflights13() %>% dm_zoom_to(flights) %>% select(-carrier) %>% glimpse()
+    Output
+      dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+      
+      Table: `flights`
+      3 outgoing foreign key(s):
+        `origin` -> `airports$faa` no_action
+        `tailnum` -> `planes$tailnum` no_action
+        (`origin`, `time_hour`) -> (`weather$origin`, `weather$time_hour`) no_action
+      Rows: 1,761
+      Columns: 18
+      $ year           <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2~
+      $ month          <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1~
+      $ day            <int> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,~
+      $ dep_time       <int> 3, 16, 450, 520, 530, 531, 535, 546, 549, 550, 553, 553~
+      $ sched_dep_time <int> 2359, 2359, 500, 525, 530, 540, 540, 600, 600, 600, 600~
+      $ dep_delay      <dbl> 4, 17, -10, -5, 0, -9, -5, -14, -11, -10, -7, -7, -7, -~
+      $ arr_time       <int> 426, 447, 634, 813, 824, 832, 1015, 645, 652, 649, 711,~
+      $ sched_arr_time <int> 437, 444, 648, 820, 829, 850, 1017, 709, 724, 703, 715,~
+      $ arr_delay      <dbl> -11, 3, -14, -7, -5, -18, -2, -24, -32, -14, -4, -33, -~
+      $ flight         <int> 727, 739, 1117, 1018, 404, 1141, 725, 380, 6055, 2114, ~
+      $ tailnum        <chr> "N571JB", "N564JB", "N171US", "N35204", "N815UA", "N5EA~
+      $ origin         <chr> "JFK", "JFK", "EWR", "EWR", "LGA", "JFK", "JFK", "EWR",~
+      $ dest           <chr> "BQN", "PSE", "CLT", "IAH", "IAH", "MIA", "BQN", "BOS",~
+      $ air_time       <dbl> 183, 191, 78, 215, 210, 149, 191, 39, 48, 36, 51, 201, ~
+      $ distance       <dbl> 1576, 1617, 529, 1400, 1416, 1089, 1576, 200, 229, 184,~
+      $ hour           <dbl> 23, 23, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,~
+      $ minute         <dbl> 59, 59, 0, 25, 30, 40, 40, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0~
+      $ time_hour      <dttm> 2013-01-10 23:00:00, 2013-01-10 23:00:00, 2013-01-10 0~
+    Code
       dm_nycflights13() %>% dm_zoom_to(flights) %>% select(-origin) %>% glimpse()
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
       Table: `flights`
+      2 outgoing foreign key(s):
+        `carrier` -> `airlines$carrier` no_action
+        `tailnum` -> `planes$tailnum` no_action
       Rows: 1,761
       Columns: 18
       $ year           <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2~

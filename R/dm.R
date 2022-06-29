@@ -840,19 +840,11 @@ collapse_key_names <- function(keys, tab = FALSE) {
 #' @keywords internal
 #' @noRd
 print_glimpse_table_fk <- function(x, table_name, width) {
-  all_fks <- dm_get_all_fks_impl(x)
-
-  if (is_zoomed(x)) {
-    # anticipate that some key columns could have been removed by the user
-    new_fks <- update_zoomed_fks(x, table_name, col_tracker_zoomed(x))
-
-    # if any of the key columns are missing, don't display any of the keys
-    if (nrow(new_fks) < nrow(all_fks)) {
-      return(invisible(x))
-    }
-
-    # otherwise update the foreign keys data frame
-    all_fks <- new_fks
+  all_fks <- if (is_zoomed(x)) {
+    # anticipate that some key columns could have been removed/renamed by the user
+    update_zoomed_fks(x, table_name, col_tracker_zoomed(x))
+  } else {
+    dm_get_all_fks_impl(x)
   }
 
   fk <- all_fks %>%
