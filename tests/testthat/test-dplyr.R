@@ -274,6 +274,8 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
 
   # these databases don't implement nest join
   skip_if_src("mssql", "postgres", "sqlite", "maria")
+  # https://github.com/duckdb/duckdb/pull/3829
+  skip_if_src("duckdb")
   expect_equivalent_tbl(
     nest_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     nest_join(tf_2(), tf_1(), by = c("d" = "a"), name = "tf_1")
