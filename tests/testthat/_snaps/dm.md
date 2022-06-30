@@ -151,6 +151,7 @@
       
       Table: `iris_1`
       Primary key: `key`
+      
       Rows: 150
       Columns: 6
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -163,6 +164,7 @@
       Table: `iris_2`
       1 outgoing foreign key(s):
         `key` -> `iris_1$key` no_action
+      
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -174,6 +176,7 @@
       $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
       
       Table: `iris_3`
+      
       Rows: 150
       Columns: 8
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -191,6 +194,7 @@
       
       Table: `iris_1`
       Primary key: `key`
+      
       Rows: 150
       Columns: 6
       $ key          <int> 1, 2, 3, 4, 5, 6,~
@@ -203,6 +207,7 @@
       Table: `iris_2`
       1 outgoing foreign key(s):
         `key` -> `iris_1$key` no_action
+      
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6,~
@@ -214,6 +219,7 @@
       $ other_col    <int> 1, 1, 1, 1, 1, 1,~
       
       Table: `iris_3`
+      
       Rows: 150
       Columns: 8
       $ key          <int> 1, 2, 3, 4, 5, 6,~
@@ -238,6 +244,7 @@
       
       Table: `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoie...
       Primary key: `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihj...
+      
       Rows: 150
       Columns: 6
       $ gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd <int> ~
@@ -250,6 +257,7 @@
       Table: `iris_2`
       1 outgoing foreign key(s):
         `key` -> `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjre...
+      
       Rows: 150
       Columns: 7
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -261,6 +269,7 @@
       $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
       
       Table: `iris_3`
+      
       Rows: 150
       Columns: 8
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
@@ -278,6 +287,7 @@
       dm of 1 tables: `weather`
       
       Table: `weather`
+      
       Rows: 144
       Columns: 14
       $ year       <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013,~
@@ -304,6 +314,7 @@
       
       Zoomed table: `airports`
       Primary key: `faa`
+      
       Rows: 86
       Columns: 8
       $ faa   <chr> "ALB", "ATL", "AUS", "BDL", "BHM", "BNA", "BOS", "BTV", "BUF", "~
@@ -325,6 +336,7 @@
         `origin` -> `airports$faa` no_action
         `tailnum` -> `planes$tailnum` no_action
         (`origin`, `time_hour`) -> (`weather$origin`, `weather$time_hour`) no_action
+      
       Rows: 1,761
       Columns: 19
       $ year           <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 201~
@@ -352,6 +364,7 @@
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
       Zoomed table: `weather`
+      
       Rows: 144
       Columns: 14
       $ year       <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013,~
@@ -376,6 +389,7 @@
       
       Zoomed table: `weather`
       Primary key: (`origin_location`, `time_hour`)
+      
       Rows: 144
       Columns: 15
       $ origin_location <chr> "EWR", "EWR", "EWR", "EWR", "EWR", "EWR", "EWR", "EWR"~
@@ -403,6 +417,7 @@
         `origin` -> `airports$faa` no_action
         `tailnum` -> `planes$tailnum` no_action
         (`origin`, `time_hour`) -> (`weather$origin`, `weather$time_hour`) no_action
+      
       Rows: 1,761
       Columns: 18
       $ year           <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2~
@@ -432,6 +447,7 @@
       2 outgoing foreign key(s):
         `carrier` -> `airlines$carrier` no_action
         `tailnum` -> `planes$tailnum` no_action
+      
       Rows: 1,761
       Columns: 18
       $ year           <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2~
@@ -464,6 +480,7 @@
         `origin_location` -> `airports$faa` no_action
         `tailnum` -> `planes$tailnum` no_action
         (`origin_location`, `time_hour`) -> (`weather$origin`, `weather$time_hour`) no...
+      
       Rows: 1,761
       Columns: 19
       $ year            <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, ~

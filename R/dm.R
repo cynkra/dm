@@ -795,6 +795,7 @@ print_glimpse_table <- function(x, table_name, width, ...) {
   print_glimpse_table_name(x, table_name, width)
   print_glimpse_table_pk(x, table_name, width)
   print_glimpse_table_fk(x, table_name, width)
+  cat("\n")
   glimpse(table, width = width, ...)
 }
 
