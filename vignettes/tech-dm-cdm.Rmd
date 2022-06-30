@@ -20,6 +20,7 @@ This vignette describes which changes are necessary to adapt your code when upda
 ## Changes required when updating from version `0.0.5` to `0.0.6`
 
 ### Replace `cdm` with `dm`
+
 During this update the prevalent prefix `cdm` was discarded in favor of `dm`.
 The old prefix would still do its job, but a warning message would be issued each time a function beginning with `cdm` was being used, informing that the function is soft-deprecated and suggesting the use of its newer version.
 
@@ -42,6 +43,7 @@ The methods are of course not to be avoided in general, if no filters are set an
 Here a short example for the different cases:
 
 Formerly you would access the "filtered" tables using the following syntax:
+
 ```{r}
 library(dm)
 flights_dm <- dm_nycflights13()
@@ -51,6 +53,7 @@ flights_dm[["weather"]]
 ```
 
 After the update the same result is achieved by this type of function call:
+
 ```{r}
 dm_apply_filters_to_tbl(flights_dm, airlines)
 ```
