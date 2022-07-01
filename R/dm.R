@@ -785,7 +785,7 @@ print_glimpse_table_meta <- function(x, width) {
 #' @noRd
 print_rule_between_tables <- function() {
   cat("\n")
-  cat_rule(col = "green")
+  cat_rule()
 }
 
 
