@@ -144,10 +144,14 @@
       glimpse(empty_dm())
     Output
       dm of 0 tables
+      
+      --------------------------------------------------------------------------------
     Code
       glimpse(dm_for_disambiguate())
     Output
       dm of 3 tables: `iris_1`, `iris_2`, `iris_3`
+      
+      --------------------------------------------------------------------------------
       
       Table: `iris_1`
       Primary key: `key`
@@ -160,6 +164,8 @@
       $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.~
       $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.~
       $ Species      <chr> "setosa", "setosa", "setosa", "setosa", "setosa", "setosa~
+      
+      --------------------------------------------------------------------------------
       
       Table: `iris_2`
       1 outgoing foreign key(s):
@@ -174,6 +180,8 @@
       $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.~
       $ Species      <chr> "setosa", "setosa", "setosa", "setosa", "setosa", "setosa~
       $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
+      
+      --------------------------------------------------------------------------------
       
       Table: `iris_3`
       
@@ -187,10 +195,14 @@
       $ Species      <chr> "setosa", "setosa", "setosa", "setosa", "setosa", "setosa~
       $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
       $ one_more_col <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
+      
+      --------------------------------------------------------------------------------
     Code
       glimpse(dm_for_disambiguate(), width = 40)
     Output
       dm of 3 tables: `iris_1`, `iris_2`, `iri...
+      
+      --------------------------------------------------------------------------------
       
       Table: `iris_1`
       Primary key: `key`
@@ -203,6 +215,8 @@
       $ Petal.Length <dbl> 1.4, 1.4, 1.3, 1.~
       $ Petal.Width  <dbl> 0.2, 0.2, 0.2, 0.~
       $ Species      <chr> "setosa", "setosa~
+      
+      --------------------------------------------------------------------------------
       
       Table: `iris_2`
       1 outgoing foreign key(s):
@@ -218,6 +232,8 @@
       $ Species      <chr> "setosa", "setosa~
       $ other_col    <int> 1, 1, 1, 1, 1, 1,~
       
+      --------------------------------------------------------------------------------
+      
       Table: `iris_3`
       
       Rows: 150
@@ -230,6 +246,8 @@
       $ Species      <chr> "setosa", "setosa~
       $ other_col    <int> 1, 1, 1, 1, 1, 1,~
       $ one_more_col <dbl> 1, 1, 1, 1, 1, 1,~
+      
+      --------------------------------------------------------------------------------
     Code
       getOption("width")
     Output
@@ -242,6 +260,8 @@
     Output
       dm of 3 tables: `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrj...
       
+      --------------------------------------------------------------------------------
+      
       Table: `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoie...
       Primary key: `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihj...
       
@@ -253,6 +273,8 @@
       $ Petal.Length                                                                                                                                          <dbl> ~
       $ Petal.Width                                                                                                                                           <dbl> ~
       $ Species                                                                                                                                               <chr> ~
+      
+      --------------------------------------------------------------------------------
       
       Table: `iris_2`
       1 outgoing foreign key(s):
@@ -268,6 +290,8 @@
       $ Species      <chr> "setosa", "setosa", "setosa", "setosa", "setosa", "setosa~
       $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
       
+      --------------------------------------------------------------------------------
+      
       Table: `iris_3`
       
       Rows: 150
@@ -280,11 +304,15 @@
       $ Species      <chr> "setosa", "setosa", "setosa", "setosa", "setosa", "setosa~
       $ other_col    <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
       $ one_more_col <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
+      
+      --------------------------------------------------------------------------------
     Code
       dm_nycflights13() %>% dm_select_tbl(weather) %>% dm_select(weather, -origin) %>%
         glimpse()
     Output
       dm of 1 tables: `weather`
+      
+      --------------------------------------------------------------------------------
       
       Table: `weather`
       
@@ -304,6 +332,8 @@
       $ pressure   <dbl> 1024.6, 1025.9, 1026.9, 1027.5, 1028.2, 1029.0, 1030.0, 103~
       $ visib      <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,~
       $ time_hour  <dttm> 2013-01-10 00:00:00, 2013-01-10 01:00:00, 2013-01-10 02:00~
+      
+      --------------------------------------------------------------------------------
 
 # glimpse.zoomed_dm() works
 

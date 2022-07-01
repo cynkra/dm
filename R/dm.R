@@ -743,6 +743,7 @@ glimpse.dm <- function(x, width = NULL, ...) {
   table_names_list <- names(dm_get_tables_impl(x))
 
   print_glimpse_table_meta(x, glimpse_width)
+  print_rule_between_tables()
   walk(table_names_list, ~ print_glimpse_table(x, .x, glimpse_width, ...))
 
   invisible(x)
@@ -780,6 +781,14 @@ print_glimpse_table_meta <- function(x, width) {
   )
 }
 
+#' @keywords internal
+#' @noRd
+print_rule_between_tables <- function() {
+  cat("\n")
+  cat_rule(col = "green")
+}
+
+
 #' Print glimpse for a single table included in the `dm` object (zoomed or not)
 #' @keywords internal
 #' @noRd
@@ -795,8 +804,12 @@ print_glimpse_table <- function(x, table_name, width, ...) {
   print_glimpse_table_name(x, table_name, width)
   print_glimpse_table_pk(x, table_name, width)
   print_glimpse_table_fk(x, table_name, width)
+  # emtpy line to demarcate clearly information about keys and the glimpse info
   cat("\n")
   glimpse(table, width = width, ...)
+  # in case the object is not zoomed, the following will help visually
+  # distinguish between glimpse outputs for individual tables
+  if (!is_zoomed(x)) print_rule_between_tables()
 }
 
 #' Print table name for a given table in the `dm` object (zoomed or not)
