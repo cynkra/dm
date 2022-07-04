@@ -60,3 +60,29 @@ sql_rows_truncate.tbl_SQLiteConnection <- function(x, ...) {
 
 #' @export
 sql_rows_truncate.tbl_duckdb_connection <- sql_rows_truncate.tbl_SQLiteConnection
+
+target_table_name <- function(x, in_place) {
+  name <- dbplyr::remote_name(x)
+
+  # Only write if requested
+  if (!is_null(name) && is_true(in_place)) {
+    return(name)
+  }
+
+  # Abort if requested but can't write
+  if (is_null(name) && is_true(in_place)) {
+    abort("Can't determine name for target table. Set `in_place = FALSE` to return a lazy table.")
+  }
+
+  # Verbose by default
+  if (is_null(in_place)) {
+    if (is_null(name)) {
+      inform("Result is returned as lazy table, because `x` does not correspond to a table that can be updated. Use `in_place = FALSE` to mute this message.")
+    } else {
+      inform("Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.")
+    }
+  }
+
+  # Never write unless handled above
+  NULL
+}
