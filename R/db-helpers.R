@@ -124,8 +124,8 @@ find_name_clashes <- function(old, new) {
 
 #' @autoglobal
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
-  if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
-    warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
+  if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src) && !is_duckdb(src)) {
+    warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB", "DuckDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
     tables <- src_tbls(src)
     out <- purrr::map(tables, ~ DBI::Id(table = .x))
@@ -139,26 +139,10 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
     check_param_class(schema, "character")
   }
 
-  if (is_mssql(src)) {
-    # MSSQL
-    schema <- schema_mssql(con, schema)
-    dbname_sql <- dbname_mssql(con, dbname)
-    names_table <- get_names_table_mssql(con, dbname_sql)
-    dbname <- names(dbname_sql)
-  } else if (is_postgres(src)) {
-    # Postgres
-    schema <- schema_postgres(con, schema)
-    dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
-    names_table <- get_names_table_postgres(con)
-  } else if (is_mariadb(src)) {
-    # MariaDB
-    schema <- schema_mariadb(con, schema)
-    dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
-    names_table <- get_names_table_mariadb(con)
-  }
+  meta <- dm_meta(con, catalog = dbname, schema = schema, simple = TRUE)
 
-  names_table <- names_table %>%
-    filter(schema_name %in% !!(if (inherits(schema, "sql")) glue_sql_collapse(schema) else schema)) %>%
+  meta$tables %>%
+    rename(table_schema = table_name) %>%
     collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
     mutate(remote_name = schema_if(schema_name, table_name, con, dbname))
@@ -231,25 +215,3 @@ dbname_mssql <- function(con, dbname) {
   }
   set_names(dbname_sql, dbname)
 }
-
-
-get_names_table_mssql <- function(con, dbname_sql) {
-  tbl(
-    con,
-    sql(glue::glue("
-      SELECT tabs.name AS table_name, schemas.name AS schema_name
-      FROM {dbname_sql}sys.tables tabs
-      INNER JOIN {dbname_sql}sys.schemas schemas ON
-      tabs.schema_id = schemas.schema_id
-    "))
-  )
-}
-
-get_names_table_postgres <- function(con) {
-  tbl(
-    con,
-    sql("SELECT table_schema as schema_name, table_name as table_name from information_schema.tables")
-  )
-}
-
-get_names_table_mariadb <- get_names_table_postgres
