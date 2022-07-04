@@ -25,8 +25,9 @@ runs:
     - name: Show cache
       if: ${{ steps.check.outputs.scope }}
       run: |
-        ls -l ~/.cache/R/R.cache || true
-        ls -l ~/.cache/R/R.cache/styler || true
+        mkdir -p ~/.cache/R/R.cache/styler
+        ls -l ~/.cache/R/R.cache
+        ls -l ~/.cache/R/R.cache/styler
         gdu -s --inodes ~/.cache/R/R.cache/styler/* || du -s --inodes ~/.cache/R/R.cache/styler/* || true
       shell: bash
 
