@@ -80,13 +80,13 @@ test_that("dm_add_tbl() works", {
 
   # error in case table srcs don't match
   expect_dm_error(
-    dm_add_tbl(dm_for_filter(), data_card_1_sqlite()),
+    dm_add_tbl(dm_for_filter(), data_card_1_duckdb()),
     "not_same_src"
   )
 
   # adding tables to an empty `dm` works for all sources
   expect_equivalent_tbl(
-    dm_add_tbl(dm(), test = data_card_1_sqlite())$test,
+    dm_add_tbl(dm(), test = data_card_1_duckdb())$test,
     data_card_1()
   )
 })
