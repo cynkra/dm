@@ -80,7 +80,7 @@ test_that("default table repair works", {
 })
 
 test_that("table identifiers are quoted", {
-  dm <- dm_for_filter_sqlite()
+  dm <- dm_for_filter_duckdb()
   remote_names <-
     dm %>%
     dm_get_tables() %>%

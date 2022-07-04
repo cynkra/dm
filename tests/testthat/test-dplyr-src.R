@@ -82,13 +82,13 @@ test_that("'copy_to.dm()' works (2)", {
 
   # copying `tibble` from chosen src to sqlite() `dm`
   expect_equivalent_dm(
-    copy_to(dm_for_filter_sqlite(), data_card_1(), "test_table"),
-    dm_add_tbl(dm_for_filter_sqlite(), test_table = data_card_1_sqlite())
+    copy_to(dm_for_filter_duckdb(), data_card_1(), "test_table"),
+    dm_add_tbl(dm_for_filter_duckdb(), test_table = data_card_1_duckdb())
   )
 
   # copying sqlite() `tibble` to `dm` on src of choice
   expect_equivalent_dm(
-    suppress_mssql_message(copy_to(dm_for_filter(), data_card_1_sqlite(), "test_table_1")),
+    suppress_mssql_message(copy_to(dm_for_filter(), data_card_1_duckdb(), "test_table_1")),
     dm_add_tbl(dm_for_filter(), test_table_1 = data_card_1())
   )
 })
