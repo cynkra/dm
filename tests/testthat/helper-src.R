@@ -101,7 +101,7 @@ my_test_con <- function() {
   con_from_src_or_con(my_test_src())
 }
 
-duckdb_test_src %<--% dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
+duckdb_test_src %<--% dbplyr::src_dbi(DBI::dbConnect(duckdb::duckdb()), auto_disconnect = TRUE)
 
 my_db_test_src <- function() {
   if (is_db_test_src()) {
