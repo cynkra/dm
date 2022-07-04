@@ -41,7 +41,7 @@ test_that("'compute.dm()' computes tables on DB", {
   skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
 
   def <-
-    dm_for_filter_sqlite() %>%
+    dm_for_filter_duckdb() %>%
     dm_filter(tf_1, a > 3) %>%
     {
       suppress_mssql_message(compute(.))
@@ -56,7 +56,7 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
   skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
 
   zoomed_dm_for_compute <-
-    dm_for_filter_sqlite() %>%
+    dm_for_filter_duckdb() %>%
     dm_zoom_to(tf_1) %>%
     mutate(c = a + 1)
 
