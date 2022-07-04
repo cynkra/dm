@@ -236,6 +236,7 @@ jobs:
       - rcc-smoke
       - rcc-full
       - rcc-windows
+      - pkgdown
     runs-on: ubuntu-latest
     steps:
       - name: Dummy
