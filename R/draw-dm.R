@@ -1,7 +1,16 @@
 #' Draw a diagram of the data model
 #'
-#' `dm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
+#' `dm_draw()` draws a diagram, a visual representation of the data model.
+#'
+#' @details
+#' Currently, \pkg{dm} uses \pkg{DiagrammeR} to draw diagrams.
 #' Use [DiagrammeRsvg::export_svg()] to convert the diagram to an SVG file.
+#'
+#' The backend for drawing the diagrams might change in the future.
+#' If you rely on DiagrammeR, pass an explicit value for the `backend` argument.
 #'
 #' @param dm A [`dm`] object.
 #' @param rankdir Graph attribute for direction (e.g., 'BT' = bottom --> top).
@@ -15,15 +24,21 @@
 #' @param edge_attrs Additional edge attributes.
 #' @param focus A list of parameters for rendering (table filter).
 #' @param columnArrows Edges from columns to columns (default: `TRUE`).
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @param column_types Set to `TRUE` to show column types.
+#' @param backend Currently, only the default `"DiagrammeR"` is accepted.
+#'   Pass this value explicitly if your code not only uses this function
+#'   to display a data model but relies on the type of the return value.
+#'
 #'
 #' @seealso [dm_set_colors()] for defining the table colors.
 #'
 #' @export
 #'
-#' @return An object of class `grViz` (see also [DiagrammeR::grViz()]), which,
+#' @return An object with a [print()] method, which,
 #' when printed, produces the output seen in the viewer as a side effect.
+#' Currently, this is an object of class `grViz` (see also
+#' [DiagrammeR::grViz()]), but this is subject to change.
 #'
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
@@ -39,6 +54,7 @@
 #'   dm_get_colors()
 dm_draw <- function(dm,
                     rankdir = "LR",
+                    ...,
                     col_attr = NULL,
                     view_type = c("keys_only", "all", "title_only"),
                     columnArrows = TRUE,
@@ -47,14 +63,11 @@ dm_draw <- function(dm,
                     edge_attrs = "",
                     focus = NULL,
                     graph_name = "Data Model",
-                    ...,
-                    column_types = NULL) {
+                    column_types = NULL,
+                    backend = "DiagrammeR") {
   #
   check_not_zoomed(dm)
-  if (is_empty(dm)) {
-    message("The dm cannot be drawn because it is empty.")
-    return(invisible(NULL))
-  }
+  check_dots_empty()
 
   view_type <- arg_match(view_type)
 
@@ -63,6 +76,13 @@ dm_draw <- function(dm,
     if (is.null(column_types) && "type" %in% col_attr) {
       column_types <- TRUE
     }
+  }
+
+  stopifnot(identical(backend, "DiagrammeR"))
+
+  if (is_empty(dm)) {
+    message("The dm cannot be drawn because it is empty.")
+    return(invisible(NULL))
   }
 
   column_types <- isTRUE(column_types)
@@ -172,6 +192,9 @@ dm_get_all_column_types <- function(x) {
 
 #' Color in database diagrams
 #'
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model with [dm_draw()].
 #' The colors can either be either specified with hex color codes or using the names of the built-in R colors.
 #' An overview of the colors corresponding to the standard color names can be found at
@@ -250,7 +273,10 @@ color_quos_to_display <- function(...) {
 #'
 #' `dm_get_colors()` returns the colors defined for a data model.
 #'
-#' @return For `dm_get_colors()`, a two-column tibble with one row per table.
+#' @return For `dm_get_colors()`, a named character vector of table names
+#'   with the colors in the names.
+#'   This allows calling `dm_set_colors(!!!dm_get_colors(...))`.
+#'   Use [tibble::enframe()] to convert this to a tibble.
 #'
 #' @rdname dm_set_colors
 #' @export

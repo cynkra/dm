@@ -26,6 +26,8 @@ If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 An updated \code{dm} with an additional primary key.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 \code{dm_add_pk()} marks the specified columns as the primary key of the specified table.
 If \code{check == TRUE}, then it will first check if
 the given combination of columns is a unique key of the table.

@@ -65,6 +65,10 @@ uncurly <- function(call) {
   call[[2]][[2]]
 }
 
+is_testing <- function() {
+  identical(Sys.getenv("TESTTHAT"), "true")
+}
+
 is_this_a_test <- function() {
   # Only run if the top level call is devtools::test() or testthat::test_check()
 

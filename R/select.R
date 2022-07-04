@@ -1,5 +1,8 @@
 #' Rename columns
 #'
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' Rename the columns of your [`dm`] using syntax that is similar to `dplyr::rename()`.
 #'
 #' @inheritParams dm_filter
@@ -36,6 +39,9 @@ dm_rename <- function(dm, table, ...) {
 }
 
 #' Select columns
+#'
+#' @description
+#' `r lifecycle::badge("stable")`
 #'
 #' Select columns of your [`dm`] using syntax that is similar to `dplyr::select()`.
 #'

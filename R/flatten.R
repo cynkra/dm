@@ -8,16 +8,18 @@
 #'   when establishing a processing order for the joins.
 #'   An interesting choice could be
 #'   for example a fact table in a star schema.
-#' @param ... Unquoted names of the tables to be included in addition to the `start` table.
-#' The order of the tables here determines
-#'   the order of the joins.
+#' @param ...
+#'   `r lifecycle::badge("experimental")`
+
+#'   Unquoted names of the tables to be included in addition to the `start` table.
+#'   The order of the tables here determines the order of the joins.
 #'   If the argument is empty, all tables that can be reached will be included.
-#'   If this includes tables that are not direct neighbors of `start`,
-#'   it will only work with `dm_squash_to_tbl()` (given one of the allowed join-methods).
+#'   Only `dm_squash_to_tbl()` allows using tables that are not direct neighbors of `start`.
 #'   `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #' @family flattening functions
 #'
-#' @details With `...` left empty, this function will join together all the tables of your [`dm`]
+#' @details
+#' With `...` left empty, this function will join together all the tables of your [`dm`]
 #' object that can be reached from the `start` table, in the direction of the foreign key relations
 #' (pointing from the child tables to the parent tables), using the foreign key relations to
 #' determine the argument `by` for the necessary joins.
@@ -59,7 +61,7 @@
 #' @export
 dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   check_not_zoomed(dm)
-  join_name <- deparse(substitute(join))
+  join_name <- as_label(enexpr(join))
   start <- dm_tbl_name(dm, {{ start }})
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
 }
@@ -68,7 +70,7 @@ dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
 #' @export
 dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   check_not_zoomed(dm)
-  join_name <- deparse(substitute(join))
+  join_name <- as_label(enexpr(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
   start <- dm_tbl_name(dm, {{ start }})
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
@@ -151,35 +153,18 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 
 #' Join two tables
 #'
-#' @description A join of a desired type is performed between `table_1` and `table_2`.
-#' The two tables need to be directly connected by a foreign key relation.
-#' Since this function is a wrapper around [dm_flatten_to_tbl()], the LHS of
-#' the join will always be a "child table", i.e. a table referencing the other table.
+#' `dm_join_to_tbl()` is deprecated in favor of [dm_flatten_to_tbl()].
 #'
 #' @param dm A [`dm`] object.
 #' @param table_1 One of the tables involved in the join.
 #' @param table_2 The second table of the join.
 #' @param join The type of join to be performed, see [dplyr::join()].
 #'
-#' @return The resulting table of the join.
-#'
-#' @family flattening functions
-#'
+#' @rdname deprecated
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_join_to_tbl(airports, flights)
-#'
-#' # same result is achieved with:
-#' dm_nycflights13() %>%
-#'   dm_join_to_tbl(flights, airports)
-#'
-#' # this gives an error, because the tables are not directly linked to each other:
-#' try(
-#'   dm_nycflights13() %>%
-#'     dm_join_to_tbl(airlines, airports)
-#' )
 dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
+  deprecate_soft("0.3.0", "dm::dm_join_to_tbl()", "dm::dm_flatten_to_tbl()")
+
   check_not_zoomed(dm)
   force(join)
   stopifnot(is_function(join))
@@ -225,7 +210,6 @@ check_flatten_to_tbl <- function(join_name,
                                  more_than_1_pt,
                                  has_grandparent,
                                  squash) {
-
   # argument checking, or filter and recompute induced subgraph
   # for subsequent check
   if (any_not_reachable) {

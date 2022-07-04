@@ -1,11 +1,15 @@
 #' Validate your data model
 #'
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' This function returns a tibble with information about
 #' which key constraints are met (`is_key = TRUE`) or violated (`FALSE`).
 #' The printing for this object is special, use [as_tibble()]
 #' to print as a regular tibble.
 #'
 #' @inheritParams dm_add_pk
+#' @inheritParams rlang::args_dots_empty
 #' @param progress Whether to display a progress bar, if `NA` (the default)
 #'   hide in non-interactive mode, show in interactive mode. Requires the
 #'   'progress' package.
@@ -28,7 +32,7 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_constraints()
-dm_examine_constraints <- function(dm, progress = NA) {
+dm_examine_constraints <- function(dm, ..., progress = NA) {
   check_not_zoomed(dm)
   dm %>%
     dm_examine_constraints_impl(progress = progress, top_level_fun = "dm_examine_constraints") %>%

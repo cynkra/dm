@@ -1,12 +1,16 @@
 #' Creates a dm object for the \pkg{nycflights13} data
 #'
-#' @description Creates an example [`dm`] object from the tables in \pkg{nycflights13},
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
+#' Creates an example [`dm`] object from the tables in \pkg{nycflights13},
 #' along with the references.
 #' See [nycflights13::flights] for a description of the data.
 #' As described in [nycflights13::planes], the relationship
 #' between the `flights` table and the `planes` tables is "weak", it does not satisfy
 #' data integrity constraints.
 #'
+#' @inheritParams rlang::args_dots_empty
 #' @param cycle Boolean.
 #'   If `FALSE` (default), only one foreign key relation
 #'   (from `flights$origin` to `airports$faa`) between the `flights` table and the `airports` table is
@@ -25,7 +29,8 @@
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
 #'   dm_draw()
-dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE) {
+dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE) {
+  check_dots_empty()
   if (subset) {
     data <- nycflights_subset()
     flights <- data$flights

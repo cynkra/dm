@@ -199,9 +199,10 @@ jobs:
           # End custom: R 3.4
 
           # Begin custom: matrix elements
-          - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-mssql',      covr: true,   desc: 'SQL Server with covr' }
+          - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-mssql',      covr: false,   desc: 'SQL Server without covr' }
           - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-postgres',   covr: true,   desc: 'Postgres with covr'   }
-          #- {os: ubuntu-18.04,   r: 'release',   test-src: 'test-duckdb',     covr: true,   desc: 'DuckDB with covr'     }
+          - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-maria',      covr: true,   desc: 'MariaDB with covr'   }
+          - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-duckdb',     covr: true,   desc: 'DuckDB with covr'     }
           - {os: ubuntu-18.04,   r: 'release',   test-src: 'test-sqlite',     covr: true,   desc: 'SQLite with covr'     }
           # End custom: matrix elements
 

@@ -34,7 +34,6 @@
   # rigg(build_copy_data)
   # rigg(dm_insert_zoomed_outgoing_fks)
   # rigg(dm_upgrade)
-  # rigg(validate_dm)
   # rigg(check_df_structure)
   # rigg(dm_insert_zoomed)
   # rigg(dm_select_tbl_impl)

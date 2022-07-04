@@ -1,5 +1,8 @@
 #' \pkg{dplyr} table manipulation methods for zoomed dm objects
 #'
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' Use these methods without the '.zoomed_dm' suffix (see examples).
 #' @param .data object of class `zoomed_dm`
 #' @param ... see corresponding function in package \pkg{dplyr} or \pkg{tidyr}
@@ -456,6 +459,22 @@ anti_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy, disambiguate = FALSE)
   joined_tbl <- anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
+}
+
+#' @export
+nest_join.dm <- function(x, ...) {
+  check_zoomed(x)
+}
+
+#' @rdname dplyr_join
+#' @inheritParams dplyr::nest_join
+#' @export
+nest_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...) {
+  y_name <- as_string(enexpr(y))
+  name <- name %||% y_name
+  join_data <- prepare_join(x, {{ y }}, by, NULL, NULL, NULL, disambiguate = FALSE)
+  joined_tbl <- nest_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy, keep, name, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 

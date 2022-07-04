@@ -5,11 +5,11 @@
 #' `...` is ignored.
 #'
 #' @inheritParams dplyr::rows_insert
-#' @inheritParams ellipsis::dots_used
+#' @inheritParams rlang::args_dots_used
 #' @param x A data frame or data frame extension (e.g. a tibble).
 #' @export
 rows_truncate <- function(x, ..., in_place = FALSE) {
-  ellipsis::check_dots_used(action = warn)
+  check_dots_used(action = warn)
   UseMethod("rows_truncate", x)
 }
 # For dm_rows_truncate
@@ -42,7 +42,7 @@ rows_truncate.tbl_sql <- function(x, ...,
 #' @export
 #' @rdname rows_truncate
 sql_rows_truncate <- function(x, ...) {
-  ellipsis::check_dots_used()
+  check_dots_used()
   UseMethod("sql_rows_truncate")
 }
 

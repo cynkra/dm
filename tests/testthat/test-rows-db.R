@@ -1,3 +1,5 @@
+skip_if_src("maria")
+
 test_that("insert + delete + truncate message", {
   expect_snapshot({
     data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
@@ -126,7 +128,8 @@ test_that("insert + delete with returning argument and in_place = FALSE, SQLite 
   )
 })
 
-test_that("duckdb errors for returning argument", {
+test_that("duckdb errors for returning argument (duckdb/duckdb#3875)", {
+  # https://github.com/duckdb/duckdb/issues/3875
   skip_if_src_not("duckdb")
 
   target <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
@@ -267,20 +270,6 @@ test_that("upsert", {
     rows_upsert(data, test_db_src_frame(select = 0L, where = "a"), by = "where", in_place = TRUE)
     data %>% arrange(select)
   })
-})
-
-test_that("upsert errors for duckdb", {
-  skip_if_src_not("duckdb")
-
-  target <- test_db_src_frame(
-    select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2,
-    .unique_indexes = list("select", "where")
-  )
-
-  # TODO remove `suppressWarnings()` when `dplyr::rows_*()` get argument `returning`
-  expect_snapshot_error(
-    suppressWarnings(rows_upsert(target, tibble(select = 2:4, where = c("x", "y", "z")), copy = TRUE, in_place = TRUE))
-  )
 })
 
 test_that("upsert with returning argument (#607)", {

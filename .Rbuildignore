@@ -26,3 +26,5 @@
 ^TODO\.md$
 ^data-raw$
 ^CRAN-SUBMISSION$
+^\.gitpod\.Dockerfile$
+^\.gitpod\.yml$

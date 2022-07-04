@@ -18,7 +18,7 @@
 #' Therefore, in-place operation must be requested explicitly with `in_place = TRUE`.
 #' By default, an informative message is given.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @inheritParams dplyr::rows_insert
 #' @inheritParams dm_examine_constraints
 #' @param x Target `dm` object.

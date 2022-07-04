@@ -1,5 +1,8 @@
 #' \pkg{utils} table manipulation methods for `zoomed_dm` objects
 #'
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' Extract the first or last rows from a table.
 #' Use these methods without the '.zoomed_dm' suffix (see examples).
 #' The methods for regular `dm` objects extract the first or last tables.
@@ -19,12 +22,14 @@
 #' zoomed
 #' dm_insert_zoomed(zoomed, new_tbl_name = "head_flights")
 #' @export
-head.zoomed_dm <- function(x, n = 6L, ...) { # dm method provided by utils
+head.zoomed_dm <- function(x, n = 6L, ...) {
+  # dm method provided by utils
   replace_zoomed_tbl(x, head(tbl_zoomed(x), n, ...))
 }
 
 #' @rdname utils_table_manipulation
 #' @export
-tail.zoomed_dm <- function(x, n = 6L, ...) { # dm method provided by utils
+tail.zoomed_dm <- function(x, n = 6L, ...) {
+  # dm method provided by utils
   replace_zoomed_tbl(x, tail(tbl_zoomed(x), n, ...))
 }
