@@ -35,7 +35,7 @@ test_that("are empty_dm() and empty ellipsis handled correctly?", {
 test_that("errors: duplicate table names, src mismatches", {
   expect_dm_error(dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter()), "need_unique_names")
   skip_if_not_installed("dbplyr")
-  expect_dm_error(dm_bind(dm_for_flatten(), dm_for_filter_sqlite()), "not_same_src")
+  expect_dm_error(dm_bind(dm_for_flatten(), dm_for_filter_duckdb()), "not_same_src")
 })
 
 test_that("auto-renaming works", {
@@ -79,7 +79,7 @@ test_that("test error output for src mismatches", {
 
   expect_snapshot({
     writeLines(conditionMessage(expect_error(
-      dm_bind(dm_for_flatten(), dm_for_filter_sqlite())
+      dm_bind(dm_for_flatten(), dm_for_filter_duckdb())
     )))
   })
 })
