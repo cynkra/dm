@@ -192,7 +192,7 @@ test_that("validator speaks up (sqlite())", {
   expect_dm_error(
     dm_for_filter() %>%
       dm_get_def() %>%
-      mutate(data = if_else(table == "tf_1", list(dm_for_filter_sqlite()$tf_1), data)) %>%
+      mutate(data = if_else(table == "tf_1", list(dm_for_filter_duckdb()$tf_1), data)) %>%
       new_dm3() %>%
       dm_validate(),
     "dm_invalid"

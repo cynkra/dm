@@ -2,7 +2,7 @@
 
     Code
       writeLines(conditionMessage(expect_error(dm_bind(dm_for_flatten(),
-      dm_for_filter_sqlite()))))
+      dm_for_filter_duckdb()))))
     Output
       All `dm` objects need to share the same `src`.
 
