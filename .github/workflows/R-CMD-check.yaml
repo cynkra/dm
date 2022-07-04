@@ -237,3 +237,8 @@ jobs:
       - rcc-full
       - rcc-windows
     runs-on: ubuntu-latest
+    steps:
+      - name: Dummy
+        run: |
+          true
+        shell: bash
