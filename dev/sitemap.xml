@@ -253,9 +253,6 @@
     <loc>https://cynkra.github.io/dm/dev/reference/examine_cardinality.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/get_returned_rows.html</loc>
-  </url>
-  <url>
     <loc>https://cynkra.github.io/dm/dev/reference/glimpse.dm.html</loc>
   </url>
   <url>
@@ -287,9 +284,6 @@
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/dev/reference/reunite_parent_child.html</loc>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/rows-db.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/dev/reference/rows-dm.html</loc>
