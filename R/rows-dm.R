@@ -252,6 +252,7 @@ check_keys_compatible <- function(x, y) {
 get_dm_rows_op <- function(operation_name) {
   switch(operation_name,
     "insert"   = list(fun = do_rows_insert, pb_label = "inserting rows"),
+    "append"   = list(fun = do_rows_append, pb_label = "appending rows"),
     "update"   = list(fun = do_rows_update, pb_label = "updating rows"),
     "patch"    = list(fun = do_rows_patch, pb_label = "patching rows"),
     "upsert"   = list(fun = do_rows_upsert, pb_label = "upserting rows"),
@@ -261,6 +262,10 @@ get_dm_rows_op <- function(operation_name) {
 }
 
 do_rows_insert <- function(x, y, by = NULL, ...) {
+  rows_insert(x, y, by = by, ..., conflict = "ignore")
+}
+
+do_rows_append <- function(x, y, by = NULL, ...) {
   rows_append(x, y, ...)
 }
 
@@ -273,7 +278,7 @@ do_rows_patch <- function(x, y, by = NULL, ...) {
 }
 
 do_rows_upsert <- function(x, y, by = NULL, ...) {
-  rows_upsert(x, y, by = by, ..., unmatched = "ignore")
+  rows_upsert(x, y, by = by, ...)
 }
 
 do_rows_delete <- function(x, y, by = NULL, ...) {
