@@ -230,3 +230,16 @@ jobs:
       - uses: ./.github/workflows/check
         with:
           results: ${{ runner.os }}-r${{ matrix.config.r }}
+
+  good-to-merge:
+    needs:
+      - rcc-smoke
+      - rcc-full
+      - rcc-windows
+      - pkgdown
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dummy
+        run: |
+          true
+        shell: bash
