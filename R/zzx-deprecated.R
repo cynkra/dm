@@ -24,7 +24,7 @@ check_if_subset <- function(t1, c1, t2, c2) {
 #' @keywords internal
 #' @export
 check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
-  deprecate_soft("0.1.0", "dm::examine_cardinality()", "dm::examine_cardinality()")
+  deprecate_soft("0.1.0", "dm::chek_cardinality()", "dm::examine_cardinality()")
   pt <- enquo(parent_table)
   pkc <- enexpr(pk_column)
   ct <- enquo(child_table)
