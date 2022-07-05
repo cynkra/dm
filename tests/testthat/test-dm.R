@@ -345,5 +345,35 @@ test_that("glimpse.dm() works", {
           gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd = iris_1
         )
     )
+
+    # in case no primary keys are present, nothing about primary keys should be printed
+    dm_nycflights13() %>%
+      dm_select_tbl(weather) %>%
+      dm_select(weather, -origin) %>%
+      glimpse()
+  })
+})
+
+test_that("glimpse.zoomed_dm() works", {
+  skip_if_remote_src()
+  expect_snapshot({
+    # doesn't have foreign keys to print
+    dm_nycflights13() %>% dm_zoom_to(airports) %>% glimpse()
+
+    # has foreign keys to print
+    dm_nycflights13() %>% dm_zoom_to(flights) %>% glimpse(width = 100)
+
+    # if any primary key has been removed, no primary key is displayed
+    dm_nycflights13() %>% dm_zoom_to(weather) %>% select(-origin) %>% glimpse()
+
+    # anticipate primary keys being renamed by users
+    dm_nycflights13() %>% dm_zoom_to(weather) %>% rename(origin_location = origin) %>% glimpse()
+
+    # if any foreign key has been removed, corresponding composite key is not displayed
+    dm_nycflights13() %>% dm_zoom_to(flights) %>% select(-carrier) %>% glimpse()
+    dm_nycflights13() %>% dm_zoom_to(flights) %>% select(-origin) %>% glimpse()
+
+    # anticipate foreign keys being renamed by users
+    dm_nycflights13() %>% dm_zoom_to(flights) %>% rename(origin_location = origin) %>% glimpse()
   })
 })

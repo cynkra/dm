@@ -55,6 +55,7 @@ fin_dm
 ``````
 
 The dm object interrogates the RDBMS for table and column information, and primary and foreign keys.
+Currently, primary and foreign keys are only available from `r glue::glue_collapse(dm:::schema_supported_dbs()[["db_name"]], sep = ", ", last = " and ")`.
 
 
 ## Selecting tables
@@ -77,7 +78,6 @@ fin_dm_small <-
   dm_select_tbl(loans, accounts, districts, trans)
 ```
 
-
 ## Linking tables by adding keys
 
 In many cases, `dm_from_con()` already returns a dm with all keys set.
@@ -92,7 +92,7 @@ fin_dm_small <-
   dm_select_tbl(loans, accounts, districts, trans)
 ``````
 
-In our data model, `id` columns uniquely identify records in the `accounts` and `loans` tables, and can be used as a primary key.
+In our data model, `id` columns uniquely identify records in the `accounts` and `loans` tables, and was used as a primary key.
 A primary key is defined with `dm_add_pk()`.
 Each loan is linked to one account via the `account_id` column in the `loans` table, the relationship is established with `dm_add_fk()`.
 

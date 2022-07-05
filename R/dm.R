@@ -732,56 +732,159 @@ as.list.zoomed_dm <- function(x, ...) {
 #'
 #' dm_nycflights13() %>% glimpse()
 #'
+#' dm_nycflights13() %>%
+#'   dm_zoom_to(flights) %>%
+#'   glimpse()
+#'
 #' @export
 glimpse.dm <- function(x, width = NULL, ...) {
-  glimpse_width <- if (is.null(width)) {
-    getOption("width")
-  } else {
-    width
-  }
+  glimpse_width <- width %||% getOption("width")
+
+  table_names_list <- names(dm_get_tables_impl(x))
+
+  print_glimpse_table_meta(x, glimpse_width)
+  print_rule_between_tables()
+  walk(table_names_list, ~ print_glimpse_table(x, .x, glimpse_width, ...))
+
+  invisible(x)
+}
+
+#' @rdname glimpse.dm
+#' @export
+glimpse.zoomed_dm <- function(x, width = NULL, ...) {
+  glimpse_width <- width %||% getOption("width")
+
+  table_name <- dm_get_zoom(x)$table[[1]]
+
+  print_glimpse_table_meta(x, glimpse_width)
+  print_glimpse_table(x, table_name, glimpse_width, ...)
+
+  invisible(x)
+}
+
+#' Print details about all tables included in the `dm` object (zoomed or not)
+#' @keywords internal
+#' @noRd
+print_glimpse_table_meta <- function(x, width) {
   table_list <- dm_get_tables_impl(x)
+
   if (length(table_list) == 0) {
-    cat_line(trim_width("dm of 0 tables", glimpse_width))
+    cat_line(trim_width("dm of 0 tables", width))
     return(invisible(x))
   }
+
   cat_line(
     trim_width(
       paste0("dm of ", length(table_list), " tables: ", toString(tick(names(table_list)))),
-      glimpse_width
+      width
     )
   )
+}
 
-  all_fks <- dm_get_all_fks_impl(x)
-  iwalk(table_list, function(table, table_name) {
-    cat_line("\n", trim_width(paste0("Table: ", tick(table_name)), glimpse_width))
-    pk <- dm_get_pk_impl(x, table_name) %>%
-      map_chr(~ paste0("(", paste0(tick(.x), collapse = ", "), ")"))
-    if (!is_empty(pk)) {
-      # FIXME: needs to change if #622 is solved
-      cat_line(trim_width(paste0("Primary key: ", pk), glimpse_width))
-    }
-    fk <- all_fks %>%
-      filter(child_table == table_name) %>%
-      select(-child_table) %>%
-      pmap_chr(
-        function(child_fk_cols, parent_table, parent_key_cols, on_delete) {
-          trim_width(
-            paste0(
-              "  (",
-              paste0(tick(child_fk_cols), collapse = ", "), ")",
-              " -> ",
-              "(`", paste0(parent_table, "$", parent_key_cols, collapse = "`, `"), "`) ",
-              on_delete
-            ),
-            glimpse_width
-          )
-        }
-      )
-    if (!is_empty(fk)) {
-      cat_line(length(fk), " outgoing foreign key(s):")
-      cat_line(fk)
-    }
-    glimpse(table, width = width, ...)
-  })
-  invisible(x)
+#' @keywords internal
+#' @noRd
+print_rule_between_tables <- function() {
+  cat("\n")
+  cat_rule()
+}
+
+
+#' Print glimpse for a single table included in the `dm` object (zoomed or not)
+#' @keywords internal
+#' @noRd
+print_glimpse_table <- function(x, table_name, width, ...) {
+  if (is_zoomed(x)) {
+    table <- dm_get_zoom(x)$zoom[[1]]
+  } else {
+    table <- x[[table_name]]
+  }
+
+  # `print_glimpse_table_meta()` is not part of this because it needs to be
+  # printed only once for the entire object
+  print_glimpse_table_name(x, table_name, width)
+  print_glimpse_table_pk(x, table_name, width)
+  print_glimpse_table_fk(x, table_name, width)
+  # emtpy line to demarcate clearly information about keys and the glimpse info
+  cat("\n")
+  glimpse(table, width = width, ...)
+  # in case the object is not zoomed, the following will help visually
+  # distinguish between glimpse outputs for individual tables
+  if (!is_zoomed(x)) print_rule_between_tables()
+}
+
+#' Print table name for a given table in the `dm` object (zoomed or not)
+#' @keywords internal
+#' @noRd
+print_glimpse_table_name <- function(x, table_name, width) {
+  if (is_zoomed(x)) {
+    cat_line("\n", trim_width(paste0("Zoomed table: ", tick(table_name)), width))
+  } else {
+    cat_line("\n", trim_width(paste0("Table: ", tick(table_name)), width))
+  }
+}
+
+#' Print details about primary key for a given table in the `dm` object (zoomed or not)
+#' @keywords internal
+#' @noRd
+print_glimpse_table_pk <- function(x, table_name, width) {
+  pk <- dm_get_pk_impl(x, table_name)
+
+  # anticipate that some key columns could have been removed by the user
+  if (is_zoomed(x)) {
+    pk <-
+      update_zoomed_pk(x) %>%
+      pull(column)
+  }
+
+  pk <- pk %>%
+    map_chr(~ collapse_key_names(.x))
+
+  if (!is_empty(pk)) {
+    # FIXME: needs to change if #622 is solved
+    cat_line(trim_width(paste0("Primary key: ", pk), width))
+  }
+}
+
+collapse_key_names <- function(keys, tab = FALSE) {
+  tab <- ifelse(tab, "  ", "")
+  if (length(keys) > 1L) {
+    paste0(tab, "(", paste0(tick(keys), collapse = ", "), ")")
+  } else {
+    paste0(tab, tick(keys), collapse = ", ")
+  }
+}
+
+#' Print details about foreign keys for a given table in the `dm` object (zoomed or not)
+#' @keywords internal
+#' @noRd
+print_glimpse_table_fk <- function(x, table_name, width) {
+  all_fks <- if (is_zoomed(x)) {
+    # anticipate that some key columns could have been removed/renamed by the user
+    update_zoomed_fks(x, table_name, col_tracker_zoomed(x))
+  } else {
+    dm_get_all_fks_impl(x)
+  }
+
+  fk <- all_fks %>%
+    filter(child_table == !!table_name) %>%
+    select(-child_table) %>%
+    pmap_chr(
+      function(child_fk_cols, parent_table, parent_key_cols, on_delete) {
+        trim_width(
+          paste0(
+            collapse_key_names(child_fk_cols, tab = TRUE),
+            " -> ",
+            collapse_key_names(paste0(parent_table, "$", parent_key_cols)),
+            " ",
+            on_delete
+          ),
+          width
+        )
+      }
+    )
+
+  if (!is_empty(fk)) {
+    cat_line(length(fk), " outgoing foreign key(s):")
+    cat_line(fk)
+  }
 }
