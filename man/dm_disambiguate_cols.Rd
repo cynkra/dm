@@ -4,16 +4,16 @@
 \alias{dm_disambiguate_cols}
 \title{Resolve column name ambiguities}
 \usage{
-dm_disambiguate_cols(dm, sep = ".", ..., quiet = FALSE)
+dm_disambiguate_cols(.dm, .sep = ".", ..., .quiet = FALSE)
 }
 \arguments{
-\item{dm}{A \code{dm} object.}
+\item{.dm}{A dm object.}
 
-\item{sep}{The character variable that separates the names of the table and the names of the ambiguous columns.}
+\item{.sep}{The character variable that separates the names of the table and the names of the ambiguous columns.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{quiet}{Boolean.
+\item{.quiet}{Boolean.
 By default, this function lists the renamed columns in a message, pass \code{TRUE} to suppress this message.}
 }
 \value{
