@@ -213,8 +213,8 @@
     Code
       dm(x = tibble(a = c(1, 1))) %>% dm_add_pk(x, a, check = TRUE)
     Condition
-      Error in `abort_not_unique_key()`:
-      ! (`a`) not a unique key of `x`.
+      Error in `set_names()`:
+      ! `x` must be a vector
 
 # dm_get_all_pks() with compound keys
 
