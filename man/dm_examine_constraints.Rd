@@ -4,14 +4,14 @@
 \alias{dm_examine_constraints}
 \title{Validate your data model}
 \usage{
-dm_examine_constraints(dm, ..., progress = NA)
+dm_examine_constraints(.dm, ..., .progress = NA)
 }
 \arguments{
-\item{dm}{A \code{dm} object.}
+\item{.dm}{A dm object.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{progress}{Whether to display a progress bar, if \code{NA} (the default)
+\item{.progress}{Whether to display a progress bar, if \code{NA} (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.}
 }
