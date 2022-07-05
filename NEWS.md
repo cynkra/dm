@@ -1,5 +1,106 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.2.8.9008
+
+## Features
+
+- `dm_from_con(learn_keys = TRUE)` works for MariaDB (#1106, #1123, #1169, @maelle).
+
+- New `nest_join()` and `pack_join()` for zoomed dm objects (@IndrajeetPatil, #1119).
+
+## Documentation
+
+- Use fallback db also for vignettes (#1118).
+
+- Edits to dm class vignette (@IndrajeetPatil, #1158).
+
+- Add Conclusions to "how-to" tutorials (@IndrajeetPatil, #1132).
+
+- Consistent captioning in articles (@IndrajeetPatil, #1157).
+
+- Better message for learning error (#1081).
+
+- Moves "Further Reading" to article index (@IndrajeetPatil, #1120).
+
+- Use selection helpers in `_pkgdown.yml` (@IndrajeetPatil, #1138).
+
+- Document `glimpse()` S3 method for `dm` (@IndrajeetPatil, #1121).
+
+- Edits to zoom vignette (@IndrajeetPatil, #1112).
+
+- Edits to articles about dm from df and db (@IndrajeetPatil, #1082).
+
+- Edits to dm draw vignette (@IndrajeetPatil, #1101).
+
+- Edits to function naming logic (@IndrajeetPatil, #1100).
+
+## Chore
+
+- Draft of test expectations for enum_ops() (@egnha, #1150).
+
+- Add tests for `dm_meta()` contents (#1114).
+
+- Middleware: Confirmation message if overwriting primary key (#1149).
+
+## Internal
+
+- Dynamic code generation (#1095).
+
+
+# dm 0.2.8.9007
+
+## Features 
+
+- New `simple` argument to `dm_meta()` (#1083).
+
+- `nest_join()` and `pack_join()` support `zoomed_dm` objects (#1119, @IndrajeetPatil).
+
+## Documentation 
+
+- simplify top of README (#1066, @maelle).
+
+- Minimal tweaks of intro vignette (#1075, @maelle).
+
+- Edits to dm theory vignette (#1079, @IndrajeetPatil).
+
+- BS5 for greater readability (#1067, @maelle).
+
+- Minor edits to the "Get Started" article (#1056, @IndrajeetPatil).
+
+
+# dm 0.2.8.9006
+
+## Chore 
+
+- Remove all uses of dm_from_src() (#1044).
+
+- Use dbplyr 2.2.0 and rlang 1.0.2 (#1024).
+
+- Fix dm_from_src() example if relational.fit is down (#993).
+
+- License year (#1029).
+
+
+
+## API 
+
+- Deprecate dm_join_to_tbl(), dm_is_referenced() and dm_get_referencing_tables() (#1038).
+
+- New `dm_validate()` replaces now deprecated `validate_dm()` (#1033).
+
+- `dm_get_filters()` uses `dm` as argument name (#1036).
+
+- `dm_get_con()` uses `dm` as argument name (#1034).
+
+- `dm()` and related functions are stable (#1040).
+
+- Mark `...` in `dm_flatten_to_tbl()` as experimental (#1037).
+
+- Add ellipses to `dm_disambiguate_cols()`, `dm_draw()`, `dm_examine_constraints()`, `dm_nycflights13()` and `dm_pixarfilms()` (#1035).
+
+- Mark functions as stable (#1032).
+
+
 # dm 0.2.8.9005
 
 ## Bug fixes 

@@ -37,17 +37,11 @@
 #'
 #' @export
 #' @examplesIf dm:::dm_has_financial()
-#' con <- DBI::dbConnect(
-#'   RMariaDB::MariaDB(),
-#'   username = "guest",
-#'   password = "relational",
-#'   dbname = "Financial_ijs",
-#'   host = "relational.fit.cvut.cz"
-#' )
+#' con <- dm_get_con(dm_financial())
 #'
 #' dm_from_src(con)
 #'
-#' DBI::dbDisconnect(con)
+#' # Avoid DBI::dbDisconnect() here, because we don't own the connection
 dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
                         ...) {
   stopifnot(is(con, "DBIConnection") || inherits(con, "Pool"))
@@ -63,7 +57,7 @@ dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
     # FIXME: Try to make it work everywhere
     tryCatch(
       {
-        dm_learned <- dm_learn_from_db(src, ...)
+        dm_learned <- dm_learn_from_db(con, ...)
         if (is_null(learn_keys)) {
           inform("Keys queried successfully, use `learn_keys = TRUE` to mute this message.")
         }
@@ -170,7 +164,7 @@ error_txt_learn_keys <- function(reason) {
   # FIXME: Use new-style error messages.
   paste0(
     "Failed to learn keys from database: ", reason,
-    ". Use `learn_keys = FALSE` to work around."
+    ". Use `learn_keys = FALSE` to work around, or `dm:::dm_learn_from_db()` to debug."
   )
 }
 

@@ -1,14 +1,23 @@
 #' Validator
 #'
-#' `validate_dm()` checks the internal consistency of a `dm` object.
+#' `dm_validate()` checks the internal consistency of a `dm` object.
+#'
+#' In theory, with the exception of [new_dm()], all `dm` objects
+#' created or modified by functions in this package should be valid,
+#' and this function should not be needed.
+#' Please file an issue if any dm operation creates an invalid object.
 #'
 #' @param x An object.
 #'
-#' @return For `validate_dm()`: Returns the `dm`, invisibly, after finishing all checks.
+#' @return Returns the `dm`, invisibly, after finishing all checks.
 #'
-#' @rdname dm
 #' @export
-validate_dm <- function(x) {
+#' @examples
+#' dm_validate(dm())
+#'
+#' bad_dm <- structure(list(bad = "dm"), class = "dm")
+#' try(dm_validate(bad_dm))
+dm_validate <- function(x) {
   check_dm(x)
 
   if (!identical(names(unclass(x)), "def")) {
@@ -76,9 +85,23 @@ validate_dm <- function(x) {
   invisible(x)
 }
 
-debug_validate_dm <- function(dm) {
+#' Validator
+#'
+#' `validate_dm()` has been replaced by `dm_validate()` for consistency.
+#'
+#' @param x An object.
+#'
+#' @export
+#' @rdname deprecated
+#' @keywords internal
+validate_dm <- function(x) {
+  deprecate_soft("0.3.0", "dm::validate_dm()", "dm::dm_validate()")
+  dm_validate(x)
+}
+
+debug_dm_validate <- function(dm) {
   # Uncomment to enable validation for troubleshooting
-  # validate_dm(dm)
+  # dm_validate(dm)
   dm
 }
 

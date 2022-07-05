@@ -101,13 +101,13 @@ my_test_con <- function() {
   con_from_src_or_con(my_test_src())
 }
 
-sqlite_test_src %<--% dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
+duckdb_test_src %<--% dbplyr::src_dbi(DBI::dbConnect(duckdb::duckdb()), auto_disconnect = TRUE)
 
 my_db_test_src <- function() {
   if (is_db_test_src()) {
     my_test_src()
   } else {
-    sqlite_test_src()
+    duckdb_test_src()
   }
 }
 
@@ -163,7 +163,7 @@ test_db_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(),
 # for examine_cardinality...() ----------------------------------------------
 
 data_card_1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
-data_card_1_sqlite %<--% copy_to(sqlite_test_src(), data_card_1())
+data_card_1_duckdb %<--% copy_to(duckdb_test_src(), data_card_1())
 data_card_2 %<-% tibble::tibble(a = c(1, 3:6), b = letters[1:5])
 data_card_3 %<-% tibble::tibble(c = 1:5)
 data_card_4 %<-% tibble::tibble(c = c(1:5, 5L))
@@ -329,7 +329,7 @@ dm_for_filter_db %<--% {
   copy_dm_to(my_db_test_src(), dm_for_filter())
 }
 
-dm_for_filter_sqlite %<--% copy_dm_to(sqlite_test_src(), dm_for_filter())
+dm_for_filter_duckdb %<--% copy_dm_to(duckdb_test_src(), dm_for_filter())
 
 dm_for_filter_rev %<-% {
   def_dm_for_filter <- dm_get_def(dm_for_filter())
@@ -438,6 +438,7 @@ dm_more_complex %<-% {
 iris_1 %<-% {
   datasets::iris %>%
     as_tibble() %>%
+    mutate(Species = as.character(Species)) %>%
     mutate(key = row_number()) %>%
     select(key, everything())
 }

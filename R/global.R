@@ -164,6 +164,12 @@ utils::globalVariables(c(
   "remote_table_unquoted",
   "unique_def",
   #
+  # meta
+  "DATABASE",
+  "referenced_column_name",
+  "referenced_table_name",
+  "referenced_table_schema",
+  #
   # keep this to avoid dealing with trailing commas
   NULL
 ))

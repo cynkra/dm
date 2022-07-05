@@ -71,7 +71,7 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     select(-ordinal_position) %>%
     left_join(tables) %>%
     dm_update_zoomed() %>%
-    dm_select_tbl(constraint_column_usage, key_column_usage, columns)
+    dm_select_tbl(constraint_column_usage, key_column_usage, columns, table_constraints)
 
   table_info <-
     df_key_info %>%
@@ -86,10 +86,15 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
 
   pks_df <-
     df_key_info %>%
+    dm_zoom_to(table_constraints) %>%
+    filter(constraint_type == "PRIMARY KEY") %>%
+    dm_update_zoomed() %>%
     dm_zoom_to(key_column_usage) %>%
+    semi_join(table_constraints) %>%
     anti_join(constraint_column_usage) %>%
     arrange(ordinal_position) %>%
     dm_update_zoomed() %>%
+    dm_select_tbl(-table_constraints) %>%
     dm_squash_to_tbl(key_column_usage) %>%
     select(constraint_catalog, constraint_schema, constraint_name, dm_name, column_name) %>%
     group_by(constraint_catalog, constraint_schema, constraint_name, dm_name) %>%
@@ -99,9 +104,14 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
 
   fks_df <-
     df_key_info %>%
+    dm_zoom_to(table_constraints) %>%
+    filter(constraint_type == "FOREIGN KEY") %>%
+    dm_update_zoomed() %>%
     dm_zoom_to(key_column_usage) %>%
+    semi_join(table_constraints) %>%
     left_join(columns, select = c(column_name, dm_name, table_catalog, table_schema, table_name)) %>%
     dm_update_zoomed() %>%
+    dm_select_tbl(-table_constraints) %>%
     dm_zoom_to(constraint_column_usage) %>%
     #
     # inner_join(): Matching column sometimes not found on Postgres

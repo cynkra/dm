@@ -275,17 +275,19 @@ test_that("tidyselect works for flatten", {
 })
 
 test_that("`dm_join_to_tbl()` works", {
-  expect_equivalent_tbl(
-    expect_message_obj(dm_join_to_tbl(dm_for_flatten(), fact, dim_3), "Renaming"),
-    left_join(
-      fact_clean(),
-      dim_3_clean(),
-      by = c("dim_3_key" = "dim_3_pk")
+  expect_deprecated(
+    expect_equivalent_tbl(
+      expect_message_obj(dm_join_to_tbl(dm_for_flatten(), fact, dim_3), "Renaming"),
+      left_join(
+        fact_clean(),
+        dim_3_clean(),
+        by = c("dim_3_key" = "dim_3_pk")
+      )
     )
   )
 
   expect_dm_error(
-    dm_join_to_tbl(dm_for_filter(), tf_7, tf_8),
+    expect_deprecated(dm_join_to_tbl(dm_for_filter(), tf_7, tf_8)),
     "table_not_in_dm"
   )
 })
@@ -335,8 +337,8 @@ test_that("tests with 'bad_dm' work (2)", {
   # can't create bad_dm() on Postgres due to strict constraint checks
   skip_if_src("postgres")
 
-  # full & right join not available on SQLite
-  skip_if_src("sqlite")
+  # full & right join not available on SQLite and MariaDB
+  skip_if_src("sqlite", "maria")
 
   bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
 
@@ -347,6 +349,16 @@ test_that("tests with 'bad_dm' work (2)", {
       full_join(tbl_2(), by = c("a" = "id", "x")) %>%
       full_join(tbl_3(), by = c("b" = "id"))
   )
+})
+
+test_that("tests with 'bad_dm' work (3)", {
+  # can't create bad_dm() on Postgres due to strict constraint checks
+  skip_if_src("postgres")
+
+  # full & right join not available on SQLite
+  skip_if_src("sqlite")
+
+  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
 
   # filtered `dm`
   expect_dm_error(

@@ -9,7 +9,7 @@
 #' to print as a regular tibble.
 #'
 #' @param .dm A dm object.
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @param .progress Whether to display a progress bar, if `NA` (the default)
 #'   hide in non-interactive mode, show in interactive mode. Requires the
 #'   'progress' package.

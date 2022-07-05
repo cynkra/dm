@@ -65,8 +65,7 @@ is_postgres <- function(dest) {
 }
 
 is_mariadb <- function(dest) {
-  inherits(dest, "src_MariaDBConnection") ||
-    inherits(dest, "MariaDBConnection")
+  inherits_any(dest, c("MariaDBConnection", "src_MariaDBConnection", "src_DoltConnection", "src_DoltLocalConnection"))
 }
 
 src_from_src_or_con <- function(dest) {
@@ -91,7 +90,7 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
     names <- unique_db_table_name(names)
   } else {
     # permanent tables
-    if (!is.null(schema) && !is_mssql(con) && !is_postgres(con)) {
+    if (!is.null(schema) && !is_mssql(con) && !is_postgres(con) && !is_mariadb(con)) {
       abort_no_schemas_supported(con = con)
     }
     names <- table_names
@@ -104,7 +103,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
     warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
-    return(src_tbls(src))
+    return(set_names(src_tbls(src)))
   }
 
   con <- con_from_src_or_con(src)

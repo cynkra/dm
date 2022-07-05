@@ -153,35 +153,18 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 
 #' Join two tables
 #'
-#' @description A join of a desired type is performed between `table_1` and `table_2`.
-#' The two tables need to be directly connected by a foreign key relation.
-#' Since this function is a wrapper around [dm_flatten_to_tbl()], the LHS of
-#' the join will always be a "child table", i.e. a table referencing the other table.
+#' `dm_join_to_tbl()` is deprecated in favor of [dm_flatten_to_tbl()].
 #'
 #' @param dm A [`dm`] object.
 #' @param table_1 One of the tables involved in the join.
 #' @param table_2 The second table of the join.
 #' @param join The type of join to be performed, see [dplyr::join()].
 #'
-#' @return The resulting table of the join.
-#'
-#' @family flattening functions
-#'
+#' @rdname deprecated
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_join_to_tbl(airports, flights)
-#'
-#' # same result is achieved with:
-#' dm_nycflights13() %>%
-#'   dm_join_to_tbl(flights, airports)
-#'
-#' # this gives an error, because the tables are not directly linked to each other:
-#' try(
-#'   dm_nycflights13() %>%
-#'     dm_join_to_tbl(airlines, airports)
-#' )
 dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
+  deprecate_soft("0.3.0", "dm::dm_join_to_tbl()", "dm::dm_flatten_to_tbl()")
+
   check_not_zoomed(dm)
   force(join)
   stopifnot(is_function(join))
@@ -227,7 +210,6 @@ check_flatten_to_tbl <- function(join_name,
                                  more_than_1_pt,
                                  has_grandparent,
                                  squash) {
-
   # argument checking, or filter and recompute induced subgraph
   # for subsequent check
   if (any_not_reachable) {

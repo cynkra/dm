@@ -1,5 +1,4 @@
 test_that("`dm_examine_constraints()` works", {
-
   # case of no constraints:
   expect_identical(
     dm_examine_constraints(dm_test_obj()),

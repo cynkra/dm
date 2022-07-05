@@ -80,7 +80,7 @@ test_that("default table repair works", {
 })
 
 test_that("table identifiers are quoted", {
-  dm <- dm_for_filter_sqlite()
+  dm <- dm_for_filter_duckdb()
   remote_names <-
     dm %>%
     dm_get_tables() %>%
@@ -183,7 +183,7 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
 })
 
 test_that("copy_dm_to() fails with schema argument for databases other than MSSQL & Postgres", {
-  skip_if_src("mssql", "postgres")
+  skip_if_src("mssql", "postgres", "maria")
 
   local_dm <- dm_for_filter() %>% collect()
 
