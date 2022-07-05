@@ -49,12 +49,16 @@ dm_recycle <- function(dm, ptype) {
 
   # compare classes of matched columns
   target_tables <- dm_get_def(ptype) %>%
-    mutate(coltypes = map_chr(data, function(x) {paste0(map_chr(x, ~ class(.x)), collapse = "")} )) %>%
+    mutate(coltypes = map_chr(data, function(x) {
+      paste0(map_chr(x, ~ class(.x)), collapse = "")
+    })) %>%
     select(table, coltypes)
 
   source_tables <- dm_ptype(dm) %>%
     dm_get_def() %>%
-    mutate(coltypes = map_chr(data, function(x) {paste0(map_chr(x, ~ class(.x)), collapse = "")} )) %>%
+    mutate(coltypes = map_chr(data, function(x) {
+      paste0(map_chr(x, ~ class(.x)), collapse = "")
+    })) %>%
     select(table, coltypes)
 
   fks_target_plus_cols <- dm_get_all_fks_impl(ptype) %>%
@@ -73,9 +77,9 @@ dm_recycle <- function(dm, ptype) {
 
   fks_source_plus_cols <- dm_get_all_fks_impl(dm) %>%
     mutate(
-        child_table_cols = map_chr(child_table, ~ paste0(all_cols_source[[.x]], collapse = "")),
-        parent_table_cols = map_chr(parent_table, ~ paste0(all_cols_source[[.x]], collapse = ""))
-      ) %>%
+      child_table_cols = map_chr(child_table, ~ paste0(all_cols_source[[.x]], collapse = "")),
+      parent_table_cols = map_chr(parent_table, ~ paste0(all_cols_source[[.x]], collapse = ""))
+    ) %>%
     left_join(source_tables, by = c("child_table" = "table")) %>%
     rename(child_table_coltypes = coltypes) %>%
     left_join(source_tables, by = c("parent_table" = "table")) %>%
