@@ -23,6 +23,15 @@ skip_if_src_not <- function(...) {
   }
 }
 
+skip_if_schema_supported <- function() {
+  not_ok_dbs <- schema_supported_dbs()[["test_shortcut"]]
+  skip_if_src(not_ok_dbs)
+}
+skip_if_schema_not_supported <- function() {
+  not_ok_dbs <- schema_supported_dbs()[["test_shortcut"]]
+  skip_if_src_not(not_ok_dbs)
+}
+
 skip_if_ide <- function() {
   if (!isTRUE(as.logical(Sys.getenv("CI")))) {
     skip("Slow test. To run, set CI=true")
