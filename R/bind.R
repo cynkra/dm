@@ -1,6 +1,14 @@
 #' Merge several `dm`
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Create a single `dm` from two or more `dm` objects.
+#'
+#' @section Life cycle:
+#'
+#' This function will become superseded when [dm()] supports processing whole
+#' dm objects, see [#826](https://github.com/cynkra/dm/issues/826).
 #'
 #' @param ... `dm` objects to bind together.
 #' @inheritParams dm_add_tbl
@@ -14,7 +22,7 @@
 #' dm_1 <- dm_nycflights13()
 #' dm_2 <- dm(mtcars, iris)
 #' dm_bind(dm_1, dm_2)
-dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
+dm_bind <- function(..., .repair = "check_unique", .quiet = FALSE) {
   # special case empty ellipsis, cause otherwise we get an empty data.frame of class `dm`
   if (dots_n(...) == 0) return(dm())
   dms <- list2(...)
@@ -27,7 +35,7 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
 
   # repair table names
   table_names <- map(dms, src_tbls_impl) %>% flatten_chr()
-  new_table_names <- repair_names_vec(table_names, repair, quiet)
+  new_table_names <- repair_names_vec(table_names, .repair, .quiet)
   # need to individually rename tables for each `dm`
   ntables_dms <- map(dms, length)
   dms_indices <-

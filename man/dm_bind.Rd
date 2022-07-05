@@ -4,12 +4,12 @@
 \alias{dm_bind}
 \title{Merge several \code{dm}}
 \usage{
-dm_bind(..., repair = "check_unique", quiet = FALSE)
+dm_bind(..., .repair = "check_unique", .quiet = FALSE)
 }
 \arguments{
 \item{...}{\code{dm} objects to bind together.}
 
-\item{repair}{Either a string or a function. If a string, it must
+\item{.repair}{Either a string or a function. If a string, it must
 be one of \code{"check_unique"}, \code{"minimal"}, \code{"unique"}, or \code{"universal"}.
 If a function, it is invoked with a vector of minimal names and must
 return minimal names, otherwise an error is thrown.
@@ -27,7 +27,7 @@ The \code{"check_unique"} option doesn't perform any name repair.
 Instead, an error is raised if the names don't suit the
 \code{"unique"} criteria.}
 
-\item{quiet}{By default, the user is informed of any renaming
+\item{.quiet}{By default, the user is informed of any renaming
 caused by repairing the names. This only concerns unique and
 universal repairing. Set \code{quiet} to \code{TRUE} to silence the
 messages.
@@ -39,11 +39,20 @@ Users can silence the name repair messages by setting the
 \code{dm} containing the tables and key relations of all \code{dm} objects.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Create a single \code{dm} from two or more \code{dm} objects.
 }
 \details{
 The \code{dm} objects have to share the same \code{src}. By default table names need to be unique.
 }
+\section{Life cycle}{
+
+
+This function will become superseded when \code{\link[=dm]{dm()}} supports processing whole
+dm objects, see \href{https://github.com/cynkra/dm/issues/826}{#826}.
+}
+
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_1 <- dm_nycflights13()
