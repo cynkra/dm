@@ -4,7 +4,7 @@
 \alias{check_set_equality}
 \title{Check column values for set equality}
 \usage{
-check_set_equality(t1, c1, t2, c2)
+check_set_equality(x, y, ..., x_select = NULL, y_select = NULL)
 }
 \arguments{
 \item{t1}{The data frame that contains the columns \code{c1}.}
@@ -20,8 +20,10 @@ Returns \code{t1}, invisibly, if the check is passed.
 Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
-\code{check_set_equality()} is a wrapper of \code{check_subset()}.
-It tests if one value set is a subset of another and vice versa, i.e., if both sets are the same.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+\code{check_set_equality()} is a wrapper of \code{\link[=check_subset]{check_subset()}}.
+It tests if one table is a subset of another and vice versa, i.e., if both sets are the same.
 If not, it throws an error.
 }
 \examples{
