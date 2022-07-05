@@ -353,16 +353,6 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
 })
 
 test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
-  # auto-added RHS-by argument
-  expect_message(expect_message(
-    dm_for_disambiguate() %>%
-      dm_zoom_to(iris_2) %>%
-      left_join(iris_2, by = c("key", "Sepal.Width", "other_col"), select = -key) %>%
-      tbl_zoomed(),
-    "Using `select = c(-key, key)`.",
-    fixed = TRUE
-  ))
-
   skip_if_src("sqlite")
   # test RHS-by name collision
   expect_equivalent_dm(
