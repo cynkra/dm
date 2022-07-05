@@ -68,6 +68,21 @@ is_mariadb <- function(dest) {
   inherits_any(dest, c("MariaDBConnection", "src_MariaDBConnection", "src_DoltConnection", "src_DoltLocalConnection"))
 }
 
+schema_supported_dbs <- function() {
+  tibble::tribble(
+    ~db_name, ~id_function, ~test_shortcut,
+    "SQL Server", "is_mssql", "mssql",
+    "Postgres", "is_postgres", "postgres",
+    "MariaDB", "is_mariadb", "maria",
+  )
+}
+
+is_schema_supported <- function(con) {
+  funs <- schema_supported_dbs()[["id_function"]]
+
+  any(purrr::map_lgl(funs, ~ do.call(., args = list(dest = con))))
+}
+
 src_from_src_or_con <- function(dest) {
   if (is.src(dest)) dest else dbplyr::src_dbi(dest)
 }
@@ -90,7 +105,7 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
     names <- unique_db_table_name(names)
   } else {
     # permanent tables
-    if (!is.null(schema) && !is_mssql(con) && !is_postgres(con) && !is_mariadb(con)) {
+    if (!is.null(schema) && !is_schema_supported(con)) {
       abort_no_schemas_supported(con = con)
     }
     names <- table_names

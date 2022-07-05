@@ -552,7 +552,6 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   # inform user in case RHS `by` column(s) are added
   if (!all(by %in% selected)) {
     new_cols <- glue_collapse(tick_if_needed(setdiff(by, selected)), ", ")
-    message(glue("Using `select = c({as_label(select_quo)}, {new_cols})`."))
   }
 
   # rename RHS `by` columns in the tibble to avoid after-the-fact disambiguation collision

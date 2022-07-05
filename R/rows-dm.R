@@ -206,7 +206,7 @@ dm_rows <- function(x, y, operation_name, top_down, in_place, require_keys, prog
   dm_rows_check(x, y)
 
   if (is_null(in_place)) {
-    message("Not persisting, use `in_place = FALSE` to turn off this message.")
+    inform("Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.")
     in_place <- FALSE
   }
 
