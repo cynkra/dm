@@ -136,7 +136,7 @@ is_unique_key_se <- function(.data, colname) {
 #' data_3 <- tibble::tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
 #' check_set_equality(data_1, a, data_3, a)
-check_set_equality <- function(x, y, ...) {
+check_set_equality <- function(x, y, ..., x_select = NULL, y_select = NULL) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
@@ -191,7 +191,7 @@ check_set_equality <- function(x, y, ...) {
 #'
 #' # this is failing:
 #' try(check_subset(data_2, a, data_1, a))
-check_subset <- function(x, y, ...) {
+check_subset <- function(x, y, ..., x_select = NULL, y_select = NULL) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 

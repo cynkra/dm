@@ -87,7 +87,7 @@
 #'
 #' # This passes:
 #' check_cardinality_0_1(d1, a, d3, c)
-check_cardinality_0_n <- function(x, y, ...) {
+check_cardinality_0_n <- function(x, y, ..., x_select = NULL, y_select = NULL) {
   pt <- enquo(parent_table)
   pkcq <- enexpr(pk_column)
   pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
@@ -105,7 +105,7 @@ check_cardinality_0_n <- function(x, y, ...) {
 
 #' @rdname examine_cardinality
 #' @export
-check_cardinality_1_n <- function(x, y, ...) {
+check_cardinality_1_n <- function(x, y, ..., x_select = NULL, y_select = NULL) {
   pt <- enquo(parent_table)
   pkcq <- enexpr(pk_column)
   pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
@@ -123,7 +123,7 @@ check_cardinality_1_n <- function(x, y, ...) {
 
 #' @rdname examine_cardinality
 #' @export
-check_cardinality_1_1 <- function(x, y, ...) {
+check_cardinality_1_1 <- function(x, y, ..., x_select = NULL, y_select = NULL) {
   pt <- enquo(parent_table)
   pkcq <- enexpr(pk_column)
   pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
@@ -149,7 +149,7 @@ check_cardinality_1_1 <- function(x, y, ...) {
 
 #' @rdname examine_cardinality
 #' @export
-check_cardinality_0_1 <- function(x, y, ...) {
+check_cardinality_0_1 <- function(x, y, ..., x_select = NULL, y_select = NULL) {
   pt <- enquo(parent_table)
   pkcq <- enexpr(pk_column)
   pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
@@ -179,7 +179,7 @@ check_cardinality_0_1 <- function(x, y, ...) {
 #'
 #' # Returns the kind of cardinality
 #' examine_cardinality(d1, a, d2, c)
-examine_cardinality <- function(x, y, ...) {
+examine_cardinality <- function(x, y, ..., x_select = NULL, y_select = NULL) {
   ptq <- enquo(parent_table)
   pkcq <- enexpr(pk_column)
   pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(ptq))))
