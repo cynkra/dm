@@ -1,6 +1,8 @@
 #' Add tables to a [`dm`]
 #'
 #' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' Adds one or more new tables to a [`dm`].
 #' Existing tables are not overwritten.
 #'
@@ -11,7 +13,21 @@
 #' @param dm A [`dm`] object.
 #' @param ... One or more tables to add to the `dm`.
 #'   If no explicit name is given, the name of the expression is used.
-#' @inheritParams vctrs::vec_as_names
+#' @param .repair Treatment of problematic column names:
+#'   * `"minimal"`: No name repair or checks, beyond basic existence,
+#'   * `"unique"`: Make sure names are unique and not empty,
+#'   * `"check_unique"`: (default value), no name repair, but check they are
+#'     `unique`,
+#'   * `"universal"`: Make the names `unique` and syntactic
+#'   * a function: apply custom name repair (e.g., `.name_repair = make.names`
+#'     for names in the style of base R).
+#'   * A purrr-style anonymous function, see [rlang::as_function()]
+#'
+#'   This argument is passed on as `repair` to [vctrs::vec_as_names()].
+#'   See there for more details on these terms and the strategies used
+#'   to enforce them.
+#'
+#' @param .quiet Whether to suppress messages about name repair.
 #'
 #' @examples
 #' dm() %>%
@@ -21,20 +37,20 @@
 #' dm() %>%
 #'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 #' @export
-dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
-  check_not_zoomed(dm)
+dm_add_tbl <- function(.dm, ..., .repair = "unique", .quiet = FALSE) {
+  check_not_zoomed(.dm)
 
   new_names <- names(exprs(..., .named = TRUE))
   new_tables <- list2(...)
 
-  check_new_tbls(dm, new_tables)
+  check_new_tbls(.dm, new_tables)
 
-  old_names <- src_tbls_impl(dm)
-  names_list <- repair_table_names(old_names, new_names, repair, quiet)
+  old_names <- src_tbls_impl(.dm)
+  names_list <- repair_table_names(old_names, new_names, .repair, .quiet)
   # rename old tables in case name repair changed their names
 
-  dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
-  dm_add_tbl_impl(dm, new_tables, names_list$new_names)
+  .dm <- dm_select_tbl_impl(.dm, names_list$new_old_names)
+  dm_add_tbl_impl(.dm, new_tables, names_list$new_names)
 }
 
 repair_names_vec <- function(names, repair, quiet) {

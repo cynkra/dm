@@ -4,44 +4,38 @@
 \alias{dm_add_tbl}
 \title{Add tables to a \code{\link{dm}}}
 \usage{
-dm_add_tbl(dm, ..., repair = "unique", quiet = FALSE)
+dm_add_tbl(.dm, ..., .repair = "unique", .quiet = FALSE)
 }
 \arguments{
-\item{dm}{A \code{\link{dm}} object.}
-
 \item{...}{One or more tables to add to the \code{dm}.
 If no explicit name is given, the name of the expression is used.}
 
-\item{repair}{Either a string or a function. If a string, it must
-be one of \code{"check_unique"}, \code{"minimal"}, \code{"unique"}, or \code{"universal"}.
-If a function, it is invoked with a vector of minimal names and must
-return minimal names, otherwise an error is thrown.
+\item{.repair}{Treatment of problematic column names:
 \itemize{
-\item Minimal names are never \code{NULL} or \code{NA}. When an element doesn't
-have a name, its minimal name is an empty string.
-\item Unique names are unique. A suffix is appended to duplicate
-names to make them unique.
-\item Universal names are unique and syntactic, meaning that you can
-safely use the names as variables without causing a syntax
-error.
+\item \code{"minimal"}: No name repair or checks, beyond basic existence,
+\item \code{"unique"}: Make sure names are unique and not empty,
+\item \code{"check_unique"}: (default value), no name repair, but check they are
+\code{unique},
+\item \code{"universal"}: Make the names \code{unique} and syntactic
+\item a function: apply custom name repair (e.g., \code{.name_repair = make.names}
+for names in the style of base R).
+\item A purrr-style anonymous function, see \code{\link[rlang:as_function]{rlang::as_function()}}
 }
 
-The \code{"check_unique"} option doesn't perform any name repair.
-Instead, an error is raised if the names don't suit the
-\code{"unique"} criteria.}
+This argument is passed on as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.
+See there for more details on these terms and the strategies used
+to enforce them.}
 
-\item{quiet}{By default, the user is informed of any renaming
-caused by repairing the names. This only concerns unique and
-universal repairing. Set \code{quiet} to \code{TRUE} to silence the
-messages.
+\item{.quiet}{Whether to suppress messages about name repair.}
 
-Users can silence the name repair messages by setting the
-\code{"rlib_name_repair_verbosity"} global option to \code{"quiet"}.}
+\item{dm}{A \code{\link{dm}} object.}
 }
 \value{
 The initial \code{dm} with the additional table(s).
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Adds one or more new tables to a \code{\link{dm}}.
 Existing tables are not overwritten.
 }
