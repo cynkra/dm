@@ -129,7 +129,7 @@ An example with filtering on a `dm` and then merging:
 **Get all flights from Delta Air Lines which didn't depart from John F. Kennedy International Airport in May 2013 - and join all the airports data into the `flights` table.**
 
 ```{r}
-dm_nycflights13() %>%
+dm_nycflights13(subset = FALSE) %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   dm_filter(flights, month == 5) %>%
   dm_flatten_to_tbl(flights, airports, join = left_join)
