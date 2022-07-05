@@ -66,12 +66,27 @@ Therefore, trying this will result in a warning.
 
 Since \code{join = nest_join()} does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
+
+The difference between \code{dm_flatten_to_tbl()} and \code{dm_squash_to_tbl()} is
+the following (see the examples):
+\itemize{
+\item \code{dm_flatten_to_tbl()} allows only one level of hierarchy
+(i.e., direct neighbors to table \code{start}), while
+\item \code{dm_squash_to_tbl()} will go through all levels of hierarchy while joining.
+}
+
+Additionally, these functions differ from \code{dm_wrap_tbl()}, which always
+returns a \code{dm} object.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-dm_nycflights13() \%>\%
-  dm_select_tbl(-weather) \%>\%
-  dm_flatten_to_tbl(flights)
-\dontshow{\}) # examplesIf}
+
+dm_financial() \%>\%
+  dm_select_tbl(-loans) \%>\%
+  dm_flatten_to_tbl(start = cards)
+
+dm_financial() \%>\%
+  dm_select_tbl(-loans) \%>\%
+  dm_squash_to_tbl(start = cards)
+
 }
 \concept{flattening functions}
