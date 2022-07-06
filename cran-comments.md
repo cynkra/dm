@@ -2,17 +2,13 @@ dm 0.3.0
 
 ## Cran Repository Policy
 
-- [ ] Reviewed CRP last edited 2022-05-03.
-
-See changes at https://github.com/eddelbuettel/crp/compare/master@%7B2022-02-08%7D...master@%7B2022-05-03%7D
+- [x] Reviewed CRP last edited 2022-05-03.
 
 ## R CMD check results
 
 - [x] Checked locally, R 4.1.3
-- [ ] Checked on CI system, R 4.2.1
-- [ ] Checked on win-builder, R devel
-
-Check the boxes above after successful execution and remove this line. Then run `fledge::release()`.
+- [x] Checked on CI system, R 4.2.1
+- [x] Checked on win-builder, R devel
 
 ## Current CRAN check results
 
