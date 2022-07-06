@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="dm">
 <title>Zooming and manipulating tables • dm</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -12,12 +13,11 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Zooming and manipulating tables">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Zooming and manipulating tables">
 <meta property="og:description" content="dm">
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -25,120 +25,84 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
-      </span>
-    </div>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../articles/dm.html">Intro</a>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../articles/dm.html">Get started</a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Tutorials
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
-    </li>
-    <li>
-      <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
-    </li>
-    <li>
-      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
-    </li>
-    <li>
-      <a href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
-    </li>
-    <li>
-      <a href="../articles/howto-dm-rows.html">Insert, update or remove rows in a database</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Technical articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/tech-dm-join.html">Joining in relational data models</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-naming.html">Function naming logic</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-cdm.html">Migration guide: 'cdm' -&gt; 'dm'</a>
-    </li>
-  </ul>
-</li>
-<li>
-  <a href="../news/index.html">News</a>
-</li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/cynkra/dm" class="external-link">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
-</div>
-<!--/.nav-collapse -->
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-tutorials">Tutorials</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-tutorials">
+    <a class="dropdown-item" href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
+    <a class="dropdown-item" href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
+    <a class="dropdown-item" href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+    <a class="dropdown-item" href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
+    <a class="dropdown-item" href="../articles/howto-dm-rows.html">Insert, update, or remove rows in a database</a>
   </div>
-<!--/.container -->
+</li>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-technical-articles">Technical articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-technical-articles">
+    <a class="dropdown-item" href="../articles/tech-dm-join.html">Joining in relational data models</a>
+    <a class="dropdown-item" href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
+    <a class="dropdown-item" href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
+    <a class="dropdown-item" href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
+    <a class="dropdown-item" href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
+    <a class="dropdown-item" href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
+    <a class="dropdown-item" href="../articles/tech-dm-naming.html">Function naming logic</a>
+    <a class="dropdown-item" href="../articles/tech-dm-cdm.html">Migration guide: 'cdm' -&gt; 'dm'</a>
+  </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+      </ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/cynkra/dm/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
-<!--/.navbar -->
 
-      
+    
+  </div>
+</nav><div class="container template-article">
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Zooming and manipulating tables</h1>
+
+
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Zooming and manipulating tables</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-zoom.Rmd" class="external-link"><code>vignettes/tech-dm-zoom.Rmd</code></a></small>
-      <div class="hidden name"><code>tech-dm-zoom.Rmd</code></div>
-
+      <div class="d-none name"><code>tech-dm-zoom.Rmd</code></div>
     </div>
 
     
@@ -176,89 +140,82 @@
 </h3>
 <p>Imagine you want to have a column in <code>flights</code>, specifying if a flight left before noon or after. Just like with {dplyr}, we can tackle this with <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code>. Let us do this step by step:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">flights_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 4</span>
-<span class="co">#&gt; Foreign keys: 4</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">flights_dm</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
+<span><span class="co">#&gt; Columns: 53</span></span>
+<span><span class="co">#&gt; Primary keys: 4</span></span>
+<span><span class="co">#&gt; Foreign keys: 4</span></span></code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_zoomed</span> <span class="op">&lt;-</span>
-  <span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span>
-<span class="co"># The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.</span>
-<span class="va">flights_zoomed</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Zoomed table: flights</span>
-<span class="co">#&gt; # A tibble:     1,761 × 19</span>
-<span class="co">#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span>
-<span class="co">#&gt;  1  2013     1    10        3           2359         4      426</span>
-<span class="co">#&gt;  2  2013     1    10       16           2359        17      447</span>
-<span class="co">#&gt;  3  2013     1    10      450            500       -10      634</span>
-<span class="co">#&gt;  4  2013     1    10      520            525        -5      813</span>
-<span class="co">#&gt;  5  2013     1    10      530            530         0      824</span>
-<span class="co">#&gt;  6  2013     1    10      531            540        -9      832</span>
-<span class="co">#&gt;  7  2013     1    10      535            540        -5     1015</span>
-<span class="co">#&gt;  8  2013     1    10      546            600       -14      645</span>
-<span class="co">#&gt;  9  2013     1    10      549            600       -11      652</span>
-<span class="co">#&gt; 10  2013     1    10      550            600       -10      649</span>
-<span class="co">#&gt; # … with 1,751 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span>
-<span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
-<span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></code></pre>
+<code class="sourceCode R"><span><span class="va">flights_zoomed</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span>
+<span><span class="co"># The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.</span></span>
+<span><span class="va">flights_zoomed</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Zoomed table: flights</span></span>
+<span><span class="co">#&gt; # A tibble:     1,761 × 19</span></span>
+<span><span class="co">#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1  2013     1    10        3           2359         4      426</span></span>
+<span><span class="co">#&gt;  2  2013     1    10       16           2359        17      447</span></span>
+<span><span class="co">#&gt;  3  2013     1    10      450            500       -10      634</span></span>
+<span><span class="co">#&gt;  4  2013     1    10      520            525        -5      813</span></span>
+<span><span class="co">#&gt;  5  2013     1    10      530            530         0      824</span></span>
+<span><span class="co">#&gt;  6  2013     1    10      531            540        -9      832</span></span>
+<span><span class="co">#&gt;  7  2013     1    10      535            540        -5     1015</span></span>
+<span><span class="co">#&gt;  8  2013     1    10      546            600       -14      645</span></span>
+<span><span class="co">#&gt;  9  2013     1    10      549            600       -11      652</span></span>
+<span><span class="co">#&gt; 10  2013     1    10      550            600       -10      649</span></span>
+<span><span class="co">#&gt; # … with 1,751 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">flights_zoomed_mutate</span> <span class="op">&lt;-</span>
-  <span class="va">flights_zoomed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>am_pm_dep <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">dep_time</span> <span class="op">&lt;</span> <span class="fl">1200</span>, <span class="st">"am"</span>, <span class="st">"pm"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="co"># in order to see our changes in the output we use `select()` for reordering the columns</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span><span class="op">:</span><span class="va">dep_time</span>, <span class="va">am_pm_dep</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="va">flights_zoomed_mutate</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Zoomed table: flights</span>
-<span class="co">#&gt; # A tibble:     1,761 × 20</span>
-<span class="co">#&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt; &lt;chr&gt;              &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span>
-<span class="co">#&gt;  1  2013     1    10        3 am                  2359         4      426</span>
-<span class="co">#&gt;  2  2013     1    10       16 am                  2359        17      447</span>
-<span class="co">#&gt;  3  2013     1    10      450 am                   500       -10      634</span>
-<span class="co">#&gt;  4  2013     1    10      520 am                   525        -5      813</span>
-<span class="co">#&gt;  5  2013     1    10      530 am                   530         0      824</span>
-<span class="co">#&gt;  6  2013     1    10      531 am                   540        -9      832</span>
-<span class="co">#&gt;  7  2013     1    10      535 am                   540        -5     1015</span>
-<span class="co">#&gt;  8  2013     1    10      546 am                   600       -14      645</span>
-<span class="co">#&gt;  9  2013     1    10      549 am                   600       -11      652</span>
-<span class="co">#&gt; 10  2013     1    10      550 am                   600       -10      649</span>
-<span class="co">#&gt; # … with 1,751 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span>
-<span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span>
-<span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></code></pre>
+<code class="sourceCode R"><span></span>
+<span><span class="va">flights_zoomed_mutate</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">flights_zoomed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>am_pm_dep <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">dep_time</span> <span class="op">&lt;</span> <span class="fl">1200</span>, <span class="st">"am"</span>, <span class="st">"pm"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># in order to see our changes in the output we use `select()` for reordering the columns</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span><span class="op">:</span><span class="va">dep_time</span>, <span class="va">am_pm_dep</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">flights_zoomed_mutate</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Zoomed table: flights</span></span>
+<span><span class="co">#&gt; # A tibble:     1,761 × 20</span></span>
+<span><span class="co">#&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt; &lt;chr&gt;              &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1  2013     1    10        3 am                  2359         4      426</span></span>
+<span><span class="co">#&gt;  2  2013     1    10       16 am                  2359        17      447</span></span>
+<span><span class="co">#&gt;  3  2013     1    10      450 am                   500       -10      634</span></span>
+<span><span class="co">#&gt;  4  2013     1    10      520 am                   525        -5      813</span></span>
+<span><span class="co">#&gt;  5  2013     1    10      530 am                   530         0      824</span></span>
+<span><span class="co">#&gt;  6  2013     1    10      531 am                   540        -9      832</span></span>
+<span><span class="co">#&gt;  7  2013     1    10      535 am                   540        -5     1015</span></span>
+<span><span class="co">#&gt;  8  2013     1    10      546 am                   600       -14      645</span></span>
+<span><span class="co">#&gt;  9  2013     1    10      549 am                   600       -11      652</span></span>
+<span><span class="co">#&gt; 10  2013     1    10      550 am                   600       -10      649</span></span>
+<span><span class="co">#&gt; # … with 1,751 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:</span>
-<span class="va">updated_flights_dm</span> <span class="op">&lt;-</span>
-  <span class="va">flights_zoomed_mutate</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co"># The only difference in the `dm` print output is the increased number of columns</span>
-<span class="va">updated_flights_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 54</span>
-<span class="co">#&gt; Primary keys: 4</span>
-<span class="co">#&gt; Foreign keys: 4</span></code></pre>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:</span></span>
+<span><span class="va">updated_flights_dm</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">flights_zoomed_mutate</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># The only difference in the `dm` print output is the increased number of columns</span></span>
+<span><span class="va">updated_flights_dm</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
+<span><span class="co">#&gt; Columns: 54</span></span>
+<span><span class="co">#&gt; Primary keys: 4</span></span>
+<span><span class="co">#&gt; Foreign keys: 4</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># The schematic view of the data model remains unchanged</span>
-<span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">updated_flights_dm</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># The schematic view of the data model remains unchanged</span></span>
+<span><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">updated_flights_dm</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="250pt" height="230pt" viewbox="0.00 0.00 250.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 226)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -279,87 +236,88 @@
 </h3>
 <p>The same course of action could, for example, be employed to create a surrogate key for a table. We can do this for the <code>weather</code> table.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span>
-<span class="va">weather_zoomed</span> <span class="op">&lt;-</span>
-  <span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">weather</span><span class="op">)</span>
-<span class="va">weather_zoomed</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Zoomed table: weather</span>
-<span class="co">#&gt; # A tibble:     144 × 15</span>
-<span class="co">#&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 EWR     2013     1    10     0  41    32    70.1      230       8.06</span>
-<span class="co">#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21</span>
-<span class="co">#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90</span>
-<span class="co">#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75</span>
-<span class="co">#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90</span>
-<span class="co">#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 </span>
-<span class="co">#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90</span>
-<span class="co">#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90</span>
-<span class="co">#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06</span>
-<span class="co">#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 </span>
-<span class="co">#&gt; # … with 134 more rows, and 5 more variables: wind_gust &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">weather_zoomed</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">weather</span><span class="op">)</span></span>
+<span><span class="va">weather_zoomed</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Zoomed table: weather</span></span>
+<span><span class="co">#&gt; # A tibble:     144 × 15</span></span>
+<span><span class="co">#&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 EWR     2013     1    10     0  41    32    70.1      230       8.06</span></span>
+<span><span class="co">#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21</span></span>
+<span><span class="co">#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90</span></span>
+<span><span class="co">#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75</span></span>
+<span><span class="co">#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90</span></span>
+<span><span class="co">#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 </span></span>
+<span><span class="co">#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90</span></span>
+<span><span class="co">#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90</span></span>
+<span><span class="co">#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06</span></span>
+<span><span class="co">#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 </span></span>
+<span><span class="co">#&gt; # … with 134 more rows, and 5 more variables: wind_gust &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Maybe there is some hidden candidate for a primary key that we overlooked</span>
-<span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span><span class="op">(</span><span class="va">weather_zoomed</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 15 × 3</span>
-<span class="co">#&gt;    columns    candidate why                                                </span>
-<span class="co">#&gt;    &lt;keys&gt;     &lt;lgl&gt;     &lt;chr&gt;                                              </span>
-<span class="co">#&gt;  1 origin     FALSE     has duplicate values: EWR (48), JFK (48), LGA (48) </span>
-<span class="co">#&gt;  2 year       FALSE     has duplicate values: 2013 (144)                   </span>
-<span class="co">#&gt;  3 month      FALSE     has duplicate values: 1 (72), 2 (72)               </span>
-<span class="co">#&gt;  4 day        FALSE     has duplicate values: 10 (144)                     </span>
-<span class="co">#&gt;  5 hour       FALSE     has duplicate values: 0 (6), 1 (6), 2 (6), 3 (6), …</span>
-<span class="co">#&gt;  6 temp       FALSE     has duplicate values: 44.06 (12), 41.00 (8), 44.96…</span>
-<span class="co">#&gt;  7 dewp       FALSE     has duplicate values: 21.92 (16), 24.98 (16), 6.98…</span>
-<span class="co">#&gt;  8 humid      FALSE     has duplicate values: 53.71 (4), 56.56 (4), 32.53 …</span>
-<span class="co">#&gt;  9 wind_dir   FALSE     has duplicate values: 320 (25), 330 (17), 310 (15)…</span>
-<span class="co">#&gt; 10 wind_speed FALSE     has duplicate values: 6.90468 (20), 8.05546 (19), …</span>
-<span class="co">#&gt; 11 wind_gust  FALSE     has 123 missing values, and duplicate values: 23.0…</span>
-<span class="co">#&gt; 12 precip     FALSE     has duplicate values: 0 (144)                      </span>
-<span class="co">#&gt; 13 pressure   FALSE     has duplicate values: 1028.9 (6), 1029.0 (5), 1032…</span>
-<span class="co">#&gt; 14 visib      FALSE     has duplicate values: 10 (144)                     </span>
-<span class="co">#&gt; 15 time_hour  FALSE     has duplicate values: 2013-01-10 00:00:00 (3), 201…</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># Maybe there is some hidden candidate for a primary key that we overlooked</span></span>
+<span><span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span><span class="op">(</span><span class="va">weather_zoomed</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 15 × 3</span></span>
+<span><span class="co">#&gt;    columns    candidate why                                                </span></span>
+<span><span class="co">#&gt;    &lt;keys&gt;     &lt;lgl&gt;     &lt;chr&gt;                                              </span></span>
+<span><span class="co">#&gt;  1 origin     FALSE     has duplicate values: EWR (48), JFK (48), LGA (48) </span></span>
+<span><span class="co">#&gt;  2 year       FALSE     has duplicate values: 2013 (144)                   </span></span>
+<span><span class="co">#&gt;  3 month      FALSE     has duplicate values: 1 (72), 2 (72)               </span></span>
+<span><span class="co">#&gt;  4 day        FALSE     has duplicate values: 10 (144)                     </span></span>
+<span><span class="co">#&gt;  5 hour       FALSE     has duplicate values: 0 (6), 1 (6), 2 (6), 3 (6), …</span></span>
+<span><span class="co">#&gt;  6 temp       FALSE     has duplicate values: 44.06 (12), 41.00 (8), 44.96…</span></span>
+<span><span class="co">#&gt;  7 dewp       FALSE     has duplicate values: 21.92 (16), 24.98 (16), 6.98…</span></span>
+<span><span class="co">#&gt;  8 humid      FALSE     has duplicate values: 53.71 (4), 56.56 (4), 32.53 …</span></span>
+<span><span class="co">#&gt;  9 wind_dir   FALSE     has duplicate values: 320 (25), 330 (17), 310 (15)…</span></span>
+<span><span class="co">#&gt; 10 wind_speed FALSE     has duplicate values: 6.90468 (20), 8.05546 (19), …</span></span>
+<span><span class="co">#&gt; 11 wind_gust  FALSE     has 123 missing values, and duplicate values: 23.0…</span></span>
+<span><span class="co">#&gt; 12 precip     FALSE     has duplicate values: 0 (144)                      </span></span>
+<span><span class="co">#&gt; 13 pressure   FALSE     has duplicate values: 1028.9 (6), 1029.0 (5), 1032…</span></span>
+<span><span class="co">#&gt; 14 visib      FALSE     has duplicate values: 10 (144)                     </span></span>
+<span><span class="co">#&gt; 15 time_hour  FALSE     has duplicate values: 2013-01-10 00:00:00 (3), 201…</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Seems we have to construct a column with unique values</span>
-<span class="co"># This can be done by combining column `origin` with `time_hour`, if the latter</span>
-<span class="co"># is converted to a single time zone first; all within the `dm`:</span>
-<span class="va">weather_zoomed_mutate</span> <span class="op">&lt;-</span>
-  <span class="va">weather_zoomed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="co"># first convert all times to the same time zone:</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>time_hour_fmt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">time_hour</span>, tz <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="co"># paste together as character the airport code and the time</span>
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite</a></span><span class="op">(</span><span class="st">"origin_slot_id"</span>, <span class="va">origin</span>, <span class="va">time_hour_fmt</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">origin_slot_id</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># check if we the result is as expected:</span>
-<span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span><span class="op">(</span><span class="va">weather_zoomed_mutate</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">candidate</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1 × 3</span>
-<span class="co">#&gt;   columns        candidate why  </span>
-<span class="co">#&gt;   &lt;keys&gt;         &lt;lgl&gt;     &lt;chr&gt;</span>
-<span class="co">#&gt; 1 origin_slot_id TRUE      ""</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># Seems we have to construct a column with unique values</span></span>
+<span><span class="co"># This can be done by combining column `origin` with `time_hour`, if the latter</span></span>
+<span><span class="co"># is converted to a single time zone first; all within the `dm`:</span></span>
+<span><span class="va">weather_zoomed_mutate</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">weather_zoomed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># first convert all times to the same time zone:</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>time_hour_fmt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">time_hour</span>, tz <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># paste together as character the airport code and the time</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite</a></span><span class="op">(</span><span class="st">"origin_slot_id"</span>, <span class="va">origin</span>, <span class="va">time_hour_fmt</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">origin_slot_id</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># check if we the result is as expected:</span></span>
+<span><span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span><span class="op">(</span><span class="va">weather_zoomed_mutate</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">candidate</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
+<span><span class="co">#&gt;   columns        candidate why  </span></span>
+<span><span class="co">#&gt;   &lt;keys&gt;         &lt;lgl&gt;     &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 origin_slot_id TRUE      ""</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_upd_weather_dm</span> <span class="op">&lt;-</span>
-  <span class="va">weather_zoomed_mutate</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">weather</span>, <span class="va">origin_slot_id</span><span class="op">)</span>
-<span class="va">flights_upd_weather_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 4</span>
-<span class="co">#&gt; Foreign keys: 3</span></code></pre>
+<code class="sourceCode R"><span><span class="va">flights_upd_weather_dm</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">weather_zoomed_mutate</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">weather</span>, <span class="va">origin_slot_id</span><span class="op">)</span></span>
+<span><span class="va">flights_upd_weather_dm</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
+<span><span class="co">#&gt; Columns: 53</span></span>
+<span><span class="co">#&gt; Primary keys: 4</span></span>
+<span><span class="co">#&gt; Foreign keys: 3</span></span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># creating the coveted FK relation between `flights` and `weather`</span>
-<span class="va">extended_flights_dm</span> <span class="op">&lt;-</span>
-  <span class="va">flights_upd_weather_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>time_hour_fmt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">time_hour</span>, tz <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="co"># need to keep `origin` as FK to airports, so `remove = FALSE`</span>
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite</a></span><span class="op">(</span><span class="st">"origin_slot_id"</span>, <span class="va">origin</span>, <span class="va">time_hour_fmt</span>, remove <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin_slot_id</span>, <span class="va">weather</span><span class="op">)</span>
-<span class="va">extended_flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># creating the coveted FK relation between `flights` and `weather`</span></span>
+<span><span class="va">extended_flights_dm</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">flights_upd_weather_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>time_hour_fmt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">time_hour</span>, tz <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># need to keep `origin` as FK to airports, so `remove = FALSE`</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite</a></span><span class="op">(</span><span class="st">"origin_slot_id"</span>, <span class="va">origin</span>, <span class="va">time_hour_fmt</span>, remove <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin_slot_id</span>, <span class="va">weather</span><span class="op">)</span></span>
+<span><span class="va">extended_flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="212pt" height="230pt" viewbox="0.00 0.00 212.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 226)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -380,7 +338,7 @@
 </h3>
 <p>If you look at the <code>dm</code> created by <code>dm_nycflights13(cycle = TRUE)</code>, you see that two columns of <code>flights</code> relate to one and the same table, <code>airports</code>. One column stands for the departure airport and the other for the arrival airport.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="250pt" height="230pt" viewbox="0.00 0.00 250.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 226)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -395,20 +353,20 @@
 <polygon fill="#ed7d31" stroke="transparent" points="167.5,-141 167.5,-161 213.5,-161 213.5,-141 167.5,-141"></polygon><text text-anchor="start" x="172.6178" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text><polygon fill="#fbe5d5" stroke="transparent" points="167.5,-121 167.5,-141 213.5,-141 213.5,-121 167.5,-121"></polygon><text text-anchor="start" x="169.1115" y="-127.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="166.5,-120 166.5,-162 214.5,-162 214.5,-120 166.5,-120"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge4" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M102.5,-111C128.9473,-111 135.7361,-126.3125 157.2687,-130.1406"></path><polygon fill="#555555" stroke="#555555" points="157.2421,-133.6506 167.5,-131 157.8281,-126.6752 157.2421,-133.6506"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
 <polygon fill="#70ad47" stroke="transparent" points="140.5,-21 140.5,-41 241.5,-41 241.5,-21 140.5,-21"></polygon><text text-anchor="start" x="168.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="#e2eeda" stroke="transparent" points="140.5,-1 140.5,-21 241.5,-21 241.5,-1 140.5,-1"></polygon><text text-anchor="start" x="142.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="139,0 139,-42 242,-42 242,0 139,0"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge5" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title>
-<path fill="none" stroke="#555555" d="M102.5,-51C122.8065,-51 118.7241,-23.5684 130.6469,-14.1387"></path><polygon fill="#555555" stroke="#555555" points="132.0341,-17.3702 140.5,-11 129.9094,-10.7004 132.0341,-17.3702"></polygon></g></g></svg><p>In such cases it can be beneficial, to “disentangle” the <code>dm</code> by duplicating the referred table. One way to do this in the {dm}-framework is as follows:</p>
+<path fill="none" stroke="#555555" d="M102.5,-51C122.8065,-51 118.7241,-23.5684 130.6469,-14.1387"></path><polygon fill="#555555" stroke="#555555" points="132.0341,-17.3702 140.5,-11 129.9094,-10.7004 132.0341,-17.3702"></polygon></g></g></svg><p>In such cases, it can be beneficial to “disentangle” the <code>dm</code> by duplicating the referred table. One way to do this in the {dm}-framework is as follows:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">disentangled_flights_dm</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="co"># zooming and immediately inserting essentially creates a copy of the original table</span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="co"># reinserting the `airports` table under the name `destination`</span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"destination"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="co"># renaming the originally zoomed table</span>
-  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_rename_tbl</a></span><span class="op">(</span>origin <span class="op">=</span> <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="co"># Key relations are also duplicated, so the wrong ones need to be removed</span>
-  <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">dest</span>, <span class="va">origin</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">destination</span><span class="op">)</span>
-<span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">disentangled_flights_dm</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">disentangled_flights_dm</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># zooming and immediately inserting essentially creates a copy of the original table</span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># reinserting the `airports` table under the name `destination`</span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"destination"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># renaming the originally zoomed table</span></span>
+<span>  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_rename_tbl</a></span><span class="op">(</span>origin <span class="op">=</span> <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># Key relations are also duplicated, so the wrong ones need to be removed</span></span>
+<span>  <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">dest</span>, <span class="va">origin</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">destination</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">disentangled_flights_dm</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="250pt" height="290pt" viewbox="0.00 0.00 250.00 290.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 286)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -424,19 +382,19 @@
 <polygon fill="#ed7d31" stroke="transparent" points="167.5,-201 167.5,-221 213.5,-221 213.5,-201 167.5,-201"></polygon><text text-anchor="start" x="172.6178" y="-206.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text><polygon fill="#fbe5d5" stroke="transparent" points="167.5,-181 167.5,-201 213.5,-201 213.5,-181 167.5,-181"></polygon><text text-anchor="start" x="169.1115" y="-187.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="166.5,-180 166.5,-222 214.5,-222 214.5,-180 166.5,-180"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge3" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M102.5,-151C132.5782,-151 133.7513,-182.4508 157.2806,-189.5764"></path><polygon fill="#555555" stroke="#555555" points="157.1127,-193.0867 167.5,-191 158.0786,-186.1537 157.1127,-193.0867"></polygon></g><!-- weather --><g id="node6" class="node"><title>weather</title>
 <polygon fill="#70ad47" stroke="transparent" points="140.5,-21 140.5,-41 241.5,-41 241.5,-21 140.5,-21"></polygon><text text-anchor="start" x="168.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="#e2eeda" stroke="transparent" points="140.5,-1 140.5,-21 241.5,-21 241.5,-1 140.5,-1"></polygon><text text-anchor="start" x="142.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="139,0 139,-42 242,-42 242,0 139,0"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge4" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title>
-<path fill="none" stroke="#555555" d="M102.5,-91C137.7113,-91 108.8369,-26.9851 130.5301,-13.482"></path><polygon fill="#555555" stroke="#555555" points="131.6417,-16.8121 140.5,-11 129.9506,-10.0195 131.6417,-16.8121"></polygon></g></g></svg><p>In a future update we will provide a more convenient way to “disentangle” <code>dm</code> objects, so that the individual steps will be done automatically.</p>
+<path fill="none" stroke="#555555" d="M102.5,-91C137.7113,-91 108.8369,-26.9851 130.5301,-13.482"></path><polygon fill="#555555" stroke="#555555" points="131.6417,-16.8121 140.5,-11 129.9506,-10.0195 131.6417,-16.8121"></polygon></g></g></svg><p>In a future update, we will provide a more convenient way to “disentangle” <code>dm</code> objects, so that the individual steps will be done automatically.</p>
 </div>
 <div class="section level3">
 <h3 id="use-case-4-add-summary-table-to-dm">Use case 4: Add summary table to <code>dm</code><a class="anchor" aria-label="anchor" href="#use-case-4-add-summary-table-to-dm"></a>
 </h3>
 <p>Here is an example for adding a summary of a table as a new table to a <code>dm</code> (FK-relations are taken care of automatically):</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_with_summary</span> <span class="op">&lt;-</span>
-  <span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">carrier</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"dep_carrier_count"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">dm_with_summary</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dm_with_summary</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">carrier</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"dep_carrier_count"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">dm_with_summary</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="254pt" height="230pt" viewbox="0.00 0.00 254.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 226)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -460,34 +418,34 @@
 </h3>
 <p>If you would like to join some or all of the columns of one table to another, you can make use of one of the <code>join</code>-methods for a <code>zoomed_dm</code>. In addition to the usual arguments for the {dplyr}-joins, by supplying the <code>select</code> argument you can specify which columns of the RHS-table you want to be included in the join. For the syntax please see the example below. The LHS-table of a join is always the zoomed table.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">joined_flights_dm</span> <span class="op">&lt;-</span>
-  <span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="co"># let's first reduce the number of columns of flights</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">dep_delay</span><span class="op">:</span><span class="op">-</span><span class="va">arr_delay</span>, <span class="op">-</span><span class="va">air_time</span><span class="op">:</span><span class="op">-</span><span class="va">time_hour</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="co"># in the {dm}-method for the joins you can specify which columns you want to add to the zoomed table</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">planes</span>, select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tailnum</span>, plane_type <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"flights_plane_type"</span><span class="op">)</span>
-<span class="co"># this is how the table looks now</span>
-<span class="va">joined_flights_dm</span><span class="op">$</span><span class="va">flights_plane_type</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1,761 × 11</span>
-<span class="co">#&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; </span>
-<span class="co">#&gt;  1  2013     1    10        3           2359 B6         727 N571JB  JFK   </span>
-<span class="co">#&gt;  2  2013     1    10       16           2359 B6         739 N564JB  JFK   </span>
-<span class="co">#&gt;  3  2013     1    10      450            500 US        1117 N171US  EWR   </span>
-<span class="co">#&gt;  4  2013     1    10      520            525 UA        1018 N35204  EWR   </span>
-<span class="co">#&gt;  5  2013     1    10      530            530 UA         404 N815UA  LGA   </span>
-<span class="co">#&gt;  6  2013     1    10      531            540 AA        1141 N5EAAA  JFK   </span>
-<span class="co">#&gt;  7  2013     1    10      535            540 B6         725 N784JB  JFK   </span>
-<span class="co">#&gt;  8  2013     1    10      546            600 B6         380 N337JB  EWR   </span>
-<span class="co">#&gt;  9  2013     1    10      549            600 EV        6055 N19554  LGA   </span>
-<span class="co">#&gt; 10  2013     1    10      550            600 US        2114 N740UW  LGA   </span>
-<span class="co">#&gt; # … with 1,751 more rows, and 2 more variables: dest &lt;chr&gt;,</span>
-<span class="co">#&gt; #   plane_type &lt;chr&gt;</span></code></pre>
+<code class="sourceCode R"><span><span class="va">joined_flights_dm</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># let's first reduce the number of columns of flights</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">dep_delay</span><span class="op">:</span><span class="op">-</span><span class="va">arr_delay</span>, <span class="op">-</span><span class="va">air_time</span><span class="op">:</span><span class="op">-</span><span class="va">time_hour</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># in the {dm}-method for the joins you can specify which columns you want to add to the zoomed table</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">planes</span>, select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tailnum</span>, plane_type <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"flights_plane_type"</span><span class="op">)</span></span>
+<span><span class="co"># this is how the table looks now</span></span>
+<span><span class="va">joined_flights_dm</span><span class="op">$</span><span class="va">flights_plane_type</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1,761 × 11</span></span>
+<span><span class="co">#&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; </span></span>
+<span><span class="co">#&gt;  1  2013     1    10        3           2359 B6         727 N571JB  JFK   </span></span>
+<span><span class="co">#&gt;  2  2013     1    10       16           2359 B6         739 N564JB  JFK   </span></span>
+<span><span class="co">#&gt;  3  2013     1    10      450            500 US        1117 N171US  EWR   </span></span>
+<span><span class="co">#&gt;  4  2013     1    10      520            525 UA        1018 N35204  EWR   </span></span>
+<span><span class="co">#&gt;  5  2013     1    10      530            530 UA         404 N815UA  LGA   </span></span>
+<span><span class="co">#&gt;  6  2013     1    10      531            540 AA        1141 N5EAAA  JFK   </span></span>
+<span><span class="co">#&gt;  7  2013     1    10      535            540 B6         725 N784JB  JFK   </span></span>
+<span><span class="co">#&gt;  8  2013     1    10      546            600 B6         380 N337JB  EWR   </span></span>
+<span><span class="co">#&gt;  9  2013     1    10      549            600 EV        6055 N19554  LGA   </span></span>
+<span><span class="co">#&gt; 10  2013     1    10      550            600 US        2114 N740UW  LGA   </span></span>
+<span><span class="co">#&gt; # … with 1,751 more rows, and 2 more variables: dest &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   plane_type &lt;chr&gt;</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># also here, the FK-relations are transferred to the new table</span>
-<span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">joined_flights_dm</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># also here, the FK-relations are transferred to the new table</span></span>
+<span><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">joined_flights_dm</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="257pt" height="230pt" viewbox="0.00 0.00 257.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 226)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -510,67 +468,60 @@
 <div class="section level3">
 <h3 id="tip-accessing-the-zoomed-table">Tip: Accessing the zoomed table<a class="anchor" aria-label="anchor" href="#tip-accessing-the-zoomed-table"></a>
 </h3>
-<p>At each point you can retrieve the zoomed table by calling <code><a href="../reference/pull_tbl.html">pull_tbl()</a></code> on a <code>zoomed_dm</code>. To use our last example once more:</p>
+<p>At each point, you can retrieve the zoomed table by calling <code><a href="../reference/pull_tbl.html">pull_tbl()</a></code> on a <code>zoomed_dm</code>. To use our last example once more:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">dep_delay</span><span class="op">:</span><span class="op">-</span><span class="va">arr_delay</span>, <span class="op">-</span><span class="va">air_time</span><span class="op">:</span><span class="op">-</span><span class="va">time_hour</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">planes</span>, select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tailnum</span>, plane_type <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1,761 × 11</span>
-<span class="co">#&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; </span>
-<span class="co">#&gt;  1  2013     1    10        3           2359 B6         727 N571JB  JFK   </span>
-<span class="co">#&gt;  2  2013     1    10       16           2359 B6         739 N564JB  JFK   </span>
-<span class="co">#&gt;  3  2013     1    10      450            500 US        1117 N171US  EWR   </span>
-<span class="co">#&gt;  4  2013     1    10      520            525 UA        1018 N35204  EWR   </span>
-<span class="co">#&gt;  5  2013     1    10      530            530 UA         404 N815UA  LGA   </span>
-<span class="co">#&gt;  6  2013     1    10      531            540 AA        1141 N5EAAA  JFK   </span>
-<span class="co">#&gt;  7  2013     1    10      535            540 B6         725 N784JB  JFK   </span>
-<span class="co">#&gt;  8  2013     1    10      546            600 B6         380 N337JB  EWR   </span>
-<span class="co">#&gt;  9  2013     1    10      549            600 EV        6055 N19554  LGA   </span>
-<span class="co">#&gt; 10  2013     1    10      550            600 US        2114 N740UW  LGA   </span>
-<span class="co">#&gt; # … with 1,751 more rows, and 2 more variables: dest &lt;chr&gt;,</span>
-<span class="co">#&gt; #   plane_type &lt;chr&gt;</span></code></pre>
+<code class="sourceCode R"><span><span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">dep_delay</span><span class="op">:</span><span class="op">-</span><span class="va">arr_delay</span>, <span class="op">-</span><span class="va">air_time</span><span class="op">:</span><span class="op">-</span><span class="va">time_hour</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">planes</span>, select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tailnum</span>, plane_type <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1,761 × 11</span></span>
+<span><span class="co">#&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; </span></span>
+<span><span class="co">#&gt;  1  2013     1    10        3           2359 B6         727 N571JB  JFK   </span></span>
+<span><span class="co">#&gt;  2  2013     1    10       16           2359 B6         739 N564JB  JFK   </span></span>
+<span><span class="co">#&gt;  3  2013     1    10      450            500 US        1117 N171US  EWR   </span></span>
+<span><span class="co">#&gt;  4  2013     1    10      520            525 UA        1018 N35204  EWR   </span></span>
+<span><span class="co">#&gt;  5  2013     1    10      530            530 UA         404 N815UA  LGA   </span></span>
+<span><span class="co">#&gt;  6  2013     1    10      531            540 AA        1141 N5EAAA  JFK   </span></span>
+<span><span class="co">#&gt;  7  2013     1    10      535            540 B6         725 N784JB  JFK   </span></span>
+<span><span class="co">#&gt;  8  2013     1    10      546            600 B6         380 N337JB  EWR   </span></span>
+<span><span class="co">#&gt;  9  2013     1    10      549            600 EV        6055 N19554  LGA   </span></span>
+<span><span class="co">#&gt; 10  2013     1    10      550            600 US        2114 N740UW  LGA   </span></span>
+<span><span class="co">#&gt; # … with 1,751 more rows, and 2 more variables: dest &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   plane_type &lt;chr&gt;</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="possible-pitfalls-and-caveats">Possible pitfalls and caveats<a class="anchor" aria-label="anchor" href="#possible-pitfalls-and-caveats"></a>
 </h3>
 <ol style="list-style-type: decimal">
-<li><p>Currently not all of the {dplyr}-verbs have their own method for a <code>zoomed_dm</code>, so be aware that in some cases it will still be necessary to resort to extracting one or more tables from a <code>dm</code> and reinserting a transformed version of theirs into the <code>dm</code> eventually. The supported functions are: <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/relocate.html" class="external-link">relocate()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">full_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">right_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code>.</p></li>
+<li><p>Currently, not all {dplyr}-verbs have their own method for a <code>zoomed_dm</code> object, so be aware that in some cases it will still be necessary to resort to extracting one or more tables from a <code>dm</code> and reinserting a transformed version back into the <code>dm</code> object. The supported functions are: <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/relocate.html" class="external-link">relocate()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">full_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">right_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join()</a></code>, and <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code>.</p></li>
 <li><p>The same is true for {tidyr}-functions. Methods are provided for: <code><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite()</a></code> and <code><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">separate()</a></code>.</p></li>
-<li><p>There might be situations when you would like the key relations to remain intact, but they are dropped nevertheless. This is because a rigid logic is implemented, that does drop a key when its associated column is acted upon with e.g. a <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code> call. In these cases the key relations will need to be established once more after finishing with the manipulations.</p></li>
-<li><p>For each implemented {dplyr}-verb there is a logic for tracking key relations between the tables. Up to {dm} version 0.2.4 we tried to track the columns in a very detailed manner. This has become increasingly difficult, especially with <code><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">dplyr::across()</a></code>. As of {dm} 0.2.5, we give more responsibility to the {dm} user: Now those columns are tracked whose <strong>names</strong> remain in the resulting table. Affected by these changes are the methods for: <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct()</a></code>. When using one of these functions, be aware that if you want to replace a key column with a column with a different content but of the same name, this column will automatically become a key column.</p></li>
+<li><p>There might be situations when you would like the key relations to remain intact, but they are dropped nevertheless. This is because a rigid logic is implemented, that does drop a key when its associated column is acted upon with e.g. a <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code> call. In these cases, the key relations will need to be re-established after finishing with the manipulations.</p></li>
+<li><p>For each implemented {dplyr}-verb, there is a logic for tracking key relations between the tables. Up to {dm} version 0.2.4 we tried to track the columns in a very detailed manner. This has become increasingly difficult, especially with <code><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">dplyr::across()</a></code>. As of {dm} 0.2.5, we give more responsibility to the {dm} user: Now those columns are tracked whose <strong>names</strong> remain in the resulting table. Affected by these changes are the methods for: <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct()</a></code>. When using one of these functions, be aware that if you want to replace a key column with a column with a different content but of the same name, this column will automatically become a key column.</p></li>
 </ol>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
+    <footer><div class="pkgdown-footer-left">
   <p></p>
 <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
-<div class="pkgdown">
+<div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
-
 
   
 

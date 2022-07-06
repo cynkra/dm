@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="dm">
 <title>Copy tables to and from a database • dm</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -12,12 +13,11 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Copy tables to and from a database">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Copy tables to and from a database">
 <meta property="og:description" content="dm">
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -25,253 +25,208 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
-      </span>
-    </div>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../articles/dm.html">Intro</a>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../articles/dm.html">Get started</a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Tutorials
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
-    </li>
-    <li>
-      <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
-    </li>
-    <li>
-      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
-    </li>
-    <li>
-      <a href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
-    </li>
-    <li>
-      <a href="../articles/howto-dm-rows.html">Insert, update or remove rows in a database</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Technical articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/tech-dm-join.html">Joining in relational data models</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-naming.html">Function naming logic</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-cdm.html">Migration guide: 'cdm' -&gt; 'dm'</a>
-    </li>
-  </ul>
-</li>
-<li>
-  <a href="../news/index.html">News</a>
-</li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/cynkra/dm" class="external-link">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
-</div>
-<!--/.nav-collapse -->
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-tutorials">Tutorials</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-tutorials">
+    <a class="dropdown-item" href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
+    <a class="dropdown-item" href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
+    <a class="dropdown-item" href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+    <a class="dropdown-item" href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
+    <a class="dropdown-item" href="../articles/howto-dm-rows.html">Insert, update, or remove rows in a database</a>
   </div>
-<!--/.container -->
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-technical-articles">Technical articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-technical-articles">
+    <a class="dropdown-item" href="../articles/tech-dm-join.html">Joining in relational data models</a>
+    <a class="dropdown-item" href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
+    <a class="dropdown-item" href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
+    <a class="dropdown-item" href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
+    <a class="dropdown-item" href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
+    <a class="dropdown-item" href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
+    <a class="dropdown-item" href="../articles/tech-dm-naming.html">Function naming logic</a>
+    <a class="dropdown-item" href="../articles/tech-dm-cdm.html">Migration guide: 'cdm' -&gt; 'dm'</a>
+  </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+      </ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/cynkra/dm/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
-<!--/.navbar -->
 
-      
+    
+  </div>
+</nav><div class="container template-article">
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Copy tables to and from a database</h1>
+
+
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Copy tables to and from a database</h1>
                         <h4 data-toc-skip class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2022-04-08</h4>
+            <h4 data-toc-skip class="date">2022-07-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-copy.Rmd" class="external-link"><code>vignettes/howto-dm-copy.Rmd</code></a></small>
-      <div class="hidden name"><code>howto-dm-copy.Rmd</code></div>
-
+      <div class="d-none name"><code>howto-dm-copy.Rmd</code></div>
     </div>
 
     
     
-<p>In this tutorial we introduce {dm} methods and techniques for copying individual tables and entire relational data models into an RDBMS. This is an integral part of the {dm} workflow. Copying tables to an RDBMS is often a step in the process of building a relational data model from locally hosted data. If your data model is complete, copying it to an RDBMS in a single operation allows you to leverage the power of the database and make it accessible to others. For modifying and persisting changes to your data at the row-level see <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code>.</p>
+<p>In this tutorial, we introduce {dm} methods and techniques for copying individual tables and entire relational data models into a relational database management system (RDBMS). This is an integral part of the {dm} workflow. Copying tables to an RDBMS is often a step in the process of building a relational data model from locally hosted data. If your data model is complete, copying it to an RDBMS in a single operation allows you to leverage the power of the database and make it accessible to others. For modifying and persisting changes to your data at the row-level see <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code>.</p>
 <div class="section level2">
 <h2 id="copy-models-or-copy-tables">Copy models or copy tables?<a class="anchor" aria-label="anchor" href="#copy-models-or-copy-tables"></a>
 </h2>
 <p>Using {dm} you can persist an entire relational data model with a single function call. <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> will move your entire model into a destination RDBMS. This may be all you need to deploy a new model. You may want to add new tables to an existing model on an RDBMS. These requirements can be handled using the <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> methods.</p>
-<p>Calling <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> or <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> requires write permission on the RDBMS, otherwise an error is returned. Therefore for the following examples we will instantiate a test dm and move it into a local SQLite database with full permissions. {dm} and {dbplyr} are designed so there is no difference between the code used to manipulate a local SQLite database and a remote RDBMS. The steps for this were already introduced in <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> and will be discussed in more detail in the <a href="#copy-model">Copying a relational model</a> section.</p>
+<p>Calling <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> or <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> requires write permission on the RDBMS; otherwise, an error is returned. Therefore, for the following examples, we will instantiate a test <code>dm</code> object and move it into a local SQLite database with full permissions. {dm} and {dbplyr} are designed to treat the code used to manipulate a <strong>local</strong> SQLite database and a <strong>remote</strong> RDBMS similarly. The steps for this were already introduced in <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> and will be discussed in more detail in the <a href="#copy-model">Copying a relational model</a> section.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code><span class="co">#&gt; ── Attaching packages ────────────────────────────────── tidyverse 1.3.1 ──</span></code></pre>
-<pre class="fansi fansi-message"><code><span class="co">#&gt; ✔ ggplot2 3.3.5     ✔ purrr   0.3.4</span>
-<span class="co">#&gt; ✔ tibble  3.1.6     ✔ dplyr   1.0.8</span>
-<span class="co">#&gt; ✔ tidyr   1.2.0     ✔ stringr 1.4.0</span>
-<span class="co">#&gt; ✔ readr   2.1.2     ✔ forcats 0.5.1</span></code></pre>
-<pre class="fansi fansi-message"><code><span class="co">#&gt; ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──</span>
-<span class="co">#&gt; ✖ dplyr::filter() masks dm::filter(), stats::filter()</span>
-<span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></code></pre>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a></span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dbplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:dplyr':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     ident, sql</span>
-
-<span class="va">fin_dm</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="../reference/dm_financial.html">dm_financial</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">trans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">local_db</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="va">deployed_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">local_db</span>, <span class="va">fin_dm</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dbplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:dplyr':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     ident, sql</span></span>
+<span></span>
+<span><span class="va">fin_dm</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/dm_financial.html">dm_financial</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">trans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">local_db</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">deployed_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">local_db</span>, <span class="va">fin_dm</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="copying-tables">Copying and persisting individual tables<a class="anchor" aria-label="anchor" href="#copying-tables"></a>
 </h2>
-<p>As part of your data analysis you may combine tables from multiple sources and create links to existing tables via foreign keys, or create new tables holding data summaries. The example below, already discussed in <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code>, computes the total amount of all loans for each account.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_dm_total</span> <span class="op">&lt;-</span>
-  <span class="va">deployed_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">account_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total_amount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">amount</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"total_loans"</span><span class="op">)</span></code></pre></div>
+<p>As part of your data analysis, you may combine tables from multiple sources and create links to existing tables via foreign keys, or create new tables holding data summaries. The example below, already discussed in <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code>, computes the total amount of all loans for each account.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_dm_total</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">deployed_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">account_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total_amount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">amount</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"total_loans"</span><span class="op">)</span></span></code></pre></div>
 <p>The derived table <code>total_loans</code> is a <em>lazy table</em> powered by the {<a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a>} package: the results are not materialized, instead an SQL query is built and executed each time the data is requested.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_dm_total</span><span class="op">$</span><span class="va">total_loans</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT `account_id`, SUM(`amount`) AS `total_amount`</span>
-<span class="co">#&gt; FROM `loans`</span>
-<span class="co">#&gt; GROUP BY `account_id`</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_dm_total</span><span class="op">$</span><span class="va">total_loans</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt; SELECT `account_id`, SUM(`amount`) AS `total_amount`</span></span>
+<span><span class="co">#&gt; FROM `loans`</span></span>
+<span><span class="co">#&gt; GROUP BY `account_id`</span></span></code></pre></div>
 <p>To avoid recomputing the query every time you use <code>total_loans</code>, call <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> right before inserting the derived table with <code>dm_insert_tbl()</code>. <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> forces the computation of a query and stores the full results in a table on the RDBMS.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_dm_total_computed</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">deployed_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">account_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total_amount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">amount</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"total_loans"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_dm_total_computed</span><span class="op">$</span><span class="va">total_loans</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt; SELECT *</span></span>
+<span><span class="co">#&gt; FROM `dbplyr_001`</span></span></code></pre></div>
+<p>Note the differences in queries returned by <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render()</a></code>. <code>my_dm_total$total_loans</code> is still being lazily evaluated and the full query constructed from the chain of operations that generated it is still in place and needs to be run to access it. Contrast that with <code>my_dm_total_computed$total_loans</code>, where the query has been realized and accessing its rows requires a simple <code>SELECT *</code> statement. The table name, <code>dbplyr_001</code>, was automatically generated as the <code>name</code> argument was not supplied to <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code>.</p>
+<p>The default is to create a <strong>temporary</strong> tables. If you want results to persist across sessions in <strong>permanent</strong> tables, <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> must be called with the argument <code>temporary = FALSE</code> and a table name for the <code>name</code> argument. See <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">?compute</a></code> for more details.</p>
+<p>When called on a whole <code>dm</code> object (without zoom), <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> materializes all tables into new (temporary or persistent) tables by executing the associated SQL query and storing the full results. Depending on the size of your data, this may take considerable time or may even be unfeasible. It may be useful occasionally to create snapshots of data that is subject to change.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_dm_total_computed</span> <span class="op">&lt;-</span>
-  <span class="va">deployed_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">account_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total_amount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">amount</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span><span class="op">(</span><span class="st">"total_loans"</span><span class="op">)</span>
-
-<span class="va">my_dm_total_computed</span><span class="op">$</span><span class="va">total_loans</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT *</span>
-<span class="co">#&gt; FROM `dbplyr_001`</span></code></pre></div>
-<p>Note the differences in queries returned by <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render()</a></code>. <code>my_dm_total$total_loans</code> is still being lazily evaluated and the full query constructed from the chain of operations that generated it, and is required to run to access it, is still in place. Contrast that with <code>my_dm_total_computed$total_loans</code> where the query has been realized and accessing its rows requires a simple <code>SELECT *</code> statement. The table name, <code>dbplyr_001</code>, was automatically generated as the <code>name</code> argument was not supplied to <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code>.</p>
-<p>The default is to create a temporary table. If you want results to persist across sessions in permanent tables, <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> must be called with the argument <code>temporary = FALSE</code> and a table name for the <code>name</code> argument. See <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">?compute</a></code> for more details.</p>
-<p>When called on a whole dm object (without zoom), <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> materializes all tables into new (temporary or persistent) tables by executing the associated SQL query and storing the full results. Depending on the size of your data this may take considerable time or be infeasible. It may be useful occasionally to create snapshots of data that is subject to change.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_dm_total_snapshot</span> <span class="op">&lt;-</span>
-  <span class="va">my_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_dm_total_snapshot</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">my_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="data-frames">Adding local data frames to an RDBMS<a class="anchor" aria-label="anchor" href="#data-frames"></a>
 </h2>
-<p>If you need to add local data frames to an existing dm object, use the <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> method. It takes the same arguments as <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code>, except the second argument takes a data frame rather than a dm. The result is a derived dm object that contains the new table.</p>
-<p>To demonstrate the use of <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> the example below will use {dm} to pull consolidated data from several tables out of an RDBMS, estimate a linear model from the data, then insert the residuals back into the RDBMS and link it to the existing tables. This is all done with a local SQLite database, but the process would work unchanged on any supported RDBMS.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">loans_df</span> <span class="op">&lt;-</span>
-  <span class="va">deployed_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">amount</span>, <span class="va">duration</span>, <span class="va">A3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span>
-<span class="co">#&gt;   dm_rename(loans, loans.date = date) %&gt;%</span>
-<span class="co">#&gt;   dm_rename(accounts, accounts.date = date)</span></code></pre></div>
+<p>If you need to add local data frames to an existing <code>dm</code> object, use the <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> method. It takes the same arguments as <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code>, except the second argument takes a data frame rather than a dm. The result is a derived <code>dm</code> object that contains the new table.</p>
+<p>To demonstrate the use of <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code>, the example below will use {dm} to pull consolidated data from several tables out of an RDBMS, estimate a linear model from the data, then insert the residuals back into the RDBMS and link it to the existing tables. This is all done with a local SQLite database, but the process would work unchanged on any supported RDBMS.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">loans_df</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">deployed_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">amount</span>, <span class="va">duration</span>, <span class="va">A3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span></span>
+<span><span class="co">#&gt;   dm_rename(loans, loans.date = date) %&gt;%</span></span>
+<span><span class="co">#&gt;   dm_rename(accounts, accounts.date = date)</span></span></code></pre></div>
 <p>Please note the use of <code><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl()</a></code>. This method gathers all linked information into a single wide table. It follows foreign key relations starting from the table supplied as its argument and gathers all the columns from related tables, disambiguating column names as it goes.</p>
 <p>In the above code, the <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> statement isolates the columns we need for our model. <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> works similarly to <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> by forcing the execution of the underlying SQL query, but it returns the results as a local tibble.</p>
 <p>Below, the local tibble, <code>loans_df</code>, is used to estimate the linear model and the residuals are stored along with the original associated <code>id</code> in a new tibble, <code>loans_residuals</code>. The <code>id</code> column is necessary to link the new tibble to the tables in the dm it was collected from.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">amount</span> <span class="op">~</span> <span class="va">duration</span> <span class="op">+</span> <span class="va">A3</span>, data <span class="op">=</span> <span class="va">loans_df</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">loans_residuals</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
+<span>  id <span class="op">=</span> <span class="va">loans_df</span><span class="op">$</span><span class="va">id</span>,</span>
+<span>  resid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">loans_residuals</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 682 × 2</span></span>
+<span><span class="co">#&gt;       id   resid</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1  4959 -31912.</span></span>
+<span><span class="co">#&gt;  2  4961 -27336.</span></span>
+<span><span class="co">#&gt;  3  4962 -30699.</span></span>
+<span><span class="co">#&gt;  4  4967  63621.</span></span>
+<span><span class="co">#&gt;  5  4968 -94811.</span></span>
+<span><span class="co">#&gt;  6  4973  59036.</span></span>
+<span><span class="co">#&gt;  7  4986  41901.</span></span>
+<span><span class="co">#&gt;  8  4988 123392.</span></span>
+<span><span class="co">#&gt;  9  4989 147157.</span></span>
+<span><span class="co">#&gt; 10  4990  33377.</span></span>
+<span><span class="co">#&gt; # … with 672 more rows</span></span></code></pre>
+<p>Adding <code>loans_residuals</code> to the dm is done using <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code>. The call to the method includes the argument <code>temporary = FALSE</code> because we want this table to persist beyond our current session. In the same pipeline we create the necessary primary and foreign keys to integrate the table with the rest of our relational model. For more information on key creation, see <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> and <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">amount</span> <span class="op">~</span> <span class="va">duration</span> <span class="op">+</span> <span class="va">A3</span>, data <span class="op">=</span> <span class="va">loans_df</span><span class="op">)</span>
-
-<span class="va">loans_residuals</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
-  id <span class="op">=</span> <span class="va">loans_df</span><span class="op">$</span><span class="va">id</span>,
-  resid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="va">loans_residuals</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 682 × 2</span>
-<span class="co">#&gt;       id   resid</span>
-<span class="co">#&gt;    &lt;int&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1  4959 -31912.</span>
-<span class="co">#&gt;  2  4961 -27336.</span>
-<span class="co">#&gt;  3  4962 -30699.</span>
-<span class="co">#&gt;  4  4967  63621.</span>
-<span class="co">#&gt;  5  4968 -94811.</span>
-<span class="co">#&gt;  6  4973  59036.</span>
-<span class="co">#&gt;  7  4986  41901.</span>
-<span class="co">#&gt;  8  4988 123392.</span>
-<span class="co">#&gt;  9  4989 147157.</span>
-<span class="co">#&gt; 10  4990  33377.</span>
-<span class="co">#&gt; # … with 672 more rows</span></code></pre>
-<p>Adding <code>loans_residuals</code> to the dm is done using <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code>. The call to the method includes the argument <code>temporary = FALSE</code> because we want this table to persist beyond our current session. In the same pipeline we create the necessary primary and foreign keys to integrate the table with the rest of our relational model. For more information on key creation see <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> and <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_dm_sqlite_resid</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to</a></span><span class="op">(</span><span class="va">deployed_dm</span>, <span class="va">loans_residuals</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">loans_residuals</span>, <span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">loans_residuals</span>, <span class="va">id</span>, <span class="va">loans</span><span class="op">)</span>
-<span class="co">#&gt; Warning: `copy_to.dm()` was deprecated in dm 0.2.0.</span>
-<span class="co">#&gt; Use `copy_to(dm_get_con(dm), ...)` and `dm_add_tbl()`.</span>
-
-<span class="va">my_dm_sqlite_resid</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_set_colors.html">dm_set_colors</a></span><span class="op">(</span>violet <span class="op">=</span> <span class="va">loans_residuals</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_dm_sqlite_resid</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to</a></span><span class="op">(</span><span class="va">deployed_dm</span>, <span class="va">loans_residuals</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">loans_residuals</span>, <span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">loans_residuals</span>, <span class="va">id</span>, <span class="va">loans</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: `copy_to.dm()` was deprecated in dm 0.2.0.</span></span>
+<span><span class="co">#&gt; Use `copy_to(dm_get_con(dm), ...)` and `dm_add_tbl()`.</span></span>
+<span></span>
+<span><span class="va">my_dm_sqlite_resid</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_set_colors.html">dm_set_colors</a></span><span class="op">(</span>violet <span class="op">=</span> <span class="va">loans_residuals</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="391pt" height="270pt" viewbox="0.00 0.00 391.00 270.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 266)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -292,133 +247,126 @@
 <path fill="none" stroke="#555555" d="M91,-111C104.1007,-111 109.6787,-111 119.2532,-111"></path><polygon fill="#555555" stroke="#555555" points="119.5,-114.5001 129.5,-111 119.5,-107.5001 119.5,-114.5001"></polygon></g><!-- orders --><g id="node8" class="node"><title>orders</title>
 <polygon fill="#efebdd" stroke="transparent" points="129.5,-41 129.5,-61 194.5,-61 194.5,-41 129.5,-41"></polygon><text text-anchor="start" x="144.5098" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#000000">orders</text><polygon fill="#ffffff" stroke="transparent" points="129.5,-21 129.5,-41 194.5,-41 194.5,-21 129.5,-21"></polygon><text text-anchor="start" x="131.5" y="-27.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">id</text><polygon fill="#ffffff" stroke="transparent" points="129.5,-1 129.5,-21 194.5,-21 194.5,-1 129.5,-1"></polygon><text text-anchor="start" x="131.2875" y="-6.4" font-family="Times,serif" font-size="14.00" fill="#444444">account_id</text><polygon fill="none" stroke="#555555" points="128,0 128,-62 195,-62 195,0 128,0"></polygon></g><!-- orders&#45;&gt;accounts --><g id="edge2" class="edge"><title>orders:account_id-&gt;accounts:id</title>
 <path fill="none" stroke="#555555" d="M194.5,-11C229.6264,-11 200.4948,-75.0149 222.0668,-88.518"></path><polygon fill="#555555" stroke="#555555" points="221.4498,-91.9714 232,-91 223.1467,-85.1802 221.4498,-91.9714"></polygon></g><!-- tkeys --><g id="node9" class="node"><title>tkeys</title>
-<polygon fill="#efebdd" stroke="transparent" points="28,-34 28,-54 61,-54 61,-34 28,-34"></polygon><text text-anchor="start" x="29.7251" y="-39.4" font-family="Times,serif" font-size="14.00" fill="#000000">tkeys</text><polygon fill="none" stroke="#555555" points="26.5,-33 26.5,-55 61.5,-55 61.5,-33 26.5,-33"></polygon></g></g></svg><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_dm_sqlite_resid</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code><span class="co">#&gt; ℹ All constraints satisfied.</span></code></pre>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_dm_sqlite_resid</span><span class="op">$</span><span class="va">loans_residuals</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # Source:   table&lt;loans_residuals_2020_08_28_07_13_03_12345_1&gt; [?? x 2]</span>
-<span class="co">#&gt; # Database: sqlite 3.38.2 []</span>
-<span class="co">#&gt;       id   resid</span>
-<span class="co">#&gt;    &lt;int&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1  4959 -31912.</span>
-<span class="co">#&gt;  2  4961 -27336.</span>
-<span class="co">#&gt;  3  4962 -30699.</span>
-<span class="co">#&gt;  4  4967  63621.</span>
-<span class="co">#&gt;  5  4968 -94811.</span>
-<span class="co">#&gt;  6  4973  59036.</span>
-<span class="co">#&gt;  7  4986  41901.</span>
-<span class="co">#&gt;  8  4988 123392.</span>
-<span class="co">#&gt;  9  4989 147157.</span>
-<span class="co">#&gt; 10  4990  33377.</span>
-<span class="co">#&gt; # … with more rows</span></code></pre>
+<polygon fill="#efebdd" stroke="transparent" points="28,-34 28,-54 61,-54 61,-34 28,-34"></polygon><text text-anchor="start" x="29.7251" y="-39.4" font-family="Times,serif" font-size="14.00" fill="#000000">tkeys</text><polygon fill="none" stroke="#555555" points="26.5,-33 26.5,-55 61.5,-55 61.5,-33 26.5,-33"></polygon></g></g></svg><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_dm_sqlite_resid</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-message"><code><span><span class="co">#&gt; ℹ All constraints satisfied.</span></span></code></pre>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_dm_sqlite_resid</span><span class="op">$</span><span class="va">loans_residuals</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   table&lt;loans_residuals_1_2020_08_28_07_13_03_12345&gt; [?? x 2]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.38.5 []</span></span>
+<span><span class="co">#&gt;       id   resid</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1  4959 -31912.</span></span>
+<span><span class="co">#&gt;  2  4961 -27336.</span></span>
+<span><span class="co">#&gt;  3  4962 -30699.</span></span>
+<span><span class="co">#&gt;  4  4967  63621.</span></span>
+<span><span class="co">#&gt;  5  4968 -94811.</span></span>
+<span><span class="co">#&gt;  6  4973  59036.</span></span>
+<span><span class="co">#&gt;  7  4986  41901.</span></span>
+<span><span class="co">#&gt;  8  4988 123392.</span></span>
+<span><span class="co">#&gt;  9  4989 147157.</span></span>
+<span><span class="co">#&gt; 10  4990  33377.</span></span>
+<span><span class="co">#&gt; # … with more rows</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="copy-model">Persisting a relational model with <code>copy_dm_to()</code><a class="anchor" aria-label="anchor" href="#copy-model"></a>
 </h2>
 <p>Persistence, because it is intended to make permanent changes, requires write access to the source RDBMS. The code below is a repeat of the code that opened the <a href="#copying-tables">Copying and persisting individual tables</a> section at the beginning of the tutorial. It uses the {dm} convenience function <code><a href="../reference/dm_financial.html">dm_financial()</a></code> to create a dm object corresponding to a data model from a public dataset repository. The dm object is downloaded locally first, before deploying it to a local SQLite database.</p>
 <p><code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> is used to exclude the transaction table <code>trans</code> due to its size, then the <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> method retrieves the remaining tables and returns them as a local dm object.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_financial.html">dm_financial</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt;  accounts     cards   clients     disps districts     loans    orders </span>
-<span class="co">#&gt;      4500       892      5369      5369        77       682      6471 </span>
-<span class="co">#&gt;     tkeys     trans </span>
-<span class="co">#&gt;       234   1056320</span>
-<span class="va">fin_dm</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="../reference/dm_financial.html">dm_financial</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">trans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">fin_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)</span>
-<span class="co">#&gt; Columns: 47</span>
-<span class="co">#&gt; Primary keys: 7</span>
-<span class="co">#&gt; Foreign keys: 6</span></code></pre>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_financial.html">dm_financial</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  accounts     cards   clients     disps districts     loans    orders </span></span>
+<span><span class="co">#&gt;      4500       892      5369      5369        77       682      6471 </span></span>
+<span><span class="co">#&gt;     tkeys     trans </span></span>
+<span><span class="co">#&gt;       234   1056320</span></span>
+<span><span class="va">fin_dm</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/dm_financial.html">dm_financial</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">trans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fin_dm</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)</span></span>
+<span><span class="co">#&gt; Columns: 47</span></span>
+<span><span class="co">#&gt; Primary keys: 7</span></span>
+<span><span class="co">#&gt; Foreign keys: 6</span></span></code></pre>
 <p>It is just as simple to move a local relational model into an RDBMS.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">destination_db</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">deployed_dm</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">destination_db</span>, <span class="va">fin_dm</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="va">deployed_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.38.2 []</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)</span>
-<span class="co">#&gt; Columns: 47</span>
-<span class="co">#&gt; Primary keys: 7</span>
-<span class="co">#&gt; Foreign keys: 6</span></code></pre>
-<p>Note that in the call to <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> the argument <code>temporary = FALSE</code> is supplied. Without this argument the model would still be copied into the database, but the argument would default to <code>temporary = TRUE</code> and the data would be deleted once your session ends.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">destination_db</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">deployed_dm</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">destination_db</span>, <span class="va">fin_dm</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">deployed_dm</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.38.5 []</span></span>
+<span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)</span></span>
+<span><span class="co">#&gt; Columns: 47</span></span>
+<span><span class="co">#&gt; Primary keys: 7</span></span>
+<span><span class="co">#&gt; Foreign keys: 6</span></span></code></pre>
+<p>Note that in the call to <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> the argument <code>temporary = FALSE</code> is supplied. Without this argument, the model would still be copied into the database, but the argument would default to <code>temporary = TRUE</code> and the data would be deleted once your session ends.</p>
 <p>In the output you can observe that the <code>src</code> for <code>deployed_dm</code> is SQLite, while for <code>fin_dm</code> the source is not indicated because it is a local data model.</p>
 <p>Copying a relational model into an empty database is the simplest use case for <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code>. If you want to copy a model into an RDBMS that is already populated, be aware that <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> will not overwrite pre-existing tables. In this case you will need to use the <code>table_names</code> argument to give the tables unique names.</p>
 <p><code>table_names</code> can be a named character vector, with the names matching the table names in the dm object and the values containing the desired names in the RDBMS, or a function or one-sided formula. In the example below, <code><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0()</a></code> is used to add a prefix to the table names to provide uniqueness.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dup_dm</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">destination_db</span>, <span class="va">fin_dm</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span>, table_names <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"dup_"</span>, <span class="va">.x</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dup_dm</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.38.5 []</span></span>
+<span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)</span></span>
+<span><span class="co">#&gt; Columns: 47</span></span>
+<span><span class="co">#&gt; Primary keys: 7</span></span>
+<span><span class="co">#&gt; Foreign keys: 6</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dup_dm</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">destination_db</span>, <span class="va">fin_dm</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span>, table_names <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"dup_"</span>, <span class="va">.x</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">dup_dm</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.38.2 []</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)</span>
-<span class="co">#&gt; Columns: 47</span>
-<span class="co">#&gt; Primary keys: 7</span>
-<span class="co">#&gt; Foreign keys: 6</span></code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html" class="external-link">remote_name</a></span><span class="op">(</span><span class="va">dup_dm</span><span class="op">$</span><span class="va">accounts</span><span class="op">)</span>
-<span class="co">#&gt; &lt;IDENT&gt; `dup_accounts`</span>
-<span class="fu"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html" class="external-link">remote_name</a></span><span class="op">(</span><span class="va">deployed_dm</span><span class="op">$</span><span class="va">accounts</span><span class="op">)</span>
-<span class="co">#&gt; &lt;IDENT&gt; `accounts`</span></code></pre></div>
-<p>Note the different table names for <code>dup_dm$accounts</code> and <code>deployed_dm$accounts</code>. For both, the table name is <code>accounts</code> in the dm, but they link to different tables on the database. In <code>dup_dm</code> the table is backed by the table <code>dup_accounts</code> in the RDBMS. <code>dm_deployed$accounts</code> shows us that this table is still backed by the <code>accounts</code> table from the <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> operation we performed in the preceding example.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html" class="external-link">remote_name</a></span><span class="op">(</span><span class="va">dup_dm</span><span class="op">$</span><span class="va">accounts</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;IDENT&gt; `dup_accounts`</span></span>
+<span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html" class="external-link">remote_name</a></span><span class="op">(</span><span class="va">deployed_dm</span><span class="op">$</span><span class="va">accounts</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;IDENT&gt; `accounts`</span></span></code></pre></div>
+<p>Note the different table names for <code>dup_dm$accounts</code> and <code>deployed_dm$accounts</code>. For both, the table name is <code>accounts</code> in the <code>dm</code> object, but they link to different tables on the database. In <code>dup_dm</code>, the table is backed by the table <code>dup_accounts</code> in the RDBMS. <code>dm_deployed$accounts</code> shows us that this table is still backed by the <code>accounts</code> table from the <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> operation we performed in the preceding example.</p>
 <p>Managing tables in the RDBMS is outside the scope of <code>dm</code>. If you find you need to remove tables or perform operations directly on the RDBMS, see the {<a href="https://dbi.r-dbi.org/" class="external-link">DBI</a>} package.</p>
 <p>When done, do not forget to disconnect:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">destination_db</span><span class="op">)</span>
-<span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">local_db</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">destination_db</span><span class="op">)</span></span>
+<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">local_db</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p><code>dm</code> makes it straightforward to deploy your complete relational model to an RDBMS using the <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> function. For tables that are created from a relational model during analysis or development, <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> can be used to persist them between sessions or to copy local tables to a database dm. The <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> method downloads an entire dm object that fits into memory from the database.</p>
+<p><code>dm</code> makes it straightforward to deploy your complete relational model to an RDBMS using the <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> function. For tables that are created from a relational model during analysis or development, <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> can be used to persist them (using argument <code>temporary = FALSE</code>) between sessions or to copy local tables to a database <code>dm</code>. The <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> method downloads an entire <code>dm</code> object that fits into memory from the database.</p>
 </div>
 <div class="section level2">
-<h2 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
+<h2 id="further-reading">Further Reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
 </h2>
 <p>If you need finer-grained control over modifications to your relational model, see <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code> for an introduction to row level operations, including updates, insertions, deletions and patching.</p>
 <p>If you feel you need to know more about relational data models in order to get the most out of dm, check out <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
 <p>If you’re familiar with relational data models but want to know how to work with them in dm, then any of <code><a href="../articles/tech-dm-join.html">vignette("tech-dm-join")</a></code>, <code><a href="../articles/tech-dm-filter.html">vignette("tech-dm-filter")</a></code>, or <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> is a good next step.</p>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
+    <footer><div class="pkgdown-footer-left">
   <p></p>
 <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
-<div class="pkgdown">
+<div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
-
 
   
 

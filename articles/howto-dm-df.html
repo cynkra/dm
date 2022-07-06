@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="dm">
 <title>Create a dm object from data frames • dm</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -12,12 +13,11 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Create a dm object from data frames">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Create a dm object from data frames">
 <meta property="og:description" content="dm">
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -25,132 +25,93 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
-      </span>
-    </div>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../articles/dm.html">Intro</a>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../articles/dm.html">Get started</a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Tutorials
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
-    </li>
-    <li>
-      <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
-    </li>
-    <li>
-      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
-    </li>
-    <li>
-      <a href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
-    </li>
-    <li>
-      <a href="../articles/howto-dm-rows.html">Insert, update or remove rows in a database</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Technical articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/tech-dm-join.html">Joining in relational data models</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-naming.html">Function naming logic</a>
-    </li>
-    <li>
-      <a href="../articles/tech-dm-cdm.html">Migration guide: 'cdm' -&gt; 'dm'</a>
-    </li>
-  </ul>
-</li>
-<li>
-  <a href="../news/index.html">News</a>
-</li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/cynkra/dm" class="external-link">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
-</div>
-<!--/.nav-collapse -->
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-tutorials">Tutorials</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-tutorials">
+    <a class="dropdown-item" href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
+    <a class="dropdown-item" href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
+    <a class="dropdown-item" href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+    <a class="dropdown-item" href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
+    <a class="dropdown-item" href="../articles/howto-dm-rows.html">Insert, update, or remove rows in a database</a>
   </div>
-<!--/.container -->
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-technical-articles">Technical articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-technical-articles">
+    <a class="dropdown-item" href="../articles/tech-dm-join.html">Joining in relational data models</a>
+    <a class="dropdown-item" href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
+    <a class="dropdown-item" href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
+    <a class="dropdown-item" href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
+    <a class="dropdown-item" href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
+    <a class="dropdown-item" href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
+    <a class="dropdown-item" href="../articles/tech-dm-naming.html">Function naming logic</a>
+    <a class="dropdown-item" href="../articles/tech-dm-cdm.html">Migration guide: 'cdm' -&gt; 'dm'</a>
+  </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+      </ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/cynkra/dm/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
-<!--/.navbar -->
 
-      
+    
+  </div>
+</nav><div class="container template-article">
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Create a dm object from data frames</h1>
+
+
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Create a dm object from data frames</h1>
             
-            <h4 data-toc-skip class="date">2022-04-08</h4>
+            <h4 data-toc-skip class="date">2022-07-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-df.Rmd" class="external-link"><code>vignettes/howto-dm-df.Rmd</code></a></small>
-      <div class="hidden name"><code>howto-dm-df.Rmd</code></div>
-
+      <div class="d-none name"><code>howto-dm-df.Rmd</code></div>
     </div>
 
     
     
+<p>dm allows you to create your own relational data models from local data frames. Once your data model is complete, you can deploy it to a range of database management systems (DBMS) using {dm}.</p>
 <div class="section level2">
-<h2 id="building-data-models-from-data-frames-with-dm">Building data models from data frames with dm<a class="anchor" aria-label="anchor" href="#building-data-models-from-data-frames-with-dm"></a>
+<h2 id="creating-a-dm-object-from-data-frames">Creating a dm object from data frames<a class="anchor" aria-label="anchor" href="#creating-a-dm-object-from-data-frames"></a>
 </h2>
-<p>dm allows you to create your own relational data models from local data frames. Once your data model is complete, you can deploy it to a range of DBMSs using dm.</p>
-<div class="section level3">
-<h3 id="creating-a-dm-object-from-data-frames">Creating a dm object from data frames<a class="anchor" aria-label="anchor" href="#creating-a-dm-object-from-data-frames"></a>
-</h3>
 <p>The example data set that we will be using is available through the <a href="https://github.com/tidyverse/nycflights13" class="external-link"><code>nycflights13</code></a> package. The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013:</p>
 <ul>
 <li>
@@ -171,168 +132,170 @@
 </ul>
 <p>Once we’ve loaded {nycflights13}, the aforementioned tables are all in our work environment, ready to be accessed.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
-
-<span class="va">airports</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1,458 × 8</span>
-<span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span>
-<span class="co">#&gt;  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…</span>
-<span class="co">#&gt;  2 06A   Moton Field Municipal Airport  32.5  -85.7   264    -6 A     Amer…</span>
-<span class="co">#&gt;  3 06C   Schaumburg Regional            42.0  -88.1   801    -6 A     Amer…</span>
-<span class="co">#&gt;  4 06N   Randall Airport                41.4  -74.4   523    -5 A     Amer…</span>
-<span class="co">#&gt;  5 09J   Jekyll Island Airport          31.1  -81.4    11    -5 A     Amer…</span>
-<span class="co">#&gt;  6 0A9   Elizabethton Municipal Airpo…  36.4  -82.2  1593    -5 A     Amer…</span>
-<span class="co">#&gt;  7 0G6   Williams County Airport        41.5  -84.5   730    -5 A     Amer…</span>
-<span class="co">#&gt;  8 0G7   Finger Lakes Regional Airport  42.9  -76.8   492    -5 A     Amer…</span>
-<span class="co">#&gt;  9 0P2   Shoestring Aviation Airfield   39.8  -76.6  1000    -5 U     Amer…</span>
-<span class="co">#&gt; 10 0S9   Jefferson County Intl          48.1 -123.    108    -8 A     Amer…</span>
-<span class="co">#&gt; # … with 1,448 more rows</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">airports</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1,458 × 8</span></span>
+<span><span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt;  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  2 06A   Moton Field Municipal Airport  32.5  -85.7   264    -6 A     Amer…</span></span>
+<span><span class="co">#&gt;  3 06C   Schaumburg Regional            42.0  -88.1   801    -6 A     Amer…</span></span>
+<span><span class="co">#&gt;  4 06N   Randall Airport                41.4  -74.4   523    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  5 09J   Jekyll Island Airport          31.1  -81.4    11    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  6 0A9   Elizabethton Municipal Airpo…  36.4  -82.2  1593    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  7 0G6   Williams County Airport        41.5  -84.5   730    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  8 0G7   Finger Lakes Regional Airport  42.9  -76.8   492    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  9 0P2   Shoestring Aviation Airfield   39.8  -76.6  1000    -5 U     Amer…</span></span>
+<span><span class="co">#&gt; 10 0S9   Jefferson County Intl          48.1 -123.    108    -8 A     Amer…</span></span>
+<span><span class="co">#&gt; # … with 1,448 more rows</span></span></code></pre>
 <p>Your own data will probably not be available as an R package. Whatever format it is in, you will need to be able to load it as data frames into your R session. If the data is too large, consider using dm to connect to the database instead. See <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> for details on using dm with databases.</p>
 </div>
-<div class="section level3">
-<h3 id="adding-tables">Adding Tables<a class="anchor" aria-label="anchor" href="#adding-tables"></a>
-</h3>
+<div class="section level2">
+<h2 id="adding-tables">Adding Tables<a class="anchor" aria-label="anchor" href="#adding-tables"></a>
+</h2>
 <p>Our first step will be to tell <code>dm</code> which tables we want to work with and how they are connected. For that we can use <code><a href="../reference/dm.html">dm()</a></code>, passing in the table names as arguments.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
-
-<span class="va">flights_dm_no_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">airports</span>, <span class="va">flights</span>, <span class="va">planes</span>, <span class="va">weather</span><span class="op">)</span>
-<span class="va">flights_dm_no_keys</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">flights_dm_no_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">airports</span>, <span class="va">flights</span>, <span class="va">planes</span>, <span class="va">weather</span><span class="op">)</span></span>
+<span><span class="va">flights_dm_no_keys</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
+<span><span class="co">#&gt; Columns: 53</span></span>
+<span><span class="co">#&gt; Primary keys: 0</span></span>
+<span><span class="co">#&gt; Foreign keys: 0</span></span></code></pre>
 <p>The <code><a href="../reference/dm.html">as_dm()</a></code> function is an alternative that works if you already have a list of tables.</p>
 </div>
-<div class="section level3">
-<h3 id="a-dm-is-a-list">A dm is a list<a class="anchor" aria-label="anchor" href="#a-dm-is-a-list"></a>
-</h3>
-<p>dm objects behave like lists with a user- and console-friendly print format. In fact, using a dm as a nicer list for organizing your data frames in your environment is an easy first step towards using dm and its data modeling functionality.</p>
-<p>Member referencing, by subscript and by name, and list and slice manipulation functions work just as you would expect on a dm object.</p>
+<div class="section level2">
+<h2 id="a-dm-is-a-list">A dm is a list<a class="anchor" aria-label="anchor" href="#a-dm-is-a-list"></a>
+</h2>
+<p><code>dm</code> objects behave like lists with a user- and console-friendly print format. In fact, using a dm as a nicer list for organizing your data frames in your environment is an easy first step towards using dm and its data modeling functionality.</p>
+<p>Subsetting syntax for a <code>dm</code> object (either by subscript or by name) is similar to syntax for lists, and so you don’t need to learn any additional syntax to work with <code>dm</code> objects.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">flights_dm_no_keys</span><span class="op">)</span>
-<span class="co">#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather"</span>
-<span class="va">flights_dm_no_keys</span><span class="op">$</span><span class="va">airports</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 1,458 × 8</span>
-<span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span>
-<span class="co">#&gt;  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…</span>
-<span class="co">#&gt;  2 06A   Moton Field Municipal Airport  32.5  -85.7   264    -6 A     Amer…</span>
-<span class="co">#&gt;  3 06C   Schaumburg Regional            42.0  -88.1   801    -6 A     Amer…</span>
-<span class="co">#&gt;  4 06N   Randall Airport                41.4  -74.4   523    -5 A     Amer…</span>
-<span class="co">#&gt;  5 09J   Jekyll Island Airport          31.1  -81.4    11    -5 A     Amer…</span>
-<span class="co">#&gt;  6 0A9   Elizabethton Municipal Airpo…  36.4  -82.2  1593    -5 A     Amer…</span>
-<span class="co">#&gt;  7 0G6   Williams County Airport        41.5  -84.5   730    -5 A     Amer…</span>
-<span class="co">#&gt;  8 0G7   Finger Lakes Regional Airport  42.9  -76.8   492    -5 A     Amer…</span>
-<span class="co">#&gt;  9 0P2   Shoestring Aviation Airfield   39.8  -76.6  1000    -5 U     Amer…</span>
-<span class="co">#&gt; 10 0S9   Jefferson County Intl          48.1 -123.    108    -8 A     Amer…</span>
-<span class="co">#&gt; # … with 1,448 more rows</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">flights_dm_no_keys</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather"</span></span>
+<span><span class="va">flights_dm_no_keys</span><span class="op">$</span><span class="va">airports</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1,458 × 8</span></span>
+<span><span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt;  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  2 06A   Moton Field Municipal Airport  32.5  -85.7   264    -6 A     Amer…</span></span>
+<span><span class="co">#&gt;  3 06C   Schaumburg Regional            42.0  -88.1   801    -6 A     Amer…</span></span>
+<span><span class="co">#&gt;  4 06N   Randall Airport                41.4  -74.4   523    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  5 09J   Jekyll Island Airport          31.1  -81.4    11    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  6 0A9   Elizabethton Municipal Airpo…  36.4  -82.2  1593    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  7 0G6   Williams County Airport        41.5  -84.5   730    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  8 0G7   Finger Lakes Regional Airport  42.9  -76.8   492    -5 A     Amer…</span></span>
+<span><span class="co">#&gt;  9 0P2   Shoestring Aviation Airfield   39.8  -76.6  1000    -5 U     Amer…</span></span>
+<span><span class="co">#&gt; 10 0S9   Jefferson County Intl          48.1 -123.    108    -8 A     Amer…</span></span>
+<span><span class="co">#&gt; # … with 1,448 more rows</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_no_keys</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"airports"</span>, <span class="st">"flights"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airports`, `flights`</span>
-<span class="co">#&gt; Columns: 27</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre>
+<code class="sourceCode R"><span><span class="va">flights_dm_no_keys</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"airports"</span>, <span class="st">"flights"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `airports`, `flights`</span></span>
+<span><span class="co">#&gt; Columns: 27</span></span>
+<span><span class="co">#&gt; Primary keys: 0</span></span>
+<span><span class="co">#&gt; Foreign keys: 0</span></span></code></pre>
 </div>
-<div class="section level3">
-<h3 id="defining-keys">Defining Keys<a class="anchor" aria-label="anchor" href="#defining-keys"></a>
-</h3>
-<p>Even though we now have a <code>dm</code> object that contains all our data, we have not specified how our five tables are connected. To do this we need to define primary keys and foreign keys on the tables.</p>
+<div class="section level2">
+<h2 id="defining-keys">Defining Keys<a class="anchor" aria-label="anchor" href="#defining-keys"></a>
+</h2>
+<p>Even though we now have a <code>dm</code> object that contains all our data, we have not specified how our five tables are connected. To do this, we need to define primary keys and foreign keys on the tables.</p>
 <p>Primary keys and foreign keys are how relational database tables are linked with each other. A primary key is a column or column tuple that has a unique value for each row within a table. A foreign key is a column or column tuple containing the primary key for a row in another table. Foreign keys act as cross references between tables. They specify the relationships that gives us the <em>relational</em> database. For more information on keys and a crash course on databases, see <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
 </div>
-<div class="section level3">
-<h3 id="primary-keys">Primary Keys<a class="anchor" aria-label="anchor" href="#primary-keys"></a>
-</h3>
-<p><code>dm</code> offers <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> to identify viable primary keys, and <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> to add them.</p>
+<div class="section level2">
+<h2 id="primary-keys">Primary Keys<a class="anchor" aria-label="anchor" href="#primary-keys"></a>
+</h2>
+<p><code>dm</code> offers <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> to identify viable primary keys for a table in the <code>dm</code> object, and <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> to add them.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span>
-  dm <span class="op">=</span> <span class="va">flights_dm_no_keys</span>,
-  table <span class="op">=</span> <span class="va">planes</span>
-<span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 9 × 3</span>
-<span class="co">#&gt;   columns      candidate why                                               </span>
-<span class="co">#&gt;   &lt;keys&gt;       &lt;lgl&gt;     &lt;chr&gt;                                             </span>
-<span class="co">#&gt; 1 tailnum      TRUE      ""                                                </span>
-<span class="co">#&gt; 2 year         FALSE     "has duplicate values: 2001 (284), 2000 (244), 20…</span>
-<span class="co">#&gt; 3 type         FALSE     "has duplicate values: Fixed wing multi engine (3…</span>
-<span class="co">#&gt; 4 manufacturer FALSE     "has duplicate values: BOEING (1630), AIRBUS INDU…</span>
-<span class="co">#&gt; 5 model        FALSE     "has duplicate values: 737-7H4 (361), A320-232 (2…</span>
-<span class="co">#&gt; 6 engines      FALSE     "has duplicate values: 2 (3288), 1 (27), 4 (4), 3…</span>
-<span class="co">#&gt; 7 seats        FALSE     "has duplicate values: 149 (452), 140 (411), 55 (…</span>
-<span class="co">#&gt; 8 speed        FALSE     "has 3299 missing values, and duplicate values: 4…</span>
-<span class="co">#&gt; 9 engine       FALSE     "has duplicate values: Turbo-fan (2750), Turbo-je…</span></code></pre>
-<p>Now, we add the primary keys that we have identified:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span></span>
+<span>  dm <span class="op">=</span> <span class="va">flights_dm_no_keys</span>,</span>
+<span>  table <span class="op">=</span> <span class="va">planes</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 9 × 3</span></span>
+<span><span class="co">#&gt;   columns      candidate why                                               </span></span>
+<span><span class="co">#&gt;   &lt;keys&gt;       &lt;lgl&gt;     &lt;chr&gt;                                             </span></span>
+<span><span class="co">#&gt; 1 tailnum      TRUE      ""                                                </span></span>
+<span><span class="co">#&gt; 2 year         FALSE     "has duplicate values: 2001 (284), 2000 (244), 20…</span></span>
+<span><span class="co">#&gt; 3 type         FALSE     "has duplicate values: Fixed wing multi engine (3…</span></span>
+<span><span class="co">#&gt; 4 manufacturer FALSE     "has duplicate values: BOEING (1630), AIRBUS INDU…</span></span>
+<span><span class="co">#&gt; 5 model        FALSE     "has duplicate values: 737-7H4 (361), A320-232 (2…</span></span>
+<span><span class="co">#&gt; 6 engines      FALSE     "has duplicate values: 2 (3288), 1 (27), 4 (4), 3…</span></span>
+<span><span class="co">#&gt; 7 seats        FALSE     "has duplicate values: 149 (452), 140 (411), 55 (…</span></span>
+<span><span class="co">#&gt; 8 speed        FALSE     "has 3299 missing values, and duplicate values: 4…</span></span>
+<span><span class="co">#&gt; 9 engine       FALSE     "has duplicate values: Turbo-fan (2750), Turbo-je…</span></span></code></pre>
+<p>Now, we can add the identified primary keys:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_only_pks</span> <span class="op">&lt;-</span>
-  <span class="va">flights_dm_no_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">airlines</span>, columns <span class="op">=</span> <span class="va">carrier</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">planes</span>, <span class="va">tailnum</span><span class="op">)</span>
-<span class="va">flights_dm_only_pks</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 3</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre>
-<p>Note that we demonstrate both named and positional arguments above.</p>
+<code class="sourceCode R"><span><span class="va">flights_dm_only_pks</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">flights_dm_no_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">airlines</span>, columns <span class="op">=</span> <span class="va">carrier</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">planes</span>, <span class="va">tailnum</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">weather</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">time_hour</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">flights_dm_only_pks</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
+<span><span class="co">#&gt; Columns: 53</span></span>
+<span><span class="co">#&gt; Primary keys: 4</span></span>
+<span><span class="co">#&gt; Foreign keys: 0</span></span></code></pre>
+<p>Note that {dm} functions work with both named and positional argument specification, and compound keys can be specified using a vector argument.</p>
 </div>
-<div class="section level3">
-<h3 id="foreign-keys">Foreign Keys<a class="anchor" aria-label="anchor" href="#foreign-keys"></a>
-</h3>
-<p>To define how our tables are related, we use <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> to add foreign keys. In calling <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> the <code>table</code> argument is the table that needs a foreign key to link it to a second table. <code>ref_table</code> is the table to be linked to and it needs a primary key already defined for it.</p>
+<div class="section level2">
+<h2 id="foreign-keys">Foreign Keys<a class="anchor" aria-label="anchor" href="#foreign-keys"></a>
+</h2>
+<p>To define how our tables are related, we use <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> to add foreign keys. Naturally, this function will deal with two tables: a table <em>looking for</em> a reference, and a table that is <em>providing</em> the reference. Accordingly, while calling <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code>, the <code>table</code> argument specifies the table that needs a foreign key to link it to a second table, and the <code>ref_table</code> argument specifies the table to be linked to, which needs a primary key already defined for it.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span>
-  dm <span class="op">=</span> <span class="va">flights_dm_only_pks</span>,
-  table <span class="op">=</span> <span class="va">flights</span>,
-  ref_table <span class="op">=</span> <span class="va">airlines</span>
-<span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 19 × 3</span>
-<span class="co">#&gt;    columns        candidate why                                            </span>
-<span class="co">#&gt;    &lt;keys&gt;         &lt;lgl&gt;     &lt;chr&gt;                                          </span>
-<span class="co">#&gt;  1 carrier        TRUE      ""                                             </span>
-<span class="co">#&gt;  2 year           FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt;  3 month          FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt;  4 day            FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt;  5 dep_time       FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt;  6 sched_dep_time FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt;  7 dep_delay      FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
-<span class="co">#&gt;  8 arr_time       FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt;  9 sched_arr_time FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt; 10 arr_delay      FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
-<span class="co">#&gt; 11 flight         FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span>
-<span class="co">#&gt; 12 tailnum        FALSE     "values of `flights$tailnum` not in `airlines$…</span>
-<span class="co">#&gt; 13 origin         FALSE     "values of `flights$origin` not in `airlines$c…</span>
-<span class="co">#&gt; 14 dest           FALSE     "values of `flights$dest` not in `airlines$car…</span>
-<span class="co">#&gt; 15 air_time       FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
-<span class="co">#&gt; 16 distance       FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
-<span class="co">#&gt; 17 hour           FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
-<span class="co">#&gt; 18 minute         FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span>
-<span class="co">#&gt; 19 time_hour      FALSE     "Can't combine `value1` &lt;datetime&lt;America/New_…</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span></span>
+<span>  dm <span class="op">=</span> <span class="va">flights_dm_only_pks</span>,</span>
+<span>  table <span class="op">=</span> <span class="va">flights</span>,</span>
+<span>  ref_table <span class="op">=</span> <span class="va">airlines</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 19 × 3</span></span>
+<span><span class="co">#&gt;    columns        candidate why                                            </span></span>
+<span><span class="co">#&gt;    &lt;keys&gt;         &lt;lgl&gt;     &lt;chr&gt;                                          </span></span>
+<span><span class="co">#&gt;  1 carrier        TRUE      ""                                             </span></span>
+<span><span class="co">#&gt;  2 year           FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt;  3 month          FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt;  4 day            FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt;  5 dep_time       FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt;  6 sched_dep_time FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt;  7 dep_delay      FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span></span>
+<span><span class="co">#&gt;  8 arr_time       FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt;  9 sched_arr_time FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt; 10 arr_delay      FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span></span>
+<span><span class="co">#&gt; 11 flight         FALSE     "Can't combine `value1` &lt;integer&gt; and `value1`…</span></span>
+<span><span class="co">#&gt; 12 tailnum        FALSE     "values of `flights$tailnum` not in `airlines$…</span></span>
+<span><span class="co">#&gt; 13 origin         FALSE     "values of `flights$origin` not in `airlines$c…</span></span>
+<span><span class="co">#&gt; 14 dest           FALSE     "values of `flights$dest` not in `airlines$car…</span></span>
+<span><span class="co">#&gt; 15 air_time       FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span></span>
+<span><span class="co">#&gt; 16 distance       FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span></span>
+<span><span class="co">#&gt; 17 hour           FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span></span>
+<span><span class="co">#&gt; 18 minute         FALSE     "Can't combine `value1` &lt;double&gt; and `value1` …</span></span>
+<span><span class="co">#&gt; 19 time_hour      FALSE     "Can't combine `value1` &lt;datetime&lt;America/New_…</span></span></code></pre>
 <p>Having chosen a column from the successful candidates provided by <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>, we use the <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> function to establish the foreign key linking the tables. In the second call to <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> we complete the process for the <code>flights</code> and <code>airlines</code> tables that we started above. The <code>carrier</code> column in the <code>airlines</code> table will be added as the foreign key in <code>flights</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_all_keys</span> <span class="op">&lt;-</span>
-  <span class="va">flights_dm_only_pks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">flights</span>, columns <span class="op">=</span> <span class="va">tailnum</span>, ref_table <span class="op">=</span> <span class="va">planes</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">carrier</span>, <span class="va">airlines</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span>
-<span class="va">flights_dm_all_keys</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 3</span>
-<span class="co">#&gt; Foreign keys: 3</span></code></pre>
+<code class="sourceCode R"><span><span class="va">flights_dm_all_keys</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">flights_dm_only_pks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">flights</span>, columns <span class="op">=</span> <span class="va">tailnum</span>, ref_table <span class="op">=</span> <span class="va">planes</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">carrier</span>, <span class="va">airlines</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">time_hour</span><span class="op">)</span>, <span class="va">weather</span><span class="op">)</span></span>
+<span><span class="va">flights_dm_all_keys</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
+<span><span class="co">#&gt; Columns: 53</span></span>
+<span><span class="co">#&gt; Primary keys: 4</span></span>
+<span><span class="co">#&gt; Foreign keys: 4</span></span></code></pre>
 <p>Having created the required primary and foreign keys to link all the tables together, we now have a relational data model we can work with.</p>
 </div>
-<div class="section level3">
-<h3 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
-</h3>
+<div class="section level2">
+<h2 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
+</h2>
 <p>Visualizing a data model is a quick and easy way to verify that we have successfully created the model we were aiming for. We can use <code><a href="../reference/dm_draw.html">dm_draw()</a></code> at any stage of the process to generate a visual representation of the tables and the links between them:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_no_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span>rankdir <span class="op">=</span> <span class="st">"TB"</span>, view_type <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">flights_dm_no_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span>rankdir <span class="op">=</span> <span class="st">"TB"</span>, view_type <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="419pt" height="449pt" viewbox="0.00 0.00 419.00 449.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 445)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -343,10 +306,9 @@
 <polygon fill="#efebdd" stroke="transparent" points="120,-381 120,-401 214,-401 214,-381 120,-381"></polygon><text text-anchor="start" x="149.1115" y="-386.4" font-family="Times,serif" font-size="14.00" fill="#000000">flights</text><polygon fill="#ffffff" stroke="transparent" points="120,-361 120,-381 214,-381 214,-361 120,-361"></polygon><text text-anchor="start" x="122" y="-366.4" font-family="Times,serif" font-size="14.00" fill="#444444">year</text><polygon fill="#ffffff" stroke="transparent" points="120,-341 120,-361 214,-361 214,-341 120,-341"></polygon><text text-anchor="start" x="122" y="-346.4" font-family="Times,serif" font-size="14.00" fill="#444444">month</text><polygon fill="#ffffff" stroke="transparent" points="120,-321 120,-341 214,-341 214,-321 120,-321"></polygon><text text-anchor="start" x="122" y="-326.4" font-family="Times,serif" font-size="14.00" fill="#444444">day</text><polygon fill="#ffffff" stroke="transparent" points="120,-301 120,-321 214,-321 214,-301 120,-301"></polygon><text text-anchor="start" x="122" y="-306.4" font-family="Times,serif" font-size="14.00" fill="#444444">dep_time</text><polygon fill="#ffffff" stroke="transparent" points="120,-281 120,-301 214,-301 214,-281 120,-281"></polygon><text text-anchor="start" x="121.5126" y="-286.4" font-family="Times,serif" font-size="14.00" fill="#444444">sched_dep_time</text><polygon fill="#ffffff" stroke="transparent" points="120,-261 120,-281 214,-281 214,-261 120,-261"></polygon><text text-anchor="start" x="122" y="-266.4" font-family="Times,serif" font-size="14.00" fill="#444444">dep_delay</text><polygon fill="#ffffff" stroke="transparent" points="120,-241 120,-261 214,-261 214,-241 120,-241"></polygon><text text-anchor="start" x="122" y="-246.4" font-family="Times,serif" font-size="14.00" fill="#444444">arr_time</text><polygon fill="#ffffff" stroke="transparent" points="120,-221 120,-241 214,-241 214,-221 120,-221"></polygon><text text-anchor="start" x="122" y="-226.4" font-family="Times,serif" font-size="14.00" fill="#444444">sched_arr_time</text><polygon fill="#ffffff" stroke="transparent" points="120,-201 120,-221 214,-221 214,-201 120,-201"></polygon><text text-anchor="start" x="122" y="-206.4" font-family="Times,serif" font-size="14.00" fill="#444444">arr_delay</text><polygon fill="#ffffff" stroke="transparent" points="120,-181 120,-201 214,-201 214,-181 120,-181"></polygon><text text-anchor="start" x="122" y="-186.4" font-family="Times,serif" font-size="14.00" fill="#444444">carrier</text><polygon fill="#ffffff" stroke="transparent" points="120,-161 120,-181 214,-181 214,-161 120,-161"></polygon><text text-anchor="start" x="122" y="-166.4" font-family="Times,serif" font-size="14.00" fill="#444444">flight</text><polygon fill="#ffffff" stroke="transparent" points="120,-141 120,-161 214,-161 214,-141 120,-141"></polygon><text text-anchor="start" x="122" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text><polygon fill="#ffffff" stroke="transparent" points="120,-121 120,-141 214,-141 214,-121 120,-121"></polygon><text text-anchor="start" x="122" y="-126.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin</text><polygon fill="#ffffff" stroke="transparent" points="120,-101 120,-121 214,-121 214,-101 120,-101"></polygon><text text-anchor="start" x="122" y="-106.4" font-family="Times,serif" font-size="14.00" fill="#444444">dest</text><polygon fill="#ffffff" stroke="transparent" points="120,-81 120,-101 214,-101 214,-81 120,-81"></polygon><text text-anchor="start" x="122" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#444444">air_time</text><polygon fill="#ffffff" stroke="transparent" points="120,-61 120,-81 214,-81 214,-61 120,-61"></polygon><text text-anchor="start" x="122" y="-66.4" font-family="Times,serif" font-size="14.00" fill="#444444">distance</text><polygon fill="#ffffff" stroke="transparent" points="120,-41 120,-61 214,-61 214,-41 120,-41"></polygon><text text-anchor="start" x="122" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#444444">hour</text><polygon fill="#ffffff" stroke="transparent" points="120,-21 120,-41 214,-41 214,-21 120,-21"></polygon><text text-anchor="start" x="122" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#444444">minute</text><polygon fill="#ffffff" stroke="transparent" points="120,-1 120,-21 214,-21 214,-1 120,-1"></polygon><text text-anchor="start" x="122" y="-6.4" font-family="Times,serif" font-size="14.00" fill="#444444">time_hour</text><polygon fill="none" stroke="#555555" points="119,0 119,-402 215,-402 215,0 119,0"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
 <polygon fill="#efebdd" stroke="transparent" points="1,-385 1,-405 79,-405 79,-385 1,-385"></polygon><text text-anchor="start" x="22.1178" y="-390.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="#ffffff" stroke="transparent" points="1,-365 1,-385 79,-385 79,-365 1,-365"></polygon><text text-anchor="start" x="3" y="-370.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text><polygon fill="#ffffff" stroke="transparent" points="1,-345 1,-365 79,-365 79,-345 1,-345"></polygon><text text-anchor="start" x="3" y="-350.4" font-family="Times,serif" font-size="14.00" fill="#444444">year</text><polygon fill="#ffffff" stroke="transparent" points="1,-325 1,-345 79,-345 79,-325 1,-325"></polygon><text text-anchor="start" x="3" y="-330.4" font-family="Times,serif" font-size="14.00" fill="#444444">type</text><polygon fill="#ffffff" stroke="transparent" points="1,-305 1,-325 79,-325 79,-305 1,-305"></polygon><text text-anchor="start" x="2.6893" y="-310.4" font-family="Times,serif" font-size="14.00" fill="#444444">manufacturer</text><polygon fill="#ffffff" stroke="transparent" points="1,-285 1,-305 79,-305 79,-285 1,-285"></polygon><text text-anchor="start" x="3" y="-290.4" font-family="Times,serif" font-size="14.00" fill="#444444">model</text><polygon fill="#ffffff" stroke="transparent" points="1,-265 1,-285 79,-285 79,-265 1,-265"></polygon><text text-anchor="start" x="3" y="-270.4" font-family="Times,serif" font-size="14.00" fill="#444444">engines</text><polygon fill="#ffffff" stroke="transparent" points="1,-245 1,-265 79,-265 79,-245 1,-245"></polygon><text text-anchor="start" x="3" y="-250.4" font-family="Times,serif" font-size="14.00" fill="#444444">seats</text><polygon fill="#ffffff" stroke="transparent" points="1,-225 1,-245 79,-245 79,-225 1,-225"></polygon><text text-anchor="start" x="3" y="-230.4" font-family="Times,serif" font-size="14.00" fill="#444444">speed</text><polygon fill="#ffffff" stroke="transparent" points="1,-205 1,-225 79,-225 79,-205 1,-205"></polygon><text text-anchor="start" x="3" y="-210.4" font-family="Times,serif" font-size="14.00" fill="#444444">engine</text><polygon fill="none" stroke="#555555" points="0,-204 0,-406 80,-406 80,-204 0,-204"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
 <polygon fill="#efebdd" stroke="transparent" points="256,-420 256,-440 326,-440 326,-420 256,-420"></polygon><text text-anchor="start" x="268.8492" y="-425.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="#ffffff" stroke="transparent" points="256,-400 256,-420 326,-420 326,-400 256,-400"></polygon><text text-anchor="start" x="258" y="-405.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin</text><polygon fill="#ffffff" stroke="transparent" points="256,-380 256,-400 326,-400 326,-380 256,-380"></polygon><text text-anchor="start" x="258" y="-385.4" font-family="Times,serif" font-size="14.00" fill="#444444">year</text><polygon fill="#ffffff" stroke="transparent" points="256,-360 256,-380 326,-380 326,-360 256,-360"></polygon><text text-anchor="start" x="258" y="-365.4" font-family="Times,serif" font-size="14.00" fill="#444444">month</text><polygon fill="#ffffff" stroke="transparent" points="256,-340 256,-360 326,-360 326,-340 256,-340"></polygon><text text-anchor="start" x="258" y="-345.4" font-family="Times,serif" font-size="14.00" fill="#444444">day</text><polygon fill="#ffffff" stroke="transparent" points="256,-320 256,-340 326,-340 326,-320 256,-320"></polygon><text text-anchor="start" x="258" y="-325.4" font-family="Times,serif" font-size="14.00" fill="#444444">hour</text><polygon fill="#ffffff" stroke="transparent" points="256,-300 256,-320 326,-320 326,-300 256,-300"></polygon><text text-anchor="start" x="258" y="-305.4" font-family="Times,serif" font-size="14.00" fill="#444444">temp</text><polygon fill="#ffffff" stroke="transparent" points="256,-280 256,-300 326,-300 326,-280 256,-280"></polygon><text text-anchor="start" x="258" y="-285.4" font-family="Times,serif" font-size="14.00" fill="#444444">dewp</text><polygon fill="#ffffff" stroke="transparent" points="256,-260 256,-280 326,-280 326,-260 256,-260"></polygon><text text-anchor="start" x="258" y="-265.4" font-family="Times,serif" font-size="14.00" fill="#444444">humid</text><polygon fill="#ffffff" stroke="transparent" points="256,-240 256,-260 326,-260 326,-240 256,-240"></polygon><text text-anchor="start" x="258" y="-245.4" font-family="Times,serif" font-size="14.00" fill="#444444">wind_dir</text><polygon fill="#ffffff" stroke="transparent" points="256,-220 256,-240 326,-240 326,-220 256,-220"></polygon><text text-anchor="start" x="257.5645" y="-225.4" font-family="Times,serif" font-size="14.00" fill="#444444">wind_speed</text><polygon fill="#ffffff" stroke="transparent" points="256,-200 256,-220 326,-220 326,-200 256,-200"></polygon><text text-anchor="start" x="258" y="-205.4" font-family="Times,serif" font-size="14.00" fill="#444444">wind_gust</text><polygon fill="#ffffff" stroke="transparent" points="256,-180 256,-200 326,-200 326,-180 256,-180"></polygon><text text-anchor="start" x="258" y="-185.4" font-family="Times,serif" font-size="14.00" fill="#444444">precip</text><polygon fill="#ffffff" stroke="transparent" points="256,-160 256,-180 326,-180 326,-160 256,-160"></polygon><text text-anchor="start" x="258" y="-165.4" font-family="Times,serif" font-size="14.00" fill="#444444">pressure</text><polygon fill="#ffffff" stroke="transparent" points="256,-140 256,-160 326,-160 326,-140 256,-140"></polygon><text text-anchor="start" x="258" y="-145.4" font-family="Times,serif" font-size="14.00" fill="#444444">visib</text><polygon fill="#ffffff" stroke="transparent" points="256,-120 256,-140 326,-140 326,-120 256,-120"></polygon><text text-anchor="start" x="258" y="-125.4" font-family="Times,serif" font-size="14.00" fill="#444444">time_hour</text><polygon fill="none" stroke="#555555" points="255,-119 255,-441 327,-441 327,-119 255,-119"></polygon></g></g></svg><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">flights_dm_no_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">carrier</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">flights_dm_no_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">carrier</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="176pt" height="164pt" viewbox="0.00 0.00 176.00 164.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 160)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -357,126 +319,133 @@
 <polygon fill="#efebdd" stroke="transparent" points="44,-128 44,-148 83,-148 83,-128 44,-128"></polygon><text text-anchor="start" x="45.6115" y="-133.4" font-family="Times,serif" font-size="14.00" fill="#000000">flights</text><polygon fill="none" stroke="#555555" points="42.5,-127 42.5,-149 83.5,-149 83.5,-127 42.5,-127"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
 <polygon fill="#efebdd" stroke="transparent" points="44,-68 44,-88 83,-88 83,-68 44,-68"></polygon><text text-anchor="start" x="45.6178" y="-73.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="none" stroke="#555555" points="42.5,-67 42.5,-89 83.5,-89 83.5,-67 42.5,-67"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
 <polygon fill="#efebdd" stroke="transparent" points="3,-8 3,-28 51,-28 51,-8 3,-8"></polygon><text text-anchor="start" x="4.8492" y="-13.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="2,-7 2,-29 52,-29 52,-7 2,-7"></polygon></g></g></svg><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">flights_dm_only_pks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">tailnum</span>, <span class="va">planes</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">flights_dm_only_pks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">tailnum</span>, <span class="va">planes</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
- --><!-- Title: %0 Pages: 1 --><svg width="182pt" height="178pt" viewbox="0.00 0.00 182.00 178.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 174)"><title>%0</title>
+ --><!-- Title: %0 Pages: 1 --><svg width="230pt" height="170pt" viewbox="0.00 0.00 230.00 170.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 166)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-174 178,-174 178,4 -4,4"></polygon></a>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-166 226,-166 226,4 -4,4"></polygon></a>
 </g><!-- airlines --><g id="node1" class="node"><title>airlines</title>
-<polygon fill="#efebdd" stroke="transparent" points="5,-149 5,-169 50,-169 50,-149 5,-149"></polygon><text text-anchor="start" x="6.8969" y="-154.4" font-family="Times,serif" font-size="14.00" fill="#000000">airlines</text><polygon fill="#ffffff" stroke="transparent" points="5,-129 5,-149 50,-149 50,-129 5,-129"></polygon><text text-anchor="start" x="7" y="-135.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">carrier</text><polygon fill="none" stroke="#555555" points="3.5,-128 3.5,-170 50.5,-170 50.5,-128 3.5,-128"></polygon></g><!-- airports --><g id="node2" class="node"><title>airports</title>
-<polygon fill="#efebdd" stroke="transparent" points="76,-141 76,-161 122,-161 122,-141 76,-141"></polygon><text text-anchor="start" x="77.6192" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#000000">airports</text><polygon fill="#ffffff" stroke="transparent" points="76,-121 76,-141 122,-141 122,-121 76,-121"></polygon><text text-anchor="start" x="78" y="-127.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">faa</text><polygon fill="none" stroke="#555555" points="75,-120 75,-162 123,-162 123,-120 75,-120"></polygon></g><!-- flights --><g id="node3" class="node"><title>flights</title>
-<polygon fill="#efebdd" stroke="transparent" points="34,-77 34,-97 80,-97 80,-77 34,-77"></polygon><text text-anchor="start" x="39.1115" y="-82.4" font-family="Times,serif" font-size="14.00" fill="#000000">flights</text><polygon fill="#ffffff" stroke="transparent" points="34,-57 34,-77 80,-77 80,-57 34,-57"></polygon><text text-anchor="start" x="35.6115" y="-62.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#555555" points="33,-56 33,-98 81,-98 81,-56 33,-56"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
-<polygon fill="#efebdd" stroke="transparent" points="124,-77 124,-97 170,-97 170,-77 124,-77"></polygon><text text-anchor="start" x="129.1178" y="-82.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="#ffffff" stroke="transparent" points="124,-57 124,-77 170,-77 170,-57 124,-57"></polygon><text text-anchor="start" x="125.6115" y="-63.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#555555" points="123,-56 123,-98 171,-98 171,-56 123,-56"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge1" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
-<path fill="none" stroke="#555555" d="M80,-67C95.5833,-67 101.8532,-67 113.6529,-67"></path><polygon fill="#555555" stroke="#555555" points="114,-70.5001 124,-67 114,-63.5001 114,-70.5001"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
-<polygon fill="#efebdd" stroke="transparent" points="43,-8 43,-28 91,-28 91,-8 43,-8"></polygon><text text-anchor="start" x="44.8492" y="-13.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="42,-7 42,-29 92,-29 92,-7 42,-7"></polygon></g></g></svg><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<polygon fill="#efebdd" stroke="transparent" points="5,-77 5,-97 50,-97 50,-77 5,-77"></polygon><text text-anchor="start" x="6.8969" y="-82.4" font-family="Times,serif" font-size="14.00" fill="#000000">airlines</text><polygon fill="#ffffff" stroke="transparent" points="5,-57 5,-77 50,-77 50,-57 5,-57"></polygon><text text-anchor="start" x="7" y="-63.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">carrier</text><polygon fill="none" stroke="#555555" points="3.5,-56 3.5,-98 50.5,-98 50.5,-56 3.5,-56"></polygon></g><!-- airports --><g id="node2" class="node"><title>airports</title>
+<polygon fill="#efebdd" stroke="transparent" points="4,-141 4,-161 50,-161 50,-141 4,-141"></polygon><text text-anchor="start" x="5.6192" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#000000">airports</text><polygon fill="#ffffff" stroke="transparent" points="4,-121 4,-141 50,-141 50,-121 4,-121"></polygon><text text-anchor="start" x="6" y="-127.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">faa</text><polygon fill="none" stroke="#555555" points="3,-120 3,-162 51,-162 51,-120 3,-120"></polygon></g><!-- flights --><g id="node3" class="node"><title>flights</title>
+<polygon fill="#efebdd" stroke="transparent" points="82,-21 82,-41 128,-41 128,-21 82,-21"></polygon><text text-anchor="start" x="87.1115" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">flights</text><polygon fill="#ffffff" stroke="transparent" points="82,-1 82,-21 128,-21 128,-1 82,-1"></polygon><text text-anchor="start" x="83.6115" y="-6.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#555555" points="81,0 81,-42 129,-42 129,0 81,0"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
+<polygon fill="#efebdd" stroke="transparent" points="172,-21 172,-41 218,-41 218,-21 172,-21"></polygon><text text-anchor="start" x="177.1178" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="#ffffff" stroke="transparent" points="172,-1 172,-21 218,-21 218,-1 172,-1"></polygon><text text-anchor="start" x="173.6115" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#555555" points="171,0 171,-42 219,-42 219,0 171,0"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge1" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
+<path fill="none" stroke="#555555" d="M128,-11C143.5833,-11 149.8532,-11 161.6529,-11"></path><polygon fill="#555555" stroke="#555555" points="162,-14.5001 172,-11 162,-7.5001 162,-14.5001"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
+<polygon fill="#efebdd" stroke="transparent" points="72.5,-85 72.5,-105 173.5,-105 173.5,-85 72.5,-85"></polygon><text text-anchor="start" x="100.8492" y="-90.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="#ffffff" stroke="transparent" points="72.5,-65 72.5,-85 173.5,-85 173.5,-65 72.5,-65"></polygon><text text-anchor="start" x="74.0056" y="-71.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#555555" points="71,-64 71,-106 174,-106 174,-64 71,-64"></polygon></g></g></svg><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
- --><!-- Title: %0 Pages: 1 --><svg width="152pt" height="200pt" viewbox="0.00 0.00 152.00 200.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 196)"><title>%0</title>
+ --><!-- Title: %0 Pages: 1 --><svg width="250pt" height="230pt" viewbox="0.00 0.00 250.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 226)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-196 148,-196 148,4 -4,4"></polygon></a>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-226 246,-226 246,4 -4,4"></polygon></a>
 </g><!-- airlines --><g id="node1" class="node"><title>airlines</title>
-<polygon fill="#efebdd" stroke="transparent" points="95,-141 95,-161 140,-161 140,-141 95,-141"></polygon><text text-anchor="start" x="96.8969" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#000000">airlines</text><polygon fill="#ffffff" stroke="transparent" points="95,-121 95,-141 140,-141 140,-121 95,-121"></polygon><text text-anchor="start" x="97" y="-127.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">carrier</text><polygon fill="none" stroke="#555555" points="93.5,-120 93.5,-162 140.5,-162 140.5,-120 93.5,-120"></polygon></g><!-- airports --><g id="node2" class="node"><title>airports</title>
-<polygon fill="#efebdd" stroke="transparent" points="94,-21 94,-41 140,-41 140,-21 94,-21"></polygon><text text-anchor="start" x="95.6192" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">airports</text><polygon fill="#ffffff" stroke="transparent" points="94,-1 94,-21 140,-21 140,-1 94,-1"></polygon><text text-anchor="start" x="96" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">faa</text><polygon fill="none" stroke="#555555" points="93,0 93,-42 141,-42 141,0 93,0"></polygon></g><!-- flights --><g id="node3" class="node"><title>flights</title>
-<polygon fill="#efebdd" stroke="transparent" points="4,-101 4,-121 50,-121 50,-101 4,-101"></polygon><text text-anchor="start" x="9.1115" y="-106.4" font-family="Times,serif" font-size="14.00" fill="#000000">flights</text><polygon fill="#ffffff" stroke="transparent" points="4,-81 4,-101 50,-101 50,-81 4,-81"></polygon><text text-anchor="start" x="6" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#444444">carrier</text><polygon fill="#ffffff" stroke="transparent" points="4,-61 4,-81 50,-81 50,-61 4,-61"></polygon><text text-anchor="start" x="5.6115" y="-66.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text><polygon fill="#ffffff" stroke="transparent" points="4,-41 4,-61 50,-61 50,-41 4,-41"></polygon><text text-anchor="start" x="6" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin</text><polygon fill="none" stroke="#555555" points="3,-40 3,-122 51,-122 51,-40 3,-40"></polygon></g><!-- flights&#45;&gt;airlines --><g id="edge1" class="edge"><title>flights:carrier-&gt;airlines:carrier</title>
-<path fill="none" stroke="#555555" d="M50,-91C72.787,-91 69.9925,-120.0063 85.1849,-128.6176"></path><polygon fill="#555555" stroke="#555555" points="84.4566,-132.0424 95,-131 86.1078,-125.2399 84.4566,-132.0424"></polygon></g><!-- flights&#45;&gt;airports --><g id="edge2" class="edge"><title>flights:origin-&gt;airports:faa</title>
-<path fill="none" stroke="#555555" d="M50,-51C72.2991,-51 69.4778,-22.5234 83.9268,-13.6245"></path><polygon fill="#555555" stroke="#555555" points="85.2055,-16.9083 94,-11 83.4406,-10.1344 85.2055,-16.9083"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
-<polygon fill="#efebdd" stroke="transparent" points="94,-81 94,-101 140,-101 140,-81 94,-81"></polygon><text text-anchor="start" x="99.1178" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="#ffffff" stroke="transparent" points="94,-61 94,-81 140,-81 140,-61 94,-61"></polygon><text text-anchor="start" x="95.6115" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#555555" points="93,-60 93,-102 141,-102 141,-60 93,-60"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge3" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
-<path fill="none" stroke="#555555" d="M50,-71C65.5833,-71 71.8532,-71 83.6529,-71"></path><polygon fill="#555555" stroke="#555555" points="84,-74.5001 94,-71 84,-67.5001 84,-74.5001"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
-<polygon fill="#efebdd" stroke="transparent" points="15,-164 15,-184 63,-184 63,-164 15,-164"></polygon><text text-anchor="start" x="16.8492" y="-169.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="14,-163 14,-185 64,-185 64,-163 14,-163"></polygon></g></g></svg>
+<polygon fill="#efebdd" stroke="transparent" points="168.5,-201 168.5,-221 213.5,-221 213.5,-201 168.5,-201"></polygon><text text-anchor="start" x="170.3969" y="-206.4" font-family="Times,serif" font-size="14.00" fill="#000000">airlines</text><polygon fill="#ffffff" stroke="transparent" points="168.5,-181 168.5,-201 213.5,-201 213.5,-181 168.5,-181"></polygon><text text-anchor="start" x="170.5" y="-187.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">carrier</text><polygon fill="none" stroke="#555555" points="167,-180 167,-222 214,-222 214,-180 167,-180"></polygon></g><!-- airports --><g id="node2" class="node"><title>airports</title>
+<polygon fill="#efebdd" stroke="transparent" points="167.5,-81 167.5,-101 213.5,-101 213.5,-81 167.5,-81"></polygon><text text-anchor="start" x="169.1192" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#000000">airports</text><polygon fill="#ffffff" stroke="transparent" points="167.5,-61 167.5,-81 213.5,-81 213.5,-61 167.5,-61"></polygon><text text-anchor="start" x="169.5" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">faa</text><polygon fill="none" stroke="#555555" points="166.5,-60 166.5,-102 214.5,-102 214.5,-60 166.5,-60"></polygon></g><!-- flights --><g id="node3" class="node"><title>flights</title>
+<polygon fill="#efebdd" stroke="transparent" points="1.5,-141 1.5,-161 102.5,-161 102.5,-141 1.5,-141"></polygon><text text-anchor="start" x="34.1115" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#000000">flights</text><polygon fill="#ffffff" stroke="transparent" points="1.5,-121 1.5,-141 102.5,-141 102.5,-121 1.5,-121"></polygon><text text-anchor="start" x="3.5" y="-126.4" font-family="Times,serif" font-size="14.00" fill="#444444">carrier</text><polygon fill="#ffffff" stroke="transparent" points="1.5,-101 1.5,-121 102.5,-121 102.5,-101 1.5,-101"></polygon><text text-anchor="start" x="3.5" y="-106.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text><polygon fill="#ffffff" stroke="transparent" points="1.5,-81 1.5,-101 102.5,-101 102.5,-81 1.5,-81"></polygon><text text-anchor="start" x="3.5" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin</text><polygon fill="#ffffff" stroke="transparent" points="1.5,-61 1.5,-81 102.5,-81 102.5,-61 1.5,-61"></polygon><text text-anchor="start" x="3.0056" y="-66.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#555555" points="0,-60 0,-162 103,-162 103,-60 0,-60"></polygon></g><!-- flights&#45;&gt;airlines --><g id="edge1" class="edge"><title>flights:carrier-&gt;airlines:carrier</title>
+<path fill="none" stroke="#555555" d="M102.5,-131C126.5668,-131 120.8029,-155.2496 139,-171 147.7956,-178.613 151.0394,-185.8305 158.4157,-189.1277"></path><polygon fill="#555555" stroke="#555555" points="158.0291,-192.6157 168.5,-191 159.307,-185.7333 158.0291,-192.6157"></polygon></g><!-- flights&#45;&gt;airports --><g id="edge2" class="edge"><title>flights:origin-&gt;airports:faa</title>
+<path fill="none" stroke="#555555" d="M102.5,-91C128.9473,-91 135.7361,-75.6875 157.2687,-71.8594"></path><polygon fill="#555555" stroke="#555555" points="157.8281,-75.3248 167.5,-71 157.2421,-68.3494 157.8281,-75.3248"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
+<polygon fill="#efebdd" stroke="transparent" points="167.5,-141 167.5,-161 213.5,-161 213.5,-141 167.5,-141"></polygon><text text-anchor="start" x="172.6178" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="#ffffff" stroke="transparent" points="167.5,-121 167.5,-141 213.5,-141 213.5,-121 167.5,-121"></polygon><text text-anchor="start" x="169.1115" y="-127.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#555555" points="166.5,-120 166.5,-162 214.5,-162 214.5,-120 166.5,-120"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge3" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
+<path fill="none" stroke="#555555" d="M102.5,-111C128.9473,-111 135.7361,-126.3125 157.2687,-130.1406"></path><polygon fill="#555555" stroke="#555555" points="157.2421,-133.6506 167.5,-131 157.8281,-126.6752 157.2421,-133.6506"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
+<polygon fill="#efebdd" stroke="transparent" points="140.5,-21 140.5,-41 241.5,-41 241.5,-21 140.5,-21"></polygon><text text-anchor="start" x="168.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="#ffffff" stroke="transparent" points="140.5,-1 140.5,-21 241.5,-21 241.5,-1 140.5,-1"></polygon><text text-anchor="start" x="142.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#555555" points="139,0 139,-42 242,-42 242,0 139,0"></polygon></g><!-- flights&#45;&gt;weather --><g id="edge4" class="edge"><title>flights:origin, time_hour-&gt;weather:origin, time_hour</title>
+<path fill="none" stroke="#555555" d="M102.5,-71C129.8727,-71 114.6101,-25.8792 130.6579,-13.8939"></path><polygon fill="#555555" stroke="#555555" points="131.8935,-17.1789 140.5,-11 129.9188,-10.4631 131.8935,-17.1789"></polygon></g></g></svg>
 </div>
-<div class="section level3">
-<h3 id="integrity-checks">Integrity Checks<a class="anchor" aria-label="anchor" href="#integrity-checks"></a>
-</h3>
+<div class="section level2">
+<h2 id="integrity-checks">Integrity Checks<a class="anchor" aria-label="anchor" href="#integrity-checks"></a>
+</h2>
 <p>As well as checking our data model visually, dm can examine the constraints we have created by the addition of keys and verify that they are sensible.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_no_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code><span class="co">#&gt; ℹ No constraints defined.</span></code></pre>
+<code class="sourceCode R"><span><span class="va">flights_dm_no_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-message"><code><span><span class="co">#&gt; ℹ No constraints defined.</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">flights_dm_only_pks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code><span class="co">#&gt; ℹ All constraints satisfied.</span></code></pre>
+<code class="sourceCode R"><span></span>
+<span><span class="va">flights_dm_only_pks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-message"><code><span><span class="co">#&gt; ℹ All constraints satisfied.</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code><span class="co">#&gt; ! Unsatisfied constraints:</span></code></pre>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; • Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), …</span></code></pre>
+<code class="sourceCode R"><span></span>
+<span><span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-message"><code><span><span class="co">#&gt; ! Unsatisfied constraints:</span></span></code></pre>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; • Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), …</span></span>
+<span><span class="co">#&gt; • Table `flights`: foreign key `origin`, `time_hour` into table `weather`: values of `flights$origin`, `flights$time_hour` not in `weather$origin`, `weather$time_hour`: EWR, 2013-10-23 06:00:00 (34), EWR, 2013-08-19 17:00:00 (26), EWR, 2013-12-31 06:00:00 (26), EWR, 2013-12-31 07:00:00 (26), JFK, 2013-08-19 17:00:00 (26), …</span></span></code></pre>
 <p>The results are presented in a human-readable form, and available as a tibble for programmatic inspection.</p>
 </div>
-<div class="section level3">
-<h3 id="programming">Programming<a class="anchor" aria-label="anchor" href="#programming"></a>
-</h3>
+<div class="section level2">
+<h2 id="programming">Programming<a class="anchor" aria-label="anchor" href="#programming"></a>
+</h2>
 <p>Helper functions are available to access details on keys and check results.</p>
-<p><code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code> returns a data frame with our primary keys:</p>
+<p>A data frame of primary keys is retrieved with <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_only_pks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 3 × 2</span>
-<span class="co">#&gt;   table    pk_col </span>
-<span class="co">#&gt;   &lt;chr&gt;    &lt;keys&gt; </span>
-<span class="co">#&gt; 1 airlines carrier</span>
-<span class="co">#&gt; 2 airports faa    </span>
-<span class="co">#&gt; 3 planes   tailnum</span></code></pre>
-<p>A data frame of foreign keys is retrieved with <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
+<code class="sourceCode R"><span><span class="va">flights_dm_only_pks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 4 × 2</span></span>
+<span><span class="co">#&gt;   table    pk_col           </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;keys&gt;           </span></span>
+<span><span class="co">#&gt; 1 airlines carrier          </span></span>
+<span><span class="co">#&gt; 2 airports faa              </span></span>
+<span><span class="co">#&gt; 3 planes   tailnum          </span></span>
+<span><span class="co">#&gt; 4 weather  origin, time_hour</span></span></code></pre>
+<p>Similarly, a data frame of foreign keys is retrieved with <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 3 × 5</span>
-<span class="co">#&gt;   child_table child_fk_cols parent_table parent_key_cols on_delete</span>
-<span class="co">#&gt;   &lt;chr&gt;       &lt;keys&gt;        &lt;chr&gt;        &lt;keys&gt;          &lt;chr&gt;    </span>
-<span class="co">#&gt; 1 flights     carrier       airlines     carrier         no_action</span>
-<span class="co">#&gt; 2 flights     origin        airports     faa             no_action</span>
-<span class="co">#&gt; 3 flights     tailnum       planes       tailnum         no_action</span></code></pre>
+<code class="sourceCode R"><span><span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 4 × 5</span></span>
+<span><span class="co">#&gt;   child_table child_fk_cols     parent_table parent_key_cols   on_delete</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;keys&gt;            &lt;chr&gt;        &lt;keys&gt;            &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt; 1 flights     carrier           airlines     carrier           no_action</span></span>
+<span><span class="co">#&gt; 2 flights     origin            airports     faa               no_action</span></span>
+<span><span class="co">#&gt; 3 flights     tailnum           planes       tailnum           no_action</span></span>
+<span><span class="co">#&gt; 4 flights     origin, time_hour weather      origin, time_hour no_action</span></span></code></pre>
 <p>We can use <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble()</a></code> on the result of <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> to programmatically inspect which constraints are not satisfied:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-output"><code><span class="co">#&gt; # A tibble: 6 × 6</span>
-<span class="co">#&gt;   table    kind  columns ref_table is_key problem                          </span>
-<span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;keys&gt;  &lt;chr&gt;     &lt;lgl&gt;  &lt;chr&gt;                            </span>
-<span class="co">#&gt; 1 flights  FK    tailnum planes    FALSE  "values of `flights$tailnum` not…</span>
-<span class="co">#&gt; 2 airlines PK    carrier NA        TRUE   ""                               </span>
-<span class="co">#&gt; 3 airports PK    faa     NA        TRUE   ""                               </span>
-<span class="co">#&gt; 4 planes   PK    tailnum NA        TRUE   ""                               </span>
-<span class="co">#&gt; 5 flights  FK    carrier airlines  TRUE   ""                               </span>
-<span class="co">#&gt; 6 flights  FK    origin  airports  TRUE   ""</span></code></pre>
+<code class="sourceCode R"><span><span class="va">flights_dm_all_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 8 × 6</span></span>
+<span><span class="co">#&gt;   table    kind  columns           ref_table is_key problem                </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;keys&gt;            &lt;chr&gt;     &lt;lgl&gt;  &lt;chr&gt;                  </span></span>
+<span><span class="co">#&gt; 1 flights  FK    tailnum           planes    FALSE  "values of `flights$ta…</span></span>
+<span><span class="co">#&gt; 2 flights  FK    origin, time_hour weather   FALSE  "values of `flights$or…</span></span>
+<span><span class="co">#&gt; 3 airlines PK    carrier           NA        TRUE   ""                     </span></span>
+<span><span class="co">#&gt; 4 airports PK    faa               NA        TRUE   ""                     </span></span>
+<span><span class="co">#&gt; 5 planes   PK    tailnum           NA        TRUE   ""                     </span></span>
+<span><span class="co">#&gt; 6 weather  PK    origin, time_hour NA        TRUE   ""                     </span></span>
+<span><span class="co">#&gt; 7 flights  FK    carrier           airlines  TRUE   ""                     </span></span>
+<span><span class="co">#&gt; 8 flights  FK    origin            airports  TRUE   ""</span></span></code></pre>
 </div>
+<div class="section level2">
+<h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
+</h2>
+<p>In this tutorial, we have demonstrated how simple it is to create relational data models from local data frames using {dm}, including setting primary and foreign keys and visualizing the resulting relational model.</p>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
+<div class="section level2">
+<h2 id="further-reading">Further reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
+</h2>
+<p><code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> – This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.</p>
+<p><code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code> – Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
-</div>
 
 
-
-      <footer><div class="copyright">
+    <footer><div class="pkgdown-footer-left">
   <p></p>
 <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
-<div class="pkgdown">
+<div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
-
 
   
 
