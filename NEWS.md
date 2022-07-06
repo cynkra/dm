@@ -36,6 +36,11 @@
 - Moved `pack_join()` arguments past the ellipsis for consistency (#920, #921).
 
 
+## Bug fixes
+
+- Compatibility fix for writing to SQL Server tables with dbplyr >= 2.2.0.
+
+
 ## Documentation
 
 - The pkgdown site now uses BS5 for greater readability (#1067, @maelle).
@@ -53,11 +58,6 @@
 - Update credentials to fallback databases for `dm_financial()` hosted on pacha.dev (#916, @pachadotdev), also used now for vignettes (#1118) and in `dm_from_con()` example (#993).
 
 - Update license year (#1029).
-
-
-## Chores
-
-- Use selection helpers in `_pkgdown.yml` (@IndrajeetPatil, #1138).
 
 
 ## Internal
