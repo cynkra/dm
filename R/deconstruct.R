@@ -13,6 +13,10 @@ new_uuid <- function() {
   )
 }
 
+vec_new_uuid_along <- function(x) {
+  map_chr(x, function(.x) new_uuid())
+}
+
 new_fks_in <- function(child_table = NULL, child_fk_cols = NULL, parent_key_cols = NULL) {
   child_table <- vec_cast(child_table, character()) %||% character()
   child_fk_cols <- vec_cast(child_fk_cols, new_keys()) %||% new_keys()
