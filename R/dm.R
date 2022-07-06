@@ -141,17 +141,27 @@ new_dm_def <- function(tables = list(),
     mutate(fks = as_list_of(map(fks, `%||%`, new_fk()), .ptype = new_fk())) %>%
     mutate(filters = list_of(new_filter())) %>%
     left_join(zoom, by = "table") %>%
-    left_join(col_tracker_zoom, by = "table")
+    left_join(col_tracker_zoom, by = "table") %>%
+    mutate(uuid = vec_new_uuid_along(table))
 
   def
 }
 
 new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
+  if (is.null(def[["uuid"]])) {
+    def$uuid <- vec_new_uuid_along(def$table)
+  } else {
+    missing <- which(is.na(def$uuid))
+    if (length(missing) > 0) {
+      def$uuid[missing] <- vec_new_uuid_along(missing)
+    }
+  }
+
   class <- c(
     if (zoomed) "zoomed_dm",
     "dm"
   )
-  out <- structure(list(def = def), class = class, version = 2L)
+  out <- structure(list(def = def), class = class, version = 3L)
 
   # Enable for strict tests (search for INSTRUMENT in .github/workflows):
   # if (validate) { dm_validate(out) } # INSTRUMENT: validate
@@ -164,7 +174,7 @@ dm_get_def <- function(x, quiet = FALSE) {
   # Most callers already call it, but not all
   check_dm(x)
 
-  if (!identical(attr(x, "version"), 2L)) {
+  if (!identical(attr(x, "version"), 3L)) {
     x <- dm_upgrade(x, quiet)
   }
   unclass(x)$def
@@ -660,7 +670,8 @@ empty_dm <- function() {
       fks = list_of(new_fk()),
       filters = list_of(new_filter()),
       zoom = list(),
-      col_tracker_zoom = list()
+      col_tracker_zoom = list(),
+      uuid = character(),
     )
   )
 }
