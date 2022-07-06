@@ -83,7 +83,7 @@
 <div class="section level3">
 <h3 id="api-0-3-0">API<a class="anchor" aria-label="anchor" href="#api-0-3-0"></a></h3>
 <ul><li><p>Marked stable functions as stable, in particular <code><a href="../reference/dm.html">dm()</a></code> and related functions (<a href="https://github.com/cynkra/dm/issues/1032" class="external-link">#1032</a>, <a href="https://github.com/cynkra/dm/issues/1040" class="external-link">#1040</a>).</p></li>
-<li><p>Remove own <code>rows_*()</code> implementation for lazy tables, they are now available in dbplyr &gt;= 2.2.0 (<a href="https://github.com/cynkra/dm/issues/912" class="external-link">#912</a>, <a href="https://github.com/cynkra/dm/issues/1024" class="external-link">#1024</a>).</p></li>
+<li><p>Remove own <code>rows_*()</code> implementation for lazy tables, they are now available in dbplyr &gt;= 2.2.0 (<a href="https://github.com/cynkra/dm/issues/912" class="external-link">#912</a>, <a href="https://github.com/cynkra/dm/issues/1024" class="external-link">#1024</a>, <a href="https://github.com/cynkra/dm/issues/1028" class="external-link">#1028</a>).</p></li>
 <li><p>Deprecate <code><a href="../reference/deprecated.html">dm_join_to_tbl()</a></code>, <code><a href="../reference/deprecated.html">dm_is_referenced()</a></code> and <code><a href="../reference/deprecated.html">dm_get_referencing_tables()</a></code> (<a href="https://github.com/cynkra/dm/issues/1038" class="external-link">#1038</a>).</p></li>
 <li><p>New <code><a href="../reference/dm_validate.html">dm_validate()</a></code> replaces now deprecated <code><a href="../reference/deprecated.html">validate_dm()</a></code> (<a href="https://github.com/cynkra/dm/issues/1033" class="external-link">#1033</a>).</p></li>
 <li><p><code><a href="../reference/dm_get_con.html">dm_get_con()</a></code> and <code><a href="../reference/dm_get_filters.html">dm_get_filters()</a></code> use <code>dm</code> as argument name (<a href="https://github.com/cynkra/dm/issues/1034" class="external-link">#1034</a>, <a href="https://github.com/cynkra/dm/issues/1036" class="external-link">#1036</a>).</p></li>
@@ -92,6 +92,9 @@
 <li><p>New <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code>, soft-deprecated <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> (<a href="https://github.com/cynkra/dm/issues/1014" class="external-link">#1014</a>, <a href="https://github.com/cynkra/dm/issues/1018" class="external-link">#1018</a>, <a href="https://github.com/cynkra/dm/issues/1044" class="external-link">#1044</a>).</p></li>
 <li><p>Moved <code><a href="../reference/pack_join.html">pack_join()</a></code> arguments past the ellipsis for consistency (<a href="https://github.com/cynkra/dm/issues/920" class="external-link">#920</a>, <a href="https://github.com/cynkra/dm/issues/921" class="external-link">#921</a>).</p></li>
 </ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-3-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-0"></a></h3>
+<ul><li>Compatibility fix for writing to SQL Server tables with dbplyr &gt;= 2.2.0.</li></ul></div>
 <div class="section level3">
 <h3 id="documentation-0-3-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-3-0"></a></h3>
 <ul><li><p>The pkgdown site now uses BS5 for greater readability (<a href="https://github.com/cynkra/dm/issues/1067" class="external-link">#1067</a>, <a href="https://github.com/maelle" class="external-link">@maelle</a>).</p></li>
@@ -103,9 +106,6 @@
 <li><p>Update credentials to fallback databases for <code><a href="../reference/dm_financial.html">dm_financial()</a></code> hosted on pacha.dev (<a href="https://github.com/cynkra/dm/issues/916" class="external-link">#916</a>, <a href="https://github.com/pachadotdev" class="external-link">@pachadotdev</a>), also used now for vignettes (<a href="https://github.com/cynkra/dm/issues/1118" class="external-link">#1118</a>) and in <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> example (<a href="https://github.com/cynkra/dm/issues/993" class="external-link">#993</a>).</p></li>
 <li><p>Update license year (<a href="https://github.com/cynkra/dm/issues/1029" class="external-link">#1029</a>).</p></li>
 </ul></div>
-<div class="section level3">
-<h3 id="chores-0-3-0">Chores<a class="anchor" aria-label="anchor" href="#chores-0-3-0"></a></h3>
-<ul><li>Use selection helpers in <code>_pkgdown.yml</code> (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1138" class="external-link">#1138</a>).</li></ul></div>
 <div class="section level3">
 <h3 id="internal-0-3-0">Internal<a class="anchor" aria-label="anchor" href="#internal-0-3-0"></a></h3>
 <ul><li><p>Switch to duckdb as default database backend (<a href="https://github.com/cynkra/dm/issues/1179" class="external-link">#1179</a>).</p></li>
