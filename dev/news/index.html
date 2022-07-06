@@ -74,143 +74,47 @@
 <h2 class="pkg-version" data-toc-text="0.3.0.9000" id="dm-0309000">dm 0.3.0.9000<a class="anchor" aria-label="anchor" href="#dm-0309000"></a></h2>
 <ul><li>Internal changes only.</li></ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.0" id="dm-030">dm 0.3.0<a class="anchor" aria-label="anchor" href="#dm-030"></a></h2>
-<ul><li>Internal changes only.</li></ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.8.9009" id="dm-0289009">dm 0.2.8.9009<a class="anchor" aria-label="anchor" href="#dm-0289009"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.0" id="dm-030">dm 0.3.0<a class="anchor" aria-label="anchor" href="#dm-030"></a></h2><p class="text-muted">CRAN release: 2022-07-06</p>
 <div class="section level3">
-<h3 id="features-0-2-8-9009">Features<a class="anchor" aria-label="anchor" href="#features-0-2-8-9009"></a></h3>
+<h3 id="features-0-3-0">Features<a class="anchor" aria-label="anchor" href="#features-0-3-0"></a></h3>
 <ul><li><p>Implement <code><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse()</a></code> for <code>zoomed_df</code> (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1003" class="external-link">#1003</a>, <a href="https://github.com/cynkra/dm/issues/1161" class="external-link">#1161</a>).</p></li>
-<li><p>Remove message about automated key selection (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1113" class="external-link">#1113</a>, <a href="https://github.com/cynkra/dm/issues/1176" class="external-link">#1176</a>).</p></li>
+<li><p>Remove message about automated key selection with the <code>select</code> argument in joins on <code>zoomed_df</code> (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1113" class="external-link">#1113</a>, <a href="https://github.com/cynkra/dm/issues/1176" class="external-link">#1176</a>).</p></li>
+<li><p><code>dm_from_con(learn_keys = TRUE)</code> works for MariaDB (<a href="https://github.com/cynkra/dm/issues/1106" class="external-link">#1106</a>, <a href="https://github.com/cynkra/dm/issues/1123" class="external-link">#1123</a>, <a href="https://github.com/cynkra/dm/issues/1169" class="external-link">#1169</a>, <a href="https://github.com/maelle" class="external-link">@maelle</a>), and for compound keys in Postgres (<a href="https://github.com/cynkra/dm/issues/342" class="external-link">#342</a>, <a href="https://github.com/cynkra/dm/issues/1006" class="external-link">#1006</a>, <a href="https://github.com/cynkra/dm/issues/1016" class="external-link">#1016</a>) and SQL Server (<a href="https://github.com/cynkra/dm/issues/342" class="external-link">#342</a>).</p></li>
+<li><p>New <code><a href="../reference/json_pack_join.html">json_pack_join()</a></code>, <code><a href="../reference/json_nest_join.html">json_nest_join()</a></code>, <code><a href="../reference/json_pack.html">json_pack()</a></code> and <code><a href="../reference/json_nest.html">json_nest()</a></code>, similar to <code><a href="../reference/pack_join.html">pack_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/nest_join.html" class="external-link">dplyr::nest_join()</a></code>, <code><a href="https://tidyr.tidyverse.org/reference/pack.html" class="external-link">tidyr::pack()</a></code> and <code><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">tidyr::nest()</a></code>, but create character columns (<a href="https://github.com/cynkra/dm/issues/917" class="external-link">#917</a>, <a href="https://github.com/cynkra/dm/issues/918" class="external-link">#918</a>, <a href="https://github.com/cynkra/dm/issues/973" class="external-link">#973</a>, <a href="https://github.com/cynkra/dm/issues/974" class="external-link">#974</a>).</p></li>
+<li><p><code><a href="https://dplyr.tidyverse.org/reference/nest_join.html" class="external-link">nest_join()</a></code> and <code><a href="../reference/pack_join.html">pack_join()</a></code> support <code>zoomed_df</code> objects (<a href="https://github.com/cynkra/dm/issues/1119" class="external-link">#1119</a>, <a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="chore-0-2-8-9009">Chore<a class="anchor" aria-label="anchor" href="#chore-0-2-8-9009"></a></h3>
-<ul><li>Remove dead code</li></ul><p>Closes <a href="https://github.com/cynkra/dm/issues/1197" class="external-link">#1197</a>.</p>
-<ul><li><p>Use helper to centralize info about schema-supported databases (<a href="https://github.com/maelle" class="external-link">@maelle</a>, <a href="https://github.com/cynkra/dm/issues/1127" class="external-link">#1127</a>).</p></li>
-<li><p>Turn symlink into plain file to fix <code>renv::restore()</code> on Windows.</p></li>
-<li><p>Switch to duckdb as default database backend (<a href="https://github.com/cynkra/dm/issues/1179" class="external-link">#1179</a>).</p></li>
-<li><p>Remove own <code>rows_*()</code> implementation in favor of dbplyr 2.2.0 (<a href="https://github.com/cynkra/dm/issues/912" class="external-link">#912</a>).</p></li>
-<li><p>Fix styler GHA (<a href="https://github.com/cynkra/dm/issues/1182" class="external-link">#1182</a>).</p></li>
-<li><p>Ignore failures to list GHA cache (<a href="https://github.com/cynkra/dm/issues/1181" class="external-link">#1181</a>).</p></li>
-<li><p>Test MariaDB on GHA (<a href="https://github.com/cynkra/dm/issues/1136" class="external-link">#1136</a>).</p></li>
-<li><p>Reenable duckdb checks (<a href="https://github.com/cynkra/dm/issues/1091" class="external-link">#1091</a>).</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="documentation-0-2-8-9009">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-2-8-9009"></a></h3>
-<ul><li><p>Edits to the dm join article (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1103" class="external-link">#1103</a>).</p></li>
-<li><p>Edits to copy and modify vignettes (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1098" class="external-link">#1098</a>).</p></li>
-<li><p>Better inform message for dm rows (<a href="https://github.com/cynkra/dm/issues/414" class="external-link">#414</a>) (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1160" class="external-link">#1160</a>).</p></li>
-<li><p>Edits to model verification vignette (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1175" class="external-link">#1175</a>).</p></li>
-<li><p>Clarify between flatten vs squash (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1166" class="external-link">#1166</a>).</p></li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.8.9008" id="dm-0289008">dm 0.2.8.9008<a class="anchor" aria-label="anchor" href="#dm-0289008"></a></h2>
-<div class="section level3">
-<h3 id="features-0-2-8-9008">Features<a class="anchor" aria-label="anchor" href="#features-0-2-8-9008"></a></h3>
-<ul><li><p><code>dm_from_con(learn_keys = TRUE)</code> works for MariaDB (<a href="https://github.com/cynkra/dm/issues/1106" class="external-link">#1106</a>, <a href="https://github.com/cynkra/dm/issues/1123" class="external-link">#1123</a>, <a href="https://github.com/cynkra/dm/issues/1169" class="external-link">#1169</a>, <a href="https://github.com/maelle" class="external-link">@maelle</a>).</p></li>
-<li><p>New <code><a href="https://dplyr.tidyverse.org/reference/nest_join.html" class="external-link">nest_join()</a></code> and <code><a href="../reference/pack_join.html">pack_join()</a></code> for zoomed dm objects (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1119" class="external-link">#1119</a>).</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="documentation-0-2-8-9008">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-2-8-9008"></a></h3>
-<ul><li><p>Use fallback db also for vignettes (<a href="https://github.com/cynkra/dm/issues/1118" class="external-link">#1118</a>).</p></li>
-<li><p>Edits to dm class vignette (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1158" class="external-link">#1158</a>).</p></li>
-<li><p>Add Conclusions to “how-to” tutorials (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1132" class="external-link">#1132</a>).</p></li>
-<li><p>Consistent captioning in articles (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1157" class="external-link">#1157</a>).</p></li>
-<li><p>Better message for learning error (<a href="https://github.com/cynkra/dm/issues/1081" class="external-link">#1081</a>).</p></li>
-<li><p>Moves “Further Reading” to article index (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1120" class="external-link">#1120</a>).</p></li>
-<li><p>Use selection helpers in <code>_pkgdown.yml</code> (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1138" class="external-link">#1138</a>).</p></li>
-<li><p>Document <code><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse()</a></code> S3 method for <code>dm</code> (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1121" class="external-link">#1121</a>).</p></li>
-<li><p>Edits to zoom vignette (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1112" class="external-link">#1112</a>).</p></li>
-<li><p>Edits to articles about dm from df and db (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1082" class="external-link">#1082</a>).</p></li>
-<li><p>Edits to dm draw vignette (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1101" class="external-link">#1101</a>).</p></li>
-<li><p>Edits to function naming logic (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1100" class="external-link">#1100</a>).</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="chore-0-2-8-9008">Chore<a class="anchor" aria-label="anchor" href="#chore-0-2-8-9008"></a></h3>
-<ul><li><p>Draft of test expectations for enum_ops() (<a href="https://github.com/egnha" class="external-link">@egnha</a>, <a href="https://github.com/cynkra/dm/issues/1150" class="external-link">#1150</a>).</p></li>
-<li><p>Add tests for <code>dm_meta()</code> contents (<a href="https://github.com/cynkra/dm/issues/1114" class="external-link">#1114</a>).</p></li>
-<li><p>Middleware: Confirmation message if overwriting primary key (<a href="https://github.com/cynkra/dm/issues/1149" class="external-link">#1149</a>).</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="internal-0-2-8-9008">Internal<a class="anchor" aria-label="anchor" href="#internal-0-2-8-9008"></a></h3>
-<ul><li>Dynamic code generation (<a href="https://github.com/cynkra/dm/issues/1095" class="external-link">#1095</a>).</li></ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.8.9007" id="dm-0289007">dm 0.2.8.9007<a class="anchor" aria-label="anchor" href="#dm-0289007"></a></h2>
-<div class="section level3">
-<h3 id="features-0-2-8-9007">Features<a class="anchor" aria-label="anchor" href="#features-0-2-8-9007"></a></h3>
-<ul><li><p>New <code>simple</code> argument to <code>dm_meta()</code> (<a href="https://github.com/cynkra/dm/issues/1083" class="external-link">#1083</a>).</p></li>
-<li><p><code><a href="https://dplyr.tidyverse.org/reference/nest_join.html" class="external-link">nest_join()</a></code> and <code><a href="../reference/pack_join.html">pack_join()</a></code> support <code>zoomed_dm</code> objects (<a href="https://github.com/cynkra/dm/issues/1119" class="external-link">#1119</a>, <a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>).</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="documentation-0-2-8-9007">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-2-8-9007"></a></h3>
-<ul><li><p>simplify top of README (<a href="https://github.com/cynkra/dm/issues/1066" class="external-link">#1066</a>, <a href="https://github.com/maelle" class="external-link">@maelle</a>).</p></li>
-<li><p>Minimal tweaks of intro vignette (<a href="https://github.com/cynkra/dm/issues/1075" class="external-link">#1075</a>, <a href="https://github.com/maelle" class="external-link">@maelle</a>).</p></li>
-<li><p>Edits to dm theory vignette (<a href="https://github.com/cynkra/dm/issues/1079" class="external-link">#1079</a>, <a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>).</p></li>
-<li><p>BS5 for greater readability (<a href="https://github.com/cynkra/dm/issues/1067" class="external-link">#1067</a>, <a href="https://github.com/maelle" class="external-link">@maelle</a>).</p></li>
-<li><p>Minor edits to the “Get Started” article (<a href="https://github.com/cynkra/dm/issues/1056" class="external-link">#1056</a>, <a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>).</p></li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.8.9006" id="dm-0289006">dm 0.2.8.9006<a class="anchor" aria-label="anchor" href="#dm-0289006"></a></h2>
-<div class="section level3">
-<h3 id="chore-0-2-8-9006">Chore<a class="anchor" aria-label="anchor" href="#chore-0-2-8-9006"></a></h3>
-<ul><li><p>Remove all uses of dm_from_src() (<a href="https://github.com/cynkra/dm/issues/1044" class="external-link">#1044</a>).</p></li>
-<li><p>Use dbplyr 2.2.0 and rlang 1.0.2 (<a href="https://github.com/cynkra/dm/issues/1024" class="external-link">#1024</a>).</p></li>
-<li><p>Fix dm_from_src() example if relational.fit is down (<a href="https://github.com/cynkra/dm/issues/993" class="external-link">#993</a>).</p></li>
-<li><p>License year (<a href="https://github.com/cynkra/dm/issues/1029" class="external-link">#1029</a>).</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="api-0-2-8-9006">API<a class="anchor" aria-label="anchor" href="#api-0-2-8-9006"></a></h3>
-<ul><li><p>Deprecate dm_join_to_tbl(), dm_is_referenced() and dm_get_referencing_tables() (<a href="https://github.com/cynkra/dm/issues/1038" class="external-link">#1038</a>).</p></li>
+<h3 id="api-0-3-0">API<a class="anchor" aria-label="anchor" href="#api-0-3-0"></a></h3>
+<ul><li><p>Marked stable functions as stable, in particular <code><a href="../reference/dm.html">dm()</a></code> and related functions (<a href="https://github.com/cynkra/dm/issues/1032" class="external-link">#1032</a>, <a href="https://github.com/cynkra/dm/issues/1040" class="external-link">#1040</a>).</p></li>
+<li><p>Remove own <code>rows_*()</code> implementation for lazy tables, they are now available in dbplyr &gt;= 2.2.0 (<a href="https://github.com/cynkra/dm/issues/912" class="external-link">#912</a>, <a href="https://github.com/cynkra/dm/issues/1024" class="external-link">#1024</a>, <a href="https://github.com/cynkra/dm/issues/1028" class="external-link">#1028</a>).</p></li>
+<li><p>Deprecate <code><a href="../reference/deprecated.html">dm_join_to_tbl()</a></code>, <code><a href="../reference/deprecated.html">dm_is_referenced()</a></code> and <code><a href="../reference/deprecated.html">dm_get_referencing_tables()</a></code> (<a href="https://github.com/cynkra/dm/issues/1038" class="external-link">#1038</a>).</p></li>
 <li><p>New <code><a href="../reference/dm_validate.html">dm_validate()</a></code> replaces now deprecated <code><a href="../reference/deprecated.html">validate_dm()</a></code> (<a href="https://github.com/cynkra/dm/issues/1033" class="external-link">#1033</a>).</p></li>
-<li><p><code><a href="../reference/dm_get_filters.html">dm_get_filters()</a></code> uses <code>dm</code> as argument name (<a href="https://github.com/cynkra/dm/issues/1036" class="external-link">#1036</a>).</p></li>
-<li><p><code><a href="../reference/dm_get_con.html">dm_get_con()</a></code> uses <code>dm</code> as argument name (<a href="https://github.com/cynkra/dm/issues/1034" class="external-link">#1034</a>).</p></li>
-<li><p><code><a href="../reference/dm.html">dm()</a></code> and related functions are stable (<a href="https://github.com/cynkra/dm/issues/1040" class="external-link">#1040</a>).</p></li>
+<li><p><code><a href="../reference/dm_get_con.html">dm_get_con()</a></code> and <code><a href="../reference/dm_get_filters.html">dm_get_filters()</a></code> use <code>dm</code> as argument name (<a href="https://github.com/cynkra/dm/issues/1034" class="external-link">#1034</a>, <a href="https://github.com/cynkra/dm/issues/1036" class="external-link">#1036</a>).</p></li>
 <li><p>Mark <code>...</code> in <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code> as experimental (<a href="https://github.com/cynkra/dm/issues/1037" class="external-link">#1037</a>).</p></li>
 <li><p>Add ellipses to <code><a href="../reference/dm_disambiguate_cols.html">dm_disambiguate_cols()</a></code>, <code><a href="../reference/dm_draw.html">dm_draw()</a></code>, <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code>, <code><a href="../reference/dm_nycflights13.html">dm_nycflights13()</a></code> and <code><a href="../reference/dm_pixarfilms.html">dm_pixarfilms()</a></code> (<a href="https://github.com/cynkra/dm/issues/1035" class="external-link">#1035</a>).</p></li>
-<li><p>Mark functions as stable (<a href="https://github.com/cynkra/dm/issues/1032" class="external-link">#1032</a>).</p></li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.8.9005" id="dm-0289005">dm 0.2.8.9005<a class="anchor" aria-label="anchor" href="#dm-0289005"></a></h2>
-<div class="section level3">
-<h3 id="bug-fixes-0-2-8-9005">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-8-9005"></a></h3>
-<ul><li><p>Learning for PostgreSQL, regression introduced in 0.2.8.9004 (<a href="https://github.com/cynkra/dm/issues/1016" class="external-link">#1016</a>).</p></li>
-<li><p>Avoid NULL if no fks after disentangle (<a href="https://github.com/cynkra/dm/issues/1012" class="external-link">#1012</a>).</p></li>
+<li><p>New <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code>, soft-deprecated <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> (<a href="https://github.com/cynkra/dm/issues/1014" class="external-link">#1014</a>, <a href="https://github.com/cynkra/dm/issues/1018" class="external-link">#1018</a>, <a href="https://github.com/cynkra/dm/issues/1044" class="external-link">#1044</a>).</p></li>
+<li><p>Moved <code><a href="../reference/pack_join.html">pack_join()</a></code> arguments past the ellipsis for consistency (<a href="https://github.com/cynkra/dm/issues/920" class="external-link">#920</a>, <a href="https://github.com/cynkra/dm/issues/921" class="external-link">#921</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="api-0-2-8-9005">API<a class="anchor" aria-label="anchor" href="#api-0-2-8-9005"></a></h3>
-<ul><li>New <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code>, soft-deprecated <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> (<a href="https://github.com/cynkra/dm/issues/1014" class="external-link">#1014</a>, <a href="https://github.com/cynkra/dm/issues/1018" class="external-link">#1018</a>).</li></ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.8.9004" id="dm-0289004">dm 0.2.8.9004<a class="anchor" aria-label="anchor" href="#dm-0289004"></a></h2>
+<h3 id="bug-fixes-0-3-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-0"></a></h3>
+<ul><li>Compatibility fix for writing to SQL Server tables with dbplyr &gt;= 2.2.0.</li></ul></div>
 <div class="section level3">
-<h3 id="features-0-2-8-9004">Features<a class="anchor" aria-label="anchor" href="#features-0-2-8-9004"></a></h3>
-<ul><li>Use dm_meta() to learn from Postgres, fixes learning of compound keys (<a href="https://github.com/cynkra/dm/issues/342" class="external-link">#342</a>, <a href="https://github.com/cynkra/dm/issues/1006" class="external-link">#1006</a>).</li>
-<li>New internal <code>dm_meta()</code> for learning a data model from the database, for now for SQL Server only, fixes learning of compound keys (<a href="https://github.com/cynkra/dm/issues/342" class="external-link">#342</a>).</li>
+<h3 id="documentation-0-3-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-3-0"></a></h3>
+<ul><li><p>The pkgdown site now uses BS5 for greater readability (<a href="https://github.com/cynkra/dm/issues/1067" class="external-link">#1067</a>, <a href="https://github.com/maelle" class="external-link">@maelle</a>).</p></li>
+<li><p>Better message for <code><a href="../reference/rows-dm.html">dm_rows_...()</a></code> functions if the <code>in_place</code> argument is missing (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/414" class="external-link">#414</a>, <a href="https://github.com/cynkra/dm/issues/1160" class="external-link">#1160</a>).</p></li>
+<li><p>Better message for learning error (<a href="https://github.com/cynkra/dm/issues/1081" class="external-link">#1081</a>).</p></li>
+<li><p>Greatly improved consistency, content, and language across all articles (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1056" class="external-link">#1056</a>, <a href="https://github.com/cynkra/dm/issues/1132" class="external-link">#1132</a>, <a href="https://github.com/cynkra/dm/issues/1157" class="external-link">#1157</a>, <a href="https://github.com/cynkra/dm/issues/1166" class="external-link">#1166</a>, <a href="https://github.com/cynkra/dm/issues/1079" class="external-link">#1079</a>, <a href="https://github.com/cynkra/dm/issues/1082" class="external-link">#1082</a>, <a href="https://github.com/cynkra/dm/issues/1098" class="external-link">#1098</a>, <a href="https://github.com/cynkra/dm/issues/1100" class="external-link">#1100</a>, <a href="https://github.com/cynkra/dm/issues/1101" class="external-link">#1101</a>, <a href="https://github.com/cynkra/dm/issues/1103" class="external-link">#1103</a>, <a href="https://github.com/cynkra/dm/issues/1112" class="external-link">#1112</a>, <a href="https://github.com/cynkra/dm/issues/1120" class="external-link">#1120</a>, <a href="https://github.com/cynkra/dm/issues/1158" class="external-link">#1158</a>, <a href="https://github.com/cynkra/dm/issues/1175" class="external-link">#1175</a>).</p></li>
+<li><p>Tweaks of intro vignette and README (<a href="https://github.com/cynkra/dm/issues/1066" class="external-link">#1066</a>, <a href="https://github.com/cynkra/dm/issues/1075" class="external-link">#1075</a>, <a href="https://github.com/maelle" class="external-link">@maelle</a>).</p></li>
+<li><p>Document <code><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse()</a></code> S3 method for <code>dm</code> (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/cynkra/dm/issues/1121" class="external-link">#1121</a>).</p></li>
+<li><p>Update credentials to fallback databases for <code><a href="../reference/dm_financial.html">dm_financial()</a></code> hosted on pacha.dev (<a href="https://github.com/cynkra/dm/issues/916" class="external-link">#916</a>, <a href="https://github.com/pachadotdev" class="external-link">@pachadotdev</a>), also used now for vignettes (<a href="https://github.com/cynkra/dm/issues/1118" class="external-link">#1118</a>) and in <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> example (<a href="https://github.com/cynkra/dm/issues/993" class="external-link">#993</a>).</p></li>
+<li><p>Update license year (<a href="https://github.com/cynkra/dm/issues/1029" class="external-link">#1029</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="internal-0-3-0">Internal<a class="anchor" aria-label="anchor" href="#internal-0-3-0"></a></h3>
+<ul><li><p>Switch to duckdb as default database backend (<a href="https://github.com/cynkra/dm/issues/1179" class="external-link">#1179</a>).</p></li>
+<li><p>Test duckdb and MariaDB on GHA (<a href="https://github.com/cynkra/dm/issues/1091" class="external-link">#1091</a>, <a href="https://github.com/cynkra/dm/issues/1136" class="external-link">#1136</a>).</p></li>
 </ul></div>
 </div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.8.9003" id="dm-0289003">dm 0.2.8.9003<a class="anchor" aria-label="anchor" href="#dm-0289003"></a></h2>
-<ul><li>
-<code>dm_disentangle()</code> based on <code>enumerate_all_paths()</code> (<a href="https://github.com/cynkra/dm/issues/923" class="external-link">#923</a>).</li></ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.8.9002" id="dm-0289002">dm 0.2.8.9002<a class="anchor" aria-label="anchor" href="#dm-0289002"></a></h2>
-<ul><li>Fix compatibility with dev dbplyr (<a href="https://github.com/cynkra/dm/issues/986" class="external-link">#986</a>).</li>
-<li>Fix <code><a href="../reference/json_pack.html">json_pack()</a></code> (<a href="https://github.com/cynkra/dm/issues/973" class="external-link">#973</a>, <a href="https://github.com/cynkra/dm/issues/974" class="external-link">#974</a>).</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.8.9001" id="dm-0289001">dm 0.2.8.9001<a class="anchor" aria-label="anchor" href="#dm-0289001"></a></h2>
-<ul><li>New <code><a href="../reference/json_pack_join.html">json_pack_join()</a></code>, <code><a href="../reference/json_nest_join.html">json_nest_join()</a></code>, <code><a href="../reference/json_pack.html">json_pack()</a></code> and <code><a href="../reference/json_nest.html">json_nest()</a></code>, similar to <code><a href="../reference/pack_join.html">pack_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/nest_join.html" class="external-link">dplyr::nest_join()</a></code>, <code><a href="https://tidyr.tidyverse.org/reference/pack.html" class="external-link">tidyr::pack()</a></code> AND <code><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">tidyr::nest()</a></code>, but create character columns (<a href="https://github.com/cynkra/dm/issues/917" class="external-link">#917</a>, <a href="https://github.com/cynkra/dm/issues/918" class="external-link">#918</a>).</li>
-<li>
-<code><a href="../reference/pack_join.html">pack_join()</a></code> arguments moved past the ellipsis (<a href="https://github.com/cynkra/dm/issues/920" class="external-link">#920</a>, <a href="https://github.com/cynkra/dm/issues/921" class="external-link">#921</a>).</li>
-<li>Update credentials to fallback databases for <code><a href="../reference/dm_financial.html">dm_financial()</a></code> hosted on pacha.dev (<a href="https://github.com/cynkra/dm/issues/916" class="external-link">#916</a>, <a href="https://github.com/pachadotdev" class="external-link">@pachadotdev</a>).</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.8.9000" id="dm-0289000">dm 0.2.8.9000<a class="anchor" aria-label="anchor" href="#dm-0289000"></a></h2>
-<ul><li>Same as previous version.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.8" id="dm-028">dm 0.2.8<a class="anchor" aria-label="anchor" href="#dm-028"></a></h2><p class="text-muted">CRAN release: 2022-04-08</p>
 <div class="section level3">
