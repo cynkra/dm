@@ -18,9 +18,10 @@ source("setup/setup.R")
 
 
 This tutorial introduces the methods {dm} provides for modifying the data in the tables of a relational model.
-There are 5 methods:
+There are 6 methods:
 
-* [`dm_rows_insert()`](#insert) - adds new rows
+* [`dm_rows_insert()`](#insert) - adds new unique rows
+* [`dm_rows_append()`](#insert) - adds new rows unconditionally
 * [`dm_rows_update()`](#update) - changes values in rows
 * [`dm_rows_patch()`](#patch) - fills in missing values
 * [`dm_rows_upsert()`](#upsert) - adds new rows or changes values if pre-existing
