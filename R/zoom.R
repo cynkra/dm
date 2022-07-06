@@ -43,6 +43,7 @@
 #' And -- last but not least -- also the {tidyr}-functions [unite()] and [separate()] are supported for `zoomed_dm`.
 #'
 #' @rdname dm_zoom_to
+#' @aliases zoomed_df
 #'
 #' @return For `dm_zoom_to()`: A `zoomed_dm` object.
 #'
