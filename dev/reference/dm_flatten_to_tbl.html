@@ -12,7 +12,7 @@ Both functions perform a disambiguation of column names and a cascade of joins."
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -146,38 +146,67 @@ table would depend on the order the tables that are listed in the <code>dm</code
 Therefore, trying this will result in a warning.</p>
 <p>Since <code>join = nest_join()</code> does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.</p>
+<p>The difference between <code>dm_flatten_to_tbl()</code> and <code>dm_squash_to_tbl()</code> is
+the following (see the examples):</p><ul><li><p><code>dm_flatten_to_tbl()</code> allows only one level of hierarchy
+(i.e., direct neighbors to table <code>start</code>), while</p></li>
+<li><p><code>dm_squash_to_tbl()</code> will go through all levels of hierarchy while joining.</p></li>
+</ul><p>Additionally, these functions differ from <code><a href="dm_wrap_tbl.html">dm_wrap_tbl()</a></code>, which always
+returns a <code>dm</code> object.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">weather</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">dm_flatten_to_tbl</span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="dm_financial.html">dm_financial</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dm_flatten_to_tbl</span><span class="op">(</span>start <span class="op">=</span> <span class="va">cards</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Renaming ambiguous columns: %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(flights, flights.year = year) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(airlines, airlines.name = name) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(airports, airports.name = name) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(planes, planes.year = year)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,761 × 35</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    flights.year month   day dep_time sched_dep_time dep_delay arr_time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>         <span style="text-decoration: underline;">2</span>013     1    10        3           <span style="text-decoration: underline;">2</span>359         4      426</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>         <span style="text-decoration: underline;">2</span>013     1    10       16           <span style="text-decoration: underline;">2</span>359        17      447</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>         <span style="text-decoration: underline;">2</span>013     1    10      450            500       -<span style="color: #BB0000;">10</span>      634</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>         <span style="text-decoration: underline;">2</span>013     1    10      520            525        -<span style="color: #BB0000;">5</span>      813</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>         <span style="text-decoration: underline;">2</span>013     1    10      530            530         0      824</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>         <span style="text-decoration: underline;">2</span>013     1    10      531            540        -<span style="color: #BB0000;">9</span>      832</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>         <span style="text-decoration: underline;">2</span>013     1    10      535            540        -<span style="color: #BB0000;">5</span>     <span style="text-decoration: underline;">1</span>015</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>         <span style="text-decoration: underline;">2</span>013     1    10      546            600       -<span style="color: #BB0000;">14</span>      645</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>         <span style="text-decoration: underline;">2</span>013     1    10      549            600       -<span style="color: #BB0000;">11</span>      652</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>         <span style="text-decoration: underline;">2</span>013     1    10      550            600       -<span style="color: #BB0000;">10</span>      649</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 1,751 more rows, and 28 more variables: sched_arr_time &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   time_hour &lt;dttm&gt;, airlines.name &lt;chr&gt;, airports.name &lt;chr&gt;, lat &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;, planes.year &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   speed &lt;int&gt;, engine &lt;chr&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(cards, cards.type = type) %&gt;%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(disps, disps.type = type)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   SQL [?? x 7]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       id disp_id cards.type issued     client_id account_id disps.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1       9 gold       1998-10-16         9          7 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2      19 classic    1998-03-13        19         14 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     3      41 gold       1995-09-03        41         33 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>     4      42 classic    1998-11-26        42         34 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>     5      51 junior     1995-04-24        51         43 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>     7      56 classic    1998-06-11        56         48 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>     8      60 junior     1998-05-20        60         51 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     9      76 classic    1997-10-25        76         65 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    10      77 classic    1996-12-07        77         66 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    11      79 gold       1997-10-25        79         68 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with more rows</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="dm_financial.html">dm_financial</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dm_squash_to_tbl</span><span class="op">(</span>start <span class="op">=</span> <span class="va">cards</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Renaming ambiguous columns: %&gt;%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(cards, cards.type = type) %&gt;%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(disps, disps.type = type) %&gt;%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(accounts, accounts.district_id = district_id) %&gt;%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(clients, clients.district_id = district_id)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   SQL [?? x 28]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       id disp_id cards.type issued     client_id account_id disps.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1       9 gold       1998-10-16         9          7 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2      19 classic    1998-03-13        19         14 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     3      41 gold       1995-09-03        41         33 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>     4      42 classic    1998-11-26        42         34 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>     5      51 junior     1995-04-24        51         43 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>     7      56 classic    1998-06-11        56         48 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>     8      60 junior     1998-05-20        60         51 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     9      76 classic    1997-10-25        76         65 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    10      77 classic    1996-12-07        77         66 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    11      79 gold       1997-10-25        79         68 OWNER     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with more rows, and 21 more variables: accounts.district_id &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   frequency &lt;chr&gt;, date &lt;date&gt;, A2 &lt;chr&gt;, A3 &lt;chr&gt;, A4 &lt;int&gt;, A5 &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   A6 &lt;int&gt;, A7 &lt;int&gt;, A8 &lt;int&gt;, A9 &lt;int&gt;, A10 &lt;dbl&gt;, A11 &lt;int&gt;, A12 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   A13 &lt;dbl&gt;, A14 &lt;int&gt;, A15 &lt;int&gt;, A16 &lt;int&gt;, birth_number &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   clients.district_id &lt;int&gt;, tkey_id &lt;int&gt;</span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -20,7 +20,7 @@ on the dm."><meta property="og:image" content="https://cynkra.github.io/dm/logo.
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,7 +114,7 @@ single table, if <code>FALSE</code> a partially wrapped dm will be returned.</p>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A dm.</p>
+<p>A <code>dm</code> object.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -127,6 +127,8 @@ rows in the <code>root</code> table.
 Even if all referential constraints are satisfied,
 unwrapping after wrapping loses rows in parent tables
 that don't have a corresponding row in the child table.</p>
+<p>This function differs from <code><a href="dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code> and <code><a href="dm_flatten_to_tbl.html">dm_squash_to_tbl()</a></code> ,
+which always return a single table, and not a <code>dm</code> object.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

@@ -16,7 +16,7 @@ If the columns given in the ellipsis ARE a key, the data frame itself is returne
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,11 +100,12 @@ If the columns given in the ellipsis ARE a key, the data frame itself is returne
 <p>One or more unquoted expressions separated by commas.
 Variable names can be treated as if they were positions, so you
 can use expressions like x:y to select ranges of variables.</p>
-<p>The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
+<p>The arguments in <code>...</code> are automatically quoted and evaluated in a context
+where column names represent column positions.
 They also support
-unquoting and splicing.
-See vignette("programming") for an introduction to these concepts.</p>
-<p>See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...</p></dd>
+unquoting and splicing.</p>
+<p>See selection helpers for more details and examples about tidyselect helpers
+such as <code>starts_with()</code>, <code>everything()</code>, etc.</p></dd>
 
 </dl></div>
     <div class="section level2">

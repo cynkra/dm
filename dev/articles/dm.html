@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Getting started with dm</h1>
             
-            <h4 data-toc-skip class="date">2022-07-05</h4>
+            <h4 data-toc-skip class="date">2022-07-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/dm.Rmd" class="external-link"><code>vignettes/dm.Rmd</code></a></small>
       <div class="d-none name"><code>dm.Rmd</code></div>
@@ -143,7 +143,7 @@
 <span><span class="co">#&gt; Columns: 57</span></span>
 <span><span class="co">#&gt; Primary keys: 9</span></span>
 <span><span class="co">#&gt; Foreign keys: 8</span></span></code></pre>
-<p>The dm object interrogates the RDBMS for table and column information, and primary and foreign keys.</p>
+<p>The dm object interrogates the RDBMS for table and column information, and primary and foreign keys. Currently, primary and foreign keys are only available from SQL Server, Postgres and MariaDB.</p>
 </div>
 <div class="section level2">
 <h2 id="selecting-tables">Selecting tables<a class="anchor" aria-label="anchor" href="#selecting-tables"></a>
@@ -193,7 +193,7 @@
 <span><span class="va">fin_dm_small</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">fin_db</span>, learn_keys <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">accounts</span>, <span class="va">districts</span>, <span class="va">trans</span><span class="op">)</span></span></code></pre></div>
-<p>In our data model, <code>id</code> columns uniquely identify records in the <code>accounts</code> and <code>loans</code> tables, and can be used as a primary key. A primary key is defined with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. Each loan is linked to one account via the <code>account_id</code> column in the <code>loans</code> table, the relationship is established with <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code>.</p>
+<p>In our data model, <code>id</code> columns uniquely identify records in the <code>accounts</code> and <code>loans</code> tables, and was used as a primary key. A primary key is defined with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. Each loan is linked to one account via the <code>account_id</code> column in the <code>loans</code> table, the relationship is established with <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fin_dm_keys</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">fin_dm_small</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>

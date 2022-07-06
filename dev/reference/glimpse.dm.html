@@ -20,7 +20,7 @@ See pillar::glimpse() for more details."><meta property="og:image" content="http
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.8.9008</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,6 +93,9 @@ See <code><a href="https://pillar.r-lib.org/reference/glimpse.html" class="exter
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for dm</span></span>
+<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for zoomed_dm</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -118,15 +121,21 @@ printing. If <code>NULL</code>, <code>getOption("width")</code> will be consulte
 <span class="r-in"><span><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Table: `airlines`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Primary key: (`carrier`)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Primary key: `carrier`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 15</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ carrier <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "9E", "AA", "AS", "B6", "DL", "EV", "F9", "FL", "HA", "MQ", "U…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Endeavor Air Inc.", "American Airlines Inc.", "Alaska Airline…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Table: `airports`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Primary key: (`faa`)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Primary key: `faa`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 86</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ faa   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "ALB", "ATL", "AUS", "BDL", "BHM", "BNA", "BOS", "BTV", "BUF", "…</span>
@@ -138,12 +147,15 @@ printing. If <code>NULL</code>, <code>getOption("width")</code> will be consulte
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ dst   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A",…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ tzone <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "America/New_York", "America/New_York", "America/Chicago", "Amer…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Table: `flights`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 outgoing foreign key(s):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   (`carrier`) -&gt; (`airlines$carrier`) no_action</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   (`origin`) -&gt; (`airports$faa`) no_action</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   (`tailnum`) -&gt; (`planes$tailnum`) no_action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `carrier` -&gt; `airlines$carrier` no_action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `origin` -&gt; `airports$faa` no_action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `tailnum` -&gt; `planes$tailnum` no_action</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (`origin`, `time_hour`) -&gt; (`weather$origin`, `weather$time_hour`) no_action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 1,761</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ year           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2…</span>
@@ -166,8 +178,11 @@ printing. If <code>NULL</code>, <code>getOption("width")</code> will be consulte
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ minute         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 59, 59, 0, 25, 30, 40, 40, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ time_hour      <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span> 2013-01-10 23:00:00, 2013-01-10 23:00:00, 2013-01-10 0…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Table: `planes`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Primary key: (`tailnum`)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Primary key: `tailnum`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 945</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ tailnum      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "N10156", "N104UW", "N10575", "N105UW", "N110UW", "N11106…</span>
@@ -180,8 +195,11 @@ printing. If <code>NULL</code>, <code>getOption("width")</code> will be consulte
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ speed        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ engine       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Turbo-fan", "Turbo-fan", "Turbo-fan", "Turbo-fan", "Turb…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Table: `weather`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Primary key: (`origin`, `time_hour`)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 144</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 15</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ origin     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "EWR", "EWR", "EWR", "EWR", "EWR", "EWR", "EWR", "EWR", "EW…</span>
@@ -199,6 +217,42 @@ printing. If <code>NULL</code>, <code>getOption("width")</code> will be consulte
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ pressure   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1024.6, 1025.9, 1026.9, 1027.5, 1028.2, 1029.0, 1030.0, 103…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ visib      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ time_hour  <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span> 2013-01-10 00:00:00, 2013-01-10 01:00:00, 2013-01-10 02:00…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Zoomed table: `flights`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 outgoing foreign key(s):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `carrier` -&gt; `airlines$carrier` no_action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `origin` -&gt; `airports$faa` no_action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `tailnum` -&gt; `planes$tailnum` no_action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (`origin`, `time_hour`) -&gt; (`weather$origin`, `weather$time_hour`) no_action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 1,761</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ year           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ month          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ day            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ dep_time       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 3, 16, 450, 520, 530, 531, 535, 546, 549, 550, 553, 553…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ sched_dep_time <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 2359, 2359, 500, 525, 530, 540, 540, 600, 600, 600, 600…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ dep_delay      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4, 17, -10, -5, 0, -9, -5, -14, -11, -10, -7, -7, -7, -…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ arr_time       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 426, 447, 634, 813, 824, 832, 1015, 645, 652, 649, 711,…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ sched_arr_time <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 437, 444, 648, 820, 829, 850, 1017, 709, 724, 703, 715,…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ arr_delay      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -11, 3, -14, -7, -5, -18, -2, -24, -32, -14, -4, -33, -…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ carrier        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "B6", "B6", "US", "UA", "UA", "AA", "B6", "B6", "EV", "…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ flight         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 727, 739, 1117, 1018, 404, 1141, 725, 380, 6055, 2114, …</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ tailnum        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "N571JB", "N564JB", "N171US", "N35204", "N815UA", "N5EA…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ origin         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "JFK", "JFK", "EWR", "EWR", "LGA", "JFK", "JFK", "EWR",…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ dest           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "BQN", "PSE", "CLT", "IAH", "IAH", "MIA", "BQN", "BOS",…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ air_time       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 183, 191, 78, 215, 210, 149, 191, 39, 48, 36, 51, 201, …</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ distance       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1576, 1617, 529, 1400, 1416, 1089, 1576, 200, 229, 184,…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ hour           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 23, 23, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ minute         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 59, 59, 0, 25, 30, 40, 40, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ time_hour      <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span> 2013-01-10 23:00:00, 2013-01-10 23:00:00, 2013-01-10 0…</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
