@@ -15,12 +15,13 @@ One or more unquoted expressions separated by commas.
 Variable names can be treated as if they were positions, so you
 can use expressions like x:y to select ranges of variables.
 
-The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
+The arguments in \code{...} are automatically quoted and evaluated in a context
+where column names represent column positions.
 They also support
 unquoting and splicing.
-See vignette("programming") for an introduction to these concepts.
 
-See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...}
+See selection helpers for more details and examples about tidyselect helpers
+such as \code{starts_with()}, \code{everything()}, etc.}
 }
 \value{
 Returns \code{.data}, invisibly, if the check is passed.

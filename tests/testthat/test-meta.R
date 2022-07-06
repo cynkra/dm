@@ -6,7 +6,7 @@ test_that("dummy", {
 })
 
 test_that("dm_meta() data model", {
-  skip_if_src_not(c("mssql", "postgres", "maria"))
+  skip_if_schema_not_supported()
 
   expect_snapshot({
     dm_meta(my_test_src()) %>%

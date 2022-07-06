@@ -182,8 +182,8 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
   )
 })
 
-test_that("copy_dm_to() fails with schema argument for databases other than MSSQL & Postgres", {
-  skip_if_src("mssql", "postgres", "maria")
+test_that("copy_dm_to() fails with schema argument for databases where schema is unsupported", {
+  skip_if_schema_supported()
 
   local_dm <- dm_for_filter() %>% collect()
 

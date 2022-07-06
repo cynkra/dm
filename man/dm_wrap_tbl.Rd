@@ -15,7 +15,7 @@ dm_wrap_tbl(dm, root, strict = TRUE)
 single table, if \code{FALSE} a partially wrapped dm will be returned.}
 }
 \value{
-A dm.
+A \code{dm} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -36,6 +36,9 @@ rows in the \code{root} table.
 Even if all referential constraints are satisfied,
 unwrapping after wrapping loses rows in parent tables
 that don't have a corresponding row in the child table.
+
+This function differs from \code{dm_flatten_to_tbl()} and \code{dm_squash_to_tbl()} ,
+which always return a single table, and not a \code{dm} object.
 }
 \examples{
 dm_nycflights13() \%>\%
