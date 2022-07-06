@@ -19,7 +19,7 @@
 
 - Marked stable functions as stable, in particular `dm()` and related functions (#1032, #1040).
 
-- Remove own `rows_*()` implementation for lazy tables, they are now available in dbplyr >= 2.2.0 (#912, #1024).
+- Remove own `rows_*()` implementation for lazy tables, they are now available in dbplyr >= 2.2.0 (#912, #1024, #1028).
 
 - Deprecate `dm_join_to_tbl()`, `dm_is_referenced()` and `dm_get_referencing_tables()` (#1038).
 
