@@ -29,7 +29,7 @@ new_fks_out <- function(child_fk_cols = NULL, parent_table = NULL, parent_key_co
   tibble(child_fk_cols, parent_table, parent_key_cols)
 }
 
-new_keyed <- function(x, ..., pk = NULL, fks_in = NULL, fks_out = NULL, uuid = NULL) {
+new_keyed_tbl <- function(x, ..., pk = NULL, fks_in = NULL, fks_out = NULL, uuid = NULL) {
   check_dots_empty()
 
   stopifnot(!is.null(pk))
