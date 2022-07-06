@@ -6,7 +6,7 @@ test_that("`dm_wrap_tbl()` and `dm_unwrap_tbl()` work", {
   expect_length(dm_wrapped, 1)
   expect_equal(names(dm_wrapped), "tf_4")
   dm_unwrap_tblped <- dm_unwrap_tbl(dm_wrapped, dm1)
-  expect_identical(dm_unwrap_tblped, dm_unwrap_tbl(dm_wrapped, dm1))
+  expect_equivalent_dm(dm_unwrap_tblped, dm_unwrap_tbl(dm_wrapped, dm1))
 
   # to tibble
   expect_snapshot({
