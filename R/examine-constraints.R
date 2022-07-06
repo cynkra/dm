@@ -1,8 +1,6 @@
 #' Validate your data model
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' This function returns a tibble with information about
 #' which key constraints are met (`is_key = TRUE`) or violated (`FALSE`).
 #' The printing for this object is special, use [as_tibble()]
