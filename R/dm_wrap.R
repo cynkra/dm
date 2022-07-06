@@ -25,7 +25,10 @@
 #' unwrapping after wrapping loses rows in parent tables
 #' that don't have a corresponding row in the child table.
 #'
-#' @return A dm.
+#' This function differs from `dm_flatten_to_tbl()` and `dm_squash_to_tbl()` ,
+#' which always return a single table, and not a `dm` object.
+#'
+#' @return A `dm` object.
 #' @export
 #' @seealso [dm_unwrap_tbl()], [dm_nest_tbl()],
 #'   [dm_examine_constraints()],

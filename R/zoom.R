@@ -290,13 +290,16 @@ update_zoomed_outgoing <- function(fks, tbl_name, tracked_cols) {
   fks
 }
 
-dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name, old_tbl_name, tracked_cols) {
-  new_out_keys <-
-    dm_get_all_fks_impl(dm) %>%
+update_zoomed_fks <- function(dm, old_tbl_name, tracked_cols) {
+  dm_get_all_fks_impl(dm) %>%
     filter(child_table == !!old_tbl_name) %>%
     filter(map_lgl(child_fk_cols, ~ all(.x %in% !!tracked_cols))) %>%
     distinct() %>%
     mutate(child_fk_cols = new_keys(map(child_fk_cols, ~ (!!names(tracked_cols))[match(.x, !!tracked_cols, nomatch = 0L)])))
+}
+
+dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name, old_tbl_name, tracked_cols) {
+  new_out_keys <- update_zoomed_fks(dm, old_tbl_name, tracked_cols)
 
   dm %>%
     dm_add_fk_impl(
