@@ -1,5 +1,58 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.3.0.9000
+
+- Internal changes only.
+
+
+# dm 0.3.0
+
+- Internal changes only.
+
+
+# dm 0.2.8.9009
+
+## Features
+
+- Implement `glimpse()` for `zoomed_df` (@IndrajeetPatil, #1003, #1161).
+
+- Remove message about automated key selection (@IndrajeetPatil, #1113, #1176).
+
+## Chore
+
+- Remove dead code
+
+Closes #1197.
+
+- Use helper to centralize info about schema-supported databases (@maelle, #1127).
+
+- Turn symlink into plain file to fix `renv::restore()` on Windows.
+
+- Switch to duckdb as default database backend (#1179).
+
+- Remove own `rows_*()` implementation in favor of dbplyr 2.2.0 (#912).
+
+- Fix styler GHA (#1182).
+
+- Ignore failures to list GHA cache (#1181).
+
+- Test MariaDB on GHA (#1136).
+
+- Reenable duckdb checks (#1091).
+
+## Documentation
+
+- Edits to the dm join article (@IndrajeetPatil, #1103).
+
+- Edits to copy and modify vignettes (@IndrajeetPatil, #1098).
+
+- Better inform message for dm rows (#414) (@IndrajeetPatil, #1160).
+
+- Edits to model verification vignette (@IndrajeetPatil, #1175).
+
+- Clarify between flatten vs squash (@IndrajeetPatil, #1166).
+
+
 # dm 0.2.8.9008
 
 ## Features
