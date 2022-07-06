@@ -35,7 +35,7 @@ library(tidyverse)
 
 To explore filtering with {dm}, we'll use the {nycflights13} data with its tables `flights`, `planes`, `airlines` and `airports`.
 
-This dataset contains information about the 336,776 flights that departed from New York City in 2013, with 3322 different planes and 1458 airports involved.
+This dataset contains information about the 336,776 flights that departed from New York City in 2013, with 3,322 different planes and 1,458 airports involved.
 The data comes from the US Bureau of Transportation Statistics, and is documented in `?nycflights13`.
 
 First, we have to create a `dm` object from the {nycflights13} data.
