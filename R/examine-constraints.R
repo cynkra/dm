@@ -93,7 +93,9 @@ kind_to_long <- function(kind) {
   case_when(
     kind == "PK" ~ "primary key",
     kind == "UK" ~ "unique key",
-    .default = "foreign key"
+    # FIXME: `case_when()` gets the `.default` arg in v1.1.0, then:
+    # .default = "foreign key"
+    TRUE ~ "foreign key"
   )
 }
 
