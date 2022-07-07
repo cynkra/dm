@@ -38,11 +38,10 @@ new_fks_out <- function(child_fk_cols = NULL, parent_table = NULL, parent_key_co
 new_keyed_tbl <- function(x, ..., pk = NULL, fks_in = NULL, fks_out = NULL, uuid = NULL) {
   check_dots_empty()
 
-  stopifnot(!is.null(pk))
   stopifnot(!is.null(fks_in))
   stopifnot(!is.null(fks_out))
 
-  pk <- vec_cast(pk, new_keys())
+  pk <- vec_cast(pk, character())
   fks_in <- vec_cast(fks_in, new_fks_in())
   fks_out <- vec_cast(fks_out, new_fks_out())
 

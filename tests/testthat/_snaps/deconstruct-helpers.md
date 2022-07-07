@@ -24,7 +24,7 @@
 
     Code
       dm <- dm_nycflights13(cycle = TRUE)
-      keyed_tbl <- new_keyed_tbl(x = dm$airports, pk = new_keys(list("faa")), fks_in = new_fks_in(
+      keyed_tbl <- new_keyed_tbl(x = dm$airports, pk = "faa", fks_in = new_fks_in(
         child_table = "flights", child_fk_cols = new_keys(list("origin", "dest")),
         parent_key_cols = new_keys(list("faa"))), fks_out = new_fks_out(
         child_fk_cols = new_keys(list("origin", "dest")), parent_table = "airports",
@@ -32,10 +32,7 @@
       attr(keyed_tbl, "dm_key_info")
     Output
       $pk
-      <list_of<character>[1]>
-      [[1]]
       [1] "faa"
-      
       
       $fks_in
       # A tibble: 2 x 3

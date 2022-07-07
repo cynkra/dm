@@ -533,8 +533,12 @@ tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
     return(data)
   }
 
-  pk_def <- def$pks[idx]
-  pk <- new_keys(pk_def)
+  pk_def <- def$pks[[idx]]
+  if (nrow(pk_def) > 0) {
+    pk <- pk_def$column[[1]]
+  } else {
+    pk <- NULL
+  }
 
   fks_in_def <-
     def$fks[[idx]] %>%
