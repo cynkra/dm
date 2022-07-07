@@ -29,7 +29,7 @@
         parent_key_cols = new_keys(list("faa"))), fks_out = new_fks_out(
         child_fk_cols = new_keys(list("origin", "dest")), parent_table = "airports",
         parent_key_cols = new_keys(list("faa"))), uuid = "0a0c060f-0d01-0b03-0402-05090800070e")
-      attr(keyed_tbl, "dm_key_info")
+      keyed_get_info(keyed_tbl)
     Output
       $pk
       [1] "faa"
