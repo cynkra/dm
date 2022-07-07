@@ -113,6 +113,7 @@ NULL
 #' This operation requires primary keys on all tables, use `dm_rows_append()`
 #' to insert unconditionally.
 #' @rdname rows-dm
+#' @aliases dm_rows_...
 #' @export
 dm_rows_insert <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()

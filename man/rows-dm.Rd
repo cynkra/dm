@@ -3,6 +3,7 @@
 \name{rows-dm}
 \alias{rows-dm}
 \alias{dm_rows_insert}
+\alias{dm_rows_...}
 \alias{dm_rows_append}
 \alias{dm_rows_update}
 \alias{dm_rows_patch}
