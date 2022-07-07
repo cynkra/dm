@@ -134,6 +134,7 @@ bdm_create_graph_list <- function(data_model,
           to = ref,
           fromCol = column,
           toCol = ref_col,
+          keyId = keyId,
           stringsAsFactors = FALSE
         )
       )
@@ -163,7 +164,13 @@ dot_graph <- function(graph, columnArrows = FALSE) {
 
   dot_nodes <- sapply(seq_len(nrow(graph$nodes_df)), function(n) {
     node <- graph$nodes_df[n, ]
-    dot_node <- sprintf('  "%s" [label = %s, shape = "%s"] \n', node$nodes, node$label, node$shape)
+    dot_node <- sprintf(
+      '  "%s" [id = "%s", label = %s, shape = "%s"] \n',
+      node$nodes,
+      node$nodes,
+      node$label,
+      node$shape
+    )
     if (!is.na(node[["segment"]])) {
       dot_node <- sprintf(
         "subgraph cluster_%s {\nlabel='%s'\ncolor=\"#DDDDDD\"\n%s\n}\n",
@@ -180,17 +187,23 @@ dot_graph <- function(graph, columnArrows = FALSE) {
   if (columnArrows) {
     dot_edges <- paste(
       sprintf(
-        '"%s":"%s"->"%s":"%s"',
+        '"%s":"%s"->"%s":"%s" [id="%s"]',
         graph$edges_df$from,
         graph$edges_df$fromCol,
         graph$edges_df$to,
-        graph$edges_df$toCol
+        graph$edges_df$toCol,
+        graph$edges_df$keyId
       ),
       collapse = "\n"
     )
   } else {
     dot_edges <- paste(
-      sprintf('"%s"->"%s"', graph$edges_df$from, graph$edges_df$to),
+      sprintf(
+        '"%s"->"%s" [id="%s"]',
+        graph$edges_df$from,
+        graph$edges_df$to,
+        graph$edges_df$keyId
+      ),
       collapse = "\n"
     )
   }

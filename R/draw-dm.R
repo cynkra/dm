@@ -121,8 +121,8 @@ dm_get_data_model <- function(x, column_types = FALSE) {
   )
 
   references_for_columns <-
-    dm_get_all_fks_impl(x) %>%
-    transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_key_cols))
+    dm_get_all_fks_impl(x, id = TRUE) %>%
+    transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_key_cols), keyId = id)
 
   references <-
     references_for_columns %>%
