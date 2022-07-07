@@ -94,7 +94,11 @@ kind_to_long <- function(kind) {
 }
 
 check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
-  pks <- dm_get_all_pks_impl(dm)
+  pks <- dm_get_all_pks_impl(dm) %>%
+    union(
+      dm_get_all_fks_impl(dm) %>%
+        select(table = parent_table, pk_col = parent_key_cols)
+    )
   if (nrow(pks) == 0) {
     return(tibble(
       table = character(),
