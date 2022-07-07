@@ -571,9 +571,10 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     glue("{res_tbl$value} ({res_tbl$n})"),
     capped = TRUE
   )
+
   glue(
     "values of ",
-    "{commas(tick(glue('{t1_name}${colname}')), Inf)} not in {commas(tick(glue('{t2_name}${pk}')), Inf)}: {vals_formatted}"
+    "{collapse_key_names(glue('{t1_name}${colname}'))} not in {collapse_key_names(glue('{t2_name}${pk}'))}: {vals_formatted}"
   )
 }
 

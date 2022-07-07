@@ -845,12 +845,12 @@ print_glimpse_table_pk <- function(x, table_name, width) {
   }
 }
 
-collapse_key_names <- function(keys, tab = FALSE) {
+collapse_key_names <- function(keys, tab = FALSE, MAX_COMMAS = Inf) {
   tab <- ifelse(tab, "  ", "")
   if (length(keys) > 1L) {
-    paste0(tab, "(", paste0(tick(keys), collapse = ", "), ")")
+    paste0(tab, "(", commas(tick(keys), MAX_COMMAS), ")")
   } else {
-    paste0(tab, tick(keys), collapse = ", ")
+    tick(keys)
   }
 }
 
