@@ -26,7 +26,7 @@ test_that("`new_keyed_tbl()` generates expected output", {
     # should look similar to `dm_get_all_fks_impl(dm, "airports")`
     keyed_tbl <- new_keyed_tbl(
       x = dm$airports,
-      pk = new_keys(list("faa")),
+      pk = "faa",
       fks_in = new_fks_in(
         child_table = "flights",
         child_fk_cols = new_keys(list("origin", "dest")),
