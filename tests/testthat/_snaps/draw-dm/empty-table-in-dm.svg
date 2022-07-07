@@ -13,7 +13,7 @@
 </a>
 </g>
 <!-- a -->
-<g id="node1" class="node">
+<g id="a" class="node">
 <title>a</title>
 <polygon fill="#efebdd" stroke="transparent" points="22,-82 22,-102 32,-102 32,-82 22,-82"/>
 <text text-anchor="start" x="23.8927" y="-87.4" font-family="Times,serif" font-size="14.00" fill="#000000">a</text>
@@ -21,7 +21,7 @@
 <polygon fill="none" stroke="#555555" points="21,-77 21,-103 33,-103 33,-77 21,-77"/>
 </g>
 <!-- x -->
-<g id="node2" class="node">
+<g id="x" class="node">
 <title>x</title>
 <polygon fill="#efebdd" stroke="transparent" points="100,-87 100,-107 111,-107 111,-87 100,-87"/>
 <text text-anchor="start" x="102" y="-92.4" font-family="Times,serif" font-size="14.00" fill="#000000">x</text>
@@ -30,7 +30,7 @@
 <polygon fill="none" stroke="#555555" points="98.5,-66 98.5,-108 111.5,-108 111.5,-66 98.5,-66"/>
 </g>
 <!-- y -->
-<g id="node3" class="node">
+<g id="y" class="node">
 <title>y</title>
 <polygon fill="#efebdd" stroke="transparent" points="100,-21 100,-41 111,-41 111,-21 100,-21"/>
 <text text-anchor="start" x="102" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">y</text>

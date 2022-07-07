@@ -163,7 +163,13 @@ dot_graph <- function(graph, columnArrows = FALSE) {
 
   dot_nodes <- sapply(seq_len(nrow(graph$nodes_df)), function(n) {
     node <- graph$nodes_df[n, ]
-    dot_node <- sprintf('  "%s" [label = %s, shape = "%s"] \n', node$nodes, node$label, node$shape)
+    dot_node <- sprintf(
+      '  "%s" [id = "%s", label = %s, shape = "%s"] \n',
+      node$nodes,
+      node$nodes,
+      node$label,
+      node$shape
+    )
     if (!is.na(node[["segment"]])) {
       dot_node <- sprintf(
         "subgraph cluster_%s {\nlabel='%s'\ncolor=\"#DDDDDD\"\n%s\n}\n",
