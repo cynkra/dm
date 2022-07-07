@@ -43,7 +43,6 @@ utils::globalVariables(c(
   "indexes",
   "into",
   "is_key",
-  "is_pk",
   "key",
   "key_fk",
   "col_tracker_zoom",
