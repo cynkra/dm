@@ -1,0 +1,272 @@
+#data_model
+digraph {
+graph [rankdir=BT tooltip="Data Model" ]
+
+node [margin=0 fontcolor = "#444444" ]
+
+edge [color = "#555555", arrowsize = 1, ]
+
+pack=true
+packmode= "node"
+
+  'airlines' [id = airlines, label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
+    <TR>
+      <TD COLSPAN="2" BGCOLOR="#ED7D31FF" BORDER="0"><FONT COLOR="#FFFFFF">airlines</FONT>
+</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"><U>carrier</U></TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">name</TD>
+    </TR>
+  </TABLE>>, shape = 'plaintext'] 
+
+  'airports' [id = airports, label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
+    <TR>
+      <TD COLSPAN="2" BGCOLOR="#ED7D31FF" BORDER="0"><FONT COLOR="#FFFFFF">airports</FONT>
+</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"><U>faa</U></TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">name</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">lat</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">lon</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">alt</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">tz</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">dst</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">tzone</TD>
+    </TR>
+  </TABLE>>, shape = 'plaintext'] 
+
+  'flights' [id = flights, label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#3C678EAA">
+    <TR>
+      <TD COLSPAN="2" BGCOLOR="#5B9BD5FF" BORDER="0"><FONT COLOR="#FFFFFF">flights</FONT>
+</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">year</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">month</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">day</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">dep_time</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">sched_dep_time</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">dep_delay</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">arr_time</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">sched_arr_time</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">arr_delay</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">~</TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">carrier</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">flight</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">~</TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">tailnum</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">~</TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">origin</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">~</TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">dest</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">air_time</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">distance</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">hour</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">minute</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">time_hour</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">~</TD>
+      <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">origin, time_hour</TD>
+    </TR>
+  </TABLE>>, shape = 'plaintext'] 
+
+  'planes' [id = planes, label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
+    <TR>
+      <TD COLSPAN="2" BGCOLOR="#ED7D31FF" BORDER="0"><FONT COLOR="#FFFFFF">planes</FONT>
+</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"><U>tailnum</U></TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">year</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">type</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">manufacturer</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">model</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">engines</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">seats</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">speed</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">engine</TD>
+    </TR>
+  </TABLE>>, shape = 'plaintext'] 
+
+  'weather' [id = weather, label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#4A732FAA">
+    <TR>
+      <TD COLSPAN="2" BGCOLOR="#70AD47FF" BORDER="0"><FONT COLOR="#FFFFFF">weather</FONT>
+</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">origin</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">year</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">month</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">day</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">hour</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">temp</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">dewp</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">humid</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">wind_dir</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">wind_speed</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">wind_gust</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">precip</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">pressure</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">visib</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF">time_hour</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"><U>origin, time_hour</U></TD>
+    </TR>
+  </TABLE>>, shape = 'plaintext'] 
+
+'flights'->'airlines'
+'flights'->'airports'
+'flights'->'airports'
+'flights'->'planes'
+'flights'->'weather'
+}
