@@ -64,7 +64,7 @@
     Message
       ! Unsatisfied constraints:
     Output
-      * Table `dc_3`: primary key `b`, `a`: has duplicate values: e, 5 (2)
-      * Table `dc_4`: foreign key `b`, `a` into table `dc_3`: values of `dc_4$b`, `dc_4$a` not in `dc_3$b`, `dc_3$a`: f, 6 (1)
+      * Table `dc_3`: primary key (`b`, `a`): has duplicate values: e, 5 (2)
+      * Table `dc_4`: foreign key (`b`, `a`) into table `dc_3`: values of `dc_4$b`, `dc_4$a` not in `dc_3$b`, `dc_3$a`: f, 6 (1)
       * Table `dc_6`: foreign key `c` into table `dc_1`: values of `dc_6$c` not in `dc_1$a`: 6 (1)
 

@@ -78,7 +78,7 @@ print.dm_examine_constraints <- function(x, ...) {
       mutate(text = paste0(
         "Table ", tick(table), ": ",
         kind_to_long(kind), " ",
-        format(map(problem_df$columns, tick), justify = "none"),
+        format(map(problem_df$columns, collapse_key_names), justify = "none"),
         into,
         ": ", problem
       )) %>%
