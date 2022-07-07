@@ -77,7 +77,7 @@ print.dm_examine_constraints <- function(x, ...) {
       # FIXME: Use cli styles
       mutate(text = paste0(
         "Table ", tick(table), ": ",
-        kind_to_long(kind), " ",
+        kind_to_long(kind, is_pk), " ",
         format(map(problem_df$columns, tick), justify = "none"),
         into,
         ": ", problem
@@ -89,12 +89,20 @@ print.dm_examine_constraints <- function(x, ...) {
   invisible(x)
 }
 
-kind_to_long <- function(kind) {
-  if_else(kind == "PK", "primary key", "foreign key")
+kind_to_long <- function(kind, is_pk) {
+  if_else(kind == "PK", if_else(is_pk, "primary key", "unique key"), "foreign key")
 }
 
 check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
-  pks <- dm_get_all_pks_impl(dm)
+  pks <- dm_get_all_pks_impl(dm) %>%
+    mutate(is_pk = TRUE) %>%
+    bind_rows(
+      dm_get_all_fks_impl(dm) %>%
+        select(table = parent_table, pk_col = parent_key_cols) %>%
+        distinct() %>%
+        mutate(is_pk = FALSE)
+    ) %>%
+    distinct(table, pk_col, .keep_all = TRUE)
   if (nrow(pks) == 0) {
     return(tibble(
       table = character(),
@@ -129,7 +137,8 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
     table = table_names,
     kind = "PK",
     column = pks$pk_col,
-    ref_table = NA_character_
+    ref_table = NA_character_,
+    is_pk = pks$is_pk
   ) %>%
     left_join(tbl_is_pk, by = c("table", "column"))
 }
