@@ -1,3 +1,12 @@
+test_that("datamodel-code for drawing", {
+  local_options(max.print = 10000)
+
+  expect_snapshot({
+    dm_get_data_model(dm_for_filter())
+    dm_get_data_model(dm_for_filter(), column_types = TRUE)
+  })
+})
+
 test_that("snapshot test for datamodelr code", {
   data_model <- dm_get_data_model(dm_nycflights13(cycle = TRUE))
 
