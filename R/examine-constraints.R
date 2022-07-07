@@ -98,10 +98,10 @@ kind_to_long <- function(kind) {
 }
 
 check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
-  pks <- dm_get_all_pks_impl(dm) %>%
-    bind_rows(dm_get_all_uks_impl(dm), .id = "kind") %>%
-    distinct(table, pk_col, .keep_all = TRUE) %>%
-    mutate(kind = if_else(kind == "1", "PK", "UK"))
+  pks <- bind_rows(
+    list(PK = dm_get_all_pks_impl(dm), UK = dm_get_all_uks_impl(dm)), .id = "kind"
+    ) %>%
+    distinct(table, pk_col, .keep_all = TRUE)
   if (nrow(pks) == 0) {
     return(tibble(
       table = character(),
