@@ -7,6 +7,7 @@ test_that("`dm_examine_constraints()` works", {
       kind = character(),
       columns = new_keys(),
       ref_table = character(),
+      is_pk = logical(),
       is_key = logical(),
       problem = character()
     ) %>%
@@ -23,6 +24,7 @@ test_that("`dm_examine_constraints()` works", {
       kind = c("PK", "FK"),
       columns = new_keys("key"),
       ref_table = c(NA, "iris_1"),
+      is_pk = c(TRUE, NA),
       is_key = TRUE,
       problem = ""
     ) %>%
@@ -73,4 +75,14 @@ test_that("output for compound keys", {
     bad_dm() %>%
       dm_examine_constraints()
   })
+})
+
+# Test unique keys for weak FK (no explicit PK set) -----------------------
+
+test_that("Non-explicit PKs should be tested too", {
+  expect_snapshot(
+    # dm_for_card() has no PKs set, only FKs
+    dm_for_card() %>%
+      dm_examine_constraints()
+  )
 })

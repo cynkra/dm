@@ -109,6 +109,7 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
       kind = character(),
       column = new_keys(),
       ref_table = character(),
+      is_pk = logical(),
       is_key = logical(),
       problem = character()
     ))
