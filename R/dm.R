@@ -850,7 +850,7 @@ collapse_key_names <- function(keys, tab = FALSE, MAX_COMMAS = Inf) {
   if (length(keys) > 1L) {
     paste0(tab, "(", commas(tick(keys), MAX_COMMAS), ")")
   } else {
-    tick(keys)
+    paste0(tab, tick(keys))
   }
 }
 
