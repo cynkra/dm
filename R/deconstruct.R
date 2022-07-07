@@ -57,3 +57,7 @@ new_keyed_tbl <- function(x, ..., pk = NULL, fks_in = NULL, fks_out = NULL, uuid
     class = unique(c("dm_keyed_tbl", class(x)))
   )
 }
+
+keyed_get_info <- function(x) {
+  attr(x, "dm_key_info")
+}
