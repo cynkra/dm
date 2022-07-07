@@ -66,7 +66,6 @@ test_that("output as tibble", {
 # test compound keys ------------------------------------------------------
 
 test_that("output for compound keys", {
-  # FIXME: COMPOUND: Need proper test
   skip_if_remote_src()
 
   expect_snapshot({
