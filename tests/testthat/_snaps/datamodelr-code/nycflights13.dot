@@ -9,7 +9,7 @@ edge [color = "#555555", arrowsize = 1, ]
 pack=true
 packmode= "node"
 
-  'airlines' [id = airlines, label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
+  'airlines' [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
     <TR>
       <TD COLSPAN="2" BGCOLOR="#ED7D31FF" BORDER="0"><FONT COLOR="#FFFFFF">airlines</FONT>
 </TD>
@@ -24,7 +24,7 @@ packmode= "node"
     </TR>
   </TABLE>>, shape = 'plaintext'] 
 
-  'airports' [id = airports, label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
+  'airports' [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
     <TR>
       <TD COLSPAN="2" BGCOLOR="#ED7D31FF" BORDER="0"><FONT COLOR="#FFFFFF">airports</FONT>
 </TD>
@@ -63,7 +63,7 @@ packmode= "node"
     </TR>
   </TABLE>>, shape = 'plaintext'] 
 
-  'flights' [id = flights, label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#3C678EAA">
+  'flights' [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#3C678EAA">
     <TR>
       <TD COLSPAN="2" BGCOLOR="#5B9BD5FF" BORDER="0"><FONT COLOR="#FFFFFF">flights</FONT>
 </TD>
@@ -150,7 +150,7 @@ packmode= "node"
     </TR>
   </TABLE>>, shape = 'plaintext'] 
 
-  'planes' [id = planes, label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
+  'planes' [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
     <TR>
       <TD COLSPAN="2" BGCOLOR="#ED7D31FF" BORDER="0"><FONT COLOR="#FFFFFF">planes</FONT>
 </TD>
@@ -193,7 +193,7 @@ packmode= "node"
     </TR>
   </TABLE>>, shape = 'plaintext'] 
 
-  'weather' [id = weather, label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#4A732FAA">
+  'weather' [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#4A732FAA">
     <TR>
       <TD COLSPAN="2" BGCOLOR="#70AD47FF" BORDER="0"><FONT COLOR="#FFFFFF">weather</FONT>
 </TD>
