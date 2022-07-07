@@ -57,13 +57,13 @@
 <polygon fill="none" stroke="#3c678e" stroke-opacity="0.666667" points="13.9253,-60 13.9253,-162 137.9253,-162 137.9253,-60 13.9253,-60"/>
 </g>
 <!-- flights&#45;&gt;airlines -->
-<g id="edge1" class="edge">
+<g id="flights_1" class="edge">
 <title>flights:carrier&#45;&gt;airlines:carrier</title>
 <path fill="none" stroke="#555555" d="M14.9253,-131C1.1476,-131 5.98,-151.521 14.9253,-162 65.9567,-221.7807 111.2417,-193.6988 187.0295,-191.1751"/>
 <polygon fill="#555555" stroke="#555555" points="187.4857,-194.668 197.4253,-191 187.3678,-187.669 187.4857,-194.668"/>
 </g>
 <!-- flights&#45;&gt;airports -->
-<g id="edge2" class="edge">
+<g id="flights_2" class="edge">
 <title>flights:origin&#45;&gt;airports:faa</title>
 <path fill="none" stroke="#555555" d="M14.9253,-91C1.1476,-91 5.183,-69.7424 14.9253,-60 72.1329,-2.7924 116.3066,-65.4234 194.2372,-70.6573"/>
 <polygon fill="#555555" stroke="#555555" points="194.3133,-74.1617 204.4253,-71 194.5487,-67.1657 194.3133,-74.1617"/>
@@ -80,7 +80,7 @@
 <polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="192.9253,-120 192.9253,-162 261.9253,-162 261.9253,-120 192.9253,-120"/>
 </g>
 <!-- flights&#45;&gt;planes -->
-<g id="edge3" class="edge">
+<g id="flights_3" class="edge">
 <title>flights:tailnum&#45;&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M14.9253,-111C-7.7413,-111 -1.1024,-145.9722 14.9253,-162 53.5805,-200.6552 84.9705,-175.573 137.9253,-162 161.986,-155.8329 165.2657,-137.0494 184.3913,-132.1688"/>
 <polygon fill="#555555" stroke="#555555" points="184.8975,-135.6336 194.4253,-131 184.0875,-128.6807 184.8975,-135.6336"/>
@@ -96,7 +96,7 @@
 <polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="173.9253,0 173.9253,-42 280.9253,-42 280.9253,0 173.9253,0"/>
 </g>
 <!-- flights&#45;&gt;weather -->
-<g id="edge4" class="edge">
+<g id="flights_4" class="edge">
 <title>flights:origin, time_hour&#45;&gt;weather:origin, time_hour</title>
 <path fill="none" stroke="#555555" d="M64.9253,-61C64.9253,-10.4642 114.6672,-10.7377 165.3011,-10.9693"/>
 <polygon fill="#555555" stroke="#555555" points="165.4147,-14.4696 175.4253,-11 165.436,-7.4696 165.4147,-14.4696"/>

@@ -264,9 +264,9 @@ packmode= "node"
     </TR>
   </TABLE>>, shape = "plaintext"] 
 
-"flights"->"airlines"
-"flights"->"airports"
-"flights"->"airports"
-"flights"->"planes"
-"flights"->"weather"
+"flights"->"airlines" [id="flights_1"]
+"flights"->"airports" [id="flights_2"]
+"flights"->"airports" [id="flights_3"]
+"flights"->"planes" [id="flights_4"]
+"flights"->"weather" [id="flights_5"]
 }

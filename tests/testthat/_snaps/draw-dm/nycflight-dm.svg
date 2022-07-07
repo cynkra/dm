@@ -33,7 +33,7 @@
 <polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="243,-240 243,-302 290,-302 290,-240 243,-240"/>
 </g>
 <!-- agency&#45;&gt;airlines -->
-<g id="edge2" class="edge">
+<g id="agency_1" class="edge">
 <title>agency:airline_name&#45;&gt;airlines:name</title>
 <path fill="none" stroke="#555555" d="M166.5,-251C197.5104,-251 207.716,-251 234.3379,-251"/>
 <polygon fill="#555555" stroke="#555555" points="234.5,-254.5001 244.5,-251 234.5,-247.5001 234.5,-254.5001"/>
@@ -65,19 +65,19 @@
 <polygon fill="none" stroke="#3c678e" stroke-opacity="0.666667" points="76,-50 76,-172 179,-172 179,-50 76,-50"/>
 </g>
 <!-- flights&#45;&gt;airlines -->
-<g id="edge1" class="edge">
+<g id="flights_1" class="edge">
 <title>flights:carrier&#45;&gt;airlines:carrier</title>
 <path fill="none" stroke="#555555" d="M178.5,-141C239.5008,-141 186.7142,-256.2119 234.3806,-269.7133"/>
 <polygon fill="#555555" stroke="#555555" points="234.1384,-273.2106 244.5,-271 235.0214,-266.2666 234.1384,-273.2106"/>
 </g>
 <!-- flights&#45;&gt;airports -->
-<g id="edge3" class="edge">
+<g id="flights_2" class="edge">
 <title>flights:origin&#45;&gt;airports:faa</title>
 <path fill="none" stroke="#555555" d="M178.5,-101C206.5888,-101 210.9444,-77.6193 233.4708,-72.1394"/>
 <polygon fill="#555555" stroke="#555555" points="233.959,-75.6065 243.5,-71 233.1688,-68.6513 233.959,-75.6065"/>
 </g>
 <!-- flights&#45;&gt;airports -->
-<g id="edge4" class="edge">
+<g id="flights_3" class="edge">
 <title>flights:dest&#45;&gt;airports:faa</title>
 <path fill="none" stroke="#555555" d="M178.5,-81C203.961,-81 212.2075,-73.412 233.2304,-71.4557"/>
 <polygon fill="#555555" stroke="#555555" points="233.665,-74.9399 243.5,-71 233.3547,-67.9468 233.665,-74.9399"/>
@@ -92,7 +92,7 @@
 <polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="242.5,-120 242.5,-162 290.5,-162 290.5,-120 242.5,-120"/>
 </g>
 <!-- flights&#45;&gt;planes -->
-<g id="edge5" class="edge">
+<g id="flights_4" class="edge">
 <title>flights:tailnum&#45;&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M178.5,-121C203.961,-121 212.2075,-128.588 233.2304,-130.5443"/>
 <polygon fill="#555555" stroke="#555555" points="233.3547,-134.0532 243.5,-131 233.665,-127.0601 233.3547,-134.0532"/>
@@ -107,7 +107,7 @@
 <polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="229,-180 229,-222 304,-222 304,-180 229,-180"/>
 </g>
 <!-- flights&#45;&gt;planes_copy -->
-<g id="edge7" class="edge">
+<g id="flights_6" class="edge">
 <title>flights:tailnum&#45;&gt;planes_copy:tailnum</title>
 <path fill="none" stroke="#555555" d="M178.5,-121C213.3198,-121 196.2632,-177.5033 220.5456,-188.9805"/>
 <polygon fill="#555555" stroke="#555555" points="220.0037,-192.4418 230.5,-191 221.3956,-185.5816 220.0037,-192.4418"/>
@@ -122,7 +122,7 @@
 <polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="215,0 215,-42 318,-42 318,0 215,0"/>
 </g>
 <!-- flights&#45;&gt;weather -->
-<g id="edge6" class="edge">
+<g id="flights_5" class="edge">
 <title>flights:origin, time_hour&#45;&gt;weather:origin, time_hour</title>
 <path fill="none" stroke="#555555" d="M178.5,-61C202.2685,-61 192.8719,-24.7421 206.7946,-13.978"/>
 <polygon fill="#555555" stroke="#555555" points="207.9666,-17.2795 216.5,-11 205.9132,-10.5874 207.9666,-17.2795"/>
