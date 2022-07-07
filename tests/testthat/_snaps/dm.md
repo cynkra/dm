@@ -169,7 +169,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        `key` -> `iris_1$key` no_action
+      `key` -> `iris_1$key` no_action
       
       Rows: 150
       Columns: 7
@@ -220,7 +220,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        `key` -> `iris_1$key` no_action
+      `key` -> `iris_1$key` no_action
       
       Rows: 150
       Columns: 7
@@ -278,7 +278,7 @@
       
       Table: `iris_2`
       1 outgoing foreign key(s):
-        `key` -> `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjre...
+      `key` -> `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjreho...
       
       Rows: 150
       Columns: 7
@@ -362,9 +362,9 @@
       
       Zoomed table: `flights`
       4 outgoing foreign key(s):
-        `carrier` -> `airlines$carrier` no_action
-        `origin` -> `airports$faa` no_action
-        `tailnum` -> `planes$tailnum` no_action
+      `carrier` -> `airlines$carrier` no_action
+      `origin` -> `airports$faa` no_action
+      `tailnum` -> `planes$tailnum` no_action
         (`origin`, `time_hour`) -> (`weather$origin`, `weather$time_hour`) no_action
       
       Rows: 1,761
@@ -444,8 +444,8 @@
       
       Zoomed table: `flights`
       3 outgoing foreign key(s):
-        `origin` -> `airports$faa` no_action
-        `tailnum` -> `planes$tailnum` no_action
+      `origin` -> `airports$faa` no_action
+      `tailnum` -> `planes$tailnum` no_action
         (`origin`, `time_hour`) -> (`weather$origin`, `weather$time_hour`) no_action
       
       Rows: 1,761
@@ -475,8 +475,8 @@
       
       Zoomed table: `flights`
       2 outgoing foreign key(s):
-        `carrier` -> `airlines$carrier` no_action
-        `tailnum` -> `planes$tailnum` no_action
+      `carrier` -> `airlines$carrier` no_action
+      `tailnum` -> `planes$tailnum` no_action
       
       Rows: 1,761
       Columns: 18
@@ -506,9 +506,9 @@
       
       Zoomed table: `flights`
       4 outgoing foreign key(s):
-        `carrier` -> `airlines$carrier` no_action
-        `origin_location` -> `airports$faa` no_action
-        `tailnum` -> `planes$tailnum` no_action
+      `carrier` -> `airlines$carrier` no_action
+      `origin_location` -> `airports$faa` no_action
+      `tailnum` -> `planes$tailnum` no_action
         (`origin_location`, `time_hour`) -> (`weather$origin`, `weather$time_hour`) no...
       
       Rows: 1,761
