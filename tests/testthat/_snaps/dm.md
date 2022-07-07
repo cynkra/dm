@@ -144,8 +144,6 @@
       glimpse(empty_dm())
     Output
       dm of 0 tables
-      
-      --------------------------------------------------------------------------------
     Code
       glimpse(dm_for_disambiguate())
     Output
