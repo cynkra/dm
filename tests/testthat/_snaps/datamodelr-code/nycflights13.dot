@@ -9,7 +9,7 @@ edge [color = "#555555", arrowsize = 1, ]
 pack=true
 packmode= "node"
 
-  'airlines' [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
+  "airlines" [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
     <TR>
       <TD COLSPAN="2" BGCOLOR="#ED7D31FF" BORDER="0"><FONT COLOR="#FFFFFF">airlines</FONT>
 </TD>
@@ -22,9 +22,9 @@ packmode= "node"
       <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
       <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">name</TD>
     </TR>
-  </TABLE>>, shape = 'plaintext'] 
+  </TABLE>>, shape = "plaintext"] 
 
-  'airports' [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
+  "airports" [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
     <TR>
       <TD COLSPAN="2" BGCOLOR="#ED7D31FF" BORDER="0"><FONT COLOR="#FFFFFF">airports</FONT>
 </TD>
@@ -61,9 +61,9 @@ packmode= "node"
       <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
       <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">tzone</TD>
     </TR>
-  </TABLE>>, shape = 'plaintext'] 
+  </TABLE>>, shape = "plaintext"] 
 
-  'flights' [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#3C678EAA">
+  "flights" [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#3C678EAA">
     <TR>
       <TD COLSPAN="2" BGCOLOR="#5B9BD5FF" BORDER="0"><FONT COLOR="#FFFFFF">flights</FONT>
 </TD>
@@ -148,9 +148,9 @@ packmode= "node"
       <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">~</TD>
       <TD ALIGN="LEFT" BGCOLOR="#DEEBF6FF">origin, time_hour</TD>
     </TR>
-  </TABLE>>, shape = 'plaintext'] 
+  </TABLE>>, shape = "plaintext"] 
 
-  'planes' [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
+  "planes" [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#9E5320AA">
     <TR>
       <TD COLSPAN="2" BGCOLOR="#ED7D31FF" BORDER="0"><FONT COLOR="#FFFFFF">planes</FONT>
 </TD>
@@ -191,9 +191,9 @@ packmode= "node"
       <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF"></TD>
       <TD ALIGN="LEFT" BGCOLOR="#FBE5D5FF">engine</TD>
     </TR>
-  </TABLE>>, shape = 'plaintext'] 
+  </TABLE>>, shape = "plaintext"] 
 
-  'weather' [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#4A732FAA">
+  "weather" [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#4A732FAA">
     <TR>
       <TD COLSPAN="2" BGCOLOR="#70AD47FF" BORDER="0"><FONT COLOR="#FFFFFF">weather</FONT>
 </TD>
@@ -262,11 +262,11 @@ packmode= "node"
       <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"></TD>
       <TD ALIGN="LEFT" BGCOLOR="#E2EEDAFF"><U>origin, time_hour</U></TD>
     </TR>
-  </TABLE>>, shape = 'plaintext'] 
+  </TABLE>>, shape = "plaintext"] 
 
-'flights'->'airlines'
-'flights'->'airports'
-'flights'->'airports'
-'flights'->'planes'
-'flights'->'weather'
+"flights"->"airlines"
+"flights"->"airports"
+"flights"->"airports"
+"flights"->"planes"
+"flights"->"weather"
 }

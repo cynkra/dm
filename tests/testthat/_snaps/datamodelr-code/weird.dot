@@ -1,0 +1,24 @@
+#data_model
+digraph {
+graph [rankdir=BT tooltip="Data Model" ]
+
+node [margin=0 fontcolor = "#444444" ]
+
+edge [color = "#555555", arrowsize = 1, ]
+
+pack=true
+packmode= "node"
+
+  "a b" [label = <<TABLE ALIGN="LEFT" BORDER="1" CELLBORDER="0" CELLSPACING="0" COLOR="#555555">
+    <TR>
+      <TD COLSPAN="2" BGCOLOR="#EFEBDD" BORDER="0"><FONT COLOR="#000000">a b</FONT>
+</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="LEFT" BGCOLOR="#FFFFFF"></TD>
+      <TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><U>c d</U></TD>
+    </TR>
+  </TABLE>>, shape = "plaintext"] 
+
+
+}
