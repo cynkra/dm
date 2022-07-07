@@ -110,7 +110,7 @@ dm_draw <- function(dm,
 #' data model object for drawing.
 #'
 #' @noRd
-dm_get_data_model <- function(x, column_types) {
+dm_get_data_model <- function(x, column_types = FALSE) {
   def <- dm_get_def(x)
 
   tables <- data.frame(
