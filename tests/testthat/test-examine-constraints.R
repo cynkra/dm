@@ -74,3 +74,13 @@ test_that("output for compound keys", {
       dm_examine_constraints()
   })
 })
+
+# Test unique keys for weak FK (no explicit PK set) -----------------------
+
+test_that("Non-explicit PKs should be tested too", {
+  expect_snapshot(
+    # dm_for_card() has no PKs set, only FKs
+    dm_for_card() %>%
+      dm_examine_constraints()
+  )
+})
