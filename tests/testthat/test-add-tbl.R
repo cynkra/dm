@@ -143,6 +143,8 @@ test_that("dm_rm_tbl() snapshot", {
 })
 
 test_that("dm_mutate_tbl() works", {
+  skip("keyed = TRUE")
+
   expect_equivalent_dm(
     dm_for_filter_w_cycle() %>%
       dm_mutate_tbl(
