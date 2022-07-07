@@ -577,7 +577,13 @@ tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
     fks_out_def$ref_column
   )
 
-  new_keyed_tbl(data, pk = pk, fks_in = fks_in, fks_out = fks_out)
+  new_keyed_tbl(
+    data,
+    pk = pk,
+    fks_in = fks_in,
+    fks_out = fks_out,
+    uuid = def$uuid[[idx]]
+  )
 }
 
 src_tbls_impl <- function(dm, quiet = FALSE) {
