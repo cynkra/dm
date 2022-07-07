@@ -490,6 +490,7 @@
       
       Rows: 150
       Columns: 6
+      Keys: `key` | 1 | 0
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
       $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.~
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
@@ -505,6 +506,7 @@
       
       Rows: 150
       Columns: 7
+      Keys: --- | 0 | 1
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
       $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.~
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
@@ -519,6 +521,7 @@
       
       Rows: 150
       Columns: 8
+      Keys: --- | 0 | 0
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
       $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.~
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
@@ -541,6 +544,7 @@
       
       Rows: 150
       Columns: 6
+      Keys: `key` | 1 | 0
       $ key          <int> 1, 2, 3, 4, 5, 6,~
       $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.~
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.~
@@ -556,6 +560,7 @@
       
       Rows: 150
       Columns: 7
+      Keys: --- | 0 | 1
       $ key          <int> 1, 2, 3, 4, 5, 6,~
       $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.~
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.~
@@ -570,6 +575,7 @@
       
       Rows: 150
       Columns: 8
+      Keys: --- | 0 | 0
       $ key          <int> 1, 2, 3, 4, 5, 6,~
       $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.~
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.~
@@ -599,6 +605,7 @@
       
       Rows: 150
       Columns: 6
+      Keys: `gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd` | 1 | 0
       $ gdsjgiodsjgdisogjdsiogjdsigjsdiogjisdjgiodsjgiosdjgiojsdiogjgrjihjrehoierjhiorejhrieojhreiojhieorhjioerjhierjhioerjhioerjhioerjiohjeriosdiogjsdjigjsd <int> ~
       $ Sepal.Length                                                                                                                                          <dbl> ~
       $ Sepal.Width                                                                                                                                           <dbl> ~
@@ -614,6 +621,7 @@
       
       Rows: 150
       Columns: 7
+      Keys: --- | 0 | 1
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
       $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.~
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
@@ -628,6 +636,7 @@
       
       Rows: 150
       Columns: 8
+      Keys: --- | 0 | 0
       $ key          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17~
       $ Sepal.Length <dbl> 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.~
       $ Sepal.Width  <dbl> 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
@@ -650,6 +659,7 @@
       
       Rows: 144
       Columns: 14
+      Keys: --- | 0 | 0
       $ year       <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013,~
       $ month      <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,~
       $ day        <int> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,~
