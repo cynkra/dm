@@ -55,7 +55,7 @@ Creating a dm object takes a single call to `dm_from_con()` with the DBI connect
 ``````{r}
 library(dm)
 
-my_dm <- dm_from_con(my_db)
+my_dm <- dm_from_con(my_db, learn_keys = FALSE)
 my_dm
 ``````
 
