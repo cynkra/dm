@@ -171,6 +171,8 @@ test_that("numeric subsetting works", {
 })
 
 test_that("subsetting `dm` works", {
+  skip("keyed = TRUE")
+
   expect_equivalent_tbl(dm_for_filter()$tf_5, tf_5())
   expect_equivalent_tbl(dm_for_filter()[["tf_3"]], tf_3())
 })

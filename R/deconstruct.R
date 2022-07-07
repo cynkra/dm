@@ -19,8 +19,8 @@ vec_new_uuid_along <- function(x) {
 
 new_fks_in <- function(child_table = NULL, child_fk_cols = NULL, parent_key_cols = NULL) {
   child_table <- vec_cast(child_table, character()) %||% character()
-  child_fk_cols <- vec_cast(child_fk_cols, new_keys()) %||% new_keys()
-  parent_key_cols <- vec_cast(parent_key_cols, new_keys()) %||% new_keys()
+  child_fk_cols <- new_keys(child_fk_cols)
+  parent_key_cols <- new_keys(parent_key_cols)
 
   tibble(child_table, child_fk_cols, parent_key_cols)
 }
@@ -28,9 +28,9 @@ new_fks_in <- function(child_table = NULL, child_fk_cols = NULL, parent_key_cols
 # TODO: I am wondering if `parent_table` shouldn't be the first parameter here?
 # That way, across both function signatures, the `*_table` will always come at first position
 new_fks_out <- function(child_fk_cols = NULL, parent_table = NULL, parent_key_cols = NULL) {
-  child_fk_cols <- vec_cast(child_fk_cols, new_keys()) %||% new_keys()
+  child_fk_cols <- new_keys(child_fk_cols)
   parent_table <- vec_cast(parent_table, character()) %||% character()
-  parent_key_cols <- vec_cast(parent_key_cols, new_keys()) %||% new_keys()
+  parent_key_cols <- new_keys(parent_key_cols)
 
   tibble(child_fk_cols, parent_table, parent_key_cols)
 }

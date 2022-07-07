@@ -418,7 +418,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 `$.dm` <- function(x, name) {
   # for both dm and zoomed_dm
   table <- dm_tbl_name(x, {{ name }})
-  tbl_impl(x, table)
+  tbl_impl(x, table, keyed = TRUE)
 }
 
 #' @export
@@ -519,14 +519,44 @@ str.zoomed_dm <- function(object, ...) {
   str(object)
 }
 
-tbl_impl <- function(dm, from, quiet = FALSE) {
-  out <- dm_get_tables_impl(dm, quiet)[[from]]
-
-  if (is.null(out)) {
+tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
+  def <- dm_get_def(dm)
+  uuid_lookup <- def[c("table", "uuid")]
+  idx <- match(from, def$table)
+  if (is.na(idx)) {
     abort_table_not_in_dm(from, src_tbls_impl(dm))
   }
 
-  out
+  data <- def$data[[idx]]
+
+  if (!keyed) {
+    return(data)
+  }
+
+  pk_def <- def$pks[idx]
+  pk <- new_keys(pk_def)
+
+  fks_in_def <-
+    def$fks[[idx]] %>%
+    left_join(uuid_lookup, by = "table")
+
+  fks_in <- new_fks_in(
+    fks_in_def$uuid,
+    fks_in_def$column,
+    fks_in_def$ref_column
+  )
+
+  fks_out_def <-
+    map2_dfr(def$uuid, def$fks, ~ tibble(ref_uuid = .x, .y)) %>%
+    filter(table == from) %>%
+    select(ref_uuid, ref_column, column)
+  fks_out <- new_fks_out(
+    fks_out_def$column,
+    fks_out_def$ref_uuid,
+    fks_out_def$ref_column
+  )
+
+  new_keyed_tbl(data, pk = pk, fks_in = fks_in, fks_out = fks_out)
 }
 
 src_tbls_impl <- function(dm, quiet = FALSE) {
