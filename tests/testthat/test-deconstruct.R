@@ -40,7 +40,7 @@ test_that("`new_keyed_tbl()` generates expected output", {
       uuid = "0a0c060f-0d01-0b03-0402-05090800070e"
     )
 
-    attr(keyed_tbl, "dm_key_info")
+    keyed_get_info(keyed_tbl)
   })
 
   expect_equal(dm$airports, keyed_tbl, ignore_attr = TRUE)
@@ -52,4 +52,19 @@ test_that("`new_keyed_tbl()` formatting", {
     dm_nycflights13()$airports
     dm_nycflights13(cycle = TRUE)$airports
   })
+})
+
+test_that("both subsetting operators for `dm` produce the same object", {
+  dm <- dm_nycflights13()
+
+  expect_equal(dm$airlines, dm[["airlines"]])
+  expect_equal(dm[[1]], dm[["airlines"]])
+})
+
+test_that("subsetting `dm` produces `dm_keyed_tbl` objects", {
+  dm <- dm_nycflights13()
+
+  expect_s3_class(dm$airlines, "dm_keyed_tbl")
+  expect_s3_class(dm[[1]], "dm_keyed_tbl")
+  expect_s3_class(dm[["airlines"]], "dm_keyed_tbl")
 })

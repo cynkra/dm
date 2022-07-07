@@ -165,7 +165,14 @@ new_pk <- function(column = list()) {
 }
 
 new_fk <- function(ref_column = list(), table = character(), column = list(), on_delete = character()) {
-  stopifnot(is.list(column), is.list(ref_column), length(table) == length(column), length(table) == length(ref_column), length(on_delete) %in% c(1L, length(table)))
+  stopifnot(
+    is.list(column),
+    is.list(ref_column),
+    length(table) == length(column),
+    length(table) == length(ref_column),
+    length(on_delete) %in% c(1L, length(table))
+  )
+
   tibble(ref_column, table, column, on_delete)
 }
 
@@ -436,7 +443,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 `[[.dm` <- function(x, id) {
   # for both dm and zoomed_dm
   if (is.numeric(id)) id <- src_tbls_impl(x)[id] else id <- as_string(id)
-  tbl_impl(x, id, quiet = TRUE)
+  tbl_impl(x, id, quiet = TRUE, keyed = TRUE)
 }
 
 #' @export
