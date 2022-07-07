@@ -90,11 +90,21 @@ print.dm_examine_constraints <- function(x, ...) {
 }
 
 kind_to_long <- function(kind) {
-  if_else(kind == "PK", "primary key", "foreign key")
+  case_when(
+    kind == "PK" ~ "primary key",
+    kind == "UK" ~ "unique key",
+    # FIXME: `case_when()` gets the `.default` arg in v1.1.0, then:
+    # .default = "foreign key"
+    TRUE ~ "foreign key"
+  )
 }
 
 check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
-  pks <- dm_get_all_pks_impl(dm)
+  pks <- bind_rows(
+    list(PK = dm_get_all_pks_impl(dm), UK = dm_get_all_uks_impl(dm)),
+    .id = "kind"
+  ) %>%
+    distinct(table, pk_col, .keep_all = TRUE)
   if (nrow(pks) == 0) {
     return(tibble(
       table = character(),
@@ -127,7 +137,7 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
 
   tibble(
     table = table_names,
-    kind = "PK",
+    kind = pks$kind,
     column = pks$pk_col,
     ref_table = NA_character_
   ) %>%
@@ -156,4 +166,10 @@ check_fk_constraints <- function(dm, progress = NA, top_level_fun = top_level_fu
       kind = "FK"
     ) %>%
     select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
+}
+
+dm_get_all_uks_impl <- function(dm) {
+  dm_get_all_fks_impl(dm) %>%
+    select(table = parent_table, pk_col = parent_key_cols) %>%
+    distinct()
 }
