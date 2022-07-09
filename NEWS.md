@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.99.99.9001
+
+## Documentation
+
+- Add contributing guide (#1222).
+
+
 # dm 0.3.0.9001
 
 ## Bug fixes
