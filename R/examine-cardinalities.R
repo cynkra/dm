@@ -8,10 +8,13 @@
 #' The printing for this object is special, use [as_tibble()]
 #' to print as a regular tibble.
 #'
+# Can't @inheritParams dm_examine_constraints for some reason
 #' @param .dm A `dm` object.
-#' @param .progress Whether to display a progress bar, if `NA` (the default) hide
-#'   in non-interactive mode, show in interactive mode. Requires the 'progress'
-#'   package.
+#' @inheritParams rlang::args_dots_empty
+#' @param .progress Whether to display a progress bar, if `NA` (the default)
+#'   hide in non-interactive mode, show in interactive mode. Requires the
+#'   'progress' package.
+#' @param dm,progress `r lifecycle::badge("deprecated")`
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
