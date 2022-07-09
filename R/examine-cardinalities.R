@@ -30,7 +30,25 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_cardinalities()
-dm_examine_cardinalities <- function(.dm, ..., .progress = NA) {
+dm_examine_cardinalities <- function(.dm, ..., .progress = NA,
+                                     dm = deprecated(), progress = deprecated()) {
+  check_dots_empty()
+
+  if (!is_missing(dm)) {
+    deprecate_soft("1.0.0", "dm_examine_cardinalities(dm = )", "dm_examine_cardinalities(.dm = )")
+  }
+
+  if (is_missing(.dm)) {
+    return(dm_examine_cardinalities(dm, .progress = .progress, progress = progress))
+  }
+
+  if (!is_missing(progress)) {
+    if (is.na(progress)) {
+      progress <- .progress
+    }
+    deprecate_soft("1.0.0", "dm_examine_cardinalities(progress = )", "dm_examine_cardinalities(.progress = )")
+  }
+
   check_not_zoomed(.dm)
   .dm %>%
     dm_examine_cardinalities_impl(progress = .progress, top_level_fun = "dm_examine_cardinalities") %>%

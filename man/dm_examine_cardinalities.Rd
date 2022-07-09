@@ -4,7 +4,13 @@
 \alias{dm_examine_cardinalities}
 \title{Learn about your data model}
 \usage{
-dm_examine_cardinalities(.dm, ..., .progress = NA)
+dm_examine_cardinalities(
+  .dm,
+  ...,
+  .progress = NA,
+  dm = deprecated(),
+  progress = deprecated()
+)
 }
 \arguments{
 \item{.dm}{A \code{dm} object.}
