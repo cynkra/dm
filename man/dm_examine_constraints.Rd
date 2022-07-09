@@ -4,7 +4,13 @@
 \alias{dm_examine_constraints}
 \title{Validate your data model}
 \usage{
-dm_examine_constraints(.dm, ..., .progress = NA)
+dm_examine_constraints(
+  .dm,
+  ...,
+  .progress = NA,
+  dm = deprecated(),
+  progress = deprecated()
+)
 }
 \arguments{
 \item{.dm}{A dm object.}
