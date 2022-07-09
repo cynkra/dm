@@ -1,5 +1,24 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.3.0.9001
+
+## Bug fixes
+
+- `dm_draw()` works if a table name has a space (#1219).
+
+- Don't print rule in `glimpse.dm()` for empty `dm()` (#1208).
+
+## Features
+
+- Honor implicit unique keys defined by foreign keys (#1131, #1209).
+
+## Chore
+
+- Use sensible node and edge IDs, corresponding to the data model, in SVG graph (#1214).
+
+- Tests for datamodelr code (#1215).
+
+
 # dm 0.3.0.9000
 
 - Internal changes only.
@@ -24,7 +43,7 @@
 
 - Marked stable functions as stable, in particular `dm()` and related functions (#1032, #1040).
 
-- Remove own `rows_*()` implementation for lazy tables, they are now available in dbplyr >= 2.2.0 (#912, #1024).
+- Remove own `rows_*()` implementation for lazy tables, they are now available in dbplyr >= 2.2.0 (#912, #1024, #1028).
 
 - Deprecate `dm_join_to_tbl()`, `dm_is_referenced()` and `dm_get_referencing_tables()` (#1038).
 
@@ -39,6 +58,11 @@
 - New `dm_from_con()`, soft-deprecated `dm_from_src()` (#1014, #1018, #1044).
 
 - Moved `pack_join()` arguments past the ellipsis for consistency (#920, #921).
+
+
+## Bug fixes
+
+- Compatibility fix for writing to SQL Server tables with dbplyr >= 2.2.0.
 
 
 ## Documentation
@@ -58,11 +82,6 @@
 - Update credentials to fallback databases for `dm_financial()` hosted on pacha.dev (#916, @pachadotdev), also used now for vignettes (#1118) and in `dm_from_con()` example (#993).
 
 - Update license year (#1029).
-
-
-## Chores
-
-- Use selection helpers in `_pkgdown.yml` (@IndrajeetPatil, #1138).
 
 
 ## Internal

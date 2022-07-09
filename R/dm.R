@@ -739,11 +739,12 @@ as.list.zoomed_dm <- function(x, ...) {
 #' @export
 glimpse.dm <- function(x, width = NULL, ...) {
   glimpse_width <- width %||% getOption("width")
-
   table_names_list <- names(dm_get_tables_impl(x))
 
   print_glimpse_table_meta(x, glimpse_width)
-  print_rule_between_tables()
+  if (!is_empty(table_names_list)) {
+    print_rule_between_tables()
+  }
   walk(table_names_list, ~ print_glimpse_table(x, .x, glimpse_width, ...))
 
   invisible(x)

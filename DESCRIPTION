@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.3.0.9000
-Date: 2022-07-06
+Version: 0.3.0.9001
+Date: 2022-07-08
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -24,6 +24,14 @@ Authors@R:
              role = "ctb"),
       person(given = "James",
              family = "Wondrasek",
+             role = "ctb"),
+      person(given = "Indrajeet",
+             family = "Patil",
+             comment = c(ORCID = "0000-0003-1995-6531"),
+             role = "ctb"),
+      person(given = "Maëlle",
+             family = "Salmon",
+             comment = c(ORCID = "0000-0002-2815-0399"),
              role = "ctb"),
       person(given = "energie360° AG",
              role = "fnd",
