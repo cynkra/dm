@@ -1,16 +1,19 @@
 #' Validate your data model
 #'
 #' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' This function returns a tibble with information about
 #' which key constraints are met (`is_key = TRUE`) or violated (`FALSE`).
 #' The printing for this object is special, use [as_tibble()]
 #' to print as a regular tibble.
 #'
-#' @inheritParams dm_add_pk
+#' @param .dm A dm object.
 #' @inheritParams rlang::args_dots_empty
-#' @param progress Whether to display a progress bar, if `NA` (the default)
+#' @param .progress Whether to display a progress bar, if `NA` (the default)
 #'   hide in non-interactive mode, show in interactive mode. Requires the
 #'   'progress' package.
+#' @param dm,progress `r lifecycle::badge("deprecated")`
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
@@ -30,10 +33,28 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_constraints()
-dm_examine_constraints <- function(dm, ..., progress = NA) {
-  check_not_zoomed(dm)
-  dm %>%
-    dm_examine_constraints_impl(progress = progress, top_level_fun = "dm_examine_constraints") %>%
+dm_examine_constraints <- function(.dm, ..., .progress = NA,
+                                   dm = deprecated(), progress = deprecated()) {
+  check_dots_empty()
+
+  if (!is_missing(dm)) {
+    deprecate_soft("1.0.0", "dm_examine_constraints(dm = )", "dm_examine_constraints(.dm = )")
+  }
+
+  if (is_missing(.dm)) {
+    return(dm_examine_constraints(dm, .progress = .progress, progress = progress))
+  }
+
+  if (!is_missing(progress)) {
+    if (is.na(progress)) {
+      progress <- .progress
+    }
+    deprecate_soft("1.0.0", "dm_examine_constraints(progress = )", "dm_examine_constraints(.progress = )")
+  }
+
+  check_not_zoomed(.dm)
+  .dm %>%
+    dm_examine_constraints_impl(progress = .progress, top_level_fun = "dm_examine_constraints") %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns)) %>%
     new_dm_examine_constraints()

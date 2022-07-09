@@ -68,3 +68,32 @@
       * Table `dc_4`: foreign key `b`, `a` into table `dc_3`: values of `dc_4$b`, `dc_4$a` not in `dc_3$b`, `dc_3$a`: f, 6 (1)
       * Table `dc_6`: foreign key `c` into table `dc_1`: values of `dc_6$c` not in `dc_1$a`: 6 (1)
 
+# `dm_examine_constraints()` API
+
+    Code
+      dm_examine_constraints(dm_test_obj(), progress = FALSE)
+    Condition
+      Warning:
+      The `progress` argument of `dm_examine_constraints()` is deprecated as of dm 1.0.0.
+      Please use the `.progress` argument instead.
+    Message
+      i No constraints defined.
+    Code
+      dm_examine_constraints(dm = dm_test_obj())
+    Condition
+      Warning:
+      The `dm` argument of `dm_examine_constraints()` is deprecated as of dm 1.0.0.
+      Please use the `.dm` argument instead.
+    Message
+      i No constraints defined.
+
+---
+
+    Code
+      dm_examine_constraints(dm_test_obj(), foo = "bar")
+    Condition
+      Error in `dm_examine_constraints()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * foo = "bar"
+

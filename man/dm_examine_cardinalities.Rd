@@ -7,7 +7,7 @@
 dm_examine_cardinalities(dm, progress = NA)
 }
 \arguments{
-\item{dm}{A \code{dm} object.}
+\item{dm}{A dm object.}
 
 \item{progress}{Whether to display a progress bar, if \code{NA} (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
