@@ -61,8 +61,9 @@
 #' the result will contain the information which prerequisite was violated.
 #' @param x Parent table, data frame or lazy table.
 #' @param y Child table, data frame or lazy table.
-#' @param x_select,y_select Names of key columns, processed with
-#'   [tidyselect::eval_select()], to restrict the check.
+#' @param x_select,y_select Key columns to restrict the check, processed with
+#'   [dplyr::select()].
+#'   If omitted, columns in `x` and `y` are matched by position.
 #'
 #' @family cardinality functions
 #'
@@ -72,7 +73,7 @@
 #' if the check is passed, to support pipes.
 #' Otherwise an error is thrown and the reason for it is explained.
 #'
-#' For `examine_cardinality()`: Returns a character variable specifying the type of relationship between the two columns.
+#' `examine_cardinality()` returns a character variable specifying the type of relationship between the two columns.
 #'
 #' @aliases check_cardinality_...
 #' @export
@@ -81,16 +82,16 @@
 #' d2 <- tibble::tibble(c = c(1:5, 5))
 #' d3 <- tibble::tibble(c = 1:4)
 #' # This does not pass, `c` is not unique key of d2:
-#' try(check_cardinality_0_n(d2, c, d1, a))
+#' try(check_cardinality_0_n(d2, d1, x_select = c, y_select = a))
 #'
 #' # This passes, multiple values in d2$c are allowed:
-#' check_cardinality_0_n(d1, a, d2, c)
+#' check_cardinality_0_n(d1, d2)
 #'
 #' # This does not pass, injectivity is violated:
-#' try(check_cardinality_1_1(d1, a, d2, c))
+#' try(check_cardinality_1_1(d1, d2))
 #'
 #' # This passes:
-#' check_cardinality_0_1(d1, a, d3, c)
+#' check_cardinality_0_1(d1, d3)
 check_cardinality_0_n <- function(x, y, ..., x_select = NULL, y_select = NULL) {
   check_card_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = check_cardinality_0_n_impl0)
 }
@@ -166,7 +167,7 @@ check_cardinality_0_1_impl0 <- function(x, y, x_label, y_label) {
 #' @examples
 #'
 #' # Returns the kind of cardinality
-#' examine_cardinality(d1, a, d2, c)
+#' examine_cardinality(d1, d2)
 examine_cardinality <- function(x, y, ..., x_select = NULL, y_select = NULL) {
   check_card_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = examine_cardinality_impl0)
 }

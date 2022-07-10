@@ -24,15 +24,16 @@ examine_cardinality(x, y, ..., x_select = NULL, y_select = NULL)
 
 \item{y}{Child table, data frame or lazy table.}
 
-\item{x_select, y_select}{Names of key columns, processed with
-\code{\link[tidyselect:eval_select]{tidyselect::eval_select()}}, to restrict the check.}
+\item{x_select, y_select}{Key columns to restrict the check, processed with
+\code{\link[dplyr:select]{dplyr::select()}}.
+If omitted, columns in \code{x} and \code{y} are matched by position.}
 }
 \value{
 \code{check_cardinality_...()} return \code{x}, invisibly,
 if the check is passed, to support pipes.
 Otherwise an error is thrown and the reason for it is explained.
 
-For \code{examine_cardinality()}: Returns a character variable specifying the type of relationship between the two columns.
+\code{examine_cardinality()} returns a character variable specifying the type of relationship between the two columns.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -100,19 +101,19 @@ d1 <- tibble::tibble(a = 1:5)
 d2 <- tibble::tibble(c = c(1:5, 5))
 d3 <- tibble::tibble(c = 1:4)
 # This does not pass, `c` is not unique key of d2:
-try(check_cardinality_0_n(d2, c, d1, a))
+try(check_cardinality_0_n(d2, d1, x_select = c, y_select = a))
 
 # This passes, multiple values in d2$c are allowed:
-check_cardinality_0_n(d1, a, d2, c)
+check_cardinality_0_n(d1, d2)
 
 # This does not pass, injectivity is violated:
-try(check_cardinality_1_1(d1, a, d2, c))
+try(check_cardinality_1_1(d1, d2))
 
 # This passes:
-check_cardinality_0_1(d1, a, d3, c)
+check_cardinality_0_1(d1, d3)
 
 # Returns the kind of cardinality
-examine_cardinality(d1, a, d2, c)
+examine_cardinality(d1, d2)
 }
 \seealso{
 Other cardinality functions: 

@@ -114,8 +114,9 @@ is_unique_key_se <- function(.data, colname) {
 #'
 #' @param x,y A data frame or lazy table.
 #' @inheritParams rlang::args_dots_empty
-#' @param x_select,y_select Names of key columns, processed with
-#'   [tidyselect::eval_select()], to restrict the check.
+#' @param x_select,y_select Key columns to restrict the check, processed with
+#'   [dplyr::select()].
+#'   If omitted, columns in `x` and `y` are matched by position.
 #'
 #' @return Returns `x`, invisibly, if the check is passed.
 #'   Otherwise an error is thrown and the reason for it is explained.
@@ -125,11 +126,13 @@ is_unique_key_se <- function(.data, colname) {
 #' data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is failing:
-#' try(check_set_equality(data_1, a, data_2, a))
+#' try(check_set_equality(data_1, data_2, x_select = a, y_select = a))
 #'
 #' data_3 <- tibble::tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
-#' check_set_equality(data_1, a, data_3, a)
+#' check_set_equality(data_1, data_3, x_select = a, y_select = a)
+#' # this is still failing:
+#' check_set_equality(data_2, data_3)
 check_set_equality <- function(x, y,
                                ...,
                                x_select = NULL, y_select = NULL) {
@@ -180,10 +183,10 @@ check_set_equality_impl0 <- function(x, y, x_label, y_label) {
 #' data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
-#' check_subset(data_1, a, data_2, a)
+#' check_subset(data_1, data_2, x_select = a, y_select = a)
 #'
 #' # this is failing:
-#' try(check_subset(data_2, a, data_1, a))
+#' try(check_subset(data_2, data_1))
 check_subset <- function(x, y,
                          ...,
                          x_select = NULL, y_select = NULL) {
