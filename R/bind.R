@@ -16,6 +16,7 @@
 #'
 #' @return `dm` containing the tables and key relations of all `dm` objects.
 #' @export
+#' @keywords internal
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_1 <- dm_nycflights13()

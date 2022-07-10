@@ -24,7 +24,6 @@ reference:
   - dm_select_tbl
   - dm_rename_tbl
   - pull_tbl
-  - dm_bind
 
 - title: Primary keys
   contents:
