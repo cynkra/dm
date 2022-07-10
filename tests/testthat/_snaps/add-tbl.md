@@ -1,3 +1,11 @@
+# dm_add_tbl() works
+
+    Code
+      dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "check_unique")
+    Condition
+      Error in `abort_need_unique_names()`:
+      ! Each new table needs to have a unique name. Duplicate new name(s): `tf_1`.
+
 # dm_add_tbl() and dm_rm_tbl() for compound keys
 
     Code

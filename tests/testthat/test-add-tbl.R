@@ -51,10 +51,9 @@ test_that("dm_add_tbl() works", {
   )
 
   # Is an error thrown in case I try to give the new table an old table's name if `repair = "check_unique"`?
-  expect_dm_error(
-    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "check_unique"),
-    "need_unique_names"
-  )
+  expect_snapshot(error = TRUE, {
+    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "check_unique")
+  })
 
   # are in the default case (`repair = 'unique'`) the tables renamed (old table AND new table) according to "unique" default setting
   expect_identical(
