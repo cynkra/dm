@@ -19,6 +19,11 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
   if (dots_n(...) == 0) return(dm())
   dms <- list2(...)
 
+  new_def <- dm_bind_impl(dms, repair, quiet)
+  new_dm3(new_def)
+}
+
+dm_bind_impl <- function(dms, repair, quiet) {
   walk(dms, check_dm)
   walk(dms, check_not_zoomed)
   if (!all_same_source(map(dms, dm_get_tables_impl) %>% flatten())) {
@@ -37,6 +42,5 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
   dms_renamed <- map2(dms, renaming_recipe, dm_rename_tbl)
 
   new_defs <- map(dms_renamed, dm_get_def)
-  vec_rbind(!!!new_defs) %>%
-    new_dm3()
+  vec_rbind(!!!new_defs)
 }
