@@ -1,6 +1,13 @@
 #' Merge several `dm`
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
 #' Create a single `dm` from two or more `dm` objects.
+#'
+#' @section Life cycle:
+#' This function is deprecated as of dm 1.0.0, because the same functionality
+#' is offered by [dm()].
 #'
 #' @param ... `dm` objects to bind together.
 #' @inheritParams dm_add_tbl
@@ -15,6 +22,8 @@
 #' dm_2 <- dm(mtcars, iris)
 #' dm_bind(dm_1, dm_2)
 dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
+  deprecate_soft("1.0.0", "dm_bind()", "dm()")
+
   dms <- list2(...)
 
   new_def <- dm_bind_impl(dms, repair, quiet)

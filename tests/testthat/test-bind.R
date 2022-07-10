@@ -1,4 +1,6 @@
 test_that("dm_bind() works?", {
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_equivalent_dm(
     dm_bind(dm_for_filter()),
     dm_for_filter()
@@ -16,6 +18,8 @@ test_that("dm_bind() works?", {
 })
 
 test_that("are empty_dm() and empty ellipsis handled correctly?", {
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_equivalent_dm(
     dm_bind(empty_dm()),
     empty_dm()
@@ -33,12 +37,16 @@ test_that("are empty_dm() and empty ellipsis handled correctly?", {
 })
 
 test_that("errors: duplicate table names, src mismatches", {
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_dm_error(dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter()), "need_unique_names")
   skip_if_not_installed("dbplyr")
   expect_dm_error(dm_bind(dm_for_flatten(), dm_for_filter_duckdb()), "not_same_src")
 })
 
 test_that("auto-renaming works", {
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_equivalent_dm(
     expect_name_repair_message(
       dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique")
@@ -75,6 +83,8 @@ test_that("auto-renaming works", {
 })
 
 test_that("test error output for src mismatches", {
+  local_options(lifecycle_verbosity = "warning")
+
   skip_if_not_installed("dbplyr")
 
   expect_snapshot({
@@ -85,6 +95,8 @@ test_that("test error output for src mismatches", {
 })
 
 test_that("output", {
+  local_options(lifecycle_verbosity = "warning")
+
   expect_snapshot({
     dm_bind()
     dm_bind(empty_dm())
@@ -94,10 +106,6 @@ test_that("output", {
       dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter())
     )))
   })
-})
-
-test_that("output dev vctrs", {
-  skip_if_not_installed("vctrs", "0.3.8.9001")
 
   expect_snapshot({
     dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique") %>% collect()
@@ -105,14 +113,12 @@ test_that("output dev vctrs", {
 })
 
 test_that("output for compound keys", {
+  local_options(lifecycle_verbosity = "warning")
+
   expect_snapshot({
     dm_bind(dm_for_filter(), dm_for_flatten()) %>% dm_paste(options = c("select", "keys"))
     dm_bind(dm_for_flatten(), dm_for_filter()) %>% dm_paste(options = c("select", "keys"))
   })
-})
-
-test_that("output for compound keys dev vctrs", {
-  skip_if_not_installed("vctrs", "0.3.8.9001")
 
   expect_snapshot({
     dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>% dm_paste(options = c("select", "keys"))

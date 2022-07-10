@@ -39,11 +39,19 @@ Users can silence the name repair messages by setting the
 \code{dm} containing the tables and key relations of all \code{dm} objects.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
 Create a single \code{dm} from two or more \code{dm} objects.
 }
 \details{
 The \code{dm} objects have to share the same \code{src}. By default table names need to be unique.
 }
+\section{Life cycle}{
+
+This function is deprecated as of dm 1.0.0, because the same functionality
+is offered by \code{\link[=dm]{dm()}}.
+}
+
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_1 <- dm_nycflights13()
