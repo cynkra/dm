@@ -80,8 +80,15 @@
     Code
       dm(dm_for_filter(), dm_for_flatten(), dm_for_filter())
     Condition
-      Error in `abort_need_unique_names()`:
-      ! Each new table needs to have a unique name. Duplicate new name(s): `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`.
+      Error in `dm()`:
+      ! Names must be unique.
+      x These names are duplicated:
+        * "tf_1" at locations 1 and 12.
+        * "tf_2" at locations 2 and 13.
+        * "tf_3" at locations 3 and 14.
+        * "tf_4" at locations 4 and 15.
+        * "tf_5" at locations 5 and 16.
+        * ...
 
 ---
 

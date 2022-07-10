@@ -37,10 +37,18 @@ test_that("are empty_dm() and empty ellipsis handled correctly?", {
 })
 
 test_that("errors: duplicate table names, src mismatches", {
+  local_options(lifecycle_verbosity = "warning")
+
+  expect_snapshot(error = TRUE, {
+    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter())
+  })
+})
+
+test_that("errors: src mismatches", {
   local_options(lifecycle_verbosity = "quiet")
 
-  expect_dm_error(dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter()), "need_unique_names")
   skip_if_not_installed("dbplyr")
+  skip_if_not_installed("duckdb")
   expect_dm_error(dm_bind(dm_for_flatten(), dm_for_filter_duckdb()), "not_same_src")
 })
 

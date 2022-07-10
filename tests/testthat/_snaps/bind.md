@@ -1,3 +1,21 @@
+# errors: duplicate table names, src mismatches
+
+    Code
+      dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter())
+    Condition
+      Warning:
+      `dm_bind()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
+      Error in `dm_bind()`:
+      ! Names must be unique.
+      x These names are duplicated:
+        * "tf_1" at locations 1 and 12.
+        * "tf_2" at locations 2 and 13.
+        * "tf_3" at locations 3 and 14.
+        * "tf_4" at locations 4 and 15.
+        * "tf_5" at locations 5 and 16.
+        * ...
+
 # test error output for src mismatches
 
     Code
@@ -61,7 +79,14 @@
       `dm_bind()` was deprecated in dm 1.0.0.
       Please use `dm()` instead.
     Output
-      Each new table needs to have a unique name. Duplicate new name(s): `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`.
+      Names must be unique.
+      x These names are duplicated:
+        * "tf_1" at locations 1 and 12.
+        * "tf_2" at locations 2 and 13.
+        * "tf_3" at locations 3 and 14.
+        * "tf_4" at locations 4 and 15.
+        * "tf_5" at locations 5 and 16.
+        * ...
 
 ---
 
