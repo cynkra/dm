@@ -89,19 +89,33 @@ to print as a regular tibble.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dm_examine_cardinalities</span><span class="op">(</span><span class="va">dm</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dm_examine_cardinalities</span><span class="op">(</span></span>
+<span>  <span class="va">.dm</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  .progress <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  dm <span class="op">=</span> <span class="fu"><a href="deprecated.html">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  progress <span class="op">=</span> <span class="fu"><a href="deprecated.html">deprecated</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>dm</dt>
-<dd><p>A dm object.</p></dd>
+    <dl><dt>.dm</dt>
+<dd><p>A <code>dm</code> object.</p></dd>
 
 
-<dt>progress</dt>
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
+
+
+<dt>.progress</dt>
 <dd><p>Whether to display a progress bar, if <code>NA</code> (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.</p></dd>
+
+
+<dt>dm, progress</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a></p></dd>
 
 </dl></div>
     <div class="section level2">
