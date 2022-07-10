@@ -1,4 +1,6 @@
 test_that("dm_add_tbl() works", {
+  local_options(lifecycle_verbosity = "quiet")
+
   # is a table added?
   expect_identical(
     length(dm_get_tables(dm_add_tbl(dm_for_filter(), data_card_1()))),
@@ -86,6 +88,8 @@ test_that("dm_add_tbl() works", {
 })
 
 test_that("dm_add_tbl() snapshots", {
+  local_options(lifecycle_verbosity = "warning")
+
   # Is an error thrown in case I try to give the new table an old table's name if `repair = "check_unique"`?
   expect_snapshot(error = TRUE, {
     dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "check_unique")

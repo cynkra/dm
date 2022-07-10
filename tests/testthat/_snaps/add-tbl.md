@@ -3,6 +3,10 @@
     Code
       dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "check_unique")
     Condition
+      Warning:
+      `dm_add_tbl()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
+      Use `.name_repair = "unique"` if necessary.
       Error in `abort_need_unique_names()`:
       ! Each new table needs to have a unique name. Duplicate new name(s): `tf_1`.
 
@@ -11,6 +15,11 @@
     Code
       dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(
         options = c("select", "keys"))
+    Condition
+      Warning:
+      `dm_add_tbl()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
+      Use `.name_repair = "unique"` if necessary.
     Message
       dm::dm(
         fact,

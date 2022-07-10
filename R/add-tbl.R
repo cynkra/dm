@@ -1,8 +1,14 @@
 #' Add tables to a [`dm`]
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#'
 #' Adds one or more new tables to a [`dm`].
 #' Existing tables are not overwritten.
+#'
+#' @section Life cycle:
+#' This function is deprecated as of dm 1.0.0, because the same functionality
+#' is offered by [dm()] with `.name_repair = "unique"`.
 #'
 #' @return The initial `dm` with the additional table(s).
 #'
@@ -13,6 +19,8 @@
 #'   If no explicit name is given, the name of the expression is used.
 #' @inheritParams vctrs::vec_as_names
 #'
+#' @export
+#' @keywords internal
 #' @examples
 #' dm() %>%
 #'   dm_add_tbl(mtcars, flowers = iris)
@@ -20,8 +28,10 @@
 #' # renaming table names if necessary (depending on the `repair` argument)
 #' dm() %>%
 #'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
-#' @export
 dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
+  deprecate_soft("1.0.0", "dm_add_tbl()", "dm()",
+    details = 'Use `.name_repair = "unique"` if necessary.')
+
   check_not_zoomed(dm)
 
   new_names <- names(exprs(..., .named = TRUE))
