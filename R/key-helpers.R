@@ -39,16 +39,24 @@ check_key <- function(.data, ...) {
   orig_names <- names(cols_chosen)
   names(cols_chosen) <- glue("...{seq_along(cols_chosen)}")
 
-  duplicate_rows <-
-    .data %>%
-    select(!!!cols_chosen) %>%
-    safe_count(!!!syms(names(cols_chosen))) %>%
-    select(n) %>%
-    filter(n > 1) %>%
-    head(1) %>%
-    collect()
+  if (inherits(.data, "data.frame")) {
+    any_duplicate_rows <-
+      .data %>%
+      select(!!!cols_chosen) %>% 
+      vctrs::vec_duplicate_any()
+  } else {
+    duplicate_rows <-
+      .data %>%
+      select(!!!cols_chosen) %>%
+      safe_count(!!!syms(names(cols_chosen))) %>%
+      select(n) %>%
+      filter(n > 1) %>%
+      head(1) %>%
+      collect()
+    any_duplicate_rows <- nrow(duplicate_rows) != 0
+  }
 
-  if (nrow(duplicate_rows) != 0) {
+  if (any_duplicate_rows) {
     abort_not_unique_key(as_label(data_q), orig_names)
   }
 
