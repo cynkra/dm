@@ -21,6 +21,8 @@ test_that("dm() works for adding tables", {
     7L
   )
 
+  skip("keyed = TRUE")
+
   # can I retrieve the tibble under its old name?
   expect_equivalent_tbl(
     dm(dm_for_filter(), data_card_1())[["data_card_1()"]],
