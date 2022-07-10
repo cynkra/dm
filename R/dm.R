@@ -58,14 +58,6 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 
   tbls <- map(quos, eval_tidy)
 
-  if (has_length(quos)) {
-    src_index <- c(which(names(quos) == "src"), 1)[[1]]
-    if (is.src(tbls[[src_index]])) {
-      deprecate_soft("0.0.4.9001", "dm::dm(src = )")
-      return(exec(dm_from_con, con_from_src_or_con(tbls[[src_index]]), !!!tbls[-src_index]))
-    }
-  }
-
   names(tbls) <- vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
   dm <- new_dm(tbls)
   dm_validate(dm)
