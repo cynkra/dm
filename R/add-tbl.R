@@ -30,7 +30,8 @@
 #'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
   deprecate_soft("1.0.0", "dm_add_tbl()", "dm()",
-    details = 'Use `.name_repair = "unique"` if necessary.')
+    details = 'Use `.name_repair = "unique"` if necessary.'
+  )
 
   check_not_zoomed(dm)
 

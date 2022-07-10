@@ -61,7 +61,7 @@ Use \code{\link[base:Extract]{[[}} instead of \code{tbl()} to access individual 
 Get the names from \code{\link[=dm_get_tables]{dm_get_tables()}} instead of calling \code{dm_get_src()}
 to list the table names in a \code{dm} object.
 
-Use \code{\link[=copy_to]{copy_to()}} on a table and then \code{\link[=dm_add_tbl]{dm_add_tbl()}} instead of \code{copy_to()}
+Use \code{\link[=copy_to]{copy_to()}} on a table and then \code{\link[=dm]{dm()}} instead of \code{copy_to()}
 on a \code{dm} object.
 }
 \keyword{internal}
