@@ -166,7 +166,8 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     summarize(fks = list(bind_rows(fks))) %>%
     ungroup()
 
-  new_dm2(tables, pks_df, fks_df)
+  def <- new_dm_def(tables, pks_df, fks_df)
+  new_dm3(def)
 }
 
 schema_if <- function(schema, table, con, dbname = NULL) {

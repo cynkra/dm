@@ -18,13 +18,11 @@ reference:
 
 - title: Tables
   contents:
-  - dm_add_tbl
   - dm_rm_tbl
   - dm_mutate_tbl
   - dm_select_tbl
   - dm_rename_tbl
   - pull_tbl
-  - dm_bind
 
 - title: Primary keys
   contents:

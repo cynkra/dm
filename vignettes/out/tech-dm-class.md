@@ -60,7 +60,7 @@ library(dm)
 empty_dm <- dm()
 empty_dm
 #> dm()
-dm_add_tbl(empty_dm, airlines, airports, flights, planes, weather)
+dm(empty_dm, airlines, airports, flights, planes, weather)
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53

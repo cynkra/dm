@@ -1,8 +1,25 @@
-# dm_add_tbl() and dm_rm_tbl() for compound keys
+# dm_add_tbl() snapshots
+
+    Code
+      dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "check_unique")
+    Condition
+      Warning:
+      `dm_add_tbl()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
+      Use `.name_repair = "unique"` if necessary.
+      Error in `abort_need_unique_names()`:
+      ! Each new table needs to have a unique name. Duplicate new name(s): `tf_1`.
+
+---
 
     Code
       dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(
         options = c("select", "keys"))
+    Condition
+      Warning:
+      `dm_add_tbl()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
+      Use `.name_repair = "unique"` if necessary.
     Message
       dm::dm(
         fact,
@@ -26,6 +43,9 @@
         dm::dm_add_fk(fact, dim_2_key, dim_2) %>%
         dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
         dm::dm_add_fk(fact, dim_4_key, dim_4)
+
+# dm_rm_tbl() works
+
     Code
       dm_rm_tbl(dm_for_flatten(), dim_1) %>% dm_paste(options = c("select", "keys"))
     Message

@@ -86,8 +86,8 @@
         dm::dm_add_fk(tf_5, m, tf_6, n)
     Code
       # produce `dm_select()` statements in addition to the rest
-      dm_for_filter() %>% dm_select(tf_5, k = k, m) %>% dm_select(tf_1, a) %>%
-        dm_add_tbl(x = copy_to_my_test_src(tibble(q = 1L), qq)) %>% dm_paste(options = "select")
+      dm_for_filter() %>% dm_select(tf_5, k = k, m) %>% dm_select(tf_1, a) %>% dm(x = copy_to_my_test_src(
+        tibble(q = 1L), qq)) %>% dm_paste(options = "select")
     Message
       dm::dm(
         tf_1,

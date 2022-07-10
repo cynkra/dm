@@ -10,11 +10,10 @@
 #' `dm()` creates a `dm` object from [tbl] objects
 #' (tibbles or lazy data objects).
 #'
-#' @param ... Tables to add to the `dm` object.
-#'   If no names are provided, the tables
-#'   are auto-named.
-#' @param .name_repair Options for name repair.
-#'   Forwarded as `repair` to [vctrs::vec_as_names()].
+#' @param ... Tables or existing `dm` objects to add to the `dm` object.
+#'   Unnamed tables are auto-named, `dm` objects must not be named.
+#' @param .name_repair,.quiet Options for name repair.
+#'   Forwarded as `repair` and `quiet` to [vctrs::vec_as_names()].
 #'
 #' @return For `dm()`, `new_dm()`, `as_dm()`: A `dm` object.
 #'
@@ -53,23 +52,46 @@
 #' dm_nycflights13() %>% names()
 #'
 #' dm_nycflights13() %>% dm_get_tables()
-dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "minimal")) {
+dm <- function(...,
+               .name_repair = c("check_unique", "unique", "universal", "minimal"),
+               .quiet = FALSE) {
   quos <- enquos(...)
+  names <- names2(quos)
 
-  tbls <- map(quos, eval_tidy)
+  dots <- map(quos, eval_tidy)
 
-  if (has_length(quos)) {
-    src_index <- c(which(names(quos) == "src"), 1)[[1]]
-    if (is.src(tbls[[src_index]])) {
-      deprecate_soft("0.0.4.9001", "dm::dm(src = )")
-      return(exec(dm_from_con, con_from_src_or_con(tbls[[src_index]]), !!!tbls[-src_index]))
+  is_dm <- map_lgl(dots, is_dm)
+
+  for (i in which(is_dm)) {
+    if (names[[i]] != "") {
+      abort(c(
+        "All dm objects passed to `dm()` must be unnamed.",
+        i = paste0("Argument ", i, " has name ", tick(names[[i]]), ".")
+      ))
+    }
+
+    if (is_zoomed(dots[[i]])) {
+      abort(c(
+        "All dm objects passed to `dm()` must be unzoomed.",
+        i = paste0("Argument ", i, " is a zoomed dm.")
+      ))
     }
   }
 
-  names(tbls) <- vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
-  dm <- new_dm(tbls)
+  # FIXME: check not zoomed, prettier
+  stopifnot(names2(quos)[is_dm] == "")
+
+  dm_tbl <- dm_impl(dots[!is_dm], names(quos_auto_name(quos[!is_dm])))
+  def <- dm_bind_impl(c(dots[is_dm], list(dm_tbl)), .name_repair, .quiet, repair_arg = "")
+
+  dm <- new_dm3(def)
   dm_validate(dm)
   dm
+}
+
+dm_impl <- function(tbls, names) {
+  names(tbls) <- names
+  new_dm(tbls)
 }
 
 #' A low-level constructor
@@ -89,13 +111,14 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #' @rdname dm
 #' @export
 new_dm <- function(tables = list()) {
-  new_dm2(tables)
+  def <- new_dm_def(tables)
+  new_dm3(def)
 }
 
-new_dm2 <- function(tables = list(),
-                    pks_df = tibble(table = character(), pks = list()),
-                    fks_df = tibble(table = character(), fks = list()),
-                    validate = TRUE) {
+new_dm_def <- function(tables = list(),
+                       pks_df = tibble(table = character(), pks = list()),
+                       fks_df = tibble(table = character(), fks = list()),
+                       validate = TRUE) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
@@ -122,7 +145,7 @@ new_dm2 <- function(tables = list(),
     left_join(zoom, by = "table") %>%
     left_join(col_tracker_zoom, by = "table")
 
-  new_dm3(def, validate = validate)
+  def
 }
 
 new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {

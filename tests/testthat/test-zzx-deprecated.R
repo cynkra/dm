@@ -7,7 +7,7 @@ test_that("cdm_add_tbl() works", {
 
   expect_equivalent_dm(
     cdm_add_tbl(dm_for_filter_simple(), cars_table = mtcars_tbl),
-    dm_add_tbl(dm_for_filter_simple(), cars_table = mtcars_tbl)
+    dm(dm_for_filter_simple(), cars_table = mtcars_tbl)
   )
 })
 

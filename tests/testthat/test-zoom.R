@@ -67,7 +67,7 @@ test_that("dm_insert_zoomed() works", {
     dm_zoom_to(dm_for_filter(), tf_4) %>%
       dm_insert_zoomed("tf_4_new"),
     dm_for_filter() %>%
-      dm_add_tbl(tf_4_new = tf_4()) %>%
+      dm(tf_4_new = tf_4()) %>%
       dm_add_pk(tf_4_new, h) %>%
       dm_add_fk(tf_4_new, c(j, j1), tf_3) %>%
       dm_add_fk(tf_5, l, tf_4_new, on_delete = "cascade")
@@ -87,7 +87,7 @@ test_that("dm_insert_zoomed() works", {
       dm_insert_zoomed("tf_4", repair = "unique", quiet = TRUE),
     dm_for_filter() %>%
       dm_rename_tbl(tf_4...4 = tf_4) %>%
-      dm_add_tbl(tf_4...7 = tf_4()) %>%
+      dm(tf_4...7 = tf_4()) %>%
       dm_add_pk(tf_4...7, h) %>%
       dm_add_fk(tf_4...7, c(j, j1), tf_3) %>%
       dm_add_fk(tf_5, l, tf_4...7, on_delete = "cascade")
@@ -109,7 +109,7 @@ test_that("dm_update_tbl() works", {
     dm_update_zoomed(new_dm_for_filter),
     dm_for_filter() %>%
       dm_rm_tbl(tf_6) %>%
-      dm_add_tbl(tf_6 = tf_7())
+      dm(tf_6 = tf_7())
   )
 })
 
