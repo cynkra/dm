@@ -63,19 +63,17 @@ dm <- function(...,
 
   stopifnot(names2(quos)[is_dm] == "")
 
-  def_dm <- dm_bind_impl(dots[is_dm], .name_repair, .quiet)
-  def_tbl <- dm_impl(dots[!is_dm], names(quos_auto_name(quos[!is_dm])), .name_repair, .quiet)
-  def <- vec_rbind(def_dm, def_tbl)
+  dm_tbl <- dm_impl(dots[!is_dm], names(quos_auto_name(quos[!is_dm])))
+  def <- dm_bind_impl(c(dots[is_dm], list(dm_tbl)), .name_repair, .quiet, repair_arg = "")
 
   dm <- new_dm3(def)
   dm_validate(dm)
   dm
 }
 
-dm_impl <- function(tbls, names, repair, quiet, call = caller_env()) {
-  names(tbls) <- vec_as_names(names, repair = repair, quiet = quiet, call = call)
-
-  new_dm_def(tbls)
+dm_impl <- function(tbls, names) {
+  names(tbls) <- names
+  new_dm(tbls)
 }
 
 #' A low-level constructor

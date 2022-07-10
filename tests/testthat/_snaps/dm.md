@@ -39,6 +39,21 @@
       Error in `dm()`:
       ! names2(quos)[is_dm] == "" is not TRUE
 
+# errors: duplicate table names, src mismatches
+
+    Code
+      dm(dm_for_filter(), dm_for_flatten(), dm_for_filter())
+    Condition
+      Error in `dm()`:
+      ! Names must be unique.
+      x These names are duplicated:
+        * "tf_1" at locations 1 and 12.
+        * "tf_2" at locations 2 and 13.
+        * "tf_3" at locations 3 and 14.
+        * "tf_4" at locations 4 and 15.
+        * "tf_5" at locations 5 and 16.
+        * ...
+
 # test error output for src mismatches
 
     Code

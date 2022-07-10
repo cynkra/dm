@@ -46,8 +46,12 @@ test_that("are empty_dm() and empty ellipsis handled correctly?", {
 })
 
 test_that("errors: duplicate table names, src mismatches", {
-  expect_dm_error(dm(dm_for_filter(), dm_for_flatten(), dm_for_filter()), "need_unique_names")
+  expect_snapshot(error = TRUE, {
+    dm(dm_for_filter(), dm_for_flatten(), dm_for_filter())
+  })
+
   skip_if_not_installed("dbplyr")
+  skip_if_not_installed("duckdb")
   expect_dm_error(dm(dm_for_flatten(), dm_for_filter_duckdb()), "not_same_src")
 })
 
