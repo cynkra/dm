@@ -10,7 +10,7 @@
 #'
 #' @param x The data frame whose columns should be tested for key properties.
 #' @param ... The names of the columns to be checked, processed with
-#'   [tidyselect::eval_select()]. If omitted, all columns will be checked.
+#'   [dplyr::select()]. If omitted, all columns will be checked.
 #' @param .data Deprecated.
 #'
 #' @return Returns `x`, invisibly, if the check is passed.
@@ -30,35 +30,35 @@ check_key <- function(x, ..., .data = deprecated()) {
     return(check_key_impl0({{ .data }}, {{ x }}, ...))
   }
 
-  check_key_impl0({{ x }}, ...)
+  check_key_impl({{ x }}, ...)
 }
 
-check_key_impl0 <- function(.data, ...) {
+check_key_impl <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
 
-  if (dots_n(...) == 0) {
-    cols_chosen <- set_names(seq_along(colnames(.data)), colnames(.data))
-  } else {
-    cols_chosen <- eval_select_indices(quo(c(...)), colnames(.data))
+  if (dots_n(...) > 0) {
+    .data <- .data %>% select(...)
   }
-  orig_names <- names(cols_chosen)
-  names(cols_chosen) <- glue("...{seq_along(cols_chosen)}")
+
+  check_key_impl0(.data, as_label(data_q))
+}
+
+check_key_impl0 <- function(x, x_label) {
+  orig_names <- colnames(x)
+  cols_chosen <- syms(set_names(orig_names, glue("...{seq_along(orig_names)}")))
 
   duplicate_rows <-
-    .data %>%
-    select(!!!cols_chosen) %>%
-    safe_count(!!!syms(names(cols_chosen))) %>%
+    x %>%
+    safe_count(!!!cols_chosen) %>%
     select(n) %>%
     filter(n > 1) %>%
     head(1) %>%
     collect()
 
   if (nrow(duplicate_rows) != 0) {
-    abort_not_unique_key(as_label(data_q), orig_names)
+    abort_not_unique_key(x_label, orig_names)
   }
-
-  invisible(.data)
 }
 
 # an internal function to check if a column is a unique key of a table
