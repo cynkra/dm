@@ -170,6 +170,10 @@ utils::globalVariables(c(
   "referenced_table_name",
   "referenced_table_schema",
   #
+  # cardinalities
+  "x_label",
+  "y_label",
+  #
   # deconstruct
   "uuid",
   "ref_uuid",
