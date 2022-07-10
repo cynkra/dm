@@ -4,14 +4,24 @@
 \alias{dm_examine_cardinalities}
 \title{Learn about your data model}
 \usage{
-dm_examine_cardinalities(dm, progress = NA)
+dm_examine_cardinalities(
+  .dm,
+  ...,
+  .progress = NA,
+  dm = deprecated(),
+  progress = deprecated()
+)
 }
 \arguments{
-\item{dm}{A dm object.}
+\item{.dm}{A \code{dm} object.}
 
-\item{progress}{Whether to display a progress bar, if \code{NA} (the default)
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{.progress}{Whether to display a progress bar, if \code{NA} (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.}
+
+\item{dm, progress}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }
 \value{
 A tibble with the following columns:

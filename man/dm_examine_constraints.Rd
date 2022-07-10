@@ -13,7 +13,7 @@ dm_examine_constraints(
 )
 }
 \arguments{
-\item{.dm}{A dm object.}
+\item{.dm}{A \code{dm} object.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
