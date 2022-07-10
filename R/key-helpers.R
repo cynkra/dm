@@ -239,19 +239,20 @@ check_api <- function(x, y,
                       x_select = NULL, y_select = NULL,
                       call = caller_env(),
                       target = exprs) {
-
   if (dots_n(...) >= 2) {
     name <- as.character(frame_call(call)[[1]] %||% "check_api")
     # deprecate_soft("1.0.0", paste0(name, "(c1 = )"), paste0(name, "(x_select = )"),
     #   details = "Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`."
     # )
     check_api_impl(
-      {{ x }}, {{ y }}, ..., target = target
+      {{ x }}, {{ y }}, ...,
+      target = target
     )
   } else {
     check_dots_empty(call = call)
     check_api_impl(
-      {{ x }}, {{ x_select }}, {{ y }}, {{ y_select }}, target = target
+      {{ x }}, {{ x_select }}, {{ y }}, {{ y_select }},
+      target = target
     )
   }
 }
