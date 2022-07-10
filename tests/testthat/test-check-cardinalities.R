@@ -11,6 +11,20 @@ test_that("check_card_api() new interface", {
   )
 })
 
+test_that("check_cardinality_...() functions work without `x_select` and `y_select`", {
+  expect_silent(check_cardinality_0_n(data_card_1(), data_card_11()))
+  expect_silent(check_cardinality_1_n(data_card_1(), data_card_12()))
+  expect_silent(check_cardinality_1_1(data_card_1(), data_card_1()))
+  expect_silent(check_cardinality_0_1(data_card_1(), data_card_11()))
+
+  expect_snapshot({
+    examine_cardinality(data_card_1(), data_card_11())
+    examine_cardinality(data_card_1(), data_card_12())
+    examine_cardinality(data_card_1(), data_card_1())
+    examine_cardinality(data_card_1(), data_card_11())
+  })
+})
+
 test_that("check_card_api() compatibility", {
   local_options(lifecycle_verbosity = "quiet")
 

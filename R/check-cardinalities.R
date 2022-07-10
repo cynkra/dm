@@ -92,105 +92,73 @@
 #' # This passes:
 #' check_cardinality_0_1(d1, a, d3, c)
 check_cardinality_0_n <- function(x, y, ..., x_select = NULL, y_select = NULL) {
-  check_card_api({{ x }}, {{ y }}, ..., {{ x_select }}, {{ y_select }}, target = check_cardinality_0_n_impl0)
+  check_card_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = check_cardinality_0_n_impl0)
 }
 
-check_cardinality_0_n_impl0 <- function(parent_table, pk_column, child_table, fk_column) {
-  pt <- enquo(parent_table)
-  pkcq <- enexpr(pk_column)
-  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
+check_cardinality_0_n_impl0 <- function(x, y, x_label, y_label) {
+  check_key_impl0(x, x_label)
 
-  ct <- enquo(child_table)
-  fkcq <- enexpr(fk_column)
-  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ct))))
+  check_subset_impl0(y, x, y_label, x_label)
 
-  check_key(!!pt, !!pkc)
-
-  check_subset(!!ct, !!fkc, !!pt, !!pkc)
-
-  invisible(parent_table)
+  invisible(x)
 }
 
 #' @rdname examine_cardinality
 #' @export
 check_cardinality_1_n <- function(x, y, ..., x_select = NULL, y_select = NULL) {
-  check_card_api({{ x }}, {{ y }}, ..., {{ x_select }}, {{ y_select }}, target = check_cardinality_1_n_impl0)
+  check_card_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = check_cardinality_1_n_impl0)
 }
 
-check_cardinality_1_n_impl0 <- function(parent_table, pk_column, child_table, fk_column) {
-  pt <- enquo(parent_table)
-  pkcq <- enexpr(pk_column)
-  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
+check_cardinality_1_n_impl0 <- function(x, y, x_label, y_label) {
+  check_key_impl0(x, x_label)
 
-  ct <- enquo(child_table)
-  fkcq <- enexpr(fk_column)
-  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ct))))
+  check_set_equality_impl0(y, x, y_label, x_label)
 
-  check_key(!!pt, !!pkc)
-
-  check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
-
-  invisible(parent_table)
+  invisible(x)
 }
 
 #' @rdname examine_cardinality
 #' @export
 check_cardinality_1_1 <- function(x, y, ..., x_select = NULL, y_select = NULL) {
-  check_card_api({{ x }}, {{ y }}, ..., {{ x_select }}, {{ y_select }}, target = check_cardinality_1_1_impl0)
+  check_card_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = check_cardinality_1_1_impl0)
 }
 
-check_cardinality_1_1_impl0 <- function(parent_table, pk_column, child_table, fk_column) {
-  pt <- enquo(parent_table)
-  pkcq <- enexpr(pk_column)
-  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
+check_cardinality_1_1_impl0 <- function(x, y, x_label, y_label) {
+  check_key_impl0(x, x_label)
 
-  ct <- enquo(child_table)
-  fkcq <- enexpr(fk_column)
-  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ct))))
-
-  check_key(!!pt, !!pkc)
-
-  check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
+  check_set_equality_impl0(y, x, y_label, x_label)
 
   tryCatch(
     {
-      check_key(!!ct, !!fkc)
+      check_key_impl0(y, y_label)
       NULL
     },
-    error = function(e) abort_not_bijective(as_label(ct), fkc)
+    error = function(e) abort_not_bijective(y_label, colnames(y))
   )
 
-  invisible(parent_table)
+  invisible(x)
 }
 
 #' @rdname examine_cardinality
 #' @export
 check_cardinality_0_1 <- function(x, y, ..., x_select = NULL, y_select = NULL) {
-  check_card_api({{ x }}, {{ y }}, ..., {{ x_select }}, {{ y_select }}, target = check_cardinality_0_1_impl0)
+  check_card_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = check_cardinality_0_1_impl0)
 }
 
-check_cardinality_0_1_impl0 <- function(parent_table, pk_column, child_table, fk_column) {
-  pt <- enquo(parent_table)
-  pkcq <- enexpr(pk_column)
-  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(pt))))
+check_cardinality_0_1_impl0 <- function(x, y, x_label, y_label) {
+  check_key_impl0(x, x_label)
 
-  ct <- enquo(child_table)
-  fkcq <- enexpr(fk_column)
-  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ct))))
-
-  check_key(!!pt, !!pkc)
-
-  check_subset(!!ct, !!fkc, !!pt, !!pkc)
+  check_subset_impl0(y, x, y_label, x_label)
 
   tryCatch(
     {
-      check_key(!!ct, !!fkc)
+      check_key_impl0(y, y_label)
       NULL
     },
-    error = function(e) abort_not_injective(as_label(ct), fkc)
+    error = function(e) abort_not_injective(y_label, colnames(y))
   )
 
-  invisible(parent_table)
+  invisible(x)
 }
 
 #' @rdname examine_cardinality
@@ -200,42 +168,30 @@ check_cardinality_0_1_impl0 <- function(parent_table, pk_column, child_table, fk
 #' # Returns the kind of cardinality
 #' examine_cardinality(d1, a, d2, c)
 examine_cardinality <- function(x, y, ..., x_select = NULL, y_select = NULL) {
-  check_card_api({{ x }}, {{ y }}, ..., {{ x_select }}, {{ y_select }}, target = examine_cardinality_impl0)
+  check_card_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = examine_cardinality_impl0)
 }
 
-examine_cardinality_impl0 <- function(parent_table, pk_column, child_table, fk_column) {
-  ptq <- enquo(parent_table)
-  pkcq <- enexpr(pk_column)
-  pkc <- names(eval_select_indices(pkcq, colnames(eval_tidy(ptq))))
-
-  ctq <- enquo(child_table)
-  fkcq <- enexpr(fk_column)
-  fkc <- names(eval_select_indices(fkcq, colnames(eval_tidy(ctq))))
-
-  examine_cardinality_impl(eval_tidy(ptq), pkc, eval_tidy(ctq), fkc, as_label(ptq), as_label(ctq))
-}
-
-examine_cardinality_impl <- function(parent_table, parent_key_cols, child_table, child_fk_cols, pt_name, ct_name) {
-  if (!is_unique_key(parent_table, !!parent_key_cols)$unique) {
-    plural <- s_if_plural(parent_key_cols)
+examine_cardinality_impl0 <- function(x, y, x_label, y_label) {
+  if (!is_unique_key_se(x, colnames(x))$unique) {
+    plural <- s_if_plural(colnames(x))
     return(
       glue(
-        "Column{plural['n']} ({commas(tick(parent_key_cols))}) not ",
-        "a unique key of {tick(pt_name)}."
+        "Column{plural['n']} ({commas(tick(colnames(x)))}) not ",
+        "a unique key of {tick(x_label)}."
       )
     )
   }
-  if (!is_subset(child_table, !!child_fk_cols, parent_table, !!parent_key_cols)) {
-    plural <- s_if_plural(parent_key_cols)
+  if (!is_subset_se(y, x)) {
+    plural <- s_if_plural(colnames(x))
     return(
       glue(
-        "Column{plural['n']} ({commas(tick(child_fk_cols))}) of table {tick(ct_name)} not ",
-        "a subset of column{plural['n']} ({commas(tick(parent_key_cols))}) of table {tick(pt_name)}."
+        "Column{plural['n']} ({commas(tick(colnames(y)))}) of table {tick(y_label)} not ",
+        "a subset of column{plural['n']} ({commas(tick(colnames(x)))}) of table {tick(x_label)}."
       )
     )
   }
-  min_1 <- is_subset(parent_table, !!parent_key_cols, child_table, !!child_fk_cols)
-  max_1 <- pull(is_unique_key(child_table, !!child_fk_cols), unique)
+  min_1 <- is_subset_se(x, y)
+  max_1 <- pull(is_unique_key_se(y, colnames(y)), unique)
 
   if (min_1 && max_1) {
     return("bijective mapping (child: 1 -> parent: 1)")
@@ -256,8 +212,8 @@ check_card_api <- function(x, y,
 
   if (dots_n(...) >= 2) {
     name <- as.character(frame_call(call)[[1]] %||% "check_card_api")
-    # deprecate_soft("1.0.0", paste0(name, "(c1 = )"), paste0(name, "(x_select = )"),
-    #   details = "Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`."
+    # deprecate_soft("1.0.0", paste0(name, "(pk_column)"), paste0(name, "(x_select = )"),
+    #   details = "Use `y_select` instead of `fk_column`, and `x` and `y` instead of `parent_table` and `child_table`."
     # )
     check_card_api_impl(
       {{ x }}, {{ y }}, ..., target = target
@@ -271,10 +227,18 @@ check_card_api <- function(x, y,
 }
 
 check_card_api_impl <- function(parent_table, pk_column, child_table, fk_column, ..., target) {
-  target(
-    parent_table = {{ parent_table }},
-    pk_column = {{ pk_column }},
-    child_table = {{ child_table }},
-    fk_column = {{ fk_column }}
-  )
+  ptq <- enquo(parent_table)
+  ctq <- enquo(child_table)
+
+  pkcq <- enquo(pk_column)
+  fkcq <- enquo(fk_column)
+
+  if (quo_is_null(pkcq)) {
+    stopifnot(quo_is_null(fkcq))
+  } else {
+    parent_table <- parent_table %>% select(!!pkcq)
+    child_table <- child_table %>% select(!!fkcq)
+  }
+
+  target(parent_table, child_table, as_label(ptq), as_label(ctq))
 }
