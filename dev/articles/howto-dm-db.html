@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9001</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -208,12 +208,12 @@
 </g><!-- accounts --><g id="accounts" class="node"><title>accounts</title>
 <polygon fill="#ffa500" stroke="transparent" points="104,-21 104,-41 156,-41 156,-21 104,-21"></polygon><text text-anchor="start" x="105.5105" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">accounts</text><polygon fill="#ffedcc" stroke="transparent" points="104,-1 104,-21 156,-21 156,-1 104,-1"></polygon><text text-anchor="start" x="106" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">id</text><polygon fill="none" stroke="#aa6e00" stroke-opacity="0.666667" points="103,0 103,-42 157,-42 157,0 103,0"></polygon></g><!-- loans --><g id="loans" class="node"><title>loans</title>
 <polygon fill="#00ff00" stroke="transparent" points="1.5,-41 1.5,-61 66.5,-61 66.5,-41 1.5,-41"></polygon><text text-anchor="start" x="19.2251" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">loans</text><polygon fill="#ccffcc" stroke="transparent" points="1.5,-21 1.5,-41 66.5,-41 66.5,-21 1.5,-21"></polygon><text text-anchor="start" x="3.5" y="-27.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">id</text><polygon fill="#ccffcc" stroke="transparent" points="1.5,-1 1.5,-21 66.5,-21 66.5,-1 1.5,-1"></polygon><text text-anchor="start" x="3.2875" y="-6.4" font-family="Times,serif" font-size="14.00" fill="#444444">account_id</text><polygon fill="none" stroke="#00aa00" stroke-opacity="0.666667" points="0,0 0,-62 67,-62 67,0 0,0"></polygon></g><!-- loans&#45;&gt;accounts --><g id="loans_1" class="edge"><title>loans:account_id-&gt;accounts:id</title>
-<path fill="none" stroke="#555555" d="M66.5,-11C79.1302,-11 84.5819,-11 93.735,-11"></path><polygon fill="#555555" stroke="#555555" points="94,-14.5001 104,-11 94,-7.5001 94,-14.5001"></polygon></g></g></svg><p>Once you have instantiated a dm object, you can continue to add tables to it. For tables from the original source for the dm, use <code><a href="../reference/dm_add_tbl.html">dm_add_tbl()</a></code></p>
+<path fill="none" stroke="#555555" d="M66.5,-11C79.1302,-11 84.5819,-11 93.735,-11"></path><polygon fill="#555555" stroke="#555555" points="94,-14.5001 104,-11 94,-7.5001 94,-14.5001"></polygon></g></g></svg><p>Once you have instantiated a dm object, you can continue to add tables to it. For tables from the original source for the dm, use <code><a href="../reference/dm.html">dm()</a></code></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">my_db</span>, <span class="st">"trans"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">my_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/dm_add_tbl.html">dm_add_tbl</a></span><span class="op">(</span><span class="va">trans</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="va">trans</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
@@ -240,7 +240,7 @@
 <code class="sourceCode R"><span></span>
 <span><span class="va">my_dm_trans</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">my_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/dm_add_tbl.html">dm_add_tbl</a></span><span class="op">(</span><span class="va">trans</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="va">trans</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">my_dm_trans</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
