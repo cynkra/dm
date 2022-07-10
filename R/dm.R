@@ -87,13 +87,14 @@ dm <- function(...,
 #' @rdname dm
 #' @export
 new_dm <- function(tables = list()) {
-  new_dm2(tables)
+  def <- new_dm_def(tables)
+  new_dm3(def)
 }
 
-new_dm2 <- function(tables = list(),
-                    pks_df = tibble(table = character(), pks = list()),
-                    fks_df = tibble(table = character(), fks = list()),
-                    validate = TRUE) {
+new_dm_def <- function(tables = list(),
+                       pks_df = tibble(table = character(), pks = list()),
+                       fks_df = tibble(table = character(), fks = list()),
+                       validate = TRUE) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
@@ -120,7 +121,7 @@ new_dm2 <- function(tables = list(),
     left_join(zoom, by = "table") %>%
     left_join(col_tracker_zoom, by = "table")
 
-  new_dm3(def, validate = validate)
+  def
 }
 
 new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
