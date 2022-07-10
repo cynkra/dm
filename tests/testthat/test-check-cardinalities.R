@@ -1,3 +1,263 @@
+test_that("check_card_api() new interface", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  expect_same(
+    check_card_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = b),
+    check_card_api(x = data_mcard_1(), data_mcard_2(), x_select = a, y_select = b),
+    check_card_api(data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b),
+    check_card_api(x = data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b),
+    check_card_api(y = data_mcard_2(), x = data_mcard_1(), x_select = a, y_select = b),
+    check_card_api(data_mcard_1(), a, data_mcard_2(), b)
+  )
+})
+
+test_that("check_card_api() compatibility", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  expect_same(
+    check_card_api(data_mcard_1(), a, data_mcard_2(), b),
+    check_card_api(parent_table = data_mcard_1(), pk_column = a, child_table = data_mcard_2(), fk_column = b)
+  )
+  expect_same(
+    check_card_api(fk_column = b, data_mcard_1(), a, data_mcard_2()),
+    check_card_api(data_mcard_1(), fk_column = b, a, data_mcard_2()),
+    check_card_api(data_mcard_1(), a, fk_column = b, data_mcard_2()),
+    check_card_api(data_mcard_1(), a, data_mcard_2(), fk_column = b)
+  )
+  expect_same(
+    check_card_api(child_table = data_mcard_2(), data_mcard_1(), a, b),
+    check_card_api(data_mcard_1(), child_table = data_mcard_2(), a, b),
+    check_card_api(data_mcard_1(), a, child_table = data_mcard_2(), b),
+    check_card_api(data_mcard_1(), a, b, child_table = data_mcard_2())
+  )
+  expect_same(
+    check_card_api(child_table = data_mcard_2(), fk_column = b, data_mcard_1(), a),
+    check_card_api(child_table = data_mcard_2(), data_mcard_1(), fk_column = b, a),
+    check_card_api(child_table = data_mcard_2(), data_mcard_1(), a, fk_column = b),
+    check_card_api(fk_column = b, child_table = data_mcard_2(), data_mcard_1(), a),
+    check_card_api(fk_column = b, data_mcard_1(), child_table = data_mcard_2(), a),
+    check_card_api(fk_column = b, data_mcard_1(), a, child_table = data_mcard_2()),
+    check_card_api(data_mcard_1(), child_table = data_mcard_2(), fk_column = b, a),
+    check_card_api(data_mcard_1(), child_table = data_mcard_2(), a, fk_column = b),
+    check_card_api(data_mcard_1(), fk_column = b, child_table = data_mcard_2(), a),
+    check_card_api(data_mcard_1(), fk_column = b, a, child_table = data_mcard_2()),
+    check_card_api(data_mcard_1(), a, child_table = data_mcard_2(), fk_column = b),
+    check_card_api(data_mcard_1(), a, fk_column = b, child_table = data_mcard_2())
+  )
+  expect_same(
+    check_card_api(pk_column = a, data_mcard_1(), data_mcard_2(), b),
+    check_card_api(data_mcard_1(), pk_column = a, data_mcard_2(), b),
+    check_card_api(data_mcard_1(), data_mcard_2(), pk_column = a, b),
+    check_card_api(data_mcard_1(), data_mcard_2(), b, pk_column = a)
+  )
+  expect_same(
+    check_card_api(pk_column = a, fk_column = b, data_mcard_1(), data_mcard_2()),
+    check_card_api(pk_column = a, data_mcard_1(), fk_column = b, data_mcard_2()),
+    check_card_api(pk_column = a, data_mcard_1(), data_mcard_2(), fk_column = b),
+    check_card_api(fk_column = b, pk_column = a, data_mcard_1(), data_mcard_2()),
+    check_card_api(fk_column = b, data_mcard_1(), pk_column = a, data_mcard_2()),
+    check_card_api(fk_column = b, data_mcard_1(), data_mcard_2(), pk_column = a),
+    check_card_api(data_mcard_1(), pk_column = a, fk_column = b, data_mcard_2()),
+    check_card_api(data_mcard_1(), pk_column = a, data_mcard_2(), fk_column = b),
+    check_card_api(data_mcard_1(), fk_column = b, pk_column = a, data_mcard_2()),
+    check_card_api(data_mcard_1(), fk_column = b, data_mcard_2(), pk_column = a),
+    check_card_api(data_mcard_1(), data_mcard_2(), pk_column = a, fk_column = b),
+    check_card_api(data_mcard_1(), data_mcard_2(), fk_column = b, pk_column = a)
+  )
+  expect_same(
+    check_card_api(pk_column = a, child_table = data_mcard_2(), data_mcard_1(), b),
+    check_card_api(pk_column = a, data_mcard_1(), child_table = data_mcard_2(), b),
+    check_card_api(pk_column = a, data_mcard_1(), b, child_table = data_mcard_2()),
+    check_card_api(child_table = data_mcard_2(), pk_column = a, data_mcard_1(), b),
+    check_card_api(child_table = data_mcard_2(), data_mcard_1(), pk_column = a, b),
+    check_card_api(child_table = data_mcard_2(), data_mcard_1(), b, pk_column = a),
+    check_card_api(data_mcard_1(), pk_column = a, child_table = data_mcard_2(), b),
+    check_card_api(data_mcard_1(), pk_column = a, b, child_table = data_mcard_2()),
+    check_card_api(data_mcard_1(), child_table = data_mcard_2(), pk_column = a, b),
+    check_card_api(data_mcard_1(), child_table = data_mcard_2(), b, pk_column = a),
+    check_card_api(data_mcard_1(), b, pk_column = a, child_table = data_mcard_2()),
+    check_card_api(data_mcard_1(), b, child_table = data_mcard_2(), pk_column = a)
+  )
+  expect_same(
+    check_card_api(pk_column = a, child_table = data_mcard_2(), fk_column = b, data_mcard_1()),
+    check_card_api(pk_column = a, child_table = data_mcard_2(), data_mcard_1(), fk_column = b),
+    check_card_api(pk_column = a, fk_column = b, child_table = data_mcard_2(), data_mcard_1()),
+    check_card_api(pk_column = a, fk_column = b, data_mcard_1(), child_table = data_mcard_2()),
+    check_card_api(pk_column = a, data_mcard_1(), child_table = data_mcard_2(), fk_column = b),
+    check_card_api(pk_column = a, data_mcard_1(), fk_column = b, child_table = data_mcard_2()),
+    check_card_api(child_table = data_mcard_2(), pk_column = a, fk_column = b, data_mcard_1()),
+    check_card_api(child_table = data_mcard_2(), pk_column = a, data_mcard_1(), fk_column = b),
+    check_card_api(child_table = data_mcard_2(), fk_column = b, pk_column = a, data_mcard_1()),
+    check_card_api(child_table = data_mcard_2(), fk_column = b, data_mcard_1(), pk_column = a),
+    check_card_api(child_table = data_mcard_2(), data_mcard_1(), pk_column = a, fk_column = b),
+    check_card_api(child_table = data_mcard_2(), data_mcard_1(), fk_column = b, pk_column = a),
+    check_card_api(fk_column = b, pk_column = a, child_table = data_mcard_2(), data_mcard_1()),
+    check_card_api(fk_column = b, pk_column = a, data_mcard_1(), child_table = data_mcard_2()),
+    check_card_api(fk_column = b, child_table = data_mcard_2(), pk_column = a, data_mcard_1()),
+    check_card_api(fk_column = b, child_table = data_mcard_2(), data_mcard_1(), pk_column = a),
+    check_card_api(fk_column = b, data_mcard_1(), pk_column = a, child_table = data_mcard_2()),
+    check_card_api(fk_column = b, data_mcard_1(), child_table = data_mcard_2(), pk_column = a),
+    check_card_api(data_mcard_1(), pk_column = a, child_table = data_mcard_2(), fk_column = b),
+    check_card_api(data_mcard_1(), pk_column = a, fk_column = b, child_table = data_mcard_2()),
+    check_card_api(data_mcard_1(), child_table = data_mcard_2(), pk_column = a, fk_column = b),
+    check_card_api(data_mcard_1(), child_table = data_mcard_2(), fk_column = b, pk_column = a),
+    check_card_api(data_mcard_1(), fk_column = b, pk_column = a, child_table = data_mcard_2()),
+    check_card_api(data_mcard_1(), fk_column = b, child_table = data_mcard_2(), pk_column = a)
+  )
+  expect_same(
+    check_card_api(parent_table = data_mcard_1(), a, data_mcard_2(), b),
+    check_card_api(a, parent_table = data_mcard_1(), data_mcard_2(), b),
+    check_card_api(a, data_mcard_2(), parent_table = data_mcard_1(), b),
+    check_card_api(a, data_mcard_2(), b, parent_table = data_mcard_1())
+  )
+  expect_same(
+    check_card_api(parent_table = data_mcard_1(), fk_column = b, a, data_mcard_2()),
+    check_card_api(parent_table = data_mcard_1(), a, fk_column = b, data_mcard_2()),
+    check_card_api(parent_table = data_mcard_1(), a, data_mcard_2(), fk_column = b),
+    check_card_api(fk_column = b, parent_table = data_mcard_1(), a, data_mcard_2()),
+    check_card_api(fk_column = b, a, parent_table = data_mcard_1(), data_mcard_2()),
+    check_card_api(fk_column = b, a, data_mcard_2(), parent_table = data_mcard_1()),
+    check_card_api(a, parent_table = data_mcard_1(), fk_column = b, data_mcard_2()),
+    check_card_api(a, parent_table = data_mcard_1(), data_mcard_2(), fk_column = b),
+    check_card_api(a, fk_column = b, parent_table = data_mcard_1(), data_mcard_2()),
+    check_card_api(a, fk_column = b, data_mcard_2(), parent_table = data_mcard_1()),
+    check_card_api(a, data_mcard_2(), parent_table = data_mcard_1(), fk_column = b),
+    check_card_api(a, data_mcard_2(), fk_column = b, parent_table = data_mcard_1())
+  )
+  expect_same(
+    check_card_api(parent_table = data_mcard_1(), child_table = data_mcard_2(), a, b),
+    check_card_api(parent_table = data_mcard_1(), a, child_table = data_mcard_2(), b),
+    check_card_api(parent_table = data_mcard_1(), a, b, child_table = data_mcard_2()),
+    check_card_api(child_table = data_mcard_2(), parent_table = data_mcard_1(), a, b),
+    check_card_api(child_table = data_mcard_2(), a, parent_table = data_mcard_1(), b),
+    check_card_api(child_table = data_mcard_2(), a, b, parent_table = data_mcard_1()),
+    check_card_api(a, parent_table = data_mcard_1(), child_table = data_mcard_2(), b),
+    check_card_api(a, parent_table = data_mcard_1(), b, child_table = data_mcard_2()),
+    check_card_api(a, child_table = data_mcard_2(), parent_table = data_mcard_1(), b),
+    check_card_api(a, child_table = data_mcard_2(), b, parent_table = data_mcard_1()),
+    check_card_api(a, b, parent_table = data_mcard_1(), child_table = data_mcard_2()),
+    check_card_api(a, b, child_table = data_mcard_2(), parent_table = data_mcard_1())
+  )
+  expect_same(
+    check_card_api(parent_table = data_mcard_1(), child_table = data_mcard_2(), fk_column = b, a),
+    check_card_api(parent_table = data_mcard_1(), child_table = data_mcard_2(), a, fk_column = b),
+    check_card_api(parent_table = data_mcard_1(), fk_column = b, child_table = data_mcard_2(), a),
+    check_card_api(parent_table = data_mcard_1(), fk_column = b, a, child_table = data_mcard_2()),
+    check_card_api(parent_table = data_mcard_1(), a, child_table = data_mcard_2(), fk_column = b),
+    check_card_api(parent_table = data_mcard_1(), a, fk_column = b, child_table = data_mcard_2()),
+    check_card_api(child_table = data_mcard_2(), parent_table = data_mcard_1(), fk_column = b, a),
+    check_card_api(child_table = data_mcard_2(), parent_table = data_mcard_1(), a, fk_column = b),
+    check_card_api(child_table = data_mcard_2(), fk_column = b, parent_table = data_mcard_1(), a),
+    check_card_api(child_table = data_mcard_2(), fk_column = b, a, parent_table = data_mcard_1()),
+    check_card_api(child_table = data_mcard_2(), a, parent_table = data_mcard_1(), fk_column = b),
+    check_card_api(child_table = data_mcard_2(), a, fk_column = b, parent_table = data_mcard_1()),
+    check_card_api(fk_column = b, parent_table = data_mcard_1(), child_table = data_mcard_2(), a),
+    check_card_api(fk_column = b, parent_table = data_mcard_1(), a, child_table = data_mcard_2()),
+    check_card_api(fk_column = b, child_table = data_mcard_2(), parent_table = data_mcard_1(), a),
+    check_card_api(fk_column = b, child_table = data_mcard_2(), a, parent_table = data_mcard_1()),
+    check_card_api(fk_column = b, a, parent_table = data_mcard_1(), child_table = data_mcard_2()),
+    check_card_api(fk_column = b, a, child_table = data_mcard_2(), parent_table = data_mcard_1()),
+    check_card_api(a, parent_table = data_mcard_1(), child_table = data_mcard_2(), fk_column = b),
+    check_card_api(a, parent_table = data_mcard_1(), fk_column = b, child_table = data_mcard_2()),
+    check_card_api(a, child_table = data_mcard_2(), parent_table = data_mcard_1(), fk_column = b),
+    check_card_api(a, child_table = data_mcard_2(), fk_column = b, parent_table = data_mcard_1()),
+    check_card_api(a, fk_column = b, parent_table = data_mcard_1(), child_table = data_mcard_2()),
+    check_card_api(a, fk_column = b, child_table = data_mcard_2(), parent_table = data_mcard_1())
+  )
+  expect_same(
+    check_card_api(parent_table = data_mcard_1(), pk_column = a, data_mcard_2(), b),
+    check_card_api(parent_table = data_mcard_1(), data_mcard_2(), pk_column = a, b),
+    check_card_api(parent_table = data_mcard_1(), data_mcard_2(), b, pk_column = a),
+    check_card_api(pk_column = a, parent_table = data_mcard_1(), data_mcard_2(), b),
+    check_card_api(pk_column = a, data_mcard_2(), parent_table = data_mcard_1(), b),
+    check_card_api(pk_column = a, data_mcard_2(), b, parent_table = data_mcard_1()),
+    check_card_api(data_mcard_2(), parent_table = data_mcard_1(), pk_column = a, b),
+    check_card_api(data_mcard_2(), parent_table = data_mcard_1(), b, pk_column = a),
+    check_card_api(data_mcard_2(), pk_column = a, parent_table = data_mcard_1(), b),
+    check_card_api(data_mcard_2(), pk_column = a, b, parent_table = data_mcard_1()),
+    check_card_api(data_mcard_2(), b, parent_table = data_mcard_1(), pk_column = a),
+    check_card_api(data_mcard_2(), b, pk_column = a, parent_table = data_mcard_1())
+  )
+  expect_same(
+    check_card_api(parent_table = data_mcard_1(), pk_column = a, fk_column = b, data_mcard_2()),
+    check_card_api(parent_table = data_mcard_1(), pk_column = a, data_mcard_2(), fk_column = b),
+    check_card_api(parent_table = data_mcard_1(), fk_column = b, pk_column = a, data_mcard_2()),
+    check_card_api(parent_table = data_mcard_1(), fk_column = b, data_mcard_2(), pk_column = a),
+    check_card_api(parent_table = data_mcard_1(), data_mcard_2(), pk_column = a, fk_column = b),
+    check_card_api(parent_table = data_mcard_1(), data_mcard_2(), fk_column = b, pk_column = a),
+    check_card_api(pk_column = a, parent_table = data_mcard_1(), fk_column = b, data_mcard_2()),
+    check_card_api(pk_column = a, parent_table = data_mcard_1(), data_mcard_2(), fk_column = b),
+    check_card_api(pk_column = a, fk_column = b, parent_table = data_mcard_1(), data_mcard_2()),
+    check_card_api(pk_column = a, fk_column = b, data_mcard_2(), parent_table = data_mcard_1()),
+    check_card_api(pk_column = a, data_mcard_2(), parent_table = data_mcard_1(), fk_column = b),
+    check_card_api(pk_column = a, data_mcard_2(), fk_column = b, parent_table = data_mcard_1()),
+    check_card_api(fk_column = b, parent_table = data_mcard_1(), pk_column = a, data_mcard_2()),
+    check_card_api(fk_column = b, parent_table = data_mcard_1(), data_mcard_2(), pk_column = a),
+    check_card_api(fk_column = b, pk_column = a, parent_table = data_mcard_1(), data_mcard_2()),
+    check_card_api(fk_column = b, pk_column = a, data_mcard_2(), parent_table = data_mcard_1()),
+    check_card_api(fk_column = b, data_mcard_2(), parent_table = data_mcard_1(), pk_column = a),
+    check_card_api(fk_column = b, data_mcard_2(), pk_column = a, parent_table = data_mcard_1()),
+    check_card_api(data_mcard_2(), parent_table = data_mcard_1(), pk_column = a, fk_column = b),
+    check_card_api(data_mcard_2(), parent_table = data_mcard_1(), fk_column = b, pk_column = a),
+    check_card_api(data_mcard_2(), pk_column = a, parent_table = data_mcard_1(), fk_column = b),
+    check_card_api(data_mcard_2(), pk_column = a, fk_column = b, parent_table = data_mcard_1()),
+    check_card_api(data_mcard_2(), fk_column = b, parent_table = data_mcard_1(), pk_column = a),
+    check_card_api(data_mcard_2(), fk_column = b, pk_column = a, parent_table = data_mcard_1())
+  )
+  expect_same(
+    check_card_api(parent_table = data_mcard_1(), pk_column = a, child_table = data_mcard_2(), b),
+    check_card_api(parent_table = data_mcard_1(), pk_column = a, b, child_table = data_mcard_2()),
+    check_card_api(parent_table = data_mcard_1(), child_table = data_mcard_2(), pk_column = a, b),
+    check_card_api(parent_table = data_mcard_1(), child_table = data_mcard_2(), b, pk_column = a),
+    check_card_api(parent_table = data_mcard_1(), b, pk_column = a, child_table = data_mcard_2()),
+    check_card_api(parent_table = data_mcard_1(), b, child_table = data_mcard_2(), pk_column = a),
+    check_card_api(pk_column = a, parent_table = data_mcard_1(), child_table = data_mcard_2(), b),
+    check_card_api(pk_column = a, parent_table = data_mcard_1(), b, child_table = data_mcard_2()),
+    check_card_api(pk_column = a, child_table = data_mcard_2(), parent_table = data_mcard_1(), b),
+    check_card_api(pk_column = a, child_table = data_mcard_2(), b, parent_table = data_mcard_1()),
+    check_card_api(pk_column = a, b, parent_table = data_mcard_1(), child_table = data_mcard_2()),
+    check_card_api(pk_column = a, b, child_table = data_mcard_2(), parent_table = data_mcard_1()),
+    check_card_api(child_table = data_mcard_2(), parent_table = data_mcard_1(), pk_column = a, b),
+    check_card_api(child_table = data_mcard_2(), parent_table = data_mcard_1(), b, pk_column = a),
+    check_card_api(child_table = data_mcard_2(), pk_column = a, parent_table = data_mcard_1(), b),
+    check_card_api(child_table = data_mcard_2(), pk_column = a, b, parent_table = data_mcard_1()),
+    check_card_api(child_table = data_mcard_2(), b, parent_table = data_mcard_1(), pk_column = a),
+    check_card_api(child_table = data_mcard_2(), b, pk_column = a, parent_table = data_mcard_1()),
+    check_card_api(b, parent_table = data_mcard_1(), pk_column = a, child_table = data_mcard_2()),
+    check_card_api(b, parent_table = data_mcard_1(), child_table = data_mcard_2(), pk_column = a),
+    check_card_api(b, pk_column = a, parent_table = data_mcard_1(), child_table = data_mcard_2()),
+    check_card_api(b, pk_column = a, child_table = data_mcard_2(), parent_table = data_mcard_1()),
+    check_card_api(b, child_table = data_mcard_2(), parent_table = data_mcard_1(), pk_column = a),
+    check_card_api(b, child_table = data_mcard_2(), pk_column = a, parent_table = data_mcard_1())
+  )
+  expect_same(
+    check_card_api(parent_table = data_mcard_1(), pk_column = a, child_table = data_mcard_2(), fk_column = b),
+    check_card_api(parent_table = data_mcard_1(), pk_column = a, fk_column = b, child_table = data_mcard_2()),
+    check_card_api(parent_table = data_mcard_1(), child_table = data_mcard_2(), pk_column = a, fk_column = b),
+    check_card_api(parent_table = data_mcard_1(), child_table = data_mcard_2(), fk_column = b, pk_column = a),
+    check_card_api(parent_table = data_mcard_1(), fk_column = b, pk_column = a, child_table = data_mcard_2()),
+    check_card_api(parent_table = data_mcard_1(), fk_column = b, child_table = data_mcard_2(), pk_column = a),
+    check_card_api(pk_column = a, parent_table = data_mcard_1(), child_table = data_mcard_2(), fk_column = b),
+    check_card_api(pk_column = a, parent_table = data_mcard_1(), fk_column = b, child_table = data_mcard_2()),
+    check_card_api(pk_column = a, child_table = data_mcard_2(), parent_table = data_mcard_1(), fk_column = b),
+    check_card_api(pk_column = a, child_table = data_mcard_2(), fk_column = b, parent_table = data_mcard_1()),
+    check_card_api(pk_column = a, fk_column = b, parent_table = data_mcard_1(), child_table = data_mcard_2()),
+    check_card_api(pk_column = a, fk_column = b, child_table = data_mcard_2(), parent_table = data_mcard_1()),
+    check_card_api(child_table = data_mcard_2(), parent_table = data_mcard_1(), pk_column = a, fk_column = b),
+    check_card_api(child_table = data_mcard_2(), parent_table = data_mcard_1(), fk_column = b, pk_column = a),
+    check_card_api(child_table = data_mcard_2(), pk_column = a, parent_table = data_mcard_1(), fk_column = b),
+    check_card_api(child_table = data_mcard_2(), pk_column = a, fk_column = b, parent_table = data_mcard_1()),
+    check_card_api(child_table = data_mcard_2(), fk_column = b, parent_table = data_mcard_1(), pk_column = a),
+    check_card_api(child_table = data_mcard_2(), fk_column = b, pk_column = a, parent_table = data_mcard_1()),
+    check_card_api(fk_column = b, parent_table = data_mcard_1(), pk_column = a, child_table = data_mcard_2()),
+    check_card_api(fk_column = b, parent_table = data_mcard_1(), child_table = data_mcard_2(), pk_column = a),
+    check_card_api(fk_column = b, pk_column = a, parent_table = data_mcard_1(), child_table = data_mcard_2()),
+    check_card_api(fk_column = b, pk_column = a, child_table = data_mcard_2(), parent_table = data_mcard_1()),
+    check_card_api(fk_column = b, child_table = data_mcard_2(), parent_table = data_mcard_1(), pk_column = a),
+    check_card_api(fk_column = b, child_table = data_mcard_2(), pk_column = a, parent_table = data_mcard_1())
+  )
+})
+
 test_that("check_cardinality_...() functions are checking the cardinality correctly?", {
   #  expecting silent: ------------------------------------------------------
 
