@@ -9,6 +9,9 @@ test_that("dm() API", {
   expect_snapshot(error = TRUE, {
     dm(a = dm())
   })
+  expect_snapshot(error = TRUE, {
+    dm(a = tibble(), dm_zoom_to(dm_for_filter(), tf_1))
+  })
 })
 
 test_that("dm() works for adding tables", {

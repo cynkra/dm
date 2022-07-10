@@ -37,7 +37,17 @@
       dm(a = dm())
     Condition
       Error in `dm()`:
-      ! names2(quos)[is_dm] == "" is not TRUE
+      ! All dm objects passed to `dm()` must be unnamed.
+      i Argument 1 has name `a`.
+
+---
+
+    Code
+      dm(a = tibble(), dm_zoom_to(dm_for_filter(), tf_1))
+    Condition
+      Error in `dm()`:
+      ! All dm objects passed to `dm()` must be unzoomed.
+      i Argument 2 is a zoomed dm.
 
 # dm() works for adding tables
 

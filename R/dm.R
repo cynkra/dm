@@ -56,10 +56,27 @@ dm <- function(...,
                .name_repair = c("check_unique", "unique", "universal", "minimal"),
                .quiet = FALSE) {
   quos <- enquos(...)
+  names <- names2(quos)
 
   dots <- map(quos, eval_tidy)
 
   is_dm <- map_lgl(dots, is_dm)
+
+  for (i in which(is_dm)) {
+    if (names[[i]] != "") {
+      abort(c(
+        "All dm objects passed to `dm()` must be unnamed.",
+        i = paste0("Argument ", i, " has name ", tick(names[[i]]), ".")
+      ))
+    }
+
+    if (is_zoomed(dots[[i]])) {
+      abort(c(
+        "All dm objects passed to `dm()` must be unzoomed.",
+        i = paste0("Argument ", i, " is a zoomed dm.")
+      ))
+    }
+  }
 
   # FIXME: check not zoomed, prettier
   stopifnot(names2(quos)[is_dm] == "")
