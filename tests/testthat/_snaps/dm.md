@@ -1,3 +1,36 @@
+# dm() API
+
+    Code
+      dm(a = tibble(), a = tibble(), .name_repair = "unique")
+    Message
+      New names:
+      * `a` -> `a...1`
+      * `a` -> `a...2`
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `a...1`, `a...2`
+      Columns: 0
+      Primary keys: 0
+      Foreign keys: 0
+    Code
+      dm(a = tibble(), a = tibble(), .name_repair = "unique", .quiet = TRUE)
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `a...1`, `a...2`
+      Columns: 0
+      Primary keys: 0
+      Foreign keys: 0
+
+---
+
+    Code
+      dm(a = tibble(), a = tibble())
+    Condition
+      Error in `dm()`:
+      ! Names must be unique.
+      x These names are duplicated:
+        * "a" at locations 1 and 2.
+
 # output
 
     Code

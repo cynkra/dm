@@ -13,8 +13,8 @@
 #' @param ... Tables to add to the `dm` object.
 #'   If no names are provided, the tables
 #'   are auto-named.
-#' @param .name_repair Options for name repair.
-#'   Forwarded as `repair` to [vctrs::vec_as_names()].
+#' @param .name_repair,.quiet Options for name repair.
+#'   Forwarded as `repair` and `quiet` to [vctrs::vec_as_names()].
 #'
 #' @return For `dm()`, `new_dm()`, `as_dm()`: A `dm` object.
 #'
@@ -53,12 +53,18 @@
 #' dm_nycflights13() %>% names()
 #'
 #' dm_nycflights13() %>% dm_get_tables()
-dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "minimal")) {
+dm <- function(...,
+               .name_repair = c("check_unique", "unique", "universal", "minimal"),
+               .quiet = FALSE) {
   quos <- enquos(...)
 
   tbls <- map(quos, eval_tidy)
 
-  names(tbls) <- vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
+  names(tbls) <- vec_as_names(
+    names(quos_auto_name(quos)),
+    repair = .name_repair,
+    quiet = .quiet
+  )
   dm <- new_dm(tbls)
   dm_validate(dm)
   dm

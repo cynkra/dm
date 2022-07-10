@@ -8,7 +8,11 @@
 \alias{as_dm}
 \title{Data model class}
 \usage{
-dm(..., .name_repair = c("check_unique", "unique", "universal", "minimal"))
+dm(
+  ...,
+  .name_repair = c("check_unique", "unique", "universal", "minimal"),
+  .quiet = FALSE
+)
 
 new_dm(tables = list())
 
@@ -23,8 +27,8 @@ as_dm(x)
 If no names are provided, the tables
 are auto-named.}
 
-\item{.name_repair}{Options for name repair.
-Forwarded as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
+\item{.name_repair, .quiet}{Options for name repair.
+Forwarded as \code{repair} and \code{quiet} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
 
 \item{tables}{A named list of the tables (tibble-objects, not names),
 to be included in the \code{dm} object.}

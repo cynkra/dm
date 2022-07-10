@@ -1,3 +1,13 @@
+test_that("dm() API", {
+  expect_snapshot({
+    dm(a = tibble(), a = tibble(), .name_repair = "unique")
+    dm(a = tibble(), a = tibble(), .name_repair = "unique", .quiet = TRUE)
+  })
+  expect_snapshot(error = TRUE, {
+    dm(a = tibble(), a = tibble())
+  })
+})
+
 test_that("can create dm with as_dm()", {
   expect_equivalent_dm(as_dm(dm_get_tables(dm_test_obj())), dm_test_obj())
 })
