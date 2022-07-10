@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9002</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9003</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -141,11 +141,11 @@
 <p>This function is important for determining if a column is a foreign key to some other table. What about the inverse relation?</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_subset.html">check_subset</a></span><span class="op">(</span><span class="va">data_2</span>, <span class="va">a</span>, <span class="va">data_1</span>, <span class="va">a</span><span class="op">)</span></span></code></pre></div>
-<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
-<span><span class="co">#&gt;       a     b     c</span></span>
-<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1     3     6     9</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_subset_of()` at dm/R/key-helpers.R:219:2:</span></span></span>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
+<span><span class="co">#&gt;       a</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     3</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_subset_of()` at dm/R/key-helpers.R:208:2:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></span></code></pre>
 <p>It should be kept in mind that <code><a href="../reference/check_subset.html">check_subset()</a></code> does not test if column <code>c2</code> is a unique key of table <code>t2</code>. In order to find out if a (child) table <code>t1</code> contains a column <code>c1</code> that is a foreign key to a (parent) table <code>t2</code> with the corresponding column <code>c2</code>, the following method should be used:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -154,11 +154,11 @@
 <p>To check both directions at once, and to find out if the unique values of <code>c_1</code> in <code>t_1</code> are the same as those of <code>c_2</code> in <code>t_2</code>, {dm} provides the function <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_set_equality.html">check_set_equality</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span>, <span class="va">data_2</span>, <span class="va">a</span><span class="op">)</span></span></code></pre></div>
-<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
-<span><span class="co">#&gt;       a     b     c</span></span>
-<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1     3     6     9</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_sets_not_equal()` at dm/R/key-helpers.R:165:4:</span></span></span>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
+<span><span class="co">#&gt;       a</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     3</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_sets_not_equal()` at dm/R/key-helpers.R:163:4:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></span></code></pre>
 <p>Introducing one more table enables us to show how it looks when the test is passed:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -212,7 +212,7 @@
 <span></span>
 <span><span class="co"># This does not pass, injectivity is violated:</span></span>
 <span><span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_1_1</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d2</span>, <span class="va">c</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_bijective()` at dm/R/check-cardinalities.R:130:2:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_bijective()` at dm/R/check-cardinalities.R:133:2:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> 1..1 cardinality (bijectivity) is not given: Column (`c`) in table `d2` contains duplicate values.</span></span>
 <span></span>
 <span><span class="co"># This passes:</span></span>
