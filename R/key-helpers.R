@@ -24,6 +24,7 @@
 #'
 #' # this is passing:
 #' check_key(data, a, c)
+#' check_key(data)
 check_key <- function(x, ..., .data = deprecated()) {
   if (!is_missing(.data)) {
     deprecate_soft("1.0.0", "check_key(.data = )", "check_key(x = )")
@@ -107,15 +108,16 @@ is_unique_key_se <- function(.data, colname) {
 #' `r lifecycle::badge("stable")`
 #'
 #' `check_set_equality()` is a wrapper of [check_subset()].
+#'
 #' It tests if one table is a subset of another and vice versa, i.e., if both sets are the same.
 #' If not, it throws an error.
 #'
-#' @param t1 The data frame that contains the columns `c1`.
-#' @param c1 The columns of `t1` that should only contain values that are also present in columns `c2` of data frame `t2`. Multiple columns can be chosen using `c(col1, col2)`.
-#' @param t2 The data frame that contains the columns `c2`.
-#' @param c2 The columns of `t2` that should only contain values that are also present in columns `c1` of data frame `t1`. Multiple columns can be chosen using `c(col1, col2)`.
+#' @param x,y A data frame or lazy table.
+#' @inheritParams rlang::args_dots_empty
+#' @param x_select,y_select Names of key columns, processed with
+#'   [tidyselect::eval_select()], to restrict the check.
 #'
-#' @return Returns `t1`, invisibly, if the check is passed.
+#' @return Returns `x`, invisibly, if the check is passed.
 #'   Otherwise an error is thrown and the reason for it is explained.
 #'
 #' @export
@@ -176,9 +178,8 @@ check_set_equality_impl0 <- function(t1, c1, t2, c2) {
 #' to a set of key columns without affecting the return value.
 #'
 #' @inheritParams check_set_equality
-#' @param c2 The columns of the second data frame which have to contain all values of `c1` to avoid an error. Multiple columns can be chosen using `c(col1, col2)`.
 #'
-#' @return Returns `t1`, invisibly, if the check is passed.
+#' @return Returns `x`, invisibly, if the check is passed.
 #'   Otherwise an error is thrown and the reason for it is explained.
 #'
 #' @export

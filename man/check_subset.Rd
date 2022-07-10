@@ -7,10 +7,15 @@
 check_subset(x, y, ..., x_select = NULL, y_select = NULL)
 }
 \arguments{
-\item{c2}{The columns of the second data frame which have to contain all values of \code{c1} to avoid an error. Multiple columns can be chosen using \code{c(col1, col2)}.}
+\item{x, y}{A data frame or lazy table.}
+
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{x_select, y_select}{Names of key columns, processed with
+\code{\link[tidyselect:eval_select]{tidyselect::eval_select()}}, to restrict the check.}
 }
 \value{
-Returns \code{t1}, invisibly, if the check is passed.
+Returns \code{x}, invisibly, if the check is passed.
 Otherwise an error is thrown and the reason for it is explained.
 }
 \description{

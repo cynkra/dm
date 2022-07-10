@@ -33,4 +33,5 @@ try(check_key(data, a, b))
 
 # this is passing:
 check_key(data, a, c)
+check_key(data)
 }
