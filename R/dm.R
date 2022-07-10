@@ -65,7 +65,10 @@ dm <- function(...,
     repair = .name_repair,
     quiet = .quiet
   )
-  dm <- new_dm(tbls)
+
+  def <- new_dm_def(tbls)
+
+  dm <- new_dm3(def)
   dm_validate(dm)
   dm
 }
