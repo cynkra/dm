@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.99.99.9003
+
+## API
+
+- Stabilize `check_cardinality_...()` and `examine_cardinality()` (#1194).
+
+- Stabilize `check_subset()` and `check_set_equality()` (#1229).
+
+
 # dm 0.99.99.9002
 
 ## API
