@@ -168,7 +168,7 @@ If <code>TRUE</code>, a potential old <code>pk</code> is deleted before setting 
 <span class="r-in"><span>  <span class="va">nycflights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>    <span class="fu">dm_add_pk</span><span class="op">(</span><span class="va">planes</span>, <span class="va">manufacturer</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_not_unique_key(as_label(data_q), orig_names) : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_not_unique_key(x_label, orig_names) : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (`manufacturer`) not a unique key of `planes`.</span>
 </code></pre></div>
     </div>

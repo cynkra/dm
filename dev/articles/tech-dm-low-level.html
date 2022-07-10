@@ -129,7 +129,7 @@
 <p>and you want to know if <code>a</code> is a primary key for <code>data_1</code>, you can use the <code><a href="../reference/check_key.html">check_key()</a></code> function:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_key.html">check_key</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_unique_key()` at dm/R/key-helpers.R:58:4:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_unique_key()` at dm/R/key-helpers.R:60:4:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> (`a`) not a unique key of `data_1`.</span></span></code></pre></div>
 <p>Mind the error message when a test is not passed.</p>
 <p>For <code>data_2</code>, column <code>a</code> is a key:</p>
@@ -204,7 +204,7 @@
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This does not pass, `c` is not unique key of d2:</span></span>
 <span><span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_n</a></span><span class="op">(</span><span class="va">d2</span>, <span class="va">c</span>, <span class="va">d1</span>, <span class="va">a</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_unique_key()` at dm/R/key-helpers.R:58:4:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_unique_key()` at dm/R/key-helpers.R:60:4:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> (`c`) not a unique key of `d2`.</span></span>
 <span></span>
 <span><span class="co"># This passes, multiple values in d2$c are allowed:</span></span>
