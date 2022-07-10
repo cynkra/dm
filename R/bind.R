@@ -15,8 +15,6 @@
 #' dm_2 <- dm(mtcars, iris)
 #' dm_bind(dm_1, dm_2)
 dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
-  # special case empty ellipsis, cause otherwise we get an empty data.frame of class `dm`
-  if (dots_n(...) == 0) return(dm())
   dms <- list2(...)
 
   new_def <- dm_bind_impl(dms, repair, quiet)
@@ -24,6 +22,10 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
 }
 
 dm_bind_impl <- function(dms, repair, quiet) {
+  if (length(dms) == 0) {
+    return(new_dm_def())
+  }
+
   walk(dms, check_dm)
   walk(dms, check_not_zoomed)
   if (!all_same_source(map(dms, dm_get_tables_impl) %>% flatten())) {
