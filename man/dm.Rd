@@ -23,9 +23,8 @@ is_dm(x)
 as_dm(x)
 }
 \arguments{
-\item{...}{Tables to add to the \code{dm} object.
-If no names are provided, the tables
-are auto-named.}
+\item{...}{Tables or existing \code{dm} objects to add to the \code{dm} object.
+Unnamed tables are auto-named, \code{dm} objects must not be named.}
 
 \item{.name_repair, .quiet}{Options for name repair.
 Forwarded as \code{repair} and \code{quiet} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}

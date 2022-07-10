@@ -6,6 +6,9 @@ test_that("dm() API", {
   expect_snapshot(error = TRUE, {
     dm(a = tibble(), a = tibble())
   })
+  expect_snapshot(error = TRUE, {
+    dm(a = dm())
+  })
 })
 
 test_that("dm() works for dm objects", {
@@ -105,10 +108,6 @@ test_that("output for dm() with dm", {
   expect_snapshot(error = TRUE, {
     dm(dm_for_filter(), dm_for_flatten(), dm_for_filter())
   })
-})
-
-test_that("output dev vctrs", {
-  skip_if_not_installed("vctrs", "0.3.8.9001")
 
   expect_snapshot({
     dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique") %>% collect()

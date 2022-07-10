@@ -31,6 +31,14 @@
       x These names are duplicated:
         * "a" at locations 1 and 2.
 
+---
+
+    Code
+      dm(a = dm())
+    Condition
+      Error in `dm()`:
+      ! names2(quos)[is_dm] == "" is not TRUE
+
 # test error output for src mismatches
 
     Code
@@ -75,7 +83,7 @@
       Error in `abort_need_unique_names()`:
       ! Each new table needs to have a unique name. Duplicate new name(s): `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`.
 
-# output dev vctrs
+---
 
     Code
       dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique") %>%

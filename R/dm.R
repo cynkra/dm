@@ -10,9 +10,8 @@
 #' `dm()` creates a `dm` object from [tbl] objects
 #' (tibbles or lazy data objects).
 #'
-#' @param ... Tables to add to the `dm` object.
-#'   If no names are provided, the tables
-#'   are auto-named.
+#' @param ... Tables or existing `dm` objects to add to the `dm` object.
+#'   Unnamed tables are auto-named, `dm` objects must not be named.
 #' @param .name_repair,.quiet Options for name repair.
 #'   Forwarded as `repair` and `quiet` to [vctrs::vec_as_names()].
 #'
@@ -61,6 +60,8 @@ dm <- function(...,
   dots <- map(quos, eval_tidy)
 
   is_dm <- map_lgl(dots, is_dm)
+
+  stopifnot(names2(quos)[is_dm] == "")
 
   def_dm <- dm_bind_impl(dots[is_dm], .name_repair, .quiet)
   def_tbl <- dm_impl(dots[!is_dm], names(quos_auto_name(quos[!is_dm])), .name_repair, .quiet)
