@@ -60,17 +60,17 @@ dm <- function(...,
 
   tbls <- map(quos, eval_tidy)
 
-  names(tbls) <- vec_as_names(
-    names(quos_auto_name(quos)),
-    repair = .name_repair,
-    quiet = .quiet
-  )
-
-  def <- new_dm_def(tbls)
+  def <- dm_impl(tbls, names(quos_auto_name(quos)), .name_repair, .quiet)
 
   dm <- new_dm3(def)
   dm_validate(dm)
   dm
+}
+
+dm_impl <- function(tbls, names, repair, quiet, call = caller_env()) {
+  names(tbls) <- vec_as_names(names, repair = repair, quiet = quiet, call = call)
+
+  new_dm_def(tbls)
 }
 
 #' A low-level constructor
