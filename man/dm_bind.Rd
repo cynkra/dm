@@ -59,3 +59,4 @@ dm_2 <- dm(mtcars, iris)
 dm_bind(dm_1, dm_2)
 \dontshow{\}) # examplesIf}
 }
+\keyword{internal}
