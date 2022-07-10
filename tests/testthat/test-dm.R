@@ -524,7 +524,7 @@ test_that("output for compound keys", {
 
   expect_snapshot({
     copy_to(nyc_comp(), mtcars, "car_table")
-    dm_add_tbl(nyc_comp(), car_table)
+    dm(nyc_comp(), car_table)
     nyc_comp() %>%
       collect()
     nyc_comp() %>%

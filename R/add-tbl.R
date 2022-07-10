@@ -90,7 +90,7 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()
 #'
 #' @return The `dm` without the removed table(s) that were present in the initial `dm`.
 #'
-#' @seealso [dm_add_tbl()], [dm_select_tbl()]
+#' @seealso [dm()], [dm_select_tbl()]
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more unquoted table names to remove from the `dm`.
@@ -126,7 +126,7 @@ check_new_tbls <- function(dm, tbls) {
 #' For now, the column names must be identical.
 #' This restriction may be levied optionally in the future.
 #'
-#' @seealso [dm_add_tbl()], [dm_rm_tbl()]
+#' @seealso [dm()], [dm_rm_tbl()]
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more tables to update in the `dm`.
