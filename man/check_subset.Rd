@@ -11,8 +11,9 @@ check_subset(x, y, ..., x_select = NULL, y_select = NULL)
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{x_select, y_select}{Names of key columns, processed with
-\code{\link[tidyselect:eval_select]{tidyselect::eval_select()}}, to restrict the check.}
+\item{x_select, y_select}{Key columns to restrict the check, processed with
+\code{\link[dplyr:select]{dplyr::select()}}.
+If omitted, columns in \code{x} and \code{y} are matched by position.}
 }
 \value{
 Returns \code{x}, invisibly, if the check is passed.
@@ -29,8 +30,8 @@ to a set of key columns without affecting the return value.
 data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 # this is passing:
-check_subset(data_1, a, data_2, a)
+check_subset(data_1, data_2, x_select = a, y_select = a)
 
 # this is failing:
-try(check_subset(data_2, a, data_1, a))
+try(check_subset(data_2, data_1))
 }

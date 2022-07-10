@@ -59,19 +59,18 @@ dm_examine_cardinalities <- function(.dm, ..., .progress = NA,
 }
 
 dm_examine_cardinalities_impl <- function(dm, progress = NA, top_level_fun = NULL) {
-  fks <- dm_get_all_fks_impl(dm) %>%
+  fks <-
+    dm_get_all_fks_impl(dm) %>%
     select(-on_delete)
+
   dm_def <- as.list(dm)
-  fks_data <- fks %>%
-    mutate(
-      pt_name = parent_table,
-      ct_name = child_table,
-      parent_table = dm_def[pt_name],
-      child_table = dm_def[ct_name]
-    ) %>%
-    mutate(
-      parent_key_cols = as.list(parent_key_cols),
-      child_fk_cols = as.list(child_fk_cols)
+  fks_data <-
+    fks %>%
+    transmute(
+      x_label = parent_table,
+      y_label = child_table,
+      x = map2(dm_def[x_label], parent_key_cols, ~ select(.x, all_of(.y))),
+      y = map2(dm_def[y_label], child_fk_cols, ~ select(.x, all_of(.y))),
     )
   ticker <- new_ticker(
     "checking fk cardinalities",
@@ -81,7 +80,7 @@ dm_examine_cardinalities_impl <- function(dm, progress = NA, top_level_fun = NUL
   )
 
   fks %>%
-    mutate(cardinality = pmap_chr(fks_data, ticker(examine_cardinality_impl)))
+    mutate(cardinality = pmap_chr(fks_data, ticker(examine_cardinality_impl0)))
 }
 
 new_dm_examine_cardinalities <- function(x) {
