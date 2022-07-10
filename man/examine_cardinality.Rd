@@ -24,6 +24,8 @@ examine_cardinality(x, y, ..., x_select = NULL, y_select = NULL)
 
 \item{y}{Child table, data frame or lazy table.}
 
+\item{...}{These dots are for future extensions and must be empty.}
+
 \item{x_select, y_select}{Key columns to restrict the check, processed with
 \code{\link[dplyr:select]{dplyr::select()}}.
 If omitted, columns in \code{x} and \code{y} are matched by position.}

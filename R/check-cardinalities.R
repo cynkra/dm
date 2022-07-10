@@ -61,6 +61,7 @@
 #' the result will contain the information which prerequisite was violated.
 #' @param x Parent table, data frame or lazy table.
 #' @param y Child table, data frame or lazy table.
+#' @inheritParams rlang::args_dots_empty
 #' @param x_select,y_select Key columns to restrict the check, processed with
 #'   [dplyr::select()].
 #'   If omitted, columns in `x` and `y` are matched by position.
