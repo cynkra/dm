@@ -4,24 +4,26 @@
 \alias{check_subset}
 \title{Check column values for subset}
 \usage{
-check_subset(t1, c1, t2, c2)
+check_subset(x, y, ..., x_select = NULL, y_select = NULL)
 }
 \arguments{
-\item{t1}{The data frame that contains the columns \code{c1}.}
+\item{x, y}{A data frame or lazy table.}
 
-\item{c1}{The columns of \code{t1} that should only contain values that are also present in columns \code{c2} of data frame \code{t2}. Multiple columns can be chosen using \code{c(col1, col2)}.}
+\item{...}{These dots are for future extensions and must be empty.}
 
-\item{t2}{The data frame that contains the columns \code{c2}.}
-
-\item{c2}{The columns of the second data frame which have to contain all values of \code{c1} to avoid an error. Multiple columns can be chosen using \code{c(col1, col2)}.}
+\item{x_select, y_select}{Names of key columns, processed with
+\code{\link[tidyselect:eval_select]{tidyselect::eval_select()}}, to restrict the check.}
 }
 \value{
-Returns \code{t1}, invisibly, if the check is passed.
+Returns \code{x}, invisibly, if the check is passed.
 Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
-\code{check_subset()} tests if the values of the chosen columns \code{c1} of data frame \code{t1} are a subset of the values
-of columns \code{c2} of data frame \code{t2}.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+\code{check_subset()} tests if \code{x} is a subset of \code{y}.
+For convenience, the \code{x_select} and \code{y_select} arguments allow restricting the check
+to a set of key columns without affecting the return value.
 }
 \examples{
 data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
