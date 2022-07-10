@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.99.99.9002
+
+## API
+
+- `dm()` accepts dm objects, deprecate `dm_bind()` and `dm_add_tbl()` (#1226).
+
+- Stabilize `dm_examine_cardinalities()` (#1195).
+
+- Stabilize `dm_examine_constraints()` (#1193).
+
+
 # dm 0.99.99.9001
 
 ## Documentation
