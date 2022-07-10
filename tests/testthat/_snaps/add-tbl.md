@@ -1,4 +1,4 @@
-# dm_add_tbl() works
+# dm_add_tbl() snapshots
 
     Code
       dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "check_unique")
@@ -6,7 +6,7 @@
       Error in `abort_need_unique_names()`:
       ! Each new table needs to have a unique name. Duplicate new name(s): `tf_1`.
 
-# dm_add_tbl() and dm_rm_tbl() for compound keys
+---
 
     Code
       dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(
@@ -34,6 +34,9 @@
         dm::dm_add_fk(fact, dim_2_key, dim_2) %>%
         dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
         dm::dm_add_fk(fact, dim_4_key, dim_4)
+
+# dm_rm_tbl() works
+
     Code
       dm_rm_tbl(dm_for_flatten(), dim_1) %>% dm_paste(options = c("select", "keys"))
     Message
