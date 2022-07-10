@@ -136,7 +136,7 @@ is_unique_key_se <- function(.data, colname) {
 check_set_equality <- function(x, y,
                                ...,
                                x_select = NULL, y_select = NULL) {
-  check_api({{ x }}, {{ y }}, ..., {{ x_select }}, {{ y_select }}, target = check_set_equality_impl0)
+  check_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = check_set_equality_impl0)
   invisible(x)
 }
 
@@ -190,7 +190,7 @@ check_set_equality_impl0 <- function(x, y, x_label, y_label) {
 check_subset <- function(x, y,
                          ...,
                          x_select = NULL, y_select = NULL) {
-  check_api({{ x }}, {{ y }}, ..., {{ x_select }}, {{ y_select }}, target = check_subset_impl0)
+  check_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = check_subset_impl0)
   invisible(x)
 }
 
