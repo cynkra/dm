@@ -101,14 +101,6 @@ test_that("getter", {
   )
 })
 
-test_that("datamodel-code for drawing", {
-  local_options(max.print = 10000)
-
-  expect_snapshot({
-    dm_get_data_model(dm_for_filter(), column_types = TRUE)
-  })
-})
-
 test_that("get available colors", {
   expect_length(
     dm_get_available_colors(),
@@ -145,9 +137,9 @@ test_that("output", {
       # Multi-fk (#37)
       dm_insert_zoomed("planes_copy") %>%
       # Loose table
-      dm_add_tbl(loose = tibble(a = 1)) %>%
+      dm(loose = tibble(a = 1)) %>%
       # Non-default fk (#402)
-      dm_add_tbl(agency = tibble(airline_name = character())) %>%
+      dm(agency = tibble(airline_name = character())) %>%
       dm_add_fk(agency, airline_name, airlines, name) %>%
       dm_draw(),
     "nycflight-dm.svg"

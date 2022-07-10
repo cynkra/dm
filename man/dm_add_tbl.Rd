@@ -42,9 +42,17 @@ Users can silence the name repair messages by setting the
 The initial \code{dm} with the additional table(s).
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
 Adds one or more new tables to a \code{\link{dm}}.
 Existing tables are not overwritten.
 }
+\section{Life cycle}{
+
+This function is deprecated as of dm 1.0.0, because the same functionality
+is offered by \code{\link[=dm]{dm()}} with \code{.name_repair = "unique"}.
+}
+
 \examples{
 dm() \%>\%
   dm_add_tbl(mtcars, flowers = iris)
@@ -56,3 +64,4 @@ dm() \%>\%
 \seealso{
 \code{\link[=dm_mutate_tbl]{dm_mutate_tbl()}}, \code{\link[=dm_rm_tbl]{dm_rm_tbl()}}
 }
+\keyword{internal}

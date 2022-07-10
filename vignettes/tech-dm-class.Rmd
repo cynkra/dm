@@ -64,7 +64,7 @@ library(nycflights13)
 library(dm)
 empty_dm <- dm()
 empty_dm
-dm_add_tbl(empty_dm, airlines, airports, flights, planes, weather)
+dm(empty_dm, airlines, airports, flights, planes, weather)
 ```
 
 ### Coerce a list of tables

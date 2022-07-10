@@ -1,5 +1,42 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.99.99.9002
+
+## API
+
+- `dm()` accepts dm objects, deprecate `dm_bind()` and `dm_add_tbl()` (#1226).
+
+- Stabilize `dm_examine_cardinalities()` (#1195).
+
+- Stabilize `dm_examine_constraints()` (#1193).
+
+
+# dm 0.99.99.9001
+
+## Documentation
+
+- Add contributing guide (#1222).
+
+
+# dm 0.3.0.9001
+
+## Bug fixes
+
+- `dm_draw()` works if a table name has a space (#1219).
+
+- Don't print rule in `glimpse.dm()` for empty `dm()` (#1208).
+
+## Features
+
+- Honor implicit unique keys defined by foreign keys (#1131, #1209).
+
+## Chore
+
+- Use sensible node and edge IDs, corresponding to the data model, in SVG graph (#1214).
+
+- Tests for datamodelr code (#1215).
+
+
 # dm 0.3.0.9000
 
 - Internal changes only.

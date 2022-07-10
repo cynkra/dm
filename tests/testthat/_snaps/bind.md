@@ -1,8 +1,30 @@
+# errors: duplicate table names, src mismatches
+
+    Code
+      dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter())
+    Condition
+      Warning:
+      `dm_bind()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
+      Error in `dm_bind()`:
+      ! Names must be unique.
+      x These names are duplicated:
+        * "tf_1" at locations 1 and 12.
+        * "tf_2" at locations 2 and 13.
+        * "tf_3" at locations 3 and 14.
+        * "tf_4" at locations 4 and 15.
+        * "tf_5" at locations 5 and 16.
+        * ...
+
 # test error output for src mismatches
 
     Code
       writeLines(conditionMessage(expect_error(dm_bind(dm_for_flatten(),
       dm_for_filter_duckdb()))))
+    Condition
+      Warning:
+      `dm_bind()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
     Output
       All `dm` objects need to share the same `src`.
 
@@ -10,14 +32,26 @@
 
     Code
       dm_bind()
+    Condition
+      Warning:
+      `dm_bind()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
     Output
       dm()
     Code
       dm_bind(empty_dm())
+    Condition
+      Warning:
+      `dm_bind()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
     Output
       dm()
     Code
       dm_bind(dm_for_filter()) %>% collect()
+    Condition
+      Warning:
+      `dm_bind()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
@@ -27,6 +61,10 @@
     Code
       dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique",
       quiet = TRUE) %>% collect()
+    Condition
+      Warning:
+      `dm_bind()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1...1`, `tf_2...2`, `tf_3...3`, `tf_4...4`, `tf_5...5`, ... (17 total)
@@ -36,14 +74,29 @@
     Code
       writeLines(conditionMessage(expect_error(dm_bind(dm_for_filter(),
       dm_for_flatten(), dm_for_filter()))))
+    Condition
+      Warning:
+      `dm_bind()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
     Output
-      Each new table needs to have a unique name. Duplicate new name(s): `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`.
+      Names must be unique.
+      x These names are duplicated:
+        * "tf_1" at locations 1 and 12.
+        * "tf_2" at locations 2 and 13.
+        * "tf_3" at locations 3 and 14.
+        * "tf_4" at locations 4 and 15.
+        * "tf_5" at locations 5 and 16.
+        * ...
 
-# output dev vctrs
+---
 
     Code
       dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique") %>%
         collect()
+    Condition
+      Warning:
+      `dm_bind()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
     Message
       New names:
       * `tf_1` -> `tf_1...1`
@@ -70,6 +123,10 @@
     Code
       dm_bind(dm_for_filter(), dm_for_flatten()) %>% dm_paste(options = c("select",
         "keys"))
+    Condition
+      Warning:
+      `dm_bind()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
     Message
       dm::dm(
         tf_1,
@@ -117,6 +174,10 @@
     Code
       dm_bind(dm_for_flatten(), dm_for_filter()) %>% dm_paste(options = c("select",
         "keys"))
+    Condition
+      Warning:
+      `dm_bind()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
     Message
       dm::dm(
         fact,
@@ -162,11 +223,15 @@
         dm::dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
         dm::dm_add_fk(tf_5, m, tf_6, n)
 
-# output for compound keys dev vctrs
+---
 
     Code
       dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>% dm_paste(
         options = c("select", "keys"))
+    Condition
+      Warning:
+      `dm_bind()` was deprecated in dm 1.0.0.
+      Please use `dm()` instead.
     Message
       New names:
       * `fact` -> `fact...1`

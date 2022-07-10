@@ -1,4 +1,6 @@
 test_that("dm_add_tbl() works", {
+  local_options(lifecycle_verbosity = "quiet")
+
   # is a table added?
   expect_identical(
     length(dm_get_tables(dm_add_tbl(dm_for_filter(), data_card_1()))),
@@ -52,12 +54,6 @@ test_that("dm_add_tbl() works", {
     c(src_tbls_impl(dm_for_filter()), "data_card_1()", "data_card_2()")
   )
 
-  # Is an error thrown in case I try to give the new table an old table's name if `repair = "check_unique"`?
-  expect_dm_error(
-    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "check_unique"),
-    "need_unique_names"
-  )
-
   # are in the default case (`repair = 'unique'`) the tables renamed (old table AND new table) according to "unique" default setting
   expect_identical(
     dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), quiet = TRUE) %>% src_tbls_impl(),
@@ -93,6 +89,19 @@ test_that("dm_add_tbl() works", {
   )
 })
 
+test_that("dm_add_tbl() snapshots", {
+  local_options(lifecycle_verbosity = "warning")
+
+  # Is an error thrown in case I try to give the new table an old table's name if `repair = "check_unique"`?
+  expect_snapshot(error = TRUE, {
+    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "check_unique")
+  })
+
+  expect_snapshot({
+    dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(options = c("select", "keys"))
+  })
+})
+
 test_that("dm_rm_tbl() works", {
   # removes a table
   expect_equivalent_dm(
@@ -123,11 +132,8 @@ test_that("dm_rm_tbl() works", {
     dm_rm_tbl(dm_for_disambiguate()),
     dm_for_disambiguate()
   )
-})
 
-test_that("dm_add_tbl() and dm_rm_tbl() for compound keys", {
   expect_snapshot({
-    dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(options = c("select", "keys"))
     dm_rm_tbl(dm_for_flatten(), dim_1) %>% dm_paste(options = c("select", "keys"))
     dm_rm_tbl(dm_for_flatten(), fact) %>% dm_paste(options = c("select", "keys"))
   })

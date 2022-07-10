@@ -73,11 +73,11 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
   # Cycles in other components don't affect filtering
   expect_equivalent_dm(
     dm_for_filter_w_cycle() %>%
-      dm_add_tbl(tf_8 = tibble(r = 1)) %>%
+      dm(tf_8 = tibble(r = 1)) %>%
       dm_filter(tf_8, TRUE) %>%
       dm_apply_filters(),
     dm_for_filter_w_cycle() %>%
-      dm_add_tbl(tf_8 = tibble(r = 1))
+      dm(tf_8 = tibble(r = 1))
   )
 
   # FIXME: fails, when it could actually work (check diagram of `dm_for_filter_w_cycle()`)
