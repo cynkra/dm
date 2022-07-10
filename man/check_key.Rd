@@ -4,30 +4,23 @@
 \alias{check_key}
 \title{Check if column(s) can be used as keys}
 \usage{
-check_key(.data, ...)
+check_key(x, ..., .data = deprecated())
 }
 \arguments{
-\item{.data}{The data frame whose columns should be tested for key properties.}
+\item{x}{The data frame whose columns should be tested for key properties.}
 
-\item{...}{The names of the columns to be checked.
+\item{...}{The names of the columns to be checked, processed with
+\code{\link[tidyselect:eval_select]{tidyselect::eval_select()}}. If omitted, all columns will be checked.}
 
-One or more unquoted expressions separated by commas.
-Variable names can be treated as if they were positions, so you
-can use expressions like x:y to select ranges of variables.
-
-The arguments in \code{...} are automatically quoted and evaluated in a context
-where column names represent column positions.
-They also support
-unquoting and splicing.
-
-See selection helpers for more details and examples about tidyselect helpers
-such as \code{starts_with()}, \code{everything()}, etc.}
+\item{.data}{Deprecated.}
 }
 \value{
-Returns \code{.data}, invisibly, if the check is passed.
+Returns \code{x}, invisibly, if the check is passed.
 Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 \code{check_key()} accepts a data frame and, optionally, columns.
 It throws an error
 if the specified columns are NOT a unique key of the data frame.

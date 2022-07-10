@@ -1,3 +1,19 @@
+# check_key() API
+
+    Code
+      check_key(tibble(a = 1), a)
+      check_key(.data = tibble(a = 1), a)
+    Condition
+      Warning:
+      The `.data` argument of `check_key()` is deprecated as of dm 1.0.0.
+      Please use the `x` argument instead.
+    Code
+      check_key(a, .data = tibble(a = 1))
+    Condition
+      Warning:
+      The `.data` argument of `check_key()` is deprecated as of dm 1.0.0.
+      Please use the `x` argument instead.
+
 # output
 
     Code

@@ -1,3 +1,13 @@
+test_that("check_key() API", {
+  local_options(lifecycle_verbosity = "warning")
+
+  expect_snapshot({
+    check_key(tibble(a = 1), a)
+    check_key(.data = tibble(a = 1), a)
+    check_key(a, .data = tibble(a = 1))
+  })
+})
+
 test_that("check_key() checks primary key properly?", {
   expect_dm_error(
     check_key(data_mcard(), c1, c2),
