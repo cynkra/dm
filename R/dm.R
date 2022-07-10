@@ -58,9 +58,13 @@ dm <- function(...,
                .quiet = FALSE) {
   quos <- enquos(...)
 
-  tbls <- map(quos, eval_tidy)
+  dots <- map(quos, eval_tidy)
 
-  def <- dm_impl(tbls, names(quos_auto_name(quos)), .name_repair, .quiet)
+  is_dm <- map_lgl(dots, is_dm)
+
+  def_dm <- dm_bind_impl(dots[is_dm], .name_repair, .quiet)
+  def_tbl <- dm_impl(dots[!is_dm], names(quos_auto_name(quos[!is_dm])), .name_repair, .quiet)
+  def <- vec_rbind(def_dm, def_tbl)
 
   dm <- new_dm3(def)
   dm_validate(dm)
