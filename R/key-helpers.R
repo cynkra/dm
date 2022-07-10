@@ -37,10 +37,11 @@ check_key_impl0 <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
 
-  # FIXME: If dots empty, select all columns
-
-  # No special handling for no columns
-  cols_chosen <- eval_select_indices(quo(c(...)), colnames(.data))
+  if (dots_n(...) == 0) {
+    cols_chosen <- set_names(seq_along(colnames(.data)), colnames(.data))
+  } else {
+    cols_chosen <- eval_select_indices(quo(c(...)), colnames(.data))
+  }
   orig_names <- names(cols_chosen)
   names(cols_chosen) <- glue("...{seq_along(cols_chosen)}")
 

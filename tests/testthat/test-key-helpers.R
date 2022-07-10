@@ -31,10 +31,8 @@ test_that("check_key() checks primary key properly?", {
     check_key(test_tbl, everything())
   )
 
-  expect_dm_error(
-    check_key(test_tbl),
-    "not_unique_key"
-  )
+  # Since dm 1.0.0:
+  expect_silent(check_key(test_tbl))
 
   # if {tidyselect} selects nothing
   # cf. issue #360
