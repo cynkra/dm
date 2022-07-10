@@ -1,3 +1,13 @@
+test_that("check_key() API", {
+  local_options(lifecycle_verbosity = "warning")
+
+  expect_snapshot({
+    check_key(tibble(a = 1), a)
+    check_key(.data = tibble(a = 1), a)
+    check_key(a, .data = tibble(a = 1))
+  })
+})
+
 test_that("check_key() checks primary key properly?", {
   expect_dm_error(
     check_key(data_mcard(), c1, c2),
@@ -21,10 +31,8 @@ test_that("check_key() checks primary key properly?", {
     check_key(test_tbl, everything())
   )
 
-  expect_dm_error(
-    check_key(test_tbl),
-    "not_unique_key"
-  )
+  # Since dm 1.0.0:
+  expect_silent(check_key(test_tbl))
 
   # if {tidyselect} selects nothing
   # cf. issue #360

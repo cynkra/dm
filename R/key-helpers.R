@@ -1,26 +1,19 @@
 #' Check if column(s) can be used as keys
 #'
-#' @description `check_key()` accepts a data frame and, optionally, columns.
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
+#' `check_key()` accepts a data frame and, optionally, columns.
 #' It throws an error
 #' if the specified columns are NOT a unique key of the data frame.
 #' If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
 #'
-#' @param .data The data frame whose columns should be tested for key properties.
-#' @param ... The names of the columns to be checked.
+#' @param x The data frame whose columns should be tested for key properties.
+#' @param ... The names of the columns to be checked, processed with
+#'   [tidyselect::eval_select()]. If omitted, all columns will be checked.
+#' @param .data Deprecated.
 #'
-#'   One or more unquoted expressions separated by commas.
-#'   Variable names can be treated as if they were positions, so you
-#'   can use expressions like x:y to select ranges of variables.
-#'
-#'   The arguments in `...` are automatically quoted and evaluated in a context
-#'   where column names represent column positions.
-#'   They also support
-#'   unquoting and splicing.
-#'
-#'   See selection helpers for more details and examples about tidyselect helpers
-#'   such as `starts_with()`, `everything()`, etc.
-#'
-#' @return Returns `.data`, invisibly, if the check is passed.
+#' @return Returns `x`, invisibly, if the check is passed.
 #'   Otherwise an error is thrown and the reason for it is explained.
 #'
 #' @export
@@ -31,12 +24,24 @@
 #'
 #' # this is passing:
 #' check_key(data, a, c)
-check_key <- function(.data, ...) {
+check_key <- function(x, ..., .data = deprecated()) {
+  if (!is_missing(.data)) {
+    deprecate_soft("1.0.0", "check_key(.data = )", "check_key(x = )")
+    return(check_key_impl0({{ .data }}, {{ x }}, ...))
+  }
+
+  check_key_impl0({{ x }}, ...)
+}
+
+check_key_impl0 <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
 
-  # No special handling for no columns
-  cols_chosen <- eval_select_indices(quo(c(...)), colnames(.data))
+  if (dots_n(...) == 0) {
+    cols_chosen <- set_names(seq_along(colnames(.data)), colnames(.data))
+  } else {
+    cols_chosen <- eval_select_indices(quo(c(...)), colnames(.data))
+  }
   orig_names <- names(cols_chosen)
   names(cols_chosen) <- glue("...{seq_along(cols_chosen)}")
 
