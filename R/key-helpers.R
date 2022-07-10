@@ -132,7 +132,7 @@ is_unique_key_se <- function(.data, colname) {
 #' # this is passing:
 #' check_set_equality(data_1, data_3, x_select = a, y_select = a)
 #' # this is still failing:
-#' check_set_equality(data_2, data_3)
+#' try(check_set_equality(data_2, data_3))
 check_set_equality <- function(x, y,
                                ...,
                                x_select = NULL, y_select = NULL) {

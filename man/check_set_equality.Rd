@@ -37,5 +37,5 @@ data_3 <- tibble::tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 # this is passing:
 check_set_equality(data_1, data_3, x_select = a, y_select = a)
 # this is still failing:
-check_set_equality(data_2, data_3)
+try(check_set_equality(data_2, data_3))
 }
