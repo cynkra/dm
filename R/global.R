@@ -170,6 +170,10 @@ utils::globalVariables(c(
   "referenced_table_name",
   "referenced_table_schema",
   #
+  # cardinalities
+  "x_label",
+  "y_label",
+  #
   # keep this to avoid dealing with trailing commas
   NULL
 ))
