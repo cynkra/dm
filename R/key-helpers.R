@@ -204,11 +204,13 @@ is_subset <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
-  c1q <- enexpr(c1)
-  c2q <- enexpr(c2)
-  col_names_1 <- names(eval_select_indices(c1q, colnames(eval_tidy(t1q))))
-  col_names_2 <- names(eval_select_indices(c2q, colnames(eval_tidy(t2q))))
+  t1s <- eval_tidy(t1q) %>% select({{ c1 }})
+  t2s <- eval_tidy(t2q) %>% select({{ c2 }})
 
-  res <- anti_join(eval_tidy(t1q), eval_tidy(t2q), by = set_names(col_names_2, col_names_1))
+  is_subset_se(t1s, t2s)
+}
+
+is_subset_se <- function(x, y) {
+  res <- anti_join(x, y, by = set_names(colnames(y), colnames(x)))
   pull(count(head(res, 1))) == 0
 }
