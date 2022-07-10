@@ -61,6 +61,7 @@ dm <- function(...,
 
   is_dm <- map_lgl(dots, is_dm)
 
+  # FIXME: check not zoomed, prettier
   stopifnot(names2(quos)[is_dm] == "")
 
   dm_tbl <- dm_impl(dots[!is_dm], names(quos_auto_name(quos[!is_dm])))
