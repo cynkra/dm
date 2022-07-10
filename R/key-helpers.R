@@ -134,18 +134,13 @@ check_set_equality <- function(x, y,
                                ...,
                                x_select = NULL, y_select = NULL) {
   check_api({{ x }}, {{ y }}, ..., {{ x_select }}, {{ y_select }}, target = check_set_equality_impl0)
+  invisible(x)
 }
 
-check_set_equality_impl0 <- function(t1, c1, t2, c2) {
-  t1q <- enquo(t1)
-  t2q <- enquo(t2)
-
-  c1q <- enexpr(c1)
-  c2q <- enexpr(c2)
-
+check_set_equality_impl0 <- function(x, y, x_label, y_label) {
   catcher_1 <- tryCatch(
     {
-      check_subset(!!t1q, !!c1q, !!t2q, !!c2q)
+      check_subset_impl0(x, y, x_label, y_label)
       NULL
     },
     error = identity
@@ -153,7 +148,7 @@ check_set_equality_impl0 <- function(t1, c1, t2, c2) {
 
   catcher_2 <- tryCatch(
     {
-      check_subset(!!t2q, !!c2q, !!t1q, !!c1q)
+      check_subset_impl0(y, x, y_label, x_label)
       NULL
     },
     error = identity
@@ -164,8 +159,6 @@ check_set_equality_impl0 <- function(t1, c1, t2, c2) {
   if (length(catchers) > 0) {
     abort_sets_not_equal(map_chr(catchers, conditionMessage))
   }
-
-  invisible(eval_tidy(t1q))
 }
 
 #' Check column values for subset
@@ -195,28 +188,21 @@ check_subset <- function(x, y,
                          ...,
                          x_select = NULL, y_select = NULL) {
   check_api({{ x }}, {{ y }}, ..., {{ x_select }}, {{ y_select }}, target = check_subset_impl0)
+  invisible(x)
 }
 
-check_subset_impl0 <- function(t1, c1, t2, c2, ...) {
-  t1q <- enquo(t1)
-  t2q <- enquo(t2)
-
-  c1q <- enexpr(c1)
-  c2q <- enexpr(c2)
-  col_names_1 <- names(eval_select_indices(c1q, colnames(eval_tidy(t1q))))
-  col_names_2 <- names(eval_select_indices(c2q, colnames(eval_tidy(t2q))))
-
+check_subset_impl0 <- function(x, y, x_label, y_label) {
   # not using `is_subset()`, since then we would do the same job of finding
   # missing values/combinations twice
-  res <- anti_join(eval_tidy(t1q), eval_tidy(t2q), by = set_names(col_names_2, col_names_1))
+  res <- anti_join(x, y, by = set_names(colnames(y), colnames(x)))
   if (pull(count(head(res, 1))) == 0) {
-    return(invisible(eval_tidy(t1q)))
+    return()
   }
 
   # collect() for robust test output
   print(collect(head(res, n = 10)))
 
-  abort_not_subset_of(as_label(t1q), col_names_1, as_label(t2q), col_names_2)
+  abort_not_subset_of(x_label, colnames(x), y_label, colnames(y))
 }
 
 # similar to `check_subset()`, but evaluates to a boolean
@@ -259,5 +245,18 @@ check_api <- function(x, y,
 }
 
 check_api_impl <- function(t1, c1, t2, c2, ..., target) {
-  target(t1 = {{ t1 }}, c1 = {{ c1 }}, t2 = {{ t2 }}, c2 = {{ c2 }})
+  t1q <- enquo(t1)
+  t2q <- enquo(t2)
+
+  c1q <- enquo(c1)
+  c2q <- enquo(c2)
+
+  if (quo_is_null(c1q)) {
+    stopifnot(quo_is_null(c2q))
+  } else {
+    t1 <- t1 %>% select(!!c1q)
+    t2 <- t2 %>% select(!!c2q)
+  }
+
+  target(x = t1, y = t2, x_label = as_label(t1q), y_label = as_label(t2q))
 }
