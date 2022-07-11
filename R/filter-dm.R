@@ -23,7 +23,7 @@
 #' This results in a new `dm` class object without any filter conditions.
 #'
 #' 1. Calling `dm_apply_filters_to_tbl()`: the remaining rows of the requested table are calculated by performing a sequence
-#' of semi-joins ([`dplyr::semi_join()`]) starting from each table that has been filtered to the requested table
+#' of semi-joins ([dplyr::semi_join()]) starting from each table that has been filtered to the requested table
 #' (similar to 1. but only for one table).
 #'
 #' Several functions of the {dm} package will throw an error if filter conditions exist when they are called.

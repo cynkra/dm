@@ -10,12 +10,12 @@
 #'   for example a fact table in a star schema.
 #' @param ...
 #'   `r lifecycle::badge("experimental")`
-
+#'
 #'   Unquoted names of the tables to be included in addition to the `start` table.
 #'   The order of the tables here determines the order of the joins.
 #'   If the argument is empty, all tables that can be reached will be included.
 #'   Only `dm_squash_to_tbl()` allows using tables that are not direct neighbors of `start`.
-#'   `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
+#'   `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
 #' @family flattening functions
 #'
 #' @details

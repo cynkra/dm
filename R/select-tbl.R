@@ -12,7 +12,7 @@
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more table names of the tables of the [`dm`] object.
-#' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
+#' `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
