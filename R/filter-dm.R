@@ -160,6 +160,14 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #' @export
 dm_apply_filters <- function(dm) {
   check_not_zoomed(dm)
+
+  filters <- dm_get_filters_impl(dm)
+  if (nrow(filters) == 0) {
+    deprecate_soft("1.0.0", "dm_apply_filters()",
+      details = "Calling `dm_apply_filters()` after `dm_filter()` is no longer necessary."
+    )
+  }
+
   dm_apply_filters_impl(dm)
 }
 
@@ -266,6 +274,11 @@ NULL
 dm_get_filters <- function(dm) {
   check_not_zoomed(dm)
 
+  filters <- dm_get_filters_impl(dm)
+  filters
+}
+
+dm_get_filters_impl <- function(dm) {
   filter_df <-
     dm_get_def(dm) %>%
     select(table, filters) %>%

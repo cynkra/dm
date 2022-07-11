@@ -45,6 +45,10 @@
       Foreign keys: 5
     Code
       dm_filter(dm_for_filter(), tf_1 = a > 4) %>% dm_apply_filters()
+    Condition
+      Warning:
+      `dm_apply_filters()` was deprecated in dm 1.0.0.
+      Calling `dm_apply_filters()` after `dm_filter()` is no longer necessary.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`

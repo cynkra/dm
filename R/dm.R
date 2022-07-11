@@ -584,7 +584,7 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 compute.dm <- function(x, ...) {
   # for both dm and zoomed_dm
   x %>%
-    dm_apply_filters() %>%
+    dm_apply_filters_impl() %>%
     dm_get_def() %>%
     mutate(data = map(data, compute, ...)) %>%
     new_dm3()
@@ -600,7 +600,7 @@ compute.dm <- function(x, ...) {
 #' @export
 collect.dm <- function(x, ..., progress = NA) {
   # for both dm and zoomed_dm
-  x <- dm_apply_filters(x)
+  x <- dm_apply_filters_impl(x)
 
   def <- dm_get_def(x)
 
