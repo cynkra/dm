@@ -126,14 +126,19 @@ dm %>%
 
 An example with filtering on a `dm` and then merging:
 
-**Get all flights from Delta Air Lines which didn't depart from John F. Kennedy International Airport in May 2013 - and join all the airports data into the `flights` table.**
+**Get all May 2013 flights from Delta Air Lines which didn't depart from John F. Kennedy International Airport in - and join all the airports data into the `flights` table.**
 
 ```{r}
 dm_nycflights13(subset = FALSE) %>%
-  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  dm_filter(flights, month == 5) %>%
+  dm_filter(
+    airlines = (name == "Delta Air Lines Inc."),
+    airports = (name != "John F Kennedy Intl"),
+    flights = (month == 5)
+  ) %>% 
   dm_flatten_to_tbl(flights, airports, join = left_join)
 ```
+
+See `vignette("tech-dm-filter")` for more details on filtering.
 
 A last example:
 
