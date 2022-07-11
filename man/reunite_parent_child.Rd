@@ -23,7 +23,7 @@ reunite_parent_child_from_list(list_of_parent_child_tables, id_column)
 A wide table produced by joining the two given tables.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Perform table fusion by combining two tables by a common (key) column, and then removing this column.
 
@@ -39,8 +39,10 @@ of the columns is not retained, and the original row names are lost).
 }
 \section{Life cycle}{
 
-These functions are marked "questioning" because they feel more useful
+These functions are marked "experimental" because they feel more useful
 when applied to a table in a dm object.
+Changing the interface later seems harmless because these functions are
+most likely used interactively.
 }
 
 \examples{
