@@ -44,6 +44,8 @@ test_that("dm_filter() legacy API", {
 test_that("dm_filter() deprecations", {
   local_options(lifecycle_verbosity = "warning")
 
+  skip_if_src_not("db")
+
   expect_snapshot({
     dm_filter(dm_for_filter(), tf_1, a > 4)
     dm_filter(dm = dm_for_filter(), tf_1, a > 4)
