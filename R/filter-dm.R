@@ -64,7 +64,7 @@ dm_filter_api0 <- function(..., dm = NULL,
                            apply_target = make_dm_apply_filters_call) {
 
   if (!is.null(dm)) {
-    # deprecate_soft("1.0.0", "dm_filter(dm = )", "dm_filter(.dm = )", user_env = user_env)
+    deprecate_soft("1.0.0", "dm_filter(dm = )", "dm_filter(.dm = )", user_env = user_env)
     dm_filter_api1(
       dm, ...,
       call = call, user_env = user_env, target = target, apply_target = apply_target

@@ -12,6 +12,10 @@
       tf_1: a > 4
     Code
       dm_filter(dm = dm_for_filter(), tf_1, a > 4)
+    Condition
+      Warning:
+      The `dm` argument of `dm_filter()` is deprecated as of dm 1.0.0.
+      Please use the `.dm` argument instead.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
