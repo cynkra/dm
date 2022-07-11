@@ -102,7 +102,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Insert, update, or remove rows in a database</h1>
                         <h4 data-toc-skip class="author">James Wondrasek</h4>
             
-            <h4 data-toc-skip class="date">2022-07-10</h4>
+            <h4 data-toc-skip class="date">2022-07-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-rows.Rmd" class="external-link"><code>vignettes/howto-dm-rows.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-rows.Rmd</code></div>
@@ -239,7 +239,7 @@
 <h2 id="insert">
 <code>dm_rows_insert()</code><a class="anchor" aria-label="anchor" href="#insert"></a>
 </h2>
-<p>To demonstrate <code><a href="../reference/rows-dm.html">dm_rows_insert()</a></code>, we create a dm with tables containing the rows to insert and copy it to <code>sqlite_db</code>, the same source as <code>demo_sql</code>. For all of the <code>dm_rows_*</code> methods, the source and destination <code>dm</code> objects must be in the same RDBMS. You will get an error message if this is not the case.</p>
+<p>To demonstrate <code><a href="../reference/rows-dm.html">dm_rows_insert()</a></code>, we create a dm with tables containing the rows to insert and copy it to <code>sqlite_db</code>, the same source as <code>demo_sql</code>. For all of the <code><a href="../reference/rows-dm.html">dm_rows_...()</a></code> methods, the source and destination <code>dm</code> objects must be in the same RDBMS. You will get an error message if this is not the case.</p>
 <p>The code below adds <code>parent</code> and <code>child</code> table entries for the letter “D”. First, the changeset dm is created and temporarily copied to the database:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">new_parent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>value <span class="op">=</span> <span class="st">"D"</span>, pk <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
@@ -455,7 +455,7 @@
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p>The <code>dm_rows_*</code> methods give you row-level granularity over the modifications you need to make to your relational model. Using the common <code>in_place</code> argument, they all can construct and verify your modifications before committing them. There are a few limitations, as mentioned in the tutorial, but these will be addressed in future updates to {dm}.</p>
+<p>The <code><a href="../reference/rows-dm.html">dm_rows_...()</a></code> methods give you row-level granularity over the modifications you need to make to your relational model. Using the common <code>in_place</code> argument, they all can construct and verify your modifications before committing them. There are a few limitations, as mentioned in the tutorial, but these will be addressed in future updates to {dm}.</p>
 </div>
 <div class="section level2">
 <h2 id="further-reading">Further Reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
