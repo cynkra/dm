@@ -191,9 +191,9 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
   out <-
     def_sub %>%
     unnest_df("pks", tibble(column = list())) %>%
-    set_names(c("table", "pk_col"))
+    set_names(c("table", "pk_cols"))
 
-  out$pk_col <- new_keys(out$pk_col)
+  out$pk_cols <- new_keys(out$pk_cols)
   out
 }
 
