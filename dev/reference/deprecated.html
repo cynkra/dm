@@ -87,7 +87,7 @@ validate_dm() has been replaced by dm_validate() for consistency."><meta propert
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Deprecated functions</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/deprecated.R" class="external-link"><code>R/deprecated.R</code></a>, <a href="https://github.com/cynkra/dm/blob/HEAD/R/flatten.R" class="external-link"><code>R/flatten.R</code></a>, <a href="https://github.com/cynkra/dm/blob/HEAD/R/graph.R" class="external-link"><code>R/graph.R</code></a>, and 2 more</small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/R/deprecated.R" class="external-link"><code>R/deprecated.R</code></a>, <a href="https://github.com/cynkra/dm/blob/HEAD/R/filter-dm.R" class="external-link"><code>R/filter-dm.R</code></a>, <a href="https://github.com/cynkra/dm/blob/HEAD/R/flatten.R" class="external-link"><code>R/flatten.R</code></a>, and 3 more</small>
       <div class="d-none name"><code>deprecated.Rd</code></div>
     </div>
 
@@ -114,6 +114,12 @@ returned from <code><a href="dm_get_all_fks.html">dm_get_all_fks()</a></code> in
 <span><span class="fu">sql_schema_exists</span><span class="op">(</span><span class="va">dest</span>, <span class="va">schema</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">sql_schema_list</span><span class="op">(</span><span class="va">dest</span>, include_default <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dm_apply_filters</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dm_apply_filters_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dm_get_filters</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">dm_join_to_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">table_1</span>, <span class="va">table_2</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></span>
 <span></span>
@@ -262,6 +268,10 @@ If <code>TRUE</code>, a potential old <code>pk</code> is deleted before setting 
 <dd><p>A <code><a href="dm.html">dm</a></code> object.</p></dd>
 
 
+<dt>table</dt>
+<dd><p>A table in the <code>dm</code>.</p></dd>
+
+
 <dt>table_1</dt>
 <dd><p>One of the tables involved in the join.</p></dd>
 
@@ -272,10 +282,6 @@ If <code>TRUE</code>, a potential old <code>pk</code> is deleted before setting 
 
 <dt>join</dt>
 <dd><p>The type of join to be performed, see <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::join()</a></code>.</p></dd>
-
-
-<dt>table</dt>
-<dd><p>A table in the <code>dm</code>.</p></dd>
 
 
 <dt>x</dt>

@@ -126,7 +126,7 @@
 <div class="section level3">
 <h3 id="be-careful-with-methods-for-dm-tbl">Be careful with methods for <code>dm</code>: <code>tbl</code>, <code>[[</code>, <code>$</code><a class="anchor" aria-label="anchor" href="#be-careful-with-methods-for-dm-tbl"></a>
 </h3>
-<p>Furthermore, you need to pay attention if you used one of <code><a href="../reference/dplyr_src.html">tbl.dm()</a></code>, <code>[[.dm()</code>, <code>$.dm()</code>. During the same update the implementation for those methods changed as well, and here you don’t get the convenient warning messages. The change was, that before the update, the mentioned methods would return the table after “filtering” it to just contain the rows with values that relate via foreign key relations to other tables that were filtered earlier. After the update just the table as is would be returned. If you want to retain the former behavior, you need to replace each of the methods with the function <code><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl()</a></code>, which was made available with the update.</p>
+<p>Furthermore, you need to pay attention if you used one of <code><a href="../reference/dplyr_src.html">tbl.dm()</a></code>, <code>[[.dm()</code>, <code>$.dm()</code>. During the same update the implementation for those methods changed as well, and here you don’t get the convenient warning messages. The change was, that before the update, the mentioned methods would return the table after “filtering” it to just contain the rows with values that relate via foreign key relations to other tables that were filtered earlier. After the update just the table as is would be returned. If you want to retain the former behavior, you need to replace each of the methods with the function <code><a href="../reference/deprecated.html">dm_apply_filters_to_tbl()</a></code>, which was made available with the update.</p>
 <p>The methods are of course not to be avoided in general, if no filters are set anyway the result will not change after the update.</p>
 <p>Here a short example for the different cases:</p>
 <p>Formerly you would access the “filtered” tables using the following syntax:</p>
@@ -185,7 +185,9 @@
 <span><span class="co">#&gt; #   precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span></code></pre>
 <p>After the update the same result is achieved by this type of function call:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airlines</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/deprecated.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airlines</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: `dm_apply_filters_to_tbl()` was deprecated in dm 1.0.0.</span></span>
+<span><span class="co">#&gt; Access tables directly after `dm_filter()`.</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 15 × 2</span></span>
 <span><span class="co">#&gt;    carrier name                       </span></span>
 <span><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;                      </span></span>

@@ -136,7 +136,7 @@ that the effect of the filters on this table is taken into account.
 For <code>right_join</code>, <code>full_join</code> and <code>nest_join</code>, an error
 is thrown if any filters are set because filters will not affect the right hand side tables and the result will therefore be
 incorrect in general (calculating the effects on all RHS-tables would also be time-consuming, and is not supported;
-if desired, call <code><a href="dm_filter.html">dm_apply_filters()</a></code> first to achieve that effect).
+if desired, call <code><a href="deprecated.html">dm_apply_filters()</a></code> first to achieve that effect).
 For all other join types, filtering only the <code>start</code> table is enough because the effect is passed on by
 successive joins.</p>
 <p>Mind that calling <code>dm_flatten_to_tbl()</code> with <code>join = right_join</code> and no table order determined in the <code>...</code> argument
