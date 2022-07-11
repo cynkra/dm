@@ -120,7 +120,7 @@ distinct.dm <- function(.data, ...) {
 }
 
 #' @rdname dplyr_table_manipulation
-#' @param .keep_all For `distinct.zoomed_dm()`: see [`dplyr::distinct`]
+#' @param .keep_all For `distinct.zoomed_dm()`: see [dplyr::distinct()]
 #' @export
 distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
   tbl <- tbl_zoomed(.data)

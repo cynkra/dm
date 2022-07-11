@@ -49,15 +49,20 @@ check_key_impl0 <- function(x, x_label) {
   orig_names <- colnames(x)
   cols_chosen <- syms(set_names(orig_names, glue("...{seq_along(orig_names)}")))
 
-  duplicate_rows <-
-    x %>%
-    safe_count(!!!cols_chosen) %>%
-    select(n) %>%
-    filter(n > 1) %>%
-    head(1) %>%
-    collect()
+  if (inherits(x, "data.frame")) {
+    any_duplicate_rows <- vctrs::vec_duplicate_any(x)
+  } else {
+    duplicate_rows <-
+      x %>%
+      safe_count(!!!cols_chosen) %>%
+      select(n) %>%
+      filter(n > 1) %>%
+      head(1) %>%
+      collect()
+    any_duplicate_rows <- nrow(duplicate_rows) != 0
+  }
 
-  if (nrow(duplicate_rows) != 0) {
+  if (any_duplicate_rows) {
     abort_not_unique_key(x_label, orig_names)
   }
 }

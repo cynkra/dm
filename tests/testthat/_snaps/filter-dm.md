@@ -1,3 +1,107 @@
+# dm_filter() deprecations
+
+    Code
+      dm_filter(dm_for_filter(), tf_1, a > 4)
+    Condition
+      Warning:
+      The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
+      Columns: 20
+      Primary keys: 6
+      Foreign keys: 5
+      -- Filters ---------------------------------------------------------------------
+      tf_1: a > 4
+    Code
+      dm_filter(dm = dm_for_filter(), tf_1, a > 4)
+    Condition
+      Warning:
+      The `dm` argument of `dm_filter()` is deprecated as of dm 1.0.0.
+      Please use the `.dm` argument instead.
+      Warning:
+      The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
+      Columns: 20
+      Primary keys: 6
+      Foreign keys: 5
+      -- Filters ---------------------------------------------------------------------
+      tf_1: a > 4
+    Code
+      dm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_apply_filters()
+    Condition
+      Warning:
+      The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
+      Columns: 20
+      Primary keys: 6
+      Foreign keys: 5
+    Code
+      dm_filter(dm_for_filter(), tf_1 = a > 4) %>% dm_apply_filters()
+    Condition
+      Warning:
+      `dm_apply_filters()` was deprecated in dm 1.0.0.
+      Calling `dm_apply_filters()` after `dm_filter()` is no longer necessary.
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
+      Columns: 20
+      Primary keys: 6
+      Foreign keys: 5
+    Code
+      dm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_apply_filters_to_tbl(tf_2)
+    Condition
+      Warning:
+      The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
+    Output
+      # A tibble: 3 x 4
+        c         d e        e1
+        <chr> <int> <chr> <int>
+      1 worm      5 G         7
+      2 dog       6 E         5
+      3 cat       7 F         6
+    Code
+      dm_filter(dm_for_filter(), tf_1 = a > 4) %>% dm_apply_filters_to_tbl(tf_2)
+    Condition
+      Warning:
+      `dm_apply_filters_to_tbl()` was deprecated in dm 1.0.0.
+      Access tables directly after `dm_filter()`.
+    Output
+      # A tibble: 3 x 4
+        c         d e        e1
+        <chr> <int> <chr> <int>
+      1 worm      5 G         7
+      2 dog       6 E         5
+      3 cat       7 F         6
+    Code
+      dm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_get_filters()
+    Condition
+      Warning:
+      The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
+    Output
+      # A tibble: 1 x 3
+        table filter     zoomed
+        <chr> <list>     <lgl> 
+      1 tf_1  <language> FALSE 
+    Code
+      dm_filter(dm_for_filter(), tf_1 = a > 4) %>% dm_get_filters()
+    Condition
+      Warning:
+      `dm_get_filters()` was deprecated in dm 1.0.0.
+      Filter conditions are no longer stored with the dm object.
+    Output
+      # A tibble: 0 x 3
+      # ... with 3 variables: table <chr>, filter <list>, zoomed <lgl>
+
 # data structure
 
     Code
@@ -61,8 +165,8 @@
 # we get filtered/unfiltered tables with respective funs
 
     Code
-      dm_for_filter() %>% dm_filter(tf_1, a > 3, a < 8) %>% dm_apply_filters() %>%
-        dm_get_tables() %>% map(harmonize_tbl)
+      dm_for_filter() %>% dm_filter(tf_1 = a > 3 & a < 8) %>% dm_get_tables() %>% map(
+        harmonize_tbl)
     Output
       $tf_1
       # A tibble: 4 x 2
@@ -117,8 +221,8 @@
 # dm_filter() works as intended for reversed dm
 
     Code
-      dm_for_filter_rev() %>% dm_filter(tf_1, a < 8, a > 3) %>% dm_apply_filters() %>%
-        dm_get_tables() %>% map(harmonize_tbl)
+      dm_for_filter_rev() %>% dm_filter(tf_1 = a < 8 & a > 3) %>% dm_get_tables() %>%
+        map(harmonize_tbl)
     Output
       $tf_6
       # A tibble: 2 x 3
@@ -173,8 +277,8 @@
 # dm_filter() works as intended for inbetween table
 
     Code
-      dm_for_filter() %>% dm_filter(tf_3, g == "five") %>% dm_apply_filters() %>%
-        dm_get_tables() %>% map(harmonize_tbl)
+      dm_for_filter() %>% dm_filter(tf_3 = g == "five") %>% dm_get_tables() %>% map(
+        harmonize_tbl)
     Output
       $tf_1
       # A tibble: 2 x 2
@@ -220,14 +324,12 @@
 # dm_filter() output for compound keys
 
     Code
-      nyc_comp() %>% dm_filter(flights, sched_dep_time <= 1200) %>% dm_apply_filters() %>%
-        dm_nrow()
+      nyc_comp() %>% dm_filter(flights = sched_dep_time <= 1200) %>% dm_nrow()
     Output
       airlines airports  flights   planes  weather 
             14       63      672      502       47 
     Code
-      nyc_comp() %>% dm_filter(weather, pressure < 1020) %>% dm_apply_filters() %>%
-        dm_nrow()
+      nyc_comp() %>% dm_filter(weather = pressure < 1020) %>% dm_nrow()
     Output
       airlines airports  flights   planes  weather 
              0        0        0        0        0 

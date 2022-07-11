@@ -33,7 +33,7 @@ A named list of length two:
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.
 
@@ -46,8 +46,10 @@ columns from the original table, which is now called the 'child table, and adds 
 }
 \section{Life cycle}{
 
-This function is marked "questioning" because it feels more useful
+This function is marked "experimental" because it feels more useful
 when applied to a table in a dm object.
+Changing the interface later seems harmless because these functions are
+most likely used interactively.
 }
 
 \examples{

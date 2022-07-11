@@ -351,7 +351,7 @@
     Output
       dm: 5 tables, 53 columns, 3 primary keys, 3 foreign keys
     Code
-      nyc_flights_dm %>% dm_filter(flights, origin == "EWR") %>% collect()
+      nyc_flights_dm %>% dm_filter(flights = (origin == "EWR")) %>% collect()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -390,8 +390,7 @@
       Primary keys: 4
       Foreign keys: 4
     Code
-      nyc_comp() %>% dm_filter(flights, day == 10) %>% compute() %>% collect() %>%
-        dm_get_def()
+      nyc_comp() %>% dm_filter(flights = (day == 10)) %>% collect() %>% dm_get_def()
     Output
       # A tibble: 5 x 10
         table data     segment display     pks     fks filters zoom   col_tracker_zoom

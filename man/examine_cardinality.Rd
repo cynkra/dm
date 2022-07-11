@@ -40,7 +40,7 @@ Otherwise an error is thrown and the reason for it is explained.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-All \verb{check_cardinality_*()} functions test the following conditions:
+All \code{check_cardinality_...()} functions test the following conditions:
 \enumerate{
 \item Are all rows in \code{x} unique?
 \item Are the rows in \code{y} a subset of the rows in \code{x}?

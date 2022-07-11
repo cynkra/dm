@@ -95,7 +95,7 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more unquoted table names to remove from the `dm`.
-#' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
+#' `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")

@@ -423,7 +423,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
 
 #' Foreign key candidates
 #'
-#' @description `r lifecycle::badge("questioning")`
+#' @description `r lifecycle::badge("experimental")`
 #'
 #' Determine which columns would be good candidates to be used as foreign keys of a table,
 #' to reference the primary key column of another table of the [`dm`] object.
@@ -446,7 +446,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
 #' - the error message triggered for unsuitable candidates that may include the types of mismatched columns
 #'
 #' @section Life cycle:
-#' These functions are marked "questioning" because we are not yet sure about
+#' These functions are marked "experimental" because we are not yet sure about
 #' the interface, in particular if we need both `dm_enum...()` and `enum...()`
 #' variants.
 #' Changing the interface later seems harmless because these functions are

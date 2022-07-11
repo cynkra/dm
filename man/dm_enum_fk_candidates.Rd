@@ -29,7 +29,7 @@ A tibble with the following columns:
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Determine which columns would be good candidates to be used as foreign keys of a table,
 to reference the primary key column of another table of the \code{\link{dm}} object.
@@ -53,7 +53,7 @@ The outcome of the join operation determines the value of the \code{why} column 
 }
 \section{Life cycle}{
 
-These functions are marked "questioning" because we are not yet sure about
+These functions are marked "experimental" because we are not yet sure about
 the interface, in particular if we need both \code{dm_enum...()} and \code{enum...()}
 variants.
 Changing the interface later seems harmless because these functions are

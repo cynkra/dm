@@ -613,10 +613,13 @@ test_that("key tracking works for distinct() and arrange()", {
       dm_zoom_to(tf_2) %>%
       filter(d < 6) %>%
       rename(c_new = c, d_new = d) %>%
-      dm_update_zoomed(),
-    dm_for_filter() %>%
-      dm_filter(tf_2, d < 6) %>%
-      dm_rename(tf_2, c_new = c, d_new = d)
+      dm_update_zoomed() %>%
+      dm_select_tbl(tf_2) %>%
+      dm_rm_pk(tf_2),
+    dm_for_filter()$tf_2 %>%
+      filter(d < 6) %>%
+      rename(c_new = c, d_new = d) %>%
+      dm(tf_2 = .)
   )
 
   # dm_nycflights13() (with FK constraints) doesn't work on DB

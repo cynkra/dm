@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("stable")`
 #'
-#' All `check_cardinality_*()` functions test the following conditions:
+#' All `check_cardinality_...()` functions test the following conditions:
 #' 1. Are all rows in `x` unique?
 #' 1. Are the rows in `y` a subset of the rows in `x`?
 #' 1. Does the relation between `x` and `y` meet the cardinality requirements?
