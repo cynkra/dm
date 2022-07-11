@@ -146,7 +146,9 @@ test_that("dm_mutate_tbl() works", {
           filter(0L == 1L)
       ),
     dm_for_filter_w_cycle() %>%
-      dm_filter(tf_7, 0L == 1L)
+      dm_zoom_to(tf_7) %>%
+      filter(0L == 1L) %>%
+      dm_update_zoomed()
   )
 
   # Table doesn't exist yet

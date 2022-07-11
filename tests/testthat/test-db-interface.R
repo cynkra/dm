@@ -207,8 +207,7 @@ test_that("build_copy_queries snapshot test for pixarfilms", {
     # fetch sample dm
     dm_pixarfilms() %>%
     # make it regular
-    dm_filter(pixar_films, !is.na(film)) %>%
-    dm_apply_filters() %>%
+    dm_filter(pixar_films = (!is.na(film))) %>%
     dm_select_tbl(-pixar_people)
 
   skip_if_not_installed("testthat", "3.1.1")

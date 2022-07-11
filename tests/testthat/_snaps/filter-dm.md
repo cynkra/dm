@@ -1,3 +1,72 @@
+# dm_filter() deprecations
+
+    Code
+      dm_filter(dm_for_filter(), tf_1, a > 4)
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
+      Columns: 20
+      Primary keys: 6
+      Foreign keys: 5
+      -- Filters ---------------------------------------------------------------------
+      tf_1: a > 4
+    Code
+      dm_filter(dm = dm_for_filter(), tf_1, a > 4)
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
+      Columns: 20
+      Primary keys: 6
+      Foreign keys: 5
+      -- Filters ---------------------------------------------------------------------
+      tf_1: a > 4
+    Code
+      dm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_apply_filters()
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
+      Columns: 20
+      Primary keys: 6
+      Foreign keys: 5
+    Code
+      dm_filter(dm_for_filter(), tf_1 = a > 4) %>% dm_apply_filters()
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
+      Columns: 20
+      Primary keys: 6
+      Foreign keys: 5
+    Code
+      dm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_apply_filters_to_tbl(tf_2)
+    Output
+      # A tibble: 3 x 4
+        c         d e        e1
+        <chr> <int> <chr> <int>
+      1 worm      5 G         7
+      2 dog       6 E         5
+      3 cat       7 F         6
+    Code
+      dm_filter(dm_for_filter(), tf_1 = a > 4) %>% dm_apply_filters_to_tbl(tf_2)
+    Output
+      # A tibble: 3 x 4
+        c         d e        e1
+        <chr> <int> <chr> <int>
+      1 worm      5 G         7
+      2 dog       6 E         5
+      3 cat       7 F         6
+    Code
+      dm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_get_filters()
+    Output
+      # A tibble: 1 x 3
+        table filter     zoomed
+        <chr> <list>     <lgl> 
+      1 tf_1  <language> FALSE 
+    Code
+      dm_filter(dm_for_filter(), tf_1 = a > 4) %>% dm_get_filters()
+    Output
+      # A tibble: 0 x 3
+      # ... with 3 variables: table <chr>, filter <list>, zoomed <lgl>
+
 # data structure
 
     Code
@@ -61,8 +130,8 @@
 # we get filtered/unfiltered tables with respective funs
 
     Code
-      dm_for_filter() %>% dm_filter(tf_1, a > 3, a < 8) %>% dm_apply_filters() %>%
-        dm_get_tables() %>% map(harmonize_tbl)
+      dm_for_filter() %>% dm_filter(tf_1 = a > 3 & a < 8) %>% dm_get_tables() %>% map(
+        harmonize_tbl)
     Output
       $tf_1
       # A tibble: 4 x 2
@@ -117,8 +186,8 @@
 # dm_filter() works as intended for reversed dm
 
     Code
-      dm_for_filter_rev() %>% dm_filter(tf_1, a < 8, a > 3) %>% dm_apply_filters() %>%
-        dm_get_tables() %>% map(harmonize_tbl)
+      dm_for_filter_rev() %>% dm_filter(tf_1 = a < 8 & a > 3) %>% dm_get_tables() %>%
+        map(harmonize_tbl)
     Output
       $tf_6
       # A tibble: 2 x 3
@@ -173,8 +242,8 @@
 # dm_filter() works as intended for inbetween table
 
     Code
-      dm_for_filter() %>% dm_filter(tf_3, g == "five") %>% dm_apply_filters() %>%
-        dm_get_tables() %>% map(harmonize_tbl)
+      dm_for_filter() %>% dm_filter(tf_3 = g == "five") %>% dm_get_tables() %>% map(
+        harmonize_tbl)
     Output
       $tf_1
       # A tibble: 2 x 2
@@ -220,14 +289,12 @@
 # dm_filter() output for compound keys
 
     Code
-      nyc_comp() %>% dm_filter(flights, sched_dep_time <= 1200) %>% dm_apply_filters() %>%
-        dm_nrow()
+      nyc_comp() %>% dm_filter(flights = sched_dep_time <= 1200) %>% dm_nrow()
     Output
       airlines airports  flights   planes  weather 
             14       63      672      502       47 
     Code
-      nyc_comp() %>% dm_filter(weather, pressure < 1020) %>% dm_apply_filters() %>%
-        dm_nrow()
+      nyc_comp() %>% dm_filter(weather = pressure < 1020) %>% dm_nrow()
     Output
       airlines airports  flights   planes  weather 
              0        0        0        0        0 

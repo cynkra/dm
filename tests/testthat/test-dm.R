@@ -247,7 +247,7 @@ test_that("creation of empty `dm` works", {
 test_that("'collect.dm()' collects tables on DB", {
   def <-
     dm_for_filter() %>%
-    dm_filter(tf_1, a > 3) %>%
+    dm_filter(tf_1 = a > 3) %>%
     collect() %>%
     dm_get_def()
 
@@ -274,7 +274,7 @@ test_that("'compute.dm()' computes tables on DB", {
 
   def <-
     dm_for_filter_duckdb() %>%
-    dm_filter(tf_1, a > 3) %>%
+    dm_filter(tf_1 = a > 3) %>%
     {
       suppress_mssql_message(compute(.))
     } %>%
@@ -469,19 +469,6 @@ test_that("dm_get_con() works", {
   )
 })
 
-test_that("dm_get_filters() works", {
-  expect_identical(
-    dm_get_filters(dm_for_filter()),
-    tibble(table = character(), filter = list(), zoomed = logical())
-  )
-
-  expect_identical(
-    dm_get_filters(dm_filter(dm_for_filter(), tf_1, a > 3, a < 8)),
-    tibble(table = "tf_1", filter = unname(exprs(a > 3, a < 8)), zoomed = FALSE)
-  )
-})
-
-
 test_that("str()", {
   # https://github.com/cynkra/dm/pull/542/checks?check_run_id=2506393322#step:11:88
   skip("FIXME: Unstable on GHA?")
@@ -509,7 +496,7 @@ test_that("output", {
       format()
 
     nyc_flights_dm %>%
-      dm_filter(flights, origin == "EWR") %>%
+      dm_filter(flights = (origin == "EWR")) %>%
       collect()
   })
 })
@@ -531,8 +518,7 @@ test_that("output for compound keys", {
     nyc_comp() %>%
       collect()
     nyc_comp() %>%
-      dm_filter(flights, day == 10) %>%
-      compute() %>%
+      dm_filter(flights = (day == 10)) %>%
       collect() %>%
       dm_get_def()
     nyc_comp() %>%

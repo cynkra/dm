@@ -80,31 +80,23 @@
 #' # only the three New York airports.
 #' @export
 dm_filter <- function(.dm, ...) {
-  dm_filter_api0(.dm, ..., target = dm_filter_impl0, apply_target = dm_apply_filters)
+  dm_filter_api0({{ .dm }}, ..., target = dm_filter_impl0, apply_target = dm_apply_filters_impl)
 }
 
-dm_filter_api0 <- function(..., .dm = NULL, dm = NULL,
+dm_filter_api0 <- function(..., dm = NULL,
                            call = caller_env(), user_env = caller_env(2),
                            target = make_dm_filter_api_call,
                            apply_target = make_dm_apply_filters_call) {
 
   if (!is.null(dm)) {
     # deprecate_soft("1.0.0", "dm_filter(dm = )", "dm_filter(.dm = )", user_env = user_env)
-    if (!is.null(.dm)) {
-      warn("Detected both `dm` and `.dm` arguments, use `.dm := ...` if needed.")
-    }
     dm_filter_api1(
       dm, ...,
       call = call, user_env = user_env, target = target, apply_target = apply_target
     )
-  } else if (is.null(.dm)) {
-    dm_filter_api1(
-      ...,
-      call = call, user_env = user_env, target = target, apply_target = apply_target
-    )
   } else {
     dm_filter_api1(
-      .dm, ...,
+      ...,
       call = call, user_env = user_env, target = target, apply_target = apply_target
     )
   }
@@ -203,6 +195,10 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #' @export
 dm_apply_filters <- function(dm) {
   check_not_zoomed(dm)
+  dm_apply_filters_impl(dm)
+}
+
+dm_apply_filters_impl <- function(dm) {
   def <- dm_get_def(dm)
 
   def$data <- map(def$table, ~ dm_get_filtered_table(dm, .))
