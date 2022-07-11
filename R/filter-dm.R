@@ -87,9 +87,9 @@ dm_filter_api1 <- function(.dm, ..., table = NULL,
     out <- reduce2(names(quos), quos, dm_filter_api, .init = .dm, target = target)
     apply_target(out)
   } else {
-    # deprecate_soft("1.0.0", "dm_filter(table = )", user_env = user_env,
-    #   details = "`dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters."
-    # )
+    deprecate_soft("1.0.0", "dm_filter(table = )", user_env = user_env,
+      details = "`dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters."
+    )
 
     if (quo_is_null(table)) {
       table_idx <- match("", names2(quos))

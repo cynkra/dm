@@ -2,6 +2,10 @@
 
     Code
       dm_filter(dm_for_filter(), tf_1, a > 4)
+    Condition
+      Warning:
+      The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
@@ -16,6 +20,9 @@
       Warning:
       The `dm` argument of `dm_filter()` is deprecated as of dm 1.0.0.
       Please use the `.dm` argument instead.
+      Warning:
+      The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
@@ -26,6 +33,10 @@
       tf_1: a > 4
     Code
       dm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_apply_filters()
+    Condition
+      Warning:
+      The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
@@ -42,6 +53,10 @@
       Foreign keys: 5
     Code
       dm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_apply_filters_to_tbl(tf_2)
+    Condition
+      Warning:
+      The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters.
     Output
       # A tibble: 3 x 4
         c         d e        e1
@@ -60,6 +75,10 @@
       3 cat       7 F         6
     Code
       dm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_get_filters()
+    Condition
+      Warning:
+      The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters.
     Output
       # A tibble: 1 x 3
         table filter     zoomed
