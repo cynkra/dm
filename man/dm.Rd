@@ -96,7 +96,7 @@ and importing the primary and foreign keys
 \item \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} for adding primary and foreign keys
 \item \code{\link[=copy_dm_to]{copy_dm_to()}} for DB interaction
 \item \code{\link[=dm_draw]{dm_draw()}} for visualization
-\item \code{\link[=dm_join_to_tbl]{dm_join_to_tbl()}} for flattening
+\item \code{\link[=dm_flatten_to_tbl]{dm_flatten_to_tbl()}} for flattening
 \item \code{\link[=dm_filter]{dm_filter()}} for filtering
 \item \code{\link[=dm_select_tbl]{dm_select_tbl()}} for creating a \code{dm} with only a subset of the tables
 \item \code{\link[=dm_nycflights13]{dm_nycflights13()}}  for creating an example \code{dm} object
