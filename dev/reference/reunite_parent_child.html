@@ -88,7 +88,7 @@ of the columns is not retained, and the original row names are lost)."><meta pro
     </div>
 
     <div class="ref-description section level2">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#questioning" class="external-link"><img src="figures/lifecycle-questioning.svg" alt="[Questioning]"></a></p>
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
 <p>Perform table fusion by combining two tables by a common (key) column, and then removing this column.</p>
 <p><code>reunite_parent_child()</code>: After joining the two tables by the column <code>id_column</code>, this column will be removed.
 The transformation is roughly the
@@ -135,8 +135,10 @@ of the columns is not retained, and the original row names are lost).</p>
     <h2 id="life-cycle">Life cycle<a class="anchor" aria-label="anchor" href="#life-cycle"></a></h2>
     
 
-<p>These functions are marked "questioning" because they feel more useful
-when applied to a table in a dm object.</p>
+<p>These functions are marked "experimental" because they feel more useful
+when applied to a table in a dm object.
+Changing the interface later seems harmless because these functions are
+most likely used interactively.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
