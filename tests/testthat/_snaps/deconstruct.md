@@ -111,3 +111,19 @@
       10 BUR   Bob Hope                            34.2 -118.    778    -8 A     Amer~
       # ... with 76 more rows
 
+# `new_dm()` can handle `dm_keyed_tbl` objects
+
+    Code
+      tbl_sum(dm_new$d1)
+    Output
+               Keys 
+      "--- | 0 | 0" 
+
+---
+
+    Code
+      tbl_sum(dm_new$d2)
+    Output
+               Keys 
+      "--- | 0 | 0" 
+
