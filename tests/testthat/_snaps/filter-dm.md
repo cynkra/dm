@@ -94,6 +94,10 @@
       1 tf_1  <language> FALSE 
     Code
       dm_filter(dm_for_filter(), tf_1 = a > 4) %>% dm_get_filters()
+    Condition
+      Warning:
+      `dm_get_filters()` was deprecated in dm 1.0.0.
+      Filter conditions are no longer stored with the dm object.
     Output
       # A tibble: 0 x 3
       # ... with 3 variables: table <chr>, filter <list>, zoomed <lgl>

@@ -137,7 +137,7 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # function to detect any reason for abort()
   check_flatten_to_tbl(
     join_name,
-    (nrow(dm_get_filters(dm)) > 0) && !is_empty(list_of_pts),
+    (nrow(dm_get_filters_impl(dm)) > 0) && !is_empty(list_of_pts),
     anyNA(order_df$name),
     g,
     auto_detect,

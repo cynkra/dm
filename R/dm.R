@@ -350,7 +350,7 @@ show_dm <- function(x) {
   cat_line("Primary keys: ", def_get_n_pks(def))
   cat_line("Foreign keys: ", def_get_n_fks(def))
 
-  filters <- dm_get_filters(x)
+  filters <- dm_get_filters_impl(x)
   if (nrow(filters) > 0) {
     cat_rule("Filters", col = "orange")
     walk2(filters$table, filters$filter, ~ cat_line(paste0(.x, ": ", as_label(.y))))

@@ -202,7 +202,7 @@ dm_apply_filters_to_tbl_impl <- function(dm, table) {
 # calculates the necessary semi-joins from all tables that were filtered to
 # the requested table
 dm_get_filtered_table <- function(dm, from) {
-  filters <- dm_get_filters(dm)
+  filters <- dm_get_filters_impl(dm)
   # Shortcut for speed, not really necessary
   if (nrow(filters) == 0) {
     return(dm_get_tables(dm)[[from]])
@@ -286,6 +286,11 @@ dm_get_filters <- function(dm) {
   check_not_zoomed(dm)
 
   filters <- dm_get_filters_impl(dm)
+  if (nrow(filters) == 0) {
+    deprecate_soft("1.0.0", "dm_get_filters()",
+      details = "Filter conditions are no longer stored with the dm object."
+    )
+  }
   filters
 }
 
@@ -306,7 +311,7 @@ dm_get_filters_impl <- function(dm) {
 }
 
 get_all_filtered_connected <- function(dm, table) {
-  filtered_tables <- unique(dm_get_filters(dm)$table)
+  filtered_tables <- unique(dm_get_filters_impl(dm)$table)
   graph <- create_graph_from_dm(dm)
 
   # Computation of distances and shortest paths uses the same algorithm
