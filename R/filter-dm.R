@@ -1,79 +1,54 @@
 #' Filtering
 #'
 #' @description
-#' `r lifecycle::badge("questioning")`
+#' `r lifecycle::badge("stable")`
 #'
 #' Filtering a table of a [`dm`] object may affect other tables that are connected to it
 #' directly or indirectly via foreign key relations.
 #'
 #' `dm_filter()` can be used to define filter conditions for tables using syntax that is similar to [dplyr::filter()].
-#' These conditions will be stored in the [`dm`], and executed immediately for the tables that they are referring to.
+#' The filters work across related tables:
+#' The resulting `dm` object only contains rows that are related
+#' (directly or indirectly) to rows that remain after applying the filters
+#' on all tables.
 #'
-#' With `dm_apply_filters()`, all tables will be updated according to the filter conditions and the foreign key relations.
+#' @details
+#' As of dm 1.0.0, these conditions are no longer stored in the `dm` object,
+#' instead they are applied to all tables during the call to `dm_filter()`.
+#' Calling `dm_apply_filters()` or `dm_apply_filters_to_tbl()` is no longer necessary.
 #'
-#' `dm_apply_filters_to_tbl()` retrieves one specific table of the `dm` that is updated according to the filter conditions and the foreign key relations.
+#' Use [dm_zoom_to()] and [dplyr::filter()] to filter rows without affecting related tables.
 #'
-#' @details The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
-#' in one of the following scenarios:
+#' @inheritParams dm_examine_constraints
+#' @param ...
+#'   Named logical predicates.
+#'   The names correspond to tables in the `dm` object.
+#'   The predicates are defined in terms of the variables in the corresponding table,
+#'   they are passed on to [dplyr::filter()].
 #'
-#' 1. Calling `dm_apply_filters()` or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
-#' reduces the rows of all other tables connected to it by foreign key relations (cascading effect), leaving only the rows
-#' with corresponding key values.
-#' Tables that are not connected to any table with an active filter are left unchanged.
-#' This results in a new `dm` class object without any filter conditions.
-#'
-#' 1. Calling `dm_apply_filters_to_tbl()`: the remaining rows of the requested table are calculated by performing a sequence
-#' of semi-joins ([dplyr::semi_join()]) starting from each table that has been filtered to the requested table
-#' (similar to 1. but only for one table).
-#'
-#' Several functions of the {dm} package will throw an error if filter conditions exist when they are called.
-#'
-#' @section Life cycle:
-#' These functions are marked "questioning" because it feels wrong
-#' to tightly couple filtering with the data model.
-#' On the one hand, an overview of active filters is useful
-#' when specifying the base data set for an analysis in terms of column selections
-#' and row filters.
-#' However, these filter condition should be only of informative nature
-#' and never affect the results of other operations.
-#' We are working on formalizing the semantics of the underlying operations
-#' in order to present them in a cleaner interface.
-#'
-#' Use [dm_zoom_to()] and [dplyr::filter()] to filter rows without registering
-#' the filter.
-#'
-#' @rdname dm_filter
-#'
-#' @inheritParams dm_add_pk
-#' @param ... Logical predicates defined in terms of the variables in `.data`, passed on to [dplyr::filter()].
-#'   Multiple conditions are combined with `&` or `,`.
+#'   Multiple conditions are combined with `&`.
 #'   Only the rows where the condition evaluates
 #'   to `TRUE` are kept.
 #'
-#'   The arguments in ... are automatically quoted and evaluated in the context of
-#'   the data frame. They support unquoting and splicing.
-#'   See `vignette("programming", package = "dplyr")`
-#'   for an introduction to these concepts.
-#'
-#' @return For `dm_filter()`: an updated `dm` object (filter executed for given table, and condition stored).
+#' @return An updated `dm` object with filters executed across all tables.
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nyc <- dm_nycflights13()
+#' dm_nyc %>%
+#'   dm_nrow()
+#'
 #' dm_nyc_filtered <-
 #'   dm_nycflights13() %>%
-#'   dm_filter(airports, name == "John F Kennedy Intl")
-#'
-#' dm_apply_filters_to_tbl(dm_nyc_filtered, flights)
+#'   dm_filter(airports = (name == "John F Kennedy Intl"))
 #'
 #' dm_nyc_filtered %>%
-#'   dm_apply_filters()
+#'   dm_nrow()
 #'
 #' # If you want to keep only those rows in the parent tables
 #' # whose primary key values appear as foreign key values in
 #' # `flights`, you can set a `TRUE` filter in `flights`:
 #' dm_nyc %>%
-#'   dm_filter(flights, 1 == 1) %>%
-#'   dm_apply_filters() %>%
+#'   dm_filter(flights = (1 == 1)) %>%
 #'   dm_nrow()
 #' # note that in this example, the only affected table is
 #' # `airports` because the departure airports in `flights` are
@@ -181,17 +156,7 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 }
 
 
-#' @rdname dm_filter
-#'
-#' @inheritParams dm_add_pk
-#'
-#' @return For `dm_apply_filters()`: an updated `dm` object (filter effects evaluated for all tables).
-#'
-#' @examplesIf rlang::is_installed("nycflights13")
-#'
-#' dm_nyc %>%
-#'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
-#'   compute()
+#' @rdname deprecated
 #' @export
 dm_apply_filters <- function(dm) {
   check_not_zoomed(dm)
@@ -206,12 +171,7 @@ dm_apply_filters_impl <- function(dm) {
   dm_reset_all_filters(new_dm3(def))
 }
 
-# FIXME: 'dm_apply_filters()' should get an own doc-page which 'dm_apply_filters_to_tbl()' should share (cf. #145)
-#' @rdname dm_filter
-#'
-#' @inheritParams dm_add_pk
-#'
-#' @return For `dm_apply_filters_to_tbl()`, a table.
+#' @rdname deprecated
 #' @export
 dm_apply_filters_to_tbl <- function(dm, table) {
   check_not_zoomed(dm)
@@ -286,8 +246,6 @@ dm_get_filtered_table <- function(dm, from) {
 #' Use [dm_zoom_to()] and [dplyr::filter()] to filter rows without registering
 #' the filter.
 #'
-#' @inheritParams dm_filter
-#'
 #' @seealso [dm_filter()], [dm_apply_filters()]
 #'
 #' @return A tibble with the following columns:
@@ -297,10 +255,14 @@ dm_get_filtered_table <- function(dm, from) {
 #'     \item{`zoomed`}{logical, does the filter condition relate to the zoomed table.}
 #'   }
 #'
-#' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
 #' dm_nycflights13() %>%
 #'   dm_get_filters()
+#' @noRd
+NULL
+
+#' @rdname deprecated
+#' @export
 dm_get_filters <- function(dm) {
   check_not_zoomed(dm)
 
