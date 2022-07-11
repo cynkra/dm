@@ -88,7 +88,7 @@ dm_filter_api1 <- function(.dm, ..., table = NULL,
   } else {
     deprecate_soft("1.0.0", "dm_filter(table = )",
       user_env = user_env,
-      details = "`dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters."
+      details = "`dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters."
     )
 
     if (quo_is_null(table)) {

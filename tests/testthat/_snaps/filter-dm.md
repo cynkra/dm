@@ -5,7 +5,7 @@
     Condition
       Warning:
       The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
-      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
@@ -22,7 +22,7 @@
       Please use the `.dm` argument instead.
       Warning:
       The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
-      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
@@ -36,7 +36,7 @@
     Condition
       Warning:
       The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
-      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
@@ -60,7 +60,7 @@
     Condition
       Warning:
       The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
-      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
     Output
       # A tibble: 3 x 4
         c         d e        e1
@@ -86,7 +86,7 @@
     Condition
       Warning:
       The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
-      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters.
+      `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
     Output
       # A tibble: 1 x 3
         table filter     zoomed
