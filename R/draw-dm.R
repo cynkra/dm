@@ -204,7 +204,7 @@ dm_get_all_column_types <- function(x) {
 #' @inheritParams dm_draw
 #' @param ... Colors to set in the form `color = table`.
 #' Allowed colors are all hex coded colors (quoted) and the color names from `dm_get_available_colors()`.
-#' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
+#' `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
 #' @return For `dm_set_colors()`: the updated data model.
 #'
 #' @export

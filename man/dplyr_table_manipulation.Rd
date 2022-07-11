@@ -68,7 +68,7 @@
 columns selected by \code{...}. Supplying neither will move columns to the
 left-hand side; specifying both is an error.}
 
-\item{.keep_all}{For \code{distinct.zoomed_dm()}: see \code{\link[dplyr:distinct]{dplyr::distinct}}}
+\item{.keep_all}{For \code{distinct.zoomed_dm()}: see \code{\link[dplyr:distinct]{dplyr::distinct()}}}
 
 \item{.keep_pk}{For \code{slice.zoomed_dm}: Logical, if \code{TRUE}, the primary key will be retained during this transformation. If \code{FALSE}, it will be dropped.
 By default, the value is \code{NULL}, which causes the function to issue a message in case a primary key is available for the zoomed table.

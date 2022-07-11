@@ -18,6 +18,7 @@ An interesting choice could be
 for example a fact table in a star schema.}
 
 \item{...}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Unquoted names of the tables to be included in addition to the \code{start} table.
 The order of the tables here determines the order of the joins.
 If the argument is empty, all tables that can be reached will be included.

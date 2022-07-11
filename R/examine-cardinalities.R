@@ -25,7 +25,7 @@
 #'     \item{`cardinality`}{the nature of cardinality along the foreign key.}
 #'   }
 #'
-#' @details Uses [`examine_cardinality()`] on each foreign key that is defined in the [`dm`].
+#' @details Uses [examine_cardinality()] on each foreign key that is defined in the [`dm`].
 #'
 #' @family cardinality functions
 #'
