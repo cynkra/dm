@@ -309,7 +309,7 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
 
 #' Primary key candidate
 #'
-#' @description `r lifecycle::badge("questioning")`
+#' @description `r lifecycle::badge("experimental")`
 #'
 #' `enum_pk_candidates()` checks for each column of a
 #' table if the column contains only unique values, and is thus
@@ -323,7 +323,7 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
 #'   }
 #'
 #' @section Life cycle:
-#' These functions are marked "questioning" because we are not yet sure about
+#' These functions are marked "experimental" because we are not yet sure about
 #' the interface, in particular if we need both `dm_enum...()` and `enum...()`
 #' variants.
 #' Changing the interface later seems harmless because these functions are
