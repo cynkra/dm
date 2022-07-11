@@ -88,6 +88,22 @@ dm_nycflights13() \%>\% names()
 
 dm_nycflights13() \%>\% dm_get_tables()
 \dontshow{\}) # examplesIf}
+library(dm)
+library(nycflights13)
+
+# using `data.frame` objects
+new_dm(tibble::lst(weather, airports))
+
+# using `dm_keyed_tbl` objects
+dm <- dm_nycflights13()
+y1 <- dm$planes \%>\%
+  mutate() \%>\%
+  select(everything())
+y2 <- dm$flights \%>\%
+  left_join(dm$airlines, by = "carrier")
+
+new_dm(list("tbl1" = y1, "tbl2" = y2))
+
 }
 \seealso{
 \itemize{

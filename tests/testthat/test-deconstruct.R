@@ -68,3 +68,27 @@ test_that("subsetting `dm` produces `dm_keyed_tbl` objects", {
   expect_s3_class(dm[[1]], "dm_keyed_tbl")
   expect_s3_class(dm[["airlines"]], "dm_keyed_tbl")
 })
+
+test_that("`new_dm()` can handle `dm_keyed_tbl` objects", {
+  dm <- dm_nycflights13()
+
+  y1 <- dm$weather %>%
+    mutate() %>%
+    select(everything())
+  y2 <- dm$airports %>%
+    mutate() %>%
+    select(everything())
+
+  dm_new <- new_dm(list("d1" = y1, "d2" = y2))
+
+  expect_s3_class(y1, "dm_keyed_tbl")
+  expect_s3_class(y2, "dm_keyed_tbl")
+  expect_s3_class(dm_new, "dm")
+
+  # there shouldn't be any keys
+  expect_snapshot(tbl_sum(dm_new$d1))
+  expect_snapshot(tbl_sum(dm_new$d2))
+
+  expect_equal(dim(dm_new$d1), c(144L, 15L))
+  expect_equal(dim(dm_new$d2), c(86L, 8L))
+})

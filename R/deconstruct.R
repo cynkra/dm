@@ -67,7 +67,7 @@ tbl_sum.dm_keyed_tbl <- function(x, ...) {
   info <- keyed_get_info(x)
 
   if (is.null(info$pk)) {
-    pk_info <- symbol$em_dash
+    pk_info <- cli::symbol$em_dash
   } else {
     pk_info <- commas(tick(info$pk))
   }
