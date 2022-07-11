@@ -62,7 +62,6 @@ dm_filter_api0 <- function(..., dm = NULL,
                            call = caller_env(), user_env = caller_env(2),
                            target = make_dm_filter_api_call,
                            apply_target = make_dm_apply_filters_call) {
-
   if (!is.null(dm)) {
     deprecate_soft("1.0.0", "dm_filter(dm = )", "dm_filter(.dm = )", user_env = user_env)
     dm_filter_api1(
@@ -87,7 +86,8 @@ dm_filter_api1 <- function(.dm, ..., table = NULL,
     out <- reduce2(names(quos), quos, dm_filter_api, .init = .dm, target = target)
     apply_target(out)
   } else {
-    deprecate_soft("1.0.0", "dm_filter(table = )", user_env = user_env,
+    deprecate_soft("1.0.0", "dm_filter(table = )",
+      user_env = user_env,
       details = "`dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters."
     )
 
