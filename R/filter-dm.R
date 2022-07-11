@@ -79,11 +79,83 @@
 #' # `airports` because the departure airports in `flights` are
 #' # only the three New York airports.
 #' @export
-dm_filter <- function(dm, table, ...) {
+dm_filter <- function(.dm, ...) {
+  dm_filter_api0(.dm, ..., target = dm_filter_impl0, apply_target = dm_apply_filters)
+}
+
+dm_filter_api0 <- function(..., .dm = NULL, dm = NULL,
+                           call = caller_env(), user_env = caller_env(2),
+                           target = make_dm_filter_api_call,
+                           apply_target = make_dm_apply_filters_call) {
+
+  if (!is.null(dm)) {
+    # deprecate_soft("1.0.0", "dm_filter(dm = )", "dm_filter(.dm = )", user_env = user_env)
+    if (!is.null(.dm)) {
+      warn("Detected both `dm` and `.dm` arguments, use `.dm := ...` if needed.")
+    }
+    dm_filter_api1(
+      dm, ...,
+      call = call, user_env = user_env, target = target, apply_target = apply_target
+    )
+  } else if (is.null(.dm)) {
+    dm_filter_api1(
+      ...,
+      call = call, user_env = user_env, target = target, apply_target = apply_target
+    )
+  } else {
+    dm_filter_api1(
+      .dm, ...,
+      call = call, user_env = user_env, target = target, apply_target = apply_target
+    )
+  }
+}
+
+dm_filter_api1 <- function(.dm, ..., table = NULL,
+                           call, user_env, target, apply_target) {
+  quos <- enquos(...)
+  table <- enquo(table)
+
+  if (is_named2(quos)) {
+    # New-style API: apply immediately
+    out <- reduce2(names(quos), quos, dm_filter_api, .init = .dm, target = target)
+    apply_target(out)
+  } else {
+    # deprecate_soft("1.0.0", "dm_filter(table = )", user_env = user_env,
+    #   details = "`dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. Call `dm_apply_filters()` to materialize the filters."
+    # )
+
+    if (quo_is_null(table)) {
+      table_idx <- match("", names2(quos))
+      if (is.na(table_idx)) {
+        abort_table_missing("table")
+      }
+      table <- quos[[table_idx]]
+      quos <- quos[-table_idx]
+    }
+
+    stopifnot(quo_is_symbol(table))
+
+    reduce(quos, dm_filter_api, table = as_name(table), .init = .dm, target = target)
+  }
+}
+
+dm_filter_api <- function(dm, table, expr, target) {
+  target(dm, {{ table }}, {{ expr }})
+}
+
+make_dm_filter_api_call <- function(dm, table, expr) {
+  call2("%>%", dm, call2("dm_filter_api", table, expr))
+}
+
+make_dm_apply_filters_call <- function(dm) {
+  call2("%>%", dm, call2("dm_apply_filters"))
+}
+
+dm_filter_impl0 <- function(dm, table, expr) {
   check_not_zoomed(dm)
   dm %>%
-    dm_zoom_to({{ table }}) %>%
-    dm_filter_impl(..., set_filter = TRUE) %>%
+    dm_zoom_to(!!table) %>%
+    dm_filter_impl({{ expr }}, set_filter = TRUE) %>%
     dm_update_zoomed()
 }
 
