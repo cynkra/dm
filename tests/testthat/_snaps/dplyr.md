@@ -11,14 +11,14 @@
     Output
       $pks
       # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+        table pk_cols
+        <chr> <keys> 
+      1 tf_1  a      
+      2 tf_2  c      
+      3 tf_3  f, f1  
+      4 tf_4  h      
+      5 tf_5  k      
+      6 tf_6  o      
       
       $fks
       # A tibble: 5 x 5
@@ -37,14 +37,14 @@
     Output
       $pks
       # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+        table pk_cols
+        <chr> <keys> 
+      1 tf_1  a      
+      2 tf_2  c      
+      3 tf_3  f, f1  
+      4 tf_4  h      
+      5 tf_5  k      
+      6 tf_6  o      
       
       $fks
       # A tibble: 5 x 5
@@ -66,14 +66,14 @@
     Output
       $pks
       # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c_new 
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+        table pk_cols
+        <chr> <keys> 
+      1 tf_1  a      
+      2 tf_2  c_new  
+      3 tf_3  f, f1  
+      4 tf_4  h      
+      5 tf_5  k      
+      6 tf_6  o      
       
       $fks
       # A tibble: 5 x 5
@@ -91,14 +91,14 @@
     Output
       $pks
       # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+        table pk_cols
+        <chr> <keys> 
+      1 tf_1  a      
+      2 tf_2  c      
+      3 tf_3  f, f1  
+      4 tf_4  h      
+      5 tf_5  k      
+      6 tf_6  o      
       
       $fks
       # A tibble: 5 x 5
@@ -116,7 +116,7 @@
     Output
       $pks
       # A tibble: 6 x 2
-        table pk_col   
+        table pk_cols  
         <chr> <keys>   
       1 tf_1  a        
       2 tf_2  c        
@@ -142,15 +142,15 @@
     Output
       $pks
       # A tibble: 7 x 2
-        table   pk_col
-        <chr>   <keys>
-      1 tf_1    a     
-      2 tf_2    c     
-      3 tf_3    f, f1 
-      4 tf_4    h     
-      5 tf_5    k     
-      6 tf_6    o     
-      7 new_tbl c     
+        table   pk_cols
+        <chr>   <keys> 
+      1 tf_1    a      
+      2 tf_2    c      
+      3 tf_3    f, f1  
+      4 tf_4    h      
+      5 tf_5    k      
+      6 tf_6    o      
+      7 new_tbl c      
       
       $fks
       # A tibble: 6 x 5
@@ -169,14 +169,14 @@
     Output
       $pks
       # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+        table pk_cols
+        <chr> <keys> 
+      1 tf_1  a      
+      2 tf_2  c      
+      3 tf_3  f, f1  
+      4 tf_4  h      
+      5 tf_5  k      
+      6 tf_6  o      
       
       $fks
       # A tibble: 5 x 5
@@ -198,15 +198,15 @@
     Output
       $pks
       # A tibble: 7 x 2
-        table   pk_col
-        <chr>   <keys>
-      1 tf_1    a     
-      2 tf_2    c     
-      3 tf_3    f, f1 
-      4 tf_4    h     
-      5 tf_5    k     
-      6 tf_6    o     
-      7 new_tbl c     
+        table   pk_cols
+        <chr>   <keys> 
+      1 tf_1    a      
+      2 tf_2    c      
+      3 tf_3    f, f1  
+      4 tf_4    h      
+      5 tf_5    k      
+      6 tf_6    o      
+      7 new_tbl c      
       
       $fks
       # A tibble: 6 x 5
@@ -228,14 +228,14 @@
     Output
       $pks
       # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+        table pk_cols
+        <chr> <keys> 
+      1 tf_1  a      
+      2 tf_2  c      
+      3 tf_3  f, f1  
+      4 tf_4  h      
+      5 tf_5  k      
+      6 tf_6  o      
       
       $fks
       # A tibble: 5 x 5
@@ -257,15 +257,15 @@
     Output
       $pks
       # A tibble: 7 x 2
-        table   pk_col
-        <chr>   <keys>
-      1 tf_1    a     
-      2 tf_2    c     
-      3 tf_3    f, f1 
-      4 tf_4    h     
-      5 tf_5    k     
-      6 tf_6    o     
-      7 new_tbl c     
+        table   pk_cols
+        <chr>   <keys> 
+      1 tf_1    a      
+      2 tf_2    c      
+      3 tf_3    f, f1  
+      4 tf_4    h      
+      5 tf_5    k      
+      6 tf_6    o      
+      7 new_tbl c      
       
       $fks
       # A tibble: 6 x 5
@@ -284,15 +284,15 @@
     Output
       $pks
       # A tibble: 7 x 2
-        table   pk_col
-        <chr>   <keys>
-      1 tf_1    a     
-      2 tf_2    c     
-      3 tf_3    f, f1 
-      4 tf_4    h     
-      5 tf_5    k     
-      6 tf_6    o     
-      7 new_tbl f, f1 
+        table   pk_cols
+        <chr>   <keys> 
+      1 tf_1    a      
+      2 tf_2    c      
+      3 tf_3    f, f1  
+      4 tf_4    h      
+      5 tf_5    k      
+      6 tf_6    o      
+      7 new_tbl f, f1  
       
       $fks
       # A tibble: 7 x 5
@@ -312,15 +312,15 @@
     Output
       $pks
       # A tibble: 7 x 2
-        table   pk_col
-        <chr>   <keys>
-      1 tf_1    a     
-      2 tf_2    c     
-      3 tf_3    f, f1 
-      4 tf_4    h     
-      5 tf_5    k     
-      6 tf_6    o     
-      7 new_tbl f, f1 
+        table   pk_cols
+        <chr>   <keys> 
+      1 tf_1    a      
+      2 tf_2    c      
+      3 tf_3    f, f1  
+      4 tf_4    h      
+      5 tf_5    k      
+      6 tf_6    o      
+      7 new_tbl f, f1  
       
       $fks
       # A tibble: 7 x 5
@@ -345,15 +345,15 @@
     Output
       $pks
       # A tibble: 7 x 2
-        table   pk_col
-        <chr>   <keys>
-      1 tf_1    a     
-      2 tf_2    c     
-      3 tf_3    f, f1 
-      4 tf_4    h     
-      5 tf_5    k     
-      6 tf_6    o     
-      7 new_tbl c     
+        table   pk_cols
+        <chr>   <keys> 
+      1 tf_1    a      
+      2 tf_2    c      
+      3 tf_3    f, f1  
+      4 tf_4    h      
+      5 tf_5    k      
+      6 tf_6    o      
+      7 new_tbl c      
       
       $fks
       # A tibble: 6 x 5
@@ -374,9 +374,9 @@
     Output
       $pks
       # A tibble: 1 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_3  f, f1 
+        table pk_cols
+        <chr> <keys> 
+      1 tf_3  f, f1  
       
       $fks
       # A tibble: 2 x 5

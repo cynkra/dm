@@ -50,7 +50,7 @@
     Output
       $pks
       # A tibble: 5 x 2
-        table     pk_col           
+        table     pk_cols          
         <chr>     <keys>           
       1 airlines  carrier          
       2 airports  faa              
@@ -80,7 +80,7 @@
     Output
       $pks
       # A tibble: 4 x 2
-        table    pk_col           
+        table    pk_cols          
         <chr>    <keys>           
       1 airlines carrier          
       2 airports faa              
