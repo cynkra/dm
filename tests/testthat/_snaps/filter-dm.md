@@ -7,6 +7,8 @@
       The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
       `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
     Output
+      -- Table source ----------------------------------------------------------------
+      src:  Microsoft SQL Server 15.00.4236[dbo@fv-az372-982/master]
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
       Columns: 20
@@ -24,6 +26,8 @@
       The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
       `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
     Output
+      -- Table source ----------------------------------------------------------------
+      src:  Microsoft SQL Server 15.00.4236[dbo@fv-az372-982/master]
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
       Columns: 20
@@ -38,6 +42,8 @@
       The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
       `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
     Output
+      -- Table source ----------------------------------------------------------------
+      src:  Microsoft SQL Server 15.00.4236[dbo@fv-az372-982/master]
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
       Columns: 20
@@ -50,6 +56,8 @@
       `dm_apply_filters()` was deprecated in dm 1.0.0.
       Calling `dm_apply_filters()` after `dm_filter()` is no longer necessary.
     Output
+      -- Table source ----------------------------------------------------------------
+      src:  Microsoft SQL Server 15.00.4236[dbo@fv-az372-982/master]
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
       Columns: 20
@@ -62,12 +70,11 @@
       The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
       `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
     Output
-      # A tibble: 3 x 4
         c         d e        e1
         <chr> <int> <chr> <int>
-      1 worm      5 G         7
+      1 cat       7 F         6
       2 dog       6 E         5
-      3 cat       7 F         6
+      3 worm      5 G         7
     Code
       dm_filter(dm_for_filter(), tf_1 = a > 4) %>% dm_apply_filters_to_tbl(tf_2)
     Condition
@@ -75,12 +82,11 @@
       `dm_apply_filters_to_tbl()` was deprecated in dm 1.0.0.
       Access tables directly after `dm_filter()`.
     Output
-      # A tibble: 3 x 4
         c         d e        e1
         <chr> <int> <chr> <int>
-      1 worm      5 G         7
+      1 cat       7 F         6
       2 dog       6 E         5
-      3 cat       7 F         6
+      3 worm      5 G         7
     Code
       dm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_get_filters()
     Condition
