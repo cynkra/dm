@@ -183,8 +183,19 @@ dm_apply_filters_impl <- function(dm) {
 #' @export
 dm_apply_filters_to_tbl <- function(dm, table) {
   check_not_zoomed(dm)
-  table_name <- dm_tbl_name(dm, {{ table }})
 
+  filters <- dm_get_filters_impl(dm)
+  if (nrow(filters) == 0) {
+    deprecate_soft("1.0.0", "dm_apply_filters_to_tbl()",
+      details = "Access tables directly after `dm_filter()`."
+    )
+  }
+
+  dm_apply_filters_to_tbl_impl(dm, {{ table }})
+}
+
+dm_apply_filters_to_tbl_impl <- function(dm, table) {
+  table_name <- dm_tbl_name(dm, {{ table }})
   dm_get_filtered_table(dm, table_name)
 }
 

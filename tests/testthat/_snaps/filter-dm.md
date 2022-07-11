@@ -70,6 +70,10 @@
       3 cat       7 F         6
     Code
       dm_filter(dm_for_filter(), tf_1 = a > 4) %>% dm_apply_filters_to_tbl(tf_2)
+    Condition
+      Warning:
+      `dm_apply_filters_to_tbl()` was deprecated in dm 1.0.0.
+      Access tables directly after `dm_filter()`.
     Output
       # A tibble: 3 x 4
         c         d e        e1
