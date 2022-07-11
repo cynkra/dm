@@ -125,7 +125,7 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
     list(PK = dm_get_all_pks_impl(dm), UK = dm_get_all_uks_impl(dm)),
     .id = "kind"
   ) %>%
-    distinct(table, pk_col, .keep_all = TRUE)
+    distinct(table, pk_cols, .keep_all = TRUE)
   if (nrow(pks) == 0) {
     return(tibble(
       table = character(),
@@ -137,7 +137,7 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
     ))
   }
   table_names <- pks$table
-  columns <- pks$pk_col
+  columns <- pks$pk_cols
 
   ticker <- new_ticker(
     "checking pk constraints",
@@ -159,7 +159,7 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
   tibble(
     table = table_names,
     kind = pks$kind,
-    column = pks$pk_col,
+    column = pks$pk_cols,
     ref_table = NA_character_
   ) %>%
     left_join(tbl_is_pk, by = c("table", "column"))
@@ -191,6 +191,6 @@ check_fk_constraints <- function(dm, progress = NA, top_level_fun = top_level_fu
 
 dm_get_all_uks_impl <- function(dm) {
   dm_get_all_fks_impl(dm) %>%
-    select(table = parent_table, pk_col = parent_key_cols) %>%
+    select(table = parent_table, pk_cols = parent_key_cols) %>%
     distinct()
 }

@@ -46,7 +46,7 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
   child_pk <-
     dm_get_all_pks(dm) %>%
     filter(table == !!table_name) %>%
-    pull(pk_col) %>%
+    pull(pk_cols) %>%
     unlist()
   parent_name <- pull(fk, parent_table)
 
@@ -139,7 +139,7 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   parent_pk <-
     dm_get_all_pks(dm) %>%
     filter(table == !!table_name) %>%
-    pull(pk_col) %>%
+    pull(pk_cols) %>%
     unlist()
   child_name <- pull(fk, child_table)
 

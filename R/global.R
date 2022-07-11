@@ -66,7 +66,7 @@ utils::globalVariables(c(
   "parent_key_cols",
   "parent_table",
   "pk",
-  "pk_col",
+  "pk_cols",
   "pks",
   "problem",
   "pt_name",

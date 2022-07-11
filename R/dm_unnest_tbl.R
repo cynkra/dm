@@ -45,7 +45,7 @@ dm_unnest_tbl <- function(dm, parent_table, col, ptype) {
   child_pk_names <-
     dm_get_all_pks(ptype) %>%
     filter(table == new_child_table_name) %>%
-    pull(pk_col) %>%
+    pull(pk_cols) %>%
     unlist()
   fk <-
     dm_get_all_fks(ptype) %>%
@@ -119,7 +119,7 @@ dm_unpack_tbl <- function(dm, child_table, col, ptype) {
 
   parent_pk_names <- dm_get_all_pks(ptype) %>%
     filter(table == new_parent_table_name) %>%
-    pull(pk_col) %>%
+    pull(pk_cols) %>%
     unlist()
   fk <- dm_get_all_fks(ptype) %>%
     filter(child_table == child_table_name, parent_table == new_parent_table_name)

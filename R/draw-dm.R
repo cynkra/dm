@@ -130,7 +130,7 @@ dm_get_data_model <- function(x, column_types = FALSE) {
 
   keys_pk <-
     dm_get_all_pks_impl(x) %>%
-    mutate(column = format(pk_col)) %>%
+    mutate(column = format(pk_cols)) %>%
     select(table, column) %>%
     mutate(key = 1L)
 

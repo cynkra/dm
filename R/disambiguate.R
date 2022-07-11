@@ -53,7 +53,7 @@ get_table_colnames <- function(dm, tables = NULL, exclude_pk = TRUE) {
     pks <- dm_get_all_pks_def_impl(def)
 
     keep_colnames <-
-      pks[c("table", "pk_col")] %>%
+      pks[c("table", "pk_cols")] %>%
       set_names(c("table", "column")) %>%
       unnest_col("column", character())
 

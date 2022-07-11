@@ -14,8 +14,8 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
   # if a that doesn't match a pk, this non-pk col should be unique
   uniques <-
     fks %>%
-    select(name = parent_table, pk_col = parent_key_cols) %>%
-    anti_join(pks, by = c("name", "pk_col")) %>%
+    select(name = parent_table, pk_cols = parent_key_cols) %>%
+    anti_join(pks, by = c("name", "pk_cols")) %>%
     distinct()
 
   ## build sql definitions to use in `CREATE TABLE ...`
@@ -58,7 +58,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       pks %>%
       transmute(
         name,
-        pk_defs = paste0("PRIMARY KEY (", quote_enum_col(pk_col), ")")
+        pk_defs = paste0("PRIMARY KEY (", quote_enum_col(pk_cols), ")")
       )
 
     # unique constraint definitions
@@ -68,7 +68,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
         name,
         unique_def = paste0(
           "UNIQUE (",
-          quote_enum_col(pk_col),
+          quote_enum_col(pk_cols),
           ")"
         )
       ) %>%
