@@ -119,7 +119,7 @@ Color guides the eye.
 
 ```{r visualize_keys}
 fin_dm_keys %>%
-  dm_set_colors(green = c(loans, accounts), darkblue = trans, grey = districts) %>%
+  dm_set_colors(darkgreen = c(loans, accounts), darkblue = trans, grey = districts) %>%
   dm_draw()
 ```
 
