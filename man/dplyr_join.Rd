@@ -3,6 +3,7 @@
 \name{dplyr_join}
 \alias{dplyr_join}
 \alias{left_join.zoomed_dm}
+\alias{left_join.dm_keyed_tbl}
 \alias{inner_join.zoomed_dm}
 \alias{full_join.zoomed_dm}
 \alias{right_join.zoomed_dm}
@@ -12,6 +13,8 @@
 \title{\pkg{dplyr} join methods for zoomed dm objects}
 \usage{
 \method{left_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{left_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
 
 \method{inner_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
 
