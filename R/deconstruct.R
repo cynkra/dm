@@ -90,7 +90,7 @@ tbl_sum.dm_keyed_tbl <- function(x, ...) {
 #' @examples
 #' dm <- dm_nycflights13()
 #' class(dm$airlines)
-#' class(unclass_keyed_tbl(dm$airlines))
+#' class(dm:::unclass_keyed_tbl(dm$airlines))
 #' @keywords internal
 unclass_keyed_tbl <- function(tbl) {
   if (inherits(tbl, "dm_keyed_tbl")) {

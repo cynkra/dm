@@ -158,6 +158,16 @@ test_that("joins work as expected with keyed tables", {
   # expect_equal(dim(zd2), dim(jd2))
 })
 
+# arrange ----------------------------------
+
+test_that("arrange for keyed tables produces expected output", {
+  dm <- dm_nycflights13()
+
+  expect_snapshot({
+    dm$airlines %>% arrange(desc(name))
+  })
+})
+
 # group_by ----------------------------------
 
 test_that("group_by for keyed tables produces expected output", {

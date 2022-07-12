@@ -175,6 +175,31 @@
                Keys 
       "--- | 0 | 0" 
 
+# arrange for keyed tables produces expected output
+
+    Code
+      dm$airlines %>% arrange(desc(name))
+    Output
+      # A tibble: 15 x 2
+      # Keys:     `carrier` | 1 | 0
+         carrier name                       
+       * <chr>   <chr>                      
+       1 VX      Virgin America             
+       2 UA      United Air Lines Inc.      
+       3 US      US Airways Inc.            
+       4 WN      Southwest Airlines Co.     
+       5 YV      Mesa Airlines Inc.         
+       6 B6      JetBlue Airways            
+       7 HA      Hawaiian Airlines Inc.     
+       8 F9      Frontier Airlines Inc.     
+       9 EV      ExpressJet Airlines Inc.   
+      10 MQ      Envoy Air                  
+      11 9E      Endeavor Air Inc.          
+      12 DL      Delta Air Lines Inc.       
+      13 AA      American Airlines Inc.     
+      14 AS      Alaska Airlines Inc.       
+      15 FL      AirTran Airways Corporation
+
 # group_by for keyed tables produces expected output
 
     Code
@@ -222,8 +247,9 @@
         avg_air_time = mean(air_time, na.rm = TRUE))
     Output
       # A tibble: 2 x 2
+      # Keys:     --- | 0 | 4
         month avg_air_time
-        <int>        <dbl>
+      * <int>        <dbl>
       1     1         147.
       2     2         149.
 

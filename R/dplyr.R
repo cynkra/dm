@@ -144,6 +144,16 @@ arrange.zoomed_dm <- function(.data, ...) {
   replace_zoomed_tbl(.data, arranged_tbl)
 }
 
+#' @rdname dplyr_table_manipulation
+#' @export
+arrange.dm_keyed_tbl <- function(.data, ...) {
+  keys_info <- keyed_get_info(.data)
+  tbl <- unclass_keyed_tbl(.data)
+  arranged_tbl <- arrange(tbl, ...)
+  new_keyed_tbl_from_keys_info(arranged_tbl, keys_info)
+}
+
+
 #' @export
 slice.dm <- function(.data, ...) {
   check_zoomed(.data)
@@ -290,8 +300,10 @@ summarise.zoomed_dm <- function(.data, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 summarise.dm_keyed_tbl <- function(.data, ...) {
+  keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  summarize(tbl, ...)
+  summarised_tbl <- summarise(tbl, ...)
+  new_keyed_tbl_from_keys_info(summarised_tbl, keys_info)
 }
 
 #' @export
