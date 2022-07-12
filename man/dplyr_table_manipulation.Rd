@@ -14,6 +14,7 @@
 \alias{group_by.zoomed_dm}
 \alias{ungroup.zoomed_dm}
 \alias{summarise.zoomed_dm}
+\alias{summarise.dm_keyed_tbl}
 \alias{count.zoomed_dm}
 \alias{tally.zoomed_dm}
 \alias{pull.zoomed_dm}
@@ -43,6 +44,8 @@
 \method{ungroup}{zoomed_dm}(x, ...)
 
 \method{summarise}{zoomed_dm}(.data, ...)
+
+\method{summarise}{dm_keyed_tbl}(.data, ...)
 
 \method{count}{zoomed_dm}(
   x,

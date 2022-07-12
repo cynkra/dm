@@ -175,3 +175,16 @@
                Keys 
       "--- | 0 | 0" 
 
+# summarize for keyed tables produces expected outcome
+
+    Code
+      dm <- dm_nycflights13()
+      dm$flights %>% group_by(month) %>% arrange(desc(day)) %>% summarize(
+        avg_air_time = mean(air_time, na.rm = TRUE))
+    Output
+      # A tibble: 2 x 2
+        month avg_air_time
+        <int>        <dbl>
+      1     1         147.
+      2     2         149.
+

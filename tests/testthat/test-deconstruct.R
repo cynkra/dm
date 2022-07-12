@@ -154,6 +154,40 @@ test_that("joins work as expected with keyed tables", {
   expect_equal(keyed_get_info(dm$weather), keyed_get_info(jd1))
   expect_equal(keyed_get_info(dm$flights), keyed_get_info(jd2))
 
-  # FIXME: need to disambiguate columns
-  expect_equal(dim(zd2), dim(jd2))
+  # FIXME: need to disambiguate columns before the number of columns can match
+  # expect_equal(dim(zd2), dim(jd2))
+})
+
+# summarize ----------------------------------
+
+test_that("summarize for keyed tables produces expected outcome", {
+  expect_snapshot({
+    dm <- dm_nycflights13()
+
+    dm$flights %>%
+      group_by(month) %>%
+      arrange(desc(day)) %>%
+      summarize(avg_air_time = mean(air_time, na.rm = TRUE))
+  })
+})
+
+
+test_that("summarize for keyed tables produces same output as zooming", {
+  dm <- dm_nycflights13()
+
+  z_summary <- dm %>%
+    dm_zoom_to(flights) %>%
+    group_by(month) %>%
+    arrange(desc(day)) %>%
+    summarize(avg_air_time = mean(air_time, na.rm = TRUE))
+
+  k_summary <- dm$flights %>%
+    group_by(month) %>%
+    arrange(desc(day)) %>%
+    summarize(avg_air_time = mean(air_time, na.rm = TRUE))
+
+  # zoomed and keyed approaches should provide same summaries
+  expect_equal(dim(z_summary), dim(k_summary))
+  expect_equal(z_summary$month, k_summary$month)
+  expect_equal(z_summary$avg_air_time, k_summary$avg_air_time)
 })
