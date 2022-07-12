@@ -87,6 +87,7 @@ tbl_sum.dm_keyed_tbl <- function(x, ...) {
 #' other classes will be preserved.
 #'
 #' @examples
+#' dm <- dm_nycflights13()
 #' class(dm$airlines)
 #' class(unclass_keyed_tbl(dm$airlines))
 #' @keywords internal
