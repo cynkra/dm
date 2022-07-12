@@ -69,7 +69,7 @@ test_that("subsetting `dm` produces `dm_keyed_tbl` objects", {
   expect_s3_class(dm[["airlines"]], "dm_keyed_tbl")
 })
 
-test_that("`new_dm()` can handle a list of `dm_keyed_tbl` objects", {
+test_that("`dm()` and `new_dm()` can handle a list of `dm_keyed_tbl` objects", {
   dm <- dm_nycflights13()
 
   y1 <- dm$weather %>%
@@ -82,18 +82,26 @@ test_that("`new_dm()` can handle a list of `dm_keyed_tbl` objects", {
   expect_s3_class(y1, "dm_keyed_tbl")
   expect_s3_class(y2, "dm_keyed_tbl")
 
-  dm_new <- new_dm(list("d1" = y1, "d2" = y2))
-  expect_s3_class(dm_new, "dm")
+  dm_output <- dm(d1 = y1, d2 = y2)
+  expect_s3_class(dm_output, "dm")
+
+  new_dm_output <- new_dm(list(d1 = y1, d2 = y2))
+  expect_s3_class(new_dm_output, "dm")
 
   # there shouldn't be any keys
-  expect_snapshot(tbl_sum(dm_new$d1))
-  expect_snapshot(tbl_sum(dm_new$d2))
+  expect_snapshot(tbl_sum(dm_output$d1))
+  expect_snapshot(tbl_sum(dm_output$d2))
+  expect_snapshot(tbl_sum(new_dm_output$d1))
+  expect_snapshot(tbl_sum(new_dm_output$d2))
 
-  expect_equal(dim(dm_new$d1), dim(dm[["weather"]]))
-  expect_equal(dim(dm_new$d2), dim(dm[["airports"]]))
+  # included tables should have the same dimensions as the original tables
+  expect_equal(dim(dm_output$d1), dim(dm[["weather"]]))
+  expect_equal(dim(dm_output$d2), dim(dm[["airports"]]))
+  expect_equal(dim(new_dm_output$d1), dim(dm[["weather"]]))
+  expect_equal(dim(new_dm_output$d2), dim(dm[["airports"]]))
 })
 
-test_that("`new_dm()` can handle a mix of tables and `dm_keyed_tbl` objects", {
+test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` objects", {
   dm <- dm_nycflights13()
 
   y1 <- dm$weather %>%
@@ -104,13 +112,21 @@ test_that("`new_dm()` can handle a mix of tables and `dm_keyed_tbl` objects", {
   expect_s3_class(y1, "dm_keyed_tbl")
   expect_s3_class(y2, "tbl_df")
 
-  dm_new <- new_dm(list("d1" = y1, "d2" = y2))
-  expect_s3_class(dm_new, "dm")
+  dm_output <- dm(d1 = y1, d2 = y2)
+  expect_s3_class(dm_output, "dm")
+
+  new_dm_output <- new_dm(list(d1 = y1, d2 = y2))
+  expect_s3_class(new_dm_output, "dm")
 
   # there shouldn't be any keys
-  expect_snapshot(tbl_sum(dm_new$d1))
-  expect_snapshot(tbl_sum(dm_new$d2))
+  expect_snapshot(tbl_sum(dm_output$d1))
+  expect_snapshot(tbl_sum(dm_output$d2))
+  expect_snapshot(tbl_sum(new_dm_output$d1))
+  expect_snapshot(tbl_sum(new_dm_output$d2))
 
-  expect_equal(dim(dm_new$d1), dim(dm[["weather"]]))
-  expect_equal(dim(dm_new$d2), dim(y2))
+  # included tables should have the same dimensions as the original tables
+  expect_equal(dim(dm_output$d1), dim(dm[["weather"]]))
+  expect_equal(dim(dm_output$d2), dim(y2))
+  expect_equal(dim(new_dm_output$d1), dim(dm[["weather"]]))
+  expect_equal(dim(new_dm_output$d2), dim(y2))
 })
