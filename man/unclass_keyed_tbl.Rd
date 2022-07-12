@@ -14,6 +14,7 @@ other classes will be preserved.
 Remove \code{"dm_keyed_tbl"} class
 }
 \examples{
+dm <- dm_nycflights13()
 class(dm$airlines)
 class(unclass_keyed_tbl(dm$airlines))
 }
