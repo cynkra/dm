@@ -432,15 +432,6 @@ left_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, 
   new_keyed_tbl_from_keys_info(joined_tbl, join_data$keys_info_x)
 }
 
-new_keyed_tbl_from_keys_info <- function(tbl, keys_info) {
-  new_keyed_tbl(
-    tbl,
-    pk = keys_info$pk,
-    fks_in = keys_info$fks_in,
-    fks_out = keys_info$fks_out,
-    uuid = keys_info$uuid
-  )
-}
 
 prepare_keyed_join <- function(x, y, by, suffix, copy) {
   # TODO: disambiguate column names
