@@ -81,14 +81,20 @@ tbl_sum.dm_keyed_tbl <- function(x, ...) {
   )
 }
 
+#' @title Remove `"dm_keyed_tbl"` class
+#'
+#' @return If entered table has `"dm_keyed_tbl"` class, it will be removed. All
+#' other classes will be preserved.
+#'
 #' @examples
 #' class(dm$airlines)
 #' class(unclass_keyed_tbl(dm$airlines))
 #' @keywords internal
 unclass_keyed_tbl <- function(tbl) {
-  stopifnot(inherits(tbl, "dm_keyed_tbl"))
+  if (inherits(tbl, "dm_keyed_tbl")) {
+    new_classes <- class(tbl)[class(tbl) != "dm_keyed_tbl"]
+    class(tbl) <- new_classes
+  }
 
-  new_classes <- class(tbl)[class(tbl) != "dm_keyed_tbl"]
-  class(tbl) <- new_classes
   tbl
 }

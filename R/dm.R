@@ -194,6 +194,7 @@ dm_get_def <- function(x, quiet = FALSE) {
   if (!identical(attr(x, "version"), 3L)) {
     x <- dm_upgrade(x, quiet)
   }
+
   unclass(x)$def
 }
 

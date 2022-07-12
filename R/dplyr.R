@@ -277,6 +277,13 @@ summarise.zoomed_dm <- function(.data, ...) {
   replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
 }
 
+
+#' @rdname dplyr_table_manipulation
+#' @export
+summarise.dm_keyed_tbl <- function(.data, ...) {
+  summarize(unclass_keyed_tbl(.data), ...)
+}
+
 #' @export
 count.dm <- function(x, ...) {
   check_zoomed(x)
