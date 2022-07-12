@@ -1,4 +1,7 @@
 # TODO: can probably be deleted once this feature branch is ready for a merge
+
+# helpers ----------------------------------
+
 test_that("`new_fks_in()` generates expected tibble", {
   expect_snapshot({
     new_fks_in(
@@ -54,6 +57,8 @@ test_that("`new_keyed_tbl()` formatting", {
   })
 })
 
+# subsetting ----------------------------------
+
 test_that("both subsetting operators for `dm` produce the same object", {
   dm <- dm_nycflights13()
 
@@ -68,6 +73,8 @@ test_that("subsetting `dm` produces `dm_keyed_tbl` objects", {
   expect_s3_class(dm[[1]], "dm_keyed_tbl")
   expect_s3_class(dm[["airlines"]], "dm_keyed_tbl")
 })
+
+# constructors ----------------------------------
 
 test_that("`dm()` and `new_dm()` can handle a list of `dm_keyed_tbl` objects", {
   dm <- dm_nycflights13()
@@ -129,4 +136,24 @@ test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` o
   expect_equal(dim(dm_output$d2), dim(y2))
   expect_equal(dim(new_dm_output$d1), dim(dm[["weather"]]))
   expect_equal(dim(new_dm_output$d2), dim(y2))
+})
+
+# joins ----------------------------------
+
+test_that("joins work as expected with keyed tables", {
+  dm <- dm_nycflights13()
+
+  # results should be similar to zooming
+  zd1 <- dm_zoom_to(dm, airports) %>% left_join(flights)
+  zd2 <- dm_zoom_to(dm, flights) %>% left_join(airports)
+
+  jd1 <- dm$weather %>% left_join(dm$flights)
+  jd2 <- dm$flights %>% left_join(dm$weather)
+
+  expect_equal(ncol(jd1), ncol(jd2))
+  expect_equal(keyed_get_info(dm$weather), keyed_get_info(jd1))
+  expect_equal(keyed_get_info(dm$flights), keyed_get_info(jd2))
+
+  # FIXME: need to disambiguate columns
+  expect_equal(dim(zd2), dim(jd2))
 })

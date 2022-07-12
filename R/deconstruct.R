@@ -80,3 +80,15 @@ tbl_sum.dm_keyed_tbl <- function(x, ...) {
     Keys = paste0(pk_info, " | ", fks_in_info, " | ", fks_out_info)
   )
 }
+
+#' @examples
+#' class(dm$airlines)
+#' class(unclass_keyed_tbl(dm$airlines))
+#' @keywords internal
+unclass_keyed_tbl <- function(tbl) {
+  stopifnot(inherits(tbl, "dm_keyed_tbl"))
+
+  new_classes <- class(tbl)[class(tbl) != "dm_keyed_tbl"]
+  class(tbl) <- new_classes
+  tbl
+}
