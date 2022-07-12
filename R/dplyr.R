@@ -187,6 +187,15 @@ group_by.zoomed_dm <- function(.data, ...) {
   replace_zoomed_tbl(.data, grouped_tbl)
 }
 
+#' @rdname dplyr_table_manipulation
+#' @export
+group_by.dm_keyed_tbl <- function(.data, ...) {
+  keys_info <- keyed_get_info(.data)
+  tbl <- unclass_keyed_tbl(.data)
+  grouped_tbl <- group_by(tbl, ...)
+  new_keyed_tbl_from_keys_info(grouped_tbl, keys_info)
+}
+
 #' @export
 group_data.dm <- function(.data) {
   check_zoomed(.data)
@@ -281,7 +290,8 @@ summarise.zoomed_dm <- function(.data, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 summarise.dm_keyed_tbl <- function(.data, ...) {
-  summarize(unclass_keyed_tbl(.data), ...)
+  tbl <- unclass_keyed_tbl(.data)
+  summarize(tbl, ...)
 }
 
 #' @export
@@ -407,12 +417,16 @@ left_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, 
     ...
   )
 
+  new_keyed_tbl_from_keys_info(joined_tbl, join_data$keys_info_x)
+}
+
+new_keyed_tbl_from_keys_info <- function(tbl, keys_info) {
   new_keyed_tbl(
-    joined_tbl,
-    pk = join_data$keys_info_x$pk,
-    fks_in = join_data$keys_info_x$fks_in,
-    fks_out = join_data$keys_info_x$fks_out,
-    uuid = join_data$keys_info_x$uuid
+    tbl,
+    pk = keys_info$pk,
+    fks_in = keys_info$fks_in,
+    fks_out = keys_info$fks_out,
+    uuid = keys_info$uuid
   )
 }
 

@@ -175,11 +175,50 @@
                Keys 
       "--- | 0 | 0" 
 
-# summarize for keyed tables produces expected outcome
+# group_by for keyed tables produces expected output
+
+    Code
+      class(dm$flights %>% group_by(month))
+    Output
+      [1] "dm_keyed_tbl" "grouped_df"   "tbl_df"       "tbl"          "data.frame"  
+
+---
+
+    Code
+      tbl_sum(dm$flights %>% group_by(month))
+    Output
+             Groups          Keys 
+        "month [2]" "--- | 0 | 4" 
+
+---
+
+    Code
+      dm$flights %>% group_by(month)
+    Output
+      # A tibble: 1,761 x 19
+      # Groups:   month [2]
+      # Keys:     --- | 0 | 4
+          year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+       * <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
+       1  2013     1    10        3           2359         4      426            437
+       2  2013     1    10       16           2359        17      447            444
+       3  2013     1    10      450            500       -10      634            648
+       4  2013     1    10      520            525        -5      813            820
+       5  2013     1    10      530            530         0      824            829
+       6  2013     1    10      531            540        -9      832            850
+       7  2013     1    10      535            540        -5     1015           1017
+       8  2013     1    10      546            600       -14      645            709
+       9  2013     1    10      549            600       -11      652            724
+      10  2013     1    10      550            600       -10      649            703
+      # ... with 1,751 more rows, and 11 more variables: arr_delay <dbl>,
+      #   carrier <chr>, flight <int>, tailnum <chr>, origin <chr>, dest <chr>,
+      #   air_time <dbl>, distance <dbl>, hour <dbl>, minute <dbl>, time_hour <dttm>
+
+# summarize for keyed tables produces expected output
 
     Code
       dm <- dm_nycflights13()
-      dm$flights %>% group_by(month) %>% arrange(desc(day)) %>% summarize(
+      dm$flights %>% group_by(month) %>% arrange(desc(day)) %>% summarise(
         avg_air_time = mean(air_time, na.rm = TRUE))
     Output
       # A tibble: 2 x 2

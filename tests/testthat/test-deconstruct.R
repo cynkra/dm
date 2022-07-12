@@ -158,16 +158,34 @@ test_that("joins work as expected with keyed tables", {
   # expect_equal(dim(zd2), dim(jd2))
 })
 
+# group_by ----------------------------------
+
+test_that("group_by for keyed tables produces expected output", {
+  dm <- dm_nycflights13()
+
+  expect_snapshot({
+    class(dm$flights %>% group_by(month))
+  })
+
+  expect_snapshot({
+    tbl_sum(dm$flights %>% group_by(month))
+  })
+
+  expect_snapshot({
+    dm$flights %>% group_by(month)
+  })
+})
+
 # summarize ----------------------------------
 
-test_that("summarize for keyed tables produces expected outcome", {
+test_that("summarize for keyed tables produces expected output", {
   expect_snapshot({
     dm <- dm_nycflights13()
 
     dm$flights %>%
       group_by(month) %>%
       arrange(desc(day)) %>%
-      summarize(avg_air_time = mean(air_time, na.rm = TRUE))
+      summarise(avg_air_time = mean(air_time, na.rm = TRUE))
   })
 })
 
