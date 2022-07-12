@@ -59,6 +59,7 @@ new_keyed_tbl <- function(x, ..., pk = NULL, fks_in = NULL, fks_out = NULL, uuid
 }
 
 keyed_get_info <- function(x) {
+  stopifnot(inherits(x, "dm_keyed_tbl"))
   attr(x, "dm_key_info")
 }
 
