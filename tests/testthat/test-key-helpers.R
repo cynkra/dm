@@ -331,6 +331,9 @@ test_that("output for legacy API", {
 
 test_that("output", {
   expect_snapshot(error = TRUE, {
+    check_subset(data_mcard_1(), data_mcard_2(), x_select = c(x = a))
+  })
+  expect_snapshot(error = TRUE, {
     check_subset(data_mcard_2(), data_mcard_1(), x_select = a)
   })
 })

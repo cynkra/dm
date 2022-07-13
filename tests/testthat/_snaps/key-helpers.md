@@ -28,6 +28,14 @@
 # output
 
     Code
+      check_subset(data_mcard_1(), data_mcard_2(), x_select = c(x = a))
+    Condition
+      Error in `check_api_impl()`:
+      ! `by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`.
+
+---
+
+    Code
       check_subset(data_mcard_2(), data_mcard_1(), x_select = a)
     Output
       # A tibble: 1 x 1

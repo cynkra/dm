@@ -57,7 +57,7 @@
       check_card_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = c)
     Condition
       Error in `check_card_api_impl()`:
-      ! `by_position = FALSE` or `by_position = NULL` require matching column names.
+      ! `by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`.
 
 # check_cardinality_...() functions are checking the cardinality correctly?
 
