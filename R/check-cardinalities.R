@@ -91,8 +91,15 @@
 #'
 #' # This passes:
 #' check_cardinality_0_1(d1, d3)
-check_cardinality_0_n <- function(x, y, ..., x_select = NULL, y_select = NULL) {
-  check_card_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = check_cardinality_0_n_impl0)
+check_cardinality_0_n <- function(x, y, ..., x_select = NULL, y_select = NULL,
+                                  by_position = NULL) {
+  check_card_api(
+    {{ x }}, {{ y }}, ...,
+    x_select = {{ x_select }},
+    y_select = {{ y_select }},
+    by_position = by_position,
+    target = check_cardinality_0_n_impl0
+  )
 }
 
 check_cardinality_0_n_impl0 <- function(x, y, x_label, y_label) {
@@ -105,8 +112,15 @@ check_cardinality_0_n_impl0 <- function(x, y, x_label, y_label) {
 
 #' @rdname examine_cardinality
 #' @export
-check_cardinality_1_n <- function(x, y, ..., x_select = NULL, y_select = NULL) {
-  check_card_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = check_cardinality_1_n_impl0)
+check_cardinality_1_n <- function(x, y, ..., x_select = NULL, y_select = NULL,
+                                  by_position = NULL) {
+  check_card_api(
+    {{ x }}, {{ y }}, ...,
+    x_select = {{ x_select }},
+    y_select = {{ y_select }},
+    by_position = by_position,
+    target = check_cardinality_1_n_impl0
+  )
 }
 
 check_cardinality_1_n_impl0 <- function(x, y, x_label, y_label) {
@@ -119,8 +133,15 @@ check_cardinality_1_n_impl0 <- function(x, y, x_label, y_label) {
 
 #' @rdname examine_cardinality
 #' @export
-check_cardinality_1_1 <- function(x, y, ..., x_select = NULL, y_select = NULL) {
-  check_card_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = check_cardinality_1_1_impl0)
+check_cardinality_1_1 <- function(x, y, ..., x_select = NULL, y_select = NULL,
+                                  by_position = NULL) {
+  check_card_api(
+    {{ x }}, {{ y }}, ...,
+    x_select = {{ x_select }},
+    y_select = {{ y_select }},
+    by_position = by_position,
+    target = check_cardinality_1_1_impl0
+  )
 }
 
 check_cardinality_1_1_impl0 <- function(x, y, x_label, y_label) {
@@ -141,8 +162,15 @@ check_cardinality_1_1_impl0 <- function(x, y, x_label, y_label) {
 
 #' @rdname examine_cardinality
 #' @export
-check_cardinality_0_1 <- function(x, y, ..., x_select = NULL, y_select = NULL) {
-  check_card_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = check_cardinality_0_1_impl0)
+check_cardinality_0_1 <- function(x, y, ..., x_select = NULL, y_select = NULL,
+                                  by_position = NULL) {
+  check_card_api(
+    {{ x }}, {{ y }}, ...,
+    x_select = {{ x_select }},
+    y_select = {{ y_select }},
+    by_position = by_position,
+    target = check_cardinality_0_1_impl0
+  )
 }
 
 check_cardinality_0_1_impl0 <- function(x, y, x_label, y_label) {
@@ -167,8 +195,15 @@ check_cardinality_0_1_impl0 <- function(x, y, x_label, y_label) {
 #'
 #' # Returns the kind of cardinality
 #' examine_cardinality(d1, d2)
-examine_cardinality <- function(x, y, ..., x_select = NULL, y_select = NULL) {
-  check_card_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = examine_cardinality_impl0)
+examine_cardinality <- function(x, y, ..., x_select = NULL, y_select = NULL,
+                                by_position = NULL) {
+  check_card_api(
+    {{ x }}, {{ y }}, ...,
+    x_select = {{ x_select }},
+    y_select = {{ y_select }},
+    by_position = by_position,
+    target = examine_cardinality_impl0
+  )
 }
 
 examine_cardinality_impl0 <- function(x, y, x_label, y_label) {
@@ -207,6 +242,7 @@ examine_cardinality_impl0 <- function(x, y, x_label, y_label) {
 check_card_api <- function(x, y,
                            ...,
                            x_select = NULL, y_select = NULL,
+                           by_position = NULL,
                            call = caller_env(),
                            target = exprs) {
   if (dots_n(...) >= 2) {
