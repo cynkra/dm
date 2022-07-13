@@ -132,8 +132,7 @@ new_dm <- function(tables = list()) {
 
 new_dm_def <- function(tables = list(),
                        pks_df = tibble(table = character(), pks = list()),
-                       fks_df = tibble(table = character(), fks = list()),
-                       validate = TRUE) {
+                       fks_df = tibble(table = character(), fks = list())) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
@@ -160,6 +159,23 @@ new_dm_def <- function(tables = list(),
     left_join(zoom, by = "table") %>%
     left_join(col_tracker_zoom, by = "table") %>%
     mutate(uuid = vec_new_uuid_along(table))
+
+  # extract primary keys from keyed table
+  new_def <- def %>%
+    filter(map_lgl(data, is_dm_keyed_tbl)) %>%
+    rowwise() %>%
+    mutate(pks = list_of(new_pk_from_kyes_info(data), .ptype = new_pk())) %>%
+    ungroup()
+
+  # update definition with the new keys
+  def <- dplyr::bind_rows(
+    def %>% filter(!map_lgl(data, is_dm_keyed_tbl)),
+    new_def
+  )
+
+  # data should be saved as a tibble
+  def <- def %>%
+    mutate(data = map(data, unclass_keyed_tbl))
 
   def
 }

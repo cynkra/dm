@@ -74,8 +74,12 @@ new_keyed_tbl_from_keys_info <- function(tbl, keys_info) {
 }
 
 keyed_get_info <- function(x) {
-  stopifnot(inherits(x, "dm_keyed_tbl"))
+  stopifnot(is_dm_keyed_tbl(x))
   attr(x, "dm_key_info")
+}
+
+is_dm_keyed_tbl <- function(x) {
+  inherits(x, "dm_keyed_tbl")
 }
 
 #' @export
@@ -114,4 +118,11 @@ unclass_keyed_tbl <- function(tbl) {
   }
 
   tbl
+}
+
+new_pk_from_kyes_info <- function(tbl) {
+  if (is_dm_keyed_tbl(tbl)) {
+    df_keys <- keyed_get_info(tbl)
+    new_pk(list(df_keys$pk))
+  }
 }
