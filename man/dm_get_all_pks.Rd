@@ -19,7 +19,7 @@ The default \code{NULL} returns information for all tables.}
 A tibble with the following columns:
 \describe{
 \item{\code{table}}{table name,}
-\item{\code{pk_cols}}{column name(s) of primary key, as list of character vectors.}
+\item{\code{pk_col}}{column name(s) of primary key, as list of character vectors.}
 }
 }
 \description{
