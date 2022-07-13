@@ -24,7 +24,7 @@
 #' - [dm_add_pk()] and [dm_add_fk()] for adding primary and foreign keys
 #' - [copy_dm_to()] for DB interaction
 #' - [dm_draw()] for visualization
-#' - [dm_join_to_tbl()] for flattening
+#' - [dm_flatten_to_tbl()] for flattening
 #' - [dm_filter()] for filtering
 #' - [dm_select_tbl()] for creating a `dm` with only a subset of the tables
 #' - [dm_nycflights13()]  for creating an example `dm` object
