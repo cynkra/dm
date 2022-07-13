@@ -152,7 +152,7 @@ check_cardinality_0_n(d1, d2)
 try(check_cardinality_1_1(d1, d3, y_select = c(a = c)))
 try(check_cardinality_0_1(d1, d3, x_select = c(c = a)))
 
-What kind of cardinality is it?
+# What kind of cardinality is it?
 examine_cardinality(d1, d3, x_select = c(c = a))
 examine_cardinality(d1, d2)
 }
