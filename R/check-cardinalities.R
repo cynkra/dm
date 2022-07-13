@@ -85,10 +85,10 @@
 #' try(check_cardinality_0_n(d1, d2))
 #'
 #' # This passes, multiple values in d2$c are allowed:
-#' check_cardinality_0_n(d1, d2, y_select = c(c = a))
+#' check_cardinality_0_n(d1, d2, x_select = c(c = a))
 #'
 #' # This does not pass, injectivity is violated:
-#' try(check_cardinality_1_1(d1, d2), y_select = c(c = a))
+#' try(check_cardinality_1_1(d1, d2, x_select = c(c = a)))
 #'
 #' # This passes:
 #' check_cardinality_0_1(d1, d3)
