@@ -154,7 +154,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`table`}{table name,}
-#'     \item{`pk_cols`}{column name(s) of primary key, as list of character vectors.}
+#'     \item{`pk_col`}{column name(s) of primary key, as list of character vectors.}
 #'   }
 #'
 #' @export
