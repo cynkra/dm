@@ -2,12 +2,20 @@ test_that("check_card_api() new interface", {
   local_options(lifecycle_verbosity = "quiet")
 
   expect_same(
-    check_card_api(data_mcard_1(), data_mcard_2()),
-    check_card_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = b),
-    check_card_api(x = data_mcard_1(), data_mcard_2(), x_select = a, y_select = b),
-    check_card_api(data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b),
-    check_card_api(x = data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b),
-    check_card_api(y = data_mcard_2(), x = data_mcard_1(), x_select = a, y_select = b),
+    check_card_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = c(a = b)),
+    check_card_api(x = data_mcard_1(), data_mcard_2(), x_select = a, y_select = c(a = b)),
+    check_card_api(data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = c(a = b)),
+    check_card_api(x = data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = c(a = b)),
+    check_card_api(y = data_mcard_2(), x = data_mcard_1(), x_select = a, y_select = c(a = b)),
+    check_card_api(data_mcard_1(), a, data_mcard_2(), c(a = b))
+  )
+
+  expect_same(
+    check_card_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
+    check_card_api(x = data_mcard_1(), data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
+    check_card_api(data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
+    check_card_api(x = data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
+    check_card_api(y = data_mcard_2(), x = data_mcard_1(), x_select = a, y_select = b, by_position = TRUE),
     check_card_api(data_mcard_1(), a, data_mcard_2(), b)
   )
 })
@@ -273,31 +281,42 @@ test_that("check_card_api() compatibility", {
   )
 })
 
+test_that("check_cardinality_...() API errors", {
+  skip_if_src_not("df")
+
+  expect_snapshot({
+    check_card_api(data_mcard_1(), a, data_mcard_2(), b)
+  })
+  expect_snapshot(error = TRUE, {
+    check_card_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = c)
+  })
+})
+
 test_that("check_cardinality_...() functions are checking the cardinality correctly?", {
   #  expecting silent: ------------------------------------------------------
 
-  expect_silent(check_cardinality_0_n(data_card_1(), data_card_3(), x_select = a, y_select = c))
+  expect_silent(check_cardinality_0_n(data_card_1(), data_card_3(), x_select = a, y_select = c(a = c)))
 
-  expect_silent(check_cardinality_1_n(data_card_1(), data_card_3(), x_select = a, y_select = c))
+  expect_silent(check_cardinality_1_n(data_card_1(), data_card_3(), x_select = a, y_select = c(a = c)))
 
-  expect_silent(check_cardinality_1_1(data_card_1(), data_card_3(), x_select = a, y_select = c))
+  expect_silent(check_cardinality_1_1(data_card_1(), data_card_3(), x_select = a, y_select = c(a = c)))
 
-  expect_silent(check_set_equality(data_card_1(), data_card_3(), x_select = a, y_select = c))
+  expect_silent(check_set_equality(data_card_1(), data_card_3(), x_select = a, y_select = c(a = c)))
 
-  expect_silent(check_cardinality_0_n(data_card_5(), data_card_4(), x_select = a, y_select = c))
+  expect_silent(check_cardinality_0_n(data_card_5(), data_card_4(), x_select = a, y_select = c(a = c)))
 
-  expect_silent(check_cardinality_0_1(data_card_5(), data_card_6(), x_select = a, y_select = c))
+  expect_silent(check_cardinality_0_1(data_card_5(), data_card_6(), x_select = a, y_select = c(a = c)))
 
 
   # scenarios for examine_cardinality() -------------------------------------
 
   expect_identical(
-    examine_cardinality(data_card_8(), data_card_2(), x_select = c, y_select = a),
+    examine_cardinality(data_card_8(), data_card_2(), x_select = c, y_select = c(c = a)),
     "injective mapping (child: 0 or 1 -> parent: 1)"
   )
 
   expect_identical(
-    examine_cardinality(data_card_5(), data_card_4(), x_select = a, y_select = c),
+    examine_cardinality(data_card_5(), data_card_4(), x_select = a, y_select = c(a = c)),
     "surjective mapping (child: 1 to n -> parent: 1)"
   )
 
@@ -307,7 +326,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   )
 
   expect_identical(
-    examine_cardinality(data_card_1(), data_card_3(), x_select = a, y_select = c),
+    examine_cardinality(data_card_1(), data_card_3(), x_select = a, y_select = c(a = c)),
     "bijective mapping (child: 1 -> parent: 1)"
   )
 
@@ -325,37 +344,37 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     )
 
     expect_dm_error(
-      check_cardinality_1_1(data_card_5(), data_card_4(), x_select = a, y_select = c),
+      check_cardinality_1_1(data_card_5(), data_card_4(), x_select = a, y_select = c(a = c)),
       class = "not_bijective"
     )
 
     expect_dm_error(
-      check_cardinality_1_1(data_card_4(), data_card_5(), x_select = c, y_select = a),
+      check_cardinality_1_1(data_card_4(), data_card_5(), x_select = c, y_select = c(c = a)),
       class = "not_unique_key"
     )
 
     expect_dm_error(
-      check_cardinality_1_1(data_card_4(), data_card_1(), x_select = c, y_select = a),
+      check_cardinality_1_1(data_card_4(), data_card_1(), x_select = c, y_select = c(c = a)),
       class = "not_unique_key"
     )
 
     expect_dm_error(
-      check_cardinality_0_1(data_card_1(), data_card_4(), x_select = a, y_select = c),
+      check_cardinality_0_1(data_card_1(), data_card_4(), x_select = a, y_select = c(a = c)),
       class = "not_injective"
     )
 
     expect_dm_error(
-      check_cardinality_0_n(data_card_4(), data_card_1(), x_select = c, y_select = a),
+      check_cardinality_0_n(data_card_4(), data_card_1(), x_select = c, y_select = c(c = a)),
       class = "not_unique_key"
     )
 
     expect_dm_error(
-      check_cardinality_1_1(data_card_4(), data_card_1(), x_select = c, y_select = a),
+      check_cardinality_1_1(data_card_4(), data_card_1(), x_select = c, y_select = c(c = a)),
       class = "not_unique_key"
     )
 
     expect_dm_error(
-      check_cardinality_1_1(data_card_1(), data_card_4(), x_select = a, y_select = c),
+      check_cardinality_1_1(data_card_1(), data_card_4(), x_select = a, y_select = c(a = c)),
       class = "not_bijective"
     )
   })

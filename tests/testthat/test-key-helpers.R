@@ -54,11 +54,20 @@ test_that("check_api() new interface", {
   local_options(lifecycle_verbosity = "quiet")
 
   expect_same(
-    check_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = b),
-    check_api(x = data_mcard_1(), data_mcard_2(), x_select = a, y_select = b),
-    check_api(data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b),
-    check_api(x = data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b),
-    check_api(y = data_mcard_2(), x = data_mcard_1(), x_select = a, y_select = b),
+    check_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = c(a = b)),
+    check_api(x = data_mcard_1(), data_mcard_2(), x_select = a, y_select = c(a = b)),
+    check_api(data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = c(a = b)),
+    check_api(x = data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = c(a = b)),
+    check_api(y = data_mcard_2(), x = data_mcard_1(), x_select = a, y_select = c(a = b)),
+    check_api(data_mcard_1(), a, data_mcard_2(), c(a = b))
+  )
+
+  expect_same(
+    check_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
+    check_api(x = data_mcard_1(), data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
+    check_api(data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
+    check_api(x = data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
+    check_api(y = data_mcard_2(), x = data_mcard_1(), x_select = a, y_select = b, by_position = TRUE),
     check_api(data_mcard_1(), a, data_mcard_2(), b)
   )
 })
@@ -311,26 +320,35 @@ test_that("check_api() compatibility", {
 })
 
 test_that("check_subset() checks if tf_1$c1 column values are subset of tf_2$c2 properly?", {
-  expect_silent(check_subset(data_mcard_1(), a, data_mcard_2(), a))
+  expect_silent(check_subset(data_mcard_1(), data_mcard_2(), x_select = a, y_select = a))
+})
+
+test_that("output for legacy API", {
+  expect_snapshot({
+    check_subset(data_mcard_1(), a, data_mcard_2(), a)
+  })
 })
 
 test_that("output", {
   expect_snapshot(error = TRUE, {
-    check_subset(data_mcard_2(), a, data_mcard_1(), a)
+    check_subset(data_mcard_1(), data_mcard_2(), x_select = c(x = a))
+  })
+  expect_snapshot(error = TRUE, {
+    check_subset(data_mcard_2(), data_mcard_1(), x_select = a)
   })
 })
 
 test_that("output for compound keys", {
   expect_snapshot(error = TRUE, {
-    check_subset(data_mcard_2(), c(a, b), data_mcard_1(), c(a, b))
+    check_subset(data_mcard_2(), data_mcard_1(), x_select = c(a, b))
   })
 })
 
 test_that("check_set_equality() checks properly if 2 sets of values are equal?", {
-  expect_silent(check_set_equality(data_mcard_1(), a, data_mcard_3(), a))
+  expect_silent(check_set_equality(data_mcard_1(), data_mcard_3(), x_select = a))
 
   expect_snapshot(error = TRUE, {
-    check_set_equality(data_mcard_1(), c(a, c), data_mcard_2(), c(a, c))
+    check_set_equality(data_mcard_1(), data_mcard_2(), x_select = c(a, c))
   })
 })
 
