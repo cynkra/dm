@@ -57,7 +57,10 @@ new_keyed_tbl <- function(x, ..., pk = NULL, fks_in = NULL, fks_out = NULL, uuid
     class = unique(c("dm_keyed_tbl", class(x)))
   )
 
-  remove_rownames(x)
+  # TODO: `structure()` reintroduces rownames; check if {rlang} and {vctrs}
+  # has an alternative; commented out for now because few other tests fail
+  # x <- remove_rownames(x)
+  x
 }
 
 new_keyed_tbl_from_keys_info <- function(tbl, keys_info) {
