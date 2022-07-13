@@ -203,21 +203,7 @@
 # group_by for keyed tables produces expected output
 
     Code
-      class(dm$flights %>% group_by(month))
-    Output
-      [1] "dm_keyed_tbl" "grouped_df"   "tbl_df"       "tbl"          "data.frame"  
-
----
-
-    Code
-      tbl_sum(dm$flights %>% group_by(month))
-    Output
-             Groups          Keys 
-        "month [2]" "--- | 0 | 4" 
-
----
-
-    Code
+      dm <- dm_nycflights13()
       dm$flights %>% group_by(month)
     Output
       # A tibble: 1,761 x 19
@@ -238,6 +224,44 @@
       # ... with 1,751 more rows, and 11 more variables: arr_delay <dbl>,
       #   carrier <chr>, flight <int>, tailnum <chr>, origin <chr>, dest <chr>,
       #   air_time <dbl>, distance <dbl>, hour <dbl>, minute <dbl>, time_hour <dttm>
+    Code
+      dm$airports %>% group_by(tzone)
+    Output
+      # A tibble: 86 x 8
+      # Groups:   tzone [6]
+      # Keys:     `faa` | 1 | 0
+         faa   name                                 lat    lon   alt    tz dst   tzone
+       * <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
+       1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
+       2 ATL   Hartsfield Jackson Atlanta Intl     33.6  -84.4  1026    -5 A     Amer~
+       3 AUS   Austin Bergstrom Intl               30.2  -97.7   542    -6 A     Amer~
+       4 BDL   Bradley Intl                        41.9  -72.7   173    -5 A     Amer~
+       5 BHM   Birmingham Intl                     33.6  -86.8   644    -6 A     Amer~
+       6 BNA   Nashville Intl                      36.1  -86.7   599    -6 A     Amer~
+       7 BOS   General Edward Lawrence Logan Intl  42.4  -71.0    19    -5 A     Amer~
+       8 BTV   Burlington Intl                     44.5  -73.2   335    -5 A     Amer~
+       9 BUF   Buffalo Niagara Intl                42.9  -78.7   724    -5 A     Amer~
+      10 BUR   Bob Hope                            34.2 -118.    778    -8 A     Amer~
+      # ... with 76 more rows
+    Code
+      dm$airports %>% group_by(faa)
+    Output
+      # A tibble: 86 x 8
+      # Groups:   faa [86]
+      # Keys:     `faa` | 1 | 0
+         faa   name                                 lat    lon   alt    tz dst   tzone
+       * <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
+       1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
+       2 ATL   Hartsfield Jackson Atlanta Intl     33.6  -84.4  1026    -5 A     Amer~
+       3 AUS   Austin Bergstrom Intl               30.2  -97.7   542    -6 A     Amer~
+       4 BDL   Bradley Intl                        41.9  -72.7   173    -5 A     Amer~
+       5 BHM   Birmingham Intl                     33.6  -86.8   644    -6 A     Amer~
+       6 BNA   Nashville Intl                      36.1  -86.7   599    -6 A     Amer~
+       7 BOS   General Edward Lawrence Logan Intl  42.4  -71.0    19    -5 A     Amer~
+       8 BTV   Burlington Intl                     44.5  -73.2   335    -5 A     Amer~
+       9 BUF   Buffalo Niagara Intl                42.9  -78.7   724    -5 A     Amer~
+      10 BUR   Bob Hope                            34.2 -118.    778    -8 A     Amer~
+      # ... with 76 more rows
 
 # summarize for keyed tables produces expected output
 
