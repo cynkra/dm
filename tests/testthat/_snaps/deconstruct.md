@@ -267,12 +267,25 @@
 
     Code
       dm <- dm_nycflights13()
-      dm$flights %>% group_by(month) %>% arrange(desc(day)) %>% summarise(
-        avg_air_time = mean(air_time, na.rm = TRUE))
+      dm$airports %>% summarise(mean_alt = mean(alt))
     Output
-      # A tibble: 2 x 2
-        month avg_air_time
-        <int>        <dbl>
-      1     1         147.
-      2     2         149.
+      # A tibble: 1 x 1
+      # Keys:     --- | 1 | 0
+        mean_alt
+      *    <dbl>
+      1     632.
+    Code
+      dm$airports %>% group_by(tzone, dst) %>% summarise(mean_alt = mean(alt))
+    Output
+      # A tibble: 6 x 3
+      # Groups:   tzone [6]
+      # Keys:     `tzone` | 1 | 0
+        tzone               dst   mean_alt
+      * <chr>               <chr>    <dbl>
+      1 America/Chicago     A         680.
+      2 America/Denver      A        5399.
+      3 America/Los_Angeles A         313.
+      4 America/New_York    A         396.
+      5 America/Phoenix     N        1135 
+      6 Pacific/Honolulu    N          13 
 
