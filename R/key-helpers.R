@@ -130,7 +130,10 @@ is_unique_key_se <- function(.data, colname) {
 #' @inheritParams rlang::args_dots_empty
 #' @param x_select,y_select Key columns to restrict the check, processed with
 #'   [dplyr::select()].
-#'   If omitted, columns in `x` and `y` are matched by position.
+#' @param by_position Set to `TRUE` to ignore column names and match
+#'   by position instead.
+#'   The default means matching by name, use `x_select` and/or `y_select`
+#'   to align the names.
 #'
 #' @return Returns `x`, invisibly, if the check is passed.
 #'   Otherwise an error is thrown and the reason for it is explained.
@@ -149,8 +152,15 @@ is_unique_key_se <- function(.data, colname) {
 #' try(check_set_equality(data_2, data_3))
 check_set_equality <- function(x, y,
                                ...,
-                               x_select = NULL, y_select = NULL) {
-  check_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = check_set_equality_impl0)
+                               x_select = NULL, y_select = NULL,
+                               by_position = NULL) {
+  check_api(
+    {{ x }}, {{ y }}, ...,
+    x_select = {{ x_select }},
+    y_select = {{ y_select }},
+    by_position = by_position,
+    target = check_set_equality_impl0
+  )
   invisible(x)
 }
 
@@ -201,8 +211,15 @@ check_set_equality_impl0 <- function(x, y, x_label, y_label) {
 #' try(check_subset(data_2, data_1))
 check_subset <- function(x, y,
                          ...,
-                         x_select = NULL, y_select = NULL) {
-  check_api({{ x }}, {{ y }}, ..., x_select = {{ x_select }}, y_select = {{ y_select }}, target = check_subset_impl0)
+                         x_select = NULL, y_select = NULL,
+                         by_position = NULL) {
+  check_api(
+    {{ x }}, {{ y }}, ...,
+    x_select = {{ x_select }},
+    y_select = {{ y_select }},
+    by_position = by_position,
+    target = check_subset_impl0
+  )
   invisible(x)
 }
 
@@ -239,38 +256,57 @@ is_subset_se <- function(x, y) {
 check_api <- function(x, y,
                       ...,
                       x_select = NULL, y_select = NULL,
+                      by_position = NULL,
                       call = caller_env(),
-                      target = exprs) {
+                      target = list) {
   if (dots_n(...) >= 2) {
     name <- as.character(frame_call(call)[[1]] %||% "check_api")
-    # deprecate_soft("1.0.0", paste0(name, "(c1 = )"), paste0(name, "(x_select = )"),
-    #   details = "Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`."
-    # )
+    deprecate_soft("1.0.0", paste0(name, "(c1 = )"), paste0(name, "(x_select = )"),
+      details = c(
+        "Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`.",
+        "Using `by_position = TRUE` for compatibility."
+      )
+    )
+    stopifnot(is.null(by_position))
     check_api_impl(
       {{ x }}, {{ y }}, ...,
+      by_position = TRUE,
       target = target
     )
   } else {
     check_dots_empty(call = call)
     check_api_impl(
       {{ x }}, {{ x_select }}, {{ y }}, {{ y_select }},
+      by_position = by_position %||% FALSE,
       target = target
     )
   }
 }
 
-check_api_impl <- function(t1, c1, t2, c2, ..., target) {
+check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
   c1q <- enquo(c1)
   c2q <- enquo(c2)
 
-  if (quo_is_null(c1q)) {
-    stopifnot(quo_is_null(c2q))
-  } else {
+  if (!quo_is_null(c1q)) {
     t1 <- t1 %>% select(!!c1q)
+  }
+
+  if (!quo_is_null(c2q)) {
     t2 <- t2 %>% select(!!c2q)
+  }
+
+  if (!isTRUE(by_position)) {
+    y_idx <- match(colnames(t1), colnames(t2))
+    if (anyNA(y_idx)) {
+      abort("`by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`.")
+    }
+
+    t2 <-
+      t2 %>%
+      select(!!y_idx)
   }
 
   target(x = t1, y = t2, x_label = as_label(t1q), y_label = as_label(t2q))
