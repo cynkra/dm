@@ -76,22 +76,24 @@
 #' @export
 #' @examples
 #' d1 <- tibble::tibble(a = 1:5)
-#' d2 <- tibble::tibble(c = c(1:5, 5), d = 0)
-#' d3 <- tibble::tibble(a = 1:4)
-#' # This does not pass, `c` is not unique key of d2:
-#' try(check_cardinality_0_n(d2, d1, x_select = c, y_select = c(c = a)))
+#' d2 <- tibble::tibble(a = c(1:4, 4L))
+#' d3 <- tibble::tibble(c = c(1:5, 5L), d = 0)
+#' # This does not pass, `a` is not unique key of d2:
+#' try(check_cardinality_0_n(d2, d1))
 #'
 #' # Columns are matched by name by default:
-#' try(check_cardinality_0_n(d1, d2))
+#' try(check_cardinality_0_n(d1, d3))
 #'
-#' # This passes, multiple values in d2$c are allowed:
-#' check_cardinality_0_n(d1, d2, x_select = c(c = a))
+#' # This passes, multiple values in d3$c are allowed:
+#' check_cardinality_0_n(d1, d2)
 #'
 #' # This does not pass, injectivity is violated:
-#' try(check_cardinality_1_1(d1, d2, x_select = c(c = a)))
+#' try(check_cardinality_1_1(d1, d3, y_select = c(a = c)))
+#' try(check_cardinality_0_1(d1, d3, x_select = c(c = a)))
 #'
-#' # This passes:
-#' check_cardinality_0_1(d1, d3)
+#' What kind of cardinality is it?
+#' examine_cardinality(d1, d3, x_select = c(c = a))
+#' examine_cardinality(d1, d2)
 check_cardinality_0_n <- function(x, y, ..., x_select = NULL, y_select = NULL,
                                   by_position = NULL) {
   check_card_api(
@@ -192,10 +194,6 @@ check_cardinality_0_1_impl0 <- function(x, y, x_label, y_label) {
 
 #' @rdname examine_cardinality
 #' @export
-#' @examples
-#'
-#' # Returns the kind of cardinality
-#' examine_cardinality(d1, d2, y_select = c(c = a))
 examine_cardinality <- function(x, y, ..., x_select = NULL, y_select = NULL,
                                 by_position = NULL) {
   check_card_api(
