@@ -1,8 +1,6 @@
 #' \pkg{utils} table manipulation methods for `zoomed_dm` objects
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Extract the first or last rows from a table.
 #' Use these methods without the '.zoomed_dm' suffix (see examples).
 #' The methods for regular `dm` objects extract the first or last tables.

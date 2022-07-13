@@ -1,8 +1,6 @@
 #' Rename columns
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Rename the columns of your [`dm`] using syntax that is similar to `dplyr::rename()`.
 #'
 #' @inheritParams dm_zoom_to
@@ -41,8 +39,6 @@ dm_rename <- function(dm, table, ...) {
 #' Select columns
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Select columns of your [`dm`] using syntax that is similar to `dplyr::select()`.
 #'
 #' @inheritParams dm_rename

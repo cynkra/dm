@@ -1,8 +1,6 @@
 #' Creates a dm object for the \pkg{pixarfilms} data
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
-#'
 #' Creates an example [`dm`] object from the tables in
 #' \pkg{pixarfilms}, along with the references.
 #'

@@ -58,8 +58,6 @@ Currently, this is an object of class \code{grViz} (see also
 \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), but this is subject to change.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{dm_draw()} draws a diagram, a visual representation of the data model.
 }
 \details{

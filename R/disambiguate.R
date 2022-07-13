@@ -1,8 +1,6 @@
 #' Resolve column name ambiguities
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' This function ensures that all columns in a `dm` have unique names.
 #'
 #' @details

@@ -1,5 +1,24 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.99.99.9004
+
+## Features
+
+- `is_unique_key()`uses `vctrs::vec_count()` on local data frames for speed (@eutwt, #1247).
+
+- `check_key()` uses `vctrs::vec_duplicate_any()` on local data frames for speed (@eutwt, #1234).
+
+## Documentation
+
+- Improve contrast for display of `dm_financial()` (#1073) (#1250).
+
+## api
+
+- Stabilize `dm_filter()`, deprecate `dm_apply_filters()`, `dm_apply_filters_to_tbl()` and `dm_get_filters()` (#424, #426, #1236).
+
+- Turn all "questioning" functions to "experimental" (#1030, #1237).
+
+
 # dm 0.99.99.9003
 
 ## API

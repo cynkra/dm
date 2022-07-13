@@ -39,7 +39,7 @@ of the columns is not retained, and the original row names are lost).
 }
 \section{Life cycle}{
 
-These functions are marked "experimental" because they feel more useful
+These functions are marked "experimental" because they seem more useful
 when applied to a table in a dm object.
 Changing the interface later seems harmless because these functions are
 most likely used interactively.

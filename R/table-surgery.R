@@ -35,7 +35,7 @@
 #'   - entry "parent_table": the "lookup table" for `child_table`.
 #'
 #' @section Life cycle:
-#' This function is marked "experimental" because it feels more useful
+#' This function is marked "experimental" because it seems more useful
 #' when applied to a table in a dm object.
 #' Changing the interface later seems harmless because these functions are
 #' most likely used interactively.
@@ -99,7 +99,7 @@ decompose_table <- function(.data, new_id_column, ...) {
 #' @return A wide table produced by joining the two given tables.
 #'
 #' @section Life cycle:
-#' These functions are marked "experimental" because they feel more useful
+#' These functions are marked "experimental" because they seem more useful
 #' when applied to a table in a dm object.
 #' Changing the interface later seems harmless because these functions are
 #' most likely used interactively.

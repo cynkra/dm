@@ -20,8 +20,6 @@ By default, this function lists the renamed columns in a message, pass \code{TRU
 A \code{dm} whose column names are unambiguous.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 This function ensures that all columns in a \code{dm} have unique names.
 }
 \details{

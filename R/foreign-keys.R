@@ -1,8 +1,6 @@
 #' Add foreign keys
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_add_fk()` marks the specified `columns` as the foreign key of table `table` with
 #' respect to a key of table `ref_table`.
 #' Usually the referenced columns are a primary key in `ref_table`,
@@ -214,8 +212,6 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 #' Get foreign key constraints
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Get a summary of all foreign key relations in a [`dm`].
 #'
 #' @return A tibble with the following columns:
@@ -273,8 +269,6 @@ dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALS
 #' Remove foreign keys
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_rm_fk()` can remove either one reference between two tables, or multiple references at once (with a message).
 #' An error is thrown if no matching foreign key is found.
 #'

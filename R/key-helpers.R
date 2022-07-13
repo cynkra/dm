@@ -1,8 +1,6 @@
 #' Check if column(s) can be used as keys
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `check_key()` accepts a data frame and, optionally, columns.
 #' It throws an error
 #' if the specified columns are NOT a unique key of the data frame.
@@ -80,12 +78,25 @@ is_unique_key_se <- function(.data, colname) {
   col_syms <- syms(colname)
   names(col_syms) <- val_names
 
-  # FIXME: Build expression instead of paste() + parse()
-  any_value_na_expr <- parse(text = paste0("is.na(", val_names, ")", collapse = " | "))[[1]]
+  any_value_na_expr <-
+    syms(val_names) %>%
+    map(call2, .fn = quote(is.na)) %>%
+    reduce(call2, .fn = quote(`|`))
 
+  if (inherits(.data, "data.frame")) {
+    count_tbl <-
+      .data %>%
+      select(!!!col_syms) %>%
+      vctrs::vec_count() %>%
+      unpack(key) %>%
+      rename(n = count)
+  } else {
+    count_tbl <-
+      .data %>%
+      safe_count(!!!col_syms)
+  }
   res_tbl <-
-    .data %>%
-    safe_count(!!!col_syms) %>%
+    count_tbl %>%
     mutate(any_na = if_else(!!any_value_na_expr, 1L, 0L)) %>%
     filter(n != 1 | any_na != 0L) %>%
     arrange(desc(n), !!!syms(val_names)) %>%
@@ -110,8 +121,6 @@ is_unique_key_se <- function(.data, colname) {
 #' Check column values for set equality
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `check_set_equality()` is a wrapper of [check_subset()].
 #'
 #' It tests if one table is a subset of another and vice versa, i.e., if both sets are the same.
@@ -172,8 +181,6 @@ check_set_equality_impl0 <- function(x, y, x_label, y_label) {
 #' Check column values for subset
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `check_subset()` tests if `x` is a subset of `y`.
 #' For convenience, the `x_select` and `y_select` arguments allow restricting the check
 #' to a set of key columns without affecting the return value.

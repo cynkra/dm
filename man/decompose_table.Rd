@@ -46,7 +46,7 @@ columns from the original table, which is now called the 'child table, and adds 
 }
 \section{Life cycle}{
 
-This function is marked "experimental" because it feels more useful
+This function is marked "experimental" because it seems more useful
 when applied to a table in a dm object.
 Changing the interface later seems harmless because these functions are
 most likely used interactively.

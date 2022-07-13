@@ -22,8 +22,6 @@ to \code{TRUE} are kept.}
 An updated \code{dm} object with filters executed across all tables.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Filtering a table of a \code{\link{dm}} object may affect other tables that are connected to it
 directly or indirectly via foreign key relations.
 

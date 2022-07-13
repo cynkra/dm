@@ -13,8 +13,6 @@ dm_financial_sqlite()
 A \code{dm} object.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 \code{dm_financial()} creates an example \code{\link{dm}} object from the tables at
 https://relational.fit.cvut.cz/dataset/Financial.
 The connection is established once per session,

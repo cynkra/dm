@@ -20,8 +20,6 @@ Returns \code{x}, invisibly, if the check is passed.
 Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{check_set_equality()} is a wrapper of \code{\link[=check_subset]{check_subset()}}.
 
 It tests if one table is a subset of another and vice versa, i.e., if both sets are the same.

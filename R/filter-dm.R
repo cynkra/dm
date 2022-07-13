@@ -1,8 +1,6 @@
 #' Filtering
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Filtering a table of a [`dm`] object may affect other tables that are connected to it
 #' directly or indirectly via foreign key relations.
 #'
@@ -252,7 +250,7 @@ dm_get_filtered_table <- function(dm, from) {
 #' information.
 #'
 #' @section Life cycle:
-#' This function is marked "questioning" because it feels wrong
+#' This function is marked "questioning" because it seems wrong
 #' to tightly couple filtering with the data model.
 #' On the one hand, an overview of active filters is useful
 #' when specifying the base data set for an analysis in terms of column selections

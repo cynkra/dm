@@ -20,8 +20,6 @@ Returns \code{x}, invisibly, if the check is passed.
 Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{check_subset()} tests if \code{x} is a subset of \code{y}.
 For convenience, the \code{x_select} and \code{y_select} arguments allow restricting the check
 to a set of key columns without affecting the return value.

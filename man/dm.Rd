@@ -42,8 +42,6 @@ For \code{dm_get_tables()}: A named list with the tables constituting the \code{
 For \code{is_dm()}: A scalar logical, \code{TRUE} if is this object is a \code{dm}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 The \code{dm} class holds a list of tables and their relationships.
 It is inspired by \href{https://github.com/bergant/datamodelr}{datamodelr},
 and extends the idea by offering operations to access the data in the tables.
@@ -112,7 +110,7 @@ and importing the primary and foreign keys
 \item \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} for adding primary and foreign keys
 \item \code{\link[=copy_dm_to]{copy_dm_to()}} for DB interaction
 \item \code{\link[=dm_draw]{dm_draw()}} for visualization
-\item \code{\link[=dm_join_to_tbl]{dm_join_to_tbl()}} for flattening
+\item \code{\link[=dm_flatten_to_tbl]{dm_flatten_to_tbl()}} for flattening
 \item \code{\link[=dm_filter]{dm_filter()}} for filtering
 \item \code{\link[=dm_select_tbl]{dm_select_tbl()}} for creating a \code{dm} with only a subset of the tables
 \item \code{\link[=dm_nycflights13]{dm_nycflights13()}}  for creating an example \code{dm} object
