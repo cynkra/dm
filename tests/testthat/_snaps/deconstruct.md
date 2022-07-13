@@ -60,7 +60,7 @@
       # A tibble: 1,761 x 19
       # Keys:     --- | 0 | 4
           year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-       * <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
+         <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
        1  2013     1    10        3           2359         4      426            437
        2  2013     1    10       16           2359        17      447            444
        3  2013     1    10      450            500       -10      634            648
@@ -80,7 +80,7 @@
       # A tibble: 86 x 8
       # Keys:     `faa` | 1 | 0
          faa   name                                 lat    lon   alt    tz dst   tzone
-       * <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
+         <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
        1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
        2 ATL   Hartsfield Jackson Atlanta Intl     33.6  -84.4  1026    -5 A     Amer~
        3 AUS   Austin Bergstrom Intl               30.2  -97.7   542    -6 A     Amer~
@@ -98,7 +98,7 @@
       # A tibble: 86 x 8
       # Keys:     `faa` | 2 | 0
          faa   name                                 lat    lon   alt    tz dst   tzone
-       * <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
+         <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
        1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
        2 ATL   Hartsfield Jackson Atlanta Intl     33.6  -84.4  1026    -5 A     Amer~
        3 AUS   Austin Bergstrom Intl               30.2  -97.7   542    -6 A     Amer~
@@ -183,7 +183,7 @@
       # A tibble: 15 x 2
       # Keys:     `carrier` | 1 | 0
          carrier name                       
-       * <chr>   <chr>                      
+         <chr>   <chr>                      
        1 VX      Virgin America             
        2 UA      United Air Lines Inc.      
        3 US      US Airways Inc.            
@@ -224,7 +224,7 @@
       # Groups:   month [2]
       # Keys:     --- | 0 | 4
           year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-       * <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
+         <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
        1  2013     1    10        3           2359         4      426            437
        2  2013     1    10       16           2359        17      447            444
        3  2013     1    10      450            500       -10      634            648
@@ -249,7 +249,7 @@
       # A tibble: 2 x 2
       # Keys:     --- | 0 | 4
         month avg_air_time
-      * <int>        <dbl>
+        <int>        <dbl>
       1     1         147.
       2     2         149.
 
