@@ -294,7 +294,6 @@ check_card_api_impl <- function(parent_table, pk_column, child_table, fk_column,
     child_table <-
       child_table %>%
       select(!!y_idx)
-
   }
 
   target(parent_table, child_table, as_label(ptq), as_label(ctq))
