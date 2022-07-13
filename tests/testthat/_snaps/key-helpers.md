@@ -14,16 +14,21 @@
       The `.data` argument of `check_key()` is deprecated as of dm 1.0.0.
       Please use the `x` argument instead.
 
-# output
+# output for legacy API
 
     Code
-      check_subset(data_mcard_2(), a, data_mcard_1(), a)
+      check_subset(data_mcard_1(), a, data_mcard_2(), a)
     Condition
       Warning:
       The `c1` argument of `check_subset()` is deprecated as of dm 1.0.0.
       Please use the `x_select` argument instead.
       * Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`.
       * Using `by_position = TRUE` for compatibility.
+
+# output
+
+    Code
+      check_subset(data_mcard_2(), data_mcard_1(), x_select = a)
     Output
       # A tibble: 1 x 1
             a
@@ -36,13 +41,7 @@
 # output for compound keys
 
     Code
-      check_subset(data_mcard_2(), c(a, b), data_mcard_1(), c(a, b))
-    Condition
-      Warning:
-      The `c1` argument of `check_subset()` is deprecated as of dm 1.0.0.
-      Please use the `x_select` argument instead.
-      * Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`.
-      * Using `by_position = TRUE` for compatibility.
+      check_subset(data_mcard_2(), data_mcard_1(), x_select = c(a, b))
     Output
       # A tibble: 3 x 2
             a     b
@@ -57,13 +56,7 @@
 # check_set_equality() checks properly if 2 sets of values are equal?
 
     Code
-      check_set_equality(data_mcard_1(), c(a, c), data_mcard_2(), c(a, c))
-    Condition
-      Warning:
-      The `c1` argument of `check_set_equality()` is deprecated as of dm 1.0.0.
-      Please use the `x_select` argument instead.
-      * Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`.
-      * Using `by_position = TRUE` for compatibility.
+      check_set_equality(data_mcard_1(), data_mcard_2(), x_select = c(a, c))
     Output
       # A tibble: 2 x 2
             a     c

@@ -285,7 +285,7 @@ check_card_api_impl <- function(parent_table, pk_column, child_table, fk_column,
   }
 
   if (!isTRUE(by_position)) {
-    y_idx <- match(colnames(child_table), colnames(parent_table))
+    y_idx <- match(colnames(parent_table), colnames(child_table))
     if (anyNA(y_idx)) {
       abort("`by_position = FALSE` or `by_position = NULL` require matching column names.")
     }

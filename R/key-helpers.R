@@ -299,7 +299,7 @@ check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target) {
   }
 
   if (!isTRUE(by_position)) {
-    y_idx <- match(colnames(t2), colnames(t1))
+    y_idx <- match(colnames(t1), colnames(t2))
     if (anyNA(y_idx)) {
       abort("`by_position = FALSE` or `by_position = NULL` require matching column names.")
     }
