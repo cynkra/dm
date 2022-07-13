@@ -300,12 +300,12 @@ summarise.dm_keyed_tbl <- function(.data, ...) {
     new_pk <- NULL
   }
 
+  # TODO: Currently, summarized table gets a new UUID. Decide if we should
+  # instead retain the original UUID to replace the existing table in the `dm`
+  # object.
   new_keyed_tbl(
     summarised_tbl,
-    pk = new_pk,
-    fks_in = keys_info$fks_in,
-    fks_out = keys_info$fks_out,
-    uuid = keys_info$uuid
+    pk = new_pk
   )
 }
 

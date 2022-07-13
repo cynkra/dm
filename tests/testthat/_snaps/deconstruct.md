@@ -270,7 +270,7 @@
       dm$airports %>% summarise(mean_alt = mean(alt))
     Output
       # A tibble: 1 x 1
-      # Keys:     --- | 1 | 0
+      # Keys:     --- | 0 | 0
         mean_alt
       *    <dbl>
       1     632.
@@ -279,7 +279,7 @@
     Output
       # A tibble: 6 x 3
       # Groups:   tzone [6]
-      # Keys:     `tzone` | 1 | 0
+      # Keys:     `tzone` | 0 | 0
         tzone               dst   mean_alt
       * <chr>               <chr>    <dbl>
       1 America/Chicago     A         680.
