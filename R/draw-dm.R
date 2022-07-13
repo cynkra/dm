@@ -1,8 +1,6 @@
 #' Draw a diagram of the data model
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_draw()` draws a diagram, a visual representation of the data model.
 #'
 #' @details
@@ -193,8 +191,6 @@ dm_get_all_column_types <- function(x) {
 #' Color in database diagrams
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model with [dm_draw()].
 #' The colors can either be either specified with hex color codes or using the names of the built-in R colors.
 #' An overview of the colors corresponding to the standard color names can be found at

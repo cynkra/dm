@@ -1,8 +1,6 @@
 #' Select and rename tables
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_select_tbl()` keeps the selected tables and their relationships,
 #' optionally renaming them.
 #'

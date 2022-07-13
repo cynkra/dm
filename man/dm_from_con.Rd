@@ -39,8 +39,6 @@ default: active database.
 A \code{dm} object.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{dm_from_con()} creates a \link{dm} from some or all tables in a \link{src}
 (a database or an environment) or which are accessible via a DBI-Connection.
 For Postgres and SQL Server databases, primary and foreign keys

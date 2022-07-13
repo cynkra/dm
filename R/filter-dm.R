@@ -1,8 +1,6 @@
 #' Filtering
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Filtering a table of a [`dm`] object may affect other tables that are connected to it
 #' directly or indirectly via foreign key relations.
 #'

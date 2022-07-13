@@ -1,8 +1,6 @@
 #' Creates a dm object for the \pkg{nycflights13} data
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Creates an example [`dm`] object from the tables in \pkg{nycflights13},
 #' along with the references.
 #' See [nycflights13::flights] for a description of the data.
