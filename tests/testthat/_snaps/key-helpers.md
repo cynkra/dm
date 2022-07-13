@@ -18,6 +18,12 @@
 
     Code
       check_subset(data_mcard_2(), a, data_mcard_1(), a)
+    Condition
+      Warning:
+      The `c1` argument of `check_subset()` is deprecated as of dm 1.0.0.
+      Please use the `x_select` argument instead.
+      * Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`.
+      * Using `by_position = TRUE` for compatibility.
     Output
       # A tibble: 1 x 1
             a
@@ -31,6 +37,12 @@
 
     Code
       check_subset(data_mcard_2(), c(a, b), data_mcard_1(), c(a, b))
+    Condition
+      Warning:
+      The `c1` argument of `check_subset()` is deprecated as of dm 1.0.0.
+      Please use the `x_select` argument instead.
+      * Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`.
+      * Using `by_position = TRUE` for compatibility.
     Output
       # A tibble: 3 x 2
             a     b
@@ -46,6 +58,12 @@
 
     Code
       check_set_equality(data_mcard_1(), c(a, c), data_mcard_2(), c(a, c))
+    Condition
+      Warning:
+      The `c1` argument of `check_set_equality()` is deprecated as of dm 1.0.0.
+      Please use the `x_select` argument instead.
+      * Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`.
+      * Using `by_position = TRUE` for compatibility.
     Output
       # A tibble: 2 x 2
             a     c

@@ -261,9 +261,12 @@ check_api <- function(x, y,
                       target = exprs) {
   if (dots_n(...) >= 2) {
     name <- as.character(frame_call(call)[[1]] %||% "check_api")
-    # deprecate_soft("1.0.0", paste0(name, "(c1 = )"), paste0(name, "(x_select = )"),
-    #   details = "Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`."
-    # )
+    deprecate_soft("1.0.0", paste0(name, "(c1 = )"), paste0(name, "(x_select = )"),
+      details = c(
+        "Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`.",
+        "Using `by_position = TRUE` for compatibility."
+      )
+    )
     stopifnot(is.null(by_position))
     check_api_impl(
       {{ x }}, {{ y }}, ...,
