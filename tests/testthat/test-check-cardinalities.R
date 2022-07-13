@@ -284,6 +284,15 @@ test_that("check_card_api() compatibility", {
   )
 })
 
+test_that("check_cardinality_...() API errors", {
+  expect_snapshot({
+    check_card_api(data_mcard_1(), a, data_mcard_2(), b)
+  })
+  expect_snapshot(error = TRUE, {
+    check_card_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = c)
+  })
+})
+
 test_that("check_cardinality_...() functions are checking the cardinality correctly?", {
   #  expecting silent: ------------------------------------------------------
 

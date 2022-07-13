@@ -248,7 +248,10 @@ check_card_api <- function(x, y,
   if (dots_n(...) >= 2) {
     name <- as.character(frame_call(call)[[1]] %||% "check_card_api")
     deprecate_soft("1.0.0", paste0(name, "(pk_column)"), paste0(name, "(x_select = )"),
-      details = "Use `y_select` instead of `fk_column`, and `x` and `y` instead of `parent_table` and `child_table`."
+      details = c(
+        "Use `y_select` instead of `fk_column`, and `x` and `y` instead of `parent_table` and `child_table`.",
+        "Using `by_position = TRUE` for compatibility."
+      )
     )
     stopifnot(is.null(by_position))
     check_card_api_impl(
