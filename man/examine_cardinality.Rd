@@ -140,9 +140,9 @@ d1 <- tibble::tibble(a = 1:5)
 d2 <- tibble::tibble(c = c(1:5, 5), d = 0)
 d3 <- tibble::tibble(a = 1:4)
 # This does not pass, `c` is not unique key of d2:
-try(check_cardinality_0_n(d2, d1, x_select = c, y_select = a))
+try(check_cardinality_0_n(d2, d1, x_select = c, y_select = c(c = a)))
 
-# Columns are matched by position by default:
+# Columns are matched by name by default:
 try(check_cardinality_0_n(d1, d2))
 
 # This passes, multiple values in d2$c are allowed:
