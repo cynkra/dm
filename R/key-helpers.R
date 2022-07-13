@@ -261,20 +261,23 @@ check_api <- function(x, y,
     # deprecate_soft("1.0.0", paste0(name, "(c1 = )"), paste0(name, "(x_select = )"),
     #   details = "Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`."
     # )
+    stopifnot(is.null(by_position))
     check_api_impl(
       {{ x }}, {{ y }}, ...,
+      by_position = TRUE,
       target = target
     )
   } else {
     check_dots_empty(call = call)
     check_api_impl(
       {{ x }}, {{ x_select }}, {{ y }}, {{ y_select }},
+      by_position = by_position %||% FALSE,
       target = target
     )
   }
 }
 
-check_api_impl <- function(t1, c1, t2, c2, ..., target) {
+check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
@@ -286,6 +289,15 @@ check_api_impl <- function(t1, c1, t2, c2, ..., target) {
   } else {
     t1 <- t1 %>% select(!!c1q)
     t2 <- t2 %>% select(!!c2q)
+  }
+
+  if (!isTRUE(by_position)) {
+    y_idx <- match(colnames(t2), colnames(t1))
+    if (anyNA(y_idx)) {
+      abort("`by_position = FALSE` or `by_position = NULL` require matching column names.")
+    }
+
+    t2 <- t2[y_idx]
   }
 
   target(x = t1, y = t2, x_label = as_label(t1q), y_label = as_label(t2q))

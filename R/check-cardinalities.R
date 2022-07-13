@@ -250,20 +250,25 @@ check_card_api <- function(x, y,
     deprecate_soft("1.0.0", paste0(name, "(pk_column)"), paste0(name, "(x_select = )"),
       details = "Use `y_select` instead of `fk_column`, and `x` and `y` instead of `parent_table` and `child_table`."
     )
+    stopifnot(is.null(by_position))
     check_card_api_impl(
       {{ x }}, {{ y }}, ...,
+      by_position = TRUE,
       target = target
     )
   } else {
     check_dots_empty(call = call)
     check_card_api_impl(
       {{ x }}, {{ x_select }}, {{ y }}, {{ y_select }},
+      by_position = by_position %||% FALSE,
       target = target
     )
   }
 }
 
-check_card_api_impl <- function(parent_table, pk_column, child_table, fk_column, ..., target) {
+check_card_api_impl <- function(parent_table, pk_column, child_table, fk_column, ...,
+                                by_position,
+                                target) {
   ptq <- enquo(parent_table)
   ctq <- enquo(child_table)
 
@@ -275,6 +280,15 @@ check_card_api_impl <- function(parent_table, pk_column, child_table, fk_column,
   } else {
     parent_table <- parent_table %>% select(!!pkcq)
     child_table <- child_table %>% select(!!fkcq)
+  }
+
+  if (!isTRUE(by_position)) {
+    y_idx <- match(colnames(child_table), colnames(parent_table))
+    if (anyNA(y_idx)) {
+      abort("`by_position = FALSE` or `by_position = NULL` require matching column names.")
+    }
+
+    child_table <- child_table[y_idx]
   }
 
   target(parent_table, child_table, as_label(ptq), as_label(ctq))
