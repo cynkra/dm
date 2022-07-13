@@ -51,8 +51,8 @@ test_that("`new_keyed_tbl()` generates expected output", {
 
 test_that("`new_keyed_tbl()` formatting", {
   expect_snapshot({
-    dm_nycflights13()$flights
-    dm_nycflights13()$airports
+    dm_nycflights13(cycle = TRUE)$flights
+    dm_nycflights13(cycle = TRUE)$airports
     dm_nycflights13(cycle = TRUE)$airports
   })
 })
@@ -60,14 +60,14 @@ test_that("`new_keyed_tbl()` formatting", {
 # subsetting ----------------------------------
 
 test_that("both subsetting operators for `dm` produce the same object", {
-  dm <- dm_nycflights13()
+  dm <- dm_nycflights13(cycle = TRUE)
 
   expect_equal(dm$airlines, dm[["airlines"]])
   expect_equal(dm[[1]], dm[["airlines"]])
 })
 
 test_that("subsetting `dm` produces `dm_keyed_tbl` objects", {
-  dm <- dm_nycflights13()
+  dm <- dm_nycflights13(cycle = TRUE)
 
   expect_s3_class(dm$airlines, "dm_keyed_tbl")
   expect_s3_class(dm[[1]], "dm_keyed_tbl")
@@ -77,7 +77,7 @@ test_that("subsetting `dm` produces `dm_keyed_tbl` objects", {
 # constructors ----------------------------------
 
 test_that("`dm()` and `new_dm()` can handle a list of `dm_keyed_tbl` objects", {
-  dm <- dm_nycflights13()
+  dm <- dm_nycflights13(cycle = TRUE)
 
   y1 <- dm$weather %>%
     mutate() %>%
@@ -109,7 +109,7 @@ test_that("`dm()` and `new_dm()` can handle a list of `dm_keyed_tbl` objects", {
 })
 
 test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` objects", {
-  dm <- dm_nycflights13()
+  dm <- dm_nycflights13(cycle = TRUE)
 
   y1 <- dm$weather %>%
     mutate() %>%
@@ -141,7 +141,7 @@ test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` o
 # joins ----------------------------------
 
 test_that("joins work as expected with keyed tables", {
-  dm <- dm_nycflights13()
+  dm <- dm_nycflights13(cycle = TRUE)
 
   # results should be similar to zooming
   zd1 <- dm_zoom_to(dm, airports) %>% left_join(flights)
@@ -161,7 +161,7 @@ test_that("joins work as expected with keyed tables", {
 # arrange ----------------------------------
 
 test_that("arrange for keyed tables produces expected output", {
-  dm <- dm_nycflights13()
+  dm <- dm_nycflights13(cycle = TRUE)
 
   expect_snapshot({
     dm$airlines %>% arrange(desc(name))
@@ -172,7 +172,7 @@ test_that("arrange for keyed tables produces expected output", {
 
 test_that("group_by for keyed tables produces expected output", {
   expect_snapshot({
-    dm <- dm_nycflights13()
+    dm <- dm_nycflights13(cycle = TRUE)
 
     dm$flights %>% group_by(month)
 
@@ -187,7 +187,7 @@ test_that("group_by for keyed tables produces expected output", {
 
 test_that("summarize for keyed tables produces expected output", {
   expect_snapshot({
-    dm <- dm_nycflights13()
+    dm <- dm_nycflights13(cycle = TRUE)
 
     dm$airports %>%
       summarise(mean_alt = mean(alt))
@@ -200,7 +200,7 @@ test_that("summarize for keyed tables produces expected output", {
 
 
 test_that("summarize for keyed tables produces same output as zooming", {
-  dm <- dm_nycflights13()
+  dm <- dm_nycflights13(cycle = TRUE)
 
   z_summary <- dm %>%
     dm_zoom_to(flights) %>%
@@ -222,7 +222,7 @@ test_that("summarize for keyed tables produces same output as zooming", {
 # reconstruction ----------------------------------
 
 test_that("primary keys survive the round trip", {
-  dm <- dm_nycflights13()
+  dm <- dm_nycflights13(cycle = TRUE)
   tbl <- dm$weather
   tbl_mutate <- tbl %>% select(everything())
 
