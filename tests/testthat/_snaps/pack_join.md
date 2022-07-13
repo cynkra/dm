@@ -48,18 +48,7 @@
 
 ---
 
-    `x` and `y` must share the same src, set `copy` = TRUE (may be slow)
-
----
-
-    Code
-      pack_join(df1, dm_fin$accounts, by = c(col1 = "id"), copy = TRUE)
-    Output
-      # A tibble: 2 x 3
-         col1 key   `dm_fin$accounts`$district_id $frequency       $date
-        <int> <chr>                         <int> <chr>            <int>
-      1     1 a                                18 POPLATEK MESICNE  9213
-      2     2 b                                 1 POPLATEK MESICNE  8457
+    is.data.frame(.data) is not TRUE
 
 ---
 
