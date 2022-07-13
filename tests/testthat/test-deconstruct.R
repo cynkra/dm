@@ -189,10 +189,12 @@ test_that("summarize for keyed tables produces expected output", {
   expect_snapshot({
     dm <- dm_nycflights13()
 
-    dm$flights %>%
-      group_by(month) %>%
-      arrange(desc(day)) %>%
-      summarise(avg_air_time = mean(air_time, na.rm = TRUE))
+    dm$airports %>%
+      summarise(mean_alt = mean(alt))
+
+    dm$airports %>%
+      group_by(tzone, dst) %>%
+      summarise(mean_alt = mean(alt))
   })
 })
 

@@ -293,7 +293,20 @@ summarise.dm_keyed_tbl <- function(.data, ...) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
   summarised_tbl <- summarise(tbl, ...)
-  new_keyed_tbl_from_keys_info(summarised_tbl, keys_info)
+
+  if (inherits(summarised_tbl, "grouped_df")) {
+    new_pk <- group_vars(summarised_tbl)
+  } else {
+    new_pk <- NULL
+  }
+
+  new_keyed_tbl(
+    summarised_tbl,
+    pk = new_pk,
+    fks_in = keys_info$fks_in,
+    fks_out = keys_info$fks_out,
+    uuid = keys_info$uuid
+  )
 }
 
 #' @export
