@@ -1,8 +1,6 @@
 #' Number of rows
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Returns a named vector with the number of rows for each table.
 #'
 #' @param dm A [`dm`] object.

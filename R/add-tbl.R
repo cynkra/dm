@@ -85,8 +85,6 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()
 #' Remove tables
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Removes one or more tables from a [`dm`].
 #'
 #' @return The `dm` without the removed table(s) that were present in the initial `dm`.

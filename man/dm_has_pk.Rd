@@ -17,8 +17,6 @@ dm_has_pk(dm, table, ...)
 A logical value: \code{TRUE} if the given table has a primary key, \code{FALSE} otherwise.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{dm_has_pk()} checks if a given table has columns marked as its primary key.
 }
 \examples{

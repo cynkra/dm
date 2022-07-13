@@ -1,8 +1,6 @@
 #' Check if column(s) can be used as keys
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `check_key()` accepts a data frame and, optionally, columns.
 #' It throws an error
 #' if the specified columns are NOT a unique key of the data frame.
@@ -123,8 +121,6 @@ is_unique_key_se <- function(.data, colname) {
 #' Check column values for set equality
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `check_set_equality()` is a wrapper of [check_subset()].
 #'
 #' It tests if one table is a subset of another and vice versa, i.e., if both sets are the same.
@@ -185,8 +181,6 @@ check_set_equality_impl0 <- function(x, y, x_label, y_label) {
 #' Check column values for subset
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `check_subset()` tests if `x` is a subset of `y`.
 #' For convenience, the `x_select` and `y_select` arguments allow restricting the check
 #' to a set of key columns without affecting the return value.

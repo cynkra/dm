@@ -1,8 +1,6 @@
 #' Load a dm from a remote data source
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_from_con()` creates a [dm] from some or all tables in a [src]
 #' (a database or an environment) or which are accessible via a DBI-Connection.
 #' For Postgres and SQL Server databases, primary and foreign keys

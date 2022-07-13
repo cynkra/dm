@@ -28,8 +28,6 @@
 A \code{zoomed_dm} object.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Extract the first or last rows from a table.
 Use these methods without the '.zoomed_dm' suffix (see examples).
 The methods for regular \code{dm} objects extract the first or last tables.

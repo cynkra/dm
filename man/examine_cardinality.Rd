@@ -38,8 +38,6 @@ Otherwise an error is thrown and the reason for it is explained.
 \code{examine_cardinality()} returns a character variable specifying the type of relationship between the two columns.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 All \code{check_cardinality_...()} functions test the following conditions:
 \enumerate{
 \item Are all rows in \code{x} unique?

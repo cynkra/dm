@@ -18,8 +18,6 @@ printing. If \code{NULL}, \code{getOption("width")} will be consulted.}
 \item{...}{Passed to \code{\link[pillar:glimpse]{pillar::glimpse()}}.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{glimpse()} provides an overview (dimensions, column data types, primary
 keys, etc.) of all tables included in the \code{dm} object. It will additionally
 print details about outgoing foreign keys for the child table.

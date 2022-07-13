@@ -13,8 +13,6 @@ dm_get_con(dm)
 The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object for a \code{dm} object.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{dm_get_con()} returns the DBI connection for a \code{dm} object.
 This works only if the tables are stored on a database, otherwise an error
 is thrown.

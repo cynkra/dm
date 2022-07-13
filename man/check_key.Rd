@@ -19,8 +19,6 @@ Returns \code{x}, invisibly, if the check is passed.
 Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{check_key()} accepts a data frame and, optionally, columns.
 It throws an error
 if the specified columns are NOT a unique key of the data frame.

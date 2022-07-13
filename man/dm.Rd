@@ -42,8 +42,6 @@ For \code{dm_get_tables()}: A named list with the tables constituting the \code{
 For \code{is_dm()}: A scalar logical, \code{TRUE} if is this object is a \code{dm}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 The \code{dm} class holds a list of tables and their relationships.
 It is inspired by \href{https://github.com/bergant/datamodelr}{datamodelr},
 and extends the idea by offering operations to access the data in the tables.

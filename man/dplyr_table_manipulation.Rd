@@ -109,8 +109,6 @@ This argument is taken by expression and supports
 names and column locations).}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Use these methods without the '.zoomed_dm' suffix (see examples).
 }
 \examples{

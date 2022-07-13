@@ -16,8 +16,6 @@ dm_rm_tbl(dm, ...)
 The \code{dm} without the removed table(s) that were present in the initial \code{dm}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Removes one or more tables from a \code{\link{dm}}.
 }
 \examples{

@@ -23,8 +23,6 @@ hide in non-interactive mode, show in interactive mode. Requires the
 A \code{dm} object of the same structure as the input.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{compute()} materializes all tables in a \code{dm} to new (temporary or permanent)
 tables on the database.
 

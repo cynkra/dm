@@ -35,8 +35,6 @@ A tibble with the following columns:
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 This function returns a tibble with information about
 which key constraints are met (\code{is_key = TRUE}) or violated (\code{FALSE}).
 The printing for this object is special, use \code{\link[=as_tibble]{as_tibble()}}
