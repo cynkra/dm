@@ -83,7 +83,14 @@ If not, it throws an error.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">check_set_equality</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span>, x_select <span class="op">=</span> <span class="cn">NULL</span>, y_select <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">check_set_equality</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  x_select <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  y_select <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  by_position <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -98,8 +105,14 @@ If not, it throws an error.</p>
 
 <dt>x_select, y_select</dt>
 <dd><p>Key columns to restrict the check, processed with
-<code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code>.
-If omitted, columns in <code>x</code> and <code>y</code> are matched by position.</p></dd>
+<code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code>.</p></dd>
+
+
+<dt>by_position</dt>
+<dd><p>Set to <code>TRUE</code> to ignore column names and match
+by position instead.
+The default means matching by name, use <code>x_select</code> and/or <code>y_select</code>
+to align the names.</p></dd>
 
 </dl></div>
     <div class="section level2">
