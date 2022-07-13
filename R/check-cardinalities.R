@@ -81,7 +81,7 @@
 #' # This does not pass, `c` is not unique key of d2:
 #' try(check_cardinality_0_n(d2, d1, x_select = c, y_select = a))
 #'
-#' # Columns are matched by position by default:
+#' # Columns are matched by name by default:
 #' try(check_cardinality_0_n(d1, d2))
 #'
 #' # This passes, multiple values in d2$c are allowed:
