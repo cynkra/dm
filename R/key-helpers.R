@@ -304,7 +304,9 @@ check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target) {
       abort("`by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`.")
     }
 
-    t2 <- t2[y_idx]
+    t2 <-
+      t2 %>%
+      select(!!y_idx)
   }
 
   target(x = t1, y = t2, x_label = as_label(t1q), y_label = as_label(t2q))
