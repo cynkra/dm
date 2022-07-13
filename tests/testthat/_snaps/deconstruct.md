@@ -55,10 +55,10 @@
 # `new_keyed_tbl()` formatting
 
     Code
-      dm_nycflights13()$flights
+      dm_nycflights13(cycle = TRUE)$flights
     Output
       # A tibble: 1,761 x 19
-      # Keys:     --- | 0 | 4
+      # Keys:     --- | 0 | 5
           year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
        * <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
        1  2013     1    10        3           2359         4      426            437
@@ -75,10 +75,10 @@
       #   carrier <chr>, flight <int>, tailnum <chr>, origin <chr>, dest <chr>,
       #   air_time <dbl>, distance <dbl>, hour <dbl>, minute <dbl>, time_hour <dttm>
     Code
-      dm_nycflights13()$airports
+      dm_nycflights13(cycle = TRUE)$airports
     Output
       # A tibble: 86 x 8
-      # Keys:     `faa` | 1 | 0
+      # Keys:     `faa` | 2 | 0
          faa   name                                 lat    lon   alt    tz dst   tzone
        * <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
        1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
@@ -203,12 +203,12 @@
 # group_by for keyed tables produces expected output
 
     Code
-      dm <- dm_nycflights13()
+      dm <- dm_nycflights13(cycle = TRUE)
       dm$flights %>% group_by(month)
     Output
       # A tibble: 1,761 x 19
       # Groups:   month [2]
-      # Keys:     --- | 0 | 4
+      # Keys:     --- | 0 | 5
           year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
        * <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
        1  2013     1    10        3           2359         4      426            437
@@ -229,7 +229,7 @@
     Output
       # A tibble: 86 x 8
       # Groups:   tzone [6]
-      # Keys:     `faa` | 1 | 0
+      # Keys:     `faa` | 2 | 0
          faa   name                                 lat    lon   alt    tz dst   tzone
        * <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
        1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
@@ -248,7 +248,7 @@
     Output
       # A tibble: 86 x 8
       # Groups:   faa [86]
-      # Keys:     `faa` | 1 | 0
+      # Keys:     `faa` | 2 | 0
          faa   name                                 lat    lon   alt    tz dst   tzone
        * <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
        1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
@@ -266,7 +266,7 @@
 # summarize for keyed tables produces expected output
 
     Code
-      dm <- dm_nycflights13()
+      dm <- dm_nycflights13(cycle = TRUE)
       dm$airports %>% summarise(mean_alt = mean(alt))
     Output
       # A tibble: 1 x 1
