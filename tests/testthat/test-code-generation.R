@@ -27,4 +27,8 @@ test_that("code generation works", {
     cg_block_2
     cg_eval_block(cg_block_2)
   })
+
+  expect_snapshot({
+    format(new_cg_block(quo(dm_nycflights13()), list(function(.) dm_add_pk(., flights, flight_id))))
+  })
 })
