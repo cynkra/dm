@@ -14,7 +14,7 @@
 
 ## api
 
-- Stabilize `dm_filter()`, deprecate `dm_apply_filters()`, `dm_apply_filters_to_tbl()` and `dm_get_filters()` (#1236).
+- Stabilize `dm_filter()`, deprecate `dm_apply_filters()`, `dm_apply_filters_to_tbl()` and `dm_get_filters()` (#424, #426, #1236).
 
 - Turn all "questioning" functions to "experimental" (#1237).
 
