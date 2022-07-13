@@ -28,7 +28,7 @@ cg_format_input_object <- function(x, has_no_f_call) {
       cg_clean_in_obj_text(x)
     }
   } else {
-    paste0(cg_clean_in_obj_text(x), " %>%\n")
+    paste0(cg_clean_in_obj_text(x), " %>%")
   }
 }
 
