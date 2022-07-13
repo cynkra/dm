@@ -291,7 +291,10 @@ check_card_api_impl <- function(parent_table, pk_column, child_table, fk_column,
       abort("`by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`.")
     }
 
-    child_table <- child_table[y_idx]
+    child_table <-
+      child_table %>%
+      select(!!y_idx)
+
   }
 
   target(parent_table, child_table, as_label(ptq), as_label(ctq))
