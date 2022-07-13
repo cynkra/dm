@@ -275,10 +275,11 @@ check_card_api_impl <- function(parent_table, pk_column, child_table, fk_column,
   pkcq <- enquo(pk_column)
   fkcq <- enquo(fk_column)
 
-  if (quo_is_null(pkcq)) {
-    stopifnot(quo_is_null(fkcq))
-  } else {
+  if (!quo_is_null(pkcq)) {
     parent_table <- parent_table %>% select(!!pkcq)
+  }
+
+  if (!quo_is_null(fkcq)) {
     child_table <- child_table %>% select(!!fkcq)
   }
 

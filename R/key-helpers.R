@@ -284,10 +284,11 @@ check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target) {
   c1q <- enquo(c1)
   c2q <- enquo(c2)
 
-  if (quo_is_null(c1q)) {
-    stopifnot(quo_is_null(c2q))
-  } else {
+  if (!quo_is_null(c1q)) {
     t1 <- t1 %>% select(!!c1q)
+  }
+
+  if (!quo_is_null(c2q)) {
     t2 <- t2 %>% select(!!c2q)
   }
 

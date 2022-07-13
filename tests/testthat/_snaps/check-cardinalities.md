@@ -29,19 +29,19 @@
       1     6
     Code
       expect_dm_error(check_cardinality_1_1(data_card_5(), data_card_4(), x_select = a,
-      y_select = c), class = "not_bijective")
+      y_select = c(a = c)), class = "not_bijective")
       expect_dm_error(check_cardinality_1_1(data_card_4(), data_card_5(), x_select = c,
-      y_select = a), class = "not_unique_key")
+      y_select = c(c = a)), class = "not_unique_key")
       expect_dm_error(check_cardinality_1_1(data_card_4(), data_card_1(), x_select = c,
-      y_select = a), class = "not_unique_key")
+      y_select = c(c = a)), class = "not_unique_key")
       expect_dm_error(check_cardinality_0_1(data_card_1(), data_card_4(), x_select = a,
-      y_select = c), class = "not_injective")
+      y_select = c(a = c)), class = "not_injective")
       expect_dm_error(check_cardinality_0_n(data_card_4(), data_card_1(), x_select = c,
-      y_select = a), class = "not_unique_key")
+      y_select = c(c = a)), class = "not_unique_key")
       expect_dm_error(check_cardinality_1_1(data_card_4(), data_card_1(), x_select = c,
-      y_select = a), class = "not_unique_key")
+      y_select = c(c = a)), class = "not_unique_key")
       expect_dm_error(check_cardinality_1_1(data_card_1(), data_card_4(), x_select = a,
-      y_select = c), class = "not_bijective")
+      y_select = c(a = c)), class = "not_bijective")
 
 # check_cardinality_...() functions are supporting compound keys
 
