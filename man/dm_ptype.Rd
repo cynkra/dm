@@ -10,8 +10,6 @@ dm_ptype(dm)
 \item{dm}{A \code{dm} object.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 The prototype contains all tables, all primary and foreign keys,
 but no data.
 All tables are truncated and converted to zero-row tibbles,

@@ -379,7 +379,7 @@ If you need finer-grained control over modifications to your relational
 model, see `vignette("howto-dm-rows")` for an introduction to row level
 operations, including updates, insertions, deletions and patching.
 
-If you feel you need to know more about relational data models in order
+If you would like to know more about relational data models in order
 to get the most out of dm, check out `vignette("howto-dm-theory")`.
 
 If you’re familiar with relational data models but want to know how to

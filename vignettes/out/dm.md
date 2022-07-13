@@ -271,7 +271,7 @@ model.
 If your data is in data frames, then you want to read
 `vignette("howto-dm-df")` next.
 
-If you feel you need to know more about relational data models in order
+If you would like to know more about relational data models in order
 to get the most out of dm, check out `vignette("howto-dm-theory")`.
 
 If you’re familiar with relational data models but want to know how to
