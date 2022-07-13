@@ -600,6 +600,7 @@ tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
     map2_dfr(def$uuid, def$fks, ~ tibble(ref_uuid = .x, .y)) %>%
     filter(table == from) %>%
     select(ref_uuid, ref_column, column)
+
   fks_out <- new_fks_out(
     fks_out_def$column,
     fks_out_def$ref_uuid,
