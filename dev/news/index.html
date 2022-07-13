@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9004</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,6 +70,22 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.99.9004" id="dm-099999004">dm 0.99.99.9004<a class="anchor" aria-label="anchor" href="#dm-099999004"></a></h2>
+<div class="section level3">
+<h3 id="features-0-99-99-9004">Features<a class="anchor" aria-label="anchor" href="#features-0-99-99-9004"></a></h3>
+<ul><li><p><code>is_unique_key()</code>uses <code><a href="https://vctrs.r-lib.org/reference/vec_count.html" class="external-link">vctrs::vec_count()</a></code> on local data frames for speed (<a href="https://github.com/eutwt" class="external-link">@eutwt</a>, <a href="https://github.com/cynkra/dm/issues/1247" class="external-link">#1247</a>).</p></li>
+<li><p><code><a href="../reference/check_key.html">check_key()</a></code> uses <code><a href="https://vctrs.r-lib.org/reference/vec_duplicate.html" class="external-link">vctrs::vec_duplicate_any()</a></code> on local data frames for speed (<a href="https://github.com/eutwt" class="external-link">@eutwt</a>, <a href="https://github.com/cynkra/dm/issues/1234" class="external-link">#1234</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-0-99-99-9004">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-99-99-9004"></a></h3>
+<ul><li>Improve contrast for display of <code><a href="../reference/dm_financial.html">dm_financial()</a></code> (<a href="https://github.com/cynkra/dm/issues/1073" class="external-link">#1073</a>) (<a href="https://github.com/cynkra/dm/issues/1250" class="external-link">#1250</a>).</li></ul></div>
+<div class="section level3">
+<h3 id="api-0-99-99-9004">api<a class="anchor" aria-label="anchor" href="#api-0-99-99-9004"></a></h3>
+<ul><li><p>Stabilize <code><a href="../reference/dm_filter.html">dm_filter()</a></code>, deprecate <code><a href="../reference/deprecated.html">dm_apply_filters()</a></code>, <code><a href="../reference/deprecated.html">dm_apply_filters_to_tbl()</a></code> and <code><a href="../reference/deprecated.html">dm_get_filters()</a></code> (<a href="https://github.com/cynkra/dm/issues/424" class="external-link">#424</a>, <a href="https://github.com/cynkra/dm/issues/426" class="external-link">#426</a>, <a href="https://github.com/cynkra/dm/issues/1236" class="external-link">#1236</a>).</p></li>
+<li><p>Turn all “questioning” functions to “experimental” (<a href="https://github.com/cynkra/dm/issues/1030" class="external-link">#1030</a>, <a href="https://github.com/cynkra/dm/issues/1237" class="external-link">#1237</a>).</p></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.99.99.9003" id="dm-099999003">dm 0.99.99.9003<a class="anchor" aria-label="anchor" href="#dm-099999003"></a></h2>
 <div class="section level3">
