@@ -80,12 +80,25 @@ is_unique_key_se <- function(.data, colname) {
   col_syms <- syms(colname)
   names(col_syms) <- val_names
 
-  # FIXME: Build expression instead of paste() + parse()
-  any_value_na_expr <- parse(text = paste0("is.na(", val_names, ")", collapse = " | "))[[1]]
+  any_value_na_expr <- 
+    syms(val_names) %>% 
+    map(call2, .fn = quote(is.na)) %>% 
+    reduce(call2, .fn = quote(`|`))
 
-  res_tbl <-
-    .data %>%
-    safe_count(!!!col_syms) %>%
+  if (inherits(.data, "data.frame")) {
+    count_tbl <-
+      .data %>% 
+      select(!!!col_syms) %>% 
+      vctrs::vec_count() %>% 
+      unpack(key) %>% 
+      rename(n = count)
+  } else {
+    count_tbl <-
+      .data %>%
+      safe_count(!!!col_syms)
+  }
+  res_tbl <- 
+    count_tbl %>% 
     mutate(any_na = if_else(!!any_value_na_expr, 1L, 0L)) %>%
     filter(n != 1 | any_na != 0L) %>%
     arrange(desc(n), !!!syms(val_names)) %>%
