@@ -171,18 +171,15 @@ test_that("arrange for keyed tables produces expected output", {
 # group_by ----------------------------------
 
 test_that("group_by for keyed tables produces expected output", {
-  dm <- dm_nycflights13()
-
   expect_snapshot({
-    class(dm$flights %>% group_by(month))
-  })
+    dm <- dm_nycflights13()
 
-  expect_snapshot({
-    tbl_sum(dm$flights %>% group_by(month))
-  })
-
-  expect_snapshot({
     dm$flights %>% group_by(month)
+
+    dm$airports %>% group_by(tzone)
+
+    # grouping by the primary key works as well
+    dm$airports %>% group_by(faa)
   })
 })
 
