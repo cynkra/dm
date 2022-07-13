@@ -258,7 +258,7 @@ check_api <- function(x, y,
                       x_select = NULL, y_select = NULL,
                       by_position = NULL,
                       call = caller_env(),
-                      target = exprs) {
+                      target = list) {
   if (dots_n(...) >= 2) {
     name <- as.character(frame_call(call)[[1]] %||% "check_api")
     deprecate_soft("1.0.0", paste0(name, "(c1 = )"), paste0(name, "(x_select = )"),

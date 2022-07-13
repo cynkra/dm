@@ -29,16 +29,26 @@
       * Using `by_position = TRUE` for compatibility.
     Output
       [[1]]
-      parent_table
+      # A tibble: 3 x 1
+            a
+        <dbl>
+      1     1
+      2     2
+      3     1
       
       [[2]]
-      child_table
+      # A tibble: 3 x 1
+            b
+        <dbl>
+      1     4
+      2     5
+      3     6
       
       [[3]]
-      as_label(ptq)
+      [1] "data_mcard_1()"
       
       [[4]]
-      as_label(ctq)
+      [1] "data_mcard_2()"
       
 
 ---
