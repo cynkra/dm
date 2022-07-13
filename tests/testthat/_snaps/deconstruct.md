@@ -183,7 +183,7 @@
       # A tibble: 15 x 2
       # Keys:     `carrier` | 1 | 0
          carrier name                       
-       * <chr>   <chr>                      
+         <chr>   <chr>                      
        1 VX      Virgin America             
        2 UA      United Air Lines Inc.      
        3 US      US Airways Inc.            
@@ -271,9 +271,8 @@
         avg_air_time = mean(air_time, na.rm = TRUE))
     Output
       # A tibble: 2 x 2
-      # Keys:     --- | 0 | 4
         month avg_air_time
-      * <int>        <dbl>
+        <int>        <dbl>
       1     1         147.
       2     2         149.
 

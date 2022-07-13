@@ -10,7 +10,6 @@
 \alias{rename.zoomed_dm}
 \alias{distinct.zoomed_dm}
 \alias{arrange.zoomed_dm}
-\alias{arrange.dm_keyed_tbl}
 \alias{slice.zoomed_dm}
 \alias{group_by.zoomed_dm}
 \alias{group_by.dm_keyed_tbl}
@@ -38,8 +37,6 @@
 \method{distinct}{zoomed_dm}(.data, ..., .keep_all = FALSE)
 
 \method{arrange}{zoomed_dm}(.data, ...)
-
-\method{arrange}{dm_keyed_tbl}(.data, ...)
 
 \method{slice}{zoomed_dm}(.data, ..., .keep_pk = NULL)
 
