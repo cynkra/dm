@@ -130,7 +130,10 @@ is_unique_key_se <- function(.data, colname) {
 #' @inheritParams rlang::args_dots_empty
 #' @param x_select,y_select Key columns to restrict the check, processed with
 #'   [dplyr::select()].
-#'   If omitted, columns in `x` and `y` are matched by position.
+#' @param by_position Set to `TRUE` to ignore column names and match
+#'   by position instead.
+#'   The default means matching by name, use `x_select` and/or `y_select`
+#'   to align the names.
 #'
 #' @return Returns `x`, invisibly, if the check is passed.
 #'   Otherwise an error is thrown and the reason for it is explained.

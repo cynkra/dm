@@ -9,15 +9,50 @@
 \alias{check_cardinality_0_1}
 \title{Check table relations}
 \usage{
-check_cardinality_0_n(x, y, ..., x_select = NULL, y_select = NULL)
+check_cardinality_0_n(
+  x,
+  y,
+  ...,
+  x_select = NULL,
+  y_select = NULL,
+  by_position = NULL
+)
 
-check_cardinality_1_n(x, y, ..., x_select = NULL, y_select = NULL)
+check_cardinality_1_n(
+  x,
+  y,
+  ...,
+  x_select = NULL,
+  y_select = NULL,
+  by_position = NULL
+)
 
-check_cardinality_1_1(x, y, ..., x_select = NULL, y_select = NULL)
+check_cardinality_1_1(
+  x,
+  y,
+  ...,
+  x_select = NULL,
+  y_select = NULL,
+  by_position = NULL
+)
 
-check_cardinality_0_1(x, y, ..., x_select = NULL, y_select = NULL)
+check_cardinality_0_1(
+  x,
+  y,
+  ...,
+  x_select = NULL,
+  y_select = NULL,
+  by_position = NULL
+)
 
-examine_cardinality(x, y, ..., x_select = NULL, y_select = NULL)
+examine_cardinality(
+  x,
+  y,
+  ...,
+  x_select = NULL,
+  y_select = NULL,
+  by_position = NULL
+)
 }
 \arguments{
 \item{x}{Parent table, data frame or lazy table.}
@@ -27,8 +62,12 @@ examine_cardinality(x, y, ..., x_select = NULL, y_select = NULL)
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{x_select, y_select}{Key columns to restrict the check, processed with
-\code{\link[dplyr:select]{dplyr::select()}}.
-If omitted, columns in \code{x} and \code{y} are matched by position.}
+\code{\link[dplyr:select]{dplyr::select()}}.}
+
+\item{by_position}{Set to \code{TRUE} to ignore column names and match
+by position instead.
+The default means matching by name, use \code{x_select} and/or \code{y_select}
+to align the names.}
 }
 \value{
 \code{check_cardinality_...()} return \code{x}, invisibly,

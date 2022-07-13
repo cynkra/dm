@@ -4,7 +4,7 @@
 \alias{check_subset}
 \title{Check column values for subset}
 \usage{
-check_subset(x, y, ..., x_select = NULL, y_select = NULL)
+check_subset(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL)
 }
 \arguments{
 \item{x, y}{A data frame or lazy table.}
@@ -12,8 +12,12 @@ check_subset(x, y, ..., x_select = NULL, y_select = NULL)
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{x_select, y_select}{Key columns to restrict the check, processed with
-\code{\link[dplyr:select]{dplyr::select()}}.
-If omitted, columns in \code{x} and \code{y} are matched by position.}
+\code{\link[dplyr:select]{dplyr::select()}}.}
+
+\item{by_position}{Set to \code{TRUE} to ignore column names and match
+by position instead.
+The default means matching by name, use \code{x_select} and/or \code{y_select}
+to align the names.}
 }
 \value{
 Returns \code{x}, invisibly, if the check is passed.
