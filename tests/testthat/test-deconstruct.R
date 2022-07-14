@@ -141,7 +141,7 @@ test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` o
 # joins ----------------------------------
 
 test_that("joins work as expected with keyed tables", {
-  dm <- dm_nycflights13(cycle = TRUE)
+  dm <- dm_nycflights13()
 
   # results should be similar to zooming
   zd1 <- dm_zoom_to(dm, airports) %>% left_join(flights)
