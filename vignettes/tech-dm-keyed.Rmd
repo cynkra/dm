@@ -1,8 +1,8 @@
 ---
-title: "Manipulating tables"
+title: "Manipulating individual tables"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Technical: Manipulating tables}
+  %\VignetteIndexEntry{Technical: Manipulating individual tables}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -68,7 +68,7 @@ flights_tbl_mutate
 
 To update the original `dm` with a new `flights` table we use `dm()`:
 
-```{r zoom2}
+```{r zoom2, error=TRUE}
 updated_flights_dm <- dm(
   flights = flights_tbl_mutate,
   flights_dm[c("airlines", "airports", "planes", "weather")]
@@ -87,7 +87,7 @@ dm_draw(updated_flights_dm)
 The same course of action could, for example, be employed to create a surrogate key for a table.
 We can do this for the `weather` table.
 
-```{r}
+```{r, error=TRUE}
 library(tidyr)
 
 weather_tbl <- flights_dm$weather
@@ -147,7 +147,7 @@ dm_draw(dm_nycflights13(cycle = TRUE))
 In such cases, it can be beneficial to "disentangle" the `dm` by duplicating the referred table.
 One way to do this in the {dm}-framework is as follows:
 
-```{r}
+```{r, error=TRUE}
 flights_cycle_dm <- dm_nycflights13(cycle = TRUE)
 
 disentangled_flights_dm <-
@@ -169,7 +169,7 @@ In a future update, we will provide a more convenient way to "disentangle" `dm` 
 
 Here is an example for adding a summary of a table as a new table to a `dm` (FK-relations are taken care of automatically):
 
-```{r}
+```{r, error=TRUE}
 dm_with_summary <-
   flights_dm$flights %>%
   count(origin, carrier) 
@@ -189,7 +189,7 @@ In addition to the usual arguments for the {dplyr}-joins, by supplying the `sele
 For the syntax, please see the example below.
 The LHS-table of a join is always the subsetted table.
 
-```{r}
+```{r, error=TRUE}
 joined_flights_tbl <-
   flights_dm$flights %>%
   # let's first reduce the number of columns of flights
@@ -210,34 +210,3 @@ joined_flights_dm$flights_plane_type
 dm_draw(joined_flights_dm)
 ```
 
-<!-- ### Tip: Accessing the subsetted table -->
-
-<!-- At each point, you can retrieve the subsetted table by calling `pull_tbl()` on a `dm_keyed_tbl`. -->
-<!-- To use our last example once more: -->
-
-<!-- ```{r} -->
-<!-- flights_dm %>% -->
-<!--   dm_zoom_to(flights) %>% -->
-<!--   select(-dep_delay:-arr_delay, -air_time:-time_hour) %>% -->
-<!--   left_join(planes, select = c(tailnum, plane_type = type)) %>% -->
-<!--   pull_tbl() -->
-<!-- ``` -->
-
-<!-- ### Possible pitfalls and caveats -->
-
-<!-- 1. Currently, not all {dplyr}-verbs have their own method for a `dm_keyed_tbl` object, so be aware that in some cases it will still be necessary to resort to extracting one or more tables from a `dm` and reinserting a transformed version back into the `dm` object. -->
-<!-- The supported functions are: -->
-<!-- `group_by()`, `ungroup()`, `summarise()`, `mutate()`, `transmute()`, `filter()`, `select()`, `relocate()`, `rename()`, `distinct()`, `arrange()`, `slice()`, `left_join()`, `inner_join()`, `full_join()`, `right_join()`, `semi_join()`, and `anti_join()`. -->
-
-<!-- 1. The same is true for {tidyr}-functions. -->
-<!-- Methods are provided for: `unite()` and `separate()`. -->
-
-<!-- 1. There might be situations when you would like the key relations to remain intact, but they are dropped nevertheless. -->
-<!-- This is because a rigid logic is implemented, that does drop a key when its associated column is acted upon with e.g. a `mutate()` call. -->
-<!-- In these cases, the key relations will need to be re-established after finishing with the manipulations. -->
-
-<!-- 1. For each implemented {dplyr}-verb, there is a logic for tracking key relations between the tables. -->
-<!-- Up to {dm} version 0.2.4 we tried to track the columns in a very detailed manner. This has become increasingly difficult, especially with `dplyr::across()`. As of {dm} 0.2.5, we give more responsibility to the {dm} user: -->
-<!-- Now those columns are tracked whose **names** remain in the resulting table. -->
-<!-- Affected by these changes are the methods for: `mutate()`, `transmute()`, `distinct()`. -->
-<!-- When using one of these functions, be aware that if you want to replace a key column with a column with a different content but of the same name, this column will automatically become a key column. -->
