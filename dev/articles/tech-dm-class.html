@@ -191,7 +191,7 @@
 <span><span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">sqlite_con</span><span class="op">)</span></span>
 <span><span class="va">flights_dm</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.38.5 [/tmp/RtmpjuahlE/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.38.5 [/tmp/RtmptMOFeh/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span></span>
 <span><span class="co">#&gt; Columns: 62</span></span>
@@ -230,7 +230,7 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm</span><span class="op">[[</span><span class="st">"airports"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   table&lt;`airports`&gt; [?? x 8]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.38.5 [/tmp/RtmpjuahlE/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.38.5 [/tmp/RtmptMOFeh/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span></span>
 <span><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
 <span><span class="co">#&gt;  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…</span></span>
@@ -264,7 +264,7 @@
 <span><span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span></span>
 <span><span class="va">flights_dm_with_key</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.38.5 [/tmp/RtmpjuahlE/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.38.5 [/tmp/RtmptMOFeh/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span></span>
 <span><span class="co">#&gt; Columns: 62</span></span>
@@ -328,7 +328,7 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm_with_key</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.38.5 [/tmp/RtmpjuahlE/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.38.5 [/tmp/RtmptMOFeh/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span></span>
 <span><span class="co">#&gt; Columns: 62</span></span>
