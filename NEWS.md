@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.99.99.9005
+
+## Documentation
+
+- Fix column names in `?dm_get_all_pks` (#1245).
+
+## API
+
+- New `by_position` argument to `check_subset()`, `check_set_equality()`, `check_cardinality_...()` and `examine_cardinality()` (#1253).
+
+- `dm_ptype()`, `dm_financial()` and `dm_pixarfilms()` are stable now (#1254).
+
+
 # dm 0.99.99.9004
 
 ## Features
