@@ -164,7 +164,10 @@ new_dm_def <- function(tables = list(),
   new_def <- def %>%
     filter(map_lgl(data, is_dm_keyed_tbl)) %>%
     rowwise() %>%
-    mutate(pks = list_of(new_pks_from_kyes_info(data), .ptype = new_pk())) %>%
+    mutate(
+      pks = list_of(new_pks_from_kyes_info(data), .ptype = new_pk()),
+      fks = list_of(new_fks_from_kyes_info(data), .ptype = new_fk())
+    ) %>%
     ungroup()
 
   # update definition with the new keys
