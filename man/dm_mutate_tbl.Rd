@@ -26,5 +26,5 @@ dm_nycflights13() \%>\%
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link[=dm]{dm()}}
+\code{\link[=dm]{dm()}}, \code{\link[=dm_select_tbl]{dm_select_tbl()}}
 }
