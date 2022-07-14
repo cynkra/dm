@@ -35,7 +35,12 @@ new_fks_out <- function(child_fk_cols = NULL, parent_table = NULL, parent_key_co
   tibble(child_fk_cols, parent_table, parent_key_cols)
 }
 
-new_keyed_tbl <- function(x, ..., pk = NULL, fks_in = NULL, fks_out = NULL, uuid = NULL) {
+new_keyed_tbl <- function(x,
+                          ...,
+                          pk = NULL,
+                          fks_in = NULL,
+                          fks_out = NULL,
+                          uuid = NULL) {
   check_dots_empty()
 
   pk <- vec_cast(pk, character())
@@ -127,14 +132,16 @@ new_pks_from_kyes_info <- function(tbl) {
   }
 }
 
-new_fks_from_kyes_info <- function(tbl, name) {
+new_fks_from_kyes_info <- function(tbl) {
   if (is_dm_keyed_tbl(tbl)) {
     df_keys <- keyed_get_info(tbl)$fks_in
-    new_fk(
-      ref_column = list(simplify(df_keys$parent_key_cols)),
-      table = name,
-      column = list(simplify(df_keys$child_fk_cols)),
+    df_fks <- tibble(
+      ref_column = map(df_keys$parent_key_cols, as.character),
+      table = df_keys$child_table,
+      column = map(df_keys$child_fk_cols, as.character),
       on_delete = "no_action"
     )
+
+    new_fk(df_fks$ref_column, df_fks$table, df_fks$column, df_fks$on_delete)
   }
 }

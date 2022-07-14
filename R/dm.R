@@ -219,7 +219,10 @@ new_pk <- function(column = list()) {
   tibble(column = column)
 }
 
-new_fk <- function(ref_column = list(), table = character(), column = list(), on_delete = character()) {
+new_fk <- function(ref_column = list(),
+                   table = character(),
+                   column = list(),
+                   on_delete = character()) {
   stopifnot(
     is.list(column),
     is.list(ref_column),
@@ -607,7 +610,7 @@ tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
     left_join(uuid_lookup, by = "table")
 
   fks_in <- new_fks_in(
-    fks_in_def$uuid,
+    fks_in_def$table,
     fks_in_def$column,
     fks_in_def$ref_column
   )
