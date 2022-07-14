@@ -40,12 +40,12 @@
       Foreign keys: 3
     Code
       cg_block_2 <- new_cg_block(cg_block$cg_input_object, list(function(.)
-        dm_add_tbl(., mtcars), function(.) dm_rm_tbl(., planes)))
+        dm_add_tbl(., mtcars), function(.) dm_select_tbl(., -planes)))
       cg_block_2
     Output
       dm_nycflights13() %>%
         dm_add_tbl(., mtcars) %>%
-        dm_rm_tbl(., planes)
+        dm_select_tbl(., -planes)
     Code
       cg_eval_block(cg_block_2)
     Condition

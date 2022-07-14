@@ -62,6 +62,6 @@ dm() \%>\%
   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 }
 \seealso{
-\code{\link[=dm_mutate_tbl]{dm_mutate_tbl()}}, \code{\link[=dm_rm_tbl]{dm_rm_tbl()}}
+\code{\link[=dm_mutate_tbl]{dm_mutate_tbl()}}
 }
 \keyword{internal}

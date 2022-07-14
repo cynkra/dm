@@ -109,8 +109,8 @@ cdm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
 #' @keywords internal
 #' @export
 cdm_rm_tbl <- function(dm, ...) {
-  deprecate_soft("0.1.0", "dm::cdm_rm_tbl()", "dm::dm_rm_tbl()")
-  dm_rm_tbl(dm = dm, ... = ...)
+  deprecate_soft("0.1.0", "dm::cdm_rm_tbl()", "dm::dm_select_tbl()")
+  dm_rm_tbl_impl(dm = dm, ... = ...)
 }
 
 #' @rdname deprecated
@@ -641,6 +641,22 @@ cdm_zoom_out <- function(dm) {
   dm_discard_zoomed(dm = dm)
 }
 
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+dm_rm_tbl <- function(dm, ...) {
+  deprecate_soft("1.0.0", "dm::dm_rm_tbl()", "dm::dm_select_tbl()")
+  # since deprecated cdm_rm_tbl() was calling dm_rm_tbl() we need dm_rm_tbl_impl
+  dm_rm_tbl_impl(dm, ...)
+}
+
+dm_rm_tbl_impl <- function(dm, ...) {
+  check_not_zoomed(dm)
+  deselected_ind <- eval_select_table_indices(quo(c(...)), src_tbls_impl(dm))
+  selected_ind <- setdiff(seq_along(dm), deselected_ind)
+
+  dm_select_tbl(dm, !!!selected_ind)
+}
 
 abort_rm_fk_col_missing <- function() {
   abort(error_txt_rm_fk_col_missing(), class = dm_error_full("rm_fk_col_missing"))

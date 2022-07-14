@@ -61,6 +61,7 @@
 \alias{cdm_insert_zoomed_tbl}
 \alias{cdm_update_zoomed_tbl}
 \alias{cdm_zoom_out}
+\alias{dm_rm_tbl}
 \title{Deprecated functions}
 \usage{
 sql_schema_create(dest, schema, ...)
@@ -206,6 +207,8 @@ cdm_insert_zoomed_tbl(
 cdm_update_zoomed_tbl(dm)
 
 cdm_zoom_out(dm)
+
+dm_rm_tbl(dm, ...)
 }
 \arguments{
 \item{...}{These dots are for future extensions and must be empty.}

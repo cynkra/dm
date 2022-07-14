@@ -21,7 +21,7 @@ test_that("code generation works", {
       cg_block$cg_input_object,
       list(
         function(.) dm_add_tbl(., mtcars),
-        function(.) dm_rm_tbl(., planes)
+        function(.) dm_select_tbl(., -planes)
       )
     )
     cg_block_2
