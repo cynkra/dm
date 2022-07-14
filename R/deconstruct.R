@@ -120,9 +120,21 @@ unclass_keyed_tbl <- function(tbl) {
   tbl
 }
 
-new_pk_from_kyes_info <- function(tbl) {
+new_pks_from_kyes_info <- function(tbl) {
   if (is_dm_keyed_tbl(tbl)) {
     df_keys <- keyed_get_info(tbl)
     new_pk(list(df_keys$pk))
+  }
+}
+
+new_fks_from_kyes_info <- function(tbl, name) {
+  if (is_dm_keyed_tbl(tbl)) {
+    df_keys <- keyed_get_info(tbl)$fks_in
+    new_fk(
+      ref_column = list(simplify(df_keys$parent_key_cols)),
+      table = name,
+      column = list(simplify(df_keys$child_fk_cols)),
+      on_delete = "no_action"
+    )
   }
 }
