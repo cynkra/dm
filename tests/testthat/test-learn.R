@@ -2,6 +2,7 @@
 
 test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
   skip_if_schema_not_supported()
+  skip("keyed = TRUE")
 
   # dm_learn_from_mssql() --------------------------------------------------
   con_db <- my_test_con()
