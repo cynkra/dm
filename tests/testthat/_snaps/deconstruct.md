@@ -133,7 +133,7 @@
       tbl_sum(new_dm_output$d1)
     Output
                                  Keys 
-      "`origin`, `time_hour` | 0 | 0" 
+      "`origin`, `time_hour` | 1 | 0" 
 
 ---
 
@@ -141,7 +141,7 @@
       tbl_sum(new_dm_output$d2)
     Output
                  Keys 
-      "`faa` | 0 | 0" 
+      "`faa` | 2 | 0" 
 
 # `dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` objects
 
@@ -165,7 +165,7 @@
       tbl_sum(new_dm_output$d1)
     Output
                                  Keys 
-      "`origin`, `time_hour` | 0 | 0" 
+      "`origin`, `time_hour` | 1 | 0" 
 
 ---
 
