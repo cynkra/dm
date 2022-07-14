@@ -100,7 +100,7 @@ check_new_tbls <- function(dm, tbls) {
 #' For now, the column names must be identical.
 #' This restriction may be levied optionally in the future.
 #'
-#' @seealso [dm()]
+#' @seealso [dm()], [dm_select_tbl()]
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more tables to update in the `dm`.
