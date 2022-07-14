@@ -51,6 +51,7 @@ dm_bind_impl <- function(dms, repair, quiet, repair_arg = "", caller = caller_en
     repair_arg = repair_arg,
     call = caller
   )
+
   # need to individually rename tables for each `dm`
   ntables_dms <- map(dms, length)
   dms_indices <- map(ntables_dms, seq_len)
@@ -61,7 +62,6 @@ dm_bind_impl <- function(dms, repair, quiet, repair_arg = "", caller = caller_en
   )
 
   dms_renamed <- map2(dms, renaming_recipe, bind_rename_tbl)
-
   new_defs <- map(dms_renamed, dm_get_def)
   vec_rbind(!!!new_defs)
 }
@@ -72,7 +72,6 @@ bind_rename_tbl <- function(dm, renamed) {
   }
 
   def <- dm_get_def(dm)
-
   renamed_names <- set_names(def$table[renamed], names(renamed))
 
   def %>%
