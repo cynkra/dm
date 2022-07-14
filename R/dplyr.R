@@ -400,8 +400,14 @@ compute.zoomed_dm <- function(x, ...) {
 #' @param ... see [`dplyr::join`]
 #' @examplesIf rlang::is_installed("nycflights13")
 #' flights_dm <- dm_nycflights13()
+#'
+#' # using zoomed table
 #' dm_zoom_to(flights_dm, flights) %>%
 #'   left_join(airports, select = c(faa, name))
+#'
+#' # by subsetting tables
+#' flights_dm$flights %>%
+#'   left_join(select(flights_dm$airports, c(faa, name)))
 #'
 #' # this should illustrate that tables don't necessarily need to be connected
 #' dm_zoom_to(flights_dm, airports) %>%
@@ -427,6 +433,19 @@ left_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
 left_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
   join_data <- prepare_keyed_join(x, y, by, suffix, copy)
   joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by,
+    copy = FALSE,
+    keep = keep,
+    ...
+  )
+
+  new_keyed_tbl_from_keys_info(joined_tbl, join_data$keys_info_x)
+}
+
+#' @rdname dplyr_join
+#' @export
+right_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
+  join_data <- prepare_keyed_join(x, y, by, suffix, copy)
+  joined_tbl <- right_join(join_data$x_tbl, join_data$y_tbl, join_data$by,
     copy = FALSE,
     keep = keep,
     ...

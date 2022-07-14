@@ -4,6 +4,7 @@
 \alias{dplyr_join}
 \alias{left_join.zoomed_dm}
 \alias{left_join.dm_keyed_tbl}
+\alias{right_join.dm_keyed_tbl}
 \alias{inner_join.zoomed_dm}
 \alias{full_join.zoomed_dm}
 \alias{right_join.zoomed_dm}
@@ -15,6 +16,8 @@
 \method{left_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
 
 \method{left_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
+
+\method{right_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
 
 \method{inner_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
 
@@ -57,8 +60,14 @@ Use these methods without the '.zoomed_dm' suffix (see examples).
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 flights_dm <- dm_nycflights13()
+
+# using zoomed table
 dm_zoom_to(flights_dm, flights) \%>\%
   left_join(airports, select = c(faa, name))
+
+# by subsetting tables
+flights_dm$flights \%>\%
+  left_join(select(flights_dm$airports, c(faa, name)))
 
 # this should illustrate that tables don't necessarily need to be connected
 dm_zoom_to(flights_dm, airports) \%>\%

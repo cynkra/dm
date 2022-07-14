@@ -140,22 +140,25 @@ test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` o
 
 # joins ----------------------------------
 
-test_that("joins work as expected with keyed tables", {
-  dm <- dm_nycflights13()
+test_that("left join works as expected with keyed tables", {
+  expect_snapshot({
+    dm <- dm_nycflights13()
+    dm$weather %>% left_join(dm$flights)
+  })
 
   # results should be similar to zooming
-  zd1 <- dm_zoom_to(dm, airports) %>% left_join(flights)
-  zd2 <- dm_zoom_to(dm, flights) %>% left_join(airports)
+  zd1 <- dm_zoom_to(dm, weather) %>% left_join(flights)
+  zd2 <- dm_zoom_to(dm, flights) %>% left_join(weather)
 
   jd1 <- dm$weather %>% left_join(dm$flights)
   jd2 <- dm$flights %>% left_join(dm$weather)
 
-  expect_equal(ncol(jd1), ncol(jd2))
+  # keys are preserved after join
   expect_equal(keyed_get_info(dm$weather), keyed_get_info(jd1))
   expect_equal(keyed_get_info(dm$flights), keyed_get_info(jd2))
 
-  # FIXME: need to disambiguate columns before the number of columns can match
-  # expect_equal(dim(zd2), dim(jd2))
+  expect_equal(ncol(jd1), ncol(jd2))
+  expect_equal(dim(zd2), dim(jd2))
 })
 
 # arrange ----------------------------------
