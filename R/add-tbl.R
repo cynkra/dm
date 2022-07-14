@@ -12,7 +12,7 @@
 #'
 #' @return The initial `dm` with the additional table(s).
 #'
-#' @seealso [dm_mutate_tbl()], [dm_rm_tbl()]
+#' @seealso [dm_mutate_tbl()]
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more tables to add to the `dm`.
@@ -100,7 +100,7 @@ check_new_tbls <- function(dm, tbls) {
 #' For now, the column names must be identical.
 #' This restriction may be levied optionally in the future.
 #'
-#' @seealso [dm()], [dm_rm_tbl()]
+#' @seealso [dm()]
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more tables to update in the `dm`.

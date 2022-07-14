@@ -110,7 +110,7 @@ cdm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
 #' @export
 cdm_rm_tbl <- function(dm, ...) {
   deprecate_soft("0.1.0", "dm::cdm_rm_tbl()", "dm::dm_rm_tbl()")
-  dm_rm_tbl(dm = dm, ... = ...)
+  dm_rm_tbl_impl(dm = dm, ... = ...)
 }
 
 #' @rdname deprecated
@@ -646,7 +646,11 @@ cdm_zoom_out <- function(dm) {
 #' @export
 dm_rm_tbl <- function(dm, ...) {
   deprecate_soft("1.0.0", "dm::dm_rm_tbl()", "dm::dm_select_tbl()")
+  # since deprecated cdm_rm_tbl() was calling dm_rm_tbl() we need dm_rm_tbl_impl
+  dm_rm_tbl_impl(dm, ...)
+}
 
+dm_rm_tbl_impl <- function(dm, ...) {
   check_not_zoomed(dm)
   deselected_ind <- eval_select_table_indices(quo(c(...)), src_tbls_impl(dm))
   selected_ind <- setdiff(seq_along(dm), deselected_ind)
