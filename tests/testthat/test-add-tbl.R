@@ -100,6 +100,45 @@ test_that("dm_add_tbl() snapshots", {
   })
 })
 
+test_that("dm_rm_tbl() works", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  # removes a table
+  expect_equivalent_dm(
+    dm_rm_tbl(dm_for_filter_w_cycle(), tf_7),
+    dm_for_filter()
+  )
+
+  # removes more than one table
+  expect_equivalent_dm(
+    dm_rm_tbl(dm_for_filter_w_cycle(), tf_7, tf_5, tf_3),
+    dm_select_tbl(dm_for_filter(), tf_1, tf_2, tf_4, tf_6)
+  )
+
+  # fails when table name is wrong
+  expect_error(
+    dm_rm_tbl(dm_for_filter(), tf_9),
+    class = "vctrs_error_subscript"
+  )
+
+  # select-helpers work for 'dm_rm_tbl()'
+  expect_identical(
+    dm_rm_tbl(dm_for_disambiguate(), everything()),
+    empty_dm()
+  )
+
+  # corner case: not removing any table
+  expect_identical(
+    dm_rm_tbl(dm_for_disambiguate()),
+    dm_for_disambiguate()
+  )
+
+  expect_snapshot({
+    dm_rm_tbl(dm_for_flatten(), dim_1) %>% dm_paste(options = c("select", "keys"))
+    dm_rm_tbl(dm_for_flatten(), fact) %>% dm_paste(options = c("select", "keys"))
+  })
+})
+
 test_that("dm_mutate_tbl() works", {
   expect_equivalent_dm(
     dm_for_filter_w_cycle() %>%
