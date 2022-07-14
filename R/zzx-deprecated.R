@@ -109,7 +109,7 @@ cdm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
 #' @keywords internal
 #' @export
 cdm_rm_tbl <- function(dm, ...) {
-  deprecate_soft("0.1.0", "dm::cdm_rm_tbl()", "dm::dm_rm_tbl()")
+  deprecate_soft("0.1.0", "dm::cdm_rm_tbl()", "dm::dm_select_tbl()")
   dm_rm_tbl_impl(dm = dm, ... = ...)
 }
 
