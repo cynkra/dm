@@ -82,31 +82,6 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()
   new_dm3(vec_rbind(def, def_0))
 }
 
-#' Remove tables
-#'
-#' @description
-#' Removes one or more tables from a [`dm`].
-#'
-#' @return The `dm` without the removed table(s) that were present in the initial `dm`.
-#'
-#' @seealso [dm()], [dm_select_tbl()]
-#'
-#' @param dm A [`dm`] object.
-#' @param ... One or more unquoted table names to remove from the `dm`.
-#' `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
-#'
-#' @export
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_rm_tbl(airports)
-dm_rm_tbl <- function(dm, ...) {
-  check_not_zoomed(dm)
-  deselected_ind <- eval_select_table_indices(quo(c(...)), src_tbls_impl(dm))
-  selected_ind <- setdiff(seq_along(dm), deselected_ind)
-
-  dm_select_tbl(dm, !!!selected_ind)
-}
-
 check_new_tbls <- function(dm, tbls) {
   orig_tbls <- dm_get_tables_impl(dm)
 
