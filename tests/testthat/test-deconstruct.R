@@ -179,6 +179,9 @@ test_that("group_by for keyed tables produces expected output", {
 # summarize ----------------------------------
 
 test_that("summarize for keyed tables produces expected output", {
+  # FIXME: Brittle tests?
+  local_options(dplyr.summarise.inform = FALSE)
+
   expect_snapshot({
     dm <- dm_nycflights13(cycle = TRUE)
 
