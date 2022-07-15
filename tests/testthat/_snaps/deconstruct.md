@@ -445,3 +445,62 @@
         }
       ] 
 
+# fks_df_from_keys_info()
+
+    Code
+      dm %>% dm_get_keyed_tables_impl() %>% fks_df_from_keys_info() %>% jsonlite::toJSON(
+        pretty = TRUE)
+    Output
+      [
+        {
+          "table": "airlines",
+          "fks": [
+            {
+              "ref_column": ["carrier"],
+              "table": "flights",
+              "column": ["carrier"],
+              "on_delete": "no_action"
+            }
+          ]
+        },
+        {
+          "table": "airports",
+          "fks": [
+            {
+              "ref_column": ["faa"],
+              "table": "flights",
+              "column": ["origin"],
+              "on_delete": "no_action"
+            },
+            {
+              "ref_column": ["faa"],
+              "table": "flights",
+              "column": ["dest"],
+              "on_delete": "no_action"
+            }
+          ]
+        },
+        {
+          "table": "planes",
+          "fks": [
+            {
+              "ref_column": ["tailnum"],
+              "table": "flights",
+              "column": ["tailnum"],
+              "on_delete": "no_action"
+            }
+          ]
+        },
+        {
+          "table": "weather",
+          "fks": [
+            {
+              "ref_column": ["origin", "time_hour"],
+              "table": "flights",
+              "column": ["origin", "time_hour"],
+              "on_delete": "no_action"
+            }
+          ]
+        }
+      ] 
+

@@ -130,6 +130,41 @@ new_pks_from_keys_info <- function(tbl) {
   new_pk(list(df_keys$pk))
 }
 
+fks_df_from_keys_info <- function(tables) {
+  info <- map(tables, keyed_get_info)
+
+  fks_in <-
+    map_dfr(info, ~ tibble(.x$fks_in, parent_uuid = .x$uuid))
+
+  fks_out <-
+    map_dfr(info, ~ tibble(child_uuid = .x$uuid, .x$fks_out))
+
+  fks <-
+    vec_rbind(fks_out, fks_in) %>%
+    distinct()
+
+  uuid_lookup <- tibble(
+    table = names2(tables),
+    data = map(unname(tables), unclass_keyed_tbl),
+    uuid = map_chr(info, "uuid")
+  )
+
+  child_uuid_lookup <- set_names(uuid_lookup, paste0("child_", names(uuid_lookup)))
+  parent_uuid_lookup <- set_names(uuid_lookup, paste0("parent_", names(uuid_lookup)))
+
+  fks %>%
+    left_join(child_uuid_lookup, by = "child_uuid") %>%
+    left_join(parent_uuid_lookup, by = "parent_uuid") %>%
+    select(-child_uuid, -parent_uuid) %>%
+    filter(map2_lgl(child_fk_cols, child_data, ~ all(.x %in% colnames(.y)))) %>%
+    filter(map2_lgl(parent_key_cols, parent_data, ~ all(.x %in% colnames(.y)))) %>%
+    group_by(parent_table) %>%
+    # FIXME: Capture on_delete
+    summarize(fks = list(new_fk(parent_key_cols, child_table, child_fk_cols, "no_action"))) %>%
+    ungroup() %>%
+    rename(table = parent_table)
+}
+
 new_fks_from_keys_info <- function(tbl) {
   if (is_dm_keyed_tbl(tbl)) {
     df_keys <- keyed_get_info(tbl)$fks_in
