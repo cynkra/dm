@@ -51,20 +51,14 @@ new_keyed_tbl <- function(x,
     uuid <- new_uuid()
   }
 
-  x <- structure(
-    x,
-    dm_key_info = list(
-      pk = pk,
-      fks_in = fks_in,
-      fks_out = fks_out,
-      uuid = uuid
-    ),
-    class = unique(c("dm_keyed_tbl", class(x)))
+  class(x) <- unique(c("dm_keyed_tbl", class(x)))
+  attr(x, "dm_key_info") <- list(
+    pk = pk,
+    fks_in = fks_in,
+    fks_out = fks_out,
+    uuid = uuid
   )
 
-  # TODO: `structure()` reintroduces rownames; check if {rlang} and {vctrs}
-  # has an alternative; commented out for now because few other tests fail
-  # x <- remove_rownames(x)
   x
 }
 

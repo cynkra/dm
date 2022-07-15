@@ -60,7 +60,7 @@
       # A tibble: 1,761 x 19
       # Keys:     --- | 0 | 5
           year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-       * <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
+         <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
        1  2013     1    10        3           2359         4      426            437
        2  2013     1    10       16           2359        17      447            444
        3  2013     1    10      450            500       -10      634            648
@@ -80,7 +80,7 @@
       # A tibble: 86 x 8
       # Keys:     `faa` | 2 | 0
          faa   name                                 lat    lon   alt    tz dst   tzone
-       * <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
+         <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
        1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
        2 ATL   Hartsfield Jackson Atlanta Intl     33.6  -84.4  1026    -5 A     Amer~
        3 AUS   Austin Bergstrom Intl               30.2  -97.7   542    -6 A     Amer~
@@ -98,7 +98,7 @@
       # A tibble: 86 x 8
       # Keys:     `faa` | 2 | 0
          faa   name                                 lat    lon   alt    tz dst   tzone
-       * <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
+         <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
        1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
        2 ATL   Hartsfield Jackson Atlanta Intl     33.6  -84.4  1026    -5 A     Amer~
        3 AUS   Austin Bergstrom Intl               30.2  -97.7   542    -6 A     Amer~
@@ -184,7 +184,7 @@
       # A tibble: 1,800 x 32
       # Keys:     `origin`, `time_hour` | 1 | 0
          origin year.x month.x day.x hour.x  temp  dewp humid wind_dir wind_speed
-       * <chr>   <int>   <int> <int>  <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
+         <chr>   <int>   <int> <int>  <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
        1 EWR      2013       1    10      0  41    32    70.1      230       8.06
        2 EWR      2013       1    10      1  39.0  30.0  69.9      210       9.21
        3 EWR      2013       1    10      2  39.0  28.9  66.8      230       6.90
@@ -237,7 +237,7 @@
       # Groups:   month [2]
       # Keys:     --- | 0 | 5
           year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-       * <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
+         <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
        1  2013     1    10        3           2359         4      426            437
        2  2013     1    10       16           2359        17      447            444
        3  2013     1    10      450            500       -10      634            648
@@ -258,7 +258,7 @@
       # Groups:   tzone [6]
       # Keys:     `faa` | 2 | 0
          faa   name                                 lat    lon   alt    tz dst   tzone
-       * <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
+         <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
        1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
        2 ATL   Hartsfield Jackson Atlanta Intl     33.6  -84.4  1026    -5 A     Amer~
        3 AUS   Austin Bergstrom Intl               30.2  -97.7   542    -6 A     Amer~
@@ -277,7 +277,7 @@
       # Groups:   faa [86]
       # Keys:     `faa` | 2 | 0
          faa   name                                 lat    lon   alt    tz dst   tzone
-       * <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
+         <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
        1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
        2 ATL   Hartsfield Jackson Atlanta Intl     33.6  -84.4  1026    -5 A     Amer~
        3 AUS   Austin Bergstrom Intl               30.2  -97.7   542    -6 A     Amer~
@@ -299,7 +299,7 @@
       # A tibble: 1 x 1
       # Keys:     --- | 0 | 0
         mean_alt
-      *    <dbl>
+           <dbl>
       1     632.
     Code
       dm$airports %>% group_by(tzone, dst) %>% summarise(mean_alt = mean(alt))
@@ -308,7 +308,7 @@
       # Groups:   tzone [6]
       # Keys:     `tzone` | 0 | 0
         tzone               dst   mean_alt
-      * <chr>               <chr>    <dbl>
+        <chr>               <chr>    <dbl>
       1 America/Chicago     A         680.
       2 America/Denver      A        5399.
       3 America/Los_Angeles A         313.
