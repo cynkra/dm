@@ -109,9 +109,14 @@ dm_impl <- function(tbls, names) {
 #' @rdname dm
 #' @export
 new_dm <- function(tables = list()) {
-  def <- new_dm_def(tables)
+  def <- new_keyed_dm_def(tables)
   new_dm3(def)
 }
+
+new_keyed_dm_def <- function(tables = list()) {
+  new_dm_def(tables)
+}
+
 
 new_dm_def <- function(tables = list(),
                        pks_df = tibble(table = character(), pks = list()),
