@@ -319,6 +319,7 @@
     Output
       # A tibble: 1,761 x 19
       # Groups:   month [2]
+      # Keys:     --- | 0 | 5
           year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
          <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
        1  2013     1    10        3           2359         4      426            437
@@ -339,6 +340,7 @@
     Output
       # A tibble: 86 x 8
       # Groups:   tzone [6]
+      # Keys:     `faa` | 2 | 0
          faa   name                                 lat    lon   alt    tz dst   tzone
          <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
        1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
@@ -357,6 +359,7 @@
     Output
       # A tibble: 86 x 8
       # Groups:   faa [86]
+      # Keys:     `faa` | 2 | 0
          faa   name                                 lat    lon   alt    tz dst   tzone
          <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
        1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~

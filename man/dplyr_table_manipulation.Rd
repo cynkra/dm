@@ -12,6 +12,7 @@
 \alias{arrange.zoomed_dm}
 \alias{slice.zoomed_dm}
 \alias{group_by.zoomed_dm}
+\alias{group_by.dm_keyed_tbl}
 \alias{ungroup.zoomed_dm}
 \alias{summarise.zoomed_dm}
 \alias{count.zoomed_dm}
@@ -39,6 +40,8 @@
 \method{slice}{zoomed_dm}(.data, ..., .keep_pk = NULL)
 
 \method{group_by}{zoomed_dm}(.data, ...)
+
+\method{group_by}{dm_keyed_tbl}(.data, ...)
 
 \method{ungroup}{zoomed_dm}(x, ...)
 
