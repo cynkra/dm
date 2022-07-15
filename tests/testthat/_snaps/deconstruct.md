@@ -289,7 +289,7 @@
 # prepare_keyed_join()
 
     Code
-      prepare_keyed_join(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
     Output
       {
         "x_tbl": [
@@ -329,7 +329,7 @@
         "by": ["b"]
       } 
     Code
-      prepare_keyed_join(y, x)
+      keyed_build_join_spec(y, x)
     Output
       $x_tbl
       # A tibble: 1 x 1

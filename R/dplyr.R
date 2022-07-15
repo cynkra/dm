@@ -426,6 +426,10 @@ left_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
 #' @rdname dplyr_join
 #' @export
 left_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
+  if (!is_dm_keyed_tbl(y)) {
+    return(NextMethod())
+  }
+
   join_data <- prepare_keyed_join(x, y, by, suffix, copy)
   joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by,
     copy = FALSE,
@@ -439,6 +443,10 @@ left_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, 
 #' @rdname dplyr_join
 #' @export
 right_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
+  if (!is_dm_keyed_tbl(y)) {
+    return(NextMethod())
+  }
+
   join_data <- prepare_keyed_join(x, y, by, suffix, copy)
   joined_tbl <- right_join(join_data$x_tbl, join_data$y_tbl, join_data$by,
     copy = FALSE,

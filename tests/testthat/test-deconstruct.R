@@ -154,9 +154,9 @@ test_that("prepare_keyed_join()", {
   y <- keyed_tbl_impl(dm, "y")
 
   expect_snapshot({
-    prepare_keyed_join(x, y) %>%
+    keyed_build_join_spec(x, y) %>%
       jsonlite::toJSON(pretty = TRUE)
-    prepare_keyed_join(y, x)
+    keyed_build_join_spec(y, x)
   })
 })
 
