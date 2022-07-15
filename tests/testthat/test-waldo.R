@@ -1,37 +1,42 @@
+withr::local_seed(20220706)
+
 test_that("waldo", {
   skip_if_not_installed("waldo", "0.3.0")
+
+  dm <- dm_nycflights13()
+
   expect_snapshot({
-    dm_nycflights13() %>%
-      waldo::compare(dm_nycflights13(), max_diffs = 10)
+    dm %>%
+      waldo::compare(dm, max_diffs = 10)
   })
   expect_snapshot({
-    dm_nycflights13() %>%
+    dm %>%
       dm_select_tbl(-airlines) %>%
-      waldo::compare(dm_nycflights13(), max_diffs = 10)
+      waldo::compare(dm, max_diffs = 10)
   })
   expect_snapshot({
-    dm_nycflights13() %>%
+    dm %>%
       dm_select(airlines, -name) %>%
-      waldo::compare(dm_nycflights13(), max_diffs = 10)
+      waldo::compare(dm, max_diffs = 10)
   })
   expect_snapshot({
-    dm_nycflights13() %>%
+    dm %>%
       dm_rm_fk() %>%
-      waldo::compare(dm_nycflights13(), max_diffs = 10)
+      waldo::compare(dm, max_diffs = 10)
   })
   expect_snapshot({
-    dm_nycflights13() %>%
+    dm %>%
       dm_rm_pk(fail_fk = FALSE) %>%
-      waldo::compare(dm_nycflights13(), max_diffs = 10)
+      waldo::compare(dm, max_diffs = 10)
   })
   expect_snapshot({
-    dm_nycflights13() %>%
+    dm %>%
       dm_set_colors("yellow" = flights) %>%
-      waldo::compare(dm_nycflights13(), max_diffs = 10)
+      waldo::compare(dm, max_diffs = 10)
   })
   expect_snapshot({
-    dm_nycflights13() %>%
+    dm %>%
       dm_zoom_to(flights) %>%
-      waldo::compare(dm_nycflights13(), max_diffs = 10)
+      waldo::compare(dm, max_diffs = 10)
   })
 })
