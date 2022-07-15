@@ -61,3 +61,22 @@ new_keyed_tbl <- function(x, ..., pk = NULL, fks_in = NULL, fks_out = NULL, uuid
 keyed_get_info <- function(x) {
   attr(x, "dm_key_info")
 }
+
+#' @export
+tbl_sum.dm_keyed_tbl <- function(x, ...) {
+  info <- keyed_get_info(x)
+
+  if (is.null(info$pk)) {
+    pk_info <- symbol$em_dash
+  } else {
+    pk_info <- commas(tick(info$pk))
+  }
+
+  fks_in_info <- nrow(info$fks_in)
+  fks_out_info <- nrow(info$fks_out)
+
+  c(
+    NextMethod(),
+    Keys = paste0(pk_info, " | ", fks_in_info, " | ", fks_out_info)
+  )
+}

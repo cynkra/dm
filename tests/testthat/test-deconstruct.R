@@ -45,3 +45,11 @@ test_that("`new_keyed_tbl()` generates expected output", {
 
   expect_equal(dm$airports, keyed_tbl, ignore_attr = TRUE)
 })
+
+test_that("`new_keyed_tbl()` formatting", {
+  expect_snapshot({
+    dm_nycflights13()$flights
+    dm_nycflights13()$airports
+    dm_nycflights13(cycle = TRUE)$airports
+  })
+})
