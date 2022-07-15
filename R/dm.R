@@ -115,8 +115,7 @@ new_dm <- function(tables = list()) {
 
 new_dm_def <- function(tables = list(),
                        pks_df = tibble(table = character(), pks = list()),
-                       fks_df = tibble(table = character(), fks = list()),
-                       validate = TRUE) {
+                       fks_df = tibble(table = character(), fks = list())) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
