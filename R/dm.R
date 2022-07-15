@@ -143,6 +143,26 @@ new_dm_def <- function(tables = list(),
     left_join(col_tracker_zoom, by = "table") %>%
     mutate(uuid = vec_new_uuid_along(table))
 
+  # extract primary keys from keyed table
+  new_def <- def %>%
+    filter(map_lgl(data, is_dm_keyed_tbl)) %>%
+    rowwise() %>%
+    mutate(
+      pks = list_of(new_pks_from_keys_info(data), .ptype = new_pk()),
+      fks = list_of(new_fks_from_keys_info(data), .ptype = new_fk())
+    ) %>%
+    ungroup()
+
+  # update definition with the new keys
+  def <- dplyr::bind_rows(
+    def %>% filter(!map_lgl(data, is_dm_keyed_tbl)),
+    new_def
+  )
+
+  # data should be saved as a tibble
+  def <- def %>%
+    mutate(data = map(data, unclass_keyed_tbl))
+
   def
 }
 

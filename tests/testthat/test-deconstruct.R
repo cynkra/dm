@@ -191,3 +191,19 @@ test_that("summarize for keyed tables produces same output as zooming", {
   expect_equal(z_summary$month, k_summary$month)
   expect_equal(z_summary$avg_air_time, k_summary$avg_air_time)
 })
+
+# reconstruction ----------------------------------
+
+test_that("primary keys survive the round trip", {
+  dm <- dm_nycflights13(cycle = TRUE)
+  tbl <- keyed_tbl_impl(dm, "weather")
+  tbl_mutate <- tbl %>% select(everything())
+
+  dm2 <- dm(weather = tbl_mutate, dm[c("airlines", "airports", "planes", "flights")])
+
+  original_def <- dm_get_def(dm) %>% arrange(table)
+  new_def <- dm_get_def(dm2) %>% arrange(table)
+
+  expect_equal(original_def$pks, new_def$pks)
+  # expect_equal(original_def$fks, new_def$fks) # TODO: fix foreign keys
+})
