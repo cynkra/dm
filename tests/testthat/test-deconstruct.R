@@ -142,6 +142,24 @@ test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` o
 
 # joins ----------------------------------
 
+test_that("prepare_keyed_join()", {
+  withr::local_seed(20220715)
+
+  dm <-
+    dm(x = tibble(a = 1), y = tibble(b = 1)) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, a, y)
+
+  x <- keyed_tbl_impl(dm, "x")
+  y <- keyed_tbl_impl(dm, "y")
+
+  expect_snapshot({
+    prepare_keyed_join(x, y) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    prepare_keyed_join(y, x)
+  })
+})
+
 test_that("left join works as expected with keyed tables", {
   expect_snapshot({
     dm <- dm_nycflights13()

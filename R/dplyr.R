@@ -450,7 +450,7 @@ right_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL,
 }
 
 
-prepare_keyed_join <- function(x, y, by, suffix, copy) {
+prepare_keyed_join <- function(x, y, by = NULL, suffix = NULL, copy = NULL) {
   # TODO: disambiguate column names
   if (!is_null(suffix)) message("Column names are disambiguated if necessary, `suffix` ignored.")
   if (!is_null(copy)) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
