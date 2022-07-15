@@ -120,40 +120,40 @@
     Code
       tbl_sum(keyed_tbl_impl(dm_output, "d1"))
     Output
-               Keys 
-      "--- | 0 | 0" 
+                                 Keys 
+      "`origin`, `time_hour` | 0 | 0" 
 
 ---
 
     Code
       tbl_sum(keyed_tbl_impl(dm_output, "d2"))
     Output
-               Keys 
-      "--- | 0 | 0" 
+                 Keys 
+      "`faa` | 0 | 0" 
 
 ---
 
     Code
       tbl_sum(keyed_tbl_impl(new_dm_output, "d1"))
     Output
-               Keys 
-      "--- | 0 | 0" 
+                                 Keys 
+      "`origin`, `time_hour` | 0 | 0" 
 
 ---
 
     Code
       tbl_sum(keyed_tbl_impl(new_dm_output, "d2"))
     Output
-               Keys 
-      "--- | 0 | 0" 
+                 Keys 
+      "`faa` | 0 | 0" 
 
 # `dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` objects
 
     Code
       tbl_sum(keyed_tbl_impl(dm_output, "d1"))
     Output
-               Keys 
-      "--- | 0 | 0" 
+                                 Keys 
+      "`origin`, `time_hour` | 0 | 0" 
 
 ---
 
@@ -168,8 +168,8 @@
     Code
       tbl_sum(keyed_tbl_impl(new_dm_output, "d1"))
     Output
-               Keys 
-      "--- | 0 | 0" 
+                                 Keys 
+      "`origin`, `time_hour` | 0 | 0" 
 
 ---
 

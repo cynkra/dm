@@ -109,9 +109,24 @@ dm_impl <- function(tbls, names) {
 #' @rdname dm
 #' @export
 new_dm <- function(tables = list()) {
-  def <- new_dm_def(tables)
+  def <- new_keyed_dm_def(tables)
   new_dm3(def)
 }
+
+new_keyed_dm_def <- function(tables = list()) {
+  data <- unname(tables)
+
+  is_keyed <- map_lgl(data, is_dm_keyed_tbl)
+
+  pks <- map(data[is_keyed], new_pks_from_keys_info)
+  pks_df <- tibble(table = names2(tables)[is_keyed], pks)
+
+  # data should be saved as a tibble
+  unclassed_tables <- map(tables, unclass_keyed_tbl)
+
+  new_dm_def(unclassed_tables, pks_df)
+}
+
 
 new_dm_def <- function(tables = list(),
                        pks_df = tibble(table = character(), pks = list()),

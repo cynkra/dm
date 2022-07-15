@@ -121,10 +121,8 @@ unclass_keyed_tbl <- function(tbl) {
 }
 
 new_pks_from_keys_info <- function(tbl) {
-  if (is_dm_keyed_tbl(tbl)) {
-    df_keys <- keyed_get_info(tbl)
-    new_pk(list(df_keys$pk))
-  }
+  df_keys <- keyed_get_info(tbl)
+  new_pk(list(df_keys$pk))
 }
 
 new_fks_from_keys_info <- function(tbl) {
