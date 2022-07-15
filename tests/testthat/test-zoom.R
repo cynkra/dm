@@ -108,7 +108,7 @@ test_that("dm_update_tbl() works", {
   expect_equivalent_dm(
     dm_update_zoomed(new_dm_for_filter),
     dm_for_filter() %>%
-      dm_rm_tbl(tf_6) %>%
+      dm_select_tbl(-tf_6) %>%
       dm(tf_6 = tf_7())
   )
 })

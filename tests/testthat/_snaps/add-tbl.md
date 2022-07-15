@@ -44,10 +44,14 @@
         dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
         dm::dm_add_fk(fact, dim_4_key, dim_4)
 
-# dm_rm_tbl() works
+# dm_rm_tbl() snapshot
 
     Code
       dm_rm_tbl(dm_for_flatten(), dim_1) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `dm_rm_tbl()` was deprecated in dm 1.0.0.
+      Please use `dm_select_tbl()` instead.
     Message
       dm::dm(
         fact,
@@ -67,6 +71,10 @@
         dm::dm_add_fk(fact, dim_4_key, dim_4)
     Code
       dm_rm_tbl(dm_for_flatten(), fact) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `dm_rm_tbl()` was deprecated in dm 1.0.0.
+      Please use `dm_select_tbl()` instead.
     Message
       dm::dm(
         dim_1,

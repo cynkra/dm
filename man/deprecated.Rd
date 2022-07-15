@@ -61,6 +61,7 @@
 \alias{cdm_insert_zoomed_tbl}
 \alias{cdm_update_zoomed_tbl}
 \alias{cdm_zoom_out}
+\alias{dm_rm_tbl}
 \alias{dm_add_tbl}
 \alias{dm_bind}
 \title{Deprecated functions}
@@ -208,6 +209,8 @@ cdm_insert_zoomed_tbl(
 cdm_update_zoomed_tbl(dm)
 
 cdm_zoom_out(dm)
+
+dm_rm_tbl(dm, ...)
 
 dm_add_tbl(dm, ..., repair = "unique", quiet = FALSE)
 
