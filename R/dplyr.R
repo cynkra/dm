@@ -423,6 +423,66 @@ left_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
+#' @rdname dplyr_join
+#' @export
+left_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
+  join_data <- prepare_keyed_join(x, y, by, suffix, copy)
+  joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by,
+    copy = FALSE,
+    keep = keep,
+    ...
+  )
+
+  new_keyed_tbl_from_keys_info(joined_tbl, join_data$keys_info_x)
+}
+
+#' @rdname dplyr_join
+#' @export
+right_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
+  join_data <- prepare_keyed_join(x, y, by, suffix, copy)
+  joined_tbl <- right_join(join_data$x_tbl, join_data$y_tbl, join_data$by,
+    copy = FALSE,
+    keep = keep,
+    ...
+  )
+
+  new_keyed_tbl_from_keys_info(joined_tbl, join_data$keys_info_x)
+}
+
+
+prepare_keyed_join <- function(x, y, by, suffix, copy) {
+  # TODO: disambiguate column names
+  if (!is_null(suffix)) message("Column names are disambiguated if necessary, `suffix` ignored.")
+  if (!is_null(copy)) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
+
+  keys_info_x <- keyed_get_info(x)
+  keys_info_y <- keyed_get_info(y)
+
+  if (is_null(by)) {
+    if (nrow(keys_info_x$fks_in) > 0L) {
+      keys_df <- keys_info_x$fks_in
+    } else {
+      keys_df <- keys_info_y$fks_in
+    }
+
+    by <- keys_df$parent_key_cols[[1]]
+    names(by) <- keys_df$child_fk_cols[[1]]
+  }
+
+  # need to remove the `"dm_keyed_tbl"` class to avoid infinite recursion
+  # while joining
+  x_tbl <- unclass_keyed_tbl(x)
+  y_tbl <- unclass_keyed_tbl(y)
+
+  list(
+    x_tbl = x_tbl,
+    keys_info_x = keys_info_x,
+    y_tbl = y_tbl,
+    keys_info_y = keys_info_y,
+    by = by
+  )
+}
+
 #' @export
 inner_join.dm <- function(x, ...) {
   check_zoomed(x)

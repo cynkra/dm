@@ -140,6 +140,29 @@ test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` o
   expect_snapshot(tbl_sum(keyed_tbl_impl(new_dm_output, "d2")))
 })
 
+# joins ----------------------------------
+
+test_that("left join works as expected with keyed tables", {
+  expect_snapshot({
+    dm <- dm_nycflights13()
+    keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))
+  })
+
+  # results should be similar to zooming
+  zd1 <- dm_zoom_to(dm, weather) %>% left_join(flights)
+  zd2 <- dm_zoom_to(dm, flights) %>% left_join(weather)
+
+  jd1 <- keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))
+  jd2 <- keyed_tbl_impl(dm, "flights") %>% left_join(keyed_tbl_impl(dm, "weather"))
+
+  # keys are preserved after join
+  expect_equal(keyed_get_info(keyed_tbl_impl(dm, "weather")), keyed_get_info(jd1))
+  expect_equal(keyed_get_info(keyed_tbl_impl(dm, "flights")), keyed_get_info(jd2))
+
+  expect_equal(ncol(jd1), ncol(jd2))
+  expect_equal(dim(zd2), dim(jd2))
+})
+
 # arrange ----------------------------------
 
 test_that("arrange for keyed tables produces expected output", {

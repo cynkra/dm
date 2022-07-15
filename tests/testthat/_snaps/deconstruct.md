@@ -286,6 +286,33 @@
                Keys 
       "--- | 0 | 0" 
 
+# left join works as expected with keyed tables
+
+    Code
+      dm <- dm_nycflights13()
+      keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))
+    Output
+      # A tibble: 1,800 x 32
+      # Keys:     `origin`, `time_hour` | 1 | 0
+         origin year.x month.x day.x hour.x  temp  dewp humid wind_dir wind_speed
+         <chr>   <int>   <int> <int>  <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
+       1 EWR      2013       1    10      0  41    32    70.1      230       8.06
+       2 EWR      2013       1    10      1  39.0  30.0  69.9      210       9.21
+       3 EWR      2013       1    10      2  39.0  28.9  66.8      230       6.90
+       4 EWR      2013       1    10      3  39.9  27.0  59.5      270       5.75
+       5 EWR      2013       1    10      4  41    26.1  55.0      320       6.90
+       6 EWR      2013       1    10      5  41    26.1  55.0      300      12.7 
+       7 EWR      2013       1    10      5  41    26.1  55.0      300      12.7 
+       8 EWR      2013       1    10      6  39.9  25.0  54.8      280       6.90
+       9 EWR      2013       1    10      6  39.9  25.0  54.8      280       6.90
+      10 EWR      2013       1    10      6  39.9  25.0  54.8      280       6.90
+      # ... with 1,790 more rows, and 22 more variables: wind_gust <dbl>,
+      #   precip <dbl>, pressure <dbl>, visib <dbl>, time_hour <dttm>, year.y <int>,
+      #   month.y <int>, day.y <int>, dep_time <int>, sched_dep_time <int>,
+      #   dep_delay <dbl>, arr_time <int>, sched_arr_time <int>, arr_delay <dbl>,
+      #   carrier <chr>, flight <int>, tailnum <chr>, dest <chr>, air_time <dbl>,
+      #   distance <dbl>, hour.y <dbl>, minute <dbl>
+
 # arrange for keyed tables produces expected output
 
     Code
