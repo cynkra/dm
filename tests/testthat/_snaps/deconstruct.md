@@ -286,6 +286,19 @@
                Keys 
       "--- | 0 | 0" 
 
+# keyed_by()
+
+    Code
+      keyed_by(x, y)
+    Output
+        a 
+      "b" 
+    Code
+      keyed_by(y, x)
+    Output
+        a 
+      "b" 
+
 # build_join_spec()
 
     Code

@@ -142,6 +142,23 @@ test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` o
 
 # joins ----------------------------------
 
+test_that("keyed_by()", {
+  withr::local_seed(20220715)
+
+  dm <-
+    dm(x = tibble(a = 1), y = tibble(b = 1)) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, a, y)
+
+  x <- keyed_tbl_impl(dm, "x")
+  y <- keyed_tbl_impl(dm, "y")
+
+  expect_snapshot({
+    keyed_by(x, y)
+    keyed_by(y, x)
+  })
+})
+
 test_that("build_join_spec()", {
   withr::local_seed(20220715)
 

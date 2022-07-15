@@ -194,15 +194,8 @@ keyed_build_join_spec <- function(x, y, by = NULL) {
   keys_info_x <- keyed_get_info(x)
   keys_info_y <- keyed_get_info(y)
 
-  if (is_null(by)) {
-    if (nrow(keys_info_x$fks_in) > 0L) {
-      keys_df <- keys_info_x$fks_in
-    } else {
-      keys_df <- keys_info_y$fks_in
-    }
-
-    by <- keys_df$parent_key_cols[[1]]
-    names(by) <- keys_df$child_fk_cols[[1]]
+  if (is.null(by)) {
+    by <- keyed_by(x, y)
   }
 
   # need to remove the `"dm_keyed_tbl"` class to avoid infinite recursion
@@ -217,4 +210,20 @@ keyed_build_join_spec <- function(x, y, by = NULL) {
     keys_info_y = keys_info_y,
     by = by
   )
+}
+
+keyed_by <- function(x, y) {
+  keys_info_x <- keyed_get_info(x)
+  keys_info_y <- keyed_get_info(y)
+
+  if (nrow(keys_info_x$fks_in) > 0L) {
+    keys_df <- keys_info_x$fks_in
+  } else {
+    keys_df <- keys_info_y$fks_in
+  }
+
+  by <- keys_df$parent_key_cols[[1]]
+  names(by) <- keys_df$child_fk_cols[[1]]
+
+  by
 }
