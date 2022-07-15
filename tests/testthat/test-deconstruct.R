@@ -142,7 +142,7 @@ test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` o
 
 # joins ----------------------------------
 
-test_that("prepare_keyed_join()", {
+test_that("build_join_spec()", {
   withr::local_seed(20220715)
 
   dm <-

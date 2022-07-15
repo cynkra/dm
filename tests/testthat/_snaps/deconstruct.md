@@ -286,7 +286,7 @@
                Keys 
       "--- | 0 | 0" 
 
-# prepare_keyed_join()
+# build_join_spec()
 
     Code
       keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
