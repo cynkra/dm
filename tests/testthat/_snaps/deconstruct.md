@@ -58,6 +58,7 @@
       keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "flights")
     Output
       # A tibble: 1,761 x 19
+      # Keys:     --- | 0 | 5
           year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
          <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
        1  2013     1    10        3           2359         4      426            437
@@ -77,6 +78,7 @@
       keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
     Output
       # A tibble: 86 x 8
+      # Keys:     `faa` | 2 | 0
          faa   name                                 lat    lon   alt    tz dst   tzone
          <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
        1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
@@ -94,6 +96,7 @@
       keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airlines")
     Output
       # A tibble: 15 x 2
+      # Keys:     `carrier` | 1 | 0
          carrier name                       
          <chr>   <chr>                      
        1 9E      Endeavor Air Inc.          
@@ -117,56 +120,64 @@
     Code
       tbl_sum(keyed_tbl_impl(dm_output, "d1"))
     Output
-      NULL
+               Keys 
+      "--- | 0 | 0" 
 
 ---
 
     Code
       tbl_sum(keyed_tbl_impl(dm_output, "d2"))
     Output
-      NULL
+               Keys 
+      "--- | 0 | 0" 
 
 ---
 
     Code
       tbl_sum(keyed_tbl_impl(new_dm_output, "d1"))
     Output
-      NULL
+               Keys 
+      "--- | 0 | 0" 
 
 ---
 
     Code
       tbl_sum(keyed_tbl_impl(new_dm_output, "d2"))
     Output
-      NULL
+               Keys 
+      "--- | 0 | 0" 
 
 # `dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` objects
 
     Code
       tbl_sum(keyed_tbl_impl(dm_output, "d1"))
     Output
-      NULL
+               Keys 
+      "--- | 0 | 0" 
 
 ---
 
     Code
       tbl_sum(keyed_tbl_impl(dm_output, "d2"))
     Output
-      NULL
+               Keys 
+      "--- | 0 | 0" 
 
 ---
 
     Code
       tbl_sum(keyed_tbl_impl(new_dm_output, "d1"))
     Output
-      NULL
+               Keys 
+      "--- | 0 | 0" 
 
 ---
 
     Code
       tbl_sum(keyed_tbl_impl(new_dm_output, "d2"))
     Output
-      NULL
+               Keys 
+      "--- | 0 | 0" 
 
 # arrange for keyed tables produces expected output
 
@@ -174,6 +185,7 @@
       keyed_tbl_impl(dm, "airlines") %>% arrange(desc(name))
     Output
       # A tibble: 15 x 2
+      # Keys:     `carrier` | 1 | 0
          carrier name                       
          <chr>   <chr>                      
        1 VX      Virgin America             

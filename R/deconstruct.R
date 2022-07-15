@@ -81,6 +81,25 @@ is_dm_keyed_tbl <- function(x) {
   inherits(x, "dm_keyed_tbl")
 }
 
+#' @export
+tbl_sum.dm_keyed_tbl <- function(x, ...) {
+  info <- keyed_get_info(x)
+
+  if (is.null(info$pk)) {
+    pk_info <- cli::symbol$em_dash
+  } else {
+    pk_info <- commas(tick(info$pk))
+  }
+
+  fks_in_info <- nrow(info$fks_in)
+  fks_out_info <- nrow(info$fks_out)
+
+  c(
+    NextMethod(),
+    Keys = paste0(pk_info, " | ", fks_in_info, " | ", fks_out_info)
+  )
+}
+
 #' @title Remove `"dm_keyed_tbl"` class
 #'
 #' @return If entered table has `"dm_keyed_tbl"` class, it will be removed. All
