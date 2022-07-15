@@ -93,23 +93,27 @@
       10 BUR   Bob Hope                            34.2 -118.    778    -8 A     Amer~
       # ... with 76 more rows
     Code
-      keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
+      keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airlines")
     Output
-      # A tibble: 86 x 8
-      # Keys:     `faa` | 2 | 0
-         faa   name                                 lat    lon   alt    tz dst   tzone
-         <chr> <chr>                              <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
-       1 ALB   Albany Intl                         42.7  -73.8   285    -5 A     Amer~
-       2 ATL   Hartsfield Jackson Atlanta Intl     33.6  -84.4  1026    -5 A     Amer~
-       3 AUS   Austin Bergstrom Intl               30.2  -97.7   542    -6 A     Amer~
-       4 BDL   Bradley Intl                        41.9  -72.7   173    -5 A     Amer~
-       5 BHM   Birmingham Intl                     33.6  -86.8   644    -6 A     Amer~
-       6 BNA   Nashville Intl                      36.1  -86.7   599    -6 A     Amer~
-       7 BOS   General Edward Lawrence Logan Intl  42.4  -71.0    19    -5 A     Amer~
-       8 BTV   Burlington Intl                     44.5  -73.2   335    -5 A     Amer~
-       9 BUF   Buffalo Niagara Intl                42.9  -78.7   724    -5 A     Amer~
-      10 BUR   Bob Hope                            34.2 -118.    778    -8 A     Amer~
-      # ... with 76 more rows
+      # A tibble: 15 x 2
+      # Keys:     `carrier` | 1 | 0
+         carrier name                       
+         <chr>   <chr>                      
+       1 9E      Endeavor Air Inc.          
+       2 AA      American Airlines Inc.     
+       3 AS      Alaska Airlines Inc.       
+       4 B6      JetBlue Airways            
+       5 DL      Delta Air Lines Inc.       
+       6 EV      ExpressJet Airlines Inc.   
+       7 F9      Frontier Airlines Inc.     
+       8 FL      AirTran Airways Corporation
+       9 HA      Hawaiian Airlines Inc.     
+      10 MQ      Envoy Air                  
+      11 UA      United Air Lines Inc.      
+      12 US      US Airways Inc.            
+      13 VX      Virgin America             
+      14 WN      Southwest Airlines Co.     
+      15 YV      Mesa Airlines Inc.         
 
 # `dm()` and `new_dm()` can handle a list of `dm_keyed_tbl` objects
 

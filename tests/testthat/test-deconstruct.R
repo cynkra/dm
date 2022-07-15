@@ -53,7 +53,7 @@ test_that("`new_keyed_tbl()` formatting", {
   expect_snapshot({
     keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "flights")
     keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
-    keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
+    keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airlines")
   })
 })
 
