@@ -179,6 +179,8 @@ test_that("build_join_spec()", {
 })
 
 test_that("left join works as expected with keyed tables", {
+  skip("Name collisions")
+
   expect_snapshot({
     dm <- dm_nycflights13()
     keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))

@@ -191,12 +191,35 @@ new_fks_from_keys_info <- function(tbl) {
 
 # FIXME: Pass suffix and keep when ready
 keyed_build_join_spec <- function(x, y, by = NULL) {
-  keys_info_x <- keyed_get_info(x)
-  keys_info_y <- keyed_get_info(y)
+  info_x <- keyed_get_info(x)
+  info_y <- keyed_get_info(y)
 
   if (is.null(by)) {
     by <- keyed_by(x, y)
+  } else if (!is_named2(by)) {
+    by <- set_names(by, by)
   }
+
+  # FIXME: Handle collisions
+  stopifnot(length(intersect(setdiff(colnames(y), by), colnames(x))) == 0)
+
+  # Is one of the "by" column sets a primary key? Keep the primary key of the *other* table!
+  if (keyed_is_pk(x, names(by))) {
+    new_pk <- info_y$pk
+  } else if (keyed_is_pk(y, by)) {
+    new_pk <- info_x$pk
+  } else {
+    new_pk <- NULL
+  }
+
+  # Keep all foreign keys
+  new_fks_in <-
+    vec_rbind(info_x$fks_in, info_y$fks_in) %>%
+    filter(child_uuid != !!info_x$uuid)
+
+  new_fks_out <-
+    vec_rbind(info_x$fks_out, info_y$fks_out) %>%
+    filter(parent_uuid != !!info_x$uuid)
 
   # need to remove the `"dm_keyed_tbl"` class to avoid infinite recursion
   # while joining
@@ -205,10 +228,11 @@ keyed_build_join_spec <- function(x, y, by = NULL) {
 
   list(
     x_tbl = x_tbl,
-    keys_info_x = keys_info_x,
     y_tbl = y_tbl,
-    keys_info_y = keys_info_y,
-    by = by
+    by = by,
+    new_pk = new_pk,
+    new_fks_in = new_fks_in,
+    new_fks_out = new_fks_out
   )
 }
 
@@ -236,4 +260,11 @@ keyed_by <- function(x, y) {
   } else {
     set_names(fk$ref_column[[1]], fk$column[[1]])
   }
+}
+
+keyed_is_pk <- function(x, cols) {
+  info <- keyed_get_info(x)
+
+  # cols must include at least all pk columns
+  !is.null(info$pk) && all(info$pk %in% cols)
 }
