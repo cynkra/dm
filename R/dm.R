@@ -486,7 +486,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 `$.dm` <- function(x, name) {
   # for both dm and zoomed_dm
   table <- dm_tbl_name(x, {{ name }})
-  tbl_impl(x, table, keyed = TRUE)
+  tbl_impl(x, table)
 }
 
 #' @export
@@ -504,7 +504,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 `[[.dm` <- function(x, id) {
   # for both dm and zoomed_dm
   if (is.numeric(id)) id <- src_tbls_impl(x)[id] else id <- as_string(id)
-  tbl_impl(x, id, quiet = TRUE, keyed = TRUE)
+  tbl_impl(x, id, quiet = TRUE)
 }
 
 #' @export
@@ -585,6 +585,10 @@ str.zoomed_dm <- function(object, ...) {
     mutate(zoom = if_else(map_lgl(zoom, is_null), NA_character_, table)) %>%
     select(zoom, table, pks, fks, filters)
   str(object)
+}
+
+keyed_tbl_impl <- function(dm, from) {
+  tbl_impl(dm, from, keyed = TRUE)
 }
 
 tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {

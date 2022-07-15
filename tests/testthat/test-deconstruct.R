@@ -51,9 +51,9 @@ test_that("`new_keyed_tbl()` generates expected output", {
 
 test_that("`new_keyed_tbl()` formatting", {
   expect_snapshot({
-    dm_nycflights13(cycle = TRUE)$flights
-    dm_nycflights13(cycle = TRUE)$airports
-    dm_nycflights13(cycle = TRUE)$airports
+    keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "flights")
+    keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
+    keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
   })
 })
 
@@ -69,6 +69,8 @@ test_that("both subsetting operators for `dm` produce the same object", {
 test_that("subsetting `dm` produces `dm_keyed_tbl` objects", {
   dm <- dm_nycflights13(cycle = TRUE)
 
+  skip("keyed = TRUE")
+
   expect_s3_class(dm$airlines, "dm_keyed_tbl")
   expect_s3_class(dm[[1]], "dm_keyed_tbl")
   expect_s3_class(dm[["airlines"]], "dm_keyed_tbl")
@@ -79,10 +81,10 @@ test_that("subsetting `dm` produces `dm_keyed_tbl` objects", {
 test_that("`dm()` and `new_dm()` can handle a list of `dm_keyed_tbl` objects", {
   dm <- dm_nycflights13(cycle = TRUE)
 
-  y1 <- dm$weather %>%
+  y1 <- keyed_tbl_impl(dm, "weather") %>%
     mutate() %>%
     select(everything())
-  y2 <- dm$airports %>%
+  y2 <- keyed_tbl_impl(dm, "airports") %>%
     mutate() %>%
     select(everything())
 
@@ -96,22 +98,16 @@ test_that("`dm()` and `new_dm()` can handle a list of `dm_keyed_tbl` objects", {
   expect_s3_class(new_dm_output, "dm")
 
   # there shouldn't be any keys
-  expect_snapshot(tbl_sum(dm_output$d1))
-  expect_snapshot(tbl_sum(dm_output$d2))
-  expect_snapshot(tbl_sum(new_dm_output$d1))
-  expect_snapshot(tbl_sum(new_dm_output$d2))
-
-  # included tables should have the same dimensions as the original tables
-  expect_equal(dim(dm_output$d1), dim(dm[["weather"]]))
-  expect_equal(dim(dm_output$d2), dim(dm[["airports"]]))
-  expect_equal(dim(new_dm_output$d1), dim(dm[["weather"]]))
-  expect_equal(dim(new_dm_output$d2), dim(dm[["airports"]]))
+  expect_snapshot(tbl_sum(keyed_tbl_impl(dm_output, "d1")))
+  expect_snapshot(tbl_sum(keyed_tbl_impl(dm_output, "d2")))
+  expect_snapshot(tbl_sum(keyed_tbl_impl(new_dm_output, "d1")))
+  expect_snapshot(tbl_sum(keyed_tbl_impl(new_dm_output, "d2")))
 })
 
 test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` objects", {
   dm <- dm_nycflights13(cycle = TRUE)
 
-  y1 <- dm$weather %>%
+  y1 <- keyed_tbl_impl(dm, "weather") %>%
     mutate() %>%
     select(everything())
   y2 <- nycflights13::airports
@@ -126,16 +122,10 @@ test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` o
   expect_s3_class(new_dm_output, "dm")
 
   # there shouldn't be any keys
-  expect_snapshot(tbl_sum(dm_output$d1))
-  expect_snapshot(tbl_sum(dm_output$d2))
-  expect_snapshot(tbl_sum(new_dm_output$d1))
-  expect_snapshot(tbl_sum(new_dm_output$d2))
-
-  # included tables should have the same dimensions as the original tables
-  expect_equal(dim(dm_output$d1), dim(dm[["weather"]]))
-  expect_equal(dim(dm_output$d2), dim(y2))
-  expect_equal(dim(new_dm_output$d1), dim(dm[["weather"]]))
-  expect_equal(dim(new_dm_output$d2), dim(y2))
+  expect_snapshot(tbl_sum(keyed_tbl_impl(dm_output, "d1")))
+  expect_snapshot(tbl_sum(keyed_tbl_impl(dm_output, "d2")))
+  expect_snapshot(tbl_sum(keyed_tbl_impl(new_dm_output, "d1")))
+  expect_snapshot(tbl_sum(keyed_tbl_impl(new_dm_output, "d2")))
 })
 
 # joins ----------------------------------
@@ -143,19 +133,19 @@ test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` o
 test_that("left join works as expected with keyed tables", {
   expect_snapshot({
     dm <- dm_nycflights13()
-    dm$weather %>% left_join(dm$flights)
+    keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))
   })
 
   # results should be similar to zooming
   zd1 <- dm_zoom_to(dm, weather) %>% left_join(flights)
   zd2 <- dm_zoom_to(dm, flights) %>% left_join(weather)
 
-  jd1 <- dm$weather %>% left_join(dm$flights)
-  jd2 <- dm$flights %>% left_join(dm$weather)
+  jd1 <- keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))
+  jd2 <- keyed_tbl_impl(dm, "flights") %>% left_join(keyed_tbl_impl(dm, "weather"))
 
   # keys are preserved after join
-  expect_equal(keyed_get_info(dm$weather), keyed_get_info(jd1))
-  expect_equal(keyed_get_info(dm$flights), keyed_get_info(jd2))
+  expect_equal(keyed_get_info(keyed_tbl_impl(dm, "weather")), keyed_get_info(jd1))
+  expect_equal(keyed_get_info(keyed_tbl_impl(dm, "flights")), keyed_get_info(jd2))
 
   expect_equal(ncol(jd1), ncol(jd2))
   expect_equal(dim(zd2), dim(jd2))
@@ -167,7 +157,7 @@ test_that("arrange for keyed tables produces expected output", {
   dm <- dm_nycflights13(cycle = TRUE)
 
   expect_snapshot({
-    dm$airlines %>% arrange(desc(name))
+    keyed_tbl_impl(dm, "airlines") %>% arrange(desc(name))
   })
 })
 
@@ -177,12 +167,12 @@ test_that("group_by for keyed tables produces expected output", {
   expect_snapshot({
     dm <- dm_nycflights13(cycle = TRUE)
 
-    dm$flights %>% group_by(month)
+    keyed_tbl_impl(dm, "flights") %>% group_by(month)
 
-    dm$airports %>% group_by(tzone)
+    keyed_tbl_impl(dm, "airports") %>% group_by(tzone)
 
     # grouping by the primary key works as well
-    dm$airports %>% group_by(faa)
+    keyed_tbl_impl(dm, "airports") %>% group_by(faa)
   })
 })
 
@@ -192,10 +182,10 @@ test_that("summarize for keyed tables produces expected output", {
   expect_snapshot({
     dm <- dm_nycflights13(cycle = TRUE)
 
-    dm$airports %>%
+    keyed_tbl_impl(dm, "airports") %>%
       summarise(mean_alt = mean(alt))
 
-    dm$airports %>%
+    keyed_tbl_impl(dm, "airports") %>%
       group_by(tzone, dst) %>%
       summarise(mean_alt = mean(alt))
   })
@@ -211,7 +201,7 @@ test_that("summarize for keyed tables produces same output as zooming", {
     arrange(desc(day)) %>%
     summarize(avg_air_time = mean(air_time, na.rm = TRUE))
 
-  k_summary <- dm$flights %>%
+  k_summary <- keyed_tbl_impl(dm, "flights") %>%
     group_by(month) %>%
     arrange(desc(day)) %>%
     summarize(avg_air_time = mean(air_time, na.rm = TRUE))
@@ -226,7 +216,7 @@ test_that("summarize for keyed tables produces same output as zooming", {
 
 test_that("primary keys survive the round trip", {
   dm <- dm_nycflights13(cycle = TRUE)
-  tbl <- dm$weather
+  tbl <- keyed_tbl_impl(dm, "weather")
   tbl_mutate <- tbl %>% select(everything())
 
   dm2 <- dm(weather = tbl_mutate, dm[c("airlines", "airports", "planes", "flights")])

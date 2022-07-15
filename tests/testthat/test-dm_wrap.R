@@ -8,9 +8,6 @@ test_that("`dm_wrap_tbl()` and `dm_unwrap_tbl()` work", {
   dm_unwrap_tblped <- dm_unwrap_tbl(dm_wrapped, dm1)
   expect_equivalent_dm(dm_unwrap_tblped, dm_unwrap_tbl(dm_wrapped, dm1))
 
-  skip("keyed = TRUE")
-
-
   # to tibble
   expect_snapshot({
     wrapped <- dm_wrap_tbl(dm_for_filter(), tf_4)

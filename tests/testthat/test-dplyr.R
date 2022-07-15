@@ -1,6 +1,5 @@
 # basic tests -------------------------------------------------------------
 
-skip("keyed = TRUE")
 
 test_that("basic test: 'group_by()'-methods work", {
   expect_equivalent_tbl(

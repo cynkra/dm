@@ -55,7 +55,7 @@
 # `new_keyed_tbl()` formatting
 
     Code
-      dm_nycflights13(cycle = TRUE)$flights
+      keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "flights")
     Output
       # A tibble: 1,761 x 19
       # Keys:     --- | 0 | 5
@@ -75,7 +75,7 @@
       #   carrier <chr>, flight <int>, tailnum <chr>, origin <chr>, dest <chr>,
       #   air_time <dbl>, distance <dbl>, hour <dbl>, minute <dbl>, time_hour <dttm>
     Code
-      dm_nycflights13(cycle = TRUE)$airports
+      keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
     Output
       # A tibble: 86 x 8
       # Keys:     `faa` | 2 | 0
@@ -93,7 +93,7 @@
       10 BUR   Bob Hope                            34.2 -118.    778    -8 A     Amer~
       # ... with 76 more rows
     Code
-      dm_nycflights13(cycle = TRUE)$airports
+      keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
     Output
       # A tibble: 86 x 8
       # Keys:     `faa` | 2 | 0
@@ -114,7 +114,7 @@
 # `dm()` and `new_dm()` can handle a list of `dm_keyed_tbl` objects
 
     Code
-      tbl_sum(dm_output$d1)
+      tbl_sum(keyed_tbl_impl(dm_output, "d1"))
     Output
                                  Keys 
       "`origin`, `time_hour` | 0 | 0" 
@@ -122,7 +122,7 @@
 ---
 
     Code
-      tbl_sum(dm_output$d2)
+      tbl_sum(keyed_tbl_impl(dm_output, "d2"))
     Output
                  Keys 
       "`faa` | 0 | 0" 
@@ -130,7 +130,7 @@
 ---
 
     Code
-      tbl_sum(new_dm_output$d1)
+      tbl_sum(keyed_tbl_impl(new_dm_output, "d1"))
     Output
                                  Keys 
       "`origin`, `time_hour` | 1 | 0" 
@@ -138,7 +138,7 @@
 ---
 
     Code
-      tbl_sum(new_dm_output$d2)
+      tbl_sum(keyed_tbl_impl(new_dm_output, "d2"))
     Output
                  Keys 
       "`faa` | 2 | 0" 
@@ -146,7 +146,7 @@
 # `dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` objects
 
     Code
-      tbl_sum(dm_output$d1)
+      tbl_sum(keyed_tbl_impl(dm_output, "d1"))
     Output
                                  Keys 
       "`origin`, `time_hour` | 0 | 0" 
@@ -154,7 +154,7 @@
 ---
 
     Code
-      tbl_sum(dm_output$d2)
+      tbl_sum(keyed_tbl_impl(dm_output, "d2"))
     Output
                Keys 
       "--- | 0 | 0" 
@@ -162,7 +162,7 @@
 ---
 
     Code
-      tbl_sum(new_dm_output$d1)
+      tbl_sum(keyed_tbl_impl(new_dm_output, "d1"))
     Output
                                  Keys 
       "`origin`, `time_hour` | 1 | 0" 
@@ -170,7 +170,7 @@
 ---
 
     Code
-      tbl_sum(new_dm_output$d2)
+      tbl_sum(keyed_tbl_impl(new_dm_output, "d2"))
     Output
                Keys 
       "--- | 0 | 0" 
@@ -179,7 +179,7 @@
 
     Code
       dm <- dm_nycflights13()
-      dm$weather %>% left_join(dm$flights)
+      keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))
     Output
       # A tibble: 1,800 x 32
       # Keys:     `origin`, `time_hour` | 1 | 0
@@ -205,7 +205,7 @@
 # arrange for keyed tables produces expected output
 
     Code
-      dm$airlines %>% arrange(desc(name))
+      keyed_tbl_impl(dm, "airlines") %>% arrange(desc(name))
     Output
       # A tibble: 15 x 2
       # Keys:     `carrier` | 1 | 0
@@ -231,7 +231,7 @@
 
     Code
       dm <- dm_nycflights13(cycle = TRUE)
-      dm$flights %>% group_by(month)
+      keyed_tbl_impl(dm, "flights") %>% group_by(month)
     Output
       # A tibble: 1,761 x 19
       # Groups:   month [2]
@@ -252,7 +252,7 @@
       #   carrier <chr>, flight <int>, tailnum <chr>, origin <chr>, dest <chr>,
       #   air_time <dbl>, distance <dbl>, hour <dbl>, minute <dbl>, time_hour <dttm>
     Code
-      dm$airports %>% group_by(tzone)
+      keyed_tbl_impl(dm, "airports") %>% group_by(tzone)
     Output
       # A tibble: 86 x 8
       # Groups:   tzone [6]
@@ -271,7 +271,7 @@
       10 BUR   Bob Hope                            34.2 -118.    778    -8 A     Amer~
       # ... with 76 more rows
     Code
-      dm$airports %>% group_by(faa)
+      keyed_tbl_impl(dm, "airports") %>% group_by(faa)
     Output
       # A tibble: 86 x 8
       # Groups:   faa [86]
@@ -294,7 +294,7 @@
 
     Code
       dm <- dm_nycflights13(cycle = TRUE)
-      dm$airports %>% summarise(mean_alt = mean(alt))
+      keyed_tbl_impl(dm, "airports") %>% summarise(mean_alt = mean(alt))
     Output
       # A tibble: 1 x 1
       # Keys:     --- | 0 | 0
@@ -302,7 +302,8 @@
            <dbl>
       1     632.
     Code
-      dm$airports %>% group_by(tzone, dst) %>% summarise(mean_alt = mean(alt))
+      keyed_tbl_impl(dm, "airports") %>% group_by(tzone, dst) %>% summarise(mean_alt = mean(
+        alt))
     Output
       # A tibble: 6 x 3
       # Groups:   tzone [6]
