@@ -133,7 +133,11 @@ pks_df_from_keys_info <- function(tables) {
 
 new_pks_from_keys_info <- function(tbl) {
   df_keys <- keyed_get_info(tbl)
-  new_pk(list(df_keys$pk))
+  if (is.null(df_keys$pk)) {
+    NULL
+  } else {
+    new_pk(list(df_keys$pk))
+  }
 }
 
 fks_df_from_keys_info <- function(tables) {
@@ -166,7 +170,7 @@ fks_df_from_keys_info <- function(tables) {
     filter(map2_lgl(parent_key_cols, parent_data, ~ all(.x %in% colnames(.y)))) %>%
     group_by(parent_table) %>%
     # FIXME: Capture on_delete
-    summarize(fks = list(new_fk(parent_key_cols, child_table, child_fk_cols, "no_action"))) %>%
+    summarize(fks = list(new_fk(as.list(parent_key_cols), child_table, as.list(child_fk_cols), "no_action"))) %>%
     ungroup() %>%
     rename(table = parent_table)
 }

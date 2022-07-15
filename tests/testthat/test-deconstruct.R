@@ -232,16 +232,22 @@ test_that("fks_df_from_keys_info()", {
   })
 })
 
-test_that("primary keys survive the round trip", {
+test_that("primary and foreign keys survive the round trip", {
   dm <- dm_nycflights13(cycle = TRUE)
   tbl <- keyed_tbl_impl(dm, "weather")
   tbl_mutate <- tbl %>% select(everything())
 
-  dm2 <- dm(weather = tbl_mutate, dm[c("airlines", "airports", "planes", "flights")])
+  dm2 <- dm(
+    weather = tbl_mutate,
+    airlines = keyed_tbl_impl(dm, "airlines"),
+    airports = keyed_tbl_impl(dm, "airports"),
+    planes = keyed_tbl_impl(dm, "planes"),
+    flights = keyed_tbl_impl(dm, "flights"),
+  )
 
   original_def <- dm_get_def(dm) %>% arrange(table)
   new_def <- dm_get_def(dm2) %>% arrange(table)
 
   expect_equal(original_def$pks, new_def$pks)
-  # expect_equal(original_def$fks, new_def$fks) # TODO: fix foreign keys
+  expect_equal(original_def$fks, new_def$fks)
 })
