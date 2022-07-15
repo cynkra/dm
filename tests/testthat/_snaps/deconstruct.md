@@ -296,8 +296,8 @@
     Code
       keyed_by(y, x)
     Output
-        a 
-      "b" 
+        b 
+      "a" 
 
 # build_join_spec()
 
@@ -342,62 +342,45 @@
         "by": ["b"]
       } 
     Code
-      keyed_build_join_spec(y, x)
+      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
     Output
-      $x_tbl
-      # A tibble: 1 x 1
-            b
-        <dbl>
-      1     1
-      
-      $keys_info_x
-      $keys_info_x$pk
-      [1] "b"
-      
-      $keys_info_x$fks_in
-      # A tibble: 1 x 3
-        child_uuid                           child_fk_cols parent_key_cols
-        <chr>                                <keys>        <keys>         
-      1 0109020c-0b0a-030e-0d04-05060f070008 a             b              
-      
-      $keys_info_x$fks_out
-      # A tibble: 0 x 3
-      # ... with 3 variables: child_fk_cols <keys>, parent_uuid <chr>,
-      #   parent_key_cols <keys>
-      
-      $keys_info_x$uuid
-      [1] "04080601-0b0a-0c02-0503-0e070f0d0009"
-      
-      
-      $y_tbl
-      # A tibble: 1 x 1
-            a
-        <dbl>
-      1     1
-      
-      $keys_info_y
-      $keys_info_y$pk
-      NULL
-      
-      $keys_info_y$fks_in
-      # A tibble: 0 x 3
-      # ... with 3 variables: child_uuid <chr>, child_fk_cols <keys>,
-      #   parent_key_cols <keys>
-      
-      $keys_info_y$fks_out
-      # A tibble: 1 x 3
-        child_fk_cols parent_uuid                          parent_key_cols
-        <keys>        <chr>                                <keys>         
-      1 a             04080601-0b0a-0c02-0503-0e070f0d0009 b              
-      
-      $keys_info_y$uuid
-      [1] "0109020c-0b0a-030e-0d04-05060f070008"
-      
-      
-      $by
-        a 
-      "b" 
-      
+      {
+        "x_tbl": [
+          {
+            "b": 1
+          }
+        ],
+        "keys_info_x": {
+          "pk": ["b"],
+          "fks_in": [
+            {
+              "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
+              "child_fk_cols": ["a"],
+              "parent_key_cols": ["b"]
+            }
+          ],
+          "fks_out": [],
+          "uuid": ["04080601-0b0a-0c02-0503-0e070f0d0009"]
+        },
+        "y_tbl": [
+          {
+            "a": 1
+          }
+        ],
+        "keys_info_y": {
+          "pk": {},
+          "fks_in": [],
+          "fks_out": [
+            {
+              "child_fk_cols": ["a"],
+              "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
+              "parent_key_cols": ["b"]
+            }
+          ],
+          "uuid": ["0109020c-0b0a-030e-0d04-05060f070008"]
+        },
+        "by": ["a"]
+      } 
 
 # left join works as expected with keyed tables
 

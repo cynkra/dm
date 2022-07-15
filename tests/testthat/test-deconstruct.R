@@ -173,7 +173,8 @@ test_that("build_join_spec()", {
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
       jsonlite::toJSON(pretty = TRUE)
-    keyed_build_join_spec(y, x)
+    keyed_build_join_spec(y, x) %>%
+      jsonlite::toJSON(pretty = TRUE)
   })
 })
 

@@ -213,17 +213,27 @@ keyed_build_join_spec <- function(x, y, by = NULL) {
 }
 
 keyed_by <- function(x, y) {
-  keys_info_x <- keyed_get_info(x)
-  keys_info_y <- keyed_get_info(y)
+  fks_df <- fks_df_from_keys_info(list(x = x, y = y))
 
-  if (nrow(keys_info_x$fks_in) > 0L) {
-    keys_df <- keys_info_x$fks_in
-  } else {
-    keys_df <- keys_info_y$fks_in
+  if (nrow(fks_df) == 0) {
+    abort("Can't infer `by`: foreign key information lost?")
   }
 
-  by <- keys_df$parent_key_cols[[1]]
-  names(by) <- keys_df$child_fk_cols[[1]]
+  stopifnot(map_int(fks_df$fks, NROW) > 0)
 
-  by
+  if (nrow(fks_df) > 1) {
+    abort("Can't infer `by`: foreign key available in both directions")
+  }
+
+  if (nrow(fks_df$fks[[1]]) > 1) {
+    abort("Can't infer `by`: multiple foreign keys available")
+  }
+
+  fk <- fks_df$fks[[1]][1, ]
+
+  if (fks_df$table == "x") {
+    set_names(fk$column[[1]], fk$ref_column[[1]])
+  } else {
+    set_names(fk$ref_column[[1]], fk$column[[1]])
+  }
 }
