@@ -308,10 +308,12 @@
     Code
       keyed_tbl_impl(dm, "airports") %>% group_by(tzone, dst) %>% summarise(mean_alt = mean(
         alt))
+    Message
+      `summarise()` has grouped output by 'tzone'. You can override using the `.groups` argument.
     Output
       # A tibble: 6 x 3
       # Groups:   tzone [6]
-      # Keys:     `tzone` | 0 | 0
+      # Keys:     `tzone`, `dst` | 0 | 0
         tzone               dst   mean_alt
         <chr>               <chr>    <dbl>
       1 America/Chicago     A         680.
