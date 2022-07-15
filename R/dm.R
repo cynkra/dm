@@ -568,17 +568,22 @@ keyed_tbl_impl <- function(dm, from) {
 
 tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
   def <- dm_get_def(dm, quiet = quiet)
-  uuid_lookup <- def[c("table", "uuid")]
   idx <- match(from, def$table)
   if (is.na(idx)) {
     abort_table_not_in_dm(from, src_tbls_impl(dm))
   }
 
+  tbl_def_impl(def, idx, keyed)
+}
+
+tbl_def_impl <- function(def, idx, keyed) {
   data <- def$data[[idx]]
 
   if (!keyed) {
     return(data)
   }
+
+  uuid_lookup <- def[c("table", "uuid")]
 
   pk_def <- def$pks[[idx]]
   if (nrow(pk_def) > 0) {
@@ -599,7 +604,7 @@ tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
 
   fks_out_def <-
     map2_dfr(def$uuid, def$fks, ~ tibble(ref_uuid = .x, .y)) %>%
-    filter(table == from) %>%
+    filter(table == !!def$table[[idx]]) %>%
     select(ref_uuid, ref_column, column)
 
   fks_out <- new_fks_out(
