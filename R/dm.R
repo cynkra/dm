@@ -550,14 +550,59 @@ str.zoomed_dm <- function(object, ...) {
   str(object)
 }
 
-tbl_impl <- function(dm, from, quiet = FALSE) {
-  out <- dm_get_tables_impl(dm, quiet)[[from]]
+keyed_tbl_impl <- function(dm, from) {
+  tbl_impl(dm, from, keyed = TRUE)
+}
 
-  if (is.null(out)) {
+tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
+  def <- dm_get_def(dm, quiet = quiet)
+  uuid_lookup <- def[c("table", "uuid")]
+  idx <- match(from, def$table)
+  if (is.na(idx)) {
     abort_table_not_in_dm(from, src_tbls_impl(dm))
   }
 
-  out
+  data <- def$data[[idx]]
+
+  if (!keyed) {
+    return(data)
+  }
+
+  pk_def <- def$pks[[idx]]
+  if (nrow(pk_def) > 0) {
+    pk <- pk_def$column[[1]]
+  } else {
+    pk <- NULL
+  }
+
+  fks_in_def <-
+    def$fks[[idx]] %>%
+    left_join(uuid_lookup, by = "table")
+
+  fks_in <- new_fks_in(
+    fks_in_def$uuid,
+    fks_in_def$column,
+    fks_in_def$ref_column
+  )
+
+  fks_out_def <-
+    map2_dfr(def$uuid, def$fks, ~ tibble(ref_uuid = .x, .y)) %>%
+    filter(table == from) %>%
+    select(ref_uuid, ref_column, column)
+
+  fks_out <- new_fks_out(
+    fks_out_def$column,
+    fks_out_def$ref_uuid,
+    fks_out_def$ref_column
+  )
+
+  new_keyed_tbl(
+    data,
+    pk = pk,
+    fks_in = fks_in,
+    fks_out = fks_out,
+    uuid = def$uuid[[idx]]
+  )
 }
 
 src_tbls_impl <- function(dm, quiet = FALSE) {
