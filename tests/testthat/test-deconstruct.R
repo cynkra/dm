@@ -219,6 +219,18 @@ test_that("pks_df_from_keys_info()", {
   })
 })
 
+test_that("fks_df_from_keys_info()", {
+  withr::local_seed(20220715)
+
+  dm <- dm_nycflights13(cycle = TRUE)
+
+  expect_snapshot({
+    dm %>%
+      dm_get_keyed_tables_impl() %>%
+      fks_df_from_keys_info() %>%
+      jsonlite::toJSON(pretty = TRUE)
+  })
+})
 
 test_that("primary keys survive the round trip", {
   dm <- dm_nycflights13(cycle = TRUE)
