@@ -120,6 +120,11 @@ unclass_keyed_tbl <- function(tbl) {
   tbl
 }
 
+pks_df_from_keys_info <- function(tables) {
+  pks <- map(unname(tables), new_pks_from_keys_info)
+  tibble(table = names(tables), pks)
+}
+
 new_pks_from_keys_info <- function(tbl) {
   df_keys <- keyed_get_info(tbl)
   new_pk(list(df_keys$pk))
