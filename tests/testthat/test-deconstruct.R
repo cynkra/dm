@@ -49,6 +49,18 @@ test_that("`new_keyed_tbl()` generates expected output", {
   expect_equal(dm$airports, keyed_tbl, ignore_attr = TRUE)
 })
 
+test_that("dm_get_keyed_tables_impl()", {
+  withr::local_seed(20220715)
+
+  expect_snapshot({
+    dm_nycflights13(cycle = TRUE) %>%
+      dm_get_keyed_tables_impl() %>%
+      map(keyed_get_info)
+  })
+})
+
+
+
 test_that("`new_keyed_tbl()` formatting", {
   expect_snapshot({
     keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "flights")
