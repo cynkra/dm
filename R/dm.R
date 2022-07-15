@@ -622,6 +622,12 @@ tbl_def_impl <- function(def, idx, keyed) {
   )
 }
 
+dm_get_keyed_tables_impl <- function(dm) {
+  def <- dm_get_def(dm)
+  tables <- map(seq_along(def$table), ~ tbl_def_impl(def, .x, keyed = TRUE))
+  set_names(tables, def$table)
+}
+
 src_tbls_impl <- function(dm, quiet = FALSE) {
   dm_get_def(dm, quiet)$table
 }

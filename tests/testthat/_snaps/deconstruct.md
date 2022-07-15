@@ -289,3 +289,52 @@
       5 America/Phoenix     N        1135 
       6 Pacific/Honolulu    N          13 
 
+# pks_df_from_keys_info()
+
+    Code
+      dm %>% dm_get_keyed_tables_impl() %>% pks_df_from_keys_info() %>% jsonlite::toJSON(
+        pretty = TRUE)
+    Output
+      [
+        {
+          "table": "airlines",
+          "pks": [
+            {
+              "column": ["carrier"]
+            }
+          ]
+        },
+        {
+          "table": "airports",
+          "pks": [
+            {
+              "column": ["faa"]
+            }
+          ]
+        },
+        {
+          "table": "flights",
+          "pks": [
+            {
+              "column": {}
+            }
+          ]
+        },
+        {
+          "table": "planes",
+          "pks": [
+            {
+              "column": ["tailnum"]
+            }
+          ]
+        },
+        {
+          "table": "weather",
+          "pks": [
+            {
+              "column": ["origin", "time_hour"]
+            }
+          ]
+        }
+      ] 
+
