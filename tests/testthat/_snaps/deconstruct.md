@@ -421,11 +421,7 @@
         },
         {
           "table": "flights",
-          "pks": [
-            {
-              "column": {}
-            }
-          ]
+          "pks": {}
         },
         {
           "table": "planes",
