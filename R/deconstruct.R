@@ -17,22 +17,28 @@ vec_new_uuid_along <- function(x) {
   map_chr(x, function(.x) new_uuid())
 }
 
-new_fks_in <- function(child_uuid = NULL, child_fk_cols = NULL, parent_key_cols = NULL) {
-  child_uuid <- vec_cast(child_uuid, character()) %||% character()
+new_fks <- function(..., child_uuid = NULL, child_fk_cols = NULL, parent_uuid = NULL, parent_key_cols = NULL) {
+  check_dots_empty0(...)
+
   child_fk_cols <- new_keys(child_fk_cols)
   parent_key_cols <- new_keys(parent_key_cols)
-
-  tibble(child_uuid, child_fk_cols, parent_key_cols)
+  tibble(child_uuid, child_fk_cols, parent_uuid, parent_key_cols)
 }
 
-# TODO: I am wondering if `parent_table` shouldn't be the first parameter here?
-# That way, across both function signatures, the `*_table` will always come at first position
-new_fks_out <- function(child_fk_cols = NULL, parent_uuid = NULL, parent_key_cols = NULL) {
-  child_fk_cols <- new_keys(child_fk_cols)
-  parent_uuid <- vec_cast(parent_uuid, character()) %||% character()
-  parent_key_cols <- new_keys(parent_key_cols)
+new_fks_in <- function(child_uuid = NULL, child_fk_cols = NULL, parent_key_cols = NULL) {
+  new_fks(
+    child_uuid = vec_cast(child_uuid, character()) %||% character(),
+    child_fk_cols = child_fk_cols,
+    parent_key_cols = parent_key_cols
+  )
+}
 
-  tibble(child_fk_cols, parent_uuid, parent_key_cols)
+new_fks_out <- function(child_fk_cols = NULL, parent_uuid = NULL, parent_key_cols = NULL) {
+  new_fks(
+    child_fk_cols = child_fk_cols,
+    parent_uuid = vec_cast(parent_uuid, character()) %||% character(),
+    parent_key_cols = parent_key_cols
+  )
 }
 
 new_keyed_tbl <- function(x,
@@ -140,7 +146,7 @@ fks_df_from_keys_info <- function(tables) {
     map_dfr(info, ~ tibble(child_uuid = .x$uuid, .x$fks_out))
 
   fks <-
-    vec_rbind(fks_out, fks_in) %>%
+    vec_rbind(fks_out, fks_in, .ptype = new_fks(child_uuid = character(), parent_uuid = character())) %>%
     distinct()
 
   uuid_lookup <- tibble(

@@ -115,13 +115,15 @@ new_dm <- function(tables = list()) {
 
 new_keyed_dm_def <- function(tables = list()) {
   is_keyed <- map_lgl(unname(tables), is_dm_keyed_tbl)
+  stopifnot(!anyDuplicated(names(tables)[is_keyed]))
 
   # data should be saved as a tibble
   unclassed_tables <- map(tables, unclass_keyed_tbl)
 
   pks_df <- pks_df_from_keys_info(tables[is_keyed])
+  fks_df <- fks_df_from_keys_info(tables[is_keyed])
 
-  new_dm_def(unclassed_tables, pks_df)
+  new_dm_def(unclassed_tables, pks_df, fks_df)
 }
 
 
