@@ -28,5 +28,16 @@ dm_upgrade <- function(dm, quiet) {
     dm <- new_dm3(def, zoomed = is_zoomed(dm))
   }
 
+  if (version < 3) {
+    # FIXME: Can't give unconditional message, because IDE can tickle object in environment,
+    # and this also produces a message. Don't emit message when calling str()?
+    if (!quiet) {
+      message("Upgrading dm object created with dm <= 0.3.0.")
+    }
+    def <- unclass(dm)$def
+    def$uuid <- vec_new_uuid_along(def$table)
+    dm <- new_dm3(def, zoomed = is_zoomed(dm))
+  }
+
   dm
 }

@@ -140,17 +140,27 @@ new_dm_def <- function(tables = list(),
     mutate(fks = as_list_of(map(fks, `%||%`, new_fk()), .ptype = new_fk())) %>%
     mutate(filters = list_of(new_filter())) %>%
     left_join(zoom, by = "table") %>%
-    left_join(col_tracker_zoom, by = "table")
+    left_join(col_tracker_zoom, by = "table") %>%
+    mutate(uuid = vec_new_uuid_along(table))
 
   def
 }
 
 new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
+  if (is.null(def[["uuid"]])) {
+    def$uuid <- vec_new_uuid_along(def$table)
+  } else {
+    missing <- which(is.na(def$uuid))
+    if (length(missing) > 0) {
+      def$uuid[missing] <- vec_new_uuid_along(missing)
+    }
+  }
+
   class <- c(
     if (zoomed) "zoomed_dm",
     "dm"
   )
-  out <- structure(list(def = def), class = class, version = 2L)
+  out <- structure(list(def = def), class = class, version = 3L)
 
   # Enable for strict tests (search for INSTRUMENT in .github/workflows):
   # if (validate) { dm_validate(out) } # INSTRUMENT: validate
@@ -163,9 +173,10 @@ dm_get_def <- function(x, quiet = FALSE) {
   # Most callers already call it, but not all
   check_dm(x)
 
-  if (!identical(attr(x, "version"), 2L)) {
+  if (!identical(attr(x, "version"), 3L)) {
     x <- dm_upgrade(x, quiet)
   }
+
   unclass(x)$def
 }
 
@@ -539,14 +550,59 @@ str.zoomed_dm <- function(object, ...) {
   str(object)
 }
 
-tbl_impl <- function(dm, from, quiet = FALSE) {
-  out <- dm_get_tables_impl(dm, quiet)[[from]]
+keyed_tbl_impl <- function(dm, from) {
+  tbl_impl(dm, from, keyed = TRUE)
+}
 
-  if (is.null(out)) {
+tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
+  def <- dm_get_def(dm, quiet = quiet)
+  uuid_lookup <- def[c("table", "uuid")]
+  idx <- match(from, def$table)
+  if (is.na(idx)) {
     abort_table_not_in_dm(from, src_tbls_impl(dm))
   }
 
-  out
+  data <- def$data[[idx]]
+
+  if (!keyed) {
+    return(data)
+  }
+
+  pk_def <- def$pks[[idx]]
+  if (nrow(pk_def) > 0) {
+    pk <- pk_def$column[[1]]
+  } else {
+    pk <- NULL
+  }
+
+  fks_in_def <-
+    def$fks[[idx]] %>%
+    left_join(uuid_lookup, by = "table")
+
+  fks_in <- new_fks_in(
+    fks_in_def$uuid,
+    fks_in_def$column,
+    fks_in_def$ref_column
+  )
+
+  fks_out_def <-
+    map2_dfr(def$uuid, def$fks, ~ tibble(ref_uuid = .x, .y)) %>%
+    filter(table == from) %>%
+    select(ref_uuid, ref_column, column)
+
+  fks_out <- new_fks_out(
+    fks_out_def$column,
+    fks_out_def$ref_uuid,
+    fks_out_def$ref_column
+  )
+
+  new_keyed_tbl(
+    data,
+    pk = pk,
+    fks_in = fks_in,
+    fks_out = fks_out,
+    uuid = def$uuid[[idx]]
+  )
 }
 
 src_tbls_impl <- function(dm, quiet = FALSE) {
@@ -669,7 +725,8 @@ empty_dm <- function() {
       fks = list_of(new_fk()),
       filters = list_of(new_filter()),
       zoom = list(),
-      col_tracker_zoom = list()
+      col_tracker_zoom = list(),
+      uuid = character(),
     )
   )
 }
