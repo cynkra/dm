@@ -432,14 +432,20 @@ left_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, 
 
   join_spec <- keyed_build_join_spec(x, y, by)
   joined_tbl <- left_join(
-    join_spec$x_tbl, join_spec$y_tbl, join_spec$by,
+    join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
     copy = copy,
     suffix = suffix %||% c(".x", ".y"),
     keep = keep,
     ...
   )
 
-  new_keyed_tbl_from_keys_info(joined_tbl, join_spec$keys_info_x)
+  new_keyed_tbl(
+    joined_tbl,
+    pk = join_spec$new_pk,
+    fks_in = join_spec$new_fks_in,
+    fks_out = join_spec$new_fks_out,
+    uuid = join_spec$new_uuid
+  )
 }
 
 #' @rdname dplyr_join
@@ -451,14 +457,20 @@ right_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL,
 
   join_spec <- keyed_build_join_spec(x, y, by)
   joined_tbl <- right_join(
-    join_spec$x_tbl, join_spec$y_tbl, join_spec$by,
+    join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
     copy = copy,
     suffix = suffix %||% c(".x", ".y"),
     keep = keep,
     ...
   )
 
-  new_keyed_tbl_from_keys_info(joined_tbl, join_spec$keys_info_x)
+  new_keyed_tbl(
+    joined_tbl,
+    pk = join_spec$new_pk,
+    fks_in = join_spec$new_fks_in,
+    fks_out = join_spec$new_fks_out,
+    uuid = join_spec$new_uuid
+  )
 }
 
 #' @export

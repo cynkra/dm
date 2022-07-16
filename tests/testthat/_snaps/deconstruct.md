@@ -299,7 +299,7 @@
         b 
       "a" 
 
-# build_join_spec()
+# joins without child PK
 
     Code
       keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
@@ -315,17 +315,43 @@
             "b": 1
           }
         ],
-        "by": ["b"],
+        "by": [
+          {
+            "x": "a",
+            "y": "b"
+          }
+        ],
         "new_pk": {},
-        "new_fks_in": [],
+        "new_fks_in": [
+          {
+            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
+            "child_fk_cols": ["a"],
+            "parent_key_cols": ["b"]
+          }
+        ],
         "new_fks_out": [
           {
             "child_fk_cols": ["a"],
             "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
             "parent_key_cols": ["b"]
           }
-        ]
+        ],
+        "new_uuid": ["0800020b-0c07-030f-0a0e-0105060d0904"]
       } 
+    Code
+      dm(x, y, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        r,
+      ) %>%
+        dm::dm_select(x, a) %>%
+        dm::dm_select(y, b) %>%
+        dm::dm_select(r, a) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(r, a, y)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
     Output
@@ -340,7 +366,12 @@
             "a": 1
           }
         ],
-        "by": ["a"],
+        "by": [
+          {
+            "x": "b",
+            "y": "a"
+          }
+        ],
         "new_pk": {},
         "new_fks_in": [
           {
@@ -349,8 +380,507 @@
             "parent_key_cols": ["b"]
           }
         ],
-        "new_fks_out": []
+        "new_fks_out": [
+          {
+            "child_fk_cols": ["a"],
+            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_uuid": ["03000c09-0a07-050d-020e-01040b08060f"]
       } 
+    Code
+      dm(x, y, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        r,
+      ) %>%
+        dm::dm_select(x, a) %>%
+        dm::dm_select(y, b) %>%
+        dm::dm_select(r, b) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(x, a, r, b)
+
+# joins with other child PK
+
+    Code
+      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+    Output
+      {
+        "x_tbl": [
+          {
+            "a": 1,
+            "c": 1
+          }
+        ],
+        "y_tbl": [
+          {
+            "b": 1
+          }
+        ],
+        "by": [
+          {
+            "x": "a",
+            "y": "b"
+          }
+        ],
+        "new_pk": ["c"],
+        "new_fks_in": [
+          {
+            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
+            "child_fk_cols": ["a"],
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_fks_out": [
+          {
+            "child_fk_cols": ["a"],
+            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_uuid": ["0800020b-0c07-030f-0a0e-0105060d0904"]
+      } 
+    Code
+      dm(x, y, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        r,
+      ) %>%
+        dm::dm_select(x, a, c) %>%
+        dm::dm_select(y, b) %>%
+        dm::dm_select(r, a, c) %>%
+        dm::dm_add_pk(x, c) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_pk(r, c) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(r, a, y)
+    Code
+      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+    Output
+      {
+        "x_tbl": [
+          {
+            "b": 1
+          }
+        ],
+        "y_tbl": [
+          {
+            "a": 1,
+            "c": 1
+          }
+        ],
+        "by": [
+          {
+            "x": "b",
+            "y": "a"
+          }
+        ],
+        "new_pk": ["c"],
+        "new_fks_in": [
+          {
+            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
+            "child_fk_cols": ["a"],
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_fks_out": [
+          {
+            "child_fk_cols": ["a"],
+            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_uuid": ["03000c09-0a07-050d-020e-01040b08060f"]
+      } 
+    Code
+      dm(x, y, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        r,
+      ) %>%
+        dm::dm_select(x, a, c) %>%
+        dm::dm_select(y, b) %>%
+        dm::dm_select(r, b, c) %>%
+        dm::dm_add_pk(x, c) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_pk(r, c) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(x, a, r, b)
+
+# joins with same child PK
+
+    Code
+      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+    Output
+      {
+        "x_tbl": [
+          {
+            "a": 1
+          }
+        ],
+        "y_tbl": [
+          {
+            "b": 1
+          }
+        ],
+        "by": [
+          {
+            "x": "a",
+            "y": "b"
+          }
+        ],
+        "new_pk": ["a"],
+        "new_fks_in": [
+          {
+            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
+            "child_fk_cols": ["a"],
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_fks_out": [
+          {
+            "child_fk_cols": ["a"],
+            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_uuid": ["0800020b-0c07-030f-0a0e-0105060d0904"]
+      } 
+    Code
+      dm(x, y, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        r,
+      ) %>%
+        dm::dm_select(x, a) %>%
+        dm::dm_select(y, b) %>%
+        dm::dm_select(r, a) %>%
+        dm::dm_add_pk(x, a) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_pk(r, a) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(r, a, y)
+    Code
+      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+    Output
+      {
+        "x_tbl": [
+          {
+            "b": 1
+          }
+        ],
+        "y_tbl": [
+          {
+            "a": 1
+          }
+        ],
+        "by": [
+          {
+            "x": "b",
+            "y": "a"
+          }
+        ],
+        "new_pk": ["b"],
+        "new_fks_in": [
+          {
+            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
+            "child_fk_cols": ["a"],
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_fks_out": [
+          {
+            "child_fk_cols": ["a"],
+            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_uuid": ["03000c09-0a07-050d-020e-01040b08060f"]
+      } 
+    Code
+      dm(x, y, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        r,
+      ) %>%
+        dm::dm_select(x, a) %>%
+        dm::dm_select(y, b) %>%
+        dm::dm_select(r, b) %>%
+        dm::dm_add_pk(x, a) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_pk(r, b) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(x, a, r)
+
+# joins with other FK from parent
+
+    Code
+      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+    Output
+      {
+        "x_tbl": [
+          {
+            "a": 1
+          }
+        ],
+        "y_tbl": [
+          {
+            "b": 1,
+            "c": 1
+          }
+        ],
+        "by": [
+          {
+            "x": "a",
+            "y": "b"
+          }
+        ],
+        "new_pk": ["a"],
+        "new_fks_in": [
+          {
+            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
+            "child_fk_cols": ["a"],
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_fks_out": [
+          {
+            "child_fk_cols": ["a"],
+            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
+            "parent_key_cols": ["b"]
+          },
+          {
+            "child_fk_cols": ["c"],
+            "parent_uuid": "0800020b-0c07-030f-0a0e-0105060d0904",
+            "parent_key_cols": ["c"]
+          }
+        ],
+        "new_uuid": ["0c0e080a-0307-0904-0b06-0205010f000d"]
+      } 
+    Code
+      dm(x, y, z, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        z,
+        r,
+      ) %>%
+        dm::dm_select(x, a) %>%
+        dm::dm_select(y, b, c) %>%
+        dm::dm_select(z, c) %>%
+        dm::dm_select(r, a, c) %>%
+        dm::dm_add_pk(x, a) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_pk(r, a) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(r, a, y) %>%
+        dm::dm_add_fk(y, c, z, c) %>%
+        dm::dm_add_fk(r, c, z, c)
+    Code
+      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+    Output
+      {
+        "x_tbl": [
+          {
+            "b": 1,
+            "c": 1
+          }
+        ],
+        "y_tbl": [
+          {
+            "a": 1
+          }
+        ],
+        "by": [
+          {
+            "x": "b",
+            "y": "a"
+          }
+        ],
+        "new_pk": ["b"],
+        "new_fks_in": [
+          {
+            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
+            "child_fk_cols": ["a"],
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_fks_out": [
+          {
+            "child_fk_cols": ["c"],
+            "parent_uuid": "0800020b-0c07-030f-0a0e-0105060d0904",
+            "parent_key_cols": ["c"]
+          },
+          {
+            "child_fk_cols": ["a"],
+            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_uuid": ["0108090a-0403-0f05-0d0c-0b0006020e07"]
+      } 
+    Code
+      dm(x, y, z, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        z,
+        r,
+      ) %>%
+        dm::dm_select(x, a) %>%
+        dm::dm_select(y, b, c) %>%
+        dm::dm_select(z, c) %>%
+        dm::dm_select(r, b, c) %>%
+        dm::dm_add_pk(x, a) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_pk(r, b) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(y, c, z, c) %>%
+        dm::dm_add_fk(r, c, z, c) %>%
+        dm::dm_add_fk(x, a, r)
+
+# joins with other FK from child
+
+    Code
+      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+    Output
+      {
+        "x_tbl": [
+          {
+            "a": 1,
+            "c": 1
+          }
+        ],
+        "y_tbl": [
+          {
+            "b": 1
+          }
+        ],
+        "by": [
+          {
+            "x": "a",
+            "y": "b"
+          }
+        ],
+        "new_pk": ["a"],
+        "new_fks_in": [
+          {
+            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
+            "child_fk_cols": ["a"],
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_fks_out": [
+          {
+            "child_fk_cols": ["a"],
+            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
+            "parent_key_cols": ["b"]
+          },
+          {
+            "child_fk_cols": ["c"],
+            "parent_uuid": "0800020b-0c07-030f-0a0e-0105060d0904",
+            "parent_key_cols": ["c"]
+          }
+        ],
+        "new_uuid": ["0c0e080a-0307-0904-0b06-0205010f000d"]
+      } 
+    Code
+      dm(x, y, z, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        z,
+        r,
+      ) %>%
+        dm::dm_select(x, a, c) %>%
+        dm::dm_select(y, b) %>%
+        dm::dm_select(z, c) %>%
+        dm::dm_select(r, a, c) %>%
+        dm::dm_add_pk(x, a) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_pk(r, a) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(r, a, y) %>%
+        dm::dm_add_fk(x, c, z, c) %>%
+        dm::dm_add_fk(r, c, z, c)
+    Code
+      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+    Output
+      {
+        "x_tbl": [
+          {
+            "b": 1
+          }
+        ],
+        "y_tbl": [
+          {
+            "a": 1,
+            "c": 1
+          }
+        ],
+        "by": [
+          {
+            "x": "b",
+            "y": "a"
+          }
+        ],
+        "new_pk": ["b"],
+        "new_fks_in": [
+          {
+            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
+            "child_fk_cols": ["a"],
+            "parent_key_cols": ["b"]
+          }
+        ],
+        "new_fks_out": [
+          {
+            "child_fk_cols": ["a"],
+            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
+            "parent_key_cols": ["b"]
+          },
+          {
+            "child_fk_cols": ["c"],
+            "parent_uuid": "0800020b-0c07-030f-0a0e-0105060d0904",
+            "parent_key_cols": ["c"]
+          }
+        ],
+        "new_uuid": ["0108090a-0403-0f05-0d0c-0b0006020e07"]
+      } 
+    Code
+      dm(x, y, z, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        z,
+        r,
+      ) %>%
+        dm::dm_select(x, a, c) %>%
+        dm::dm_select(y, b) %>%
+        dm::dm_select(z, c) %>%
+        dm::dm_select(r, b, c) %>%
+        dm::dm_add_pk(x, a) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_pk(r, b) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(x, c, z, c) %>%
+        dm::dm_add_fk(r, c, z, c) %>%
+        dm::dm_add_fk(x, a, r)
 
 # arrange for keyed tables produces expected output
 

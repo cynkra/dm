@@ -159,7 +159,7 @@ test_that("keyed_by()", {
   })
 })
 
-test_that("build_join_spec()", {
+test_that("joins without child PK", {
   withr::local_seed(20220715)
 
   dm <-
@@ -173,8 +173,112 @@ test_that("build_join_spec()", {
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
       jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, r = left_join(x, y)) %>%
+      dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
       jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, r = left_join(y, x)) %>%
+      dm_paste(options = c("select", "keys"))
+  })
+})
+
+test_that("joins with other child PK", {
+  withr::local_seed(20220715)
+
+  dm <-
+    dm(x = tibble(a = 1, c = 1), y = tibble(b = 1)) %>%
+    dm_add_pk(x, c) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, a, y)
+
+  x <- keyed_tbl_impl(dm, "x")
+  y <- keyed_tbl_impl(dm, "y")
+
+  expect_snapshot({
+    keyed_build_join_spec(x, y) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, r = left_join(x, y)) %>%
+      dm_paste(options = c("select", "keys"))
+    keyed_build_join_spec(y, x) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, r = left_join(y, x)) %>%
+      dm_paste(options = c("select", "keys"))
+  })
+})
+
+test_that("joins with same child PK", {
+  withr::local_seed(20220715)
+
+  dm <-
+    dm(x = tibble(a = 1), y = tibble(b = 1)) %>%
+    dm_add_pk(x, a) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, a, y)
+
+  x <- keyed_tbl_impl(dm, "x")
+  y <- keyed_tbl_impl(dm, "y")
+
+  expect_snapshot({
+    keyed_build_join_spec(x, y) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, r = left_join(x, y)) %>%
+      dm_paste(options = c("select", "keys"))
+    keyed_build_join_spec(y, x) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, r = left_join(y, x)) %>%
+      dm_paste(options = c("select", "keys"))
+  })
+})
+
+test_that("joins with other FK from parent", {
+  withr::local_seed(20220715)
+
+  dm <-
+    dm(x = tibble(a = 1), y = tibble(b = 1, c = 1), z = tibble(c = 1)) %>%
+    dm_add_pk(x, a) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, a, y) %>%
+    dm_add_fk(y, c, z, c)
+
+  x <- keyed_tbl_impl(dm, "x")
+  y <- keyed_tbl_impl(dm, "y")
+  z <- keyed_tbl_impl(dm, "z")
+
+  expect_snapshot({
+    keyed_build_join_spec(x, y) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, z, r = left_join(x, y)) %>%
+      dm_paste(options = c("select", "keys"))
+    keyed_build_join_spec(y, x) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, z, r = left_join(y, x)) %>%
+      dm_paste(options = c("select", "keys"))
+  })
+})
+
+test_that("joins with other FK from child", {
+  withr::local_seed(20220715)
+
+  dm <-
+    dm(x = tibble(a = 1, c = 1), y = tibble(b = 1), z = tibble(c = 1)) %>%
+    dm_add_pk(x, a) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, a, y) %>%
+    dm_add_fk(x, c, z, c)
+
+  x <- keyed_tbl_impl(dm, "x")
+  y <- keyed_tbl_impl(dm, "y")
+  z <- keyed_tbl_impl(dm, "z")
+
+  expect_snapshot({
+    keyed_build_join_spec(x, y) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, z, r = left_join(x, y)) %>%
+      dm_paste(options = c("select", "keys"))
+    keyed_build_join_spec(y, x) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, z, r = left_join(y, x)) %>%
+      dm_paste(options = c("select", "keys"))
   })
 })
 

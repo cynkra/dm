@@ -205,21 +205,21 @@ keyed_build_join_spec <- function(x, y, by = NULL) {
 
   # Is one of the "by" column sets a primary key? Keep the primary key of the *other* table!
   if (keyed_is_pk(x, names(by))) {
-    new_pk <- info_y$pk
+    new_pk <- join_rename_y(info_y$pk, by)
   } else if (keyed_is_pk(y, by)) {
-    new_pk <- info_x$pk
+    new_pk <- join_rename_x(info_x$pk)
   } else {
     new_pk <- NULL
   }
 
   # Keep all foreign keys
   new_fks_in <-
-    vec_rbind(info_x$fks_in, info_y$fks_in) %>%
-    filter(child_uuid != !!info_x$uuid)
+    # FIXME: Rename
+    vec_rbind(info_x$fks_in, info_y$fks_in)
 
   new_fks_out <-
-    vec_rbind(info_x$fks_out, info_y$fks_out) %>%
-    filter(parent_uuid != !!info_x$uuid)
+    # FIXME: Rename
+    vec_rbind(info_x$fks_out, info_y$fks_out)
 
   # need to remove the `"dm_keyed_tbl"` class to avoid infinite recursion
   # while joining
@@ -229,10 +229,11 @@ keyed_build_join_spec <- function(x, y, by = NULL) {
   list(
     x_tbl = x_tbl,
     y_tbl = y_tbl,
-    by = by,
+    by = enframe(by, "x", "y"),
     new_pk = new_pk,
     new_fks_in = new_fks_in,
-    new_fks_out = new_fks_out
+    new_fks_out = new_fks_out,
+    new_uuid = new_uuid()
   )
 }
 
@@ -267,4 +268,14 @@ keyed_is_pk <- function(x, cols) {
 
   # cols must include at least all pk columns
   !is.null(info$pk) && all(info$pk %in% cols)
+}
+
+join_rename_x <- function(x) {
+  x
+}
+
+join_rename_y <- function(y, by) {
+  by_idx <- match(y, by, nomatch = 0)
+  y[by_idx[by_idx != 0]] <- names(by)[by_idx]
+  y
 }
