@@ -28,7 +28,7 @@ if (rlang::has_length(grep('^library[(]"?tidyverse"?[)]', input))) {
   library(tidyverse)
 }
 if (rlang::has_length(grep('^library[(]"?dplyr"?[)]', input))) {
-  library(tidyverse)
+  library(dplyr)
 }
 
 ## Link helper to enable links only on pkgdown

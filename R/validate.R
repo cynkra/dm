@@ -26,7 +26,7 @@ dm_validate <- function(x) {
 
   def <- dm_get_def(x)
 
-  boilerplate <- new_dm_def(validate = FALSE)
+  boilerplate <- new_dm_def()
 
   table_names <- def$table
   if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
@@ -63,6 +63,8 @@ dm_validate <- function(x) {
     unnest_col("ref_column", character()) %>%
     select(table = ref_table, column = ref_column) %>%
     check_colnames(dm_col_names, "Parent key")
+
+  stopifnot(lengths(def$pks) %in% 0:1)
 
   pks <-
     def %>%

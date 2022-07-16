@@ -115,8 +115,7 @@ new_dm <- function(tables = list()) {
 
 new_dm_def <- function(tables = list(),
                        pks_df = tibble(table = character(), pks = list()),
-                       fks_df = tibble(table = character(), fks = list()),
-                       validate = TRUE) {
+                       fks_df = tibble(table = character(), fks = list())) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
@@ -175,8 +174,18 @@ new_pk <- function(column = list()) {
   tibble(column = column)
 }
 
-new_fk <- function(ref_column = list(), table = character(), column = list(), on_delete = character()) {
-  stopifnot(is.list(column), is.list(ref_column), length(table) == length(column), length(table) == length(ref_column), length(on_delete) %in% c(1L, length(table)))
+new_fk <- function(ref_column = list(),
+                   table = character(),
+                   column = list(),
+                   on_delete = character()) {
+  stopifnot(
+    is.list(column),
+    is.list(ref_column),
+    length(table) == length(column),
+    length(table) == length(ref_column),
+    length(on_delete) %in% c(1L, length(table))
+  )
+
   tibble(ref_column, table, column, on_delete)
 }
 
