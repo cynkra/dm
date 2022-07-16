@@ -321,6 +321,7 @@
             "y": "b"
           }
         ],
+        "suffix": [".x", ".y"],
         "new_pk": {},
         "new_fks_in": [
           {
@@ -372,6 +373,7 @@
             "y": "a"
           }
         ],
+        "suffix": [".x", ".y"],
         "new_pk": {},
         "new_fks_in": [
           {
@@ -427,6 +429,7 @@
             "y": "b"
           }
         ],
+        "suffix": [".x", ".y"],
         "new_pk": ["c"],
         "new_fks_in": [
           {
@@ -481,6 +484,7 @@
             "y": "a"
           }
         ],
+        "suffix": [".x", ".y"],
         "new_pk": ["c"],
         "new_fks_in": [
           {
@@ -537,6 +541,7 @@
             "y": "b"
           }
         ],
+        "suffix": [".x", ".y"],
         "new_pk": ["a"],
         "new_fks_in": [
           {
@@ -590,6 +595,7 @@
             "y": "a"
           }
         ],
+        "suffix": [".x", ".y"],
         "new_pk": ["b"],
         "new_fks_in": [
           {
@@ -647,6 +653,7 @@
             "y": "b"
           }
         ],
+        "suffix": [".x", ".y"],
         "new_pk": ["a"],
         "new_fks_in": [
           {
@@ -710,6 +717,7 @@
             "y": "a"
           }
         ],
+        "suffix": [".x", ".y"],
         "new_pk": ["b"],
         "new_fks_in": [
           {
@@ -776,6 +784,7 @@
             "y": "b"
           }
         ],
+        "suffix": [".x", ".y"],
         "new_pk": ["a"],
         "new_fks_in": [
           {
@@ -839,6 +848,7 @@
             "y": "a"
           }
         ],
+        "suffix": [".x", ".y"],
         "new_pk": ["b"],
         "new_fks_in": [
           {

@@ -190,7 +190,7 @@ new_fks_from_keys_info <- function(tbl) {
 }
 
 # FIXME: Pass suffix and keep when ready
-keyed_build_join_spec <- function(x, y, by = NULL) {
+keyed_build_join_spec <- function(x, y, by = NULL, suffix = NULL) {
   info_x <- keyed_get_info(x)
   info_y <- keyed_get_info(y)
 
@@ -198,6 +198,10 @@ keyed_build_join_spec <- function(x, y, by = NULL) {
     by <- keyed_by(x, y)
   } else if (!is_named2(by)) {
     by <- set_names(by, by)
+  }
+
+  if (is.null(suffix)) {
+    suffix <- c(".x", ".y")
   }
 
   # FIXME: Handle collisions
@@ -230,6 +234,7 @@ keyed_build_join_spec <- function(x, y, by = NULL) {
     x_tbl = x_tbl,
     y_tbl = y_tbl,
     by = enframe(by, "x", "y"),
+    suffix = suffix,
     new_pk = new_pk,
     new_fks_in = new_fks_in,
     new_fks_out = new_fks_out,

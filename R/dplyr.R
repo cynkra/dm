@@ -430,11 +430,11 @@ left_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, 
     return(NextMethod())
   }
 
-  join_spec <- keyed_build_join_spec(x, y, by)
+  join_spec <- keyed_build_join_spec(x, y, by, suffix)
   joined_tbl <- left_join(
     join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
     copy = copy,
-    suffix = suffix %||% c(".x", ".y"),
+    suffix = join_spec$suffix,
     keep = keep,
     ...
   )
@@ -455,11 +455,11 @@ right_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL,
     return(NextMethod())
   }
 
-  join_spec <- keyed_build_join_spec(x, y, by)
+  join_spec <- keyed_build_join_spec(x, y, by, suffix)
   joined_tbl <- right_join(
     join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
     copy = copy,
-    suffix = suffix %||% c(".x", ".y"),
+    suffix = join_spec$suffix,
     keep = keep,
     ...
   )
