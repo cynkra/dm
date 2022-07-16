@@ -1,29 +1,6 @@
 # dm() API
 
     Code
-      dm(a = tibble(), a = tibble(), .name_repair = "unique")
-    Message
-      New names:
-      * `a` -> `a...1`
-      * `a` -> `a...2`
-    Output
-      -- Metadata --------------------------------------------------------------------
-      Tables: `a...1`, `a...2`
-      Columns: 0
-      Primary keys: 0
-      Foreign keys: 0
-    Code
-      dm(a = tibble(), a = tibble(), .name_repair = "unique", .quiet = TRUE)
-    Output
-      -- Metadata --------------------------------------------------------------------
-      Tables: `a...1`, `a...2`
-      Columns: 0
-      Primary keys: 0
-      Foreign keys: 0
-
----
-
-    Code
       dm(a = tibble(), a = tibble())
     Condition
       Error in `dm()`:
@@ -154,32 +131,6 @@
         * "tf_5" at locations 5 and 16.
         * ...
 
----
-
-    Code
-      dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique") %>%
-        collect()
-    Message
-      New names:
-      * `tf_1` -> `tf_1...1`
-      * `tf_2` -> `tf_2...2`
-      * `tf_3` -> `tf_3...3`
-      * `tf_4` -> `tf_4...4`
-      * `tf_5` -> `tf_5...5`
-      * `tf_6` -> `tf_6...6`
-      * `tf_1` -> `tf_1...12`
-      * `tf_2` -> `tf_2...13`
-      * `tf_3` -> `tf_3...14`
-      * `tf_4` -> `tf_4...15`
-      * `tf_5` -> `tf_5...16`
-      * `tf_6` -> `tf_6...17`
-    Output
-      -- Metadata --------------------------------------------------------------------
-      Tables: `tf_1...1`, `tf_2...2`, `tf_3...3`, `tf_4...4`, `tf_5...5`, ... (17 total)
-      Columns: 56
-      Primary keys: 16
-      Foreign keys: 14
-
 # output dm() for dm for compound keys
 
     Code
@@ -274,62 +225,6 @@
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
         dm::dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
         dm::dm_add_fk(tf_5, m, tf_6, n)
-
----
-
-    Code
-      dm(dm_for_flatten(), dm_for_flatten(), .name_repair = "unique") %>% dm_paste(
-        options = c("select", "keys"))
-    Message
-      New names:
-      * `fact` -> `fact...1`
-      * `dim_1` -> `dim_1...2`
-      * `dim_2` -> `dim_2...3`
-      * `dim_3` -> `dim_3...4`
-      * `dim_4` -> `dim_4...5`
-      * `fact` -> `fact...6`
-      * `dim_1` -> `dim_1...7`
-      * `dim_2` -> `dim_2...8`
-      * `dim_3` -> `dim_3...9`
-      * `dim_4` -> `dim_4...10`
-      dm::dm(
-        fact...1,
-        dim_1...2,
-        dim_2...3,
-        dim_3...4,
-        dim_4...5,
-        fact...6,
-        dim_1...7,
-        dim_2...8,
-        dim_3...9,
-        dim_4...10,
-      ) %>%
-        dm::dm_select(fact...1, fact, dim_1_key_1, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) %>%
-        dm::dm_select(dim_1...2, dim_1_pk_1, dim_1_pk_2, something) %>%
-        dm::dm_select(dim_2...3, dim_2_pk, something) %>%
-        dm::dm_select(dim_3...4, dim_3_pk, something) %>%
-        dm::dm_select(dim_4...5, dim_4_pk, something) %>%
-        dm::dm_select(fact...6, fact, dim_1_key_1, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something) %>%
-        dm::dm_select(dim_1...7, dim_1_pk_1, dim_1_pk_2, something) %>%
-        dm::dm_select(dim_2...8, dim_2_pk, something) %>%
-        dm::dm_select(dim_3...9, dim_3_pk, something) %>%
-        dm::dm_select(dim_4...10, dim_4_pk, something) %>%
-        dm::dm_add_pk(dim_1...2, c(dim_1_pk_1, dim_1_pk_2)) %>%
-        dm::dm_add_pk(dim_2...3, dim_2_pk) %>%
-        dm::dm_add_pk(dim_3...4, dim_3_pk) %>%
-        dm::dm_add_pk(dim_4...5, dim_4_pk) %>%
-        dm::dm_add_pk(dim_1...7, c(dim_1_pk_1, dim_1_pk_2)) %>%
-        dm::dm_add_pk(dim_2...8, dim_2_pk) %>%
-        dm::dm_add_pk(dim_3...9, dim_3_pk) %>%
-        dm::dm_add_pk(dim_4...10, dim_4_pk) %>%
-        dm::dm_add_fk(fact...1, c(dim_1_key_1, dim_1_key_2), dim_1...2) %>%
-        dm::dm_add_fk(fact...1, dim_2_key, dim_2...3) %>%
-        dm::dm_add_fk(fact...1, dim_3_key, dim_3...4) %>%
-        dm::dm_add_fk(fact...1, dim_4_key, dim_4...5) %>%
-        dm::dm_add_fk(fact...6, c(dim_1_key_1, dim_1_key_2), dim_1...7) %>%
-        dm::dm_add_fk(fact...6, dim_2_key, dim_2...8) %>%
-        dm::dm_add_fk(fact...6, dim_3_key, dim_3...9) %>%
-        dm::dm_add_fk(fact...6, dim_4_key, dim_4...10)
 
 # output
 
