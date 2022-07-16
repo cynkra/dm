@@ -174,6 +174,9 @@ utils::globalVariables(c(
   "x_label",
   "y_label",
   #
+  # deconstruct
+  "ref_uuid",
+  #
   # keep this to avoid dealing with trailing commas
   NULL
 ))
