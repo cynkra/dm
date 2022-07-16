@@ -327,7 +327,7 @@
           {
             "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
             "child_fk_cols": ["a"],
-            "parent_key_cols": ["b"]
+            "parent_key_cols": ["a"]
           }
         ],
         "new_fks_out": [
@@ -352,7 +352,8 @@
         dm::dm_select(r, a) %>%
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, a, y)
+        dm::dm_add_fk(r, a, y) %>%
+        dm::dm_add_fk(x, a, r, a)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
     Output
@@ -384,7 +385,7 @@
         ],
         "new_fks_out": [
           {
-            "child_fk_cols": ["a"],
+            "child_fk_cols": ["b"],
             "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
             "parent_key_cols": ["b"]
           }
@@ -404,6 +405,7 @@
         dm::dm_select(r, b) %>%
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(r, b, y) %>%
         dm::dm_add_fk(x, a, r, b)
 
 # joins with other child PK
@@ -435,7 +437,7 @@
           {
             "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
             "child_fk_cols": ["a"],
-            "parent_key_cols": ["b"]
+            "parent_key_cols": ["a"]
           }
         ],
         "new_fks_out": [
@@ -462,7 +464,8 @@
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, c) %>%
         dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, a, y)
+        dm::dm_add_fk(r, a, y) %>%
+        dm::dm_add_fk(x, a, r, a)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
     Output
@@ -495,7 +498,7 @@
         ],
         "new_fks_out": [
           {
-            "child_fk_cols": ["a"],
+            "child_fk_cols": ["b"],
             "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
             "parent_key_cols": ["b"]
           }
@@ -517,6 +520,7 @@
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, c) %>%
         dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(r, b, y) %>%
         dm::dm_add_fk(x, a, r, b)
 
 # joins with same child PK
@@ -547,7 +551,7 @@
           {
             "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
             "child_fk_cols": ["a"],
-            "parent_key_cols": ["b"]
+            "parent_key_cols": ["a"]
           }
         ],
         "new_fks_out": [
@@ -574,7 +578,8 @@
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, a) %>%
         dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, a, y)
+        dm::dm_add_fk(r, a, y) %>%
+        dm::dm_add_fk(x, a, r)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
     Output
@@ -606,7 +611,7 @@
         ],
         "new_fks_out": [
           {
-            "child_fk_cols": ["a"],
+            "child_fk_cols": ["b"],
             "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
             "parent_key_cols": ["b"]
           }
@@ -628,6 +633,7 @@
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, b) %>%
         dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(r, b, y) %>%
         dm::dm_add_fk(x, a, r)
 
 # joins with other FK from parent
@@ -659,7 +665,7 @@
           {
             "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
             "child_fk_cols": ["a"],
-            "parent_key_cols": ["b"]
+            "parent_key_cols": ["a"]
           }
         ],
         "new_fks_out": [
@@ -695,7 +701,8 @@
         dm::dm_add_fk(x, a, y) %>%
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(y, c, z, c) %>%
-        dm::dm_add_fk(r, c, z, c)
+        dm::dm_add_fk(r, c, z, c) %>%
+        dm::dm_add_fk(x, a, r)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
     Output
@@ -733,7 +740,7 @@
             "parent_key_cols": ["c"]
           },
           {
-            "child_fk_cols": ["a"],
+            "child_fk_cols": ["b"],
             "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
             "parent_key_cols": ["b"]
           }
@@ -757,6 +764,7 @@
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, b) %>%
         dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(r, b, y) %>%
         dm::dm_add_fk(y, c, z, c) %>%
         dm::dm_add_fk(r, c, z, c) %>%
         dm::dm_add_fk(x, a, r)
@@ -790,7 +798,7 @@
           {
             "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
             "child_fk_cols": ["a"],
-            "parent_key_cols": ["b"]
+            "parent_key_cols": ["a"]
           }
         ],
         "new_fks_out": [
@@ -826,7 +834,8 @@
         dm::dm_add_fk(x, a, y) %>%
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(x, c, z, c) %>%
-        dm::dm_add_fk(r, c, z, c)
+        dm::dm_add_fk(r, c, z, c) %>%
+        dm::dm_add_fk(x, a, r)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
     Output
@@ -859,7 +868,7 @@
         ],
         "new_fks_out": [
           {
-            "child_fk_cols": ["a"],
+            "child_fk_cols": ["b"],
             "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
             "parent_key_cols": ["b"]
           },
@@ -888,6 +897,7 @@
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, b) %>%
         dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(r, b, y) %>%
         dm::dm_add_fk(x, c, z, c) %>%
         dm::dm_add_fk(r, c, z, c) %>%
         dm::dm_add_fk(x, a, r)

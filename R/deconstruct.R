@@ -204,26 +204,29 @@ keyed_build_join_spec <- function(x, y, by = NULL, suffix = NULL) {
     suffix <- c(".x", ".y")
   }
 
-  # FIXME: Handle collisions
-  stopifnot(length(intersect(setdiff(colnames(y), by), colnames(x))) == 0)
+  rename <- join_rename_rules(colnames(x), colnames(y), by, suffix)
 
   # Is one of the "by" column sets a primary key? Keep the primary key of the *other* table!
   if (keyed_is_pk(x, names(by))) {
-    new_pk <- join_rename_y(info_y$pk, by)
+    new_pk <- join_rename(info_y$pk, rename$y)
   } else if (keyed_is_pk(y, by)) {
-    new_pk <- join_rename_x(info_x$pk)
+    new_pk <- join_rename(info_x$pk, rename$x)
   } else {
     new_pk <- NULL
   }
 
   # Keep all foreign keys
   new_fks_in <-
-    # FIXME: Rename
-    vec_rbind(info_x$fks_in, info_y$fks_in)
+    vec_rbind(
+      join_rename_key(info_x$fks_in, "parent_key_cols", rename$x),
+      join_rename_key(info_y$fks_in, "parent_key_cols", rename$y),
+    )
 
   new_fks_out <-
-    # FIXME: Rename
-    vec_rbind(info_x$fks_out, info_y$fks_out)
+    vec_rbind(
+      join_rename_key(info_x$fks_out, "child_fk_cols", rename$x),
+      join_rename_key(info_y$fks_out, "child_fk_cols", rename$y),
+    )
 
   # need to remove the `"dm_keyed_tbl"` class to avoid infinite recursion
   # while joining
@@ -275,12 +278,35 @@ keyed_is_pk <- function(x, cols) {
   !is.null(info$pk) && all(info$pk %in% cols)
 }
 
-join_rename_x <- function(x) {
-  x
+join_rename_rules <- function(x, y, by, suffix) {
+  by_idx <- match(by, y)
+  stopifnot(!anyNA(by_idx))
+  stopifnot(length(by_idx) > 0)
+  conflicts <- intersect(x, y[-by_idx])
+
+  x_new <- x
+  x_new[x_new %in% conflicts()] <- paste0(x_new, suffix[[1]])
+
+  y_new <- y
+  y_new[by_idx] <- names(by)
+  y_new[y_new %in% conflicts()] <- paste0(y_new, suffix[[2]])
+
+  list(
+    x = set_names(x_new, x),
+    y = set_names(y_new, y)
+  )
 }
 
-join_rename_y <- function(y, by) {
-  by_idx <- match(y, by, nomatch = 0)
-  y[by_idx[by_idx != 0]] <- names(by)[by_idx]
-  y
+join_rename <- function(x, rename) {
+  if (is.null(x)) {
+    return(NULL)
+  }
+  stopifnot(all(x %in% names(rename)))
+  unname(rename[x])
+}
+
+join_rename_key <- function(x, colname, rename) {
+  stopifnot(colname %in% names(x))
+  x[[colname]] <- new_keys(map(x[[colname]], join_rename, rename))
+  x
 }
