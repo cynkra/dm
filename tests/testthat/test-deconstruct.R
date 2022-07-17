@@ -49,6 +49,18 @@ test_that("`new_keyed_tbl()` generates expected output", {
   expect_equal(dm$airports, keyed_tbl, ignore_attr = TRUE)
 })
 
+test_that("dm_get_keyed_tables_impl()", {
+  withr::local_seed(20220715)
+
+  expect_snapshot({
+    dm_nycflights13(cycle = TRUE) %>%
+      dm_get_keyed_tables_impl() %>%
+      map(keyed_get_info)
+  })
+})
+
+
+
 test_that("`new_keyed_tbl()` formatting", {
   expect_snapshot({
     keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "flights")
@@ -190,4 +202,52 @@ test_that("summarize for keyed tables produces same output as zooming", {
   expect_equal(dim(z_summary), dim(k_summary))
   expect_equal(z_summary$month, k_summary$month)
   expect_equal(z_summary$avg_air_time, k_summary$avg_air_time)
+})
+
+# reconstruction ----------------------------------
+
+test_that("pks_df_from_keys_info()", {
+  withr::local_seed(20220715)
+
+  dm <- dm_nycflights13(cycle = TRUE)
+
+  expect_snapshot({
+    dm %>%
+      dm_get_keyed_tables_impl() %>%
+      pks_df_from_keys_info() %>%
+      jsonlite::toJSON(pretty = TRUE)
+  })
+})
+
+test_that("fks_df_from_keys_info()", {
+  withr::local_seed(20220715)
+
+  dm <- dm_nycflights13(cycle = TRUE)
+
+  expect_snapshot({
+    dm %>%
+      dm_get_keyed_tables_impl() %>%
+      fks_df_from_keys_info() %>%
+      jsonlite::toJSON(pretty = TRUE)
+  })
+})
+
+test_that("primary and foreign keys survive the round trip", {
+  dm <- dm_nycflights13(cycle = TRUE)
+  tbl <- keyed_tbl_impl(dm, "weather")
+  tbl_mutate <- tbl %>% select(everything())
+
+  dm2 <- dm(
+    weather = tbl_mutate,
+    airlines = keyed_tbl_impl(dm, "airlines"),
+    airports = keyed_tbl_impl(dm, "airports"),
+    planes = keyed_tbl_impl(dm, "planes"),
+    flights = keyed_tbl_impl(dm, "flights"),
+  )
+
+  original_def <- dm_get_def(dm) %>% arrange(table)
+  new_def <- dm_get_def(dm2) %>% arrange(table)
+
+  expect_equal(original_def$pks, new_def$pks)
+  expect_equal(original_def$fks, new_def$fks)
 })

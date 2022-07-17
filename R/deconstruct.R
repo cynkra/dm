@@ -17,22 +17,28 @@ vec_new_uuid_along <- function(x) {
   map_chr(x, function(.x) new_uuid())
 }
 
-new_fks_in <- function(child_uuid = NULL, child_fk_cols = NULL, parent_key_cols = NULL) {
-  child_uuid <- vec_cast(child_uuid, character()) %||% character()
+new_fks <- function(..., child_uuid = NULL, child_fk_cols = NULL, parent_uuid = NULL, parent_key_cols = NULL) {
+  check_dots_empty0(...)
+
   child_fk_cols <- new_keys(child_fk_cols)
   parent_key_cols <- new_keys(parent_key_cols)
-
-  tibble(child_uuid, child_fk_cols, parent_key_cols)
+  tibble(child_uuid, child_fk_cols, parent_uuid, parent_key_cols)
 }
 
-# TODO: I am wondering if `parent_table` shouldn't be the first parameter here?
-# That way, across both function signatures, the `*_table` will always come at first position
-new_fks_out <- function(child_fk_cols = NULL, parent_uuid = NULL, parent_key_cols = NULL) {
-  child_fk_cols <- new_keys(child_fk_cols)
-  parent_uuid <- vec_cast(parent_uuid, character()) %||% character()
-  parent_key_cols <- new_keys(parent_key_cols)
+new_fks_in <- function(child_uuid = NULL, child_fk_cols = NULL, parent_key_cols = NULL) {
+  new_fks(
+    child_uuid = vec_cast(child_uuid, character()) %||% character(),
+    child_fk_cols = child_fk_cols,
+    parent_key_cols = parent_key_cols
+  )
+}
 
-  tibble(child_fk_cols, parent_uuid, parent_key_cols)
+new_fks_out <- function(child_fk_cols = NULL, parent_uuid = NULL, parent_key_cols = NULL) {
+  new_fks(
+    child_fk_cols = child_fk_cols,
+    parent_uuid = vec_cast(parent_uuid, character()) %||% character(),
+    parent_key_cols = parent_key_cols
+  )
 }
 
 new_keyed_tbl <- function(x,
@@ -120,11 +126,53 @@ unclass_keyed_tbl <- function(tbl) {
   tbl
 }
 
+pks_df_from_keys_info <- function(tables) {
+  pks <- map(unname(tables), new_pks_from_keys_info)
+  tibble(table = names2(tables), pks)
+}
+
 new_pks_from_keys_info <- function(tbl) {
-  if (is_dm_keyed_tbl(tbl)) {
-    df_keys <- keyed_get_info(tbl)
+  df_keys <- keyed_get_info(tbl)
+  if (is.null(df_keys$pk)) {
+    NULL
+  } else {
     new_pk(list(df_keys$pk))
   }
+}
+
+fks_df_from_keys_info <- function(tables) {
+  info <- map(tables, keyed_get_info)
+
+  fks_in <-
+    map_dfr(info, ~ tibble(.x$fks_in, parent_uuid = .x$uuid))
+
+  fks_out <-
+    map_dfr(info, ~ tibble(child_uuid = .x$uuid, .x$fks_out))
+
+  fks <-
+    vec_rbind(fks_out, fks_in, .ptype = new_fks(child_uuid = character(), parent_uuid = character())) %>%
+    distinct()
+
+  uuid_lookup <- tibble(
+    table = names2(tables),
+    data = map(unname(tables), unclass_keyed_tbl),
+    uuid = map_chr(info, "uuid")
+  )
+
+  child_uuid_lookup <- set_names(uuid_lookup, paste0("child_", names(uuid_lookup)))
+  parent_uuid_lookup <- set_names(uuid_lookup, paste0("parent_", names(uuid_lookup)))
+
+  fks %>%
+    left_join(child_uuid_lookup, by = "child_uuid") %>%
+    left_join(parent_uuid_lookup, by = "parent_uuid") %>%
+    select(-child_uuid, -parent_uuid) %>%
+    filter(map2_lgl(child_fk_cols, child_data, ~ all(.x %in% colnames(.y)))) %>%
+    filter(map2_lgl(parent_key_cols, parent_data, ~ all(.x %in% colnames(.y)))) %>%
+    group_by(parent_table) %>%
+    # FIXME: Capture on_delete
+    summarize(fks = list(new_fk(as.list(parent_key_cols), child_table, as.list(child_fk_cols), "no_action"))) %>%
+    ungroup() %>%
+    rename(table = parent_table)
 }
 
 new_fks_from_keys_info <- function(tbl) {

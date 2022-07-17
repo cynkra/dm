@@ -52,6 +52,113 @@
       [1] "0a0c060f-0d01-0b03-0402-05090800070e"
       
 
+# dm_get_keyed_tables_impl()
+
+    Code
+      dm_nycflights13(cycle = TRUE) %>% dm_get_keyed_tables_impl() %>% map(
+        keyed_get_info)
+    Output
+      $airlines
+      $airlines$pk
+      [1] "carrier"
+      
+      $airlines$fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0800020b-0c07-030f-0a0e-0105060d0904 carrier       carrier        
+      
+      $airlines$fks_out
+      # A tibble: 0 x 3
+      # ... with 3 variables: child_fk_cols <keys>, parent_uuid <chr>,
+      #   parent_key_cols <keys>
+      
+      $airlines$uuid
+      [1] "0109020c-0b0a-030e-0d04-05060f070008"
+      
+      
+      $airports
+      $airports$pk
+      [1] "faa"
+      
+      $airports$fks_in
+      # A tibble: 2 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0800020b-0c07-030f-0a0e-0105060d0904 origin        faa            
+      2 0800020b-0c07-030f-0a0e-0105060d0904 dest          faa            
+      
+      $airports$fks_out
+      # A tibble: 0 x 3
+      # ... with 3 variables: child_fk_cols <keys>, parent_uuid <chr>,
+      #   parent_key_cols <keys>
+      
+      $airports$uuid
+      [1] "04080601-0b0a-0c02-0503-0e070f0d0009"
+      
+      
+      $flights
+      $flights$pk
+      NULL
+      
+      $flights$fks_in
+      # A tibble: 0 x 3
+      # ... with 3 variables: child_uuid <chr>, child_fk_cols <keys>,
+      #   parent_key_cols <keys>
+      
+      $flights$fks_out
+      # A tibble: 5 x 3
+        child_fk_cols     parent_uuid                          parent_key_cols  
+        <keys>            <chr>                                <keys>           
+      1 carrier           0109020c-0b0a-030e-0d04-05060f070008 carrier          
+      2 origin            04080601-0b0a-0c02-0503-0e070f0d0009 faa              
+      3 dest              04080601-0b0a-0c02-0503-0e070f0d0009 faa              
+      4 tailnum           0c0e080a-0307-0904-0b06-0205010f000d tailnum          
+      5 origin, time_hour 0a090204-0108-0b00-0c0d-0705060e0f03 origin, time_hour
+      
+      $flights$uuid
+      [1] "0800020b-0c07-030f-0a0e-0105060d0904"
+      
+      
+      $planes
+      $planes$pk
+      [1] "tailnum"
+      
+      $planes$fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0800020b-0c07-030f-0a0e-0105060d0904 tailnum       tailnum        
+      
+      $planes$fks_out
+      # A tibble: 0 x 3
+      # ... with 3 variables: child_fk_cols <keys>, parent_uuid <chr>,
+      #   parent_key_cols <keys>
+      
+      $planes$uuid
+      [1] "0c0e080a-0307-0904-0b06-0205010f000d"
+      
+      
+      $weather
+      $weather$pk
+      [1] "origin"    "time_hour"
+      
+      $weather$fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols     parent_key_cols  
+        <chr>                                <keys>            <keys>           
+      1 0800020b-0c07-030f-0a0e-0105060d0904 origin, time_hour origin, time_hour
+      
+      $weather$fks_out
+      # A tibble: 0 x 3
+      # ... with 3 variables: child_fk_cols <keys>, parent_uuid <chr>,
+      #   parent_key_cols <keys>
+      
+      $weather$uuid
+      [1] "0a090204-0108-0b00-0c0d-0705060e0f03"
+      
+      
+
 # `new_keyed_tbl()` formatting
 
     Code
@@ -120,40 +227,40 @@
     Code
       tbl_sum(keyed_tbl_impl(dm_output, "d1"))
     Output
-               Keys 
-      "--- | 0 | 0" 
+                                 Keys 
+      "`origin`, `time_hour` | 0 | 0" 
 
 ---
 
     Code
       tbl_sum(keyed_tbl_impl(dm_output, "d2"))
     Output
-               Keys 
-      "--- | 0 | 0" 
+                 Keys 
+      "`faa` | 0 | 0" 
 
 ---
 
     Code
       tbl_sum(keyed_tbl_impl(new_dm_output, "d1"))
     Output
-               Keys 
-      "--- | 0 | 0" 
+                                 Keys 
+      "`origin`, `time_hour` | 0 | 0" 
 
 ---
 
     Code
       tbl_sum(keyed_tbl_impl(new_dm_output, "d2"))
     Output
-               Keys 
-      "--- | 0 | 0" 
+                 Keys 
+      "`faa` | 0 | 0" 
 
 # `dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` objects
 
     Code
       tbl_sum(keyed_tbl_impl(dm_output, "d1"))
     Output
-               Keys 
-      "--- | 0 | 0" 
+                                 Keys 
+      "`origin`, `time_hour` | 0 | 0" 
 
 ---
 
@@ -168,8 +275,8 @@
     Code
       tbl_sum(keyed_tbl_impl(new_dm_output, "d1"))
     Output
-               Keys 
-      "--- | 0 | 0" 
+                                 Keys 
+      "`origin`, `time_hour` | 0 | 0" 
 
 ---
 
@@ -288,4 +395,108 @@
       4 America/New_York    A         396.
       5 America/Phoenix     N        1135 
       6 Pacific/Honolulu    N          13 
+
+# pks_df_from_keys_info()
+
+    Code
+      dm %>% dm_get_keyed_tables_impl() %>% pks_df_from_keys_info() %>% jsonlite::toJSON(
+        pretty = TRUE)
+    Output
+      [
+        {
+          "table": "airlines",
+          "pks": [
+            {
+              "column": ["carrier"]
+            }
+          ]
+        },
+        {
+          "table": "airports",
+          "pks": [
+            {
+              "column": ["faa"]
+            }
+          ]
+        },
+        {
+          "table": "flights",
+          "pks": {}
+        },
+        {
+          "table": "planes",
+          "pks": [
+            {
+              "column": ["tailnum"]
+            }
+          ]
+        },
+        {
+          "table": "weather",
+          "pks": [
+            {
+              "column": ["origin", "time_hour"]
+            }
+          ]
+        }
+      ] 
+
+# fks_df_from_keys_info()
+
+    Code
+      dm %>% dm_get_keyed_tables_impl() %>% fks_df_from_keys_info() %>% jsonlite::toJSON(
+        pretty = TRUE)
+    Output
+      [
+        {
+          "table": "airlines",
+          "fks": [
+            {
+              "ref_column": ["carrier"],
+              "table": "flights",
+              "column": ["carrier"],
+              "on_delete": "no_action"
+            }
+          ]
+        },
+        {
+          "table": "airports",
+          "fks": [
+            {
+              "ref_column": ["faa"],
+              "table": "flights",
+              "column": ["origin"],
+              "on_delete": "no_action"
+            },
+            {
+              "ref_column": ["faa"],
+              "table": "flights",
+              "column": ["dest"],
+              "on_delete": "no_action"
+            }
+          ]
+        },
+        {
+          "table": "planes",
+          "fks": [
+            {
+              "ref_column": ["tailnum"],
+              "table": "flights",
+              "column": ["tailnum"],
+              "on_delete": "no_action"
+            }
+          ]
+        },
+        {
+          "table": "weather",
+          "fks": [
+            {
+              "ref_column": ["origin", "time_hour"],
+              "table": "flights",
+              "column": ["origin", "time_hour"],
+              "on_delete": "no_action"
+            }
+          ]
+        }
+      ] 
 

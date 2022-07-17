@@ -109,9 +109,23 @@ dm_impl <- function(tbls, names) {
 #' @rdname dm
 #' @export
 new_dm <- function(tables = list()) {
-  def <- new_dm_def(tables)
+  def <- new_keyed_dm_def(tables)
   new_dm3(def)
 }
+
+new_keyed_dm_def <- function(tables = list()) {
+  is_keyed <- map_lgl(unname(tables), is_dm_keyed_tbl)
+  stopifnot(!anyDuplicated(names(tables)[is_keyed]))
+
+  # data should be saved as a tibble
+  unclassed_tables <- map(tables, unclass_keyed_tbl)
+
+  pks_df <- pks_df_from_keys_info(tables[is_keyed])
+  fks_df <- fks_df_from_keys_info(tables[is_keyed])
+
+  new_dm_def(unclassed_tables, pks_df, fks_df)
+}
+
 
 new_dm_def <- function(tables = list(),
                        pks_df = tibble(table = character(), pks = list()),
@@ -556,17 +570,22 @@ keyed_tbl_impl <- function(dm, from) {
 
 tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
   def <- dm_get_def(dm, quiet = quiet)
-  uuid_lookup <- def[c("table", "uuid")]
   idx <- match(from, def$table)
   if (is.na(idx)) {
     abort_table_not_in_dm(from, src_tbls_impl(dm))
   }
 
+  tbl_def_impl(def, idx, keyed)
+}
+
+tbl_def_impl <- function(def, idx, keyed) {
   data <- def$data[[idx]]
 
   if (!keyed) {
     return(data)
   }
+
+  uuid_lookup <- def[c("table", "uuid")]
 
   pk_def <- def$pks[[idx]]
   if (nrow(pk_def) > 0) {
@@ -587,7 +606,7 @@ tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
 
   fks_out_def <-
     map2_dfr(def$uuid, def$fks, ~ tibble(ref_uuid = .x, .y)) %>%
-    filter(table == from) %>%
+    filter(table == !!def$table[[idx]]) %>%
     select(ref_uuid, ref_column, column)
 
   fks_out <- new_fks_out(
@@ -603,6 +622,12 @@ tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
     fks_out = fks_out,
     uuid = def$uuid[[idx]]
   )
+}
+
+dm_get_keyed_tables_impl <- function(dm) {
+  def <- dm_get_def(dm)
+  tables <- map(seq_along(def$table), ~ tbl_def_impl(def, .x, keyed = TRUE))
+  set_names(tables, def$table)
 }
 
 src_tbls_impl <- function(dm, quiet = FALSE) {
