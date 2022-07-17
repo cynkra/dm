@@ -206,6 +206,30 @@ test_that("joins with other child PK", {
   })
 })
 
+test_that("joins with other child PK and name conflict", {
+  withr::local_seed(20220715)
+
+  dm <-
+    dm(x = tibble(a = 1, b = 1), y = tibble(b = 1)) %>%
+    dm_add_pk(x, b) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, a, y)
+
+  x <- keyed_tbl_impl(dm, "x")
+  y <- keyed_tbl_impl(dm, "y")
+
+  expect_snapshot({
+    keyed_build_join_spec(x, y) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, r = left_join(x, y)) %>%
+      dm_paste(options = c("select", "keys"))
+    keyed_build_join_spec(y, x) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, r = left_join(y, x)) %>%
+      dm_paste(options = c("select", "keys"))
+  })
+})
+
 test_that("joins with same child PK", {
   withr::local_seed(20220715)
 
@@ -214,6 +238,30 @@ test_that("joins with same child PK", {
     dm_add_pk(x, a) %>%
     dm_add_pk(y, b) %>%
     dm_add_fk(x, a, y)
+
+  x <- keyed_tbl_impl(dm, "x")
+  y <- keyed_tbl_impl(dm, "y")
+
+  expect_snapshot({
+    keyed_build_join_spec(x, y) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, r = left_join(x, y)) %>%
+      dm_paste(options = c("select", "keys"))
+    keyed_build_join_spec(y, x) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, r = left_join(y, x)) %>%
+      dm_paste(options = c("select", "keys"))
+  })
+})
+
+test_that("joins with same child PK and same name", {
+  withr::local_seed(20220715)
+
+  dm <-
+    dm(x = tibble(b = 1), y = tibble(b = 1)) %>%
+    dm_add_pk(x, b) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, b, y)
 
   x <- keyed_tbl_impl(dm, "x")
   y <- keyed_tbl_impl(dm, "y")
@@ -239,6 +287,32 @@ test_that("joins with other FK from parent", {
     dm_add_pk(y, b) %>%
     dm_add_fk(x, a, y) %>%
     dm_add_fk(y, c, z, c)
+
+  x <- keyed_tbl_impl(dm, "x")
+  y <- keyed_tbl_impl(dm, "y")
+  z <- keyed_tbl_impl(dm, "z")
+
+  expect_snapshot({
+    keyed_build_join_spec(x, y) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, z, r = left_join(x, y)) %>%
+      dm_paste(options = c("select", "keys"))
+    keyed_build_join_spec(y, x) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, z, r = left_join(y, x)) %>%
+      dm_paste(options = c("select", "keys"))
+  })
+})
+
+test_that("joins with other FK from parent and name conflict", {
+  withr::local_seed(20220715)
+
+  dm <-
+    dm(x = tibble(a = 1), y = tibble(b = 1, a = 1), z = tibble(a = 1)) %>%
+    dm_add_pk(x, a) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, a, y) %>%
+    dm_add_fk(y, a, z, a)
 
   x <- keyed_tbl_impl(dm, "x")
   y <- keyed_tbl_impl(dm, "y")
@@ -282,8 +356,34 @@ test_that("joins with other FK from child", {
   })
 })
 
+test_that("joins with other FK from child and name conflict", {
+  withr::local_seed(20220715)
+
+  dm <-
+    dm(x = tibble(a = 1, b = 1), y = tibble(b = 1), z = tibble(b = 1)) %>%
+    dm_add_pk(x, a) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, a, y) %>%
+    dm_add_fk(x, b, z, b)
+
+  x <- keyed_tbl_impl(dm, "x")
+  y <- keyed_tbl_impl(dm, "y")
+  z <- keyed_tbl_impl(dm, "z")
+
+  expect_snapshot({
+    keyed_build_join_spec(x, y) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, z, r = left_join(x, y)) %>%
+      dm_paste(options = c("select", "keys"))
+    keyed_build_join_spec(y, x) %>%
+      jsonlite::toJSON(pretty = TRUE)
+    dm(x, y, z, r = left_join(y, x)) %>%
+      dm_paste(options = c("select", "keys"))
+  })
+})
+
 test_that("left join works as expected with keyed tables", {
-  skip("Name collisions")
+  withr::local_seed(20220717)
 
   expect_snapshot({
     dm <- dm_nycflights13()
@@ -296,10 +396,6 @@ test_that("left join works as expected with keyed tables", {
 
   jd1 <- keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))
   jd2 <- keyed_tbl_impl(dm, "flights") %>% left_join(keyed_tbl_impl(dm, "weather"))
-
-  # keys are preserved after join
-  expect_equal(keyed_get_info(keyed_tbl_impl(dm, "weather")), keyed_get_info(jd1))
-  expect_equal(keyed_get_info(keyed_tbl_impl(dm, "flights")), keyed_get_info(jd2))
 
   expect_equal(ncol(jd1), ncol(jd2))
   expect_equal(dim(zd2), dim(jd2))
