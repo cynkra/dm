@@ -53,6 +53,11 @@
 dm <- function(...,
                .name_repair = c("check_unique", "unique", "universal", "minimal"),
                .quiet = FALSE) {
+  dots <- list(...)
+  if (length(dots) == 1L && is.list(dots[[1]])) {
+    abort("A `list` is not a valid input for this argument. Please enter individual tables or `dm` objects instead.")
+  }
+
   quos <- enquos(...)
   names <- names2(quos)
 

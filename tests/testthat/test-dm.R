@@ -12,6 +12,8 @@ test_that("dm() API", {
   expect_snapshot(error = TRUE, {
     dm(a = tibble(), dm_zoom_to(dm_for_filter(), tf_1))
   })
+  expect_snapshot_error(dm(list(weather, airports)))
+  expect_snapshot_error(dm(list(empty_dm())))
 })
 
 test_that("dm() works for adding tables", {
