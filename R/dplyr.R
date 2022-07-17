@@ -187,6 +187,15 @@ group_by.zoomed_dm <- function(.data, ...) {
   replace_zoomed_tbl(.data, grouped_tbl)
 }
 
+#' @rdname dplyr_table_manipulation
+#' @export
+group_by.dm_keyed_tbl <- function(.data, ...) {
+  keys_info <- keyed_get_info(.data)
+  tbl <- unclass_keyed_tbl(.data)
+  grouped_tbl <- group_by(tbl, ...)
+  new_keyed_tbl_from_keys_info(grouped_tbl, keys_info)
+}
+
 #' @export
 group_data.dm <- function(.data) {
   check_zoomed(.data)
@@ -275,6 +284,30 @@ summarise.zoomed_dm <- function(.data, ...) {
   summarized_tbl <- summarize(tbl, ...)
   new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
   replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
+}
+
+
+#' @rdname dplyr_table_manipulation
+#' @export
+summarise.dm_keyed_tbl <- function(.data, ...) {
+  keys_info <- keyed_get_info(.data)
+  tbl <- unclass_keyed_tbl(.data)
+
+  if (inherits(tbl, "grouped_df")) {
+    new_pk <- group_vars(tbl)
+  } else {
+    new_pk <- NULL
+  }
+
+  summarised_tbl <- NextMethod()
+
+  # TODO: Currently, summarized table gets a new UUID. Decide if we should
+  # instead retain the original UUID to replace the existing table in the `dm`
+  # object.
+  new_keyed_tbl(
+    summarised_tbl,
+    pk = new_pk
+  )
 }
 
 #' @export
