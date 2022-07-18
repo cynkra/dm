@@ -11,7 +11,7 @@
 \method{collect}{dm}(x, ..., progress = NA)
 }
 \arguments{
-\item{x}{A \code{dm}.}
+\item{x}{A \code{dm} object.}
 
 \item{...}{Passed on to \code{\link[=compute]{compute()}}.}
 

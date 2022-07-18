@@ -19,6 +19,7 @@
 #'
 #' - [dm_from_con()] for connecting to all tables in a database
 #'   and importing the primary and foreign keys
+#' - [dm_get_tables()] for returning a list of tables
 #' - [dm_add_pk()] and [dm_add_fk()] for adding primary and foreign keys
 #' - [copy_dm_to()] for DB interaction
 #' - [dm_draw()] for visualization
@@ -48,8 +49,6 @@
 #' dm_nycflights13()[["airports"]]
 #'
 #' dm_nycflights13() %>% names()
-#'
-#' dm_nycflights13() %>% dm_get_tables()
 dm <- function(...,
                .name_repair = c("check_unique", "unique", "universal", "minimal"),
                .quiet = FALSE) {
@@ -639,7 +638,7 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 #' Called on a `dm` object, these methods create a copy of all tables in the `dm`.
 #' Depending on the size of your data this may take a long time.
 #'
-#' @param x A `dm`.
+#' @inheritParams dm_get_tables
 #' @param ... Passed on to [compute()].
 #' @return A `dm` object of the same structure as the input.
 #' @name materialize
@@ -816,7 +815,7 @@ as.list.zoomed_dm <- function(x, ...) {
 
 #' Get a glimpse of your `dm` object
 #'
-#' @param x A `dm` object.
+#' @inheritParams dm_get_tables
 #' @param width Controls the maximum number of columns on a line used in
 #'   printing. If `NULL`, `getOption("width")` will be consulted.
 #' @param ... Passed to [pillar::glimpse()].

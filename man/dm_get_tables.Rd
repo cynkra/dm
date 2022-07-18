@@ -7,6 +7,8 @@
 dm_get_tables(x, ..., keyed = FALSE)
 }
 \arguments{
+\item{x}{A \code{dm} object.}
+
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{keyed}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -19,4 +21,18 @@ constituting the \code{dm}.
 \description{
 \code{dm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
 of a \code{dm} object.
+}
+\examples{
+dm_nycflights13() \%>\%
+  dm_get_tables()
+
+dm_nycflights13() \%>\%
+  dm_get_tables(keyed = TRUE)
+
+dm_nycflights13() \%>\%
+  dm_get_tables(keyed = TRUE) \%>\%
+  new_dm()
+}
+\seealso{
+\code{\link[=dm]{dm()}} and \code{\link[=new_dm]{new_dm()}} for constructing a \code{dm} object from tables.
 }

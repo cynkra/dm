@@ -73,8 +73,6 @@ dm_nycflights13()["airports"]
 dm_nycflights13()[["airports"]]
 
 dm_nycflights13() \%>\% names()
-
-dm_nycflights13() \%>\% dm_get_tables()
 \dontshow{\}) # examplesIf}
 library(dm)
 library(nycflights13)
@@ -97,6 +95,7 @@ new_dm(list("tbl1" = y1, "tbl2" = y2))
 \itemize{
 \item \code{\link[=dm_from_con]{dm_from_con()}} for connecting to all tables in a database
 and importing the primary and foreign keys
+\item \code{\link[=dm_get_tables]{dm_get_tables()}} for returning a list of tables
 \item \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} for adding primary and foreign keys
 \item \code{\link[=copy_dm_to]{copy_dm_to()}} for DB interaction
 \item \code{\link[=dm_draw]{dm_draw()}} for visualization

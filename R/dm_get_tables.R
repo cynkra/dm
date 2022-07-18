@@ -3,6 +3,7 @@
 #' `dm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
 #' of a `dm` object.
 #'
+#' @param x A `dm` object.
 #' @inheritParams rlang::args_dots_empty
 #' @param keyed `r lifecycle::badge("experimental")`
 #'   Set to `TRUE` to return objects of the internal class `"dm_keyed_tbl"``
@@ -15,7 +16,19 @@
 #' @return A named list with the tables (data frames or lazy tables)
 #'   constituting the `dm`.
 #'
+#' @seealso [dm()] and [new_dm()] for constructing a `dm` object from tables.
+#'
 #' @export
+#' @examples
+#' dm_nycflights13() %>%
+#'   dm_get_tables()
+#'
+#' dm_nycflights13() %>%
+#'   dm_get_tables(keyed = TRUE)
+#'
+#' dm_nycflights13() %>%
+#'   dm_get_tables(keyed = TRUE) %>%
+#'   new_dm()
 dm_get_tables <- function(x, ..., keyed = FALSE) {
   check_not_zoomed(x)
   if (isTRUE(keyed)) {
