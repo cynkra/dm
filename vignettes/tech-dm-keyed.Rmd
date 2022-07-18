@@ -11,8 +11,8 @@ vignette: >
 source("setup/setup.R")
 ``````
 
-This vignette deals with situations where you want to transform tables of your `dm` and then update an existing table or add a new table to the `dm`.
-There are two straightforward approaches:
+This vignette deals with situations where you want to transform tables of your `dm` object and then update an existing table or add a new table to the `dm` object.
+There are two approaches:
 
 1. individually subsetting the tables relevant to the calculation, perform the necessary transformations, add the result to the `dm` (or replace an existing table), and establish the key relations.
 1. do all this within the `dm` object by zooming to a table and manipulating it while maintaining the key relations whenever possible.
@@ -171,7 +171,7 @@ In a future update, we will provide a more convenient way to "disentangle" `dm` 
 
 ### Use case 4: Add summary table to `dm`
 
-Here is an example for adding a summary of a table as a new table to a `dm` (FK-relations are taken care of automatically):
+Here is an example for adding a summary of a table as a new table to a `dm`. Foreign-key relations are taken care of automatically:
 
 ```{r, error=TRUE}
 dm_with_summary <-
@@ -189,9 +189,9 @@ dm_draw(flights_dm)
 ### Use case 5: Joining tables
 
 If you would like to join some or all of the columns of one table to another, you can make use of one of the `join`-methods for a `dm_keyed_tbl`.
-In addition to the usual arguments for the {dplyr}-joins, by supplying the `select` argument you can specify which columns of the RHS-table you want to be included in the join.
+In addition to the usual arguments for the {dplyr}-joins, by supplying the `select` argument you can specify which columns of the right-hand-side table you want to be included in the join.
 For the syntax, please see the example below.
-The LHS-table of a join is always the subsetted table.
+The left-hand-side table of a join is always the subsetted table.
 
 ```{r, error=TRUE}
 joined_flights_tbl <-
