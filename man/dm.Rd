@@ -3,7 +3,6 @@
 \name{dm}
 \alias{dm}
 \alias{new_dm}
-\alias{dm_get_tables}
 \alias{is_dm}
 \alias{as_dm}
 \title{Data model class}
@@ -15,8 +14,6 @@ dm(
 )
 
 new_dm(tables = list())
-
-dm_get_tables(x)
 
 is_dm(x)
 
@@ -37,8 +34,6 @@ to be included in the \code{dm} object.}
 \value{
 For \code{dm()}, \code{new_dm()}, \code{as_dm()}: A \code{dm} object.
 
-For \code{dm_get_tables()}: A named list with the tables constituting the \code{dm}.
-
 For \code{is_dm()}: A scalar logical, \code{TRUE} if is this object is a \code{dm}.
 }
 \description{
@@ -56,11 +51,6 @@ and extends the idea by offering operations to access the data in the tables.
 the inputs are of the expected class and internally consistent;
 use \code{\link[=dm_validate]{dm_validate()}} to double-check the returned object.
 }
-
-\code{dm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
-of a \code{dm} object.
-Filtering expressions defined by \code{\link[=dm_filter]{dm_filter()}} are NOT evaluated at this stage.
-To get a filtered table, use \code{\link[=dm_apply_filters_to_tbl]{dm_apply_filters_to_tbl()}}, to apply filters to all tables use \code{\link[=dm_apply_filters]{dm_apply_filters()}}.
 
 \code{is_dm()} returns \code{TRUE} if the input is of class \code{dm}.
 
