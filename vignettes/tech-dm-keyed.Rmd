@@ -50,7 +50,11 @@ library(dplyr)
 flights_dm <- dm_nycflights13()
 flights_dm
 
-flights_tbl <- flights_dm$flights
+flights_dm_tbl <-
+  flights_dm %>% 
+  dm_get_tables(keyed = TRUE)
+
+flights_tbl <- flights_dm_tbl$flights
 
 # The print output for a `dm_keyed_tbl` looks very much like that from a normal
 # `tibble`, with additional details about keys.
@@ -90,7 +94,7 @@ We can do this for the `weather` table.
 ```{r, error=TRUE}
 library(tidyr)
 
-weather_tbl <- flights_dm$weather
+weather_tbl <- flights_dm_tbl$weather
 weather_tbl
 
 # Maybe there is some hidden candidate for a primary key that we overlooked
@@ -171,7 +175,7 @@ Here is an example for adding a summary of a table as a new table to a `dm` (FK-
 
 ```{r, error=TRUE}
 dm_with_summary <-
-  flights_dm$flights %>%
+  flights_dm_tbl$flights %>%
   count(origin, carrier) 
 
 flights_dm <- dm(
@@ -191,12 +195,12 @@ The LHS-table of a join is always the subsetted table.
 
 ```{r, error=TRUE}
 joined_flights_tbl <-
-  flights_dm$flights %>%
+  flights_dm_tbl$flights %>%
   # let's first reduce the number of columns of flights
   select(-dep_delay:-arr_delay, -air_time:-time_hour) %>%
   # in the {dm}-method for the joins you can specify which columns you want to
   # add to the subsetted table
-  left_join(flights_dm$planes, select = c(tailnum, plane_type = type)) 
+  left_join(flights_dm_tbl$planes, select = c(tailnum, plane_type = type)) 
 
 joined_flights_dm <- dm(
   flights_plane_type = joined_flights_tbl,
@@ -204,7 +208,7 @@ joined_flights_dm <- dm(
 )
 
 # this is how the table looks now
-joined_flights_dm$flights_plane_type
+joined_flights_dm_tbl$flights_plane_type
 
 # also here, the FK-relations are transferred to the new table
 dm_draw(joined_flights_dm)
