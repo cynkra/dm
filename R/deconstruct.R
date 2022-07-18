@@ -188,3 +188,125 @@ new_fks_from_keys_info <- function(tbl) {
     new_fk(df_fks$ref_column, df_fks$table, df_fks$column, df_fks$on_delete)
   }
 }
+
+# FIXME: Pass suffix and keep when ready
+keyed_build_join_spec <- function(x, y, by = NULL, suffix = NULL) {
+  info_x <- keyed_get_info(x)
+  info_y <- keyed_get_info(y)
+
+  if (is.null(by)) {
+    by <- keyed_by(x, y)
+  } else if (!is_named2(by)) {
+    by <- set_names(by, by)
+  }
+
+  if (is.null(suffix)) {
+    suffix <- c(".x", ".y")
+  }
+
+  rename <- join_rename_rules(colnames(x), colnames(y), by, suffix)
+
+  # Is one of the "by" column sets a primary key? Keep the primary key of the *other* table!
+  if (keyed_is_pk(x, names(by))) {
+    new_pk <- join_rename(info_y$pk, rename$y)
+  } else if (keyed_is_pk(y, by)) {
+    new_pk <- join_rename(info_x$pk, rename$x)
+  } else {
+    new_pk <- NULL
+  }
+
+  # Keep all foreign keys
+  new_fks_in <-
+    vec_rbind(
+      join_rename_key(info_x$fks_in, "parent_key_cols", rename$x),
+      join_rename_key(info_y$fks_in, "parent_key_cols", rename$y),
+    )
+
+  new_fks_out <-
+    vec_rbind(
+      join_rename_key(info_x$fks_out, "child_fk_cols", rename$x),
+      join_rename_key(info_y$fks_out, "child_fk_cols", rename$y),
+    )
+
+  # need to remove the `"dm_keyed_tbl"` class to avoid infinite recursion
+  # while joining
+  x_tbl <- unclass_keyed_tbl(x)
+  y_tbl <- unclass_keyed_tbl(y)
+
+  list(
+    x_tbl = x_tbl,
+    y_tbl = y_tbl,
+    by = enframe(by, "x", "y"),
+    suffix = suffix,
+    new_pk = new_pk,
+    new_fks_in = new_fks_in,
+    new_fks_out = new_fks_out,
+    new_uuid = new_uuid()
+  )
+}
+
+keyed_by <- function(x, y) {
+  fks_df <- fks_df_from_keys_info(list(x = x, y = y))
+
+  if (nrow(fks_df) == 0) {
+    abort("Can't infer `by`: foreign key information lost?")
+  }
+
+  stopifnot(map_int(fks_df$fks, NROW) > 0)
+
+  if (nrow(fks_df) > 1) {
+    abort("Can't infer `by`: foreign key available in both directions")
+  }
+
+  if (nrow(fks_df$fks[[1]]) > 1) {
+    abort("Can't infer `by`: multiple foreign keys available")
+  }
+
+  fk <- fks_df$fks[[1]][1, ]
+
+  if (fks_df$table == "x") {
+    set_names(fk$column[[1]], fk$ref_column[[1]])
+  } else {
+    set_names(fk$ref_column[[1]], fk$column[[1]])
+  }
+}
+
+keyed_is_pk <- function(x, cols) {
+  info <- keyed_get_info(x)
+
+  # cols must include at least all pk columns
+  !is.null(info$pk) && all(info$pk %in% cols)
+}
+
+join_rename_rules <- function(x, y, by, suffix) {
+  by_idx <- match(by, y)
+  stopifnot(!anyNA(by_idx))
+  stopifnot(length(by_idx) > 0)
+  conflicts <- intersect(x, y[-by_idx])
+
+  x_new <- x
+  x_new[x_new %in% conflicts()] <- paste0(x_new, suffix[[1]])
+
+  y_new <- y
+  y_new[by_idx] <- names(by)
+  y_new[y_new %in% conflicts()] <- paste0(y_new, suffix[[2]])
+
+  list(
+    x = set_names(x_new, x),
+    y = set_names(y_new, y)
+  )
+}
+
+join_rename <- function(x, rename) {
+  if (is.null(x)) {
+    return(NULL)
+  }
+  stopifnot(all(x %in% names(rename)))
+  unname(rename[x])
+}
+
+join_rename_key <- function(x, colname, rename) {
+  stopifnot(colname %in% names(x))
+  x[[colname]] <- new_keys(map(x[[colname]], join_rename, rename))
+  x
+}

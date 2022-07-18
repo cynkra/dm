@@ -423,6 +423,56 @@ left_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
+#' @rdname dplyr_join
+#' @export
+left_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
+  if (!is_dm_keyed_tbl(y)) {
+    return(NextMethod())
+  }
+
+  join_spec <- keyed_build_join_spec(x, y, by, suffix)
+  joined_tbl <- left_join(
+    join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
+    copy = copy,
+    suffix = join_spec$suffix,
+    keep = keep,
+    ...
+  )
+
+  new_keyed_tbl(
+    joined_tbl,
+    pk = join_spec$new_pk,
+    fks_in = join_spec$new_fks_in,
+    fks_out = join_spec$new_fks_out,
+    uuid = join_spec$new_uuid
+  )
+}
+
+#' @rdname dplyr_join
+#' @export
+right_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
+  if (!is_dm_keyed_tbl(y)) {
+    return(NextMethod())
+  }
+
+  join_spec <- keyed_build_join_spec(x, y, by, suffix)
+  joined_tbl <- right_join(
+    join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
+    copy = copy,
+    suffix = join_spec$suffix,
+    keep = keep,
+    ...
+  )
+
+  new_keyed_tbl(
+    joined_tbl,
+    pk = join_spec$new_pk,
+    fks_in = join_spec$new_fks_in,
+    fks_out = join_spec$new_fks_out,
+    uuid = join_spec$new_uuid
+  )
+}
+
 #' @export
 inner_join.dm <- function(x, ...) {
   check_zoomed(x)
