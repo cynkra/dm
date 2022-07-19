@@ -349,6 +349,11 @@ test_that("`pull_tbl()`-methods work", {
     tf_5()
   )
 
+  expect_equal(
+    pull_tbl(dm_for_filter(), tf_5, keyed = TRUE),
+    dm_get_tables(dm_for_filter(), keyed = TRUE)[["tf_5"]]
+  )
+
   skip_if_src("maria")
   expect_equivalent_tbl(
     dm_for_filter() %>%

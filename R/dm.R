@@ -759,6 +759,7 @@ empty_dm <- function() {
 #'
 #' @inheritParams dm_add_pk
 #' @param table One unquoted table name for `pull_tbl.dm()`, ignored for `pull_tbl.zoomed_dm()`.
+#' @inheritParams dm_get_tables
 #'
 #' @return The requested table
 #'
@@ -772,21 +773,25 @@ empty_dm <- function() {
 #'   dm_zoom_to(airports) %>%
 #'   pull_tbl()
 #' @export
-pull_tbl <- function(dm, table, ...) {
+pull_tbl <- function(dm, table, ..., keyed = FALSE) {
   UseMethod("pull_tbl")
 }
 
 #' @export
-pull_tbl.dm <- function(dm, table, ...) {
+pull_tbl.dm <- function(dm, table, ..., keyed = FALSE) {
   # for both dm and zoomed_dm
   # FIXME: shall we issue a special error in case someone tries sth. like: `pull_tbl(dm_for_filter, c(t4, t3))`?
   table_name <- as_string(enexpr(table))
   if (table_name == "") abort_no_table_provided()
-  tbl_impl(dm, table_name)
+  tbl_impl(dm, table_name, keyed = keyed)
 }
 
 #' @export
-pull_tbl.zoomed_dm <- function(dm, table, ...) {
+pull_tbl.zoomed_dm <- function(dm, table, ..., keyed = FALSE) {
+  if (isTRUE(keyed)) {
+    abort("`keyed = TRUE` not supported for zoomed dm objects.")
+  }
+
   table_name <- as_string(enexpr(table))
   zoomed <- dm_get_zoom(dm)
   if (table_name == "") {

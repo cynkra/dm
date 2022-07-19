@@ -23,7 +23,7 @@ For the second approach, see `vignette("tech-dm-zoom")`.
 
 ## Enabling {dplyr}-workflow within a `dm`
 
-The `dm_get_tables()` function has a new experimental argument `keyed`, which defaults to `FALSE`.
+The `dm_get_tables()` and `pull_tbl()` functions have a new experimental argument `keyed`, which defaults to `FALSE`.
 If set to `TRUE`, a list of objects of class `dm_keyed_tbl` is returned instead.
 Because `dm_keyed_tbl` inherits from `tbl` or `tbl_lazy`, many {dplyr} and {tidyr} verbs will work unchanged.
 These objects will also attempt to track primary and foreign keys, so that they are available for joins and when recombining these tables later into a `dm` object.
@@ -32,7 +32,7 @@ When you are finished with transforming your data, you can use `dm()` or `new_dm
 The resulting tables in the `dm` will have all the primary and foreign keys available that could be tracked from the original table.
 Reconstructing the `dm` object is not strictly necessary if you're primarily interested in deriving one or multiple separate tables for analysis.
 
-If this workflow proves as useful as it seems, subsetting tables via `$`, `[[` and `pull_tbl()` will default to `keyed = TRUE` in a forthcoming major release of {dm}.
+If this workflow proves as useful as it seems, subsetting tables via `$`, `[[` will default to `keyed = TRUE` in a forthcoming major release of {dm}.
 
 
 ## Examples
@@ -68,7 +68,8 @@ flights_tbl_mutate <-
 flights_tbl_mutate
 ```
 
-To update the original `dm` with a new `flights` table we use `dm()`:
+To update the original `dm` with a new `flights` table we use `dm()`.
+The bang-bang-bang (`!!!`) is a technical necessity that will become superfluous in a forthcoming release.
 
 ```{r zoom2}
 updated_flights_dm <- dm(
@@ -159,14 +160,15 @@ disentangled_flights_dm %>%
 
 ### Use case 4: Add summary table to `dm`
 
-Here is an example for adding a summary of a table as a new table to a `dm`. Foreign-key relations are taken care of automatically:
+Here is an example for adding a summary of a table as a new table to a `dm`. Foreign-key relations are taken care of automatically.
+This example shows an alternative approach of deconstruction and reconstruction using `pull_tbl()` and `dm()` with the original `dm` object.
 
 ```{r}
-dep_carrier_count <-
-  flights_keyed$flights %>%
-  count(origin, carrier) 
-
-derived_flights_dm <- dm(dep_carrier_count, !!!flights_keyed)
+derived_flights_dm <-
+  flights_dm() %>% 
+  pull_tbl(flights, keyed = TRUE) %>% 
+  count(origin, carrier) %>% 
+  dm(flights_dm)
 
 derived_flights_dm %>% 
   dm_draw()

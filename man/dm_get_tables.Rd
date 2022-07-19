@@ -12,7 +12,12 @@ dm_get_tables(x, ..., keyed = FALSE)
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{keyed}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-Set to \code{TRUE} to return objects of the internal class \verb{"dm_keyed_tbl"`` that will contain information on primary and foreign keys in the individual table objects. This allows using dplyr workflows on those tables and later reconstruct them into a }dm\verb{object. See}vignette("tech-dm-keyed")` for details.}
+Set to \code{TRUE} to return objects of the internal class \code{"dm_keyed_tbl"}
+that will contain information on primary and foreign keys
+in the individual table objects.
+This allows using dplyr workflows on those tables and later reconstruct them
+into a \code{dm} object.
+See \code{vignette("tech-dm-keyed")} for details.}
 }
 \value{
 A named list with the tables (data frames or lazy tables)
