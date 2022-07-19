@@ -6,7 +6,7 @@
 #' @param x A `dm` object.
 #' @inheritParams rlang::args_dots_empty
 #' @param keyed `r lifecycle::badge("experimental")`
-#'   Set to `TRUE` to return objects of the internal class `"dm_keyed_tbl"``
+#'   Set to `TRUE` to return objects of the internal class `"dm_keyed_tbl"`
 #'   that will contain information on primary and foreign keys
 #'   in the individual table objects.
 #'   This allows using dplyr workflows on those tables and later reconstruct them
