@@ -1,8 +1,10 @@
 #' Creates a dm object for the \pkg{pixarfilms} data
 #'
-#' @description Creates an example [`dm`] object from the tables in
-#'   \pkg{pixarfilms}, along with the references.
+#' @description
+#' Creates an example [`dm`] object from the tables in
+#' \pkg{pixarfilms}, along with the references.
 #'
+#' @inheritParams rlang::args_dots_empty
 #' @param color Boolean, if `TRUE` (default), the resulting `dm` object will
 #'   have colors assigned to different tables for visualization with
 #'   `dm_draw()`.
@@ -18,7 +20,9 @@
 #' dm_pixarfilms()
 #' dm_pixarfilms() %>%
 #'   dm_draw()
-dm_pixarfilms <- function(color = TRUE, consistent = FALSE) {
+dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE) {
+  check_dots_empty()
+
   # Check for data package installed
   check_suggested("pixarfilms",
     use = TRUE,

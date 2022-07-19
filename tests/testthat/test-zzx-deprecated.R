@@ -7,7 +7,7 @@ test_that("cdm_add_tbl() works", {
 
   expect_equivalent_dm(
     cdm_add_tbl(dm_for_filter_simple(), cars_table = mtcars_tbl),
-    dm_add_tbl(dm_for_filter_simple(), cars_table = mtcars_tbl)
+    dm(dm_for_filter_simple(), cars_table = mtcars_tbl)
   )
 })
 
@@ -27,7 +27,7 @@ test_that("cdm_copy_to() behaves correctly", {
   local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_dm(
-    cdm_copy_to(sqlite_test_src(), dm_for_filter_simple(), unique_table_names = TRUE),
+    cdm_copy_to(duckdb_test_src(), dm_for_filter_simple(), unique_table_names = TRUE),
     dm_for_filter_simple()
   )
 })

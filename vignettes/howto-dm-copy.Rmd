@@ -17,7 +17,7 @@ source("setup/setup.R")
 ``````
 
 
-In this tutorial we introduce {dm} methods and techniques for copying individual tables and entire relational data models into an RDBMS.
+In this tutorial, we introduce {dm} methods and techniques for copying individual tables and entire relational data models into a relational database management system (RDBMS).
 This is an integral part of the {dm} workflow.
 Copying tables to an RDBMS is often a step in the process of building a relational data model from locally hosted data.
 If your data model is complete, copying it to an RDBMS in a single operation allows you to leverage the power of the database and make it accessible to others.
@@ -31,9 +31,9 @@ This may be all you need to deploy a new model.
 You may want to add new tables to an existing model on an RDBMS.
 These requirements can be handled using the `compute()` and `copy_to()` methods.
 
-Calling `compute()` or `copy_to()` requires write permission on the RDBMS, otherwise an error is returned.
-Therefore for the following examples we will instantiate a test dm and move it into a local SQLite database with full permissions.
-{dm} and {dbplyr} are designed so there is no difference between the code used to manipulate a local SQLite database and a remote RDBMS.
+Calling `compute()` or `copy_to()` requires write permission on the RDBMS; otherwise, an error is returned.
+Therefore, for the following examples, we will instantiate a test `dm` object and move it into a local SQLite database with full permissions.
+{dm} and {dbplyr} are designed to treat the code used to manipulate a **local** SQLite database and a **remote** RDBMS similarly.
 The steps for this were already introduced in `vignette("howto-dm-db")` and will be discussed in more detail in the [Copying a relational model](#copy-model) section.
 
 ``````{r }
@@ -53,7 +53,7 @@ deployed_dm <- copy_dm_to(local_db, fin_dm, temporary = FALSE)
 
 ## Copying and persisting individual tables {#copying-tables}
 
-As part of your data analysis you may combine tables from multiple sources and create links to existing tables via foreign keys, or create new tables holding data summaries.
+As part of your data analysis, you may combine tables from multiple sources and create links to existing tables via foreign keys, or create new tables holding data summaries.
 The example below, already discussed in `vignette("howto-dm-db")`, computes the total amount of all loans for each account.
 
 ``````{r}
@@ -97,16 +97,16 @@ stopifnot(grepl(remote_name_total_loans, sql_render(my_dm_total_computed$total_l
 ```
 
 Note the differences in queries returned by `sql_render()`.
-`my_dm_total$total_loans` is still being lazily evaluated and the full query constructed from the chain of operations that generated it, and is required to run to access it, is still in place.
-Contrast that with `my_dm_total_computed$total_loans` where the query has been realized and accessing its rows requires a simple `SELECT *` statement.
+`my_dm_total$total_loans` is still being lazily evaluated and the full query constructed from the chain of operations that generated it is still in place and needs to be run to access it.
+Contrast that with `my_dm_total_computed$total_loans`, where the query has been realized and accessing its rows requires a simple `SELECT *` statement.
 The table name, `` `r remote_name_total_loans` ``, was automatically generated as the `name` argument was not supplied to `compute()`.
 
-The default is to create a temporary table.
-If you want results to persist across sessions in permanent tables, `compute()` must be called with the argument `temporary = FALSE` and a table name for the `name` argument.
+The default is to create a **temporary** tables.
+If you want results to persist across sessions in **permanent** tables, `compute()` must be called with the argument `temporary = FALSE` and a table name for the `name` argument.
 See `?compute` for more details.
 
-When called on a whole dm object (without zoom), `compute()` materializes all tables into new (temporary or persistent) tables by executing the associated SQL query and storing the full results.
-Depending on the size of your data this may take considerable time or be infeasible.
+When called on a whole `dm` object (without zoom), `compute()` materializes all tables into new (temporary or persistent) tables by executing the associated SQL query and storing the full results.
+Depending on the size of your data, this may take considerable time or may even be unfeasible.
 It may be useful occasionally to create snapshots of data that is subject to change.
 
 ``````{r }
@@ -118,11 +118,11 @@ my_dm_total_snapshot <-
 
 ## Adding local data frames to an RDBMS {#data-frames}
 
-If you need to add local data frames to an existing dm object, use the `copy_to()` method.
+If you need to add local data frames to an existing `dm` object, use the `copy_to()` method.
 It takes the same arguments as `copy_dm_to()`, except the second argument takes a data frame rather than a dm.
-The result is a derived dm object that contains the new table.
+The result is a derived `dm` object that contains the new table.
 
-To demonstrate the use of `copy_to()` the example below will use {dm} to pull consolidated data from several tables out of an RDBMS, estimate a linear model from the data, then insert the residuals back into the RDBMS and link it to the existing tables.
+To demonstrate the use of `copy_to()`, the example below will use {dm} to pull consolidated data from several tables out of an RDBMS, estimate a linear model from the data, then insert the residuals back into the RDBMS and link it to the existing tables.
 This is all done with a local SQLite database, but the process would work unchanged on any supported RDBMS.
 
 ``````{r}
@@ -157,7 +157,7 @@ loans_residuals
 Adding `loans_residuals` to the dm is done using `copy_to()`.
 The call to the method includes the argument `temporary = FALSE` because we want this table to persist beyond our current session.
 In the same pipeline we create the necessary primary and foreign keys to integrate the table with the rest of our relational model.
-For more information on key creation see `vignette("howto-dm-db")` and `vignette("howto-dm-theory")`.
+For more information on key creation, see `vignette("howto-dm-db")` and `vignette("howto-dm-theory")`.
 
 ``````{r}
 my_dm_sqlite_resid <-
@@ -206,7 +206,7 @@ deployed_dm
 ``````
 
 Note that in the call to `copy_dm_to()` the argument `temporary = FALSE` is supplied.
-Without this argument the model would still be copied into the database, but the argument would default to `temporary = TRUE` and the data would be deleted once your session ends.
+Without this argument, the model would still be copied into the database, but the argument would default to `temporary = TRUE` and the data would be deleted once your session ends.
 
 In the output you can observe that the `src` for `deployed_dm` is SQLite, while for `fin_dm` the source is not indicated because it is a local data model.
 
@@ -227,8 +227,8 @@ remote_name(deployed_dm$accounts)
 ``````
 
 Note the different table names for `dup_dm$accounts` and `deployed_dm$accounts`.
-For both, the table name is `accounts` in the dm, but they link to different tables on the database.
-In `dup_dm` the table is backed by the table `dup_accounts` in the RDBMS.
+For both, the table name is `accounts` in the `dm` object, but they link to different tables on the database.
+In `dup_dm`, the table is backed by the table `dup_accounts` in the RDBMS.
 `dm_deployed$accounts` shows us that this table is still backed by the `accounts` table from the `copy_dm_to()` operation we performed in the preceding example.
 
 Managing tables in the RDBMS is outside the scope of `dm`.
@@ -241,17 +241,17 @@ DBI::dbDisconnect(destination_db)
 DBI::dbDisconnect(local_db)
 ``````
 
-## Conclusion
+## Conclusion {#conclusion}
 
 `dm` makes it straightforward to deploy your complete relational model to an RDBMS using the `copy_dm_to()` function.
-For tables that are created from a relational model during analysis or development, `compute()` and `copy_to()` can be used to persist them between sessions or to copy local tables to a database dm.
-The `collect()` method downloads an entire dm object that fits into memory from the database.
+For tables that are created from a relational model during analysis or development, `compute()` and `copy_to()` can be used to persist them (using argument `temporary = FALSE`) between sessions or to copy local tables to a database `dm`.
+The `collect()` method downloads an entire `dm` object that fits into memory from the database.
 
 
-## Next steps
+## Further Reading
 
 If you need finer-grained control over modifications to your relational model, see `vignette("howto-dm-rows")` for an introduction to row level operations, including updates, insertions, deletions and patching.
 
-If you feel you need to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
+If you would like to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
 
 If you're familiar with relational data models but want to know how to work with them in dm, then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.

@@ -1,5 +1,6 @@
 #' Create R code for a dm object
 #'
+#' @description
 #' `dm_paste()` takes an existing `dm` and emits the code necessary for its creation.
 #'
 #' @inheritParams dm_add_pk

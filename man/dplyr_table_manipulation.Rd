@@ -12,8 +12,10 @@
 \alias{arrange.zoomed_dm}
 \alias{slice.zoomed_dm}
 \alias{group_by.zoomed_dm}
+\alias{group_by.dm_keyed_tbl}
 \alias{ungroup.zoomed_dm}
 \alias{summarise.zoomed_dm}
+\alias{summarise.dm_keyed_tbl}
 \alias{count.zoomed_dm}
 \alias{tally.zoomed_dm}
 \alias{pull.zoomed_dm}
@@ -40,9 +42,13 @@
 
 \method{group_by}{zoomed_dm}(.data, ...)
 
+\method{group_by}{dm_keyed_tbl}(.data, ...)
+
 \method{ungroup}{zoomed_dm}(x, ...)
 
 \method{summarise}{zoomed_dm}(.data, ...)
+
+\method{summarise}{dm_keyed_tbl}(.data, ...)
 
 \method{count}{zoomed_dm}(
   x,
@@ -68,7 +74,7 @@
 columns selected by \code{...}. Supplying neither will move columns to the
 left-hand side; specifying both is an error.}
 
-\item{.keep_all}{For \code{distinct.zoomed_dm()}: see \code{\link[dplyr:distinct]{dplyr::distinct}}}
+\item{.keep_all}{For \code{distinct.zoomed_dm()}: see \code{\link[dplyr:distinct]{dplyr::distinct()}}}
 
 \item{.keep_pk}{For \code{slice.zoomed_dm}: Logical, if \code{TRUE}, the primary key will be retained during this transformation. If \code{FALSE}, it will be dropped.
 By default, the value is \code{NULL}, which causes the function to issue a message in case a primary key is available for the zoomed table.

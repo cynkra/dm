@@ -182,7 +182,7 @@ info_simple %>%
   dm_get_tables()
 
 key_dm <-
-  info %>%
+  info_simple %>%
 
   dm_zoom_to(table_constraints) %>%
   filter(constraint_type == "PRIMARY KEY") %>%
@@ -196,14 +196,18 @@ key_dm <-
   dm_update_zoomed() %>%
   dm_zoom_to(constraint_column_usage) %>%
   semi_join(table_constraints) %>%
-  rename(fk_table_catalog = table_catalog, fk_table_schema = table_schema, fk_table_name = table_name, fk_column_name = column_name) %>%
+  rename(fk_fq_table_name = fq_table_name, fk_column_name = column_name) %>%
   left_join(key_column_usage) %>%
-  rename(pk_table_catalog = table_catalog, pk_table_schema = table_schema, pk_table_name = table_name, pk_column_name = column_name) %>%
+  rename(pk_fq_table_name = fq_table_name, pk_column_name = column_name) %>%
 
   # Postgres: Can return int64 here
   mutate(ordinal_position = as.integer(ordinal_position)) %>%
   dm_insert_zoomed("fk") %>%
-  dm_add_fk(fk, c(pk_table_catalog, pk_table_schema, pk_table_name, pk_column_name), columns) %>%
+  dm_add_fk(fk, c(pk_fq_table_name, pk_column_name), columns) %>%
+
+  dm_zoom_to(columns) %>%
+  left_join(tables, select = r_table_name) %>%
+  dm_update_zoomed() %>%
 
   dm_select_tbl(columns, pk, fk)
 

@@ -1,7 +1,7 @@
 #' Decompose a table into two linked tables
 #'
 #' @description
-#' `r lifecycle::badge("questioning")`
+#' `r lifecycle::badge("experimental")`
 #'
 #' Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.
 #'
@@ -35,8 +35,10 @@
 #'   - entry "parent_table": the "lookup table" for `child_table`.
 #'
 #' @section Life cycle:
-#' This function is marked "questioning" because it feels more useful
+#' This function is marked "experimental" because it seems more useful
 #' when applied to a table in a dm object.
+#' Changing the interface later seems harmless because these functions are
+#' most likely used interactively.
 #'
 #' @examples
 #' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
@@ -80,7 +82,7 @@ decompose_table <- function(.data, new_id_column, ...) {
 #' Merge two tables that are linked by a foreign key relation
 #'
 #' @description
-#' `r lifecycle::badge("questioning")`
+#' `r lifecycle::badge("experimental")`
 #'
 #' Perform table fusion by combining two tables by a common (key) column, and then removing this column.
 #'
@@ -97,8 +99,10 @@ decompose_table <- function(.data, new_id_column, ...) {
 #' @return A wide table produced by joining the two given tables.
 #'
 #' @section Life cycle:
-#' These functions are marked "questioning" because they feel more useful
+#' These functions are marked "experimental" because they seem more useful
 #' when applied to a table in a dm object.
+#' Changing the interface later seems harmless because these functions are
+#' most likely used interactively.
 #'
 #' @name reunite_parent_child
 #'

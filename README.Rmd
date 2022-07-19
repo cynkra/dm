@@ -30,20 +30,18 @@ options(cli.num_colors = 256)
 # [dm](https://cynkra.github.io/dm/)
 
 <!-- badges: start -->
-[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![R build status](https://github.com/cynkra/dm/workflows/tic/badge.svg)](https://github.com/cynkra/dm/actions)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![R build status](https://github.com/cynkra/dm/workflows/rcc/badge.svg)](https://github.com/cynkra/dm/actions)
 [![Codecov test coverage](https://codecov.io/gh/cynkra/dm/branch/master/graph/badge.svg)](https://app.codecov.io/gh/cynkra/dm?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm)
 [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
 
-## TL;DR
-
-Are you using multiple data frames or database tables in R? Organize them with dm.
-
-- Use it for data analysis today.
-- Build data models tomorrow.
-- Deploy the data models to your organization's RDBMS the day after.
+> Are you using multiple data frames or database tables in R? Organize them with dm.
+>
+> - Use it for data analysis today.
+> - Build data models tomorrow.
+> - Deploy the data models to your organization's Relational Database Management System (RDBMS) the day after.
 
 
 ## Overview
@@ -81,7 +79,21 @@ The latest stable version of the {dm} package can be obtained from [CRAN](https:
 install.packages("dm")
 ```
 
-The latest development version of {dm} can be installed from GitHub.
+The latest development version of {dm} can be installed from R-universe:
+
+```r
+# Enable repository from cynkra
+options(
+  repos = c(
+    cynkra = "https://cynkra.r-universe.dev",
+    CRAN = "https://cloud.r-project.org"
+  )
+)
+# Download and install dm in R
+install.packages('dm')
+```
+
+or from GitHub:
 
 ```r
 # install.packages("devtools")

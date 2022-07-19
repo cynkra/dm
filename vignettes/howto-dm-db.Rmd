@@ -6,8 +6,8 @@ output:
   rmarkdown::html_vignette:
     md_extensions: -autolink_bare_uris
 vignette: >
-  %\VignetteIndexEntry{How to: Create a dm object from a database}
   %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{How to: Create a dm object from a database}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
@@ -18,23 +18,24 @@ editor_options:
 source("setup/setup.R")
 ``````
 
-{dm} was designed to make connecting to and working with an RDBMS as straightforward as possible.
+{dm} was designed to make connecting to and working with a relational database management system (RDBMS) as straightforward as possible.
 To this end, a dm object can be created from any database that has a {[DBI](https://dbi.r-dbi.org/)} backend available ([see list](https://github.com/r-dbi/backends)).
 
-When a dm object is created via a DBI connection to an RDBMS it can import all the tables in the database, the active schema or a limited set.
+When a dm object is created via a DBI connection to an RDBMS, it can import all the tables in the database, the active schema, or a limited set.
 For some RDBMS, such as Postgres and SQL Server, primary and foreign keys are also imported and do not have to be manually added afterwards.
 
 To demonstrate, we will connect to a `r href("relational dataset repository", "https://relational.fit.cvut.cz/")` with a database server that is publicly accessible without registration.
 It hosts a `r href("financial dataset", "https://relational.fit.cvut.cz/dataset/Financial")` that contains loan data along with relevant account information and transactions.
 We chose this dataset because the relationships between `loan`, `account`, and `transactions` tables are a good representation of databases that record real-world business transactions.
-The repository uses a MariaDB server for which {dm} does not currently import primary or foreign keys, so we will need to add them.
+The repository uses a MariaDB server for which {dm} currently does not import primary or foreign keys, so we will need to add them.
 
-Below we open a connection to the publicly accessible database server using their documented connection parameters.
-Connection details vary from database to database. Before connecting to your own RDBMS you may want to read `vignette("DBI", package = "DBI")` for further information.
+Below, we open a connection to the publicly accessible database server using their documented connection parameters.
+Connection details vary from database to database. Before connecting to your own RDBMS, you may want to read `vignette("DBI", package = "DBI")` for further information.
 
 
-``````{r }
+``````{r eval = FALSE}
 library(RMariaDB)
+
 my_db <- dbConnect(
   MariaDB(),
   username = "guest",
@@ -44,12 +45,17 @@ my_db <- dbConnect(
 )
 ``````
 
-Creating a dm object takes a single call to `dm_from_src()` with the DBI connection object as its argument.
+``````{r show = FALSE}
+library(RMariaDB)
+my_db <- dm:::financial_db_con()
+``````
 
-``````{r message = FALSE}
+Creating a dm object takes a single call to `dm_from_con()` with the DBI connection object as its argument.
+
+``````{r}
 library(dm)
 
-my_dm <- dm_from_src(my_db)
+my_dm <- dm_from_con(my_db)
 my_dm
 ``````
 
@@ -62,7 +68,7 @@ Lazy tables defer downloading of table data until results are required for print
 A dm can also be constructed from individual tables or views.
 This is useful for when you want to work with a subset of a database's tables, perhaps from different schemas.
 
-Below we use the `$` notation to extract two tables from the financial database.
+Below, we use the `$` notation to extract two tables from the financial database.
 Then we create our dm by passing the tables in as arguments.
 Note that the tables arguments have to all be from the same source, in this case `my_db`.
 
@@ -86,9 +92,20 @@ Foreign keys act as cross references between tables.
 They specify the relationships that gives us the *relational* database.
 For more information on keys and a crash course on databases, see `vignette("howto-dm-theory")`.
 
+In many cases, `dm_from_con()` already returns a dm with all keys set.
+If not, dm allows us to define primary and foreign keys ourselves.
+For this, we use `learn_keys = FALSE` to obtain a `dm` object with only the tables.
+
+``````{r load}
+library(dm)
+
+fin_dm <- dm_from_con(my_db, learn_keys = FALSE)
+fin_dm
+``````
+
 The `r href("model diagram", "https://relational.fit.cvut.cz/assets/img/datasets-generated/financial.svg")` provided by our test database loosely illustrates the intended relationships between tables.
-In the diagram we can see that the `loans` table should be linked to the `accounts` table.
-Below we create those links in 3 steps:
+In the diagram, we can see that the `loans` table should be linked to the `accounts` table.
+Below, we create those links in 3 steps:
 
 1. Add a primary key `id` to the `accounts` table
 1. Add a primary key `id` to the `loans` table
@@ -96,8 +113,8 @@ Below we create those links in 3 steps:
 
 Then we assign colors to the tables and draw the structure of the dm.
 
-Note that when the foreign key is created the primary key in the referenced table does not need to be specified, but the primary key must already be defined.
-And, as mentioned above, primary and foreign key constraints on the database are currently only imported for Postgres and SQL Server databases, and only when `dm_from_src()` is used.
+Note that when the foreign key is created, the primary key in the referenced table does not need to be *specified*, but the primary key must already be *defined*.
+And, as mentioned above, primary and foreign key constraints on the database are currently only imported for Postgres and SQL Server databases, and only when `dm_from_con()` is used.
 This process of key definition needs to be done manually for other databases.
 
 ``````{r }
@@ -112,17 +129,17 @@ my_dm_keys %>%
   dm_draw()
 ``````
 
-Once you have instantiated a dm object you can continue to add tables to it.
-For tables from the original source for the dm, use `dm_add_tbl()`
+Once you have instantiated a dm object, you can continue to add tables to it.
+For tables from the original source for the dm, use `dm()`
 
 ``````{r }
 trans <- tbl(my_db, "trans")
 
 my_dm_keys %>%
-  dm_add_tbl(trans)
+  dm(trans)
 ``````
 
-For tables from other sources or from the local environment `dplyr::copy_to()` is used.
+For tables from other sources or from the local environment, `dplyr::copy_to()` is used.
 `copy_to()` is discussed later in this article.
 
 ## Transient nature of operations
@@ -134,7 +151,7 @@ my_dm_keys
 
 my_dm_trans <-
   my_dm_keys %>%
-  dm_add_tbl(trans)
+  dm(trans)
 
 my_dm_trans
 ``````
@@ -152,11 +169,11 @@ my_dm_keys %>%
 
 ## Performing operations on tables by "zooming"
 
-As the dm is a collection of tables, if we wish to perform operations on an individual table we set it as the context for those operations using `dm_zoom_to()`.
+As the dm is a collection of tables, if we wish to perform operations on an individual table, we set it as the context for those operations using `dm_zoom_to()`.
 See `vignette("tech-dm-zoom")` for more detail on zooming.
 
 dm operations are transient unless persistence is explicitly requested.
-To make our chain of manipulations on the selected table permanent we assign the result of `dm_insert_zoomed()` to a new object, `my_dm_total`.
+To make our chain of manipulations on the selected table permanent, we assign the result of `dm_insert_zoomed()` to a new object, `my_dm_total`.
 This is a new dm object, derived from `my_dm_keys`, with a new lazy table `total_loans` linked to the `accounts` table.
 
 ``````{r }
@@ -191,7 +208,7 @@ The resulting table `total_loans` can be accessed like any other table in the dm
 my_dm_total$total_loans
 ``````
 
-It is a *lazy table* powered by the {[dbplyr](https://dbplyr.tidyverse.org/)} package: the results are not materialized, instead an SQL query is built and executed each time the data is requested.
+It is a *lazy table* powered by the {[dbplyr](https://dbplyr.tidyverse.org/)} package: the results are not materialized; instead, an SQL query is built and executed each time the data is requested.
 
 ``````{r}
 my_dm_total$total_loans %>%
@@ -219,7 +236,7 @@ my_dm_local$total_loans
 ``````
 
 Use this method with caution.
-If you are not sure of the size of the dataset you will be downloading you can call `dm_nrow()` on your dm for the row count of your data model's tables.
+If you are not sure of the size of the dataset you will be downloading, you can call `dm_nrow()` on your `dm` for the row count of your data model's tables.
 
 ```{r}
 my_dm_total %>%
@@ -231,7 +248,7 @@ my_dm_total %>%
 
 It is just as simple to move a local relational model into an RDBMS as is using `collect()` to download it.
 The method used is `copy_dm_to()` and it takes as arguments a database connection and a dm object.
-In the example below a local SQLite database is used to demonstrate it, but {dm} is designed to work with any RDBMS supported by {DBI}.
+In the example below, a local SQLite database is used to demonstrate it, but {dm} is designed to work with any RDBMS supported by {DBI}.
 
 ``````{r }
 destination_db <- DBI::dbConnect(RSQLite::SQLite())
@@ -242,7 +259,7 @@ deployed_dm
 my_dm_local
 ``````
 
-In the output you can observe that the `src` for `deployed_dm` is the SQLite database, while for `my_dm_local` the source is the local R environment.
+In the output, you can observe that the `src` for `deployed_dm` is the SQLite database, while for `my_dm_local` the source is the local R environment.
 
 Persisting tables are covered in more detail in `vignette("howto-dm-copy")`.
 
@@ -254,10 +271,10 @@ DBI::dbDisconnect(destination_db)
 DBI::dbDisconnect(my_db)
 ``````
 
-## Conclusion
+## Conclusion {#conclusion}
 
-In this tutorial we have demonstrated how simple it is to load a database into a dm object and begin working with it.
-While loading a dm from most RDBMS currently requires you to manually set key relations, dm provides methods to make this straightforward.
+In this tutorial, we have demonstrated how simple it is to load a database into a `dm` object and begin working with it.
+Currently, loading a dm from most RDBMS requires you to manually set key relations, but {dm} provides methods to make this straightforward.
 It is planned that future versions of dm will support automatic key creation for more RDBMS.
 
 The next step is to read `vignette("howto-dm-copy")`, where copying your tables to and from an RDBMS is covered.
@@ -266,6 +283,6 @@ The next step is to read `vignette("howto-dm-copy")`, where copying your tables 
 
 ## Further reading
 
-`vignette("howto-dm-df")` - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.
+`vignette("howto-dm-df")` -- Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.
 
-`vignette("howto-dm-theory")` - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.
+`vignette("howto-dm-theory")` -- Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.

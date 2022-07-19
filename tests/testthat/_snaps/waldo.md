@@ -1,15 +1,14 @@
 # waldo
 
     Code
-      dm_nycflights13() %>% waldo::compare(dm_nycflights13(), max_diffs = 10)
+      dm %>% waldo::compare(dm, max_diffs = 10)
     Output
       v No differences
 
 ---
 
     Code
-      dm_nycflights13() %>% dm_select_tbl(-airlines) %>% waldo::compare(
-        dm_nycflights13(), max_diffs = 10)
+      dm %>% dm_select_tbl(-airlines) %>% waldo::compare(dm, max_diffs = 10)
     Output
       `old` is length 4
       `new` is length 5
@@ -23,8 +22,7 @@
 ---
 
     Code
-      dm_nycflights13() %>% dm_select(airlines, -name) %>% waldo::compare(
-        dm_nycflights13(), max_diffs = 10)
+      dm %>% dm_select(airlines, -name) %>% waldo::compare(dm, max_diffs = 10)
     Output
       `old$airlines$data` is length 1
       `new$airlines$data` is length 2
@@ -38,8 +36,7 @@
 ---
 
     Code
-      dm_nycflights13() %>% dm_rm_fk() %>% waldo::compare(dm_nycflights13(),
-      max_diffs = 10)
+      dm %>% dm_rm_fk() %>% waldo::compare(dm, max_diffs = 10)
     Message
       Removing foreign keys: %>%
         dm_rm_fk(flights, carrier, airlines) %>%
@@ -82,8 +79,7 @@
 ---
 
     Code
-      dm_nycflights13() %>% dm_rm_pk(fail_fk = FALSE) %>% waldo::compare(
-        dm_nycflights13(), max_diffs = 10)
+      dm %>% dm_rm_pk(fail_fk = FALSE) %>% waldo::compare(dm, max_diffs = 10)
     Message
       Removing primary keys: %>%
         dm_rm_pk(airlines) %>%
@@ -118,8 +114,7 @@
 ---
 
     Code
-      dm_nycflights13() %>% dm_set_colors(yellow = flights) %>% waldo::compare(
-        dm_nycflights13(), max_diffs = 10)
+      dm %>% dm_set_colors(yellow = flights) %>% waldo::compare(dm, max_diffs = 10)
     Output
       `old$flights$display`: "#FFFF00FF"
       `new$flights$display`: "#5B9BD5FF"
@@ -127,8 +122,7 @@
 ---
 
     Code
-      dm_nycflights13() %>% dm_zoom_to(flights) %>% waldo::compare(dm_nycflights13(),
-      max_diffs = 10)
+      dm %>% dm_zoom_to(flights) %>% waldo::compare(dm, max_diffs = 10)
     Output
       `old$flights$zoom` is an S3 object of class <tbl_df/tbl/data.frame>, a list
       `new$flights$zoom` is NULL

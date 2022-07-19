@@ -7,7 +7,7 @@
 #' If `force == TRUE`, the function will replace an already
 #' set key, without altering foreign keys previously pointing to that primary key.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
 #' @param columns Table columns, unquoted.
@@ -84,7 +84,8 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 
 #' Check for primary key
 #'
-#' @description `dm_has_pk()` checks if a given table has columns marked as its primary key.
+#' @description
+#' `dm_has_pk()` checks if a given table has columns marked as its primary key.
 #'
 #' @inheritParams dm_add_pk
 #'
@@ -139,7 +140,8 @@ dm_get_pk_impl <- function(dm, table_name) {
 
 #' Get all primary keys of a [`dm`] object
 #'
-#' @description `dm_get_all_pks()` checks the `dm` object for set primary keys and
+#' @description
+#' `dm_get_all_pks()` checks the `dm` object for set primary keys and
 #' returns the tables, the respective primary key columns and their classes.
 #'
 #' @family primary key functions
@@ -152,7 +154,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`table`}{table name,}
-#'     \item{`pk_cols`}{column name(s) of primary key, as list of character vectors.}
+#'     \item{`pk_col`}{column name(s) of primary key, as list of character vectors.}
 #'   }
 #'
 #' @export
@@ -192,6 +194,7 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 
 #' Remove a primary key
 #'
+#' @description
 #' `dm_rm_pk()` removes one or more primary keys from a table and leaves the [`dm`] object otherwise unaltered.
 #' An error is thrown if no private key matches the selection criteria.
 #' If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
@@ -298,7 +301,7 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
 
 #' Primary key candidate
 #'
-#' @description `r lifecycle::badge("questioning")`
+#' @description `r lifecycle::badge("experimental")`
 #'
 #' `enum_pk_candidates()` checks for each column of a
 #' table if the column contains only unique values, and is thus
@@ -312,7 +315,7 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
 #'   }
 #'
 #' @section Life cycle:
-#' These functions are marked "questioning" because we are not yet sure about
+#' These functions are marked "experimental" because we are not yet sure about
 #' the interface, in particular if we need both `dm_enum...()` and `enum...()`
 #' variants.
 #' Changing the interface later seems harmless because these functions are

@@ -80,7 +80,7 @@ test_that("default table repair works", {
 })
 
 test_that("table identifiers are quoted", {
-  dm <- dm_for_filter_sqlite()
+  dm <- dm_for_filter_duckdb()
   remote_names <-
     dm %>%
     dm_get_tables() %>%
@@ -182,8 +182,8 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
   )
 })
 
-test_that("copy_dm_to() fails with schema argument for databases other than MSSQL & Postgres", {
-  skip_if_src("mssql", "postgres")
+test_that("copy_dm_to() fails with schema argument for databases where schema is unsupported", {
+  skip_if_schema_supported()
 
   local_dm <- dm_for_filter() %>% collect()
 
@@ -207,8 +207,7 @@ test_that("build_copy_queries snapshot test for pixarfilms", {
     # fetch sample dm
     dm_pixarfilms() %>%
     # make it regular
-    dm_filter(pixar_films, !is.na(film)) %>%
-    dm_apply_filters() %>%
+    dm_filter(pixar_films = (!is.na(film))) %>%
     dm_select_tbl(-pixar_people)
 
   skip_if_not_installed("testthat", "3.1.1")

@@ -1,3 +1,4 @@
+# nocov start
 replace_if_dplyr_has <- function(fun) {
   dplyr_ns <- asNamespace("dplyr")
 
@@ -30,3 +31,4 @@ register_if_dplyr_hasnt <- function(...) {
   map2(classes, methods, s3_register, generic = paste0("dm::", fun))
   invisible()
 }
+# nocov end

@@ -53,12 +53,12 @@ src_tbls.dm <- function(x, ...) {
 }
 
 #' @details
-#' Use [copy_to()] on a table and then [dm_add_tbl()] instead of `copy_to()`
+#' Use [copy_to()] on a table and then [dm()] instead of `copy_to()`
 #' on a `dm` object.
 #' @param dest For `copy_to.dm()`: The `dm` object to which a table should be copied.
 #' @param df For `copy_to.dm()`: A table (can be on a different `src`)
-#' @param name For `copy_to.dm()`: See [`dplyr::copy_to`]
-#' @param overwrite For `copy_to.dm()`: See [`dplyr::copy_to`]; `TRUE` leads to an error
+#' @param name For `copy_to.dm()`: See [dplyr::copy_to()]
+#' @param overwrite For `copy_to.dm()`: See [dplyr::copy_to()]; `TRUE` leads to an error
 #' @param temporary For `copy_to.dm()`: If the `dm` is on a DB, the copied version of `df` will only be written temporarily to the DB.
 #' After the connection is reset it will no longer be available.
 #' @param repair,quiet Name repair options; cf. [vctrs::vec_as_names()]
@@ -66,7 +66,7 @@ src_tbls.dm <- function(x, ...) {
 #' @rdname dplyr_src
 #' @keywords internal
 copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
-  deprecate_soft("0.2.0", "dm::copy_to.dm()", details = "Use `copy_to(dm_get_con(dm), ...)` and `dm_add_tbl()`.")
+  deprecate_soft("0.2.0", "dm::copy_to.dm()", details = "Use `copy_to(dm_get_con(dm), ...)` and `dm()`.")
 
   check_not_zoomed(dest)
 

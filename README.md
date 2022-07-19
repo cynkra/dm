@@ -4,17 +4,15 @@
 
 <!-- badges: start -->
 
-[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html) [![R build status](https://github.com/cynkra/dm/workflows/tic/badge.svg)](https://github.com/cynkra/dm/actions) [![Codecov test coverage](https://codecov.io/gh/cynkra/dm/branch/master/graph/badge.svg)](https://app.codecov.io/gh/cynkra/dm?branch=master) [![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm) [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html) [![R build status](https://github.com/cynkra/dm/workflows/rcc/badge.svg)](https://github.com/cynkra/dm/actions) [![Codecov test coverage](https://codecov.io/gh/cynkra/dm/branch/master/graph/badge.svg)](https://app.codecov.io/gh/cynkra/dm?branch=master) [![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm) [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 
 <!-- badges: end -->
 
-## TL;DR
-
-Are you using multiple data frames or database tables in R? Organize them with dm.
-
--   Use it for data analysis today.
--   Build data models tomorrow.
--   Deploy the data models to your organization’s RDBMS the day after.
+> Are you using multiple data frames or database tables in R? Organize them with dm.
+>
+> -   Use it for data analysis today.
+> -   Build data models tomorrow.
+> -   Deploy the data models to your organization’s Relational Database Management System (RDBMS) the day after.
 
 ## Overview
 
@@ -39,7 +37,20 @@ The latest stable version of the {dm} package can be obtained from [CRAN](https:
 <pre class='chroma'>
 <span class='nf'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='o'>(</span><span class='s'>"dm"</span><span class='o'>)</span></pre>
 
-The latest development version of {dm} can be installed from GitHub.
+The latest development version of {dm} can be installed from R-universe:
+
+<pre class='chroma'>
+<span class='c'># Enable repository from cynkra</span>
+<span class='nf'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='o'>(</span>
+  repos <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span>
+    cynkra <span class='o'>=</span> <span class='s'>"https://cynkra.r-universe.dev"</span>,
+    CRAN <span class='o'>=</span> <span class='s'>"https://cloud.r-project.org"</span>
+  <span class='o'>)</span>
+<span class='o'>)</span>
+<span class='c'># Download and install dm in R</span>
+<span class='nf'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='o'>(</span><span class='s'>'dm'</span><span class='o'>)</span></pre>
+
+or from GitHub:
 
 <pre class='chroma'>
 <span class='c'># install.packages("devtools")</span>

@@ -1,5 +1,6 @@
 #' \pkg{dplyr} table manipulation methods for zoomed dm objects
 #'
+#' @description
 #' Use these methods without the '.zoomed_dm' suffix (see examples).
 #' @param .data object of class `zoomed_dm`
 #' @param ... see corresponding function in package \pkg{dplyr} or \pkg{tidyr}
@@ -117,7 +118,7 @@ distinct.dm <- function(.data, ...) {
 }
 
 #' @rdname dplyr_table_manipulation
-#' @param .keep_all For `distinct.zoomed_dm()`: see [`dplyr::distinct`]
+#' @param .keep_all For `distinct.zoomed_dm()`: see [dplyr::distinct()]
 #' @export
 distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
   tbl <- tbl_zoomed(.data)
@@ -184,6 +185,15 @@ group_by.zoomed_dm <- function(.data, ...) {
   grouped_tbl <- group_by(tbl, ...)
 
   replace_zoomed_tbl(.data, grouped_tbl)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+group_by.dm_keyed_tbl <- function(.data, ...) {
+  keys_info <- keyed_get_info(.data)
+  tbl <- unclass_keyed_tbl(.data)
+  grouped_tbl <- group_by(tbl, ...)
+  new_keyed_tbl_from_keys_info(grouped_tbl, keys_info)
 }
 
 #' @export
@@ -274,6 +284,30 @@ summarise.zoomed_dm <- function(.data, ...) {
   summarized_tbl <- summarize(tbl, ...)
   new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
   replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
+}
+
+
+#' @rdname dplyr_table_manipulation
+#' @export
+summarise.dm_keyed_tbl <- function(.data, ...) {
+  keys_info <- keyed_get_info(.data)
+  tbl <- unclass_keyed_tbl(.data)
+
+  if (inherits(tbl, "grouped_df")) {
+    new_pk <- group_vars(tbl)
+  } else {
+    new_pk <- NULL
+  }
+
+  summarised_tbl <- NextMethod()
+
+  # TODO: Currently, summarized table gets a new UUID. Decide if we should
+  # instead retain the original UUID to replace the existing table in the `dm`
+  # object.
+  new_keyed_tbl(
+    summarised_tbl,
+    pk = new_pk
+  )
 }
 
 #' @export
@@ -389,6 +423,56 @@ left_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
+#' @rdname dplyr_join
+#' @export
+left_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
+  if (!is_dm_keyed_tbl(y)) {
+    return(NextMethod())
+  }
+
+  join_spec <- keyed_build_join_spec(x, y, by, suffix)
+  joined_tbl <- left_join(
+    join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
+    copy = copy,
+    suffix = join_spec$suffix,
+    keep = keep,
+    ...
+  )
+
+  new_keyed_tbl(
+    joined_tbl,
+    pk = join_spec$new_pk,
+    fks_in = join_spec$new_fks_in,
+    fks_out = join_spec$new_fks_out,
+    uuid = join_spec$new_uuid
+  )
+}
+
+#' @rdname dplyr_join
+#' @export
+right_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
+  if (!is_dm_keyed_tbl(y)) {
+    return(NextMethod())
+  }
+
+  join_spec <- keyed_build_join_spec(x, y, by, suffix)
+  joined_tbl <- right_join(
+    join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
+    copy = copy,
+    suffix = join_spec$suffix,
+    keep = keep,
+    ...
+  )
+
+  new_keyed_tbl(
+    joined_tbl,
+    pk = join_spec$new_pk,
+    fks_in = join_spec$new_fks_in,
+    fks_out = join_spec$new_fks_out,
+    uuid = join_spec$new_uuid
+  )
+}
+
 #' @export
 inner_join.dm <- function(x, ...) {
   check_zoomed(x)
@@ -456,6 +540,22 @@ anti_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy, disambiguate = FALSE)
   joined_tbl <- anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
+}
+
+#' @export
+nest_join.dm <- function(x, ...) {
+  check_zoomed(x)
+}
+
+#' @rdname dplyr_join
+#' @inheritParams dplyr::nest_join
+#' @export
+nest_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...) {
+  y_name <- as_string(enexpr(y))
+  name <- name %||% y_name
+  join_data <- prepare_join(x, {{ y }}, by, NULL, NULL, NULL, disambiguate = FALSE)
+  joined_tbl <- nest_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy, keep, name, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
@@ -533,7 +633,6 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   # inform user in case RHS `by` column(s) are added
   if (!all(by %in% selected)) {
     new_cols <- glue_collapse(tick_if_needed(setdiff(by, selected)), ", ")
-    message(glue("Using `select = c({as_label(select_quo)}, {new_cols})`."))
   }
 
   # rename RHS `by` columns in the tibble to avoid after-the-fact disambiguation collision

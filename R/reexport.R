@@ -86,6 +86,9 @@ dplyr::rows_delete
 pillar::glimpse
 
 #' @export
+tibble::tibble
+
+#' @export
 tidyr::unite
 
 #' @export

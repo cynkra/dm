@@ -1,5 +1,6 @@
 #' Copy data model to data source
 #'
+#' @description
 #' `copy_dm_to()` takes a [dplyr::src_dbi] object or a [`DBI::DBIConnection-class`] object as its first argument
 #' and a [`dm`] object as its second argument.
 #' The latter is copied to the former.
@@ -7,6 +8,7 @@
 #' Unless `set_key_constraints` is `FALSE`, primary key constraints are set on all databases,
 #' and in addition foreign key constraints are set on MSSQL and Postgres databases.
 #'
+#' @details
 #' No tables will be overwritten; passing `overwrite = TRUE` to the function will give an error.
 #' Types are determined separately for each table, setting the `types` argument will
 #' also throw an error.
@@ -244,7 +246,7 @@ copy_dm_to <- function(dest, dm, ...,
   def$data <- unname(remote_tables[names(dm)])
   remote_dm <- new_dm3(def)
 
-  invisible(debug_validate_dm(remote_dm))
+  invisible(debug_dm_validate(remote_dm))
 }
 
 get_db_table_names <- function(dm) {
@@ -283,7 +285,7 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
     walk(seq_len(n_chunks), ticker(~ {
       end <- .x * chunk_size
       idx <- seq2(end - (chunk_size - 1), min(end, nrow(table)))
-      values <- map(table[idx, ], dbplyr::escape, parens = FALSE, collapse = NULL, con = con)
+      values <- map(table[idx, ], mssql_escape, con = con)
       # Can't use dbAppendTable(): https://github.com/r-dbi/odbc/issues/480
       sql <- DBI::sqlAppendTable(con, DBI::SQL(remote_table), values, row.names = FALSE)
       DBI::dbExecute(con, sql, immediate = TRUE)

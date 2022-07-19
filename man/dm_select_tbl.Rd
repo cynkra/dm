@@ -34,6 +34,3 @@ dm_nycflights13() \%>\%
   dm_rename_tbl(ap = airports, fl = flights)
 \dontshow{\}) # examplesIf}
 }
-\seealso{
-\code{\link[=dm_rm_tbl]{dm_rm_tbl()}}
-}

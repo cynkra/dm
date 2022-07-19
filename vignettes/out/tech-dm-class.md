@@ -28,7 +28,7 @@ The relevant functions for creating `dm` objects are:
 1.  `dm()`
 2.  `as_dm()`
 3.  `new_dm()`
-4.  `dm_from_src()`
+4.  `dm_from_con()`
 
 To illustrate these options, we will now create the same `dm` in several
 different ways. We can use the tables from the well-known {nycflights13}
@@ -60,7 +60,7 @@ library(dm)
 empty_dm <- dm()
 empty_dm
 #> dm()
-dm_add_tbl(empty_dm, airlines, airports, flights, planes, weather)
+dm(empty_dm, airlines, airports, flights, planes, weather)
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
@@ -88,12 +88,12 @@ as_dm(list(airlines = airlines,
 ### Turn tables from a `src` into a `dm`
 
 Squeeze all (or a subset of) tables belonging to a `src` object into a
-`dm` using `dm_from_src()`:
+`dm` using `dm_from_con()`:
 
 ``` r
-sqlite_src <- dbplyr::nycflights13_sqlite()
+sqlite_con <- dbplyr::remote_con(dbplyr::nycflights13_sqlite())
 
-flights_dm <- dm_from_src(sqlite_src)
+flights_dm <- dm_from_con(sqlite_con)
 flights_dm
 #> ── Table source ───────────────────────────────────────────────────────────
 #> src:  sqlite 3.35.5 [/tmp/RtmpGalley/nycflights13.sqlite]
@@ -104,10 +104,10 @@ flights_dm
 #> Foreign keys: 0
 ```
 
-The function `dm_from_src(src, table_names = NULL)` includes all
+The function `dm_from_con(con, table_names = NULL)` includes all
 available tables on a source in the `dm` object. This means that you can
-use this, for example, on a postgres database that you access via
-`src_postgres()` (with the appropriate arguments `dbname`, `host`,
+use this, for example, on a Postgres database that you access via
+`DBI::dbConnect(RPostgres::Postgres())` (with the appropriate arguments `dbname`, `host`,
 `port`, …), to produce a `dm` object with all the tables on the
 database.
 
@@ -127,10 +127,10 @@ base_dm
 ```
 
 This constructor is optimized for speed and does not perform integrity
-checks. Use with caution, validate using `validate_dm()` if necessary.
+checks. Use with caution, validate using `dm_validate()` if necessary.
 
 ``` r
-validate_dm(base_dm)
+dm_validate(base_dm)
 ```
 
 ## Access tables

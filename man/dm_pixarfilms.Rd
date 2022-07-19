@@ -4,9 +4,11 @@
 \alias{dm_pixarfilms}
 \title{Creates a dm object for the \pkg{pixarfilms} data}
 \usage{
-dm_pixarfilms(color = TRUE, consistent = FALSE)
+dm_pixarfilms(..., color = TRUE, consistent = FALSE)
 }
 \arguments{
+\item{...}{These dots are for future extensions and must be empty.}
+
 \item{color}{Boolean, if \code{TRUE} (default), the resulting \code{dm} object will
 have colors assigned to different tables for visualization with
 \code{dm_draw()}.}

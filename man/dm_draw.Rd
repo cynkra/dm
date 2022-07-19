@@ -7,6 +7,7 @@
 dm_draw(
   dm,
   rankdir = "LR",
+  ...,
   col_attr = NULL,
   view_type = c("keys_only", "all", "title_only"),
   columnArrows = TRUE,
@@ -15,14 +16,16 @@ dm_draw(
   edge_attrs = "",
   focus = NULL,
   graph_name = "Data Model",
-  ...,
-  column_types = NULL
+  column_types = NULL,
+  backend = "DiagrammeR"
 )
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object.}
 
 \item{rankdir}{Graph attribute for direction (e.g., 'BT' = bottom --> top).}
+
+\item{...}{These dots are for future extensions and must be empty.}
 
 \item{col_attr}{Deprecated, use \code{colummn_types} instead.}
 
@@ -42,17 +45,27 @@ It defines the level of details for rendering tables
 
 \item{graph_name}{The name of the graph.}
 
-\item{...}{These dots are for future extensions and must be empty.}
-
 \item{column_types}{Set to \code{TRUE} to show column types.}
+
+\item{backend}{Currently, only the default \code{"DiagrammeR"} is accepted.
+Pass this value explicitly if your code not only uses this function
+to display a data model but relies on the type of the return value.}
 }
 \value{
-An object of class \code{grViz} (see also \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), which,
+An object with a \code{\link[=print]{print()}} method, which,
 when printed, produces the output seen in the viewer as a side effect.
+Currently, this is an object of class \code{grViz} (see also
+\code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), but this is subject to change.
 }
 \description{
-\code{dm_draw()} uses \pkg{DiagrammeR} to draw diagrams.
+\code{dm_draw()} draws a diagram, a visual representation of the data model.
+}
+\details{
+Currently, \pkg{dm} uses \pkg{DiagrammeR} to draw diagrams.
 Use \code{\link[DiagrammeRsvg:export_svg]{DiagrammeRsvg::export_svg()}} to convert the diagram to an SVG file.
+
+The backend for drawing the diagrams might change in the future.
+If you rely on DiagrammeR, pass an explicit value for the \code{backend} argument.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

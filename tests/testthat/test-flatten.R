@@ -56,7 +56,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   # for flatten: columns from tf_5 + tf_4 + tf_4_2 + tf_6 are combined in one table, 8 cols in total
   expect_identical(
     ncol(dm_flatten_to_tbl(dm_more_complex(), tf_5)),
-    9L
+    11L
   )
 })
 
@@ -151,7 +151,7 @@ test_that("`dm_squash_to_tbl()` does the right things", {
   # for flatten: columns from tf_5 + tf_4 + tf_3 + tf_4_2 + tf_6 are combined in one table, 10 cols in total
   expect_identical(
     ncol(dm_squash_to_tbl(dm_more_complex(), tf_5)),
-    10L
+    12L
   )
 
 
@@ -194,7 +194,7 @@ test_that("`dm_squash_to_tbl()` does the right things", {
 })
 
 test_that("prepare_dm_for_flatten() works", {
-  # unfiltered with rename
+  # with rename
   out <- expect_message_obj(prepare_dm_for_flatten(
     dm_for_flatten(),
     c("fact", "dim_1", "dim_3"),
@@ -205,37 +205,7 @@ test_that("prepare_dm_for_flatten() works", {
     dm_select_tbl(dm_for_flatten(), fact, dim_1, dim_3) %>% dm_disambiguate_cols(quiet = TRUE)
   )
 
-  # filtered with rename
-  prep_dm <-
-    dm_for_flatten() %>%
-    dm_select_tbl(fact, dim_1, dim_3) %>%
-    #
-    dm_zoom_to(fact) %>%
-    filter(dim_1_key_1 > 7, dim_1_key_2 > !!LETTERS[7]) %>%
-    dm_update_zoomed() %>%
-    #
-    dm_zoom_to(dim_1) %>%
-    filter(dim_1_pk_1 > 7, dim_1_pk_2 > !!LETTERS[7]) %>%
-    dm_update_zoomed()
-
-  prep_dm_renamed <- dm_disambiguate_cols(prep_dm, quiet = TRUE)
-
-  out <- expect_message_obj(prepare_dm_for_flatten(
-    dm_filter(dm_for_flatten(), dim_1, dim_1_pk_1 > 7, dim_1_pk_2 > !!LETTERS[7]),
-    c("fact", "dim_1", "dim_3"),
-    gotta_rename = TRUE
-  ))
-  expect_equivalent_dm(out, prep_dm_renamed)
-
-  # filtered without rename
-  out <- prepare_dm_for_flatten(
-    dm_filter(dm_for_flatten(), dim_1, dim_1_pk_1 > 7, dim_1_pk_2 > !!LETTERS[7]),
-    c("fact", "dim_1", "dim_3"),
-    gotta_rename = FALSE
-  )
-  expect_equivalent_dm(out, prep_dm)
-
-  # unfiltered without rename
+  # without rename
   expect_equivalent_dm(
     prepare_dm_for_flatten(dm_for_flatten(), c("fact", "dim_1", "dim_3"), gotta_rename = FALSE),
     dm_select_tbl(dm_for_flatten(), fact, dim_1, dim_3)
@@ -275,17 +245,19 @@ test_that("tidyselect works for flatten", {
 })
 
 test_that("`dm_join_to_tbl()` works", {
-  expect_equivalent_tbl(
-    expect_message_obj(dm_join_to_tbl(dm_for_flatten(), fact, dim_3), "Renaming"),
-    left_join(
-      fact_clean(),
-      dim_3_clean(),
-      by = c("dim_3_key" = "dim_3_pk")
+  expect_deprecated(
+    expect_equivalent_tbl(
+      expect_message_obj(dm_join_to_tbl(dm_for_flatten(), fact, dim_3), "Renaming"),
+      left_join(
+        fact_clean(),
+        dim_3_clean(),
+        by = c("dim_3_key" = "dim_3_pk")
+      )
     )
   )
 
   expect_dm_error(
-    dm_join_to_tbl(dm_for_filter(), tf_7, tf_8),
+    expect_deprecated(dm_join_to_tbl(dm_for_filter(), tf_7, tf_8)),
     "table_not_in_dm"
   )
 })
@@ -306,18 +278,18 @@ test_that("tests with 'bad_dm' work", {
   skip_if_src("maria")
 
   # filtered `dm`
-  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
+  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1 = (a != 4))
 
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1),
-    dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1)
+    bad_filtered_dm %>% dm_flatten_to_tbl(tbl_1)
   )
 
 
   # filtered `dm`
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = semi_join),
-    dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = semi_join)
+    bad_filtered_dm %>% dm_flatten_to_tbl(tbl_1, join = semi_join)
   )
 
   skip_if_not_installed("nycflights13")
@@ -335,10 +307,10 @@ test_that("tests with 'bad_dm' work (2)", {
   # can't create bad_dm() on Postgres due to strict constraint checks
   skip_if_src("postgres")
 
-  # full & right join not available on SQLite
-  skip_if_src("sqlite")
+  # full & right join not available on SQLite and MariaDB
+  skip_if_src("sqlite", "maria")
 
-  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
+  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1 = (a != 4))
 
   # flatten bad_dm() (no referential integrity)
   expect_equivalent_tbl(
@@ -347,12 +319,16 @@ test_that("tests with 'bad_dm' work (2)", {
       full_join(tbl_2(), by = c("a" = "id", "x")) %>%
       full_join(tbl_3(), by = c("b" = "id"))
   )
+})
 
-  # filtered `dm`
-  expect_dm_error(
-    dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = full_join),
-    class = "apply_filters_first_full_join"
-  )
+test_that("tests with 'bad_dm' work (3)", {
+  # can't create bad_dm() on Postgres due to strict constraint checks
+  skip_if_src("postgres")
+
+  # full & right join not available on SQLite
+  skip_if_src("sqlite")
+
+  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1 = (a != 4))
 
   # flatten bad_dm() (no referential integrity)
   expect_equivalent_tbl(
@@ -368,11 +344,5 @@ test_that("tests with 'bad_dm' work (2)", {
     tbl_1() %>%
       right_join(tbl_3(), by = c("b" = "id")) %>%
       right_join(tbl_2(), by = c("a" = "id", "x"))
-  )
-
-  # filtered `dm`
-  expect_dm_error(
-    dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = right_join),
-    class = "apply_filters_first_right_join"
   )
 })

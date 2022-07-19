@@ -16,7 +16,7 @@ test_that("can upgrade from v1", {
     def <- dm_get_def(dm_v1, quiet = TRUE)
     def <- dm_get_def(dm_v1)
     dm <- new_dm3(def)
-    validate_dm(dm)
+    dm_validate(dm)
     is_zoomed(dm)
   })
 })
@@ -27,7 +27,7 @@ test_that("can upgrade zoomed from v1", {
     def <- dm_get_def(dm_v1_zoomed, quiet = TRUE)
     def <- dm_get_def(dm_v1_zoomed)
     dm <- new_dm3(def, zoomed = TRUE)
-    validate_dm(dm)
+    dm_validate(dm)
     is_zoomed(dm)
   })
 })
@@ -43,7 +43,7 @@ test_that("can upgrade from v2", {
     def <- dm_get_def(dm_v2, quiet = TRUE)
     def <- dm_get_def(dm_v2)
     dm <- new_dm3(def)
-    validate_dm(dm)
+    dm_validate(dm)
     is_zoomed(dm)
   })
 })
@@ -54,7 +54,37 @@ test_that("can upgrade zoomed from v2", {
     def <- dm_get_def(dm_v2_zoomed, quiet = TRUE)
     def <- dm_get_def(dm_v2_zoomed)
     dm <- new_dm3(def, zoomed = TRUE)
-    validate_dm(dm)
+    dm_validate(dm)
+    is_zoomed(dm)
+  })
+})
+
+test_that("can upgrade from v3", {
+  if (FALSE) {
+    # TODO:
+    # - Run this code with a version of dm before the format change
+    # - Search for attr(x, "version") and change
+    saveRDS(dm_for_filter(), "tests/testthat/dm/v3.rds", version = 2)
+    saveRDS(dm_for_filter() %>% dm_zoom_to(tf_2), "tests/testthat/dm/v3_zoomed.rds", version = 2)
+  }
+
+  dm_v3 <- readRDS(test_path("dm/v3.rds"))
+  expect_snapshot({
+    def <- dm_get_def(dm_v3, quiet = TRUE)
+    def <- dm_get_def(dm_v3)
+    dm <- new_dm3(def)
+    dm_validate(dm)
+    is_zoomed(dm)
+  })
+})
+
+test_that("can upgrade zoomed from v3", {
+  dm_v3_zoomed <- readRDS(test_path("dm/v3_zoomed.rds"))
+  expect_snapshot({
+    def <- dm_get_def(dm_v3_zoomed, quiet = TRUE)
+    def <- dm_get_def(dm_v3_zoomed)
+    dm <- new_dm3(def, zoomed = TRUE)
+    dm_validate(dm)
     is_zoomed(dm)
   })
 })

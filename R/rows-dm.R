@@ -18,7 +18,7 @@
 #' Therefore, in-place operation must be requested explicitly with `in_place = TRUE`.
 #' By default, an informative message is given.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @inheritParams dplyr::rows_insert
 #' @inheritParams dm_examine_constraints
 #' @param x Target `dm` object.
@@ -113,6 +113,7 @@ NULL
 #' This operation requires primary keys on all tables, use `dm_rows_append()`
 #' to insert unconditionally.
 #' @rdname rows-dm
+#' @aliases dm_rows_...
 #' @export
 dm_rows_insert <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
@@ -206,7 +207,7 @@ dm_rows <- function(x, y, operation_name, top_down, in_place, require_keys, prog
   dm_rows_check(x, y)
 
   if (is_null(in_place)) {
-    message("Not persisting, use `in_place = FALSE` to turn off this message.")
+    inform("Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.")
     in_place <- FALSE
   }
 

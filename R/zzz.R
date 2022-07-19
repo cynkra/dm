@@ -18,23 +18,13 @@
   check_version_on_load
   s3_register("waldo::compare_proxy", "dm")
 
-  check_version_on_load("RSQLite", "2.2.8", "to use the {.code returning} argument in {.code dm::rows_*()}")
-
-  replace_if_dbplyr_has(get_returned_rows)
-  replace_if_dbplyr_has(has_returned_rows)
-
-  register_if_dbplyr_hasnt(rows_insert.tbl_lazy)
-  register_if_dbplyr_hasnt(rows_append.tbl_lazy)
-  register_if_dbplyr_hasnt(rows_update.tbl_lazy)
-  register_if_dbplyr_hasnt(rows_patch.tbl_lazy)
-  register_if_dbplyr_hasnt(rows_upsert.tbl_lazy)
-  register_if_dbplyr_hasnt(rows_delete.tbl_lazy)
+  check_version_on_load("RSQLite", "2.2.8", "to use the {.code returning} argument in {.code rows_*()}.")
+  check_version_on_load("dbplyr", "2.2.0", "to use the {.code rows_*()} functions.")
 
   # rigg(enum_pk_candidates_impl)
   # rigg(build_copy_data)
   # rigg(dm_insert_zoomed_outgoing_fks)
   # rigg(dm_upgrade)
-  # rigg(validate_dm)
   # rigg(check_df_structure)
   # rigg(dm_insert_zoomed)
   # rigg(dm_select_tbl_impl)
@@ -49,7 +39,7 @@ rigg <- function(fun) {
 
   rig <- get("rig", asNamespace("boomer"), mode = "function")
 
-  assign(name, rig(fun, ignore = c("~", "{", "(", "<-", "<<-")), getNamespace("dm"))
+  assign(name, rig(fun, ignore = c("~", "{", "(")), getNamespace("dm"))
 }
 
 check_version_on_load <- function(package, version, reason) {

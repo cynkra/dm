@@ -1,77 +1,3 @@
-
-# data_model code directly from {datamodelr} --------------------------------------
-
-is.data_model <- function(x) {
-  inherits(x, "data_model")
-}
-
-bdm_create_references <- function(col_table) {
-  if (!inherits(col_table, "data.frame")) stop("Input must be a data frame.")
-
-  if (!all(c("table", "column") %in% names(col_table))) {
-    stop("Column info table must have table, column and ref variables.")
-  }
-  if (!"ref" %in% names(col_table)) {
-    return(NULL)
-  }
-  if (all(is.na(col_table[, "ref"]))) {
-    return(NULL)
-  }
-
-
-  if (is.null(col_table[["ref_col"]])) {
-    col_table[["ref_col"]] <- NA
-  }
-  ref_table <- col_table[
-    !is.na(col_table[["ref"]]), # take only rows with reference
-    c("table", "column", "ref", "ref_col")
-  ]
-  col_table[is.na(col_table$key), "key"] <- FALSE
-
-  ref_col <-
-    with(
-      ref_table,
-      ifelse(is.na(ref_col),
-        sapply(ref_table$ref, function(x) {
-          col_table[col_table$table == x & col_table$key, "column"][1]
-        }),
-        ref_col
-      )
-    )
-  ref_table[["ref_col"]] <- ref_col
-
-  # number of columns in primary key
-  num_col <- sapply(ref_table$ref, function(x) {
-    length(col_table[col_table$table == x & col_table$key, ][["column"]])
-  })
-  num_col[num_col == 0L] <- 1L
-
-  key_col_num <- {
-
-    # create column index number
-    rle1 <- rle(num_col)
-    if (lengths(rle1)[1] > 0) {
-      col_list <- sapply(1:lengths(rle1)[1], function(i) {
-        rep(1:rle1$values[i], rle1$lengths[i] / rle1$values[i])
-      })
-      col_list[lengths(col_list) == 0] <- 1
-      unlist(col_list)
-    } else {
-      NA
-    }
-  }
-
-  dim(key_col_num) <- NULL
-  if (nrow(ref_table) == length(key_col_num)) {
-    ref_table$ref_id <- cumsum(key_col_num == 1)
-    ref_table$ref_col_num <- key_col_num
-  } else {
-    ref_table$ref_col_num <- 1
-    ref_table$ref_id <- cumsum(ref_table$ref_col_num)
-  }
-  ref_table
-}
-
 # graph code directly from {datamodelr} -----------------------------------------
 
 bdm_create_graph <- function(data_model,
@@ -128,7 +54,6 @@ bdm_create_graph_list <- function(data_model,
                                   focus = NULL,
                                   col_attr = "column",
                                   columnArrows = FALSE) {
-
   # hidden tables
 
   if (!is.null(focus) && is.list(focus)) {
@@ -209,6 +134,7 @@ bdm_create_graph_list <- function(data_model,
           to = ref,
           fromCol = column,
           toCol = ref_col,
+          keyId = keyId,
           stringsAsFactors = FALSE
         )
       )
@@ -238,7 +164,13 @@ dot_graph <- function(graph, columnArrows = FALSE) {
 
   dot_nodes <- sapply(seq_len(nrow(graph$nodes_df)), function(n) {
     node <- graph$nodes_df[n, ]
-    dot_node <- sprintf("  '%s' [label = %s, shape = '%s'] \n", node$nodes, node$label, node$shape)
+    dot_node <- sprintf(
+      '  "%s" [id = "%s", label = %s, shape = "%s"] \n',
+      node$nodes,
+      node$nodes,
+      node$label,
+      node$shape
+    )
     if (!is.na(node[["segment"]])) {
       dot_node <- sprintf(
         "subgraph cluster_%s {\nlabel='%s'\ncolor=\"#DDDDDD\"\n%s\n}\n",
@@ -255,17 +187,23 @@ dot_graph <- function(graph, columnArrows = FALSE) {
   if (columnArrows) {
     dot_edges <- paste(
       sprintf(
-        "'%s':'%s'->'%s':'%s'",
+        '"%s":"%s"->"%s":"%s" [id="%s"]',
         graph$edges_df$from,
         graph$edges_df$fromCol,
         graph$edges_df$to,
-        graph$edges_df$toCol
+        graph$edges_df$toCol,
+        graph$edges_df$keyId
       ),
       collapse = "\n"
     )
   } else {
     dot_edges <- paste(
-      sprintf("'%s'->'%s'", graph$edges_df$from, graph$edges_df$to),
+      sprintf(
+        '"%s"->"%s" [id="%s"]',
+        graph$edges_df$from,
+        graph$edges_df$to,
+        graph$edges_df$keyId
+      ),
       collapse = "\n"
     )
   }

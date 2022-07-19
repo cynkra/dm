@@ -87,8 +87,8 @@ test_that("dm_rows_insert()", {
 })
 
 test_that("dm_rows_update()", {
-  # https://github.com/duckdb/duckdb/issues/1187
-  skip_if_src("duckdb")
+  # duckdb+df: https://github.com/duckdb/duckdb/issues/4023
+  skip_if_src("duckdb", "maria", "df")
   expect_snapshot({
     # Test bad column order
     dm_filter_rearranged <-

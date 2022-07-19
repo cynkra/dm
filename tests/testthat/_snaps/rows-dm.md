@@ -28,7 +28,7 @@
       flights_hour10_sqlite <- copy_dm_to(sqlite, flights_hour10)
       out <- dm_rows_append(flights_sqlite, flights_hour10_sqlite)
     Message
-      Not persisting, use `in_place = FALSE` to turn off this message.
+      Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.
     Code
       print(dm_nrow(flights_sqlite))
     Output
@@ -94,7 +94,7 @@
     Code
       dm_copy %>% dm_rows_update(dm_update_copy) %>% pull_tbl(tf_2) %>% arrange_all()
     Message
-      Not persisting, use `in_place = FALSE` to turn off this message.
+      Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.
     Output
             d c        e        e1
         <int> <chr>    <chr> <int>
@@ -178,21 +178,21 @@
       5 three a     C         3
       
       $tf_5
-        l     m              k
-        <chr> <chr>      <int>
-      1 b     house          1
-      2 c     tree           2
-      3 d     streetlamp     3
-      4 e     streetlamp     4
+        l     m             ww     k
+        <chr> <chr>      <int> <int>
+      1 b     house          2     1
+      2 c     tree           2     2
+      3 d     streetlamp     2     3
+      4 e     streetlamp     2     4
       
       $tf_6
-        n          o    
-        <chr>      <chr>
-      1 garden     i    
-      2 hill       g    
-      3 house      e    
-      4 streetlamp h    
-      5 tree       f    
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 garden     i    
+      2     1 hill       g    
+      3     1 house      e    
+      4     1 streetlamp h    
+      5     1 tree       f    
       
     Code
       dm_copy %>% dm_rows_update(dm_update_copy, in_place = TRUE)
@@ -246,21 +246,21 @@
       5 three  a     C         3
       
       $tf_5
-        l     m              k
-        <chr> <chr>      <int>
-      1 b     house          1
-      2 c     tree           2
-      3 d     tree           3
-      4 e     streetlamp     4
+        l     m             ww     k
+        <chr> <chr>      <int> <int>
+      1 b     house          2     1
+      2 c     tree           2     2
+      3 d     tree           2     3
+      4 e     streetlamp     2     4
       
       $tf_6
-        n          o    
-        <chr>      <chr>
-      1 garden     i    
-      2 hill       g    
-      3 house      e    
-      4 streetlamp h    
-      5 tree       f    
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 garden     i    
+      2     1 hill       g    
+      3     1 house      e    
+      4     1 streetlamp h    
+      5     1 tree       f    
       
 
 # dm_rows_truncate()
@@ -285,7 +285,7 @@
       dm_copy %>% dm_rows_truncate(dm_truncate_copy) %>% pull_tbl(tf_2) %>%
         arrange_all()
     Message
-      Not persisting, use `in_place = FALSE` to turn off this message.
+      Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.
     Output
       # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
     Code
@@ -355,21 +355,21 @@
       5 e     seven F         6
       
       $tf_5
-            k l     m         
-        <int> <chr> <chr>     
-      1     1 b     house     
-      2     2 c     tree      
-      3     3 d     streetlamp
-      4     4 e     streetlamp
+           ww     k l     m         
+        <int> <int> <chr> <chr>     
+      1     2     1 b     house     
+      2     2     2 c     tree      
+      3     2     3 d     streetlamp
+      4     2     4 e     streetlamp
       
       $tf_6
-        n          o    
-        <chr>      <chr>
-      1 garden     i    
-      2 hill       g    
-      3 house      e    
-      4 streetlamp h    
-      5 tree       f    
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 garden     i    
+      2     1 hill       g    
+      3     1 house      e    
+      4     1 streetlamp h    
+      5     1 tree       f    
       
     Code
       dm_copy %>% dm_rows_truncate(dm_truncate_copy, in_place = TRUE)
@@ -416,15 +416,15 @@
       5 e     seven F         6
       
       $tf_5
-      # ... with 3 variables: k <int>, l <chr>, m <chr>
+      # ... with 4 variables: ww <int>, k <int>, l <chr>, m <chr>
       
       $tf_6
-        n          o    
-        <chr>      <chr>
-      1 garden     i    
-      2 hill       g    
-      3 house      e    
-      4 streetlamp h    
-      5 tree       f    
+           zz n          o    
+        <int> <chr>      <chr>
+      1     1 garden     i    
+      2     1 hill       g    
+      3     1 house      e    
+      4     1 streetlamp h    
+      5     1 tree       f    
       
 

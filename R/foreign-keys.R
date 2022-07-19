@@ -1,5 +1,6 @@
 #' Add foreign keys
 #'
+#' @description
 #' `dm_add_fk()` marks the specified `columns` as the foreign key of table `table` with
 #' respect to a key of table `ref_table`.
 #' Usually the referenced columns are a primary key in `ref_table`,
@@ -210,6 +211,7 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 
 #' Get foreign key constraints
 #'
+#' @description
 #' Get a summary of all foreign key relations in a [`dm`].
 #'
 #' @return A tibble with the following columns:
@@ -238,7 +240,7 @@ dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
   dm_get_all_fks_impl(dm, parent_table)
 }
 
-dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE) {
+dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
   def <- dm_get_def(dm)
 
   sub_def <- def[c("table", "fks")]
@@ -253,11 +255,20 @@ dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALS
   names(flat) <- c("parent_table", "parent_key_cols", "child_table", "child_fk_cols", "on_delete")
   flat[[2]] <- new_keys(flat[[2]])
   flat[[4]] <- new_keys(flat[[4]])
-  flat[c(3:4, 1:2, if (!ignore_on_delete) 5L)]
+  out <- flat[c(3:4, 1:2, if (!ignore_on_delete) 5L)]
+  if (id) {
+    out <-
+      out %>%
+      group_by(child_table) %>%
+      mutate(id = paste0(child_table, "_", row_number())) %>%
+      ungroup()
+  }
+  out
 }
 
 #' Remove foreign keys
 #'
+#' @description
 #' `dm_rm_fk()` can remove either one reference between two tables, or multiple references at once (with a message).
 #' An error is thrown if no matching foreign key is found.
 #'
@@ -406,7 +417,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
 
 #' Foreign key candidates
 #'
-#' @description `r lifecycle::badge("questioning")`
+#' @description `r lifecycle::badge("experimental")`
 #'
 #' Determine which columns would be good candidates to be used as foreign keys of a table,
 #' to reference the primary key column of another table of the [`dm`] object.
@@ -429,7 +440,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
 #' - the error message triggered for unsuitable candidates that may include the types of mismatched columns
 #'
 #' @section Life cycle:
-#' These functions are marked "questioning" because we are not yet sure about
+#' These functions are marked "experimental" because we are not yet sure about
 #' the interface, in particular if we need both `dm_enum...()` and `enum...()`
 #' variants.
 #' Changing the interface later seems harmless because these functions are

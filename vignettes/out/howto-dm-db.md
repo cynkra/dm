@@ -38,13 +38,13 @@ my_db <- dbConnect(
 )
 ```
 
-Creating a dm object takes a single call to `dm_from_src()` with the DBI
+Creating a dm object takes a single call to `dm_from_con()` with the DBI
 connection object as its argument.
 
 ``` r
 library(dm)
 
-my_dm <- dm_from_src(my_db)
+my_dm <- dm_from_con(my_db)
 my_dm
 #> ── Table source ───────────────────────────────────────────────────────────
 #> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
@@ -127,7 +127,7 @@ Note that when the foreign key is created the primary key in the
 referenced table does not need to be specified, but the primary key must
 already be defined. And, as mentioned above, primary and foreign key
 constraints on the database are currently only imported for Postgres and
-SQL Server databases, and only when `dm_from_src()` is used. This
+SQL Server databases, and only when `dm_from_con()` is used. This
 process of key definition needs to be done manually for other databases.
 
 ``` r
@@ -145,13 +145,13 @@ my_dm_keys %>%
 ![](/home/kirill/git/R/dm/vignettes/out/howto-dm-db_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 Once you have instantiated a dm object you can continue to add tables to
-it. For tables from the original source for the dm, use `dm_add_tbl()`
+it. For tables from the original source for the dm, use `dm()`
 
 ``` r
 trans <- tbl(my_db, "trans")
 
 my_dm_keys %>%
-  dm_add_tbl(trans)
+  dm(trans)
 #> ── Table source ───────────────────────────────────────────────────────────
 #> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
 #> ── Metadata ───────────────────────────────────────────────────────────────
@@ -182,7 +182,7 @@ my_dm_keys
 
 my_dm_trans <-
   my_dm_keys %>%
-  dm_add_tbl(trans)
+  dm(trans)
 
 my_dm_trans
 #> ── Table source ───────────────────────────────────────────────────────────
@@ -409,12 +409,12 @@ discusses manipulation of individual rows in a database.
 
 ## Further reading
 
-`vignette("howto-dm-df")` - Is your data in local data frames? This
+`vignette("howto-dm-df")` -- Is your data in local data frames? This
 article covers creating a data model from your local data frames,
 including building the relationships in your data model, verifying your
 model, and leveraging the power of dplyr to operate on your data model.
 
-`vignette("howto-dm-theory")` - Do you know all about data frames but
+`vignette("howto-dm-theory")` -- Do you know all about data frames but
 very little about relational data models? This quick introduction will
 walk you through the key similarities and differences, and show you how
 to move from individual data frames to a relational data model.

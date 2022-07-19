@@ -13,25 +13,25 @@
 \arguments{
 \item{data}{object of class \code{zoomed_dm}}
 
-\item{col}{For \code{unite.zoomed_dm}: see \code{\link[tidyr:unite]{tidyr::unite}}
+\item{col}{For \code{unite.zoomed_dm}: see \code{\link[tidyr:unite]{tidyr::unite()}}
 
-For \code{separate.zoomed_dm}: see \code{\link[tidyr:separate]{tidyr::separate}}}
+For \code{separate.zoomed_dm}: see \code{\link[tidyr:separate]{tidyr::separate()}}}
 
-\item{...}{For \code{unite.zoomed_dm}: see \code{\link[tidyr:unite]{tidyr::unite}}
+\item{...}{For \code{unite.zoomed_dm}: see \code{\link[tidyr:unite]{tidyr::unite()}}
 
-For \code{separate.zoomed_dm}: see \code{\link[tidyr:separate]{tidyr::separate}}}
+For \code{separate.zoomed_dm}: see \code{\link[tidyr:separate]{tidyr::separate()}}}
 
-\item{sep}{For \code{unite.zoomed_dm}: see \code{\link[tidyr:unite]{tidyr::unite}}
+\item{sep}{For \code{unite.zoomed_dm}: see \code{\link[tidyr:unite]{tidyr::unite()}}
 
-For \code{separate.zoomed_dm}: see \code{\link[tidyr:separate]{tidyr::separate}}}
+For \code{separate.zoomed_dm}: see \code{\link[tidyr:separate]{tidyr::separate()}}}
 
-\item{remove}{For \code{unite.zoomed_dm}: see \code{\link[tidyr:unite]{tidyr::unite}}
+\item{remove}{For \code{unite.zoomed_dm}: see \code{\link[tidyr:unite]{tidyr::unite()}}
 
-For \code{separate.zoomed_dm}: see \code{\link[tidyr:separate]{tidyr::separate}}}
+For \code{separate.zoomed_dm}: see \code{\link[tidyr:separate]{tidyr::separate()}}}
 
-\item{na.rm}{see \code{\link[tidyr:unite]{tidyr::unite}}}
+\item{na.rm}{see \code{\link[tidyr:unite]{tidyr::unite()}}}
 
-\item{into}{see \code{\link[tidyr:separate]{tidyr::separate}}}
+\item{into}{see \code{\link[tidyr:separate]{tidyr::separate()}}}
 }
 \description{
 Use these methods without the '.zoomed_dm' suffix (see examples).

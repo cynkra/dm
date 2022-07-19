@@ -1,3 +1,4 @@
+# nocov start
 replace_if_dbplyr_has <- function(fun) {
   if (!requireNamespace("dbplyr", quietly = TRUE)) {
     return()
@@ -37,3 +38,4 @@ register_if_dbplyr_hasnt <- function(...) {
   map2(classes, methods, s3_register, generic = paste0("dm::", fun))
   invisible()
 }
+# nocov end

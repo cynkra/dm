@@ -4,9 +4,17 @@
 \alias{dm_nycflights13}
 \title{Creates a dm object for the \pkg{nycflights13} data}
 \usage{
-dm_nycflights13(cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE)
+dm_nycflights13(
+  ...,
+  cycle = FALSE,
+  color = TRUE,
+  subset = TRUE,
+  compound = TRUE
+)
 }
 \arguments{
+\item{...}{These dots are for future extensions and must be empty.}
+
 \item{cycle}{Boolean.
 If \code{FALSE} (default), only one foreign key relation
 (from \code{flights$origin} to \code{airports$faa}) between the \code{flights} table and the \code{airports} table is

@@ -1,5 +1,4 @@
 test_that("`dm_examine_constraints()` works", {
-
   # case of no constraints:
   expect_identical(
     dm_examine_constraints(dm_test_obj()),
@@ -73,5 +72,28 @@ test_that("output for compound keys", {
   expect_snapshot({
     bad_dm() %>%
       dm_examine_constraints()
+  })
+})
+
+# Test unique keys for weak FK (no explicit PK set) -----------------------
+
+test_that("Non-explicit PKs should be tested too", {
+  expect_snapshot(
+    # dm_for_card() has no PKs set, only FKs
+    dm_for_card() %>%
+      dm_examine_constraints()
+  )
+})
+
+test_that("`dm_examine_constraints()` API", {
+  local_options(lifecycle_verbosity = "warning")
+
+  expect_snapshot({
+    dm_examine_constraints(dm_test_obj(), progress = FALSE)
+    dm_examine_constraints(dm = dm_test_obj())
+  })
+
+  expect_snapshot(error = TRUE, {
+    dm_examine_constraints(dm_test_obj(), foo = "bar")
   })
 })

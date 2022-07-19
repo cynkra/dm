@@ -1,14 +1,17 @@
 #' Validate your data model
 #'
+#' @description
 #' This function returns a tibble with information about
 #' which key constraints are met (`is_key = TRUE`) or violated (`FALSE`).
 #' The printing for this object is special, use [as_tibble()]
 #' to print as a regular tibble.
 #'
-#' @inheritParams dm_add_pk
-#' @param progress Whether to display a progress bar, if `NA` (the default)
+#' @param .dm A `dm` object.
+#' @inheritParams rlang::args_dots_empty
+#' @param .progress Whether to display a progress bar, if `NA` (the default)
 #'   hide in non-interactive mode, show in interactive mode. Requires the
 #'   'progress' package.
+#' @param dm,progress `r lifecycle::badge("deprecated")`
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
@@ -28,10 +31,28 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_constraints()
-dm_examine_constraints <- function(dm, progress = NA) {
-  check_not_zoomed(dm)
-  dm %>%
-    dm_examine_constraints_impl(progress = progress, top_level_fun = "dm_examine_constraints") %>%
+dm_examine_constraints <- function(.dm, ..., .progress = NA,
+                                   dm = deprecated(), progress = deprecated()) {
+  check_dots_empty()
+
+  if (!is_missing(dm)) {
+    deprecate_soft("1.0.0", "dm_examine_constraints(dm = )", "dm_examine_constraints(.dm = )")
+  }
+
+  if (is_missing(.dm)) {
+    return(dm_examine_constraints(dm, .progress = .progress, progress = progress))
+  }
+
+  if (!is_missing(progress)) {
+    if (is.na(progress)) {
+      progress <- .progress
+    }
+    deprecate_soft("1.0.0", "dm_examine_constraints(progress = )", "dm_examine_constraints(.progress = )")
+  }
+
+  check_not_zoomed(.dm)
+  .dm %>%
+    dm_examine_constraints_impl(progress = .progress, top_level_fun = "dm_examine_constraints") %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns)) %>%
     new_dm_examine_constraints()
@@ -88,11 +109,21 @@ print.dm_examine_constraints <- function(x, ...) {
 }
 
 kind_to_long <- function(kind) {
-  if_else(kind == "PK", "primary key", "foreign key")
+  case_when(
+    kind == "PK" ~ "primary key",
+    kind == "UK" ~ "unique key",
+    # FIXME: `case_when()` gets the `.default` arg in v1.1.0, then:
+    # .default = "foreign key"
+    TRUE ~ "foreign key"
+  )
 }
 
 check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
-  pks <- dm_get_all_pks_impl(dm)
+  pks <- bind_rows(
+    list(PK = dm_get_all_pks_impl(dm), UK = dm_get_all_uks_impl(dm)),
+    .id = "kind"
+  ) %>%
+    distinct(table, pk_col, .keep_all = TRUE)
   if (nrow(pks) == 0) {
     return(tibble(
       table = character(),
@@ -125,7 +156,7 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
 
   tibble(
     table = table_names,
-    kind = "PK",
+    kind = pks$kind,
     column = pks$pk_col,
     ref_table = NA_character_
   ) %>%
@@ -154,4 +185,10 @@ check_fk_constraints <- function(dm, progress = NA, top_level_fun = top_level_fu
       kind = "FK"
     ) %>%
     select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
+}
+
+dm_get_all_uks_impl <- function(dm) {
+  dm_get_all_fks_impl(dm) %>%
+    select(table = parent_table, pk_col = parent_key_cols) %>%
+    distinct()
 }

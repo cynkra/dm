@@ -271,6 +271,15 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
     right_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     right_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
+
+  # these databases don't implement nest join
+  skip_if_src("mssql", "postgres", "sqlite", "maria")
+  # https://github.com/duckdb/duckdb/pull/3829
+  skip_if_src("duckdb")
+  expect_equivalent_tbl(
+    nest_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    nest_join(tf_2(), tf_1(), by = c("d" = "a"), name = "tf_1")
+  )
 })
 
 test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
@@ -344,16 +353,6 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
 })
 
 test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
-  # auto-added RHS-by argument
-  expect_message(expect_message(
-    dm_for_disambiguate() %>%
-      dm_zoom_to(iris_2) %>%
-      left_join(iris_2, by = c("key", "Sepal.Width", "other_col"), select = -key) %>%
-      tbl_zoomed(),
-    "Using `select = c(-key, key)`.",
-    fixed = TRUE
-  ))
-
   skip_if_src("sqlite")
   # test RHS-by name collision
   expect_equivalent_dm(
@@ -408,9 +407,13 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
     "table_not_in_dm"
   )
 
-  skip("No nest_join() for now")
   expect_dm_error(
     nest_join(dm_for_filter()),
+    "only_possible_w_zoom"
+  )
+
+  expect_dm_error(
+    pack_join(dm_for_filter()),
     "only_possible_w_zoom"
   )
 })
@@ -610,10 +613,13 @@ test_that("key tracking works for distinct() and arrange()", {
       dm_zoom_to(tf_2) %>%
       filter(d < 6) %>%
       rename(c_new = c, d_new = d) %>%
-      dm_update_zoomed(),
-    dm_for_filter() %>%
-      dm_filter(tf_2, d < 6) %>%
-      dm_rename(tf_2, c_new = c, d_new = d)
+      dm_update_zoomed() %>%
+      dm_select_tbl(tf_2) %>%
+      dm_rm_pk(tf_2),
+    dm_for_filter()$tf_2 %>%
+      filter(d < 6) %>%
+      rename(c_new = c, d_new = d) %>%
+      dm(tf_2 = .)
   )
 
   # dm_nycflights13() (with FK constraints) doesn't work on DB
@@ -845,6 +851,10 @@ test_that("output for compound keys", {
     # anti_join()
     zoomed_comp_dm %>%
       anti_join(flights) %>%
+      nrow()
+    # nest_join()
+    zoomed_comp_dm %>%
+      nest_join(flights) %>%
       nrow()
   })
 })

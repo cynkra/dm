@@ -3,16 +3,19 @@ unique_db_table_name <- local({
 
   function(table_name) {
     i <<- i + 1
-    glue("{table_name}_", systime_convenient(), "_", get_pid(), "_", as.character(i))
+    glue("{table_name}_", as.character(i), "_", systime_convenient(), "_", get_pid())
   }
 })
 
 systime_convenient <- function() {
+  # FIXME: Race condition here, but fast enough
+  local_options(digits.secs = 6)
+
   if (Sys.getenv("IN_PKGDOWN") != "") {
     "2020_08_28_07_13_03"
   } else {
     time <- as.character(Sys.time())
-    gsub("[-: ]", "_", time)
+    gsub("[-:. ]", "_", time)
   }
 }
 
@@ -62,8 +65,22 @@ is_postgres <- function(dest) {
 }
 
 is_mariadb <- function(dest) {
-  inherits(dest, "src_MariaDBConnection") ||
-    inherits(dest, "MariaDBConnection")
+  inherits_any(dest, c("MariaDBConnection", "src_MariaDBConnection", "src_DoltConnection", "src_DoltLocalConnection"))
+}
+
+schema_supported_dbs <- function() {
+  tibble::tribble(
+    ~db_name, ~id_function, ~test_shortcut,
+    "SQL Server", "is_mssql", "mssql",
+    "Postgres", "is_postgres", "postgres",
+    "MariaDB", "is_mariadb", "maria",
+  )
+}
+
+is_schema_supported <- function(con) {
+  funs <- schema_supported_dbs()[["id_function"]]
+
+  any(purrr::map_lgl(funs, ~ do.call(., args = list(dest = con))))
 }
 
 src_from_src_or_con <- function(dest) {
@@ -88,7 +105,7 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
     names <- unique_db_table_name(names)
   } else {
     # permanent tables
-    if (!is.null(schema) && !is_mssql(con) && !is_postgres(con)) {
+    if (!is.null(schema) && !is_schema_supported(con)) {
       abort_no_schemas_supported(con = con)
     }
     names <- table_names
@@ -101,10 +118,10 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
     warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
-    return(src_tbls(src))
+    return(set_names(src_tbls(src)))
   }
 
-  con <- src$con
+  con <- con_from_src_or_con(src)
 
   if (!is.null(schema)) {
     check_param_class(schema, "character")

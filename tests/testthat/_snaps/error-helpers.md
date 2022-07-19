@@ -206,10 +206,10 @@
       Error in `abort_only_possible_w_zoom()`:
       ! You can't call `dm_update_zoomed()` on an unzoomed `dm`. Consider using `dm_zoom_to()` first.
     Code
-      abort_learn_keys()
+      abort_learn_keys("some reason")
     Condition
       Error in `abort_learn_keys()`:
-      ! Failed to learn keys from database. Use `learn_keys = FALSE` to work around.
+      ! Failed to learn keys from database: some reason. Use `learn_keys = FALSE` to work around, or `dm:::dm_learn_from_db()` to debug.
     Code
       abort_tbl_access("accessdenied")
     Condition

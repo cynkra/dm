@@ -1,4 +1,5 @@
 test_that("dm_add_tbl() works", {
+  local_options(lifecycle_verbosity = "quiet")
 
   # is a table added?
   expect_identical(
@@ -51,12 +52,6 @@ test_that("dm_add_tbl() works", {
     c(src_tbls_impl(dm_for_filter()), "data_card_1()", "data_card_2()")
   )
 
-  # Is an error thrown in case I try to give the new table an old table's name if `repair = "check_unique"`?
-  expect_dm_error(
-    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "check_unique"),
-    "need_unique_names"
-  )
-
   # are in the default case (`repair = 'unique'`) the tables renamed (old table AND new table) according to "unique" default setting
   expect_identical(
     dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), quiet = TRUE) %>% src_tbls_impl(),
@@ -81,18 +76,33 @@ test_that("dm_add_tbl() works", {
 
   # error in case table srcs don't match
   expect_dm_error(
-    dm_add_tbl(dm_for_filter(), data_card_1_sqlite()),
+    dm_add_tbl(dm_for_filter(), data_card_1_duckdb()),
     "not_same_src"
   )
 
   # adding tables to an empty `dm` works for all sources
   expect_equivalent_tbl(
-    dm_add_tbl(dm(), test = data_card_1_sqlite())$test,
+    dm_add_tbl(dm(), test = data_card_1_duckdb())$test,
     data_card_1()
   )
 })
 
+test_that("dm_add_tbl() snapshots", {
+  local_options(lifecycle_verbosity = "warning")
+
+  # Is an error thrown in case I try to give the new table an old table's name if `repair = "check_unique"`?
+  expect_snapshot(error = TRUE, {
+    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "check_unique")
+  })
+
+  expect_snapshot({
+    dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(options = c("select", "keys"))
+  })
+})
+
 test_that("dm_rm_tbl() works", {
+  local_options(lifecycle_verbosity = "quiet")
+
   # removes a table
   expect_equivalent_dm(
     dm_rm_tbl(dm_for_filter_w_cycle(), tf_7),
@@ -124,9 +134,9 @@ test_that("dm_rm_tbl() works", {
   )
 })
 
-test_that("dm_add_tbl() and dm_rm_tbl() for compound keys", {
+test_that("dm_rm_tbl() snapshot", {
+  local_options(lifecycle_verbosity = "warning")
   expect_snapshot({
-    dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(options = c("select", "keys"))
     dm_rm_tbl(dm_for_flatten(), dim_1) %>% dm_paste(options = c("select", "keys"))
     dm_rm_tbl(dm_for_flatten(), fact) %>% dm_paste(options = c("select", "keys"))
   })
@@ -141,7 +151,9 @@ test_that("dm_mutate_tbl() works", {
           filter(0L == 1L)
       ),
     dm_for_filter_w_cycle() %>%
-      dm_filter(tf_7, 0L == 1L)
+      dm_zoom_to(tf_7) %>%
+      filter(0L == 1L) %>%
+      dm_update_zoomed()
   )
 
   # Table doesn't exist yet

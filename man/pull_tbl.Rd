@@ -15,7 +15,7 @@ pull_tbl(dm, table)
 The requested table
 }
 \description{
-This function has methods for both \code{dm} classes:
+This generic has methods for both \code{dm} classes:
 \enumerate{
 \item With \code{pull_tbl.dm()} you can chose which table of the \code{dm} you want to retrieve.
 \item With \code{pull_tbl.zoomed_dm()} you will retrieve the zoomed table in the current state.

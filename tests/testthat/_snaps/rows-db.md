@@ -11,8 +11,9 @@
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_insert(data, test_db_src_frame(select = 4, where = "z"), by = "select",
-      conflict = "ignore")
+      rows_insert(data, test_db_src_frame(select = 4, where = "z"), conflict = "ignore")
+    Message
+      Matching, by = "select"
     Output
         select where exists
          <dbl> <chr>  <dbl>
@@ -43,13 +44,15 @@
       3      3 <NA>     2.5
     Code
       writeLines(conditionMessage(expect_error(rows_insert(data, tibble(select = 4,
-        where = "z"), by = "select", conflict = "ignore"))))
+        where = "z"), conflict = "ignore"))))
     Output
       `x` and `y` must share the same src.
       i set `copy` = TRUE (may be slow).
     Code
-      rows_insert(data, test_db_src_frame(select = 4, where = "z"), by = "select",
-      conflict = "ignore", in_place = FALSE)
+      rows_insert(data, test_db_src_frame(select = 4, where = "z"), conflict = "ignore",
+      in_place = FALSE)
+    Message
+      Matching, by = "select"
     Output
         select where exists
          <dbl> <chr>  <dbl>
@@ -66,8 +69,11 @@
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_insert(data, test_db_src_frame(select = 4, where = "z"), by = "select",
-      conflict = "ignore", in_place = TRUE)
+      rows_insert(data, test_db_src_frame(select = 4, where = "z"), conflict = "ignore",
+      in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -77,8 +83,10 @@
       3      3 <NA>     2.5
       4      4 z       NA  
     Code
-      rows_delete(data, test_db_src_frame(select = 2), by = "select", unmatched = "ignore",
+      rows_delete(data, test_db_src_frame(select = 2), unmatched = "ignore",
       in_place = FALSE)
+    Message
+      Matching, by = "select"
     Output
         select where exists
          <int> <chr>  <dbl>
@@ -95,8 +103,11 @@
       3      3 <NA>     2.5
       4      4 z       NA  
     Code
-      rows_delete(data, test_db_src_frame(select = 2), by = "select", unmatched = "ignore",
+      rows_delete(data, test_db_src_frame(select = 2), unmatched = "ignore",
       in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -132,8 +143,10 @@
       2      3 <NA>     2.5
       3      4 z       NA  
     Code
-      rows_delete(data, test_db_src_frame(where = "q"), by = "where", unmatched = "ignore",
-      in_place = FALSE)
+      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = "where",
+      unmatched = "ignore", in_place = FALSE)
+    Message
+      Ignoring extra `y` columns: `select`
     Output
         select where exists
          <int> <chr>  <dbl>
@@ -149,8 +162,11 @@
       2      3 <NA>     2.5
       3      4 z       NA  
     Code
-      rows_delete(data, test_db_src_frame(where = "q"), by = "where", unmatched = "ignore",
-      in_place = TRUE)
+      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), by = "where",
+      unmatched = "ignore", in_place = TRUE)
+    Message
+      Ignoring extra `y` columns: `select`
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -159,8 +175,11 @@
       2      3 <NA>     2.5
       3      4 z       NA  
     Code
-      rows_delete(data, test_db_src_frame(select = 1:3), by = "select", unmatched = "ignore",
+      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), unmatched = "ignore",
       in_place = FALSE)
+    Message
+      Matching, by = "select"
+      Ignoring extra `y` columns: `where`
     Output
         select where exists
          <int> <chr>  <dbl>
@@ -174,8 +193,12 @@
       2      3 <NA>     2.5
       3      4 z       NA  
     Code
-      rows_delete(data, test_db_src_frame(select = 1:3), by = "select", unmatched = "ignore",
+      rows_delete(data, test_db_src_frame(select = 1:3, where = "q"), unmatched = "ignore",
       in_place = TRUE)
+    Message
+      Matching, by = "select"
+      Ignoring extra `y` columns: `where`
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -196,6 +219,10 @@
       data %>% arrange(select)
     Output
       # ... with 3 variables: select <int>, where <chr>, exists <dbl>
+
+# duckdb errors for returning argument (duckdb/duckdb#3875)
+
+    identical(conflict, "ignore") is not TRUE
 
 # update
 
@@ -253,8 +280,11 @@
       2      2 b        1.5
       3      3 <NA>     2.5
     Code
-      rows_update(data, test_db_src_frame(select = 2:3, where = "w"), by = "select",
-      unmatched = "ignore", in_place = TRUE)
+      rows_update(data, test_db_src_frame(select = 2:3, where = "w"), unmatched = "ignore",
+      in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -263,8 +293,11 @@
       2      2 w        1.5
       3      3 w        2.5
     Code
-      rows_update(data, test_db_src_frame(select = 2, where = "w", exists = 3.5), by = "select",
+      rows_update(data, test_db_src_frame(select = 2, where = "w", exists = 3.5),
       unmatched = "ignore", in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -273,8 +306,11 @@
       2      2 w        3.5
       3      3 w        2.5
     Code
-      rows_update(data, test_db_src_frame(select = 2:3), by = "select", unmatched = "ignore",
+      rows_update(data, test_db_src_frame(select = 2:3), unmatched = "ignore",
       in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -348,8 +384,11 @@
       2      2 b    
       3      3 <NA> 
     Code
-      rows_patch(data, test_db_src_frame(select = 2:3, where = "patched"), by = "select",
-      unmatched = "ignore", in_place = TRUE)
+      rows_patch(data, test_db_src_frame(select = 2:3, where = "patched"), unmatched = "ignore",
+      in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where  
@@ -359,8 +398,11 @@
       3      3 patched
     Code
       data <- test_db_src_frame(select = 1:3, where = letters[c(1:2, NA)])
-      rows_patch(data, test_db_src_frame(select = 2:3), by = "select", unmatched = "ignore",
+      rows_patch(data, test_db_src_frame(select = 2:3), unmatched = "ignore",
       in_place = TRUE)
+    Message
+      Matching, by = "select"
+    Code
       data %>% arrange(select)
     Output
         select where

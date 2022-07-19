@@ -17,12 +17,12 @@ when establishing a processing order for the joins.
 An interesting choice could be
 for example a fact table in a star schema.}
 
-\item{...}{Unquoted names of the tables to be included in addition to the \code{start} table.
-The order of the tables here determines
-the order of the joins.
+\item{...}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Unquoted names of the tables to be included in addition to the \code{start} table.
+The order of the tables here determines the order of the joins.
 If the argument is empty, all tables that can be reached will be included.
-If this includes tables that are not direct neighbors of \code{start},
-it will only work with \code{dm_squash_to_tbl()} (given one of the allowed join-methods).
+Only \code{dm_squash_to_tbl()} allows using tables that are not direct neighbors of \code{start}.
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 
 \item{join}{The type of join to be performed, see \code{\link[dplyr:mutate-joins]{dplyr::join()}}.}
@@ -67,16 +67,27 @@ Therefore, trying this will result in a warning.
 
 Since \code{join = nest_join()} does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
+
+The difference between \code{dm_flatten_to_tbl()} and \code{dm_squash_to_tbl()} is
+the following (see the examples):
+\itemize{
+\item \code{dm_flatten_to_tbl()} allows only one level of hierarchy
+(i.e., direct neighbors to table \code{start}), while
+\item \code{dm_squash_to_tbl()} will go through all levels of hierarchy while joining.
+}
+
+Additionally, these functions differ from \code{dm_wrap_tbl()}, which always
+returns a \code{dm} object.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-dm_nycflights13() \%>\%
-  dm_select_tbl(-weather) \%>\%
-  dm_flatten_to_tbl(flights)
-\dontshow{\}) # examplesIf}
-}
-\seealso{
-Other flattening functions: 
-\code{\link{dm_join_to_tbl}()}
+
+dm_financial() \%>\%
+  dm_select_tbl(-loans) \%>\%
+  dm_flatten_to_tbl(start = cards)
+
+dm_financial() \%>\%
+  dm_select_tbl(-loans) \%>\%
+  dm_squash_to_tbl(start = cards)
+
 }
 \concept{flattening functions}

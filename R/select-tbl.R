@@ -6,11 +6,9 @@
 #'
 #' @return The input `dm` with tables renamed or removed.
 #'
-#' @seealso [dm_rm_tbl()]
-#'
 #' @param dm A [`dm`] object.
 #' @param ... One or more table names of the tables of the [`dm`] object.
-#' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
+#' `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
@@ -43,7 +41,9 @@ dm_rename_tbl <- function(dm, ...) {
 }
 
 dm_select_tbl_impl <- function(dm, selected) {
-  if (anyDuplicated(names(selected))) abort_need_unique_names(names(selected[duplicated(names(selected))]))
+  if (anyDuplicated(names(selected))) {
+    abort_need_unique_names(names(selected[duplicated(names(selected))]))
+  }
 
   # Required to avoid an error further on
   if (is_empty(selected)) {

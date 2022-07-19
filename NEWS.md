@@ -1,26 +1,153 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
-# dm 0.2.8.9003
+# dm 0.99.99.9005
 
-- `dm_disentangle()` based on `enumerate_all_paths()` (#923).
+## Documentation
 
+- Fix column names in `?dm_get_all_pks` (#1245).
 
-# dm 0.2.8.9002
+## API
 
-- Fix compatibility with dev dbplyr (#986).
-- Fix `json_pack()` (#973, #974).
+- New `by_position` argument to `check_subset()`, `check_set_equality()`, `check_cardinality_...()` and `examine_cardinality()` (#1253).
 
-
-# dm 0.2.8.9001
-
-* New `json_pack_join()`, `json_nest_join()`, `json_pack()` and `json_nest()`, similar to `pack_join()`, `dplyr::nest_join()`, `tidyr::pack()` AND `tidyr::nest()`, but create character columns (#917, #918).
-- `pack_join()` arguments moved past the ellipsis (#920, #921).
-- Update credentials to fallback databases for `dm_financial()` hosted on pacha.dev (#916, @pachadotdev).
+- `dm_ptype()`, `dm_financial()` and `dm_pixarfilms()` are stable now (#1254).
 
 
-# dm 0.2.8.9000
+# dm 0.99.99.9004
 
-- Same as previous version.
+## Features
+
+- `is_unique_key()`uses `vctrs::vec_count()` on local data frames for speed (@eutwt, #1247).
+
+- `check_key()` uses `vctrs::vec_duplicate_any()` on local data frames for speed (@eutwt, #1234).
+
+## Documentation
+
+- Improve contrast for display of `dm_financial()` (#1073) (#1250).
+
+## api
+
+- Stabilize `dm_filter()`, deprecate `dm_apply_filters()`, `dm_apply_filters_to_tbl()` and `dm_get_filters()` (#424, #426, #1236).
+
+- Turn all "questioning" functions to "experimental" (#1030, #1237).
+
+
+# dm 0.99.99.9003
+
+## API
+
+- Stabilize `check_cardinality_...()` and `examine_cardinality()` (#1194).
+
+- Stabilize `check_subset()` and `check_set_equality()` (#1229).
+
+
+# dm 0.99.99.9002
+
+## API
+
+- `dm()` accepts dm objects, deprecate `dm_bind()` and `dm_add_tbl()` (#1226).
+
+- Stabilize `dm_examine_cardinalities()` (#1195).
+
+- Stabilize `dm_examine_constraints()` (#1193).
+
+
+# dm 0.99.99.9001
+
+## Documentation
+
+- Add contributing guide (#1222).
+
+
+# dm 0.3.0.9001
+
+## Bug fixes
+
+- `dm_draw()` works if a table name has a space (#1219).
+
+- Don't print rule in `glimpse.dm()` for empty `dm()` (#1208).
+
+## Features
+
+- Honor implicit unique keys defined by foreign keys (#1131, #1209).
+
+## Chore
+
+- Use sensible node and edge IDs, corresponding to the data model, in SVG graph (#1214).
+
+- Tests for datamodelr code (#1215).
+
+
+# dm 0.3.0.9000
+
+- Internal changes only.
+
+
+# dm 0.3.0
+
+## Features
+
+- Implement `glimpse()` for `zoomed_df` (@IndrajeetPatil, #1003, #1161).
+
+- Remove message about automated key selection with the `select` argument in joins on `zoomed_df` (@IndrajeetPatil, #1113, #1176).
+
+- `dm_from_con(learn_keys = TRUE)` works for MariaDB (#1106, #1123, #1169, @maelle), and for compound keys in Postgres (#342, #1006, #1016) and SQL Server (#342).
+
+- New `json_pack_join()`, `json_nest_join()`, `json_pack()` and `json_nest()`, similar to `pack_join()`, `dplyr::nest_join()`, `tidyr::pack()` and `tidyr::nest()`, but create character columns (#917, #918, #973, #974).
+
+- `nest_join()` and `pack_join()` support `zoomed_df` objects (#1119, @IndrajeetPatil).
+
+
+## API 
+
+- Marked stable functions as stable, in particular `dm()` and related functions (#1032, #1040).
+
+- Remove own `rows_*()` implementation for lazy tables, they are now available in dbplyr >= 2.2.0 (#912, #1024, #1028).
+
+- Deprecate `dm_join_to_tbl()`, `dm_is_referenced()` and `dm_get_referencing_tables()` (#1038).
+
+- New `dm_validate()` replaces now deprecated `validate_dm()` (#1033).
+
+- `dm_get_con()` and `dm_get_filters()` use `dm` as argument name (#1034, #1036).
+
+- Mark `...` in `dm_flatten_to_tbl()` as experimental (#1037).
+
+- Add ellipses to `dm_disambiguate_cols()`, `dm_draw()`, `dm_examine_constraints()`, `dm_nycflights13()` and `dm_pixarfilms()` (#1035).
+
+- New `dm_from_con()`, soft-deprecated `dm_from_src()` (#1014, #1018, #1044).
+
+- Moved `pack_join()` arguments past the ellipsis for consistency (#920, #921).
+
+
+## Bug fixes
+
+- Compatibility fix for writing to SQL Server tables with dbplyr >= 2.2.0.
+
+
+## Documentation
+
+- The pkgdown site now uses BS5 for greater readability (#1067, @maelle).
+
+- Better message for `dm_rows_...()` functions if the `in_place` argument is missing (@IndrajeetPatil, #414, #1160).
+
+- Better message for learning error (#1081).
+
+- Greatly improved consistency, content, and language across all articles (@IndrajeetPatil, #1056, #1132, #1157, #1166, #1079, #1082, #1098, #1100, #1101, #1103, #1112, #1120, #1158, #1175).
+
+- Tweaks of intro vignette and README (#1066, #1075, @maelle).
+
+- Document `glimpse()` S3 method for `dm` (@IndrajeetPatil, #1121).
+
+- Update credentials to fallback databases for `dm_financial()` hosted on pacha.dev (#916, @pachadotdev), also used now for vignettes (#1118) and in `dm_from_con()` example (#993).
+
+- Update license year (#1029).
+
+
+## Internal
+
+- Switch to duckdb as default database backend (#1179).
+
+- Test duckdb and MariaDB on GHA (#1091, #1136).
 
 
 # dm 0.2.8

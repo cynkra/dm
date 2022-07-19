@@ -1,18 +1,26 @@
 #' Add tables to a [`dm`]
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#'
 #' Adds one or more new tables to a [`dm`].
 #' Existing tables are not overwritten.
 #'
+#' @section Life cycle:
+#' This function is deprecated as of dm 1.0.0, because the same functionality
+#' is offered by [dm()] with `.name_repair = "unique"`.
+#'
 #' @return The initial `dm` with the additional table(s).
 #'
-#' @seealso [dm_mutate_tbl()], [dm_rm_tbl()]
+#' @seealso [dm_mutate_tbl()]
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more tables to add to the `dm`.
 #'   If no explicit name is given, the name of the expression is used.
 #' @inheritParams vctrs::vec_as_names
 #'
+#' @export
+#' @keywords internal
 #' @examples
 #' dm() %>%
 #'   dm_add_tbl(mtcars, flowers = iris)
@@ -20,8 +28,11 @@
 #' # renaming table names if necessary (depending on the `repair` argument)
 #' dm() %>%
 #'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
-#' @export
 dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
+  deprecate_soft("1.0.0", "dm_add_tbl()", "dm()",
+    details = 'Use `.name_repair = "unique"` if necessary.'
+  )
+
   check_not_zoomed(dm)
 
   new_names <- names(exprs(..., .named = TRUE))
@@ -71,31 +82,6 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()
   new_dm3(vec_rbind(def, def_0))
 }
 
-#' Remove tables
-#'
-#' @description
-#' Removes one or more tables from a [`dm`].
-#'
-#' @return The `dm` without the removed table(s) that were present in the initial `dm`.
-#'
-#' @seealso [dm_add_tbl()], [dm_select_tbl()]
-#'
-#' @param dm A [`dm`] object.
-#' @param ... One or more unquoted table names to remove from the `dm`.
-#' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
-#'
-#' @export
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_rm_tbl(airports)
-dm_rm_tbl <- function(dm, ...) {
-  check_not_zoomed(dm)
-  deselected_ind <- eval_select_table_indices(quo(c(...)), src_tbls_impl(dm))
-  selected_ind <- setdiff(seq_along(dm), deselected_ind)
-
-  dm_select_tbl(dm, !!!selected_ind)
-}
-
 check_new_tbls <- function(dm, tbls) {
   orig_tbls <- dm_get_tables_impl(dm)
 
@@ -114,7 +100,7 @@ check_new_tbls <- function(dm, tbls) {
 #' For now, the column names must be identical.
 #' This restriction may be levied optionally in the future.
 #'
-#' @seealso [dm_add_tbl()], [dm_rm_tbl()]
+#' @seealso [dm()], [dm_select_tbl()]
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more tables to update in the `dm`.

@@ -25,7 +25,7 @@ A tibble with the following columns:
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \code{enum_pk_candidates()} checks for each column of a
 table if the column contains only unique values, and is thus
@@ -36,7 +36,7 @@ for a table in a \link{dm} object.
 }
 \section{Life cycle}{
 
-These functions are marked "questioning" because we are not yet sure about
+These functions are marked "experimental" because we are not yet sure about
 the interface, in particular if we need both \code{dm_enum...()} and \code{enum...()}
 variants.
 Changing the interface later seems harmless because these functions are

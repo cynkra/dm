@@ -1,7 +1,7 @@
 # `check_suggested()` works
 
     Code
-      check_suggested("dm", TRUE, top_level_fun = "foo")
+      check_suggested("rlang", TRUE, top_level_fun = "foo")
     Output
       [1] TRUE
     Code

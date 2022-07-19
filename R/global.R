@@ -113,6 +113,37 @@ utils::globalVariables(c(
   "orders",
   "trans",
   #
+  # information_schema
+  "catalog",
+  "catalog_name",
+  "column_default",
+  "column_id",
+  "column_name",
+  "con",
+  "constraint_catalog",
+  "constraint_column_id",
+  "constraint_column_usage",
+  "constraint_name",
+  "constraint_schema",
+  "constraint_type",
+  "dbname",
+  "FIXME",
+  "is_nullable",
+  "key_column_usage",
+  "object_id",
+  "ordinal_position",
+  "schema_id",
+  "schemata",
+  "table_catalog",
+  "table_constraints",
+  "table_schema",
+  "table_type",
+  "tables",
+  "constraint_column_usage.column_name",
+  "constraint_column_usage.dm_name",
+  "key_column_usage.column_name",
+  "key_column_usage.dm_name",
+  #
   # pixarfilms
   "pixar_films",
   "pixar_people",
@@ -139,6 +170,24 @@ utils::globalVariables(c(
   #
   # tidyselect
   "where",
+  #
+  # meta
+  "DATABASE",
+  "referenced_column_name",
+  "referenced_table_name",
+  "referenced_table_schema",
+  #
+  # cardinalities
+  "x_label",
+  "y_label",
+  #
+  # deconstruct
+  "ref_uuid",
+  "child_data",
+  "child_uuid",
+  "parent_data",
+  "parent_uuid",
+  #
   # keep this to avoid dealing with trailing commas
   NULL
 ))

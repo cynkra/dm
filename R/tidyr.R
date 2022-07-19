@@ -1,24 +1,25 @@
 #' \pkg{tidyr} table manipulation methods for zoomed dm objects
 #'
+#' @description
 #' Use these methods without the '.zoomed_dm' suffix (see examples).
 #' @param data object of class `zoomed_dm`
-#' @param col For `unite.zoomed_dm`: see [`tidyr::unite`]
+#' @param col For `unite.zoomed_dm`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [`tidyr::separate`]
-#' @param ... For `unite.zoomed_dm`: see [`tidyr::unite`]
+#' For `separate.zoomed_dm`: see [tidyr::separate()]
+#' @param ... For `unite.zoomed_dm`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [`tidyr::separate`]
-#' @param col For `unite.zoomed_dm`: see [`tidyr::unite`]
+#' For `separate.zoomed_dm`: see [tidyr::separate()]
+#' @param col For `unite.zoomed_dm`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [`tidyr::separate`]
-#' @param sep For `unite.zoomed_dm`: see [`tidyr::unite`]
+#' For `separate.zoomed_dm`: see [tidyr::separate()]
+#' @param sep For `unite.zoomed_dm`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [`tidyr::separate`]
-#' @param remove For `unite.zoomed_dm`: see [`tidyr::unite`]
+#' For `separate.zoomed_dm`: see [tidyr::separate()]
+#' @param remove For `unite.zoomed_dm`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [`tidyr::separate`]
-#' @param na.rm see [`tidyr::unite`]
-#' @param into see [`tidyr::separate`]
+#' For `separate.zoomed_dm`: see [tidyr::separate()]
+#' @param na.rm see [tidyr::unite()]
+#' @param into see [tidyr::separate()]
 #' @name tidyr_table_manipulation
 #' @examplesIf rlang::is_installed("nycflights13")
 #' zoom_united <- dm_nycflights13() %>%
