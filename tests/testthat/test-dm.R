@@ -1,3 +1,5 @@
+withr::local_seed(20220719)
+
 test_that("dm() API", {
   expect_snapshot({
     dm(a = tibble(), a = tibble(), .name_repair = "unique")

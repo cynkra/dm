@@ -395,11 +395,11 @@
       # A tibble: 5 x 10
         table    data     segment display     pks     fks filters zoom   col_t~1 uuid 
         <chr>    <list>   <chr>   <chr>   <list<> <list<> <list<> <list> <list>  <chr>
-      1 airlines <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  0609~
-      2 airports <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  020a~
-      3 flights  <tibble> <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL>  0806~
-      4 planes   <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  0607~
-      5 weather  <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  080e~
+      1 airlines <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  0f0d~
+      2 airports <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  030c~
+      3 flights  <tibble> <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL>  0409~
+      4 planes   <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  0d09~
+      5 weather  <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  090d~
       # ... with abbreviated variable name 1: col_tracker_zoom
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% mutate(origin_new = paste0(origin,
@@ -409,11 +409,11 @@
       # A tibble: 5 x 10
         table    data     segment display     pks     fks filters zoom   col_t~1 uuid 
         <chr>    <list>   <chr>   <chr>   <list<> <list<> <list<> <list> <list>  <chr>
-      1 airlines <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  0609~
-      2 airports <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  020a~
-      3 flights  <tibble> <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL>  0806~
-      4 planes   <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  0607~
-      5 weather  <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  080e~
+      1 airlines <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  0f0d~
+      2 airports <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  030c~
+      3 flights  <tibble> <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL>  0409~
+      4 planes   <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  0d09~
+      5 weather  <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  090d~
       # ... with abbreviated variable name 1: col_tracker_zoom
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()
