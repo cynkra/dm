@@ -320,12 +320,12 @@ is_dm <- function(x) {
 #'
 #' @rdname dm
 #' @export
-as_dm <- function(x) {
+as_dm <- function(x, ...) {
   UseMethod("as_dm")
 }
 
 #' @export
-as_dm.default <- function(x) {
+as_dm.default <- function(x, ...) {
   if (!is.list(x) || is.object(x)) {
     abort(paste0("Can't coerce <", class(x)[[1]], "> to <dm>."))
   }
@@ -348,12 +348,12 @@ tbl_src <- function(x) {
 }
 
 #' @export
-as_dm.src <- function(x) {
+as_dm.src <- function(x, ...) {
   dm_from_con(con = con_from_src_or_con(x), table_names = NULL)
 }
 
 #' @export
-as_dm.DBIConnection <- function(x) {
+as_dm.DBIConnection <- function(x, ...) {
   dm_from_con(con = x, table_names = NULL)
 }
 
@@ -795,12 +795,12 @@ empty_dm <- function() {
 #'   dm_zoom_to(airports) %>%
 #'   pull_tbl()
 #' @export
-pull_tbl <- function(dm, table) {
+pull_tbl <- function(dm, table, ...) {
   UseMethod("pull_tbl")
 }
 
 #' @export
-pull_tbl.dm <- function(dm, table) {
+pull_tbl.dm <- function(dm, table, ...) {
   # for both dm and zoomed_dm
   # FIXME: shall we issue a special error in case someone tries sth. like: `pull_tbl(dm_for_filter, c(t4, t3))`?
   table_name <- as_string(enexpr(table))
@@ -809,7 +809,7 @@ pull_tbl.dm <- function(dm, table) {
 }
 
 #' @export
-pull_tbl.zoomed_dm <- function(dm, table) {
+pull_tbl.zoomed_dm <- function(dm, table, ...) {
   table_name <- as_string(enexpr(table))
   zoomed <- dm_get_zoom(dm)
   if (table_name == "") {
