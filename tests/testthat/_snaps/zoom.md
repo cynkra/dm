@@ -21,20 +21,21 @@
     Output
       # Zoomed table: weather
       # A tibble:     144 x 15
-         origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
-         <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
-       1 EWR     2013     1    10     0  41    32    70.1      230       8.06
-       2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21
-       3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90
-       4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75
-       5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90
-       6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 
-       7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90
-       8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90
-       9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06
-      10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
-      # ... with 134 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
-      #   pressure <dbl>, visib <dbl>, time_hour <dttm>
+         origin  year month   day  hour  temp  dewp humid wind_dir wind_speed wind_g~1
+         <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>    <dbl>
+       1 EWR     2013     1    10     0  41    32    70.1      230       8.06     NA  
+       2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21     NA  
+       3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90     NA  
+       4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75     NA  
+       5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90     NA  
+       6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7      20.7
+       7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90     17.3
+       8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90     NA  
+       9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06     NA  
+      10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3      26.5
+      # ... with 134 more rows, 4 more variables: precip <dbl>, pressure <dbl>,
+      #   visib <dbl>, time_hour <dttm>, and abbreviated variable name 1: wind_gust
+      # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% dm_update_zoomed()
     Output
