@@ -3,12 +3,18 @@
 \name{tidyr_table_manipulation}
 \alias{tidyr_table_manipulation}
 \alias{unite.zoomed_dm}
+\alias{unite.dm_keyed_tbl}
 \alias{separate.zoomed_dm}
+\alias{separate.dm_keyed_tbl}
 \title{\pkg{tidyr} table manipulation methods for zoomed dm objects}
 \usage{
 \method{unite}{zoomed_dm}(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE)
 
+\method{unite}{dm_keyed_tbl}(data, ...)
+
 \method{separate}{zoomed_dm}(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, ...)
+
+\method{separate}{dm_keyed_tbl}(data, ...)
 }
 \arguments{
 \item{data}{object of class \code{zoomed_dm}}

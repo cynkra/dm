@@ -53,6 +53,14 @@ unite.zoomed_dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FA
   replace_zoomed_tbl(data, united_tbl, new_tracked_cols_zoom)
 }
 
+#' @rdname tidyr_table_manipulation
+#' @export
+unite.dm_keyed_tbl <- function(data, ...) {
+  keys_info <- keyed_get_info(.data)
+  out <- NextMethod()
+  new_keyed_tbl_from_keys_info(out, keys_info)
+}
+
 #' @export
 separate.dm <- function(data, ...) {
   check_zoomed(data)
@@ -69,4 +77,12 @@ separate.zoomed_dm <- function(data, col, into, sep = "[^[:alnum:]]+", remove = 
   selected <- set_names(setdiff(names(col_tracker_zoomed(data)), deselected))
   new_tracked_cols_zoom <- new_tracked_cols(data, selected)
   replace_zoomed_tbl(data, separated_tbl, new_tracked_cols_zoom)
+}
+
+#' @rdname tidyr_table_manipulation
+#' @export
+separate.dm_keyed_tbl <- function(data, ...) {
+  keys_info <- keyed_get_info(.data)
+  out <- NextMethod()
+  new_keyed_tbl_from_keys_info(out, keys_info)
 }
