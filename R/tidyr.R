@@ -56,7 +56,7 @@ unite.zoomed_dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FA
 #' @rdname tidyr_table_manipulation
 #' @export
 unite.dm_keyed_tbl <- function(data, ...) {
-  keys_info <- keyed_get_info(.data)
+  keys_info <- keyed_get_info(data)
   out <- NextMethod()
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
@@ -82,7 +82,7 @@ separate.zoomed_dm <- function(data, col, into, sep = "[^[:alnum:]]+", remove = 
 #' @rdname tidyr_table_manipulation
 #' @export
 separate.dm_keyed_tbl <- function(data, ...) {
-  keys_info <- keyed_get_info(.data)
+  keys_info <- keyed_get_info(data)
   out <- NextMethod()
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
