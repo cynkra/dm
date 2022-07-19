@@ -390,30 +390,31 @@
       Primary keys: 4
       Foreign keys: 4
     Code
-      nyc_comp() %>% dm_filter(flights = (day == 10)) %>% collect() %>% dm_get_def()
+      nyc_comp() %>% dm_filter(flights = (day == 10)) %>% collect() %>% dm_get_def() %>%
+        select(-uuid)
     Output
-      # A tibble: 5 x 10
-        table    data     segment display     pks     fks filters zoom   col_t~1 uuid 
-        <chr>    <list>   <chr>   <chr>   <list<> <list<> <list<> <list> <list>  <chr>
-      1 airlines <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  0f0d~
-      2 airports <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  030c~
-      3 flights  <tibble> <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL>  0409~
-      4 planes   <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  0d09~
-      5 weather  <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  090d~
+      # A tibble: 5 x 9
+        table    data     segment display           pks     fks filters zoom   col_t~1
+        <chr>    <list>   <chr>   <chr>   <list<tibble> <list<> <list<> <list> <list> 
+      1 airlines <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      2 airports <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      3 flights  <tibble> <NA>    <NA>          [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL> 
+      4 planes   <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      5 weather  <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
       # ... with abbreviated variable name 1: col_tracker_zoom
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% mutate(origin_new = paste0(origin,
         " airport")) %>% compute() %>% dm_update_zoomed() %>% collect() %>%
-        dm_get_def()
+        dm_get_def() %>% select(-uuid)
     Output
-      # A tibble: 5 x 10
-        table    data     segment display     pks     fks filters zoom   col_t~1 uuid 
-        <chr>    <list>   <chr>   <chr>   <list<> <list<> <list<> <list> <list>  <chr>
-      1 airlines <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  0f0d~
-      2 airports <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  030c~
-      3 flights  <tibble> <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL>  0409~
-      4 planes   <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  0d09~
-      5 weather  <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>  090d~
+      # A tibble: 5 x 9
+        table    data     segment display           pks     fks filters zoom   col_t~1
+        <chr>    <list>   <chr>   <chr>   <list<tibble> <list<> <list<> <list> <list> 
+      1 airlines <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      2 airports <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      3 flights  <tibble> <NA>    <NA>          [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL> 
+      4 planes   <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      5 weather  <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
       # ... with abbreviated variable name 1: col_tracker_zoom
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()

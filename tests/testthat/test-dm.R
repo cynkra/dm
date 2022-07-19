@@ -1,5 +1,3 @@
-withr::local_seed(20220719)
-
 test_that("dm() API", {
   expect_snapshot({
     dm(a = tibble(), a = tibble(), .name_repair = "unique")
@@ -527,14 +525,16 @@ test_that("output for compound keys", {
     nyc_comp() %>%
       dm_filter(flights = (day == 10)) %>%
       collect() %>%
-      dm_get_def()
+      dm_get_def() %>%
+      select(-uuid)
     nyc_comp() %>%
       dm_zoom_to(weather) %>%
       mutate(origin_new = paste0(origin, " airport")) %>%
       compute() %>%
       dm_update_zoomed() %>%
       collect() %>%
-      dm_get_def()
+      dm_get_def() %>%
+      select(-uuid)
     nyc_comp() %>%
       dm_zoom_to(weather) %>%
       collect()
