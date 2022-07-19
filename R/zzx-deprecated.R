@@ -665,3 +665,45 @@ abort_rm_fk_col_missing <- function() {
 error_txt_rm_fk_col_missing <- function() {
   "Parameter `columns` has to be set. Pass `NULL` for removing all references."
 }
+
+#' @description
+#' `dm_add_tbl` is deprecated as of dm 1.0.0, because the same functionality
+#' is offered by [dm()] with `.name_repair = "unique"`.
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
+  deprecate_soft("1.0.0", "dm_add_tbl()", "dm()",
+    details = 'Use `.name_repair = "unique"` if necessary.'
+  )
+
+  check_not_zoomed(dm)
+
+  new_names <- names(exprs(..., .named = TRUE))
+  new_tables <- list2(...)
+
+  check_new_tbls(dm, new_tables)
+
+  old_names <- src_tbls_impl(dm)
+  names_list <- repair_table_names(old_names, new_names, repair, quiet)
+  # rename old tables in case name repair changed their names
+
+  dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
+  dm_add_tbl_impl(dm, new_tables, names_list$new_names)
+}
+
+#' @description
+#' `dm_bind()`  is deprecated as of dm 1.0.0, because the same functionality
+#' is offered by [dm()].
+#'
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
+  deprecate_soft("1.0.0", "dm_bind()", "dm()")
+
+  dms <- list2(...)
+
+  new_def <- dm_bind_impl(dms, repair, quiet)
+  new_dm3(new_def)
+}

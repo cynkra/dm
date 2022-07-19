@@ -62,6 +62,8 @@
 \alias{cdm_update_zoomed_tbl}
 \alias{cdm_zoom_out}
 \alias{dm_rm_tbl}
+\alias{dm_add_tbl}
+\alias{dm_bind}
 \title{Deprecated functions}
 \usage{
 sql_schema_create(dest, schema, ...)
@@ -209,6 +211,10 @@ cdm_update_zoomed_tbl(dm)
 cdm_zoom_out(dm)
 
 dm_rm_tbl(dm, ...)
+
+dm_add_tbl(dm, ..., repair = "unique", quiet = FALSE)
+
+dm_bind(..., repair = "check_unique", quiet = FALSE)
 }
 \arguments{
 \item{...}{These dots are for future extensions and must be empty.}
@@ -251,5 +257,11 @@ with a \code{dm_} prefix.
 returned from \code{\link[=dm_get_all_fks]{dm_get_all_fks()}} instead.
 
 \code{validate_dm()} has been replaced by \code{dm_validate()} for consistency.
+
+\code{dm_add_tbl} is deprecated as of dm 1.0.0, because the same functionality
+is offered by \code{\link[=dm]{dm()}} with \code{.name_repair = "unique"}.
+
+\code{dm_bind()}  is deprecated as of dm 1.0.0, because the same functionality
+is offered by \code{\link[=dm]{dm()}}.
 }
 \keyword{internal}
