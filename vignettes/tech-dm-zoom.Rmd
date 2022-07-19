@@ -78,7 +78,7 @@ dm_draw(updated_flights_dm)
 
 ### Use case 2: Creation of a surrogate key
 
-The same course of action could, for example, be employed to create a surrogate key for a table.
+The same course of action could, for example, be employed to create a surrogate key for a table, a synthetic simple key that replaces a compound key..
 We can do this for the `weather` table.
 
 ```{r}
