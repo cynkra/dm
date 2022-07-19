@@ -96,7 +96,6 @@
       Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.
     Output
       # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
-      # i Use `colnames()` to see all variable names
     Code
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
@@ -113,7 +112,6 @@
         tf_2) %>% arrange_all()
     Output
       # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
-      # i Use `colnames()` to see all variable names
     Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
@@ -201,7 +199,6 @@
       
       $tf_2
       # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
-      # i Use `colnames()` to see all variable names
       
       $tf_3
          f        f1 g    
@@ -228,7 +225,6 @@
       
       $tf_5
       # ... with 4 variables: ww <int>, k <int>, l <chr>, m <chr>
-      # i Use `colnames()` to see all variable names
       
       $tf_6
            zz n          o    
