@@ -19,6 +19,7 @@
 #'
 #' - [dm_from_con()] for connecting to all tables in a database
 #'   and importing the primary and foreign keys
+#' - [dm_get_tables()] for returning a list of tables
 #' - [dm_add_pk()] and [dm_add_fk()] for adding primary and foreign keys
 #' - [copy_dm_to()] for DB interaction
 #' - [dm_draw()] for visualization
@@ -48,8 +49,6 @@
 #' dm_nycflights13()[["airports"]]
 #'
 #' dm_nycflights13() %>% names()
-#'
-#' dm_nycflights13() %>% dm_get_tables()
 dm <- function(...,
                .name_repair = c("check_unique", "unique", "universal", "minimal"),
                .quiet = FALSE) {
@@ -246,28 +245,6 @@ new_zoom <- function() {
 
 new_col_tracker_zoom <- function() {
   tibble(table = character(), col_tracker_zoom = list())
-}
-
-#' Get tables
-#'
-#' `dm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
-#' of a `dm` object.
-#' Filtering expressions defined by [dm_filter()] are NOT evaluated at this stage.
-#' To get a filtered table, use [dm_apply_filters_to_tbl()], to apply filters to all tables use [dm_apply_filters()].
-#'
-#' @rdname dm
-#'
-#' @return For `dm_get_tables()`: A named list with the tables constituting the `dm`.
-#'
-#' @export
-dm_get_tables <- function(x) {
-  check_not_zoomed(x)
-  dm_get_tables_impl(x)
-}
-
-dm_get_tables_impl <- function(x, quiet = FALSE) {
-  def <- dm_get_def(x, quiet)
-  set_names(def$data, def$table)
 }
 
 unnest_pks <- function(def) {
@@ -495,7 +472,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 #' @export
-`[[.dm` <- function(x, id) {
+`[[.dm` <- function(x, id, ...) {
   # for both dm and zoomed_dm
   if (is.numeric(id)) id <- src_tbls_impl(x)[id] else id <- as_string(id)
   tbl_impl(x, id, quiet = TRUE)
@@ -661,7 +638,7 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 #' Called on a `dm` object, these methods create a copy of all tables in the `dm`.
 #' Depending on the size of your data this may take a long time.
 #'
-#' @param x A `dm`.
+#' @inheritParams dm_get_tables
 #' @param ... Passed on to [compute()].
 #' @return A `dm` object of the same structure as the input.
 #' @name materialize
@@ -838,7 +815,7 @@ as.list.zoomed_dm <- function(x, ...) {
 
 #' Get a glimpse of your `dm` object
 #'
-#' @param x A `dm` object.
+#' @inheritParams dm_get_tables
 #' @param width Controls the maximum number of columns on a line used in
 #'   printing. If `NULL`, `getOption("width")` will be consulted.
 #' @param ... Passed to [pillar::glimpse()].

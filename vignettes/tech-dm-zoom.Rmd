@@ -14,10 +14,12 @@ source("setup/setup.R")
 This vignette deals with situations where you want to transform tables of your `dm` and then update an existing table or add a new table to the `dm`.
 There are two straightforward approaches:
 
-1. individually extract the tables relevant to the calculation, perform the necessary transformations, add the result to the `dm` (or replace an existing table) and establish the key relations.
+1. extract the tables relevant to the calculation, perform the necessary transformations, and (if needed) recombine the resulting table into a `dm`,
 1. do all this within the `dm` object by zooming to a table and manipulating it while maintaining the key relations whenever possible.
 
-The first approach is rather self-explanatory, so let us have a closer look at the second way.
+Both approaches aim at maintaining the key relations whenever possible.
+We will explore the second approach here. 
+For the first approach, see `vignette("tech-dm-zoom")`.
 
 ## Enabling {dplyr}-workflow within a `dm`
 
@@ -78,7 +80,7 @@ dm_draw(updated_flights_dm)
 
 ### Use case 2: Creation of a surrogate key
 
-The same course of action could, for example, be employed to create a surrogate key for a table.
+The same course of action could, for example, be employed to create a surrogate key for a table, a synthetic simple key that replaces a compound key.
 We can do this for the `weather` table.
 
 ```{r}
@@ -129,6 +131,7 @@ One column stands for the departure airport and the other for the arrival airpor
 dm_draw(dm_nycflights13(cycle = TRUE))
 ```
 
+This generates a cycle which leads to failures with many operations that only work on cycle-free data models, such as `dm_flatten_to_tbl()`, `dm_filter()` or `dm_wrap_to_tbl()`.
 In such cases, it can be beneficial to "disentangle" the `dm` by duplicating the referred table.
 One way to do this in the {dm}-framework is as follows:
 
