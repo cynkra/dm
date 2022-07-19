@@ -507,6 +507,7 @@
       6 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90        NA
       # ... with 4 more variables: precip <dbl>, pressure <dbl>, visib <dbl>,
       #   time_hour <dttm>
+      # i Use `colnames()` to see all variable names
     Code
       zoomed_comp_dm %>% slice(c(1:3, 5:3), .keep_pk = TRUE) %>% col_tracker_zoomed()
     Output
