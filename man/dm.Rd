@@ -20,7 +20,7 @@ dm_get_tables(x)
 
 is_dm(x)
 
-as_dm(x)
+as_dm(x, ...)
 }
 \arguments{
 \item{...}{Tables or existing \code{dm} objects to add to the \code{dm} object.

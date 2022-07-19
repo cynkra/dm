@@ -4,12 +4,14 @@
 \alias{pull_tbl}
 \title{Retrieve a table}
 \usage{
-pull_tbl(dm, table)
+pull_tbl(dm, table, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{One unquoted table name for \code{pull_tbl.dm()}, ignored for \code{pull_tbl.zoomed_dm()}.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 The requested table
