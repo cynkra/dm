@@ -165,7 +165,7 @@ This example shows an alternative approach of deconstruction and reconstruction 
 
 ```{r}
 derived_flights_dm <-
-  flights_dm() %>% 
+  flights_dm %>% 
   pull_tbl(flights, keyed = TRUE) %>% 
   count(origin, carrier) %>% 
   dm(flights_dm)
