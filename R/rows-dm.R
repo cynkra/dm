@@ -189,20 +189,6 @@ dm_rows_delete <- function(x, y, ..., in_place = NULL, progress = NA) {
   dm_rows(x, y, "delete", top_down = FALSE, in_place, require_keys = TRUE, progress = progress)
 }
 
-#' dm_rows_truncate
-#'
-#' `dm_rows_truncate()` removes all records via [rows_truncate()],
-#' only for tables in `dm`.
-#' The order in which the tables are processed is reversed.
-#'
-#' @rdname rows-dm
-#' @export
-dm_rows_truncate <- function(x, y, ..., in_place = NULL, progress = NA) {
-  check_dots_empty()
-
-  dm_rows(x, y, "truncate", top_down = FALSE, in_place, require_keys = FALSE, progress = progress)
-}
-
 dm_rows <- function(x, y, operation_name, top_down, in_place, require_keys, progress = NA) {
   dm_rows_check(x, y)
 

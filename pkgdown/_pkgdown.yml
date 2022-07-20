@@ -33,6 +33,7 @@ reference:
 
 - title: Visualize
   contents:
+  - dm_gui
   - dm_draw
   - ends_with("_colors")
   - dm_paste

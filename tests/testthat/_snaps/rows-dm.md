@@ -284,6 +284,9 @@
     Code
       dm_copy %>% dm_rows_truncate(dm_truncate_copy) %>% pull_tbl(tf_2) %>%
         arrange_all()
+    Condition
+      Warning:
+      `dm_rows_truncate()` was deprecated in dm 1.0.0.
     Message
       Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.
     Output
@@ -303,6 +306,9 @@
     Code
       dm_copy %>% dm_rows_truncate(dm_truncate_copy, in_place = FALSE) %>% pull_tbl(
         tf_2) %>% arrange_all()
+    Condition
+      Warning:
+      `dm_rows_truncate()` was deprecated in dm 1.0.0.
     Output
       # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
       # i Use `colnames()` to see all variable names
@@ -375,6 +381,14 @@
       
     Code
       dm_copy %>% dm_rows_truncate(dm_truncate_copy, in_place = TRUE)
+    Condition
+      Warning:
+      `dm_rows_truncate()` was deprecated in dm 1.0.0.
+      Warning:
+      `sql_rows_truncate()` was deprecated in dm 1.0.0.
+      Warning:
+      `sql_rows_truncate()` was deprecated in dm 1.0.0.
+    Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
       $tf_1
