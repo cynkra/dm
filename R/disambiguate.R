@@ -14,9 +14,9 @@
 #' @inheritParams dm_add_pk
 #' @inheritParams rlang::args_dots_empty
 #' @param sep The character variable that separates the names of the table and the names of the ambiguous columns.
-#' @param quiet Boolean.
+#' @param .quiet Boolean.
 #'   By default, this function lists the renamed columns in a message, pass `TRUE` to suppress this message.
-#' @param position
+#' @param .position
 #'   `r lifecycle::badge("experimental")`
 #'   By default, table names are appended to the column names to resolve conflicts.
 #'   Prepending table names was the default for versions before 1.0.0,
@@ -28,15 +28,15 @@
 #' dm_nycflights13() %>%
 #'   dm_disambiguate_cols()
 #' @export
-dm_disambiguate_cols <- function(dm, sep = ".", ..., quiet = FALSE,
-                                 position = c("suffix", "prefix")) {
+dm_disambiguate_cols <- function(dm, sep = ".", ..., .quiet = FALSE,
+                                 .position = c("suffix", "prefix")) {
   check_not_zoomed(dm)
   check_dots_empty()
   position <- arg_match(position)
   dm_disambiguate_cols_impl(
     dm,
-    tables = NULL, sep = sep, quiet = quiet,
-    position = position
+    tables = NULL, sep = sep, quiet = .quiet,
+    position = .position
   )
 }
 
