@@ -137,11 +137,24 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
   )
 })
 
-test_that("`dm_squash_to_tbl()` does the right things", {
+test_that("`dm_squash_to_tbl()` is deprecated but still works", {
+  # with grandparent table
+  # left_join:
+  expect_deprecated(
+    expect_equivalent_tbl(
+      dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3),
+      tf_5() %>%
+        left_join(tf_4(), by = c("l" = "h")) %>%
+        left_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
+    )
+  )
+})
+
+test_that("`dm_flatten_to_tbl(recursive = TRUE)` does the right things", {
   # with grandparent table
   # left_join:
   expect_equivalent_tbl(
-    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3),
+    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, recursive = TRUE),
     tf_5() %>%
       left_join(tf_4(), by = c("l" = "h")) %>%
       left_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
@@ -150,26 +163,26 @@ test_that("`dm_squash_to_tbl()` does the right things", {
   # deeper hierarchy available and `auto_detect = TRUE`
   # for flatten: columns from tf_5 + tf_4 + tf_3 + tf_4_2 + tf_6 are combined in one table, 10 cols in total
   expect_identical(
-    ncol(dm_squash_to_tbl(dm_more_complex(), tf_5)),
+    ncol(dm_flatten_to_tbl(dm_more_complex(), tf_5, recursive = TRUE)),
     12L
   )
 
 
   # semi_join:
   expect_dm_error(
-    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = semi_join),
+    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = semi_join, recursive = TRUE),
     class = "squash_limited"
   )
 
   # anti_join:
   expect_dm_error(
-    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = anti_join),
+    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = anti_join, recursive = TRUE),
     class = "squash_limited"
   )
 
   # fails when there is a cycle:
   expect_dm_error(
-    dm_squash_to_tbl(dm_for_filter_w_cycle(), tf_5),
+    dm_flatten_to_tbl(dm_for_filter_w_cycle(), tf_5, recursive = TRUE),
     "no_cycles"
   )
 
@@ -178,7 +191,7 @@ test_that("`dm_squash_to_tbl()` does the right things", {
 
   # full_join:
   expect_equivalent_tbl(
-    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = full_join),
+    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = full_join, recursive = TRUE),
     tf_5() %>%
       full_join(tf_4(), by = c("l" = "h")) %>%
       full_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
@@ -188,7 +201,7 @@ test_that("`dm_squash_to_tbl()` does the right things", {
 
   # right_join:
   expect_dm_error(
-    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = right_join),
+    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = right_join, recursive = TRUE),
     class = "squash_limited"
   )
 })
