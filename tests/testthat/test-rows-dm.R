@@ -152,6 +152,8 @@ test_that("dm_rows_update()", {
 })
 
 test_that("dm_rows_truncate()", {
+  local_options(lifecycle_verbosity = "warning")
+
   expect_snapshot({
     suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_for_filter()))
 
@@ -204,6 +206,7 @@ test_that("dm_rows_truncate()", {
 
 test_that("output for compound keys", {
   skip("COMPOUND")
+  local_options(lifecycle_verbosity = "warning")
 
   expect_snapshot({
     target_dm <- dm_filter(nyc_comp(), weather, pressure > 1010) %>% dm_apply_filters()
