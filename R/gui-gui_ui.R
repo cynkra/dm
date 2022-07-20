@@ -110,7 +110,8 @@ gui_ui <- function(ns, select_tables = TRUE) {
                   margin-right: 10px !important;
                 }
               ")),
-              htmltools::span(id = "colorpicker-user",
+              htmltools::span(
+                id = "colorpicker-user",
                 colourpicker::colourInput(
                   "i_choose_color",
                   label = "Choose color",

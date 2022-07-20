@@ -59,7 +59,6 @@ data_column <- function(dm, table_name = "airports") {
 # table_name <- "bla"
 
 reactable_column <- function(data, table_name) {
-
   # browser()
   data |>
     reactable::reactable(

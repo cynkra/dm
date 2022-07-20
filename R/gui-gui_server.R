@@ -2,7 +2,6 @@ g_table_names <- character()
 
 
 gui_server <- function(input, output, session) {
-
   # debug <- isTRUE(getOption("shiny.fullstacktrace"))
   # if (!debug) {
   #   print <- function(x, ...) invisible(x)
@@ -323,16 +322,19 @@ gui_server <- function(input, output, session) {
     r_ops_stack(ops_stack_append(r_ops_stack(), ans))
   })
 
-  shiny::observeEvent(input$i_choose_color, {
-    ans <- mw_cg_run(
-      r_ops(), "dm_set_colors",
-      table_names = r_table_names_ordered(),
-      color_name = input$i_choose_color,
-      abort_function = ~ showNotification(.x, type = "error")
-    )
+  shiny::observeEvent(input$i_choose_color,
+    {
+      ans <- mw_cg_run(
+        r_ops(), "dm_set_colors",
+        table_names = r_table_names_ordered(),
+        color_name = input$i_choose_color,
+        abort_function = ~ showNotification(.x, type = "error")
+      )
 
-    r_ops_stack(ops_stack_append(r_ops_stack(), ans))
-  }, ignoreInit = TRUE)
+      r_ops_stack(ops_stack_append(r_ops_stack(), ans))
+    },
+    ignoreInit = TRUE
+  )
 
   shiny::observeEvent(input$i_rm_col, {
     ans <- mw_cg_run(
