@@ -32,6 +32,8 @@
   # rigg(dm_rm_pk_impl)
   # rigg(dm_rm_fk_impl)
   # rigg(cdm_rm_fk)
+
+  run_on_load()
 }
 
 rigg <- function(fun) {
