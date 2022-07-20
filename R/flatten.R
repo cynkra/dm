@@ -194,7 +194,7 @@ dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  dm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
 }
 
 parent_child_table <- function(dm, table_1, table_2) {
