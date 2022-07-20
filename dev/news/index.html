@@ -350,7 +350,7 @@
 <h2 class="pkg-version" data-toc-text="0.2.3" id="dm-023">dm 0.2.3<a class="anchor" aria-label="anchor" href="#dm-023"></a></h2><p class="text-muted">CRAN release: 2021-06-20</p>
 <div class="section level3">
 <h3 id="bug-fixes-0-2-3">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-3"></a></h3>
-<ul><li>Fix <code><a href="../reference/rows_truncate.html">rows_truncate()</a></code> in interactive mode (<a href="https://github.com/cynkra/dm/issues/588" class="external-link">#588</a>).</li></ul></div>
+<ul><li>Fix <code><a href="../reference/deprecated.html">rows_truncate()</a></code> in interactive mode (<a href="https://github.com/cynkra/dm/issues/588" class="external-link">#588</a>).</li></ul></div>
 <div class="section level3">
 <h3 id="features-0-2-3">Features<a class="anchor" aria-label="anchor" href="#features-0-2-3"></a></h3>
 <ul><li>Implement <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_delete()</a></code> for databases (<a href="https://github.com/cynkra/dm/issues/589" class="external-link">#589</a>).</li></ul></div>
@@ -431,7 +431,7 @@
 <li>
 <code>copy_dm_to(set_key_constraints = FALSE)</code> downgrades unique indexes to regular indexes (<a href="https://github.com/cynkra/dm/issues/335" class="external-link">#335</a>).</li>
 <li>
-<code><a href="../reference/rows_truncate.html">rows_truncate()</a></code> implemented for data frames (<a href="https://github.com/cynkra/dm/issues/335" class="external-link">#335</a>).</li>
+<code><a href="../reference/deprecated.html">rows_truncate()</a></code> implemented for data frames (<a href="https://github.com/cynkra/dm/issues/335" class="external-link">#335</a>).</li>
 <li>
 <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code> enumerates column in the order they apper in the table (<a href="https://github.com/cynkra/dm/issues/335" class="external-link">#335</a>).</li>
 </ul></div>
@@ -532,7 +532,7 @@
 <ul><li>
 <code><a href="../reference/dm_paste.html">dm_paste()</a></code> generates self-contained code (<a href="https://github.com/cynkra/dm/issues/401" class="external-link">#401</a>).</li>
 <li>Errors regarding cycles in the relationship graph now show the shortest cycle (<a href="https://github.com/cynkra/dm/issues/405" class="external-link">#405</a>).</li>
-<li>Implement <code><a href="../reference/rows_truncate.html">rows_truncate()</a></code> for databases.</li>
+<li>Implement <code><a href="../reference/deprecated.html">rows_truncate()</a></code> for databases.</li>
 <li>
 <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> works on a zoomed dm, with a message.</li>
 <li>The data model is drawn in a more compact way if it comprises of multiple connected components.</li>
@@ -556,8 +556,8 @@
 <h2 class="pkg-version" data-toc-text="0.1.4" id="dm-014">dm 0.1.4<a class="anchor" aria-label="anchor" href="#dm-014"></a></h2><p class="text-muted">CRAN release: 2020-06-07</p>
 <div class="section level3">
 <h3 id="features-0-1-4">Features<a class="anchor" aria-label="anchor" href="#features-0-1-4"></a></h3>
-<ul><li><p>New <code><a href="../reference/rows-dm.html">dm_rows_insert()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_update()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_patch()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_upsert()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_delete()</a></code> and <code><a href="../reference/rows-dm.html">dm_rows_truncate()</a></code>, calling the corresponding <code>rows_*()</code> method for every table (<a href="https://github.com/cynkra/dm/issues/319" class="external-link">#319</a>).</p></li>
-<li><p>New <code><a href="../reference/rows_truncate.html">rows_truncate()</a></code> (<a href="https://github.com/cynkra/dm/issues/319" class="external-link">#319</a>).</p></li>
+<ul><li><p>New <code><a href="../reference/rows-dm.html">dm_rows_insert()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_update()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_patch()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_upsert()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_delete()</a></code> and <code><a href="../reference/deprecated.html">dm_rows_truncate()</a></code>, calling the corresponding <code>rows_*()</code> method for every table (<a href="https://github.com/cynkra/dm/issues/319" class="external-link">#319</a>).</p></li>
+<li><p>New <code><a href="../reference/deprecated.html">rows_truncate()</a></code> (<a href="https://github.com/cynkra/dm/issues/319" class="external-link">#319</a>).</p></li>
 <li><p>Added <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update()</a></code> methods for SQLite, Postgres, MariaDB and MSSQL (<a href="https://github.com/cynkra/dm/issues/319" class="external-link">#319</a>).</p></li>
 <li><p>Missing arguments now give a better error message (<a href="https://github.com/cynkra/dm/issues/388" class="external-link">#388</a>).</p></li>
 <li><p>Empty <code>dm</code> object prints as <code><a href="../reference/dm.html">dm()</a></code> (<a href="https://github.com/cynkra/dm/issues/386" class="external-link">#386</a>).</p></li>
