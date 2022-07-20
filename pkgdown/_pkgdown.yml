@@ -45,7 +45,6 @@ reference:
 - title: Flatten
   contents:
   - dm_flatten_to_tbl
-  - dm_squash_to_tbl
   - dm_disambiguate_cols
 
 - title: Filter
