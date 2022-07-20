@@ -42,7 +42,9 @@ cg_format_f_list <- function(x) {
 }
 
 call_to_char <- function(body) {
-  trimws(expr_deparse(body)) %>% paste0(collapse = "\n  ")
+  stopifnot(identical(body[[2]], sym(".")))
+  body <- as.call(as.list(body[-2]))
+  trimws(expr_deparse(body)) %>% paste0(collapse = " ")
 }
 
 cg_eval_block <- function(cg_block) {
