@@ -164,11 +164,12 @@ Here is an example for adding a summary of a table as a new table to a `dm`. For
 This example shows an alternative approach of deconstruction and reconstruction using `pull_tbl()` and `dm()` with the original `dm` object.
 
 ```{r}
-derived_flights_dm <-
+flights_derived <-
   flights_dm %>% 
   pull_tbl(flights, keyed = TRUE) %>% 
-  count(origin, carrier) %>% 
-  dm(flights_dm)
+  count(origin, carrier)
+
+derived_flights_dm <- dm(flights_derived, flights_dm)
 
 derived_flights_dm %>% 
   dm_draw()
