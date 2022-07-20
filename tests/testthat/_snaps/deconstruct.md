@@ -1451,6 +1451,38 @@
       #   minute <dbl>, and abbreviated variable names 1: wind_speed, 2: wind_gust
       # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
 
+# semi_join()
+
+    Code
+      dm(x, y, r = semi_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        r,
+      ) %>%
+        dm::dm_select(x, a) %>%
+        dm::dm_select(y, b) %>%
+        dm::dm_select(r, a) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(r, a, y)
+    Code
+      dm(x, y, r = semi_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        r,
+      ) %>%
+        dm::dm_select(x, a) %>%
+        dm::dm_select(y, b) %>%
+        dm::dm_select(r, b) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_pk(r, b) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(x, a, r)
+
 # arrange for keyed tables produces expected output
 
     Code
