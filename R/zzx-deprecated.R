@@ -710,7 +710,7 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
 
 #' @description
 #' `dm_squash_to_tbl()`  is deprecated as of dm 1.0.0, because the same functionality
-#' is offered by [dm_flatten_to_tbl(recursive = TRUE)].
+#' is offered by [dm_flatten_to_tbl()] with `recursive = TRUE`.
 #'
 #' @rdname deprecated
 #' @keywords internal
