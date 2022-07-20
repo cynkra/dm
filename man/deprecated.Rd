@@ -65,6 +65,7 @@
 \alias{dm_add_tbl}
 \alias{dm_bind}
 \alias{rows_truncate}
+\alias{dm_rows_truncate}
 \title{Deprecated functions}
 \usage{
 sql_schema_create(dest, schema, ...)
@@ -218,6 +219,8 @@ dm_add_tbl(dm, ..., repair = "unique", quiet = FALSE)
 dm_bind(..., repair = "check_unique", quiet = FALSE)
 
 rows_truncate(x, ..., in_place = FALSE)
+
+dm_rows_truncate(x, y, ..., in_place = NULL, progress = NA)
 }
 \arguments{
 \item{...}{These dots are for future extensions and must be empty.}
@@ -267,7 +270,7 @@ is offered by \code{\link[=dm]{dm()}} with \code{.name_repair = "unique"}.
 \code{dm_bind()}  is deprecated as of dm 1.0.0, because the same functionality
 is offered by \code{\link[=dm]{dm()}}.
 
-\code{rows_truncate()}  is deprecated as of dm 1.0.0, because it's a DDL operation
+\code{rows_truncate()} is deprecated as of dm 1.0.0, because it's a DDL operation
 and requires different permissions than the \verb{dplyr::rows_*()} functions.
 }
 \keyword{internal}

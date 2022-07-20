@@ -709,7 +709,7 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
 }
 
 #' @description
-#' `rows_truncate()`  is deprecated as of dm 1.0.0, because it's a DDL operation
+#' `rows_truncate()` is deprecated as of dm 1.0.0, because it's a DDL operation
 #' and requires different permissions than the `dplyr::rows_*()` functions.
 #'
 #' @rdname deprecated
@@ -793,4 +793,15 @@ target_table_name <- function(x, in_place) {
 
   # Never write unless handled above
   NULL
+}
+
+#' @rdname deprecated
+#' @keywords internal
+#'
+#' @export
+dm_rows_truncate <- function(x, y, ..., in_place = NULL, progress = NA) {
+  deprecate_soft("1.0.0", "dm_rows_truncate()")
+  check_dots_empty()
+
+  dm_rows(x, y, "truncate", top_down = FALSE, in_place, require_keys = FALSE, progress = progress)
 }
