@@ -2,6 +2,10 @@
 
     Code
       dm_from_con(con_db)[integer()]
+    Condition
+      Warning:
+      `dm_squash_to_tbl()` was deprecated in dm 1.0.0.
+      Please use `recursive = TRUE` in `dm_flatten_to_tbl()` instead.
     Message
       Keys queried successfully, use `learn_keys = TRUE` to mute this message.
     Output
