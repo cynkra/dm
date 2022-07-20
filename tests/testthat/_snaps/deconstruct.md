@@ -295,6 +295,24 @@
                Keys 
       "--- | 0 | 0" 
 
+# `dm()` handles missing key column names gracefully
+
+    Code
+      dm(x = keyed$x["b"], y = keyed$y) %>% dm_paste()
+    Message
+      dm::dm(
+        x,
+        y,
+      ) %>%
+        dm::dm_add_pk(y, c(a, b))
+    Code
+      dm(x = keyed$x, y = keyed$y["b"]) %>% dm_paste()
+    Message
+      dm::dm(
+        x,
+        y,
+      )
+
 # keyed_by()
 
     Code
