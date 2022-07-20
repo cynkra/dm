@@ -123,6 +123,8 @@ unclass_keyed_tbl <- function(tbl) {
     class(tbl) <- new_classes
   }
 
+  attr(tbl, "dm_key_info") <- NULL
+
   tbl
 }
 
