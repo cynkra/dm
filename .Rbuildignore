@@ -28,3 +28,4 @@
 ^CRAN-SUBMISSION$
 ^\.gitpod\.Dockerfile$
 ^\.gitpod\.yml$
+^inst/htmlwidgets/lib/jquery/\.bower\.json$
