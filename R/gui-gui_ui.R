@@ -109,6 +109,10 @@ gui_ui <- function(ns, select_tables = TRUE) {
                   width: 140px !important;
                   margin-right: 10px !important;
                 }
+                .colourpicker-panel {
+                  left: -50px;
+                  top: -130px;
+                }
               ")),
               htmltools::span(
                 id = "colorpicker-user",
