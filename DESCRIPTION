@@ -68,6 +68,7 @@ Imports:
     vctrs (>= 0.3.2)
 Suggests: 
     brio,
+    colourpicker,
     covr,
     crayon,
     dbplyr (>= 2.2.0),
@@ -77,6 +78,8 @@ Suggests:
     duckdb (>= 0.4.0),
     fansi,
     forcats,
+    htmltools,
+    htmlwidgets,
     jsonlite,
     keyring,
     knitr,
@@ -86,21 +89,28 @@ Suggests:
     pixarfilms,
     pool,
     progress,
+    reactable,
     RMariaDB (>= 1.2.2),
     rmarkdown,
     RPostgres,
     RSQLite (>= 2.2.8),
+    rstudioapi,
+    shiny,
+    shinyAce,
+    shinydashboard,
     testthat (>= 3.1.2),
     tidyverse,
+    usethis,
     waldo,
     withr
 VignetteBuilder: 
     knitr
+Config/autostyle/scope: line_breaks
+Config/autostyle/strict: true
+Config/testthat/edition: 3
+Config/testthat/parallel: true
+Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm,
+    draw-dm, bind, rows-dm
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd"))
 RoxygenNote: 7.2.1
-Config/testthat/edition: 3
-Config/testthat/parallel: true
-Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm, draw-dm, bind, rows-dm
-Config/autostyle/scope: line_breaks
-Config/autostyle/strict: true
