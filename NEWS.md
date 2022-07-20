@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.99.99.9007
+
+## Features
+
+- New `dm_gui()` for interactive editing of `dm` objects (#1076, #1319).
+
+## Uncategorized
+
+- REVERT ME: Shut up GHA PRs for pillar < 1.8.0.
+
+
 # dm 0.99.99.9006
 
 ## Features
