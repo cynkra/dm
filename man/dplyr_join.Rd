@@ -11,7 +11,9 @@
 \alias{right_join.zoomed_dm}
 \alias{right_join.dm_keyed_tbl}
 \alias{semi_join.zoomed_dm}
+\alias{semi_join.dm_keyed_tbl}
 \alias{anti_join.zoomed_dm}
+\alias{anti_join.dm_keyed_tbl}
 \alias{nest_join.zoomed_dm}
 \title{\pkg{dplyr} join methods for zoomed dm objects}
 \usage{
@@ -33,7 +35,11 @@
 
 \method{semi_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
 
+\method{semi_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ...)
+
 \method{anti_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{anti_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ...)
 
 \method{nest_join}{zoomed_dm}(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...)
 }

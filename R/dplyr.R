@@ -579,6 +579,26 @@ semi_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
+#' @rdname dplyr_join
+#' @export
+semi_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, ...) {
+  if (!is_dm_keyed_tbl(y)) {
+    return(NextMethod())
+  }
+
+  if (is.null(by)) {
+    by <- keyed_by(x, y)
+  }
+
+  joined_tbl <- semi_join(
+    unclass_keyed_tbl(x), unclass_keyed_tbl(y), by,
+    copy = copy,
+    ...
+  )
+
+  new_keyed_tbl_from_keys_info(joined_tbl, keyed_get_info(x))
+}
+
 #' @export
 anti_join.dm <- function(x, ...) {
   check_zoomed(x)
@@ -591,6 +611,26 @@ anti_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy, disambiguate = FALSE)
   joined_tbl <- anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
+}
+
+#' @rdname dplyr_join
+#' @export
+anti_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, ...) {
+  if (!is_dm_keyed_tbl(y)) {
+    return(NextMethod())
+  }
+
+  if (is.null(by)) {
+    by <- keyed_by(x, y)
+  }
+
+  joined_tbl <- anti_join(
+    unclass_keyed_tbl(x), unclass_keyed_tbl(y), by,
+    copy = copy,
+    ...
+  )
+
+  new_keyed_tbl_from_keys_info(joined_tbl, keyed_get_info(x))
 }
 
 #' @export

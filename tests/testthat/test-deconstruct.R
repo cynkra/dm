@@ -419,6 +419,27 @@ test_that("left join works as expected with keyed tables", {
   expect_equal(dim(zd2), dim(jd2))
 })
 
+# semi_join ----------------------------------
+
+test_that("semi_join()", {
+  withr::local_seed(20220720)
+
+  dm <-
+    dm(x = tibble(a = 1), y = tibble(b = 1)) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, a, y)
+
+  x <- keyed_tbl_impl(dm, "x")
+  y <- keyed_tbl_impl(dm, "y")
+
+  expect_snapshot({
+    dm(x, y, r = semi_join(x, y)) %>%
+      dm_paste(options = c("select", "keys"))
+    dm(x, y, r = semi_join(y, x)) %>%
+      dm_paste(options = c("select", "keys"))
+  })
+})
+
 # arrange ----------------------------------
 
 test_that("arrange for keyed tables produces expected output", {
