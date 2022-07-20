@@ -34,7 +34,8 @@ dm_disambiguate_cols <- function(dm, sep = ".", ..., quiet = FALSE,
   check_dots_empty()
   position <- arg_match(position)
   dm_disambiguate_cols_impl(
-    dm, tables = NULL, sep = sep, quiet = quiet,
+    dm,
+    tables = NULL, sep = sep, quiet = quiet,
     position = position
   )
 }
