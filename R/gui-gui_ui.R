@@ -87,7 +87,7 @@ gui_ui <- function(ns, select_tables = TRUE) {
                   choices = NULL,
                   options = list(
                     placeholder = "Select or search one or several tables",
-                    plugins = list('remove_button')
+                    plugins = list("remove_button")
                   ),
                   width = "100%"
                 ),
@@ -144,7 +144,7 @@ gui_ui <- function(ns, select_tables = TRUE) {
             title = "Edit Table",
             status = "success",
             width = 6,
-            reactable::reactableOutput('o_column'),
+            reactable::reactableOutput("o_column"),
             footer =
               shiny::conditionalPanel(
                 condition = "output.is_one_table_selected",
@@ -163,8 +163,8 @@ gui_ui <- function(ns, select_tables = TRUE) {
             status = "warning",
             width = 6,
             shiny::fluidRow(
-              shiny::column(6, reactable::reactableOutput('o_column_1')),
-              shiny::column(6, reactable::reactableOutput('o_column_2')),
+              shiny::column(6, reactable::reactableOutput("o_column_1")),
+              shiny::column(6, reactable::reactableOutput("o_column_2")),
             ),
             footer = shiny::tagList(
               # p("Select two tables to manage the relationship between them."),

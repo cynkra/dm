@@ -137,11 +137,15 @@ gui_server <- function(input, output, session) {
 
     # do not self-update: changes in svg or should only trigger an update of
     # select if it was NOT induced by select itself.
-    if (identical(table_names, g_table_names_select)) return(NULL)
+    if (identical(table_names, g_table_names_select)) {
+      return(NULL)
+    }
 
     # To avoid infite loops
     # Not perfect: One could update and then click on SVG
-    if (Sys.time() - g_update_time < 0.3) return(NULL)
+    if (Sys.time() - g_update_time < 0.3) {
+      return(NULL)
+    }
 
     shiny::updateSelectizeInput(
       session,
@@ -202,10 +206,10 @@ gui_server <- function(input, output, session) {
     table_name <- r_table_names_ordered()
     if (length(table_name) == 1) {
       n <- reactable::getReactableState("o_column", "selected")
-      shiny::req(r_data_column())[n, ] |> dplyr::pull(name)
+      shiny::req(r_data_column())[n, ] %>% dplyr::pull(name)
     } else if (length(table_name) == 2) {
       n <- reactable::getReactableState("o_column_1", "selected")
-      shiny::req(r_data_column())[n, ] |> dplyr::pull(name)
+      shiny::req(r_data_column())[n, ] %>% dplyr::pull(name)
     }
   })
 
@@ -246,7 +250,7 @@ gui_server <- function(input, output, session) {
 
   r_column_2_names <- shiny::reactive({
     n <- reactable::getReactableState("o_column_2", "selected")
-    shiny::req(r_data_column_2())[n, ] |> dplyr::pull(name)
+    shiny::req(r_data_column_2())[n, ] %>% dplyr::pull(name)
   })
 
   # so we can use shiny::conditionalPanel() and avoid renderUI for now
