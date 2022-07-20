@@ -2,12 +2,9 @@
 % Please edit documentation in R/flatten.R
 \name{dm_flatten_to_tbl}
 \alias{dm_flatten_to_tbl}
-\alias{dm_squash_to_tbl}
 \title{Flatten a part of a \code{dm} into a wide table}
 \usage{
-dm_flatten_to_tbl(dm, start, ..., join = left_join)
-
-dm_squash_to_tbl(dm, start, ..., join = left_join)
+dm_flatten_to_tbl(dm, start, ..., recursive = FALSE, join = left_join)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object.}
@@ -22,8 +19,9 @@ for example a fact table in a star schema.}
 Unquoted names of the tables to be included in addition to the \code{start} table.
 The order of the tables here determines the order of the joins.
 If the argument is empty, all tables that can be reached will be included.
-Only \code{dm_squash_to_tbl()} allows using tables that are not direct neighbors of \code{start}.
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
+
+\item{recursive}{Logical, defaults to \code{FALSE}. Should not only parent tables be joined to \code{start}, but also their ancestors?}
 
 \item{join}{The type of join to be performed, see \code{\link[dplyr:mutate-joins]{dplyr::join()}}.}
 }
@@ -31,8 +29,8 @@ Only \code{dm_squash_to_tbl()} allows using tables that are not direct neighbors
 A single table that results from consecutively joining all affected tables to the \code{start} table.
 }
 \description{
-\code{dm_flatten_to_tbl()} and \code{dm_squash_to_tbl()} gather all information of interest in one place in a wide table.
-Both functions perform a disambiguation of column names and a cascade of joins.
+\code{dm_flatten_to_tbl()} gathers all information of interest in one place in a wide table.
+It performs a disambiguation of column names and a cascade of joins.
 }
 \details{
 With \code{...} left empty, this function will join together all the tables of your \code{\link{dm}}
@@ -68,12 +66,12 @@ Therefore, trying this will result in a warning.
 Since \code{join = nest_join()} does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
 
-The difference between \code{dm_flatten_to_tbl()} and \code{dm_squash_to_tbl()} is
+The difference between \code{recursive = FALSE} and \code{recursive = TRUE} is
 the following (see the examples):
 \itemize{
-\item \code{dm_flatten_to_tbl()} allows only one level of hierarchy
+\item \code{recursive = FALSE} allows only one level of hierarchy
 (i.e., direct neighbors to table \code{start}), while
-\item \code{dm_squash_to_tbl()} will go through all levels of hierarchy while joining.
+\item \code{recursive = TRUE} will go through all levels of hierarchy while joining.
 }
 
 Additionally, these functions differ from \code{dm_wrap_tbl()}, which always
@@ -87,7 +85,7 @@ dm_financial() \%>\%
 
 dm_financial() \%>\%
   dm_select_tbl(-loans) \%>\%
-  dm_squash_to_tbl(start = cards)
+  dm_flatten_to_tbl(start = cards, recursive = TRUE)
 
 }
 \concept{flattening functions}

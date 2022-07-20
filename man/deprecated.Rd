@@ -64,6 +64,7 @@
 \alias{dm_rm_tbl}
 \alias{dm_add_tbl}
 \alias{dm_bind}
+\alias{dm_squash_to_tbl}
 \title{Deprecated functions}
 \usage{
 sql_schema_create(dest, schema, ...)
@@ -215,6 +216,8 @@ dm_rm_tbl(dm, ...)
 dm_add_tbl(dm, ..., repair = "unique", quiet = FALSE)
 
 dm_bind(..., repair = "check_unique", quiet = FALSE)
+
+dm_squash_to_tbl(dm, start, ..., join = left_join)
 }
 \arguments{
 \item{...}{These dots are for future extensions and must be empty.}
@@ -263,5 +266,8 @@ is offered by \code{\link[=dm]{dm()}} with \code{.name_repair = "unique"}.
 
 \code{dm_bind()}  is deprecated as of dm 1.0.0, because the same functionality
 is offered by \code{\link[=dm]{dm()}}.
+
+\code{dm_squash_to_tbl()}  is deprecated as of dm 1.0.0, because the same functionality
+is offered by \link{dm_flatten_to_tbl(recursive = TRUE)}.
 }
 \keyword{internal}

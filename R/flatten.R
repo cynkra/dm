@@ -1,7 +1,7 @@
 #' Flatten a part of a `dm` into a wide table
 #'
-#' `dm_flatten_to_tbl()` and `dm_squash_to_tbl()` gather all information of interest in one place in a wide table.
-#' Both functions perform a disambiguation of column names and a cascade of joins.
+#' `dm_flatten_to_tbl()` gathers all information of interest in one place in a wide table.
+#' It performs a disambiguation of column names and a cascade of joins.
 #'
 #' @inheritParams dm_join_to_tbl
 #' @param start The table from which all outgoing foreign key relations are considered
@@ -14,8 +14,8 @@
 #'   Unquoted names of the tables to be included in addition to the `start` table.
 #'   The order of the tables here determines the order of the joins.
 #'   If the argument is empty, all tables that can be reached will be included.
-#'   Only `dm_squash_to_tbl()` allows using tables that are not direct neighbors of `start`.
 #'   `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
+#' @param recursive Logical, defaults to `FALSE`. Should not only parent tables be joined to `start`, but also their ancestors?
 #' @family flattening functions
 #'
 #' @details
@@ -52,13 +52,13 @@
 #' Since `join = nest_join()` does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 #' each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
 #'
-#' The difference between `dm_flatten_to_tbl()` and `dm_squash_to_tbl()` is
+#' The difference between `recursive = FALSE` and `recursive = TRUE` is
 #' the following (see the examples):
 #'
-#' - `dm_flatten_to_tbl()` allows only one level of hierarchy
+#' - `recursive = FALSE` allows only one level of hierarchy
 #'   (i.e., direct neighbors to table `start`), while
 #'
-#' - `dm_squash_to_tbl()` will go through all levels of hierarchy while joining.
+#' - `recursive = TRUE` will go through all levels of hierarchy while joining.
 #'
 #' Additionally, these functions differ from `dm_wrap_tbl()`, which always
 #' returns a `dm` object.
@@ -73,26 +73,17 @@
 #'
 #' dm_financial() %>%
 #'   dm_select_tbl(-loans) %>%
-#'   dm_squash_to_tbl(start = cards)
+#'   dm_flatten_to_tbl(start = cards, recursive = TRUE)
 #'
 #' @export
-dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
+dm_flatten_to_tbl <- function(dm, start, ..., recursive = FALSE, join = left_join) {
   check_not_zoomed(dm)
   join_name <- as_label(enexpr(join))
-  start <- dm_tbl_name(dm, {{ start }})
-  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
-}
+  if (recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
 
-#' @rdname dm_flatten_to_tbl
-#' @export
-dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
-  check_not_zoomed(dm)
-  join_name <- as_label(enexpr(join))
-  if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
   start <- dm_tbl_name(dm, {{ start }})
-  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
+  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = recursive)
 }
-
 
 dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   vars <- setdiff(src_tbls_impl(dm), start)

@@ -707,3 +707,21 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
   new_def <- dm_bind_impl(dms, repair, quiet)
   new_dm3(new_def)
 }
+
+#' @description
+#' `dm_squash_to_tbl()`  is deprecated as of dm 1.0.0, because the same functionality
+#' is offered by [dm_flatten_to_tbl(recursive = TRUE)].
+#'
+#' @rdname deprecated
+#' @keywords internal
+#'
+#' @export
+dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
+  deprecate_soft("1.0.0", "dm_squash_to_tbl()", details = "Please use `recursive = TRUE` in `dm_flatten_to_tbl()` instead.")
+
+  check_not_zoomed(dm)
+  join_name <- as_label(enexpr(join))
+  if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
+  start <- dm_tbl_name(dm, {{ start }})
+  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
+}
