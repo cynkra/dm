@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Migration guide: 'cdm' -&gt; 'dm'">
 <meta property="og:description" content="dm">
@@ -101,7 +101,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Migration guide: 'cdm' -&gt; 'dm'</h1>
             
-            <h4 data-toc-skip class="date">2022-07-18</h4>
+            <h4 data-toc-skip class="date">2022-07-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-cdm.Rmd" class="external-link"><code>vignettes/tech-dm-cdm.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-cdm.Rmd</code></div>
@@ -149,40 +149,44 @@
 <span><span class="co">#&gt;  8 BTV   Burlington Intl                44.5  -73.2   335    -5 A     Amer…</span></span>
 <span><span class="co">#&gt;  9 BUF   Buffalo Niagara Intl           42.9  -78.7   724    -5 A     Amer…</span></span>
 <span><span class="co">#&gt; 10 BUR   Bob Hope                       34.2 -118.    778    -8 A     Amer…</span></span>
-<span><span class="co">#&gt; # … with 76 more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with 76 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm</span><span class="op">$</span><span class="va">planes</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 945 × 9</span></span>
-<span><span class="co">#&gt;    tailnum  year type         manufacturer model engines seats speed engine</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; </span></span>
-<span><span class="co">#&gt;  1 N10156   2004 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt;  2 N104UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span></span>
-<span><span class="co">#&gt;  3 N10575   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt;  4 N105UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span></span>
-<span><span class="co">#&gt;  5 N110UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span></span>
-<span><span class="co">#&gt;  6 N11106   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt;  7 N11107   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt;  8 N11109   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt;  9 N11121   2003 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt; 10 N11137   2003 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt; # … with 935 more rows</span></span></code></pre>
+<span><span class="co">#&gt;    tailnum  year type              manuf…¹ model engines seats speed engine</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;             &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; </span></span>
+<span><span class="co">#&gt;  1 N10156   2004 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  2 N104UW   1999 Fixed wing multi… AIRBUS… A320…       2   182    NA Turbo…</span></span>
+<span><span class="co">#&gt;  3 N10575   2002 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  4 N105UW   1999 Fixed wing multi… AIRBUS… A320…       2   182    NA Turbo…</span></span>
+<span><span class="co">#&gt;  5 N110UW   1999 Fixed wing multi… AIRBUS… A320…       2   182    NA Turbo…</span></span>
+<span><span class="co">#&gt;  6 N11106   2002 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  7 N11107   2002 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  8 N11109   2002 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  9 N11121   2003 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt; 10 N11137   2003 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt; # … with 935 more rows, and abbreviated variable name ¹​manufacturer</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm</span><span class="op">[[</span><span class="st">"weather"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 144 × 15</span></span>
-<span><span class="co">#&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 EWR     2013     1    10     0  41    32    70.1      230       8.06</span></span>
-<span><span class="co">#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21</span></span>
-<span><span class="co">#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90</span></span>
-<span><span class="co">#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75</span></span>
-<span><span class="co">#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90</span></span>
-<span><span class="co">#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 </span></span>
-<span><span class="co">#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90</span></span>
-<span><span class="co">#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90</span></span>
-<span><span class="co">#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06</span></span>
-<span><span class="co">#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 </span></span>
-<span><span class="co">#&gt; # … with 134 more rows, and 5 more variables: wind_gust &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span></code></pre>
+<span><span class="co">#&gt;    origin  year month   day  hour  temp  dewp humid wind_…¹ wind_…² wind_…³</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 EWR     2013     1    10     0  41    32    70.1     230    8.06    NA  </span></span>
+<span><span class="co">#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9     210    9.21    NA  </span></span>
+<span><span class="co">#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8     230    6.90    NA  </span></span>
+<span><span class="co">#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5     270    5.75    NA  </span></span>
+<span><span class="co">#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0     320    6.90    NA  </span></span>
+<span><span class="co">#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0     300   12.7     20.7</span></span>
+<span><span class="co">#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8     280    6.90    17.3</span></span>
+<span><span class="co">#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6     330    6.90    NA  </span></span>
+<span><span class="co">#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7     330    8.06    NA  </span></span>
+<span><span class="co">#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6     320   17.3     26.5</span></span>
+<span><span class="co">#&gt; # … with 134 more rows, 4 more variables: precip &lt;dbl&gt;, pressure &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   visib &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names</span></span>
+<span><span class="co">#&gt; #   ¹​wind_dir, ²​wind_speed, ³​wind_gust</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
 <p>After the update the same result is achieved by this type of function call:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/deprecated.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airlines</span><span class="op">)</span></span>

@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Joining in relational data models">
 <meta property="og:description" content="dm">
@@ -102,7 +102,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Joining in relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2022-07-18</h4>
+            <h4 data-toc-skip class="date">2022-07-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-join.Rmd" class="external-link"><code>vignettes/tech-dm-join.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-join.Rmd</code></div>
@@ -184,22 +184,24 @@
 <span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></span>
 <span><span class="va">dm_joined</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1,761 × 20</span></span>
-<span><span class="co">#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time</span></span>
-<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1  2013     1    10        3           2359         4      426</span></span>
-<span><span class="co">#&gt;  2  2013     1    10       16           2359        17      447</span></span>
-<span><span class="co">#&gt;  3  2013     1    10      450            500       -10      634</span></span>
-<span><span class="co">#&gt;  4  2013     1    10      520            525        -5      813</span></span>
-<span><span class="co">#&gt;  5  2013     1    10      530            530         0      824</span></span>
-<span><span class="co">#&gt;  6  2013     1    10      531            540        -9      832</span></span>
-<span><span class="co">#&gt;  7  2013     1    10      535            540        -5     1015</span></span>
-<span><span class="co">#&gt;  8  2013     1    10      546            600       -14      645</span></span>
-<span><span class="co">#&gt;  9  2013     1    10      549            600       -11      652</span></span>
-<span><span class="co">#&gt; 10  2013     1    10      550            600       -10      649</span></span>
-<span><span class="co">#&gt; # … with 1,751 more rows, and 13 more variables: sched_arr_time &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, name &lt;chr&gt;</span></span></code></pre>
+<span><span class="co">#&gt;     year month   day dep_time sched_dep_t…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;         &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1  2013     1    10        3          2359       4     426     437     -11</span></span>
+<span><span class="co">#&gt;  2  2013     1    10       16          2359      17     447     444       3</span></span>
+<span><span class="co">#&gt;  3  2013     1    10      450           500     -10     634     648     -14</span></span>
+<span><span class="co">#&gt;  4  2013     1    10      520           525      -5     813     820      -7</span></span>
+<span><span class="co">#&gt;  5  2013     1    10      530           530       0     824     829      -5</span></span>
+<span><span class="co">#&gt;  6  2013     1    10      531           540      -9     832     850     -18</span></span>
+<span><span class="co">#&gt;  7  2013     1    10      535           540      -5    1015    1017      -2</span></span>
+<span><span class="co">#&gt;  8  2013     1    10      546           600     -14     645     709     -24</span></span>
+<span><span class="co">#&gt;  9  2013     1    10      549           600     -11     652     724     -32</span></span>
+<span><span class="co">#&gt; 10  2013     1    10      550           600     -10     649     703     -14</span></span>
+<span><span class="co">#&gt; # … with 1,751 more rows, 11 more variables: carrier &lt;chr&gt;, flight &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;,</span></span>
+<span><span class="co">#&gt; #   name &lt;chr&gt;, and abbreviated variable names ¹​sched_dep_time,</span></span>
+<span><span class="co">#&gt; #   ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
 <p>As you can see below, the <code>dm_joined</code> data frame has one more column than the <code>flights</code> table. The difference is the <code>name</code> column from the <code>airlines</code> table.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span><span class="op">$</span><span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -237,7 +239,8 @@
 <span><span class="co">#&gt; #   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span></code></pre>
+<span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span>
+<span><span class="co">#&gt; # ℹ Use `colnames()` to see all variable names</span></span></code></pre>
 <p>An example with filtering on a <code>dm</code> and then merging:</p>
 <p><strong>Get all May 2013 flights from Delta Air Lines which didn’t depart from John F. Kennedy International Airport in - and join all the airports data into the <code>flights</code> table.</strong></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -249,23 +252,25 @@
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 2,340 × 26</span></span>
-<span><span class="co">#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time</span></span>
-<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1  2013     5     1      554            600        -6      731</span></span>
-<span><span class="co">#&gt;  2  2013     5     1      555            600        -5      819</span></span>
-<span><span class="co">#&gt;  3  2013     5     1      603            610        -7      754</span></span>
-<span><span class="co">#&gt;  4  2013     5     1      622            630        -8      848</span></span>
-<span><span class="co">#&gt;  5  2013     5     1      654            700        -6      931</span></span>
-<span><span class="co">#&gt;  6  2013     5     1      655            700        -5      944</span></span>
-<span><span class="co">#&gt;  7  2013     5     1      656            705        -9     1005</span></span>
-<span><span class="co">#&gt;  8  2013     5     1      658            700        -2      925</span></span>
-<span><span class="co">#&gt;  9  2013     5     1      743            745        -2     1014</span></span>
-<span><span class="co">#&gt; 10  2013     5     1      755            800        -5      929</span></span>
-<span><span class="co">#&gt; # … with 2,330 more rows, and 19 more variables: sched_arr_time &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, name &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;</span></span></code></pre>
+<span><span class="co">#&gt;     year month   day dep_time sched_dep_t…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;         &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1  2013     5     1      554           600      -6     731     756     -25</span></span>
+<span><span class="co">#&gt;  2  2013     5     1      555           600      -5     819     827      -8</span></span>
+<span><span class="co">#&gt;  3  2013     5     1      603           610      -7     754     809     -15</span></span>
+<span><span class="co">#&gt;  4  2013     5     1      622           630      -8     848     844       4</span></span>
+<span><span class="co">#&gt;  5  2013     5     1      654           700      -6     931     950     -19</span></span>
+<span><span class="co">#&gt;  6  2013     5     1      655           700      -5     944    1007     -23</span></span>
+<span><span class="co">#&gt;  7  2013     5     1      656           705      -9    1005    1011      -6</span></span>
+<span><span class="co">#&gt;  8  2013     5     1      658           700      -2     925     928      -3</span></span>
+<span><span class="co">#&gt;  9  2013     5     1      743           745      -2    1014    1004      10</span></span>
+<span><span class="co">#&gt; 10  2013     5     1      755           800      -5     929    1001     -32</span></span>
+<span><span class="co">#&gt; # … with 2,330 more rows, 17 more variables: carrier &lt;chr&gt;, flight &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;,</span></span>
+<span><span class="co">#&gt; #   name &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   tzone &lt;chr&gt;, and abbreviated variable names ¹​sched_dep_time,</span></span>
+<span><span class="co">#&gt; #   ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
 <p>See <code><a href="../articles/tech-dm-filter.html">vignette("tech-dm-filter")</a></code> for more details on filtering.</p>
 <p>A last example:</p>
 <p><strong>Merge all tables into one big table.</strong></p>
@@ -280,25 +285,26 @@
 <span><span class="co">#&gt;   dm_rename(airports, airports.name = name) %&gt;%</span></span>
 <span><span class="co">#&gt;   dm_rename(planes, planes.year = year)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1,761 × 35</span></span>
-<span><span class="co">#&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time</span></span>
-<span><span class="co">#&gt;           &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1         2013     1    10        3           2359         4      426</span></span>
-<span><span class="co">#&gt;  2         2013     1    10       16           2359        17      447</span></span>
-<span><span class="co">#&gt;  3         2013     1    10      450            500       -10      634</span></span>
-<span><span class="co">#&gt;  4         2013     1    10      520            525        -5      813</span></span>
-<span><span class="co">#&gt;  5         2013     1    10      530            530         0      824</span></span>
-<span><span class="co">#&gt;  6         2013     1    10      531            540        -9      832</span></span>
-<span><span class="co">#&gt;  7         2013     1    10      535            540        -5     1015</span></span>
-<span><span class="co">#&gt;  8         2013     1    10      546            600       -14      645</span></span>
-<span><span class="co">#&gt;  9         2013     1    10      549            600       -11      652</span></span>
-<span><span class="co">#&gt; 10         2013     1    10      550            600       -10      649</span></span>
-<span><span class="co">#&gt; # … with 1,751 more rows, and 28 more variables: sched_arr_time &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, airlines.name &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   airports.name &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   dst &lt;chr&gt;, tzone &lt;chr&gt;, planes.year &lt;int&gt;, type &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;, …</span></span></code></pre>
+<span><span class="co">#&gt;    flights.year month   day dep_t…¹ sched…² dep_d…³ arr_t…⁴ sched…⁵ arr_d…⁶</span></span>
+<span><span class="co">#&gt;           &lt;int&gt; &lt;int&gt; &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1         2013     1    10       3    2359       4     426     437     -11</span></span>
+<span><span class="co">#&gt;  2         2013     1    10      16    2359      17     447     444       3</span></span>
+<span><span class="co">#&gt;  3         2013     1    10     450     500     -10     634     648     -14</span></span>
+<span><span class="co">#&gt;  4         2013     1    10     520     525      -5     813     820      -7</span></span>
+<span><span class="co">#&gt;  5         2013     1    10     530     530       0     824     829      -5</span></span>
+<span><span class="co">#&gt;  6         2013     1    10     531     540      -9     832     850     -18</span></span>
+<span><span class="co">#&gt;  7         2013     1    10     535     540      -5    1015    1017      -2</span></span>
+<span><span class="co">#&gt;  8         2013     1    10     546     600     -14     645     709     -24</span></span>
+<span><span class="co">#&gt;  9         2013     1    10     549     600     -11     652     724     -32</span></span>
+<span><span class="co">#&gt; 10         2013     1    10     550     600     -10     649     703     -14</span></span>
+<span><span class="co">#&gt; # … with 1,751 more rows, 26 more variables: carrier &lt;chr&gt;, flight &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;,</span></span>
+<span><span class="co">#&gt; #   airlines.name &lt;chr&gt;, airports.name &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;, planes.year &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;, and abbreviated variable …</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
 <p>To be more precise, <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code> will join all tables from one level of hierarchy (i.e., direct neighbors to table <code>start</code>). If you want to cover tables from all levels of hierarchy, use <code><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl()</a></code> instead.</p>
 <p>Also, be aware that all column names need to be unique. The <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code> takes care of this by automatically renaming the relevant columns and informs the user if any names were changed, e.g. <code>dm_rename(airlines, airlines.name = name)</code>.</p>
 <p>If you want to merge all tables, but get a nested table in return, use <code><a href="../reference/dm_wrap_tbl.html">dm_wrap_tbl()</a></code> with <code><a href="../reference/pull_tbl.html">pull_tbl()</a></code> instead:</p>
@@ -307,23 +313,25 @@
 <span>  <span class="fu"><a href="../reference/dm_wrap_tbl.html">dm_wrap_tbl</a></span><span class="op">(</span>root <span class="op">=</span> <span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1,761 × 23</span></span>
-<span><span class="co">#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time</span></span>
-<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1  2013     1    10        3           2359         4      426</span></span>
-<span><span class="co">#&gt;  2  2013     1    10       16           2359        17      447</span></span>
-<span><span class="co">#&gt;  3  2013     1    10      450            500       -10      634</span></span>
-<span><span class="co">#&gt;  4  2013     1    10      520            525        -5      813</span></span>
-<span><span class="co">#&gt;  5  2013     1    10      530            530         0      824</span></span>
-<span><span class="co">#&gt;  6  2013     1    10      531            540        -9      832</span></span>
-<span><span class="co">#&gt;  7  2013     1    10      535            540        -5     1015</span></span>
-<span><span class="co">#&gt;  8  2013     1    10      546            600       -14      645</span></span>
-<span><span class="co">#&gt;  9  2013     1    10      549            600       -11      652</span></span>
-<span><span class="co">#&gt; 10  2013     1    10      550            600       -10      649</span></span>
-<span><span class="co">#&gt; # … with 1,751 more rows, and 16 more variables: sched_arr_time &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, airlines &lt;packed[,1]&gt;,</span></span>
-<span><span class="co">#&gt; #   airports &lt;packed[,7]&gt;, planes &lt;packed[,8]&gt;, weather &lt;packed[,13]&gt;</span></span></code></pre>
+<span><span class="co">#&gt;     year month   day dep_time sched_dep_t…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;         &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1  2013     1    10        3          2359       4     426     437     -11</span></span>
+<span><span class="co">#&gt;  2  2013     1    10       16          2359      17     447     444       3</span></span>
+<span><span class="co">#&gt;  3  2013     1    10      450           500     -10     634     648     -14</span></span>
+<span><span class="co">#&gt;  4  2013     1    10      520           525      -5     813     820      -7</span></span>
+<span><span class="co">#&gt;  5  2013     1    10      530           530       0     824     829      -5</span></span>
+<span><span class="co">#&gt;  6  2013     1    10      531           540      -9     832     850     -18</span></span>
+<span><span class="co">#&gt;  7  2013     1    10      535           540      -5    1015    1017      -2</span></span>
+<span><span class="co">#&gt;  8  2013     1    10      546           600     -14     645     709     -24</span></span>
+<span><span class="co">#&gt;  9  2013     1    10      549           600     -11     652     724     -32</span></span>
+<span><span class="co">#&gt; 10  2013     1    10      550           600     -10     649     703     -14</span></span>
+<span><span class="co">#&gt; # … with 1,751 more rows, 14 more variables: carrier &lt;chr&gt;, flight &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;,</span></span>
+<span><span class="co">#&gt; #   airlines &lt;packed[,1]&gt;, airports &lt;packed[,7]&gt;, planes &lt;packed[,8]&gt;,</span></span>
+<span><span class="co">#&gt; #   weather &lt;packed[,13]&gt;, and abbreviated variable names ¹​sched_dep_time,</span></span>
+<span><span class="co">#&gt; #   ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

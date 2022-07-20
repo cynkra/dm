@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Create a dm object from a database">
 <meta property="og:description" content="dm">
@@ -102,7 +102,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Create a dm object from a database</h1>
                         <h4 data-toc-skip class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2022-07-18</h4>
+            <h4 data-toc-skip class="date">2022-07-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-db.Rmd" class="external-link"><code>vignettes/howto-dm-db.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-db.Rmd</code></div>
@@ -259,20 +259,22 @@
 <span><span class="co">#&gt;   dm_rename(accounts, accounts.date = date)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   SQL [?? x 10]</span></span>
 <span><span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span></span>
-<span><span class="co">#&gt;       id account_id loans.date amount duration payments status district_id</span></span>
-<span><span class="co">#&gt;    &lt;int&gt;      &lt;int&gt; &lt;date&gt;      &lt;dbl&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;        &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1  4959          2 1994-01-05  80952       24     3373 A                1</span></span>
-<span><span class="co">#&gt;  2  4961         19 1996-04-29  30276       12     2523 B               21</span></span>
-<span><span class="co">#&gt;  3  4962         25 1997-12-08  30276       12     2523 A               68</span></span>
-<span><span class="co">#&gt;  4  4967         37 1998-10-14 318480       60     5308 D               20</span></span>
-<span><span class="co">#&gt;  5  4968         38 1998-04-19 110736       48     2307 C               19</span></span>
-<span><span class="co">#&gt;  6  4973         67 1996-05-02 165960       24     6915 A               16</span></span>
-<span><span class="co">#&gt;  7  4986         97 1997-08-10 102876       12     8573 A               74</span></span>
-<span><span class="co">#&gt;  8  4988        103 1997-12-06 265320       36     7370 D               44</span></span>
-<span><span class="co">#&gt;  9  4989        105 1998-12-05 352704       48     7348 C               21</span></span>
-<span><span class="co">#&gt; 10  4990        110 1997-09-08 162576       36     4516 C               36</span></span>
-<span><span class="co">#&gt; # … with more rows, and 2 more variables: frequency &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   accounts.date &lt;date&gt;</span></span></code></pre>
+<span><span class="co">#&gt;       id account…¹ loans.date amount durat…² payme…³ status distr…⁴ frequ…⁵</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;     &lt;int&gt; &lt;date&gt;      &lt;dbl&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt;  1  4959         2 1994-01-05  80952      24    3373 A            1 POPLAT…</span></span>
+<span><span class="co">#&gt;  2  4961        19 1996-04-29  30276      12    2523 B           21 POPLAT…</span></span>
+<span><span class="co">#&gt;  3  4962        25 1997-12-08  30276      12    2523 A           68 POPLAT…</span></span>
+<span><span class="co">#&gt;  4  4967        37 1998-10-14 318480      60    5308 D           20 POPLAT…</span></span>
+<span><span class="co">#&gt;  5  4968        38 1998-04-19 110736      48    2307 C           19 POPLAT…</span></span>
+<span><span class="co">#&gt;  6  4973        67 1996-05-02 165960      24    6915 A           16 POPLAT…</span></span>
+<span><span class="co">#&gt;  7  4986        97 1997-08-10 102876      12    8573 A           74 POPLAT…</span></span>
+<span><span class="co">#&gt;  8  4988       103 1997-12-06 265320      36    7370 D           44 POPLAT…</span></span>
+<span><span class="co">#&gt;  9  4989       105 1998-12-05 352704      48    7348 C           21 POPLAT…</span></span>
+<span><span class="co">#&gt; 10  4990       110 1997-09-08 162576      36    4516 C           36 POPLAT…</span></span>
+<span><span class="co">#&gt; # … with more rows, 1 more variable: accounts.date &lt;date&gt;, and abbreviated</span></span>
+<span><span class="co">#&gt; #   variable names ¹​account_id, ²​duration, ³​payments, ⁴​district_id,</span></span>
+<span><span class="co">#&gt; #   ⁵​frequency</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">my_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -355,7 +357,8 @@
 <span><span class="co">#&gt;  8        103       265320</span></span>
 <span><span class="co">#&gt;  9        105       352704</span></span>
 <span><span class="co">#&gt; 10        110       162576</span></span>
-<span><span class="co">#&gt; # … with more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
 <p>It is a <em>lazy table</em> powered by the {<a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a>} package: the results are not materialized; instead, an SQL query is built and executed each time the data is requested.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_total</span><span class="op">$</span><span class="va">total_loans</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -388,7 +391,8 @@
 <span><span class="co">#&gt;  8        103       265320</span></span>
 <span><span class="co">#&gt;  9        105       352704</span></span>
 <span><span class="co">#&gt; 10        110       162576</span></span>
-<span><span class="co">#&gt; # … with 672 more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with 672 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
 <p>Use this method with caution. If you are not sure of the size of the dataset you will be downloading, you can call <code><a href="../reference/dm_nrow.html">dm_nrow()</a></code> on your <code>dm</code> for the row count of your data model’s tables.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -407,7 +411,7 @@
 <span></span>
 <span><span class="va">deployed_dm</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.38.5 []</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.39.1 []</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `loans`, `accounts`, `total_loans`</span></span>
 <span><span class="co">#&gt; Columns: 13</span></span>
