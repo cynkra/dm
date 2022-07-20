@@ -176,6 +176,10 @@ utils::globalVariables(c(
   #
   # deconstruct
   "ref_uuid",
+  "child_data",
+  "child_uuid",
+  "parent_data",
+  "parent_uuid",
   #
   # keep this to avoid dealing with trailing commas
   NULL

@@ -301,7 +301,8 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
 
 #' Primary key candidate
 #'
-#' @description `r lifecycle::badge("experimental")`
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
 #' `enum_pk_candidates()` checks for each column of a
 #' table if the column contains only unique values, and is thus

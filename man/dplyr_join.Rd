@@ -3,25 +3,43 @@
 \name{dplyr_join}
 \alias{dplyr_join}
 \alias{left_join.zoomed_dm}
+\alias{left_join.dm_keyed_tbl}
 \alias{inner_join.zoomed_dm}
+\alias{inner_join.dm_keyed_tbl}
 \alias{full_join.zoomed_dm}
+\alias{full_join.dm_keyed_tbl}
 \alias{right_join.zoomed_dm}
+\alias{right_join.dm_keyed_tbl}
 \alias{semi_join.zoomed_dm}
+\alias{semi_join.dm_keyed_tbl}
 \alias{anti_join.zoomed_dm}
+\alias{anti_join.dm_keyed_tbl}
 \alias{nest_join.zoomed_dm}
 \title{\pkg{dplyr} join methods for zoomed dm objects}
 \usage{
 \method{left_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
 
+\method{left_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
+
 \method{inner_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{inner_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
 
 \method{full_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
 
+\method{full_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
+
 \method{right_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{right_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
 
 \method{semi_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
 
+\method{semi_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ...)
+
 \method{anti_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{anti_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ...)
 
 \method{nest_join}{zoomed_dm}(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...)
 }

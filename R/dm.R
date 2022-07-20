@@ -19,6 +19,7 @@
 #'
 #' - [dm_from_con()] for connecting to all tables in a database
 #'   and importing the primary and foreign keys
+#' - [dm_get_tables()] for returning a list of tables
 #' - [dm_add_pk()] and [dm_add_fk()] for adding primary and foreign keys
 #' - [copy_dm_to()] for DB interaction
 #' - [dm_draw()] for visualization
@@ -48,8 +49,6 @@
 #' dm_nycflights13()[["airports"]]
 #'
 #' dm_nycflights13() %>% names()
-#'
-#' dm_nycflights13() %>% dm_get_tables()
 dm <- function(...,
                .name_repair = c("check_unique", "unique", "universal", "minimal"),
                .quiet = FALSE) {
@@ -111,12 +110,43 @@ dm_impl <- function(tbls, names) {
 #' @param tables A named list of the tables (tibble-objects, not names),
 #'   to be included in the `dm` object.
 #'
+#' @examples
+#' library(dm)
+#' library(nycflights13)
+#'
+#' # using `data.frame` objects
+#' new_dm(tibble::lst(weather, airports))
+#'
+#' # using `dm_keyed_tbl` objects
+#' dm <- dm_nycflights13()
+#' y1 <- dm$planes %>%
+#'   mutate() %>%
+#'   select(everything())
+#' y2 <- dm$flights %>%
+#'   left_join(dm$airlines, by = "carrier")
+#'
+#' new_dm(list("tbl1" = y1, "tbl2" = y2))
+#'
 #' @rdname dm
 #' @export
 new_dm <- function(tables = list()) {
-  def <- new_dm_def(tables)
+  def <- new_keyed_dm_def(tables)
   new_dm3(def)
 }
+
+new_keyed_dm_def <- function(tables = list()) {
+  is_keyed <- map_lgl(unname(tables), is_dm_keyed_tbl)
+  stopifnot(!anyDuplicated(names(tables)[is_keyed]))
+
+  # data should be saved as a tibble
+  unclassed_tables <- map(tables, unclass_keyed_tbl)
+
+  pks_df <- pks_df_from_keys_info(tables[is_keyed])
+  fks_df <- fks_df_from_keys_info(tables[is_keyed])
+
+  new_dm_def(unclassed_tables, pks_df, fks_df)
+}
+
 
 new_dm_def <- function(tables = list(),
                        pks_df = tibble(table = character(), pks = list()),
@@ -222,28 +252,6 @@ new_col_tracker_zoom <- function() {
   tibble(table = character(), col_tracker_zoom = list())
 }
 
-#' Get tables
-#'
-#' `dm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
-#' of a `dm` object.
-#' Filtering expressions defined by [dm_filter()] are NOT evaluated at this stage.
-#' To get a filtered table, use [dm_apply_filters_to_tbl()], to apply filters to all tables use [dm_apply_filters()].
-#'
-#' @rdname dm
-#'
-#' @return For `dm_get_tables()`: A named list with the tables constituting the `dm`.
-#'
-#' @export
-dm_get_tables <- function(x) {
-  check_not_zoomed(x)
-  dm_get_tables_impl(x)
-}
-
-dm_get_tables_impl <- function(x, quiet = FALSE) {
-  def <- dm_get_def(x, quiet)
-  set_names(def$data, def$table)
-}
-
 unnest_pks <- function(def) {
   # Optimized
   pk_df <- tibble(
@@ -294,12 +302,12 @@ is_dm <- function(x) {
 #'
 #' @rdname dm
 #' @export
-as_dm <- function(x) {
+as_dm <- function(x, ...) {
   UseMethod("as_dm")
 }
 
 #' @export
-as_dm.default <- function(x) {
+as_dm.default <- function(x, ...) {
   if (!is.list(x) || is.object(x)) {
     abort(paste0("Can't coerce <", class(x)[[1]], "> to <dm>."))
   }
@@ -322,12 +330,12 @@ tbl_src <- function(x) {
 }
 
 #' @export
-as_dm.src <- function(x) {
+as_dm.src <- function(x, ...) {
   dm_from_con(con = con_from_src_or_con(x), table_names = NULL)
 }
 
 #' @export
-as_dm.DBIConnection <- function(x) {
+as_dm.DBIConnection <- function(x, ...) {
   dm_from_con(con = x, table_names = NULL)
 }
 
@@ -469,7 +477,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 #' @export
-`[[.dm` <- function(x, id) {
+`[[.dm` <- function(x, id, ...) {
   # for both dm and zoomed_dm
   if (is.numeric(id)) id <- src_tbls_impl(x)[id] else id <- as_string(id)
   tbl_impl(x, id, quiet = TRUE)
@@ -561,17 +569,22 @@ keyed_tbl_impl <- function(dm, from) {
 
 tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
   def <- dm_get_def(dm, quiet = quiet)
-  uuid_lookup <- def[c("table", "uuid")]
   idx <- match(from, def$table)
   if (is.na(idx)) {
     abort_table_not_in_dm(from, src_tbls_impl(dm))
   }
 
+  tbl_def_impl(def, idx, keyed)
+}
+
+tbl_def_impl <- function(def, idx, keyed) {
   data <- def$data[[idx]]
 
   if (!keyed) {
     return(data)
   }
+
+  uuid_lookup <- def[c("table", "uuid")]
 
   pk_def <- def$pks[[idx]]
   if (nrow(pk_def) > 0) {
@@ -592,7 +605,7 @@ tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
 
   fks_out_def <-
     map2_dfr(def$uuid, def$fks, ~ tibble(ref_uuid = .x, .y)) %>%
-    filter(table == from) %>%
+    filter(table == !!def$table[[idx]]) %>%
     select(ref_uuid, ref_column, column)
 
   fks_out <- new_fks_out(
@@ -610,6 +623,12 @@ tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
   )
 }
 
+dm_get_keyed_tables_impl <- function(dm) {
+  def <- dm_get_def(dm)
+  tables <- map(seq_along(def$table), ~ tbl_def_impl(def, .x, keyed = TRUE))
+  set_names(tables, def$table)
+}
+
 src_tbls_impl <- function(dm, quiet = FALSE) {
   dm_get_def(dm, quiet)$table
 }
@@ -624,7 +643,7 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 #' Called on a `dm` object, these methods create a copy of all tables in the `dm`.
 #' Depending on the size of your data this may take a long time.
 #'
-#' @param x A `dm`.
+#' @inheritParams dm_get_tables
 #' @param ... Passed on to [compute()].
 #' @return A `dm` object of the same structure as the input.
 #' @name materialize
@@ -745,6 +764,7 @@ empty_dm <- function() {
 #'
 #' @inheritParams dm_add_pk
 #' @param table One unquoted table name for `pull_tbl.dm()`, ignored for `pull_tbl.zoomed_dm()`.
+#' @inheritParams dm_get_tables
 #'
 #' @return The requested table
 #'
@@ -758,21 +778,25 @@ empty_dm <- function() {
 #'   dm_zoom_to(airports) %>%
 #'   pull_tbl()
 #' @export
-pull_tbl <- function(dm, table) {
+pull_tbl <- function(dm, table, ..., keyed = FALSE) {
   UseMethod("pull_tbl")
 }
 
 #' @export
-pull_tbl.dm <- function(dm, table) {
+pull_tbl.dm <- function(dm, table, ..., keyed = FALSE) {
   # for both dm and zoomed_dm
   # FIXME: shall we issue a special error in case someone tries sth. like: `pull_tbl(dm_for_filter, c(t4, t3))`?
   table_name <- as_string(enexpr(table))
   if (table_name == "") abort_no_table_provided()
-  tbl_impl(dm, table_name)
+  tbl_impl(dm, table_name, keyed = keyed)
 }
 
 #' @export
-pull_tbl.zoomed_dm <- function(dm, table) {
+pull_tbl.zoomed_dm <- function(dm, table, ..., keyed = FALSE) {
+  if (isTRUE(keyed)) {
+    abort("`keyed = TRUE` not supported for zoomed dm objects.")
+  }
+
   table_name <- as_string(enexpr(table))
   zoomed <- dm_get_zoom(dm)
   if (table_name == "") {
@@ -801,7 +825,7 @@ as.list.zoomed_dm <- function(x, ...) {
 
 #' Get a glimpse of your `dm` object
 #'
-#' @param x A `dm` object.
+#' @inheritParams dm_get_tables
 #' @param width Controls the maximum number of columns on a line used in
 #'   printing. If `NULL`, `getOption("width")` will be consulted.
 #' @param ... Passed to [pillar::glimpse()].

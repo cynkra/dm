@@ -390,87 +390,91 @@
       Primary keys: 4
       Foreign keys: 4
     Code
-      nyc_comp() %>% dm_filter(flights = (day == 10)) %>% collect() %>% dm_get_def()
+      nyc_comp() %>% dm_filter(flights = (day == 10)) %>% collect() %>% dm_get_def() %>%
+        select(-uuid)
     Output
-      # A tibble: 5 x 10
-        table data     segment display     pks     fks filters zoom   col_tracker_zoom
-        <chr> <list>   <chr>   <chr>   <list<> <list<> <list<> <list> <list>          
-      1 airl~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
-      2 airp~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
-      3 flig~ <tibble> <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL>          
-      4 plan~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
-      5 weat~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
-      # ... with 1 more variable: uuid <chr>
+      # A tibble: 5 x 9
+        table    data     segment display           pks     fks filters zoom   col_t~1
+        <chr>    <list>   <chr>   <chr>   <list<tibble> <list<> <list<> <list> <list> 
+      1 airlines <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      2 airports <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      3 flights  <tibble> <NA>    <NA>          [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL> 
+      4 planes   <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      5 weather  <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      # ... with abbreviated variable name 1: col_tracker_zoom
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% mutate(origin_new = paste0(origin,
         " airport")) %>% compute() %>% dm_update_zoomed() %>% collect() %>%
-        dm_get_def()
+        dm_get_def() %>% select(-uuid)
     Output
-      # A tibble: 5 x 10
-        table data     segment display     pks     fks filters zoom   col_tracker_zoom
-        <chr> <list>   <chr>   <chr>   <list<> <list<> <list<> <list> <list>          
-      1 airl~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
-      2 airp~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
-      3 flig~ <tibble> <NA>    <NA>    [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL>          
-      4 plan~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
-      5 weat~ <tibble> <NA>    <NA>    [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL>          
-      # ... with 1 more variable: uuid <chr>
+      # A tibble: 5 x 9
+        table    data     segment display           pks     fks filters zoom   col_t~1
+        <chr>    <list>   <chr>   <chr>   <list<tibble> <list<> <list<> <list> <list> 
+      1 airlines <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      2 airports <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      3 flights  <tibble> <NA>    <NA>          [0 x 1] [0 x 4] [0 x 2] <NULL> <NULL> 
+      4 planes   <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      5 weather  <tibble> <NA>    <NA>          [1 x 1] [1 x 4] [0 x 2] <NULL> <NULL> 
+      # ... with abbreviated variable name 1: col_tracker_zoom
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()
     Message
       Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.
     Output
       # A tibble: 144 x 15
-         origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
-         <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
-       1 EWR     2013     1    10     0  41    32    70.1      230       8.06
-       2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21
-       3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90
-       4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75
-       5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90
-       6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 
-       7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90
-       8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90
-       9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06
-      10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
-      # ... with 134 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
-      #   pressure <dbl>, visib <dbl>, time_hour <dttm>
+         origin  year month   day  hour  temp  dewp humid wind_dir wind_speed wind_g~1
+         <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>    <dbl>
+       1 EWR     2013     1    10     0  41    32    70.1      230       8.06     NA  
+       2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21     NA  
+       3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90     NA  
+       4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75     NA  
+       5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90     NA  
+       6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7      20.7
+       7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90     17.3
+       8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90     NA  
+       9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06     NA  
+      10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3      26.5
+      # ... with 134 more rows, 4 more variables: precip <dbl>, pressure <dbl>,
+      #   visib <dbl>, time_hour <dttm>, and abbreviated variable name 1: wind_gust
+      # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
     Code
       pull_tbl(nyc_comp(), weather)
     Output
       # A tibble: 144 x 15
-         origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
-         <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
-       1 EWR     2013     1    10     0  41    32    70.1      230       8.06
-       2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21
-       3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90
-       4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75
-       5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90
-       6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 
-       7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90
-       8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90
-       9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06
-      10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
-      # ... with 134 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
-      #   pressure <dbl>, visib <dbl>, time_hour <dttm>
+         origin  year month   day  hour  temp  dewp humid wind_dir wind_speed wind_g~1
+         <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>    <dbl>
+       1 EWR     2013     1    10     0  41    32    70.1      230       8.06     NA  
+       2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21     NA  
+       3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90     NA  
+       4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75     NA  
+       5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90     NA  
+       6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7      20.7
+       7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90     17.3
+       8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90     NA  
+       9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06     NA  
+      10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3      26.5
+      # ... with 134 more rows, 4 more variables: precip <dbl>, pressure <dbl>,
+      #   visib <dbl>, time_hour <dttm>, and abbreviated variable name 1: wind_gust
+      # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% pull_tbl()
     Output
       # A tibble: 144 x 15
-         origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
-         <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
-       1 EWR     2013     1    10     0  41    32    70.1      230       8.06
-       2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21
-       3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90
-       4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75
-       5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90
-       6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 
-       7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90
-       8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90
-       9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06
-      10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
-      # ... with 134 more rows, and 5 more variables: wind_gust <dbl>, precip <dbl>,
-      #   pressure <dbl>, visib <dbl>, time_hour <dttm>
+         origin  year month   day  hour  temp  dewp humid wind_dir wind_speed wind_g~1
+         <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>    <dbl>
+       1 EWR     2013     1    10     0  41    32    70.1      230       8.06     NA  
+       2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21     NA  
+       3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90     NA  
+       4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75     NA  
+       5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90     NA  
+       6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7      20.7
+       7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90     17.3
+       8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90     NA  
+       9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06     NA  
+      10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3      26.5
+      # ... with 134 more rows, 4 more variables: precip <dbl>, pressure <dbl>,
+      #   visib <dbl>, time_hour <dttm>, and abbreviated variable name 1: wind_gust
+      # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
 
 # glimpse.dm() works
 

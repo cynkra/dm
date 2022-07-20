@@ -351,6 +351,11 @@ test_that("`pull_tbl()`-methods work", {
     tf_5()
   )
 
+  expect_equal(
+    pull_tbl(dm_for_filter(), tf_5, keyed = TRUE),
+    dm_get_tables(dm_for_filter(), keyed = TRUE)[["tf_5"]]
+  )
+
   skip_if_src("maria")
   expect_equivalent_tbl(
     dm_for_filter() %>%
@@ -522,14 +527,16 @@ test_that("output for compound keys", {
     nyc_comp() %>%
       dm_filter(flights = (day == 10)) %>%
       collect() %>%
-      dm_get_def()
+      dm_get_def() %>%
+      select(-uuid)
     nyc_comp() %>%
       dm_zoom_to(weather) %>%
       mutate(origin_new = paste0(origin, " airport")) %>%
       compute() %>%
       dm_update_zoomed() %>%
       collect() %>%
-      dm_get_def()
+      dm_get_def() %>%
+      select(-uuid)
     nyc_comp() %>%
       dm_zoom_to(weather) %>%
       collect()

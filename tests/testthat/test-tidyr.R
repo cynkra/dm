@@ -2,7 +2,17 @@ test_that("basic test: 'unite()'-methods work", {
   # see issue #361
   skip_if_remote_src()
   expect_equivalent_tbl(
-    unite(zoomed_dm(), "new_col", c, e) %>% tbl_zoomed(),
+    zoomed_dm() %>%
+      unite("new_col", c, e) %>%
+      tbl_zoomed(),
+    unite(tf_2(), "new_col", c, e)
+  )
+
+  expect_equivalent_tbl(
+    dm_for_filter() %>%
+      pull_tbl(tf_2, keyed = TRUE) %>%
+      unite("new_col", c, e) %>%
+      unclass_keyed_tbl(),
     unite(tf_2(), "new_col", c, e)
   )
 
@@ -21,6 +31,16 @@ test_that("basic test: 'separate()'-methods work", {
       select(c, d, e, e1) %>%
       tbl_zoomed(),
     tf_2()
+  )
+
+  expect_equivalent_tbl(
+    dm_for_filter() %>%
+      pull_tbl(tf_2, keyed = TRUE) %>%
+      unite("new_col", c, e) %>%
+      separate("new_col", c("c", "e")) %>%
+      select(c, d, e, e1),
+    dm_for_filter() %>%
+      pull_tbl(tf_2, keyed = TRUE)
   )
 
   expect_dm_error(
