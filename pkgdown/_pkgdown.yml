@@ -161,7 +161,7 @@ navbar:
          to perform operations, generate summaries, or prepare data for extraction.
          This article covers dm's methods for creating the different kind of joins
          along with usage examples.
-      - text: Manipulate individual tables
+      - text: Manipulating individual tables
         href: articles/tech-dm-keyed.html
         desc: |
           Learn how to manipulate the data in the tables in your dm
