@@ -707,3 +707,106 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
   new_def <- dm_bind_impl(dms, repair, quiet)
   new_dm3(new_def)
 }
+
+#' @description
+#' `rows_truncate()` is deprecated as of dm 1.0.0, because it's a DDL operation
+#' and requires different permissions than the `dplyr::rows_*()` functions.
+#'
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+rows_truncate <- function(x, ..., in_place = FALSE) {
+  deprecate_soft("1.0.0", "rows_truncate()")
+
+  check_dots_used(action = warn)
+  UseMethod("rows_truncate", x)
+}
+
+rows_truncate_ <- function(x, y, ..., in_place = FALSE) {
+  UseMethod("rows_truncate", x)
+}
+
+#' @export
+rows_truncate.data.frame <- function(x, ..., in_place = NULL) {
+  stopifnot(is.null(in_place) || !in_place)
+  x[0, ]
+}
+
+#' @export
+rows_truncate.tbl_sql <- function(x, ...,
+                                  in_place = NULL) {
+  name <- target_table_name(x, in_place)
+
+  if (!is_null(name)) {
+    con <- dbplyr::remote_con(x)
+    sql <- sql_rows_truncate(x)
+    dbExecute(con, sql, immediate = TRUE)
+    invisible(x)
+  } else {
+    x %>%
+      filter(0L == 1L)
+  }
+}
+
+#' @rdname deprecated
+#' @keywords internal
+#'
+#' @export
+sql_rows_truncate <- function(x, ...) {
+  deprecate_soft("1.0.0", "sql_rows_truncate()")
+
+  check_dots_used()
+  UseMethod("sql_rows_truncate")
+}
+
+#' @export
+sql_rows_truncate.tbl_sql <- function(x, ...) {
+  name <- dbplyr::remote_name(x)
+  paste0("TRUNCATE TABLE ", name)
+}
+
+#' @export
+sql_rows_truncate.tbl_SQLiteConnection <- function(x, ...) {
+  name <- dbplyr::remote_name(x)
+  paste0("DELETE FROM ", name)
+}
+
+#' @export
+sql_rows_truncate.tbl_duckdb_connection <- sql_rows_truncate.tbl_SQLiteConnection
+
+target_table_name <- function(x, in_place) {
+  name <- dbplyr::remote_name(x)
+
+  # Only write if requested
+  if (!is_null(name) && is_true(in_place)) {
+    return(name)
+  }
+
+  # Abort if requested but can't write
+  if (is_null(name) && is_true(in_place)) {
+    abort("Can't determine name for target table. Set `in_place = FALSE` to return a lazy table.")
+  }
+
+  # Verbose by default
+  if (is_null(in_place)) {
+    if (is_null(name)) {
+      inform("Result is returned as lazy table, because `x` does not correspond to a table that can be updated. Use `in_place = FALSE` to mute this message.")
+    } else {
+      inform("Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.")
+    }
+  }
+
+  # Never write unless handled above
+  NULL
+}
+
+#' @rdname deprecated
+#' @keywords internal
+#'
+#' @export
+dm_rows_truncate <- function(x, y, ..., in_place = NULL, progress = NA) {
+  deprecate_soft("1.0.0", "dm_rows_truncate()")
+  check_dots_empty()
+
+  dm_rows(x, y, "truncate", top_down = FALSE, in_place, require_keys = FALSE, progress = progress)
+}
