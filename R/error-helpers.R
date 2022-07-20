@@ -323,7 +323,7 @@ abort_squash_limited <- function() {
 }
 
 error_txt_squash_limited <- function() {
-  "`dm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`."
+  "`dm_flatten_to_tbl(recursive = TRUE)` only supports join methods `left_join`, `inner_join`, `full_join`."
 }
 
 abort_apply_filters_first <- function(join_name) {
