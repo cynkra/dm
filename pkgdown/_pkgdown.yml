@@ -161,10 +161,16 @@ navbar:
          to perform operations, generate summaries, or prepare data for extraction.
          This article covers dm's methods for creating the different kind of joins
          along with usage examples.
+      - text: Manipulating individual tables
+        href: articles/tech-dm-keyed.html
+        desc: |
+          Learn how to manipulate the data in the tables in your dm
+          using dplyr verbs and deconstruction/reconstruction.
       - text: Zooming and manipulating tables
         href: articles/tech-dm-zoom.html
         desc: |
-          Learn how to manipulate the data in the tables in your dm using dplyr verbs.
+          Learn how to manipulate the data in the tables in your dm
+          using dplyr verbs and zooming.
       - text: Filtering in relational data models
         href: articles/tech-dm-filter.html
         desc: |
