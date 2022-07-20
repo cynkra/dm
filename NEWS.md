@@ -1,5 +1,20 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.99.99.9006
+
+## Features
+
+- `dm_get_tables()` and `pull_tbl()` gain a new `keyed = FALSE` argument. If set to `TRUE`, table objects of class `"dm_keyed_tbl"` are returned. These objects inherit from the underlying data structure (tibble or lazy table), keep track of primary and foreign keys, and can be used later on in a call to `dm()` to recreate a dm object with the keys (#1187).
+
+## API
+
+- Add ellipses to methods (#1298).
+
+- Reexport `tibble()` (#1279).
+
+- Deprecate `dm_rm_tbl()` in favor of `dm_select_tbl()` (#1275).
+
+
 # dm 0.99.99.9005
 
 ## Documentation
