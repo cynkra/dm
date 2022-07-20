@@ -193,7 +193,7 @@ new_fks_from_keys_info <- function(tbl) {
   }
 }
 
-# FIXME: Pass suffix and keep when ready
+# FIXME: Pass keep when ready
 keyed_build_join_spec <- function(x, y, by = NULL, suffix = NULL) {
   info_x <- keyed_get_info(x)
   info_y <- keyed_get_info(y)
