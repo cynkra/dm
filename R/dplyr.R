@@ -462,6 +462,31 @@ inner_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, se
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
+#' @rdname dplyr_join
+#' @export
+inner_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
+  if (!is_dm_keyed_tbl(y)) {
+    return(NextMethod())
+  }
+
+  join_spec <- keyed_build_join_spec(x, y, by, suffix)
+  joined_tbl <- inner_join(
+    join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
+    copy = copy,
+    suffix = join_spec$suffix,
+    keep = keep,
+    ...
+  )
+
+  new_keyed_tbl(
+    joined_tbl,
+    pk = join_spec$new_pk,
+    fks_in = join_spec$new_fks_in,
+    fks_out = join_spec$new_fks_out,
+    uuid = join_spec$new_uuid
+  )
+}
+
 #' @export
 full_join.dm <- function(x, ...) {
   check_zoomed(x)
@@ -474,6 +499,31 @@ full_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
   joined_tbl <- full_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
+}
+
+#' @rdname dplyr_join
+#' @export
+full_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
+  if (!is_dm_keyed_tbl(y)) {
+    return(NextMethod())
+  }
+
+  join_spec <- keyed_build_join_spec(x, y, by, suffix)
+  joined_tbl <- full_join(
+    join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
+    copy = copy,
+    suffix = join_spec$suffix,
+    keep = keep,
+    ...
+  )
+
+  new_keyed_tbl(
+    joined_tbl,
+    pk = join_spec$new_pk,
+    fks_in = join_spec$new_fks_in,
+    fks_out = join_spec$new_fks_out,
+    uuid = join_spec$new_uuid
+  )
 }
 
 #' @export
