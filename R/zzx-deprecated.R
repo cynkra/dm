@@ -748,8 +748,13 @@ rows_truncate.tbl_sql <- function(x, ...,
   }
 }
 
+#' @rdname deprecated
+#' @keywords internal
+#'
 #' @export
 sql_rows_truncate <- function(x, ...) {
+  deprecate_soft("1.0.0", "sql_rows_truncate()")
+
   check_dots_used()
   UseMethod("sql_rows_truncate")
 }

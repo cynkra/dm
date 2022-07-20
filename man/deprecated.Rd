@@ -65,6 +65,7 @@
 \alias{dm_add_tbl}
 \alias{dm_bind}
 \alias{rows_truncate}
+\alias{sql_rows_truncate}
 \alias{dm_rows_truncate}
 \title{Deprecated functions}
 \usage{
@@ -219,6 +220,8 @@ dm_add_tbl(dm, ..., repair = "unique", quiet = FALSE)
 dm_bind(..., repair = "check_unique", quiet = FALSE)
 
 rows_truncate(x, ..., in_place = FALSE)
+
+sql_rows_truncate(x, ...)
 
 dm_rows_truncate(x, y, ..., in_place = NULL, progress = NA)
 }
