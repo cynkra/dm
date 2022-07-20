@@ -2,7 +2,6 @@ g_table_names <- character()
 
 
 gui_server <- function(input, output, session) {
-
   # debug <- isTRUE(getOption("shiny.fullstacktrace"))
   # if (!debug) {
   #   print <- function(x, ...) invisible(x)
