@@ -345,9 +345,9 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
   expect_equivalent_tbl(
     out,
     left_join(
-      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
-      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.y.", .)),
-      by = c("key", "Sepal.Width" = "iris_2.y.Sepal.Width", "other_col")
+      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0(., ".iris_2.x")) %>% rename(Sepal.Width = Sepal.Width.iris_2.x),
+      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0(., ".iris_2.y")),
+      by = c("key", "Sepal.Width" = "Sepal.Width.iris_2.y", "other_col")
     )
   )
 })
