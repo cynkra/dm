@@ -85,22 +85,3 @@ mw_cg_make <- function(dm, op_name, ...) {
     abort(paste0("Unknown op in `mw_cg_make()`: ", op))
   )
 }
-
-use_cg_make <- function(name) {
-  r_name <- paste0("mw_cg_make_", name, ".R")
-  test_name <- paste0("test-", r_name)
-
-  usethis::use_template(
-    "test-mw_cg_make.R", file.path("tests/testthat", test_name),
-    list(name = name),
-    package = utils::packageName(),
-    open = TRUE
-  )
-
-  usethis::use_template(
-    "mw_cg_make.R", file.path("R", r_name),
-    list(name = name),
-    package = utils::packageName(),
-    open = TRUE
-  )
-}
