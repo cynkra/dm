@@ -212,7 +212,7 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   deprecate_soft("0.1.0", "dm::cdm_flatten_to_tbl()", "dm::dm_flatten_to_tbl()")
   join_name <- deparse(substitute(join))
   start <- dm_tbl_name(dm, {{ start }})
-  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE, .position = "prefix")
 }
 
 #' @rdname deprecated
@@ -242,7 +242,7 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  dm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
 }
 
 #' @rdname deprecated
