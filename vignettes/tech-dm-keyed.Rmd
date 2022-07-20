@@ -161,14 +161,15 @@ disentangled_flights_dm %>%
 ### Use case 4: Add summary table to `dm`
 
 Here is an example for adding a summary of a table as a new table to a `dm`. Foreign-key relations are taken care of automatically.
-This example shows an alternative approach of deconstruction and reconstruction using `pull_tbl()` and `dm()` with the original `dm` object.
+This example shows an alternative approach of deconstruction reconstruction using `pull_tbl()`.
 
 ```{r}
-derived_flights_dm <-
+flights_derived <-
   flights_dm %>% 
   pull_tbl(flights, keyed = TRUE) %>% 
-  count(origin, carrier) %>% 
-  dm(flights_dm)
+  count(origin, carrier)
+
+derived_flights_dm <- dm(flights_derived, !!!flights_keyed)
 
 derived_flights_dm %>% 
   dm_draw()

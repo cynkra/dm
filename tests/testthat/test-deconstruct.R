@@ -140,6 +140,24 @@ test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` o
   expect_snapshot(tbl_sum(keyed_tbl_impl(new_dm_output, "d2")))
 })
 
+test_that("`dm()` handles missing key column names gracefully", {
+  dm <-
+    dm(x = tibble(a = 1, b = 1), y = tibble(a = 1, b = 1)) %>%
+    dm_add_pk(y, c(a, b)) %>%
+    dm_add_fk(x, c(a, b), y)
+
+  keyed <-
+    dm %>%
+    dm_get_tables(keyed = TRUE)
+
+  expect_snapshot({
+    dm(x = keyed$x["b"], y = keyed$y) %>%
+      dm_paste()
+    dm(x = keyed$x, y = keyed$y["b"]) %>%
+      dm_paste()
+  })
+})
+
 # joins ----------------------------------
 
 test_that("keyed_by()", {

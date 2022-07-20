@@ -123,6 +123,8 @@ unclass_keyed_tbl <- function(tbl) {
     class(tbl) <- new_classes
   }
 
+  attr(tbl, "dm_key_info") <- NULL
+
   tbl
 }
 
@@ -134,6 +136,8 @@ pks_df_from_keys_info <- function(tables) {
 new_pks_from_keys_info <- function(tbl) {
   df_keys <- keyed_get_info(tbl)
   if (is.null(df_keys$pk)) {
+    NULL
+  } else if (length(setdiff(df_keys$pk, colnames(tbl))) > 0) {
     NULL
   } else {
     new_pk(list(df_keys$pk))
