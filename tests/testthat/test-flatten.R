@@ -202,7 +202,7 @@ test_that("prepare_dm_for_flatten() works", {
   ))
   expect_equivalent_dm(
     out,
-    dm_select_tbl(dm_for_flatten(), fact, dim_1, dim_3) %>% dm_disambiguate_cols(quiet = TRUE)
+    dm_select_tbl(dm_for_flatten(), fact, dim_1, dim_3) %>% dm_disambiguate_cols(.quiet = TRUE)
   )
 
   # without rename

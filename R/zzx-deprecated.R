@@ -140,7 +140,7 @@ cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, indexes =
 #' @export
 cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
   deprecate_soft("0.1.0", "dm::cdm_disambiguate_cols()", "dm::dm_disambiguate_cols()")
-  dm_disambiguate_cols(dm = dm, sep = sep, quiet = quiet)
+  dm_disambiguate_cols(dm = dm, sep = sep, .quiet = quiet)
 }
 
 #' @rdname deprecated
