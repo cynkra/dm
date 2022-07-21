@@ -130,7 +130,7 @@ With the argument `recursive = TRUE`, `dm_flatten_to_tbl()` will automatically f
 
 ```{r squash}
 fin_dm_keys %>%
-  dm_flatten_to_tbl(loans, recursive = TRUE)
+  dm_flatten_to_tbl(loans, .recursive = TRUE)
 ```
 
 Apart from the rows printed above, no data has been fetched from the database.
@@ -139,7 +139,7 @@ Use `select()` to reduce the number of columns fetched, and `collect()` to retri
 ```{r model}
 loans_df <-
   fin_dm_keys %>%
-  dm_flatten_to_tbl(loans, recursive = TRUE) %>%
+  dm_flatten_to_tbl(loans, .recursive = TRUE) %>%
   select(id, amount, duration, A3) %>%
   collect()
 

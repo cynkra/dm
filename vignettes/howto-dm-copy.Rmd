@@ -128,7 +128,7 @@ This is all done with a local SQLite database, but the process would work unchan
 ``````{r}
 loans_df <-
   deployed_dm %>%
-  dm_flatten_to_tbl(loans, recursive = TRUE) %>%
+  dm_flatten_to_tbl(loans, .recursive = TRUE) %>%
   select(id, amount, duration, A3) %>%
   collect()
 ``````

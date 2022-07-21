@@ -53,11 +53,11 @@
 #'
 #' dm_financial() %>%
 #'   dm_select_tbl(-loans) %>%
-#'   dm_flatten_to_tbl(start = cards)
+#'   dm_flatten_to_tbl(.start = cards)
 #'
 #' dm_financial() %>%
 #'   dm_select_tbl(-loans) %>%
-#'   dm_flatten_to_tbl(start = cards, recursive = TRUE)
+#'   dm_flatten_to_tbl(.start = cards, .recursive = TRUE)
 #'
 #' @export
 dm_flatten_to_tbl <- function(dm, .start, ..., .recursive = FALSE, .join = left_join) {
