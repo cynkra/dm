@@ -2,6 +2,11 @@
 
     Code
       dm_get_data_model(dm_for_filter())
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 21 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
     Output
       $tables
         table segment display
@@ -52,6 +57,11 @@
       [1] "data_model"
     Code
       dm_get_data_model(dm_for_filter(), column_types = TRUE)
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 21 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
     Output
       $tables
         table segment display
