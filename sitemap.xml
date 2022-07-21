@@ -7,6 +7,9 @@
     <loc>https://cynkra.github.io/dm/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
+    <loc>https://cynkra.github.io/dm/CONTRIBUTING.html</loc>
+  </url>
+  <url>
     <loc>https://cynkra.github.io/dm/LICENSE-text.html</loc>
   </url>
   <url>
@@ -50,6 +53,9 @@
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/articles/tech-dm-join.html</loc>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/dm/articles/tech-dm-keyed.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/articles/tech-dm-low-level.html</loc>
@@ -121,12 +127,6 @@
     <loc>https://cynkra.github.io/dm/reference/dm_add_pk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/reference/dm_add_tbl.html</loc>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/dm/reference/dm_bind.html</loc>
-  </url>
-  <url>
     <loc>https://cynkra.github.io/dm/reference/dm_disambiguate_cols.html</loc>
   </url>
   <url>
@@ -134,6 +134,9 @@
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/dm_enum_fk_candidates.html</loc>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/dm/reference/dm_enum_pk_candidates.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/dm_examine_cardinalities.html</loc>
@@ -166,10 +169,13 @@
     <loc>https://cynkra.github.io/dm/reference/dm_get_con.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/reference/dm_get_filters.html</loc>
+    <loc>https://cynkra.github.io/dm/reference/dm_get_pk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/reference/dm_get_pk.html</loc>
+    <loc>https://cynkra.github.io/dm/reference/dm_get_tables.html</loc>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/dm/reference/dm_gui.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/dm_has_fk.html</loc>
@@ -211,9 +217,6 @@
     <loc>https://cynkra.github.io/dm/reference/dm_rm_pk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/reference/dm_rm_tbl.html</loc>
-  </url>
-  <url>
     <loc>https://cynkra.github.io/dm/reference/dm_select.html</loc>
   </url>
   <url>
@@ -248,9 +251,6 @@
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/dplyr_table_manipulation.html</loc>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/dm/reference/enum_pk_candidates.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/examine_cardinality.html</loc>
@@ -290,9 +290,6 @@
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/rows-dm.html</loc>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/dm/reference/rows_truncate.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/reference/tidyr_table_manipulation.html</loc>

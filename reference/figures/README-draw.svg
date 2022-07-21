@@ -12,7 +12,7 @@
 </a>
 </g>
 <!-- airlines -->
-<g id="node1" class="node">
+<g id="airlines" class="node">
 <title>airlines</title>
 <polygon fill="#ed7d31" stroke="transparent" points="168.5,-201 168.5,-221 213.5,-221 213.5,-201 168.5,-201"/>
 <text text-anchor="start" x="170.3969" y="-206.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airlines</text>
@@ -21,7 +21,7 @@
 <polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="167,-180 167,-222 214,-222 214,-180 167,-180"/>
 </g>
 <!-- airports -->
-<g id="node2" class="node">
+<g id="airports" class="node">
 <title>airports</title>
 <polygon fill="#ed7d31" stroke="transparent" points="167.5,-81 167.5,-101 213.5,-101 213.5,-81 167.5,-81"/>
 <text text-anchor="start" x="169.1192" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airports</text>
@@ -30,7 +30,7 @@
 <polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="166.5,-60 166.5,-102 214.5,-102 214.5,-60 166.5,-60"/>
 </g>
 <!-- flights -->
-<g id="node3" class="node">
+<g id="flights" class="node">
 <title>flights</title>
 <polygon fill="#5b9bd5" stroke="transparent" points="1.5,-141 1.5,-161 102.5,-161 102.5,-141 1.5,-141"/>
 <text text-anchor="start" x="34.1115" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">flights</text>
@@ -45,19 +45,19 @@
 <polygon fill="none" stroke="#3c678e" stroke-opacity="0.666667" points="0,-60 0,-162 103,-162 103,-60 0,-60"/>
 </g>
 <!-- flights&#45;&gt;airlines -->
-<g id="edge1" class="edge">
+<g id="flights_1" class="edge">
 <title>flights:carrier&#45;&gt;airlines:carrier</title>
 <path fill="none" stroke="#555555" d="M102.5,-131C126.5668,-131 120.8029,-155.2496 139,-171 147.7956,-178.613 151.0394,-185.8305 158.4157,-189.1277"/>
 <polygon fill="#555555" stroke="#555555" points="158.0291,-192.6157 168.5,-191 159.307,-185.7333 158.0291,-192.6157"/>
 </g>
 <!-- flights&#45;&gt;airports -->
-<g id="edge2" class="edge">
+<g id="flights_2" class="edge">
 <title>flights:origin&#45;&gt;airports:faa</title>
 <path fill="none" stroke="#555555" d="M102.5,-91C128.9473,-91 135.7361,-75.6875 157.2687,-71.8594"/>
 <polygon fill="#555555" stroke="#555555" points="157.8281,-75.3248 167.5,-71 157.2421,-68.3494 157.8281,-75.3248"/>
 </g>
 <!-- planes -->
-<g id="node4" class="node">
+<g id="planes" class="node">
 <title>planes</title>
 <polygon fill="#ed7d31" stroke="transparent" points="167.5,-141 167.5,-161 213.5,-161 213.5,-141 167.5,-141"/>
 <text text-anchor="start" x="172.6178" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text>
@@ -66,13 +66,13 @@
 <polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="166.5,-120 166.5,-162 214.5,-162 214.5,-120 166.5,-120"/>
 </g>
 <!-- flights&#45;&gt;planes -->
-<g id="edge3" class="edge">
+<g id="flights_3" class="edge">
 <title>flights:tailnum&#45;&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M102.5,-111C128.9473,-111 135.7361,-126.3125 157.2687,-130.1406"/>
 <polygon fill="#555555" stroke="#555555" points="157.2421,-133.6506 167.5,-131 157.8281,-126.6752 157.2421,-133.6506"/>
 </g>
 <!-- weather -->
-<g id="node5" class="node">
+<g id="weather" class="node">
 <title>weather</title>
 <polygon fill="#70ad47" stroke="transparent" points="140.5,-21 140.5,-41 241.5,-41 241.5,-21 140.5,-21"/>
 <text text-anchor="start" x="168.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text>
@@ -81,7 +81,7 @@
 <polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="139,0 139,-42 242,-42 242,0 139,0"/>
 </g>
 <!-- flights&#45;&gt;weather -->
-<g id="edge4" class="edge">
+<g id="flights_4" class="edge">
 <title>flights:origin, time_hour&#45;&gt;weather:origin, time_hour</title>
 <path fill="none" stroke="#555555" d="M102.5,-71C129.8727,-71 114.6101,-25.8792 130.6579,-13.8939"/>
 <polygon fill="#555555" stroke="#555555" points="131.8935,-17.1789 140.5,-11 129.9188,-10.4631 131.8935,-17.1789"/>

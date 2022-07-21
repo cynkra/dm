@@ -1,6 +1,6 @@
 pandoc: 2.14.2
-pkgdown: 2.0.5.9000
-pkgdown_sha: b4096aa376773d7dee98a267fd0b5a025975a3dc
+pkgdown: 2.0.6.9000
+pkgdown_sha: 956f076f661eb2de9413f64ea24a580cf444466d
 articles:
   dm: dm.html
   howto-dm-copy: howto-dm-copy.html
@@ -13,6 +13,7 @@ articles:
   tech-dm-draw: tech-dm-draw.html
   tech-dm-filter: tech-dm-filter.html
   tech-dm-join: tech-dm-join.html
+  tech-dm-keyed: tech-dm-keyed.html
   tech-dm-low-level: tech-dm-low-level.html
   tech-dm-naming: tech-dm-naming.html
   tech-dm-zoom: tech-dm-zoom.html
@@ -20,7 +21,7 @@ articles:
   dm-readme-old: wip/dm-readme-old.html
   dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
   dm-tips-and-tricks: wip/dm-tips-and-tricks.html
-last_built: 2022-07-06T15:58Z
+last_built: 2022-07-21T13:38Z
 urls:
   reference: https://cynkra.github.io/dm/reference
   article: https://cynkra.github.io/dm/articles
