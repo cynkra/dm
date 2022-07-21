@@ -33,7 +33,7 @@ interactively.
 }
 \examples{
 \dontrun{
-dm_nycflights13(cycle = TRUE) \%>\%
-  dm_gui()
+dm <-dm_nycflights13(cycle = TRUE)
+dm_gui(dm = dm)
 }
 }
