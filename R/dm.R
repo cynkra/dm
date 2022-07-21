@@ -393,8 +393,8 @@ format.dm <- function(x, ...) {
 #' @export
 format.dm_zoomed <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   # so far only 1 table can be zoomed on
-  zoomed_df <- as_zoomed_df(x)
-  cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
+  dm_zoomed_df <- as_dm_zoomed_df(x)
+  cat_line(format(dm_zoomed_df, ..., n = n, width = width, n_extra = n_extra))
   invisible(x)
 }
 
@@ -414,25 +414,25 @@ def_get_n_fks <- function(def) {
   sum(map_int(def$fks, vec_size))
 }
 
-as_zoomed_df <- function(x) {
+as_dm_zoomed_df <- function(x) {
   zoomed <- dm_get_zoom(x)
 
   # for tests
-  new_zoomed_df(
+  new_dm_zoomed_df(
     zoomed$zoom[[1]],
     name_df = zoomed$table
   )
 }
 
-new_zoomed_df <- function(x, ...) {
+new_dm_zoomed_df <- function(x, ...) {
   if (!is.data.frame(x)) {
-    return(structure(x, class = c("zoomed_df", class(x)), ...))
+    return(structure(x, class = c("dm_zoomed_df", class(x)), ...))
   }
   # need this in order to avoid star (from rownames, automatic from `structure(...)`)
   # in print method for local tibbles
   new_tibble(
     x,
-    class = c("zoomed_df", class(x), c("tbl_df", "tbl", "data.frame")),
+    class = c("dm_zoomed_df", class(x), c("tbl_df", "tbl", "data.frame")),
     nrow = nrow(x),
     ...
   )
@@ -441,7 +441,7 @@ new_zoomed_df <- function(x, ...) {
 # this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
 # therefore, we need to have our own subclass but the main class needs to be `tbl`
 #' @export
-tbl_sum.zoomed_df <- function(x) {
+tbl_sum.dm_zoomed_df <- function(x) {
   c(
     structure(attr(x, "name_df"), names = "Zoomed table"),
     NextMethod()
@@ -449,7 +449,7 @@ tbl_sum.zoomed_df <- function(x) {
 }
 
 #' @export
-format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
+format.dm_zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   NextMethod()
 }
 

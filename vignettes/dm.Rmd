@@ -126,11 +126,11 @@ fin_dm_keys %>%
 ## Accessing a data model as a table
 
 If we want to perform modeling or analysis on this relational model, we need to transform it into a tabular format that R functions can work with.
-`dm_squash_to_tbl()` will automatically follow foreign keys across tables to gather all the available columns into a single table.
+With the argument `recursive = TRUE`, `dm_flatten_to_tbl()` will automatically follow foreign keys across tables to gather all the available columns into a single table.
 
 ```{r squash}
 fin_dm_keys %>%
-  dm_squash_to_tbl(loans)
+  dm_flatten_to_tbl(loans, .recursive = TRUE)
 ```
 
 Apart from the rows printed above, no data has been fetched from the database.
@@ -139,7 +139,7 @@ Use `select()` to reduce the number of columns fetched, and `collect()` to retri
 ```{r model}
 loans_df <-
   fin_dm_keys %>%
-  dm_squash_to_tbl(loans) %>%
+  dm_flatten_to_tbl(loans, .recursive = TRUE) %>%
   select(id, amount, duration, A3) %>%
   collect()
 

@@ -72,7 +72,7 @@
       abort_tables_not_reachable_from_start()
     Condition
       Error in `abort_tables_not_reachable_from_start()`:
-      ! All selected tables must be reachable from `start`.
+      ! All selected tables must be reachable from `.start`.
     Code
       abort_wrong_col_names("table_name", c("col_1", "col_2"), c("col_one", "col_2"))
     Condition
@@ -154,7 +154,7 @@
       abort_only_parents()
     Condition
       Error in `abort_only_parents()`:
-      ! When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `start` have to be its direct neighbors. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` use `dm_squash_to_tbl()` as an alternative.
+      ! When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `.start` have to be its direct neighbors. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` use `dm_flatten_to_tbl(.recursive = TRUE)` as an alternative.
     Code
       abort_not_same_src()
     Condition
@@ -174,7 +174,7 @@
       abort_squash_limited()
     Condition
       Error in `abort_squash_limited()`:
-      ! `dm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`.
+      ! `dm_flatten_to_tbl(.recursive = TRUE)` only supports join methods `left_join`, `inner_join`, `full_join`.
     Code
       abort_apply_filters_first("join_tightly")
     Condition

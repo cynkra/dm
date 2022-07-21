@@ -3,6 +3,7 @@
 \name{dm_zoom_to}
 \alias{dm_zoom_to}
 \alias{zoomed_df}
+\alias{dm_zoomed_df}
 \alias{dm_insert_zoomed}
 \alias{dm_update_zoomed}
 \alias{dm_discard_zoomed}

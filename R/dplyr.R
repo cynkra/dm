@@ -378,10 +378,10 @@ pull.dm_zoomed <- function(.data, var = -1, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 compute.dm_zoomed <- function(x, ...) {
-  zoomed_df <-
+  dm_zoomed_df <-
     tbl_zoomed(x) %>%
     compute(...)
-  replace_zoomed_tbl(x, zoomed_df)
+  replace_zoomed_tbl(x, dm_zoomed_df)
 }
 
 #' \pkg{dplyr} join methods for zoomed dm objects
