@@ -6,8 +6,8 @@
         get_all_keys()
     Message
       Renaming ambiguous columns: %>%
-        dm_rename(tf_2, tf_2.d = d) %>%
-        dm_rename(tf_3, tf_3.d = d)
+        dm_rename(tf_2, d.tf_2 = d) %>%
+        dm_rename(tf_3, d.tf_3 = d)
     Output
       $pks
       # A tibble: 6 x 2
@@ -24,7 +24,7 @@
       # A tibble: 5 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
         <chr>       <keys>        <chr>        <keys>          <chr>    
-      1 tf_2        tf_2.d        tf_1         a               no_action
+      1 tf_2        d.tf_2        tf_1         a               no_action
       2 tf_2        e, e1         tf_3         f, f1           no_action
       3 tf_4        j, j1         tf_3         f, f1           no_action
       4 tf_5        l             tf_4         h               cascade  
@@ -521,56 +521,56 @@
       zoomed_comp_dm %>% left_join(flights) %>% nrow()
     Message
       Renaming ambiguous columns: %>%
-        dm_rename(weather, weather.year = year) %>%
-        dm_rename(weather, weather.month = month) %>%
-        dm_rename(weather, weather.day = day) %>%
-        dm_rename(weather, weather.hour = hour) %>%
-        dm_rename(flights, flights.year = year) %>%
-        dm_rename(flights, flights.month = month) %>%
-        dm_rename(flights, flights.day = day) %>%
-        dm_rename(flights, flights.hour = hour)
+        dm_rename(weather, year.weather = year) %>%
+        dm_rename(weather, month.weather = month) %>%
+        dm_rename(weather, day.weather = day) %>%
+        dm_rename(weather, hour.weather = hour) %>%
+        dm_rename(flights, year.flights = year) %>%
+        dm_rename(flights, month.flights = month) %>%
+        dm_rename(flights, day.flights = day) %>%
+        dm_rename(flights, hour.flights = hour)
     Output
       [1] 1800
     Code
       zoomed_comp_dm %>% right_join(flights) %>% nrow()
     Message
       Renaming ambiguous columns: %>%
-        dm_rename(weather, weather.year = year) %>%
-        dm_rename(weather, weather.month = month) %>%
-        dm_rename(weather, weather.day = day) %>%
-        dm_rename(weather, weather.hour = hour) %>%
-        dm_rename(flights, flights.year = year) %>%
-        dm_rename(flights, flights.month = month) %>%
-        dm_rename(flights, flights.day = day) %>%
-        dm_rename(flights, flights.hour = hour)
+        dm_rename(weather, year.weather = year) %>%
+        dm_rename(weather, month.weather = month) %>%
+        dm_rename(weather, day.weather = day) %>%
+        dm_rename(weather, hour.weather = hour) %>%
+        dm_rename(flights, year.flights = year) %>%
+        dm_rename(flights, month.flights = month) %>%
+        dm_rename(flights, day.flights = day) %>%
+        dm_rename(flights, hour.flights = hour)
     Output
       [1] 1761
     Code
       zoomed_comp_dm %>% inner_join(flights) %>% nrow()
     Message
       Renaming ambiguous columns: %>%
-        dm_rename(weather, weather.year = year) %>%
-        dm_rename(weather, weather.month = month) %>%
-        dm_rename(weather, weather.day = day) %>%
-        dm_rename(weather, weather.hour = hour) %>%
-        dm_rename(flights, flights.year = year) %>%
-        dm_rename(flights, flights.month = month) %>%
-        dm_rename(flights, flights.day = day) %>%
-        dm_rename(flights, flights.hour = hour)
+        dm_rename(weather, year.weather = year) %>%
+        dm_rename(weather, month.weather = month) %>%
+        dm_rename(weather, day.weather = day) %>%
+        dm_rename(weather, hour.weather = hour) %>%
+        dm_rename(flights, year.flights = year) %>%
+        dm_rename(flights, month.flights = month) %>%
+        dm_rename(flights, day.flights = day) %>%
+        dm_rename(flights, hour.flights = hour)
     Output
       [1] 1761
     Code
       zoomed_comp_dm %>% full_join(flights) %>% nrow()
     Message
       Renaming ambiguous columns: %>%
-        dm_rename(weather, weather.year = year) %>%
-        dm_rename(weather, weather.month = month) %>%
-        dm_rename(weather, weather.day = day) %>%
-        dm_rename(weather, weather.hour = hour) %>%
-        dm_rename(flights, flights.year = year) %>%
-        dm_rename(flights, flights.month = month) %>%
-        dm_rename(flights, flights.day = day) %>%
-        dm_rename(flights, flights.hour = hour)
+        dm_rename(weather, year.weather = year) %>%
+        dm_rename(weather, month.weather = month) %>%
+        dm_rename(weather, day.weather = day) %>%
+        dm_rename(weather, hour.weather = hour) %>%
+        dm_rename(flights, year.flights = year) %>%
+        dm_rename(flights, month.flights = month) %>%
+        dm_rename(flights, day.flights = day) %>%
+        dm_rename(flights, hour.flights = hour)
     Output
       [1] 1800
     Code
