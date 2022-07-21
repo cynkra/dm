@@ -381,7 +381,7 @@ abort_only_possible_wo_zoom <- function(fun_name) {
 
 error_txt_only_possible_wo_zoom <- function(fun_name) {
   glue(
-    "You can't call `{fun_name}()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, ",
+    "You can't call `{fun_name}()` on a `dm_zoomed`. Consider using one of `dm_update_zoomed()`, ",
     "`dm_insert_zoomed()` or `dm_discard_zoomed()` first."
   )
 }
@@ -453,7 +453,7 @@ abort_pk_not_tracked <- function(orig_table, orig_pk) {
 error_txt_pk_not_tracked <- function(orig_table, orig_pk) {
   glue(
     "The primary key column(s) {commas(tick(orig_pk))} of the originally zoomed table {tick(orig_table)} got lost ",
-    "in transformations. Therefore it is not possible to use `nest.zoomed_dm()`."
+    "in transformations. Therefore it is not possible to use `nest.dm_zoomed()`."
   )
 }
 
@@ -465,7 +465,7 @@ abort_only_for_local_src <- function(src_dm) {
 }
 
 error_txt_only_for_local_src <- function(src_class) {
-  glue("`nest_join.zoomed_dm()` works only for a local `src`, not on a database with `src`-class: {src_class}.")
+  glue("`nest_join.dm_zoomed()` works only for a local `src`, not on a database with `src`-class: {src_class}.")
 }
 
 # Errors for `pull_tbl.dm()` -----------------------------
@@ -484,7 +484,7 @@ abort_table_not_zoomed <- function(table_name, zoomed_tables) {
 
 error_txt_table_not_zoomed <- function(table_name, zoomed_tables) {
   glue(
-    "In `pull_tbl.zoomed_dm`: Table {tick(table_name)} not zoomed, ",
+    "In `pull_tbl.dm_zoomed`: Table {tick(table_name)} not zoomed, ",
     "zoomed tables: {commas(tick(zoomed_tables))}."
   )
 }
@@ -494,7 +494,7 @@ abort_not_pulling_multiple_zoomed <- function() {
 }
 
 error_txt_not_pulling_multiple_zoomed <- function() {
-  "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
+  "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.dm_zoomed()`."
 }
 
 abort_cols_not_avail <- function(wrong_col) {

@@ -486,20 +486,20 @@ dm_enum_fk_candidates <- function(dm, table, ref_table, ...) {
 #' @details `enum_fk_candidates()` works like `dm_enum_fk_candidates()` with the zoomed table as `table`.
 #'
 #' @rdname dm_enum_fk_candidates
-#' @param zoomed_dm A `dm` with a zoomed table.
+#' @param dm_zoomed A `dm` with a zoomed table.
 #' @export
-enum_fk_candidates <- function(zoomed_dm, ref_table, ...) {
+enum_fk_candidates <- function(dm_zoomed, ref_table, ...) {
   check_dots_empty()
-  check_zoomed(zoomed_dm)
-  check_no_filter(zoomed_dm)
+  check_zoomed(dm_zoomed)
+  check_no_filter(dm_zoomed)
 
-  table_name <- orig_name_zoomed(zoomed_dm)
-  ref_table_name <- dm_tbl_name(zoomed_dm, {{ ref_table }})
+  table_name <- orig_name_zoomed(dm_zoomed)
+  ref_table_name <- dm_tbl_name(dm_zoomed, {{ ref_table }})
 
-  ref_tbl_pk <- dm_get_pk_impl(zoomed_dm, ref_table_name)
+  ref_tbl_pk <- dm_get_pk_impl(dm_zoomed, ref_table_name)
 
-  ref_tbl <- dm_get_tables_impl(zoomed_dm)[[ref_table_name]]
-  enum_fk_candidates_impl(table_name, tbl_zoomed(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk) %>%
+  ref_tbl <- dm_get_tables_impl(dm_zoomed)[[ref_table_name]]
+  enum_fk_candidates_impl(table_name, tbl_zoomed(dm_zoomed), ref_table_name, ref_tbl, ref_tbl_pk) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 }

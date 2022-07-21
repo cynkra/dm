@@ -25,7 +25,7 @@ pack_join.dm <- function(x, ...) {
 
 #' @rdname pack_join
 #' @export
-pack_join.zoomed_dm <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
+pack_join.dm_zoomed <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
   y_name <- dm_tbl_name(x, {{ y }})
   zoomed <- dm_get_zoom(x, c("table", "zoom", "col_tracker_zoom"))
   x_tbl <- zoomed$zoom[[1]]

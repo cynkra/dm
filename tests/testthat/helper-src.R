@@ -697,8 +697,8 @@ nyc_comp %<--% {
     dm_add_fk(flights, c(origin, time_hour), weather)
 }
 
-zoomed_dm <- function() dm_zoom_to(dm_for_filter(), tf_2)
-zoomed_dm_2 <- function() dm_zoom_to(dm_for_filter(), tf_3)
+dm_zoomed <- function() dm_zoom_to(dm_for_filter(), tf_2)
+dm_zoomed_2 <- function() dm_zoom_to(dm_for_filter(), tf_3)
 
 # FIXME: regarding PR #313: everything below this line needs to be at least reconsidered if not just dumped.
 

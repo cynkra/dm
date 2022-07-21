@@ -2,12 +2,12 @@
 % Please edit documentation in R/dm.R
 \name{glimpse.dm}
 \alias{glimpse.dm}
-\alias{glimpse.zoomed_dm}
+\alias{glimpse.dm_zoomed}
 \title{Get a glimpse of your \code{dm} object}
 \usage{
 \method{glimpse}{dm}(x, width = NULL, ...)
 
-\method{glimpse}{zoomed_dm}(x, width = NULL, ...)
+\method{glimpse}{dm_zoomed}(x, width = NULL, ...)
 }
 \arguments{
 \item{x}{A \code{dm} object.}
