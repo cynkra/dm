@@ -57,7 +57,7 @@ reference:
   contents:
   - dm_zoom_to
   - ends_with("_zoomed")
-  - ends_with(".zoomed_dm")
+  - ends_with(".dm_zoomed")
 
 - title: Wrap
   contents:

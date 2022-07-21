@@ -2,12 +2,12 @@
 % Please edit documentation in R/pack_join.R
 \name{pack_join}
 \alias{pack_join}
-\alias{pack_join.zoomed_dm}
+\alias{pack_join.dm_zoomed}
 \title{Pack Join}
 \usage{
 pack_join(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL)
 
-\method{pack_join}{zoomed_dm}(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL)
+\method{pack_join}{dm_zoomed}(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL)
 }
 \arguments{
 \item{x, y}{A pair of data frames or data frame extensions (e.g. a tibble).}

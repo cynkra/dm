@@ -9,7 +9,7 @@ pull_tbl(dm, table, ..., keyed = FALSE)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{One unquoted table name for \code{pull_tbl.dm()}, ignored for \code{pull_tbl.zoomed_dm()}.}
+\item{table}{One unquoted table name for \code{pull_tbl.dm()}, ignored for \code{pull_tbl.dm_zoomed()}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
@@ -28,7 +28,7 @@ The requested table
 This generic has methods for both \code{dm} classes:
 \enumerate{
 \item With \code{pull_tbl.dm()} you can chose which table of the \code{dm} you want to retrieve.
-\item With \code{pull_tbl.zoomed_dm()} you will retrieve the zoomed table in the current state.
+\item With \code{pull_tbl.dm_zoomed()} you will retrieve the zoomed table in the current state.
 }
 }
 \examples{

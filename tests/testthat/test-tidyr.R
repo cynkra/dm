@@ -2,7 +2,7 @@ test_that("basic test: 'unite()'-methods work", {
   # see issue #361
   skip_if_remote_src()
   expect_equivalent_tbl(
-    zoomed_dm() %>%
+    dm_zoomed() %>%
       unite("new_col", c, e) %>%
       tbl_zoomed(),
     unite(tf_2(), "new_col", c, e)
@@ -25,7 +25,7 @@ test_that("basic test: 'unite()'-methods work", {
 test_that("basic test: 'separate()'-methods work", {
   skip_if_remote_src()
   expect_equivalent_tbl(
-    zoomed_dm() %>%
+    dm_zoomed() %>%
       unite("new_col", c, e) %>%
       separate("new_col", c("c", "e")) %>%
       select(c, d, e, e1) %>%
@@ -52,17 +52,17 @@ test_that("basic test: 'separate()'-methods work", {
 test_that("key tracking works", {
   skip_if_remote_src()
   expect_snapshot({
-    zoomed_dm() %>%
+    dm_zoomed() %>%
       unite("new_col", c, e) %>%
       dm_update_zoomed() %>%
       get_all_keys()
 
-    zoomed_dm() %>%
+    dm_zoomed() %>%
       unite("new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
       get_all_keys()
 
-    zoomed_dm() %>%
+    dm_zoomed() %>%
       unite("new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
       dm_add_fk(tf_2, new_col, tf_6) %>%
@@ -71,7 +71,7 @@ test_that("key tracking works", {
       dm_update_zoomed() %>%
       get_all_keys()
 
-    zoomed_dm() %>%
+    dm_zoomed() %>%
       unite("new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
       dm_add_fk(tf_2, new_col, tf_6) %>%

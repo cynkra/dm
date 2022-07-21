@@ -16,8 +16,8 @@ source("setup/setup.R")
 
 This vignette describes the logic behind the names of the {dm}-functions.
 
-In general, the functions are implemented in such a way that no function can handle instances of both `dm` classes (`dm` and `zoomed_dm`) as an argument.
-In most situations, a `zoomed_dm` behaves like a table and there are mostly no explicit functions available for this class, but rather methods (see vignette ["Zooming and manipulating tables"](https://cynkra.github.io/dm/articles/tech-dm-zoom.html).
+In general, the functions are implemented in such a way that no function can handle instances of both `dm` classes (`dm` and `dm_zoomed`) as an argument.
+In most situations, a `dm_zoomed` behaves like a table and there are mostly no explicit functions available for this class, but rather methods (see vignette ["Zooming and manipulating tables"](https://cynkra.github.io/dm/articles/tech-dm-zoom.html).
 
 ## Prefixes
 
@@ -43,4 +43,4 @@ Most important extended prefixes `dm_..._`:
 1. `_fk(s)`: Relates to foreign key(s)
 1. `_tbl`: Add/remove/select/rename a tibble to/from/within a `dm` object
 1. `_colors`: Relates to the colors for the visualization of a `dm` object
-1. `_zoomed`: Insert, update, or discard the zoomed table. In combination with the prefix `dm_`, this indicates that the first argument is a `zoomed_dm` rather than a `dm`.
+1. `_zoomed`: Insert, update, or discard the zoomed table. In combination with the prefix `dm_`, this indicates that the first argument is a `dm_zoomed` rather than a `dm`.

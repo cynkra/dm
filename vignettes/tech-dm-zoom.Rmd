@@ -26,10 +26,10 @@ For the first approach, see `vignette("tech-dm-zoom")`.
 "Zooming" to a table of a `dm` means:
 
 - all information stored in the original `dm` is kept, including the originally zoomed table
-- an object of class `zoomed_dm` is produced, presenting a view of the table for transformations
+- an object of class `dm_zoomed` is produced, presenting a view of the table for transformations
 - you do not need to specify the table when calling `select()`, `mutate()` and other table manipulation functions
 
-{dm} provides methods for many of the {dplyr}-verbs for a `zoomed_dm` which behave the way you are used to, affecting only the zoomed table and leaving the rest of the `dm` untouched.
+{dm} provides methods for many of the {dplyr}-verbs for a `dm_zoomed` which behave the way you are used to, affecting only the zoomed table and leaving the rest of the `dm` untouched.
 When you are finished with transforming the table, there are three options to proceed:
 
 1. use `dm_update_zoomed()` if you want to replace the originally zoomed table with the new table
@@ -57,7 +57,7 @@ flights_dm
 flights_zoomed <-
   flights_dm %>%
   dm_zoom_to(flights)
-# The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.
+# The print output for a `dm_zoomed` looks very much like that from a normal `tibble`.
 flights_zoomed
 
 flights_zoomed_mutate <-
@@ -167,7 +167,7 @@ dm_draw(dm_with_summary)
 
 ### Use case 5: Joining tables
 
-If you would like to join some or all of the columns of one table to another, you can make use of one of the `join`-methods for a `zoomed_dm`.
+If you would like to join some or all of the columns of one table to another, you can make use of one of the `join`-methods for a `dm_zoomed`.
 In addition to the usual arguments for the {dplyr}-joins, by supplying the `select` argument you can specify which columns of the RHS-table you want to be included in the join.
 For the syntax please see the example below.
 The LHS-table of a join is always the zoomed table.
@@ -189,7 +189,7 @@ dm_draw(joined_flights_dm)
 
 ### Tip: Accessing the zoomed table
 
-At each point, you can retrieve the zoomed table by calling `pull_tbl()` on a `zoomed_dm`.
+At each point, you can retrieve the zoomed table by calling `pull_tbl()` on a `dm_zoomed`.
 To use our last example once more:
 
 ```{r}
@@ -202,7 +202,7 @@ flights_dm %>%
 
 ### Possible pitfalls and caveats
 
-1. Currently, not all {dplyr}-verbs have their own method for a `zoomed_dm` object, so be aware that in some cases it will still be necessary to resort to extracting one or more tables from a `dm` and reinserting a transformed version back into the `dm` object.
+1. Currently, not all {dplyr}-verbs have their own method for a `dm_zoomed` object, so be aware that in some cases it will still be necessary to resort to extracting one or more tables from a `dm` and reinserting a transformed version back into the `dm` object.
 The supported functions are:
 `group_by()`, `ungroup()`, `summarise()`, `mutate()`, `transmute()`, `filter()`, `select()`, `relocate()`, `rename()`, `distinct()`, `arrange()`, `slice()`, `left_join()`, `inner_join()`, `full_join()`, `right_join()`, `semi_join()`, and `anti_join()`.
 

@@ -456,7 +456,7 @@
 ## Internal
 
 - Use `withCallingHandlers()` where appropriate (#422).
-- Consistent definition of `.dm` and `.zoomed_dm` methods (#300).
+- Consistent definition of `.dm` and `.dm_zoomed` methods (#300).
 - Examples involving `dm_financial()` are not run if connection can't be established (#418).
 - Fix database tests on CI (#416).
 
@@ -530,7 +530,7 @@
 - `dm_from_src()` now works for databases other than Postgres and MSSQL (#288), gives a warning if tables cannot be accessed with `table_name = NULL` (#348), and gains `learn_keys` argument to control querying of primary and foreign keys from the database (#340).
 - `dm_examine_constraints()` now prints a different message if a dm has no constraints defined.
 - Disambiguation message now only lists column names for easier copy-pasting.
-- New methods for `"zoomed_dm"`: `head()`, `tail()`, `pull()`, `group_data()`, `group_indices()`, `group_vars()`, `group_keys()` and `groups()` (#236, #203).
+- New methods for `"dm_zoomed"`: `head()`, `tail()`, `pull()`, `group_data()`, `group_indices()`, `group_vars()`, `group_keys()` and `groups()` (#236, #203).
 - `dm_paste()` supports writing colors and the table definition via the new `options` argument. The definition can be written to a file via the new `path` argument. The `select` argument is soft-deprecated (#218, #302).
 - `dm_add_tbl()` uses `rlang::list2()` internally, now accepts `:=` to specify table names.
 - New `dm_ptype()` (#301).
@@ -547,10 +547,10 @@
 - `dm_add_pk()`, `dm_rm_pk()`, `dm_add_fk()` and `dm_rm_fk()` are now stricter when keys exists or when attempting to remove keys that don't exist. A more relaxed mode of operation may be added later (#214).
 - `examine_cardinality()`, `dm_examine_constraints()` and `enum_pk_candidates()` now work for columns named `n`.
 - `dm_set_key_constraints()` (and by extension `dm_copy_to(set_key_constraints = TRUE)`) now quote identifiers for the SQL that creates foreign keys on the database.
-- `collect()` gives a better error message when called on a `"zoomed_dm"` (#294).
+- `collect()` gives a better error message when called on a `"dm_zoomed"` (#294).
 - `check_subset()` gives a clean error message if the tables are complex expressions.
 - `dm_from_src(schema = "...")` works on Postgres if `search_path` is not set on the connection.
-- `compute.zoomed_dm()` no longer throws an error.
+- `compute.dm_zoomed()` no longer throws an error.
 - Remove unused DT import (#295).
 
 
@@ -587,10 +587,10 @@
 # dm 0.1.0
 
 - Package is now in the "maturing" lifecycle (#154).
-- `filter.zoomed_dm()` no longer sets the filter.
+- `filter.dm_zoomed()` no longer sets the filter.
 - `examine_()` functions never throw an error (#238).
 - API overhaul: `dm_zoom_to()`, `dm_insert_zoomed()`, `dm_update_zoomed()` and `dm_discard_zoomed()`; `check_()` -> `examine_()`; `dm_get_filter()` -> `dm_get_filters()`; `dm_from_src()` + `dm_learn_from_db()` -> `dm_from_src()` (#233).
-- New `$.zoomed_dm()`, `[.zoomed_dm()`, `[[.zoomed_dm()`, `length.zoomed_dm()`, `names.zoomed_dm()`, `tbl_vars.zoomed_dm()` (#199, #216).
+- New `$.dm_zoomed()`, `[.dm_zoomed()`, `[[.dm_zoomed()`, `length.dm_zoomed()`, `names.dm_zoomed()`, `tbl_vars.dm_zoomed()` (#199, #216).
 - New `as.list()` methods (#213).
 - Help pages for dplyr methods (#209).
 - New migration guide from dm <= 0.0.5 (#234).
@@ -629,10 +629,10 @@
 
 ## Features
 
-- `cdm_filter()` and `filter.zoomed_dm()` apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in `cdm_apply_filters()`. This now allows using a variety of operations on filtered `dm` objects (#124).
+- `cdm_filter()` and `filter.dm_zoomed()` apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in `cdm_apply_filters()`. This now allows using a variety of operations on filtered `dm` objects (#124).
 - `dimnames()`, `colnames()`, `dim()`, `distinct()`, `arrange()`, `slice()`, `separate()` and `unite()` implemented for zoomed dm-s (#130).
 - Joins on zoomed dm objects now supported (#121). Joins use the same column name disambiguation algorithm as `cdm_flatten_to_tbl()` (#147).
-- `slice.zoomed_dm()`: user decides in arg `.keep_pk` if PK column is tracked or not (#152).
+- `slice.dm_zoomed()`: user decides in arg `.keep_pk` if PK column is tracked or not (#152).
 - Supported {dplyr} and {tidyr} verbs are reexported.
 - `enum_pk_candidates()` works with zoomed dm-s (#156).
 - New `enum_fk_candidates()` (#156).
@@ -647,7 +647,7 @@
 
 ## Bug fixes
 
-- Avoid asterisk when printing local `zoomed_dm` (#131).
+- Avoid asterisk when printing local `dm_zoomed` (#131).
 - `cdm_select_tbl()` works again when multiple foreign keys are defined between two tables (#122).
 
 

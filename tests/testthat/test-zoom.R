@@ -11,7 +11,7 @@ test_that("dm_zoom_to() works", {
 
   expect_s3_class(
     dm_for_filter() %>% dm_zoom_to(tf_3),
-    c("zoomed_dm", "dm")
+    c("dm_zoomed", "dm")
   )
 })
 
@@ -26,7 +26,7 @@ test_that("dm_discard_zoomed() works", {
   )
 })
 
-test_that("print() and format() methods for subclass `zoomed_dm` work", {
+test_that("print() and format() methods for subclass `dm_zoomed` work", {
   expect_snapshot(
     dm_for_filter() %>% dm_zoom_to(tf_5) %>% as_zoomed_df() %>% tbl_sum()
   )

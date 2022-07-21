@@ -199,7 +199,7 @@
       abort_only_possible_wo_zoom("dm_zoom_to")
     Condition
       Error in `abort_only_possible_wo_zoom()`:
-      ! You can't call `dm_zoom_to()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+      ! You can't call `dm_zoom_to()` on a `dm_zoomed`. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
     Code
       abort_only_possible_w_zoom("dm_update_zoomed")
     Condition
@@ -245,12 +245,12 @@
       abort_table_not_zoomed("blur", c("focus_1", "focus_2"))
     Condition
       Error in `abort_table_not_zoomed()`:
-      ! In `pull_tbl.zoomed_dm`: Table `blur` not zoomed, zoomed tables: `focus_1`, `focus_2`.
+      ! In `pull_tbl.dm_zoomed`: Table `blur` not zoomed, zoomed tables: `focus_1`, `focus_2`.
     Code
       abort_not_pulling_multiple_zoomed()
     Condition
       Error in `abort_not_pulling_multiple_zoomed()`:
-      ! If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`.
+      ! If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.dm_zoomed()`.
     Code
       abort_cols_not_avail(c("pink5", "elephant"))
     Condition
@@ -276,12 +276,12 @@
       abort_pk_not_tracked("house", "house_number")
     Condition
       Error in `abort_pk_not_tracked()`:
-      ! The primary key column(s) `house_number` of the originally zoomed table `house` got lost in transformations. Therefore it is not possible to use `nest.zoomed_dm()`.
+      ! The primary key column(s) `house_number` of the originally zoomed table `house` got lost in transformations. Therefore it is not possible to use `nest.dm_zoomed()`.
     Code
       abort_only_for_local_src(mtcars)
     Condition
       Error in `abort_only_for_local_src()`:
-      ! `nest_join.zoomed_dm()` works only for a local `src`, not on a database with `src`-class: `data.frame`.
+      ! `nest_join.dm_zoomed()` works only for a local `src`, not on a database with `src`-class: `data.frame`.
     Code
       abort_parameter_not_correct_class("number", correct_class = "numeric", class = "logical")
     Condition

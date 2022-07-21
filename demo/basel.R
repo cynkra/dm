@@ -315,7 +315,7 @@ delta_non_jfk_january %>%
 # or the manipulated table can be inserted as a new table.
 
 
-# The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.
+# The print output for a `dm_zoomed` looks very much like that from a normal `tibble`.
 dm_flights %>%
   dm_zoom_to(flights)
 
@@ -448,7 +448,7 @@ nycflights13_base %>%
 zoomed_weather <- dm_zoom_to(nycflights13_base, weather)
 zoomed_weather
 
-# `enum_pk_candidates()` works for both `tibbles` and `zoomed_dm`
+# `enum_pk_candidates()` works for both `tibbles` and `dm_zoomed`
 enum_pk_candidates(zoomed_weather)
 
 enum_pk_candidates(zoomed_weather) %>%

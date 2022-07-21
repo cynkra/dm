@@ -28,7 +28,7 @@ test_that("validator speaks up when something's wrong", {
     "dm_invalid"
   )
 
-  # zoom column of `zoomed_dm` is empty
+  # zoom column of `dm_zoomed` is empty
   expect_dm_error(
     dm_for_filter() %>%
       dm_zoom_to(tf_1) %>%

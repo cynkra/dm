@@ -2,7 +2,7 @@
 
     Code
       # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
-      zoomed_dm() %>% left_join(tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>%
+      dm_zoomed() %>% left_join(tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>%
         get_all_keys()
     Message
       Renaming ambiguous columns: %>%
@@ -32,7 +32,7 @@
       
     Code
       # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
-      zoomed_dm() %>% semi_join(tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>%
+      dm_zoomed() %>% semi_join(tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>%
         get_all_keys()
     Output
       $pks
@@ -493,7 +493,7 @@
     Code
       zoomed_comp_dm %>% slice(c(1:3, 5:3))
     Message
-      Keeping PK column, but `slice.zoomed_dm()` can potentially damage the uniqueness of PK columns (duplicated indices). Set argument `.keep_pk` to `TRUE` or `FALSE` to ensure the behavior you intended.
+      Keeping PK column, but `slice.dm_zoomed()` can potentially damage the uniqueness of PK columns (duplicated indices). Set argument `.keep_pk` to `TRUE` or `FALSE` to ensure the behavior you intended.
     Output
       # Zoomed table: weather
       # A tibble:     6 x 15

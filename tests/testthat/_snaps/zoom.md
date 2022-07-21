@@ -1,4 +1,4 @@
-# print() and format() methods for subclass `zoomed_dm` work
+# print() and format() methods for subclass `dm_zoomed` work
 
     Code
       dm_for_filter() %>% dm_zoom_to(tf_5) %>% as_zoomed_df() %>% tbl_sum()

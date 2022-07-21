@@ -1,23 +1,23 @@
 #' \pkg{tidyr} table manipulation methods for zoomed dm objects
 #'
 #' @description
-#' Use these methods without the '.zoomed_dm' suffix (see examples).
-#' @param data object of class `zoomed_dm`
-#' @param col For `unite.zoomed_dm`: see [tidyr::unite()]
+#' Use these methods without the '.dm_zoomed' suffix (see examples).
+#' @param data object of class `dm_zoomed`
+#' @param col For `unite.dm_zoomed`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [tidyr::separate()]
-#' @param ... For `unite.zoomed_dm`: see [tidyr::unite()]
+#' For `separate.dm_zoomed`: see [tidyr::separate()]
+#' @param ... For `unite.dm_zoomed`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [tidyr::separate()]
-#' @param col For `unite.zoomed_dm`: see [tidyr::unite()]
+#' For `separate.dm_zoomed`: see [tidyr::separate()]
+#' @param col For `unite.dm_zoomed`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [tidyr::separate()]
-#' @param sep For `unite.zoomed_dm`: see [tidyr::unite()]
+#' For `separate.dm_zoomed`: see [tidyr::separate()]
+#' @param sep For `unite.dm_zoomed`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [tidyr::separate()]
-#' @param remove For `unite.zoomed_dm`: see [tidyr::unite()]
+#' For `separate.dm_zoomed`: see [tidyr::separate()]
+#' @param remove For `unite.dm_zoomed`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [tidyr::separate()]
+#' For `separate.dm_zoomed`: see [tidyr::separate()]
 #' @param na.rm see [tidyr::unite()]
 #' @param into see [tidyr::separate()]
 #' @name tidyr_table_manipulation
@@ -37,7 +37,7 @@ unite.dm <- function(data, ...) {
 
 #' @rdname tidyr_table_manipulation
 #' @export
-unite.zoomed_dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
+unite.dm_zoomed <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
   tbl <- tbl_zoomed(data)
   united_tbl <- unite(tbl, col = !!col, ..., sep = sep, remove = remove, na.rm = na.rm)
 
@@ -68,7 +68,7 @@ separate.dm <- function(data, ...) {
 
 #' @rdname tidyr_table_manipulation
 #' @export
-separate.zoomed_dm <- function(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, ...) {
+separate.dm_zoomed <- function(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, ...) {
   tbl <- tbl_zoomed(data)
   col <- tidyselect::vars_pull(names(tbl), !!enquo(col))
   separated_tbl <- separate(tbl, col = !!col, into = into, sep = sep, remove = remove, ...)

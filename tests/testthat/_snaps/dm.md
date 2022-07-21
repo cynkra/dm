@@ -671,7 +671,7 @@
       
       --------------------------------------------------------------------------------
 
-# glimpse.zoomed_dm() works
+# glimpse.dm_zoomed() works
 
     Code
       dm_nycflights13() %>% dm_zoom_to(airports) %>% glimpse()
