@@ -24,7 +24,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' dm <-dm_nycflights13(cycle = TRUE)
+#' dm <- dm_nycflights13(cycle = TRUE)
 #' dm_gui(dm = dm)
 #' }
 dm_gui <- function(..., dm = NULL, select_tables = TRUE, debug = FALSE) {
