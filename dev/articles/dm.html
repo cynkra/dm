@@ -232,10 +232,10 @@
 <div class="section level2">
 <h2 id="accessing-a-data-model-as-a-table">Accessing a data model as a table<a class="anchor" aria-label="anchor" href="#accessing-a-data-model-as-a-table"></a>
 </h2>
-<p>If we want to perform modeling or analysis on this relational model, we need to transform it into a tabular format that R functions can work with. <code><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl()</a></code> will automatically follow foreign keys across tables to gather all the available columns into a single table.</p>
+<p>If we want to perform modeling or analysis on this relational model, we need to transform it into a tabular format that R functions can work with. With the argument <code>recursive = TRUE</code>, <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code> will automatically follow foreign keys across tables to gather all the available columns into a single table.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">loans</span>, .recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span></span>
 <span><span class="co">#&gt;   dm_rename(loans, date.loans = date) %&gt;%</span></span>
 <span><span class="co">#&gt;   dm_rename(accounts, date.accounts = date)</span></span></code></pre></div>
@@ -263,7 +263,7 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">loans_df</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">loans</span>, .recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">amount</span>, <span class="va">duration</span>, <span class="va">A3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span></span>

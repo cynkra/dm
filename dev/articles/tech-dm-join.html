@@ -182,7 +182,7 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm_joined</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, .join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></span>
 <span><span class="va">dm_joined</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1,761 × 20</span></span>
 <span><span class="co">#&gt;     year month   day dep_time sched_dep_t…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵</span></span>
@@ -234,7 +234,7 @@
 <p>We expect the <code>flights</code> data from {nycflights13} package to be clean and well organized, so no flights should remain. You can check this with an <code>anti_join</code>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, join <span class="op">=</span> <span class="va">anti_join</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, .join <span class="op">=</span> <span class="va">anti_join</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 0 × 19</span></span>
 <span><span class="co">#&gt; # … with 19 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span></span>
@@ -251,7 +251,7 @@
 <span>    airports <span class="op">=</span> <span class="op">(</span><span class="va">name</span> <span class="op">!=</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span>,</span>
 <span>    flights <span class="op">=</span> <span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span>, .join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 2,340 × 26</span></span>
 <span><span class="co">#&gt;     year month   day dep_time sched_dep_t…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵</span></span>
 <span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;         &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt;</span></span>
@@ -279,7 +279,7 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">weather</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span>start <span class="op">=</span> <span class="va">flights</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span>.start <span class="op">=</span> <span class="va">flights</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span></span>
 <span><span class="co">#&gt;   dm_rename(flights, year.flights = year) %&gt;%</span></span>
 <span><span class="co">#&gt;   dm_rename(airlines, name.airlines = name) %&gt;%</span></span>
@@ -306,7 +306,7 @@
 <span><span class="co">#&gt; #   type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;, and abbreviated variable …</span></span>
 <span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
-<p>To be more precise, <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code> will join all tables from one level of hierarchy (i.e., direct neighbors to table <code>start</code>). If you want to cover tables from all levels of hierarchy, use <code><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl()</a></code> instead.</p>
+<p>To be more precise, <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code> will join all tables from one level of hierarchy (i.e., direct neighbors to table <code>.start</code>). If you want to cover tables from all levels of hierarchy, use the argument <code>recursive = TRUE</code> for <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code> instead.</p>
 <p>Also, be aware that all column names need to be unique. The <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code> takes care of this by automatically renaming the relevant columns and informs the user if any names were changed, e.g. <code>dm_rename(airlines, airlines.name = name)</code>.</p>
 <p>If you want to merge all tables, but get a nested table in return, use <code><a href="../reference/dm_wrap_tbl.html">dm_wrap_tbl()</a></code> with <code><a href="../reference/pull_tbl.html">pull_tbl()</a></code> instead:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
