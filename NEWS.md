@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.99.99.9008
+
+## Documentation
+
+- Work around ANSI escape issues in CRAN rendering of vignette (#1156, #1330).
+
+## API
+
+- Deprecate `rows_truncate()` and `dm_rows_truncate()` (#1031, #1321).
+
+
 # dm 0.99.99.9007
 
 ## Features
