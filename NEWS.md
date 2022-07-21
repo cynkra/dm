@@ -1,5 +1,22 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.99.99.9009
+
+## Features
+
+- Breaking change: `dm_disambiguate_cols()` gains a `.position` argument, disambiguates with suffix by default (#1293) (#1327).
+
+## Breaking changes
+
+- Breaking change: `dm_disambiguate_cols()` gains a `.position` argument, disambiguates with suffix by default (#1293) (#1327).
+
+## API
+
+- Add `dm_` prefix to internal class names (#1285) (#1339).
+
+- deprecate `dm_squash_to_tbl()` and instead provide argument `.recursive` for `dm_flatten_to_tbl()`; rename `start` to `.start` and `join` to `.join` (#1272) (#1324).
+
+
 # dm 0.99.99.9008
 
 ## Documentation
