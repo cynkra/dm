@@ -63,7 +63,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
 test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
   out <- expect_message_obj(dm_flatten_to_tbl(
     dm_for_flatten(), fact,
-    join = inner_join
+    .join = inner_join
   ))
   expect_equivalent_tbl(out, result_from_flatten())
 })
@@ -73,7 +73,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
   skip_if_src("maria")
   out <- expect_message_obj(dm_flatten_to_tbl(
     dm_for_flatten(), fact,
-    join = full_join
+    .join = full_join
   ))
   expect_equivalent_tbl(
     out,
@@ -87,21 +87,21 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'semi_join()'", {
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_for_flatten(), fact, join = semi_join),
+    dm_flatten_to_tbl(dm_for_flatten(), fact, .join = semi_join),
     fact()
   )
 })
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'anti_join()'", {
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_for_flatten(), fact, join = anti_join),
+    dm_flatten_to_tbl(dm_for_flatten(), fact, .join = anti_join),
     fact() %>% filter(1 == 0)
   )
 })
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'nest_join()'", {
   expect_dm_error(
-    dm_flatten_to_tbl(dm_for_flatten(), fact, join = nest_join),
+    dm_flatten_to_tbl(dm_for_flatten(), fact, .join = nest_join),
     class = "no_flatten_with_nest_join"
   )
 })
@@ -111,7 +111,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
   skip_if_src("sqlite")
   expect_equivalent_tbl(
     expect_message_obj(expect_warning_obj(
-      dm_flatten_to_tbl(dm_for_flatten(), fact, join = right_join),
+      dm_flatten_to_tbl(dm_for_flatten(), fact, .join = right_join),
       "right_join"
     )),
     fact_clean() %>%
@@ -124,7 +124,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
   # change order of parent tables
   out <- expect_message_obj(dm_flatten_to_tbl(
     dm_for_flatten(), fact, dim_2, dim_1,
-    join = right_join
+    .join = right_join
   ))
   expect_equivalent_tbl(
     out,
@@ -154,7 +154,7 @@ test_that("`dm_flatten_to_tbl(recursive = TRUE)` does the right things", {
   # with grandparent table
   # left_join:
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, recursive = TRUE),
+    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, .recursive = TRUE),
     tf_5() %>%
       left_join(tf_4(), by = c("l" = "h")) %>%
       left_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
@@ -163,26 +163,26 @@ test_that("`dm_flatten_to_tbl(recursive = TRUE)` does the right things", {
   # deeper hierarchy available and `auto_detect = TRUE`
   # for flatten: columns from tf_5 + tf_4 + tf_3 + tf_4_2 + tf_6 are combined in one table, 10 cols in total
   expect_identical(
-    ncol(dm_flatten_to_tbl(dm_more_complex(), tf_5, recursive = TRUE)),
+    ncol(dm_flatten_to_tbl(dm_more_complex(), tf_5, .recursive = TRUE)),
     12L
   )
 
 
   # semi_join:
   expect_dm_error(
-    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = semi_join, recursive = TRUE),
+    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, .join = semi_join, .recursive = TRUE),
     class = "squash_limited"
   )
 
   # anti_join:
   expect_dm_error(
-    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = anti_join, recursive = TRUE),
+    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, .join = anti_join, .recursive = TRUE),
     class = "squash_limited"
   )
 
   # fails when there is a cycle:
   expect_dm_error(
-    dm_flatten_to_tbl(dm_for_filter_w_cycle(), tf_5, recursive = TRUE),
+    dm_flatten_to_tbl(dm_for_filter_w_cycle(), tf_5, .recursive = TRUE),
     "no_cycles"
   )
 
@@ -191,7 +191,7 @@ test_that("`dm_flatten_to_tbl(recursive = TRUE)` does the right things", {
 
   # full_join:
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = full_join, recursive = TRUE),
+    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, .join = full_join, .recursive = TRUE),
     tf_5() %>%
       full_join(tf_4(), by = c("l" = "h")) %>%
       full_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
@@ -201,7 +201,7 @@ test_that("`dm_flatten_to_tbl(recursive = TRUE)` does the right things", {
 
   # right_join:
   expect_dm_error(
-    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = right_join, recursive = TRUE),
+    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, .join = right_join, .recursive = TRUE),
     class = "squash_limited"
   )
 })
@@ -301,8 +301,8 @@ test_that("tests with 'bad_dm' work", {
 
   # filtered `dm`
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = semi_join),
-    bad_filtered_dm %>% dm_flatten_to_tbl(tbl_1, join = semi_join)
+    dm_flatten_to_tbl(bad_filtered_dm, tbl_1, .join = semi_join),
+    bad_filtered_dm %>% dm_flatten_to_tbl(tbl_1, .join = semi_join)
   )
 
   skip_if_not_installed("nycflights13")
@@ -327,7 +327,7 @@ test_that("tests with 'bad_dm' work (2)", {
 
   # flatten bad_dm() (no referential integrity)
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, join = full_join),
+    dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = full_join),
     tbl_1() %>%
       full_join(tbl_2(), by = c("a" = "id", "x")) %>%
       full_join(tbl_3(), by = c("b" = "id"))
@@ -345,7 +345,7 @@ test_that("tests with 'bad_dm' work (3)", {
 
   # flatten bad_dm() (no referential integrity)
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, join = right_join),
+    dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = right_join),
     tbl_1() %>%
       right_join(tbl_2(), by = c("a" = "id", "x")) %>%
       right_join(tbl_3(), by = c("b" = "id"))
@@ -353,7 +353,7 @@ test_that("tests with 'bad_dm' work (3)", {
 
   # flatten bad_dm() (no referential integrity); different order
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_3, tbl_2, join = right_join),
+    dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_3, tbl_2, .join = right_join),
     tbl_1() %>%
       right_join(tbl_3(), by = c("b" = "id")) %>%
       right_join(tbl_2(), by = c("a" = "id", "x"))

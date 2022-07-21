@@ -212,7 +212,11 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   deprecate_soft("0.1.0", "dm::cdm_flatten_to_tbl()", "dm::dm_flatten_to_tbl()")
   join_name <- deparse(substitute(join))
   start <- dm_tbl_name(dm, {{ start }})
-  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
+
+  vars <- setdiff(src_tbls_impl(dm), start)
+  list_of_pts <- eval_select_table(quo(c(...)), vars)
+
+  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = join, join_name = join_name, squash = FALSE)
 }
 
 #' @rdname deprecated
@@ -223,7 +227,11 @@ cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   join_name <- deparse(substitute(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
   start <- dm_tbl_name(dm, {{ start }})
-  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
+
+  vars <- setdiff(src_tbls_impl(dm), start)
+  list_of_pts <- eval_select_table(quo(c(...)), vars)
+
+  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = join, join_name = join_name, squash = TRUE)
 }
 
 #' @rdname deprecated
@@ -242,7 +250,7 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  dm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, other, join = join, join_name = join_name, squash = FALSE)
 }
 
 #' @rdname deprecated
@@ -723,7 +731,11 @@ dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   join_name <- as_label(enexpr(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
   start <- dm_tbl_name(dm, {{ start }})
-  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
+
+  vars <- setdiff(src_tbls_impl(dm), start)
+  list_of_pts <- eval_select_table(quo(c(...)), vars)
+
+  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = join, join_name = join_name, squash = TRUE)
 }
 
 #' @description

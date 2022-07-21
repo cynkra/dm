@@ -153,10 +153,10 @@ The following joins are determined by the foreign key links.
 ```{r}
 dm_nycflights13() %>%
   dm_select_tbl(-weather) %>%
-  dm_flatten_to_tbl(start = flights)
+  dm_flatten_to_tbl(.start = flights)
 ```
 
-To be more precise, `dm_flatten_to_tbl()` will join all tables from one level of hierarchy (i.e., direct neighbors to table `start`).
+To be more precise, `dm_flatten_to_tbl()` will join all tables from one level of hierarchy (i.e., direct neighbors to table `.start`).
 If you want to cover tables from all levels of hierarchy, use the argument `recursive = TRUE` for `dm_flatten_to_tbl()` instead.
 
 Also, be aware that all column names need to be unique.

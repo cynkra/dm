@@ -60,19 +60,20 @@
 #'   dm_flatten_to_tbl(start = cards, recursive = TRUE)
 #'
 #' @export
-dm_flatten_to_tbl <- function(dm, start, ..., recursive = FALSE, join = left_join) {
+dm_flatten_to_tbl <- function(dm, .start, ..., .recursive = FALSE, .join = left_join) {
   check_not_zoomed(dm)
-  join_name <- as_label(enexpr(join))
-  if (recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
+  join_name <- as_label(enexpr(.join))
+  if (.recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
 
-  start <- dm_tbl_name(dm, {{ start }})
-  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = recursive)
-}
+  start <- dm_tbl_name(dm, {{ .start }})
 
-dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   vars <- setdiff(src_tbls_impl(dm), start)
   list_of_pts <- eval_select_table(quo(c(...)), vars)
 
+  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = .join, join_name = join_name, squash = .recursive)
+}
+
+dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squash) {
   if (join_name == "nest_join") abort_no_flatten_with_nest_join()
 
   force(join)
@@ -121,10 +122,10 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
     squash
   )
 
-  # rename dm and replace table `start` by its filtered, renamed version
+  # rename dm and replace table `.start` by its filtered, renamed version
   prep_dm <- prepare_dm_for_flatten(dm, order_df$name, gotta_rename)
 
-  # Drop the first table in the list of join partners. (We have at least one table, `start`.)
+  # Drop the first table in the list of join partners. (We have at least one table, `.start`.)
   # (Working with `reduce2()` here and the `.init`-argument is the first table)
   # in the case of only one table in the `dm` (table "start"), all code below is a no-op
   order_df <- order_df[-1, ]
@@ -169,7 +170,7 @@ dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  dm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, other, join = join, join_name = join_name, squash = FALSE)
 }
 
 parent_child_table <- function(dm, table_1, table_2) {
@@ -219,7 +220,7 @@ check_flatten_to_tbl <- function(join_name,
 
 
   # If called by `dm_join_to_tbl()` or `dm_flatten_to_tbl()`, the argument `squash = FALSE`.
-  # Then only one level of hierarchy is allowed (direct neighbors to table `start`).
+  # Then only one level of hierarchy is allowed (direct neighbors to table `.start`).
   if (!squash && has_grandparent) {
     abort_only_parents()
   }
