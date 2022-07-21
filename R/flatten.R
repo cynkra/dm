@@ -4,66 +4,50 @@
 #' It performs a disambiguation of column names and a cascade of joins.
 #'
 #' @inheritParams dm_join_to_tbl
-#' @param start The table from which all outgoing foreign key relations are considered
+#' @param .start The table from which all outgoing foreign key relations are considered
 #'   when establishing a processing order for the joins.
 #'   An interesting choice could be
 #'   for example a fact table in a star schema.
 #' @param ...
 #'   `r lifecycle::badge("experimental")`
 #'
-#'   Unquoted names of the tables to be included in addition to the `start` table.
+#'   Unquoted names of the tables to be included in addition to the `.start` table.
 #'   The order of the tables here determines the order of the joins.
 #'   If the argument is empty, all tables that can be reached will be included.
 #'   `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
-#' @param recursive Logical, defaults to `FALSE`. Should not only parent tables be joined to `start`, but also their ancestors?
+#' @param .recursive Logical, defaults to `FALSE`. Should not only parent tables be joined to `.start`, but also their ancestors?
+#' @param .join The type of join to be performed, see [dplyr::join()].
 #' @family flattening functions
 #'
 #' @details
 #' With `...` left empty, this function will join together all the tables of your [`dm`]
-#' object that can be reached from the `start` table, in the direction of the foreign key relations
+#' object that can be reached from the `.start` table, in the direction of the foreign key relations
 #' (pointing from the child tables to the parent tables), using the foreign key relations to
 #' determine the argument `by` for the necessary joins.
 #' The result is one table with unique column names.
-#' Use the `...` argument if you would like to control which tables should be joined to the `start` table.
+#' Use the `...` argument if you would like to control which tables should be joined to the `.start` table.
 #'
-#' How does filtering affect the result?
-#'
-#' **Case 1**, either no filter conditions are set in the `dm`, or set only in the part that is unconnected to the `start` table:
-#' The necessary disambiguations of the column names are performed first.
-#' Then all involved foreign tables are joined to the `start` table successively, with the join function given in the `join` argument.
-#'
-#' **Case 2**, filter conditions are set for at least one table that is connected to `start`:
-#' First, disambiguation will be performed if necessary. The `start` table is then calculated using `dm[[start]]`.
-#' This implies
-#' that the effect of the filters on this table is taken into account.
-#' For `right_join`, `full_join` and `nest_join`, an error
-#' is thrown if any filters are set because filters will not affect the right hand side tables and the result will therefore be
-#' incorrect in general (calculating the effects on all RHS-tables would also be time-consuming, and is not supported;
-#' if desired, call `dm_apply_filters()` first to achieve that effect).
-#' For all other join types, filtering only the `start` table is enough because the effect is passed on by
-#' successive joins.
-#'
-#' Mind that calling `dm_flatten_to_tbl()` with `join = right_join` and no table order determined in the `...` argument
-#' will not lead to a well-defined result if two or more foreign tables are to be joined to `start`.
+#' Mind that calling `dm_flatten_to_tbl()` with `.join = right_join` and no table order determined in the `...` argument
+#' will not lead to a well-defined result if two or more foreign tables are to be joined to `.start`.
 #' The resulting
 #' table would depend on the order the tables that are listed in the `dm`.
 #' Therefore, trying this will result in a warning.
 #'
-#' Since `join = nest_join()` does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
+#' Since `.join = nest_join` does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 #' each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
 #'
-#' The difference between `recursive = FALSE` and `recursive = TRUE` is
+#' The difference between `.recursive = FALSE` and `.recursive = TRUE` is
 #' the following (see the examples):
 #'
-#' - `recursive = FALSE` allows only one level of hierarchy
-#'   (i.e., direct neighbors to table `start`), while
+#' - `.recursive = FALSE` allows only one level of hierarchy
+#'   (i.e., direct neighbors to table `.start`), while
 #'
-#' - `recursive = TRUE` will go through all levels of hierarchy while joining.
+#' - `.recursive = TRUE` will go through all levels of hierarchy while joining.
 #'
 #' Additionally, these functions differ from `dm_wrap_tbl()`, which always
 #' returns a `dm` object.
 #'
-#' @return A single table that results from consecutively joining all affected tables to the `start` table.
+#' @return A single table that results from consecutively joining all affected tables to the `.start` table.
 #'
 #' @examples
 #'
