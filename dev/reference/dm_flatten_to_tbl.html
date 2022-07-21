@@ -162,11 +162,11 @@ returns a <code>dm</code> object.</p>
 <span class="r-in"><span>  <span class="fu"><a href="dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dm_flatten_to_tbl</span><span class="op">(</span>start <span class="op">=</span> <span class="va">cards</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Renaming ambiguous columns: %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(cards, cards.type = type) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(disps, disps.type = type)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(cards, type.cards = type) %&gt;%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(disps, type.disps = type)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   SQL [?? x 7]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       id disp_id cards.type issued     client_id account_id disps.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       id disp_id type.cards issued     client_id account_id type.disps</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1       9 gold       1998-10-16         9          7 OWNER     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2      19 classic    1998-03-13        19         14 OWNER     </span>
@@ -185,13 +185,13 @@ returns a <code>dm</code> object.</p>
 <span class="r-in"><span>  <span class="fu"><a href="dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dm_squash_to_tbl</span><span class="op">(</span>start <span class="op">=</span> <span class="va">cards</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Renaming ambiguous columns: %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(cards, cards.type = type) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(disps, disps.type = type) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(accounts, accounts.district_id = district_id) %&gt;%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(clients, clients.district_id = district_id)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(cards, type.cards = type) %&gt;%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(disps, type.disps = type) %&gt;%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(accounts, district_id.accounts = district_id) %&gt;%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   dm_rename(clients, district_id.clients = district_id)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   SQL [?? x 28]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       id disp_id cards.type issued     client_id accou…¹ disps…² accou…³ frequ…⁴</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       id disp_id type.cards issued     client_id accou…¹ type.…² distr…³ frequ…⁴</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1       9 gold       1998-10-16         9       7 OWNER        60 POPLAT…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2      19 classic    1998-03-13        19      14 OWNER        47 POPLAT…</span>
@@ -206,8 +206,8 @@ returns a <code>dm</code> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with more rows, 19 more variables: date &lt;date&gt;, A2 &lt;chr&gt;, A3 &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   A4 &lt;int&gt;, A5 &lt;int&gt;, A6 &lt;int&gt;, A7 &lt;int&gt;, A8 &lt;int&gt;, A9 &lt;int&gt;, A10 &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   A11 &lt;int&gt;, A12 &lt;dbl&gt;, A13 &lt;dbl&gt;, A14 &lt;int&gt;, A15 &lt;int&gt;, A16 &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   birth_number &lt;chr&gt;, clients.district_id &lt;int&gt;, tkey_id &lt;int&gt;, and</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   abbreviated variable names ¹​account_id, ²​disps.type, ³​accounts.district_id,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   birth_number &lt;chr&gt;, district_id.clients &lt;int&gt;, tkey_id &lt;int&gt;, and</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   abbreviated variable names ¹​account_id, ²​type.disps, ³​district_id.accounts,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ⁴​frequency</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span>
 <span class="r-in"><span></span></span>

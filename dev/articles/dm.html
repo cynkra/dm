@@ -237,11 +237,11 @@
 <code class="sourceCode R"><span><span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span></span>
-<span><span class="co">#&gt;   dm_rename(loans, loans.date = date) %&gt;%</span></span>
-<span><span class="co">#&gt;   dm_rename(accounts, accounts.date = date)</span></span></code></pre></div>
+<span><span class="co">#&gt;   dm_rename(loans, date.loans = date) %&gt;%</span></span>
+<span><span class="co">#&gt;   dm_rename(accounts, date.accounts = date)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   SQL [?? x 25]</span></span>
 <span><span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span></span>
-<span><span class="co">#&gt;       id account…¹ loans.date amount durat…² payme…³ status distr…⁴ frequ…⁵</span></span>
+<span><span class="co">#&gt;       id account…¹ date.loans amount durat…² payme…³ status distr…⁴ frequ…⁵</span></span>
 <span><span class="co">#&gt;    &lt;int&gt;     &lt;int&gt; &lt;date&gt;      &lt;dbl&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;  </span></span>
 <span><span class="co">#&gt;  1  4959         2 1994-01-05  80952      24    3373 A            1 POPLAT…</span></span>
 <span><span class="co">#&gt;  2  4961        19 1996-04-29  30276      12    2523 B           21 POPLAT…</span></span>
@@ -253,7 +253,7 @@
 <span><span class="co">#&gt;  8  4988       103 1997-12-06 265320      36    7370 D           44 POPLAT…</span></span>
 <span><span class="co">#&gt;  9  4989       105 1998-12-05 352704      48    7348 C           21 POPLAT…</span></span>
 <span><span class="co">#&gt; 10  4990       110 1997-09-08 162576      36    4516 C           36 POPLAT…</span></span>
-<span><span class="co">#&gt; # … with more rows, 16 more variables: accounts.date &lt;date&gt;, A2 &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; # … with more rows, 16 more variables: date.accounts &lt;date&gt;, A2 &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   A3 &lt;chr&gt;, A4 &lt;int&gt;, A5 &lt;int&gt;, A6 &lt;int&gt;, A7 &lt;int&gt;, A8 &lt;int&gt;, A9 &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   A10 &lt;dbl&gt;, A11 &lt;int&gt;, A12 &lt;dbl&gt;, A13 &lt;dbl&gt;, A14 &lt;int&gt;, A15 &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   A16 &lt;int&gt;, and abbreviated variable names ¹​account_id, ²​duration,</span></span>
@@ -267,8 +267,8 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">amount</span>, <span class="va">duration</span>, <span class="va">A3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span></span>
-<span><span class="co">#&gt;   dm_rename(loans, loans.date = date) %&gt;%</span></span>
-<span><span class="co">#&gt;   dm_rename(accounts, accounts.date = date)</span></span>
+<span><span class="co">#&gt;   dm_rename(loans, date.loans = date) %&gt;%</span></span>
+<span><span class="co">#&gt;   dm_rename(accounts, date.accounts = date)</span></span>
 <span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">amount</span> <span class="op">~</span> <span class="va">duration</span> <span class="op">+</span> <span class="va">A3</span>, data <span class="op">=</span> <span class="va">loans_df</span><span class="op">)</span></span>
 <span></span>

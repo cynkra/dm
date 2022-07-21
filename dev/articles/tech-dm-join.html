@@ -281,12 +281,12 @@
 <span>  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">weather</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span>start <span class="op">=</span> <span class="va">flights</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span></span>
-<span><span class="co">#&gt;   dm_rename(flights, flights.year = year) %&gt;%</span></span>
-<span><span class="co">#&gt;   dm_rename(airlines, airlines.name = name) %&gt;%</span></span>
-<span><span class="co">#&gt;   dm_rename(airports, airports.name = name) %&gt;%</span></span>
-<span><span class="co">#&gt;   dm_rename(planes, planes.year = year)</span></span></code></pre></div>
+<span><span class="co">#&gt;   dm_rename(flights, year.flights = year) %&gt;%</span></span>
+<span><span class="co">#&gt;   dm_rename(airlines, name.airlines = name) %&gt;%</span></span>
+<span><span class="co">#&gt;   dm_rename(airports, name.airports = name) %&gt;%</span></span>
+<span><span class="co">#&gt;   dm_rename(planes, year.planes = year)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1,761 × 35</span></span>
-<span><span class="co">#&gt;    flights.year month   day dep_t…¹ sched…² dep_d…³ arr_t…⁴ sched…⁵ arr_d…⁶</span></span>
+<span><span class="co">#&gt;    year.flights month   day dep_t…¹ sched…² dep_d…³ arr_t…⁴ sched…⁵ arr_d…⁶</span></span>
 <span><span class="co">#&gt;           &lt;int&gt; &lt;int&gt; &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt;  1         2013     1    10       3    2359       4     426     437     -11</span></span>
 <span><span class="co">#&gt;  2         2013     1    10      16    2359      17     447     444       3</span></span>
@@ -301,8 +301,8 @@
 <span><span class="co">#&gt; # … with 1,751 more rows, 26 more variables: carrier &lt;chr&gt;, flight &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;,</span></span>
-<span><span class="co">#&gt; #   airlines.name &lt;chr&gt;, airports.name &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;, planes.year &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   name.airlines &lt;chr&gt;, name.airports &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;, year.planes &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;, and abbreviated variable …</span></span>
 <span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
