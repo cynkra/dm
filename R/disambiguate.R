@@ -32,7 +32,7 @@ dm_disambiguate_cols <- function(dm, sep = ".", ..., .quiet = FALSE,
                                  .position = c("suffix", "prefix")) {
   check_not_zoomed(dm)
   check_dots_empty()
-  position <- arg_match(position)
+  .position <- arg_match(.position)
   dm_disambiguate_cols_impl(
     dm,
     tables = NULL, sep = sep, quiet = .quiet,
