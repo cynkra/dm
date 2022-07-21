@@ -2,6 +2,12 @@
 
     Code
       wrapped <- dm_wrap_tbl(dm_for_filter(), tf_4)
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 4 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
+    Code
       wrapped
     Output
       -- Metadata --------------------------------------------------------------------
@@ -40,6 +46,12 @@
 
     Code
       unwrapped <- dm_unwrap_tbl(dm_wrap_tbl(dm_for_filter(), tf_4), dm_for_filter())
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 4 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
+    Code
       unwrapped
     Output
       -- Metadata --------------------------------------------------------------------
