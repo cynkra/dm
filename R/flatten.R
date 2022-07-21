@@ -73,7 +73,7 @@ dm_flatten_to_tbl <- function(dm, .start, ..., .recursive = FALSE, .join = left_
   dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = .join, join_name = join_name, squash = .recursive)
 }
 
-dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squash) {
+dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squash, .position = "suffix") {
   if (join_name == "nest_join") abort_no_flatten_with_nest_join()
 
   force(join)
