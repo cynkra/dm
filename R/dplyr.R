@@ -300,9 +300,8 @@ summarise.dm_keyed_tbl <- function(.data, ...) {
 
   summarised_tbl <- NextMethod()
 
-  # TODO: Currently, summarized table gets a new UUID. Decide if we should
-  # instead retain the original UUID to replace the existing table in the `dm`
-  # object.
+  # FIXME: Add original FKs for the remaining columns
+  # (subsets of the grouped columns), use new UUID
   new_keyed_tbl(
     summarised_tbl,
     pk = new_pk,
