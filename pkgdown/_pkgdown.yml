@@ -14,14 +14,15 @@ reference:
   - as_dm
   - is_dm
   - dm_get_con
-  - dm_get_tables
 
 - title: Tables
   contents:
-  - dm_mutate_tbl
   - dm_select_tbl
   - dm_rename_tbl
+  - dm_get_tables
   - pull_tbl
+  - glimpse
+  - dm_mutate_tbl
 
 - title: Primary keys
   contents:
@@ -57,6 +58,7 @@ reference:
   - dm_zoom_to
   - ends_with("_zoomed")
   - ends_with(".dm_zoomed")
+  - -pack_join
 
 - title: Wrap
   contents:
@@ -110,7 +112,6 @@ reference:
   - dm_nrow
   - dm_ptype
   - dm_validate
-  - glimpse.dm
 
 navbar:
   structure:
