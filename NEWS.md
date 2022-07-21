@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 1.0.0.9000
+
+- Internal changes only.
+
+
 # dm 1.0.0
 
 - Same as previous version.
