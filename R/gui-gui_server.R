@@ -38,7 +38,7 @@ gui_server <- function(input, output, session) {
   })
 
   r_call <- shiny::reactive({
-    paste(utils::capture.output(print.cg_code_block(r_ops()$cg)), collapse = "\n")
+    paste(utils::capture.output(print.dm_cg_code_block(r_ops()$cg)), collapse = "\n")
     # format(r_ops()$cg)
   })
 
