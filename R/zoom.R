@@ -90,7 +90,7 @@ dm_zoom_to <- function(dm, table) {
 }
 
 is_zoomed <- function(dm) {
-  inherits(dm, "dm_zoomed")
+  inherits(dm, c("dm_zoomed", "zoomed_dm"))
 }
 
 #' @rdname dm_zoom_to
