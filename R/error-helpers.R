@@ -162,7 +162,7 @@ abort_tables_not_reachable_from_start <- function() {
 }
 
 error_txt_tables_not_reachable_from_start <- function() {
-  glue("All selected tables must be reachable from `start`.")
+  glue("All selected tables must be reachable from `.start`.")
 }
 
 
@@ -287,9 +287,9 @@ abort_only_parents <- function() {
 
 error_txt_only_parents <- function() {
   paste0(
-    "When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `start` ",
+    "When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `.start` ",
     "have to be its direct neighbors. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` ",
-    "use `dm_squash_to_tbl()` as an alternative."
+    "use `dm_flatten_to_tbl(.recursive = TRUE)` as an alternative."
   )
 }
 
@@ -323,7 +323,7 @@ abort_squash_limited <- function() {
 }
 
 error_txt_squash_limited <- function() {
-  "`dm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`."
+  "`dm_flatten_to_tbl(.recursive = TRUE)` only supports join methods `left_join`, `inner_join`, `full_join`."
 }
 
 abort_apply_filters_first <- function(join_name) {
