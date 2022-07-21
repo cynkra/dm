@@ -1,7 +1,7 @@
 test_that("code generation works", {
   expect_identical(
     new_cg_block(),
-    structure(list(cg_input_object = list(), cg_f_list = list()), class = "cg_code_block")
+    structure(list(cg_input_object = list(), cg_f_list = list()), class = "dm_cg_code_block")
   )
 
   expect_snapshot({

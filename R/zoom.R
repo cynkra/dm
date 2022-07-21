@@ -42,6 +42,7 @@
 #'
 #' @rdname dm_zoom_to
 #' @aliases zoomed_df
+#' @aliases dm_zoomed_df
 #'
 #' @return For `dm_zoom_to()`: A `zoomed_dm` object.
 #'
