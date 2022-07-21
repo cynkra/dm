@@ -6,7 +6,7 @@ test_that("code generation works", {
 
   expect_snapshot({
     call_to_char(body(function(.) dm_add_tbl(., weather)))
-    call_to_char(quo(dm_add_tbl(., weather, airports, flights, airlines, planes, mtcars, penguins)))
+    call_to_char(expr(dm_add_tbl(., weather, airports, flights, airlines, planes, mtcars, penguins)))
     new_cg_block()
     new_cg_block(quo(dm_nycflights13()), list(function(.) dm_add_pk(., flights, flight_id)))
     table <- "flights"
