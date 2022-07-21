@@ -2,7 +2,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   # for left join test the basic flattening also on all DBs
   expect_equivalent_tbl(
     expect_message_obj(dm_flatten_to_tbl(dm_for_flatten(), fact)),
-    result_from_flatten()
+    result_from_flatten_new()
   )
 
   # a one-table-dm
@@ -20,11 +20,11 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   expect_equivalent_tbl(
     out,
     left_join(
-      fact_clean(),
-      dim_1_clean(),
+      fact_clean_new(),
+      dim_1_clean_new(),
       by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
     ) %>%
-      left_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk"))
+      left_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk"))
   )
 
   # change order of parent tables
@@ -34,10 +34,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   expect_equivalent_tbl(
     out,
     left_join(
-      fact_clean(), dim_2_clean(),
+      fact_clean_new(), dim_2_clean_new(),
       by = c("dim_2_key" = "dim_2_pk")
     ) %>%
-      left_join(dim_1_clean(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2"))
+      left_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2"))
   )
 
   # with grandparent table
@@ -65,7 +65,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
     dm_for_flatten(), fact,
     .join = inner_join
   ))
-  expect_equivalent_tbl(out, result_from_flatten())
+  expect_equivalent_tbl(out, result_from_flatten_new())
 })
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
@@ -77,11 +77,11 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
   ))
   expect_equivalent_tbl(
     out,
-    fact_clean() %>%
-      full_join(dim_1_clean(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
-      full_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) %>%
-      full_join(dim_3_clean(), by = c("dim_3_key" = "dim_3_pk")) %>%
-      full_join(dim_4_clean(), by = c("dim_4_key" = "dim_4_pk"))
+    fact_clean_new() %>%
+      full_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
+      full_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk")) %>%
+      full_join(dim_3_clean_new(), by = c("dim_3_key" = "dim_3_pk")) %>%
+      full_join(dim_4_clean_new(), by = c("dim_4_key" = "dim_4_pk"))
   )
 })
 
@@ -114,11 +114,11 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
       dm_flatten_to_tbl(dm_for_flatten(), fact, .join = right_join),
       "right_join"
     )),
-    fact_clean() %>%
-      right_join(dim_1_clean(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
-      right_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) %>%
-      right_join(dim_3_clean(), by = c("dim_3_key" = "dim_3_pk")) %>%
-      right_join(dim_4_clean(), by = c("dim_4_key" = "dim_4_pk"))
+    fact_clean_new() %>%
+      right_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
+      right_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk")) %>%
+      right_join(dim_3_clean_new(), by = c("dim_3_key" = "dim_3_pk")) %>%
+      right_join(dim_4_clean_new(), by = c("dim_4_key" = "dim_4_pk"))
   )
 
   # change order of parent tables
@@ -129,11 +129,11 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
   expect_equivalent_tbl(
     out,
     right_join(
-      fact_clean(),
-      dim_2_clean(),
+      fact_clean_new(),
+      dim_2_clean_new(),
       by = c("dim_2_key" = "dim_2_pk")
     ) %>%
-      right_join(dim_1_clean(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2"))
+      right_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2"))
   )
 })
 
@@ -215,7 +215,7 @@ test_that("prepare_dm_for_flatten() works", {
   ))
   expect_equivalent_dm(
     out,
-    dm_select_tbl(dm_for_flatten(), fact, dim_1, dim_3) %>% dm_disambiguate_cols(quiet = TRUE)
+    dm_select_tbl(dm_for_flatten(), fact, dim_1, dim_3) %>% dm_disambiguate_cols(.quiet = TRUE)
   )
 
   # without rename

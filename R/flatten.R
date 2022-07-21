@@ -123,7 +123,7 @@ dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squa
   )
 
   # rename dm and replace table `.start` by its filtered, renamed version
-  prep_dm <- prepare_dm_for_flatten(dm, order_df$name, gotta_rename)
+  prep_dm <- prepare_dm_for_flatten(dm, order_df$name, gotta_rename, position = .position)
 
   # Drop the first table in the list of join partners. (We have at least one table, `.start`.)
   # (Working with `reduce2()` here and the `.init`-argument is the first table)
@@ -170,7 +170,7 @@ dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  dm_flatten_to_tbl_impl(dm, start, other, join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, other, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
 }
 
 parent_child_table <- function(dm, table_1, table_2) {
@@ -235,7 +235,7 @@ check_flatten_to_tbl <- function(join_name,
   }
 }
 
-prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
+prepare_dm_for_flatten <- function(dm, tables, gotta_rename, position = "suffix") {
   start <- tables[1]
   # filters need to be empty, for the disambiguation to work
   # renaming will be minimized if we reduce the `dm` to the necessary tables here
@@ -248,7 +248,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
 
   if (gotta_rename) {
     table_colnames <- get_table_colnames(red_dm)
-    recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".")
+    recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".", position = position)
     explain_col_rename(recipe)
     # prepare `dm` by disambiguating columns (on a reduced dm)
     clean_dm <-

@@ -140,7 +140,7 @@ cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, indexes =
 #' @export
 cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
   deprecate_soft("0.1.0", "dm::cdm_disambiguate_cols()", "dm::dm_disambiguate_cols()")
-  dm_disambiguate_cols(dm = dm, sep = sep, quiet = quiet)
+  dm_disambiguate_cols(dm = dm, sep = sep, .quiet = quiet)
 }
 
 #' @rdname deprecated
@@ -216,7 +216,7 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   vars <- setdiff(src_tbls_impl(dm), start)
   list_of_pts <- eval_select_table(quo(c(...)), vars)
 
-  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
 }
 
 #' @rdname deprecated
@@ -250,7 +250,7 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  dm_flatten_to_tbl_impl(dm, start, other, join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, other, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
 }
 
 #' @rdname deprecated
