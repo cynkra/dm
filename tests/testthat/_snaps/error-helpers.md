@@ -174,7 +174,7 @@
       abort_squash_limited()
     Condition
       Error in `abort_squash_limited()`:
-      ! `dm_flatten_to_tbl(recursive = TRUE)` only supports join methods `left_join`, `inner_join`, `full_join`.
+      ! `dm_flatten_to_tbl(.recursive = TRUE)` only supports join methods `left_join`, `inner_join`, `full_join`.
     Code
       abort_apply_filters_first("join_tightly")
     Condition

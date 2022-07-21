@@ -150,7 +150,7 @@ test_that("`dm_squash_to_tbl()` is deprecated but still works", {
   )
 })
 
-test_that("`dm_flatten_to_tbl(recursive = TRUE)` does the right things", {
+test_that("`dm_flatten_to_tbl(.recursive = TRUE)` does the right things", {
   # with grandparent table
   # left_join:
   expect_equivalent_tbl(
