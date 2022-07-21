@@ -1,4 +1,6 @@
-pkgload::load_all()
+# pkgload::load_all()
+library(dm)
+library(dplyr)
 
 dm <- dm_nycflights13()
 
@@ -20,7 +22,9 @@ flights %>%
 
 by_origin <-
   flights %>%
-  count(origin)
+  group_by(origin) %>%
+  summarize(n = n()) %>%
+  ungroup()
 
 by_origin
 
