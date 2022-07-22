@@ -6,7 +6,7 @@
 \usage{
 dm_disambiguate_cols(
   dm,
-  sep = ".",
+  .sep = ".",
   ...,
   .quiet = FALSE,
   .position = c("suffix", "prefix")
@@ -15,7 +15,7 @@ dm_disambiguate_cols(
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{sep}{The character variable that separates the names of the table and the names of the ambiguous columns.}
+\item{.sep}{The character variable that separates the names of the table and the names of the ambiguous columns.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 

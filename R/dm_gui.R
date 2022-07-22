@@ -24,25 +24,20 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' dm_nycflights13(cycle = TRUE) %>%
-#'   dm_gui()
+#' dm <- dm_nycflights13(cycle = TRUE)
+#' dm_gui(dm = dm)
 #' }
 dm_gui <- function(..., dm = NULL, select_tables = TRUE, debug = FALSE) {
   check_dots_empty()
 
-  check_suggested(
-    c(
-      "colourpicker",
-      "htmltools",
-      "htmlwidgets",
-      "reactable",
-      "rstudioapi",
-      "shiny",
-      "shinyAce",
-      "shinydashboard"
-    ),
-    use = TRUE
-  )
+  check_suggested("colourpicker", use = TRUE)
+  check_suggested("htmltools", use = TRUE)
+  check_suggested("htmlwidgets", use = TRUE)
+  check_suggested("reactable", use = TRUE)
+  check_suggested("rstudioapi", use = TRUE)
+  check_suggested("shiny", use = TRUE)
+  check_suggested("shinyAce", use = TRUE)
+  check_suggested("shinydashboard", use = TRUE)
 
   gui_run(dm, select_tables, debug)
 }

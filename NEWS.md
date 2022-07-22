@@ -7,123 +7,55 @@
 
 # dm 1.0.0
 
-- Same as previous version.
-
-
-# dm 0.99.99.9009
-
-## Features
-
-- Breaking change: `dm_disambiguate_cols()` gains a `.position` argument, disambiguates with suffix by default (#1293) (#1327).
-
-## Breaking changes
-
-- Breaking change: `dm_disambiguate_cols()` gains a `.position` argument, disambiguates with suffix by default (#1293) (#1327).
-
-## API
-
-- Add `dm_` prefix to internal class names (#1285) (#1339).
-
-- deprecate `dm_squash_to_tbl()` and instead provide argument `.recursive` for `dm_flatten_to_tbl()`; rename `start` to `.start` and `join` to `.join` (#1272) (#1324).
-
-
-# dm 0.99.99.9008
-
-## Documentation
-
-- Work around ANSI escape issues in CRAN rendering of vignette (#1156, #1330).
-
-## API
-
-- Deprecate `rows_truncate()` and `dm_rows_truncate()` (#1031, #1321).
-
-
-# dm 0.99.99.9007
-
 ## Features
 
 - New `dm_gui()` for interactive editing of `dm` objects (#1076, #1319).
 
-## Uncategorized
-
-- REVERT ME: Shut up GHA PRs for pillar < 1.8.0.
-
-
-# dm 0.99.99.9006
-
-## Features
-
 - `dm_get_tables()` and `pull_tbl()` gain a new `keyed = FALSE` argument. If set to `TRUE`, table objects of class `"dm_keyed_tbl"` are returned. These objects inherit from the underlying data structure (tibble or lazy table), keep track of primary and foreign keys, and can be used later on in a call to `dm()` to recreate a dm object with the keys (#1187).
-
-## API
-
-- Add ellipses to methods (#1298).
-
-- Reexport `tibble()` (#1279).
-
-- Deprecate `dm_rm_tbl()` in favor of `dm_select_tbl()` (#1275).
-
-
-# dm 0.99.99.9005
-
-## Documentation
-
-- Fix column names in `?dm_get_all_pks` (#1245).
-
-## API
 
 - New `by_position` argument to `check_subset()`, `check_set_equality()`, `check_cardinality_...()` and `examine_cardinality()` (#1253).
 
+- `dm()` accepts dm objects (#1226).
+
+- `dm_examine_constraints()` honors implicit unique keys defined by foreign keys (#1131, #1209).
+
+## Breaking changes
+
+- `dm_filter()` is now stable, with a new API that avoids exposing an intermediate state with filters not yet applied, with a compatibility wrapper (#424, #426, #1236).
+
+- `check_cardinality_...()`, `examine_cardinality()`, `check_subset()` and `check_set_equality()` are now stable and consistently use a common interface with arguments named `x`, `y`, `x_select` and `y_select`, with compatibility wrappers (#1194, #1229).
+
+- `dm_examine_cardinalities()` and `dm_examine_constraints()` are now stable with a new signature and a compatibility wrapper (#1193, #1195).
+
+- `dm_apply_filters()`, `dm_apply_filters_to_tbl()` and `dm_get_filters()` are deprecated (#424, #426, #1236).
+
+- `dm_disambiguate_cols()` adds table names as a suffix by default, and gains a `.position` argument to restore the original behavior. Arguments `sep` and `quiet` are renamed to `.sep` and `.quiet` (#1293, #1327).
+
+- `dm_squash_to_tbl()` is deprecated in favor of the new `.recursive` argument to `dm_flatten_to_tbl()`. Arguments `start` and `join` are renamed to `.start` and `.join` (#1272, #1324).
+
+- `dm_rm_tbl()` is deprecated in favor of `dm_select_tbl()` (#1275).
+
+- `dm_bind()` and `dm_add_tbl()` are deprecated in favor of `dm()` (#1226).
+
+- `rows_truncate()` and `dm_rows_truncate()` are deprecated, because they use DDL as opposed to all other verbs that use DML (#1031, #1321).
+
+- All internal S3 classes now use the `"dm_"` prefix (#1285, #1339).
+
+- Add ellipses to all generics (#1298).
+
+## API
+
+- Reexport `tibble()` (#1279).
+
 - `dm_ptype()`, `dm_financial()` and `dm_pixarfilms()` are stable now (#1254).
 
+- Turn all "questioning" functions to "experimental" (#1030, #1237).
 
-# dm 0.99.99.9004
-
-## Features
+## Performance
 
 - `is_unique_key()`uses `vctrs::vec_count()` on local data frames for speed (@eutwt, #1247).
 
 - `check_key()` uses `vctrs::vec_duplicate_any()` on local data frames for speed (@eutwt, #1234).
-
-## Documentation
-
-- Improve contrast for display of `dm_financial()` (#1073) (#1250).
-
-## api
-
-- Stabilize `dm_filter()`, deprecate `dm_apply_filters()`, `dm_apply_filters_to_tbl()` and `dm_get_filters()` (#424, #426, #1236).
-
-- Turn all "questioning" functions to "experimental" (#1030, #1237).
-
-
-# dm 0.99.99.9003
-
-## API
-
-- Stabilize `check_cardinality_...()` and `examine_cardinality()` (#1194).
-
-- Stabilize `check_subset()` and `check_set_equality()` (#1229).
-
-
-# dm 0.99.99.9002
-
-## API
-
-- `dm()` accepts dm objects, deprecate `dm_bind()` and `dm_add_tbl()` (#1226).
-
-- Stabilize `dm_examine_cardinalities()` (#1195).
-
-- Stabilize `dm_examine_constraints()` (#1193).
-
-
-# dm 0.99.99.9001
-
-## Documentation
-
-- Add contributing guide (#1222).
-
-
-# dm 0.3.0.9001
 
 ## Bug fixes
 
@@ -131,20 +63,21 @@
 
 - Don't print rule in `glimpse.dm()` for empty `dm()` (#1208).
 
-## Features
+## Documentation
 
-- Honor implicit unique keys defined by foreign keys (#1131, #1209).
+- Work around ANSI escape issues in CRAN rendering of vignette (#1156, #1330).
 
-## Chore
+- Fix column names in `?dm_get_all_pks` (#1245).
+
+- Improve contrast for display of `dm_financial()` (#1073, #1250).
+
+- Add contributing guide (#1222).
+
+## Internal
 
 - Use sensible node and edge IDs, corresponding to the data model, in SVG graph (#1214).
 
 - Tests for datamodelr code (#1215).
-
-
-# dm 0.3.0.9000
-
-- Internal changes only.
 
 
 # dm 0.3.0
