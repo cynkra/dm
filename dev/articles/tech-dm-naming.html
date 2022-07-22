@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9008</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,7 +110,7 @@
     
     
 <p>This vignette describes the logic behind the names of the {dm}-functions.</p>
-<p>In general, the functions are implemented in such a way that no function can handle instances of both <code>dm</code> classes (<code>dm</code> and <code>zoomed_dm</code>) as an argument. In most situations, a <code>zoomed_dm</code> behaves like a table and there are mostly no explicit functions available for this class, but rather methods (see vignette <a href="https://cynkra.github.io/dm/articles/tech-dm-zoom.html">“Zooming and manipulating tables”</a>.</p>
+<p>In general, the functions are implemented in such a way that no function can handle instances of both <code>dm</code> classes (<code>dm</code> and <code>dm_zoomed</code>) as an argument. In most situations, a <code>dm_zoomed</code> behaves like a table and there are mostly no explicit functions available for this class, but rather methods (see vignette <a href="https://cynkra.github.io/dm/articles/tech-dm-zoom.html">“Zooming and manipulating tables”</a>.</p>
 <div class="section level2">
 <h2 id="prefixes">Prefixes<a class="anchor" aria-label="anchor" href="#prefixes"></a>
 </h2>
@@ -160,7 +160,7 @@
 <li>
 <code>_colors</code>: Relates to the colors for the visualization of a <code>dm</code> object</li>
 <li>
-<code>_zoomed</code>: Insert, update, or discard the zoomed table. In combination with the prefix <code>dm_</code>, this indicates that the first argument is a <code>zoomed_dm</code> rather than a <code>dm</code>.</li>
+<code>_zoomed</code>: Insert, update, or discard the zoomed table. In combination with the prefix <code>dm_</code>, this indicates that the first argument is a <code>dm_zoomed</code> rather than a <code>dm</code>.</li>
 </ol>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

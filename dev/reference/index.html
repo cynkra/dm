@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9008</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,11 +96,6 @@
           <code><a href="dm_get_con.html">dm_get_con()</a></code> 
         </dt>
         <dd>Get connection</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dm_get_tables.html">dm_get_tables()</a></code> 
-        </dt>
-        <dd>Get tables</dd>
       </dl></div><div class="section level2">
       <h2 id="tables">Tables<a class="anchor" aria-label="anchor" href="#tables"></a></h2>
       
@@ -114,19 +109,29 @@
 
       <dl><dt>
           
-          <code><a href="dm_mutate_tbl.html">dm_mutate_tbl()</a></code> 
-        </dt>
-        <dd>Update tables in a <code>dm</code></dd>
-      </dl><dl><dt>
-          
           <code><a href="dm_select_tbl.html">dm_select_tbl()</a></code> <code><a href="dm_select_tbl.html">dm_rename_tbl()</a></code> 
         </dt>
         <dd>Select and rename tables</dd>
       </dl><dl><dt>
           
+          <code><a href="dm_get_tables.html">dm_get_tables()</a></code> 
+        </dt>
+        <dd>Get tables</dd>
+      </dl><dl><dt>
+          
           <code><a href="pull_tbl.html">pull_tbl()</a></code> 
         </dt>
         <dd>Retrieve a table</dd>
+      </dl><dl><dt>
+          
+          <code><a href="reexports.html">reexports</a></code> <code><a href="reexports.html">%&gt;%</a></code> <code><a href="reexports.html">filter</a></code> <code><a href="reexports.html">mutate</a></code> <code><a href="reexports.html">transmute</a></code> <code><a href="reexports.html">summarise</a></code> <code><a href="reexports.html">summarize</a></code> <code><a href="reexports.html">select</a></code> <code><a href="reexports.html">rename</a></code> <code><a href="reexports.html">group_by</a></code> <code><a href="reexports.html">ungroup</a></code> <code><a href="reexports.html">left_join</a></code> <code><a href="reexports.html">inner_join</a></code> <code><a href="reexports.html">full_join</a></code> <code><a href="reexports.html">semi_join</a></code> <code><a href="reexports.html">anti_join</a></code> <code><a href="reexports.html">right_join</a></code> <code><a href="reexports.html">collect</a></code> <code><a href="reexports.html">compute</a></code> <code><a href="reexports.html">copy_to</a></code> <code><a href="reexports.html">src_tbls</a></code> <code><a href="reexports.html">tbl</a></code> <code><a href="reexports.html">arrange</a></code> <code><a href="reexports.html">rows_insert</a></code> <code><a href="reexports.html">rows_append</a></code> <code><a href="reexports.html">rows_update</a></code> <code><a href="reexports.html">rows_patch</a></code> <code><a href="reexports.html">rows_upsert</a></code> <code><a href="reexports.html">rows_delete</a></code> <code><a href="reexports.html">glimpse</a></code> <code><a href="reexports.html">tibble</a></code> <code><a href="reexports.html">unite</a></code> <code><a href="reexports.html">separate</a></code> 
+        </dt>
+        <dd>Objects exported from other packages</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dm_mutate_tbl.html">dm_mutate_tbl()</a></code> 
+        </dt>
+        <dd>Update tables in a <code>dm</code></dd>
       </dl></div><div class="section level2">
       <h2 id="primary-keys">Primary keys<a class="anchor" aria-label="anchor" href="#primary-keys"></a></h2>
       
@@ -145,6 +150,11 @@
         <dd>Add a primary key</dd>
       </dl><dl><dt>
           
+          <code><a href="dm_enum_pk_candidates.html">enum_pk_candidates()</a></code> <code><a href="dm_enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> 
+        </dt>
+        <dd>Primary key candidate</dd>
+      </dl><dl><dt>
+          
           <code><a href="dm_get_all_pks.html">dm_get_all_pks()</a></code> 
         </dt>
         <dd>Get all primary keys of a <code>dm</code> object</dd>
@@ -158,11 +168,6 @@
           <code><a href="dm_rm_pk.html">dm_rm_pk()</a></code> 
         </dt>
         <dd>Remove a primary key</dd>
-      </dl><dl><dt>
-          
-          <code><a href="enum_pk_candidates.html">enum_pk_candidates()</a></code> <code><a href="enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> 
-        </dt>
-        <dd>Primary key candidate</dd>
       </dl></div><div class="section level2">
       <h2 id="foreign-keys">Foreign keys<a class="anchor" aria-label="anchor" href="#foreign-keys"></a></h2>
       
@@ -301,34 +306,29 @@
         <dd>Mark table for manipulation</dd>
       </dl><dl><dt>
           
-          <code><a href="dplyr_join.html">left_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">left_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">inner_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">inner_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">full_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">full_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">right_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">right_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">semi_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">semi_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">anti_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">anti_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">nest_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> 
+          <code><a href="dplyr_join.html">left_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">left_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">inner_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">inner_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">full_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">full_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">right_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">right_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">semi_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">semi_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">anti_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">anti_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">nest_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> 
         </dt>
         <dd><span class="pkg">dplyr</span> join methods for zoomed dm objects</dd>
       </dl><dl><dt>
           
-          <code><a href="dplyr_table_manipulation.html">filter(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">mutate(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">transmute(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">select(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">relocate(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">rename(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">distinct(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">arrange(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">slice(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">group_by(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">group_by(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">ungroup(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">summarise(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">summarise(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">count(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">tally(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">pull(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">compute(<i>&lt;zoomed_dm&gt;</i>)</a></code> 
+          <code><a href="dplyr_table_manipulation.html">filter(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">mutate(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">transmute(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">select(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">relocate(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">rename(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">distinct(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">arrange(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">slice(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">group_by(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">group_by(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">ungroup(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">summarise(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">summarise(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">count(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">tally(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">pull(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">compute(<i>&lt;dm_zoomed&gt;</i>)</a></code> 
         </dt>
         <dd><span class="pkg">dplyr</span> table manipulation methods for zoomed dm objects</dd>
       </dl><dl><dt>
           
-          <code><a href="glimpse.dm.html">glimpse(<i>&lt;dm&gt;</i>)</a></code> <code><a href="glimpse.dm.html">glimpse(<i>&lt;zoomed_dm&gt;</i>)</a></code> 
+          <code><a href="glimpse.dm.html">glimpse(<i>&lt;dm&gt;</i>)</a></code> <code><a href="glimpse.dm.html">glimpse(<i>&lt;dm_zoomed&gt;</i>)</a></code> 
         </dt>
         <dd>Get a glimpse of your <code>dm</code> object</dd>
       </dl><dl><dt>
           
-          <code><a href="pack_join.html">pack_join()</a></code> 
-        </dt>
-        <dd>Pack Join</dd>
-      </dl><dl><dt>
-          
-          <code><a href="tidyr_table_manipulation.html">unite(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="tidyr_table_manipulation.html">unite(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="tidyr_table_manipulation.html">separate(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="tidyr_table_manipulation.html">separate(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> 
+          <code><a href="tidyr_table_manipulation.html">unite(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="tidyr_table_manipulation.html">unite(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="tidyr_table_manipulation.html">separate(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="tidyr_table_manipulation.html">separate(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> 
         </dt>
         <dd><span class="pkg">tidyr</span> table manipulation methods for zoomed dm objects</dd>
       </dl><dl><dt>
           
-          <code><a href="utils_table_manipulation.html">head(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="utils_table_manipulation.html">tail(<i>&lt;zoomed_dm&gt;</i>)</a></code> 
+          <code><a href="utils_table_manipulation.html">head(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="utils_table_manipulation.html">tail(<i>&lt;dm_zoomed&gt;</i>)</a></code> 
         </dt>
-        <dd><span class="pkg">utils</span> table manipulation methods for <code>zoomed_dm</code> objects</dd>
+        <dd><span class="pkg">utils</span> table manipulation methods for <code>dm_zoomed</code> objects</dd>
       </dl></div><div class="section level2">
       <h2 id="wrap">Wrap<a class="anchor" aria-label="anchor" href="#wrap"></a></h2>
       
@@ -588,11 +588,6 @@
           <code><a href="dm_validate.html">dm_validate()</a></code> 
         </dt>
         <dd>Validator</dd>
-      </dl><dl><dt>
-          
-          <code><a href="glimpse.dm.html">glimpse(<i>&lt;dm&gt;</i>)</a></code> <code><a href="glimpse.dm.html">glimpse(<i>&lt;zoomed_dm&gt;</i>)</a></code> 
-        </dt>
-        <dd>Get a glimpse of your <code>dm</code> object</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

@@ -133,6 +133,9 @@
     <loc>https://cynkra.github.io/dm/dev/reference/dm_enum_fk_candidates.html</loc>
   </url>
   <url>
+    <loc>https://cynkra.github.io/dm/dev/reference/dm_enum_pk_candidates.html</loc>
+  </url>
+  <url>
     <loc>https://cynkra.github.io/dm/dev/reference/dm_examine_cardinalities.html</loc>
   </url>
   <url>
@@ -245,9 +248,6 @@
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/dev/reference/dplyr_table_manipulation.html</loc>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/enum_pk_candidates.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/dev/reference/examine_cardinality.html</loc>

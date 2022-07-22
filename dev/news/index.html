@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9008</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,105 +72,61 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.99.9008" id="dm-099999008">dm 0.99.99.9008<a class="anchor" aria-label="anchor" href="#dm-099999008"></a></h2>
-<div class="section level3">
-<h3 id="documentation-0-99-99-9008">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-99-99-9008"></a></h3>
-<ul><li>Work around ANSI escape issues in CRAN rendering of vignette (<a href="https://github.com/cynkra/dm/issues/1156" class="external-link">#1156</a>, <a href="https://github.com/cynkra/dm/issues/1330" class="external-link">#1330</a>).</li></ul></div>
-<div class="section level3">
-<h3 id="api-0-99-99-9008">API<a class="anchor" aria-label="anchor" href="#api-0-99-99-9008"></a></h3>
-<ul><li>Deprecate <code><a href="../reference/deprecated.html">rows_truncate()</a></code> and <code><a href="../reference/deprecated.html">dm_rows_truncate()</a></code> (<a href="https://github.com/cynkra/dm/issues/1031" class="external-link">#1031</a>, <a href="https://github.com/cynkra/dm/issues/1321" class="external-link">#1321</a>).</li></ul></div>
-</div>
+<h2 class="pkg-version" data-toc-text="1.0.0.9000" id="dm-1009000">dm 1.0.0.9000<a class="anchor" aria-label="anchor" href="#dm-1009000"></a></h2>
+<ul><li>Internal changes only.</li></ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.99.9007" id="dm-099999007">dm 0.99.99.9007<a class="anchor" aria-label="anchor" href="#dm-099999007"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.0" id="dm-100">dm 1.0.0<a class="anchor" aria-label="anchor" href="#dm-100"></a></h2><p class="text-muted">CRAN release: 2022-07-21</p>
 <div class="section level3">
-<h3 id="features-0-99-99-9007">Features<a class="anchor" aria-label="anchor" href="#features-0-99-99-9007"></a></h3>
-<ul><li>New <code><a href="../reference/dm_gui.html">dm_gui()</a></code> for interactive editing of <code>dm</code> objects (<a href="https://github.com/cynkra/dm/issues/1076" class="external-link">#1076</a>, <a href="https://github.com/cynkra/dm/issues/1319" class="external-link">#1319</a>).</li></ul></div>
-<div class="section level3">
-<h3 id="uncategorized-0-99-99-9007">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-0-99-99-9007"></a></h3>
-<ul><li>REVERT ME: Shut up GHA PRs for pillar &lt; 1.8.0.</li></ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.99.9006" id="dm-099999006">dm 0.99.99.9006<a class="anchor" aria-label="anchor" href="#dm-099999006"></a></h2>
-<div class="section level3">
-<h3 id="features-0-99-99-9006">Features<a class="anchor" aria-label="anchor" href="#features-0-99-99-9006"></a></h3>
-<ul><li>
-<code><a href="../reference/dm_get_tables.html">dm_get_tables()</a></code> and <code><a href="../reference/pull_tbl.html">pull_tbl()</a></code> gain a new <code>keyed = FALSE</code> argument. If set to <code>TRUE</code>, table objects of class <code>"dm_keyed_tbl"</code> are returned. These objects inherit from the underlying data structure (tibble or lazy table), keep track of primary and foreign keys, and can be used later on in a call to <code><a href="../reference/dm.html">dm()</a></code> to recreate a dm object with the keys (<a href="https://github.com/cynkra/dm/issues/1187" class="external-link">#1187</a>).</li></ul></div>
-<div class="section level3">
-<h3 id="api-0-99-99-9006">API<a class="anchor" aria-label="anchor" href="#api-0-99-99-9006"></a></h3>
-<ul><li><p>Add ellipses to methods (<a href="https://github.com/cynkra/dm/issues/1298" class="external-link">#1298</a>).</p></li>
-<li><p>Reexport <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble()</a></code> (<a href="https://github.com/cynkra/dm/issues/1279" class="external-link">#1279</a>).</p></li>
-<li><p>Deprecate <code><a href="../reference/deprecated.html">dm_rm_tbl()</a></code> in favor of <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/1275" class="external-link">#1275</a>).</p></li>
+<h3 id="features-1-0-0">Features<a class="anchor" aria-label="anchor" href="#features-1-0-0"></a></h3>
+<ul><li><p>New <code><a href="../reference/dm_gui.html">dm_gui()</a></code> for interactive editing of <code>dm</code> objects (<a href="https://github.com/cynkra/dm/issues/1076" class="external-link">#1076</a>, <a href="https://github.com/cynkra/dm/issues/1319" class="external-link">#1319</a>).</p></li>
+<li><p><code><a href="../reference/dm_get_tables.html">dm_get_tables()</a></code> and <code><a href="../reference/pull_tbl.html">pull_tbl()</a></code> gain a new <code>keyed = FALSE</code> argument. If set to <code>TRUE</code>, table objects of class <code>"dm_keyed_tbl"</code> are returned. These objects inherit from the underlying data structure (tibble or lazy table), keep track of primary and foreign keys, and can be used later on in a call to <code><a href="../reference/dm.html">dm()</a></code> to recreate a dm object with the keys (<a href="https://github.com/cynkra/dm/issues/1187" class="external-link">#1187</a>).</p></li>
+<li><p>New <code>by_position</code> argument to <code><a href="../reference/check_subset.html">check_subset()</a></code>, <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_...()</a></code> and <code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> (<a href="https://github.com/cynkra/dm/issues/1253" class="external-link">#1253</a>).</p></li>
+<li><p><code><a href="../reference/dm.html">dm()</a></code> accepts dm objects (<a href="https://github.com/cynkra/dm/issues/1226" class="external-link">#1226</a>).</p></li>
+<li><p><code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> honors implicit unique keys defined by foreign keys (<a href="https://github.com/cynkra/dm/issues/1131" class="external-link">#1131</a>, <a href="https://github.com/cynkra/dm/issues/1209" class="external-link">#1209</a>).</p></li>
 </ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.99.9005" id="dm-099999005">dm 0.99.99.9005<a class="anchor" aria-label="anchor" href="#dm-099999005"></a></h2>
 <div class="section level3">
-<h3 id="documentation-0-99-99-9005">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-99-99-9005"></a></h3>
-<ul><li>Fix column names in <code><a href="../reference/dm_get_all_pks.html">?dm_get_all_pks</a></code> (<a href="https://github.com/cynkra/dm/issues/1245" class="external-link">#1245</a>).</li></ul></div>
+<h3 id="breaking-changes-1-0-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-0"></a></h3>
+<ul><li><p><code><a href="../reference/dm_filter.html">dm_filter()</a></code> is now stable, with a new API that avoids exposing an intermediate state with filters not yet applied, with a compatibility wrapper (<a href="https://github.com/cynkra/dm/issues/424" class="external-link">#424</a>, <a href="https://github.com/cynkra/dm/issues/426" class="external-link">#426</a>, <a href="https://github.com/cynkra/dm/issues/1236" class="external-link">#1236</a>).</p></li>
+<li><p><code><a href="../reference/examine_cardinality.html">check_cardinality_...()</a></code>, <code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code>, <code><a href="../reference/check_subset.html">check_subset()</a></code> and <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code> are now stable and consistently use a common interface with arguments named <code>x</code>, <code>y</code>, <code>x_select</code> and <code>y_select</code>, with compatibility wrappers (<a href="https://github.com/cynkra/dm/issues/1194" class="external-link">#1194</a>, <a href="https://github.com/cynkra/dm/issues/1229" class="external-link">#1229</a>).</p></li>
+<li><p><code><a href="../reference/dm_examine_cardinalities.html">dm_examine_cardinalities()</a></code> and <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> are now stable with a new signature and a compatibility wrapper (<a href="https://github.com/cynkra/dm/issues/1193" class="external-link">#1193</a>, <a href="https://github.com/cynkra/dm/issues/1195" class="external-link">#1195</a>).</p></li>
+<li><p><code><a href="../reference/deprecated.html">dm_apply_filters()</a></code>, <code><a href="../reference/deprecated.html">dm_apply_filters_to_tbl()</a></code> and <code><a href="../reference/deprecated.html">dm_get_filters()</a></code> are deprecated (<a href="https://github.com/cynkra/dm/issues/424" class="external-link">#424</a>, <a href="https://github.com/cynkra/dm/issues/426" class="external-link">#426</a>, <a href="https://github.com/cynkra/dm/issues/1236" class="external-link">#1236</a>).</p></li>
+<li><p><code><a href="../reference/dm_disambiguate_cols.html">dm_disambiguate_cols()</a></code> adds table names as a suffix by default, and gains a <code>.position</code> argument to restore the original behavior. Arguments <code>sep</code> and <code>quiet</code> are renamed to <code>.sep</code> and <code>.quiet</code> (<a href="https://github.com/cynkra/dm/issues/1293" class="external-link">#1293</a>, <a href="https://github.com/cynkra/dm/issues/1327" class="external-link">#1327</a>).</p></li>
+<li><p><code><a href="../reference/deprecated.html">dm_squash_to_tbl()</a></code> is deprecated in favor of the new <code>.recursive</code> argument to <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code>. Arguments <code>start</code> and <code>join</code> are renamed to <code>.start</code> and <code>.join</code> (<a href="https://github.com/cynkra/dm/issues/1272" class="external-link">#1272</a>, <a href="https://github.com/cynkra/dm/issues/1324" class="external-link">#1324</a>).</p></li>
+<li><p><code><a href="../reference/deprecated.html">dm_rm_tbl()</a></code> is deprecated in favor of <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/1275" class="external-link">#1275</a>).</p></li>
+<li><p><code><a href="../reference/deprecated.html">dm_bind()</a></code> and <code><a href="../reference/deprecated.html">dm_add_tbl()</a></code> are deprecated in favor of <code><a href="../reference/dm.html">dm()</a></code> (<a href="https://github.com/cynkra/dm/issues/1226" class="external-link">#1226</a>).</p></li>
+<li><p><code><a href="../reference/deprecated.html">rows_truncate()</a></code> and <code><a href="../reference/deprecated.html">dm_rows_truncate()</a></code> are deprecated, because they use DDL as opposed to all other verbs that use DML (<a href="https://github.com/cynkra/dm/issues/1031" class="external-link">#1031</a>, <a href="https://github.com/cynkra/dm/issues/1321" class="external-link">#1321</a>).</p></li>
+<li><p>All internal S3 classes now use the <code>"dm_"</code> prefix (<a href="https://github.com/cynkra/dm/issues/1285" class="external-link">#1285</a>, <a href="https://github.com/cynkra/dm/issues/1339" class="external-link">#1339</a>).</p></li>
+<li><p>Add ellipses to all generics (<a href="https://github.com/cynkra/dm/issues/1298" class="external-link">#1298</a>).</p></li>
+</ul></div>
 <div class="section level3">
-<h3 id="api-0-99-99-9005">API<a class="anchor" aria-label="anchor" href="#api-0-99-99-9005"></a></h3>
-<ul><li><p>New <code>by_position</code> argument to <code><a href="../reference/check_subset.html">check_subset()</a></code>, <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code>, <code><a href="../reference/examine_cardinality.html">check_cardinality_...()</a></code> and <code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> (<a href="https://github.com/cynkra/dm/issues/1253" class="external-link">#1253</a>).</p></li>
+<h3 id="api-1-0-0">API<a class="anchor" aria-label="anchor" href="#api-1-0-0"></a></h3>
+<ul><li><p>Reexport <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble()</a></code> (<a href="https://github.com/cynkra/dm/issues/1279" class="external-link">#1279</a>).</p></li>
 <li><p><code><a href="../reference/dm_ptype.html">dm_ptype()</a></code>, <code><a href="../reference/dm_financial.html">dm_financial()</a></code> and <code><a href="../reference/dm_pixarfilms.html">dm_pixarfilms()</a></code> are stable now (<a href="https://github.com/cynkra/dm/issues/1254" class="external-link">#1254</a>).</p></li>
+<li><p>Turn all “questioning” functions to “experimental” (<a href="https://github.com/cynkra/dm/issues/1030" class="external-link">#1030</a>, <a href="https://github.com/cynkra/dm/issues/1237" class="external-link">#1237</a>).</p></li>
 </ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.99.9004" id="dm-099999004">dm 0.99.99.9004<a class="anchor" aria-label="anchor" href="#dm-099999004"></a></h2>
 <div class="section level3">
-<h3 id="features-0-99-99-9004">Features<a class="anchor" aria-label="anchor" href="#features-0-99-99-9004"></a></h3>
+<h3 id="performance-1-0-0">Performance<a class="anchor" aria-label="anchor" href="#performance-1-0-0"></a></h3>
 <ul><li><p><code>is_unique_key()</code>uses <code><a href="https://vctrs.r-lib.org/reference/vec_count.html" class="external-link">vctrs::vec_count()</a></code> on local data frames for speed (<a href="https://github.com/eutwt" class="external-link">@eutwt</a>, <a href="https://github.com/cynkra/dm/issues/1247" class="external-link">#1247</a>).</p></li>
 <li><p><code><a href="../reference/check_key.html">check_key()</a></code> uses <code><a href="https://vctrs.r-lib.org/reference/vec_duplicate.html" class="external-link">vctrs::vec_duplicate_any()</a></code> on local data frames for speed (<a href="https://github.com/eutwt" class="external-link">@eutwt</a>, <a href="https://github.com/cynkra/dm/issues/1234" class="external-link">#1234</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="documentation-0-99-99-9004">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-99-99-9004"></a></h3>
-<ul><li>Improve contrast for display of <code><a href="../reference/dm_financial.html">dm_financial()</a></code> (<a href="https://github.com/cynkra/dm/issues/1073" class="external-link">#1073</a>) (<a href="https://github.com/cynkra/dm/issues/1250" class="external-link">#1250</a>).</li></ul></div>
-<div class="section level3">
-<h3 id="api-0-99-99-9004">api<a class="anchor" aria-label="anchor" href="#api-0-99-99-9004"></a></h3>
-<ul><li><p>Stabilize <code><a href="../reference/dm_filter.html">dm_filter()</a></code>, deprecate <code><a href="../reference/deprecated.html">dm_apply_filters()</a></code>, <code><a href="../reference/deprecated.html">dm_apply_filters_to_tbl()</a></code> and <code><a href="../reference/deprecated.html">dm_get_filters()</a></code> (<a href="https://github.com/cynkra/dm/issues/424" class="external-link">#424</a>, <a href="https://github.com/cynkra/dm/issues/426" class="external-link">#426</a>, <a href="https://github.com/cynkra/dm/issues/1236" class="external-link">#1236</a>).</p></li>
-<li><p>Turn all “questioning” functions to “experimental” (<a href="https://github.com/cynkra/dm/issues/1030" class="external-link">#1030</a>, <a href="https://github.com/cynkra/dm/issues/1237" class="external-link">#1237</a>).</p></li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.99.9003" id="dm-099999003">dm 0.99.99.9003<a class="anchor" aria-label="anchor" href="#dm-099999003"></a></h2>
-<div class="section level3">
-<h3 id="api-0-99-99-9003">API<a class="anchor" aria-label="anchor" href="#api-0-99-99-9003"></a></h3>
-<ul><li><p>Stabilize <code><a href="../reference/examine_cardinality.html">check_cardinality_...()</a></code> and <code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> (<a href="https://github.com/cynkra/dm/issues/1194" class="external-link">#1194</a>).</p></li>
-<li><p>Stabilize <code><a href="../reference/check_subset.html">check_subset()</a></code> and <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code> (<a href="https://github.com/cynkra/dm/issues/1229" class="external-link">#1229</a>).</p></li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.99.9002" id="dm-099999002">dm 0.99.99.9002<a class="anchor" aria-label="anchor" href="#dm-099999002"></a></h2>
-<div class="section level3">
-<h3 id="api-0-99-99-9002">API<a class="anchor" aria-label="anchor" href="#api-0-99-99-9002"></a></h3>
-<ul><li><p><code><a href="../reference/dm.html">dm()</a></code> accepts dm objects, deprecate <code><a href="../reference/deprecated.html">dm_bind()</a></code> and <code><a href="../reference/deprecated.html">dm_add_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/1226" class="external-link">#1226</a>).</p></li>
-<li><p>Stabilize <code><a href="../reference/dm_examine_cardinalities.html">dm_examine_cardinalities()</a></code> (<a href="https://github.com/cynkra/dm/issues/1195" class="external-link">#1195</a>).</p></li>
-<li><p>Stabilize <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> (<a href="https://github.com/cynkra/dm/issues/1193" class="external-link">#1193</a>).</p></li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.99.9001" id="dm-099999001">dm 0.99.99.9001<a class="anchor" aria-label="anchor" href="#dm-099999001"></a></h2>
-<div class="section level3">
-<h3 id="documentation-0-99-99-9001">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-99-99-9001"></a></h3>
-<ul><li>Add contributing guide (<a href="https://github.com/cynkra/dm/issues/1222" class="external-link">#1222</a>).</li></ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.0.9001" id="dm-0309001">dm 0.3.0.9001<a class="anchor" aria-label="anchor" href="#dm-0309001"></a></h2>
-<div class="section level3">
-<h3 id="bug-fixes-0-3-0-9001">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-0-9001"></a></h3>
+<h3 id="bug-fixes-1-0-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-0"></a></h3>
 <ul><li><p><code><a href="../reference/dm_draw.html">dm_draw()</a></code> works if a table name has a space (<a href="https://github.com/cynkra/dm/issues/1219" class="external-link">#1219</a>).</p></li>
 <li><p>Don’t print rule in <code><a href="../reference/glimpse.dm.html">glimpse.dm()</a></code> for empty <code><a href="../reference/dm.html">dm()</a></code> (<a href="https://github.com/cynkra/dm/issues/1208" class="external-link">#1208</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="features-0-3-0-9001">Features<a class="anchor" aria-label="anchor" href="#features-0-3-0-9001"></a></h3>
-<ul><li>Honor implicit unique keys defined by foreign keys (<a href="https://github.com/cynkra/dm/issues/1131" class="external-link">#1131</a>, <a href="https://github.com/cynkra/dm/issues/1209" class="external-link">#1209</a>).</li></ul></div>
+<h3 id="documentation-1-0-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-0"></a></h3>
+<ul><li><p>Work around ANSI escape issues in CRAN rendering of vignette (<a href="https://github.com/cynkra/dm/issues/1156" class="external-link">#1156</a>, <a href="https://github.com/cynkra/dm/issues/1330" class="external-link">#1330</a>).</p></li>
+<li><p>Fix column names in <code><a href="../reference/dm_get_all_pks.html">?dm_get_all_pks</a></code> (<a href="https://github.com/cynkra/dm/issues/1245" class="external-link">#1245</a>).</p></li>
+<li><p>Improve contrast for display of <code><a href="../reference/dm_financial.html">dm_financial()</a></code> (<a href="https://github.com/cynkra/dm/issues/1073" class="external-link">#1073</a>, <a href="https://github.com/cynkra/dm/issues/1250" class="external-link">#1250</a>).</p></li>
+<li><p>Add contributing guide (<a href="https://github.com/cynkra/dm/issues/1222" class="external-link">#1222</a>).</p></li>
+</ul></div>
 <div class="section level3">
-<h3 id="chore-0-3-0-9001">Chore<a class="anchor" aria-label="anchor" href="#chore-0-3-0-9001"></a></h3>
+<h3 id="internal-1-0-0">Internal<a class="anchor" aria-label="anchor" href="#internal-1-0-0"></a></h3>
 <ul><li><p>Use sensible node and edge IDs, corresponding to the data model, in SVG graph (<a href="https://github.com/cynkra/dm/issues/1214" class="external-link">#1214</a>).</p></li>
 <li><p>Tests for datamodelr code (<a href="https://github.com/cynkra/dm/issues/1215" class="external-link">#1215</a>).</p></li>
 </ul></div>
 </div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.0.9000" id="dm-0309000">dm 0.3.0.9000<a class="anchor" aria-label="anchor" href="#dm-0309000"></a></h2>
-<ul><li>Internal changes only.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="dm-030">dm 0.3.0<a class="anchor" aria-label="anchor" href="#dm-030"></a></h2><p class="text-muted">CRAN release: 2022-07-06</p>
 <div class="section level3">
@@ -529,7 +485,7 @@
 <div class="section level3">
 <h3 id="internal-0-1-6">Internal<a class="anchor" aria-label="anchor" href="#internal-0-1-6"></a></h3>
 <ul><li>Use <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code> where appropriate (<a href="https://github.com/cynkra/dm/issues/422" class="external-link">#422</a>).</li>
-<li>Consistent definition of <code>.dm</code> and <code>.zoomed_dm</code> methods (<a href="https://github.com/cynkra/dm/issues/300" class="external-link">#300</a>).</li>
+<li>Consistent definition of <code>.dm</code> and <code>.dm_zoomed</code> methods (<a href="https://github.com/cynkra/dm/issues/300" class="external-link">#300</a>).</li>
 <li>Examples involving <code><a href="../reference/dm_financial.html">dm_financial()</a></code> are not run if connection can’t be established (<a href="https://github.com/cynkra/dm/issues/418" class="external-link">#418</a>).</li>
 <li>Fix database tests on CI (<a href="https://github.com/cynkra/dm/issues/416" class="external-link">#416</a>).</li>
 </ul></div>
@@ -601,7 +557,7 @@
 <li>
 <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> now prints a different message if a dm has no constraints defined.</li>
 <li>Disambiguation message now only lists column names for easier copy-pasting.</li>
-<li>New methods for <code>"zoomed_dm"</code>: <code><a href="https://rdrr.io/r/utils/head.html" class="external-link">head()</a></code>, <code><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">group_data()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">group_indices()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">group_vars()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">group_keys()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">groups()</a></code> (<a href="https://github.com/cynkra/dm/issues/236" class="external-link">#236</a>, <a href="https://github.com/cynkra/dm/issues/203" class="external-link">#203</a>).</li>
+<li>New methods for <code>"dm_zoomed"</code>: <code><a href="https://rdrr.io/r/utils/head.html" class="external-link">head()</a></code>, <code><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">group_data()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">group_indices()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">group_vars()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">group_keys()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">groups()</a></code> (<a href="https://github.com/cynkra/dm/issues/236" class="external-link">#236</a>, <a href="https://github.com/cynkra/dm/issues/203" class="external-link">#203</a>).</li>
 <li>
 <code><a href="../reference/dm_paste.html">dm_paste()</a></code> supports writing colors and the table definition via the new <code>options</code> argument. The definition can be written to a file via the new <code>path</code> argument. The <code>select</code> argument is soft-deprecated (<a href="https://github.com/cynkra/dm/issues/218" class="external-link">#218</a>, <a href="https://github.com/cynkra/dm/issues/302" class="external-link">#302</a>).</li>
 <li>
@@ -620,17 +576,17 @@
 <li>
 <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>, <code><a href="../reference/dm_rm_pk.html">dm_rm_pk()</a></code>, <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> and <code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code> are now stricter when keys exists or when attempting to remove keys that don’t exist. A more relaxed mode of operation may be added later (<a href="https://github.com/cynkra/dm/issues/214" class="external-link">#214</a>).</li>
 <li>
-<code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code>, <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> and <code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code> now work for columns named <code>n</code>.</li>
+<code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code>, <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> and <code><a href="../reference/dm_enum_pk_candidates.html">enum_pk_candidates()</a></code> now work for columns named <code>n</code>.</li>
 <li>
 <code>dm_set_key_constraints()</code> (and by extension <code>dm_copy_to(set_key_constraints = TRUE)</code>) now quote identifiers for the SQL that creates foreign keys on the database.</li>
 <li>
-<code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> gives a better error message when called on a <code>"zoomed_dm"</code> (<a href="https://github.com/cynkra/dm/issues/294" class="external-link">#294</a>).</li>
+<code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> gives a better error message when called on a <code>"dm_zoomed"</code> (<a href="https://github.com/cynkra/dm/issues/294" class="external-link">#294</a>).</li>
 <li>
 <code><a href="../reference/check_subset.html">check_subset()</a></code> gives a clean error message if the tables are complex expressions.</li>
 <li>
 <code>dm_from_src(schema = "...")</code> works on Postgres if <code>search_path</code> is not set on the connection.</li>
 <li>
-<code><a href="../reference/dplyr_table_manipulation.html">compute.zoomed_dm()</a></code> no longer throws an error.</li>
+<code><a href="../reference/dplyr_table_manipulation.html">compute.dm_zoomed()</a></code> no longer throws an error.</li>
 <li>Remove unused DT import (<a href="https://github.com/cynkra/dm/issues/295" class="external-link">#295</a>).</li>
 </ul></div>
 <div class="section level3">
@@ -667,11 +623,11 @@
 <h2 class="pkg-version" data-toc-text="0.1.0" id="dm-010">dm 0.1.0<a class="anchor" aria-label="anchor" href="#dm-010"></a></h2>
 <ul><li>Package is now in the “maturing” lifecycle (<a href="https://github.com/cynkra/dm/issues/154" class="external-link">#154</a>).</li>
 <li>
-<code><a href="../reference/dplyr_table_manipulation.html">filter.zoomed_dm()</a></code> no longer sets the filter.</li>
+<code><a href="../reference/dplyr_table_manipulation.html">filter.dm_zoomed()</a></code> no longer sets the filter.</li>
 <li>
 <code>examine_()</code> functions never throw an error (<a href="https://github.com/cynkra/dm/issues/238" class="external-link">#238</a>).</li>
 <li>API overhaul: <code><a href="../reference/dm_zoom_to.html">dm_zoom_to()</a></code>, <code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code>, <code><a href="../reference/dm_zoom_to.html">dm_update_zoomed()</a></code> and <code><a href="../reference/dm_zoom_to.html">dm_discard_zoomed()</a></code>; <code>check_()</code> -&gt; <code>examine_()</code>; <code>dm_get_filter()</code> -&gt; <code><a href="../reference/deprecated.html">dm_get_filters()</a></code>; <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> + <code>dm_learn_from_db()</code> -&gt; <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> (<a href="https://github.com/cynkra/dm/issues/233" class="external-link">#233</a>).</li>
-<li>New <code>$.zoomed_dm()</code>, <code>[.zoomed_dm()</code>, <code>[[.zoomed_dm()</code>, <code>length.zoomed_dm()</code>, <code>names.zoomed_dm()</code>, <code>tbl_vars.zoomed_dm()</code> (<a href="https://github.com/cynkra/dm/issues/199" class="external-link">#199</a>, <a href="https://github.com/cynkra/dm/issues/216" class="external-link">#216</a>).</li>
+<li>New <code>$.dm_zoomed()</code>, <code>[.dm_zoomed()</code>, <code>[[.dm_zoomed()</code>, <code>length.dm_zoomed()</code>, <code>names.dm_zoomed()</code>, <code>tbl_vars.dm_zoomed()</code> (<a href="https://github.com/cynkra/dm/issues/199" class="external-link">#199</a>, <a href="https://github.com/cynkra/dm/issues/216" class="external-link">#216</a>).</li>
 <li>New <code><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list()</a></code> methods (<a href="https://github.com/cynkra/dm/issues/213" class="external-link">#213</a>).</li>
 <li>Help pages for dplyr methods (<a href="https://github.com/cynkra/dm/issues/209" class="external-link">#209</a>).</li>
 <li>New migration guide from dm &lt;= 0.0.5 (<a href="https://github.com/cynkra/dm/issues/234" class="external-link">#234</a>).</li>
@@ -714,15 +670,15 @@
 <div class="section level3">
 <h3 id="features-0-0-5">Features<a class="anchor" aria-label="anchor" href="#features-0-0-5"></a></h3>
 <ul><li>
-<code><a href="../reference/deprecated.html">cdm_filter()</a></code> and <code><a href="../reference/dplyr_table_manipulation.html">filter.zoomed_dm()</a></code> apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in <code><a href="../reference/deprecated.html">cdm_apply_filters()</a></code>. This now allows using a variety of operations on filtered <code>dm</code> objects (<a href="https://github.com/cynkra/dm/issues/124" class="external-link">#124</a>).</li>
+<code><a href="../reference/deprecated.html">cdm_filter()</a></code> and <code><a href="../reference/dplyr_table_manipulation.html">filter.dm_zoomed()</a></code> apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in <code><a href="../reference/deprecated.html">cdm_apply_filters()</a></code>. This now allows using a variety of operations on filtered <code>dm</code> objects (<a href="https://github.com/cynkra/dm/issues/124" class="external-link">#124</a>).</li>
 <li>
 <code><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames()</a></code>, <code><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames()</a></code>, <code><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice()</a></code>, <code><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">separate()</a></code> and <code><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite()</a></code> implemented for zoomed dm-s (<a href="https://github.com/cynkra/dm/issues/130" class="external-link">#130</a>).</li>
 <li>Joins on zoomed dm objects now supported (<a href="https://github.com/cynkra/dm/issues/121" class="external-link">#121</a>). Joins use the same column name disambiguation algorithm as <code><a href="../reference/deprecated.html">cdm_flatten_to_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/147" class="external-link">#147</a>).</li>
 <li>
-<code><a href="../reference/dplyr_table_manipulation.html">slice.zoomed_dm()</a></code>: user decides in arg <code>.keep_pk</code> if PK column is tracked or not (<a href="https://github.com/cynkra/dm/issues/152" class="external-link">#152</a>).</li>
+<code><a href="../reference/dplyr_table_manipulation.html">slice.dm_zoomed()</a></code>: user decides in arg <code>.keep_pk</code> if PK column is tracked or not (<a href="https://github.com/cynkra/dm/issues/152" class="external-link">#152</a>).</li>
 <li>Supported {dplyr} and {tidyr} verbs are reexported.</li>
 <li>
-<code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code> works with zoomed dm-s (<a href="https://github.com/cynkra/dm/issues/156" class="external-link">#156</a>).</li>
+<code><a href="../reference/dm_enum_pk_candidates.html">enum_pk_candidates()</a></code> works with zoomed dm-s (<a href="https://github.com/cynkra/dm/issues/156" class="external-link">#156</a>).</li>
 <li>New <code><a href="../reference/dm_enum_fk_candidates.html">enum_fk_candidates()</a></code> (<a href="https://github.com/cynkra/dm/issues/156" class="external-link">#156</a>).</li>
 <li>Add name repair argument for both <code><a href="../reference/deprecated.html">cdm_insert_zoomed_tbl()</a></code> and <code><a href="../reference/deprecated.html">cdm_add_tbl()</a></code>, defaulting to renaming of old and new tables when adding tables with duplicate names (<a href="https://github.com/cynkra/dm/issues/132" class="external-link">#132</a>).</li>
 <li>Redesign constructors and validators: <code><a href="../reference/dm.html">dm()</a></code> is akin to <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble()</a></code>, <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> works like <code><a href="../reference/dm.html">dm()</a></code> did previously, <code><a href="../reference/dm.html">new_dm()</a></code> only accepts a list of tables and no longer validates, <code><a href="../reference/deprecated.html">validate_dm()</a></code> checks internal consistency (<a href="https://github.com/cynkra/dm/issues/69" class="external-link">#69</a>).</li>
@@ -736,7 +692,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-0-5">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-5"></a></h3>
-<ul><li>Avoid asterisk when printing local <code>zoomed_dm</code> (<a href="https://github.com/cynkra/dm/issues/131" class="external-link">#131</a>).</li>
+<ul><li>Avoid asterisk when printing local <code>dm_zoomed</code> (<a href="https://github.com/cynkra/dm/issues/131" class="external-link">#131</a>).</li>
 <li>
 <code><a href="../reference/deprecated.html">cdm_select_tbl()</a></code> works again when multiple foreign keys are defined between two tables (<a href="https://github.com/cynkra/dm/issues/122" class="external-link">#122</a>).</li>
 </ul></div>
@@ -801,7 +757,7 @@
 <ul><li>
 <code><a href="../reference/deprecated.html">cdm_flatten_to_tbl()</a></code> disambiguates only the necessary columns.</li>
 <li>When flattening, the column name of the LHS (child) table is used (<a href="https://github.com/cynkra/dm/issues/52" class="external-link">#52</a>).</li>
-<li>Fix formatting in <code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code> for character data.</li>
+<li>Fix formatting in <code><a href="../reference/dm_enum_pk_candidates.html">enum_pk_candidates()</a></code> for character data.</li>
 <li>
 <code><a href="../reference/deprecated.html">cdm_add_pk()</a></code> and <code><a href="../reference/deprecated.html">cdm_add_fk()</a></code> no longer check data integrity by default.</li>
 <li>Explicitly checking that the <code>join</code> argument is a function, to avoid surprises when the caller passes data.</li>
@@ -841,7 +797,7 @@
 <li>New <code>length.dm()</code> and <code>length&lt;-.dm()</code> (<a href="https://github.com/cynkra/dm/issues/53" class="external-link">#53</a>).</li>
 <li>
 <code>$</code>, <code>[[</code>, <code>[</code>, <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code>, <code><a href="https://rdrr.io/r/utils/str.html" class="external-link">str()</a></code> and <code><a href="https://rdrr.io/r/base/length.html" class="external-link">length()</a></code> now implemented for dm objects (read-only).</li>
-<li>New <code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code>.</li>
+<li>New <code><a href="../reference/dm_enum_pk_candidates.html">enum_pk_candidates()</a></code>.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="minor-changes-0-0-2">Minor changes<a class="anchor" aria-label="anchor" href="#minor-changes-0-0-2"></a></h3>
