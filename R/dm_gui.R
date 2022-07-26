@@ -39,5 +39,7 @@ dm_gui <- function(..., dm = NULL, select_tables = TRUE, debug = FALSE) {
   check_suggested("shinyAce", use = TRUE)
   check_suggested("shinydashboard", use = TRUE)
 
+  dm <- dm_ptype(dm)
+
   gui_run(dm, select_tables, debug)
 }
