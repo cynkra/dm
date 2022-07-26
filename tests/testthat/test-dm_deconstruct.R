@@ -4,3 +4,10 @@ test_that("snapshot test", {
     dm_deconstruct(dm)
   })
 })
+
+test_that("non-syntactic names", {
+  expect_snapshot({
+    dm <- dm(`if` = tibble(a = 1), `a b` = tibble(b = 1))
+    dm_deconstruct(dm)
+  })
+})
