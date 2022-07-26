@@ -21,6 +21,7 @@ reference:
   - dm_rename_tbl
   - dm_get_tables
   - pull_tbl
+  - dm_deconstruct
   - glimpse
   - dm_mutate_tbl
 
