@@ -28,7 +28,7 @@
 #' by_origin <-
 #'   flights %>%
 #'   group_by(origin) %>%
-#'   summarize(n = n(), mean_arr_delay = mean(arr_delay, na.rm = TRUE)) %>%
+#'   summarize(mean_arr_delay = mean(arr_delay, na.rm = TRUE)) %>%
 #'   ungroup()
 #'
 #' by_origin
