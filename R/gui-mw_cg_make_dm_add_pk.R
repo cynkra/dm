@@ -14,12 +14,23 @@ mw_cg_make_dm_add_pk <- function(dm, ..., table_names = NULL, column_names = NUL
     column_names_sym <- expr(c(!!!syms(column_names)))
   }
 
-  list(
-    call = expr(dm_add_pk(
-      .,
-      !!sym(table_names),
-      !!column_names_sym,
-      force = TRUE # we want to change the pks interactively, otherwise error
-    ))
-  )
+  if (dm_has_pk(dm, !!table_names)) {
+    # FIXME: Include confirmation message
+    list(
+      call = expr(dm_add_pk(
+        .,
+        !!sym(table_names),
+        !!column_names_sym,
+        force = TRUE # we want to change the pks interactively, otherwise error
+      ))
+    )
+  } else {
+    list(
+      call = expr(dm_add_pk(
+        .,
+        !!sym(table_names),
+        !!column_names_sym
+      ))
+    )
+  }
 }
