@@ -18,7 +18,7 @@ With pull_tbl.dm_zoomed() you will retrieve the zoomed table in the current stat
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" alt="cynkra" id="navbar-logo"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,14 +111,20 @@ that will contain information on primary and foreign keys
 in the individual table objects.
 This allows using dplyr workflows on those tables and later reconstruct them
 into a <code>dm</code> object.
-See <code><a href="../articles/tech-dm-keyed.html">vignette("tech-dm-keyed")</a></code> for details.</p></dd>
+See <code><a href="dm_deconstruct.html">dm_deconstruct()</a></code> for a function that generates corresponding code
+for an existing dm object, and <code><a href="../articles/tech-dm-keyed.html">vignette("tech-dm-keyed")</a></code> for details.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>The requested table</p>
+<p>The requested table.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="dm_deconstruct.html">dm_deconstruct()</a></code> to generate code of the form
+<code>pull_tbl(..., keyed = TRUE)</code> from an existing <code>dm</code> object.</p></div>
     </div>
 
     <div class="section level2">
