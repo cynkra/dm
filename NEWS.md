@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 1.0.1.9000
+
+## Bug fixes
+
+- Use `dm_ptype()` in `dm_gui()`, generate better code (#1353).
+
+## Features
+
+- New `dm_deconstruct()` creates code to deconstruct a `dm` object into individual keyed tables via `pull_tbl(keyed = TRUE)` (#1354).
+
+
 # dm 1.0.1
 
 ## Bug fixes
