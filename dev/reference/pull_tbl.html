@@ -111,14 +111,20 @@ that will contain information on primary and foreign keys
 in the individual table objects.
 This allows using dplyr workflows on those tables and later reconstruct them
 into a <code>dm</code> object.
-See <code><a href="../articles/tech-dm-keyed.html">vignette("tech-dm-keyed")</a></code> for details.</p></dd>
+See <code><a href="dm_deconstruct.html">dm_deconstruct()</a></code> for a function that generates corresponding code
+for an existing dm object, and <code><a href="../articles/tech-dm-keyed.html">vignette("tech-dm-keyed")</a></code> for details.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>The requested table</p>
+<p>The requested table.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="dm_deconstruct.html">dm_deconstruct()</a></code> to generate code of the form
+<code>pull_tbl(..., keyed = TRUE)</code> from an existing <code>dm</code> object.</p></div>
     </div>
 
     <div class="section level2">
