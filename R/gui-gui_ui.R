@@ -40,12 +40,12 @@ html_header <- function() {
             class = "navbar-custom-menu",
             shiny::tags$ul(
               class = "nav navbar-nav",
-              shiny::tags$li(actionButton2("i_undo", label = NULL, icon = shiny::icon("undo"), class = "btn btn-default", style = "margin-top: 9px; margin-right: 15px;")),
-              shiny::tags$li(actionButton2("i_redo", label = NULL, icon = shiny::icon("redo"), class = "btn btn-default", style = "margin-top: 9px; margin-right: 15px;")),
+              shiny::tags$li(actionButton2("i_undo", label = NULL, icon = shiny::icon(verify_fa = FALSE, "undo"), class = "btn btn-default", style = "margin-top: 9px; margin-right: 15px;")),
+              shiny::tags$li(actionButton2("i_redo", label = NULL, icon = shiny::icon(verify_fa = FALSE, "redo"), class = "btn btn-default", style = "margin-top: 9px; margin-right: 15px;")),
               shiny::tags$li(shiny::tags$button(
                 id = "i_return", style = "margin-top: 9px; margin-right: 15px;", href = "#", type = "button",
                 class = "btn btn-primary btn action-button btn-navbar",
-                shiny::icon("fas fa-sign-out-alt", ), "To Console"
+                shiny::icon(verify_fa = FALSE, "fas fa-sign-out-alt", ), "To Console"
               ))
             )
           )
@@ -97,11 +97,11 @@ gui_ui <- function(ns, select_tables = TRUE) {
               dmSVGOutput("o_svg", height = "626px")
             },
             footer = shiny::tagList(
-              actionButton2("i_zoom_to_selected", "Zoom", icon = shiny::icon("binoculars"), class = "btn btn-info btn-app"),
-              actionButton2("i_rm_tbl", "Delete table", icon = shiny::icon("trash-alt"), class = "btn btn-info btn-app"),
-              actionButton2("i_select_tbl", "Select table", icon = shiny::icon("table"), class = "btn btn-info btn-app"),
-              actionButton2("i_rm_fk", "Remove foreign key", icon = shiny::icon("unlink"), class = "btn btn-info btn-app"),
-              actionButton2("i_disentangle", "Remove cycles", icon = shiny::icon("circle-notch"), class = "btn btn-info btn-app"),
+              actionButton2("i_zoom_to_selected", "Zoom", icon = shiny::icon(verify_fa = FALSE, "binoculars"), class = "btn btn-info btn-app"),
+              actionButton2("i_rm_tbl", "Delete table", icon = shiny::icon(verify_fa = FALSE, "trash-alt"), class = "btn btn-info btn-app"),
+              actionButton2("i_select_tbl", "Select table", icon = shiny::icon(verify_fa = FALSE, "table"), class = "btn btn-info btn-app"),
+              actionButton2("i_rm_fk", "Remove foreign key", icon = shiny::icon(verify_fa = FALSE, "unlink"), class = "btn btn-info btn-app"),
+              actionButton2("i_disentangle", "Remove cycles", icon = shiny::icon(verify_fa = FALSE, "circle-notch"), class = "btn btn-info btn-app"),
               shiny::tags$style(htmltools::HTML("
                 #colorpicker-user>.shiny-input-container {
                   display: inline-block !important;
@@ -153,9 +153,9 @@ gui_ui <- function(ns, select_tables = TRUE) {
               shiny::conditionalPanel(
                 condition = "output.is_one_table_selected",
                 shiny::tagList(
-                  actionButton2("i_add_pk", "Add primary key", icon = shiny::icon("key"), class = "btn btn-info btn-app"),
+                  actionButton2("i_add_pk", "Add primary key", icon = shiny::icon(verify_fa = FALSE, "key"), class = "btn btn-info btn-app"),
                   # actionButton("i_rename_col", "Rename columns"),
-                  actionButton2("i_rm_col", "Delete column", icon = shiny::icon("trash"), class = "btn btn-app")
+                  actionButton2("i_rm_col", "Delete column", icon = shiny::icon(verify_fa = FALSE, "trash"), class = "btn btn-app")
                 )
               )
           )
@@ -172,8 +172,8 @@ gui_ui <- function(ns, select_tables = TRUE) {
             ),
             footer = shiny::tagList(
               # p("Select two tables to manage the relationship between them."),
-              actionButton2("i_add_fk", "Add foreign key", icon = shiny::icon("link"), class = "btn btn-info btn-app"),
-              actionButton2("i_switch_tbls", "Switch tables", icon = shiny::icon("exchange-alt"), class = "btn btn-info btn-app")
+              actionButton2("i_add_fk", "Add foreign key", icon = shiny::icon(verify_fa = FALSE, "link"), class = "btn btn-info btn-app"),
+              actionButton2("i_switch_tbls", "Switch tables", icon = shiny::icon(verify_fa = FALSE, "exchange-alt"), class = "btn btn-info btn-app")
             )
           )
         )
