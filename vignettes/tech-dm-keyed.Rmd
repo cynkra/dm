@@ -201,3 +201,16 @@ joined_flights_dm$flights_plane_type
 joined_flights_dm %>% 
   dm_draw()
 ```
+
+### Use case 6: Retrieve all tables
+
+Retrieving all tables from a `dm` object requires a lot of boilerplate code.
+The `dm_deconstruct()` function helps creating that boilerplate.
+For a `dm` object, it prints the code necessary to create local variables for all tables.
+
+```{r}
+dm <- dm_nycflights13()
+dm_deconstruct(dm)
+```
+
+This code can be copy-pasted into your script or function.
