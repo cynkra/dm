@@ -2,40 +2,13 @@
 
 # dm 1.0.1
 
-## Bug fixes
-
-- Use `dm_ptype()` in `dm_gui()`, generate better code (#1353).
-
 ## Features
 
 - New `dm_deconstruct()` creates code to deconstruct a `dm` object into individual keyed tables via `pull_tbl(keyed = TRUE)` (#1354).
 
-
-# dm 1.0.0.9002
-
 ## Bug fixes
 
 - Use `dm_ptype()` in `dm_gui()`, generate better code (#1353).
-
-## Features
-
-- New `dm_deconstruct()` creates code to deconstruct a `dm` object into individual keyed tables via `pull_tbl(keyed = TRUE)` (#1354).
-
-
-# dm 1.0.0.9001
-
-## Bug fixes
-
-- Use `dm_ptype()` in `dm_gui()`, generate better code (#1353).
-
-## Features
-
-- New `dm_deconstruct()` creates code to deconstruct a `dm` object into individual keyed tables via `pull_tbl(keyed = TRUE)` (#1354).
-
-
-# dm 1.0.0.9000
-
-- Internal changes only.
 
 
 # dm 1.0.0
