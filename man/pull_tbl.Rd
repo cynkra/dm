@@ -19,10 +19,11 @@ that will contain information on primary and foreign keys
 in the individual table objects.
 This allows using dplyr workflows on those tables and later reconstruct them
 into a \code{dm} object.
-See \code{vignette("tech-dm-keyed")} for details.}
+See \code{\link[=dm_deconstruct]{dm_deconstruct()}} for a function that generates corresponding code
+for an existing dm object, and \code{vignette("tech-dm-keyed")} for details.}
 }
 \value{
-The requested table
+The requested table.
 }
 \description{
 This generic has methods for both \code{dm} classes:
@@ -42,4 +43,8 @@ dm_nycflights13() \%>\%
   dm_zoom_to(airports) \%>\%
   pull_tbl()
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\code{\link[=dm_deconstruct]{dm_deconstruct()}} to generate code of the form
+\code{pull_tbl(..., keyed = TRUE)} from an existing \code{dm} object.
 }

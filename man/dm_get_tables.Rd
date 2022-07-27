@@ -17,7 +17,8 @@ that will contain information on primary and foreign keys
 in the individual table objects.
 This allows using dplyr workflows on those tables and later reconstruct them
 into a \code{dm} object.
-See \code{vignette("tech-dm-keyed")} for details.}
+See \code{\link[=dm_deconstruct]{dm_deconstruct()}} for a function that generates corresponding code
+for an existing dm object, and \code{vignette("tech-dm-keyed")} for details.}
 }
 \value{
 A named list with the tables (data frames or lazy tables)

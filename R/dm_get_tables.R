@@ -11,7 +11,8 @@
 #'   in the individual table objects.
 #'   This allows using dplyr workflows on those tables and later reconstruct them
 #'   into a `dm` object.
-#'   See `vignette("tech-dm-keyed")` for details.
+#'   See [dm_deconstruct()] for a function that generates corresponding code
+#'   for an existing dm object, and `vignette("tech-dm-keyed")` for details.
 #'
 #' @return A named list with the tables (data frames or lazy tables)
 #'   constituting the `dm`.

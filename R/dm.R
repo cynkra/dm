@@ -761,7 +761,10 @@ empty_dm <- function() {
 #' @param table One unquoted table name for `pull_tbl.dm()`, ignored for `pull_tbl.dm_zoomed()`.
 #' @inheritParams dm_get_tables
 #'
-#' @return The requested table
+#' @seealso [dm_deconstruct()] to generate code of the form
+#'   `pull_tbl(..., keyed = TRUE)` from an existing `dm` object.
+#'
+#' @return The requested table.
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
 #' # For an unzoomed dm you need to specify the table to pull:
