@@ -34,7 +34,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" alt="cynkra" id="navbar-logo"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.1.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -456,6 +456,20 @@
 <path fill="none" stroke="#555555" d="M109,-61C134.7674,-61 143.0438,-68.6563 164.4385,-70.5703"></path><polygon fill="#555555" stroke="#555555" points="164.3597,-74.07 174.5,-71 164.6585,-67.0764 164.3597,-74.07"></polygon></g><!-- weather --><g id="weather" class="node"><title>weather</title>
 <polygon fill="#efebdd" stroke="transparent" points="147.5,-21 147.5,-41 248.5,-41 248.5,-21 147.5,-21"></polygon><text text-anchor="start" x="175.8492" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="#ffffff" stroke="transparent" points="147.5,-1 147.5,-21 248.5,-21 248.5,-1 147.5,-1"></polygon><text text-anchor="start" x="149.0056" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">origin, time_hour</text><polygon fill="none" stroke="#555555" points="146,0 146,-42 249,-42 249,0 146,0"></polygon></g><!-- flights_plane_type&#45;&gt;weather --><g id="flights_plane_type_4" class="edge"><title>flights_plane_type:origin, time_hour-&gt;weather:origin, time_hour</title>
 <path fill="none" stroke="#555555" d="M109,-41C126.6252,-41 126.705,-21.1953 137.7507,-13.7686"></path><polygon fill="#555555" stroke="#555555" points="138.8365,-17.0987 147.5,-11 136.9242,-10.3649 138.8365,-17.0987"></polygon></g></g></svg>
+</div>
+<div class="section level3">
+<h3 id="use-case-6-retrieve-all-tables">Use case 6: Retrieve all tables<a class="anchor" aria-label="anchor" href="#use-case-6-retrieve-all-tables"></a>
+</h3>
+<p>Retrieving all tables from a <code>dm</code> object requires a lot of boilerplate code. The <code><a href="../reference/dm_deconstruct.html">dm_deconstruct()</a></code> function helps creating that boilerplate. For a <code>dm</code> object, it prints the code necessary to create local variables for all tables.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/dm_deconstruct.html">dm_deconstruct</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span><span class="co">#&gt; airlines &lt;- pull_tbl(dm, "airlines", keyed = TRUE)</span></span>
+<span><span class="co">#&gt; airports &lt;- pull_tbl(dm, "airports", keyed = TRUE)</span></span>
+<span><span class="co">#&gt; flights &lt;- pull_tbl(dm, "flights", keyed = TRUE)</span></span>
+<span><span class="co">#&gt; planes &lt;- pull_tbl(dm, "planes", keyed = TRUE)</span></span>
+<span><span class="co">#&gt; weather &lt;- pull_tbl(dm, "weather", keyed = TRUE)</span></span></code></pre></div>
+<p>This code can be copy-pasted into your script or function.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
