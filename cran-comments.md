@@ -1,8 +1,8 @@
-dm 1.0.0
+dm 1.0.1
 
 ## Cran Repository Policy
 
-- [x] Reviewed CRP last edited 2022-05-03.
+- [x] Reviewed CRP last edited 2022-07-26.
 
 ## R CMD check results
 
@@ -10,8 +10,6 @@ dm 1.0.0
 - [x] Checked on CI system, R 4.2.1
 - [x] Checked on win-builder, R devel
 
-Check the boxes above after successful execution and remove this line. Then run `fledge::release()`.
-
 ## Current CRAN check results
 
-- [x] Checked on 2022-07-21, no problems found.
+- [x] Checked on 2022-07-27, no problems found.
