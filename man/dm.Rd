@@ -3,7 +3,6 @@
 \name{dm}
 \alias{dm}
 \alias{new_dm}
-\alias{dm_get_tables}
 \alias{is_dm}
 \alias{as_dm}
 \title{Data model class}
@@ -16,11 +15,9 @@ dm(
 
 new_dm(tables = list())
 
-dm_get_tables(x)
-
 is_dm(x)
 
-as_dm(x)
+as_dm(x, ...)
 }
 \arguments{
 \item{...}{Tables or existing \code{dm} objects to add to the \code{dm} object.
@@ -36,8 +33,6 @@ to be included in the \code{dm} object.}
 }
 \value{
 For \code{dm()}, \code{new_dm()}, \code{as_dm()}: A \code{dm} object.
-
-For \code{dm_get_tables()}: A named list with the tables constituting the \code{dm}.
 
 For \code{is_dm()}: A scalar logical, \code{TRUE} if is this object is a \code{dm}.
 }
@@ -56,11 +51,6 @@ and extends the idea by offering operations to access the data in the tables.
 the inputs are of the expected class and internally consistent;
 use \code{\link[=dm_validate]{dm_validate()}} to double-check the returned object.
 }
-
-\code{dm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
-of a \code{dm} object.
-Filtering expressions defined by \code{\link[=dm_filter]{dm_filter()}} are NOT evaluated at this stage.
-To get a filtered table, use \code{\link[=dm_apply_filters_to_tbl]{dm_apply_filters_to_tbl()}}, to apply filters to all tables use \code{\link[=dm_apply_filters]{dm_apply_filters()}}.
 
 \code{is_dm()} returns \code{TRUE} if the input is of class \code{dm}.
 
@@ -83,8 +73,6 @@ dm_nycflights13()["airports"]
 dm_nycflights13()[["airports"]]
 
 dm_nycflights13() \%>\% names()
-
-dm_nycflights13() \%>\% dm_get_tables()
 \dontshow{\}) # examplesIf}
 library(dm)
 library(nycflights13)
@@ -107,6 +95,7 @@ new_dm(list("tbl1" = y1, "tbl2" = y2))
 \itemize{
 \item \code{\link[=dm_from_con]{dm_from_con()}} for connecting to all tables in a database
 and importing the primary and foreign keys
+\item \code{\link[=dm_get_tables]{dm_get_tables()}} for returning a list of tables
 \item \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} for adding primary and foreign keys
 \item \code{\link[=copy_dm_to]{copy_dm_to()}} for DB interaction
 \item \code{\link[=dm_draw]{dm_draw()}} for visualization

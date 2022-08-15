@@ -1,23 +1,23 @@
 #' \pkg{tidyr} table manipulation methods for zoomed dm objects
 #'
 #' @description
-#' Use these methods without the '.zoomed_dm' suffix (see examples).
-#' @param data object of class `zoomed_dm`
-#' @param col For `unite.zoomed_dm`: see [tidyr::unite()]
+#' Use these methods without the '.dm_zoomed' suffix (see examples).
+#' @param data object of class `dm_zoomed`
+#' @param col For `unite.dm_zoomed`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [tidyr::separate()]
-#' @param ... For `unite.zoomed_dm`: see [tidyr::unite()]
+#' For `separate.dm_zoomed`: see [tidyr::separate()]
+#' @param ... For `unite.dm_zoomed`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [tidyr::separate()]
-#' @param col For `unite.zoomed_dm`: see [tidyr::unite()]
+#' For `separate.dm_zoomed`: see [tidyr::separate()]
+#' @param col For `unite.dm_zoomed`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [tidyr::separate()]
-#' @param sep For `unite.zoomed_dm`: see [tidyr::unite()]
+#' For `separate.dm_zoomed`: see [tidyr::separate()]
+#' @param sep For `unite.dm_zoomed`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [tidyr::separate()]
-#' @param remove For `unite.zoomed_dm`: see [tidyr::unite()]
+#' For `separate.dm_zoomed`: see [tidyr::separate()]
+#' @param remove For `unite.dm_zoomed`: see [tidyr::unite()]
 #'
-#' For `separate.zoomed_dm`: see [tidyr::separate()]
+#' For `separate.dm_zoomed`: see [tidyr::separate()]
 #' @param na.rm see [tidyr::unite()]
 #' @param into see [tidyr::separate()]
 #' @name tidyr_table_manipulation
@@ -37,7 +37,7 @@ unite.dm <- function(data, ...) {
 
 #' @rdname tidyr_table_manipulation
 #' @export
-unite.zoomed_dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
+unite.dm_zoomed <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
   tbl <- tbl_zoomed(data)
   united_tbl <- unite(tbl, col = !!col, ..., sep = sep, remove = remove, na.rm = na.rm)
 
@@ -53,6 +53,14 @@ unite.zoomed_dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FA
   replace_zoomed_tbl(data, united_tbl, new_tracked_cols_zoom)
 }
 
+#' @rdname tidyr_table_manipulation
+#' @export
+unite.dm_keyed_tbl <- function(data, ...) {
+  keys_info <- keyed_get_info(data)
+  out <- NextMethod()
+  new_keyed_tbl_from_keys_info(out, keys_info)
+}
+
 #' @export
 separate.dm <- function(data, ...) {
   check_zoomed(data)
@@ -60,7 +68,7 @@ separate.dm <- function(data, ...) {
 
 #' @rdname tidyr_table_manipulation
 #' @export
-separate.zoomed_dm <- function(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, ...) {
+separate.dm_zoomed <- function(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, ...) {
   tbl <- tbl_zoomed(data)
   col <- tidyselect::vars_pull(names(tbl), !!enquo(col))
   separated_tbl <- separate(tbl, col = !!col, into = into, sep = sep, remove = remove, ...)
@@ -69,4 +77,12 @@ separate.zoomed_dm <- function(data, col, into, sep = "[^[:alnum:]]+", remove = 
   selected <- set_names(setdiff(names(col_tracker_zoomed(data)), deselected))
   new_tracked_cols_zoom <- new_tracked_cols(data, selected)
   replace_zoomed_tbl(data, separated_tbl, new_tracked_cols_zoom)
+}
+
+#' @rdname tidyr_table_manipulation
+#' @export
+separate.dm_keyed_tbl <- function(data, ...) {
+  keys_info <- keyed_get_info(data)
+  out <- NextMethod()
+  new_keyed_tbl_from_keys_info(out, keys_info)
 }

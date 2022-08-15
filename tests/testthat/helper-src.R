@@ -501,6 +501,13 @@ fact_clean %<-% {
     )
 }
 
+fact_clean_new %<-% {
+  fact() %>%
+    rename(
+      something.fact = something
+    )
+}
+
 dim_1 %<-% tibble(
   dim_1_pk_1 = 1:20,
   dim_1_pk_2 = LETTERS[1:20],
@@ -509,6 +516,10 @@ dim_1 %<-% tibble(
 dim_1_clean %<-% {
   dim_1() %>%
     rename(dim_1.something = something)
+}
+dim_1_clean_new %<-% {
+  dim_1() %>%
+    rename(something.dim_1 = something)
 }
 
 dim_2 %<-% tibble(
@@ -519,6 +530,10 @@ dim_2_clean %<-% {
   dim_2() %>%
     rename(dim_2.something = something)
 }
+dim_2_clean_new %<-% {
+  dim_2() %>%
+    rename(something.dim_2 = something)
+}
 
 dim_3 %<-% tibble(
   dim_3_pk = LETTERS[5:24],
@@ -528,6 +543,10 @@ dim_3_clean %<-% {
   dim_3() %>%
     rename(dim_3.something = something)
 }
+dim_3_clean_new %<-% {
+  dim_3() %>%
+    rename(something.dim_3 = something)
+}
 
 dim_4 %<-% tibble(
   dim_4_pk = 19:7,
@@ -536,6 +555,10 @@ dim_4 %<-% tibble(
 dim_4_clean %<-% {
   dim_4() %>%
     rename(dim_4.something = something)
+}
+dim_4_clean_new %<-% {
+  dim_4() %>%
+    rename(something.dim_4 = something)
 }
 
 # dm for testing dm_disentangle() -----------------------------------------
@@ -621,6 +644,14 @@ result_from_flatten %<-% {
     left_join(dim_4_clean(), by = c("dim_4_key" = "dim_4_pk"))
 }
 
+result_from_flatten_new %<-% {
+  fact_clean_new() %>%
+    left_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
+    left_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk")) %>%
+    left_join(dim_3_clean_new(), by = c("dim_3_key" = "dim_3_pk")) %>%
+    left_join(dim_4_clean_new(), by = c("dim_4_key" = "dim_4_pk"))
+}
+
 # 'bad' dm (no ref. integrity) for testing dm_flatten_to_tbl() --------
 
 tbl_1 %<-% tibble(a = as.integer(c(1, 2, 4, 5, NA)), x = LETTERS[3:7], b = a)
@@ -666,8 +697,8 @@ nyc_comp %<--% {
     dm_add_fk(flights, c(origin, time_hour), weather)
 }
 
-zoomed_dm <- function() dm_zoom_to(dm_for_filter(), tf_2)
-zoomed_dm_2 <- function() dm_zoom_to(dm_for_filter(), tf_3)
+dm_zoomed <- function() dm_zoom_to(dm_for_filter(), tf_2)
+dm_zoomed_2 <- function() dm_zoom_to(dm_for_filter(), tf_3)
 
 # FIXME: regarding PR #313: everything below this line needs to be at least reconsidered if not just dumped.
 

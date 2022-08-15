@@ -9,7 +9,6 @@
 \alias{dm_rows_patch}
 \alias{dm_rows_upsert}
 \alias{dm_rows_delete}
-\alias{dm_rows_truncate}
 \title{Modifying rows for multiple tables}
 \usage{
 dm_rows_insert(x, y, ..., in_place = NULL, progress = NA)
@@ -23,8 +22,6 @@ dm_rows_patch(x, y, ..., in_place = NULL, progress = NA)
 dm_rows_upsert(x, y, ..., in_place = NULL, progress = NA)
 
 dm_rows_delete(x, y, ..., in_place = NULL, progress = NA)
-
-dm_rows_truncate(x, y, ..., in_place = NULL, progress = NA)
 }
 \arguments{
 \item{x}{Target \code{dm} object.}
@@ -88,10 +85,6 @@ based on the primary key, via \code{\link[=rows_upsert]{rows_upsert()}}.
 
 \code{dm_rows_delete()} removes matching records via \code{\link[=rows_delete]{rows_delete()}},
 based on the primary key.
-The order in which the tables are processed is reversed.
-
-\code{dm_rows_truncate()} removes all records via \code{\link[=rows_truncate]{rows_truncate()}},
-only for tables in \code{dm}.
 The order in which the tables are processed is reversed.
 }
 \examples{

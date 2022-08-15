@@ -68,6 +68,7 @@
     Output
       # A tibble: 0 x 1
       # ... with 1 variable: df5 <tibble[,0]>
+      # i Use `colnames()` to see all variable names
 
 ---
 
@@ -76,4 +77,5 @@
     Output
       # A tibble: 0 x 2
       # ... with 2 variables: col <int>, df6 <tibble[,0]>
+      # i Use `colnames()` to see all variable names
 

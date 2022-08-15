@@ -20,12 +20,12 @@ look at the second way.
 
 -   all information stored in the original `dm` is kept, including the
     originally zoomed table
--   an object of class `zoomed_dm` is produced, presenting a view of the
+-   an object of class `dm_zoomed` is produced, presenting a view of the
     table for transformations
 -   you do not need to specify the table when calling `select()`,
     `mutate()` and other table manipulation functions
 
-{dm} provides methods for many of the {dplyr}-verbs for a `zoomed_dm`
+{dm} provides methods for many of the {dplyr}-verbs for a `dm_zoomed`
 which behave the way you are used to, affecting only the zoomed table
 and leaving the rest of the `dm` untouched. When you are finished with
 transforming the table, there are three options to proceed:
@@ -76,7 +76,7 @@ flights_dm
 flights_zoomed <-
   flights_dm %>%
   dm_zoom_to(flights)
-# The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.
+# The print output for a `dm_zoomed` looks very much like that from a normal `tibble`.
 flights_zoomed
 #> # Zoomed table: flights
 #> # A tibble:     11,227 x 19
@@ -291,7 +291,7 @@ dm_draw(dm_with_summary)
 
 If you would like to join some or all of the columns of one table to
 another, you can make use of one of the `join`-methods for a
-`zoomed_dm`. In addition to the usual arguments for the {dplyr}-joins,
+`dm_zoomed`. In addition to the usual arguments for the {dplyr}-joins,
 by supplying the `select` argument you can specify which columns of the
 RHS-table you want to be included in the join. For the syntax please see
 the example below. The LHS-table of a join is always the zoomed table.
@@ -331,7 +331,7 @@ dm_draw(joined_flights_dm)
 ### Tip: Accessing the zoomed table
 
 At each point you can retrieve the zoomed table by calling `pull_tbl()`
-on a `zoomed_dm`. To use our last example once more:
+on a `dm_zoomed`. To use our last example once more:
 
 ``` r
 flights_dm %>%
@@ -359,7 +359,7 @@ flights_dm %>%
 ### Possible pitfalls and caveats
 
 1.  Currently not all of the {dplyr}-verbs have their own method for a
-    `zoomed_dm`, so be aware that in some cases it will still be
+    `dm_zoomed`, so be aware that in some cases it will still be
     necessary to resort to extracting one or more tables from a `dm` and
     reinserting a transformed version of theirs into the `dm`
     eventually. The supported functions are: `group_by()`, `ungroup()`,

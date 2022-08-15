@@ -4,21 +4,32 @@
 \alias{pull_tbl}
 \title{Retrieve a table}
 \usage{
-pull_tbl(dm, table)
+pull_tbl(dm, table, ..., keyed = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{One unquoted table name for \code{pull_tbl.dm()}, ignored for \code{pull_tbl.zoomed_dm()}.}
+\item{table}{One unquoted table name for \code{pull_tbl.dm()}, ignored for \code{pull_tbl.dm_zoomed()}.}
+
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{keyed}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+Set to \code{TRUE} to return objects of the internal class \code{"dm_keyed_tbl"}
+that will contain information on primary and foreign keys
+in the individual table objects.
+This allows using dplyr workflows on those tables and later reconstruct them
+into a \code{dm} object.
+See \code{\link[=dm_deconstruct]{dm_deconstruct()}} for a function that generates corresponding code
+for an existing dm object, and \code{vignette("tech-dm-keyed")} for details.}
 }
 \value{
-The requested table
+The requested table.
 }
 \description{
 This generic has methods for both \code{dm} classes:
 \enumerate{
 \item With \code{pull_tbl.dm()} you can chose which table of the \code{dm} you want to retrieve.
-\item With \code{pull_tbl.zoomed_dm()} you will retrieve the zoomed table in the current state.
+\item With \code{pull_tbl.dm_zoomed()} you will retrieve the zoomed table in the current state.
 }
 }
 \examples{
@@ -32,4 +43,8 @@ dm_nycflights13() \%>\%
   dm_zoom_to(airports) \%>\%
   pull_tbl()
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\code{\link[=dm_deconstruct]{dm_deconstruct()}} to generate code of the form
+\code{pull_tbl(..., keyed = TRUE)} from an existing \code{dm} object.
 }

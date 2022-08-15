@@ -188,6 +188,8 @@ utils::globalVariables(c(
   "parent_data",
   "parent_uuid",
   #
+  "g_table_names",
+  #
   # keep this to avoid dealing with trailing commas
   NULL
 ))

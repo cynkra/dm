@@ -2,55 +2,55 @@
 % Please edit documentation in R/dplyr.R
 \name{dplyr_table_manipulation}
 \alias{dplyr_table_manipulation}
-\alias{filter.zoomed_dm}
-\alias{mutate.zoomed_dm}
-\alias{transmute.zoomed_dm}
-\alias{select.zoomed_dm}
-\alias{relocate.zoomed_dm}
-\alias{rename.zoomed_dm}
-\alias{distinct.zoomed_dm}
-\alias{arrange.zoomed_dm}
-\alias{slice.zoomed_dm}
-\alias{group_by.zoomed_dm}
+\alias{filter.dm_zoomed}
+\alias{mutate.dm_zoomed}
+\alias{transmute.dm_zoomed}
+\alias{select.dm_zoomed}
+\alias{relocate.dm_zoomed}
+\alias{rename.dm_zoomed}
+\alias{distinct.dm_zoomed}
+\alias{arrange.dm_zoomed}
+\alias{slice.dm_zoomed}
+\alias{group_by.dm_zoomed}
 \alias{group_by.dm_keyed_tbl}
-\alias{ungroup.zoomed_dm}
-\alias{summarise.zoomed_dm}
+\alias{ungroup.dm_zoomed}
+\alias{summarise.dm_zoomed}
 \alias{summarise.dm_keyed_tbl}
-\alias{count.zoomed_dm}
-\alias{tally.zoomed_dm}
-\alias{pull.zoomed_dm}
-\alias{compute.zoomed_dm}
+\alias{count.dm_zoomed}
+\alias{tally.dm_zoomed}
+\alias{pull.dm_zoomed}
+\alias{compute.dm_zoomed}
 \title{\pkg{dplyr} table manipulation methods for zoomed dm objects}
 \usage{
-\method{filter}{zoomed_dm}(.data, ...)
+\method{filter}{dm_zoomed}(.data, ...)
 
-\method{mutate}{zoomed_dm}(.data, ...)
+\method{mutate}{dm_zoomed}(.data, ...)
 
-\method{transmute}{zoomed_dm}(.data, ...)
+\method{transmute}{dm_zoomed}(.data, ...)
 
-\method{select}{zoomed_dm}(.data, ...)
+\method{select}{dm_zoomed}(.data, ...)
 
-\method{relocate}{zoomed_dm}(.data, ..., .before = NULL, .after = NULL)
+\method{relocate}{dm_zoomed}(.data, ..., .before = NULL, .after = NULL)
 
-\method{rename}{zoomed_dm}(.data, ...)
+\method{rename}{dm_zoomed}(.data, ...)
 
-\method{distinct}{zoomed_dm}(.data, ..., .keep_all = FALSE)
+\method{distinct}{dm_zoomed}(.data, ..., .keep_all = FALSE)
 
-\method{arrange}{zoomed_dm}(.data, ...)
+\method{arrange}{dm_zoomed}(.data, ...)
 
-\method{slice}{zoomed_dm}(.data, ..., .keep_pk = NULL)
+\method{slice}{dm_zoomed}(.data, ..., .keep_pk = NULL)
 
-\method{group_by}{zoomed_dm}(.data, ...)
+\method{group_by}{dm_zoomed}(.data, ...)
 
 \method{group_by}{dm_keyed_tbl}(.data, ...)
 
-\method{ungroup}{zoomed_dm}(x, ...)
+\method{ungroup}{dm_zoomed}(x, ...)
 
-\method{summarise}{zoomed_dm}(.data, ...)
+\method{summarise}{dm_zoomed}(.data, ...)
 
 \method{summarise}{dm_keyed_tbl}(.data, ...)
 
-\method{count}{zoomed_dm}(
+\method{count}{dm_zoomed}(
   x,
   ...,
   wt = NULL,
@@ -59,14 +59,14 @@
   .drop = group_by_drop_default(x)
 )
 
-\method{tally}{zoomed_dm}(x, ...)
+\method{tally}{dm_zoomed}(x, ...)
 
-\method{pull}{zoomed_dm}(.data, var = -1, ...)
+\method{pull}{dm_zoomed}(.data, var = -1, ...)
 
-\method{compute}{zoomed_dm}(x, ...)
+\method{compute}{dm_zoomed}(x, ...)
 }
 \arguments{
-\item{.data}{object of class \code{zoomed_dm}}
+\item{.data}{object of class \code{dm_zoomed}}
 
 \item{...}{see corresponding function in package \pkg{dplyr} or \pkg{tidyr}}
 
@@ -74,13 +74,13 @@
 columns selected by \code{...}. Supplying neither will move columns to the
 left-hand side; specifying both is an error.}
 
-\item{.keep_all}{For \code{distinct.zoomed_dm()}: see \code{\link[dplyr:distinct]{dplyr::distinct()}}}
+\item{.keep_all}{For \code{distinct.dm_zoomed()}: see \code{\link[dplyr:distinct]{dplyr::distinct()}}}
 
-\item{.keep_pk}{For \code{slice.zoomed_dm}: Logical, if \code{TRUE}, the primary key will be retained during this transformation. If \code{FALSE}, it will be dropped.
+\item{.keep_pk}{For \code{slice.dm_zoomed}: Logical, if \code{TRUE}, the primary key will be retained during this transformation. If \code{FALSE}, it will be dropped.
 By default, the value is \code{NULL}, which causes the function to issue a message in case a primary key is available for the zoomed table.
-This argument is specific for the \code{slice.zoomed_dm()} method.}
+This argument is specific for the \code{slice.dm_zoomed()} method.}
 
-\item{x}{For \code{ungroup.zoomed_dm}: object of class \code{zoomed_dm}}
+\item{x}{For \code{ungroup.dm_zoomed}: object of class \code{dm_zoomed}}
 
 \item{wt}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Frequency weights.
 Can be \code{NULL} or a variable:
@@ -115,7 +115,7 @@ This argument is taken by expression and supports
 names and column locations).}
 }
 \description{
-Use these methods without the '.zoomed_dm' suffix (see examples).
+Use these methods without the '.dm_zoomed' suffix (see examples).
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

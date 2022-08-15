@@ -1,8 +1,8 @@
-dm 0.3.0
+dm 1.0.1
 
 ## Cran Repository Policy
 
-- [x] Reviewed CRP last edited 2022-05-03.
+- [x] Reviewed CRP last edited 2022-07-26.
 
 ## R CMD check results
 
@@ -12,4 +12,4 @@ dm 0.3.0
 
 ## Current CRAN check results
 
-- [x] Checked on 2022-07-06, no problems found.
+- [x] Checked on 2022-07-27, no problems found.

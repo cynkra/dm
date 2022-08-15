@@ -25,7 +25,7 @@ test_that("`pack_join()` works", {
   expect_snapshot(pack_join(df5, df6, by = c(col = "df6")))
 })
 
-test_that("`pack_join()` works with zoomed_dm", {
+test_that("`pack_join()` works with dm_zoomed", {
   dm_nyc <- dm_nycflights13()
 
   name_packed_df <- "packed_flights"

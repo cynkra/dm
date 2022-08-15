@@ -72,6 +72,7 @@
       # A tibble: 0 x 3
       # ... with 3 variables: child_fk_cols <keys>, parent_uuid <chr>,
       #   parent_key_cols <keys>
+      # i Use `colnames()` to see all variable names
       
       $airlines$uuid
       [1] "0109020c-0b0a-030e-0d04-05060f070008"
@@ -92,6 +93,7 @@
       # A tibble: 0 x 3
       # ... with 3 variables: child_fk_cols <keys>, parent_uuid <chr>,
       #   parent_key_cols <keys>
+      # i Use `colnames()` to see all variable names
       
       $airports$uuid
       [1] "04080601-0b0a-0c02-0503-0e070f0d0009"
@@ -105,6 +107,7 @@
       # A tibble: 0 x 3
       # ... with 3 variables: child_uuid <chr>, child_fk_cols <keys>,
       #   parent_key_cols <keys>
+      # i Use `colnames()` to see all variable names
       
       $flights$fks_out
       # A tibble: 5 x 3
@@ -134,6 +137,7 @@
       # A tibble: 0 x 3
       # ... with 3 variables: child_fk_cols <keys>, parent_uuid <chr>,
       #   parent_key_cols <keys>
+      # i Use `colnames()` to see all variable names
       
       $planes$uuid
       [1] "0c0e080a-0307-0904-0b06-0205010f000d"
@@ -153,6 +157,7 @@
       # A tibble: 0 x 3
       # ... with 3 variables: child_fk_cols <keys>, parent_uuid <chr>,
       #   parent_key_cols <keys>
+      # i Use `colnames()` to see all variable names
       
       $weather$uuid
       [1] "0a090204-0108-0b00-0c0d-0705060e0f03"
@@ -166,21 +171,24 @@
     Output
       # A tibble: 1,761 x 19
       # Keys:     --- | 0 | 5
-          year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-         <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
-       1  2013     1    10        3           2359         4      426            437
-       2  2013     1    10       16           2359        17      447            444
-       3  2013     1    10      450            500       -10      634            648
-       4  2013     1    10      520            525        -5      813            820
-       5  2013     1    10      530            530         0      824            829
-       6  2013     1    10      531            540        -9      832            850
-       7  2013     1    10      535            540        -5     1015           1017
-       8  2013     1    10      546            600       -14      645            709
-       9  2013     1    10      549            600       -11      652            724
-      10  2013     1    10      550            600       -10      649            703
-      # ... with 1,751 more rows, and 11 more variables: arr_delay <dbl>,
-      #   carrier <chr>, flight <int>, tailnum <chr>, origin <chr>, dest <chr>,
-      #   air_time <dbl>, distance <dbl>, hour <dbl>, minute <dbl>, time_hour <dttm>
+          year month   day dep_time sched_de~1 dep_d~2 arr_t~3 sched~4 arr_d~5 carrier
+         <int> <int> <int>    <int>      <int>   <dbl>   <int>   <int>   <dbl> <chr>  
+       1  2013     1    10        3       2359       4     426     437     -11 B6     
+       2  2013     1    10       16       2359      17     447     444       3 B6     
+       3  2013     1    10      450        500     -10     634     648     -14 US     
+       4  2013     1    10      520        525      -5     813     820      -7 UA     
+       5  2013     1    10      530        530       0     824     829      -5 UA     
+       6  2013     1    10      531        540      -9     832     850     -18 AA     
+       7  2013     1    10      535        540      -5    1015    1017      -2 B6     
+       8  2013     1    10      546        600     -14     645     709     -24 B6     
+       9  2013     1    10      549        600     -11     652     724     -32 EV     
+      10  2013     1    10      550        600     -10     649     703     -14 US     
+      # ... with 1,751 more rows, 9 more variables: flight <int>, tailnum <chr>,
+      #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
+      #   minute <dbl>, time_hour <dttm>, and abbreviated variable names
+      #   1: sched_dep_time, 2: dep_delay, 3: arr_time, 4: sched_arr_time,
+      #   5: arr_delay
+      # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
     Code
       keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
     Output
@@ -199,6 +207,7 @@
        9 BUF   Buffalo Niagara Intl                42.9  -78.7   724    -5 A     Amer~
       10 BUR   Bob Hope                            34.2 -118.    778    -8 A     Amer~
       # ... with 76 more rows
+      # i Use `print(n = ...)` to see more rows
     Code
       keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airlines")
     Output
@@ -285,6 +294,24 @@
     Output
                Keys 
       "--- | 0 | 0" 
+
+# `dm()` handles missing key column names gracefully
+
+    Code
+      dm(x = keyed$x["b"], y = keyed$y) %>% dm_paste()
+    Message
+      dm::dm(
+        x,
+        y,
+      ) %>%
+        dm::dm_add_pk(y, c(a, b))
+    Code
+      dm(x = keyed$x, y = keyed$y["b"]) %>% dm_paste()
+    Message
+      dm::dm(
+        x,
+        y,
+      )
 
 # keyed_by()
 
@@ -1404,24 +1431,57 @@
     Output
       # A tibble: 1,800 x 32
       # Keys:     --- | 1 | 4
-         origin year.x month.x day.x hour.x  temp  dewp humid wind_dir wind_speed
-         <chr>   <int>   <int> <int>  <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
-       1 EWR      2013       1    10      0  41    32    70.1      230       8.06
-       2 EWR      2013       1    10      1  39.0  30.0  69.9      210       9.21
-       3 EWR      2013       1    10      2  39.0  28.9  66.8      230       6.90
-       4 EWR      2013       1    10      3  39.9  27.0  59.5      270       5.75
-       5 EWR      2013       1    10      4  41    26.1  55.0      320       6.90
-       6 EWR      2013       1    10      5  41    26.1  55.0      300      12.7 
-       7 EWR      2013       1    10      5  41    26.1  55.0      300      12.7 
-       8 EWR      2013       1    10      6  39.9  25.0  54.8      280       6.90
-       9 EWR      2013       1    10      6  39.9  25.0  54.8      280       6.90
-      10 EWR      2013       1    10      6  39.9  25.0  54.8      280       6.90
-      # ... with 1,790 more rows, and 22 more variables: wind_gust <dbl>,
-      #   precip <dbl>, pressure <dbl>, visib <dbl>, time_hour <dttm>, year.y <int>,
-      #   month.y <int>, day.y <int>, dep_time <int>, sched_dep_time <int>,
-      #   dep_delay <dbl>, arr_time <int>, sched_arr_time <int>, arr_delay <dbl>,
-      #   carrier <chr>, flight <int>, tailnum <chr>, dest <chr>, air_time <dbl>,
-      #   distance <dbl>, hour.y <dbl>, minute <dbl>
+         origin year.x month.x day.x hour.x  temp  dewp humid wind_dir wind_~1 wind_~2
+         <chr>   <int>   <int> <int>  <int> <dbl> <dbl> <dbl>    <dbl>   <dbl>   <dbl>
+       1 EWR      2013       1    10      0  41    32    70.1      230    8.06    NA  
+       2 EWR      2013       1    10      1  39.0  30.0  69.9      210    9.21    NA  
+       3 EWR      2013       1    10      2  39.0  28.9  66.8      230    6.90    NA  
+       4 EWR      2013       1    10      3  39.9  27.0  59.5      270    5.75    NA  
+       5 EWR      2013       1    10      4  41    26.1  55.0      320    6.90    NA  
+       6 EWR      2013       1    10      5  41    26.1  55.0      300   12.7     20.7
+       7 EWR      2013       1    10      5  41    26.1  55.0      300   12.7     20.7
+       8 EWR      2013       1    10      6  39.9  25.0  54.8      280    6.90    17.3
+       9 EWR      2013       1    10      6  39.9  25.0  54.8      280    6.90    17.3
+      10 EWR      2013       1    10      6  39.9  25.0  54.8      280    6.90    17.3
+      # ... with 1,790 more rows, 21 more variables: precip <dbl>, pressure <dbl>,
+      #   visib <dbl>, time_hour <dttm>, year.y <int>, month.y <int>, day.y <int>,
+      #   dep_time <int>, sched_dep_time <int>, dep_delay <dbl>, arr_time <int>,
+      #   sched_arr_time <int>, arr_delay <dbl>, carrier <chr>, flight <int>,
+      #   tailnum <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour.y <dbl>,
+      #   minute <dbl>, and abbreviated variable names 1: wind_speed, 2: wind_gust
+      # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
+
+# semi_join()
+
+    Code
+      dm(x, y, r = semi_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        r,
+      ) %>%
+        dm::dm_select(x, a) %>%
+        dm::dm_select(y, b) %>%
+        dm::dm_select(r, a) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(r, a, y)
+    Code
+      dm(x, y, r = semi_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Message
+      dm::dm(
+        x,
+        y,
+        r,
+      ) %>%
+        dm::dm_select(x, a) %>%
+        dm::dm_select(y, b) %>%
+        dm::dm_select(r, b) %>%
+        dm::dm_add_pk(y, b) %>%
+        dm::dm_add_pk(r, b) %>%
+        dm::dm_add_fk(x, a, y) %>%
+        dm::dm_add_fk(x, a, r)
 
 # arrange for keyed tables produces expected output
 
@@ -1457,21 +1517,24 @@
       # A tibble: 1,761 x 19
       # Groups:   month [2]
       # Keys:     --- | 0 | 5
-          year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-         <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
-       1  2013     1    10        3           2359         4      426            437
-       2  2013     1    10       16           2359        17      447            444
-       3  2013     1    10      450            500       -10      634            648
-       4  2013     1    10      520            525        -5      813            820
-       5  2013     1    10      530            530         0      824            829
-       6  2013     1    10      531            540        -9      832            850
-       7  2013     1    10      535            540        -5     1015           1017
-       8  2013     1    10      546            600       -14      645            709
-       9  2013     1    10      549            600       -11      652            724
-      10  2013     1    10      550            600       -10      649            703
-      # ... with 1,751 more rows, and 11 more variables: arr_delay <dbl>,
-      #   carrier <chr>, flight <int>, tailnum <chr>, origin <chr>, dest <chr>,
-      #   air_time <dbl>, distance <dbl>, hour <dbl>, minute <dbl>, time_hour <dttm>
+          year month   day dep_time sched_de~1 dep_d~2 arr_t~3 sched~4 arr_d~5 carrier
+         <int> <int> <int>    <int>      <int>   <dbl>   <int>   <int>   <dbl> <chr>  
+       1  2013     1    10        3       2359       4     426     437     -11 B6     
+       2  2013     1    10       16       2359      17     447     444       3 B6     
+       3  2013     1    10      450        500     -10     634     648     -14 US     
+       4  2013     1    10      520        525      -5     813     820      -7 UA     
+       5  2013     1    10      530        530       0     824     829      -5 UA     
+       6  2013     1    10      531        540      -9     832     850     -18 AA     
+       7  2013     1    10      535        540      -5    1015    1017      -2 B6     
+       8  2013     1    10      546        600     -14     645     709     -24 B6     
+       9  2013     1    10      549        600     -11     652     724     -32 EV     
+      10  2013     1    10      550        600     -10     649     703     -14 US     
+      # ... with 1,751 more rows, 9 more variables: flight <int>, tailnum <chr>,
+      #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
+      #   minute <dbl>, time_hour <dttm>, and abbreviated variable names
+      #   1: sched_dep_time, 2: dep_delay, 3: arr_time, 4: sched_arr_time,
+      #   5: arr_delay
+      # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
     Code
       keyed_tbl_impl(dm, "airports") %>% group_by(tzone)
     Output
@@ -1491,6 +1554,7 @@
        9 BUF   Buffalo Niagara Intl                42.9  -78.7   724    -5 A     Amer~
       10 BUR   Bob Hope                            34.2 -118.    778    -8 A     Amer~
       # ... with 76 more rows
+      # i Use `print(n = ...)` to see more rows
     Code
       keyed_tbl_impl(dm, "airports") %>% group_by(faa)
     Output
@@ -1510,6 +1574,7 @@
        9 BUF   Buffalo Niagara Intl                42.9  -78.7   724    -5 A     Amer~
       10 BUR   Bob Hope                            34.2 -118.    778    -8 A     Amer~
       # ... with 76 more rows
+      # i Use `print(n = ...)` to see more rows
 
 # summarize for keyed tables produces expected output
 

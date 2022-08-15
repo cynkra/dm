@@ -140,6 +140,24 @@ test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` o
   expect_snapshot(tbl_sum(keyed_tbl_impl(new_dm_output, "d2")))
 })
 
+test_that("`dm()` handles missing key column names gracefully", {
+  dm <-
+    dm(x = tibble(a = 1, b = 1), y = tibble(a = 1, b = 1)) %>%
+    dm_add_pk(y, c(a, b)) %>%
+    dm_add_fk(x, c(a, b), y)
+
+  keyed <-
+    dm %>%
+    dm_get_tables(keyed = TRUE)
+
+  expect_snapshot({
+    dm(x = keyed$x["b"], y = keyed$y) %>%
+      dm_paste()
+    dm(x = keyed$x, y = keyed$y["b"]) %>%
+      dm_paste()
+  })
+})
+
 # joins ----------------------------------
 
 test_that("keyed_by()", {
@@ -399,6 +417,27 @@ test_that("left join works as expected with keyed tables", {
 
   expect_equal(ncol(jd1), ncol(jd2))
   expect_equal(dim(zd2), dim(jd2))
+})
+
+# semi_join ----------------------------------
+
+test_that("semi_join()", {
+  withr::local_seed(20220720)
+
+  dm <-
+    dm(x = tibble(a = 1), y = tibble(b = 1)) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, a, y)
+
+  x <- keyed_tbl_impl(dm, "x")
+  y <- keyed_tbl_impl(dm, "y")
+
+  expect_snapshot({
+    dm(x, y, r = semi_join(x, y)) %>%
+      dm_paste(options = c("select", "keys"))
+    dm(x, y, r = semi_join(y, x)) %>%
+      dm_paste(options = c("select", "keys"))
+  })
 })
 
 # arrange ----------------------------------

@@ -157,7 +157,7 @@ test_that("dm_enum_pk_candidates() works properly?", {
 test_that("enum_pk_candidates() works properly", {
   expect_silent(
     expect_identical(
-      enum_pk_candidates(zoomed_dm()),
+      enum_pk_candidates(dm_zoomed()),
       enum_pk_candidates(tf_2())
     )
   )

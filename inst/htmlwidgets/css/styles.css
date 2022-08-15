@@ -1,0 +1,15 @@
+
+.on {
+  stroke-dasharray: 2;
+}
+
+.node:hover polygon {
+  stroke-width: 3;
+}
+.edge:hover path {
+  stroke-width: 3;
+}
+.edge:hover polygon {
+  stroke-width: 4;
+}
+
