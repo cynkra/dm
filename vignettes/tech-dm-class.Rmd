@@ -71,11 +71,13 @@ dm(empty_dm, airlines, airports, flights, planes, weather)
 
 Turn a named list of tables into a `dm` with `as_dm()`:
 ```{r}
-as_dm(list(airlines = airlines,
-           airports = airports,
-           flights = flights,
-           planes = planes,
-           weather = weather))
+as_dm(list(
+  airlines = airlines,
+  airports = airports,
+  flights = flights,
+  planes = planes,
+  weather = weather
+))
 ```
 
 ### Turn tables from a `src` into a `dm`
@@ -250,7 +252,7 @@ try(
     dm_rm_fk(table = flights, column = dest, ref_table = airports) %>%
     dm_get_all_fks(c(flights, airports))
 )
-  
+
 flights_dm_with_fk %>%
   dm_rm_fk(flights, origin, airports) %>%
   dm_get_all_fks(c(flights, airports))
