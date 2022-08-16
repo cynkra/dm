@@ -53,7 +53,7 @@ library(dplyr)
 flights_dm <- dm_nycflights13(cycle = TRUE)
 flights_dm
 flights_keyed <-
-  flights_dm %>% 
+  flights_dm %>%
   dm_get_tables(keyed = TRUE)
 
 # The print output for a `dm_keyed_tbl` looks very much like that from a normal
@@ -106,7 +106,7 @@ weather_tbl_mutate <-
   select(origin_slot_id, everything())
 
 # check if we the result is as expected:
-weather_tbl_mutate %>% 
+weather_tbl_mutate %>%
   enum_pk_candidates() %>%
   filter(candidate)
 # We apply the same transformation to create
@@ -123,7 +123,7 @@ surrogate_flights_dm <-
     flights = flights_tbl_mutate,
     !!!flights_keyed[c("airlines", "airports", "planes")]
   ) %>%
-  dm_add_pk(weather, origin_slot_id) %>% 
+  dm_add_pk(weather, origin_slot_id) %>%
   dm_add_fk(flights, origin_slot_id, weather)
 
 surrogate_flights_dm %>%
@@ -149,7 +149,7 @@ disentangled_flights_dm <-
   dm_rm_fk(flights, dest, origin) %>%
   dm_rm_fk(flights, origin, destination)
 
-disentangled_flights_dm %>% 
+disentangled_flights_dm %>%
   dm_draw()
 ```
 
@@ -161,13 +161,13 @@ This example shows an alternative approach of deconstruction reconstruction usin
 
 ```{r}
 flights_derived <-
-  flights_dm %>% 
-  pull_tbl(flights, keyed = TRUE) %>% 
+  flights_dm %>%
+  pull_tbl(flights, keyed = TRUE) %>%
   count(origin, carrier)
 
 derived_flights_dm <- dm(flights_derived, !!!flights_keyed)
 
-derived_flights_dm %>% 
+derived_flights_dm %>%
   dm_draw()
 ```
 
@@ -198,7 +198,7 @@ joined_flights_dm <- dm(
 # this is how the table looks now
 joined_flights_dm$flights_plane_type
 # also here, the FK-relations are transferred to the new table
-joined_flights_dm %>% 
+joined_flights_dm %>%
   dm_draw()
 ```
 

@@ -74,7 +74,7 @@ library(tidyverse)
 library(dm)
 library(nycflights13)
 
-nycflights13_df <- 
+nycflights13_df <-
   flights %>%
   left_join(airlines, by = "carrier") %>%
   left_join(planes, by = "tailnum") %>%
@@ -166,7 +166,7 @@ dm %>%
 Additionally, you can also extract a summary of all foreign key relations present in a `dm` object using `dm_get_all_fks()`:
 
 ```{r}
-dm %>% 
+dm %>%
   dm_get_all_fks()
 ```
 
