@@ -540,12 +540,13 @@ error_txt_temp_table_requested <- function(table_names, tbls_in_dm) {
 }
 
 abort_parameter_not_correct_class <- function(parameter, correct_class, class) {
-  abort(error_txt_parameter_not_correct_class(
-    parameter,
-    correct_class,
-    class
-  ),
-  class = dm_error_full("parameter_not_correct_class")
+  abort(
+    error_txt_parameter_not_correct_class(
+      parameter,
+      correct_class,
+      class
+    ),
+    class = dm_error_full("parameter_not_correct_class")
   )
 }
 
@@ -556,12 +557,13 @@ error_txt_parameter_not_correct_class <- function(parameter, correct_class, clas
 }
 
 abort_parameter_not_correct_length <- function(parameter, correct_length, parameter_value) {
-  abort(error_txt_parameter_not_correct_length(
-    parameter,
-    correct_length,
-    parameter_value
-  ),
-  class = dm_error_full("parameter_not_correct_length")
+  abort(
+    error_txt_parameter_not_correct_length(
+      parameter,
+      correct_length,
+      parameter_value
+    ),
+    class = dm_error_full("parameter_not_correct_length")
   )
 }
 
