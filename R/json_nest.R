@@ -141,6 +141,6 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
     .con = con
   )
 
-  tbl(con, sql(query))
+  tbl(con, sql(query), vars = c(id_cols, names(nest_cols)))
 
 }
