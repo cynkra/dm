@@ -103,8 +103,6 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
 `json_nest.tbl_Microsoft SQL Server` <- function(.data, ..., .names_sep = NULL) {
   # FIXME: we may not need json_nest.tbl_lazy if we implement json_nest methods for each DBMS
   # FIXME: The old code is still there, just not called
-  # FIXME: `DBI::dbQuoteLiteral()` uses simple quotes for mssql, this seems wrong,
-  #   queries work if double quotes are used. should we implement our own fix ?
   # FIXME: We need a table alias and we use `*tmp*`, can we leverage the mechanism
   #   in `dbplyr` to increment the `q*` aliases ?
 
@@ -117,23 +115,23 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
   # define and protect column names, table name and alias
   tbl_name <-
     dbplyr::remote_name(.data) %>%
-    DBI::dbQuoteLiteral(con, .)
+    DBI::dbQuoteIdentifier(con, .)
   col_nms <- colnames(.data)
   nest_cols <- purrr::map(dots, ~ tidyselect::vars_select(col_nms, !!.x))
   id_cols <-
     setdiff(col_nms, unlist(nest_cols)) %>%
-    DBI::dbQuoteLiteral(con, .)
-  col_nms <- DBI::dbQuoteLiteral(con, col_nms)
-  temp_alias <- DBI::dbQuoteLiteral(con, "*tmp*")
+    DBI::dbQuoteIdentifier(con, .)
+  col_nms <- DBI::dbQuoteIdentifier(con, col_nms)
+  temp_alias <- DBI::dbQuoteIdentifier(con, "*tmp*")
 
   # build joining clause to use in final query
   joins <- glue("{id_cols} = {temp_alias}.{id_cols}") %>%
     glue_collapse(" AND ")
 
   # compute subqueries for each nested column
-  nest_col_queries <- imap_chr(nest_cols, ~ {
-    cols <- toString(DBI::dbQuoteLiteral(con, .x))
-    alias <- DBI::dbQuoteLiteral(con, .y)
+  nest_col_queries <- imap_chr(nest_cols, ~{
+    cols <- toString(DBI::dbQuoteIdentifier(con, .x))
+    alias <- DBI::dbQuoteIdentifier(con, .y)
     glue::glue("(SELECT {cols} FROM {tbl_name} WHERE ({joins}) FOR JSON PATH) AS {alias}")
   })
 
@@ -142,9 +140,6 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
     'SELECT {toString(id_cols)}, {toString(nest_col_queries)} ',
     'FROM (SELECT {toString(col_nms)} FROM {tbl_name}) {temp_alias} GROUP BY {id_cols}'
   )
-
-  # HACK! see FIXME at top
-  query <- gsub("'", '"', query)
 
   tbl(con, sql(query))
 }
