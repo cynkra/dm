@@ -113,33 +113,33 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
   con <- dbplyr::remote_con(.data)
 
   # define and protect column names, table name and alias
-  tbl_name <-
-    dbplyr::remote_name(.data) %>%
-    DBI::dbQuoteIdentifier(con, .)
+  tbl_name <- dbplyr::remote_name(.data)
   col_nms <- colnames(.data)
   nest_cols <- purrr::map(dots, ~ tidyselect::vars_select(col_nms, !!.x))
-  id_cols <-
-    setdiff(col_nms, unlist(nest_cols)) %>%
-    DBI::dbQuoteIdentifier(con, .)
-  col_nms <- DBI::dbQuoteIdentifier(con, col_nms)
-  temp_alias <- DBI::dbQuoteIdentifier(con, "*tmp*")
+  id_cols <- setdiff(col_nms, unlist(nest_cols))
+  temp_alias <- "*tmp*"
 
   # build joining clause to use in final query
-  joins <- glue("{id_cols} = {temp_alias}.{id_cols}") %>%
+  joins <- glue_sql("{`id_cols`} = {`temp_alias`}.{`id_cols`}", .con = con) %>%
     glue_collapse(" AND ")
 
   # compute subqueries for each nested column
   nest_col_queries <- imap_chr(nest_cols, ~{
-    cols <- toString(DBI::dbQuoteIdentifier(con, .x))
-    alias <- DBI::dbQuoteIdentifier(con, .y)
-    glue::glue("(SELECT {cols} FROM {tbl_name} WHERE ({joins}) FOR JSON PATH) AS {alias}")
+    glue::glue_sql(
+      "(SELECT {`.x`*} FROM {`tbl_name`} WHERE (",
+      joins,
+      ") FOR JSON PATH) AS {`.y`}",
+      .con = con)
   })
 
   # build final query
-  query <- glue::glue(
-    'SELECT {toString(id_cols)}, {toString(nest_col_queries)} ',
-    'FROM (SELECT {toString(col_nms)} FROM {tbl_name}) {temp_alias} GROUP BY {id_cols}'
+  query <- glue_sql(
+    "SELECT {`id_cols`*}, ",
+    nest_col_queries,
+    " FROM (SELECT {`col_nms`*} FROM {`tbl_name`}) {`temp_alias`} GROUP BY {`id_cols`*}",
+    .con = con
   )
 
   tbl(con, sql(query))
+
 }
