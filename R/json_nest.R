@@ -130,7 +130,8 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
       joins,
       ") FOR JSON PATH) AS {`.y`}",
       .con = con)
-  })
+  }) %>%
+    glue_collapse(" ,")
 
   # build final query
   query <- glue_sql(
