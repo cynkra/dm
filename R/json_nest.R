@@ -129,7 +129,7 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
     glue_collapse(" AND ")
 
   # compute subqueries for each nested column
-  nest_col_queries <- imap_chr(nest_cols, ~{
+  nest_col_queries <- imap_chr(nest_cols, ~ {
     cols <- toString(DBI::dbQuoteIdentifier(con, .x))
     alias <- DBI::dbQuoteIdentifier(con, .y)
     glue::glue("(SELECT {cols} FROM {tbl_name} WHERE ({joins}) FOR JSON PATH) AS {alias}")
