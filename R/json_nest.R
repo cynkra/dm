@@ -63,17 +63,6 @@ json_nest_aggregate.default <- function(con, data, id_cols, sql_exprs) {
     ungroup()
 }
 
-#' @export
-`json_nest_aggregate.Microsoft SQL Server` <- function(con, data, id_cols, sql_exprs) {
-  query <-
-    json_nest_aggregate.default(con, data, id_cols, sql_exprs) %>%
-    dbplyr::sql_render()
-  # fetch subquery alias and use in place of the placeholder
-  select_subquery_alias <- sub('.* "(.*)"[[:space:]]+GROUP BY "[^"]+"$', "\\1", query)
-  query <- gsub('" = PLACEHOLDER\\."', glue('" = "{select_subquery_alias}"."'), query)
-  tbl(dbplyr::remote_con(data), sql(query))
-}
-
 sql_json_nest <- function(con, cols, names_sep, packed_col, id_cols, data) {
   UseMethod("sql_json_nest")
 }
@@ -87,22 +76,8 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
 }
 
 #' @export
-`sql_json_nest.Microsoft SQL Server` <- function(con, cols, names_sep, packed_col, id_cols, data) {
-  inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
-  join_subquery <- glue_collapse(glue('"{id_cols}" = PLACEHOLDER."{id_cols}"'), " AND ")
-  filter_select_subquery <-
-    data %>%
-    filter(sql(join_subquery)) %>%
-    select(!!!set_names(syms(cols), inside_cols)) %>%
-    dbplyr::sql_render()
-  query <- glue("({filter_select_subquery} FOR JSON PATH)")
-  sql(query)
-}
-
-#' @export
 `json_nest.tbl_Microsoft SQL Server` <- function(.data, ..., .names_sep = NULL) {
   # FIXME: we may not need json_nest.tbl_lazy if we implement json_nest methods for each DBMS
-  # FIXME: The old code is still there, just not called
   # FIXME: We need a table alias and we use `*tmp*`, can we leverage the mechanism
   #   in `dbplyr` to increment the `q*` aliases ?
 
