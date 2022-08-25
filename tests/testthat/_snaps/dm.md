@@ -436,7 +436,6 @@
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3      26.5
       # ... with 134 more rows, 4 more variables: precip <dbl>, pressure <dbl>,
       #   visib <dbl>, time_hour <dttm>, and abbreviated variable name 1: wind_gust
-      # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
     Code
       pull_tbl(nyc_comp(), weather)
     Output
@@ -455,7 +454,6 @@
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3      26.5
       # ... with 134 more rows, 4 more variables: precip <dbl>, pressure <dbl>,
       #   visib <dbl>, time_hour <dttm>, and abbreviated variable name 1: wind_gust
-      # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% pull_tbl()
     Output
@@ -474,7 +472,6 @@
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3      26.5
       # ... with 134 more rows, 4 more variables: precip <dbl>, pressure <dbl>,
       #   visib <dbl>, time_hour <dttm>, and abbreviated variable name 1: wind_gust
-      # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
 
 # glimpse.dm() works
 
