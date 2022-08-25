@@ -1,62 +1,3 @@
-# basic test: 'join()'-methods for `zoomed.dm` work (2)
-
-    Code
-      # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
-      dm_zoomed() %>% left_join(tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>%
-        get_all_keys()
-    Message
-      Renaming ambiguous columns: %>%
-        dm_rename(tf_2, d.tf_2 = d) %>%
-        dm_rename(tf_3, d.tf_3 = d)
-    Output
-      $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
-      
-      $fks
-      # A tibble: 5 x 5
-        child_table child_fk_cols parent_table parent_key_cols on_delete
-        <chr>       <keys>        <chr>        <keys>          <chr>    
-      1 tf_2        d.tf_2        tf_1         a               no_action
-      2 tf_2        e, e1         tf_3         f, f1           no_action
-      3 tf_4        j, j1         tf_3         f, f1           no_action
-      4 tf_5        l             tf_4         h               cascade  
-      5 tf_5        m             tf_6         n               no_action
-      
-    Code
-      # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
-      dm_zoomed() %>% semi_join(tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>%
-        get_all_keys()
-    Output
-      $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
-      
-      $fks
-      # A tibble: 5 x 5
-        child_table child_fk_cols parent_table parent_key_cols on_delete
-        <chr>       <keys>        <chr>        <keys>          <chr>    
-      1 tf_2        d             tf_1         a               no_action
-      2 tf_2        e, e1         tf_3         f, f1           no_action
-      3 tf_4        j, j1         tf_3         f, f1           no_action
-      4 tf_5        l             tf_4         h               cascade  
-      5 tf_5        m             tf_6         n               no_action
-      
-
 # key tracking works
 
     Code
@@ -507,7 +448,6 @@
       6 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90        NA
       # ... with 4 more variables: precip <dbl>, pressure <dbl>, visib <dbl>,
       #   time_hour <dttm>
-      # i Use `colnames()` to see all variable names
     Code
       zoomed_comp_dm %>% slice(c(1:3, 5:3), .keep_pk = TRUE) %>% col_tracker_zoomed()
     Output
@@ -529,6 +469,11 @@
         dm_rename(flights, month.flights = month) %>%
         dm_rename(flights, day.flights = day) %>%
         dm_rename(flights, hour.flights = hour)
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 6 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
     Output
       [1] 1800
     Code
@@ -543,6 +488,11 @@
         dm_rename(flights, month.flights = month) %>%
         dm_rename(flights, day.flights = day) %>%
         dm_rename(flights, hour.flights = hour)
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 6 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
     Output
       [1] 1761
     Code
@@ -557,6 +507,11 @@
         dm_rename(flights, month.flights = month) %>%
         dm_rename(flights, day.flights = day) %>%
         dm_rename(flights, hour.flights = hour)
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 6 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
     Output
       [1] 1761
     Code
@@ -571,6 +526,11 @@
         dm_rename(flights, month.flights = month) %>%
         dm_rename(flights, day.flights = day) %>%
         dm_rename(flights, hour.flights = hour)
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 6 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
     Output
       [1] 1800
     Code

@@ -72,7 +72,6 @@
       # A tibble: 0 x 3
       # ... with 3 variables: child_fk_cols <keys>, parent_uuid <chr>,
       #   parent_key_cols <keys>
-      # i Use `colnames()` to see all variable names
       
       $airlines$uuid
       [1] "0109020c-0b0a-030e-0d04-05060f070008"
@@ -93,7 +92,6 @@
       # A tibble: 0 x 3
       # ... with 3 variables: child_fk_cols <keys>, parent_uuid <chr>,
       #   parent_key_cols <keys>
-      # i Use `colnames()` to see all variable names
       
       $airports$uuid
       [1] "04080601-0b0a-0c02-0503-0e070f0d0009"
@@ -107,7 +105,6 @@
       # A tibble: 0 x 3
       # ... with 3 variables: child_uuid <chr>, child_fk_cols <keys>,
       #   parent_key_cols <keys>
-      # i Use `colnames()` to see all variable names
       
       $flights$fks_out
       # A tibble: 5 x 3
@@ -137,7 +134,6 @@
       # A tibble: 0 x 3
       # ... with 3 variables: child_fk_cols <keys>, parent_uuid <chr>,
       #   parent_key_cols <keys>
-      # i Use `colnames()` to see all variable names
       
       $planes$uuid
       [1] "0c0e080a-0307-0904-0b06-0205010f000d"
@@ -157,7 +153,6 @@
       # A tibble: 0 x 3
       # ... with 3 variables: child_fk_cols <keys>, parent_uuid <chr>,
       #   parent_key_cols <keys>
-      # i Use `colnames()` to see all variable names
       
       $weather$uuid
       [1] "0a090204-0108-0b00-0c0d-0705060e0f03"
@@ -188,7 +183,6 @@
       #   minute <dbl>, time_hour <dttm>, and abbreviated variable names
       #   1: sched_dep_time, 2: dep_delay, 3: arr_time, 4: sched_arr_time,
       #   5: arr_delay
-      # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
     Code
       keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
     Output
@@ -207,7 +201,6 @@
        9 BUF   Buffalo Niagara Intl                42.9  -78.7   724    -5 A     Amer~
       10 BUR   Bob Hope                            34.2 -118.    778    -8 A     Amer~
       # ... with 76 more rows
-      # i Use `print(n = ...)` to see more rows
     Code
       keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airlines")
     Output
@@ -1428,6 +1421,11 @@
     Code
       dm <- dm_nycflights13()
       keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 6 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
     Output
       # A tibble: 1,800 x 32
       # Keys:     --- | 1 | 4
@@ -1449,12 +1447,16 @@
       #   sched_arr_time <int>, arr_delay <dbl>, carrier <chr>, flight <int>,
       #   tailnum <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour.y <dbl>,
       #   minute <dbl>, and abbreviated variable names 1: wind_speed, 2: wind_gust
-      # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
 
 # semi_join()
 
     Code
       dm(x, y, r = semi_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 1 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
     Message
       dm::dm(
         x,
@@ -1469,6 +1471,11 @@
         dm::dm_add_fk(r, a, y)
     Code
       dm(x, y, r = semi_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      Each row in `x` should match at most 1 row in `y`.
+      i Row 1 of `x` matches multiple rows.
+      i If multiple matches are expected, specify `multiple = "all"` in the join call to silence this warning.
     Message
       dm::dm(
         x,
@@ -1534,7 +1541,6 @@
       #   minute <dbl>, time_hour <dttm>, and abbreviated variable names
       #   1: sched_dep_time, 2: dep_delay, 3: arr_time, 4: sched_arr_time,
       #   5: arr_delay
-      # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
     Code
       keyed_tbl_impl(dm, "airports") %>% group_by(tzone)
     Output
@@ -1554,7 +1560,6 @@
        9 BUF   Buffalo Niagara Intl                42.9  -78.7   724    -5 A     Amer~
       10 BUR   Bob Hope                            34.2 -118.    778    -8 A     Amer~
       # ... with 76 more rows
-      # i Use `print(n = ...)` to see more rows
     Code
       keyed_tbl_impl(dm, "airports") %>% group_by(faa)
     Output
@@ -1574,7 +1579,6 @@
        9 BUF   Buffalo Niagara Intl                42.9  -78.7   724    -5 A     Amer~
       10 BUR   Bob Hope                            34.2 -118.    778    -8 A     Amer~
       # ... with 76 more rows
-      # i Use `print(n = ...)` to see more rows
 
 # summarize for keyed tables produces expected output
 
