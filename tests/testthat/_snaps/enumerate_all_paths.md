@@ -89,7 +89,6 @@
        9 g-2       g    
       10 c-2       c    
       # ... with 12 more rows
-      # i Use `print(n = ...)` to see more rows
       
       $new_fks
       # A tibble: 22 x 5
@@ -106,7 +105,6 @@
        9 f-2             f          g-2              g           no_action
       10 e-2             e          g-2              g           no_action
       # ... with 12 more rows
-      # i Use `print(n = ...)` to see more rows
       
     Code
       enumerate_all_paths(entangled_dm(), "c")
@@ -126,7 +124,6 @@
        9 g-2       g    
       10 b-2       b    
       # ... with 12 more rows
-      # i Use `print(n = ...)` to see more rows
       
       $new_fks
       # A tibble: 22 x 5
@@ -143,7 +140,6 @@
        9 f-2             f          g-2              g           no_action
       10 e-2             e          g-2              g           no_action
       # ... with 12 more rows
-      # i Use `print(n = ...)` to see more rows
       
     Code
       enumerate_all_paths(entangled_dm_2(), "a")
