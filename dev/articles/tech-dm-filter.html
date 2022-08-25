@@ -103,7 +103,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Filtering in relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2022-08-06</h4>
+            <h4 data-toc-skip class="date">2022-08-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-filter.Rmd" class="external-link"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-filter.Rmd</code></div>
@@ -172,8 +172,7 @@
 <span><span class="co">#&gt;  8 BTV   Burlington Intl                44.5  -73.2   335    -5 A     Amer…</span></span>
 <span><span class="co">#&gt;  9 BUF   Buffalo Niagara Intl           42.9  -78.7   724    -5 A     Amer…</span></span>
 <span><span class="co">#&gt; 10 BUR   Bob Hope                       34.2 -118.    778    -8 A     Amer…</span></span>
-<span><span class="co">#&gt; # … with 76 more rows</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with 76 more rows</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="filter">Filtering a <code>dm</code> object<a class="anchor" aria-label="anchor" href="#filter"></a>
@@ -271,11 +270,10 @@
 <span><span class="co">#&gt;  8 N318NB   2000 Fixed wing multi… AIRBUS… A319…       2   145    NA Turbo…</span></span>
 <span><span class="co">#&gt;  9 N318US   1991 Fixed wing multi… AIRBUS… A320…       2   182    NA Turbo…</span></span>
 <span><span class="co">#&gt; 10 N322NB   2001 Fixed wing multi… AIRBUS… A319…       2   145    NA Turbo…</span></span>
-<span><span class="co">#&gt; # … with 48 more rows, and abbreviated variable name ¹​manufacturer</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with 48 more rows, and abbreviated variable name ¹​manufacturer</span></span></code></pre>
 <p>And indeed, all included flights departed in January (<code>month == 1</code>):</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dm_delta_may</span><span class="op">$</span><span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">dm_delta_may</span><span class="op">$</span><span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">month</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
 <span><span class="co">#&gt;   month     n</span></span>
@@ -306,8 +304,7 @@
 <span><span class="co">#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, and</span></span>
 <span><span class="co">#&gt; #   abbreviated variable names ¹​sched_dep_time, ²​dep_delay, ³​arr_time,</span></span>
-<span><span class="co">#&gt; #   ⁴​sched_arr_time, ⁵​arr_delay</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   ⁴​sched_arr_time, ⁵​arr_delay</span></span></code></pre>
 <p>The {dm} code is leaner because the foreign key information is encoded in the object.</p>
 </div>
 </div>

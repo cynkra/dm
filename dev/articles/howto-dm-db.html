@@ -103,7 +103,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Create a dm object from a database</h1>
                         <h4 data-toc-skip class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2022-08-06</h4>
+            <h4 data-toc-skip class="date">2022-08-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-db.Rmd" class="external-link"><code>vignettes/howto-dm-db.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-db.Rmd</code></div>
@@ -274,8 +274,7 @@
 <span><span class="co">#&gt; 10  4990       110 1997-09-08 162576      36    4516 C           36 POPLAT…</span></span>
 <span><span class="co">#&gt; # … with more rows, 1 more variable: date.accounts &lt;date&gt;, and abbreviated</span></span>
 <span><span class="co">#&gt; #   variable names ¹​account_id, ²​duration, ³​payments, ⁴​district_id,</span></span>
-<span><span class="co">#&gt; #   ⁵​frequency</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   ⁵​frequency</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">my_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -358,8 +357,7 @@
 <span><span class="co">#&gt;  8        103       265320</span></span>
 <span><span class="co">#&gt;  9        105       352704</span></span>
 <span><span class="co">#&gt; 10        110       162576</span></span>
-<span><span class="co">#&gt; # … with more rows</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with more rows</span></span></code></pre>
 <p>It is a <em>lazy table</em> powered by the {<a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a>} package: the results are not materialized; instead, an SQL query is built and executed each time the data is requested.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_total</span><span class="op">$</span><span class="va">total_loans</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -392,8 +390,7 @@
 <span><span class="co">#&gt;  8        103       265320</span></span>
 <span><span class="co">#&gt;  9        105       352704</span></span>
 <span><span class="co">#&gt; 10        110       162576</span></span>
-<span><span class="co">#&gt; # … with 672 more rows</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with 672 more rows</span></span></code></pre>
 <p>Use this method with caution. If you are not sure of the size of the dataset you will be downloading, you can call <code><a href="../reference/dm_nrow.html">dm_nrow()</a></code> on your <code>dm</code> for the row count of your data model’s tables.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -412,7 +409,7 @@
 <span></span>
 <span><span class="va">deployed_dm</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.39.1 []</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.39.2 []</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `loans`, `accounts`, `total_loans`</span></span>
 <span><span class="co">#&gt; Columns: 13</span></span>

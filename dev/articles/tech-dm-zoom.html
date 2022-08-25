@@ -175,8 +175,7 @@
 <span><span class="co">#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, and</span></span>
 <span><span class="co">#&gt; #   abbreviated variable names ¹​sched_dep_time, ²​dep_delay, ³​arr_time,</span></span>
-<span><span class="co">#&gt; #   ⁴​sched_arr_time, ⁵​arr_delay</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   ⁴​sched_arr_time, ⁵​arr_delay</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">flights_zoomed_mutate</span> <span class="op">&lt;-</span></span>
@@ -204,8 +203,7 @@
 <span><span class="co">#&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   time_hour &lt;dttm&gt;, and abbreviated variable names ¹​sched_dep_time,</span></span>
-<span><span class="co">#&gt; #   ²​dep_delay, ³​arr_time, ⁴​sched_arr_time</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   ²​dep_delay, ³​arr_time, ⁴​sched_arr_time</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:</span></span>
@@ -264,8 +262,7 @@
 <span><span class="co">#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6     320   17.3     26.5</span></span>
 <span><span class="co">#&gt; # … with 134 more rows, 4 more variables: precip &lt;dbl&gt;, pressure &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   visib &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names</span></span>
-<span><span class="co">#&gt; #   ¹​wind_dir, ²​wind_speed, ³​wind_gust</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   ¹​wind_dir, ²​wind_speed, ³​wind_gust</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Maybe there is some hidden candidate for a primary key that we overlooked</span></span>
 <span><span class="fu"><a href="../reference/dm_enum_pk_candidates.html">enum_pk_candidates</a></span><span class="op">(</span><span class="va">weather_zoomed</span><span class="op">)</span></span></code></pre></div>
@@ -450,8 +447,7 @@
 <span><span class="co">#&gt;  9  2013     1    10      549       600 EV        6055 N19554  LGA    IAD  </span></span>
 <span><span class="co">#&gt; 10  2013     1    10      550       600 US        2114 N740UW  LGA    BOS  </span></span>
 <span><span class="co">#&gt; # … with 1,751 more rows, 1 more variable: plane_type &lt;chr&gt;, and</span></span>
-<span><span class="co">#&gt; #   abbreviated variable name ¹​sched_dep_time</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   abbreviated variable name ¹​sched_dep_time</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># also here, the FK-relations are transferred to the new table</span></span>
 <span><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">joined_flights_dm</span><span class="op">)</span></span></code></pre></div>
@@ -498,8 +494,7 @@
 <span><span class="co">#&gt;  9  2013     1    10      549       600 EV        6055 N19554  LGA    IAD  </span></span>
 <span><span class="co">#&gt; 10  2013     1    10      550       600 US        2114 N740UW  LGA    BOS  </span></span>
 <span><span class="co">#&gt; # … with 1,751 more rows, 1 more variable: plane_type &lt;chr&gt;, and</span></span>
-<span><span class="co">#&gt; #   abbreviated variable name ¹​sched_dep_time</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   abbreviated variable name ¹​sched_dep_time</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="possible-pitfalls-and-caveats">Possible pitfalls and caveats<a class="anchor" aria-label="anchor" href="#possible-pitfalls-and-caveats"></a>

@@ -103,7 +103,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Introduction to relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2022-08-06</h4>
+            <h4 data-toc-skip class="date">2022-08-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-theory.Rmd</code></div>
@@ -161,7 +161,7 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">nycflights13_df</span> <span class="op">&lt;-</span> </span>
+<span><span class="va">nycflights13_df</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airlines</span>, by <span class="op">=</span> <span class="st">"carrier"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">planes</span>, by <span class="op">=</span> <span class="st">"tailnum"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -188,8 +188,7 @@
 <span><span class="co">#&gt; #   name.x &lt;chr&gt;, year.y &lt;int&gt;, type &lt;chr&gt;, manufacturer &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   name.y &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   tzone &lt;chr&gt;, year &lt;int&gt;, month.y &lt;int&gt;, day.y &lt;int&gt;, hour.y &lt;int&gt;, …</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   tzone &lt;chr&gt;, year &lt;int&gt;, month.y &lt;int&gt;, day.y &lt;int&gt;, hour.y &lt;int&gt;, …</span></span></code></pre>
 <p>{dm} offers a more elegant and shorter way to combine tables while augmenting {dplyr}/{dbplyr} workflows.</p>
 <p>It is possible to have the best of both worlds: manage your data with {dm} as linked tables, and, when necessary, flatten multiple tables into a single data frame for analysis with {dplyr}.</p>
 <p>The next step is to create a <a href="#model">data model</a> based on multiple tables:</p>
@@ -296,7 +295,7 @@
 <span><span class="co">#&gt; 19 time_hour      FALSE     "Can't combine `value1` &lt;datetime&lt;America/New_…</span></span></code></pre>
 <p>Additionally, you can also extract a summary of all foreign key relations present in a <code>dm</code> object using <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 5 × 5</span></span>
 <span><span class="co">#&gt;   child_table child_fk_cols     parent_table parent_key_cols   on_delete</span></span>
@@ -362,8 +361,7 @@
 <span><span class="co">#&gt;  8   5708 ExpressJet Airlines Inc.</span></span>
 <span><span class="co">#&gt;  9     79 JetBlue Airways         </span></span>
 <span><span class="co">#&gt; 10    301 American Airlines Inc.  </span></span>
-<span><span class="co">#&gt; # … with 336,766 more rows</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with 336,766 more rows</span></span></code></pre>
 <p>Another way to demonstrate normalization is splitting a table into two parts.</p>
 <p>Let’s look at the <code>planes</code> table, which consists of 3322 individual tail numbers and corresponding information for the specific airplane, like the year it was manufactured or the average cruising speed.</p>
 <p>The function <code><a href="../reference/decompose_table.html">decompose_table()</a></code> extracts two new tables and creates a new key <code>model_id</code>, that links both tables.</p>
@@ -386,7 +384,6 @@
 <span><span class="co">#&gt;  9 N109UW   1999 Turbo-fan       93</span></span>
 <span><span class="co">#&gt; 10 N110UW   1999 Turbo-fan       93</span></span>
 <span><span class="co">#&gt; # … with 3,312 more rows</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $parent_table</span></span>
 <span><span class="co">#&gt; # A tibble: 147 × 7</span></span>
@@ -402,8 +399,7 @@
 <span><span class="co">#&gt;  8      112 CL-600-2D24 BOMBARDIER INC   Fixed wing mu…       2    95    NA</span></span>
 <span><span class="co">#&gt;  9       30 737-724     BOEING           Fixed wing mu…       2   149    NA</span></span>
 <span><span class="co">#&gt; 10       27 737-524     BOEING           Fixed wing mu…       2   149    NA</span></span>
-<span><span class="co">#&gt; # … with 137 more rows</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with 137 more rows</span></span></code></pre>
 <p>While <code>child_table</code> contains 3322 unique <code>tailnum</code> rows and therefore consists of 3322 rows, just like the original <code>planes</code> table, the <code>parent_table</code> shrunk to just 147 rows, enough to store all relevant combinations and avoid storing redundant information.</p>
 <p>Further Reading: See the <a href="https://simple.wikipedia.org/wiki/Database_normalisation" class="external-link">Simple English Wikipedia article on database normalization</a> for more details.</p>
 </div>
@@ -436,7 +432,7 @@
 <span><span class="co">#&gt; Keys could not be queried: no such table: information_schema.tables. Use</span></span>
 <span><span class="co">#&gt; `learn_keys = FALSE` to mute this message.</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.39.1 []</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.39.2 []</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `airlines_1_2020_08_28_07_13_03_12345`, `airports_1_2020_08_28_07_13_03_12345`, `flights_1_2020_08_28_07_13_03_12345`, `planes_1_2020_08_28_07_13_03_12345`, `weather_1_2020_08_28_07_13_03_12345`</span></span>
 <span><span class="co">#&gt; Columns: 53</span></span>
