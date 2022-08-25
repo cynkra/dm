@@ -164,7 +164,6 @@
       $pks
       # A tibble: 0 x 2
       # ... with 2 variables: table <chr>, pk_col <keys>
-      # i Use `colnames()` to see all variable names
       
       $fks
       # A tibble: 5 x 5
