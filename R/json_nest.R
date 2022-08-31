@@ -24,6 +24,11 @@ json_nest <- function(.data, ..., .names_sep = NULL) {
 json_nest.data.frame <- function(.data, ..., .names_sep = NULL) {
   check_suggested("jsonlite", use = TRUE, top_level_fun = "json_nest")
   dot_nms <- ...names()
+  # `{tidyr}` only warns but since we don't need backward compatibility we're
+  #   better off failing
+  if (is_null(dot_nms) || "" %in% dot_nms) {
+    abort("All elements of `...` must be named.")
+  }
   tidyr::nest(.data, ..., .names_sep = .names_sep) %>%
     mutate(across(all_of(dot_nms), ~ map_chr(., jsonlite::toJSON, digits = NA)))
 }
