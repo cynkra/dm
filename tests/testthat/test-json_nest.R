@@ -14,18 +14,22 @@ test_that("`json_nest()` works remotely", {
   remote <- test_db_src_frame(!!!local)
 
   expect_snapshot(variant = my_test_src_name, {
-    remote %>%
+    query <- remote %>%
       json_nest(a = starts_with("a")) %>%
       arrange(grp) %>%
       show_query()
+    # For stable POSTGRES tests
+    gsub("test_frame_[_0-9]+", "test_frame_...", query)
     remote %>%
       json_nest(a = starts_with("a")) %>%
       arrange(grp) %>%
       collect()
-    remote %>%
+    query <- remote %>%
       json_nest(a = starts_with("a"), .names_sep = "_") %>%
       arrange(grp) %>%
-      show_query()
+      dbplyr::sql_render()
+    # For stable POSTGRES tests
+    gsub("test_frame_[_0-9]+", "test_frame_...", query)
     remote %>%
       json_nest(a = starts_with("a"), .names_sep = "_") %>%
       arrange(grp) %>%

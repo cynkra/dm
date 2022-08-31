@@ -14,9 +14,13 @@ test_that("`json_pack()` works remotely", {
   remote <- test_db_src_frame(!!!local)
 
   expect_snapshot(variant = my_test_src_name, {
-    json_pack(remote, a = starts_with("a")) %>% show_query()
+    query <- json_pack(remote, a = starts_with("a")) %>% dbplyr::sql_render()
+    # For stable POSTGRES tests
+    gsub("test_frame_[_0-9]+", "test_frame_...", query)
     json_pack(remote, a = starts_with("a"))
-    json_pack(remote, a = starts_with("a"), .names_sep = "_") %>% show_query()
+    query <- json_pack(remote, a = starts_with("a"), .names_sep = "_") %>% dbplyr::sql_render()
+    # For stable POSTGRES tests
+    gsub("test_frame_[_0-9]+", "test_frame_...", query)
     json_pack(remote, a = starts_with("a"), .names_sep = "_")
   })
 
