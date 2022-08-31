@@ -56,24 +56,24 @@ json_nest.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
   json_nest_aggregate(dbplyr::remote_con(.data), .data, id_cols, sql_exprs)
 }
 
-json_nest_aggregate <- function(con, data, id_cols, sql_exprs) {
+json_nest_aggregate <- function(con, data, id_cols, sql_exprs, ...) {
   UseMethod("json_nest_aggregate")
 }
 
 #' @export
-json_nest_aggregate.default <- function(con, data, id_cols, sql_exprs) {
+json_nest_aggregate.default <- function(con, data, id_cols, sql_exprs, ...) {
   data %>%
     group_by(across(!!!syms(id_cols))) %>%
     summarize(!!!sql_exprs) %>%
     ungroup()
 }
 
-sql_json_nest <- function(con, cols, names_sep, packed_col, id_cols, data) {
+sql_json_nest <- function(con, cols, names_sep, packed_col, id_cols, data, ...) {
   UseMethod("sql_json_nest")
 }
 
 #' @export
-sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols, data) {
+sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols, data, ...) {
   inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
   inside_cols_idented <- dbplyr::ident(inside_cols)
   exprs <- vctrs::vec_interleave(as.list(inside_cols_idented), syms(cols))

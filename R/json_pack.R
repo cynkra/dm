@@ -58,12 +58,12 @@ json_pack.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
     transmute(!!!syms(id_cols), !!!sql_exprs)
 }
 
-sql_json_pack <- function(con, cols, names_sep, packed_col, data) {
+sql_json_pack <- function(con, cols, names_sep, packed_col, data, ...) {
   UseMethod("sql_json_pack")
 }
 
 #' @export
-sql_json_pack.PqConnection <- function(con, cols, names_sep, packed_col, data) {
+sql_json_pack.PqConnection <- function(con, cols, names_sep, packed_col, data, ...) {
   inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
   inside_cols_idented <- dbplyr::ident(inside_cols)
   exprs <- vctrs::vec_interleave(as.list(inside_cols_idented), syms(cols))
@@ -81,7 +81,7 @@ remove_prefix_and_sep <- function(x, prefix, sep) {
 
 
 #' @export
-sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols, data) {
+sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols, data, ...) {
   inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
   inside_cols_idented <- dbplyr::ident(inside_cols)
   exprs <- vctrs::vec_interleave(as.list(inside_cols_idented), syms(cols))
