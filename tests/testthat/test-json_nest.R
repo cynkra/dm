@@ -17,7 +17,7 @@ test_that("`json_nest()` works remotely", {
     query <- remote %>%
       json_nest(a = starts_with("a")) %>%
       arrange(grp) %>%
-      show_query()
+      dbplyr::sql_render()
     # For stable POSTGRES tests
     gsub("test_frame_[_0-9]+", "test_frame_...", query)
     remote %>%
