@@ -77,10 +77,6 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
 
 #' @export
 `json_nest.tbl_Microsoft SQL Server` <- function(.data, ..., .names_sep = NULL) {
-  # FIXME: we may not need json_nest.tbl_lazy if we implement json_nest methods for each DBMS
-  # FIXME: We need a table alias and we use `*tmp*`, can we leverage the mechanism
-  #   in `dbplyr` to increment the `q*` aliases ?
-
   dots <- quos(...)
   if ("" %in% names2(dots)) {
     abort("All elements of `...` must be named.")
