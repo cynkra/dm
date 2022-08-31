@@ -17,7 +17,15 @@ test_that("`json_nest()` works remotely", {
     remote %>%
       json_nest(a = starts_with("a")) %>%
       arrange(grp) %>%
+      show_query()
+    remote %>%
+      json_nest(a = starts_with("a")) %>%
+      arrange(grp) %>%
       collect()
+    remote %>%
+      json_nest(a = starts_with("a"), .names_sep = "_") %>%
+      arrange(grp) %>%
+      show_query()
     remote %>%
       json_nest(a = starts_with("a"), .names_sep = "_") %>%
       arrange(grp) %>%
