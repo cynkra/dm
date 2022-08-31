@@ -14,12 +14,12 @@ test_that("`json_pack()` works remotely", {
   remote <- test_db_src_frame(!!!local)
 
   expect_snapshot(variant = my_test_src_name, {
-    json_pack(remote, A = starts_with("a"))
-    json_pack(remote, A = starts_with("a"), .names_sep = "_")
+    json_pack(remote, a = starts_with("a"))
+    json_pack(remote, a = starts_with("a"), .names_sep = "_")
   })
 
   expect_identical(
-    local %>% json_pack(A = starts_with("a")) %>% unjson_nested(),
-    remote %>% json_pack(A = starts_with("a")) %>% collect() %>% unjson_nested()
+    local %>% json_pack(a = starts_with("a")) %>% unjson_nested(),
+    remote %>% json_pack(a = starts_with("a")) %>% collect() %>% unjson_nested()
   )
 })
