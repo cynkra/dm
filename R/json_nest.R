@@ -86,9 +86,8 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
     abort("All elements of `...` must be named.")
   }
   con <- dbplyr::remote_con(.data)
+  in_query <- dbplyr::sql_render(.data)
 
-  # define and protect column names, table name and alias
-  tbl_name <- dbplyr::remote_name(.data)
   col_nms <- colnames(.data)
   nest_cols <- purrr::map(dots, ~ tidyselect::vars_select(col_nms, !!.x))
   id_cols <- setdiff(col_nms, unlist(nest_cols))
@@ -100,8 +99,11 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
 
   # compute subqueries for each nested column
   nest_col_queries <- imap_chr(nest_cols, ~{
+    alias <- sprintf("*tmp_%s*", .y)
     glue::glue_sql(
-      "(SELECT {`.x`*} FROM {`tbl_name`} WHERE (",
+      "(SELECT {`.x`*} FROM (",
+      in_query,
+      ") {`alias`} WHERE (",
       joins,
       ") FOR JSON PATH) AS {`.y`}",
       .con = con)
@@ -112,7 +114,9 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
   query <- glue_sql(
     "SELECT {`id_cols`*}, ",
     nest_col_queries,
-    " FROM (SELECT {`col_nms`*} FROM {`tbl_name`}) {`temp_alias`} GROUP BY {`id_cols`*}",
+    " FROM (",
+    in_query,
+    ") {`temp_alias`} GROUP BY {`id_cols`*}",
     .con = con
   )
 
