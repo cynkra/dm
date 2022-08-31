@@ -124,7 +124,7 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
     glue_collapse(" AND ")
 
   nesting_plan$from_json_path_query <- glue::glue_sql(
-    "(",  nesting_plan$inner_query, " WHERE (", join_constraint,
+    "(", nesting_plan$inner_query, " WHERE (", join_constraint,
     ") FOR JSON PATH) AS {`nesting_plan$nesting_name`}",
     .con = con
   )
@@ -140,5 +140,4 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
   )
 
   tbl(con, sql(out_query), vars = c(id_cols, nesting_plan$nesting_name))
-
 }
