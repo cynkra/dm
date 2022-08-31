@@ -89,37 +89,60 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
   in_query <- dbplyr::sql_render(.data)
 
   col_nms <- colnames(.data)
-  nest_cols <- purrr::map(dots, ~ tidyselect::vars_select(col_nms, !!.x))
-  id_cols <- setdiff(col_nms, unlist(nest_cols))
-  temp_alias <- "*tmp*"
 
-  # build joining clause to use in final query
-  joins <- glue_sql("{`id_cols`} = {`temp_alias`}.{`id_cols`}", .con = con) %>%
+  # nesting_plan contains information and subqueries, one row for each nesting column
+  nesting_plan <- purrr::imap_dfr(dots, function(quo_selection, nesting_name) {
+    nested_names <- tidyselect::vars_select(col_nms, !!quo_selection)
+    if (!is.null(.names_sep)) {
+      new_nested_names <-
+        remove_prefix_and_sep(nested_names, prefix = nesting_name, sep = .names_sep)
+      selected <-
+        paste(
+          glue_sql("{`nested_names`}", .con = con),
+          glue_sql("{`new_nested_names`}", .con = con)
+        ) %>%
+        glue_collapse(", ")
+    } else {
+      new_nested_names <- nested_names
+      selected <- glue_sql("{`nested_names`*}", .con = con)
+    }
+    inner_query_alias <- glue("*tmp_{nesting_name}*")
+    inner_query <- glue::glue_sql(
+      "SELECT ", selected, " FROM (", in_query, ") {`inner_query_alias`}",
+      .con = con
+    )
+
+    tibble::tibble_row(
+      nesting_name = nesting_name,
+      nested_names = list(nested_names),
+      new_nested_names = list(new_nested_names),
+      selected = selected,
+      inner_query = inner_query,
+    )
+  })
+
+  id_cols <- setdiff(col_nms, unlist(nesting_plan$nested_names))
+  temp_alias <- "*tmp*"
+  join_constraint <-
+    glue_sql("{`id_cols`} = {`temp_alias`}.{`id_cols`}", .con = con) %>%
     glue_collapse(" AND ")
 
-  # compute subqueries for each nested column
-  nest_col_queries <- imap_chr(nest_cols, ~{
-    alias <- sprintf("*tmp_%s*", .y)
-    glue::glue_sql(
-      "(SELECT {`.x`*} FROM (",
-      in_query,
-      ") {`alias`} WHERE (",
-      joins,
-      ") FOR JSON PATH) AS {`.y`}",
-      .con = con)
-  }) %>%
-    glue_collapse(" ,")
+  nesting_plan$from_json_path_query <- glue::glue_sql(
+    "(",  nesting_plan$inner_query, " WHERE (", join_constraint,
+    ") FOR JSON PATH) AS {`nesting_plan$nesting_name`}",
+    .con = con
+  )
 
   # build final query
-  query <- glue_sql(
+  out_query <- glue_sql(
     "SELECT {`id_cols`*}, ",
-    nest_col_queries,
+    glue_collapse(nesting_plan$from_json_path_query, ", "),
     " FROM (",
     in_query,
     ") {`temp_alias`} GROUP BY {`id_cols`*}",
     .con = con
   )
 
-  tbl(con, sql(query), vars = c(id_cols, names(nest_cols)))
+  tbl(con, sql(out_query), vars = c(id_cols, nesting_plan$nesting_name))
 
 }
