@@ -106,10 +106,7 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
       new_packed_names <-
         remove_prefix_and_sep(packed_names, prefix = packing_name, sep = .names_sep)
       selected <-
-        paste(
-          glue_sql("{`packed_names`}", .con = con),
-          glue_sql("{`new_packed_names`}", .con = con)
-        ) %>%
+        glue_sql("{`packed_names`} {`new_packed_names`}", .con = con) %>%
         glue_collapse(", ")
     } else {
       new_packed_names <- packed_names
