@@ -1,11 +1,11 @@
 # `json_pack()` works remotely
 
     Code
-      json_pack(remote, a = starts_with("a")) %>% show_query()
+      query <- json_pack(remote, a = starts_with("a")) %>% dbplyr::sql_render()
+      gsub("test_frame_[_0-9]+", "test_frame_...", query)
     Output
-      <SQL>
-      SELECT "grp", (SELECT value FROM OPENJSON((SELECT "a_i", "a_j" FOR JSON PATH))) AS "a" FROM (SELECT *
-      FROM "#test_frame_35_2022_08_31_13_51_43_20525_14985") "*tmp*"
+      <SQL> SELECT "grp", (SELECT value FROM OPENJSON((SELECT "a_i", "a_j" FOR JSON PATH))) AS "a" FROM (SELECT *
+      FROM "#test_frame_...") "*tmp*"
     Code
       json_pack(remote, a = starts_with("a"))
     Output
@@ -16,11 +16,11 @@
       3     2 "{\"a_i\":\"c\",\"a_j\":\"C\"}"
       4     2 "{\"a_i\":\"d\",\"a_j\":\"D\"}"
     Code
-      json_pack(remote, a = starts_with("a"), .names_sep = "_") %>% show_query()
+      query <- json_pack(remote, a = starts_with("a"), .names_sep = "_") %>% dbplyr::sql_render()
+      gsub("test_frame_[_0-9]+", "test_frame_...", query)
     Output
-      <SQL>
-      SELECT "grp", (SELECT value FROM OPENJSON((SELECT "a_i" "i", "a_j" "j" FOR JSON PATH))) AS "a" FROM (SELECT *
-      FROM "#test_frame_35_2022_08_31_13_51_43_20525_14985") "*tmp*"
+      <SQL> SELECT "grp", (SELECT value FROM OPENJSON((SELECT "a_i" "i", "a_j" "j" FOR JSON PATH))) AS "a" FROM (SELECT *
+      FROM "#test_frame_...") "*tmp*"
     Code
       json_pack(remote, a = starts_with("a"), .names_sep = "_")
     Output
