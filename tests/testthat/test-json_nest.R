@@ -15,11 +15,11 @@ test_that("`json_nest()` works remotely", {
 
   expect_snapshot(variant = my_test_src_name, {
     remote %>%
-      json_nest(A = starts_with("a")) %>%
+      json_nest(a = starts_with("a")) %>%
       arrange(grp) %>%
       collect()
     remote %>%
-      json_nest(A = starts_with("a"), .names_sep = "_") %>%
+      json_nest(a = starts_with("a"), .names_sep = "_") %>%
       arrange(grp) %>%
       collect()
   })
