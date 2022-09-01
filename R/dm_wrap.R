@@ -119,37 +119,50 @@ dm_wrap_tbl_plan <- function(dm, root) {
 #' dm_nrow(roundtrip)
 dm_unwrap_tbl <- function(dm, ptype) {
   check_dm(ptype)
-  # unwrap all tables and their unwrapped children/parents
-  unwrapped_table_names <- character(0)
-  repeat {
-    to_unwrap <- setdiff(names(dm), unwrapped_table_names)[1]
-    done_unwrapping <- is.na(to_unwrap)
-    if (done_unwrapping) break
-    dm <- dm_unwrap_tbl1(dm, !!to_unwrap, ptype)
-    unwrapped_table_names <- c(unwrapped_table_names, to_unwrap)
-  }
-  dm
+
+  unwrap_plan <- imap_dfr(dm_get_tables(dm), dm_unwrap_tbl_plan)
+
+  unwrapped_dm <- reduce(
+    transpose(unwrap_plan),
+    function(dm, row) {
+      exec(row$action, dm, row$table, row$col, ptype)
+      },
+    .init = dm
+  )
+  unwrapped_dm
 }
 
-dm_unwrap_tbl1 <- function(dm, table, ptype) {
-  # process args and build names
-  table_name <- dm_tbl_name(dm, {{ table }})
-  table <- dm_get_tables_impl(dm)[[table_name]]
+dm_unwrap_tbl_plan <- function(table, table_name) {
   nms <- names(table)
 
-  # detect parent and children tables
   children <- nms[map_lgl(table, inherits, "nested")]
   parents <- nms[map_lgl(table, inherits, "packed")]
 
-  # unnest children tables
-  for (child_name in children) {
-    dm <- dm_unnest_tbl(dm, !!table_name, col = !!child_name, ptype = ptype)
-  }
+  unnest_plan <-
+    tibble(
+      action = "dm_unnest_tbl",
+      table = table_name,
+      col = children
+    )
 
-  # unpack parent tables
-  for (parent_name in parents) {
-    dm <- dm_unpack_tbl(dm, !!table_name, col = !!parent_name, ptype = ptype)
-  }
+  unpack_plan <-
+    tibble(
+      action = "dm_unpack_tbl",
+      table = table_name,
+      col = parents
+    )
 
-  dm
+  unwrap_plan_from_children <-
+    # note: we cannot use bind_rows() because of https://github.com/tidyverse/dplyr/issues/6447
+    map_dfr(children, ~ dm_unwrap_tbl_plan(vec_c(!!!table[[.x]]), .x))
+
+  unwrap_plan_from_parents <-
+    map_dfr(parents, ~ dm_unwrap_tbl_plan(table[[.x]], .x))
+
+  bind_rows(
+    unnest_plan,
+    unpack_plan,
+    unwrap_plan_from_children,
+    unwrap_plan_from_parents
+  )
 }
