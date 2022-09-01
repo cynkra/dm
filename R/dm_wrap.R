@@ -126,7 +126,7 @@ dm_unwrap_tbl <- function(dm, ptype) {
     transpose(unwrap_plan),
     function(dm, row) {
       exec(row$action, dm, row$table, row$col, ptype)
-      },
+    },
     .init = dm
   )
   unwrapped_dm
