@@ -150,8 +150,18 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   child_data <- def$data[def$table == child_name][[1]]
-  packed_data <- pack_join(child_data, table_data, by = set_names(parent_fk, child_fk), name = table_name)
-  class(packed_data[[table_name]]) <- c("packed", class(packed_data[[table_name]]))
+  #packed_data <- pack_join(child_data, table_data, by = set_names(parent_fk, child_fk), name = table_name)
+  #class(packed_data[[table_name]]) <- c("packed", class(packed_data[[table_name]]))
+  parent_fk_suffixed <- paste0(parent_fk, "=", child_fk)
+  # FIXME: fail if weird names exist already
+  table_data <- rename(table_data, !!! set_names(parent_fk, parent_fk_suffixed))
+  packed_data <- pack_join(
+    child_data,
+    table_data,
+    by = set_names(parent_fk_suffixed, child_fk),
+    name = paste0(table_name, "<"),
+    keep = TRUE
+  )
 
   # update def and rebuild dm
   def$data[def$table == child_name] <- list(packed_data)
