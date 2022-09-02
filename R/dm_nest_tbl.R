@@ -156,7 +156,7 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
       children_msg <- ""
     }
     abort(glue(
-      "`{table_name}` can't be nested because it is not a terminal parent table.",
+      "`{table_name}` can't be packed because it is not a terminal parent table.",
       "{parent_msg}{children_msg}"
     ))
   }
