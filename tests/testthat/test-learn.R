@@ -483,4 +483,9 @@ test_that("dm_from_con() with mariaDB", {
   expect_snapshot_output(my_dm <- dm_from_con(my_db))
   expect_snapshot(dm::dm_get_all_fks(my_dm))
   expect_snapshot(dm::dm_get_all_pks(my_dm))
+
+  # multiple schemata work
+  expect_snapshot_output(my_dm <- dm_from_con(my_db, schema = c("Accidents", "Ad")))
+  expect_snapshot(dm::dm_get_all_fks(my_dm))
+  expect_snapshot(dm::dm_get_all_pks(my_dm))
 })

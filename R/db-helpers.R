@@ -125,7 +125,6 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
 
   if (!is.null(schema)) {
     check_param_class(schema, "character")
-    check_param_length(schema)
   }
 
   if (is_mssql(src)) {
