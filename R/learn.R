@@ -41,6 +41,7 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     return()
   }
 
+  schema <- check_schema(src, schema)
   info <- dm_meta(con, catalog = dbname, schema = schema)
 
   df_info <-

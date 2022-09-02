@@ -115,33 +115,25 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
 }
 
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
+  schema <- check_schema(src, schema)
+
   if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
-    warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
     return(set_names(src_tbls(src)))
   }
-
   con <- con_from_src_or_con(src)
-
-  if (!is.null(schema)) {
-    check_param_class(schema, "character")
-    check_param_length(schema)
-  }
 
   if (is_mssql(src)) {
     # MSSQL
-    schema <- schema_mssql(con, schema)
     dbname_sql <- dbname_mssql(con, dbname)
     names_table <- get_names_table_mssql(con, dbname_sql)
     dbname <- names(dbname_sql)
   } else if (is_postgres(src)) {
     # Postgres
-    schema <- schema_postgres(con, schema)
     dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
     names_table <- get_names_table_postgres(con)
   } else if (is_mariadb(src)) {
     # MariaDB
-    schema <- schema_mariadb(con, schema)
     dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
     names_table <- get_names_table_mariadb(con)
   }
@@ -153,6 +145,31 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
     mutate(remote_name = schema_if(schema_name, table_name, con, dbname)) %>%
     select(-schema_name) %>%
     deframe()
+}
+
+check_schema <- function(src, schema) {
+  if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
+    warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
+    return(schema)
+  }
+
+  con <- con_from_src_or_con(src)
+
+  if (!is.null(schema)) {
+    check_param_class(schema, "character")
+    check_param_length(schema)
+  }
+
+  if (is_mssql(src)) {
+    # MSSQL
+    schema_mssql(con, schema)
+  } else if (is_postgres(src)) {
+    # Postgres
+    schema_postgres(con, schema)
+  } else if (is_mariadb(src)) {
+    # MariaDB
+    schema_mariadb(con, schema)
+  }
 }
 
 # `schema_*()` : default schema if NULL, otherwise unchanged
@@ -170,9 +187,14 @@ schema_postgres <- function(con, schema) {
   schema
 }
 
+ident_q <- function(...) {
+  # to avoid dependency on dbplyr define `ident_q()` here (not exported from dplyr)
+  structure(c(...), class = c("ident_q", "ident", "character"))
+}
+
 schema_mariadb <- function(con, schema) {
   if (is_null(schema)) {
-    schema <- sql("database()")
+    schema <- ident_q("database()")
   }
   schema
 }
