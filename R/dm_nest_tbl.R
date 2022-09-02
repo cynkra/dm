@@ -123,43 +123,20 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
 dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   # process args
   into <- enquo(into)
-  # FIXME: Rename to parent_tables_name
   table_name <- dm_tbl_name(dm, {{ parent_table }})
 
-  # retrieve keys, child and parent
-  # FIXME: fix redundancies and DRY when we decide what we export
   fks <- dm_get_all_fks(dm)
-  parents <-
-    fks %>%
-    filter(child_table == !!table_name) %>%
-    pull(parent_table)
   fk <- filter(fks, parent_table == !!table_name)
+  children_names <- pull(fk, child_table)
+
+  check_table_can_be_packed(table_name, children_names, fks)
+  child_name <- children_names # we checked we had only one
+
+  pks <- dm_get_all_pks(dm)
+  pk <- filter(pks, table == !!table_name)
   child_fk <- unlist(fk$child_fk_cols)
   parent_fk <- unlist(fk$parent_key_cols)
-  parent_pk <-
-    dm_get_all_pks(dm) %>%
-    filter(table == !!table_name) %>%
-    pull(pk_col) %>%
-    unlist()
-  child_name <- pull(fk, child_table)
-
-  # make sure we have a terminal parent
-  if (length(parents) || !length(child_name) || length(child_name) > 1) {
-    if (length(parents)) {
-      parent_msg <- paste0("\nparents : ", toString(paste0("`", parents, "`")))
-    } else {
-      parent_msg <- ""
-    }
-    if (length(child_name)) {
-      children_msg <- paste0("\nchildren: ", toString(paste0("`", child_name, "`")))
-    } else {
-      children_msg <- ""
-    }
-    abort(glue(
-      "`{table_name}` can't be packed because it is not a terminal parent table.",
-      "{parent_msg}{children_msg}"
-    ))
-  }
+  parent_pk <- unlist(pk$pk_col)
 
   # check consistency of `into` if relevant
   if (!quo_is_null(into)) {
@@ -181,6 +158,36 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   def <- def[def$table != table_name, ]
 
   new_dm3(def)
+}
+
+check_table_can_be_packed <- function(table_name, children_names, fks) {
+  # make sure we have a terminal parent
+  parents <-
+    fks %>%
+    filter(child_table == !!table_name) %>%
+    pull(parent_table)
+
+  table_has_parents <- length(parents) > 0
+  table_has_one_child <- length(children_names) == 1
+  table_is_terminal_parent <- table_has_one_child && !table_has_parents
+  if (!table_is_terminal_parent) {
+    if (table_has_parents) {
+      parent_msg <- paste0("\nparents : ", toString(paste0("`", parents, "`")))
+    } else {
+      parent_msg <- ""
+    }
+    table_has_children <- length(children_names) > 0
+    if (table_has_children) {
+      children_msg <- paste0("\nchildren: ", toString(paste0("`", children_names, "`")))
+    } else {
+      children_msg <- ""
+    }
+    abort(glue(
+      "`{table_name}` can't be packed because it is not a terminal parent table.",
+      "{parent_msg}{children_msg}"
+    ))
+  }
+  invisible(NULL)
 }
 
 # FIXME: can we be more efficient ?
