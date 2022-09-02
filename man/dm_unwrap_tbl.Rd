@@ -4,12 +4,16 @@
 \alias{dm_unwrap_tbl}
 \title{Unwrap a single table dm}
 \usage{
-dm_unwrap_tbl(dm, ptype)
+dm_unwrap_tbl(dm, ptype, progress = NA)
 }
 \arguments{
 \item{dm}{A dm.}
 
 \item{ptype}{A dm, only used to query names of primary and foreign keys.}
+
+\item{progress}{Whether to display a progress bar, if \code{NA} (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.}
 }
 \value{
 A dm.

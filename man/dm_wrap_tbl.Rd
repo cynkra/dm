@@ -4,7 +4,7 @@
 \alias{dm_wrap_tbl}
 \title{Wrap dm into a single tibble dm}
 \usage{
-dm_wrap_tbl(dm, root, strict = TRUE)
+dm_wrap_tbl(dm, root, strict = TRUE, progress = NA)
 }
 \arguments{
 \item{dm}{A cycle free dm object.}
@@ -13,6 +13,10 @@ dm_wrap_tbl(dm, root, strict = TRUE)
 
 \item{strict}{Whether to fail for cyclic dms that cannot be wrapped into a
 single table, if \code{FALSE} a partially wrapped dm will be returned.}
+
+\item{progress}{Whether to display a progress bar, if \code{NA} (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.}
 }
 \value{
 A \code{dm} object.
