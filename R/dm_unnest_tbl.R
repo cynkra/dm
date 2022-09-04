@@ -38,34 +38,45 @@
 dm_unnest_tbl <- function(dm, parent_table, col, ptype) {
   # process args and build names
   parent_table_name <- dm_tbl_name(dm, {{ parent_table }})
-  table <- dm_get_tables_impl(dm)[[parent_table_name]]
+  table <- dm[[parent_table_name]]
   col_expr <- enexpr(col)
-  new_child_table_name <- names(eval_select_indices(col_expr, colnames(table)))
+  nested_col_name <- names(eval_select_indices(col_expr, colnames(table)))
+  new_child_table_name <- sub(">$", "", nested_col_name)
 
-  child_pk_names <-
-    dm_get_all_pks(ptype) %>%
-    filter(table == new_child_table_name) %>%
-    pull(pk_col) %>%
-    unlist()
-  fk <-
-    dm_get_all_fks(ptype) %>%
-    filter(child_table == new_child_table_name, parent_table == parent_table_name)
-  parent_fk_names <- unlist(fk$parent_key_cols)
-  child_fk_names <- unlist(fk$child_fk_cols)
+  # child_pk_names <-
+  #   dm_get_all_pks(ptype) %>%
+  #   filter(table == new_child_table_name) %>%
+  #   pull(pk_col) %>%
+  #   unlist()
+
+  # fk <-
+  #   dm_get_all_fks(ptype) %>%
+  #   filter(child_table == new_child_table_name, parent_table == parent_table_name)
+
+  new_table <- vctrs::vec_c(!!!table[[nested_col_name]])
+  raw_names <- names(new_table)
+
+  pattern <- "^([^*=]+?)(=([^*=]+?))?\\*?$"
+  clean_names <- sub(pattern, "\\1", raw_names)
+  child_pk_lgl <- grepl("\\*$", raw_names)
+  child_pk_names <- clean_names[child_pk_lgl]
+  keys <- grep("=", raw_names, value = TRUE)
+  child_fk_names <- sub(pattern, "\\1", keys)
+  parent_fk_names <- sub(pattern, "\\3", keys)
 
   # extract nested table
   new_table <-
-    table %>%
-    select(!!!set_names(parent_fk_names, child_fk_names), !!new_child_table_name) %>%
-    unnest(!!new_child_table_name) %>%
+    new_table %>%
+    rename(!!!set_names(raw_names, clean_names)) %>%
     distinct()
 
   # update the dm by adding new table, removing nested col and setting keys
   dm <- dm(dm, !!new_child_table_name := new_table)
-  dm <- dm_select(dm, !!parent_table_name, -all_of(new_child_table_name))
+  dm <- dm_select(dm, !!parent_table_name, -all_of(nested_col_name))
   if (length(parent_fk_names)) {
     dm <- dm_add_fk(dm, !!new_child_table_name, !!child_fk_names, !!parent_table_name, !!parent_fk_names)
   }
+
   if (length(child_pk_names)) {
     dm <- dm_add_pk(dm, !!new_child_table_name, !!child_pk_names)
   }
@@ -115,27 +126,46 @@ dm_unpack_tbl <- function(dm, child_table, col, ptype) {
   child_table_name <- dm_tbl_name(dm, {{ child_table }})
   table <- dm_get_tables_impl(dm)[[child_table_name]]
   col_expr <- enexpr(col)
-  new_parent_table_name <- names(eval_select_indices(col_expr, colnames(table)))
 
-  parent_pk_names <- dm_get_all_pks(ptype) %>%
-    filter(table == new_parent_table_name) %>%
-    pull(pk_col) %>%
-    unlist()
-  fk <- dm_get_all_fks(ptype) %>%
-    filter(child_table == child_table_name, parent_table == new_parent_table_name)
-  child_fk_names <- unlist(fk$child_fk_cols)
-  parent_fk_names <- unlist(fk$parent_key_cols)
+  #new_parent_table_name <- names(eval_select_indices(col_expr, colnames(table)))
+  packed_col_name <- names(eval_select_indices(col_expr, colnames(table)))
+  new_parent_table_name <- sub("<$", "", packed_col_name)
+
+  # parent_pk_names <- dm_get_all_pks(ptype) %>%
+  #   filter(table == new_parent_table_name) %>%
+  #   pull(pk_col) %>%
+  #   unlist()
+
+  # fk <- dm_get_all_fks(ptype) %>%
+  #   filter(child_table == child_table_name, parent_table == new_parent_table_name)
+  # child_fk_names <- unlist(fk$child_fk_cols)
+  # parent_fk_names <- unlist(fk$parent_key_cols)
+
+  new_table <- table[[packed_col_name]]
+  raw_names <- names(new_table)
+
+  pattern <- "^([^*=]+?)(=([^*=]+?))?\\*?$"
+  clean_names <- sub(pattern, "\\1", raw_names)
+  parent_pk_lgl <- grepl("\\*$", raw_names)
+  parent_pk_names <- clean_names[parent_pk_lgl]
+  keys <- grep("=", raw_names, value = TRUE)
+  parent_fk_names <- sub(pattern, "\\1", keys)
+  child_fk_names <- sub(pattern, "\\3", keys)
 
   # extract packed table
   new_table <-
-    table %>%
-    select(!!!set_names(child_fk_names, parent_fk_names), !!new_parent_table_name) %>%
-    unpack(!!new_parent_table_name) %>%
+    new_table %>%
+    rename(!!!set_names(raw_names, clean_names)) %>%
     distinct()
+  # new_table <-
+  #   table %>%
+  #   select(!!!set_names(child_fk_names, parent_fk_names), !!new_parent_table_name) %>%
+  #   unpack(!!new_parent_table_name) %>%
+  #   distinct()
 
   # update the dm by adding new table, removing packed col and setting keys
   dm <- dm(dm, !!new_parent_table_name := new_table)
-  dm <- dm_select(dm, !!child_table_name, -all_of(new_parent_table_name))
+  dm <- dm_select(dm, !!child_table_name, -all_of(packed_col_name))
   if (length(child_fk_names)) {
     dm <- dm_add_fk(
       dm,
@@ -145,6 +175,7 @@ dm_unpack_tbl <- function(dm, child_table, col, ptype) {
       !!parent_fk_names
     )
   }
+
   if (length(parent_pk_names)) {
     dm <- dm_add_pk(dm, !!new_parent_table_name, !!parent_pk_names)
   }
