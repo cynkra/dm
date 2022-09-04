@@ -27,46 +27,21 @@
 dm_nest_tbl <- function(dm, child_table, into = NULL) {
   # process args
   into <- enquo(into)
-  # FIXME: Rename table_name to child_tables_name
   table_name <- dm_tbl_name(dm, {{ child_table }})
 
   # retrieve fk and parent_name
   fks <- dm_get_all_fks(dm)
-
-  # retrieve fk and parent_name
-  # FIXME: fix redundancies and DRY when we decide what we export
-  fks <- dm_get_all_fks(dm)
-  children <-
-    fks %>%
-    filter(parent_table == !!table_name) %>%
-    pull(child_table)
   fk <- filter(fks, child_table == !!table_name)
-  parent_fk <- unlist(fk$parent_key_cols)
-  child_fk <- unlist(fk$child_fk_cols)
-  child_pk <-
-    dm_get_all_pks(dm) %>%
-    filter(table == !!table_name) %>%
-    pull(pk_col) %>%
-    unlist()
-  parent_name <- pull(fk, parent_table)
+  parent_names <- pull(fk, parent_table)
 
-  # make sure we have a terminal child
-  if (length(children) || !length(parent_name) || length(parent_name) > 1) {
-    if (length(parent_name)) {
-      parent_msg <- paste0("\nparents: ", toString(paste0("`", parent_name, "`")))
-    } else {
-      parent_msg <- ""
-    }
-    if (length(children)) {
-      children_msg <- paste0("\nchildren: ", toString(paste0("`", children, "`")))
-    } else {
-      children_msg <- ""
-    }
-    abort(glue(
-      "`{table_name}` can't be nested because it is not a terminal child table.",
-      "{parent_msg}{children_msg}"
-    ))
-  }
+  check_table_can_be_nested(table_name, parent_names, fks)
+  parent_name <- parent_names
+
+  pks <- dm_get_all_pks(dm)
+  pk <- filter(pks, table == !!table_name)
+  child_fk <- unlist(fk$child_fk_cols)
+  parent_fk <- unlist(fk$parent_key_cols)
+  child_pk <- unlist(pk$pk_col)
 
   # check consistency of `into` if relevant
   if (!quo_is_null(into)) {
@@ -80,8 +55,26 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   parent_data <- def$data[def$table == parent_name][[1]]
-  nested_data <- nest_join(parent_data, table_data, by = set_names(child_fk, parent_fk), name = table_name)
-  class(nested_data[[table_name]]) <- c("nested", class(nested_data[[table_name]]))
+  #nested_data <- nest_join(parent_data, table_data, by = set_names(child_fk, parent_fk), name = table_name)
+  #class(nested_data[[table_name]]) <- c("nested", class(nested_data[[table_name]]))
+
+  # FIXME: fail if weird names exist already
+  new_names <- names(table_data)
+  fk_lgl <- new_names %in% child_fk
+  pk_lgl <- new_names %in% child_pk
+  new_names[fk_lgl] <- paste0(child_fk, "=", parent_fk)
+  new_names[pk_lgl] <- paste0(new_names[pk_lgl], "*")
+  new_parent_fk <- new_names[fk_lgl]
+
+  table_data <- set_names(table_data, new_names)
+
+  nested_data <- nest_join(
+    parent_data,
+    table_data,
+    by = set_names(new_parent_fk, parent_fk),
+    name = paste0(table_name, ">"),
+    keep = TRUE
+  )
 
   # update def and rebuild dm
   def$data[def$table == parent_name] <- list(nested_data)
@@ -91,6 +84,35 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
   def <- def[def$table != table_name, ]
 
   new_dm3(def)
+}
+
+check_table_can_be_nested <- function(table_name, parent_names, fks) {
+  # make sure we have a terminal child
+  children <-
+    fks %>%
+    filter(parent_table == !!table_name) %>%
+    pull(child_table)
+
+  table_has_children <- length(children) > 0
+  table_has_one_parent <- length(parent_names) == 1
+  table_is_terminal_child <- table_has_one_parent && !table_has_children
+  if (!table_is_terminal_child) {
+    table_has_parents <- length(parent_names) > 0
+    if (table_has_parents) {
+      parent_msg <- paste0("\nparents: ", toString(paste0("`", parent_names, "`")))
+    } else {
+      parent_msg <- ""
+    }
+    if (table_has_children) {
+      children_msg <- paste0("\nchildren: ", toString(paste0("`", children, "`")))
+    } else {
+      children_msg <- ""
+    }
+    abort(glue(
+      "`{table_name}` can't be nested because it is not a terminal child table.",
+      "{parent_msg}{children_msg}"
+    ))
+  }
 }
 
 #' dm_pack_tbl()
