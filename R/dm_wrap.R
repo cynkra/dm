@@ -118,7 +118,7 @@ dm_wrap_tbl_plan <- function(dm, root) {
 #' dm_nrow(dm_nycflights13())
 #' dm_nrow(roundtrip)
 dm_unwrap_tbl <- function(dm, ptype) {
-  check_dm(ptype)
+  #check_dm(ptype)
   # unwrap all tables and their unwrapped children/parents
   unwrapped_table_names <- character(0)
   repeat {
