@@ -123,7 +123,7 @@ dm_unwrap_tbl <- function(dm, ptype) {
   unwrap_plan <- dm_get_tables(dm) %>%
     imap(dm_unwrap_tbl_plan) %>%
     unlist(recursive = FALSE) %>%
-    purrr::discard(~nrow(.) == 0)
+    purrr::discard(~ nrow(.) == 0)
 
   unwrapped_dm <- reduce(
     unwrap_plan,
