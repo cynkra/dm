@@ -225,7 +225,7 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
   force(catalog)
   force(schema)
 
-  if (length(schema) > 1 && any(is.na(schema))) {
+  if (length(schema) > 1 && anyNA(schema)) {
     cli::cli_abort("{.arg schema} must not contain NA if it has more than one element.")
   }
 
