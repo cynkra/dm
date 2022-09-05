@@ -120,10 +120,13 @@ dm_wrap_tbl_plan <- function(dm, root) {
 dm_unwrap_tbl <- function(dm, ptype) {
   check_dm(ptype)
 
-  unwrap_plan <- imap_dfr(dm_get_tables(dm), dm_unwrap_tbl_plan)
+  unwrap_plan <- dm_get_tables(dm) %>%
+    imap(dm_unwrap_tbl_plan) %>%
+    unlist(recursive = FALSE) %>%
+    purrr::discard(~nrow(.) == 0)
 
   unwrapped_dm <- reduce(
-    transpose(unwrap_plan),
+    unwrap_plan,
     function(dm, row) {
       exec(row$action, dm, row$table, row$col, ptype)
     },
@@ -143,24 +146,28 @@ dm_unwrap_tbl_plan <- function(table, table_name) {
       action = "dm_unnest_tbl",
       table = table_name,
       col = children
-    )
+    ) %>%
+    split.data.frame(seq_along(children))
 
   unpack_plan <-
     tibble(
       action = "dm_unpack_tbl",
       table = table_name,
       col = parents
-    )
+    ) %>%
+    split.data.frame(seq_along(parents))
 
   unwrap_plan_from_children <-
     # note: we cannot use bind_rows() because of https://github.com/tidyverse/dplyr/issues/6447,
     #   or even vec_rbind() because of https://github.com/r-lib/vctrs/issues/1640
-    map_dfr(children, ~ dm_unwrap_tbl_plan(vec_c(!!!table[[.x]]), .x))
+    map(children, ~ dm_unwrap_tbl_plan(vec_c(!!!table[[.x]]), .x)) %>%
+    unlist(recursive = FALSE)
 
   unwrap_plan_from_parents <-
-    map_dfr(parents, ~ dm_unwrap_tbl_plan(table[[.x]], .x))
+    map(parents, ~ dm_unwrap_tbl_plan(table[[.x]], .x)) %>%
+    unlist(recursive = FALSE)
 
-  bind_rows(
+  c(
     unnest_plan,
     unpack_plan,
     unwrap_plan_from_children,
