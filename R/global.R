@@ -164,6 +164,13 @@ utils::globalVariables(c(
   "remote_table_unquoted",
   "unique_def",
   #
+  # SQL functions
+  "JSON_AGG",
+  "JSON_BUILD_OBJECT",
+  #
+  # tidyselect
+  "where",
+  #
   # meta
   "DATABASE",
   "referenced_column_name",
