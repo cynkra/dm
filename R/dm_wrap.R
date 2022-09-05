@@ -153,7 +153,8 @@ dm_unwrap_tbl_plan <- function(table, table_name) {
     )
 
   unwrap_plan_from_children <-
-    # note: we cannot use bind_rows() because of https://github.com/tidyverse/dplyr/issues/6447
+    # note: we cannot use bind_rows() because of https://github.com/tidyverse/dplyr/issues/6447,
+    #   or even vec_rbind() because of https://github.com/r-lib/vctrs/issues/1640
     map_dfr(children, ~ dm_unwrap_tbl_plan(vec_c(!!!table[[.x]]), .x))
 
   unwrap_plan_from_parents <-
