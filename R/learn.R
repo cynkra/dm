@@ -95,7 +95,7 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     arrange(ordinal_position) %>%
     dm_update_zoomed() %>%
     dm_select_tbl(-table_constraints) %>%
-    dm_squash_to_tbl(key_column_usage) %>%
+    dm_flatten_to_tbl(key_column_usage, .recursive = TRUE) %>%
     select(constraint_catalog, constraint_schema, constraint_name, dm_name, column_name) %>%
     group_by(constraint_catalog, constraint_schema, constraint_name, dm_name) %>%
     summarize(pks = list(tibble(column = list(column_name)))) %>%

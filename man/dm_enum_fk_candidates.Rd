@@ -7,7 +7,7 @@
 \usage{
 dm_enum_fk_candidates(dm, table, ref_table, ...)
 
-enum_fk_candidates(zoomed_dm, ref_table, ...)
+enum_fk_candidates(dm_zoomed, ref_table, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -18,7 +18,7 @@ enum_fk_candidates(zoomed_dm, ref_table, ...)
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{zoomed_dm}{A \code{dm} with a zoomed table.}
+\item{dm_zoomed}{A \code{dm} with a zoomed table.}
 }
 \value{
 A tibble with the following columns:

@@ -65,7 +65,6 @@
        9 d-1         d             f-2          f               no_action
       10 d-2         d             f-4          f               no_action
       # ... with 12 more rows
-      # i Use `print(n = ...)` to see more rows
     Code
       dm_disentangle(entangled_dm(), c) %>% dm_get_all_fks()
     Message
@@ -91,7 +90,6 @@
        9 d-1         d             f-2          f               no_action
       10 d-2         d             f-4          f               no_action
       # ... with 12 more rows
-      # i Use `print(n = ...)` to see more rows
     Code
       dm_disentangle(entangled_dm_2(), a) %>% dm_get_all_fks()
     Message
@@ -128,7 +126,7 @@
 
 ---
 
-    You can't call `dm_disentangle()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+    You can't call `dm_disentangle()` on a `dm_zoomed`. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
 
 ---
 

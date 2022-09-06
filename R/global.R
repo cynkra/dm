@@ -164,6 +164,13 @@ utils::globalVariables(c(
   "remote_table_unquoted",
   "unique_def",
   #
+  # SQL functions
+  "JSON_AGG",
+  "JSON_BUILD_OBJECT",
+  #
+  # tidyselect
+  "where",
+  #
   # meta
   "DATABASE",
   "referenced_column_name",
@@ -180,6 +187,8 @@ utils::globalVariables(c(
   "child_uuid",
   "parent_data",
   "parent_uuid",
+  #
+  "g_table_names",
   #
   # keep this to avoid dealing with trailing commas
   NULL

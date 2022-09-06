@@ -3,7 +3,7 @@
 
 test_that("basic test: 'group_by()'-methods work", {
   expect_equivalent_tbl(
-    group_by(zoomed_dm(), e) %>% tbl_zoomed(),
+    group_by(dm_zoomed(), e) %>% tbl_zoomed(),
     group_by(tf_2(), e)
   )
 
@@ -15,7 +15,7 @@ test_that("basic test: 'group_by()'-methods work", {
 
 test_that("basic test: 'select()'-methods work", {
   expect_equivalent_tbl(
-    select(zoomed_dm(), e, a = c) %>% tbl_zoomed(),
+    select(dm_zoomed(), e, a = c) %>% tbl_zoomed(),
     select(tf_2(), e, a = c)
   )
 
@@ -27,12 +27,12 @@ test_that("basic test: 'select()'-methods work", {
 
 test_that("basic test: 'relocate()'-methods work", {
   expect_equivalent_tbl(
-    relocate(zoomed_dm(), e) %>% tbl_zoomed(),
+    relocate(dm_zoomed(), e) %>% tbl_zoomed(),
     relocate(tf_2(), e)
   )
 
   expect_equivalent_tbl(
-    relocate(zoomed_dm(), e, .after = e1) %>% tbl_zoomed(),
+    relocate(dm_zoomed(), e, .after = e1) %>% tbl_zoomed(),
     relocate(tf_2(), e, .after = e1)
   )
 
@@ -45,7 +45,7 @@ test_that("basic test: 'relocate()'-methods work", {
 
 test_that("basic test: 'rename()'-methods work", {
   expect_equivalent_tbl(
-    rename(zoomed_dm(), a = c) %>% tbl_zoomed(),
+    rename(dm_zoomed(), a = c) %>% tbl_zoomed(),
     rename(tf_2(), a = c)
   )
 
@@ -57,7 +57,7 @@ test_that("basic test: 'rename()'-methods work", {
 
 test_that("basic test: 'mutate()'-methods work", {
   expect_equivalent_tbl(
-    mutate(zoomed_dm(), d_2 = d * 2) %>% tbl_zoomed(),
+    mutate(dm_zoomed(), d_2 = d * 2) %>% tbl_zoomed(),
     mutate(tf_2(), d_2 = d * 2)
   )
 
@@ -70,7 +70,7 @@ test_that("basic test: 'mutate()'-methods work", {
 
 test_that("basic test: 'transmute()'-methods work", {
   expect_equivalent_tbl(
-    transmute(zoomed_dm(), d_2 = d * 2) %>% tbl_zoomed(),
+    transmute(dm_zoomed(), d_2 = d * 2) %>% tbl_zoomed(),
     transmute(tf_2(), d_2 = d * 2)
   )
 
@@ -82,7 +82,7 @@ test_that("basic test: 'transmute()'-methods work", {
 
 test_that("basic test: 'ungroup()'-methods work", {
   expect_equivalent_tbl(
-    group_by(zoomed_dm(), e) %>% ungroup() %>% tbl_zoomed(),
+    group_by(dm_zoomed(), e) %>% ungroup() %>% tbl_zoomed(),
     group_by(tf_2(), e) %>% ungroup()
   )
 
@@ -94,7 +94,7 @@ test_that("basic test: 'ungroup()'-methods work", {
 
 test_that("basic test: 'summarise()'-methods work", {
   expect_equivalent_tbl(
-    summarise(zoomed_dm(), d_2 = mean(d, na.rm = TRUE)) %>% tbl_zoomed(),
+    summarise(dm_zoomed(), d_2 = mean(d, na.rm = TRUE)) %>% tbl_zoomed(),
     summarise(tf_2(), d_2 = mean(d, na.rm = TRUE))
   )
 
@@ -106,27 +106,27 @@ test_that("basic test: 'summarise()'-methods work", {
 
 test_that("basic test: 'count()'-method works", {
   expect_equivalent_tbl(
-    count(zoomed_dm()) %>% tbl_zoomed(),
+    count(dm_zoomed()) %>% tbl_zoomed(),
     count(tf_2())
   )
 
   expect_equivalent_tbl(
-    count(zoomed_dm(), c) %>% tbl_zoomed(),
+    count(dm_zoomed(), c) %>% tbl_zoomed(),
     count(tf_2(), c)
   )
 
   expect_equivalent_tbl(
-    count(zoomed_dm(), wt = d) %>% tbl_zoomed(),
+    count(dm_zoomed(), wt = d) %>% tbl_zoomed(),
     count(tf_2(), wt = d)
   )
 
   expect_equivalent_tbl(
-    count(zoomed_dm(), sort = TRUE) %>% tbl_zoomed(),
+    count(dm_zoomed(), sort = TRUE) %>% tbl_zoomed(),
     count(tf_2(), sort = TRUE)
   )
 
   expect_equivalent_tbl(
-    count(zoomed_dm(), name = "COUNT") %>% tbl_zoomed(),
+    count(dm_zoomed(), name = "COUNT") %>% tbl_zoomed(),
     count(tf_2(), name = "COUNT")
   )
 
@@ -138,7 +138,7 @@ test_that("basic test: 'count()'-method works", {
 
 test_that("basic test: 'tally()'-method works", {
   expect_equivalent_tbl(
-    tally(zoomed_dm()) %>% tbl_zoomed(),
+    tally(dm_zoomed()) %>% tbl_zoomed(),
     tally(tf_2())
   )
 
@@ -152,7 +152,7 @@ test_that("basic test: 'filter()'-methods work", {
   skip_if_src("maria")
 
   expect_equivalent_tbl(
-    zoomed_dm() %>%
+    dm_zoomed() %>%
       filter(d > mean(d, na.rm = TRUE)) %>%
       dm_update_zoomed() %>%
       tbl_impl("tf_2"),
@@ -170,7 +170,7 @@ test_that("basic test: 'filter()'-methods work (2)", {
 
 test_that("basic test: 'distinct()'-methods work", {
   expect_equivalent_tbl(
-    distinct(zoomed_dm(), d_new = d) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    distinct(dm_zoomed(), d_new = d) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     distinct(tf_2(), d_new = d)
   )
 
@@ -183,13 +183,13 @@ test_that("basic test: 'distinct()'-methods work", {
 test_that("basic test: 'arrange()'-methods work", {
   # standard arrange
   expect_equivalent_tbl(
-    arrange(zoomed_dm(), e) %>% tbl_zoomed(),
+    arrange(dm_zoomed(), e) %>% tbl_zoomed(),
     arrange(tf_2(), e)
   )
 
   # arrange within groups
   expect_equivalent_tbl(
-    group_by(zoomed_dm(), e) %>% arrange(desc(d), .by_group = TRUE) %>% tbl_zoomed(),
+    group_by(dm_zoomed(), e) %>% arrange(desc(d), .by_group = TRUE) %>% tbl_zoomed(),
     arrange(group_by(tf_2(), e), desc(d), .by_group = TRUE)
   )
 
@@ -202,8 +202,8 @@ test_that("basic test: 'arrange()'-methods work", {
 test_that("basic test: 'slice()'-methods work", {
   skip_if_remote_src()
   expect_message(
-    expect_equivalent_tbl(slice(zoomed_dm(), 3:6) %>% tbl_zoomed(), slice(tf_2(), 3:6)),
-    "`slice.zoomed_dm\\(\\)` can potentially"
+    expect_equivalent_tbl(slice(dm_zoomed(), 3:6) %>% tbl_zoomed(), slice(tf_2(), 3:6)),
+    "`slice.dm_zoomed\\(\\)` can potentially"
   )
 
   # silent when no PK available
@@ -220,13 +220,13 @@ test_that("basic test: 'slice()'-methods work", {
 
   # changed for #663: mutate() tracks now all cols that remain
   expect_message(
-    mutate(zoomed_dm(), c = 1) %>% slice(1:3),
+    mutate(dm_zoomed(), c = 1) %>% slice(1:3),
     "Keeping PK column"
   )
 
   expect_silent(
     expect_equivalent_tbl(
-      slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% tbl_zoomed(),
+      slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% tbl_zoomed(),
       slice(tf_2(), if_else(d < 5, 1:6, 7:2))
     )
   )
@@ -239,23 +239,23 @@ test_that("basic test: 'slice()'-methods work", {
 
 test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   expect_equivalent_tbl(
-    left_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    left_join(dm_zoomed(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     left_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
   expect_equivalent_tbl(
-    inner_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    inner_join(dm_zoomed(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     inner_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
 
   expect_equivalent_tbl(
-    semi_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    semi_join(dm_zoomed(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     semi_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
   expect_equivalent_tbl(
-    anti_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    anti_join(dm_zoomed(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     anti_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
@@ -263,12 +263,12 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   skip_if_src("sqlite")
   skip_if_src("maria")
   expect_equivalent_tbl(
-    full_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    full_join(dm_zoomed(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     full_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
   expect_equivalent_tbl(
-    right_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    right_join(dm_zoomed(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     right_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
@@ -277,7 +277,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   # https://github.com/duckdb/duckdb/pull/3829
   skip_if_src("duckdb")
   expect_equivalent_tbl(
-    nest_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    nest_join(dm_zoomed(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     nest_join(tf_2(), tf_1(), by = c("d" = "a"), name = "tf_1")
   )
 })
@@ -285,48 +285,48 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
 test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
   # fails if RHS not linked to zoomed table and no by is given
   expect_dm_error(
-    left_join(zoomed_dm(), tf_4),
+    left_join(dm_zoomed(), tf_4),
     "tables_not_neighbors"
   )
 
   # works, if by is given
   expect_equivalent_tbl(
-    left_join(zoomed_dm(), tf_4, by = c("e" = "j")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    left_join(dm_zoomed(), tf_4, by = c("e" = "j")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     left_join(tf_2(), tf_4(), by = c("e" = "j"))
   )
 
   expect_equivalent_tbl(
-    left_join(zoomed_dm(), tf_4, by = c("e" = "j", "e1" = "j1")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"))
   )
 
   # explicitly select columns from RHS using argument `select`
   expect_equivalent_tbl(
-    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
+    left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
     left_join(tf_3(), select(tf_2(), c, e, e1), by = c("f" = "e", "f1" = "e1"))
   )
 
   # explicitly select and rename columns from RHS using argument `select`
   expect_equivalent_tbl(
-    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
+    left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
     left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"))
   )
 
   # a former FK-relation could not be tracked
   expect_dm_error(
-    zoomed_dm() %>% select(-e) %>% left_join(tf_3),
+    dm_zoomed() %>% select(-e) %>% left_join(tf_3),
     "fk_not_tracked"
   )
 
   expect_snapshot({
     "keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'"
-    zoomed_dm() %>%
+    dm_zoomed() %>%
       left_join(tf_3, select = c(d = g, f, f1)) %>%
       dm_update_zoomed() %>%
       get_all_keys()
 
     "keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'"
-    zoomed_dm() %>%
+    dm_zoomed() %>%
       semi_join(tf_3, select = c(d = g, f, f1)) %>%
       dm_update_zoomed() %>%
       get_all_keys()
@@ -345,9 +345,9 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
   expect_equivalent_tbl(
     out,
     left_join(
-      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
-      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.y.", .)),
-      by = c("key", "Sepal.Width" = "iris_2.y.Sepal.Width", "other_col")
+      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0(., ".iris_2.x")) %>% rename(Sepal.Width = Sepal.Width.iris_2.x),
+      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0(., ".iris_2.y")),
+      by = c("key", "Sepal.Width" = "Sepal.Width.iris_2.y", "other_col")
     )
   )
 })
@@ -578,7 +578,7 @@ test_that("key tracking works (6)", {
 
 test_that("key tracking works for distinct() and arrange()", {
   expect_identical(
-    zoomed_dm() %>%
+    dm_zoomed() %>%
       distinct(d_new = d) %>%
       dm_update_zoomed() %>%
       dm_get_all_fks_impl(),
@@ -588,7 +588,7 @@ test_that("key tracking works for distinct() and arrange()", {
   )
 
   expect_identical(
-    zoomed_dm() %>%
+    dm_zoomed() %>%
       arrange(e) %>%
       dm_update_zoomed() %>%
       dm_get_all_fks_impl(),
@@ -607,7 +607,7 @@ test_that("key tracking works for distinct() and arrange()", {
       filter(child_fk_cols != new_keys("dim_4_key"))
   )
 
-  # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
+  # it should be possible to combine 'filter' on a dm_zoomed with all other dplyr-methods; example: 'rename'
   expect_equivalent_dm(
     dm_for_filter() %>%
       dm_zoom_to(tf_2) %>%
@@ -675,12 +675,12 @@ test_that("key tracking works for distinct() and arrange()", {
 
 test_that("key tracking works for slice()", {
   skip_if_remote_src()
-  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% col_tracker_zoomed(), set_names(c("d", "e", "e1")))
+  expect_identical(slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% col_tracker_zoomed(), set_names(c("d", "e", "e1")))
   expect_message(
-    expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2)) %>% col_tracker_zoomed(), set_names(c("c", "d", "e", "e1"))),
+    expect_identical(slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2)) %>% col_tracker_zoomed(), set_names(c("c", "d", "e", "e1"))),
     "Keeping PK"
   )
-  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% col_tracker_zoomed(), set_names(c("c", "d", "e", "e1")))
+  expect_identical(slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% col_tracker_zoomed(), set_names(c("c", "d", "e", "e1")))
 })
 
 

@@ -172,7 +172,7 @@ dm_delta_may$planes
 And indeed, all included flights departed in January (`month == 1`):
 
 ```{r}
-dm_delta_may$flights %>% 
+dm_delta_may$flights %>%
   count(month)
 ```
 

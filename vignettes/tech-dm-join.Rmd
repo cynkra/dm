@@ -87,7 +87,7 @@ Let's look at some examples:
 ```{r}
 dm_joined <-
   dm %>%
-  dm_flatten_to_tbl(flights, airlines, join = left_join)
+  dm_flatten_to_tbl(flights, airlines, .join = left_join)
 dm_joined
 ```
 
@@ -121,7 +121,7 @@ You can check this with an `anti_join`:
 
 ```{r}
 dm %>%
-  dm_flatten_to_tbl(flights, airlines, join = anti_join)
+  dm_flatten_to_tbl(flights, airlines, .join = anti_join)
 ```
 
 An example with filtering on a `dm` and then merging:
@@ -135,7 +135,7 @@ dm_nycflights13(subset = FALSE) %>%
     airports = (name != "John F Kennedy Intl"),
     flights = (month == 5)
   ) %>% 
-  dm_flatten_to_tbl(flights, airports, join = left_join)
+  dm_flatten_to_tbl(flights, airports, .join = left_join)
 ```
 
 See `vignette("tech-dm-filter")` for more details on filtering.
@@ -153,11 +153,11 @@ The following joins are determined by the foreign key links.
 ```{r}
 dm_nycflights13() %>%
   dm_select_tbl(-weather) %>%
-  dm_flatten_to_tbl(start = flights)
+  dm_flatten_to_tbl(.start = flights)
 ```
 
-To be more precise, `dm_flatten_to_tbl()` will join all tables from one level of hierarchy (i.e., direct neighbors to table `start`).
-If you want to cover tables from all levels of hierarchy, use `dm_squash_to_tbl()` instead.
+To be more precise, `dm_flatten_to_tbl()` will join all tables from one level of hierarchy (i.e., direct neighbors to table `.start`).
+If you want to cover tables from all levels of hierarchy, use the argument `recursive = TRUE` for `dm_flatten_to_tbl()` instead.
 
 Also, be aware that all column names need to be unique.
 The `dm_flatten_to_tbl()` takes care of this by automatically renaming the relevant columns and informs the user if any names were changed, e.g. `dm_rename(airlines, airlines.name = name)`.

@@ -124,25 +124,25 @@ dm_filter_impl0 <- function(dm, table, expr) {
     dm_update_zoomed()
 }
 
-dm_filter_impl <- function(zoomed_dm, ..., set_filter) {
+dm_filter_impl <- function(dm_zoomed, ..., set_filter) {
   # valid table and empty ellipsis provided
   filter_quos <- enquos(...)
   if (is_empty(filter_quos)) {
-    return(zoomed_dm)
+    return(dm_zoomed)
   }
 
-  tbl <- tbl_zoomed(zoomed_dm)
+  tbl <- tbl_zoomed(dm_zoomed)
   filtered_tbl <- filter(tbl, ...)
 
   # attribute filter expression to zoomed table. Needs to be flagged with `zoomed = TRUE`, since
   # in case of `dm_insert_zoomed()` the filter exprs needs to be transferred
   if (set_filter) {
-    zoomed_dm <-
-      zoomed_dm %>%
-      set_filter_for_table(orig_name_zoomed(zoomed_dm), map(filter_quos, quo_get_expr), TRUE)
+    dm_zoomed <-
+      dm_zoomed %>%
+      set_filter_for_table(orig_name_zoomed(dm_zoomed), map(filter_quos, quo_get_expr), TRUE)
   }
 
-  replace_zoomed_tbl(zoomed_dm, filtered_tbl)
+  replace_zoomed_tbl(dm_zoomed, filtered_tbl)
 }
 
 set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {

@@ -257,14 +257,14 @@ test_that("'collect.dm()' collects tables on DB", {
   expect_true(all(is_df))
 })
 
-test_that("'collect.zoomed_dm()' collects tables, with message", {
-  zoomed_dm_for_collect <-
+test_that("'collect.dm_zoomed()' collects tables, with message", {
+  dm_zoomed_for_collect <-
     dm_for_filter() %>%
     dm_zoom_to(tf_1) %>%
     mutate(c = a + 1)
 
   expect_message(
-    out <- zoomed_dm_for_collect %>% collect(),
+    out <- dm_zoomed_for_collect %>% collect(),
     "pull_tbl"
   )
 
@@ -286,17 +286,17 @@ test_that("'compute.dm()' computes tables on DB", {
   expect_equal(lengths(remote_names), rep_along(remote_names, 1))
 })
 
-test_that("'compute.zoomed_dm()' computes tables on DB", {
+test_that("'compute.dm_zoomed()' computes tables on DB", {
   skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
 
-  zoomed_dm_for_compute <-
+  dm_zoomed_for_compute <-
     dm_for_filter_duckdb() %>%
     dm_zoom_to(tf_1) %>%
     mutate(c = a + 1)
 
   # without computing
   def <-
-    zoomed_dm_for_compute %>%
+    dm_zoomed_for_compute %>%
     dm_update_zoomed() %>%
     dm_get_def()
 
@@ -305,7 +305,7 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
 
   # with computing
   def <-
-    suppress_mssql_message(compute(zoomed_dm_for_compute)) %>%
+    suppress_mssql_message(compute(dm_zoomed_for_compute)) %>%
     dm_update_zoomed() %>%
     dm_get_def()
 
@@ -313,7 +313,7 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
   expect_equal(lengths(remote_names), rep_along(remote_names, 1))
 })
 
-test_that("some methods/functions for `zoomed_dm` work", {
+test_that("some methods/functions for `dm_zoomed` work", {
   expect_identical(
     colnames(dm_zoom_to(dm_for_filter(), tf_1)),
     c("a", "b")
@@ -414,7 +414,7 @@ test_that("subsetting `dm` works", {
   expect_equivalent_tbl(dm_for_filter()[["tf_3"]], tf_3())
 })
 
-test_that("subsetting `zoomed_dm` works", {
+test_that("subsetting `dm_zoomed` works", {
   skip_if_remote_src()
   expect_identical(
     dm_zoom_to(dm_for_filter(), tf_2)$c,
@@ -432,7 +432,7 @@ test_that("subsetting `zoomed_dm` works", {
   )
 })
 
-test_that("as.list()-method works for local `zoomed_dm`", {
+test_that("as.list()-method works for local `dm_zoomed`", {
   skip_if_remote_src()
   expect_identical(
     as.list(dm_for_filter() %>% dm_zoom_to(tf_4)),
@@ -581,7 +581,7 @@ test_that("glimpse.dm() works", {
   })
 })
 
-test_that("glimpse.zoomed_dm() works", {
+test_that("glimpse.dm_zoomed() works", {
   skip_if_remote_src()
   expect_snapshot({
     # doesn't have foreign keys to print

@@ -4,8 +4,8 @@ This vignette describes the logic behind the names of the
 {dm}-functions.
 
 In general the functions are implemented in such a way, that no function
-can handle both `dm` classes (`dm` and `zoomed_dm`) as an argument. A
-`zoomed_dm` behaves in most situations like a table and there are mostly
+can handle both `dm` classes (`dm` and `dm_zoomed`) as an argument. A
+`dm_zoomed` behaves in most situations like a table and there are mostly
 no explicit functions available for this class, but rather methods (see
 vignette [“Zooming and manipulating
 tables”](https://cynkra.github.io/dm/articles/tech-dm-zoom.html).
@@ -43,4 +43,4 @@ Most important extended prefixes `dm_..._`:
 7.  `_colors`: Relates to the colors for the visualization of the dm
 8.  `_zoomed`: Insert, update or discard the zoomed table. In
     combination with the prefix `dm_` this indicates, that the first
-    argument is a `zoomed_dm` rather than a `dm`.
+    argument is a `dm_zoomed` rather than a `dm`.

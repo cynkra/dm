@@ -322,6 +322,7 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
 #' Changing the interface later seems harmless because these functions are
 #' most likely used interactively.
 #'
+#' @rdname dm_enum_pk_candidates
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
 #' nycflights13::flights %>%
@@ -346,7 +347,6 @@ enum_pk_candidates <- function(table, ...) {
 #'
 #' @inheritParams dm_add_pk
 #'
-#' @rdname enum_pk_candidates
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
 #'
