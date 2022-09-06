@@ -352,7 +352,6 @@ import(purrr, except = c(list_along, rep_along, invoke, modify, as_function, fla
 import(rlang)
 import(tibble)
 import(tidyr, except = c(extract))
-importFrom(glue,glue)
 importFrom(grDevices,col2rgb)
 importFrom(grDevices,colors)
 importFrom(grDevices,rgb)

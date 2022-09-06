@@ -1,5 +1,4 @@
 #' @import cli
-#' @importFrom glue glue
 #' @import rlang
 #' @importFrom vctrs vec_ptype2 vec_ptype_abbr vec_slice vec_cast vec_proxy_compare vec_data vec_c
 #' @importFrom vctrs vec_names vec_as_names vec_cbind vec_rbind vec_recycle
