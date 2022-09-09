@@ -138,10 +138,8 @@ dm_unwrap_tbl1 <- function(dm, table, ptype) {
   nms <- names(table)
 
   # detect parent and children tables
-  # children <- nms[map_lgl(table, inherits, "nested")]
-  children <- grep(">$", nms, value = TRUE)
-  # parents <- nms[map_lgl(table, inherits, "packed")]
-  parents <- grep("<$", nms, value = TRUE)
+  children <- nms[map_lgl(table, is_bare_list)]
+  parents <- nms[map_lgl(table, is.data.frame)]
 
   # unnest children tables
   for (child_name in children) {

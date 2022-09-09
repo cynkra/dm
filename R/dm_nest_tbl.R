@@ -72,7 +72,7 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
     parent_data,
     table_data,
     by = set_names(new_parent_fk, parent_fk),
-    name = paste0(table_name, ">"),
+    name = table_name,
     keep = TRUE
   )
 
@@ -186,7 +186,7 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
     child_data,
     table_data,
     by = set_names(new_parent_fk, child_fk),
-    name = paste0(table_name, "<"),
+    name = table_name,
     keep = TRUE
   )
 
