@@ -22,11 +22,11 @@ test_that("`dm_pack_tbl()`, `dm_unpack_tbl()`, `dm_nest_tbl()`, `dm_unnest_tbl()
     dm_packed_nested
 
     #dm_packed_nested_unnested <- dm_unnest_tbl(dm_packed_nested, tf_3, tf_2, ptype = dm_for_filter())
-    dm_packed_nested_unnested <- dm_unnest_tbl(dm_packed_nested, tf_3, `tf_2>`)
+    dm_packed_nested_unnested <- dm_unnest_tbl(dm_packed_nested, tf_3, tf_2)
     dm_packed_nested_unnested
 
     #dm_packed_nested_unnested_unpacked <- dm_unpack_tbl(dm_packed_nested_unnested, tf_2, tf_1, ptype = dm_for_filter())
-    dm_packed_nested_unnested_unpacked <- dm_unpack_tbl(dm_packed_nested_unnested, tf_2, `tf_1<`)
+    dm_packed_nested_unnested_unpacked <- dm_unpack_tbl(dm_packed_nested_unnested, tf_2, tf_1)
     dm_packed_nested_unnested_unpacked
   })
 })
