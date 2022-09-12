@@ -55,23 +55,11 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   parent_data <- def$data[def$table == parent_name][[1]]
-  #nested_data <- nest_join(parent_data, table_data, by = set_names(child_fk, parent_fk), name = table_name)
-  #class(nested_data[[table_name]]) <- c("nested", class(nested_data[[table_name]]))
-
-  # FIXME: fail if weird names exist already
-  new_names <- names(table_data)
-  fk_lgl <- new_names %in% child_fk
-  pk_lgl <- new_names %in% child_pk
-  new_names[fk_lgl] <- paste0(child_fk, "=", parent_fk)
-  new_names[pk_lgl] <- paste0(new_names[pk_lgl], "*")
-  new_parent_fk <- new_names[fk_lgl]
-
-  table_data <- set_names(table_data, new_names)
 
   nested_data <- nest_join(
     parent_data,
     table_data,
-    by = set_names(new_parent_fk, parent_fk),
+    by = set_names(child_fk, parent_fk),
     name = table_name,
     keep = TRUE
   )
