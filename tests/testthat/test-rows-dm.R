@@ -87,8 +87,6 @@ test_that("dm_rows_insert()", {
 })
 
 test_that("dm_rows_update()", {
-  # duckdb+df: https://github.com/duckdb/duckdb/issues/4023
-  skip_if_src("duckdb", "maria", "df")
   expect_snapshot({
     # Test bad column order
     dm_filter_rearranged <-
@@ -104,17 +102,13 @@ test_that("dm_rows_update()", {
         a = 2L,
         b = "q"
       ),
-      tf_2 = tibble(
-        c = c("worm"),
-        d = 10L,
-      ),
       tf_4 = tibble(
         h = "e",
         i = "sieben",
       ),
       tf_5 = tibble(
         k = 3L,
-        m = "tree",
+        ww = 3,
       ),
     )
 
