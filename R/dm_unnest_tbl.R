@@ -111,58 +111,30 @@ dm_unpack_tbl <- function(dm, child_table, col, ptype) {
   child_table_name <- dm_tbl_name(dm, {{ child_table }})
   table <- dm_get_tables_impl(dm)[[child_table_name]]
   col_expr <- enexpr(col)
+  new_parent_table_name <- names(eval_select_indices(col_expr, colnames(table)))
 
-  #new_parent_table_name <- names(eval_select_indices(col_expr, colnames(table)))
   packed_col_name <- names(eval_select_indices(col_expr, colnames(table)))
-  new_parent_table_name <- sub("<$", "", packed_col_name)
-
-  # parent_pk_names <- dm_get_all_pks(ptype) %>%
-  #   filter(table == new_parent_table_name) %>%
-  #   pull(pk_col) %>%
-  #   unlist()
-
-  # fk <- dm_get_all_fks(ptype) %>%
-  #   filter(child_table == child_table_name, parent_table == new_parent_table_name)
-  # child_fk_names <- unlist(fk$child_fk_cols)
-  # parent_fk_names <- unlist(fk$parent_key_cols)
-
-  new_table <- table[[packed_col_name]]
+  new_table <- table[[packed_col_name]] %>%
+    distinct()
   raw_names <- names(new_table)
 
-  pattern <- "^([^*=]+?)(=([^*=]+?))?\\*?$"
-  clean_names <- sub(pattern, "\\1", raw_names)
-  parent_pk_lgl <- grepl("\\*$", raw_names)
-  parent_pk_names <- clean_names[parent_pk_lgl]
-  keys <- grep("=", raw_names, value = TRUE)
-  parent_fk_names <- sub(pattern, "\\1", keys)
-  child_fk_names <- sub(pattern, "\\3", keys)
-
-  # extract packed table
-  new_table <-
-    new_table %>%
-    rename(!!!set_names(raw_names, clean_names)) %>%
-    distinct()
-  # new_table <-
-  #   table %>%
-  #   select(!!!set_names(child_fk_names, parent_fk_names), !!new_parent_table_name) %>%
-  #   unpack(!!new_parent_table_name) %>%
-  #   distinct()
+  parent_pk_names <- guess_pk(new_table)
+  child_fk_names <- guess_fks(new_table, table, parent_pk_names)
 
   # update the dm by adding new table, removing packed col and setting keys
-  dm <- dm(dm, !!new_parent_table_name := new_table)
+  dm <- dm(dm, !!packed_col_name := new_table)
   dm <- dm_select(dm, !!child_table_name, -all_of(packed_col_name))
   if (length(child_fk_names)) {
     dm <- dm_add_fk(
       dm,
       !!child_table_name,
       !!child_fk_names,
-      !!new_parent_table_name,
-      !!parent_fk_names
+      !!packed_col_name,
+      !!parent_pk_names
     )
   }
-
   if (length(parent_pk_names)) {
-    dm <- dm_add_pk(dm, !!new_parent_table_name, !!parent_pk_names)
+    dm <- dm_add_pk(dm, !!packed_col_name, !!parent_pk_names)
   }
 
   dm
@@ -203,3 +175,4 @@ guess_pk <- function(table) {
     }
   }
   child_pk_names
+}
