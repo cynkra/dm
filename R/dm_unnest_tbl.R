@@ -38,47 +38,32 @@
 dm_unnest_tbl <- function(dm, parent_table, col, ptype) {
   # process args and build names
   parent_table_name <- dm_tbl_name(dm, {{ parent_table }})
-  table <- dm[[parent_table_name]]
+  table <- dm_get_tables_impl(dm)[[parent_table_name]]
   col_expr <- enexpr(col)
   nested_col_name <- names(eval_select_indices(col_expr, colnames(table)))
-  new_child_table_name <- sub(">$", "", nested_col_name)
 
-  # child_pk_names <-
-  #   dm_get_all_pks(ptype) %>%
-  #   filter(table == new_child_table_name) %>%
-  #   pull(pk_col) %>%
-  #   unlist()
-
-  # fk <-
-  #   dm_get_all_fks(ptype) %>%
-  #   filter(child_table == new_child_table_name, parent_table == parent_table_name)
-
-  new_table <- vctrs::vec_c(!!!table[[nested_col_name]])
-  raw_names <- names(new_table)
-
-  pattern <- "^([^*=]+?)(=([^*=]+?))?\\*?$"
-  clean_names <- sub(pattern, "\\1", raw_names)
-  child_pk_lgl <- grepl("\\*$", raw_names)
-  child_pk_names <- clean_names[child_pk_lgl]
-  keys <- grep("=", raw_names, value = TRUE)
-  child_fk_names <- sub(pattern, "\\1", keys)
-  parent_fk_names <- sub(pattern, "\\3", keys)
+  parent_pk_names <-
+    dm_get_all_pks(dm) %>%
+    filter(table == parent_table_name) %>%
+    pull(pk_col) %>%
+    unlist()
 
   # extract nested table
-  new_table <-
-    new_table %>%
-    rename(!!!set_names(raw_names, clean_names)) %>%
+  new_table <- vctrs::vec_c(!!!table[[nested_col_name]]) %>%
     distinct()
+  raw_names <- names(new_table)
+
+  child_fk_names <- guess_fks(table, new_table, parent_pk_names)
+  child_pk_names <- guess_pk(new_table)
 
   # update the dm by adding new table, removing nested col and setting keys
-  dm <- dm(dm, !!new_child_table_name := new_table)
+  dm <- dm(dm, !!nested_col_name := new_table)
   dm <- dm_select(dm, !!parent_table_name, -all_of(nested_col_name))
-  if (length(parent_fk_names)) {
-    dm <- dm_add_fk(dm, !!new_child_table_name, !!child_fk_names, !!parent_table_name, !!parent_fk_names)
+  if (length(parent_pk_names)) {
+    dm <- dm_add_fk(dm, !!nested_col_name, !!child_fk_names, !!parent_table_name, !!parent_pk_names)
   }
-
   if (length(child_pk_names)) {
-    dm <- dm_add_pk(dm, !!new_child_table_name, !!child_pk_names)
+    dm <- dm_add_pk(dm, !!nested_col_name, !!child_pk_names)
   }
 
   dm
@@ -182,3 +167,39 @@ dm_unpack_tbl <- function(dm, child_table, col, ptype) {
 
   dm
 }
+
+guess_fks <- function(parent_table, child_table, parent_pk_names) {
+  names_by_type <-
+    child_table %>%
+    map_chr(type_of) %>%
+    split.default(child_table, .) %>%
+    map(names)
+  pk1_candidates <- names_by_type[[typeof(parent_table[[parent_pk_names[1]]])]]
+  combos_df <- reduce(parent_pk_names[-1], .init = tibble(pk1_candidates), function(acc, nxt) {
+    new_candidates <- names_by_type[[typeof(parent_table[[nxt]])]]
+    tidyr::expand_grid(acc, new_candidates) %>%
+      rowwise() %>%
+      filter(n_distinct(c_across()) == ncol(.)) %>%
+      ungroup()
+  })
+  for (i in seq_len(nrow(combos_df))) {
+    combo <- unname(unlist(combos_df[i,]))
+    combo_is_subset <-
+      nrow(child_table) ==
+      child_table[combo] %>%
+      set_names(parent_pk_names) %>%
+      semi_join(parent_table[parent_pk_names], by = parent_pk_names) %>%
+      nrow()
+    if (combo_is_subset) break
+  }
+  combo
+}
+
+guess_pk <- function(table) {
+  for (i in seq_len(ncol(table))) {
+    if (!anyDuplicated(table[1:i])) {
+      child_pk_names <- names(table)[1:i]
+      break
+    }
+  }
+  child_pk_names
