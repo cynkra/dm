@@ -2,6 +2,10 @@
 
     Code
       dm_get_data_model(dm_for_filter())
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $tables
         table segment display
@@ -52,6 +56,10 @@
       [1] "data_model"
     Code
       dm_get_data_model(dm_for_filter(), column_types = TRUE)
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $tables
         table segment display

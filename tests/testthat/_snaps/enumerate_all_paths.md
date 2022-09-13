@@ -2,6 +2,10 @@
 
     Code
       enumerate_all_paths(dm_for_filter_w_cycle(), "tf_1")
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $table_mapping
       # A tibble: 10 x 2
@@ -36,6 +40,10 @@
       
     Code
       enumerate_all_paths(dm_for_filter_w_cycle(), "tf_5")
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $table_mapping
       # A tibble: 12 x 2
@@ -73,6 +81,10 @@
       
     Code
       enumerate_all_paths(entangled_dm(), "a")
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $table_mapping
       # A tibble: 22 x 2
@@ -108,6 +120,10 @@
       
     Code
       enumerate_all_paths(entangled_dm(), "c")
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $table_mapping
       # A tibble: 22 x 2
@@ -143,6 +159,10 @@
       
     Code
       enumerate_all_paths(entangled_dm_2(), "a")
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $table_mapping
       # A tibble: 8 x 2
@@ -173,6 +193,10 @@
       
     Code
       enumerate_all_paths(entangled_dm_2(), "d")
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $table_mapping
       # A tibble: 4 x 2

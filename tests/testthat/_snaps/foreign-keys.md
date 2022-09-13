@@ -21,6 +21,10 @@
 
     Code
       dm_for_filter() %>% dm_rm_fk(tf_5) %>% get_all_keys()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_5, l, tf_4) %>%
@@ -47,6 +51,10 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk(columns = l) %>% get_all_keys()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_5, l, tf_4)
@@ -73,6 +81,10 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk(columns = c(e, e1)) %>% get_all_keys()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_2, c(e, e1), tf_3)
@@ -99,6 +111,10 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk(ref_table = tf_3) %>% get_all_keys()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_2, c(e, e1), tf_3) %>%
@@ -125,6 +141,10 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk(ref_columns = c(f, f1)) %>% get_all_keys()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_2, c(e, e1), tf_3) %>%
@@ -151,6 +171,10 @@
       
     Code
       dm_for_filter() %>% dm_rm_fk() %>% get_all_keys()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Removing foreign keys: %>%
         dm_rm_fk(tf_2, d, tf_1) %>%

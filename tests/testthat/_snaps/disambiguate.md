@@ -3,6 +3,10 @@
     Code
       dm_for_flatten() %>% dm_disambiguate_cols() %>% dm_paste(options = c("select",
         "keys"))
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Renaming ambiguous columns: %>%
         dm_rename(fact, something.fact = something) %>%
