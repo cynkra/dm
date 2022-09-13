@@ -20,6 +20,11 @@
       Foreign keys: 3
     Code
       dm_packed_nested_unnested <- dm_unnest_tbl(dm_packed_nested, tf_3, tf_2, ptype = dm_for_filter())
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
+    Code
       dm_packed_nested_unnested
     Output
       -- Metadata --------------------------------------------------------------------
