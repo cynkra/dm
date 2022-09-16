@@ -8,6 +8,11 @@
       Replaced table `tf_5` with `tf_5-1`, `tf_5-2`.
       Replaced table `tf_6` with `tf_6-1`, `tf_6-2`.
       Replaced table `tf_7` with `tf_7-1`, `tf_7-2`.
+    Condition
+      Warning in `left_join()`:
+      Each row in `x` is expected to match at most 1 row in `y`.
+      i Row 3 of `x` matches multiple rows.
+      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Output
       # A tibble: 11 x 5
          child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -32,6 +37,11 @@
       Replaced table `tf_4` with `tf_4-1`, `tf_4-2`.
       Replaced table `tf_6` with `tf_6-1`, `tf_6-2`.
       Replaced table `tf_7` with `tf_7-1`, `tf_7-2`.
+    Condition
+      Warning in `left_join()`:
+      Each row in `x` is expected to match at most 1 row in `y`.
+      i Row 1 of `x` matches multiple rows.
+      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Output
       # A tibble: 12 x 5
          child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -50,6 +60,11 @@
       12 tf_6-2      o             tf_7-2       p               no_action
     Code
       dm_disentangle(entangled_dm(), a, quiet = TRUE) %>% dm_get_all_fks()
+    Condition
+      Warning in `left_join()`:
+      Each row in `x` is expected to match at most 1 row in `y`.
+      i Row 2 of `x` matches multiple rows.
+      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Output
       # A tibble: 22 x 5
          child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -75,6 +90,11 @@
       Replaced table `f` with `f-1`, `f-2`, `f-3`, `f-4`.
       Replaced table `g` with `g-1`, `g-2`, `g-3`, `g-4`.
       Replaced table `h` with `h-1`, `h-2`, `h-3`, `h-4`.
+    Condition
+      Warning in `left_join()`:
+      Each row in `x` is expected to match at most 1 row in `y`.
+      i Row 1 of `x` matches multiple rows.
+      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Output
       # A tibble: 22 x 5
          child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -97,6 +117,11 @@
       Replaced table `c` with `c-1`, `c-2`.
       Replaced table `d` with `d-1`, `d-2`.
       Replaced table `e` with `e-1`, `e-2`.
+    Condition
+      Warning in `left_join()`:
+      Each row in `x` is expected to match at most 1 row in `y`.
+      i Row 2 of `x` matches multiple rows.
+      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Output
       # A tibble: 9 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -112,6 +137,11 @@
       9 f           f             g            g               no_action
     Code
       dm_disentangle(entangled_dm_2(), d, quiet = TRUE) %>% dm_get_all_fks()
+    Condition
+      Warning in `left_join()`:
+      Each row in `x` is expected to match at most 1 row in `y`.
+      i Row 1 of `x` matches multiple rows.
+      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Output
       # A tibble: 7 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
