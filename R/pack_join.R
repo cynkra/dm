@@ -42,12 +42,14 @@ pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALS
   if (!copy && inherits(y, "tbl_lazy"))
     abort("`x` and `y` must share the same src, set `copy` = TRUE (may be slow)")
   y_local <- collect(y)
-  # by2 is only used for `pack`, so we keep dplyr's messages for implicit `by`
-  by2 <- by %||% intersect(names(x), names(y_local))
   x_nms <- colnames(x)
   name_var_unique <- last(make.unique(c(names(y_local), x_nms, name_var)))
-  y_packed <- tidyr::pack(y_local, !!name_var_unique := -all_of(by2))
-  joined <- left_join(x, y_packed, by = by, copy = copy, keep = keep)
+  y_keys <- unname(by) %||% intersect(names(x), names(y_local))
+  y_packed <- tidyr::pack(y_local, !!name_var_unique := -all_of(y_keys))
+  if (keep) {
+    y_packed[[name_var_unique]][y_keys] <- y_packed[y_keys]
+  }
+  joined <- left_join(x, y_packed, by = by, copy = copy, keep = FALSE)
   # overwrite existing column silently in x if collision, not very safe but consistent with dplyr::nest_join
   if (name_var %in% x_nms) {
     joined[[name_var]] <- NULL
