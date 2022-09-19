@@ -109,8 +109,8 @@ cdm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
 #' @keywords internal
 #' @export
 cdm_rm_tbl <- function(dm, ...) {
-  deprecate_soft("0.1.0", "dm::cdm_rm_tbl()", "dm::dm_rm_tbl()")
-  dm_rm_tbl(dm = dm, ... = ...)
+  deprecate_soft("0.1.0", "dm::cdm_rm_tbl()", "dm::dm_select_tbl()")
+  dm_rm_tbl_impl(dm = dm, ... = ...)
 }
 
 #' @rdname deprecated
@@ -140,7 +140,7 @@ cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, indexes =
 #' @export
 cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
   deprecate_soft("0.1.0", "dm::cdm_disambiguate_cols()", "dm::dm_disambiguate_cols()")
-  dm_disambiguate_cols(dm = dm, sep = sep, quiet = quiet)
+  dm_disambiguate_cols(dm = dm, .sep = sep, .quiet = quiet)
 }
 
 #' @rdname deprecated
@@ -212,7 +212,11 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   deprecate_soft("0.1.0", "dm::cdm_flatten_to_tbl()", "dm::dm_flatten_to_tbl()")
   join_name <- deparse(substitute(join))
   start <- dm_tbl_name(dm, {{ start }})
-  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
+
+  vars <- setdiff(src_tbls_impl(dm), start)
+  list_of_pts <- eval_select_table(quo(c(...)), vars)
+
+  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
 }
 
 #' @rdname deprecated
@@ -223,7 +227,11 @@ cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   join_name <- deparse(substitute(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
   start <- dm_tbl_name(dm, {{ start }})
-  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
+
+  vars <- setdiff(src_tbls_impl(dm), start)
+  list_of_pts <- eval_select_table(quo(c(...)), vars)
+
+  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = join, join_name = join_name, squash = TRUE, .position = "prefix")
 }
 
 #' @rdname deprecated
@@ -242,7 +250,7 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  dm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, other, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
 }
 
 #' @rdname deprecated
@@ -641,6 +649,22 @@ cdm_zoom_out <- function(dm) {
   dm_discard_zoomed(dm = dm)
 }
 
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+dm_rm_tbl <- function(dm, ...) {
+  deprecate_soft("1.0.0", "dm::dm_rm_tbl()", "dm::dm_select_tbl()")
+  # since deprecated cdm_rm_tbl() was calling dm_rm_tbl() we need dm_rm_tbl_impl
+  dm_rm_tbl_impl(dm, ...)
+}
+
+dm_rm_tbl_impl <- function(dm, ...) {
+  check_not_zoomed(dm)
+  deselected_ind <- eval_select_table_indices(quo(c(...)), src_tbls_impl(dm))
+  selected_ind <- setdiff(seq_along(dm), deselected_ind)
+
+  dm_select_tbl(dm, !!!selected_ind)
+}
 
 abort_rm_fk_col_missing <- function() {
   abort(error_txt_rm_fk_col_missing(), class = dm_error_full("rm_fk_col_missing"))
@@ -648,4 +672,171 @@ abort_rm_fk_col_missing <- function() {
 
 error_txt_rm_fk_col_missing <- function() {
   "Parameter `columns` has to be set. Pass `NULL` for removing all references."
+}
+
+#' @description
+#' `dm_add_tbl` is deprecated as of dm 1.0.0, because the same functionality
+#' is offered by [dm()] with `.name_repair = "unique"`.
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
+  deprecate_soft("1.0.0", "dm_add_tbl()", "dm()",
+    details = 'Use `.name_repair = "unique"` if necessary.'
+  )
+
+  check_not_zoomed(dm)
+
+  new_names <- names(exprs(..., .named = TRUE))
+  new_tables <- list2(...)
+
+  check_new_tbls(dm, new_tables)
+
+  old_names <- src_tbls_impl(dm)
+  names_list <- repair_table_names(old_names, new_names, repair, quiet)
+  # rename old tables in case name repair changed their names
+
+  dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
+  dm_add_tbl_impl(dm, new_tables, names_list$new_names)
+}
+
+#' @description
+#' `dm_bind()`  is deprecated as of dm 1.0.0, because the same functionality
+#' is offered by [dm()].
+#'
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
+  deprecate_soft("1.0.0", "dm_bind()", "dm()")
+
+  dms <- list2(...)
+
+  new_def <- dm_bind_impl(dms, repair, quiet)
+  new_dm3(new_def)
+}
+
+#' @description
+#' `dm_squash_to_tbl()`  is deprecated as of dm 1.0.0, because the same functionality
+#' is offered by [dm_flatten_to_tbl()] with `recursive = TRUE`.
+#'
+#' @rdname deprecated
+#' @keywords internal
+#'
+#' @export
+dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
+  deprecate_soft("1.0.0", "dm_squash_to_tbl()", details = "Please use `recursive = TRUE` in `dm_flatten_to_tbl()` instead.")
+
+  check_not_zoomed(dm)
+  join_name <- as_label(enexpr(join))
+  if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
+  start <- dm_tbl_name(dm, {{ start }})
+
+  vars <- setdiff(src_tbls_impl(dm), start)
+  list_of_pts <- eval_select_table(quo(c(...)), vars)
+
+  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = join, join_name = join_name, squash = TRUE, .position = "prefix")
+}
+
+#' @description
+#' `rows_truncate()` is deprecated as of dm 1.0.0, because it's a DDL operation
+#' and requires different permissions than the `dplyr::rows_*()` functions.
+#'
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+rows_truncate <- function(x, ..., in_place = FALSE) {
+  deprecate_soft("1.0.0", "rows_truncate()")
+
+  check_dots_used(action = warn)
+  UseMethod("rows_truncate", x)
+}
+
+rows_truncate_ <- function(x, y, ..., in_place = FALSE) {
+  UseMethod("rows_truncate", x)
+}
+
+#' @export
+rows_truncate.data.frame <- function(x, ..., in_place = NULL) {
+  stopifnot(is.null(in_place) || !in_place)
+  x[0, ]
+}
+
+#' @export
+rows_truncate.tbl_sql <- function(x, ...,
+                                  in_place = NULL) {
+  name <- target_table_name(x, in_place)
+
+  if (!is_null(name)) {
+    con <- dbplyr::remote_con(x)
+    sql <- sql_rows_truncate(x)
+    dbExecute(con, sql, immediate = TRUE)
+    invisible(x)
+  } else {
+    x %>%
+      filter(0L == 1L)
+  }
+}
+
+#' @rdname deprecated
+#' @keywords internal
+#'
+#' @export
+sql_rows_truncate <- function(x, ...) {
+  deprecate_soft("1.0.0", "sql_rows_truncate()")
+
+  check_dots_used()
+  UseMethod("sql_rows_truncate")
+}
+
+#' @export
+sql_rows_truncate.tbl_sql <- function(x, ...) {
+  name <- dbplyr::remote_name(x)
+  paste0("TRUNCATE TABLE ", name)
+}
+
+#' @export
+sql_rows_truncate.tbl_SQLiteConnection <- function(x, ...) {
+  name <- dbplyr::remote_name(x)
+  paste0("DELETE FROM ", name)
+}
+
+#' @export
+sql_rows_truncate.tbl_duckdb_connection <- sql_rows_truncate.tbl_SQLiteConnection
+
+target_table_name <- function(x, in_place) {
+  name <- dbplyr::remote_name(x)
+
+  # Only write if requested
+  if (!is_null(name) && is_true(in_place)) {
+    return(name)
+  }
+
+  # Abort if requested but can't write
+  if (is_null(name) && is_true(in_place)) {
+    abort("Can't determine name for target table. Set `in_place = FALSE` to return a lazy table.")
+  }
+
+  # Verbose by default
+  if (is_null(in_place)) {
+    if (is_null(name)) {
+      inform("Result is returned as lazy table, because `x` does not correspond to a table that can be updated. Use `in_place = FALSE` to mute this message.")
+    } else {
+      inform("Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.")
+    }
+  }
+
+  # Never write unless handled above
+  NULL
+}
+
+#' @rdname deprecated
+#' @keywords internal
+#'
+#' @export
+dm_rows_truncate <- function(x, y, ..., in_place = NULL, progress = NA) {
+  deprecate_soft("1.0.0", "dm_rows_truncate()")
+  check_dots_empty()
+
+  dm_rows(x, y, "truncate", top_down = FALSE, in_place, require_keys = FALSE, progress = progress)
 }

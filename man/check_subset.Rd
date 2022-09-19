@@ -4,31 +4,36 @@
 \alias{check_subset}
 \title{Check column values for subset}
 \usage{
-check_subset(t1, c1, t2, c2)
+check_subset(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL)
 }
 \arguments{
-\item{t1}{The data frame that contains the columns \code{c1}.}
+\item{x, y}{A data frame or lazy table.}
 
-\item{c1}{The columns of \code{t1} that should only contain values that are also present in columns \code{c2} of data frame \code{t2}. Multiple columns can be chosen using \code{c(col1, col2)}.}
+\item{...}{These dots are for future extensions and must be empty.}
 
-\item{t2}{The data frame that contains the columns \code{c2}.}
+\item{x_select, y_select}{Key columns to restrict the check, processed with
+\code{\link[dplyr:select]{dplyr::select()}}.}
 
-\item{c2}{The columns of the second data frame which have to contain all values of \code{c1} to avoid an error. Multiple columns can be chosen using \code{c(col1, col2)}.}
+\item{by_position}{Set to \code{TRUE} to ignore column names and match
+by position instead.
+The default means matching by name, use \code{x_select} and/or \code{y_select}
+to align the names.}
 }
 \value{
-Returns \code{t1}, invisibly, if the check is passed.
+Returns \code{x}, invisibly, if the check is passed.
 Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
-\code{check_subset()} tests if the values of the chosen columns \code{c1} of data frame \code{t1} are a subset of the values
-of columns \code{c2} of data frame \code{t2}.
+\code{check_subset()} tests if \code{x} is a subset of \code{y}.
+For convenience, the \code{x_select} and \code{y_select} arguments allow restricting the check
+to a set of key columns without affecting the return value.
 }
 \examples{
 data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 # this is passing:
-check_subset(data_1, a, data_2, a)
+check_subset(data_1, data_2, x_select = a, y_select = a)
 
 # this is failing:
-try(check_subset(data_2, a, data_1, a))
+try(check_subset(data_2, data_1))
 }

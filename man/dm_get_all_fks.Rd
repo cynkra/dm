@@ -26,8 +26,6 @@ A tibble with the following columns:
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Get a summary of all foreign key relations in a \code{\link{dm}}.
 }
 \examples{

@@ -33,7 +33,7 @@ test_that("output", {
     dm_for_filter() %>%
       dm_select(tf_5, k = k, m) %>%
       dm_select(tf_1, a) %>%
-      dm_add_tbl(x = copy_to_my_test_src(tibble(q = 1L), qq)) %>%
+      dm(x = copy_to_my_test_src(tibble(q = 1L), qq)) %>%
       dm_paste(options = "select")
 
     "produce code with colors"

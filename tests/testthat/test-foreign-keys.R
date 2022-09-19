@@ -244,7 +244,7 @@ test_that("enum_fk_candidates() works properly", {
   # FIXME: COMPOUND: Test for tf_2 -> tf_3 and other combinations too
   expect_silent(
     expect_equivalent_why(
-      enum_fk_candidates(zoomed_dm(), tf_1),
+      enum_fk_candidates(dm_zoomed(), tf_1),
       dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1)
     )
   )

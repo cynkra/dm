@@ -1,8 +1,6 @@
 #' Prototype for a dm object
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
-#'
 #' The prototype contains all tables, all primary and foreign keys,
 #' but no data.
 #' All tables are truncated and converted to zero-row tibbles,

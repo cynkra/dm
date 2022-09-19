@@ -1,26 +1,17 @@
 #' Check if column(s) can be used as keys
 #'
-#' @description `check_key()` accepts a data frame and, optionally, columns.
+#' @description
+#' `check_key()` accepts a data frame and, optionally, columns.
 #' It throws an error
 #' if the specified columns are NOT a unique key of the data frame.
 #' If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
 #'
-#' @param .data The data frame whose columns should be tested for key properties.
-#' @param ... The names of the columns to be checked.
+#' @param x The data frame whose columns should be tested for key properties.
+#' @param ... The names of the columns to be checked, processed with
+#'   [dplyr::select()]. If omitted, all columns will be checked.
+#' @param .data Deprecated.
 #'
-#'   One or more unquoted expressions separated by commas.
-#'   Variable names can be treated as if they were positions, so you
-#'   can use expressions like x:y to select ranges of variables.
-#'
-#'   The arguments in `...` are automatically quoted and evaluated in a context
-#'   where column names represent column positions.
-#'   They also support
-#'   unquoting and splicing.
-#'
-#'   See selection helpers for more details and examples about tidyselect helpers
-#'   such as `starts_with()`, `everything()`, etc.
-#'
-#' @return Returns `.data`, invisibly, if the check is passed.
+#' @return Returns `x`, invisibly, if the check is passed.
 #'   Otherwise an error is thrown and the reason for it is explained.
 #'
 #' @export
@@ -31,29 +22,47 @@
 #'
 #' # this is passing:
 #' check_key(data, a, c)
-check_key <- function(.data, ...) {
+#' check_key(data)
+check_key <- function(x, ..., .data = deprecated()) {
+  if (!is_missing(.data)) {
+    deprecate_soft("1.0.0", "check_key(.data = )", "check_key(x = )")
+    return(check_key_impl0({{ .data }}, {{ x }}, ...))
+  }
+
+  check_key_impl({{ x }}, ...)
+}
+
+check_key_impl <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
 
-  # No special handling for no columns
-  cols_chosen <- eval_select_indices(quo(c(...)), colnames(.data))
-  orig_names <- names(cols_chosen)
-  names(cols_chosen) <- glue("...{seq_along(cols_chosen)}")
-
-  duplicate_rows <-
-    .data %>%
-    select(!!!cols_chosen) %>%
-    safe_count(!!!syms(names(cols_chosen))) %>%
-    select(n) %>%
-    filter(n > 1) %>%
-    head(1) %>%
-    collect()
-
-  if (nrow(duplicate_rows) != 0) {
-    abort_not_unique_key(as_label(data_q), orig_names)
+  if (dots_n(...) > 0) {
+    .data <- .data %>% select(...)
   }
 
-  invisible(.data)
+  check_key_impl0(.data, as_label(data_q))
+}
+
+check_key_impl0 <- function(x, x_label) {
+  orig_names <- colnames(x)
+  cols_chosen <- syms(set_names(orig_names, glue("...{seq_along(orig_names)}")))
+
+  if (inherits(x, "data.frame")) {
+    any_duplicate_rows <- vctrs::vec_duplicate_any(x)
+  } else {
+    duplicate_rows <-
+      x %>%
+      safe_count(!!!cols_chosen) %>%
+      select(n) %>%
+      filter(n > 1) %>%
+      head(1) %>%
+      collect()
+    any_duplicate_rows <- nrow(duplicate_rows) != 0
+  }
+
+  if (any_duplicate_rows) {
+    abort_not_unique_key(x_label, orig_names)
+  }
 }
 
 # an internal function to check if a column is a unique key of a table
@@ -69,12 +78,25 @@ is_unique_key_se <- function(.data, colname) {
   col_syms <- syms(colname)
   names(col_syms) <- val_names
 
-  # FIXME: Build expression instead of paste() + parse()
-  any_value_na_expr <- parse(text = paste0("is.na(", val_names, ")", collapse = " | "))[[1]]
+  any_value_na_expr <-
+    syms(val_names) %>%
+    map(call2, .fn = quote(is.na)) %>%
+    reduce(call2, .fn = quote(`|`))
 
+  if (inherits(.data, "data.frame")) {
+    count_tbl <-
+      .data %>%
+      select(!!!col_syms) %>%
+      vctrs::vec_count() %>%
+      unpack(key) %>%
+      rename(n = count)
+  } else {
+    count_tbl <-
+      .data %>%
+      safe_count(!!!col_syms)
+  }
   res_tbl <-
-    .data %>%
-    safe_count(!!!col_syms) %>%
+    count_tbl %>%
     mutate(any_na = if_else(!!any_value_na_expr, 1L, 0L)) %>%
     filter(n != 1 | any_na != 0L) %>%
     arrange(desc(n), !!!syms(val_names)) %>%
@@ -98,16 +120,22 @@ is_unique_key_se <- function(.data, colname) {
 
 #' Check column values for set equality
 #'
-#' @description `check_set_equality()` is a wrapper of `check_subset()`.
-#' It tests if one value set is a subset of another and vice versa, i.e., if both sets are the same.
+#' @description
+#' `check_set_equality()` is a wrapper of [check_subset()].
+#'
+#' It tests if one table is a subset of another and vice versa, i.e., if both sets are the same.
 #' If not, it throws an error.
 #'
-#' @param t1 The data frame that contains the columns `c1`.
-#' @param c1 The columns of `t1` that should only contain values that are also present in columns `c2` of data frame `t2`. Multiple columns can be chosen using `c(col1, col2)`.
-#' @param t2 The data frame that contains the columns `c2`.
-#' @param c2 The columns of `t2` that should only contain values that are also present in columns `c1` of data frame `t1`. Multiple columns can be chosen using `c(col1, col2)`.
+#' @param x,y A data frame or lazy table.
+#' @inheritParams rlang::args_dots_empty
+#' @param x_select,y_select Key columns to restrict the check, processed with
+#'   [dplyr::select()].
+#' @param by_position Set to `TRUE` to ignore column names and match
+#'   by position instead.
+#'   The default means matching by name, use `x_select` and/or `y_select`
+#'   to align the names.
 #'
-#' @return Returns `t1`, invisibly, if the check is passed.
+#' @return Returns `x`, invisibly, if the check is passed.
 #'   Otherwise an error is thrown and the reason for it is explained.
 #'
 #' @export
@@ -115,21 +143,31 @@ is_unique_key_se <- function(.data, colname) {
 #' data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is failing:
-#' try(check_set_equality(data_1, a, data_2, a))
+#' try(check_set_equality(data_1, data_2, x_select = a, y_select = a))
 #'
 #' data_3 <- tibble::tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
-#' check_set_equality(data_1, a, data_3, a)
-check_set_equality <- function(t1, c1, t2, c2) {
-  t1q <- enquo(t1)
-  t2q <- enquo(t2)
+#' check_set_equality(data_1, data_3, x_select = a, y_select = a)
+#' # this is still failing:
+#' try(check_set_equality(data_2, data_3))
+check_set_equality <- function(x, y,
+                               ...,
+                               x_select = NULL, y_select = NULL,
+                               by_position = NULL) {
+  check_api(
+    {{ x }}, {{ y }}, ...,
+    x_select = {{ x_select }},
+    y_select = {{ y_select }},
+    by_position = by_position,
+    target = check_set_equality_impl0
+  )
+  invisible(x)
+}
 
-  c1q <- enexpr(c1)
-  c2q <- enexpr(c2)
-
+check_set_equality_impl0 <- function(x, y, x_label, y_label) {
   catcher_1 <- tryCatch(
     {
-      check_subset(!!t1q, !!c1q, !!t2q, !!c2q)
+      check_subset_impl0(x, y, x_label, y_label)
       NULL
     },
     error = identity
@@ -137,7 +175,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
 
   catcher_2 <- tryCatch(
     {
-      check_subset(!!t2q, !!c2q, !!t1q, !!c1q)
+      check_subset_impl0(y, x, y_label, x_label)
       NULL
     },
     error = identity
@@ -148,19 +186,18 @@ check_set_equality <- function(t1, c1, t2, c2) {
   if (length(catchers) > 0) {
     abort_sets_not_equal(map_chr(catchers, conditionMessage))
   }
-
-  invisible(eval_tidy(t1q))
 }
 
 #' Check column values for subset
 #'
-#' @description `check_subset()` tests if the values of the chosen columns `c1` of data frame `t1` are a subset of the values
-#' of columns `c2` of data frame `t2`.
+#' @description
+#' `check_subset()` tests if `x` is a subset of `y`.
+#' For convenience, the `x_select` and `y_select` arguments allow restricting the check
+#' to a set of key columns without affecting the return value.
 #'
 #' @inheritParams check_set_equality
-#' @param c2 The columns of the second data frame which have to contain all values of `c1` to avoid an error. Multiple columns can be chosen using `c(col1, col2)`.
 #'
-#' @return Returns `t1`, invisibly, if the check is passed.
+#' @return Returns `x`, invisibly, if the check is passed.
 #'   Otherwise an error is thrown and the reason for it is explained.
 #'
 #' @export
@@ -168,30 +205,36 @@ check_set_equality <- function(t1, c1, t2, c2) {
 #' data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
-#' check_subset(data_1, a, data_2, a)
+#' check_subset(data_1, data_2, x_select = a, y_select = a)
 #'
 #' # this is failing:
-#' try(check_subset(data_2, a, data_1, a))
-check_subset <- function(t1, c1, t2, c2) {
-  t1q <- enquo(t1)
-  t2q <- enquo(t2)
+#' try(check_subset(data_2, data_1))
+check_subset <- function(x, y,
+                         ...,
+                         x_select = NULL, y_select = NULL,
+                         by_position = NULL) {
+  check_api(
+    {{ x }}, {{ y }}, ...,
+    x_select = {{ x_select }},
+    y_select = {{ y_select }},
+    by_position = by_position,
+    target = check_subset_impl0
+  )
+  invisible(x)
+}
 
-  c1q <- enexpr(c1)
-  c2q <- enexpr(c2)
-  col_names_1 <- names(eval_select_indices(c1q, colnames(eval_tidy(t1q))))
-  col_names_2 <- names(eval_select_indices(c2q, colnames(eval_tidy(t2q))))
-
+check_subset_impl0 <- function(x, y, x_label, y_label) {
   # not using `is_subset()`, since then we would do the same job of finding
   # missing values/combinations twice
-  res <- anti_join(eval_tidy(t1q), eval_tidy(t2q), by = set_names(col_names_2, col_names_1))
+  res <- anti_join(x, y, by = set_names(colnames(y), colnames(x)))
   if (pull(count(head(res, 1))) == 0) {
-    return(invisible(eval_tidy(t1q)))
+    return()
   }
 
   # collect() for robust test output
   print(collect(head(res, n = 10)))
 
-  abort_not_subset_of(as_label(t1q), col_names_1, as_label(t2q), col_names_2)
+  abort_not_subset_of(x_label, colnames(x), y_label, colnames(y))
 }
 
 # similar to `check_subset()`, but evaluates to a boolean
@@ -199,11 +242,72 @@ is_subset <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
-  c1q <- enexpr(c1)
-  c2q <- enexpr(c2)
-  col_names_1 <- names(eval_select_indices(c1q, colnames(eval_tidy(t1q))))
-  col_names_2 <- names(eval_select_indices(c2q, colnames(eval_tidy(t2q))))
+  t1s <- eval_tidy(t1q) %>% select({{ c1 }})
+  t2s <- eval_tidy(t2q) %>% select({{ c2 }})
 
-  res <- anti_join(eval_tidy(t1q), eval_tidy(t2q), by = set_names(col_names_2, col_names_1))
+  is_subset_se(t1s, t2s)
+}
+
+is_subset_se <- function(x, y) {
+  res <- anti_join(x, y, by = set_names(colnames(y), colnames(x)))
   pull(count(head(res, 1))) == 0
+}
+
+check_api <- function(x, y,
+                      ...,
+                      x_select = NULL, y_select = NULL,
+                      by_position = NULL,
+                      call = caller_env(),
+                      target = list) {
+  if (dots_n(...) >= 2) {
+    name <- as.character(frame_call(call)[[1]] %||% "check_api")
+    deprecate_soft("1.0.0", paste0(name, "(c1 = )"), paste0(name, "(x_select = )"),
+      details = c(
+        "Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`.",
+        "Using `by_position = TRUE` for compatibility."
+      )
+    )
+    stopifnot(is.null(by_position))
+    check_api_impl(
+      {{ x }}, {{ y }}, ...,
+      by_position = TRUE,
+      target = target
+    )
+  } else {
+    check_dots_empty(call = call)
+    check_api_impl(
+      {{ x }}, {{ x_select }}, {{ y }}, {{ y_select }},
+      by_position = by_position %||% FALSE,
+      target = target
+    )
+  }
+}
+
+check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target) {
+  t1q <- enquo(t1)
+  t2q <- enquo(t2)
+
+  c1q <- enquo(c1)
+  c2q <- enquo(c2)
+
+  if (!quo_is_null(c1q)) {
+    t1 <- t1 %>% select(!!c1q)
+  }
+
+  if (!quo_is_null(c2q)) {
+    t2 <- t2 %>% select(!!c2q)
+  }
+
+  if (!isTRUE(by_position)) {
+    y_idx <- match(colnames(t1), colnames(t2))
+    if (anyNA(y_idx)) {
+      abort("`by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`.")
+    }
+
+    t2 <-
+      t2 %>%
+      select(!!y_idx)
+  }
+
+  target(x = t1, y = t2, x_label = as_label(t1q), y_label = as_label(t2q))
 }

@@ -82,21 +82,14 @@ Filtering a `dm` object is not that different from filtering a dataframe or tibb
 
 The corresponding {dm} function is `dm::dm_filter()`.
 With this function one or more filtering conditions can be set for one of the tables of the `dm` object.
-These conditions are immediately evaluated for their respective tables and in addition they are stored in the `dm`.
-There are two ways in which a condition on one table could affect another table:
-
-1. Calling `dm_apply_filters_to_tbl()`, i.e. requesting a table from a `dm` after the filter conditions are applied.
-In this case, all tables that are connected to the requested table and have stored filter conditions associated with them are taken into account in the following way:
+These conditions are immediately evaluated for their respective tables and for all related tables.
+For each resulting table, all related tables (directly or indirectly) with a filter condition them are taken into account in the following way:
     - filtering semi-joins are successively performed along the paths from each of the filtered tables to the requested table, each join reducing the left-hand side tables of the joins to only those of their rows with key values that have corresponding values in key columns of the right-hand side tables of the join.
     - eventually the requested table is returned, containing only the the remaining rows after the filtering joins
-1. Calling `dm_apply_filters()` or `compute()` methods for `dm` objects on a `dm`: this results in a new `dm` that contains the same tables as before.
-Each table is the result of a `dm_apply_filters_to_tbl()` call, meaning that the effects of the filter conditions on each of the tables are taken into account.
 
 Currently, this only works if the graph induced by the foreign key relations is cycle free.
 Fortunately, this is the default for `dm_nycflights13()`.
 
-Keep in mind that several {dm} functions will refuse to work when unevaluated filter conditions exist, such as, e.g. `dm_enum_fk_candidates()`, `dm_enum_pk_candidates()`, `dm_select_tbl()`, `dm_rename_tbl()`, `dm_select()`, `dm_rename()` and `dm_nrow()`.
-In these cases consider applying the filters with `dm_apply_filters()` first.
 
 ### Filtering Examples
 
@@ -107,19 +100,15 @@ Let's see filtering in action:
 ```{r}
 filtered_dm <-
   dm %>%
-  dm_filter(airports, name == "John F Kennedy Intl")
+  dm_filter(airports = (name == "John F Kennedy Intl"))
 filtered_dm
 ```
 
-The filter expression is listed in the print output.
-
 You can get the numbers of rows of each table with `dm_nrow()`.
-Before doing that, you will need to apply the filters using `dm_apply_filters()`:
 
 ```{r}
 rows_per_table <-
   filtered_dm %>%
-  dm_apply_filters() %>%
   dm_nrow()
 rows_per_table
 sum(rows_per_table)
@@ -143,50 +132,48 @@ Next example:
 
 ```{r}
 dm %>%
-  dm_filter(flights, dest == "IAD") %>%
-  dm_apply_filters() %>%
+  dm_filter(flights = (dest == "IAD")) %>%
   dm_nrow()
 ```
 
-Chaining multiple filters on different tables is also supported.
+Applying multiple filters to different tables is also supported.
 
 An example:
 
-**Get all flights from Delta Air Lines which didn't depart from John F. Kennedy International Airport in May 2013.**
+**Get all January 2013 flights from Delta Air Lines which didn't depart from John F. Kennedy International Airport.**
 
 ```{r}
 dm_delta_may <-
   dm %>%
-  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  dm_filter(airports, name != "John F Kennedy Intl") %>%
-  dm_filter(flights, month == 5)
+  dm_filter(
+    airlines = (name == "Delta Air Lines Inc."),
+    airports = (name != "John F Kennedy Intl"),
+    flights = (month == 1)
+  )
 dm_delta_may
 dm_delta_may %>%
-  dm_apply_filters() %>%
   dm_nrow()
 ```
 
-You can inspect the filtered tables with `dm_apply_filters_to_tbl()`.
+You can inspect the filtered tables by subsetting them.
 
 In the `airlines` table, Delta is the only remaining carrier:
 
 ```{r}
-dm_delta_may %>%
-  dm_apply_filters_to_tbl("airlines")
+dm_delta_may$airlines
 ```
 
 Which planes were used to service these flights?
 
 ```{r}
-dm_delta_may %>%
-  dm_apply_filters_to_tbl("planes")
+dm_delta_may$planes
 ```
 
-And indeed, all included flights departed in May (`month == 5`):
+And indeed, all included flights departed in January (`month == 1`):
 
 ```{r}
-dm_delta_may %>%
-  dm_apply_filters_to_tbl("flights")
+dm_delta_may$flights %>%
+  count(month)
 ```
 
 For comparison, let's review the equivalent manual query for `flights` in `dplyr` syntax:
@@ -211,7 +198,7 @@ You can check the queries by using `sql_render()` from the [{dbplyr}](https://db
 
 Example:
 
-**Print the SQL statements for getting all flights from Delta Air Lines, which did not depart from John F. Kennedy International Airport in May 2013, with the data stored in a sqlite database.**
+**Print the SQL statements for getting all January 2013 flights from Delta Air Lines, which did not depart from John F. Kennedy International Airport, with the data stored in a sqlite database.**
 
 To show the SQL query behind a `dm_filter()`, we copy the `flights`, `airlines` and `airports` tables from the `nyflights13` dataset to a temporary in-memory database using the built-in function `copy_dm_to()` and `dbplyr::src_memdb`.
 
@@ -220,11 +207,12 @@ Then we filter the data, and print the corresponding SQL statement with `dbplyr:
 ```{r, warning=FALSE}
 dm %>%
   dm_select_tbl(flights, airlines, airports) %>%
-  dm_filter(flights, month == 5) %>%
   copy_dm_to(dbplyr::src_memdb(), .) %>%
-  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  dm_filter(airports, name != "John F Kennedy Intl") %>%
-  dm_apply_filters() %>%
+  dm_filter(
+    airlines = (name == "Delta Air Lines Inc."),
+    airports = (name != "John F Kennedy Intl"),
+    flights = (month == 1)
+  ) %>%
   dm_get_tables() %>%
   map(dbplyr::sql_render)
 ```

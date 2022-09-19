@@ -115,7 +115,7 @@ This is a common use case for {dm} -- manually building a sequence of operations
 ## `dm_rows_insert()` {#insert}
 
 To demonstrate `dm_rows_insert()`, we create a dm with tables containing the rows to insert and copy it to `sqlite_db`, the same source as `demo_sql`.
-For all of the `dm_rows_*` methods, the source and destination `dm` objects must be in the same RDBMS.
+For all of the `dm_rows_...()` methods, the source and destination `dm` objects must be in the same RDBMS.
 You will get an error message if this is not the case.
 
 The code below adds `parent` and `child` table entries for the letter "D".
@@ -239,7 +239,7 @@ DBI::dbDisconnect(sqlite_db)
 
 ## Conclusion {#conclusion}
 
-The `dm_rows_*` methods give you row-level granularity over the modifications you need to make to your relational model.
+The `dm_rows_...()` methods give you row-level granularity over the modifications you need to make to your relational model.
 Using the common `in_place` argument, they all can construct and verify your modifications before committing them.
 There are a few limitations, as mentioned in the tutorial, but these will be addressed in future updates to {dm}.
 
@@ -251,6 +251,6 @@ Is your data in an RDBMS? `vignette("howto-dm-db")` offers a detailed look at wo
 
 If your data is in data frames, then you may want to read `vignette("howto-dm-df")` next.
 
-If you feel you need to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
+If you would like to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
 
 If you're familiar with relational data models but want to know how to work with them in dm, then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.

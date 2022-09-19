@@ -1,8 +1,6 @@
 #' Creates a dm object for the Financial data
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
-#'
 #' `dm_financial()` creates an example [`dm`] object from the tables at
 #' https://relational.fit.cvut.cz/dataset/Financial.
 #' The connection is established once per session,

@@ -9,3 +9,16 @@ test_that("dm_examine_cardinalities() works", {
     dm_examine_cardinalities(dm())
   })
 })
+
+test_that("`dm_examine_cardinalities()` API", {
+  local_options(lifecycle_verbosity = "warning")
+
+  expect_snapshot({
+    dm_examine_cardinalities(dm_test_obj(), progress = FALSE)
+    dm_examine_cardinalities(dm = dm_test_obj())
+  })
+
+  expect_snapshot(error = TRUE, {
+    dm_examine_cardinalities(dm_test_obj(), foo = "bar")
+  })
+})

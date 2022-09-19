@@ -1,7 +1,7 @@
 # key tracking works
 
     Code
-      zoomed_dm() %>% unite("new_col", c, e) %>% dm_update_zoomed() %>% get_all_keys()
+      dm_zoomed() %>% unite("new_col", c, e) %>% dm_update_zoomed() %>% get_all_keys()
     Output
       $pks
       # A tibble: 5 x 2
@@ -23,7 +23,7 @@
       4 tf_5        m             tf_6         n               no_action
       
     Code
-      zoomed_dm() %>% unite("new_col", c, e, remove = FALSE) %>% dm_update_zoomed() %>%
+      dm_zoomed() %>% unite("new_col", c, e, remove = FALSE) %>% dm_update_zoomed() %>%
         get_all_keys()
     Output
       $pks
@@ -48,7 +48,7 @@
       5 tf_5        m             tf_6         n               no_action
       
     Code
-      zoomed_dm() %>% unite("new_col", c, e, remove = FALSE) %>% dm_update_zoomed() %>%
+      dm_zoomed() %>% unite("new_col", c, e, remove = FALSE) %>% dm_update_zoomed() %>%
         dm_add_fk(tf_2, new_col, tf_6) %>% dm_zoom_to(tf_2) %>% separate(new_col, c(
         "c", "e"), remove = TRUE) %>% dm_update_zoomed() %>% get_all_keys()
     Output
@@ -74,7 +74,7 @@
       5 tf_5        m             tf_6         n               no_action
       
     Code
-      zoomed_dm() %>% unite("new_col", c, e, remove = FALSE) %>% dm_update_zoomed() %>%
+      dm_zoomed() %>% unite("new_col", c, e, remove = FALSE) %>% dm_update_zoomed() %>%
         dm_add_fk(tf_2, new_col, tf_6) %>% dm_zoom_to(tf_2) %>% separate(new_col, c(
         "c", "e"), remove = FALSE) %>% dm_update_zoomed() %>% get_all_keys()
     Output

@@ -2,41 +2,45 @@
 % Please edit documentation in R/tidyr.R
 \name{tidyr_table_manipulation}
 \alias{tidyr_table_manipulation}
-\alias{unite.zoomed_dm}
-\alias{separate.zoomed_dm}
+\alias{unite.dm_zoomed}
+\alias{unite.dm_keyed_tbl}
+\alias{separate.dm_zoomed}
+\alias{separate.dm_keyed_tbl}
 \title{\pkg{tidyr} table manipulation methods for zoomed dm objects}
 \usage{
-\method{unite}{zoomed_dm}(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE)
+\method{unite}{dm_zoomed}(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE)
 
-\method{separate}{zoomed_dm}(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, ...)
+\method{unite}{dm_keyed_tbl}(data, ...)
+
+\method{separate}{dm_zoomed}(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, ...)
+
+\method{separate}{dm_keyed_tbl}(data, ...)
 }
 \arguments{
-\item{data}{object of class \code{zoomed_dm}}
+\item{data}{object of class \code{dm_zoomed}}
 
-\item{col}{For \code{unite.zoomed_dm}: see \code{\link[tidyr:unite]{tidyr::unite}}
+\item{col}{For \code{unite.dm_zoomed}: see \code{\link[tidyr:unite]{tidyr::unite()}}
 
-For \code{separate.zoomed_dm}: see \code{\link[tidyr:separate]{tidyr::separate}}}
+For \code{separate.dm_zoomed}: see \code{\link[tidyr:separate]{tidyr::separate()}}}
 
-\item{...}{For \code{unite.zoomed_dm}: see \code{\link[tidyr:unite]{tidyr::unite}}
+\item{...}{For \code{unite.dm_zoomed}: see \code{\link[tidyr:unite]{tidyr::unite()}}
 
-For \code{separate.zoomed_dm}: see \code{\link[tidyr:separate]{tidyr::separate}}}
+For \code{separate.dm_zoomed}: see \code{\link[tidyr:separate]{tidyr::separate()}}}
 
-\item{sep}{For \code{unite.zoomed_dm}: see \code{\link[tidyr:unite]{tidyr::unite}}
+\item{sep}{For \code{unite.dm_zoomed}: see \code{\link[tidyr:unite]{tidyr::unite()}}
 
-For \code{separate.zoomed_dm}: see \code{\link[tidyr:separate]{tidyr::separate}}}
+For \code{separate.dm_zoomed}: see \code{\link[tidyr:separate]{tidyr::separate()}}}
 
-\item{remove}{For \code{unite.zoomed_dm}: see \code{\link[tidyr:unite]{tidyr::unite}}
+\item{remove}{For \code{unite.dm_zoomed}: see \code{\link[tidyr:unite]{tidyr::unite()}}
 
-For \code{separate.zoomed_dm}: see \code{\link[tidyr:separate]{tidyr::separate}}}
+For \code{separate.dm_zoomed}: see \code{\link[tidyr:separate]{tidyr::separate()}}}
 
-\item{na.rm}{see \code{\link[tidyr:unite]{tidyr::unite}}}
+\item{na.rm}{see \code{\link[tidyr:unite]{tidyr::unite()}}}
 
-\item{into}{see \code{\link[tidyr:separate]{tidyr::separate}}}
+\item{into}{see \code{\link[tidyr:separate]{tidyr::separate()}}}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
-Use these methods without the '.zoomed_dm' suffix (see examples).
+Use these methods without the '.dm_zoomed' suffix (see examples).
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

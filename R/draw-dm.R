@@ -1,8 +1,6 @@
 #' Draw a diagram of the data model
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_draw()` draws a diagram, a visual representation of the data model.
 #'
 #' @details
@@ -110,7 +108,7 @@ dm_draw <- function(dm,
 #' data model object for drawing.
 #'
 #' @noRd
-dm_get_data_model <- function(x, column_types) {
+dm_get_data_model <- function(x, column_types = FALSE) {
   def <- dm_get_def(x)
 
   tables <- data.frame(
@@ -121,8 +119,8 @@ dm_get_data_model <- function(x, column_types) {
   )
 
   references_for_columns <-
-    dm_get_all_fks_impl(x) %>%
-    transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_key_cols))
+    dm_get_all_fks_impl(x, id = TRUE) %>%
+    transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_key_cols), keyId = id)
 
   references <-
     references_for_columns %>%
@@ -193,8 +191,6 @@ dm_get_all_column_types <- function(x) {
 #' Color in database diagrams
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model with [dm_draw()].
 #' The colors can either be either specified with hex color codes or using the names of the built-in R colors.
 #' An overview of the colors corresponding to the standard color names can be found at
@@ -204,7 +200,7 @@ dm_get_all_column_types <- function(x) {
 #' @inheritParams dm_draw
 #' @param ... Colors to set in the form `color = table`.
 #' Allowed colors are all hex coded colors (quoted) and the color names from `dm_get_available_colors()`.
-#' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
+#' `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
 #' @return For `dm_set_colors()`: the updated data model.
 #'
 #' @export

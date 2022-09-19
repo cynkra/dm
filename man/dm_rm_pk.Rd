@@ -25,8 +25,6 @@ if there are foreign keys addressing the primary key that is to be removed.}
 An updated \code{dm} without the indicated primary key(s).
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{dm_rm_pk()} removes one or more primary keys from a table and leaves the \code{\link{dm}} object otherwise unaltered.
 An error is thrown if no private key matches the selection criteria.
 If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.

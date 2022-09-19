@@ -87,8 +87,8 @@ For this, we use `learn_keys = FALSE` to obtain a `dm` object with only the tabl
 ``````{r load}
 library(dm)
 
-fin_dm_small <- 
-  dm_from_con(fin_db, learn_keys = FALSE) %>% 
+fin_dm_small <-
+  dm_from_con(fin_db, learn_keys = FALSE) %>%
   dm_select_tbl(loans, accounts, districts, trans)
 ``````
 
@@ -119,18 +119,18 @@ Color guides the eye.
 
 ```{r visualize_keys}
 fin_dm_keys %>%
-  dm_set_colors(green = c(loans, accounts), darkblue = trans, grey = districts) %>%
+  dm_set_colors(darkgreen = c(loans, accounts), darkblue = trans, grey = districts) %>%
   dm_draw()
 ```
 
 ## Accessing a data model as a table
 
 If we want to perform modeling or analysis on this relational model, we need to transform it into a tabular format that R functions can work with.
-`dm_squash_to_tbl()` will automatically follow foreign keys across tables to gather all the available columns into a single table.
+With the argument `recursive = TRUE`, `dm_flatten_to_tbl()` will automatically follow foreign keys across tables to gather all the available columns into a single table.
 
 ```{r squash}
 fin_dm_keys %>%
-  dm_squash_to_tbl(loans)
+  dm_flatten_to_tbl(loans, .recursive = TRUE)
 ```
 
 Apart from the rows printed above, no data has been fetched from the database.
@@ -139,7 +139,7 @@ Use `select()` to reduce the number of columns fetched, and `collect()` to retri
 ```{r model}
 loans_df <-
   fin_dm_keys %>%
-  dm_squash_to_tbl(loans) %>%
+  dm_flatten_to_tbl(loans, .recursive = TRUE) %>%
   select(id, amount, duration, A3) %>%
   collect()
 
@@ -201,7 +201,7 @@ Is your data in an RDBMS? Then move on to `vignette("howto-dm-db")` for a more d
 
 If your data is in data frames, then you want to read `vignette("howto-dm-df")` next.
 
-If you feel you need to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
+If you would like to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
 
 If you're familiar with relational data models, but want to know how to work with them in dm, then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.
 

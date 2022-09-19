@@ -107,3 +107,8 @@ expect_snapshot_diagram <- function(diagram, name) {
 
   expect_snapshot_file(path, compare = compare_file_text)
 }
+
+expect_same <- function(object, ...) {
+  others <- enquos(...)
+  walk(others, function(.x) expect_identical(!!.x, {{ object }}))
+}

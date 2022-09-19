@@ -34,8 +34,6 @@ Default \code{NULL} is equivalent to \code{c("keys", "color")}}
 Code for producing the prototype of the given \code{dm}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{dm_paste()} takes an existing \code{dm} and emits the code necessary for its creation.
 }
 \details{

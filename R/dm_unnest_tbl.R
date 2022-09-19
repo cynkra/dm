@@ -61,7 +61,7 @@ dm_unnest_tbl <- function(dm, parent_table, col, ptype) {
     distinct()
 
   # update the dm by adding new table, removing nested col and setting keys
-  dm <- dm_add_tbl(dm, !!new_child_table_name := new_table)
+  dm <- dm(dm, !!new_child_table_name := new_table)
   dm <- dm_select(dm, !!parent_table_name, -all_of(new_child_table_name))
   if (length(parent_fk_names)) {
     dm <- dm_add_fk(dm, !!new_child_table_name, !!child_fk_names, !!parent_table_name, !!parent_fk_names)
@@ -134,7 +134,7 @@ dm_unpack_tbl <- function(dm, child_table, col, ptype) {
     distinct()
 
   # update the dm by adding new table, removing packed col and setting keys
-  dm <- dm_add_tbl(dm, !!new_parent_table_name := new_table)
+  dm <- dm(dm, !!new_parent_table_name := new_table)
   dm <- dm_select(dm, !!child_table_name, -all_of(new_parent_table_name))
   if (length(child_fk_names)) {
     dm <- dm_add_fk(

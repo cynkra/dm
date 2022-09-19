@@ -1,6 +1,8 @@
 url: https://cynkra.github.io/dm
 
 template:
+  includes:
+    before_title: '<a href="https://cynkra.com"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" alt="cynkra" id="navbar-logo"></a>'
   bootstrap: 5
   assets:
   - pkgdown/assets
@@ -14,17 +16,16 @@ reference:
   - as_dm
   - is_dm
   - dm_get_con
-  - dm_get_tables
 
 - title: Tables
   contents:
-  - dm_add_tbl
-  - dm_rm_tbl
-  - dm_mutate_tbl
   - dm_select_tbl
   - dm_rename_tbl
+  - dm_get_tables
   - pull_tbl
-  - dm_bind
+  - dm_deconstruct
+  - glimpse
+  - dm_mutate_tbl
 
 - title: Primary keys
   contents:
@@ -36,6 +37,7 @@ reference:
 
 - title: Visualize
   contents:
+  - dm_gui
   - dm_draw
   - ends_with("_colors")
   - dm_paste
@@ -48,14 +50,18 @@ reference:
 - title: Flatten
   contents:
   - dm_flatten_to_tbl
-  - dm_squash_to_tbl
   - dm_disambiguate_cols
+
+- title: Filter
+  contents:
+  - dm_filter
 
 - title: Zoom
   contents:
   - dm_zoom_to
   - ends_with("_zoomed")
-  - ends_with(".zoomed_dm")
+  - ends_with(".dm_zoomed")
+  - -pack_join
 
 - title: Wrap
   contents:
@@ -80,10 +86,6 @@ reference:
   contents:
   - copy_dm_to
   - contains("rows")
-
-- title: Filter
-  contents:
-  - matches("_filter")
 
 - title: Table surgery
   contents:
@@ -113,7 +115,6 @@ reference:
   - dm_nrow
   - dm_ptype
   - dm_validate
-  - glimpse.dm
 
 navbar:
   structure:
@@ -164,10 +165,16 @@ navbar:
          to perform operations, generate summaries, or prepare data for extraction.
          This article covers dm's methods for creating the different kind of joins
          along with usage examples.
+      - text: Manipulating individual tables
+        href: articles/tech-dm-keyed.html
+        desc: |
+          Learn how to manipulate the data in the tables in your dm
+          using dplyr verbs and deconstruction/reconstruction.
       - text: Zooming and manipulating tables
         href: articles/tech-dm-zoom.html
         desc: |
-          Learn how to manipulate the data in the tables in your dm using dplyr verbs.
+          Learn how to manipulate the data in the tables in your dm
+          using dplyr verbs and zooming.
       - text: Filtering in relational data models
         href: articles/tech-dm-filter.html
         desc: |

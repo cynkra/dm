@@ -8,7 +8,13 @@
 #' The printing for this object is special, use [as_tibble()]
 #' to print as a regular tibble.
 #'
-#' @inheritParams dm_examine_constraints
+# Can't @inheritParams dm_examine_constraints for some reason
+#' @param .dm A `dm` object.
+#' @inheritParams rlang::args_dots_empty
+#' @param .progress Whether to display a progress bar, if `NA` (the default)
+#'   hide in non-interactive mode, show in interactive mode. Requires the
+#'   'progress' package.
+#' @param dm,progress `r lifecycle::badge("deprecated")`
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
@@ -19,7 +25,7 @@
 #'     \item{`cardinality`}{the nature of cardinality along the foreign key.}
 #'   }
 #'
-#' @details Uses [`examine_cardinality()`] on each foreign key that is defined in the [`dm`].
+#' @details Uses [examine_cardinality()] on each foreign key that is defined in the [`dm`].
 #'
 #' @family cardinality functions
 #'
@@ -27,27 +33,44 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_cardinalities()
-dm_examine_cardinalities <- function(dm, progress = NA) {
-  check_not_zoomed(dm)
-  dm %>%
-    dm_examine_cardinalities_impl(progress = progress, top_level_fun = "dm_examine_cardinalities") %>%
+dm_examine_cardinalities <- function(.dm, ..., .progress = NA,
+                                     dm = deprecated(), progress = deprecated()) {
+  check_dots_empty()
+
+  if (!is_missing(dm)) {
+    deprecate_soft("1.0.0", "dm_examine_cardinalities(dm = )", "dm_examine_cardinalities(.dm = )")
+  }
+
+  if (is_missing(.dm)) {
+    return(dm_examine_cardinalities(dm, .progress = .progress, progress = progress))
+  }
+
+  if (!is_missing(progress)) {
+    if (is.na(progress)) {
+      progress <- .progress
+    }
+    deprecate_soft("1.0.0", "dm_examine_cardinalities(progress = )", "dm_examine_cardinalities(.progress = )")
+  }
+
+  check_not_zoomed(.dm)
+  .dm %>%
+    dm_examine_cardinalities_impl(progress = .progress, top_level_fun = "dm_examine_cardinalities") %>%
     new_dm_examine_cardinalities()
 }
 
 dm_examine_cardinalities_impl <- function(dm, progress = NA, top_level_fun = NULL) {
-  fks <- dm_get_all_fks_impl(dm) %>%
+  fks <-
+    dm_get_all_fks_impl(dm) %>%
     select(-on_delete)
+
   dm_def <- as.list(dm)
-  fks_data <- fks %>%
-    mutate(
-      pt_name = parent_table,
-      ct_name = child_table,
-      parent_table = dm_def[pt_name],
-      child_table = dm_def[ct_name]
-    ) %>%
-    mutate(
-      parent_key_cols = as.list(parent_key_cols),
-      child_fk_cols = as.list(child_fk_cols)
+  fks_data <-
+    fks %>%
+    transmute(
+      x_label = parent_table,
+      y_label = child_table,
+      x = map2(dm_def[x_label], parent_key_cols, ~ select(.x, all_of(.y))),
+      y = map2(dm_def[y_label], child_fk_cols, ~ select(.x, all_of(.y))),
     )
   ticker <- new_ticker(
     "checking fk cardinalities",
@@ -57,7 +80,7 @@ dm_examine_cardinalities_impl <- function(dm, progress = NA, top_level_fun = NUL
   )
 
   fks %>%
-    mutate(cardinality = pmap_chr(fks_data, ticker(examine_cardinality_impl)))
+    mutate(cardinality = pmap_chr(fks_data, ticker(examine_cardinality_impl0)))
 }
 
 new_dm_examine_cardinalities <- function(x) {
