@@ -84,10 +84,10 @@ test_that("output", {
 
     "no error for factor column that leads to code with width > 500"
     dm(tibble(a = factor(levels = expand.grid(
-      letters, as.character(1:5)) %>%
-        transmute(x = paste0(Var1, Var2)) %>%
-        pull()))
-      ) %>%
+      letters, as.character(1:5)
+    ) %>%
+      transmute(x = paste0(Var1, Var2)) %>%
+      pull()))) %>%
       dm_paste(options = "tables")
   })
 })
