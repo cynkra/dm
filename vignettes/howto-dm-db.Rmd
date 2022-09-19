@@ -27,7 +27,6 @@ For some RDBMS, such as Postgres, SQL Server and MariaDB, primary and foreign ke
 To demonstrate, we will connect to a `r href("relational dataset repository", "https://relational.fit.cvut.cz/")` with a database server that is publicly accessible without registration.
 It hosts a `r href("financial dataset", "https://relational.fit.cvut.cz/dataset/Financial")` that contains loan data along with relevant account information and transactions.
 We chose this dataset because the relationships between `loan`, `account`, and `transactions` tables are a good representation of databases that record real-world business transactions.
-Starting from version 0.3.0, {dm} does import primary and foreign keys also from MariaDB which this repository relies on. However, for demonstration purposes, we would act as if this would not be possible. So, we will add primary and foreign keys later on using the functions `dm_add_pk()` and `dm_add_fk()`.
 
 Below, we open a connection to the publicly accessible database server using their documented connection parameters.
 Connection details vary from database to database. Before connecting to your own RDBMS, you may want to read `vignette("DBI", package = "DBI")` for further information.
