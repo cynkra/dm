@@ -170,11 +170,11 @@ test_that("'schema_if()' works", {
         schema = "schema",
         table = "table",
         con = con_db,
-        dbname = "db"
+        dbname = "database"
       ),
       "SQL"
     )),
-    "\"db\".\"schema\".\"table\"|`db`.`schema`.`table`"
+    "\"database\".\"schema\".\"table\"|`database`.`schema`.`table`"
   )
 
   # schema and table set
