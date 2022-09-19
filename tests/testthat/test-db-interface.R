@@ -79,18 +79,6 @@ test_that("default table repair works", {
   )
 })
 
-test_that("table identifiers are quoted", {
-  dm <- dm_for_filter_duckdb()
-  remote_names <-
-    dm %>%
-    dm_get_tables() %>%
-    map_chr(dbplyr::remote_name)
-
-  con <- dm_get_con(dm)
-  pattern <- paste0("^", unclass(DBI::dbQuoteIdentifier(con, "[a-z0-9_#]+")), "$")
-  expect_true(all(grepl(pattern, remote_names)))
-})
-
 test_that("copy_dm_to() fails legibly if target schema missing for MSSQL & Postgres", {
   skip_if_src_not(c("mssql", "postgres"))
 
