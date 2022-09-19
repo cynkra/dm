@@ -77,9 +77,8 @@
       dm_filter_rearranged <- dm_for_filter() %>% dm_select(tf_2, d, everything()) %>%
         dm_select(tf_4, i, everything()) %>% dm_select(tf_5, l, m, everything())
       suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_filter_rearranged))
-      dm_update_local <- dm(tf_1 = tibble(a = 2L, b = "q"), tf_2 = tibble(c = c(
-        "worm"), d = 10L, ), tf_4 = tibble(h = "e", i = "sieben", ), tf_5 = tibble(k = 3L,
-        m = "tree", ), )
+      dm_update_local <- dm(tf_1 = tibble(a = 2L, b = "q"), tf_4 = tibble(h = "e", i = "sieben",
+        ), tf_5 = tibble(k = 3L, ww = 3, ), )
       dm_update_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_update_local))
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
@@ -101,9 +100,9 @@
       1     2 elephant D         4
       2     3 lion     E         5
       3     4 seal     F         6
-      4     6 dog      E         5
-      5     7 cat      F         6
-      6    10 worm     G         7
+      4     5 worm     G         7
+      5     6 dog      E         5
+      6     7 cat      F         6
     Code
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
@@ -124,9 +123,9 @@
       1     2 elephant D         4
       2     3 lion     E         5
       3     4 seal     F         6
-      4     6 dog      E         5
-      5     7 cat      F         6
-      6    10 worm     G         7
+      4     5 worm     G         7
+      5     6 dog      E         5
+      6     7 cat      F         6
     Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
@@ -218,9 +217,9 @@
       1     2 elephant D         4
       2     3 lion     E         5
       3     4 seal     F         6
-      4     6 dog      E         5
-      5     7 cat      F         6
-      6    10 worm     G         7
+      4     5 worm     G         7
+      5     6 dog      E         5
+      6     7 cat      F         6
       
       $tf_3
          f        f1 g    
@@ -250,7 +249,7 @@
         <chr> <chr>      <int> <int>
       1 b     house          2     1
       2 c     tree           2     2
-      3 d     tree           2     3
+      3 d     streetlamp     3     3
       4 e     streetlamp     2     4
       
       $tf_6
