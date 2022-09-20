@@ -33,7 +33,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" alt="cynkra" id="navbar-logo"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Class dm and basic operations</h1>
             
-            <h4 data-toc-skip class="date">2022-08-06</h4>
+            <h4 data-toc-skip class="date">2022-09-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-class.Rmd" class="external-link"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-class.Rmd</code></div>
@@ -170,11 +170,13 @@
 </h3>
 <p>Turn a named list of tables into a <code>dm</code> with <code><a href="../reference/dm.html">as_dm()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm.html">as_dm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>airlines <span class="op">=</span> <span class="va">airlines</span>,</span>
-<span>           airports <span class="op">=</span> <span class="va">airports</span>,</span>
-<span>           flights <span class="op">=</span> <span class="va">flights</span>,</span>
-<span>           planes <span class="op">=</span> <span class="va">planes</span>,</span>
-<span>           weather <span class="op">=</span> <span class="va">weather</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm.html">as_dm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  airlines <span class="op">=</span> <span class="va">airlines</span>,</span>
+<span>  airports <span class="op">=</span> <span class="va">airports</span>,</span>
+<span>  flights <span class="op">=</span> <span class="va">flights</span>,</span>
+<span>  planes <span class="op">=</span> <span class="va">planes</span>,</span>
+<span>  weather <span class="op">=</span> <span class="va">weather</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
 <span><span class="co">#&gt; Columns: 53</span></span>
@@ -191,7 +193,7 @@
 <span><span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">sqlite_con</span><span class="op">)</span></span>
 <span><span class="va">flights_dm</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.39.1 [/tmp/RtmpGpao1T/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.39.3 [/tmp/RtmpgHTfwK/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span></span>
 <span><span class="co">#&gt; Columns: 62</span></span>
@@ -230,7 +232,7 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm</span><span class="op">[[</span><span class="st">"airports"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   table&lt;`airports`&gt; [?? x 8]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.39.1 [/tmp/RtmpGpao1T/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.39.3 [/tmp/RtmpgHTfwK/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span></span>
 <span><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
 <span><span class="co">#&gt;  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…</span></span>
@@ -243,8 +245,7 @@
 <span><span class="co">#&gt;  8 0G7   Finger Lakes Regional Airport  42.9  -76.8   492    -5 A     Amer…</span></span>
 <span><span class="co">#&gt;  9 0P2   Shoestring Aviation Airfield   39.8  -76.6  1000    -5 U     Amer…</span></span>
 <span><span class="co">#&gt; 10 0S9   Jefferson County Intl          48.1 -123.    108    -8 A     Amer…</span></span>
-<span><span class="co">#&gt; # … with more rows</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with more rows</span></span></code></pre>
 <p>But how can we use {dm}-functions to manage the primary keys of the tables in a <code>dm</code> object?</p>
 </div>
 <div class="section level2">
@@ -265,7 +266,7 @@
 <span><span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span></span>
 <span><span class="va">flights_dm_with_key</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.39.1 [/tmp/RtmpGpao1T/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.39.3 [/tmp/RtmpgHTfwK/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span></span>
 <span><span class="co">#&gt; Columns: 62</span></span>
@@ -331,7 +332,7 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm_with_key</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.39.1 [/tmp/RtmpGpao1T/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.39.3 [/tmp/RtmpgHTfwK/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span></span>
 <span><span class="co">#&gt; Columns: 62</span></span>
@@ -374,14 +375,13 @@
 <span>    <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in abort_is_not_fkc() : No foreign keys to remove.</span></span>
-<span>  </span>
+<span></span>
 <span><span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 0 × 5</span></span>
 <span><span class="co">#&gt; # … with 5 variables: child_table &lt;chr&gt;, child_fk_cols &lt;keys&gt;,</span></span>
-<span><span class="co">#&gt; #   parent_table &lt;chr&gt;, parent_key_cols &lt;keys&gt;, on_delete &lt;chr&gt;</span></span>
-<span><span class="co">#&gt; # ℹ Use `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   parent_table &lt;chr&gt;, parent_key_cols &lt;keys&gt;, on_delete &lt;chr&gt;</span></span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -391,8 +391,7 @@
 <span><span class="co">#&gt;   dm_rm_fk(flights, origin, airports)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 0 × 5</span></span>
 <span><span class="co">#&gt; # … with 5 variables: child_table &lt;chr&gt;, child_fk_cols &lt;keys&gt;,</span></span>
-<span><span class="co">#&gt; #   parent_table &lt;chr&gt;, parent_key_cols &lt;keys&gt;, on_delete &lt;chr&gt;</span></span>
-<span><span class="co">#&gt; # ℹ Use `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   parent_table &lt;chr&gt;, parent_key_cols &lt;keys&gt;, on_delete &lt;chr&gt;</span></span></code></pre>
 <p>Since the primary keys are defined in the <code>dm</code> object, you do not usually need to provide the referenced column name of <code>ref_table</code>.</p>
 <p>Another function for getting to know your data better (cf. <code><a href="../reference/dm_enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> in <a href="#pk">“Primary keys of <code>dm</code> objects”</a>) is <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>. Use it to get an overview over foreign key candidates that point from one table to another:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">

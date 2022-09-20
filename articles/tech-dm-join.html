@@ -33,7 +33,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" alt="cynkra" id="navbar-logo"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Joining in relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2022-08-06</h4>
+            <h4 data-toc-skip class="date">2022-09-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-join.Rmd" class="external-link"><code>vignettes/tech-dm-join.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-join.Rmd</code></div>
@@ -200,8 +200,7 @@
 <span><span class="co">#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;,</span></span>
 <span><span class="co">#&gt; #   name &lt;chr&gt;, and abbreviated variable names ¹​sched_dep_time,</span></span>
-<span><span class="co">#&gt; #   ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</span></span></code></pre>
 <p>As you can see below, the <code>dm_joined</code> data frame has one more column than the <code>flights</code> table. The difference is the <code>name</code> column from the <code>airlines</code> table.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span><span class="op">$</span><span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -239,8 +238,7 @@
 <span><span class="co">#&gt; #   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span>
-<span><span class="co">#&gt; # ℹ Use `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span></code></pre>
 <p>An example with filtering on a <code>dm</code> and then merging:</p>
 <p><strong>Get all May 2013 flights from Delta Air Lines which didn’t depart from John F. Kennedy International Airport in - and join all the airports data into the <code>flights</code> table.</strong></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -269,8 +267,7 @@
 <span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;,</span></span>
 <span><span class="co">#&gt; #   name &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   tzone &lt;chr&gt;, and abbreviated variable names ¹​sched_dep_time,</span></span>
-<span><span class="co">#&gt; #   ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</span></span></code></pre>
 <p>See <code><a href="../articles/tech-dm-filter.html">vignette("tech-dm-filter")</a></code> for more details on filtering.</p>
 <p>A last example:</p>
 <p><strong>Merge all tables into one big table.</strong></p>
@@ -303,8 +300,7 @@
 <span><span class="co">#&gt; #   name.airlines &lt;chr&gt;, name.airports &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;, year.planes &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;, and abbreviated variable …</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;, and abbreviated variable …</span></span></code></pre>
 <p>To be more precise, <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code> will join all tables from one level of hierarchy (i.e., direct neighbors to table <code>.start</code>). If you want to cover tables from all levels of hierarchy, use the argument <code>recursive = TRUE</code> for <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code> instead.</p>
 <p>Also, be aware that all column names need to be unique. The <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code> takes care of this by automatically renaming the relevant columns and informs the user if any names were changed, e.g. <code>dm_rename(airlines, airlines.name = name)</code>.</p>
 <p>If you want to merge all tables, but get a nested table in return, use <code><a href="../reference/dm_wrap_tbl.html">dm_wrap_tbl()</a></code> with <code><a href="../reference/pull_tbl.html">pull_tbl()</a></code> instead:</p>
@@ -330,8 +326,7 @@
 <span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;,</span></span>
 <span><span class="co">#&gt; #   airlines &lt;packed[,1]&gt;, airports &lt;packed[,7]&gt;, planes &lt;packed[,8]&gt;,</span></span>
 <span><span class="co">#&gt; #   weather &lt;packed[,13]&gt;, and abbreviated variable names ¹​sched_dep_time,</span></span>
-<span><span class="co">#&gt; #   ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</span></span></code></pre>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

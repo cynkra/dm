@@ -33,7 +33,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" alt="cynkra" id="navbar-logo"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Migration guide: 'cdm' -&gt; 'dm'</h1>
             
-            <h4 data-toc-skip class="date">2022-08-06</h4>
+            <h4 data-toc-skip class="date">2022-09-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-cdm.Rmd" class="external-link"><code>vignettes/tech-dm-cdm.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-cdm.Rmd</code></div>
@@ -149,8 +149,7 @@
 <span><span class="co">#&gt;  8 BTV   Burlington Intl                44.5  -73.2   335    -5 A     Amer…</span></span>
 <span><span class="co">#&gt;  9 BUF   Buffalo Niagara Intl           42.9  -78.7   724    -5 A     Amer…</span></span>
 <span><span class="co">#&gt; 10 BUR   Bob Hope                       34.2 -118.    778    -8 A     Amer…</span></span>
-<span><span class="co">#&gt; # … with 76 more rows</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with 76 more rows</span></span></code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm</span><span class="op">$</span><span class="va">planes</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 945 × 9</span></span>
@@ -166,8 +165,7 @@
 <span><span class="co">#&gt;  8 N11109   2002 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
 <span><span class="co">#&gt;  9 N11121   2003 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
 <span><span class="co">#&gt; 10 N11137   2003 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt; # … with 935 more rows, and abbreviated variable name ¹​manufacturer</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with 935 more rows, and abbreviated variable name ¹​manufacturer</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm</span><span class="op">[[</span><span class="st">"weather"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 144 × 15</span></span>
@@ -185,8 +183,7 @@
 <span><span class="co">#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6     320   17.3     26.5</span></span>
 <span><span class="co">#&gt; # … with 134 more rows, 4 more variables: precip &lt;dbl&gt;, pressure &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   visib &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names</span></span>
-<span><span class="co">#&gt; #   ¹​wind_dir, ²​wind_speed, ³​wind_gust</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   ¹​wind_dir, ²​wind_speed, ³​wind_gust</span></span></code></pre>
 <p>After the update the same result is achieved by this type of function call:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/deprecated.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airlines</span><span class="op">)</span></span>

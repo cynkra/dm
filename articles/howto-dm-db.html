@@ -33,7 +33,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" alt="cynkra" id="navbar-logo"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Create a dm object from a database</h1>
                         <h4 data-toc-skip class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2022-08-06</h4>
+            <h4 data-toc-skip class="date">2022-09-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-db.Rmd" class="external-link"><code>vignettes/howto-dm-db.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-db.Rmd</code></div>
@@ -111,8 +111,8 @@
     
     
 <p>{dm} was designed to make connecting to and working with a relational database management system (RDBMS) as straightforward as possible. To this end, a dm object can be created from any database that has a {<a href="https://dbi.r-dbi.org/" class="external-link">DBI</a>} backend available (<a href="https://github.com/r-dbi/backends" class="external-link">see list</a>).</p>
-<p>When a dm object is created via a DBI connection to an RDBMS, it can import all the tables in the database, the active schema, or a limited set. For some RDBMS, such as Postgres and SQL Server, primary and foreign keys are also imported and do not have to be manually added afterwards.</p>
-<p>To demonstrate, we will connect to a <a href="https://relational.fit.cvut.cz/" class="external-link">relational dataset repository</a> with a database server that is publicly accessible without registration. It hosts a <a href="https://relational.fit.cvut.cz/dataset/Financial" class="external-link">financial dataset</a> that contains loan data along with relevant account information and transactions. We chose this dataset because the relationships between <code>loan</code>, <code>account</code>, and <code>transactions</code> tables are a good representation of databases that record real-world business transactions. The repository uses a MariaDB server for which {dm} currently does not import primary or foreign keys, so we will need to add them.</p>
+<p>When a dm object is created via a DBI connection to an RDBMS, it can import all the tables in the database, the active schema, or a limited set. For some RDBMS, such as Postgres, SQL Server and MariaDB, primary and foreign keys are also imported and do not have to be manually added afterwards.</p>
+<p>To demonstrate, we will connect to a <a href="https://relational.fit.cvut.cz/" class="external-link">relational dataset repository</a> with a database server that is publicly accessible without registration. It hosts a <a href="https://relational.fit.cvut.cz/dataset/Financial" class="external-link">financial dataset</a> that contains loan data along with relevant account information and transactions. We chose this dataset because the relationships between <code>loan</code>, <code>account</code>, and <code>transactions</code> tables are a good representation of databases that record real-world business transactions.</p>
 <p>Below, we open a connection to the publicly accessible database server using their documented connection parameters. Connection details vary from database to database. Before connecting to your own RDBMS, you may want to read <code><a href="https://dbi.r-dbi.org/articles/DBI.html" class="external-link">vignette("DBI", package = "DBI")</a></code> for further information.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rmariadb.r-dbi.org" class="external-link">RMariaDB</a></span><span class="op">)</span></span>
@@ -190,7 +190,7 @@
 <li>Add a foreign key <code>account_id</code> to the <code>loans</code> table referencing the <code>accounts</code> table</li>
 </ol>
 <p>Then we assign colors to the tables and draw the structure of the dm.</p>
-<p>Note that when the foreign key is created, the primary key in the referenced table does not need to be <em>specified</em>, but the primary key must already be <em>defined</em>. And, as mentioned above, primary and foreign key constraints on the database are currently only imported for Postgres and SQL Server databases, and only when <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> is used. This process of key definition needs to be done manually for other databases.</p>
+<p>Note that when the foreign key is created, the primary key in the referenced table does not need to be <em>specified</em>, but the primary key must already be <em>defined</em>. And, as mentioned above, primary and foreign key constraints on the database are currently only imported for Postgres, SQL Server databases and MariaDB, and only when <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> is used. This process of key definition needs to be done manually for other databases.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_keys</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">my_manual_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -273,8 +273,7 @@
 <span><span class="co">#&gt; 10  4990       110 1997-09-08 162576      36    4516 C           36 POPLAT…</span></span>
 <span><span class="co">#&gt; # … with more rows, 1 more variable: date.accounts &lt;date&gt;, and abbreviated</span></span>
 <span><span class="co">#&gt; #   variable names ¹​account_id, ²​duration, ³​payments, ⁴​district_id,</span></span>
-<span><span class="co">#&gt; #   ⁵​frequency</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre>
+<span><span class="co">#&gt; #   ⁵​frequency</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">my_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -357,8 +356,7 @@
 <span><span class="co">#&gt;  8        103       265320</span></span>
 <span><span class="co">#&gt;  9        105       352704</span></span>
 <span><span class="co">#&gt; 10        110       162576</span></span>
-<span><span class="co">#&gt; # … with more rows</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with more rows</span></span></code></pre>
 <p>It is a <em>lazy table</em> powered by the {<a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a>} package: the results are not materialized; instead, an SQL query is built and executed each time the data is requested.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_total</span><span class="op">$</span><span class="va">total_loans</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -391,8 +389,7 @@
 <span><span class="co">#&gt;  8        103       265320</span></span>
 <span><span class="co">#&gt;  9        105       352704</span></span>
 <span><span class="co">#&gt; 10        110       162576</span></span>
-<span><span class="co">#&gt; # … with 672 more rows</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with 672 more rows</span></span></code></pre>
 <p>Use this method with caution. If you are not sure of the size of the dataset you will be downloading, you can call <code><a href="../reference/dm_nrow.html">dm_nrow()</a></code> on your <code>dm</code> for the row count of your data model’s tables.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -411,7 +408,7 @@
 <span></span>
 <span><span class="va">deployed_dm</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.39.1 []</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.39.3 []</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `loans`, `accounts`, `total_loans`</span></span>
 <span><span class="co">#&gt; Columns: 13</span></span>

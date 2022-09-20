@@ -33,7 +33,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" alt="cynkra" id="navbar-logo"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Model verification - keys, constraints and normalization</h1>
             
-            <h4 data-toc-skip class="date">2022-08-06</h4>
+            <h4 data-toc-skip class="date">2022-09-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-low-level.Rmd" class="external-link"><code>vignettes/tech-dm-low-level.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-low-level.Rmd</code></div>
@@ -197,7 +197,7 @@
 <p>Given the following three data frames:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
-<span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">d4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Here are some examples of how the cardinality testing functions can be used:</p>
@@ -259,8 +259,7 @@
 <span><span class="co">#&gt;  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2</span></span>
 <span><span class="co">#&gt;  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2</span></span>
 <span><span class="co">#&gt; 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span></span>
-<span><span class="co">#&gt; # … with 22 more rows</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with 22 more rows</span></span></code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">decomposed_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">mtcars_tibble</span>, <span class="va">am_gear_carb_id</span>, <span class="va">am</span>, <span class="va">gear</span>, <span class="va">carb</span><span class="op">)</span></span>
 <span><span class="va">decomposed_table</span></span></code></pre></div>
@@ -279,7 +278,6 @@
 <span><span class="co">#&gt;  9  22.8     4  141.    95  3.92  3.15  22.9     1               4</span></span>
 <span><span class="co">#&gt; 10  19.2     6  168.   123  3.92  3.44  18.3     1               5</span></span>
 <span><span class="co">#&gt; # … with 22 more rows</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $parent_table</span></span>
 <span><span class="co">#&gt; # A tibble: 13 × 4</span></span>
@@ -317,8 +315,7 @@
 <span><span class="co">#&gt;  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2</span></span>
 <span><span class="co">#&gt;  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2</span></span>
 <span><span class="co">#&gt; 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span></span>
-<span><span class="co">#&gt; # … with 22 more rows</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre>
+<span><span class="co">#&gt; # … with 22 more rows</span></span></code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Shortcut:</span></span>
 <span><span class="fu"><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list</a></span><span class="op">(</span><span class="va">decomposed_table</span>, id_column <span class="op">=</span> <span class="va">am_gear_carb_id</span><span class="op">)</span></span></code></pre></div>
