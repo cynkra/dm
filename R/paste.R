@@ -222,7 +222,8 @@ deparse_line <- function(x) {
     attributes(x) <- attrs[sort(names(attrs))]
   }
   x <- deparse(x, width.cutoff = 500, backtick = TRUE)
-  gsub(" *\n *", " ", x)
+  # need paste0() because of https://github.com/cynkra/dm/issues/1510
+  paste0(gsub(" *\n *", " ", x), collapse = "")
 }
 
 glue_collapse1 <- function(x, ...) {
