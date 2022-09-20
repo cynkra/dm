@@ -284,6 +284,9 @@
         "all", "mad")))))
     Output
       Option unknown: "bogus", "mad". Must be one of "all", "tables", "keys", "select", "color".
+
+# output 2
+
     Code
       # no error for factor column that leads to code with width > 500
       dm(tibble(a = factor(levels = expand.grid(letters, as.character(1:5)) %>%
