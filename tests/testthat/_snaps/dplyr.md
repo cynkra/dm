@@ -4,6 +4,10 @@
       # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
       dm_zoomed() %>% left_join(tf_3, select = c(d = g, f, f1)) %>% dm_update_zoomed() %>%
         get_all_keys()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Renaming ambiguous columns: %>%
         dm_rename(tf_2, d.tf_2 = d) %>%
@@ -195,6 +199,10 @@
       # transmute()
       zoomed_grouped_out_dm %>% transmute(d_mean = mean(d)) %>% dm_insert_zoomed(
         "new_tbl") %>% get_all_keys()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $pks
       # A tibble: 7 x 2
@@ -225,6 +233,10 @@
     Code
       zoomed_grouped_in_dm %>% transmute(g_list = list(g)) %>% dm_insert_zoomed(
         "new_tbl") %>% get_all_keys()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $pks
       # A tibble: 6 x 2
@@ -254,6 +266,10 @@
       # mutate()
       zoomed_grouped_out_dm %>% mutate(d_mean = mean(d)) %>% select(-d) %>%
         dm_insert_zoomed("new_tbl") %>% get_all_keys()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $pks
       # A tibble: 7 x 2
@@ -281,6 +297,10 @@
     Code
       zoomed_grouped_in_dm %>% mutate(f = paste0(g, g)) %>% dm_insert_zoomed(
         "new_tbl") %>% get_all_keys()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $pks
       # A tibble: 7 x 2
@@ -309,6 +329,10 @@
     Code
       zoomed_grouped_in_dm %>% mutate(g_new = list(g)) %>% dm_insert_zoomed("new_tbl") %>%
         get_all_keys()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $pks
       # A tibble: 7 x 2
@@ -342,6 +366,10 @@
       zoomed_grouped_out_dm %>% summarize(d_mean = mean(d)) %>% ungroup() %>% rename(
         e_new = e) %>% group_by(e_new, e1) %>% transmute(c = paste0(c, "_animal")) %>%
         dm_insert_zoomed("new_tbl") %>% get_all_keys()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $pks
       # A tibble: 7 x 2
@@ -390,6 +418,10 @@
 
     Code
       grouped_zoomed_comp_dm_1 %>% mutate(count = n()) %>% col_tracker_zoomed()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
             origin         year        month          day         hour         temp 
           "origin"       "year"      "month"        "day"       "hour"       "temp" 
@@ -399,6 +431,10 @@
         "pressure"      "visib"  "time_hour" 
     Code
       grouped_zoomed_comp_dm_2 %>% mutate(count = n()) %>% col_tracker_zoomed()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
             origin         year        month          day         hour         temp 
           "origin"       "year"      "month"        "day"       "hour"       "temp" 
@@ -408,6 +444,10 @@
         "pressure"      "visib"  "time_hour" 
     Code
       grouped_zoomed_comp_dm_1 %>% transmute(count = n()) %>% dm_update_zoomed()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -416,6 +456,10 @@
       Foreign keys: 3
     Code
       grouped_zoomed_comp_dm_2 %>% transmute(count = n()) %>% dm_update_zoomed()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -518,6 +562,10 @@
         "pressure"      "visib"  "time_hour" 
     Code
       zoomed_comp_dm %>% left_join(flights) %>% nrow()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
@@ -532,6 +580,10 @@
       [1] 1800
     Code
       zoomed_comp_dm %>% right_join(flights) %>% nrow()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
@@ -546,6 +598,10 @@
       [1] 1761
     Code
       zoomed_comp_dm %>% inner_join(flights) %>% nrow()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
@@ -560,6 +616,10 @@
       [1] 1761
     Code
       zoomed_comp_dm %>% full_join(flights) %>% nrow()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%

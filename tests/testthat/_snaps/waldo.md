@@ -37,6 +37,10 @@
 
     Code
       dm %>% dm_rm_fk() %>% waldo::compare(dm, max_diffs = 10)
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Removing foreign keys: %>%
         dm_rm_fk(flights, carrier, airlines) %>%

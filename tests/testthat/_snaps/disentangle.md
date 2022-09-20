@@ -2,6 +2,10 @@
 
     Code
       dm_disentangle(dm_for_filter_w_cycle(), tf_1) %>% dm_get_all_fks()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Replaced table `tf_3` with `tf_3-1`, `tf_3-2`.
       Replaced table `tf_4` with `tf_4-1`, `tf_4-2`.
@@ -25,6 +29,10 @@
       11 tf_6-2      o             tf_7-2       p               no_action
     Code
       dm_disentangle(dm_for_filter_w_cycle(), tf_5) %>% dm_get_all_fks()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Replaced table `tf_1` with `tf_1-1`, `tf_1-2`.
       Replaced table `tf_2` with `tf_2-1`, `tf_2-2`.
@@ -50,6 +58,10 @@
       12 tf_6-2      o             tf_7-2       p               no_action
     Code
       dm_disentangle(entangled_dm(), a, quiet = TRUE) %>% dm_get_all_fks()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       # A tibble: 22 x 5
          child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -67,6 +79,10 @@
       # ... with 12 more rows
     Code
       dm_disentangle(entangled_dm(), c) %>% dm_get_all_fks()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Replaced table `a` with `a-1`, `a-2`.
       Replaced table `b` with `b-1`, `b-2`.
@@ -92,6 +108,10 @@
       # ... with 12 more rows
     Code
       dm_disentangle(entangled_dm_2(), a) %>% dm_get_all_fks()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Message
       Replaced table `b` with `b-1`, `b-2`.
       Replaced table `c` with `c-1`, `c-2`.
@@ -112,6 +132,10 @@
       9 f           f             g            g               no_action
     Code
       dm_disentangle(entangled_dm_2(), d, quiet = TRUE) %>% dm_get_all_fks()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       # A tibble: 7 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete

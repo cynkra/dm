@@ -4,6 +4,13 @@
       pixar_dm %>% build_copy_queries(src_db, ., table_names = names(.) %>%
         repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
         map(dbplyr::ident_q)) %>% as.list()
+    Condition
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
+      Warning:
+      `vec_unchop()` was deprecated in vctrs 0.5.0.
+      Please use `list_unchop()` instead.
     Output
       $name
       [1] "pixar_films"     "academy"         "box_office"      "genres"         
