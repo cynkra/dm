@@ -397,3 +397,31 @@
       8 tkeys     id    
       9 trans     id    
 
+---
+
+    
+
+---
+
+    Code
+      dm::dm_get_all_fks(my_dm)
+    Output
+      # A tibble: 3 x 5
+        child_table child_fk_cols parent_table  parent_key_cols  on_delete
+        <chr>       <keys>        <chr>         <keys>           <chr>    
+      1 oseba       id_nesreca    nesreca       id_nesreca       no_action
+      2 nesreca     upravna_enota upravna_enota id_upravna_enota no_action
+      3 oseba       upravna_enota upravna_enota id_upravna_enota no_action
+
+---
+
+    Code
+      dm::dm_get_all_pks(my_dm)
+    Output
+      # A tibble: 3 x 2
+        table         pk_col            
+        <chr>         <keys>            
+      1 ad            ts, ad_id, user_id
+      2 nesreca       id_nesreca        
+      3 upravna_enota id_upravna_enota  
+
