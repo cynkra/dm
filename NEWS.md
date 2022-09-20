@@ -2,15 +2,6 @@
 
 # dm 1.0.2
 
-- Same as previous version.
-
-
-# dm 1.0.1.9001
-
-## Bug fixes
-
-- `dm_paste()` gives correct output for factor columns with many levels (#1510, #1511).
-
 ## Features
 
 - `dm_from_con()` can use multiple schemata (@mgirlich, #1441, #1449).
@@ -21,20 +12,17 @@
 
 - New `json_pack.tbl_lazy()` and `json_nest.tbl_lazy()` (#969, #975).
 
+## Bug fixes
+
+- `dm_paste()` gives correct output for factor columns with many levels (#1510, #1511).
+
 ## Chore
 
-- Fix compatibility with duckdb 0.5.0 (#1518).
-
-- Adapt snapshot tests to duckdb 0.5.0 (#1509).
+- Fix compatibility with duckdb 0.5.0 (#1509, #1518).
 
 - Refactor `dm_unwrap_tbl()` so it builds a "unwrap plan" first (#1446, #1447).
 
 - Reenable `dm_rows_update()` test (#1437).
-
-
-# dm 1.0.1.9000
-
-Internal changes only.
 
 
 # dm 1.0.1
