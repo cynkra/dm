@@ -119,7 +119,7 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
 find_name_clashes <- function(old, new) {
 
   # Any entries in `new` with a higher count than in `old`
-  clashes <- names(purrr::keep(table(new), ~ .x > table(old)[.x]))
+  clashes <- purrr::keep(unique(new), ~ table(new)[.x] > table(old)[.x])
 
   purrr::imap_chr(
     purrr::set_names(clashes),
@@ -129,6 +129,8 @@ find_name_clashes <- function(old, new) {
 
 
 make_local_names <- function(schema_names, table_names, tidy_names = FALSE) {
+
+  combined_names <- glue::glue("{schema_names}.{table_names}")
 
   if (tidy_names) {
 
