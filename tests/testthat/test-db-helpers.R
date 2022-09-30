@@ -112,7 +112,7 @@ test_that("DB helpers work for MSSQL", {
     get_src_tbl_names(my_test_src(), schema = "schema_db_helpers_3", tidy_names = TRUE),
     paste(
       "Forcing tidy table names leads to name clashes:",
-      "* \"test_db_helpers_2\", \"Test DB Helpers 2\" => \"test_db_helpers_2\"",
+      "* \"schema_db_helpers_3.test_db_helpers_2\", \"schema_db_helpers_3.Test DB Helpers 2\" => \"schema_db_helpers_3.test_db_helpers_2\"",
       "Try again with `tidy_names = FALSE`.",
       sep = "\n"
     ),
