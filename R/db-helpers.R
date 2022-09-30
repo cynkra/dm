@@ -118,12 +118,12 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
 
 find_name_clashes <- function(old, new) {
 
-  # Any entries in `new` with a higher count than in `old`
-  clashes <- purrr::keep(unique(new), ~ table(new)[.x] > table(old)[.x])
+  # Any entries in `new` with more than one corresponding entry in `old`
+  clashes <- purrr::keep(split(old, new), ~ length(unique(.x)) > 1)
 
   purrr::imap_chr(
-    purrr::set_names(clashes),
-    ~ glue::glue("* {paste0(dQuote(old[new == .x], q = FALSE), collapse = ', ')} => {dQuote(.y, q = FALSE)}")
+    clashes,
+    ~ glue::glue("* {paste0(dQuote(.x, q = FALSE), collapse = ', ')} => {dQuote(.y, q = FALSE)}")
   )
 }
 
@@ -147,7 +147,7 @@ make_local_names <- function(schema_names, table_names, tidy_names = FALSE) {
         "Forcing tidy schema names leads to name clashes:",
         schema_clashes,
         "Try again with `tidy_names = FALSE`."
-      ),collapse = "\n"))
+      ), collapse = "\n"))
 
 
     table_names_untidy <- table_names
