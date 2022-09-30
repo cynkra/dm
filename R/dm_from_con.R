@@ -16,6 +16,8 @@
 #'   foreign keys from the database.
 #'   Currently works only for Postgres and SQL Server databases.
 #'   The default attempts to query and issues an informative message.
+#' @param tidy_names Whether to convert table names (and schema names, if
+#'   multiple schemas are requested) to tidy format.
 #' @param ... `r lifecycle::badge("experimental")`
 #'
 #'   Additional parameters for the schema learning query.
@@ -39,8 +41,7 @@
 #' dm_from_src(con)
 #'
 #' # Avoid DBI::dbDisconnect() here, because we don't own the connection
-dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
-                        ...) {
+dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL, tidy_names = FALSE, ...) {
   stopifnot(is(con, "DBIConnection") || inherits(con, "Pool"))
 
   if (inherits(con, "Pool")) {

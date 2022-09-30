@@ -114,7 +114,57 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
   quote_ids(names, con_from_src_or_con(con), schema)
 }
 
-get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
+
+
+find_name_clashes <- function(old, new) {
+
+  # Any entries in `new` with a higher count than in `old`
+  clashes <- names(purrr::keep(table(new), ~ .x > table(old)[.x]))
+
+  purrr::imap_chr(
+    purrr::set_names(clashes),
+    ~ glue::glue("* {paste0(dQuote(old[new == .x], q = FALSE), collapse = ', ')} => {dQuote(.y, q = FALSE)}")
+  )
+}
+
+
+make_local_names <- function(schema_names, table_names, tidy_names = FALSE) {
+
+  if (tidy_names) {
+
+    check_suggested("snakecase", use = TRUE)
+
+    schema_names_untidy <- schema_names
+    schema_names <- snakecase::to_snake_case(schema_names)
+
+
+    schema_clashes <- find_name_clashes(schema_names_untidy, schema_names)
+
+    if (length(schema_clashes) > 0)
+      stop(paste0(c("Forcing tidy schema names leads to name clashes:", schema_clashes), collapse = "\n"))
+
+
+    table_names_untidy <- table_names
+    table_names <- snakecase::to_snake_case(table_names)
+
+    combined_names_untidy <- glue::glue("{schema_names}.{table_names_untidy}")
+    combined_names <- glue::glue("{schema_names}.{table_names}")
+
+    combined_clashes <- find_name_clashes(combined_names_untidy, combined_names)
+
+    if (length(local_clashes) > 0)
+      stop(paste0(c("Forcing tidy table names leads to name clashes:", combined_clashes), collapse = "\n"))
+  }
+
+
+  if (length(unique(schema_names)) == 1)
+    table_names
+  else
+    combined_names
+}
+
+
+get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, tidy_names = FALSE) {
   if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
     warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
@@ -146,11 +196,14 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   }
 
   names_table %>%
-    filter(schema_name == !!schema) %>%
+    # sql expressions need to be wrapped in parentheses
+    filter(schema_name %in% !!(if (inherits(schema, "sql")) glue_sql_collapse(schema) else schema)) %>%
     collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
-    mutate(remote_name = schema_if(schema_name, table_name, con, dbname)) %>%
-    select(-schema_name) %>%
+    transmute(
+      local_name = make_local_names(schema_name, table_name, tidy_names = tidy_names),
+      remote_name = schema_if(schema_name, table_name, con, dbname),
+    ) %>%
     deframe()
 }
 

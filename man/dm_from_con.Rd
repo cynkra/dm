@@ -4,7 +4,13 @@
 \alias{dm_from_con}
 \title{Load a dm from a remote data source}
 \usage{
-dm_from_con(con = NULL, table_names = NULL, learn_keys = NULL, ...)
+dm_from_con(
+  con = NULL,
+  table_names = NULL,
+  learn_keys = NULL,
+  tidy_names = FALSE,
+  ...
+)
 }
 \arguments{
 \item{con}{A \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} or a \code{Pool} object.}
@@ -17,6 +23,9 @@ Set to \code{TRUE} to query the definition of primary and
 foreign keys from the database.
 Currently works only for Postgres and SQL Server databases.
 The default attempts to query and issues an informative message.}
+
+\item{tidy_names}{Whether to convert table names (and schema names, if
+multiple schemas are requested) to tidy format.}
 
 \item{...}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
