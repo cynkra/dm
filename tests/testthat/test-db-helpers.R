@@ -125,7 +125,7 @@ test_that("DB helpers work for MSSQL", {
   expect_named(res, c(
     "schema_db_helpers_2.test_db_helpers_2",
     "schema_db_helpers_2.Test DB Helpers 2",
-    "schema_db_helpers_3.test_db_helpers_2",
+    "schema_db_helpers_3.test_db_helpers_2"
   ))
 
   expect_identical(
