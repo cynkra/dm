@@ -124,8 +124,9 @@ test_that("DB helpers work for MSSQL", {
   res <- get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers_2", "schema_db_helpers_3"))
   expect_named(res, c(
     "schema_db_helpers_2.test_db_helpers_2",
-    "schema_db_helpers_2.Test DB Helpers 2",
-    "schema_db_helpers_3.test_db_helpers_2"
+    "schema_db_helpers_2.Test DB Helpers Two",
+    "schema_db_helpers_3.test_db_helpers_2",
+    "schema_db_helpers_3.Test DB Helpers 2"
   ))
 
   expect_identical(
