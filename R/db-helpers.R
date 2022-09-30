@@ -143,7 +143,11 @@ make_local_names <- function(schema_names, table_names, tidy_names = FALSE) {
     schema_clashes <- find_name_clashes(schema_names_untidy, schema_names)
 
     if (length(schema_clashes) > 0)
-      stop(paste0(c("Forcing tidy schema names leads to name clashes:", schema_clashes), collapse = "\n"))
+      stop(paste0(c(
+        "Forcing tidy schema names leads to name clashes:",
+        schema_clashes,
+        "Try again with `tidy_names = FALSE`."
+      ),collapse = "\n"))
 
 
     table_names_untidy <- table_names
@@ -155,7 +159,11 @@ make_local_names <- function(schema_names, table_names, tidy_names = FALSE) {
     combined_clashes <- find_name_clashes(combined_names_untidy, combined_names)
 
     if (length(combined_clashes) > 0)
-      stop(paste0(c("Forcing tidy table names leads to name clashes:", combined_clashes), collapse = "\n"))
+      stop(paste0(c(
+        "Forcing tidy table names leads to name clashes:",
+        combined_clashes,
+        "Try again with `tidy_names = FALSE`."
+      ), collapse = "\n"))
   }
 
 
