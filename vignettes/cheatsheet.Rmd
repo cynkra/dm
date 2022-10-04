@@ -1,0 +1,54 @@
+---
+title: "Relational data with dm: Cheat sheet"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{cheatsheet}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  echo = FALSE
+)
+```
+
+> If you have more than one table, use dm.
+
+## <i class="fa-solid fa-circle-plus"></i> Create dm...
+
+### <i class="fa-solid fa-database"></i> from database: `dm_from_con()`
+
+```{r}
+create_figure <- function(class, src, alt, caption) {
+  html <- sprintf('
+  <figure class="%s">
+            <img
+              alt="%s"
+              src="%s"
+            />
+            <figcaption>
+              %s
+            </figcaption>
+          </figure>  
+  ',
+   class, alt, src, commonmark::markdown_html(caption) 
+  )
+  cat(html)
+}
+```
+
+
+```{r, results='asis'}
+create_figure(
+  class = "right",
+  alt = "diagram showing the transformation from left a database icon to right a dm object represented as three tables in a blue frame",
+  src = "cheatsheet/dm_from_con.svg",
+  caption = "```\ncon <- DBI::dbConnect(...)
+dm_from_con(con)\n```\n"
+)
+```
+
+### <i class="fa-solid fa-table"></i> from data frames: `dm(df1, df2, ...)`
