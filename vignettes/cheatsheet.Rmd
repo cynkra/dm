@@ -496,11 +496,11 @@ dm_rows_insert(dm2, in_place = FALSE)
 cat('<figure class="left">
   <img
     alt="Equal sign then a dm object where the blue table has now more rows."
-    src="insert2.svg"
+    src="../man/figures/cheatsheet/insert2.svg"
   />
   <img
     alt="On the left a dm object with 3 tables. On the right, a similar dm where one of the tables, the blue one, has more rows. Between the two is a plus sign"
-    src="insert1.svg"
+    src="../man/figures/cheatsheet/insert1.svg"
   />
 </figure>')
 ```
@@ -514,11 +514,11 @@ dm_rows_insert(dm2, in_place = TRUE)
 cat('<figure class="left">
   <img
     alt="Database icon."
-    src="insert4.svg"
+    src="../man/figures/cheatsheet/insert4.svg"
   />
   <img
     alt="On the left a dm object with 3 tables, and a database icon superimposed. On the right, a similar dm where one of the tables, the blue one, has more rows. Between the two is a plus sign"
-    src="insert3.svg"
+    src="../man/figures/cheatsheet/insert3.svg"
   />
 </figure>')
 ```
