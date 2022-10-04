@@ -364,6 +364,93 @@ pull_tbl()\n```\n'
 ```
 <!--end-col1-->
 <!--col2-->
+## <i class="fa-solid fa-screwdriver-wrench"></i> Mutate, create, analyze tables
+
+### <i class="fa-solid fa-hammer"></i> Method 1: deconstruct and reconstruct
+
+1. `dm_get_tables(keyed = TRUE)`: <br />
+    to keep information on primary and foreign keys).
+
+```{r, results='asis'}
+create_figure(
+  class = "",
+  alt = "diagram showing the transformation from left a dm object to right a named list of the same table, instead of a solid border frame on the right the frame has a dotted border",
+  src = "deconstruct.svg",
+  caption = '```\ndm_tbl <- dm1 |>
+  dm_get_tables(keyed = TRUE)\n```\n'
+  
+)
+```
+
+2. tidyverse pipeline on the table of interest.
+
+```{r, results='asis'}
+create_figure(
+  class = "right",
+  alt = "on the left a table, on the right the same table with one more column",
+  src = "mutate.svg",
+  caption = '```\nnew_table1 <- dm_tbl$table1 |>
+  mutate(...)\n```\n'
+  
+)
+```
+
+3. Optional: update the dm object:
+
+```{r, results='asis'}
+create_figure(
+  class = "right",
+  alt = "on the left a dm of three tables, on the right the same dm but one of the tables has one column more",
+  src = "reconstruct.svg",
+  caption = '```\ndm1 |>
+  dm_select_tbl(-table1) |>
+  dm(table1 = new_table1)\n```\n'
+  
+)
+```
+
+### <i class="fa-solid fa-magnifying-glass"></i> Method 2: zoom
+
+1. `dm_zoom_to()`: Zoom on a table.
+
+```{r, results='asis'}
+create_figure(
+  class = "right",
+  alt = "On the left a dm object with three tables. On the right the same object but there is now a magnifying glass on the green table.",
+  src = "zoom1.svg",
+  caption = '```\nzoomed_dm1 <- dm1 |>
+  dm_zoom_to(green_df)\n```\n'
+  
+)
+```
+
+2. tidyverse pipeline (`mutate()`, etc.).
+
+```{r, results='asis'}
+create_figure(
+  class = "right",
+  alt = "On the left a dm object with three tables including a green table with a magnifying glass on it. On the right the same object but there is now a second green table superimposed, with one more column compared to the green table in the dm.",
+  src = "zoom2.svg",
+  caption = '```\nzoomed_dm2 <- zoomed_dm1 |>
+  mutate(var = thing)\n```\n'
+  
+)
+```
+
+3. `dm_update_zoomed()` (replace) /
+    `dm_insert_zoomed()`
+
+```{r, results='asis'}
+create_figure(
+  class = "right",
+  alt = "On the left a dm object featuring a second green table superimposed, with one more column compared to the green table in the dm. On the right the magnifying glass and second green table disappeared. Instead the green table in the dm has the new column.",
+  src = "zoom3.svg",
+  caption = '```\ndm3 <- zoomed_dm2 |>
+  dm_update_zoomed()\n```\n'
+  
+)
+```
+    
 <!--end-col2-->
 <!--col3-->
 <!--end-col3-->
