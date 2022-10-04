@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 <!--page1-->
 > If you have more than one table, use dm.
 
-<!--col1-->
+<!--page1col1-->
 ## <i class="fa-solid fa-circle-plus"></i> Create dm...
 
 ### <i class="fa-solid fa-database"></i> from database: `dm_from_con()`
@@ -123,8 +123,8 @@ create_figure(
   
 )
 ``` 
-<!--end-col1-->
-<!--col2-->
+<!--end-page1col1-->
+<!--page1col2-->
 ::: {.important-div}
 ### <i class="fa-solid fa-circle-info"></i> dm objects: relational data models
 
@@ -203,8 +203,8 @@ create_figure(
   
 )
 ```
-<!--end-col2-->
-<!--col3-->
+<!--end-page1col2-->
+<!--page1col3-->
 
 ## <i class="fa-solid fa-eye"></i> Visualize dm: `dm_draw()`
 
@@ -274,10 +274,10 @@ returns an error if `df1` and `df2` are not the same sets.
 ### <i class="fa-solid fa-tags"></i> Fix column names: `dm_disambiguate_cols()`
 
 `dm_disambiguate_cols(dm1)` ensures that all columns in a dm have unique names.
-<!--end-col3-->
+<!--end-page1col3-->
 <!--end-page1-->
 <!--page2-->
-<!--col1-->
+<!--page2col1-->
 
 ## <i class="fa-solid fa-table"></i> Transform dm into tibble
 
@@ -362,8 +362,8 @@ pull_tbl()\n```\n'
   
 )
 ```
-<!--end-col1-->
-<!--col2-->
+<!--end-page2col1-->
+<!--page2col2-->
 ## <i class="fa-solid fa-screwdriver-wrench"></i> Mutate, create, analyze tables
 
 ### <i class="fa-solid fa-hammer"></i> Method 1: deconstruct and reconstruct
@@ -451,8 +451,8 @@ create_figure(
 )
 ```
     
-<!--end-col2-->
-<!--col3-->
+<!--end-page2col2-->
+<!--page2col3-->
 ## <i class="fa-solid fa-database"></i> Modify database source of a dm
 
 ### <i class="fa-solid fa-download"></i> Export dm object to database:  `copy_dm_to()`
@@ -528,5 +528,5 @@ A dm is immutable, except with
 - <i class="fa-solid fa-check"></i> these functions AND
 - <i class="fa-solid fa-check"></i> a mutable backend (database) AND
 - <i class="fa-solid fa-check"></i> `in_place = TRUE`.
-<!--end-col3-->
+<!--end-page2col3-->
 <!--end-page2-->
