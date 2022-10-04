@@ -276,3 +276,95 @@ returns an error if `df1` and `df2` are not the same sets.
 `dm_disambiguate_cols(dm1)` ensures that all columns in a dm have unique names.
 <!--end-col3-->
 <!--end-page1-->
+<!--page2-->
+<!--col1-->
+
+## <i class="fa-solid fa-table"></i> Transform dm into tibble
+
+### Wide tibble: Cascade joins with `dm_flatten_to_tbl()`
+
+Only direct neighbours: `dm_flatten_to_tbl()`
+
+```{r, results='asis'}
+create_figure(
+  class = "big",
+  alt = "On the left a dm object where table A is linked to table B and table C. Table D is linked to table B. On the right a table corresponding to a join of table A, B and C. Not D as it is not a direct neighboor",
+  src = "flatten.svg",
+  caption = '```\ndm1 |>
+  dm_flatten_to_tbl(
+.start = df1
+)\n```\n'
+  
+)
+```
+
+All neighbours: `dm_flatten_to_tbl(.recursive = TRUE)`
+
+```{r, results='asis'}
+create_figure(
+  class = "big",
+  alt = "On the left a dm object where table A is linked to table B and table C. Table D is linked to table B. On the right a table corresponding to a join of table A, B, C and D as they can all be reached from table A albeit indirectly.",
+  src = "squash.svg",
+  caption = '```\ndm1 |>
+  dm_flatten_to_tbl(
+.start = df1,
+.recursive = TRUE
+)\n```\n'
+  
+)
+```
+
+
+### Single tibble dm: `dm_wrap_tbl()`
+
+Parent tables are packed &#8212; `dm_pack_tbl()`.
+
+Child tables are nested &#8212; `dm_nest_tbl()`.
+
+```{r, results='asis'}
+create_figure(
+  class = "big",
+  alt = "On the left a dm object (tables with arrows in a frame) where a green table is linked to a parent blue table and a child purple table. On the right another dm object with a single table in a frame. The blue parent table became a packed column in the green table (a column that contains a data frame) and the purple child table became a nested table (a table in each cell).",
+  src = "dm_wrap_tbl.svg",
+  caption = '```\ndm1 |>
+  dm_wrap_tbl(
+root = green_df
+)\n```\n'
+  
+)
+```
+
+### Retrieve one table of the dm: `pull_tbl()`
+
+```{r, results='asis'}
+create_figure(
+  class = "big",
+  alt = "On the left a dm object with three tables, on the right only a table. The primary key information has been kept which is represented by the first column of that table having kept its dark background.",
+  src = "pull-keyed.svg",
+  caption = '```\ndm1 |>
+  pull_tbl(
+dm1,
+green_df,
+keyed = TRUE
+)\n```\n'
+  
+)
+```
+
+```{r, results='asis'}
+create_figure(
+  class = "big",
+  alt = "On the left a dm object with three tables. There is a magnifying glass on the green table. On the right only the green table.",
+  src = "pull2.svg",
+  caption = 'If the dm is zoomed, retrieve zoomed table automatically.\n\n```\ndm1 |>
+  dm_zoom_to(green_df) |>
+pull_tbl()\n```\n'
+  
+)
+```
+<!--end-col1-->
+<!--col2-->
+<!--end-col2-->
+<!--col3-->
+<!--end-col3-->
+<!--end-page2-->
