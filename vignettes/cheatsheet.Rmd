@@ -125,7 +125,154 @@ create_figure(
 ``` 
 <!--end-col1-->
 <!--col2-->
+::: {.important-div}
+### <i class="fa-solid fa-circle-info"></i> dm objects: relational data models
+
+The dm package provides a **grammar of relational data models**. 
+It helps maintain **referential integrity**.
+
+A dm behaves like a list of tables (data frames or lazy tables) capturing
+**relationships** between the tables.
+:::
+
+::: {.alert .alert-primary role="alert" style="display:grid;place-items:center;"}
+
+<i class="fa-solid fa-arrow-up-right-from-square"></i> Shiny app: `dm_gui(dm = dm1)`
+
+```{r, results='asis'}
+cat(
+  '<img
+              alt="Screenshot of the Shiny app provided by dm. It has three parts. On the left is a diagram view of the dm that one can click to, for instance, select tables or change their colors. On the right, there is the generated code as well as a menu to control primary and foreign keys."
+              src="../man/figures/cheatsheet/shiny.png"
+              style="max-width: 75%; margin:auto;"
+            />'
+)
+
+```
+            
+:::
+
+
+## <i class="fa-solid fa-filter"></i> Resize dm
+
+### Select tables: `dm_select_tbl(dm1, ...)`
+
+```{r, results='asis'}
+create_figure(
+  class = "right",
+  alt = "diagram showing two dm objects, the one on the right has one table less",
+  src = "select_tbl.svg",
+  caption = '```\ndm1 |>
+  dm_select_tbl(-df3)\n```\n'
+  
+)
+``` 
+
+### Rename tables: `dm_rename_tbl(dm1, ...)`
+
+### Select columns: `dm_select(dm1, table, ...)`
+
+Automatic update of dm meta-information and table relations.
+
+
+```{r, results='asis'}
+create_figure(
+  class = "right",
+  alt = "diagram showing two dm objects, the third table of the one on the right has two colmns less",
+  src = "dm_select.svg",
+  caption = '```\ndm1 |>
+  dm_select(df3, -c3, -c4)\n```\n'
+  
+)
+```
+
+### Rename columns: `dm_rename(dm1, table, ...)`
+
+### Filter rows: `dm_filter(dm1, table = condition)`
+
+Filter rows in the table where the condition is defined, 
+but also all directly/indirectly connected tables.
+
+```{r, results='asis'}
+create_figure(
+  class = "right",
+  alt = "diagram showing two dm objects, the one on the right has tables with less rows",
+  src = "filter.svg",
+  caption = '```\ndm1 |>
+  dm_filter(df3 = (x == "val"))\n```\n'
+  
+)
+```
 <!--end-col2-->
 <!--col3-->
+
+## <i class="fa-solid fa-eye"></i> Visualize dm: `dm_draw()`
+
+### Control diagram level of detail: display...
+
+- Only keys (default): `dm_draw(view_type = "keys_only")`.
+- All variables: `dm_draw(view_type = "all")`.
+- Only table names: `dm_draw(view_type = "title_only")`.
+
+```{r, results='asis'}
+create_figure(
+  class = "right",
+  alt = "Diagram with linked rectangles (tables). Only table names.",
+  src = "draw-title_only.svg",
+  caption = '```\ndm |>
+  dm_draw(
+    view_type = "title_only",
+    rankdir = "TB"
+  )\n```\n'
+  
+)
+``` 
+
+### Control diagram scope
+
+To visualize fewer tables first use `dm_select_tbl()`.
+
+### Control diagram colors: `dm_set_colors()`
+
+```{r, results='asis'}
+create_figure(
+  class = "right",
+  alt = "Diagram with linked rectangles (tables). The flight table is pink, the airlines and airpots tables whose name start with 'air', are orange.",
+  src = "df-pk-fk-col.svg",
+  caption = '```\ndm |>
+  dm_set_colors(
+    pink = flights,
+    orange = starts_with("air")
+  ) |>
+  dm_draw()\n```\n'
+  
+)
+``` 
+          
+## <i class="fa-solid fa-check"></i> Data checks
+
+### `dm_examine_constraints()`
+
+tibble with information about which key constraints are met or violated.
+
+### `dm_examine_cardinalities()`
+
+tibble with information about the cardinality of the foreign keys constraints.
+
+### `check_key(df, col1)`
+
+returns an error if not an unique key.
+
+### `check_subset(df1, df2)`
+
+returns an error if `df1` is not a subset of `df2`.
+
+### `check_set_equality(df1, df2)`
+
+returns an error if `df1` and `df2` are not the same sets.
+
+### <i class="fa-solid fa-tags"></i> Fix column names: `dm_disambiguate_cols()`
+
+`dm_disambiguate_cols(dm1)` ensures that all columns in a dm have unique names.
 <!--end-col3-->
 <!--end-page1-->
