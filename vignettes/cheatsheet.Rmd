@@ -25,7 +25,8 @@ knitr::opts_chunk$set(
 ```{r}
 create_figure <- function(class, src, alt, caption) {
   src <- sprintf("../man/figures/cheatsheet/%s", src)
-  html <- sprintf('
+  html <- sprintf(
+    '
   <figure class="%s">
             <img
               alt="%s"
@@ -34,9 +35,9 @@ create_figure <- function(class, src, alt, caption) {
             <figcaption>
               %s
             </figcaption>
-          </figure>  
+          </figure>
   ',
-   class, alt, src, commonmark::markdown_html(caption) 
+    class, alt, src, commonmark::markdown_html(caption)
   )
   cat(html)
 }
@@ -61,7 +62,6 @@ create_figure(
   alt = "diagram showing the transformation from left three data frames to right a dm object represented as three tables in a blue frame",
   src = "dm.svg",
   caption = "```r\ndm(df1, df2, df3)\n```\n"
-  
 )
 ```
          
@@ -73,7 +73,6 @@ create_figure(
   alt = "diagram showing the transformation from left a dm with a data frame below to right a single dm object represented as three tables in a blue frame",
   src = "dm-df.svg",
   caption = "```r\ndm(dm1, df1)\n```\n"
-  
 )
 ```
 
@@ -83,7 +82,6 @@ create_figure(
   alt = "diagram showing the transformation from left two dm objects to right a single dm object represented as three tables in a blue frame",
   src = "dm-dm.svg",
   caption = "```r\ndm(dm1, dm2)\n```\n"
-  
 )
 ```        
 
@@ -104,7 +102,6 @@ create_figure(
   src = "primary-keys.svg",
   caption = "**Add** primary keys:\n\n```r\ndm1 |>
   dm_add_pk(table, columns)\n```\n"
-  
 )
 ```        
 
@@ -120,7 +117,6 @@ create_figure(
   src = "fk.svg",
   caption = "**Add** foreign keys:\n\n```r\ndm1 |>
   dm_add_fk(table, column)\n```\n"
-  
 )
 ``` 
 </div>
@@ -147,7 +143,6 @@ cat(
               style="max-width: 75%; margin:auto;"
             />'
 )
-
 ```
             
 :::
@@ -164,7 +159,6 @@ create_figure(
   src = "select_tbl.svg",
   caption = '```r\ndm1 |>
   dm_select_tbl(-df3)\n```\n'
-  
 )
 ``` 
 
@@ -182,7 +176,6 @@ create_figure(
   src = "dm_select.svg",
   caption = '```r\ndm1 |>
   dm_select(df3, -c3, -c4)\n```\n'
-  
 )
 ```
 
@@ -200,7 +193,6 @@ create_figure(
   src = "filter.svg",
   caption = '```r\ndm1 |>
   dm_filter(df3 = (x == "val"))\n```\n'
-  
 )
 ```
 </div>
@@ -224,7 +216,6 @@ create_figure(
     view_type = "title_only",
     rankdir = "TB"
   )\n```\n'
-  
 )
 ``` 
 
@@ -245,7 +236,6 @@ create_figure(
     orange = starts_with("air")
   ) |>
   dm_draw()\n```\n'
-  
 )
 ``` 
           
@@ -294,7 +284,6 @@ create_figure(
   dm_flatten_to_tbl(
 .start = df1
 )\n```\n'
-  
 )
 ```
 
@@ -310,7 +299,6 @@ create_figure(
 .start = df1,
 .recursive = TRUE
 )\n```\n'
-  
 )
 ```
 
@@ -330,7 +318,6 @@ create_figure(
   dm_wrap_tbl(
 root = green_df
 )\n```\n'
-  
 )
 ```
 
@@ -347,7 +334,6 @@ dm1,
 green_df,
 keyed = TRUE
 )\n```\n'
-  
 )
 ```
 
@@ -359,7 +345,6 @@ create_figure(
   caption = 'If the dm is zoomed, retrieve zoomed table automatically.\n\n```r\ndm1 |>
   dm_zoom_to(green_df) |>
 pull_tbl()\n```\n'
-  
 )
 ```
 </div>
@@ -378,7 +363,6 @@ create_figure(
   src = "deconstruct.svg",
   caption = '```r\ndm_tbl <- dm1 |>
   dm_get_tables(keyed = TRUE)\n```\n'
-  
 )
 ```
 
@@ -391,7 +375,6 @@ create_figure(
   src = "mutate.svg",
   caption = '```r\nnew_table1 <- dm_tbl$table1 |>
   mutate(...)\n```\n'
-  
 )
 ```
 
@@ -405,7 +388,6 @@ create_figure(
   caption = '```r\ndm1 |>
   dm_select_tbl(-table1) |>
   dm(table1 = new_table1)\n```\n'
-  
 )
 ```
 
@@ -420,7 +402,6 @@ create_figure(
   src = "zoom1.svg",
   caption = '```r\nzoomed_dm1 <- dm1 |>
   dm_zoom_to(green_df)\n```\n'
-  
 )
 ```
 
@@ -433,7 +414,6 @@ create_figure(
   src = "zoom2.svg",
   caption = '```r\nzoomed_dm2 <- zoomed_dm1 |>
   mutate(var = thing)\n```\n'
-  
 )
 ```
 
@@ -447,7 +427,6 @@ create_figure(
   src = "zoom3.svg",
   caption = '```r\ndm3 <- zoomed_dm2 |>
   dm_update_zoomed()\n```\n'
-  
 )
 ```
     
@@ -473,7 +452,6 @@ temporary = FALSE
 )
 
 DBI::dbDisconnect(con)\n```\n'
-  
 )
 ```
 
