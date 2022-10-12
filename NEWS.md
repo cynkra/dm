@@ -18,16 +18,6 @@
 
 - Avoid running example without database connection.
 
-## Uncategorized
-
-- Merged cran-1.0.2 into main
-
-
-
-# dm 1.0.2.9000
-
-- Internal changes only.
-
 
 # dm 1.0.2
 
