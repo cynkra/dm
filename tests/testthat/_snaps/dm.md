@@ -366,7 +366,7 @@
     Condition
       Warning:
       `copy_to.dm()` was deprecated in dm 0.2.0.
-      Use `copy_to(dm_get_con(dm), ...)` and `dm()`.
+      i Use `copy_to(dm_get_con(dm), ...)` and `dm()`.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `car_table`
