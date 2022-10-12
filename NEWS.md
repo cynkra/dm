@@ -1,5 +1,17 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 1.0.3
+
+## Chore
+
+- Avoid running example without database connection.
+
+## Uncategorized
+
+- Merged cran-1.0.2 into main
+
+
+
 # dm 1.0.2.9000
 
 - Internal changes only.
