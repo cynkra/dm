@@ -274,7 +274,7 @@
     Condition
       Warning:
       The `select` argument of `dm_paste()` is deprecated as of dm 0.1.2.
-      Please use the `options` argument instead.
+      i Please use the `options` argument instead.
     Message
       dm::dm(
       )
