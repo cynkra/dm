@@ -6,13 +6,13 @@
     Condition
       Warning:
       The `.data` argument of `check_key()` is deprecated as of dm 1.0.0.
-      Please use the `x` argument instead.
+      i Please use the `x` argument instead.
     Code
       check_key(a, .data = tibble(a = 1))
     Condition
       Warning:
       The `.data` argument of `check_key()` is deprecated as of dm 1.0.0.
-      Please use the `x` argument instead.
+      i Please use the `x` argument instead.
 
 # output for legacy API
 
@@ -21,9 +21,9 @@
     Condition
       Warning:
       The `c1` argument of `check_subset()` is deprecated as of dm 1.0.0.
-      Please use the `x_select` argument instead.
-      * Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`.
-      * Using `by_position = TRUE` for compatibility.
+      i Please use the `x_select` argument instead.
+      i Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`.
+      i Using `by_position = TRUE` for compatibility.
 
 # output
 

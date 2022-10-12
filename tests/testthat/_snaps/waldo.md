@@ -2,6 +2,43 @@
 
     Code
       dm %>% waldo::compare(dm, max_diffs = 10)
+    Condition
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
     Output
       v No differences
 
@@ -9,6 +46,40 @@
 
     Code
       dm %>% dm_select_tbl(-airlines) %>% waldo::compare(dm, max_diffs = 10)
+    Condition
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
     Output
       `old` is length 4
       `new` is length 5
@@ -23,6 +94,43 @@
 
     Code
       dm %>% dm_select(airlines, -name) %>% waldo::compare(dm, max_diffs = 10)
+    Condition
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
     Output
       `old$airlines$data` is length 1
       `new$airlines$data` is length 2
@@ -43,6 +151,43 @@
         dm_rm_fk(flights, origin, airports) %>%
         dm_rm_fk(flights, tailnum, planes) %>%
         dm_rm_fk(flights, c(origin, time_hour), weather)
+    Condition
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
     Output
       `old$airlines$fks` is length 0
       `new$airlines$fks` is length 1
@@ -86,6 +231,43 @@
         dm_rm_pk(airports) %>%
         dm_rm_pk(planes) %>%
         dm_rm_pk(weather)
+    Condition
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
     Output
       `old$airlines$pks$column` is length 0
       `new$airlines$pks$column` is length 1
@@ -115,6 +297,43 @@
 
     Code
       dm %>% dm_set_colors(yellow = flights) %>% waldo::compare(dm, max_diffs = 10)
+    Condition
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
     Output
       `old$flights$display`: "#FFFF00FF"
       `new$flights$display`: "#5B9BD5FF"
@@ -123,6 +342,43 @@
 
     Code
       dm %>% dm_zoom_to(flights) %>% waldo::compare(dm, max_diffs = 10)
+    Condition
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
+      Warning:
+      `transpose()` was deprecated in purrr 1.0.0.
+      i Please use `list_transpose()` instead.
     Output
       `old$flights$zoom` is an S3 object of class <tbl_df/tbl/data.frame>, a list
       `new$flights$zoom` is NULL
