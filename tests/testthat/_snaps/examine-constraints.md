@@ -75,7 +75,7 @@
     Condition
       Warning:
       The `progress` argument of `dm_examine_constraints()` is deprecated as of dm 1.0.0.
-      Please use the `.progress` argument instead.
+      i Please use the `.progress` argument instead.
     Message
       i No constraints defined.
     Code
@@ -83,7 +83,7 @@
     Condition
       Warning:
       The `dm` argument of `dm_examine_constraints()` is deprecated as of dm 1.0.0.
-      Please use the `.dm` argument instead.
+      i Please use the `.dm` argument instead.
     Message
       i No constraints defined.
 
