@@ -430,6 +430,8 @@ test_that("dm_meta() contents", {
 
 test_that("dm_from_con() with mariaDB", {
   skip_if_offline()
+  skip_if_not(dm_has_financial())
+
   my_db <- RMariaDB::dbConnect(
     RMariaDB::MariaDB(),
     username = "guest",

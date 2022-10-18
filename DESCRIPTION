@@ -55,7 +55,7 @@ Imports:
     dplyr (>= 1.0.9),
     glue,
     igraph,
-    lifecycle,
+    lifecycle (>= 1.0.3),
     magrittr,
     memoise,
     methods,
