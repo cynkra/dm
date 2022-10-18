@@ -1,9 +1,5 @@
 url: https://cynkra.github.io/dm
 template:
-  includes:
-    before_title: <a href="https://cynkra.com"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png"
-      alt="cynkra" id="navbar-logo"></a>
-  bootstrap: 5
   assets: pkgdown/assets
   package: cynkratemplate
 reference:
