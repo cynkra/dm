@@ -1421,6 +1421,11 @@
     Code
       dm <- dm_nycflights13()
       keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))
+    Condition
+      Warning in `left_join()`:
+      Each row in `x` is expected to match at most 1 row in `y`.
+      i Row 6 of `x` matches multiple rows.
+      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Output
       # A tibble: 1,800 x 32
       # Keys:     --- | 1 | 4
@@ -1447,6 +1452,11 @@
 
     Code
       dm(x, y, r = semi_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning in `left_join()`:
+      Each row in `x` is expected to match at most 1 row in `y`.
+      i Row 1 of `x` matches multiple rows.
+      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Message
       dm::dm(
         x,
@@ -1461,6 +1471,11 @@
         dm::dm_add_fk(r, a, y)
     Code
       dm(x, y, r = semi_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning in `left_join()`:
+      Each row in `x` is expected to match at most 1 row in `y`.
+      i Row 1 of `x` matches multiple rows.
+      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Message
       dm::dm(
         x,
