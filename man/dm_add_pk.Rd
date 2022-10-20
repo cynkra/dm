@@ -4,7 +4,15 @@
 \alias{dm_add_pk}
 \title{Add a primary key}
 \usage{
-dm_add_pk(dm, table, columns, ..., check = FALSE, force = FALSE)
+dm_add_pk(
+  dm,
+  table,
+  columns,
+  ...,
+  check = FALSE,
+  force = FALSE,
+  autoincrement = FALSE
+)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -21,6 +29,9 @@ To define a compound key, use \code{c(col1, col2)}.}
 \item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key
 set for this table.
 If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
+
+\item{autoincrement}{If \code{TRUE}, a sequence of integers (from 1 to number of
+rows) will be generated in column specified in \code{columns}.}
 }
 \value{
 An updated \code{dm} with an additional primary key.

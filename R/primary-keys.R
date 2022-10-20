@@ -16,12 +16,13 @@
 #' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key
 #'   set for this table.
 #'   If `TRUE`, a potential old `pk` is deleted before setting a new one.
+#' @param autoincrement If `TRUE`, a sequence of integers (from 1 to number of
+#'   rows) will be generated in column specified in `columns`.
 #'
 #' @family primary key functions
 #'
 #' @return An updated `dm` with an additional primary key.
 #'
-#' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' nycflights_dm <- dm(
 #'   planes = nycflights13::planes,
@@ -44,14 +45,27 @@
 #'   nycflights_dm %>%
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
 #' )
-dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE) {
+#' @export
+dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE, autoincrement = FALSE) {
   check_dots_empty()
+
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
   table <- dm_get_tables_impl(dm)[[table_name]]
   col_expr <- enexpr(columns)
   col_name <- names(eval_select_indices(col_expr, colnames(table)))
+
+  # TODO: Should we support autoincrement for composite primary keys?
+  if (autoincrement && length(col_name) > 1L) {
+    abort(
+      c(
+        "Currently, composite primary keys cannot be autoincremented.",
+        "Please provide only a single column name to `columns`."
+      )
+    )
+  }
+
 
   if (check) {
     table_from_dm <- dm_get_filtered_table(dm, table_name)
