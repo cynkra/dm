@@ -101,7 +101,8 @@ Suggests:
     testthat (>= 3.1.2),
     tidyverse,
     waldo,
-    withr
+    withr,
+    xml2
 VignetteBuilder: 
     knitr
 Config/autostyle/scope: line_breaks
