@@ -87,8 +87,8 @@ For this, we use `learn_keys = FALSE` to obtain a `dm` object with only the tabl
 ``````{r load}
 library(dm)
 
-fin_dm_small <- 
-  dm_from_con(fin_db, learn_keys = FALSE) %>% 
+fin_dm_small <-
+  dm_from_con(fin_db, learn_keys = FALSE) %>%
   dm_select_tbl(loans, accounts, districts, trans)
 ``````
 

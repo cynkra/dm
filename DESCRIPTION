@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 1.0.0
-Date: 2022-07-21
+Version: 1.0.3
+Date: 2022-10-12
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -10,7 +10,7 @@ Authors@R:
       person(given = "Kirill",
              family = "Müller",
              role = c("aut", "cre"),
-             email = "krlmlr+r@mailbox.org",
+             email = "kirill@cynkra.com",
              comment = c(ORCID = "0000-0002-1416-3412")),
       person(given = "Antoine",
              family = "Fabri",

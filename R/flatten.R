@@ -49,7 +49,7 @@
 #'
 #' @return A single table that results from consecutively joining all affected tables to the `.start` table.
 #'
-#' @examples
+#' @examplesIf dm:::dm_has_financial()
 #'
 #' dm_financial() %>%
 #'   dm_select_tbl(-loans) %>%

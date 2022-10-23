@@ -132,7 +132,7 @@ Given the following three data frames:
 
 ```{r}
 d1 <- tibble(a = 1:5)
-d2 <- tibble(c = c(1:5,5))
+d2 <- tibble(c = c(1:5, 5))
 d3 <- tibble(c = 1:4)
 d4 <- tibble(a = c(2:5, 5))
 ```

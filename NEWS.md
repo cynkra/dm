@@ -1,5 +1,48 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 1.0.3
+
+## Chore
+
+- Avoid running example without database connection.
+
+
+# dm 1.0.2
+
+## Features
+
+- `dm_from_con()` can use multiple schemata (@mgirlich, #1441, #1449).
+
+- `pack_join(keep = TRUE)` preserves order of packed columns (#1513, #1514).
+
+- `pack_join(keep = TRUE)` keeps keys of `y` in the resulting packed column (#1451, #1452).
+
+- New `json_pack.tbl_lazy()` and `json_nest.tbl_lazy()` (#969, #975).
+
+## Bug fixes
+
+- `dm_paste()` gives correct output for factor columns with many levels (#1510, #1511).
+
+## Chore
+
+- Fix compatibility with duckdb 0.5.0 (#1509, #1518).
+
+- Refactor `dm_unwrap_tbl()` so it builds a "unwrap plan" first (#1446, #1447).
+
+- Reenable `dm_rows_update()` test (#1437).
+
+
+# dm 1.0.1
+
+## Features
+
+- New `dm_deconstruct()` creates code to deconstruct a `dm` object into individual keyed tables via `pull_tbl(keyed = TRUE)` (#1354).
+
+## Bug fixes
+
+- Use `dm_ptype()` in `dm_gui()`, generate better code (#1353).
+
+
 # dm 1.0.0
 
 ## Features

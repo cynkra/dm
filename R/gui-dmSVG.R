@@ -48,7 +48,7 @@ dmSVG <- function(dm, viewBox = TRUE, node_to_zoom = NULL, nodes_to_select = NUL
 #'
 #' @noRd
 dmSVGOutput <- function(outputId, width = "100%", height = "400px") {
-  htmlwidgets::shinyWidgetOutput(outputId, "dmSVG", width, height, package = "dmSVG")
+  htmlwidgets::shinyWidgetOutput(outputId, "dmSVG", width, height, package = "dm")
 }
 
 #' @rdname dmSVG-shiny
