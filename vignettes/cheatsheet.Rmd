@@ -22,21 +22,30 @@ knitr::opts_chunk$set(
 
 ### <i class="fa-solid fa-database"></i> from database: `dm_from_con()`
 
-```{r}
+```{r create-figure}
 create_figure <- function(class, src, alt, caption) {
-  src <- sprintf("../man/figures/cheatsheet/%s", src)
-  svg <- xml2::read_xml(src)
+  path <- sprintf("../man/figures/cheatsheet/%s", src)
+  cat("<div class='cheatsheet-div'>")
+  svg <- xml2::read_xml(path) 
+  xml2::xml_remove(xml2::xml_find_all(svg, "//comment()"))
+  xml2::xml_attr(svg, "class") <- "cheatsheet-svg"
   xml2::xml_attr(svg, "aria-labelledby") <- sprintf("svgDescription-%s", src)
   xml2::xml_add_child(
     svg,
     .value = "description",
     alt,
-    id = sprintf("svgDescription-%s", src),
     .where = 0
   )
-  cat(as.character(svg))
-  html <- sprintf('<p>%s</p>', commonmark::markdown_html(caption))
+  # to drop the XML declaration that messes things up
+  temp_file <- withr::local_tempfile()
+  xml2::write_xml(svg, file = temp_file, options = "format_whitespace")
+  lines <- readLines(temp_file)
+  lines <- lines[!grepl("^<\\?", lines)]
+  lines <- lines[!grepl("^<!", lines)]
+  cat(glue::glue_collapse(lines, sep = ""))
+  html <- sprintf('<div class="cheatsheet-caption">%s</div>', commonmark::markdown_html(caption))
   cat(html)
+  cat("</div>")
 }
 ```
 
