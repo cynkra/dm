@@ -42,9 +42,10 @@ create_figure <- function(class, src, alt, caption) {
   lines <- readLines(temp_file)
   lines <- lines[!grepl("^<\\?", lines)]
   lines <- lines[!grepl("^<!", lines)]
-  cat(glue::glue_collapse(lines, sep = ""))
   html <- sprintf('<div class="cheatsheet-caption">%s</div>', commonmark::markdown_html(caption))
   cat(html)
+  cat(glue::glue_collapse(lines, sep = ""))
+  
   cat("</div>")
 }
 ```
@@ -90,6 +91,8 @@ create_figure(
   caption = "```r\ndm(dm1, dm2)\n```\n"
 )
 ```        
+
+<hr class="d-none d-print-block"></hr>
 
 ### Add keys: `dm_add_pk()`, `dm_add_fk()`
 
@@ -153,6 +156,7 @@ cat(
             
 :::
 
+<hr class="d-none d-print-block"></hr>
 
 ## <i class="fa-solid fa-filter"></i> Resize dm
 
@@ -244,6 +248,8 @@ create_figure(
   dm_draw()\n```\n'
 )
 ``` 
+
+<hr class="d-none d-print-block"></hr>
           
 ## <i class="fa-solid fa-check"></i> Data checks
 
@@ -266,6 +272,8 @@ returns an error if `df1` is not a subset of `df2`.
 ### `check_set_equality(df1, df2)`
 
 returns an error if `df1` and `df2` are not the same sets.
+
+<hr class="d-none d-print-block"></hr>
 
 ### <i class="fa-solid fa-tags"></i> Fix column names: `dm_disambiguate_cols()`
 
