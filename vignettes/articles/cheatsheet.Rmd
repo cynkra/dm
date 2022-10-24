@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
   echo = FALSE
 )
 ```
+
 <div class="page1">
 > If you have more than one table, use dm.
 
@@ -24,9 +25,10 @@ knitr::opts_chunk$set(
 
 ```{r create-figure}
 create_figure <- function(class, src, alt, caption) {
-  path <- sprintf("../man/figures/cheatsheet/%s", src)
-  cat("<div class='cheatsheet-div'>")
+  if (!nzchar(Sys.getenv("CHEATSHEET"))) {
+  path <- file.path(system.file("cheatsheet-figures", package = "dm"), src)
   svg <- xml2::read_xml(path)
+  cat("<div class='cheatsheet-div'>")
   xml2::xml_remove(xml2::xml_find_all(svg, "//comment()"))
   xml2::xml_attr(svg, "class") <- "cheatsheet-svg"
   xml2::xml_attr(svg, "aria-labelledby") <- sprintf("svgDescription-%s", src)
@@ -47,6 +49,25 @@ create_figure <- function(class, src, alt, caption) {
   cat(glue::glue_collapse(lines, sep = ""))
 
   cat("</div>")
+    
+  } else {
+      src <- sprintf("%s/%s", "cheatsheet-figures", src)
+  html <- sprintf(
+    '
+  <figure class="%s">
+            <img
+              alt="%s"
+              src="%s"
+            />
+            <figcaption>
+              %s
+            </figcaption>
+          </figure>
+  ',
+    class, alt, src, commonmark::markdown_html(caption)
+  )
+  cat(html)
+  }
 }
 ```
 
@@ -522,3 +543,7 @@ A dm is immutable, except with
 - <i class="fa-solid fa-check"></i> `in_place = TRUE`.
 </div>
 </div>
+
+```{r}
+source(system.file("make-cheatsheet.R", package = "dm"))
+```

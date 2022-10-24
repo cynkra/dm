@@ -126,9 +126,12 @@ reference:
 
 navbar:
   structure:
-    left:  [intro, reference, tutorials, tech, news]
+    left:  [intro, reference, tutorials, tech, cheatsheet, news]
     right: [search, github]
   components:
+    cheatsheet:
+      text: Cheatsheet
+      href: articles/cheatsheet.html
     tutorials:
       text: Tutorials
       menu:
