@@ -26,34 +26,33 @@ knitr::opts_chunk$set(
 ```{r create-figure}
 create_figure <- function(class, src, alt, caption) {
   if (!nzchar(Sys.getenv("CHEATSHEET"))) {
-  path <- file.path(system.file("cheatsheet-figures", package = "dm"), src)
-  svg <- xml2::read_xml(path)
-  cat("<div class='cheatsheet-div'>")
-  xml2::xml_remove(xml2::xml_find_all(svg, "//comment()"))
-  xml2::xml_attr(svg, "class") <- "cheatsheet-svg"
-  xml2::xml_attr(svg, "aria-labelledby") <- sprintf("svgDescription-%s", src)
-  xml2::xml_add_child(
-    svg,
-    .value = "description",
-    alt,
-    .where = 0
-  )
-  # to drop the XML declaration that messes things up
-  temp_file <- withr::local_tempfile()
-  xml2::write_xml(svg, file = temp_file, options = "format_whitespace")
-  lines <- readLines(temp_file)
-  lines <- lines[!grepl("^<\\?", lines)]
-  lines <- lines[!grepl("^<!", lines)]
-  html <- sprintf('<div class="cheatsheet-caption">%s</div>', commonmark::markdown_html(caption))
-  cat(html)
-  cat(glue::glue_collapse(lines, sep = ""))
+    path <- file.path(system.file("cheatsheet-figures", package = "dm"), src)
+    svg <- xml2::read_xml(path)
+    cat("<div class='cheatsheet-div'>")
+    xml2::xml_remove(xml2::xml_find_all(svg, "//comment()"))
+    xml2::xml_attr(svg, "class") <- "cheatsheet-svg"
+    xml2::xml_attr(svg, "aria-labelledby") <- sprintf("svgDescription-%s", src)
+    xml2::xml_add_child(
+      svg,
+      .value = "description",
+      alt,
+      .where = 0
+    )
+    # to drop the XML declaration that messes things up
+    temp_file <- withr::local_tempfile()
+    xml2::write_xml(svg, file = temp_file, options = "format_whitespace")
+    lines <- readLines(temp_file)
+    lines <- lines[!grepl("^<\\?", lines)]
+    lines <- lines[!grepl("^<!", lines)]
+    html <- sprintf('<div class="cheatsheet-caption">%s</div>', commonmark::markdown_html(caption))
+    cat(html)
+    cat(glue::glue_collapse(lines, sep = ""))
 
-  cat("</div>")
-    
+    cat("</div>")
   } else {
-      src <- sprintf("%s/%s", "cheatsheet-figures", src)
-  html <- sprintf(
-    '
+    src <- sprintf("%s/%s", "cheatsheet-figures", src)
+    html <- sprintf(
+      '
   <figure class="%s">
             <img
               alt="%s"
@@ -64,9 +63,9 @@ create_figure <- function(class, src, alt, caption) {
             </figcaption>
           </figure>
   ',
-    class, alt, src, commonmark::markdown_html(caption)
-  )
-  cat(html)
+      class, alt, src, commonmark::markdown_html(caption)
+    )
+    cat(html)
   }
 }
 ```
