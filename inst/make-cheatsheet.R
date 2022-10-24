@@ -37,7 +37,7 @@ withr::with_dir(
         xml2::xml_attr(img, "src") <- "cheatsheet-figures/shiny.png"
       } else {
         xml2::xml_attr(img, "src") <- sub(
-          "man/figures/cheatsheet",
+          ".*man/figures/cheatsheet",
           "cheatsheet-figures",
           xml2::xml_attr(img, "src")
         )
@@ -90,16 +90,20 @@ withr::with_dir(
     dir.create("cheatsheet")
     file.copy(logo, file.path("cheatsheet", "logo.svg"))
     file.copy(logo, "logo.svg")
+    file.copy(
+      system.file("cheatsheet-figures", "logo.png", package = "dm"),
+      "logo.png"
+    )
 
     # render --------------
     template <- paste0(brio::read_lines(system.file("cheatsheet-template.html", package = "dm")), collapse = "")
     rendered <- whisker::whisker.render(template)
     brio::write_lines(rendered, "cheatsheet.html")
-    file.copy("cheatsheet.html", file.path(current, "cheatsheet.html"))
     pagedown::chrome_print(
       "cheatsheet.html",
       output = file.path(current, "docs", "dev", "cheatsheet.pdf"),
-      options = list(landscape = TRUE, preferCSSPageSize = FALSE)
+      options = list(landscape = TRUE, preferCSSPageSize = FALSE),
+      timeout = 120
     )
   }
 )
