@@ -100,7 +100,8 @@ Suggests:
     shinydashboard,
     testthat (>= 3.1.2),
     tidyverse,
-    waldo
+    waldo,
+    withr
 Config/Needs/website:
     brio,
     bslib,
@@ -109,7 +110,6 @@ Config/Needs/website:
     purrr,
     rmarkdown,
     whisker,
-    withr,
     xml2
 VignetteBuilder: 
     knitr
