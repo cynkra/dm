@@ -15,6 +15,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+[PDF](/dev/cheatsheet.pdf)
+
 <div class="page1">
 > If you have more than one table, use dm.
 
@@ -23,7 +25,7 @@ knitr::opts_chunk$set(
 
 ### <i class="fa-solid fa-database"></i> from database: `dm_from_con()`
 
-```{r create-figure}
+```{r}
 create_figure <- function(class, src, alt, caption) {
   if (!nzchar(Sys.getenv("CHEATSHEET"))) {
     path <- file.path(system.file("cheatsheet-figures", package = "dm"), src)

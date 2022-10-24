@@ -1,6 +1,6 @@
 temp_folder <- withr::local_tempdir()
-input <- "/home/maelle/Documents/cynkra/dm/vignettes/articles/cheatsheet.Rmd"#knitr::current_input()
-current <- getwd()
+input <- knitr::current_input(dir = TRUE)
+current <- "/home/maelle/Documents/cynkra/dm/"
 withr::with_dir(
   temp_folder, {
     html_path <- withr::local_tempfile(fileext = ".html")
@@ -95,9 +95,11 @@ withr::with_dir(
     template <- paste0(brio::read_lines(system.file("cheatsheet-template.html", package = "dm")), collapse = "")
     rendered <- whisker::whisker.render(template)
     brio::write_lines(rendered, "cheatsheet.html")
+    file.copy("cheatsheet.html", file.path(current, "cheatsheet.html"))
     pagedown::chrome_print(
       "cheatsheet.html",
-      output = file.path(current, "cheatsheet.pdf")
+      output = file.path(current, "docs", "dev", "cheatsheet.pdf"),
+      options = list(landscape = TRUE, preferCSSPageSize = FALSE)
     )
   }
 )
