@@ -45,7 +45,7 @@ create_figure <- function(class, src, alt, caption) {
   html <- sprintf('<div class="cheatsheet-caption">%s</div>', commonmark::markdown_html(caption))
   cat(html)
   cat(glue::glue_collapse(lines, sep = ""))
-  
+
   cat("</div>")
 }
 ```
