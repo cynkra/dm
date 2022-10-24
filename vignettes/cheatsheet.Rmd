@@ -187,7 +187,7 @@ create_figure(
 
 ### Rename columns: `dm_rename(dm1, table, ...)`
 
-### Filter rows: `dm_filter(dm1, table = condition)`
+### Filter rows: `dm_filter(dm1, table = (pred))`
 
 Filter rows in the table where the condition is defined, 
 but also all directly/indirectly connected tables.
