@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 create_figure <- function(class, src, alt, caption) {
   path <- sprintf("../man/figures/cheatsheet/%s", src)
   cat("<div class='cheatsheet-div'>")
-  svg <- xml2::read_xml(path) 
+  svg <- xml2::read_xml(path)
   xml2::xml_remove(xml2::xml_find_all(svg, "//comment()"))
   xml2::xml_attr(svg, "class") <- "cheatsheet-svg"
   xml2::xml_attr(svg, "aria-labelledby") <- sprintf("svgDescription-%s", src)
