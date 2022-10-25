@@ -1,6 +1,7 @@
 temp_folder <- withr::local_tempdir()
 input <- knitr::current_input(dir = TRUE)
-current <- "/home/maelle/Documents/cynkra/dm/"
+input_dir <- dirname(input)
+final_dir <- file.path(input_dir, "../../docs/dev/cheatsheet")
 withr::with_dir(
   temp_folder, {
     html_path <- withr::local_tempfile(fileext = ".html")
@@ -27,10 +28,7 @@ withr::with_dir(
     subtitle <- xml2::xml_find_first(html, ".//blockquote/p") |> xml2::xml_text()
 
     # figures ----------
-    fs::dir_copy(
-      system.file("cheatsheet-figures", package = "dm"),
-      "cheatsheet-figures"
-    )
+
     img <- xml2::xml_find_all(html, ".//img")
     fix_src <- function(img) {
       if (grepl("shiny.png", xml2::xml_attr(img, "src"))) {
@@ -86,24 +84,20 @@ withr::with_dir(
     file.copy(css, "cheatsheet.css")
 
     # logo -------
-    logo <- system.file("cheatsheet-figures", "logo.svg", package = "dm")
+    fs::dir_copy(file.path(input_dir, "cheatsheet-figures"), "cheatsheet-figures")
+    logo <- file.path(input_dir, "cheatsheet-figures", "logo.svg")
     dir.create("cheatsheet")
     file.copy(logo, file.path("cheatsheet", "logo.svg"))
     file.copy(logo, "logo.svg")
     file.copy(
-      system.file("cheatsheet-figures", "logo.png", package = "dm"),
+      file.path(input_dir, "logo.png"),
       "logo.png"
     )
 
     # render --------------
     template <- paste0(brio::read_lines(system.file("cheatsheet-template.html", package = "dm")), collapse = "")
     rendered <- whisker::whisker.render(template)
-    brio::write_lines(rendered, "cheatsheet.html")
-    pagedown::chrome_print(
-      "cheatsheet.html",
-      output = file.path(current, "docs", "dev", "cheatsheet.pdf"),
-      options = list(landscape = TRUE, preferCSSPageSize = FALSE),
-      timeout = 120
-    )
+    brio::write_lines(rendered, "cheatsheet-printable.html")
+    fs::dir_copy(getwd(), final_dir)
   }
 )

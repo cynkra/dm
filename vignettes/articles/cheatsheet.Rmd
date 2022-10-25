@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-[PDF](/dev/cheatsheet.pdf)
+[For printing](cheatsheet.html)
 
 <div class="page1">
 > If you have more than one table, use dm.
@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 ```{r}
 create_figure <- function(class, src, alt, caption) {
   if (!nzchar(Sys.getenv("CHEATSHEET"))) {
-    path <- file.path(system.file("cheatsheet-figures", package = "dm"), src)
+    path <- file.path("cheatsheet-figures", src)
     svg <- xml2::read_xml(path)
     cat("<div class='cheatsheet-div'>")
     xml2::xml_remove(xml2::xml_find_all(svg, "//comment()"))
