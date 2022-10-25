@@ -35,7 +35,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           install-r: false
-          cache-version: pkgdown-1
+          cache-version: pkgdown-2
           needs: website
           extra-packages: r-lib/pkgdown local::.
 
