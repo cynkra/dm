@@ -50,9 +50,11 @@ dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE, aut
   check_dots_empty()
 
   check_not_zoomed(dm)
-  table_name <- dm_tbl_name(dm, {{ table }})
 
+  table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[table_name]]
+
+  check_required(columns)
   col_expr <- enexpr(columns)
   col_name <- names(eval_select_indices(col_expr, colnames(table)))
 

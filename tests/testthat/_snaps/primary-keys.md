@@ -1,3 +1,11 @@
+# dm_add_pk() works as intended?
+
+    Code
+      dm(x = tibble(x = integer())) %>% dm_add_pk(x)
+    Condition
+      Error in `dm_add_pk()`:
+      ! `columns` is absent but must be supplied.
+
 # dm_rm_pk() supports partial filters
 
     Code

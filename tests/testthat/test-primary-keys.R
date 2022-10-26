@@ -21,6 +21,12 @@ test_that("dm_add_pk() works as intended?", {
     dm_add_pk(dm_test_obj(), dm_table_1, qq),
     class = "vctrs_error_subscript_oob"
   )
+
+  expect_snapshot(error = TRUE, {
+    dm(x = tibble(x = integer())) %>%
+      dm_add_pk(x)
+  })
+
   expect_dm_error(
     dm_test_obj() %>%
       dm_add_pk(dm_table_1, a) %>%
