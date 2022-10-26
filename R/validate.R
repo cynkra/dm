@@ -64,7 +64,7 @@ dm_validate <- function(x) {
     select(table = ref_table, column = ref_column) %>%
     check_colnames(dm_col_names, "Parent key")
 
-  stopifnot(lengths(def$pks) %in% 0:1)
+  stopifnot(lengths(def$pks) %in% 0:2)
 
   pks <-
     def %>%

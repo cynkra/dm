@@ -72,13 +72,13 @@ dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE, aut
     eval_tidy(expr(check_key(!!sym(table_name), !!col_expr)), list2(!!table_name := table_from_dm))
   }
 
-  dm_add_pk_impl(dm, table_name, col_name, force)
+  dm_add_pk_impl(dm, table_name, col_name, force, autoincrement)
 }
 
 # both "table" and "column" must be characters
 # in {datamodelr}, a primary key may consist of more than one columns
 # a key will be added, regardless of whether it is a unique key or not; not to be exported
-dm_add_pk_impl <- function(dm, table, column, force) {
+dm_add_pk_impl <- function(dm, table, column, force, autoincrement) {
   def <- dm_get_def(dm)
   i <- which(def$table == table)
 
@@ -91,7 +91,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
     abort_key_set_force_false(table)
   }
 
-  def$pks[[i]] <- tibble(column = !!list(column))
+  def$pks[[i]] <- tibble(column = !!list(column), autoincrement = autoincrement)
 
   new_dm3(def)
 }
@@ -198,8 +198,8 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 
   out <-
     def_sub %>%
-    unnest_df("pks", tibble(column = list())) %>%
-    set_names(c("table", "pk_col"))
+    unnest_df("pks", tibble(column = list(), autoincrement = logical())) %>%
+    set_names(c("table", "pk_col", "autoincrement"))
 
   out$pk_col <- new_keys(out$pk_col)
   out
