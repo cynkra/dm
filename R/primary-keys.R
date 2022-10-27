@@ -46,7 +46,7 @@
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
 #' )
 #' @export
-dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE, autoincrement = FALSE) {
+dm_add_pk <- function(dm, table, columns, ..., autoincrement = FALSE, check = FALSE, force = FALSE) {
   check_dots_empty()
 
   check_not_zoomed(dm)
@@ -62,7 +62,7 @@ dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE, aut
   if (autoincrement && length(col_name) > 1L) {
     abort(
       c(
-        "Currently, composite primary keys cannot be autoincremented.",
+        "Composite primary keys cannot be autoincremented.",
         "Please provide only a single column name to `columns`."
       )
     )
