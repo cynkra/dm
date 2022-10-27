@@ -94,6 +94,9 @@
       dm_copy %>% dm_rows_update(dm_update_copy) %>% pull_tbl(tf_2) %>% arrange_all()
     Message
       Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.
+    Condition
+      Warning:
+      `x` must be a one- or two-column data frame in `deframe()`.
     Output
             d c        e        e1
         <int> <chr>    <chr> <int>
@@ -117,6 +120,9 @@
     Code
       dm_copy %>% dm_rows_update(dm_update_copy, in_place = FALSE) %>% pull_tbl(tf_2) %>%
         arrange_all()
+    Condition
+      Warning:
+      `x` must be a one- or two-column data frame in `deframe()`.
     Output
             d c        e        e1
         <int> <chr>    <chr> <int>
@@ -195,6 +201,10 @@
       
     Code
       dm_copy %>% dm_rows_update(dm_update_copy, in_place = TRUE)
+    Condition
+      Warning:
+      `x` must be a one- or two-column data frame in `deframe()`.
+    Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
       $tf_1

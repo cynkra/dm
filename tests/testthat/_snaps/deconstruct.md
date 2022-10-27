@@ -229,40 +229,8 @@
     Code
       tbl_sum(keyed_tbl_impl(dm_output, "d1"))
     Output
-                                 Keys 
-      "`origin`, `time_hour` | 0 | 0" 
-
----
-
-    Code
-      tbl_sum(keyed_tbl_impl(dm_output, "d2"))
-    Output
-                 Keys 
-      "`faa` | 0 | 0" 
-
----
-
-    Code
-      tbl_sum(keyed_tbl_impl(new_dm_output, "d1"))
-    Output
-                                 Keys 
-      "`origin`, `time_hour` | 0 | 0" 
-
----
-
-    Code
-      tbl_sum(keyed_tbl_impl(new_dm_output, "d2"))
-    Output
-                 Keys 
-      "`faa` | 0 | 0" 
-
-# `dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` objects
-
-    Code
-      tbl_sum(keyed_tbl_impl(dm_output, "d1"))
-    Output
-                                 Keys 
-      "`origin`, `time_hour` | 0 | 0" 
+               Keys 
+      "--- | 0 | 0" 
 
 ---
 
@@ -277,8 +245,40 @@
     Code
       tbl_sum(keyed_tbl_impl(new_dm_output, "d1"))
     Output
-                                 Keys 
-      "`origin`, `time_hour` | 0 | 0" 
+               Keys 
+      "--- | 0 | 0" 
+
+---
+
+    Code
+      tbl_sum(keyed_tbl_impl(new_dm_output, "d2"))
+    Output
+               Keys 
+      "--- | 0 | 0" 
+
+# `dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` objects
+
+    Code
+      tbl_sum(keyed_tbl_impl(dm_output, "d1"))
+    Output
+               Keys 
+      "--- | 0 | 0" 
+
+---
+
+    Code
+      tbl_sum(keyed_tbl_impl(dm_output, "d2"))
+    Output
+               Keys 
+      "--- | 0 | 0" 
+
+---
+
+    Code
+      tbl_sum(keyed_tbl_impl(new_dm_output, "d1"))
+    Output
+               Keys 
+      "--- | 0 | 0" 
 
 ---
 
@@ -296,8 +296,7 @@
       dm::dm(
         x,
         y,
-      ) %>%
-        dm::dm_add_pk(y, c(a, b))
+      )
     Code
       dm(x = keyed$x, y = keyed$y["b"]) %>% dm_paste()
     Message
@@ -370,9 +369,8 @@
         dm::dm_select(x, a) %>%
         dm::dm_select(y, b) %>%
         dm::dm_select(r, a) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, a, y) %>%
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, a, y, b) %>%
         dm::dm_add_fk(x, a, r, a)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
@@ -423,9 +421,8 @@
         dm::dm_select(x, a) %>%
         dm::dm_select(y, b) %>%
         dm::dm_select(r, b) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, b, y) %>%
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, b, y, b) %>%
         dm::dm_add_fk(x, a, r, b)
 
 # joins with other child PK
@@ -480,11 +477,8 @@
         dm::dm_select(x, a, c) %>%
         dm::dm_select(y, b) %>%
         dm::dm_select(r, a, c) %>%
-        dm::dm_add_pk(x, c) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, c) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, a, y) %>%
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, a, y, b) %>%
         dm::dm_add_fk(x, a, r, a)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
@@ -536,11 +530,8 @@
         dm::dm_select(x, a, c) %>%
         dm::dm_select(y, b) %>%
         dm::dm_select(r, b, c) %>%
-        dm::dm_add_pk(x, c) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, c) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, b, y) %>%
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, b, y, b) %>%
         dm::dm_add_fk(x, a, r, b)
 
 # joins with other child PK and name conflict
@@ -595,11 +586,8 @@
         dm::dm_select(x, a, b) %>%
         dm::dm_select(y, b) %>%
         dm::dm_select(r, a, b) %>%
-        dm::dm_add_pk(x, b) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, b) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, a, y) %>%
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, a, y, b) %>%
         dm::dm_add_fk(x, a, r, a)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
@@ -651,12 +639,9 @@
         dm::dm_select(x, a, b) %>%
         dm::dm_select(y, b) %>%
         dm::dm_select(r, b, b.y) %>%
-        dm::dm_add_pk(x, b) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, b) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, b, y) %>%
-        dm::dm_add_fk(x, a, r)
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, b, y, b) %>%
+        dm::dm_add_fk(x, a, r, b)
 
 # joins with same child PK
 
@@ -709,12 +694,9 @@
         dm::dm_select(x, a) %>%
         dm::dm_select(y, b) %>%
         dm::dm_select(r, a) %>%
-        dm::dm_add_pk(x, a) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, a) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, a, y) %>%
-        dm::dm_add_fk(x, a, r)
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, a, y, b) %>%
+        dm::dm_add_fk(x, a, r, a)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
     Output
@@ -764,12 +746,9 @@
         dm::dm_select(x, a) %>%
         dm::dm_select(y, b) %>%
         dm::dm_select(r, b) %>%
-        dm::dm_add_pk(x, a) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, b) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, b, y) %>%
-        dm::dm_add_fk(x, a, r)
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, b, y, b) %>%
+        dm::dm_add_fk(x, a, r, b)
 
 # joins with same child PK and same name
 
@@ -822,12 +801,9 @@
         dm::dm_select(x, b) %>%
         dm::dm_select(y, b) %>%
         dm::dm_select(r, b) %>%
-        dm::dm_add_pk(x, b) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, b) %>%
-        dm::dm_add_fk(x, b, y) %>%
-        dm::dm_add_fk(r, b, y) %>%
-        dm::dm_add_fk(x, b, r)
+        dm::dm_add_fk(x, b, y, b) %>%
+        dm::dm_add_fk(r, b, y, b) %>%
+        dm::dm_add_fk(x, b, r, b)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
     Output
@@ -877,12 +853,9 @@
         dm::dm_select(x, b) %>%
         dm::dm_select(y, b) %>%
         dm::dm_select(r, b) %>%
-        dm::dm_add_pk(x, b) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, b) %>%
-        dm::dm_add_fk(x, b, y) %>%
-        dm::dm_add_fk(r, b, y) %>%
-        dm::dm_add_fk(x, b, r)
+        dm::dm_add_fk(x, b, y, b) %>%
+        dm::dm_add_fk(r, b, y, b) %>%
+        dm::dm_add_fk(x, b, r, b)
 
 # joins with other FK from parent
 
@@ -943,14 +916,11 @@
         dm::dm_select(y, b, c) %>%
         dm::dm_select(z, c) %>%
         dm::dm_select(r, a, c) %>%
-        dm::dm_add_pk(x, a) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, a) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, a, y) %>%
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, a, y, b) %>%
         dm::dm_add_fk(y, c, z, c) %>%
         dm::dm_add_fk(r, c, z, c) %>%
-        dm::dm_add_fk(x, a, r)
+        dm::dm_add_fk(x, a, r, a)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
     Output
@@ -1008,14 +978,11 @@
         dm::dm_select(y, b, c) %>%
         dm::dm_select(z, c) %>%
         dm::dm_select(r, b, c) %>%
-        dm::dm_add_pk(x, a) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, b) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, b, y) %>%
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, b, y, b) %>%
         dm::dm_add_fk(y, c, z, c) %>%
         dm::dm_add_fk(r, c, z, c) %>%
-        dm::dm_add_fk(x, a, r)
+        dm::dm_add_fk(x, a, r, b)
 
 # joins with other FK from parent and name conflict
 
@@ -1076,14 +1043,11 @@
         dm::dm_select(y, b, a) %>%
         dm::dm_select(z, a) %>%
         dm::dm_select(r, a, a.y) %>%
-        dm::dm_add_pk(x, a) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, a) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, a, y) %>%
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, a, y, b) %>%
         dm::dm_add_fk(y, a, z, a) %>%
         dm::dm_add_fk(r, a, z, a) %>%
-        dm::dm_add_fk(x, a, r)
+        dm::dm_add_fk(x, a, r, a)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
     Output
@@ -1141,14 +1105,11 @@
         dm::dm_select(y, b, a) %>%
         dm::dm_select(z, a) %>%
         dm::dm_select(r, b, a) %>%
-        dm::dm_add_pk(x, a) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, b) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, b, y) %>%
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, b, y, b) %>%
         dm::dm_add_fk(y, a, z, a) %>%
         dm::dm_add_fk(r, a, z, a) %>%
-        dm::dm_add_fk(x, a, r)
+        dm::dm_add_fk(x, a, r, b)
 
 # joins with other FK from child
 
@@ -1209,14 +1170,11 @@
         dm::dm_select(y, b) %>%
         dm::dm_select(z, c) %>%
         dm::dm_select(r, a, c) %>%
-        dm::dm_add_pk(x, a) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, a) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, a, y) %>%
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, a, y, b) %>%
         dm::dm_add_fk(x, c, z, c) %>%
         dm::dm_add_fk(r, c, z, c) %>%
-        dm::dm_add_fk(x, a, r)
+        dm::dm_add_fk(x, a, r, a)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
     Output
@@ -1274,14 +1232,11 @@
         dm::dm_select(y, b) %>%
         dm::dm_select(z, c) %>%
         dm::dm_select(r, b, c) %>%
-        dm::dm_add_pk(x, a) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, b) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, b, y) %>%
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, b, y, b) %>%
         dm::dm_add_fk(x, c, z, c) %>%
         dm::dm_add_fk(r, c, z, c) %>%
-        dm::dm_add_fk(x, a, r)
+        dm::dm_add_fk(x, a, r, b)
 
 # joins with other FK from child and name conflict
 
@@ -1342,14 +1297,11 @@
         dm::dm_select(y, b) %>%
         dm::dm_select(z, b) %>%
         dm::dm_select(r, a, b) %>%
-        dm::dm_add_pk(x, a) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, a) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, a, y) %>%
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, a, y, b) %>%
         dm::dm_add_fk(x, b, z, b) %>%
         dm::dm_add_fk(r, b, z, b) %>%
-        dm::dm_add_fk(x, a, r)
+        dm::dm_add_fk(x, a, r, a)
     Code
       keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
     Output
@@ -1407,14 +1359,11 @@
         dm::dm_select(y, b) %>%
         dm::dm_select(z, b) %>%
         dm::dm_select(r, b, b.y) %>%
-        dm::dm_add_pk(x, a) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, b) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, b, y) %>%
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, b, y, b) %>%
         dm::dm_add_fk(x, b, z, b) %>%
         dm::dm_add_fk(r, b, z, b) %>%
-        dm::dm_add_fk(x, a, r)
+        dm::dm_add_fk(x, a, r, b)
 
 # left join works as expected with keyed tables
 
@@ -1456,9 +1405,8 @@
         dm::dm_select(x, a) %>%
         dm::dm_select(y, b) %>%
         dm::dm_select(r, a) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(r, a, y)
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(r, a, y, b)
     Code
       dm(x, y, r = semi_join(y, x)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -1470,10 +1418,8 @@
         dm::dm_select(x, a) %>%
         dm::dm_select(y, b) %>%
         dm::dm_select(r, b) %>%
-        dm::dm_add_pk(y, b) %>%
-        dm::dm_add_pk(r, b) %>%
-        dm::dm_add_fk(x, a, y) %>%
-        dm::dm_add_fk(x, a, r)
+        dm::dm_add_fk(x, a, y, b) %>%
+        dm::dm_add_fk(x, a, r, b)
 
 # arrange for keyed tables produces expected output
 
@@ -1601,19 +1547,11 @@
       [
         {
           "table": "airlines",
-          "pks": [
-            {
-              "column": ["carrier"]
-            }
-          ]
+          "pks": []
         },
         {
           "table": "airports",
-          "pks": [
-            {
-              "column": ["faa"]
-            }
-          ]
+          "pks": []
         },
         {
           "table": "flights",
@@ -1621,19 +1559,11 @@
         },
         {
           "table": "planes",
-          "pks": [
-            {
-              "column": ["tailnum"]
-            }
-          ]
+          "pks": []
         },
         {
           "table": "weather",
-          "pks": [
-            {
-              "column": ["origin", "time_hour"]
-            }
-          ]
+          "pks": []
         }
       ] 
 

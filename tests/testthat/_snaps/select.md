@@ -3,15 +3,14 @@
     Code
       dm_for_filter() %>% dm_rename(tf_3, new_f = f) %>% dm_get_all_pks_impl()
     Output
-      # A tibble: 6 x 2
-        table pk_col   
-        <chr> <keys>   
-      1 tf_1  a        
-      2 tf_2  c        
-      3 tf_3  new_f, f1
-      4 tf_4  h        
-      5 tf_5  k        
-      6 tf_6  o        
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_4  h      FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
 
 # dm_rename() works for replacing fks
 
@@ -33,14 +32,14 @@
     Code
       dm_for_filter() %>% dm_select(tf_3, new_f = f) %>% dm_get_all_pks_impl()
     Output
-      # A tibble: 5 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_4  h     
-      4 tf_5  k     
-      5 tf_6  o     
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_4  h      FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
 
 # dm_select() works for replacing fks, and removes missing ones
 
@@ -94,11 +93,10 @@
         dm::dm_select(dim_2, dim_2_pk, something) %>%
         dm::dm_select(dim_3, dim_3_pk, something) %>%
         dm::dm_select(dim_4, dim_4_pk, something) %>%
-        dm::dm_add_pk(dim_1, c(dim_1_pk_1, dim_1_pk_2)) %>%
         dm::dm_add_pk(dim_2, dim_2_pk) %>%
         dm::dm_add_pk(dim_3, dim_3_pk) %>%
         dm::dm_add_pk(dim_4, dim_4_pk) %>%
-        dm::dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1) %>%
+        dm::dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1, c(dim_1_pk_1, dim_1_pk_2)) %>%
         dm::dm_add_fk(fact, dim_2_key, dim_2) %>%
         dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
         dm::dm_add_fk(fact, dim_4_key, dim_4)

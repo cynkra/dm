@@ -25,7 +25,7 @@
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_3`, `tf_4`, `tf_5`, `tf_6`, `tf_2`
       Columns: 19
-      Primary keys: 5
+      Primary keys: 4
       Foreign keys: 4
     Code
       dm_packed_nested_unnested_unpacked <- dm_unpack_tbl(dm_packed_nested_unnested,
@@ -35,6 +35,6 @@
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_3`, `tf_4`, `tf_5`, `tf_6`, `tf_2`, `tf_1`
       Columns: 20
-      Primary keys: 6
+      Primary keys: 4
       Foreign keys: 5
 

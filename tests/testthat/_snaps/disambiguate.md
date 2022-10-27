@@ -22,12 +22,8 @@
         dm::dm_select(dim_2, dim_2_pk, something.dim_2) %>%
         dm::dm_select(dim_3, dim_3_pk, something.dim_3) %>%
         dm::dm_select(dim_4, dim_4_pk, something.dim_4) %>%
-        dm::dm_add_pk(dim_1, c(dim_1_pk_1, dim_1_pk_2)) %>%
-        dm::dm_add_pk(dim_2, dim_2_pk) %>%
-        dm::dm_add_pk(dim_3, dim_3_pk) %>%
-        dm::dm_add_pk(dim_4, dim_4_pk) %>%
-        dm::dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1) %>%
-        dm::dm_add_fk(fact, dim_2_key, dim_2) %>%
-        dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
-        dm::dm_add_fk(fact, dim_4_key, dim_4)
+        dm::dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1, c(dim_1_pk_1, dim_1_pk_2)) %>%
+        dm::dm_add_fk(fact, dim_2_key, dim_2, dim_2_pk) %>%
+        dm::dm_add_fk(fact, dim_3_key, dim_3, dim_3_pk) %>%
+        dm::dm_add_fk(fact, dim_4_key, dim_4, dim_4_pk)
 

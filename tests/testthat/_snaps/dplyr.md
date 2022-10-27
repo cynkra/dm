@@ -10,15 +10,14 @@
         dm_rename(tf_3, d.tf_3 = d)
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_3  f, f1  FALSE        
+      3 tf_4  h      FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -36,15 +35,15 @@
         get_all_keys()
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -65,15 +64,14 @@
         get_all_keys()
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c_new 
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_3  f, f1  FALSE        
+      3 tf_4  h      FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -90,15 +88,14 @@
         get_all_keys()
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_3  f, f1  FALSE        
+      3 tf_4  h      FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -115,15 +112,14 @@
         get_all_keys()
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col   
-        <chr> <keys>   
-      1 tf_1  a        
-      2 tf_2  c        
-      3 tf_3  f_new, f1
-      4 tf_4  h        
-      5 tf_5  k        
-      6 tf_6  o        
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_4  h      FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -141,16 +137,15 @@
         "new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 7 x 2
-        table   pk_col
-        <chr>   <keys>
-      1 tf_1    a     
-      2 tf_2    c     
-      3 tf_3    f, f1 
-      4 tf_4    h     
-      5 tf_5    k     
-      6 tf_6    o     
-      7 new_tbl c     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 6 x 5
@@ -168,15 +163,15 @@
         "new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -197,16 +192,15 @@
         "new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 7 x 2
-        table   pk_col
-        <chr>   <keys>
-      1 tf_1    a     
-      2 tf_2    c     
-      3 tf_3    f, f1 
-      4 tf_4    h     
-      5 tf_5    k     
-      6 tf_6    o     
-      7 new_tbl c     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 6 x 5
@@ -227,15 +221,15 @@
         "new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -256,16 +250,15 @@
         dm_insert_zoomed("new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 7 x 2
-        table   pk_col
-        <chr>   <keys>
-      1 tf_1    a     
-      2 tf_2    c     
-      3 tf_3    f, f1 
-      4 tf_4    h     
-      5 tf_5    k     
-      6 tf_6    o     
-      7 new_tbl c     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 6 x 5
@@ -283,16 +276,15 @@
         "new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 7 x 2
-        table   pk_col
-        <chr>   <keys>
-      1 tf_1    a     
-      2 tf_2    c     
-      3 tf_3    f, f1 
-      4 tf_4    h     
-      5 tf_5    k     
-      6 tf_6    o     
-      7 new_tbl f, f1 
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 7 x 5
@@ -311,16 +303,15 @@
         get_all_keys()
     Output
       $pks
-      # A tibble: 7 x 2
-        table   pk_col
-        <chr>   <keys>
-      1 tf_1    a     
-      2 tf_2    c     
-      3 tf_3    f, f1 
-      4 tf_4    h     
-      5 tf_5    k     
-      6 tf_6    o     
-      7 new_tbl f, f1 
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 7 x 5
@@ -344,16 +335,15 @@
         dm_insert_zoomed("new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 7 x 2
-        table   pk_col
-        <chr>   <keys>
-      1 tf_1    a     
-      2 tf_2    c     
-      3 tf_3    f, f1 
-      4 tf_4    h     
-      5 tf_5    k     
-      6 tf_6    o     
-      7 new_tbl c     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 6 x 5
@@ -373,10 +363,10 @@
       zoomed_grouped_in_dm %>% select(g_new = g) %>% get_all_keys("tf_3")
     Output
       $pks
-      # A tibble: 1 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_3  f, f1 
+      # A tibble: 1 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_3  f, f1  FALSE        
       
       $fks
       # A tibble: 2 x 5
@@ -420,7 +410,7 @@
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 41
-      Primary keys: 4
+      Primary keys: 3
       Foreign keys: 4
     Code
       grouped_zoomed_comp_dm_1 %>% summarize(count = n()) %>% dm_update_zoomed()
@@ -436,7 +426,7 @@
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 41
-      Primary keys: 4
+      Primary keys: 3
       Foreign keys: 4
     Code
       zoomed_comp_dm %>% select(time_hour, wind_dir) %>% dm_update_zoomed()
@@ -452,7 +442,7 @@
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 41
-      Primary keys: 4
+      Primary keys: 3
       Foreign keys: 4
     Code
       zoomed_comp_dm %>% rename(th = time_hour, wd = wind_dir) %>% dm_update_zoomed()
@@ -460,7 +450,7 @@
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 53
-      Primary keys: 4
+      Primary keys: 3
       Foreign keys: 4
     Code
       zoomed_comp_dm %>% distinct(origin, wind_dir) %>% dm_update_zoomed()
@@ -476,7 +466,7 @@
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 41
-      Primary keys: 4
+      Primary keys: 3
       Foreign keys: 4
     Code
       zoomed_comp_dm %>% filter(pressure < 1020) %>% dm_update_zoomed()

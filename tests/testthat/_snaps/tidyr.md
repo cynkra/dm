@@ -4,14 +4,14 @@
       dm_zoomed() %>% unite("new_col", c, e) %>% dm_update_zoomed() %>% get_all_keys()
     Output
       $pks
-      # A tibble: 5 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_3  f, f1 
-      3 tf_4  h     
-      4 tf_5  k     
-      5 tf_6  o     
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_3  f, f1  FALSE        
+      3 tf_4  h      FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
       
       $fks
       # A tibble: 4 x 5
@@ -27,15 +27,15 @@
         get_all_keys()
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -53,15 +53,14 @@
         "c", "e"), remove = TRUE) %>% dm_update_zoomed() %>% get_all_keys()
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_3  f, f1  FALSE        
+      3 tf_4  h      FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -79,15 +78,15 @@
         "c", "e"), remove = FALSE) %>% dm_update_zoomed() %>% get_all_keys()
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 6 x 5
@@ -109,12 +108,12 @@
       unite_weather_dm %>% get_all_keys()
     Output
       $pks
-      # A tibble: 3 x 2
-        table    pk_col 
-        <chr>    <keys> 
-      1 airlines carrier
-      2 airports faa    
-      3 planes   tailnum
+      # A tibble: 3 x 3
+        table    pk_col  autoincrement
+        <chr>    <keys>  <lgl>        
+      1 airlines carrier FALSE        
+      2 airports faa     FALSE        
+      3 planes   tailnum FALSE        
       
       $fks
       # A tibble: 3 x 5
@@ -128,12 +127,12 @@
       unite_weather_dm %>% get_all_keys()
     Output
       $pks
-      # A tibble: 3 x 2
-        table    pk_col 
-        <chr>    <keys> 
-      1 airlines carrier
-      2 airports faa    
-      3 planes   tailnum
+      # A tibble: 3 x 3
+        table    pk_col  autoincrement
+        <chr>    <keys>  <lgl>        
+      1 airlines carrier FALSE        
+      2 airports faa     FALSE        
+      3 planes   tailnum FALSE        
       
       $fks
       # A tibble: 3 x 5
@@ -149,13 +148,13 @@
       unite_flights_dm %>% get_all_keys()
     Output
       $pks
-      # A tibble: 4 x 2
-        table    pk_col           
-        <chr>    <keys>           
-      1 airlines carrier          
-      2 airports faa              
-      3 planes   tailnum          
-      4 weather  origin, time_hour
+      # A tibble: 4 x 3
+        table    pk_col            autoincrement
+        <chr>    <keys>            <lgl>        
+      1 airlines carrier           FALSE        
+      2 airports faa               FALSE        
+      3 planes   tailnum           FALSE        
+      4 weather  origin, time_hour FALSE        
       
       $fks
       # A tibble: 3 x 5
@@ -169,13 +168,13 @@
       unite_flights_dm %>% get_all_keys()
     Output
       $pks
-      # A tibble: 4 x 2
-        table    pk_col           
-        <chr>    <keys>           
-      1 airlines carrier          
-      2 airports faa              
-      3 planes   tailnum          
-      4 weather  origin, time_hour
+      # A tibble: 4 x 3
+        table    pk_col            autoincrement
+        <chr>    <keys>            <lgl>        
+      1 airlines carrier           FALSE        
+      2 airports faa               FALSE        
+      3 planes   tailnum           FALSE        
+      4 weather  origin, time_hour FALSE        
       
       $fks
       # A tibble: 3 x 5
