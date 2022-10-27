@@ -48,7 +48,7 @@ jobs:
       - uses: ./.github/workflows/install
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          install-r: false
+          install-r: true
           cache-version: rcc-smoke-1
           needs: check
           extra-packages: any::rcmdcheck any::roxygen2 r-lib/styler
