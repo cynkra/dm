@@ -9,9 +9,9 @@ dm_add_pk(
   table,
   columns,
   ...,
+  autoincrement = FALSE,
   check = FALSE,
-  force = FALSE,
-  autoincrement = FALSE
+  force = FALSE
 )
 }
 \arguments{
@@ -24,14 +24,14 @@ To define a compound key, use \code{c(col1, col2)}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
+\item{autoincrement}{If \code{TRUE}, a sequence of integers (from 1 to number of
+rows) will be generated in column specified in \code{columns}.}
+
 \item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
 
 \item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key
 set for this table.
 If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
-
-\item{autoincrement}{If \code{TRUE}, a sequence of integers (from 1 to number of
-rows) will be generated in column specified in \code{columns}.}
 }
 \value{
 An updated \code{dm} with an additional primary key.

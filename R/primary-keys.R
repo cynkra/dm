@@ -63,7 +63,7 @@ dm_add_pk <- function(dm, table, columns, ..., autoincrement = FALSE, check = FA
     abort(
       c(
         "Composite primary keys cannot be autoincremented.",
-        "Please provide only a single column name to `columns`."
+        "Provide only a single column name to `columns`."
       )
     )
   }
@@ -74,13 +74,13 @@ dm_add_pk <- function(dm, table, columns, ..., autoincrement = FALSE, check = FA
     eval_tidy(expr(check_key(!!sym(table_name), !!col_expr)), list2(!!table_name := table_from_dm))
   }
 
-  dm_add_pk_impl(dm, table_name, col_name, force, autoincrement)
+  dm_add_pk_impl(dm, table_name, col_name, autoincrement, force)
 }
 
 # both "table" and "column" must be characters
 # in {datamodelr}, a primary key may consist of more than one columns
 # a key will be added, regardless of whether it is a unique key or not; not to be exported
-dm_add_pk_impl <- function(dm, table, column, force, autoincrement) {
+dm_add_pk_impl <- function(dm, table, column, autoincrement, force) {
   def <- dm_get_def(dm)
   i <- which(def$table == table)
 

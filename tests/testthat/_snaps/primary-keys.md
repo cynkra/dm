@@ -251,6 +251,6 @@
       dm(x) %>% dm_add_pk(x, columns = c(x_id, z), autoincrement = TRUE)
     Condition
       Error in `dm_add_pk()`:
-      ! Currently, composite primary keys cannot be autoincremented.
-      * Please provide only a single column name to `columns`.
+      ! Composite primary keys cannot be autoincremented.
+      * Provide only a single column name to `columns`.
 
