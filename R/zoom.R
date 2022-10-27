@@ -246,7 +246,7 @@ update_zoomed_pk <- function(dm) {
   orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
 
   if (has_length(orig_pk) && all(get_key_cols(orig_pk) %in% tracked_cols)) {
-    upd_pk <- new_pk(list(recode2(get_key_cols(orig_pk), tracked_cols)))
+    upd_pk <- new_pk(list(recode2(get_key_cols(orig_pk), tracked_cols)), NA)
   } else {
     upd_pk <- new_pk()
   }
