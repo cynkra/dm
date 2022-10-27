@@ -176,7 +176,7 @@ dm_paste_fks <- function(dm) {
   pks <-
     dm %>%
     dm_get_all_pks_impl() %>%
-    set_names(c("parent_table", "parent_default_pk_cols", "autoincrement"))
+    set_names(c("parent_table", "parent_default_pk_cols"))
 
   fks <-
     dm %>%

@@ -201,7 +201,8 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
   out <-
     def_sub %>%
     unnest_df("pks", tibble(column = list(), autoincrement = logical())) %>%
-    set_names(c("table", "pk_col", "autoincrement"))
+    select(-autoincrement) %>% # TODO: Leave it out for now. Should this be included?
+    set_names(c("table", "pk_col"))
 
   out$pk_col <- new_keys(out$pk_col)
   out
