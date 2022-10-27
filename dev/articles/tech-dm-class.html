@@ -17,15 +17,14 @@
 <link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="Class dm and basic operations">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Class dm and basic operations">
 <meta property="og:description" content="dm">
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png">
 <meta name="robots" content="noindex">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<![endif]-->
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -75,9 +74,6 @@
   </div>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="../articles/cheatsheet.html">Cheatsheet</a>
-</li>
-<li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
@@ -106,7 +102,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Class dm and basic operations</h1>
             
-            <h4 data-toc-skip class="date">2022-10-25</h4>
+            <h4 data-toc-skip class="date">2022-10-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-class.Rmd" class="external-link"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-class.Rmd</code></div>
@@ -114,35 +110,47 @@
 
     
     
-<p>The goal of the {dm} package and the <code>dm</code> class that comes with it, is to make your life easier when you are dealing with data from several different tables.</p>
+<p>The goal of the {dm} package and the <code>dm</code> class that comes
+with it, is to make your life easier when you are dealing with data from
+several different tables.</p>
 <p>Let’s take a look at the <code>dm</code> class.</p>
 <div class="section level2">
 <h2 id="class-dm">Class <code>dm</code><a class="anchor" aria-label="anchor" href="#class-dm"></a>
 </h2>
-<p>The <code>dm</code> class consists of a collection of tables and metadata about the tables, such as</p>
+<p>The <code>dm</code> class consists of a collection of tables and
+metadata about the tables, such as</p>
 <ul>
 <li>the names of the tables</li>
 <li>the names of the columns of the tables</li>
-<li>the primary and foreign keys of the tables to link the tables together</li>
-<li>the data (either as data frames or as references to database tables)</li>
+<li>the primary and foreign keys of the tables to link the tables
+together</li>
+<li>the data (either as data frames or as references to database
+tables)</li>
 </ul>
-<p>All tables in a <code>dm</code> must be obtained from the same data source; csv files and spreadsheets would need to be imported to data frames in R.</p>
+<p>All tables in a <code>dm</code> must be obtained from the same data
+source; csv files and spreadsheets would need to be imported to data
+frames in R.</p>
 </div>
 <div class="section level2">
 <h2 id="ex_dm">Examples of <code>dm</code> objects<a class="anchor" aria-label="anchor" href="#ex_dm"></a>
 </h2>
-<p>There are currently three options available for creating a <code>dm</code> object. The relevant functions for creating <code>dm</code> objects are:</p>
+<p>There are currently three options available for creating a
+<code>dm</code> object. The relevant functions for creating
+<code>dm</code> objects are:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/dm.html">dm()</a></code></li>
 <li><code><a href="../reference/dm.html">as_dm()</a></code></li>
 <li><code><a href="../reference/dm.html">new_dm()</a></code></li>
 <li><code><a href="../reference/dm_from_con.html">dm_from_con()</a></code></li>
 </ol>
-<p>To illustrate these options, we will now create the same <code>dm</code> in several different ways. We can use the tables from the well-known {nycflights13} package.</p>
+<p>To illustrate these options, we will now create the same
+<code>dm</code> in several different ways. We can use the tables from
+the well-known {nycflights13} package.</p>
 <div class="section level3">
 <h3 id="pass-the-tables-directly">Pass the tables directly<a class="anchor" aria-label="anchor" href="#pass-the-tables-directly"></a>
 </h3>
-<p>Create a <code>dm</code> object directly by providing data frames to <code><a href="../reference/dm.html">dm()</a></code>:</p>
+<p>Create a <code>dm</code> object directly by providing data frames to
+<code><a href="../reference/dm.html">dm()</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></span>
@@ -156,7 +164,9 @@
 <div class="section level3">
 <h3 id="start-with-an-empty-dm">Start with an empty <code>dm</code><a class="anchor" aria-label="anchor" href="#start-with-an-empty-dm"></a>
 </h3>
-<p>Start with an empty <code>dm</code> object that has been created with <code><a href="../reference/dm.html">dm()</a></code> or <code><a href="../reference/dm.html">new_dm()</a></code>, and add tables to that object:</p>
+<p>Start with an empty <code>dm</code> object that has been created with
+<code><a href="../reference/dm.html">dm()</a></code> or <code><a href="../reference/dm.html">new_dm()</a></code>, and add tables to that
+object:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></span>
@@ -173,7 +183,8 @@
 <div class="section level3">
 <h3 id="coerce-a-list-of-tables">Coerce a list of tables<a class="anchor" aria-label="anchor" href="#coerce-a-list-of-tables"></a>
 </h3>
-<p>Turn a named list of tables into a <code>dm</code> with <code><a href="../reference/dm.html">as_dm()</a></code>:</p>
+<p>Turn a named list of tables into a <code>dm</code> with
+<code><a href="../reference/dm.html">as_dm()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm.html">as_dm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  airlines <span class="op">=</span> <span class="va">airlines</span>,</span>
@@ -191,25 +202,33 @@
 <div class="section level3">
 <h3 id="turn-tables-from-a-src-into-a-dm">Turn tables from a <code>src</code> into a <code>dm</code><a class="anchor" aria-label="anchor" href="#turn-tables-from-a-src-into-a-dm"></a>
 </h3>
-<p>Squeeze all (or a subset of) tables belonging to a <code>src</code> object into a <code>dm</code> using <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code>:</p>
+<p>Squeeze all (or a subset of) tables belonging to a <code>src</code>
+object into a <code>dm</code> using <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sqlite_con</span> <span class="op">&lt;-</span> <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/nycflights13.html" class="external-link">nycflights13_sqlite</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">sqlite_con</span><span class="op">)</span></span>
 <span><span class="va">flights_dm</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.39.4 [/tmp/RtmpNIgCne/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.39.4 [/tmp/RtmpsiJCeS/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span></span>
 <span><span class="co">#&gt; Columns: 62</span></span>
 <span><span class="co">#&gt; Primary keys: 0</span></span>
 <span><span class="co">#&gt; Foreign keys: 0</span></span></code></pre>
-<p>The function <code>dm_from_con(con, table_names = NULL)</code> includes all available tables on a source in the <code>dm</code> object. This means that you can use this, for example, on a postgres database that you access via <code>DBI::dbConnect(RPostgres::Postgres())</code> (with the appropriate arguments <code>dbname</code>, <code>host</code>, <code>port</code>, …), to produce a <code>dm</code> object with all the tables on the database.</p>
+<p>The function <code>dm_from_con(con, table_names = NULL)</code>
+includes all available tables on a source in the <code>dm</code> object.
+This means that you can use this, for example, on a postgres database
+that you access via <code>DBI::dbConnect(RPostgres::Postgres())</code>
+(with the appropriate arguments <code>dbname</code>, <code>host</code>,
+<code>port</code>, …), to produce a <code>dm</code> object with all the
+tables on the database.</p>
 </div>
 <div class="section level3">
 <h3 id="low-level-construction">Low-level construction<a class="anchor" aria-label="anchor" href="#low-level-construction"></a>
 </h3>
-<p>Another way of creating a <code>dm</code> object is calling <code><a href="../reference/dm.html">new_dm()</a></code> on a list of <code>tbl</code> objects:</p>
+<p>Another way of creating a <code>dm</code> object is calling
+<code><a href="../reference/dm.html">new_dm()</a></code> on a list of <code>tbl</code> objects:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">base_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">new_dm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  airlines <span class="op">=</span> <span class="va">airlines</span>,</span>
@@ -224,7 +243,9 @@
 <span><span class="co">#&gt; Columns: 53</span></span>
 <span><span class="co">#&gt; Primary keys: 0</span></span>
 <span><span class="co">#&gt; Foreign keys: 0</span></span></code></pre>
-<p>This constructor is optimized for speed and does not perform integrity checks. Use with caution, validate using <code><a href="../reference/dm_validate.html">dm_validate()</a></code> if necessary.</p>
+<p>This constructor is optimized for speed and does not perform
+integrity checks. Use with caution, validate using
+<code><a href="../reference/dm_validate.html">dm_validate()</a></code> if necessary.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_validate.html">dm_validate</a></span><span class="op">(</span><span class="va">base_dm</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -232,12 +253,13 @@
 <div class="section level2">
 <h2 id="access-tables">Access tables<a class="anchor" aria-label="anchor" href="#access-tables"></a>
 </h2>
-<p>We can get the list of tables with <code><a href="../reference/dm_get_tables.html">dm_get_tables()</a></code> and the <code>src</code> object with <code><a href="../reference/dm_get_con.html">dm_get_con()</a></code>.</p>
+<p>We can get the list of tables with <code><a href="../reference/dm_get_tables.html">dm_get_tables()</a></code> and
+the <code>src</code> object with <code><a href="../reference/dm_get_con.html">dm_get_con()</a></code>.</p>
 <p>In order to pull a specific table from a <code>dm</code>, use:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm</span><span class="op">[[</span><span class="st">"airports"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   table&lt;`airports`&gt; [?? x 8]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.39.4 [/tmp/RtmpNIgCne/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.39.4 [/tmp/RtmpsiJCeS/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span></span>
 <span><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
 <span><span class="co">#&gt;  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…</span></span>
@@ -251,7 +273,8 @@
 <span><span class="co">#&gt;  9 0P2   Shoestring Aviation Airfield   39.8  -76.6  1000    -5 U     Amer…</span></span>
 <span><span class="co">#&gt; 10 0S9   Jefferson County Intl          48.1 -123.    108    -8 A     Amer…</span></span>
 <span><span class="co">#&gt; # … with more rows</span></span></code></pre>
-<p>But how can we use {dm}-functions to manage the primary keys of the tables in a <code>dm</code> object?</p>
+<p>But how can we use {dm}-functions to manage the primary keys of the
+tables in a <code>dm</code> object?</p>
 </div>
 <div class="section level2">
 <h2 id="pk">Primary keys of <code>dm</code> objects<a class="anchor" aria-label="anchor" href="#pk"></a>
@@ -263,15 +286,18 @@
 <li><code><a href="../reference/dm_rm_pk.html">dm_rm_pk()</a></code></li>
 <li><code><a href="../reference/dm_enum_pk_candidates.html">dm_enum_pk_candidates()</a></code></li>
 </ol>
-<p>If you created a <code>dm</code> object according to the examples in <a href="#ex_dm">“Examples of <code>dm</code> objects”</a>, your object does not yet have any primary keys set. So let’s add one.</p>
-<p>We use the <code>nycflights13</code> tables, i.e. <code>flights_dm</code> from above.</p>
+<p>If you created a <code>dm</code> object according to the examples in
+<a href="#ex_dm">“Examples of <code>dm</code> objects”</a>, your object
+does not yet have any primary keys set. So let’s add one.</p>
+<p>We use the <code>nycflights13</code> tables,
+i.e. <code>flights_dm</code> from above.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_has_pk.html">dm_has_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] FALSE</span></span>
 <span><span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span></span>
 <span><span class="va">flights_dm_with_key</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.39.4 [/tmp/RtmpNIgCne/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.39.4 [/tmp/RtmpsiJCeS/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span></span>
 <span><span class="co">#&gt; Columns: 62</span></span>
@@ -281,7 +307,8 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_has_pk.html">dm_has_pk</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">airports</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
-<p>To get an overview over all tables with primary keys, use <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
+<p>To get an overview over all tables with primary keys, use
+<code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
@@ -293,7 +320,10 @@
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_rm_pk.html">dm_rm_pk</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_has_pk.html">dm_has_pk</a></span><span class="op">(</span><span class="va">airports</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
-<p>If you still need to get to know your data better, and it is already available in the form of a <code>dm</code> object, you can use the <code><a href="../reference/dm_enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> function in order to get information about which columns of the table are unique keys:</p>
+<p>If you still need to get to know your data better, and it is already
+available in the form of a <code>dm</code> object, you can use the
+<code><a href="../reference/dm_enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> function in order to get
+information about which columns of the table are unique keys:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">airports</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 8 × 3</span></span>
@@ -307,14 +337,19 @@
 <span><span class="co">#&gt; 6 tz      FALSE     "has duplicate values: -5 (521), -6 (342), -9 (240), -…</span></span>
 <span><span class="co">#&gt; 7 dst     FALSE     "has duplicate values: A (1388), U (47), N (23)"       </span></span>
 <span><span class="co">#&gt; 8 tzone   FALSE     "has duplicate values: America/New_York (519), America…</span></span></code></pre>
-<p>The <code>flights</code> table does not have any one-column primary key candidates:</p>
+<p>The <code>flights</code> table does not have any one-column primary
+key candidates:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">candidate</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
 <span><span class="co">#&gt;   candidate     n</span></span>
 <span><span class="co">#&gt;   &lt;lgl&gt;     &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1 FALSE        19</span></span></code></pre>
-<p><code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> has a <code>check</code> argument. If set to <code>TRUE</code>, the function checks if the column of the table given by the user is unique. For performance reasons, the default is <code>check = FALSE</code>. See also [dm_examine_constraints()] for checking all constraints in a <code>dm</code>.</p>
+<p><code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> has a <code>check</code> argument. If set to
+<code>TRUE</code>, the function checks if the column of the table given
+by the user is unique. For performance reasons, the default is
+<code>check = FALSE</code>. See also [dm_examine_constraints()] for
+checking all constraints in a <code>dm</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">tzone</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -332,12 +367,19 @@
 <li><code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code></li>
 <li><code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code></li>
 </ol>
-<p>Now it gets (even more) interesting: we want to define relations between different tables. With the <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> function you can define which column of which table points to another table’s column.</p>
-<p>This is done by choosing a foreign key from one table that will point to a primary key of another table. The primary key of the referred table must be set with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.</p>
+<p>Now it gets (even more) interesting: we want to define relations
+between different tables. With the <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> function you
+can define which column of which table points to another table’s
+column.</p>
+<p>This is done by choosing a foreign key from one table that will point
+to a primary key of another table. The primary key of the referred table
+must be set with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> will
+find the primary key column of the referenced table by itself and make
+the indicated column of the child table point to it.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm_with_key</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.39.4 [/tmp/RtmpNIgCne/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.39.4 [/tmp/RtmpsiJCeS/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span></span>
 <span><span class="co">#&gt; Columns: 62</span></span>
@@ -350,18 +392,25 @@
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in abort_ref_tbl_has_no_pk(ref_table_name) : </span></span>
 <span><span class="co">#&gt;   ref_table `airports` needs a primary key first. Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key.</span></span></code></pre></div>
-<p>Let’s create a <code>dm</code> object with a foreign key relation to work with later on:</p>
+<p>Let’s create a <code>dm</code> object with a foreign key relation to
+work with later on:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm_with_fk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></span></code></pre></div>
-<p>What if we tried to add another foreign key relation from <code>flights</code> to <code>airports</code> to the object? Column <code>dest</code> might work, since it also contains airport codes:</p>
+<p>What if we tried to add another foreign key relation from
+<code>flights</code> to <code>airports</code> to the object? Column
+<code>dest</code> might work, since it also contains airport codes:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span>
 <span>  <span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">dest</span>, <span class="va">airports</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in abort_not_subset_of(table_name, col_name, ref_table_name, ref_col_name) : </span></span>
 <span><span class="co">#&gt;   Column (`dest`) of table `flights` contains values (see examples above) that are not present in column (`faa`) of table `airports`.</span></span></code></pre></div>
-<p>Checks are opt-in and executed only if <code>check = TRUE</code>. You can still add a foreign key with the default <code>check = FALSE</code>. See also <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> for checking all constraints in a <code>dm</code>.</p>
-<p>Get an overview of all foreign key relations with<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
+<p>Checks are opt-in and executed only if <code>check = TRUE</code>. You
+can still add a foreign key with the default <code>check = FALSE</code>.
+See also <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> for checking all
+constraints in a <code>dm</code>.</p>
+<p>Get an overview of all foreign key relations
+with<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 5 × 5</span></span>
@@ -372,7 +421,9 @@
 <span><span class="co">#&gt; 3 flights     dest              airports     faa               no_action</span></span>
 <span><span class="co">#&gt; 4 flights     tailnum           planes       tailnum           no_action</span></span>
 <span><span class="co">#&gt; 5 flights     origin, time_hour weather      origin, time_hour no_action</span></span></code></pre>
-<p>Remove foreign key relations with <code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code> (parameter <code>columns = NULL</code> means that all relations will be removed, with a message):</p>
+<p>Remove foreign key relations with <code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code> (parameter
+<code>columns = NULL</code> means that all relations will be removed,
+with a message):</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span>
 <span>  <span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -397,8 +448,14 @@
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 0 × 5</span></span>
 <span><span class="co">#&gt; # … with 5 variables: child_table &lt;chr&gt;, child_fk_cols &lt;keys&gt;,</span></span>
 <span><span class="co">#&gt; #   parent_table &lt;chr&gt;, parent_key_cols &lt;keys&gt;, on_delete &lt;chr&gt;</span></span></code></pre>
-<p>Since the primary keys are defined in the <code>dm</code> object, you do not usually need to provide the referenced column name of <code>ref_table</code>.</p>
-<p>Another function for getting to know your data better (cf. <code><a href="../reference/dm_enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> in <a href="#pk">“Primary keys of <code>dm</code> objects”</a>) is <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>. Use it to get an overview over foreign key candidates that point from one table to another:</p>
+<p>Since the primary keys are defined in the <code>dm</code> object, you
+do not usually need to provide the referenced column name of
+<code>ref_table</code>.</p>
+<p>Another function for getting to know your data better
+(cf. <code><a href="../reference/dm_enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> in <a href="#pk">“Primary keys
+of <code>dm</code> objects”</a>) is
+<code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>. Use it to get an overview over
+foreign key candidates that point from one table to another:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">weather</span>, <span class="va">airports</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 15 × 3</span></span>

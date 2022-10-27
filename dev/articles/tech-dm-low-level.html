@@ -17,15 +17,14 @@
 <link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="Model verification - keys, constraints and normalization">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Model verification - keys, constraints and normalization">
 <meta property="og:description" content="dm">
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png">
 <meta name="robots" content="noindex">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<![endif]-->
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -75,9 +74,6 @@
   </div>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="../articles/cheatsheet.html">Cheatsheet</a>
-</li>
-<li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
@@ -106,7 +102,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Model verification - keys, constraints and normalization</h1>
             
-            <h4 data-toc-skip class="date">2022-10-25</h4>
+            <h4 data-toc-skip class="date">2022-10-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-low-level.Rmd" class="external-link"><code>vignettes/tech-dm-low-level.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-low-level.Rmd</code></div>
@@ -114,24 +110,33 @@
 
     
     
-<p>In this document, we will present several specialized functions for conducting basic tests about key conditions and about relations between tables. We will also describe functions that can be used for splitting and uniting tables.</p>
+<p>In this document, we will present several specialized functions for
+conducting basic tests about key conditions and about relations between
+tables. We will also describe functions that can be used for splitting
+and uniting tables.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="testing-key-constraints">Testing key constraints<a class="anchor" aria-label="anchor" href="#testing-key-constraints"></a>
 </h2>
-<p>This section contains information and examples about the following functions:</p>
+<p>This section contains information and examples about the following
+functions:</p>
 <ol style="list-style-type: decimal">
 <li><code>check_key(.data, ...)</code></li>
 <li><code>check_subset(t1, c1, t2, c2)</code></li>
 <li><code>check_set_equality(t1, c1, t2, c2)</code></li>
 </ol>
-<p>When you have tables (data frames) that are connected by key relations, {dm} can help you to verify the assumed key relations and/or determine the existing key relations between the tables. For example, if you have tables:</p>
+<p>When you have tables (data frames) that are connected by key
+relations, {dm} can help you to verify the assumed key relations and/or
+determine the existing key relations between the tables. For example, if
+you have tables:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span>, c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">data_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>, c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>and you want to know if <code>a</code> is a primary key for <code>data_1</code>, you can use the <code><a href="../reference/check_key.html">check_key()</a></code> function:</p>
+<p>and you want to know if <code>a</code> is a primary key for
+<code>data_1</code>, you can use the <code><a href="../reference/check_key.html">check_key()</a></code>
+function:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_key.html">check_key</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_unique_key()` at dm/R/key-helpers.R:64:4:</span></span></span>
@@ -140,10 +145,13 @@
 <p>For <code>data_2</code>, column <code>a</code> is a key:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_key.html">check_key</a></span><span class="op">(</span><span class="va">data_2</span>, <span class="va">a</span><span class="op">)</span></span></code></pre></div>
-<p>To see if a column of one table contains only those values that are also present in another column of another table, the <code><a href="../reference/check_subset.html">check_subset()</a></code> function can be used:</p>
+<p>To see if a column of one table contains only those values that are
+also present in another column of another table, the
+<code><a href="../reference/check_subset.html">check_subset()</a></code> function can be used:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_subset.html">check_subset</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span>, <span class="va">data_2</span>, <span class="va">a</span><span class="op">)</span></span></code></pre></div>
-<p>This function is important for determining if a column is a foreign key to some other table. What about the inverse relation?</p>
+<p>This function is important for determining if a column is a foreign
+key to some other table. What about the inverse relation?</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_subset.html">check_subset</a></span><span class="op">(</span><span class="va">data_2</span>, <span class="va">a</span>, <span class="va">data_1</span>, <span class="va">a</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
@@ -152,11 +160,19 @@
 <span><span class="co">#&gt; 1     3</span></span></code></pre>
 <pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_subset_of()` at dm/R/key-helpers.R:237:2:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></span></code></pre>
-<p>It should be kept in mind that <code><a href="../reference/check_subset.html">check_subset()</a></code> does not test if column <code>c2</code> is a unique key of table <code>t2</code>. In order to find out if a (child) table <code>t1</code> contains a column <code>c1</code> that is a foreign key to a (parent) table <code>t2</code> with the corresponding column <code>c2</code>, the following method should be used:</p>
+<p>It should be kept in mind that <code><a href="../reference/check_subset.html">check_subset()</a></code> does not
+test if column <code>c2</code> is a unique key of table <code>t2</code>.
+In order to find out if a (child) table <code>t1</code> contains a
+column <code>c1</code> that is a foreign key to a (parent) table
+<code>t2</code> with the corresponding column <code>c2</code>, the
+following method should be used:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_key.html">check_key</a></span><span class="op">(</span><span class="va">t2</span>, <span class="va">c2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/check_subset.html">check_subset</a></span><span class="op">(</span><span class="va">t1</span>, <span class="va">c1</span>, <span class="va">t2</span>, <span class="va">c2</span><span class="op">)</span></span></code></pre></div>
-<p>To check both directions at once, and to find out if the unique values of <code>c_1</code> in <code>t_1</code> are the same as those of <code>c_2</code> in <code>t_2</code>, {dm} provides the function <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code>:</p>
+<p>To check both directions at once, and to find out if the unique
+values of <code>c_1</code> in <code>t_1</code> are the same as those of
+<code>c_2</code> in <code>t_2</code>, {dm} provides the function
+<code><a href="../reference/check_set_equality.html">check_set_equality()</a></code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_set_equality.html">check_set_equality</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span>, <span class="va">data_2</span>, <span class="va">a</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
@@ -165,12 +181,15 @@
 <span><span class="co">#&gt; 1     3</span></span></code></pre>
 <pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_sets_not_equal()` at dm/R/key-helpers.R:187:4:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></span></code></pre>
-<p>Introducing one more table enables us to show how it looks when the test is passed:</p>
+<p>Introducing one more table enables us to show how it looks when the
+test is passed:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>, c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/check_set_equality.html">check_set_equality</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span>, <span class="va">data_3</span>, <span class="va">a</span><span class="op">)</span></span></code></pre></div>
-<p>If the test is passed, the return value of the function will be the first table parameter (invisibly). This ensures that the functions can be conveniently used in a pipe configuration.</p>
+<p>If the test is passed, the return value of the function will be the
+first table parameter (invisibly). This ensures that the functions can
+be conveniently used in a pipe configuration.</p>
 </div>
 <div class="section level2">
 <h2 id="testing-cardinalities-between-two-tables">Testing cardinalities between two tables<a class="anchor" aria-label="anchor" href="#testing-cardinalities-between-two-tables"></a>
@@ -183,19 +202,52 @@
 <li><code>check_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)</code></li>
 <li><code>examine_cardinality(parent_table, primary_key_column, child_table, foreign_key_column)</code></li>
 </ol>
-<p>The four functions for testing for a specific kind of cardinality of the relation all require a parent table and a child table as inputs. The functions first test if that requirement is fulfilled by checking if:</p>
+<p>The four functions for testing for a specific kind of cardinality of
+the relation all require a parent table and a child table as inputs. The
+functions first test if that requirement is fulfilled by checking
+if:</p>
 <ol style="list-style-type: decimal">
 <li>
-<code>primary_key_column</code> is a unique key for <code>parent_table</code>
+<code>primary_key_column</code> is a unique key for
+<code>parent_table</code>
 </li>
-<li>The set of values of <code>foreign_key_column</code> is a subset of the set of values of <code>primary_key_column</code>
+<li>The set of values of <code>foreign_key_column</code> is a subset of
+the set of values of <code>primary_key_column</code>
 </li>
 </ol>
-<p>The cardinality specifications <code>0_n</code>, <code>1_n</code>, <code>0_1</code>, <code>1_1</code> refer to the expected relation that the child table has with the parent table. The numbers ‘0’, ‘1’ and ‘n’ refer to the number of values in the child table’s column (<code>foreign_key_column</code>) that correspond to each value of the parent table’s column (<code>primary_key_column</code>). ‘n’ means more than one in this context, with no upper limit.</p>
-<p><code>0_n</code> means, that for each value of the <code>parent_key_column</code>, the number of corresponding records in the child table is unrestricted. <code>1_n</code> means, that for each value of the <code>parent_key_column</code> there is at least one corresponding record in the child table. This means that there is a “surjective” relation from the child table to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.</p>
-<p><code>0_1</code> means, that for each value of the <code>parent_key_column</code>, at least zero and at most one value has to correspond to it in the column of the child table. This means that there is an “injective” relation from the child table to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times. But not all of the parent table column values have to be referred to.</p>
-<p><code>1_1</code> means, that for each value of the <code>parent_key_column</code>, exactly one value has to correspond to it in the child table’s column. This means that there is a “bijective” (“injective” AND “surjective”) relation between the child table and the parent table w.r.t. the specified columns, i.e. the set of values of the two columns is equal and there are no duplicates in either of them.</p>
-<p>Also <code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> first performs the above mentioned tests to figure out, if the parent-child table relationship criteria are met. Subsequently, two further checks are made to determine the nature of the relation (surjective, injective, bijective, or none of these) between the two columns.</p>
+<p>The cardinality specifications <code>0_n</code>, <code>1_n</code>,
+<code>0_1</code>, <code>1_1</code> refer to the expected relation that
+the child table has with the parent table. The numbers ‘0’, ‘1’ and ‘n’
+refer to the number of values in the child table’s column
+(<code>foreign_key_column</code>) that correspond to each value of the
+parent table’s column (<code>primary_key_column</code>). ‘n’ means more
+than one in this context, with no upper limit.</p>
+<p><code>0_n</code> means, that for each value of the
+<code>parent_key_column</code>, the number of corresponding records in
+the child table is unrestricted. <code>1_n</code> means, that for each
+value of the <code>parent_key_column</code> there is at least one
+corresponding record in the child table. This means that there is a
+“surjective” relation from the child table to the parent table w.r.t.
+the specified columns, i.e. for each parent table column value there
+exists at least one equal child table column value.</p>
+<p><code>0_1</code> means, that for each value of the
+<code>parent_key_column</code>, at least zero and at most one value has
+to correspond to it in the column of the child table. This means that
+there is an “injective” relation from the child table to the parent
+table w.r.t. the specified columns, i.e. no parent table column value is
+addressed multiple times. But not all of the parent table column values
+have to be referred to.</p>
+<p><code>1_1</code> means, that for each value of the
+<code>parent_key_column</code>, exactly one value has to correspond to
+it in the child table’s column. This means that there is a “bijective”
+(“injective” AND “surjective”) relation between the child table and the
+parent table w.r.t. the specified columns, i.e. the set of values of the
+two columns is equal and there are no duplicates in either of them.</p>
+<p>Also <code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> first performs the above
+mentioned tests to figure out, if the parent-child table relationship
+criteria are met. Subsequently, two further checks are made to determine
+the nature of the relation (surjective, injective, bijective, or none of
+these) between the two columns.</p>
 <div class="section level3">
 <h3 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h3>
@@ -205,7 +257,8 @@
 <span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">d4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Here are some examples of how the cardinality testing functions can be used:</p>
+<p>Here are some examples of how the cardinality testing functions can
+be used:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This does not pass, `c` is not unique key of d2:</span></span>
 <span><span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_n</a></span><span class="op">(</span><span class="va">d2</span>, <span class="va">c</span>, <span class="va">d1</span>, <span class="va">a</span><span class="op">)</span></span>
@@ -222,7 +275,8 @@
 <span></span>
 <span><span class="co"># This passes:</span></span>
 <span><span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_1</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d3</span>, <span class="va">c</span><span class="op">)</span></span></code></pre></div>
-<p><code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> returns the type of relation, e.g.:</p>
+<p><code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> returns the type of relation,
+e.g.:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/examine_cardinality.html">examine_cardinality</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d3</span>, <span class="va">c</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "injective mapping (child: 0 or 1 -&gt; parent: 1)"</span></span>
@@ -232,7 +286,8 @@
 <span><span class="co">#&gt; [1] "bijective mapping (child: 1 -&gt; parent: 1)"</span></span>
 <span><span class="fu"><a href="../reference/examine_cardinality.html">examine_cardinality</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d4</span>, <span class="va">a</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "generic mapping (child: 0 to n -&gt; parent: 1)"</span></span></code></pre></div>
-<p>Just like the underlying cardinality functions, it will also inform you if any restrictions on cardinality are violated:</p>
+<p>Just like the underlying cardinality functions, it will also inform
+you if any restrictions on cardinality are violated:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/examine_cardinality.html">examine_cardinality</a></span><span class="op">(</span><span class="va">d2</span>, <span class="va">c</span>, <span class="va">d1</span>, <span class="va">a</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Column (`c`) not a unique key of `d2`.</span></span></code></pre></div>
@@ -247,7 +302,15 @@
 <li><code>reunite_parent_child(child_table, parent_table, id_column)</code></li>
 <li><code>reunite_parent_child_from_list(list_of_parent_child_tables, id_column)</code></li>
 </ol>
-<p>The first function implements table normalization. An existing table is split into a parent table (i.e. a lookup table) and a child table (containing the observations), linked by a key column (here: <code>new_id_column</code>). Basically, a foreign key relation would be created, pointing from the <code>new_id_column</code> of the child table to the parent table’s corresponding column, which can be seen as the parent table’s primary key column. The function <code><a href="../reference/decompose_table.html">decompose_table()</a></code> does that, as can be seen in the following example:</p>
+<p>The first function implements table normalization. An existing table
+is split into a parent table (i.e. a lookup table) and a child table
+(containing the observations), linked by a key column (here:
+<code>new_id_column</code>). Basically, a foreign key relation would be
+created, pointing from the <code>new_id_column</code> of the child table
+to the parent table’s corresponding column, which can be seen as the
+parent table’s primary key column. The function
+<code><a href="../reference/decompose_table.html">decompose_table()</a></code> does that, as can be seen in the
+following example:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="va">mtcars_tibble</span></span></code></pre></div>
@@ -301,8 +364,15 @@
 <span><span class="co">#&gt; 11              11     1     5     4</span></span>
 <span><span class="co">#&gt; 12              12     1     5     6</span></span>
 <span><span class="co">#&gt; 13              13     1     5     8</span></span></code></pre>
-<p>A new column is created, with which the two tables can be joined again, essentially creating the original table.</p>
-<p>The functions that do the inverse operation, i.e. join a parent and a child table and subsequently drop the <code>new_id_column</code>, are <code><a href="../reference/reunite_parent_child.html">reunite_parent_child()</a></code> and <code><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list()</a></code>. The former takes as arguments two tables and the unquoted name of the ID column, and the latter takes as arguments a list of two tables plus the unquoted name of the ID column:</p>
+<p>A new column is created, with which the two tables can be joined
+again, essentially creating the original table.</p>
+<p>The functions that do the inverse operation, i.e. join a parent and a
+child table and subsequently drop the <code>new_id_column</code>, are
+<code><a href="../reference/reunite_parent_child.html">reunite_parent_child()</a></code> and
+<code><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list()</a></code>. The former takes as
+arguments two tables and the unquoted name of the ID column, and the
+latter takes as arguments a list of two tables plus the unquoted name of
+the ID column:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">parent_table</span> <span class="op">&lt;-</span> <span class="va">decomposed_table</span><span class="op">$</span><span class="va">parent_table</span></span>
 <span><span class="va">child_table</span> <span class="op">&lt;-</span> <span class="va">decomposed_table</span><span class="op">$</span><span class="va">child_table</span></span>
@@ -324,7 +394,9 @@
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Shortcut:</span></span>
 <span><span class="fu"><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list</a></span><span class="op">(</span><span class="va">decomposed_table</span>, id_column <span class="op">=</span> <span class="va">am_gear_carb_id</span><span class="op">)</span></span></code></pre></div>
-<p>Currently, these functions only exist as a low-level operation on tables. We plan to extend this operation to <code>dm</code> objects in the future.</p>
+<p>Currently, these functions only exist as a low-level operation on
+tables. We plan to extend this operation to <code>dm</code> objects in
+the future.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

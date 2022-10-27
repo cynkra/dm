@@ -17,15 +17,14 @@
 <link href="../../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
 <script src="../../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../../pkgdown.js"></script><link href="../../extra.css" rel="stylesheet">
-<meta property="og:title" content="Updating tables and dm objects">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../../pkgdown.js"></script><meta property="og:title" content="Updating tables and dm objects">
 <meta property="og:description" content="dm">
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png">
 <meta name="robots" content="noindex">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<![endif]-->
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -75,9 +74,6 @@
   </div>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="../../articles/cheatsheet.html">Cheatsheet</a>
-</li>
-<li class="nav-item">
   <a class="nav-link" href="../../news/index.html">Changelog</a>
 </li>
       </ul>
@@ -113,23 +109,41 @@
 
     
     
-<p>This draft describes update operations on tables and dm objects. The generics for the table operations can be private in dm for now and move to dplyr later. Contains parts from <a href="https://github.com/tidyverse/dplyr/issues/4654" class="external-link uri">https://github.com/tidyverse/dplyr/issues/4654</a>.</p>
+<p>This draft describes update operations on tables and dm objects. The
+generics for the table operations can be private in dm for now and move
+to dplyr later. Contains parts from <a href="https://github.com/tidyverse/dplyr/issues/4654" class="external-link uri">https://github.com/tidyverse/dplyr/issues/4654</a>.</p>
 <div class="section level2">
 <h2 id="tables">Tables<a class="anchor" aria-label="anchor" href="#tables"></a>
 </h2>
-<p>In dplyr, operations on tables in dplyr are generally transient or ephemeral. Resulting table objects must be stored in a new object, otherwise they are lost. All operations by default return a new table object that is disconnected from the original.</p>
+<p>In dplyr, operations on tables in dplyr are generally transient or
+ephemeral. Resulting table objects must be stored in a new object,
+otherwise they are lost. All operations by default return a new table
+object that is disconnected from the original.</p>
 <div class="section level3">
 <h3 id="operations">Operations<a class="anchor" aria-label="anchor" href="#operations"></a>
 </h3>
-<p>The operations are modeled after existing database statements, with the exception of the new “patch”.</p>
+<p>The operations are modeled after existing database statements, with
+the exception of the new “patch”.</p>
 <ul>
-<li><p>insert new rows — would error if keys already exist, similar to <code><a href="https://tibble.tidyverse.org/reference/add_row.html" class="external-link">tibble::add_row()</a></code>.</p></li>
+<li><p>insert new rows — would error if keys already exist, similar to
+<code><a href="https://tibble.tidyverse.org/reference/add_row.html" class="external-link">tibble::add_row()</a></code>.</p></li>
 <li><p>update values — overrides existing values. (Similar to <a href="https://github.com/tidyverse/tidyr/issues/183" class="external-link uri">https://github.com/tidyverse/tidyr/issues/183</a>)</p></li>
-<li><p>patch values — like update, but only replaces missing values (Also similar to <a href="https://github.com/tidyverse/tidyr/issues/183" class="external-link uri">https://github.com/tidyverse/tidyr/issues/183</a>)</p></li>
-<li><p>upsert — update or insert depending on presence/absence of keys</p></li>
+<li><p>patch values — like update, but only replaces missing values
+(Also similar to <a href="https://github.com/tidyverse/tidyr/issues/183" class="external-link uri">https://github.com/tidyverse/tidyr/issues/183</a>)</p></li>
+<li><p>upsert — update or insert depending on presence/absence of
+keys</p></li>
 </ul>
-<p>All operations would either take multiple named inputs or a single unnamed data frame. Additional restrictions and options may apply on other backends, these will be specified with arguments that start with a dot. For extensibility, named inputs that start with a dot are silently discarded.</p>
-<p>All operations require specification of a <code>.key</code> argument. Unlike <code>by</code> with joins, the <code>.key</code> argument is mandatory, because RHS column names must be a subset of the LHS column names. Keys must have the same name in the target and the input. If the table container knows its keys (e.g., grouped data frames or data.table), <code>.key</code> may be omitted.</p>
+<p>All operations would either take multiple named inputs or a single
+unnamed data frame. Additional restrictions and options may apply on
+other backends, these will be specified with arguments that start with a
+dot. For extensibility, named inputs that start with a dot are silently
+discarded.</p>
+<p>All operations require specification of a <code>.key</code> argument.
+Unlike <code>by</code> with joins, the <code>.key</code> argument is
+mandatory, because RHS column names must be a subset of the LHS column
+names. Keys must have the same name in the target and the input. If the
+table container knows its keys (e.g., grouped data frames or
+data.table), <code>.key</code> may be omitted.</p>
 <p>Both target table and source columns/table must be compatible:</p>
 <ul>
 <li>Source has no extra tables and columns.</li>
@@ -139,14 +153,24 @@
 <div class="section level3">
 <h3 id="mutable-backends">Mutable backends<a class="anchor" aria-label="anchor" href="#mutable-backends"></a>
 </h3>
-<p>Some <em>mutable</em> backends, most notably databases, Google sheets and data.table, permit in-place update of the source data. Update operations on mutable backends should optionally allow updating the source data. Because this is a potentially destructive exception from the dplyr guarantees, in-place updates must be “opt in”. The default result always will be a “lazy” table. This allows previewing the results of an update operation before materializing.</p>
-<p>On these backends, the following additional operations are useful:</p>
+<p>Some <em>mutable</em> backends, most notably databases, Google sheets
+and data.table, permit in-place update of the source data. Update
+operations on mutable backends should optionally allow updating the
+source data. Because this is a potentially destructive exception from
+the dplyr guarantees, in-place updates must be “opt in”. The default
+result always will be a “lazy” table. This allows previewing the results
+of an update operation before materializing.</p>
+<p>On these backends, the following additional operations are
+useful:</p>
 <ul>
-<li><p>delete — remove rows that match keys, a variant of <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code></p></li>
+<li><p>delete — remove rows that match keys, a variant of
+<code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code></p></li>
 <li><p>truncate — remove all rows</p></li>
 </ul>
-<p>Databases will require that the data is already on the database or ask the user to supply a <code>copy</code> argument.</p>
-<p>On mutable backends, update operations return the input, invisibly, if the update was carried out in-place.</p>
+<p>Databases will require that the data is already on the database or
+ask the user to supply a <code>copy</code> argument.</p>
+<p>On mutable backends, update operations return the input, invisibly,
+if the update was carried out in-place.</p>
 <p>Challenges:</p>
 <ul>
 <li>How to make compatible with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render()</a></code>?</li>
@@ -156,25 +180,30 @@
 <div class="section level2">
 <h2 id="dm">dm<a class="anchor" aria-label="anchor" href="#dm"></a>
 </h2>
-<p>Operations on a dm object are generally transient or ephemeral. Resulting dm or table objects must be stored in a new object, otherwise they are lost.</p>
+<p>Operations on a dm object are generally transient or ephemeral.
+Resulting dm or table objects must be stored in a new object, otherwise
+they are lost.</p>
 <div class="section level3">
 <h3 id="design">Design<a class="anchor" aria-label="anchor" href="#design"></a>
 </h3>
 <ul>
-<li>records from tables from a source dm are appended/updated/upserted/removed/replaced/… from the target dm</li>
+<li>records from tables from a source dm are
+appended/updated/upserted/removed/replaced/… from the target dm</li>
 <li>both dm must be compatible
 <ul>
 <li>same source</li>
 <li>source is a subset of target tables</li>
 </ul>
 </li>
-<li>dry run supported: use transient operations instead of materialization
+<li>dry run supported: use transient operations instead of
+materialization
 <ul>
 <li>check integrity constraints are still valid after running</li>
 <li>compare before-after state</li>
 </ul>
 </li>
-<li>transactions out of scope, caller can use <code>DBI::withTransaction()</code>
+<li>transactions out of scope, caller can use
+<code>DBI::withTransaction()</code>
 </li>
 <li>some operations need top-down, others need bottom-up
 <ul>
