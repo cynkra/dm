@@ -53,15 +53,14 @@
         "c", "e"), remove = TRUE) %>% dm_update_zoomed() %>% get_all_keys()
     Output
       $pks
-      # A tibble: 6 x 2
+      # A tibble: 5 x 2
         table pk_col
         <chr> <keys>
       1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      2 tf_3  f, f1 
+      3 tf_4  h     
+      4 tf_5  k     
+      5 tf_6  o     
       
       $fks
       # A tibble: 5 x 5

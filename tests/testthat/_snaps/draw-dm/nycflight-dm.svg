@@ -103,7 +103,7 @@
 <polygon fill="#ed7d31" stroke="transparent" points="230.5,-201 230.5,-221 303.5,-221 303.5,-201 230.5,-201"/>
 <text text-anchor="start" x="232.0105" y="-206.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes_copy</text>
 <polygon fill="#fbe5d5" stroke="transparent" points="230.5,-181 230.5,-201 303.5,-201 303.5,-181 230.5,-181"/>
-<text text-anchor="start" x="232.5" y="-187.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text>
+<text text-anchor="start" x="232.5" y="-186.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text>
 <polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="229,-180 229,-222 304,-222 304,-180 229,-180"/>
 </g>
 <!-- flights&#45;&gt;planes_copy -->

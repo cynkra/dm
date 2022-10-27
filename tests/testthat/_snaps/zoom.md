@@ -49,14 +49,13 @@
       nyc_comp_2 %>% get_all_keys()
     Output
       $pks
-      # A tibble: 5 x 2
-        table     pk_col           
-        <chr>     <keys>           
-      1 airlines  carrier          
-      2 airports  faa              
-      3 planes    tailnum          
-      4 weather   origin, time_hour
-      5 weather_2 origin, time_hour
+      # A tibble: 4 x 2
+        table    pk_col           
+        <chr>    <keys>           
+      1 airlines carrier          
+      2 airports faa              
+      3 planes   tailnum          
+      4 weather  origin, time_hour
       
       $fks
       # A tibble: 5 x 5
