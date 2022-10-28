@@ -32,9 +32,6 @@
       
       `old$airlines$data$name` is absent
       `new$airlines$data$name` is a character vector ('Endeavor Air Inc.', 'American Airlines Inc.', 'Alaska Airlines Inc.', 'JetBlue Airways', 'Delta Air Lines Inc.', ...)
-      
-      `old$airlines$pks$autoincrement`: <NA> 
-      `new$airlines$pks$autoincrement`: FALSE
 
 ---
 
