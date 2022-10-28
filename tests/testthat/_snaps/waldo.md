@@ -32,6 +32,9 @@
       
       `old$airlines$data$name` is absent
       `new$airlines$data$name` is a character vector ('Endeavor Air Inc.', 'American Airlines Inc.', 'Alaska Airlines Inc.', 'JetBlue Airways', 'Delta Air Lines Inc.', ...)
+      
+      `old$airlines$pks$autoincrement`: <NA> 
+      `new$airlines$pks$autoincrement`: FALSE
 
 ---
 
@@ -93,11 +96,17 @@
       `old$airlines$pks$column[[1]]` is absent
       `new$airlines$pks$column[[1]]` is a character vector ('carrier')
       
+      `old$airlines$pks$autoincrement`:      
+      `new$airlines$pks$autoincrement`: FALSE
+      
       `old$airports$pks$column` is length 0
       `new$airports$pks$column` is length 1
       
       `old$airports$pks$column[[1]]` is absent
       `new$airports$pks$column[[1]]` is a character vector ('faa')
+      
+      `old$airports$pks$autoincrement`:      
+      `new$airports$pks$autoincrement`: FALSE
       
       `old$planes$pks$column` is length 0
       `new$planes$pks$column` is length 1
@@ -105,11 +114,13 @@
       `old$planes$pks$column[[1]]` is absent
       `new$planes$pks$column[[1]]` is a character vector ('tailnum')
       
+      `old$planes$pks$autoincrement`:      
+      `new$planes$pks$autoincrement`: FALSE
+      
       `old$weather$pks$column` is length 0
       `new$weather$pks$column` is length 1
       
-      `old$weather$pks$column[[1]]` is absent
-      `new$weather$pks$column[[1]]` is a character vector ('origin', 'time_hour')
+      And 2 more differences ...
 
 ---
 

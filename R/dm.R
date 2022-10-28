@@ -210,7 +210,7 @@ dm_get_def <- function(x, quiet = FALSE) {
   unclass(x)$def
 }
 
-new_pk <- function(column = list(), autoincrement = logical()) {
+new_pk <- function(column = list(), autoincrement = logical(length(column))) {
   stopifnot(is.list(column), is.logical(autoincrement))
   tibble(column = column, autoincrement = autoincrement)
 }
