@@ -313,3 +313,73 @@ test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
     class = "arg_not"
   )
 })
+
+
+
+test_that("name tidying for local (non-remote) tables", {
+
+  # Simulate names_table corresponding to database in Postgres tests
+  names_table <- tibble::tibble(
+    schema_name = c("schema_db_helpers_2", "schema_db_helpers_2", "schema_db_helpers_3", "schema_db_helpers_3"),
+    table_name = c("test_db_helpers_2", "Test DB Helpers Two", "test_db_helpers_2", "Test DB Helpers 2")
+  )
+
+
+  # Non-tidied names
+
+  ## Single schema
+  expect_equal(
+    with(
+      dplyr::filter(names_table, schema_name == "schema_db_helpers_2"),
+      make_local_names(schema_name, table_name)
+    ),
+    c("test_db_helpers_2", "Test DB Helpers Two")
+  )
+
+  ## Multiple schemas
+  expect_equal(
+    with(
+      names_table,
+      make_local_names(schema_name, table_name)
+    ),
+    c(
+      "schema_db_helpers_2.test_db_helpers_2",
+      "schema_db_helpers_2.Test DB Helpers Two",
+      "schema_db_helpers_3.test_db_helpers_2",
+      "schema_db_helpers_3.Test DB Helpers 2"
+    ),
+    # Because the results are glue strings
+    ignore_attr = TRUE
+  )
+
+
+  # Tidied names
+
+  ## Single schema
+  expect_equal(
+    with(
+      dplyr::filter(names_table, schema_name == "schema_db_helpers_2"),
+      make_local_names(schema_name, table_name, tidy_names = TRUE)
+    ),
+    c("test_db_helpers_2", "test_db_helpers_two")
+  )
+
+  ## Multiple schemas - with name clash!
+  err <- capture_error(
+    with(
+      names_table,
+      make_local_names(schema_name, table_name, tidy_names = TRUE)
+    )
+  )
+
+  expect_equal(
+    err$message,
+    paste(
+      'Forcing tidy table names leads to name clashes:',
+      '  * "schema_db_helpers_3.test_db_helpers_2", "schema_db_helpers_3.Test DB Helpers 2" => "schema_db_helpers_3.test_db_helpers_2"',
+      'Try again with `tidy_names = FALSE`.',
+      sep = "\n"
+    )
+  )
+
+})

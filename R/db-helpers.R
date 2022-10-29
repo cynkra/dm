@@ -123,7 +123,7 @@ find_name_clashes <- function(old, new) {
 
   purrr::imap_chr(
     clashes,
-    ~ glue::glue("* {paste0(dQuote(.x, q = FALSE), collapse = ', ')} => {dQuote(.y, q = FALSE)}")
+    ~ glue::glue("  * {paste0(dQuote(.x, q = FALSE), collapse = ', ')} => {dQuote(.y, q = FALSE)}")
   )
 }
 
