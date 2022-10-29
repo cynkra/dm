@@ -1,5 +1,4 @@
 #' @import cli
-#' @importFrom glue glue
 #' @import rlang
 #' @importFrom vctrs vec_ptype2 vec_ptype_abbr vec_slice vec_cast vec_proxy_compare vec_data vec_c
 #' @importFrom vctrs vec_names vec_as_names vec_cbind vec_rbind vec_recycle
@@ -12,7 +11,7 @@
 #' @rawNamespace import(purrr, except = c(list_along, rep_along, invoke, modify, as_function, flatten_dbl, flatten_lgl, flatten_int, flatten_raw, flatten_chr, splice, flatten, prepend, `%@%`, `%||%`))
 #' @rawNamespace import(magrittr, except = c(set_names))
 #' @importFrom methods is
-#' @rawNamespace import(glue, except = c(collapse))
+#' @import glue
 #' @importFrom igraph V E
 #' @importFrom utils head tail str packageVersion
 #' @import lifecycle
