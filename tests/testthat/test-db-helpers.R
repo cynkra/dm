@@ -130,11 +130,11 @@ test_that("DB helpers work for MSSQL", {
   ))
 
   expect_identical(
-    results["schema_db_helpers_2.test_db_helpers_2"],
+    res["schema_db_helpers_2.test_db_helpers_2"],
     DBI::SQL("\"schema_db_helpers_2\".\"test_db_helpers_2\"")
   )
   expect_identical(
-    results["schema_db_helpers_3.test_db_helpers_2"],
+    res["schema_db_helpers_3.test_db_helpers_2"],
     DBI::SQL("\"schema_db_helpers_3\".\"test_db_helpers_2\"")
   )
 
