@@ -1,3 +1,11 @@
+# dm_add_pk() works as intended?
+
+    Code
+      dm(x = tibble(x = integer())) %>% dm_add_pk(x)
+    Condition
+      Error in `dm_add_pk()`:
+      ! `columns` is absent but must be supplied.
+
 # dm_rm_pk() supports partial filters
 
     Code
@@ -74,8 +82,8 @@
     Condition
       Warning:
       The `rm_referencing_fks` argument of `dm_rm_pk()` is deprecated as of dm 0.2.1.
-      Please use the `fail_fk` argument instead.
-      Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed.
+      i Please use the `fail_fk` argument instead.
+      i Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed.
     Output
       $pks
       # A tibble: 5 x 2
