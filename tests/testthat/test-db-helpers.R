@@ -108,18 +108,9 @@ test_that("DB helpers work for MSSQL", {
 
 
   # Non-default schema, tidy names, with name clash
-  err <- capture_error(
+  # Error message from make_local_names() tested explicitly later
+  expect_snapshot_error(
     get_src_tbl_names(my_test_src(), schema = "schema_db_helpers_3", tidy_names = TRUE)
-  )
-
-  expect_equal(
-    err$message,
-    paste(
-      "Forcing tidy table names leads to name clashes:",
-      "  * \"schema_db_helpers_3.test_db_helpers_2\", \"schema_db_helpers_3.Test DB Helpers 2\" => \"schema_db_helpers_3.test_db_helpers_2\"",
-      "Try again with `tidy_names = FALSE`.",
-      sep = "\n"
-    )
   )
 
 
@@ -143,18 +134,9 @@ test_that("DB helpers work for MSSQL", {
 
 
   # Multiple schemas, tidy names (same name clash in schema_db_helpers_2)
-  err <- capture_error(
+  # Error message from make_local_names() tested explicitly later
+  expect_snapshot_error(
     get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers_2", "schema_db_helpers_3"), tidy_names = TRUE)
-  )
-
-  expect_equal(
-    err$message,
-    paste(
-      "Forcing tidy table names leads to name clashes:",
-      "  * \"schema_db_helpers_3.test_db_helpers_2\", \"schema_db_helpers_3.Test DB Helpers 2\" => \"schema_db_helpers_3.test_db_helpers_2\"",
-      "Try again with `tidy_names = FALSE`.",
-      sep = "\n"
-    )
   )
 
 
