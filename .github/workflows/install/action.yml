@@ -55,7 +55,7 @@ runs:
     - id: get-extra
       uses: ./.github/workflows/get-extra
 
-    - uses: r-lib/actions/setup-r-dependencies@v2
+    - uses: r-lib/actions/setup-r-dependencies@v2.2.8
       env:
         GITHUB_PAT: ${{ inputs.token }}
       with:
@@ -78,12 +78,3 @@ runs:
         sudo ln -s $(which true) /usr/local/bin/qpdf
         sudo ln -s $(which true) /usr/local/bin/checkbashisms
       shell: bash
-
-    - name: "Band aid: install rmarkdown from GitHub in older R"
-      run: |
-        try(
-          if (getRversion() < "3.5" && packageVersion("rmarkdown") < "2.13") {
-            pak::pak("rstudio/rmarkdown")
-          }
-        )
-      shell: Rscript {0}
