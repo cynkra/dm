@@ -113,3 +113,4 @@ Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm,
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd"))
 RoxygenNote: 7.2.1
+Config/Needs/website: cynkra/cynkratemplate
