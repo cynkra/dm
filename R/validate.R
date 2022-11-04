@@ -64,6 +64,9 @@ dm_validate <- function(x) {
     select(table = ref_table, column = ref_column) %>%
     check_colnames(dm_col_names, "Parent key")
 
+  # FIXME: what's the correct check here? Both of these produce errors.
+  # stopifnot(lengths(def$pks) %in% 0:1)
+  # stopifnot(NROW(def$pks) %in% 0:1)
   pks <-
     def %>%
     select(table, pks) %>%

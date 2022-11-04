@@ -58,7 +58,6 @@ dm_add_pk <- function(dm, table, columns, ..., autoincrement = FALSE, check = FA
   col_expr <- enexpr(columns)
   col_name <- names(eval_select_indices(col_expr, colnames(table)))
 
-  # TODO: Should we support autoincrement for composite primary keys?
   if (autoincrement && length(col_name) > 1L) {
     abort(
       c(
