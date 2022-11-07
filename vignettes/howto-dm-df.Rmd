@@ -1,5 +1,5 @@
 ---
-title: "How to: Create a dm object from data frames"
+title: "Create a dm object from data frames"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

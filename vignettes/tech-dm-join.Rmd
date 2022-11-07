@@ -1,5 +1,5 @@
 ---
-title: "Technical: Joining in relational data models"
+title: "Joining in relational data models"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

@@ -1,5 +1,5 @@
 ---
-title: "Techincal: Visualizing dm objects"
+title: "Visualizing dm objects"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

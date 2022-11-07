@@ -1,5 +1,5 @@
 ---
-title: "How to: Copy data to and from a database"
+title: "Copy tables to and from a database"
 date: "`r Sys.Date()`"
 author: James Wondrasek, Kirill Müller
 output: rmarkdown::html_vignette

@@ -1,5 +1,5 @@
 ---
-title: "Technical: Model verification - keys, constraints and normalization"
+title: "Model verification - keys, constraints and normalization"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

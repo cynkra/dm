@@ -1,10 +1,10 @@
 ---
-title: "Technical: Migration guide: 'cdm' -> 'dm'"
+title: "Migration guide: 'cdm' -> 'dm'"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteEncoding{UTF-8}
   %\VignetteIndexEntry{Technical: Migration guide: 'cdm' -> 'dm'}
+  %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
