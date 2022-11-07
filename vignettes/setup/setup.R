@@ -5,9 +5,9 @@ are_suggested_deps_available <- function() {
 
 default_eval <- function() {
   # Only build vignettes in pkgdown for now
-  are_suggested_deps_available() ||
-    (Sys.getenv("IN_PKGDOWN") != "") ||
-    grepl("^cran-", Sys.getenv("GITHUB_HEAD_REF"))
+  are_suggested_deps_available() &&
+    ((Sys.getenv("IN_PKGDOWN") != "") ||
+    grepl("^cran-", Sys.getenv("GITHUB_HEAD_REF")))
 }
 
 knitr::opts_chunk$set(
