@@ -1,6 +1,13 @@
+are_suggested_deps_available <- function() {
+  pkgs_needed_for_vignettes <- c("tidyverse")
+  all(purrr::map_lgl(pkgs_needed_for_vignettes, rlang::is_installed))
+}
+
 default_eval <- function() {
   # Only build vignettes in pkgdown for now
-  (Sys.getenv("IN_PKGDOWN") != "") || grepl("^cran-", Sys.getenv("GITHUB_HEAD_REF"))
+  (Sys.getenv("IN_PKGDOWN") != "") ||
+    grepl("^cran-", Sys.getenv("GITHUB_HEAD_REF")) ||
+    are_suggested_deps_available()
 }
 
 knitr::opts_chunk$set(
