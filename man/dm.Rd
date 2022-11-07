@@ -74,6 +74,7 @@ dm_nycflights13()[["airports"]]
 
 dm_nycflights13() \%>\% names()
 \dontshow{\}) # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dm)
 library(nycflights13)
 
@@ -89,7 +90,7 @@ y2 <- dm$flights \%>\%
   left_join(dm$airlines, by = "carrier")
 
 new_dm(list("tbl1" = y1, "tbl2" = y2))
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{
