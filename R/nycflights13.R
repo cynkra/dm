@@ -29,6 +29,7 @@
 #'   dm_draw()
 dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE) {
   check_dots_empty()
+
   if (subset) {
     data <- nycflights_subset()
     flights <- data$flights
@@ -37,6 +38,8 @@ dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, com
     airports <- data$airports
     planes <- data$planes
   } else {
+    rlang::is_installed("nycflights13")
+
     flights <- nycflights13::flights
     weather <- nycflights13::weather
     airlines <- nycflights13::airlines

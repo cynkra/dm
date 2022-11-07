@@ -468,6 +468,8 @@ test_that("dm_get_con() errors", {
 })
 
 test_that("dm_get_con() works", {
+  skip_if_not_installed("dbplyr")
+
   expect_identical(
     dm_get_con(dm_for_filter_db()),
     con_from_src_or_con(my_db_test_src())

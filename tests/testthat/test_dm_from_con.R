@@ -1,4 +1,6 @@
 test_that("table identifiers are quoted", {
+  skip_if_not_installed("dbplyr")
+
   con_db <- my_db_test_con()
 
   test_dm <- copy_dm_to(
@@ -37,6 +39,8 @@ test_that("table identifiers are quoted", {
 })
 
 test_that("table identifiers are quoted with learn_keys = FALSE", {
+  skip_if_not_installed("dbplyr")
+
   con_db <- my_db_test_con()
 
   test_dm <- copy_dm_to(

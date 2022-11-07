@@ -22,6 +22,8 @@ test_that("`new_fks_out()` generates expected tibble", {
   })
 })
 
+skip_if_not_installed("nycflights13")
+
 test_that("`new_keyed_tbl()` generates expected output", {
   expect_snapshot({
     dm <- dm_nycflights13(cycle = TRUE)
