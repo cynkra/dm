@@ -15,7 +15,14 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message"))
-options(crayon.enabled = knitr::is_html_output(excludes = "gfm"), width = 75, cli.width = 75)
+
+options(
+  crayon.enabled = knitr::is_html_output(excludes = "gfm"),
+  # allow vignette titles and entries to be different
+  rmarkdown.html_vignette.check_title = FALSE,
+  width = 75,
+  cli.width = 75
+)
 
 knit_print.grViz <- function(x, ...) {
   x %>%
