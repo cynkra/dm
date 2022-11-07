@@ -1,10 +1,10 @@
 ---
-title: "Class dm and basic operations"
+title: "Technical: Class dm and basic operations"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Technical: Class dm and basic operations}
   %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Technical: Class dm and basic operations}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console

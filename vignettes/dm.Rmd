@@ -1,5 +1,5 @@
 ---
-title: "Getting started with dm"
+title: "First read: Getting started with dm"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

@@ -1,5 +1,5 @@
 ---
-title: "Function naming logic"
+title: "Technical: Function naming logic"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}

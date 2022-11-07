@@ -1,5 +1,5 @@
 ---
-title: "Insert, update, or remove rows in a database"
+title: "How to: Insert, update or remove rows in a database"
 date: "`r Sys.Date()`"
 author: James Wondrasek
 output: rmarkdown::html_vignette

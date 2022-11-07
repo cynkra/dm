@@ -1,5 +1,5 @@
 ---
-title: "Zooming and manipulating tables"
+title: "Technical: Zooming and manipulating tables"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Technical: Zooming and manipulating tables}

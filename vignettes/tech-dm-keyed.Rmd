@@ -1,5 +1,5 @@
 ---
-title: "Manipulating individual tables"
+title: "Technical: Manipulating individual tables"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Technical: Manipulating individual tables}
