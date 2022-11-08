@@ -56,11 +56,13 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     # primary key definitions
     pk_defs <-
       pks %>%
-      transmute(
+      mutate(
         name,
+        bla = isTRUE(autoincrement),
         pk_defs = case_when(
-          isTRUE(autoincrement) & is_postgres(con) ~ paste0("SERIAL PRIMARY KEY (", quote_enum_col(pk_col), ")"),
-          isTRUE(autoincrement) & is_mssql(con) ~ paste0("AUTO_INCREMENT PRIMARY KEY (", quote_enum_col(pk_col), ")"),
+          !is.na(autoincrement) & autoincrement & is_postgres(con) ~ paste0("SERIAL PRIMARY KEY (", quote_enum_col(pk_col), ")"),
+          !is.na(autoincrement) & autoincrement & is_mssql(con) ~ paste0("AUTO_INCREMENT PRIMARY KEY (", quote_enum_col(pk_col), ")"),
+          !is.na(autoincrement) & autoincrement & is_sqlite(con) ~ paste0("AUTOINCREMENT PRIMARY KEY (", quote_enum_col(pk_col), ")"),
           TRUE ~ paste0("PRIMARY KEY (", quote_enum_col(pk_col), ")")
         )
       )
