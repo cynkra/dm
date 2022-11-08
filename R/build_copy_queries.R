@@ -58,7 +58,11 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       pks %>%
       transmute(
         name,
-        pk_defs = paste0("PRIMARY KEY (", quote_enum_col(pk_col), ")")
+        pk_defs = case_when(
+          autoincrement & is_postgres(con) ~ paste0("SERIAL PRIMARY KEY (", quote_enum_col(pk_col), ")"),
+          autoincrement & is_mssql(con) ~ paste0("AUTO_INCREMENT PRIMARY KEY (", quote_enum_col(pk_col), ")"),
+          TRUE ~ paste0("PRIMARY KEY (", quote_enum_col(pk_col), ")")
+        )
       )
 
     # unique constraint definitions

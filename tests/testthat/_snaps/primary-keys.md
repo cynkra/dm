@@ -12,14 +12,14 @@
       dm_for_filter() %>% dm_rm_pk(tf_4, fail_fk = FALSE) %>% get_all_keys()
     Output
       $pks
-      # A tibble: 5 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_5  k     
-      5 tf_6  o     
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -35,14 +35,14 @@
       dm_for_filter() %>% dm_rm_pk(tf_3, fail_fk = FALSE) %>% get_all_keys()
     Output
       $pks
-      # A tibble: 5 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_4  h     
-      4 tf_5  k     
-      5 tf_6  o     
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_4  h      FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -58,14 +58,14 @@
       dm_for_filter() %>% dm_rm_pk(tf_6) %>% get_all_keys()
     Output
       $pks
-      # A tibble: 5 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -86,14 +86,14 @@
       i Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed.
     Output
       $pks
-      # A tibble: 5 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_5  k     
-      5 tf_6  o     
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -112,14 +112,14 @@
         dm_rm_pk(tf_2)
     Output
       $pks
-      # A tibble: 5 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_3  f, f1 
-      3 tf_4  h     
-      4 tf_5  k     
-      5 tf_6  o     
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_3  f, f1  FALSE        
+      3 tf_4  h      FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -139,14 +139,14 @@
         dm_rm_pk(tf_3)
     Output
       $pks
-      # A tibble: 5 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_4  h     
-      4 tf_5  k     
-      5 tf_6  o     
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_4  h      FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -170,8 +170,8 @@
         dm_rm_pk(tf_6)
     Output
       $pks
-      # A tibble: 0 x 2
-      # ... with 2 variables: table <chr>, pk_col <keys>
+      # A tibble: 0 x 3
+      # ... with 3 variables: table <chr>, pk_col <keys>, autoincrement <lgl>
       
       $fks
       # A tibble: 5 x 5
@@ -183,38 +183,6 @@
       4 tf_5        l             tf_4         h               cascade  
       5 tf_5        m             tf_6         n               no_action
       
-
-# dm_enum_pk_candidates() works properly?
-
-    Code
-      dm_enum_pk_candidates(dm_test_obj(), dm_table_1)
-    Output
-      # A tibble: 2 x 3
-        columns candidate why  
-        <keys>  <lgl>     <chr>
-      1 a       TRUE      ""   
-      2 b       TRUE      ""   
-    Code
-      dm_enum_pk_candidates(dm_test_obj(), dm_table_2)
-    Output
-      # A tibble: 1 x 3
-        columns candidate why                        
-        <keys>  <lgl>     <chr>                      
-      1 c       FALSE     has duplicate values: 5 (2)
-    Code
-      dm_enum_pk_candidates(dm_test_obj(), dm_table_5)
-    Output
-      # A tibble: 1 x 3
-        columns candidate why                 
-        <keys>  <lgl>     <chr>               
-      1 c       FALSE     has 1 missing values
-    Code
-      dm_enum_pk_candidates(dm_test_obj(), dm_table_6)
-    Output
-      # A tibble: 1 x 3
-        columns candidate why                                              
-        <keys>  <lgl>     <chr>                                            
-      1 c       FALSE     has 1 missing values, and duplicate values: 3 (2)
 
 # output
 
@@ -237,13 +205,13 @@
     Code
       nyc_comp() %>% dm_get_all_pks()
     Output
-      # A tibble: 4 x 2
-        table    pk_col           
-        <chr>    <keys>           
-      1 airlines carrier          
-      2 airports faa              
-      3 planes   tailnum          
-      4 weather  origin, time_hour
+      # A tibble: 4 x 3
+        table    pk_col            autoincrement
+        <chr>    <keys>            <lgl>        
+      1 airlines carrier           FALSE        
+      2 airports faa               FALSE        
+      3 planes   tailnum           FALSE        
+      4 weather  origin, time_hour FALSE        
 
 # autoincrement fails with compound keys
 
