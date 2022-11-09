@@ -184,6 +184,38 @@
       5 tf_5        m             tf_6         n               no_action
       
 
+# dm_enum_pk_candidates() works properly?
+
+    Code
+      dm_enum_pk_candidates(dm_test_obj(), dm_table_1)
+    Output
+      # A tibble: 2 x 3
+        columns candidate why  
+        <keys>  <lgl>     <chr>
+      1 a       TRUE      ""   
+      2 b       TRUE      ""   
+    Code
+      dm_enum_pk_candidates(dm_test_obj(), dm_table_2)
+    Output
+      # A tibble: 1 x 3
+        columns candidate why                        
+        <keys>  <lgl>     <chr>                      
+      1 c       FALSE     has duplicate values: 5 (2)
+    Code
+      dm_enum_pk_candidates(dm_test_obj(), dm_table_5)
+    Output
+      # A tibble: 1 x 3
+        columns candidate why                 
+        <keys>  <lgl>     <chr>               
+      1 c       FALSE     has 1 missing values
+    Code
+      dm_enum_pk_candidates(dm_test_obj(), dm_table_6)
+    Output
+      # A tibble: 1 x 3
+        columns candidate why                                              
+        <keys>  <lgl>     <chr>                                            
+      1 c       FALSE     has 1 missing values, and duplicate values: 3 (2)
+
 # output
 
     Code
