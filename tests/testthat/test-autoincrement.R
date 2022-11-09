@@ -22,5 +22,5 @@ test_that("autoincrement produces valid SQL queries and R code - RSQLite", {
   df <- dm:::build_copy_queries(con, dm)
 
   expect_snapshot(df$sql_table)
-  expect_snapshot(dm)
+  expect_snapshot(dm_paste(dm))
 })

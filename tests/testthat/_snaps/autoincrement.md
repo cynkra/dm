@@ -30,11 +30,13 @@
 ---
 
     Code
-      dm
-    Output
-      -- Metadata --------------------------------------------------------------------
-      Tables: `x`, `y`
-      Columns: 5
-      Primary keys: 2
-      Foreign keys: 1
+      dm_paste(dm)
+    Message
+      dm::dm(
+        x,
+        y,
+      ) %>%
+        dm::dm_add_pk(x, x_id, autoincrement = TRUE) %>%
+        dm::dm_add_pk(y, y_id) %>%
+        dm::dm_add_fk(y, x_id, x)
 
