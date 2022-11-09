@@ -22,6 +22,14 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
   # column definitions
   get_sql_col_types <- function(x) {
+    # autoincrementing is not possible for composite keys, so `pk_col` is guaranteed
+    # to be a scalar
+    pk_col <-
+      dm %>%
+      dm_get_all_pks(x) %>%
+      filter(autoincrement) %>%
+      pull(pk_col)
+
     tbl <- tbl_impl(dm, x)
     types <- DBI::dbDataType(con, tbl)
 
@@ -31,6 +39,32 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     }
     if (is_sqlite(dest)) {
       types[types == "INT"] <- "INTEGER"
+    }
+
+    # database-specific autoincrementing column types
+    if (length(pk_col) > 0L) {
+      # Postgres:
+      if (is_postgres(dest)) {
+        types[pk_col] <- "SERIAL"
+      }
+
+      # SQL Server:
+      if (is_mssql(dest)) {
+        types[pk_col] <- "IDENTITY"
+      }
+
+      # MariaDB:
+      # Doesn't have a special data type. Uses `AUTO_INCREMENT` attribute instead.
+      # Ref: https://mariadb.com/kb/en/auto_increment/
+
+      # DuckDB:
+      # Doesn't have a special data type. Uses `CREATE SEQUENCE` instead.
+      # Ref: https://duckdb.org/docs/sql/statements/create_sequence
+
+      # SQLite:
+      # For a primary key, autoincrementing works by default, and it is almost never
+      # necessary to use the `AUTOINCREMENT` keyword.
+      # Ref: https://www.sqlite.org/autoinc.html
     }
 
     enframe(types, "col", "type")
@@ -62,15 +96,9 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     # primary key definitions
     pk_defs <-
       pks %>%
-      mutate(
+      transmute(
         name,
-        pk_defs = case_when(
-          !is.na(autoincrement) & autoincrement & is_postgres(con) ~ paste0("SERIAL PRIMARY KEY (", quote_enum_col(pk_col), ")"),
-          !is.na(autoincrement) & autoincrement & is_mssql(con) ~ paste0("AUTO_INCREMENT PRIMARY KEY (", quote_enum_col(pk_col), ")"),
-          # For a primary key, autoincrementing works by default in SQLite, and as mentioned in the docs
-          # (https://www.sqlite.org/autoinc.html), it is never necessary to use `AUTOINCREMENT` keyword.
-          TRUE ~ paste0("PRIMARY KEY (", quote_enum_col(pk_col), ")")
-        )
+        pk_defs = paste0("PRIMARY KEY (", quote_enum_col(pk_col), ")")
       )
 
     # unique constraint definitions
