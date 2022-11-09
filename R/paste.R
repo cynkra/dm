@@ -168,7 +168,12 @@ dm_paste_select <- function(dm) {
 dm_paste_pks <- function(dm) {
   dm %>%
     dm_get_all_pks_impl() %>%
-    mutate(code = glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")) %>%
+    mutate(
+      code = case_when(
+        !is.na(autoincrement) & autoincrement ~ glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)}, autoincrement = TRUE)"),
+          TRUE ~ glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")
+      )
+    ) %>%
     pull()
 }
 

@@ -58,7 +58,6 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       pks %>%
       mutate(
         name,
-        bla = isTRUE(autoincrement),
         pk_defs = case_when(
           !is.na(autoincrement) & autoincrement & is_postgres(con) ~ paste0("SERIAL PRIMARY KEY (", quote_enum_col(pk_col), ")"),
           !is.na(autoincrement) & autoincrement & is_mssql(con) ~ paste0("AUTO_INCREMENT PRIMARY KEY (", quote_enum_col(pk_col), ")"),
