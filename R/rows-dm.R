@@ -287,7 +287,7 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
     if (!(all(tables %in% all_pks$table))) {
       abort(glue("`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys for all target tables."))
     }
-    keys <- deframe(dm_get_all_pks(x))[tables]
+    keys <- deframe(select(dm_get_all_pks(dm), table, pk_col))[tables]
   } else {
     keys <- rep_along(tables, list(NULL))
   }
