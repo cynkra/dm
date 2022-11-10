@@ -44,6 +44,8 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
     # database-specific autoincrementing column types
     if (length(pk_col) > 0L) {
+      pk_col <- pk_col %>% extract2(1L)
+
       # Postgres:
       if (is_postgres(dest)) {
         types[pk_col] <- "SERIAL"
@@ -79,7 +81,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     df_col_types <-
       df_col_types %>%
       mutate(autoincrement_attribute = case_when(
-        col == pk_col[[1L]] ~ autoincrement_attribute,
+        col == pk_col ~ autoincrement_attribute,
         TRUE ~ autoincrement_attribute
       ))
     }
