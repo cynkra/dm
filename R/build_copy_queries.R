@@ -79,12 +79,12 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       mutate(autoincrement_attribute = " ")
 
     if (length(pk_col) > 0L) {
-    df_col_types <-
-      df_col_types %>%
-      mutate(autoincrement_attribute = case_when(
-        col == pk_col ~ autoincrement_attribute,
-        TRUE ~ autoincrement_attribute
-      ))
+      df_col_types <-
+        df_col_types %>%
+        mutate(autoincrement_attribute = case_when(
+          col == pk_col ~ autoincrement_attribute,
+          TRUE ~ autoincrement_attribute
+        ))
     }
 
     df_col_types
