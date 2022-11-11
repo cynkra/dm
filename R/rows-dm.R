@@ -278,6 +278,9 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   topo <- igraph::topo_sort(graph, mode = if (top_down) "in" else "out")
   tables <- intersect(names(topo), src_tbls_impl(y))
 
+  # Relevant only in case of autoincrementing keys
+  # returning <- list(NULL)
+
   # Use tables and keys
   target_tbls <- dm_get_tables_impl(x)[tables]
   tbls <- dm_get_tables_impl(y)[tables]
@@ -287,7 +290,7 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
     if (!(all(tables %in% all_pks$table))) {
       abort(glue("`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys for all target tables."))
     }
-    keys <- deframe(select(dm_get_all_pks(dm), table, pk_col))[tables]
+    keys <- deframe(select(all_pks, table, pk_col))[tables]
   } else {
     keys <- rep_along(tables, list(NULL))
   }

@@ -195,7 +195,6 @@
       
     Code
       dm_copy %>% dm_rows_update(dm_update_copy, in_place = TRUE)
-    Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
       $tf_1
@@ -382,10 +381,6 @@
     Condition
       Warning:
       `dm_rows_truncate()` was deprecated in dm 1.0.0.
-      Warning:
-      `sql_rows_truncate()` was deprecated in dm 1.0.0.
-      Warning:
-      `sql_rows_truncate()` was deprecated in dm 1.0.0.
     Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output

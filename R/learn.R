@@ -1,11 +1,14 @@
 #' Create data model from database constraints
 #'
-#' @description If there are any permament tables on a DB, a new [`dm`] object can be created that contains those tables,
-#' along with their primary and foreign key constraints.
+#' @description
+#' If there are any permanent tables on a DB, a new [`dm`] object can be created
+#' that contains those tables, along with their primary and foreign key
+#' constraints.
 #'
-#' Currently this only works with MSSQL and Postgres databases.
+#' Currently, this only works with MSSQL and Postgres databases.
 #'
-#' The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema.
+#' The default database schema will be used; it is currently not possible to
+#' parametrize the function with a specific database schema.
 #'
 #' @param dest A `src`-object on a DB or a connection to a DB.
 #'
