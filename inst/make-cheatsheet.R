@@ -9,6 +9,7 @@ withr::with_dir(
     rmd_path <- withr::local_tempfile(fileext = ".rmd")
 
     original <- brio::read_lines(input)
+    # remove the part reading this very script to avoid an infinite loop :-s
     brio::write_lines(original[-c((length(original)-4):length(original))], rmd_path)
 
     withr::with_envvar(
