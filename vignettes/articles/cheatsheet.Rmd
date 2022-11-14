@@ -170,7 +170,7 @@ A dm behaves like a list of tables (data frames or lazy tables) capturing
 cat(
   '<img
               alt="Screenshot of the Shiny app provided by dm. It has three parts. On the left is a diagram view of the dm that one can click to, for instance, select tables or change their colors. On the right, there is the generated code as well as a menu to control primary and foreign keys."
-              src="../man/figures/cheatsheet/shiny.png"
+              src="cheatsheet-figures/shiny.png"
               style="max-width: 75%; margin:auto;"
             />'
 )
