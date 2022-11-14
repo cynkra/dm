@@ -105,7 +105,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header">
 <img src="logo.png" class="logo" alt=""><h1 id="dm">
-<a href="https://cynkra.github.io/dm/">dm</a><a class="anchor" aria-label="anchor" href="#dm"></a>
+<a href="https://dm.cynkra.com/" class="external-link">dm</a><a class="anchor" aria-label="anchor" href="#dm"></a>
 </h1>
 </div>
 <!-- badges: start -->
@@ -134,7 +134,7 @@
 <li>simpler joins that “know” how tables are related, including a “flatten” operation that automatically follows keys and performs column name disambiguation</li>
 <li>consistency and constraint checks to help you understand (and fix) the limitations of your data</li>
 </ul>
-<p>That’s just the tip of the iceberg. See <a href="https://cynkra.github.io/dm/articles/dm.html">Getting started</a> to hit the ground running and explore all the features.</p>
+<p>That’s just the tip of the iceberg. See <a href="https://dm.cynkra.com/articles/dm.html" class="external-link">Getting started</a> to hit the ground running and explore all the features.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -161,10 +161,10 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>Create a dm object (see <a href="https://cynkra.github.io/dm/articles/dm.html">Getting started</a> for details).</p>
+<p>Create a dm object (see <a href="https://dm.cynkra.com/articles/dm.html" class="external-link">Getting started</a> for details).</p>
 <pre class="chroma">
-<span class="kr"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="o">(</span><span class="nv"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="o">)</span>
-<span class="nv">dm</span> <span class="o">&lt;-</span> <span class="nf"><a href="https://cynkra.github.io/dm/reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="o">(</span><span class="o">)</span>
+<span class="kr"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="o">(</span><span class="nv"><a href="https://dm.cynkra.com/" class="external-link">dm</a></span><span class="o">)</span>
+<span class="nv">dm</span> <span class="o">&lt;-</span> <span class="nf"><a href="https://dm.cynkra.com/reference/dm_nycflights13.html" class="external-link">dm_nycflights13</a></span><span class="o">(</span><span class="o">)</span>
 <span class="nv">dm</span>
 <span class="c">#&gt; <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="c">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
@@ -188,12 +188,12 @@
 <p>Visualize relationships at any time:</p>
 <pre class="chroma">
 <span class="nv">dm</span> <span class="o"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="nf"><a href="https://cynkra.github.io/dm/reference/dm_draw.html">dm_draw</a></span><span class="o">(</span><span class="o">)</span></pre>
+  <span class="nf"><a href="https://dm.cynkra.com/reference/dm_draw.html" class="external-link">dm_draw</a></span><span class="o">(</span><span class="o">)</span></pre>
 <p><img src="reference/figures/README-draw.svg"></p>
 <p>Simple joins:</p>
 <pre class="chroma">
 <span class="nv">dm</span> <span class="o"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="nf"><a href="https://cynkra.github.io/dm/reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="o">(</span><span class="nv">flights</span><span class="o">)</span>
+  <span class="nf"><a href="https://dm.cynkra.com/reference/dm_flatten_to_tbl.html" class="external-link">dm_flatten_to_tbl</a></span><span class="o">(</span><span class="nv">flights</span><span class="o">)</span>
 <span class="c">#&gt; Renaming ambiguous columns: %&gt;%</span>
 <span class="c">#&gt;   dm_rename(flights, flights.year = year) %&gt;%</span>
 <span class="c">#&gt;   dm_rename(flights, flights.month = month) %&gt;%</span>
@@ -229,10 +229,10 @@
 <p>Check consistency:</p>
 <pre class="chroma">
 <span class="nv">dm</span> <span class="o"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="nf"><a href="https://cynkra.github.io/dm/reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="o">(</span><span class="o">)</span>
+  <span class="nf"><a href="https://dm.cynkra.com/reference/dm_examine_constraints.html" class="external-link">dm_examine_constraints</a></span><span class="o">(</span><span class="o">)</span>
 <span class="c">#&gt; <span style="color: #BBBB00;">!</span> Unsatisfied constraints:</span>
 <span class="c">#&gt; <span style="color: #BB0000;">•</span> Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</span></pre>
-<p>Learn more in the <a href="https://cynkra.github.io/dm/articles/dm.html">Getting started</a> article.</p>
+<p>Learn more in the <a href="https://dm.cynkra.com/articles/dm.html" class="external-link">Getting started</a> article.</p>
 </div>
 <div class="section level2">
 <h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
@@ -243,7 +243,7 @@
 <p>Funded by:</p>
 <p><a href="https://www.energie360.ch/de/" class="external-link"><img src="reference/figures/energie-72.png" alt="energie360°"></a> <span style="padding-right:50px"> </span> <a href="https://www.cynkra.com/" class="external-link"><img src="reference/figures/cynkra-72.png" alt="cynkra"></a></p>
 <hr>
-<p>Please note that the ‘dm’ project is released with a <a href="https://cynkra.github.io/dm/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<p>Please note that the ‘dm’ project is released with a <a href="https://dm.cynkra.com/CODE_OF_CONDUCT.html" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

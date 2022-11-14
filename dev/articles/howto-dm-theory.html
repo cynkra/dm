@@ -105,7 +105,7 @@
                         <h4 data-toc-skip class="author">Katharina
 Brunner</h4>
             
-            <h4 data-toc-skip class="date">2022-11-08</h4>
+            <h4 data-toc-skip class="date">2022-11-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-theory.Rmd</code></div>
@@ -200,7 +200,7 @@ gradually to <code>airlines</code>, <code>planes</code>,
 wide data frame.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dm.cynkra.com/" class="external-link">dm</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">nycflights13_df</span> <span class="op">&lt;-</span></span>
@@ -283,8 +283,8 @@ storing data in single a data frame:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">nycflights13_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 108020824 bytes</span></span></code></pre></div>
-<p>Further Reading: The {dm} methods for <a href="https://cynkra.github.io/dm/articles/tech-dm-draw.html">visualizing
-data models</a>.</p>
+<p>Further Reading: The {dm} methods for <a href="https://dm.cynkra.com/articles/tech-dm-draw.html" class="external-link">visualizing data
+models</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="pk">3. Primary Keys<a class="anchor" aria-label="anchor" href="#pk"></a>
@@ -329,7 +329,7 @@ column to serve as a simple primary key:</p>
 <span><span class="co">#&gt; 7 dst     FALSE     "has duplicate values: A (84), N (2)"                  </span></span>
 <span><span class="co">#&gt; 8 tzone   FALSE     "has duplicate values: America/New_York (48), America/…</span></span></code></pre>
 <p>Further Reading: The {dm} package offers several functions for
-dealing with <a href="https://cynkra.github.io/dm/articles/tech-dm-class.html#pk">primary
+dealing with <a href="https://dm.cynkra.com/articles/tech-dm-class.html" class="external-link">primary
 keys</a>.</p>
 </div>
 <div class="section level2">
@@ -391,7 +391,7 @@ relations present in a <code>dm</code> object using
 <span><span class="co">#&gt; 3 flights     dest              airports     faa               no_action</span></span>
 <span><span class="co">#&gt; 4 flights     tailnum           planes       tailnum           no_action</span></span>
 <span><span class="co">#&gt; 5 flights     origin, time_hour weather      origin, time_hour no_action</span></span></code></pre>
-<p>Further Reading: All {dm} functions for working with <a href="https://cynkra.github.io/dm/articles/tech-dm-class.html#foreign-keys">foreign
+<p>Further Reading: All {dm} functions for working with <a href="https://dm.cynkra.com/articles/tech-dm-class.html" class="external-link">foreign
 keys</a>.</p>
 </div>
 <div class="section level2">
@@ -538,9 +538,9 @@ short for Structured Querying Language, plays an important role: it was
 invented for the purpose of querying relational databases.</p>
 <p>In production, the data is stored in a relational database and {dm}
 is used to work with the data.</p>
-<p>Therefore, {dm} can copy data <a href="https://cynkra.github.io/dm/articles/dm.html#copy">from and to
-databases</a>, and works transparently with both in-memory data and with
-relational database systems.</p>
+<p>Therefore, {dm} can copy data <a href="https://dm.cynkra.com/articles/dm.html" class="external-link">from and to databases</a>,
+and works transparently with both in-memory data and with relational
+database systems.</p>
 <p>For example, let’s create a local SQLite database and copy the
 <code>dm</code> object to it:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
