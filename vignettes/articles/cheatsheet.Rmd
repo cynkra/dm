@@ -26,14 +26,18 @@ knitr::opts_chunk$set(
 ### <i class="fa-solid fa-database"></i> from database: `dm_from_con()`
 
 ```{r}
-create_figure <- function(class, src, alt, caption) {
+get_src <- function(src) {
   if (!nzchar(Sys.getenv("CHEATSHEET"))) {
-    path <- file.path("cheatsheet-figures", src)
-    svg <- xml2::read_xml(path)
-    cat("<div class='cheatsheet-div'>")
-    xml2::xml_remove(xml2::xml_find_all(svg, "//comment()"))
+    file.path("cheatsheet-figures", src)
+  } else {
+    sprintf("%s/%s", "cheatsheet-figures", src)
+  }
+}
+get_svg <- function(path, alt) {
+  svg <- xml2::read_xml(path)
+  xml2::xml_remove(xml2::xml_find_all(svg, "//comment()"))
     xml2::xml_attr(svg, "class") <- "cheatsheet-svg"
-    xml2::xml_attr(svg, "aria-labelledby") <- sprintf("svgDescription-%s", src)
+    xml2::xml_attr(svg, "aria-labelledby") <- sprintf("svgDescription-%s", basename(path))
     xml2::xml_add_child(
       svg,
       .value = "description",
@@ -46,26 +50,36 @@ create_figure <- function(class, src, alt, caption) {
     lines <- readLines(temp_file)
     lines <- lines[!grepl("^<\\?", lines)]
     lines <- lines[!grepl("^<!", lines)]
+    glue::glue_collapse(lines, sep = "")
+}
+create_figure <- function(class, src, alt, caption) {
+  if (!nzchar(Sys.getenv("CHEATSHEET"))) {
+    path <- purrr::map_chr(src, get_src)
+    svgs <- purrr::map2_chr(path, alt, get_svg)
+    svgs <- paste0(rev(svgs), collapse = "")
+    
+    cat("<div class='cheatsheet-div'>")
     html <- sprintf('<div class="cheatsheet-caption">%s</div>', commonmark::markdown_html(caption))
     cat(html)
-    cat(glue::glue_collapse(lines, sep = ""))
-
+    cat(svgs)
     cat("</div>")
   } else {
-    src <- sprintf("%s/%s", "cheatsheet-figures", src)
+    create_img <- function(alt, src) {
+      sprintf('<img alt="%s" src="%s"/>', alt, src)
+    }
+    src <- purrr::map_chr(src, get_src)
+    imgs <- purrr::map2_chr(src, alt, create_img)
+    imgs <- paste(imgs, collapse="")
     html <- sprintf(
       '
   <figure class="%s">
-            <img
-              alt="%s"
-              src="%s"
-            />
+            %s
             <figcaption>
               %s
             </figcaption>
           </figure>
   ',
-      class, alt, src, commonmark::markdown_html(caption)
+      class, imgs, commonmark::markdown_html(caption)
     )
     cat(html)
   }
@@ -507,16 +521,15 @@ dm_rows_insert(dm2, in_place = FALSE)
 ```
 
 ```{r, results='asis'}
-cat('<figure class="left">
-  <img
-    alt="Equal sign then a dm object where the blue table has now more rows."
-    src="../man/figures/cheatsheet/insert2.svg"
-  />
-  <img
-    alt="On the left a dm object with 3 tables. On the right, a similar dm where one of the tables, the blue one, has more rows. Between the two is a plus sign"
-    src="../man/figures/cheatsheet/insert1.svg"
-  />
-</figure>')
+create_figure(
+  class = "left",
+  alt = c(
+    "Equal sign then a dm object where the blue table has now more rows.", 
+    "On the left a dm object with 3 tables. On the right, a similar dm where one of the tables, the blue one, has more rows. Between the two is a plus sign"
+    ),
+  src = c("insert2.svg", "insert1.svg"),
+  caption = NULL
+)
 ```
 
 ```r
@@ -525,16 +538,15 @@ dm_rows_insert(dm2, in_place = TRUE)
 ```
 
 ```{r, results='asis'}
-cat('<figure class="left">
-  <img
-    alt="Database icon."
-    src="../man/figures/cheatsheet/insert4.svg"
-  />
-  <img
-    alt="On the left a dm object with 3 tables, and a database icon superimposed. On the right, a similar dm where one of the tables, the blue one, has more rows. Between the two is a plus sign"
-    src="../man/figures/cheatsheet/insert3.svg"
-  />
-</figure>')
+create_figure(
+  class = "left",
+  alt = c(
+    "Database icon.", 
+    "On the left a dm object with 3 tables, and a database icon superimposed. On the right, a similar dm where one of the tables, the blue one, has more rows. Between the two is a plus sign"
+    ),
+  src = c("insert4.svg", "insert3.svg"),
+  caption = NULL
+)
 ```
 
 A dm is immutable, except with
@@ -545,6 +557,6 @@ A dm is immutable, except with
 </div>
 </div>
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
 source(system.file("make-cheatsheet.R", package = "dm"))
 ```
