@@ -5,6 +5,8 @@ vignette: >
   %\VignetteIndexEntry{cheatsheet}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - cheatsheet
 ---
 
 ```{r, include = FALSE}
@@ -15,7 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-[For printing](../cheatsheet/cheatsheet-printable.html)
+[For printing](cheatsheet/cheatsheet-printable.html)
 
 <div class="page1">
 > If you have more than one table, use dm.
@@ -72,12 +74,10 @@ create_figure <- function(class, src, alt, caption) {
     imgs <- paste(imgs, collapse="")
     html <- sprintf(
       '
-  <figure class="%s">
-            %s
-            <figcaption>
-              %s
-            </figcaption>
-          </figure>
+    <figure class="%s">
+      %s
+      <figcaption>%s</figcaption>
+    </figure>
   ',
       class, imgs, commonmark::markdown_html(caption)
     )
@@ -183,10 +183,10 @@ A dm behaves like a list of tables (data frames or lazy tables) capturing
 ```{r, results='asis'}
 cat(
   '<img
-              alt="Screenshot of the Shiny app provided by dm. It has three parts. On the left is a diagram view of the dm that one can click to, for instance, select tables or change their colors. On the right, there is the generated code as well as a menu to control primary and foreign keys."
-              src="cheatsheet-figures/shiny.png"
-              style="max-width: 75%; margin:auto;"
-            />'
+    alt="Screenshot of the Shiny app provided by dm. It has three parts. On the left is a diagram view of the dm that one can click to, for instance, select tables or change their colors. On the right, there is the generated code as well as a menu to control primary and foreign keys."
+    src="cheatsheet-figures/shiny.png"
+    style="max-width: 75%; margin:auto;"
+  />'
 )
 ```
             

@@ -1,8 +1,7 @@
 temp_folder <- withr::local_tempdir()
 input <- knitr::current_input(dir = TRUE)
 input_dir <- dirname(input)
-# TODO: this has to depend on whether it is the dev or release website!
-final_dir <- file.path(input_dir, "../../docs/dev/cheatsheet")
+final_dir <- file.path(input_dir, "cheatsheet")
 withr::with_dir(
   temp_folder, {
     html_path <- withr::local_tempfile(fileext = ".html")
