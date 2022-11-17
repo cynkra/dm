@@ -76,7 +76,7 @@ withr::with_dir(
     )
 
     deps <- bslib::bs_theme_dependencies(bs_theme)
-    deps <- lapply(deps, htmltools::copyDependencyToDir, "deps")
+    deps <- lapply(deps, htmltools::copyDependencyToDir, file.path("cheatsheet", "deps"))
     deps <- lapply(deps, htmltools::makeDependencyRelative, getwd())
     deps <- htmltools::renderDependencies(deps, srcType = "file")
 
