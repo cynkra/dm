@@ -67,10 +67,10 @@ withr::with_dir(
 
     # deps ------------
     bs_theme <- bslib::bs_theme(
-      `font-size-base` = ".6rem",
-      `h2-font-size` = "1rem",
-      `h3-font-size` = ".8rem",
-      `h4-font-size` = ".8rem",
+      `font-size-base` = ".5rem",
+      `h2-font-size` = ".9rem",
+      `h3-font-size` = ".7rem",
+      `h4-font-size` = ".7rem",
       `headings-color` = "#6366f1",
       `primary` = "#6366f1"
     )
