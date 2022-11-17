@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-[For printing](cheatsheet.html)
+[For printing](../cheatsheet/cheatsheet-printable.html)
 
 <div class="page1">
 > If you have more than one table, use dm.
