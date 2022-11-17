@@ -73,12 +73,7 @@ create_figure <- function(class, src, alt, caption) {
     imgs <- purrr::map2_chr(alt, src, create_img)
     imgs <- paste(imgs, collapse = "")
     html <- sprintf(
-      '
-    <figure class="%s">
-      %s
-      <figcaption>%s</figcaption>
-    </figure>
-  ',
+      '<figure class="%s">%s<figcaption>%s</figcaption></figure>',
       class, imgs, commonmark::markdown_html(caption)
     )
     cat(html)
