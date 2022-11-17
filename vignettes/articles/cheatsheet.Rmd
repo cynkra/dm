@@ -70,8 +70,8 @@ create_figure <- function(class, src, alt, caption) {
       sprintf('<img alt="%s" src="%s"/>', alt, src)
     }
     src <- purrr::map_chr(src, get_src)
-    imgs <- purrr::map2_chr(src, alt, create_img)
-    imgs <- paste(imgs, collapse="")
+    imgs <- purrr::map2_chr(alt, src, create_img)
+    imgs <- paste(imgs, collapse = "")
     html <- sprintf(
       '
     <figure class="%s">
