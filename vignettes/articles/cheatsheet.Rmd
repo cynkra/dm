@@ -38,28 +38,28 @@ get_src <- function(src) {
 get_svg <- function(path, alt) {
   svg <- xml2::read_xml(path)
   xml2::xml_remove(xml2::xml_find_all(svg, "//comment()"))
-    xml2::xml_attr(svg, "class") <- "cheatsheet-svg"
-    xml2::xml_attr(svg, "aria-labelledby") <- sprintf("svgDescription-%s", basename(path))
-    xml2::xml_add_child(
-      svg,
-      .value = "description",
-      alt,
-      .where = 0
-    )
-    # to drop the XML declaration that messes things up
-    temp_file <- withr::local_tempfile()
-    xml2::write_xml(svg, file = temp_file, options = "format_whitespace")
-    lines <- readLines(temp_file)
-    lines <- lines[!grepl("^<\\?", lines)]
-    lines <- lines[!grepl("^<!", lines)]
-    glue::glue_collapse(lines, sep = "")
+  xml2::xml_attr(svg, "class") <- "cheatsheet-svg"
+  xml2::xml_attr(svg, "aria-labelledby") <- sprintf("svgDescription-%s", basename(path))
+  xml2::xml_add_child(
+    svg,
+    .value = "description",
+    alt,
+    .where = 0
+  )
+  # to drop the XML declaration that messes things up
+  temp_file <- withr::local_tempfile()
+  xml2::write_xml(svg, file = temp_file, options = "format_whitespace")
+  lines <- readLines(temp_file)
+  lines <- lines[!grepl("^<\\?", lines)]
+  lines <- lines[!grepl("^<!", lines)]
+  glue::glue_collapse(lines, sep = "")
 }
 create_figure <- function(class, src, alt, caption) {
   if (!nzchar(Sys.getenv("CHEATSHEET"))) {
     path <- purrr::map_chr(src, get_src)
     svgs <- purrr::map2_chr(path, alt, get_svg)
     svgs <- paste0(rev(svgs), collapse = "")
-    
+
     cat("<div class='cheatsheet-div'>")
     html <- sprintf('<div class="cheatsheet-caption">%s</div>', commonmark::markdown_html(caption))
     cat(html)
@@ -519,9 +519,9 @@ dm_rows_insert(dm2, in_place = FALSE)
 create_figure(
   class = "left",
   alt = c(
-    "Equal sign then a dm object where the blue table has now more rows.", 
+    "Equal sign then a dm object where the blue table has now more rows.",
     "On the left a dm object with 3 tables. On the right, a similar dm where one of the tables, the blue one, has more rows. Between the two is a plus sign"
-    ),
+  ),
   src = c("insert2.svg", "insert1.svg"),
   caption = NULL
 )
@@ -536,9 +536,9 @@ dm_rows_insert(dm2, in_place = TRUE)
 create_figure(
   class = "left",
   alt = c(
-    "Database icon.", 
+    "Database icon.",
     "On the left a dm object with 3 tables, and a database icon superimposed. On the right, a similar dm where one of the tables, the blue one, has more rows. Between the two is a plus sign"
-    ),
+  ),
   src = c("insert4.svg", "insert3.svg"),
   caption = NULL
 )
