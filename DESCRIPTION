@@ -110,7 +110,8 @@ Config/Needs/website:
     purrr,
     rmarkdown,
     whisker,
-    xml2
+    xml2,
+    cynkra/cynkratemplate
 VignetteBuilder: 
     knitr
 Config/autostyle/scope: line_breaks
@@ -122,4 +123,3 @@ Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm,
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd"))
 RoxygenNote: 7.2.2
-Config/Needs/website: cynkra/cynkratemplate
