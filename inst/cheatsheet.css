@@ -66,6 +66,7 @@ figure.big img {
 
 figure img {
   margin-left: 10px;
+  margin-top: -10px;
 }
 
 figure.left {
@@ -75,7 +76,7 @@ figure.left {
 }
 
 img {
-  max-width: 40%;
+  max-width: 30%;
 }
 
 /* Space */
