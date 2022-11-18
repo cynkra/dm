@@ -44,7 +44,7 @@ Description: Provides tools for working with multiple related
     tables (data and metadata) are stored in a compound object, which can
     then be manipulated with a pipe-friendly syntax.
 License: MIT + file LICENSE
-URL: https://cynkra.github.io/dm/, https://github.com/cynkra/dm
+URL: https://dm.cynkra.com/, https://github.com/cynkra/dm
 BugReports: https://github.com/cynkra/dm/issues
 Depends: 
     R (>= 3.3)
@@ -121,4 +121,5 @@ Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm,
     draw-dm, bind, rows-dm
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd"))
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
+Config/Needs/website: cynkra/cynkratemplate
