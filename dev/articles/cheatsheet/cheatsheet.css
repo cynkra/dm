@@ -66,6 +66,7 @@ figure.big img {
 
 figure img {
   margin-left: 10px;
+  margin-top: -10px;
 }
 
 figure.left {
@@ -75,7 +76,7 @@ figure.left {
 }
 
 img {
-  max-width: 40%;
+  max-width: 30%;
 }
 
 /* Space */
@@ -106,7 +107,7 @@ ol li {
 img.logo {
   max-width: 100px;
   margin-left: 850px;
-  margin-top: -60px;
+  margin-top: -50px;
 }
 
 .page-header {
