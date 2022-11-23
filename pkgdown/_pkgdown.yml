@@ -1,197 +1,203 @@
 url: https://cynkra.github.io/dm
+
 template:
   assets: pkgdown/assets
   package: cynkratemplate
+
 reference:
-- title: Basic
-  contents:
-  - dm
-  - dm_from_con
-  - new_dm
-  - as_dm
-  - is_dm
-  - dm_get_con
-- title: Tables
-  contents:
-  - dm_select_tbl
-  - dm_rename_tbl
-  - dm_get_tables
-  - pull_tbl
-  - dm_deconstruct
-  - glimpse
-  - dm_mutate_tbl
-- title: Primary keys
-  contents: matches("_pk")
-- title: Foreign keys
-  contents: matches("_fk")
-- title: Visualize
-  contents:
-  - dm_gui
-  - dm_draw
-  - ends_with("_colors")
-  - dm_paste
-- title: Select columns
-  contents:
-  - dm_select
-  - dm_rename
-- title: Flatten
-  contents:
-  - dm_flatten_to_tbl
-  - dm_disambiguate_cols
-- title: Filter
-  contents: dm_filter
-- title: Zoom
-  contents:
-  - dm_zoom_to
-  - ends_with("_zoomed")
-  - ends_with(".dm_zoomed")
-  - -pack_join
-- title: Wrap
-  contents:
-  - dm_wrap_tbl
-  - dm_unwrap_tbl
-  - dm_nest_tbl
-  - dm_pack_tbl
-  - dm_unnest_tbl
-  - dm_unpack_tbl
-- title: Operations on data frames and lazy tables
-  contents:
-  - pack_join
-  - starts_with("json_")
-- title: Materialize
-  contents:
-  - compute.dm
-  - collect.dm
-- title: Upload
-  contents:
-  - copy_dm_to
-  - contains("rows")
-- title: Table surgery
-  contents:
-  - decompose_table
-  - reunite_parent_child
-  - reunite_parent_child_from_list
-- title: Check keys and cardinalities
-  contents:
-  - matches("cardinality|cardinalities")
-  - dm_examine_constraints
-  - starts_with("check_")
-- title: Database schemas
-  contents: starts_with("db_schema_")
-- title: Example dm objects
-  contents:
-  - dm_nycflights13
-  - dm_financial
-  - dm_financial_sqlite
-  - dm_pixarfilms
-- title: Miscellaneous
-  contents:
-  - dm_nrow
-  - dm_ptype
-  - dm_validate
+  - title: Basic
+    contents:
+      - dm
+      - dm_from_con
+      - new_dm
+      - as_dm
+      - is_dm
+      - dm_get_con
+  - title: Tables
+    contents:
+      - dm_select_tbl
+      - dm_rename_tbl
+      - dm_get_tables
+      - pull_tbl
+      - dm_deconstruct
+      - glimpse
+      - dm_mutate_tbl
+  - title: Primary keys
+    contents: matches("_pk")
+  - title: Foreign keys
+    contents: matches("_fk")
+  - title: Visualize
+    contents:
+      - dm_gui
+      - dm_draw
+      - ends_with("_colors")
+      - dm_paste
+  - title: Select columns
+    contents:
+      - dm_select
+      - dm_rename
+  - title: Flatten
+    contents:
+      - dm_flatten_to_tbl
+      - dm_disambiguate_cols
+  - title: Filter
+    contents: dm_filter
+  - title: Zoom
+    contents:
+      - dm_zoom_to
+      - ends_with("_zoomed")
+      - ends_with(".dm_zoomed")
+      - -pack_join
+  - title: Wrap
+    contents:
+      - dm_wrap_tbl
+      - dm_unwrap_tbl
+      - dm_nest_tbl
+      - dm_pack_tbl
+      - dm_unnest_tbl
+      - dm_unpack_tbl
+  - title: Operations on data frames and lazy tables
+    contents:
+      - pack_join
+      - starts_with("json_")
+  - title: Materialize
+    contents:
+      - compute.dm
+      - collect.dm
+  - title: Upload
+    contents:
+      - copy_dm_to
+      - contains("rows")
+  - title: Table surgery
+    contents:
+      - decompose_table
+      - reunite_parent_child
+      - reunite_parent_child_from_list
+  - title: Check keys and cardinalities
+    contents:
+      - matches("cardinality|cardinalities")
+      - dm_examine_constraints
+      - starts_with("check_")
+  - title: Database schemas
+    contents: starts_with("db_schema_")
+  - title: Example dm objects
+    contents:
+      - dm_nycflights13
+      - dm_financial
+      - dm_financial_sqlite
+      - dm_pixarfilms
+  - title: Miscellaneous
+    contents:
+      - dm_nrow
+      - dm_ptype
+      - dm_validate
+
 navbar:
   structure:
     left:
-    - intro
-    - reference
-    - tutorials
-    - tech
-    - news
+      - intro
+      - reference
+      - tutorials
+      - tech
+      - news
     right:
-    - search
-    - github
+      - search
+      - github
   components:
     tutorials:
       text: Tutorials
       menu:
-      - text: Introduction to relational data models
-        href: articles/howto-dm-theory.html
-        desc: |
-          Do you know all about data frames but very little about relational data
-          models? This quick introduction will walk you through the key similarities
-          and differences, and show you how to move from individual data frames
-          to a relational data model.
-      - text: Create a dm object from data frames
-        href: articles/howto-dm-df.html
-        desc: |
-          Is your data in local data frames? This article covers creating a data
-          model from your local data frames, including building the relationships
-          in your data model, verifying your model, and leveraging the power of
-          dplyr to operate on your data model.
-      - text: Create a dm object from a database
-        href: articles/howto-dm-db.html
-        desc: |
-          This article covers accessing and working with RDBMSs within your
-          R session, including manipulating data, filling in missing relationships
-          between tables, getting data out of the RDBMS and into your model, and
-          deploying your data model to an RDBMS.
-      - text: Copy data to and from a database
-        href: articles/howto-dm-copy.html
-        desc: |
-          This article covers methods and techniques for copying individual tables
-          and entire relational data models into an RDBMS.
-      - text: Insert, update, or remove rows in a database
-        href: articles/howto-dm-rows.html
-        desc: |
-          This tutorial introduces the methods {dm} provides for modifying the data
-          in the tables of a relational model.
+        - text: Introduction to relational data models
+          href: articles/howto-dm-theory.html
+          desc: |
+            Do you know all about data frames but very little about relational data
+            models? This quick introduction will walk you through the key similarities
+            and differences, and show you how to move from individual data frames
+            to a relational data model.
+        - text: Create a dm object from data frames
+          href: articles/howto-dm-df.html
+          desc: |
+            Is your data in local data frames? This article covers creating a data
+            model from your local data frames, including building the relationships
+            in your data model, verifying your model, and leveraging the power of
+            dplyr to operate on your data model.
+        - text: Create a dm object from a database
+          href: articles/howto-dm-db.html
+          desc: |
+            This article covers accessing and working with RDBMSs within your
+            R session, including manipulating data, filling in missing relationships
+            between tables, getting data out of the RDBMS and into your model, and
+            deploying your data model to an RDBMS.
+        - text: Copy data to and from a database
+          href: articles/howto-dm-copy.html
+          desc: |
+            This article covers methods and techniques for copying individual tables
+            and entire relational data models into an RDBMS.
+        - text: Insert, update, or remove rows in a database
+          href: articles/howto-dm-rows.html
+          desc: |
+            This tutorial introduces the methods {dm} provides for modifying the data
+            in the tables of a relational model.
     tech:
       text: Technical articles
       menu:
-      - text: Joining in relational data models
-        href: articles/tech-dm-join.html
-        desc: |
-          Joining is how separate, linked tables are virtually combined in order
-          to perform operations, generate summaries, or prepare data for extraction.
-          This article covers dm's methods for creating the different kind of joins
-          along with usage examples.
-      - text: Manipulating individual tables
-        href: articles/tech-dm-keyed.html
-        desc: |
-          Learn how to manipulate the data in the tables in your dm
-          using dplyr verbs and deconstruction/reconstruction.
-      - text: Zooming and manipulating tables
-        href: articles/tech-dm-zoom.html
-        desc: |
-          Learn how to manipulate the data in the tables in your dm
-          using dplyr verbs and zooming.
-      - text: Filtering in relational data models
-        href: articles/tech-dm-filter.html
-        desc: |
-          Need a subset of your data across tables? This introduction to dm's
-          filtering methods will show you how to apply them to data that is separated
-          into multiple tables.
-      - text: Visualizing dm objects
-        href: articles/tech-dm-draw.html
-        desc: |
-          A quick guide to dm's methods for drawing your data model for exploration,
-          verification, or documentation purposes. Learn how to customize the diagrams.
-      - text: Model verification - keys, constraints and normalization
-        href: articles/tech-dm-low-level.html
-        desc: |
-          If your data model needs to be rock solid, this article covers the dm methods
-          for checking every aspect of the model. It covers key constraints, cardinalities
-          between tables, and methods for normalization as you construct your data model.
-      - text: Class 'dm' and basic operations
-        href: articles/tech-dm-class.html
-        desc: |
-          A detailed overview of the `"dm"` class.
-      - text: Function naming logic
-        href: articles/tech-dm-naming.html
-        desc: |
-          Making sense of dm's API.
-      - text: 'Migration guide: ''cdm'' -> ''dm'''
-        href: articles/tech-dm-cdm.html
-        desc: |
-          If you were an early adopter, used dm version 0.0.5 or lower and want to
-          migrate your code, this is for you.
+        - text: Joining in relational data models
+          href: articles/tech-dm-join.html
+          desc: |
+            Joining is how separate, linked tables are virtually combined in order
+            to perform operations, generate summaries, or prepare data for extraction.
+            This article covers dm's methods for creating the different kind of joins
+            along with usage examples.
+        - text: Manipulating individual tables
+          href: articles/tech-dm-keyed.html
+          desc: |
+            Learn how to manipulate the data in the tables in your dm
+            using dplyr verbs and deconstruction/reconstruction.
+        - text: Zooming and manipulating tables
+          href: articles/tech-dm-zoom.html
+          desc: |
+            Learn how to manipulate the data in the tables in your dm
+            using dplyr verbs and zooming.
+        - text: Filtering in relational data models
+          href: articles/tech-dm-filter.html
+          desc: |
+            Need a subset of your data across tables? This introduction to dm's
+            filtering methods will show you how to apply them to data that is separated
+            into multiple tables.
+        - text: Visualizing dm objects
+          href: articles/tech-dm-draw.html
+          desc: |
+            A quick guide to dm's methods for drawing your data model for exploration,
+            verification, or documentation purposes. Learn how to customize the diagrams.
+        - text: Model verification - keys, constraints and normalization
+          href: articles/tech-dm-low-level.html
+          desc: |
+            If your data model needs to be rock solid, this article covers the dm methods
+            for checking every aspect of the model. It covers key constraints, cardinalities
+            between tables, and methods for normalization as you construct your data model.
+        - text: Class 'dm' and basic operations
+          href: articles/tech-dm-class.html
+          desc: |
+            A detailed overview of the `"dm"` class.
+        - text: Function naming logic
+          href: articles/tech-dm-naming.html
+          desc: |
+            Making sense of dm's API.
+        - text: "Migration guide: 'cdm' -> 'dm'"
+          href: articles/tech-dm-cdm.html
+          desc: |
+            If you were an early adopter, used dm version 0.0.5 or lower and want to
+            migrate your code, this is for you.
+
 development:
   mode: auto
+
 authors:
   Kirill Müller:
     href: http://krlmlr.info
   energie360° AG:
-    html: <img src="https://cynkra.github.io/dm/reference/figures/energie-72.png"
+    html:
+      <img src="https://cynkra.github.io/dm/reference/figures/energie-72.png"
       height="16"/>
     href: https://www.energie360.ch/de/
   cynkra GmbH:
