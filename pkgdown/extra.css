@@ -13,6 +13,8 @@
 
 .cheatsheet-caption {
   margin-left: 10px;
+  width: 50%;
+  margin-right: 10px;
 }
 
 .cheatsheet-caption pre {

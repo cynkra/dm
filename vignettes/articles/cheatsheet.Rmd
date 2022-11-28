@@ -490,10 +490,10 @@ create_figure(
   src = "copy_dm.svg",
   caption = '```r\ncon <- DBI::dbConnect(...)
   # Persistent tables:
-persistent_dm &lt;- copy_dm_to(
-con,
-dm1,
-temporary = FALSE
+persistent_dm <- copy_dm_to(
+  con,
+  dm1,
+  temporary = FALSE
 )
 
 DBI::dbDisconnect(con)\n```\n'
@@ -510,9 +510,9 @@ Methods:
 - `dm_rows_upsert(dm1, dm2)`: adds new or changes rows
 - `dm_rows_delete(dm1, dm2)`: deletes rows
 
-```
+```r
 dm1 |>
-dm_rows_insert(dm2, in_place = FALSE)
+  dm_rows_insert(dm2, in_place = FALSE)
 ```
 
 ```{r, results='asis'}
@@ -529,7 +529,7 @@ create_figure(
 
 ```r
 dm1 |>
-dm_rows_insert(dm2, in_place = TRUE)
+  dm_rows_insert(dm2, in_place = TRUE)
 ```
 
 ```{r, results='asis'}
