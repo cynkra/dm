@@ -414,10 +414,10 @@ Export dm object to database: <code>copy_dm_to()</code>
 
 <figure class="right"><img alt="On the left a dm object, with an arrow pointing to on the right a database icon" src="cheatsheet-figures/copy_dm.svg"><figcaption><pre><code class="language-r">con &lt;- DBI::dbConnect(...)
   # Persistent tables:
-persistent_dm &amp;lt;- copy_dm_to(
-con,
-dm1,
-temporary = FALSE
+persistent_dm &lt;- copy_dm_to(
+  con,
+  dm1,
+  temporary = FALSE
 )
 
 DBI::dbDisconnect(con)
@@ -444,13 +444,13 @@ Insert, update or remove rows in a dm</h2>
 <code>dm_rows_delete(dm1, dm2)</code>: deletes rows</li>
 </ul>
 
-<pre><code>dm1 |&gt;
-dm_rows_insert(dm2, in_place = FALSE)</code></pre>
+<pre class="r"><code>dm1 |&gt;
+  dm_rows_insert(dm2, in_place = FALSE)</code></pre>
 
 
 <figure class="left"><img alt="Equal sign then a dm object where the blue table has now more rows." src="cheatsheet-figures/insert2.svg"><img alt="On the left a dm object with 3 tables. On the right, a similar dm where one of the tables, the blue one, has more rows. Between the two is a plus sign" src="cheatsheet-figures/insert1.svg"><figcaption></figcaption></figure>
 <pre class="r"><code>dm1 |&gt;
-dm_rows_insert(dm2, in_place = TRUE)</code></pre>
+  dm_rows_insert(dm2, in_place = TRUE)</code></pre>
 
 
 <figure class="left"><img alt="Database icon." src="cheatsheet-figures/insert4.svg"><img alt="On the left a dm object with 3 tables, and a database icon superimposed. On the right, a similar dm where one of the tables, the blue one, has more rows. Between the two is a plus sign" src="cheatsheet-figures/insert3.svg"><figcaption></figcaption></figure>

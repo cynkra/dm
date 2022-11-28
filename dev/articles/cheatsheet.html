@@ -674,10 +674,10 @@ object to database: <code>copy_dm_to()</code><a class="anchor" aria-label="ancho
 <div class="cheatsheet-caption">
 <pre><code class="language-r"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span>  <span class="co"># Persistent tables:</span></span>
-<span><span class="va">persistent_dm</span> <span class="op">&amp;</span><span class="va">lt</span>;<span class="op">-</span> <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span></span>
-<span><span class="va">con</span>,</span>
-<span><span class="va">dm1</span>,</span>
-<span>temporary <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="va">persistent_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span></span>
+<span>  <span class="va">con</span>,</span>
+<span>  <span class="va">dm1</span>,</span>
+<span>  temporary <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre>
@@ -706,8 +706,9 @@ update or remove rows in a dm<a class="anchor" aria-label="anchor" href="#insert
 <li>
 <code>dm_rows_delete(dm1, dm2)</code>: deletes rows</li>
 </ul>
-<pre><code><span><span class="va">dm1</span> <span class="op">|&gt;</span></span>
-<span><span class="fu"><a href="../reference/rows-dm.html">dm_rows_insert</a></span><span class="op">(</span><span class="va">dm2</span>, in_place <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dm1</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/rows-dm.html">dm_rows_insert</a></span><span class="op">(</span><span class="va">dm2</span>, in_place <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="cheatsheet-div">
 <div class="cheatsheet-caption">
 
@@ -721,7 +722,7 @@ rows.</description><clippath id="g13df1b65d05_0_51.0"><path d="m0 0l960.0 0l0 54
 </div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm1</span> <span class="op">|&gt;</span></span>
-<span><span class="fu"><a href="../reference/rows-dm.html">dm_rows_insert</a></span><span class="op">(</span><span class="va">dm2</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/rows-dm.html">dm_rows_insert</a></span><span class="op">(</span><span class="va">dm2</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="cheatsheet-div">
 <div class="cheatsheet-caption">
 
