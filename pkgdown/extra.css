@@ -18,3 +18,8 @@
 .cheatsheet-caption pre {
   height: fit-content;
 }
+
+
+.cheatsheet-icon {
+  display: none;
+}

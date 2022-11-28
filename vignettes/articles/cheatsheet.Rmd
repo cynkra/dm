@@ -23,9 +23,9 @@ knitr::opts_chunk$set(
 > If you have more than one table, use dm.
 
 <div class="page1col1">
-## <i class="fa-solid fa-circle-plus"></i> Create dm...
+## <i class="cheatsheet-icon fa-solid fa-circle-plus"></i> Create dm...
 
-### <i class="fa-solid fa-database"></i> from database: `dm_from_con()`
+### <i class="cheatsheet-icon fa-solid fa-database"></i> from database: `dm_from_con()`
 
 ```{r}
 get_src <- function(src) {
@@ -92,7 +92,7 @@ dm_from_con(con)\n```\n"
 )
 ```
 
-### <i class="fa-solid fa-table"></i> from data frames: `dm(df1, df2, ...)`
+### <i class="cheatsheet-icon fa-solid fa-table"></i> from data frames: `dm(df1, df2, ...)`
 
 ```{r, results='asis'}
 create_figure(
@@ -103,7 +103,7 @@ create_figure(
 )
 ```
          
-### <i class="fa-solid fa-diagram-project"></i> from dm: `dm(dm1, df1...)`
+### <i class="cheatsheet-icon fa-solid fa-diagram-project"></i> from dm: `dm(dm1, df1...)`
 
 ```{r, results='asis'}
 create_figure(
@@ -129,7 +129,7 @@ create_figure(
 
 **Automatic** for MariaDB, SQL Server, Postgres, and others.
 
-#### <i class="fa-solid fa-key"></i> Primary keys
+#### <i class="cheatsheet-icon fa-solid fa-key"></i> Primary keys
 
 **Identify** potential primary keys:
 
@@ -162,7 +162,7 @@ create_figure(
 </div>
 <div class="page1col2">
 ::: {.important-div}
-### <i class="fa-solid fa-circle-info"></i> dm objects: relational data models
+### <i class="cheatsheet-icon fa-solid fa-circle-info"></i> dm objects: relational data models
 
 The dm package provides a **grammar of relational data models**. 
 It helps maintain **referential integrity**.
@@ -173,7 +173,7 @@ A dm behaves like a list of tables (data frames or lazy tables) capturing
 
 ::: {.alert .alert-primary role="alert" style="display:grid;place-items:center;"}
 
-<i class="fa-solid fa-arrow-up-right-from-square"></i> Shiny app: `dm_gui(dm = dm1)`
+<i class="cheatsheet-icon fa-solid fa-arrow-up-right-from-square"></i> Shiny app: `dm_gui(dm = dm1)`
 
 ```{r, results='asis'}
 cat(
@@ -189,7 +189,7 @@ cat(
 
 <hr class="d-none d-print-block"></hr>
 
-## <i class="fa-solid fa-filter"></i> Resize dm
+## <i class="cheatsheet-icon fa-solid fa-filter"></i> Resize dm
 
 ### Select tables: `dm_select_tbl(dm1, ...)`
 
@@ -239,7 +239,7 @@ create_figure(
 </div>
 <div class="page1col3">
 
-## <i class="fa-solid fa-eye"></i> Visualize dm: `dm_draw()`
+## <i class="cheatsheet-icon fa-solid fa-eye"></i> Visualize dm: `dm_draw()`
 
 ### Control diagram level of detail: display...
 
@@ -282,7 +282,7 @@ create_figure(
 
 <hr class="d-none d-print-block"></hr>
           
-## <i class="fa-solid fa-check"></i> Data checks
+## <i class="cheatsheet-icon fa-solid fa-check"></i> Data checks
 
 ### `dm_examine_constraints()`
 
@@ -306,7 +306,7 @@ returns an error if `df1` and `df2` are not the same sets.
 
 <hr class="d-none d-print-block"></hr>
 
-### <i class="fa-solid fa-tags"></i> Fix column names: `dm_disambiguate_cols()`
+### <i class="cheatsheet-icon fa-solid fa-tags"></i> Fix column names: `dm_disambiguate_cols()`
 
 `dm_disambiguate_cols(dm1)` ensures that all columns in a dm have unique names.
 </div>
@@ -314,7 +314,7 @@ returns an error if `df1` and `df2` are not the same sets.
 <div class="page2">
 <div class="page2col1">
 
-## <i class="fa-solid fa-table"></i> Transform dm into tibble
+## <i class="cheatsheet-icon fa-solid fa-table"></i> Transform dm into tibble
 
 ### Wide tibble: Cascade joins with `dm_flatten_to_tbl()`
 
@@ -394,9 +394,9 @@ pull_tbl()\n```\n'
 ```
 </div>
 <div class="page2col2">
-## <i class="fa-solid fa-screwdriver-wrench"></i> Mutate, create, analyze tables
+## <i class="cheatsheet-icon fa-solid fa-screwdriver-wrench"></i> Mutate, create, analyze tables
 
-### <i class="fa-solid fa-hammer"></i> Method 1: deconstruct and reconstruct
+### <i class="cheatsheet-icon fa-solid fa-hammer"></i> Method 1: deconstruct and reconstruct
 
 1. `dm_get_tables(keyed = TRUE)`: <br />
     to keep information on primary and foreign keys).
@@ -436,7 +436,7 @@ create_figure(
 )
 ```
 
-### <i class="fa-solid fa-magnifying-glass"></i> Method 2: zoom
+### <i class="cheatsheet-icon fa-solid fa-magnifying-glass"></i> Method 2: zoom
 
 1. `dm_zoom_to()`: Zoom on a table.
 
@@ -477,9 +477,9 @@ create_figure(
     
 </div>
 <div class="page2col3">
-## <i class="fa-solid fa-database"></i> Modify database source of a dm
+## <i class="cheatsheet-icon fa-solid fa-database"></i> Modify database source of a dm
 
-### <i class="fa-solid fa-download"></i> Export dm object to database:  `copy_dm_to()`
+### <i class="cheatsheet-icon fa-solid fa-download"></i> Export dm object to database:  `copy_dm_to()`
 
 Need a **database connection &#8212; `DBI::dbConnect()`**.
 
@@ -500,7 +500,7 @@ DBI::dbDisconnect(con)\n```\n'
 )
 ```
 
-## <i class="fa-solid fa-plus-minus"></i> Insert, update or remove rows in a dm
+## <i class="cheatsheet-icon fa-solid fa-plus-minus"></i> Insert, update or remove rows in a dm
 
 Methods:
 
@@ -546,9 +546,9 @@ create_figure(
 
 A dm is immutable, except with
 
-- <i class="fa-solid fa-check"></i> these functions AND
-- <i class="fa-solid fa-check"></i> a mutable backend (database) AND
-- <i class="fa-solid fa-check"></i> `in_place = TRUE`.
+- <i class="cheatsheet-icon fa-solid fa-check"></i> these functions AND
+- <i class="cheatsheet-icon fa-solid fa-check"></i> a mutable backend (database) AND
+- <i class="cheatsheet-icon fa-solid fa-check"></i> `in_place = TRUE`.
 </div>
 </div>
 
