@@ -1,0 +1,25 @@
+.cheatsheet-svg {
+  width: 50%;
+}
+
+.cheatsheet-div {
+  display: flex;
+}
+
+.cheatsheet-div {
+  display: flex;
+  margin-top: 20px;
+}
+
+.cheatsheet-caption {
+  margin-left: 10px;
+}
+
+.cheatsheet-caption pre {
+  height: fit-content;
+}
+
+
+.cheatsheet-icon {
+  display: none;
+}
