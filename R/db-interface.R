@@ -196,8 +196,22 @@ copy_dm_to <- function(dest, dm, ...,
   if (!is_db(dest)) {
     return(dm)
   }
+  # get autoincrement PK cols, since they need to be removed from the dm tables before transferring them to the DB
+  autoinc_pks <- if (is_db(dest)) {
+    dm_get_all_pks(dm) %>%
+      filter(autoincrement) %>%
+      select(-autoincrement, autoinc_col = pk_col) %>%
+      mutate(autoinc_col = map_chr(autoinc_col, ~ get_key_cols(.x)))
+  } else {
+    tibble(table = character(), autoinc_col = new_keys())
+  }
 
-  queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
+  # needed later to check for FKs that point to autoincrement PKs
+  fks <- dm_get_all_fks_impl(dm) %>%
+    select(name = parent_table, parent_key_cols, child_table, child_fk_cols)
+
+  queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out) %>%
+    left_join(autoinc_pks, by = c("name" = "table"))
 
   ticker_create <- new_ticker(
     "creating tables",
@@ -218,11 +232,25 @@ copy_dm_to <- function(dest, dm, ...,
     top_level_fun = "copy_dm_to"
   )
 
+
   # populate tables
-  pwalk(
-    queries[c("name", "remote_name")],
-    ticker_populate(~ db_append_table(dest_con, .y, dm[[.x]], progress))
-  )
+  for (i in seq_along(queries$name)) {
+    res <- db_append_table(
+      con = dest_con,
+      remote_table = queries$remote_name[[i]],
+      table = dm[[queries$name[i]]],
+      autoinc_col = queries$autoinc_col[[i]],
+      progress = progress
+    )
+    # in case queries$autoinc_col[[i]] is NA, there is the possibility that fks$parent_key_cols contains
+    # more than 1 column, which makes `get_key_cols()` fail
+    fks_ai <- if (!is_na(queries$autoinc_col[[i]])) {
+      filter(fks, name == queries$name[i], map_lgl(parent_key_cols, ~ get_key_cols(.x) == queries$autoinc_col[[i]]))
+    } else {
+      filter(fks, 1 == 0)
+    }
+    dm <- upd_dm_w_autoinc(dm, fks_ai, res)
+  }
 
   ticker_index <- new_ticker(
     "creating indexes",
@@ -265,10 +293,13 @@ check_naming <- function(table_names, dm_table_names) {
   }
 }
 
-db_append_table <- function(con, remote_table, table, progress, top_level_fun = "copy_dm_to") {
+db_append_table <- function(con, remote_table, table, autoinc_col, progress, top_level_fun = "copy_dm_to") {
   if (nrow(table) == 0 || ncol(table) == 0) {
     return(invisible())
   }
+
+  cols <- colnames(table)
+  table_wo_aic <- select(table, !!!setdiff(cols, autoinc_col))
 
   if (is_mssql(con)) {
     # FIXME: Make adaptive
@@ -292,14 +323,38 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
     }))
   } else if (is_postgres(con)) {
     # https://github.com/r-dbi/RPostgres/issues/384
-    table <- as.data.frame(table)
-    # https://github.com/r-dbi/RPostgres/issues/382
-    DBI::dbAppendTable(con, DBI::SQL(remote_table), table, copy = FALSE)
+    if (!is_na(autoinc_col)) {
+      x <- tbl(con, remote_table)
+      returned <- rows_append(x, table_wo_aic, returning = !!sym(autoinc_col), copy = TRUE, in_place = TRUE)
+      returned_rows <- dbplyr::get_returned_rows(returned) %>%
+        rename(remote = 1) %>%
+        bind_cols(select(table, original = !!sym(autoinc_col)))
+    } else {
+      table_wo_aic <- as.data.frame(table_wo_aic)
+      # https://github.com/r-dbi/RPostgres/issues/382
+      DBI::dbAppendTable(con, DBI::SQL(remote_table), table_wo_aic, copy = FALSE)
+      returned_rows <- tibble(remote = character(), original = character())
+    }
   } else {
     DBI::dbAppendTable(con, DBI::SQL(remote_table), table)
   }
+  returned_rows
+}
 
-  invisible()
+upd_dm_w_autoinc <- function(dm, fks_ai, res) {
+  if (nrow(fks_ai) == 0) return(dm)
+  res_dm <- reduce2(
+    fks_ai$child_table,
+    fks_ai$child_fk_cols,
+    ~ dm_zoom_to(..1, !!sym(..2)) %>%
+      left_join(res, by = set_names("original", ..3)) %>%
+      mutate(!!..3 := remote) %>%
+      select(-remote) %>%
+      dm_update_zoomed(),
+    # left_join.zoomed_dm needs y to be part of the dm
+    .init = dm(dm, res)
+  )
+  res_dm %>% dm_select_tbl(-res)
 }
 
 
