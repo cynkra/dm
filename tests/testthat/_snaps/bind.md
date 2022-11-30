@@ -25,8 +25,12 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
     Output
-      All `dm` objects need to share the same `src`.
+      object 'returned_rows' not found
 
 # output
 
