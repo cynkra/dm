@@ -254,50 +254,50 @@ test_that("build_copy_queries avoids duplicate indexes", {
   )
 })
 
-test_that("copy_dm_to() works with autoincrement PKs and FKS for Postgres", {
-  skip_if_src_not(c("postgres"))
-
-
-  con_db <- my_test_con()
-  local_dm <- dm_for_autoinc_1() %>%
-    collect() %>%
-    dm_add_pk(t1, a, autoincrement = TRUE) %>%
-    dm_add_pk(t2, c, autoincrement = TRUE) %>%
-    dm_add_fk(t2, d, t1) %>%
-    dm_add_fk(t3, e, t1) %>%
-    dm_add_fk(t4, h, t2)
-
-  withr::defer({
-    order_of_deletion <- c("t4", "t2", "t3", "t1")
-    walk(
-      dm_get_tables_impl(remote_dm)[order_of_deletion],
-      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
-    )
-  })
-
-  expect_silent(
-    remote_dm <- copy_dm_to(
-      con_db,
-      local_dm,
-      temporary = FALSE
-    )
-  )
-
-  collected_dm <- remote_dm %>%
-    collect()
-
-  expect_snapshot(
-    variant = my_test_src_name,
-    {
-      local_dm$t1
-      local_dm$t2
-      local_dm$t3
-      local_dm$t4
-      collected_dm$t1
-      collected_dm$t2
-      collected_dm$t3
-      collected_dm$t4
-    }
-  )
-
-})
+# test_that("copy_dm_to() works with autoincrement PKs and FKS for Postgres", {
+#   skip_if_src_not(c("postgres"))
+#
+#
+#   con_db <- my_test_con()
+#   local_dm <- dm_for_autoinc_1() %>%
+#     collect() %>%
+#     dm_add_pk(t1, a, autoincrement = TRUE) %>%
+#     dm_add_pk(t2, c, autoincrement = TRUE) %>%
+#     dm_add_fk(t2, d, t1) %>%
+#     dm_add_fk(t3, e, t1) %>%
+#     dm_add_fk(t4, h, t2)
+#
+#   withr::defer({
+#     order_of_deletion <- c("t4", "t2", "t3", "t1")
+#     walk(
+#       dm_get_tables_impl(remote_dm)[order_of_deletion],
+#       ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
+#     )
+#   })
+#
+#   expect_silent(
+#     remote_dm <- copy_dm_to(
+#       con_db,
+#       local_dm,
+#       temporary = FALSE
+#     )
+#   )
+#
+#   collected_dm <- remote_dm %>%
+#     collect()
+#
+#   expect_snapshot(
+#     variant = my_test_src_name,
+#     {
+#       local_dm$t1
+#       local_dm$t2
+#       local_dm$t3
+#       local_dm$t4
+#       collected_dm$t1
+#       collected_dm$t2
+#       collected_dm$t3
+#       collected_dm$t4
+#     }
+#   )
+#
+# })
