@@ -212,3 +212,91 @@ test_that("output for compound keys", {
     dm_rows_truncate(nyc_comp(), insert_dm, in_place = FALSE)
   })
 })
+
+
+# tests for autoincrement PKs ---------------------------------------------
+
+test_that("dm_rows_append() works with autoincrement PKs and FKS for Postgres", {
+  skip_if_src_not(c("postgres"))
+
+  con_db <- my_test_con()
+  DBI::dbExecute(con_db, "CREATE TABLE \"t1\" (
+  \"a\" SERIAL,
+  \"b\" TEXT,
+  PRIMARY KEY (\"a\")
+  )")
+  DBI::dbExecute(con_db, 'CREATE TABLE "t2" (
+    "c" SERIAL,
+    "d" INTEGER,
+    PRIMARY KEY ("c"),
+    FOREIGN KEY ("d") REFERENCES "t1" ("a")
+  )')
+  DBI::dbExecute(con_db, 'CREATE TABLE "t3" (
+    "e" INTEGER,
+    "f" TEXT,
+    FOREIGN KEY ("e") REFERENCES "t1" ("a")
+  )')
+  DBI::dbExecute(con_db, 'CREATE TABLE "t4" (
+    "g" INTEGER,
+    "h" INTEGER,
+    FOREIGN KEY ("h") REFERENCES "t2" ("c")
+  )')
+  x <- dm(!!!map(
+    set_names(dbplyr::ident_q(c("t1", "t2", "t3", "t4")), c("t1", "t2", "t3", "t4")),
+    ~ tbl(con_db, .x))
+  )
+  y <- dm_for_autoinc_1()
+
+  local_dm <- dm_for_autoinc_1() %>%
+    collect() %>%
+    dm_add_pk(t1, a, autoincrement = TRUE) %>%
+    dm_add_pk(t2, c, autoincrement = TRUE) %>%
+    dm_add_fk(t2, d, t1) %>%
+    dm_add_fk(t3, e, t1) %>%
+    dm_add_fk(t4, h, t2)
+
+  withr::defer({
+    order_of_deletion <- c("t4", "t2", "t3", "t1")
+    walk(
+      dm_get_tables_impl(remote_dm)[order_of_deletion],
+      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
+    )
+  })
+
+  expect_silent(
+    filled_dm <- dm_rows_append(
+      x,
+      y,
+      in_place = FALSE
+    ) %>%
+      collect()
+  )
+
+  expect_silent(
+    filled_dm_in_place <- dm_rows_append(
+      x,
+      y,
+      in_place = TRUE
+    ) %>%
+      collect()
+  )
+
+  expect_snapshot(
+    variant = my_test_src_name,
+    {
+      local_dm$t1
+      local_dm$t2
+      local_dm$t3
+      local_dm$t4
+      filled_dm$t1
+      filled_dm$t2
+      filled_dm$t3
+      filled_dm$t4
+      filled_dm_in_place$t1
+      filled_dm_in_place$t2
+      filled_dm_in_place$t3
+      filled_dm_in_place$t4
+    }
+  )
+
+})
