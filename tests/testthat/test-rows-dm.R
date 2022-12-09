@@ -244,7 +244,13 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for Postgres", 
   x <- dm(!!!map(
     set_names(dbplyr::ident_q(c("t1", "t2", "t3", "t4")), c("t1", "t2", "t3", "t4")),
     ~ tbl(con_db, .x)
-  ))
+  )) %>%
+    dm_add_pk(t1, a, autoincrement = TRUE) %>%
+    dm_add_pk(t2, c, autoincrement = TRUE) %>%
+    dm_add_fk(t2, d, t1) %>%
+    dm_add_fk(t3, e, t1) %>%
+    dm_add_fk(t4, h, t2)
+
   y <- dm_for_autoinc_1()
 
   local_dm <- dm_for_autoinc_1() %>%
@@ -267,7 +273,8 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for Postgres", 
     filled_dm <- dm_rows_append(
       x,
       y,
-      in_place = FALSE
+      in_place = FALSE,
+      progress = FALSE
     ) %>%
       collect()
   )
@@ -276,7 +283,8 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for Postgres", 
     filled_dm_in_place <- dm_rows_append(
       x,
       y,
-      in_place = TRUE
+      in_place = TRUE,
+      progress = FALSE
     ) %>%
       collect()
   )
