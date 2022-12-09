@@ -33,7 +33,7 @@ dm_validate <- function(x) {
 
   check_df_structure(def, boilerplate, "dm definition")
 
-  if (!all(map_lgl(def$data, ~ inherits(., "data.frame") || inherits(., "tbl_dbi")))) {
+  if (!all(map_lgl(def$data, ~ inherits(., "data.frame") || inherits(., "tbl_sql")))) {
     abort_dm_invalid(
       "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `dm_get_tables()`."
     )
