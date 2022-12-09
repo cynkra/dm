@@ -334,6 +334,21 @@ dm_patch_tbl <- function(dm, ...) {
   new_dm3(def)
 }
 
+upd_dm_w_autoinc <- function(dm, fks_ai, res) {
+  if (nrow(fks_ai) == 0) return(dm)
+  res_dm <- reduce2(
+    fks_ai$child_table,
+    fks_ai$child_fk_cols,
+    ~ dm_zoom_to(..1, !!sym(..2)) %>%
+      left_join(res, by = set_names("original", ..3)) %>%
+      mutate(!!..3 := remote) %>%
+      select(-remote) %>%
+      dm_update_zoomed(),
+    # left_join.zoomed_dm needs y to be part of the dm
+    .init = dm(dm, res)
+  )
+  res_dm %>% dm_select_tbl(-res)
+}
 
 # Errors ------------------------------------------------------------------
 
