@@ -16,7 +16,9 @@
 #' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key
 #'   set for this table.
 #'   If `TRUE`, a potential old `pk` is deleted before setting a new one.
-#' @param autoincrement If `TRUE`, the  column specified in `columns` will be populated
+#' @param autoincrement
+#'   `r lifecycle::badge("experimental")`
+#'   If `TRUE`, the  column specified in `columns` will be populated
 #'   automatically with a sequence of integers.
 #'
 #' @family primary key functions

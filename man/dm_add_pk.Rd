@@ -24,8 +24,9 @@ To define a compound key, use \code{c(col1, col2)}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{autoincrement}{If \code{TRUE}, a sequence of integers (from 1 to number of
-rows) will be generated in column specified in \code{columns}.}
+\item{autoincrement}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+If \code{TRUE}, the  column specified in \code{columns} will be populated
+automatically with a sequence of integers.}
 
 \item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
 
