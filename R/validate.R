@@ -64,6 +64,11 @@ dm_validate <- function(x) {
     select(table = ref_table, column = ref_column) %>%
     check_colnames(dm_col_names, "Parent key")
 
+  if (!all(map_int(def$pks, vctrs::vec_size) %in% 0:1)) {
+    abort_dm_invalid(
+      "Not all tables have maximally 1 primary key."
+    )
+  }
   # FIXME: what's the correct check here? Both of these produce errors.
   # stopifnot(lengths(def$pks) %in% 0:1)
   # stopifnot(NROW(def$pks) %in% 0:1)
