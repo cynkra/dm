@@ -396,7 +396,7 @@ test_that("dm_meta() contents", {
 
   meta <- dm_meta(con_db, schema = schema_name)
 
-  constraints <- dm_examine_constraints(meta, progress = FALSE)
+  constraints <- dm_examine_constraints(meta, .progress = FALSE)
   expect_true(all(constraints$is_key))
 
   arrange_all_but_constraint_name <- function(.x) {
