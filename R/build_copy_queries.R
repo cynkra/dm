@@ -61,7 +61,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       # Doesn't have a special data type. Uses `AUTO_INCREMENT` attribute instead.
       # Ref: https://mariadb.com/kb/en/auto_increment/
       if (is_mariadb(dest)) {
-        autoincrement_attribute <- "AUTO_INCREMENT"
+        autoincrement_attribute <- " AUTO_INCREMENT"
       }
 
       # DuckDB:
@@ -95,7 +95,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     src_tbls_impl() %>%
     set_names() %>%
     map_dfr(get_sql_col_types, .id = "name") %>%
-    mutate(col_def = glue("{DBI::dbQuoteIdentifier(con, col)} {type} {autoincrement_attribute}")) %>%
+    mutate(col_def = glue("{DBI::dbQuoteIdentifier(con, col)} {type}{autoincrement_attribute}")) %>%
     group_by(name) %>%
     summarize(
       col_defs = paste(trimws(col_def), collapse = ",\n  "),
