@@ -217,7 +217,7 @@ test_that("output for compound keys", {
 # tests for autoincrement PKs ---------------------------------------------
 
 test_that("dm_rows_append() works with autoincrement PKs and FKS for Postgres", {
-  skip_if_src_not(c("postgres", "mssql"))
+  skip_if_src_not(c("postgres", "mssql", "sqlite"))
 
   con_db <- my_test_con()
 
