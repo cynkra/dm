@@ -190,3 +190,18 @@ test_that("dm_get_all_pks() with compound keys", {
       dm_get_all_pks()
   })
 })
+
+# autoincrement -------------------------------------------------
+
+x <- tibble(
+  x_id = integer(0),
+  z = integer(0),
+  x_data = character(0),
+)
+
+test_that("autoincrement fails with compound keys", {
+  expect_snapshot(error = TRUE, {
+    dm(x) %>%
+      dm_add_pk(x, columns = c(x_id, z), autoincrement = TRUE)
+  })
+})

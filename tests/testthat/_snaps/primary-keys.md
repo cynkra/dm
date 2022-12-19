@@ -245,3 +245,12 @@
       3 planes   tailnum           FALSE        
       4 weather  origin, time_hour FALSE        
 
+# autoincrement fails with compound keys
+
+    Code
+      dm(x) %>% dm_add_pk(x, columns = c(x_id, z), autoincrement = TRUE)
+    Condition
+      Error in `dm_add_pk()`:
+      ! Composite primary keys cannot be autoincremented.
+      * Provide only a single column name to `columns`.
+
