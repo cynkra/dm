@@ -1603,7 +1603,8 @@
           "table": "airlines",
           "pks": [
             {
-              "column": ["carrier"]
+              "column": ["carrier"],
+              "autoincrement": false
             }
           ]
         },
@@ -1611,7 +1612,8 @@
           "table": "airports",
           "pks": [
             {
-              "column": ["faa"]
+              "column": ["faa"],
+              "autoincrement": false
             }
           ]
         },
@@ -1623,7 +1625,8 @@
           "table": "planes",
           "pks": [
             {
-              "column": ["tailnum"]
+              "column": ["tailnum"],
+              "autoincrement": false
             }
           ]
         },
@@ -1631,7 +1634,8 @@
           "table": "weather",
           "pks": [
             {
-              "column": ["origin", "time_hour"]
+              "column": ["origin", "time_hour"],
+              "autoincrement": false
             }
           ]
         }
