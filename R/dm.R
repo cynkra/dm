@@ -190,7 +190,7 @@ new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
     if (zoomed) "dm_zoomed",
     "dm"
   )
-  out <- structure(list(def = def), class = class, version = 3L)
+  out <- structure(list(def = def), class = class, version = 4L)
 
   # Enable for strict tests (search for INSTRUMENT in .github/workflows):
   # if (validate) { dm_validate(out) } # INSTRUMENT: validate
@@ -203,16 +203,16 @@ dm_get_def <- function(x, quiet = FALSE) {
   # Most callers already call it, but not all
   check_dm(x)
 
-  if (!identical(attr(x, "version"), 3L)) {
+  if (!identical(attr(x, "version"), 4L)) {
     x <- dm_upgrade(x, quiet)
   }
 
   unclass(x)$def
 }
 
-new_pk <- function(column = list()) {
-  stopifnot(is.list(column))
-  tibble(column = column)
+new_pk <- function(column = list(), autoincrement = logical(length(column))) {
+  stopifnot(is.list(column), is.logical(autoincrement))
+  tibble(column = column, autoincrement = autoincrement)
 }
 
 new_fk <- function(ref_column = list(),
