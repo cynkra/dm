@@ -22,12 +22,72 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
   # column definitions
   get_sql_col_types <- function(x) {
+    # autoincrementing is not possible for composite keys, so `pk_col` is guaranteed
+    # to be a scalar
+    pk_col <-
+      dm %>%
+      dm_get_all_pks(x) %>%
+      filter(autoincrement) %>%
+      pull(pk_col)
+
     tbl <- tbl_impl(dm, x)
     types <- DBI::dbDataType(con, tbl)
+    autoincrement_attribute <- " "
+
+    # database-specific type conversions
     if (is_mariadb(dest)) {
       types[types == "TEXT"] <- "VARCHAR(255)"
     }
-    enframe(types, "col", "type")
+    if (is_sqlite(dest)) {
+      types[types == "INT"] <- "INTEGER"
+    }
+
+    # database-specific autoincrementing column types
+    if (length(pk_col) > 0L) {
+      # extract column name representing primary key
+      pk_col <- pk_col %>% extract2(1L)
+
+      # Postgres:
+      if (is_postgres(dest)) {
+        types[pk_col] <- "SERIAL"
+      }
+
+      # SQL Server:
+      if (is_mssql(dest)) {
+        types[pk_col] <- "INT IDENTITY"
+      }
+
+      # MariaDB:
+      # Doesn't have a special data type. Uses `AUTO_INCREMENT` attribute instead.
+      # Ref: https://mariadb.com/kb/en/auto_increment/
+      if (is_mariadb(dest)) {
+        autoincrement_attribute <- " AUTO_INCREMENT"
+      }
+
+      # DuckDB:
+      # Doesn't have a special data type. Uses `CREATE SEQUENCE` instead.
+      # Ref: https://duckdb.org/docs/sql/statements/create_sequence
+
+      # SQLite:
+      # For a primary key, autoincrementing works by default, and it is almost never
+      # necessary to use the `AUTOINCREMENT` keyword. So nothing we need to do here.
+      # Ref: https://www.sqlite.org/autoinc.html
+    }
+
+    df_col_types <-
+      enframe(types, "col", "type") %>%
+      mutate(autoincrement_attribute = " ")
+
+    if (length(pk_col) > 0L) {
+      df_col_types <-
+        df_col_types %>%
+        mutate(autoincrement_attribute = case_when(
+          col == pk_col ~ autoincrement_attribute,
+          TRUE ~ autoincrement_attribute
+        ))
+    }
+
+    df_col_types
   }
 
   col_defs <-
@@ -35,7 +95,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     src_tbls_impl() %>%
     set_names() %>%
     map_dfr(get_sql_col_types, .id = "name") %>%
-    mutate(col_def = glue("{DBI::dbQuoteIdentifier(con, col)} {type}")) %>%
+    mutate(col_def = glue("{DBI::dbQuoteIdentifier(con, col)} {type}{autoincrement_attribute}")) %>%
     group_by(name) %>%
     summarize(
       col_defs = paste(col_def, collapse = ",\n  "),
