@@ -25,7 +25,7 @@ dm_upgrade <- function(dm, quiet) {
     }
     def <- unclass(dm)$def
     def$fks <- list_of(!!!map(def$fks, mutate, on_delete = "no_action"))
-    dm <- new_dm3(def, zoomed = is_zoomed(dm))
+    dm <- new_dm3(def, zoomed = is_zoomed(dm), validate = FALSE)
   }
 
   if (version < 3L) {
@@ -36,7 +36,7 @@ dm_upgrade <- function(dm, quiet) {
     }
     def <- unclass(dm)$def
     def$uuid <- vec_new_uuid_along(def$table)
-    dm <- new_dm3(def, zoomed = is_zoomed(dm))
+    dm <- new_dm3(def, zoomed = is_zoomed(dm), validate = FALSE)
   }
 
   if (version < 4L) {
