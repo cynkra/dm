@@ -205,3 +205,12 @@ test_that("autoincrement fails with compound keys", {
       dm_add_pk(x, columns = c(x_id, z), autoincrement = TRUE)
   })
 })
+
+test_that("set autoincrement PK", {
+  expect_snapshot({
+    dm(x, y = x) %>%
+      dm_add_pk(x, columns = c(x_id), autoincrement = TRUE) %>%
+      dm_add_pk(y, columns = c(x_id, z)) %>%
+      dm_get_all_pks()
+  })
+})

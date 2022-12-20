@@ -254,3 +254,15 @@
       ! Composite primary keys cannot be autoincremented.
       * Provide only a single column name to `columns`.
 
+# set autoincrement PK
+
+    Code
+      dm(x, y = x) %>% dm_add_pk(x, columns = c(x_id), autoincrement = TRUE) %>%
+        dm_add_pk(y, columns = c(x_id, z)) %>% dm_get_all_pks()
+    Output
+      # A tibble: 2 x 3
+        table pk_col  autoincrement
+        <chr> <keys>  <lgl>        
+      1 x     x_id    TRUE         
+      2 y     x_id, z FALSE        
+
