@@ -102,3 +102,31 @@
     Output
       [1] TRUE
 
+# can upgrade to v4
+
+    Code
+      def <- dm_get_def(dm_v4, quiet = TRUE)
+      def <- dm_get_def(dm_v4)
+    Message
+      Upgrading dm object created with dm <= 1.0.4.
+    Code
+      dm <- new_dm3(def)
+      dm_validate(dm)
+      is_zoomed(dm)
+    Output
+      [1] FALSE
+
+# can upgrade zoomed to v4
+
+    Code
+      def <- dm_get_def(dm_v4_zoomed, quiet = TRUE)
+      def <- dm_get_def(dm_v4_zoomed)
+    Message
+      Upgrading dm object created with dm <= 1.0.4.
+    Code
+      dm <- new_dm3(def, zoomed = TRUE)
+      dm_validate(dm)
+      is_zoomed(dm)
+    Output
+      [1] TRUE
+
