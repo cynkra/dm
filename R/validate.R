@@ -111,9 +111,9 @@ debug_dm_validate <- function(dm) {
   dm
 }
 
-check_dm <- function(dm) {
-  if (!is_dm(dm)) {
-    abort_is_not_dm(class(dm))
+check_dm <- function(x) {
+  if (!is_dm(x)) {
+    abort_is_not_dm(class(x))
   }
 }
 
