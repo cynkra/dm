@@ -16,3 +16,11 @@ dm <- dm(x, y) %>%
 test_that("autoincrement produces valid R code", {
   expect_snapshot(dm)
 })
+
+test_that("autoincrement produces valid SQL queries and R code - RSQLite", {
+  con <- DBI::dbConnect(RSQLite::SQLite())
+  df <- dm:::build_copy_queries(con, dm)
+
+  expect_snapshot(df$sql_table)
+  expect_snapshot(dm_paste(dm))
+})
