@@ -46,7 +46,6 @@ dm_upgrade <- function(dm, quiet) {
     def <- unclass(dm)$def
     def$pks <- map(def$pks, mutate, autoincrement = FALSE) %>%
       vctrs::as_list_of(new_pk())
-    def$uuid <- vec_new_uuid_along(def$table)
     dm <- new_dm3(def, zoomed = is_zoomed(dm))
   }
 
