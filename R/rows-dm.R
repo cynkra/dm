@@ -287,7 +287,7 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
     if (!(all(tables %in% all_pks$table))) {
       abort(glue("`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys for all target tables."))
     }
-    keys <- deframe(dm_get_all_pks(x))[tables]
+    keys <- deframe(select(all_pks, table, pk_col))[tables]
   } else {
     keys <- rep_along(tables, list(NULL))
   }
@@ -297,11 +297,56 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   rows_op <- get_dm_rows_op(rows_op_name)
   ticker <- new_ticker(rows_op$pb_label, length(tables), progress)
   # run operation(target_tbl, source_tbl, in_place = in_place) for each table
-  op_results <- pmap(
-    list(x = target_tbls, y = tbls, by = keys),
-    ticker(rows_op$fun),
-    in_place = in_place
-  )
+
+  autoinc_pks <- get_autoinc(x, y)
+  # FIXME: extend for c("insert", "upsert")
+  if (rows_op_name %in% c("append") && nrow(autoinc_pks) > 0) {
+    fks_ai_prel <- filter(dm_get_all_fks_impl(x), parent_table %in% autoinc_pks$table) %>%
+      filter(parent_table %in% src_tbls_impl(y), child_table %in% src_tbls_impl(y))
+    fks_ai <- if (nrow(fks_ai_prel) > 0) {
+      # parent key cols have length 1, since it's an autoincrement column, child_fk_cols could point to other cols though
+      filter(fks_ai_prel, map_lgl(child_fk_cols, ~ length(get_key_cols(.x)) == 1)) %>%
+        # is the referred `parent_key_cols` actually the autoinc-PK?
+        semi_join(autoinc_pks, by = c("parent_table" = "table", "parent_key_cols" = "pk_col"))
+    } else {
+      fks_ai_prel
+    }
+    op_results <- list()
+    for (i in seq_along(y)) {
+      autoinc_col_prel <- autoinc_pks %>%
+        filter(table == names(y[i])) %>%
+        pull(pk_col)
+      autoinc_col <- if (length(autoinc_col_prel) == 1) get_key_cols(autoinc_col_prel) else {
+        character()
+      }
+      if (!is_empty(autoinc_col)) {
+        res <- ticker(rows_op$fun)(
+          x = target_tbls[[i]],
+          y = select(pull_tbl(y, !!sym(tables[i])), setdiff(colnames(tbls[[i]]), autoinc_col)),
+          by = keys[[i]],
+          returning = !!sym(autoinc_col),
+          in_place = in_place
+        )
+        # need to create matching table between newly created values and original values
+        matched_cols <- dbplyr::get_returned_rows(res) %>%
+          rename(remote = 1) %>%
+          # FIXME: is it guaranteed that the order of select(tbls[[i]], original = !!sym(autoinc_col)) is the same
+          # as it was during inserting of the new rows?
+          bind_cols(collect(select(tbls[[i]], original = !!sym(autoinc_col)))) %>%
+          dbplyr::copy_inline(dm_get_con(x), .)
+        y <- upd_dm_w_autoinc(y, filter(fks_ai, parent_table == names(tbls[i])), matched_cols)
+      } else {
+        res <- ticker(rows_op$fun)(x = target_tbls[[i]], y = pull_tbl(y, !!sym(tables[i])), by = keys[[i]], in_place = in_place)
+      }
+      op_results <- append(op_results, set_names(list(res), names(y[i])))
+    }
+  } else {
+    op_results <- pmap(
+      list(x = target_tbls, y = tbls, by = keys),
+      ticker(rows_op$fun),
+      in_place = in_place
+    )
+  }
 
   if (identical(unname(op_results), unname(target_tbls))) {
     out <- x
@@ -331,6 +376,28 @@ dm_patch_tbl <- function(dm, ...) {
   new_dm3(def)
 }
 
+get_autoinc <- function(x, y) {
+  dm_select_tbl(x, !!!src_tbls_impl(y)) %>%
+    dm_get_all_pks() %>%
+    filter(autoincrement) %>%
+    select(-autoincrement)
+}
+
+upd_dm_w_autoinc <- function(dm, fks_ai, res) {
+  if (nrow(fks_ai) == 0) return(dm)
+  res_dm <- reduce2(
+    fks_ai$child_table,
+    fks_ai$child_fk_cols,
+    ~ dm_zoom_to(..1, !!sym(..2)) %>%
+      left_join(res, by = set_names("original", ..3)) %>%
+      mutate(!!..3 := remote) %>%
+      select(-remote) %>%
+      dm_update_zoomed(),
+    # left_join.zoomed_dm needs y to be part of the dm
+    .init = dm(dm, res)
+  )
+  res_dm %>% dm_select_tbl(-res)
+}
 
 # Errors ------------------------------------------------------------------
 
