@@ -1,4 +1,4 @@
-# dm_rows_append() works with autoincrement PKs and FKS for Postgres
+# dm_rows_append() works with autoincrement PKs and FKS for selected DBs
 
     Code
       local_dm$t1
