@@ -296,70 +296,83 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
 
   rows_op <- get_dm_rows_op(rows_op_name)
   ticker <- new_ticker(rows_op$pb_label, length(tables), progress)
+
   # run operation(target_tbl, source_tbl, in_place = in_place) for each table
+  op_results <- vector("list", length(tables))
+  names(op_results) <- tables
+  op_ticker <- ticker(rows_op$fun)
 
-  autoinc_pks <- get_autoinc(x, y)
-  # FIXME: extend for c("insert", "upsert")
-  if (rows_op_name %in% c("append") && nrow(autoinc_pks) > 0) {
-    op_ticker <- ticker(rows_op$fun)
-
-    fks_ai <-
-      x %>%
-      dm_get_all_fks_impl() %>%
-      filter(parent_table %in% autoinc_pks$table) %>%
-      filter(parent_table %in% src_tbls_impl(y), child_table %in% src_tbls_impl(y)) %>%
-      # Parent key cols have length 1, since it's an autoincrement column
-      # child_fk_cols must have the same length.
-      # Is the referred `parent_key_cols` actually the autoinc-PK?
-      semi_join(autoinc_pks, by = c("parent_table" = "table", "parent_key_cols" = "pk_col"))
-
-    op_results <- list()
-    for (i in seq_along(y)) {
-      autoinc_col_prel <-
-        autoinc_pks %>%
-        filter(table == names(y[i])) %>%
-        pull(pk_col)
-
-      if (length(autoinc_col_prel) == 1) {
-        autoinc_col <- get_key_cols(autoinc_col_prel)
-      } else {
-        autoinc_col <- character()
-      }
-
-      if (!is_empty(autoinc_col)) {
-        res <- op_ticker(
-          x = target_tbls[[i]],
-          y = select(pull_tbl(y, !!sym(tables[i])), setdiff(colnames(tbls[[i]]), autoinc_col)),
-          by = keys[[i]],
-          returning = !!sym(autoinc_col),
-          in_place = in_place
-        )
-        # need to create matching table between newly created values and original values
-        matched_cols <-
-          dbplyr::get_returned_rows(res) %>%
-          rename(remote = 1) %>%
-          # FIXME: is it guaranteed that the order of select(tbls[[i]], original = !!sym(autoinc_col)) is the same
-          # as it was during inserting of the new rows?
-          bind_cols(collect(select(tbls[[i]], original = !!sym(autoinc_col)))) %>%
-          dbplyr::copy_inline(dm_get_con(x), .)
-        y <- upd_dm_w_autoinc(y, filter(fks_ai, parent_table == names(tbls[i])), matched_cols)
-      } else {
-        res <- op_ticker(
-          x = target_tbls[[i]],
-          y = pull_tbl(y, !!sym(tables[i])),
-          by = keys[[i]],
-          in_place = in_place
-        )
-      }
-      op_results <- append(op_results, set_names(list(res), names(y[i])))
-    }
-  } else {
-    op_results <- pmap(
-      list(x = target_tbls, y = tbls, by = keys),
-      ticker(rows_op$fun),
+  for (i in seq_along(tables)) {
+    op_results[[i]] <- op_ticker(
+      target_tbls[[i]],
+      tbls[[i]],
+      by = keys[[i]],
       in_place = in_place
     )
   }
+
+  # autoinc_pks <- get_autoinc(x, y)
+  # # FIXME: extend for c("insert", "upsert")
+  # if (rows_op_name %in% c("append") && nrow(autoinc_pks) > 0) {
+  #   op_ticker <- ticker(rows_op$fun)
+  #
+  #   fks_ai <-
+  #     x %>%
+  #     dm_get_all_fks_impl() %>%
+  #     filter(parent_table %in% autoinc_pks$table) %>%
+  #     filter(parent_table %in% src_tbls_impl(y), child_table %in% src_tbls_impl(y)) %>%
+  #     # Parent key cols have length 1, since it's an autoincrement column
+  #     # child_fk_cols must have the same length.
+  #     # Is the referred `parent_key_cols` actually the autoinc-PK?
+  #     semi_join(autoinc_pks, by = c("parent_table" = "table", "parent_key_cols" = "pk_col"))
+  #
+  #   op_results <- list()
+  #   for (i in seq_along(y)) {
+  #     autoinc_col_prel <-
+  #       autoinc_pks %>%
+  #       filter(table == names(y[i])) %>%
+  #       pull(pk_col)
+  #
+  #     if (length(autoinc_col_prel) == 1) {
+  #       autoinc_col <- get_key_cols(autoinc_col_prel)
+  #     } else {
+  #       autoinc_col <- character()
+  #     }
+  #
+  #     if (!is_empty(autoinc_col)) {
+  #       res <- op_ticker(
+  #         x = target_tbls[[i]],
+  #         y = select(pull_tbl(y, !!sym(tables[i])), setdiff(colnames(tbls[[i]]), autoinc_col)),
+  #         by = keys[[i]],
+  #         returning = !!sym(autoinc_col),
+  #         in_place = in_place
+  #       )
+  #       # need to create matching table between newly created values and original values
+  #       matched_cols <-
+  #         dbplyr::get_returned_rows(res) %>%
+  #         rename(remote = 1) %>%
+  #         # FIXME: is it guaranteed that the order of select(tbls[[i]], original = !!sym(autoinc_col)) is the same
+  #         # as it was during inserting of the new rows?
+  #         bind_cols(collect(select(tbls[[i]], original = !!sym(autoinc_col)))) %>%
+  #         dbplyr::copy_inline(dm_get_con(x), .)
+  #       y <- upd_dm_w_autoinc(y, filter(fks_ai, parent_table == names(tbls[i])), matched_cols)
+  #     } else {
+  #       res <- op_ticker(
+  #         x = target_tbls[[i]],
+  #         y = pull_tbl(y, !!sym(tables[i])),
+  #         by = keys[[i]],
+  #         in_place = in_place
+  #       )
+  #     }
+  #     op_results <- append(op_results, set_names(list(res), names(y[i])))
+  #   }
+  # } else {
+  #   op_results <- pmap(
+  #     list(x = target_tbls, y = tbls, by = keys),
+  #     ticker(rows_op$fun),
+  #     in_place = in_place
+  #   )
+  # }
 
   if (identical(unname(op_results), unname(target_tbls))) {
     out <- x
