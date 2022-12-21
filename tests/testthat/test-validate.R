@@ -75,7 +75,7 @@ test_that("validator speaks up when something's wrong", {
     dm_for_filter() %>%
       dm_zoom_to(tf_1) %>%
       dm_get_def() %>%
-      mutate(zoom = if_else(table == "tf_1", list(1), NULL)) %>%
+      mutate(zoom = if_else(table == "tf_1", list(1), list(NULL))) %>%
       new_dm3(zoomed = TRUE) %>%
       dm_validate(),
     "dm_invalid"
