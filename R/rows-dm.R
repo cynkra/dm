@@ -302,6 +302,8 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   names(op_results) <- tables
   op_ticker <- ticker(rows_op$fun)
 
+  pks <- dm_get_all_pks(x, tables)
+
   for (i in seq_along(tables)) {
     op_results[[i]] <- op_ticker(
       target_tbls[[i]],
