@@ -254,7 +254,7 @@ test_that("build_copy_queries avoids duplicate indexes", {
   )
 })
 
-test_that("copy_dm_to() works with autoincrement PKs and FKS for Postgres", {
+test_that("copy_dm_to() works with autoincrement PKs and FKS on selected DBs", {
   skip_if_src_not(c("postgres", "sqlite", "mssql"))
 
   con_db <- my_test_con()
