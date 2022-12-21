@@ -271,7 +271,7 @@ test_that("copy_dm_to() works with autoincrement PKs and FKS on selected DBs", {
     order_of_deletion <- c("t4", "t2", "t3", "t1")
     walk(
       dm_get_tables_impl(remote_dm)[order_of_deletion],
-      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
+      ~ try(dbExecute(con_db, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
     )
   })
 
