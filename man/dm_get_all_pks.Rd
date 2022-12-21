@@ -11,6 +11,7 @@ dm_get_all_pks(dm, table = NULL, ...)
 
 \item{table}{One or more table names, as character vector,
 to return primary key information for.
+If given, primary keys are returned in that order.
 The default \code{NULL} returns information for all tables.}
 
 \item{...}{These dots are for future extensions and must be empty.}
@@ -23,8 +24,8 @@ A tibble with the following columns:
 }
 }
 \description{
-\code{dm_get_all_pks()} checks the \code{dm} object for set primary keys and
-returns the tables, the respective primary key columns and their classes.
+\code{dm_get_all_pks()} checks the \code{dm} object for primary keys and
+returns the tables, the respective primary key columns, and their classes.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
