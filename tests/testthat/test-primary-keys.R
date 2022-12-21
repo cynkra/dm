@@ -177,6 +177,19 @@ test_that("output", {
 })
 
 
+# all primary keys --------------------------------------------------------------------
+
+test_that("dm_get_all_pks() and order", {
+  dm <- nyc_comp()
+  pks_all <- dm_get_all_pks(dm)
+  pks_12 <- dm_get_all_pks(dm, names(dm)[1:2])
+  pks_21 <- dm_get_all_pks(dm, names(dm)[2:1])
+
+  expect_equal(pks_all[1:2, ], pks_12)
+  expect_equal(pks_all[2:1, ], pks_21)
+})
+
+
 # tests for compound keys -------------------------------------------------
 
 test_that("dm_get_all_pks() with compound keys", {
