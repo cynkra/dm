@@ -32,7 +32,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
     tbl <- tbl_impl(dm, x)
     types <- DBI::dbDataType(con, tbl)
-    autoincrement_attribute <- " "
+    autoincrement_attribute <- ""
 
     # database-specific type conversions
     if (is_mariadb(dest)) {
@@ -73,18 +73,14 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       # necessary to use the `AUTOINCREMENT` keyword. So nothing we need to do here.
       # Ref: https://www.sqlite.org/autoinc.html
     }
-
     df_col_types <-
       enframe(types, "col", "type") %>%
-      mutate(autoincrement_attribute = " ")
+      mutate(autoincrement_attribute = "")
 
     if (length(pk_col) > 0L) {
       df_col_types <-
         df_col_types %>%
-        mutate(autoincrement_attribute = case_when(
-          col == pk_col ~ autoincrement_attribute,
-          TRUE ~ autoincrement_attribute
-        ))
+        mutate(autoincrement_attribute = autoincrement_attribute)
     }
 
     df_col_types
