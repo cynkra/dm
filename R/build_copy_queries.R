@@ -84,8 +84,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
           col == pk_col,
           !!autoincrement_attribute,
           autoincrement_attribute
-        )
-      )
+        ))
     }
 
     df_col_types
