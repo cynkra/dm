@@ -101,13 +101,6 @@ jobs:
             echo "Fatal: substitution did not change anything"
           fi
 
-      # Begin custom: after install
-      - name: Run tests
-        run: |
-          testthat::test_local(reporter = testthat::ProgressReporter$new(max_failures = Inf, update_interval = Inf))
-        shell: Rscript {0}
-      # End custom: after install
-
       - name: Run tests
         run: |
           testthat::test_local(reporter = testthat::ProgressReporter$new(max_failures = Inf, update_interval = Inf))
