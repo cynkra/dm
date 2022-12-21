@@ -47,41 +47,41 @@
       
       $sql_table
       <SQL> CREATE TEMPORARY TABLE pixar_films (
-        number STRING,
-        film STRING,
-        release_date DATE,
-        run_time DOUBLE,
-        film_rating STRING,
+        number STRING ,
+        film STRING ,
+        release_date DATE ,
+        run_time DOUBLE ,
+        film_rating STRING ,
         PRIMARY KEY (film)
       )
       <SQL> CREATE TEMPORARY TABLE academy (
-        film STRING,
-        award_type STRING,
-        status STRING,
+        film STRING ,
+        award_type STRING ,
+        status STRING ,
         PRIMARY KEY (film, award_type),
         FOREIGN KEY (film) REFERENCES pixar_films (film)
       )
       <SQL> CREATE TEMPORARY TABLE box_office (
-        film STRING,
-        budget DOUBLE,
-        box_office_us_canada DOUBLE,
-        box_office_other DOUBLE,
-        box_office_worldwide DOUBLE,
+        film STRING ,
+        budget DOUBLE ,
+        box_office_us_canada DOUBLE ,
+        box_office_other DOUBLE ,
+        box_office_worldwide DOUBLE ,
         PRIMARY KEY (film),
         FOREIGN KEY (film) REFERENCES pixar_films (film)
       )
       <SQL> CREATE TEMPORARY TABLE genres (
-        film STRING,
-        genre STRING,
+        film STRING ,
+        genre STRING ,
         PRIMARY KEY (film, genre),
         FOREIGN KEY (film) REFERENCES pixar_films (film)
       )
       <SQL> CREATE TEMPORARY TABLE public_response (
-        film STRING,
-        rotten_tomatoes DOUBLE,
-        metacritic DOUBLE,
-        cinema_score STRING,
-        critics_choice DOUBLE,
+        film STRING ,
+        rotten_tomatoes DOUBLE ,
+        metacritic DOUBLE ,
+        cinema_score STRING ,
+        critics_choice DOUBLE ,
         PRIMARY KEY (film),
         FOREIGN KEY (film) REFERENCES pixar_films (film)
       )
@@ -159,19 +159,19 @@
       
       $sql_table
       <SQL> CREATE TEMPORARY TABLE parent1 (
-        "key" DOUBLE,
+        "key" DOUBLE ,
         PRIMARY KEY ("key")
       )
       <SQL> CREATE TEMPORARY TABLE parent2 (
-        a__key DOUBLE,
+        a__key DOUBLE ,
         PRIMARY KEY (a__key)
       )
       <SQL> CREATE TEMPORARY TABLE child (
-        a__key DOUBLE,
+        a__key DOUBLE ,
         FOREIGN KEY (a__key) REFERENCES parent2 (a__key)
       )
       <SQL> CREATE TEMPORARY TABLE child__a (
-        "key" DOUBLE,
+        "key" DOUBLE ,
         FOREIGN KEY ("key") REFERENCES parent2 (a__key)
       )
       
