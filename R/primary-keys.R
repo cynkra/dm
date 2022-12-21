@@ -16,12 +16,15 @@
 #' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key
 #'   set for this table.
 #'   If `TRUE`, a potential old `pk` is deleted before setting a new one.
+#' @param autoincrement
+#'   `r lifecycle::badge("experimental")`
+#'   If `TRUE`, the  column specified in `columns` will be populated
+#'   automatically with a sequence of integers.
 #'
 #' @family primary key functions
 #'
 #' @return An updated `dm` with an additional primary key.
 #'
-#' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' nycflights_dm <- dm(
 #'   planes = nycflights13::planes,
@@ -44,8 +47,10 @@
 #'   nycflights_dm %>%
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
 #' )
-dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE) {
+#' @export
+dm_add_pk <- function(dm, table, columns, ..., autoincrement = FALSE, check = FALSE, force = FALSE) {
   check_dots_empty()
+
   check_not_zoomed(dm)
 
   table_name <- dm_tbl_name(dm, {{ table }})
@@ -55,18 +60,28 @@ dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE) {
   col_expr <- enexpr(columns)
   col_name <- names(eval_select_indices(col_expr, colnames(table)))
 
+  if (autoincrement && length(col_name) > 1L) {
+    abort(
+      c(
+        "Composite primary keys cannot be autoincremented.",
+        "Provide only a single column name to `columns`."
+      )
+    )
+  }
+
+
   if (check) {
     table_from_dm <- dm_get_filtered_table(dm, table_name)
     eval_tidy(expr(check_key(!!sym(table_name), !!col_expr)), list2(!!table_name := table_from_dm))
   }
 
-  dm_add_pk_impl(dm, table_name, col_name, force)
+  dm_add_pk_impl(dm, table_name, col_name, autoincrement, force)
 }
 
 # both "table" and "column" must be characters
 # in {datamodelr}, a primary key may consist of more than one columns
 # a key will be added, regardless of whether it is a unique key or not; not to be exported
-dm_add_pk_impl <- function(dm, table, column, force) {
+dm_add_pk_impl <- function(dm, table, column, autoincrement, force) {
   def <- dm_get_def(dm)
   i <- which(def$table == table)
 
@@ -79,7 +94,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
     abort_key_set_force_false(table)
   }
 
-  def$pks[[i]] <- tibble(column = !!list(column))
+  def$pks[[i]] <- tibble(column = !!list(column), autoincrement = autoincrement)
 
   new_dm3(def)
 }
@@ -186,8 +201,8 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 
   out <-
     def_sub %>%
-    unnest_df("pks", tibble(column = list())) %>%
-    set_names(c("table", "pk_col"))
+    unnest_df("pks", tibble(column = list(), autoincrement = logical())) %>%
+    set_names(c("table", "pk_col", "autoincrement"))
 
   out$pk_col <- new_keys(out$pk_col)
   out

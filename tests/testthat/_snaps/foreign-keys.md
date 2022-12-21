@@ -5,10 +5,10 @@
         dm_table_4) %>% get_all_keys()
     Output
       $pks
-      # A tibble: 1 x 2
-        table      pk_col
-        <chr>      <keys>
-      1 dm_table_4 c     
+      # A tibble: 1 x 3
+        table      pk_col autoincrement
+        <chr>      <keys> <lgl>        
+      1 dm_table_4 c      FALSE        
       
       $fks
       # A tibble: 1 x 5
@@ -27,15 +27,15 @@
         dm_rm_fk(tf_5, m, tf_6, n))
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 3 x 5
@@ -52,15 +52,15 @@
         dm_rm_fk(tf_5, l, tf_4)
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 4 x 5
@@ -78,15 +78,15 @@
         dm_rm_fk(tf_2, c(e, e1), tf_3)
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 4 x 5
@@ -105,15 +105,15 @@
         dm_rm_fk(tf_4, c(j, j1), tf_3)
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 3 x 5
@@ -131,15 +131,15 @@
         dm_rm_fk(tf_4, c(j, j1), tf_3)
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 3 x 5
@@ -160,15 +160,15 @@
         dm_rm_fk(tf_5, m, tf_6, n))
     Output
       $pks
-      # A tibble: 6 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_3  f, f1 
-      4 tf_4  h     
-      5 tf_5  k     
-      6 tf_6  o     
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
       
       $fks
       # A tibble: 0 x 5

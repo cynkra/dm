@@ -4,7 +4,15 @@
 \alias{dm_add_pk}
 \title{Add a primary key}
 \usage{
-dm_add_pk(dm, table, columns, ..., check = FALSE, force = FALSE)
+dm_add_pk(
+  dm,
+  table,
+  columns,
+  ...,
+  autoincrement = FALSE,
+  check = FALSE,
+  force = FALSE
+)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -15,6 +23,10 @@ dm_add_pk(dm, table, columns, ..., check = FALSE, force = FALSE)
 To define a compound key, use \code{c(col1, col2)}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
+
+\item{autoincrement}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+If \code{TRUE}, the  column specified in \code{columns} will be populated
+automatically with a sequence of integers.}
 
 \item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
 

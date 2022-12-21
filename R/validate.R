@@ -64,7 +64,11 @@ dm_validate <- function(x) {
     select(table = ref_table, column = ref_column) %>%
     check_colnames(dm_col_names, "Parent key")
 
-  stopifnot(lengths(def$pks) %in% 0:1)
+  if (!all(map_int(def$pks, vctrs::vec_size) %in% 0:1)) {
+    abort_dm_invalid(
+      "Not all tables have maximally 1 primary key."
+    )
+  }
 
   pks <-
     def %>%
@@ -107,9 +111,9 @@ debug_dm_validate <- function(dm) {
   dm
 }
 
-check_dm <- function(dm) {
-  if (!is_dm(dm)) {
-    abort_is_not_dm(class(dm))
+check_dm <- function(x) {
+  if (!is_dm(x)) {
+    abort_is_not_dm(class(x))
   }
 }
 

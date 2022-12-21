@@ -20,6 +20,7 @@ utils::globalVariables(c(
   # dm
   "any_na",
   "arrange_col",
+  "autoincrement",
   "candidate",
   "cardinality",
   "child_cols",

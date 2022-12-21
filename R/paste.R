@@ -168,7 +168,13 @@ dm_paste_select <- function(dm) {
 dm_paste_pks <- function(dm) {
   dm %>%
     dm_get_all_pks_impl() %>%
-    mutate(code = glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")) %>%
+    mutate(
+      code = if_else(
+        !is.na(autoincrement) & autoincrement,
+        glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)}, autoincrement = TRUE)"),
+        glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")
+      )
+    ) %>%
     pull()
 }
 
@@ -176,7 +182,7 @@ dm_paste_fks <- function(dm) {
   pks <-
     dm %>%
     dm_get_all_pks_impl() %>%
-    set_names(c("parent_table", "parent_default_pk_cols"))
+    set_names(c("parent_table", "parent_default_pk_cols", "autoincrement"))
 
   fks <-
     dm %>%

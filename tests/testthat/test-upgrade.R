@@ -88,3 +88,30 @@ test_that("can upgrade zoomed from v3", {
     is_zoomed(dm)
   })
 })
+
+test_that("can upgrade to v4", {
+  if (FALSE) {
+    saveRDS(dm_for_filter(), "tests/testthat/dm/v4.rds", version = 2)
+    saveRDS(dm_for_filter() %>% dm_zoom_to(tf_2), "tests/testthat/dm/v4_zoomed.rds", version = 2)
+  }
+
+  dm_v4 <- readRDS(test_path("dm/v4.rds"))
+  expect_snapshot({
+    def <- dm_get_def(dm_v4, quiet = TRUE)
+    def <- dm_get_def(dm_v4)
+    dm <- new_dm3(def)
+    dm_validate(dm)
+    is_zoomed(dm)
+  })
+})
+
+test_that("can upgrade zoomed to v4", {
+  dm_v4_zoomed <- readRDS(test_path("dm/v4_zoomed.rds"))
+  expect_snapshot({
+    def <- dm_get_def(dm_v4_zoomed, quiet = TRUE)
+    def <- dm_get_def(dm_v4_zoomed)
+    dm <- new_dm3(def, zoomed = TRUE)
+    dm_validate(dm)
+    is_zoomed(dm)
+  })
+})
