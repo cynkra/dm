@@ -62,6 +62,7 @@
       ! Unsatisfied constraints:
     Output
       * Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N0EGMQ (1), N3BCAA (1), N3CCAA (1), N3CFAA (1), N3EHAA (1), ...
+      * Table `flights`: foreign key `origin`, `time_hour` into table `weather`: no such column: value1
     Code
       dm_rows_append(flights_sqlite, flights_hour11_sqlite, in_place = TRUE)
       print(dm_nrow(flights_sqlite))
