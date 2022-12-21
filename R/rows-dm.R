@@ -303,22 +303,15 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   if (rows_op_name %in% c("append") && nrow(autoinc_pks) > 0) {
     op_ticker <- ticker(rows_op$fun)
 
-    fks_ai_prel <-
+    fks_ai <-
       x %>%
       dm_get_all_fks_impl() %>%
       filter(parent_table %in% autoinc_pks$table) %>%
-      filter(parent_table %in% src_tbls_impl(y), child_table %in% src_tbls_impl(y))
-
-    if (nrow(fks_ai_prel) > 0) {
-      # parent key cols have length 1, since it's an autoincrement column, child_fk_cols could point to other cols though
-      fks_ai <-
-        fks_ai_prel %>%
-        filter(map_lgl(child_fk_cols, ~ length(get_key_cols(.x)) == 1)) %>%
-        # is the referred `parent_key_cols` actually the autoinc-PK?
-        semi_join(autoinc_pks, by = c("parent_table" = "table", "parent_key_cols" = "pk_col"))
-    } else {
-      fks_ai <- fks_ai_prel
-    }
+      filter(parent_table %in% src_tbls_impl(y), child_table %in% src_tbls_impl(y)) %>%
+      # Parent key cols have length 1, since it's an autoincrement column
+      # child_fk_cols must have the same length.
+      # Is the referred `parent_key_cols` actually the autoinc-PK?
+      semi_join(autoinc_pks, by = c("parent_table" = "table", "parent_key_cols" = "pk_col"))
 
     op_results <- list()
     for (i in seq_along(y)) {
