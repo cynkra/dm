@@ -255,7 +255,7 @@ test_that("build_copy_queries avoids duplicate indexes", {
 })
 
 test_that("copy_dm_to() works with autoincrement PKs and FKS on selected DBs", {
-  skip_if_src_not(c("postgres", "sqlite", "mssql"))
+  skip_if_src_not(c("postgres", "sqlite", "mssql", "maria"))
 
   con_db <- my_test_con()
   local_dm_ptype <- dm_for_autoinc_1() %>%
