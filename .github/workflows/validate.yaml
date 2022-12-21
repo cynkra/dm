@@ -12,10 +12,6 @@ on:
   schedule:
     - cron:  '20 2 * * *'
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || '' }}-${{ github.base_ref || '' }}
-  cancel-in-progress: true
-
 name: validate
 
 jobs:
@@ -31,7 +27,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { os: ubuntu-, os-version: 22.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/jammy/latest" }
+          - { os: ubuntu-, os-version: 22.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest" }
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -43,21 +39,57 @@ jobs:
       # End custom: env vars
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Check rate limits
+        run: |
+          curl -s --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/rate_limit
+        shell: bash
 
-      - uses: ./.github/workflows/custom/before-install
-        if: hashFiles('.github/workflows/custom/before-install/action.yml') != ''
+      - uses: actions/checkout@v2
 
-      - uses: ./.github/workflows/install
+      # Begin custom: before install
+      # End custom: before install
+
+      - uses: r-lib/actions/setup-r@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          install-r: false
-          cache-version: rcc-smoke-1
-          needs: check
-          extra-packages: any::rcmdcheck any::roxygen2 r-lib/styler
+          r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
 
-      - uses: ./.github/workflows/custom/after-install
-        if: hashFiles('.github/workflows/custom/after-install/action.yml') != ''
+      - name: Install remotes
+        run: |
+          if (!requireNamespace("curl", quietly = TRUE)) install.packages("curl")
+          if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
+        shell: Rscript {0}
+
+      - name: Query dependencies
+        if: runner.os != 'Windows'
+        run: |
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE, type = .Platform$pkgType), ".github/depends.Rds", version = 2)
+          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+        shell: Rscript {0}
+
+      - name: Restore R package cache
+        if: runner.os != 'Windows'
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ matrix.config.os }}${{ matrix.config.os-version }}-${{ hashFiles('.github/R-version') }}-2-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ matrix.config.os }}${{ matrix.config.os-version }}-${{ hashFiles('.github/R-version') }}-2-
+
+      - name: Install system dependencies
+        if: runner.os == 'Linux'
+        run: |
+          while read -r cmd
+          do
+            eval sudo $cmd
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "${{matrix.config.os-version}}"))')
+
+      # Begin custom: before install
+      # End custom: before install
+
+      - name: Install dependencies
+        run: |
+          remotes::install_deps(dependencies = TRUE, type = .Platform$pkgType)
+        shell: Rscript {0}
 
       - name: Instrument R code for validation
         run: |
@@ -83,3 +115,9 @@ jobs:
       - name: Test coverage
         run: covr::codecov()
         shell: Rscript {0}
+
+      - name: Check rate limits
+        if: always()
+        run: |
+          curl -s --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/rate_limit
+        shell: bash
