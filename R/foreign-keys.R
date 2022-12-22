@@ -226,6 +226,7 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 #' @inheritParams dm_has_fk
 #' @param parent_table One or more table names, as character vector,
 #'   to return foreign key information for.
+#'   If given, foreign keys are returned in that order.
 #'   The default `NULL` returns information for all tables.
 #'
 #' @family foreign key functions
@@ -243,14 +244,18 @@ dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
 dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
   def <- dm_get_def(dm)
 
-  sub_def <- def[c("table", "fks")]
-  names(sub_def)[[1]] <- "parent_table"
+  def_sub <- def[c("table", "fks")]
+  names(def_sub)[[1]] <- "parent_table"
 
   if (!is.null(parent_table)) {
-    sub_def <- sub_def[sub_def$parent_table %in% parent_table, ]
+    idx <- match(parent_table, def_sub$parent_table)
+    if (anyNA(idx)) {
+      abort(paste0("Table not in dm object: ", parent_table[which(is.na(idx))[[1]]]))
+    }
+    def_sub <- def_sub[idx, ]
   }
 
-  flat <- unnest_list_of_df(sub_def, "fks")
+  flat <- unnest_list_of_df(def_sub, "fks")
 
   names(flat) <- c("parent_table", "parent_key_cols", "child_table", "child_fk_cols", "on_delete")
   flat[[2]] <- new_keys(flat[[2]])

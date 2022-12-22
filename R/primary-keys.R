@@ -158,12 +158,13 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' Get all primary keys of a [`dm`] object
 #'
 #' @description
-#' `dm_get_all_pks()` checks the `dm` object for set primary keys and
-#' returns the tables, the respective primary key columns and their classes.
+#' `dm_get_all_pks()` checks the `dm` object for primary keys and
+#' returns the tables, the respective primary key columns, and their classes.
 #'
 #' @family primary key functions
 #' @param table One or more table names, as character vector,
 #'   to return primary key information for.
+#'   If given, primary keys are returned in that order.
 #'   The default `NULL` returns information for all tables.
 #'
 #' @inheritParams dm_add_pk
@@ -196,7 +197,11 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
   def_sub <- def[c("table", "pks")]
 
   if (!is.null(table)) {
-    def_sub <- def_sub[def_sub$table %in% table, ]
+    idx <- match(table, def_sub$table)
+    if (anyNA(idx)) {
+      abort(paste0("Table not in dm object: ", parent_table[which(is.na(idx))[[1]]]))
+    }
+    def_sub <- def_sub[match(table, def_sub$table), ]
   }
 
   out <-
