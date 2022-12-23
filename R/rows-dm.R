@@ -307,10 +307,29 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   pks <- dm_get_all_pks(x, tables)
 
   for (i in seq_along(tables)) {
+    has_autoinc <- FALSE
+
+    if (rows_op_name %in% c("append")) {
+      my_pk <- pks[pks$table == tables[[i]], ]
+      stopifnot(nrow(my_pk) %in% 0:1)
+
+      if (isTRUE(my_pk$autoincrement)) {
+        has_autoinc <- TRUE
+      }
+    }
+
+    if (has_autoinc) {
+      # Only one key column for autoincrement keys
+      returning <- sym(get_key_cols(pks$pk_col[[1]]))
+    } else {
+      returning <- NULL
+    }
+
     new_target_table <- op_ticker(
       target_tbls[[i]],
       tbls[[i]],
       by = keys[[i]],
+      returning = !!returning,
       in_place = in_place
     )
 
