@@ -298,8 +298,10 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   ticker <- new_ticker(rows_op$pb_label, length(tables), progress)
 
   # run operation(target_tbl, source_tbl, in_place = in_place) for each table
-  op_results <- vector("list", length(tables))
-  names(op_results) <- tables
+
+  # Always return original table by default, to avoid leaking "returning" rows
+  op_results <- target_tbls
+
   op_ticker <- ticker(rows_op$fun)
 
   pks <- dm_get_all_pks(x, tables)
@@ -312,7 +314,9 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
       in_place = in_place
     )
 
-    op_results[[i]] <- new_target_table
+    if (!in_place) {
+      op_results[[i]] <- new_target_table
+    }
   }
 
   # autoinc_pks <- get_autoinc(x, y)
