@@ -305,12 +305,14 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   pks <- dm_get_all_pks(x, tables)
 
   for (i in seq_along(tables)) {
-    op_results[[i]] <- op_ticker(
+    new_target_table <- op_ticker(
       target_tbls[[i]],
       tbls[[i]],
       by = keys[[i]],
       in_place = in_place
     )
+
+    op_results[[i]] <- new_target_table
   }
 
   # autoinc_pks <- get_autoinc(x, y)
