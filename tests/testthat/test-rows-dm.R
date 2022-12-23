@@ -218,23 +218,25 @@ test_that("output for compound keys", {
 # tests for autoincrement PKs ---------------------------------------------
 
 test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DBs", {
-  skip("NYI")
-
   skip_if_src_not(c("postgres", "mssql", "sqlite"))
 
   con_db <- my_test_con()
 
   # Setup
-  dm_ai_w_keys <- dm_for_autoinc_1() %>%
+  dm_ai_w_keys <-
+    dm_for_autoinc_1() %>%
     dm_add_pk(t1, a, autoincrement = TRUE) %>%
     dm_add_pk(t2, c, autoincrement = TRUE) %>%
+    dm_add_pk(t4, g, autoincrement = TRUE) %>%
     dm_add_fk(t2, d, t1) %>%
     dm_add_fk(t3, e, t1) %>%
     dm_add_fk(t4, h, t2)
 
-  local_dm <- dm_ai_w_keys %>%
+  local_dm <-
+    dm_ai_w_keys %>%
     collect()
-  dm_ai_empty_remote <- local_dm %>%
+  dm_ai_empty_remote <-
+    local_dm %>%
     dm_ptype() %>%
     copy_dm_to(con_db, ., temporary = FALSE)
 
@@ -247,10 +249,15 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
     )
   })
 
+  dm_ai_insert <-
+    dm_for_autoinc_1() %>%
+    # Remove one PK column, only provided by database
+    dm_select(t4, -g)
+
   expect_silent(
     filled_dm <- dm_rows_append(
       dm_ai_empty_remote,
-      dm_ai_w_keys,
+      dm_ai_insert,
       in_place = FALSE,
       progress = FALSE
     ) %>%
@@ -260,7 +267,7 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
   expect_silent(
     filled_dm_in_place <- dm_rows_append(
       dm_ai_empty_remote,
-      dm_ai_w_keys,
+      dm_ai_insert,
       in_place = TRUE,
       progress = FALSE
     ) %>%

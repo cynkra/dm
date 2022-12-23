@@ -309,97 +309,46 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   for (i in seq_along(tables)) {
     has_autoinc <- FALSE
 
-    if (rows_op_name %in% c("append")) {
+    # FIXME: implement for in_place = FALSE
+    if (in_place && (rows_op_name %in% c("append"))) {
       my_pk <- pks[pks$table == tables[[i]], ]
       stopifnot(nrow(my_pk) %in% 0:1)
 
       if (isTRUE(my_pk$autoincrement)) {
-        has_autoinc <- TRUE
+        pk_col <- get_key_cols(my_pk$pk_col[[1]])
+        if (pk_col %in% colnames(tbls[[i]])) {
+          has_autoinc <- TRUE
+        }
       }
     }
 
     if (has_autoinc) {
       # Only one key column for autoincrement keys
-      returning <- sym(get_key_cols(pks$pk_col[[1]]))
+      returning <- sym(pk_col)
+      tbl <-
+        tbls[[i]] %>%
+        select(-!!sym(pk_col))
     } else {
       returning <- NULL
+      tbl <- tbls[[i]]
     }
 
     new_target_table <- op_ticker(
       target_tbls[[i]],
-      tbls[[i]],
+      tbl,
       by = keys[[i]],
       returning = !!returning,
       in_place = in_place
     )
 
+    if (has_autoinc) {
+      tbls <- dm_align_autoinc_fks(tbls, x, tables[[i]], dbplyr::get_returned_rows(new_target_table))
+    }
+
     if (!in_place) {
       op_results[[i]] <- new_target_table
     }
   }
-
-  # autoinc_pks <- get_autoinc(x, y)
-  # # FIXME: extend for c("insert", "upsert")
-  # if (rows_op_name %in% c("append") && nrow(autoinc_pks) > 0) {
-  #   op_ticker <- ticker(rows_op$fun)
-  #
-  #   fks_ai <-
-  #     x %>%
-  #     dm_get_all_fks_impl() %>%
-  #     filter(parent_table %in% autoinc_pks$table) %>%
-  #     filter(parent_table %in% src_tbls_impl(y), child_table %in% src_tbls_impl(y)) %>%
-  #     # Parent key cols have length 1, since it's an autoincrement column
-  #     # child_fk_cols must have the same length.
-  #     # Is the referred `parent_key_cols` actually the autoinc-PK?
-  #     semi_join(autoinc_pks, by = c("parent_table" = "table", "parent_key_cols" = "pk_col"))
-  #
-  #   op_results <- list()
-  #   for (i in seq_along(y)) {
-  #     autoinc_col_prel <-
-  #       autoinc_pks %>%
-  #       filter(table == names(y[i])) %>%
-  #       pull(pk_col)
-  #
-  #     if (length(autoinc_col_prel) == 1) {
-  #       autoinc_col <- get_key_cols(autoinc_col_prel)
-  #     } else {
-  #       autoinc_col <- character()
-  #     }
-  #
-  #     if (!is_empty(autoinc_col)) {
-  #       res <- op_ticker(
-  #         x = target_tbls[[i]],
-  #         y = select(pull_tbl(y, !!sym(tables[i])), setdiff(colnames(tbls[[i]]), autoinc_col)),
-  #         by = keys[[i]],
-  #         returning = !!sym(autoinc_col),
-  #         in_place = in_place
-  #       )
-  #       # need to create matching table between newly created values and original values
-  #       matched_cols <-
-  #         dbplyr::get_returned_rows(res) %>%
-  #         rename(remote = 1) %>%
-  #         # FIXME: is it guaranteed that the order of select(tbls[[i]], original = !!sym(autoinc_col)) is the same
-  #         # as it was during inserting of the new rows?
-  #         bind_cols(collect(select(tbls[[i]], original = !!sym(autoinc_col)))) %>%
-  #         dbplyr::copy_inline(dm_get_con(x), .)
-  #       y <- upd_dm_w_autoinc(y, filter(fks_ai, parent_table == names(tbls[i])), matched_cols)
-  #     } else {
-  #       res <- op_ticker(
-  #         x = target_tbls[[i]],
-  #         y = pull_tbl(y, !!sym(tables[i])),
-  #         by = keys[[i]],
-  #         in_place = in_place
-  #       )
-  #     }
-  #     op_results <- append(op_results, set_names(list(res), names(y[i])))
-  #   }
-  # } else {
-  #   op_results <- pmap(
-  #     list(x = target_tbls, y = tbls, by = keys),
-  #     ticker(rows_op$fun),
-  #     in_place = in_place
-  #   )
-  # }
 
   if (identical(unname(op_results), unname(target_tbls))) {
     out <- x
@@ -429,27 +378,61 @@ dm_patch_tbl <- function(dm, ...) {
   new_dm3(def)
 }
 
-get_autoinc <- function(x, y) {
-  dm_select_tbl(x, !!!src_tbls_impl(y)) %>%
-    dm_get_all_pks() %>%
-    filter(autoincrement) %>%
-    select(-autoincrement)
+dm_align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
+  fks <- dm_get_all_fks(target_dm, table)
+  fks_target <- fks[fks$child_table %in% names(tbls), ]
+
+  all_target_tables <- dm_get_tables(target_dm)[fks_target$child_table]
+  all_target_cols <- unique(unlist(map(all_target_tables, colnames)))
+
+  pk_col <- names(returning_rows)
+  new_pk_col <- derive_temp_column_name(all_target_cols, pk_col)
+
+  row_number_col <- derive_temp_column_name(c(pk_col, new_pk_col), "row_number", "")
+
+  # Structure: <new_pk_col>, row_number
+  alias_df <-
+    returning_rows %>%
+    rename(!!sym(new_pk_col) := !!sym(pk_col)) %>%
+    mutate(!!sym(row_number_col) := row_number())
+
+  alias_tbl <- dbplyr::copy_inline(dm_get_con(target_dm), alias_df)
+
+  # Structure: <pk_col>, <new_pk_col>
+  align_tbl <-
+    tbls[[table]] %>%
+    select(!!sym(pk_col)) %>%
+    mutate(!!sym(row_number_col) := row_number()) %>%
+    left_join(alias_tbl, by = row_number_col) %>%
+    select(-!!sym(row_number_col))
+
+  for (i in seq_along(fks_target$child_table)) {
+    child_table <- fks_target$child_table[[i]]
+    child_fk_col <- get_key_cols(fks_target$child_fk_cols[[i]])
+    tbl <- tbls[[child_table]]
+
+    if (child_fk_col %in% colnames(tbl)) {
+      tbls[[child_table]] <-
+        tbl %>%
+        left_join(align_tbl, by = vec_c(!!child_fk_col := pk_col)) %>%
+        select(-!!sym(child_fk_col), !!sym(child_fk_col) := sym(new_pk_col)) %>%
+        select(!!!colnames(tbl))
+    }
+  }
+
+  tbls
 }
 
-upd_dm_w_autoinc <- function(dm, fks_ai, res) {
-  if (nrow(fks_ai) == 0) return(dm)
-  res_dm <- reduce2(
-    fks_ai$child_table,
-    fks_ai$child_fk_cols,
-    ~ dm_zoom_to(..1, !!sym(..2)) %>%
-      left_join(res, by = set_names("original", ..3)) %>%
-      mutate(!!..3 := remote) %>%
-      select(-remote) %>%
-      dm_update_zoomed(),
-    # left_join.zoomed_dm needs y to be part of the dm
-    .init = dm(dm, res)
-  )
-  res_dm %>% dm_select_tbl(-res)
+derive_temp_column_name <- function(tbl_names, base, suffix = "_new") {
+  new_name <- paste0(base, suffix)
+  tbl_names <- colnames(tbl)
+
+  repeat {
+    if (!(new_name %in% tbl_names)) {
+      return(new_name)
+    }
+    new_name <- paste0(new_name, "_")
+  }
 }
 
 # Errors ------------------------------------------------------------------
