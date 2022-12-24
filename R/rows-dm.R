@@ -320,7 +320,7 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
     new_target_table <- run_rows_op(op_ticker, target_tbl, tbl, key, in_place, autoinc_col)
 
     if (!is.null(autoinc_col)) {
-      tbls <- dm_align_autoinc_fks(tbls, x, tables[[i]], dbplyr::get_returned_rows(new_target_table))
+      tbls <- align_autoinc_fks(tbls, x, tables[[i]], dbplyr::get_returned_rows(new_target_table))
     }
 
     if (!in_place) {
@@ -392,7 +392,7 @@ run_rows_op <- function(op_ticker, target_tbl, tbl, key, in_place, autoinc_col) 
   )
 }
 
-dm_align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
+align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
   fks <- dm_get_all_fks(target_dm, table)
   fks_target <- fks[fks$child_table %in% names(tbls), ]
 
