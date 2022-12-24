@@ -317,14 +317,13 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
       autoinc_col <- NULL
     }
 
-    new_target_table <- run_rows_op(op_ticker, target_tbl, tbl, key, in_place, autoinc_col)
+    # Returns tibble if autoinc_col is set, `target_tbl` otherwise
+    res <- run_rows_op(op_ticker, target_tbl, tbl, key, in_place, autoinc_col)
 
     if (!is.null(autoinc_col)) {
-      tbls <- align_autoinc_fks(tbls, x, tables[[i]], dbplyr::get_returned_rows(new_target_table))
-    }
-
-    if (!in_place) {
-      op_results[[i]] <- new_target_table
+      tbls <- align_autoinc_fks(tbls, x, tables[[i]], res)
+    } else if (!in_place) {
+      op_results[[i]] <- res
     }
   }
 
@@ -377,13 +376,65 @@ run_rows_op <- function(op_ticker, target_tbl, tbl, key, in_place, autoinc_col) 
     return(op_ticker(target_tbl, tbl, by = key, in_place = in_place))
   }
 
-  # Only one key column for autoincrement keys
-  returning <- sym(autoinc_col)
-  tbl <-
-    tbl %>%
-    select(-!!sym(autoinc_col))
+  # Assuming in-place append operation on dbplyr data source
+  stopifnot(inherits(target_tbl, "tbl_dbi"))
+  stopifnot(in_place)
 
-  op_ticker(target_tbl, tbl, by = key, returning = !!returning, in_place = in_place)
+  # FIXME: optimize if unique key exists
+  returning <- sym(autoinc_col)
+  key_values <-
+    tbl %>%
+    select(!!returning) %>%
+    collect() %>%
+    pull()
+
+  if (anyDuplicated(key_values)) {
+    abort(paste0("Duplicate values for autoincrement primary key ", autoinc_col, "."))
+  }
+
+  if (length(key_values) == 0) {
+    barf
+  }
+
+  source_rows <- map(key_values, ~ select(filter(tbl, !!returning == !!.x), -!!returning))
+
+  con <- dbplyr::remote_con(target_tbl)
+  target_name <- dbplyr::remote_name(target_tbl)
+  insert_queries <- map(source_rows, ~ dbplyr::sql_query_append(
+    con,
+    target_name,
+    .x,
+    returning_cols = autoinc_col
+  ))
+
+  autoinc_col_orig <- paste0(autoinc_col, "_orig")
+
+  insert_sql <- map_chr(insert_queries, dbplyr::sql_render)
+
+  # Didn't work on Postgres
+  if (FALSE) {
+    returning_map_sql <- paste0(
+      "SELECT ", DBI::dbQuoteLiteral(con, key_values), " AS ", autoinc_col_orig, ", ",
+      autoinc_col, " FROM (",
+      insert_sql,
+      ") q"
+    )
+
+    returning_sql <- paste(returning_map_sql, collapse = "\nUNION ALL\n")
+
+    DBI::dbGetQuery(con, returning_sql, immediate = TRUE)
+  }
+
+  # Run INSERT INTO queries, side effect!
+  insert_res <- map(insert_queries, ~ DBI::dbGetQuery(con, .x))
+
+  out <- tibble(
+    bind_rows(!!!insert_res),
+    !!sym(autoinc_col_orig) := !!key_values
+  )
+
+  autoinc_col_new <- paste0(autoinc_col, "_new")
+  set_names(out[2:1], c(autoinc_col, autoinc_col_new))
 }
 
 align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
@@ -393,26 +444,12 @@ align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
   all_target_tables <- dm_get_tables(target_dm)[fks_target$child_table]
   all_target_cols <- unique(unlist(map(all_target_tables, colnames)))
 
-  pk_col <- names(returning_rows)
+  pk_col <- names(returning_rows)[[1]]
   new_pk_col <- derive_temp_column_name(all_target_cols, pk_col)
-
-  row_number_col <- derive_temp_column_name(c(pk_col, new_pk_col), "row_number", "")
-
-  # Structure: <new_pk_col>, row_number
-  alias_df <-
-    returning_rows %>%
-    rename(!!sym(new_pk_col) := !!sym(pk_col)) %>%
-    mutate(!!sym(row_number_col) := row_number())
-
-  alias_tbl <- dbplyr::copy_inline(dm_get_con(target_dm), alias_df)
+  names(returning_rows)[[2]] <- new_pk_col
 
   # Structure: <pk_col>, <new_pk_col>
-  align_tbl <-
-    tbls[[table]] %>%
-    select(!!sym(pk_col)) %>%
-    mutate(!!sym(row_number_col) := row_number()) %>%
-    left_join(alias_tbl, by = row_number_col) %>%
-    select(-!!sym(row_number_col))
+  align_tbl <- dbplyr::copy_inline(dm_get_con(target_dm), returning_rows)
 
   for (i in seq_along(fks_target$child_table)) {
     child_table <- fks_target$child_table[[i]]

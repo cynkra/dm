@@ -87,17 +87,17 @@
       # A tibble: 3 x 3
             c     d o    
         <int> <int> <chr>
-      1     1     1 a    
+      1     1     3 c    
       2     2     2 b    
-      3     3     3 c    
+      3     3     1 a    
     Code
       filled_dm_in_place$t3
     Output
       # A tibble: 3 x 2
             e o    
         <int> <chr>
-      1     1 a    
-      2     2 b    
+      1     2 b    
+      2     1 a    
       3     3 c    
     Code
       filled_dm_in_place$t4
@@ -105,7 +105,7 @@
       # A tibble: 3 x 3
             g     h o    
         <int> <int> <chr>
-      1     1     1 a    
+      1     1     3 a    
       2     2     2 b    
-      3     3     3 c    
+      3     3     1 c    
 
