@@ -57,12 +57,8 @@
     Code
       filled_dm$t3
     Output
-      # A tibble: 3 x 2
-            e o    
-        <int> <chr>
-      1     6 b    
-      2     5 a    
-      3     7 c    
+      # A tibble: 0 x 2
+      # ... with 2 variables: e <int>, o <chr>
     Code
       filled_dm$t4
     Output
@@ -93,12 +89,8 @@
     Code
       filled_dm_in_place$t3
     Output
-      # A tibble: 3 x 2
-            e o    
-        <int> <chr>
-      1     2 b    
-      2     1 a    
-      3     3 c    
+      # A tibble: 0 x 2
+      # ... with 2 variables: e <int>, o <chr>
     Code
       filled_dm_in_place$t4
     Output

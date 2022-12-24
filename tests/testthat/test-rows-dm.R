@@ -253,7 +253,10 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
   dm_ai_insert <-
     dm_for_autoinc_1() %>%
     # Remove one PK column, only provided by database
-    dm_select(t4, -g)
+    dm_select(t4, -g) %>%
+    dm_zoom_to(t3) %>%
+    filter(0L == 1L) %>%
+    dm_update_zoomed()
 
   expect_silent(
     filled_dm <- dm_rows_append(

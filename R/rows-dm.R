@@ -392,8 +392,12 @@ run_rows_op <- function(op_ticker, target_tbl, tbl, key, in_place, autoinc_col) 
     abort(paste0("Duplicate values for autoincrement primary key ", autoinc_col, "."))
   }
 
+  autoinc_col_new <- paste0(autoinc_col, "_new")
   if (length(key_values) == 0) {
-    barf
+    return(tibble(
+      !!sym(autoinc_col) := integer(),
+      !!sym(autoinc_col_new) := integer(),
+    ))
   }
 
   source_rows <- map(key_values, ~ select(filter(tbl, !!returning == !!.x), -!!returning))
@@ -433,7 +437,6 @@ run_rows_op <- function(op_ticker, target_tbl, tbl, key, in_place, autoinc_col) 
     !!sym(autoinc_col_orig) := !!key_values
   )
 
-  autoinc_col_new <- paste0(autoinc_col, "_new")
   set_names(out[2:1], c(autoinc_col, autoinc_col_new))
 }
 
