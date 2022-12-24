@@ -306,7 +306,9 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
 
   for (i in seq_along(tables)) {
     table <- tables[[i]]
+    target_tbl <- target_tbls[[i]]
     tbl <- tbls[[i]]
+    key <- keys[[i]]
 
     # FIXME: implement for in_place = FALSE
     if (in_place && (rows_op_name %in% c("append"))) {
@@ -326,9 +328,9 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
     }
 
     new_target_table <- op_ticker(
-      target_tbls[[i]],
+      target_tbl,
       tbl,
-      by = keys[[i]],
+      by = key,
       returning = !!returning,
       in_place = in_place
     )
