@@ -317,23 +317,7 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
       autoinc_col <- NULL
     }
 
-    if (is.null(autoinc_col)) {
-      returning <- NULL
-    } else {
-      # Only one key column for autoincrement keys
-      returning <- sym(autoinc_col)
-      tbl <-
-        tbl %>%
-        select(-!!sym(autoinc_col))
-    }
-
-    new_target_table <- op_ticker(
-      target_tbl,
-      tbl,
-      by = key,
-      returning = !!returning,
-      in_place = in_place
-    )
+    new_target_table <- run_rows_op(op_ticker, target_tbl, tbl, key, in_place, autoinc_col)
 
     if (!is.null(autoinc_col)) {
       tbls <- dm_align_autoinc_fks(tbls, x, tables[[i]], dbplyr::get_returned_rows(new_target_table))
@@ -386,6 +370,26 @@ get_autoinc_col <- function(x, table, cols) {
   }
 
   pk_col
+}
+
+run_rows_op <- function(op_ticker, target_tbl, tbl, key, in_place, autoinc_col) {
+  if (is.null(autoinc_col)) {
+    returning <- NULL
+  } else {
+    # Only one key column for autoincrement keys
+    returning <- sym(autoinc_col)
+    tbl <-
+      tbl %>%
+      select(-!!sym(autoinc_col))
+  }
+
+  op_ticker(
+    target_tbl,
+    tbl,
+    by = key,
+    returning = !!returning,
+    in_place = in_place
+  )
 }
 
 dm_align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
