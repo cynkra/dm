@@ -309,16 +309,10 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
     tbl <- tbls[[i]]
 
     # FIXME: implement for in_place = FALSE
-    autoinc_col <- if (in_place && (rows_op_name %in% c("append"))) {
-      my_pk <- dm_get_all_pks(x, table)
-      stopifnot(nrow(my_pk) %in% 0:1)
-
-      if (isTRUE(my_pk$autoincrement)) {
-        pk_col <- get_key_cols(my_pk$pk_col[[1]])
-        if (pk_col %in% colnames(tbl)) {
-          pk_col
-        }
-      }
+    if (in_place && (rows_op_name %in% c("append"))) {
+      autoinc_col <- get_autoinc_col(x, table, colnames(tbl))
+    } else {
+      autoinc_col <- NULL
     }
 
     if (is.null(autoinc_col)) {
@@ -374,6 +368,22 @@ dm_patch_tbl <- function(dm, ...) {
   idx <- match(names(new_tables), def$table)
   def[idx, "data"] <- list(unname(new_tables))
   new_dm3(def)
+}
+
+get_autoinc_col <- function(x, table, cols) {
+  my_pk <- dm_get_all_pks(x, table)
+  stopifnot(nrow(my_pk) %in% 0:1)
+
+  if (!isTRUE(my_pk$autoincrement)) {
+    return(NULL)
+  }
+
+  pk_col <- get_key_cols(my_pk$pk_col[[1]])
+  if (!(pk_col %in% cols)) {
+    return(NULL)
+  }
+
+  pk_col
 }
 
 dm_align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
