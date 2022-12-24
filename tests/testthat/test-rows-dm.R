@@ -235,12 +235,7 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
   local_dm <-
     dm_ai_w_keys %>%
     collect()
-  dm_ai_empty_remote <-
-    local_dm %>%
-    dm_ptype() %>%
-    copy_dm_to(con_db, ., temporary = FALSE)
 
-  # Tests
   withr::defer({
     order_of_deletion <- c("t4", "t2", "t3", "t1")
     walk(
@@ -249,6 +244,12 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
     )
   })
 
+  dm_ai_empty_remote <-
+    local_dm %>%
+    dm_ptype() %>%
+    copy_dm_to(con_db, ., temporary = FALSE)
+
+  # Tests
   dm_ai_insert <-
     dm_for_autoinc_1() %>%
     # Remove one PK column, only provided by database
