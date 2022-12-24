@@ -1,5 +1,53 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 1.0.3.9001
+
+## Features
+
+- `dm_get_all_pks()` and `dm_get_all_fks()` keep order of `table` or `parent_table` argument (#1707).
+
+- Support AI PKs for dm_copy_to() for empty tables (ptype) (#1696).
+
+- Adapt dm structure to support autoincrement PKs (#1689).
+
+- Improve error message for `dm_add_pk()` when the `columns` argument is missing (#1644, #1646).
+
+## Chore
+
+- Accept dm tables that are tbl_sql but not tbl_dbi (#1695, #1710).
+
+- Use correctly typed missing value for lists (@DavisVaughan, #1686).
+
+- Require lifecycle >= 1.0.3 (#1637).
+
+## Continuous integration
+
+- Use `--no-multiarch` for Windows 3.6 tests.
+
+- Remove duplicate step in validate GHA (#1694).
+
+## Documentation
+
+- Fix link rot (#1671).
+
+## Uncategorized
+
+- Merge pull request #1698 from cynkra/1642-f-autoincrement-dm-rows-append.
+
+
+
+- Merge pull request #1640 from cynkra/docs-cynkra-pkgdown.
+
+
+
+- Harmonize yaml formatting.
+
+- Revert changes to matrix section.
+
+- Merged cran-1.0.3 into main.
+
+
+
 # dm 1.0.3.9000
 
 ## Chore
