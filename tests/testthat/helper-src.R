@@ -702,10 +702,10 @@ dm_zoomed_2 <- function() dm_zoom_to(dm_for_filter(), tf_3)
 
 dm_for_autoinc_1 %<-% {
   dm(
-    t1 = tibble(a = 5:7, b = letters[1:3]),
-    t2 = tibble(c = 10:8, d = 7:5),
-    t3 = tibble(e = c(6L, 5L, 7L), f = letters[1:3]),
-    t4 = tibble(g = 1:3, h = 8:10)
+    t1 = tibble(a = 5:7, o = letters[1:3]),
+    t2 = tibble(c = 10:8, d = 7:5, o = letters[3:1]),
+    t3 = tibble(e = c(6L, 5L, 7L), o = letters[c(2, 1, 3)]),
+    t4 = tibble(g = 1:3, h = 8:10, o = letters[1:3])
   )
 }
 
