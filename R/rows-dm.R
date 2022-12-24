@@ -366,49 +366,45 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
 
   rows_op <- get_dm_rows_op(rows_op_name)
   ticker <- new_ticker(rows_op$pb_label, length(tables), progress)
-
-  # run operation(target_tbl, source_tbl, in_place = in_place) for each table
-
-  # Always return original table by default, to avoid leaking "returning" rows
-  op_results <- target_tbls
-
   op_ticker <- ticker(rows_op$fun)
 
+  if (!in_place) {
+    op_results <- target_tbls
+  }
+
+  # run operation(target_tbl, tbl, in_place = in_place) for each table
   for (i in seq_along(tables)) {
     table <- tables[[i]]
-    target_tbl <- target_tbls[[i]]
     tbl <- tbls[[i]]
-    key <- keys[[i]]
 
     # FIXME: implement for in_place = FALSE
-    if (in_place && (rows_op_name %in% c("append"))) {
+    if (in_place && (rows_op_name == "append")) {
       autoinc_col <- get_autoinc_col(x, table, colnames(tbl))
     } else {
       autoinc_col <- NULL
     }
 
     # Returns tibble if autoinc_col is set, `target_tbl` otherwise
-    res <- op_ticker(target_tbl, tbl, by = key, in_place = in_place, autoinc_col = autoinc_col)
+    res <- op_ticker(
+      target_tbls[[i]],
+      tbl,
+      by = keys[[i]],
+      in_place = in_place,
+      autoinc_col = autoinc_col
+    )
 
     if (!is.null(autoinc_col)) {
-      tbls <- align_autoinc_fks(tbls, x, tables[[i]], res)
+      tbls <- align_autoinc_fks(tbls, x, table, res)
     } else if (!in_place) {
       op_results[[i]] <- res
     }
   }
 
-  if (identical(unname(op_results), unname(target_tbls))) {
-    out <- x
-  } else {
-    out <-
-      x %>%
-      dm_patch_tbl(!!!op_results)
-  }
-
   if (in_place) {
-    invisible(out)
+    invisible(x)
   } else {
-    out
+    x %>%
+      dm_patch_tbl(!!!op_results)
   }
 }
 
