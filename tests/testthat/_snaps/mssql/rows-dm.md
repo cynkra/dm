@@ -4,7 +4,7 @@
       local_dm$t1
     Output
       # A tibble: 3 x 2
-            a b    
+            a o    
         <int> <chr>
       1     5 a    
       2     6 b    
@@ -12,71 +12,67 @@
     Code
       local_dm$t2
     Output
-      # A tibble: 3 x 2
-            c     d
-        <int> <int>
-      1    10     7
-      2     9     6
-      3     8     5
+      # A tibble: 3 x 3
+            c     d o    
+        <int> <int> <chr>
+      1    10     7 c    
+      2     9     6 b    
+      3     8     5 a    
     Code
       local_dm$t3
     Output
       # A tibble: 3 x 2
-            e f    
+            e o    
         <int> <chr>
-      1     6 a    
-      2     5 b    
+      1     6 b    
+      2     5 a    
       3     7 c    
     Code
       local_dm$t4
     Output
-      # A tibble: 3 x 2
-            g     h
-        <int> <int>
-      1     1     8
-      2     2     9
-      3     3    10
+      # A tibble: 3 x 3
+            g     h o    
+        <int> <int> <chr>
+      1     1     8 a    
+      2     2     9 b    
+      3     3    10 c    
     Code
       filled_dm$t1
     Output
       # A tibble: 3 x 2
-            a b    
+            a o    
         <int> <chr>
-      1    NA a    
-      2    NA b    
-      3    NA c    
+      1     5 a    
+      2     6 b    
+      3     7 c    
     Code
       filled_dm$t2
     Output
-      # A tibble: 3 x 2
-            c     d
-        <int> <int>
-      1    NA    NA
-      2    NA    NA
-      3    NA    NA
+      # A tibble: 3 x 3
+            c     d o    
+        <int> <int> <chr>
+      1    10     7 c    
+      2     9     6 b    
+      3     8     5 a    
     Code
       filled_dm$t3
     Output
-      # A tibble: 3 x 2
-            e f    
-        <int> <chr>
-      1    NA a    
-      2    NA b    
-      3    NA c    
+      # A tibble: 0 x 2
+      # ... with 2 variables: e <int>, o <chr>
     Code
       filled_dm$t4
     Output
-      # A tibble: 3 x 2
-            g     h
-        <int> <int>
-      1     1    NA
-      2     2    NA
-      3     3    NA
+      # A tibble: 3 x 3
+            g     h o    
+        <int> <int> <chr>
+      1    NA     8 a    
+      2    NA     9 b    
+      3    NA    10 c    
     Code
       filled_dm_in_place$t1
     Output
       # A tibble: 3 x 2
-            a b    
+            a o    
         <int> <chr>
       1     1 a    
       2     2 b    
@@ -84,28 +80,24 @@
     Code
       filled_dm_in_place$t2
     Output
-      # A tibble: 3 x 2
-            c     d
-        <int> <int>
-      1     3     1
-      2     2     2
-      3     1     3
+      # A tibble: 3 x 3
+            c     d o    
+        <int> <int> <chr>
+      1     1     3 c    
+      2     2     2 b    
+      3     3     1 a    
     Code
       filled_dm_in_place$t3
     Output
-      # A tibble: 3 x 2
-            e f    
-        <int> <chr>
-      1     2 a    
-      2     1 b    
-      3     3 c    
+      # A tibble: 0 x 2
+      # ... with 2 variables: e <int>, o <chr>
     Code
       filled_dm_in_place$t4
     Output
-      # A tibble: 3 x 2
-            g     h
-        <int> <int>
-      1     1     3
-      2     2     2
-      3     3     1
+      # A tibble: 3 x 3
+            g     h o    
+        <int> <int> <chr>
+      1     1     3 a    
+      2     2     2 b    
+      3     3     1 c    
 
