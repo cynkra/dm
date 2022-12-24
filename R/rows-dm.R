@@ -307,7 +307,7 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   pks <- dm_get_all_pks(x, tables)
 
   for (i in seq_along(tables)) {
-    has_autoinc <- FALSE
+    autoinc_col <- NULL
 
     # FIXME: implement for in_place = FALSE
     if (in_place && (rows_op_name %in% c("append"))) {
@@ -317,20 +317,20 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
       if (isTRUE(my_pk$autoincrement)) {
         pk_col <- get_key_cols(my_pk$pk_col[[1]])
         if (pk_col %in% colnames(tbls[[i]])) {
-          has_autoinc <- TRUE
+          autoinc_col <- pk_col
         }
       }
     }
 
-    if (has_autoinc) {
-      # Only one key column for autoincrement keys
-      returning <- sym(pk_col)
-      tbl <-
-        tbls[[i]] %>%
-        select(-!!sym(pk_col))
-    } else {
+    if (is.null(autoinc_col)) {
       returning <- NULL
       tbl <- tbls[[i]]
+    } else {
+      # Only one key column for autoincrement keys
+      returning <- sym(autoinc_col)
+      tbl <-
+        tbls[[i]] %>%
+        select(-!!sym(autoinc_col))
     }
 
     new_target_table <- op_ticker(
@@ -341,7 +341,7 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
       in_place = in_place
     )
 
-    if (has_autoinc) {
+    if (!is.null(autoinc_col)) {
       tbls <- dm_align_autoinc_fks(tbls, x, tables[[i]], dbplyr::get_returned_rows(new_target_table))
     }
 
