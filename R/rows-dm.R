@@ -374,22 +374,16 @@ get_autoinc_col <- function(x, table, cols) {
 
 run_rows_op <- function(op_ticker, target_tbl, tbl, key, in_place, autoinc_col) {
   if (is.null(autoinc_col)) {
-    returning <- NULL
-  } else {
-    # Only one key column for autoincrement keys
-    returning <- sym(autoinc_col)
-    tbl <-
-      tbl %>%
-      select(-!!sym(autoinc_col))
+    return(op_ticker(target_tbl, tbl, by = key, in_place = in_place))
   }
 
-  op_ticker(
-    target_tbl,
-    tbl,
-    by = key,
-    returning = !!returning,
-    in_place = in_place
-  )
+  # Only one key column for autoincrement keys
+  returning <- sym(autoinc_col)
+  tbl <-
+    tbl %>%
+    select(-!!sym(autoinc_col))
+
+  op_ticker(target_tbl, tbl, by = key, returning = !!returning, in_place = in_place)
 }
 
 align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
