@@ -297,23 +297,9 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
 
   insert_sql <- map_chr(insert_queries, dbplyr::sql_render)
 
-  insert_sql <- paste0("WITH res AS (", insert_sql, ") SELECT * FROM res")
-
-  # Didn't work on Postgres
-  if (FALSE) {
-    returning_map_sql <- paste0(
-      "SELECT ", DBI::dbQuoteLiteral(con, key_values), " AS ", autoinc_col_orig, ", ",
-      autoinc_col, " FROM (",
-      insert_sql,
-      ") q"
-    )
-
-    returning_sql <- paste(returning_map_sql, collapse = "\nUNION ALL\n")
-
-    DBI::dbGetQuery(con, returning_sql, immediate = TRUE)
-  }
-
   # Run INSERT INTO queries, side effect!
+  # Must run queries individually, e.g. on Postgres:
+  # > WITH clause containing a data-modifying statement must be at the top level
   insert_res <- map(insert_queries, ~ DBI::dbGetQuery(con, .x))
 
   out <- tibble(
