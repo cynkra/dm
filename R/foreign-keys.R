@@ -546,6 +546,11 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   val_names_na_expr <- map(syms(val_names), ~ call("is.na", .x))
   any_value_na_expr <- reduce(val_names_na_expr, ~ call("|", .x, .y))
 
+  # Work around weird bug in R 3.6 and before
+  if (getRversion() < "4.0") {
+    dbplyr::sql_render(t1_join)
+  }
+
   res_tbl <- tryCatch(
     t1_join %>%
       # if value* is NULL, this also counts as a match -- consistent with fk semantics
