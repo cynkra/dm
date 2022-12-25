@@ -297,6 +297,8 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
 
   insert_sql <- map_chr(insert_queries, dbplyr::sql_render)
 
+  insert_sql <- paste0("WITH res AS (", insert_sql, ") SELECT * FROM res")
+
   # Didn't work on Postgres
   if (FALSE) {
     returning_map_sql <- paste0(
