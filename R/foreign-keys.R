@@ -543,11 +543,8 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     count(!!!t2_vals) %>%
     ungroup()
 
-  any_value_na_expr <- reduce(
-    syms(val_names[-1]),
-    ~ call("|", .x, call("is.na", .y)),
-    .init = call("is.na", sym(val_names[[1]]))
-  )
+  val_names_na_expr <- map(syms(val_names), ~ call("is.na", .x))
+  any_value_na_expr <- reduce(val_names_na_expr, ~ call("|", .x, .y))
 
   res_tbl <- tryCatch(
     t1_join %>%
