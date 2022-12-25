@@ -5,7 +5,6 @@ test_that("dumma", {
 })
 
 test_that("dm_rows_insert()", {
-  skip_if(.Platform$OS.type == "windows" && getRversion() < "4.0")
   skip_if_not_installed("nycflights13")
   skip_if_not_installed("RSQLite")
   local_options(lifecycle_verbosity = "quiet")

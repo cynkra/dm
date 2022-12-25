@@ -163,7 +163,7 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
     left_join(tbl_is_pk, by = c("table", "column"))
 }
 
-check_fk_constraints <- function(dm, progress = NA, top_level_fun = top_level_fun) {
+check_fk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
   fks <- dm_get_all_fks_impl(dm)
   pts <- map(fks$parent_table, tbl_impl, dm = dm)
   cts <- map(fks$child_table, tbl_impl, dm = dm)
