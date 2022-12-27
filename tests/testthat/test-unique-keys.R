@@ -45,15 +45,34 @@ test_that("unique keys", {
           c(year, manufacturer, model)
         )
     )
+    # trying to remove a UK with a FK pointing to it and `fail_fk = FALSE`
+    dm_add_fk(
+      dm_nycflights_small(),
+      flights,
+      time_hour,
+      weather,
+      time_hour
+    ) %>%
+      dm_rm_uk(weather, time_hour, fail_fk = FALSE)
   })
 
   expect_snapshot({
+    # failing check upon addition of UK
     dm_add_uk(
       dm_nycflights_small(),
       planes,
       c(year, manufacturer, model),
       check = TRUE
     )
+    # trying to remove a UK with a FK pointing to it and `fail_fk = TRUE`
+    dm_add_fk(
+      dm_nycflights_small(),
+      flights,
+      time_hour,
+      weather,
+      time_hour
+    ) %>%
+      dm_rm_uk(weather, time_hour, fail_fk = TRUE)
   },
   error = TRUE)
 })
