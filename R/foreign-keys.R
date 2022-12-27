@@ -92,9 +92,6 @@ dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ...,
     # setequal() could also be used for matching, but IMHO the order should matter
     matches_keys <- map_lgl(all_keys$uk_col, identical, ref_col_name)
     if (!any(matches_keys)) {
-      cli::cli_alert_info(
-        paste0("Adding new unique key to table `", ref_table_name, "`: ", commas(tick(ref_col_name)))
-      )
       if (check) {
         if (!is_unique_key_se(ref_table_obj, ref_col_name)$unique) {
           abort_not_unique_key(ref_table_name, ref_col_name)
