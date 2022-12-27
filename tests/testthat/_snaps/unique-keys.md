@@ -88,6 +88,8 @@
       dm_add_fk(dm_nycflights_small(), flights, time_hour, weather, time_hour) %>%
         dm_rm_uk(weather, time_hour, fail_fk = TRUE)
     Condition
-      Error in `abort_first_rm_fks()`:
+      Error in `pmap()`:
+      i In index: 1.
+      Caused by error in `abort_first_rm_fks()`:
       ! There are foreign keys pointing from table(s) `flights` to table `weather`. First remove those, or set `fail_fk = FALSE`.
 
