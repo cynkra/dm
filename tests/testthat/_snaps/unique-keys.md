@@ -71,6 +71,8 @@
       dm_add_fk(dm_nycflights_small(), flights, time_hour, weather, time_hour) %>%
         dm_rm_uk(weather, time_hour, fail_fk = FALSE)
     Output
+      -- Table source ----------------------------------------------------------------
+      src:  DuckDB 0.6.1 [unknown@Linux 5.15.0-1024-azure:R 4.2.2/:memory:]
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 53
