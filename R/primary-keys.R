@@ -7,6 +7,8 @@
 #' If `force == TRUE`, the function will replace an already
 #' set key, without altering foreign keys previously pointing to that primary key.
 #'
+#' @details There can be only one primary key per table in a [`dm`].
+#'
 #' @inheritParams rlang::args_dots_empty
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
@@ -159,7 +161,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #'
 #' @description
 #' `dm_get_all_pks()` checks the `dm` object for primary keys and
-#' returns the tables, the respective primary key columns, and their classes.
+#' returns the tables and the respective primary key columns.
 #'
 #' @family primary key functions
 #' @param table One or more table names, as character vector,
@@ -217,8 +219,9 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #' Remove a primary key
 #'
 #' @description
-#' `dm_rm_pk()` removes one or more primary keys from a table and leaves the [`dm`] object otherwise unaltered.
-#' An error is thrown if no private key matches the selection criteria.
+#' If a table name is provided, `dm_rm_pk()` removes the primary key from this table and leaves the [`dm`] object otherwise unaltered.
+#' If no table is given, the `dm` is stripped of all primary keys at once.
+#' An error is thrown if no primary key matches the selection criteria.
 #' If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
 #' Foreign keys are never removed.
 #'

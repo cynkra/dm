@@ -44,6 +44,9 @@ the given combination of columns is a unique key of the table.
 If \code{force == TRUE}, the function will replace an already
 set key, without altering foreign keys previously pointing to that primary key.
 }
+\details{
+There can be only one primary key per table in a \code{\link{dm}}.
+}
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 nycflights_dm <- dm(

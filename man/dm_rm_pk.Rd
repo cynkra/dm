@@ -25,8 +25,9 @@ if there are foreign keys addressing the primary key that is to be removed.}
 An updated \code{dm} without the indicated primary key(s).
 }
 \description{
-\code{dm_rm_pk()} removes one or more primary keys from a table and leaves the \code{\link{dm}} object otherwise unaltered.
-An error is thrown if no private key matches the selection criteria.
+If a table name is provided, \code{dm_rm_pk()} removes the primary key from this table and leaves the \code{\link{dm}} object otherwise unaltered.
+If no table is given, the \code{dm} is stripped of all primary keys at once.
+An error is thrown if no primary key matches the selection criteria.
 If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
 Foreign keys are never removed.
 }
