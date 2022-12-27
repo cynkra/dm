@@ -750,6 +750,7 @@ empty_dm <- function() {
       segment = character(),
       display = character(),
       pks = list_of(new_pk()),
+      uks = list_of(new_uk()),
       fks = list_of(new_fk()),
       filters = list_of(new_filter()),
       zoom = list(),
