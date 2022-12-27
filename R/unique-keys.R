@@ -28,7 +28,7 @@
 #'     dm_add_uk(planes, manufacturer, check = TRUE)
 #' )
 #' @export
-dm_add_uk <- function(dm, table, columns, ..., check = FALSE, force = FALSE) {
+dm_add_uk <- function(dm, table, columns, ..., check = FALSE) {
   check_dots_empty()
 
   check_not_zoomed(dm)
@@ -45,26 +45,20 @@ dm_add_uk <- function(dm, table, columns, ..., check = FALSE, force = FALSE) {
     eval_tidy(expr(check_key(!!sym(table_name), !!col_expr)), list2(!!table_name := table_from_dm))
   }
 
-  dm_add_uk_impl(dm, table_name, col_name, force)
+  dm_add_uk_impl(dm, table_name, col_name)
 }
 
 # both "table" and "column" must be characters
 # in {datamodelr}, a primary key may consist of more than one columns
 # a key will be added, regardless of whether it is a unique key or not; not to be exported
-dm_add_uk_impl <- function(dm, table, column, force) {
+dm_add_uk_impl <- function(dm, table, column) {
   def <- dm_get_def(dm)
   i <- which(def$table == table)
 
-  if (!force && NROW(def$uks[[i]]) > 0) {
-    if (!dm_is_strict_keys(dm) &&
-      identical(def$uks[[i]]$column[[1]], column)) {
-      return(dm)
-    }
-
-    abort_key_set_force_false(table)
-  }
-
-  def$uks[[i]] <- tibble(column = !!list(column))
+  def$uks[[i]] <- vctrs::vec_rbind(
+    def$uks[[i]],
+    tibble(column = !!list(column))
+  )
 
   new_dm3(def)
 }
