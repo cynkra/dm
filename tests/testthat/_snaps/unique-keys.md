@@ -71,6 +71,8 @@
       dm_add_fk(dm_nycflights_small(), flights, time_hour, weather, time_hour) %>%
         dm_rm_uk(weather, time_hour, fail_fk = FALSE)
     Output
+      -- Table source ----------------------------------------------------------------
+      src:  Microsoft SQL Server 16.00.1000[dbo@fv-az641-742/master]
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 53
