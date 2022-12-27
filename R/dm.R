@@ -383,6 +383,8 @@ show_dm <- function(x) {
   cat_line("Tables: ", commas(tick(def$table)))
   cat_line("Columns: ", def_get_n_columns(def))
   cat_line("Primary keys: ", def_get_n_pks(def))
+  n_uks <- def_get_n_uks(def)
+  if (n_uks > 0) cat_line("Unique keys: ", n_uks)
   cat_line("Foreign keys: ", def_get_n_fks(def))
 
   filters <- dm_get_filters_impl(x)
@@ -417,6 +419,10 @@ def_get_n_columns <- function(def) {
 
 def_get_n_pks <- function(def) {
   sum(map_int(def$pks, vec_size))
+}
+
+def_get_n_uks <- function(def) {
+  sum(map_int(def$uks, vec_size))
 }
 
 def_get_n_fks <- function(def) {
