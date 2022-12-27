@@ -91,6 +91,13 @@ dm_has_uk_impl <- function(dm, table) {
   has_length(dm_get_uk_impl(dm, table))
 }
 
+dm_get_uk_impl <- function(dm, table_name) {
+  # Optimized
+  def <- dm_get_def(dm)
+  uks <- def$uks[[which(def$table == table_name)]]
+  uks$column
+}
+
 #' Get all primary keys of a [`dm`] object
 #'
 #' @description
