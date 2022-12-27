@@ -1,4 +1,6 @@
 test_that("unique keys", {
+  skip_if_remote_src()
+
   expect_snapshot({
     nyc_1_uk <- dm_add_uk(
       dm_nycflights_small(),
