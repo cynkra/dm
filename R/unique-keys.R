@@ -77,16 +77,16 @@ dm_add_uk_impl <- function(dm, table, column) {
   new_dm3(def)
 }
 
-#' Check for primary key
+#' Check for unique key
 #'
 #' @description
-#' `dm_has_uk()` checks if a given table has columns marked as its primary key.
+#' `dm_has_uk()` checks if a given table has columns marked as its unique key.
 #'
 #' @inheritParams dm_add_uk
 #'
 #' @family primary key functions
 #'
-#' @return A logical value: `TRUE` if the given table has a primary key, `FALSE` otherwise.
+#' @return A logical value: `TRUE` if the given table has a unique key, `FALSE` otherwise.
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
@@ -115,8 +115,8 @@ dm_get_uk_impl <- function(dm, table_name) {
 #' Get all primary keys of a [`dm`] object
 #'
 #' @description
-#' `dm_get_all_uks()` checks the `dm` object for primary keys and
-#' returns the tables, the respective primary key columns, and their classes.
+#' `dm_get_all_uks()` checks the `dm` object for unique keys and
+#' returns the tables and the respective unique key columns.
 #'
 #' @family primary key functions
 #' @param table One or more table names, as character vector,

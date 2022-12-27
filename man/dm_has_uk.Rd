@@ -2,7 +2,7 @@
 % Please edit documentation in R/unique-keys.R
 \name{dm_has_uk}
 \alias{dm_has_uk}
-\title{Check for primary key}
+\title{Check for unique key}
 \usage{
 dm_has_uk(dm, table, ...)
 }
@@ -14,10 +14,10 @@ dm_has_uk(dm, table, ...)
 \item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
-A logical value: \code{TRUE} if the given table has a primary key, \code{FALSE} otherwise.
+A logical value: \code{TRUE} if the given table has a unique key, \code{FALSE} otherwise.
 }
 \description{
-\code{dm_has_uk()} checks if a given table has columns marked as its primary key.
+\code{dm_has_uk()} checks if a given table has columns marked as its unique key.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

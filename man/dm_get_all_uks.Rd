@@ -24,8 +24,8 @@ A tibble with the following columns:
 }
 }
 \description{
-\code{dm_get_all_uks()} checks the \code{dm} object for primary keys and
-returns the tables, the respective primary key columns, and their classes.
+\code{dm_get_all_uks()} checks the \code{dm} object for unique keys and
+returns the tables and the respective unique key columns.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
