@@ -188,10 +188,6 @@ dm_get_all_uks_def_impl <- function(def, table = NULL) {
 #' @return An updated `dm` without the indicated unique key(s).
 #'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
-#' dm_nycflights13() %>%
-#'   dm_rm_uk(airports, fail_fk = FALSE) %>%
-#'   dm_draw()
 dm_rm_uk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE) {
   if (missing(fail_fk)) {
     fail_fk <- NULL

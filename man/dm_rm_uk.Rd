@@ -30,13 +30,6 @@ An error is thrown if no unique key matches the selection criteria.
 If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
 Foreign keys are never removed.
 }
-\examples{
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-dm_nycflights13() \%>\%
-  dm_rm_uk(airports, fail_fk = FALSE) \%>\%
-  dm_draw()
-\dontshow{\}) # examplesIf}
-}
 \seealso{
 Other primary key functions: 
 \code{\link{dm_add_pk}()},
