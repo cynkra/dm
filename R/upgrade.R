@@ -46,6 +46,8 @@ dm_upgrade <- function(dm, quiet) {
     def <- unclass(dm)$def
     def$pks <- map(def$pks, mutate, autoincrement = FALSE) %>%
       vctrs::as_list_of(new_pk())
+    def$uks <- list_of(new_uk())
+    def <- relocate(def, uks, .after = pks)
     dm <- new_dm3(def, zoomed = is_zoomed(dm))
   }
 
