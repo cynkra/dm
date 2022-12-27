@@ -46,6 +46,7 @@
       Tables: `tf_4`, `tf_5`, `tf_3`, `tf_6`, `tf_2`, `tf_1`
       Columns: 20
       Primary keys: 6
+      Unique keys: 1
       Foreign keys: 5
     Code
       unwrapped$tf_4

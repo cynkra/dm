@@ -57,6 +57,7 @@
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
       Columns: 20
       Primary keys: 6
+      Unique keys: 1
       Foreign keys: 5
     Code
       dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique",
@@ -70,6 +71,7 @@
       Tables: `tf_1...1`, `tf_2...2`, `tf_3...3`, `tf_4...4`, `tf_5...5`, ... (17 total)
       Columns: 56
       Primary keys: 16
+      Unique keys: 2
       Foreign keys: 14
     Code
       writeLines(conditionMessage(expect_error(dm_bind(dm_for_filter(),
@@ -116,6 +118,7 @@
       Tables: `tf_1...1`, `tf_2...2`, `tf_3...3`, `tf_4...4`, `tf_5...5`, ... (17 total)
       Columns: 56
       Primary keys: 16
+      Unique keys: 2
       Foreign keys: 14
 
 # output for compound keys
