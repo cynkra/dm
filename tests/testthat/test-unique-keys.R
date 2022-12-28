@@ -1,6 +1,4 @@
 test_that("unique keys", {
-  skip_if_remote_src()
-
   expect_snapshot({
     nyc_1_uk <- dm_add_uk(
       dm_nycflights_small(),
@@ -54,7 +52,8 @@ test_that("unique keys", {
       weather,
       time_hour
     ) %>%
-      dm_rm_uk(weather, time_hour, fail_fk = FALSE)
+      dm_rm_uk(weather, time_hour, fail_fk = FALSE) %>%
+      dm_get_all_uks()
   })
 
   expect_snapshot(
