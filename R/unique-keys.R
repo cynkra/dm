@@ -77,41 +77,6 @@ dm_add_uk_impl <- function(dm, table, column) {
   new_dm3(def)
 }
 
-#' Check for unique key
-#'
-#' @description
-#' `dm_has_uk()` checks if a given table has columns marked as its unique key.
-#'
-#' @inheritParams dm_add_uk
-#'
-#' @family primary key functions
-#'
-#' @return A logical value: `TRUE` if the given table has a unique key, `FALSE` otherwise.
-#'
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_has_uk(flights)
-#' dm_nycflights13() %>%
-#'   dm_has_uk(planes)
-#' @export
-dm_has_uk <- function(dm, table, ...) {
-  check_dots_empty()
-  check_not_zoomed(dm)
-  table_name <- dm_tbl_name(dm, {{ table }})
-  dm_has_uk_impl(dm, table_name)
-}
-
-dm_has_uk_impl <- function(dm, table) {
-  has_length(dm_get_uk_impl(dm, table))
-}
-
-dm_get_uk_impl <- function(dm, table_name) {
-  # Optimized
-  def <- dm_get_def(dm)
-  uks <- def$uks[[which(def$table == table_name)]]
-  uks$column
-}
-
 #' Get all primary keys of a [`dm`] object
 #'
 #' @description

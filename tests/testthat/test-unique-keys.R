@@ -20,9 +20,7 @@ test_that("unique keys", {
         c(year, manufacturer, model)
       ) %>%
       dm_get_all_uks()
-    # dm_has_uk()
-    dm_has_uk(nyc_1_uk, planes)
-    dm_has_uk(nyc_1_uk, flights)
+
     # dm_rm_uk()
     nyc_1_uk %>%
       dm_rm_uk() %>%
@@ -33,9 +31,7 @@ test_that("unique keys", {
     nyc_1_uk %>%
       dm_rm_uk(flights, everything()) %>%
       dm_get_all_uks()
-    # dm_get_uk_impl()
-    dm_get_uk_impl(nyc_1_uk, "planes")
-    dm_get_uk_impl(nyc_1_uk, "flights")
+
     # dm_examine_constraints()
     dm_examine_constraints(
       dm_nycflights_small() %>%
