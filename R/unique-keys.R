@@ -71,7 +71,7 @@ dm_add_uk_impl <- function(dm, table, column) {
 
   def$uks[[i]] <- vctrs::vec_rbind(
     def$uks[[i]],
-    tibble(column = !!list(column))
+    new_uk(list(column))
   )
 
   new_dm3(def)

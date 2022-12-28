@@ -98,7 +98,7 @@ dm_add_pk_impl <- function(dm, table, column, autoincrement, force) {
     abort_key_set_force_false(table)
   }
 
-  def$pks[[i]] <- tibble(column = !!list(column), autoincrement = autoincrement)
+  def$pks[[i]] <- new_pk(column = list(column), autoincrement = autoincrement)
 
   new_dm3(def)
 }
