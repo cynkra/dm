@@ -15,7 +15,7 @@
 #'   on the DB (cf. [dm_rows_append()]) the foreign keys are updated accordingly.
 #'   If no UK is available, the insertion is done row-wise, which also ensures a correct matching, but can be much slower.
 #' - a UK can generally enhance the data model by adding additional information
-#' - if a foreign key is added to point at a table without a PK and a UK, a UK is automatically added to that table.
+#' - if a foreign key is added to point at a table without a corresponding PK or UK, a UK is automatically added to that table.
 #'
 #' @family primary key functions
 #'
