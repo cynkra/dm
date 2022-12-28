@@ -19,14 +19,6 @@
       2 flights origin, dest, time_hour    
       3 planes  year, manufacturer, model  
     Code
-      dm_has_uk(nyc_1_uk, planes)
-    Output
-      [1] FALSE
-    Code
-      dm_has_uk(nyc_1_uk, flights)
-    Output
-      [1] TRUE
-    Code
       nyc_1_uk %>% dm_rm_uk() %>% dm_get_all_uks()
     Message
       Removing unique keys: %>%
@@ -44,20 +36,6 @@
     Output
       # A tibble: 0 x 2
       # ... with 2 variables: table <chr>, uk_col <keys>
-    Code
-      dm_get_uk_impl(nyc_1_uk, "planes")
-    Output
-      list()
-    Code
-      dm_get_uk_impl(nyc_1_uk, "flights")
-    Output
-      [[1]]
-       [1] "year"           "month"          "day"            "dep_time"      
-       [5] "sched_dep_time" "dep_delay"      "arr_time"       "sched_arr_time"
-       [9] "arr_delay"      "carrier"        "flight"         "tailnum"       
-      [13] "origin"         "dest"           "air_time"       "distance"      
-      [17] "hour"           "minute"         "time_hour"     
-      
     Code
       dm_examine_constraints(dm_nycflights_small() %>% dm_add_uk(planes, c(year,
         manufacturer, model)))
