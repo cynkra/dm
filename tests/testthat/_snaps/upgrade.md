@@ -86,6 +86,16 @@
       is_zoomed(dm)
     Output
       [1] FALSE
+    Code
+      dm_get_all_uks(dm_v3)
+    Message
+      Upgrading dm object created with dm <= 0.3.0.
+      Upgrading dm object created with dm <= 1.0.4.
+    Output
+      # A tibble: 1 x 2
+        table uk_col
+        <chr> <keys>
+      1 tf_6  n     
 
 # can upgrade zoomed from v3
 
@@ -115,6 +125,15 @@
       is_zoomed(dm)
     Output
       [1] FALSE
+    Code
+      dm_get_all_uks(dm_v4)
+    Message
+      Upgrading dm object created with dm <= 1.0.4.
+    Output
+      # A tibble: 1 x 2
+        table uk_col
+        <chr> <keys>
+      1 tf_6  n     
 
 # can upgrade zoomed to v4
 
