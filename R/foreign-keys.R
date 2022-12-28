@@ -85,10 +85,9 @@ dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ...,
   } else {
     ref_col_name <- names(eval_select_indices(ref_col_expr, colnames(ref_table_obj)))
     # check if either a PK or UK already matches ref_col_name
-    all_keys <- dm_get_all_pks_impl(dm) %>%
+    all_keys <- dm_get_all_pks_impl(dm, ref_table_name) %>%
       rename(uk_col = pk_col) %>%
-      bind_rows(dm_get_all_uks_impl(dm)) %>%
-      filter(table == ref_table_name)
+      bind_rows(dm_get_all_uks_impl(dm, ref_table_name))
     # setequal() could also be used for matching, but IMHO the order should matter
     matches_keys <- map_lgl(all_keys$uk_col, identical, ref_col_name)
     if (!any(matches_keys)) {
