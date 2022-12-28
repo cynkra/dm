@@ -53,26 +53,26 @@ test_that("unique keys", {
   })
 
   expect_snapshot_error(
-      # failing check upon addition of UK
-      dm_add_uk(
-        dm_nycflights_small(),
-        planes,
-        c(year, manufacturer, model),
-        check = TRUE
-      ),
-      class = dm_error("not_unique_key")
+    # failing check upon addition of UK
+    dm_add_uk(
+      dm_nycflights_small(),
+      planes,
+      c(year, manufacturer, model),
+      check = TRUE
+    ),
+    class = dm_error("not_unique_key")
   )
 
   expect_snapshot_error(
-      # trying to remove a UK with a FK pointing to it and `fail_fk = TRUE`
-      dm_add_fk(
-        dm_nycflights_small(),
-        flights,
-        time_hour,
-        weather,
-        time_hour
-      ) %>%
-        dm_rm_uk(weather, time_hour, fail_fk = TRUE),
+    # trying to remove a UK with a FK pointing to it and `fail_fk = TRUE`
+    dm_add_fk(
+      dm_nycflights_small(),
+      flights,
+      time_hour,
+      weather,
+      time_hour
+    ) %>%
+      dm_rm_uk(weather, time_hour, fail_fk = TRUE),
     class = dm_error("first_rm_fks")
   )
 })
