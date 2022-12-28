@@ -223,6 +223,22 @@ dm_rm_uk_impl <- function(dm, table_name, columns, fail_fk) {
   new_dm3(def)
 }
 
+# for upgrading dm with version < 4L
+get_implicit_uks_from_def <- function(def) {
+  all_fks <- dm_get_all_fks_def_impl(def) %>%
+    select(table = parent_table, uk_col = parent_key_cols)
+  all_pks <- dm_get_all_pks_def_impl(def)
+  implicit_uks <- anti_join(all_fks, all_pks, by = c("table", "uk_col" = "pk_col")) %>%
+    distinct() %>%
+    group_by(table) %>%
+    summarize(uk_col = list_of(new_uk(as.list(uk_col)), .ptype = new_uk()), .groups = "drop")
+  # bring in line with tables in def
+  select(def, table) %>%
+    left_join(implicit_uks, by = "table") %>%
+    mutate(uk_col = purrr::modify(uk_col, ~ .x %||% new_uk())) %>%
+    pull(uk_col)
+}
+
 # Error -------------------------------------------------------------------
 
 abort_uk_not_defined <- function() {
