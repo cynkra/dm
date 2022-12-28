@@ -8,6 +8,8 @@
 #' set key, without altering foreign keys previously pointing to that primary key.
 #'
 #' @details There can be only one primary key per table in a [`dm`].
+#' It's possible though to set an unlimited number of unique keys using [dm_add_uk()]
+#' or adding foreign keys pointing to columns other than the primary key columns with [dm_add_fk()].
 #'
 #' @inheritParams rlang::args_dots_empty
 #' @param dm A `dm` object.

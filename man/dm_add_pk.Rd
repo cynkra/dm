@@ -46,6 +46,8 @@ set key, without altering foreign keys previously pointing to that primary key.
 }
 \details{
 There can be only one primary key per table in a \code{\link{dm}}.
+It's possible though to set an unlimited number of unique keys using \code{\link[=dm_add_uk]{dm_add_uk()}}
+or adding foreign keys pointing to columns other than the primary key columns with \code{\link[=dm_add_fk]{dm_add_fk()}}.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
