@@ -15,7 +15,7 @@
       Upgrading dm object created with dm <= 0.2.1.
       Upgrading dm object created with dm <= 0.2.4.
       Upgrading dm object created with dm <= 0.3.0.
-      Upgrading dm object created with dm <= 1.0.4.
+      Upgrading dm object created with dm <= 1.0.3.
     Code
       dm <- new_dm3(def)
       dm_validate(dm)
@@ -32,7 +32,7 @@
       Upgrading dm object created with dm <= 0.2.1.
       Upgrading dm object created with dm <= 0.2.4.
       Upgrading dm object created with dm <= 0.3.0.
-      Upgrading dm object created with dm <= 1.0.4.
+      Upgrading dm object created with dm <= 1.0.3.
     Code
       dm <- new_dm3(def, zoomed = TRUE)
       dm_validate(dm)
@@ -48,7 +48,7 @@
     Message
       Upgrading dm object created with dm <= 0.2.4.
       Upgrading dm object created with dm <= 0.3.0.
-      Upgrading dm object created with dm <= 1.0.4.
+      Upgrading dm object created with dm <= 1.0.3.
     Code
       dm <- new_dm3(def)
       dm_validate(dm)
@@ -64,7 +64,7 @@
     Message
       Upgrading dm object created with dm <= 0.2.4.
       Upgrading dm object created with dm <= 0.3.0.
-      Upgrading dm object created with dm <= 1.0.4.
+      Upgrading dm object created with dm <= 1.0.3.
     Code
       dm <- new_dm3(def, zoomed = TRUE)
       dm_validate(dm)
@@ -79,7 +79,7 @@
       def <- dm_get_def(dm_v3)
     Message
       Upgrading dm object created with dm <= 0.3.0.
-      Upgrading dm object created with dm <= 1.0.4.
+      Upgrading dm object created with dm <= 1.0.3.
     Code
       dm <- new_dm3(def)
       dm_validate(dm)
@@ -90,7 +90,7 @@
       dm_get_all_uks(dm_v3)
     Message
       Upgrading dm object created with dm <= 0.3.0.
-      Upgrading dm object created with dm <= 1.0.4.
+      Upgrading dm object created with dm <= 1.0.3.
     Output
       # A tibble: 1 x 2
         table uk_col
@@ -104,7 +104,7 @@
       def <- dm_get_def(dm_v3_zoomed)
     Message
       Upgrading dm object created with dm <= 0.3.0.
-      Upgrading dm object created with dm <= 1.0.4.
+      Upgrading dm object created with dm <= 1.0.3.
     Code
       dm <- new_dm3(def, zoomed = TRUE)
       dm_validate(dm)
@@ -118,7 +118,7 @@
       def <- dm_get_def(dm_v4, quiet = TRUE)
       def <- dm_get_def(dm_v4)
     Message
-      Upgrading dm object created with dm <= 1.0.4.
+      Upgrading dm object created with dm <= 1.0.3.
     Code
       dm <- new_dm3(def)
       dm_validate(dm)
@@ -128,7 +128,7 @@
     Code
       dm_get_all_uks(dm_v4)
     Message
-      Upgrading dm object created with dm <= 1.0.4.
+      Upgrading dm object created with dm <= 1.0.3.
     Output
       # A tibble: 1 x 2
         table uk_col
@@ -141,7 +141,7 @@
       def <- dm_get_def(dm_v4_zoomed, quiet = TRUE)
       def <- dm_get_def(dm_v4_zoomed)
     Message
-      Upgrading dm object created with dm <= 1.0.4.
+      Upgrading dm object created with dm <= 1.0.3.
     Code
       dm <- new_dm3(def, zoomed = TRUE)
       dm_validate(dm)

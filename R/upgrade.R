@@ -41,7 +41,7 @@ dm_upgrade <- function(dm, quiet) {
 
   if (version < 4L) {
     if (!quiet) {
-      message("Upgrading dm object created with dm <= 1.0.4.") # TODO: Check that package version is correct
+      message("Upgrading dm object created with dm <= 1.0.3.")
     }
     def <- unclass(dm)$def
     def$pks <- map(def$pks, mutate, autoincrement = FALSE) %>%
