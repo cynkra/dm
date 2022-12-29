@@ -212,7 +212,7 @@ dm_rm_uk_impl <- function(dm, table_name, columns, fail_fk) {
   })
 
   # Talk about it
-  if (is.null(table_name)) {
+  if (is.null(table_name) || quo_is_null(columns)) {
     message("Removing unique keys: %>%")
     message("  ", glue_collapse(glue("dm_rm_uk({tick_if_needed(def$table[i])})"), " %>%\n  "))
   }
