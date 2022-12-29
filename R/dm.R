@@ -152,8 +152,8 @@ new_dm_def <- function(tables = list(),
   table <- names2(tables)
 
   stopifnot(all(pks_df$table %in% table))
-  stopifnot(all(fks_df$table %in% table))
   stopifnot(all(uks_df$table %in% table))
+  stopifnot(all(fks_df$table %in% table))
 
   zoom <- new_zoom()
   col_tracker_zoom <- new_col_tracker_zoom()
