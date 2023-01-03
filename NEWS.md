@@ -1,5 +1,28 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 1.0.3.9004
+
+- Internal changes only.
+
+
+# dm 1.0.3.9003
+
+- Internal changes only.
+
+
+# dm 1.0.3.9002
+
+## Bug fixes
+
+- `dm_examine_constraints()` works for `dm` objects on the database with compound keys (#1713).
+
+## Chore
+
+- `dm_unpack_tbl()` sets PK before FK (#1715).
+
+- Clean up `dm_rows_append()` implementation (#1714).
+
+
 # dm 1.0.3.9001
 
 ## Features

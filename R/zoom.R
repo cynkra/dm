@@ -1,4 +1,3 @@
-
 #' Mark table for manipulation
 #'
 #' @description
