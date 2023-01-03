@@ -185,27 +185,35 @@ dm_rm_uk_impl <- function(dm, table_name, columns, fail_fk) {
       i <- integer()
     }
   }
+  if (length(i) == 0 && dm_is_strict_keys(dm)) {
+    abort_uk_not_defined()
+  }
 
-  if (!quo_is_null(columns)) {
-    ii <- map2_lgl(def$data[i], def$uks[i], ~ tryCatch(
+  ii <- if (!quo_is_null(columns)) {
+    ii_col <- map2(def$data[i], def$uks[i], ~ tryCatch(
       {
         vars <- eval_select_indices(columns, colnames(.x))
-        identical(names(vars), .y$column[[1]])
+        map_lgl(.y$column, ~ identical(names(vars), .x))
       },
       error = function(e) {
         FALSE
       }
     ))
 
-    i <- i[ii]
-  }
+    # if `columns` is not NULL, it refers to only one UK, therefore we can choose
+    # the first element of the list created by `map2()`
 
-  if (length(i) == 0 && dm_is_strict_keys(dm)) {
-    abort_uk_not_defined()
+    # FIXME: error message should be more informative: which UKs are available
+    # for the given table? What was the user input for `columns`?
+    if (!any(ii_col[[1]])) {abort_uk_not_defined()}
+    ii_col[[1]]
+  } else {
+    # if no `column` is provided by user, use all columns for matching
+    TRUE
   }
 
   pwalk(list(def$fks[i], def$uks[i], def$table[i]), ~ {
-    is_match <- !is.na(vec_match(..1$ref_column, ..2$column))
+    is_match <- !is.na(vec_match(..1$ref_column, ..2$column[ii]))
     if (fail_fk && any(is_match)) {
       abort_first_rm_fks(..3, ..1$table[is_match])
     }
@@ -216,9 +224,8 @@ dm_rm_uk_impl <- function(dm, table_name, columns, fail_fk) {
     message("Removing unique keys: %>%")
     message("  ", glue_collapse(glue("dm_rm_uk({tick_if_needed(def$table[i])})"), " %>%\n  "))
   }
-
   # Execute
-  def$uks[i] <- list_of(new_uk())
+  def$uks[i] <- list_of(filter(def$uks[[i]], !ii))
 
   new_dm3(def)
 }

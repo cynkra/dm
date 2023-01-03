@@ -19,6 +19,26 @@
       2 flights origin, dest, time_hour    
       3 planes  year, manufacturer, model  
     Code
+      nyc_1_uk %>% dm_add_uk(flights, c(origin, dest, time_hour)) %>% dm_add_uk(
+        planes, c(year, manufacturer, model)) %>% dm_rm_uk(flights, c(origin, dest,
+        time_hour)) %>% dm_get_all_uks()
+    Output
+      # A tibble: 2 x 2
+        table   uk_col                     
+        <chr>   <keys>                     
+      1 flights year, month, ... (19 total)
+      2 planes  year, manufacturer, model  
+    Code
+      nyc_1_uk %>% dm_add_uk(flights, c(origin, dest, time_hour)) %>% dm_add_uk(
+        planes, c(year, manufacturer, model)) %>% dm_rm_uk(flights, everything()) %>%
+        dm_get_all_uks()
+    Output
+      # A tibble: 2 x 2
+        table   uk_col                   
+        <chr>   <keys>                   
+      1 flights origin, dest, time_hour  
+      2 planes  year, manufacturer, model
+    Code
       nyc_1_uk %>% dm_rm_uk() %>% dm_get_all_uks()
     Message
       Removing unique keys: %>%
