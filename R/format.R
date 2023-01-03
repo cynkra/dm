@@ -66,7 +66,7 @@ char_vec_to_sym <- function(x) {
   map(x, ~ if (length(.x) > 1) {
       paste0("c(", glue_collapse(syms(.x), ", "), ")")
     } else {
-      sym(x)
+      sym(.x)
     }
   )
 }
