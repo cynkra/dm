@@ -130,4 +130,14 @@ test_that("unique keys", {
       dm_rm_uk(weather, time_hour, fail_fk = TRUE),
     class = dm_error("first_rm_fks")
   )
+
+  expect_snapshot_error(
+    # trying to add a UK for which a PK already exists
+    dm_add_uk(
+      dm_nycflights_small(),
+      airlines,
+      carrier,
+    ),
+    class = dm_error("no_uk_if_pk")
+  )
 })
