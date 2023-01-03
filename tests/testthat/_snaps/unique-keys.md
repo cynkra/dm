@@ -42,7 +42,7 @@
       nyc_1_uk %>% dm_rm_uk() %>% dm_get_all_uks()
     Message
       Removing unique keys: %>%
-        dm_rm_uk(flights, c(year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour)
+        dm_rm_uk(flights, c(year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour))
     Output
       # A tibble: 0 x 2
       # ... with 2 variables: table <chr>, uk_col <keys>
@@ -50,12 +50,34 @@
       nyc_1_uk %>% dm_rm_uk(flights) %>% dm_get_all_uks()
     Message
       Removing unique keys: %>%
-        dm_rm_uk(flights, c(year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour)
+        dm_rm_uk(flights, c(year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour))
     Output
       # A tibble: 0 x 2
       # ... with 2 variables: table <chr>, uk_col <keys>
     Code
       nyc_1_uk %>% dm_rm_uk(flights, everything()) %>% dm_get_all_uks()
+    Output
+      # A tibble: 0 x 2
+      # ... with 2 variables: table <chr>, uk_col <keys>
+    Code
+      nyc_1_uk %>% dm_add_uk(flights, c(origin, dest, time_hour)) %>% dm_add_uk(
+        planes, c(year, manufacturer, model)) %>% dm_rm_uk() %>% dm_get_all_uks()
+    Message
+      Removing unique keys: %>%
+        dm_rm_uk(flights, c(year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour)) %>%
+        dm_rm_uk(flights, c(origin, dest, time_hour)) %>%
+        dm_rm_uk(planes, c(year, manufacturer, model))
+    Output
+      # A tibble: 0 x 2
+      # ... with 2 variables: table <chr>, uk_col <keys>
+    Code
+      nyc_1_uk %>% dm_add_uk(flights, c(origin, dest, time_hour)) %>% dm_add_uk(
+        planes, manufacturer) %>% dm_rm_uk() %>% dm_get_all_uks()
+    Message
+      Removing unique keys: %>%
+        dm_rm_uk(flights, c(year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour)) %>%
+        dm_rm_uk(flights, c(origin, dest, time_hour)) %>%
+        dm_rm_uk(planes, manufacturer)
     Output
       # A tibble: 0 x 2
       # ... with 2 variables: table <chr>, uk_col <keys>

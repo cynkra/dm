@@ -59,6 +59,34 @@ test_that("unique keys", {
       dm_rm_uk(flights, everything()) %>%
       dm_get_all_uks()
 
+    # test for code generation:
+    # add 2 UK to same table and 1 of length > 1 to another table and remove all UKs
+    nyc_1_uk %>%
+      dm_add_uk(
+        flights,
+        c(origin, dest, time_hour)
+      ) %>%
+      dm_add_uk(
+        planes,
+        c(year, manufacturer, model)
+      ) %>%
+      dm_rm_uk() %>%
+      dm_get_all_uks()
+
+    # test for code generation:
+    # add 2 UK to same table and 1 of length 1  to another table and remove all UKs
+    nyc_1_uk %>%
+      dm_add_uk(
+        flights,
+        c(origin, dest, time_hour)
+      ) %>%
+      dm_add_uk(
+        planes,
+        manufacturer
+      ) %>%
+      dm_rm_uk() %>%
+      dm_get_all_uks()
+
     # dm_examine_constraints()
     dm_examine_constraints(
       dm_nycflights_small() %>%
