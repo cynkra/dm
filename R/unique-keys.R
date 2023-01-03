@@ -210,7 +210,9 @@ dm_rm_uk_impl <- function(dm, table_name, columns, fail_fk) {
 
     # FIXME: error message should be more informative: which UKs are available
     # for the given table? What was the user input for `columns`?
-    if (!any(ii_col[[1]])) {abort_uk_not_defined()}
+    if (!any(ii_col[[1]])) {
+      abort_uk_not_defined()
+    }
     ii_col[[1]]
   } else {
     # if no `column` is provided by user, use all columns for matching
@@ -231,8 +233,8 @@ dm_rm_uk_impl <- function(dm, table_name, columns, fail_fk) {
     message("  ", glue_collapse(
       glue(
         "dm_rm_uk({tick_if_needed(rep(def$table[i], n_uk_per_table))}, {flatten(map(i, ~ char_vec_to_sym(def$uks[[.x]]$column)))})"
-      ), " %>%\n  ")
-    )
+      ), " %>%\n  "
+    ))
   }
   # Execute
   # in case `length(i) > 1`: all tables have all their UKs removed, respectively
