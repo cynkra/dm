@@ -221,11 +221,21 @@ dm_rm_uk_impl <- function(dm, table_name, columns, fail_fk) {
 
   # Talk about it
   if (is.null(table_name) || quo_is_null(columns)) {
+    n_uk_per_table <- map_int(i, ~ nrow(def$uks[[.x]]))
     message("Removing unique keys: %>%")
-    message("  ", glue_collapse(glue("dm_rm_uk({tick_if_needed(def$table[i])})"), " %>%\n  "))
+    message("  ", glue_collapse(
+      glue(
+        "dm_rm_uk({tick_if_needed(rep(def$table[i], n_uk_per_table))}, {flatten(map(i, ~ char_vec_to_sym(def$uks[[.x]]$column)))}"
+      ), " %>%\n  ")
+    )
   }
   # Execute
-  def$uks[i] <- list_of(filter(def$uks[[i]], !ii))
+  # in case `length(i) > 1`: all tables have all their UKs removed, respectively
+  def$uks[i] <- if (length(i) > 1) {
+    list_of(new_uk())
+  } else {
+    list_of(filter(def$uks[[i]], !ii))
+  }
 
   new_dm3(def)
 }
