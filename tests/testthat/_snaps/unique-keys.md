@@ -42,12 +42,15 @@
       nyc_1_uk %>% dm_rm_uk() %>% dm_get_all_uks()
     Message
       Removing unique keys: %>%
-        dm_rm_uk(flights)
+        dm_rm_uk(flights, c(year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour)
     Output
       # A tibble: 0 x 2
       # ... with 2 variables: table <chr>, uk_col <keys>
     Code
       nyc_1_uk %>% dm_rm_uk(flights) %>% dm_get_all_uks()
+    Message
+      Removing unique keys: %>%
+        dm_rm_uk(flights, c(year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour)
     Output
       # A tibble: 0 x 2
       # ... with 2 variables: table <chr>, uk_col <keys>
