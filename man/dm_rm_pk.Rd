@@ -34,6 +34,7 @@ Foreign keys are never removed.
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
+  dm_rm_fk(flights, origin, airports) \%>\%
   dm_rm_pk(airports, fail_fk = FALSE) \%>\%
   dm_draw()
 \dontshow{\}) # examplesIf}
