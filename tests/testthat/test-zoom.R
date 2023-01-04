@@ -97,7 +97,10 @@ test_that("dm_insert_zoomed() works", {
 test_that("dm_update_tbl() works", {
   # setting table tf_7 as zoomed table for tf_6 and removing its primary key and foreign keys pointing to it
   new_dm_for_filter <-
-    dm_get_def(dm_for_filter()) %>%
+    dm_for_filter() %>%
+    dm_rm_fk(tf_5, m, tf_6, n) %>%
+    dm_rm_uk(tf_6, n) %>%
+    dm_get_def() %>%
     mutate(
       zoom = if_else(table == "tf_6", list(tf_7()), list(NULL)),
       col_tracker_zoom = if_else(table == "tf_6", list(character()), list(NULL)),
