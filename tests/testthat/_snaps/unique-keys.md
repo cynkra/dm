@@ -90,12 +90,6 @@
       * Table `planes`: unique key `year`, `manufacturer`, `model`: has duplicate values: 2002, EMBRAER, EMB-145LR (19), 2001, EMBRAER, EMB-145LR (18), 2008, BOMBARDIER INC, CL-600-2D24 (18), 2007, BOMBARDIER INC, CL-600-2D24 (17), 1999, EMBRAER, EMB-145LR (16), ...
       * Table `flights`: foreign key `dest` into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (30), BQN (6), STT (4), PSE (2)
       * Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
-    Code
-      dm_add_fk(dm_nycflights_small(), flights, time_hour, weather, time_hour) %>%
-        dm_rm_uk(weather, time_hour, fail_fk = FALSE) %>% dm_get_all_uks()
-    Output
-      # A tibble: 0 x 2
-      # ... with 2 variables: table <chr>, uk_col <keys>
 
 ---
 
