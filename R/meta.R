@@ -66,13 +66,13 @@ dm_meta_raw <- function(con, catalog) {
     # "collation_catalog", "collation_schema", "domain_catalog",
     # "domain_schema", "domain_name"
   ))
-    
+
   # add autoincrement column
   if (is_mssql(src)) {
-    columns <- columns %>% 
+    columns <- columns %>%
       mutate(is_autoincrement = sql("COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity')"))
   } else {
-    columns <- columns %>% 
+    columns <- columns %>%
       mutate(is_autoincrement = NA)
   }
 
