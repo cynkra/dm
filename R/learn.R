@@ -109,6 +109,7 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     dm_update_zoomed() %>%
     dm_zoom_to(key_column_usage) %>%
     semi_join(table_constraints) %>%
+    left_join(table_constraints, select = c(delete_rule)) %>% 
     left_join(columns, select = c(column_name, dm_name, table_catalog, table_schema, table_name)) %>%
     dm_update_zoomed() %>%
     dm_select_tbl(-table_constraints) %>%
@@ -158,7 +159,12 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
       ref_column = list(ref_column),
       table = if (length(table) > 0) table[[1]] else NA_character_,
       column = list(column),
-      on_delete = "no_action"
+      # FIXME: `case_when()` gets the `.default` arg in v1.1.0, then:
+      # .default = "no_action"
+      on_delete = case_when(
+        delete_rule == "CASCADE" ~ "cascade",
+        TRUE ~ "no_action"
+      )
     ))) %>%
     ungroup() %>%
     select(-(1:3)) %>%
