@@ -96,9 +96,12 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     dm_update_zoomed() %>%
     dm_select_tbl(-table_constraints) %>%
     dm_flatten_to_tbl(key_column_usage, .recursive = TRUE) %>%
-    select(constraint_catalog, constraint_schema, constraint_name, dm_name, column_name) %>%
+    select(constraint_catalog, constraint_schema, constraint_name, dm_name, column_name, is_autoincrement) %>%
     group_by(constraint_catalog, constraint_schema, constraint_name, dm_name) %>%
-    summarize(pks = list(tibble(column = list(column_name)))) %>%
+    summarize(pks = list(tibble(
+      column = list(column_name),
+      autoincrement = as.logical(is_autoincrement)
+    ))) %>%
     ungroup() %>%
     select(table = dm_name, pks)
 
