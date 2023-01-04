@@ -76,7 +76,6 @@ dm_meta_raw <- function(con, catalog) {
       mutate(constraint_name = if_else(constraint_type == "PRIMARY KEY", paste0("pk_", table_name), constraint_name)) %>%
       mutate(delete_rule = if_else(constraint_type == "PRIMARY KEY", NA_character_, "NO ACTION"))
   } else {
-  
     table_constraints <- tbl_lc(src, "information_schema.table_constraints", vars = vec_c(
       "constraint_catalog", "constraint_schema", "constraint_name",
       "table_catalog", "table_schema", "table_name", "constraint_type",
@@ -85,7 +84,7 @@ dm_meta_raw <- function(con, catalog) {
       left_join(
         tbl_lc(src, "information_schema.referential_constraints", vars = vec_c(
           "constraint_catalog", "constraint_schema", "constraint_name",
-          #"unique_constraint_catalog", "unique_constraint_schema", "unique_constraint_name", "match_option", "update_rule", 
+          # "unique_constraint_catalog", "unique_constraint_schema", "unique_constraint_name", "match_option", "update_rule",
           "delete_rule"
         )),
         by = c("constraint_catalog", "constraint_schema", "constraint_name")
