@@ -98,7 +98,7 @@ dm_validate <- function(x) {
     anti_join(pks, by = c("ref_table" = "table", "ref_column" = "column")) %>%
     anti_join(uks, by = c("ref_table" = "table", "ref_column" = "column")) %>%
     transmute(problem = paste0(
-      tick(paste0(table, "$", char_vec_to_sym(column))), " -> ", tick(paste0(ref_table, "$", char_vec_to_sym(ref_column)))
+      tick(paste0(table, "$", deparse_keys(column))), " -> ", tick(paste0(ref_table, "$", deparse_keys(ref_column)))
     ))
 
   if (nrow(unmatched_fks) > 0) {

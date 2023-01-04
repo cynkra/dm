@@ -232,7 +232,7 @@ dm_rm_uk_impl <- function(dm, table_name, columns, fail_fk) {
     message("Removing unique keys: %>%")
     message("  ", glue_collapse(
       glue(
-        "dm_rm_uk({tick_if_needed(rep(def$table[i], n_uk_per_table))}, {flatten(map(i, ~ char_vec_to_sym(def$uks[[.x]]$column)))})"
+        "dm_rm_uk({tick_if_needed(rep(def$table[i], n_uk_per_table))}, {flatten_chr(map(i, ~ deparse_keys(def$uks[[.x]]$column)))})"
       ), " %>%\n  "
     ))
   }
