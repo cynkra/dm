@@ -109,7 +109,7 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     dm_update_zoomed() %>%
     dm_zoom_to(key_column_usage) %>%
     semi_join(table_constraints) %>%
-    left_join(table_constraints, select = c(delete_rule)) %>% 
+    left_join(table_constraints, select = c(delete_rule)) %>%
     left_join(columns, select = c(column_name, dm_name, table_catalog, table_schema, table_name)) %>%
     dm_update_zoomed() %>%
     dm_select_tbl(-table_constraints) %>%
