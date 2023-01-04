@@ -136,6 +136,7 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
       constraint_schema,
       constraint_name,
       ordinal_position,
+      delete_rule,
       ref_table = constraint_column_usage.dm_name,
       ref_column = constraint_column_usage.column_name,
       table = key_column_usage.dm_name,
