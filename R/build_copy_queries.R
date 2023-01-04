@@ -5,12 +5,11 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
   quote_enum_col <- function(x) {
     map_chr(x, ~ toString(map_chr(.x, DBI::dbQuoteIdentifier, conn = con)))
   }
-  
+
   ## helper to set on delete statement if required
   set_on_delete_col <- function(x) {
-    map_chr(x, ~{
-      switch(
-        .x,
+    map_chr(x, ~ {
+      switch(.x,
         "no_action" = return(""),
         "cascade" = return(" ON DELETE CASCADE"),
         abort(glue("on_delete column value '{.x}' not supported"))
