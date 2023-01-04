@@ -106,6 +106,12 @@ test_that("unique keys", {
     # ) %>%
     #   dm_rm_uk(weather, time_hour, fail_fk = FALSE) %>%
     #   dm_get_all_uks()
+
+    # key tracking needs to work also for UKs
+    dm_rename(dm_for_filter(), tf_6, p = n) %>% dm_get_all_uks()
+    dm_rename(dm_for_filter(), tf_6, p = n) %>% dm_get_all_fks()
+    dm_select(dm_for_filter(), tf_6, -n) %>% dm_get_all_uks()
+    dm_select(dm_for_filter(), tf_6, -n) %>% dm_get_all_fks()
   })
 
   expect_snapshot_error(
