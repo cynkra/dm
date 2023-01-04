@@ -66,6 +66,15 @@ dm_meta_raw <- function(con, catalog) {
     # "collation_catalog", "collation_schema", "domain_catalog",
     # "domain_schema", "domain_name"
   ))
+    
+  # add autoincrement column
+  if (is_mssql(src)) {
+    columns <- columns %>% 
+      mutate(is_autoincrement = sql("COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity')"))
+  } else {
+    columns <- columns %>% 
+      mutate(is_autoincrement = NA)
+  }
 
   if (is_mariadb(src)) {
     table_constraints <- tbl_lc(src, "information_schema.table_constraints", vars = vec_c(
@@ -224,7 +233,7 @@ select_dm_meta <- function(dm_meta) {
   dm_meta %>%
     dm_select(schemata, catalog_name, schema_name) %>%
     dm_select(tables, table_catalog, table_schema, table_name, table_type) %>%
-    dm_select(columns, table_catalog, table_schema, table_name, column_name, ordinal_position, column_default, is_nullable) %>%
+    dm_select(columns, table_catalog, table_schema, table_name, column_name, ordinal_position, column_default, is_nullable, is_autoincrement) %>%
     dm_select(table_constraints, constraint_catalog, constraint_schema, constraint_name, table_catalog, table_schema, table_name, constraint_type, delete_rule) %>%
     dm_select(key_column_usage, constraint_catalog, constraint_schema, constraint_name, table_catalog, table_schema, table_name, column_name, ordinal_position) %>%
     dm_select(constraint_column_usage, table_catalog, table_schema, table_name, column_name, constraint_catalog, constraint_schema, constraint_name, ordinal_position)
