@@ -5,6 +5,18 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
   quote_enum_col <- function(x) {
     map_chr(x, ~ toString(map_chr(.x, DBI::dbQuoteIdentifier, conn = con)))
   }
+  
+  ## helper to set on delete statement if required
+  set_on_delete_col <- function(x) {
+    map_chr(x, ~{
+      switch(
+        .x,
+        "no_action" = return(""),
+        "cascade" = return(" ON DELETE CASCADE"),
+        abort(glue("on_delete column value '{.x}' not supported"))
+      )
+    })
+  }
 
   ## fetch types, keys and uniques
   pks <- dm_get_all_pks_impl(dm) %>% rename(name = table)
@@ -156,7 +168,8 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
             unlist(table_names[parent_table]),
             " (",
             quote_enum_col(parent_key_cols),
-            ")"
+            ")",
+            set_on_delete_col(on_delete)
           )
         ) %>%
         group_by(name) %>%
