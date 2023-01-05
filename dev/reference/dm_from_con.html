@@ -16,7 +16,7 @@ are imported from the database."><meta property="og:image" content="https://cynk
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9002</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9004</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -131,21 +131,13 @@ default: active database.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm_get_con.html">dm_get_con</a></span><span class="op">(</span><span class="fu"><a href="dm_financial.html">dm_financial</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># dm:::dm_has_financial()</span></span></span>
+<span class="r-in"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="dm_get_con.html">dm_get_con</a></span><span class="op">(</span><span class="fu"><a href="dm_financial.html">dm_financial</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`dm_from_src()` was deprecated in dm 0.3.0.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use `dm_from_con()` instead.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Keys queried successfully, use `learn_keys = TRUE` to mute this message.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">──</span> <span style="color: #00BB00;">Table source</span> <span style="color: #00BB00;">────────────────────────────────────────────────────────────────</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAFFF;">──</span> <span style="color: #FFAFFF;">Metadata</span> <span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 57</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Primary keys: 9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Foreign keys: 8</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Avoid DBI::dbDisconnect() here, because we don't own the connection</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
