@@ -128,6 +128,7 @@ utils::globalVariables(c(
   "constraint_schema",
   "constraint_type",
   "dbname",
+  "delete_rule",
   "FIXME",
   "is_nullable",
   "key_column_usage",
@@ -174,6 +175,7 @@ utils::globalVariables(c(
   #
   # meta
   "DATABASE",
+  "is_autoincrement",
   "referenced_column_name",
   "referenced_table_name",
   "referenced_table_schema",
