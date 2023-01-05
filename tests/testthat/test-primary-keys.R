@@ -88,15 +88,13 @@ test_that("dm_rm_pk() works as intended?", {
 test_that("dm_rm_pk() supports partial filters", {
   expect_snapshot({
     # test logic if argument `fail_fk = FALSE`
-    # FIXME: reinstate once removing PKs also removes FKs (snapshot needs to be updated then)
-    # dm_for_filter() %>%
-    #   dm_rm_pk(tf_4, fail_fk = FALSE) %>%
-    #   get_all_keys()
+    dm_for_filter() %>%
+      dm_rm_pk(tf_4, fail_fk = FALSE) %>%
+      get_all_keys()
 
-    # FIXME: reinstate once removing PKs also removes FKs (snapshot needs to be updated then)
-    # dm_for_filter() %>%
-    #   dm_rm_pk(tf_3, fail_fk = FALSE) %>%
-    #   get_all_keys()
+    dm_for_filter() %>%
+      dm_rm_pk(tf_3, fail_fk = FALSE) %>%
+      get_all_keys()
 
     # no failure if pk not used in relationship
     dm_for_filter() %>%
@@ -104,10 +102,9 @@ test_that("dm_rm_pk() supports partial filters", {
       get_all_keys()
 
     # dprecated argument name
-    # FIXME: reinstate once removing PKs also removes FKs (snapshot needs to be updated then)
-    # dm_for_filter() %>%
-    #   dm_rm_pk(tf_4, rm_referencing_fks = TRUE) %>%
-    #   get_all_keys()
+    dm_for_filter() %>%
+      dm_rm_pk(tf_4, rm_referencing_fks = TRUE) %>%
+      get_all_keys()
 
     # partial match for columns
     dm_for_filter() %>%
@@ -115,16 +112,14 @@ test_that("dm_rm_pk() supports partial filters", {
       get_all_keys()
 
     # partial match for columns, with compound key
-    # FIXME: reinstate once removing PKs also removes FKs (snapshot needs to be updated then)
-    # dm_for_filter() %>%
-    #   dm_rm_pk(columns = c(f, f1), fail_fk = FALSE) %>%
-    #   get_all_keys()
+    dm_for_filter() %>%
+      dm_rm_pk(columns = c(f, f1), fail_fk = FALSE) %>%
+      get_all_keys()
 
     # partial match for all tables
-    # FIXME: reinstate once removing PKs also removes FKs (snapshot needs to be updated then)
-    # dm_for_filter() %>%
-    #   dm_rm_pk(fail_fk = FALSE) %>%
-    #   get_all_keys()
+    dm_for_filter() %>%
+      dm_rm_pk(fail_fk = FALSE) %>%
+      get_all_keys()
   })
 })
 

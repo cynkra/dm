@@ -178,7 +178,6 @@ test_that("keyed_by()", {
 })
 
 test_that("joins without child PK", {
-  skip("FIXME: not working after 4e66e4c2e")
   withr::local_seed(20220715)
 
   dm <-
@@ -202,7 +201,6 @@ test_that("joins without child PK", {
 })
 
 test_that("joins with other child PK", {
-  skip("FIXME: not working after 4e66e4c2e")
   withr::local_seed(20220715)
 
   dm <-
@@ -227,7 +225,6 @@ test_that("joins with other child PK", {
 })
 
 test_that("joins with other child PK and name conflict", {
-  skip("FIXME: not working after 4e66e4c2e")
   withr::local_seed(20220715)
 
   dm <-
@@ -300,7 +297,6 @@ test_that("joins with same child PK and same name", {
 })
 
 test_that("joins with other FK from parent", {
-  skip("FIXME: not working after 4e66e4c2e")
   withr::local_seed(20220715)
 
   dm <-
@@ -327,7 +323,6 @@ test_that("joins with other FK from parent", {
 })
 
 test_that("joins with other FK from parent and name conflict", {
-  skip("FIXME: not working after 4e66e4c2e")
   withr::local_seed(20220715)
 
   dm <-
@@ -354,7 +349,6 @@ test_that("joins with other FK from parent and name conflict", {
 })
 
 test_that("joins with other FK from child", {
-  skip("FIXME: not working after 4e66e4c2e")
   withr::local_seed(20220715)
 
   dm <-
@@ -381,7 +375,6 @@ test_that("joins with other FK from child", {
 })
 
 test_that("joins with other FK from child and name conflict", {
-  skip("FIXME: not working after 4e66e4c2e")
   withr::local_seed(20220715)
 
   dm <-

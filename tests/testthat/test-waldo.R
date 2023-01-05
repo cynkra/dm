@@ -24,12 +24,11 @@ test_that("waldo", {
       dm_rm_fk() %>%
       waldo::compare(dm, max_diffs = 10)
   })
-  # FIXME: reinstate once removing PKs also removes FKs (snapshot needs to be updated then)
-  # expect_snapshot({
-  #   dm %>%
-  #     dm_rm_pk(fail_fk = FALSE) %>%
-  #     waldo::compare(dm, max_diffs = 10)
-  # })
+  expect_snapshot({
+    dm %>%
+      dm_rm_pk(fail_fk = FALSE) %>%
+      waldo::compare(dm, max_diffs = 10)
+  })
   expect_snapshot({
     dm %>%
       dm_set_colors("yellow" = flights) %>%
