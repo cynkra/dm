@@ -44,12 +44,14 @@ new_fks_out <- function(child_fk_cols = NULL, parent_uuid = NULL, parent_key_col
 new_keyed_tbl <- function(x,
                           ...,
                           pk = NULL,
+                          uks = NULL,
                           fks_in = NULL,
                           fks_out = NULL,
                           uuid = NULL) {
   check_dots_empty()
 
   pk <- vec_cast(pk, character())
+  uks <- vec_cast(uks, new_uk()) %||% new_uk()
   fks_in <- vec_cast(fks_in, new_fks_in()) %||% new_fks_in()
   fks_out <- vec_cast(fks_out, new_fks_out()) %||% new_fks_out()
 
@@ -60,6 +62,7 @@ new_keyed_tbl <- function(x,
   class(x) <- unique(c("dm_keyed_tbl", class(x)))
   attr(x, "dm_key_info") <- list(
     pk = pk,
+    uks = uks,
     fks_in = fks_in,
     fks_out = fks_out,
     uuid = uuid
@@ -142,6 +145,23 @@ new_pks_from_keys_info <- function(tbl) {
   } else {
     new_pk(list(df_keys$pk))
   }
+}
+
+uks_df_from_keys_info <- function(tables) {
+  uks <- map(unname(tables), new_uks_from_keys_info)
+  tibble(table = names2(tables), uks)
+}
+
+new_uks_from_keys_info <- function(tbl) {
+  df_keys <- keyed_get_info(tbl)
+  if (is.null(df_keys$uks)) {
+    return(NULL)
+  }
+
+  missing_uks <- map_lgl(df_keys$uks$column, setdiff, colnames(tbl))
+  valid_uks <- (lengths(missing_uks) == 0)
+
+  new_uk(df_keys$uks$column[valid_uks])
 }
 
 fks_df_from_keys_info <- function(tables) {

@@ -1641,6 +1641,35 @@
         }
       ] 
 
+# uks_df_from_keys_info()
+
+    Code
+      dm %>% dm_get_keyed_tables_impl() %>% uks_df_from_keys_info() %>% jsonlite::toJSON(
+        pretty = TRUE)
+    Output
+      [
+        {
+          "table": "airlines",
+          "uks": []
+        },
+        {
+          "table": "airports",
+          "uks": []
+        },
+        {
+          "table": "flights",
+          "uks": []
+        },
+        {
+          "table": "planes",
+          "uks": []
+        },
+        {
+          "table": "weather",
+          "uks": []
+        }
+      ] 
+
 # fks_df_from_keys_info()
 
     Code

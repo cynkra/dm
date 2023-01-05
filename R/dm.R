@@ -137,16 +137,17 @@ new_keyed_dm_def <- function(tables = list()) {
   unclassed_tables <- map(tables, unclass_keyed_tbl)
 
   pks_df <- pks_df_from_keys_info(tables[is_keyed])
+  uks_df <- uks_df_from_keys_info(tables[is_keyed])
   fks_df <- fks_df_from_keys_info(tables[is_keyed])
 
-  new_dm_def(unclassed_tables, pks_df, fks_df)
+  new_dm_def(unclassed_tables, pks_df, uks_df, fks_df)
 }
 
 
 new_dm_def <- function(tables = list(),
                        pks_df = tibble(table = character(), pks = list()),
-                       fks_df = tibble(table = character(), fks = list()),
-                       uks_df = tibble(table = character(), uks = list())) {
+                       uks_df = tibble(table = character(), uks = list()),
+                       fks_df = tibble(table = character(), fks = list())) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
@@ -602,6 +603,8 @@ tbl_def_impl <- function(def, idx, keyed) {
   } else {
     pk <- NULL
   }
+
+  uk_def <- def$uks[[idx]]
 
   fks_in_def <-
     def$fks[[idx]] %>%
