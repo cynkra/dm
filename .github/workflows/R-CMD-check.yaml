@@ -197,7 +197,6 @@ jobs:
           # End custom: R 3.5
 
           # Begin custom: R 3.4
-          - {os: ubuntu-22.04,   r: 'oldrel-4'}
           # End custom: R 3.4
 
           # Begin custom: matrix elements
