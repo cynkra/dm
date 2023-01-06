@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 1.0.3.9005
+
+## Continuous integration
+
+- Avoid oldrel-4.
+
+
 # dm 1.0.3.9004
 
 - Internal changes only.
