@@ -130,7 +130,9 @@
 
 ---
 
-    There are foreign keys pointing from table(s) `flights` to table `weather`. First remove those, or set `fail_fk = FALSE`.
+    i In index: 1.
+    Caused by error in `abort_first_rm_fks()`:
+    ! There are foreign keys pointing from table(s) `flights` to table `weather`. First remove those, or set `fail_fk = FALSE`.
 
 ---
 
