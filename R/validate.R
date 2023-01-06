@@ -94,24 +94,6 @@ dm_validate <- function(x) {
     unnest_col("column", character()) %>%
     check_colnames(dm_col_names, "UK")
 
-  unmatched_fks <- fks %>%
-    anti_join(pks, by = c("ref_table" = "table", "ref_column" = "column")) %>%
-    anti_join(uks, by = c("ref_table" = "table", "ref_column" = "column")) %>%
-    transmute(problem = paste0(
-      tick(paste0(table, "$", deparse_keys(column))), " -> ", tick(paste0(ref_table, "$", deparse_keys(ref_column)))
-    ))
-
-  if (nrow(unmatched_fks) > 0) {
-    error_txt <- paste0(
-      "For the following FKs no PK or UK exists in the parent table: \n",
-      glue_collapse(
-        unmatched_fks$problem,
-        sep = "\n"
-      )
-    )
-    abort_dm_invalid(error_txt)
-  }
-
   check_no_nulls(def)
 
   invisible(x)
