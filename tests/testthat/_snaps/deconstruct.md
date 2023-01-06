@@ -34,6 +34,10 @@
       $pk
       [1] "faa"
       
+      $uks
+      # A tibble: 0 x 1
+      # ... with 1 variable: column <list>
+      
       $fks_in
       # A tibble: 2 x 3
         child_uuid   child_fk_cols parent_key_cols
@@ -62,6 +66,10 @@
       $airlines$pk
       [1] "carrier"
       
+      $airlines$uks
+      # A tibble: 0 x 1
+      # ... with 1 variable: column <list>
+      
       $airlines$fks_in
       # A tibble: 1 x 3
         child_uuid                           child_fk_cols parent_key_cols
@@ -80,6 +88,10 @@
       $airports
       $airports$pk
       [1] "faa"
+      
+      $airports$uks
+      # A tibble: 0 x 1
+      # ... with 1 variable: column <list>
       
       $airports$fks_in
       # A tibble: 2 x 3
@@ -100,6 +112,10 @@
       $flights
       $flights$pk
       NULL
+      
+      $flights$uks
+      # A tibble: 0 x 1
+      # ... with 1 variable: column <list>
       
       $flights$fks_in
       # A tibble: 0 x 3
@@ -124,6 +140,10 @@
       $planes$pk
       [1] "tailnum"
       
+      $planes$uks
+      # A tibble: 0 x 1
+      # ... with 1 variable: column <list>
+      
       $planes$fks_in
       # A tibble: 1 x 3
         child_uuid                           child_fk_cols parent_key_cols
@@ -142,6 +162,10 @@
       $weather
       $weather$pk
       [1] "origin"    "time_hour"
+      
+      $weather$uks
+      # A tibble: 0 x 1
+      # ... with 1 variable: column <list>
       
       $weather$fks_in
       # A tibble: 1 x 3
