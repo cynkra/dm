@@ -44,6 +44,11 @@ the given combination of columns is a unique key of the table.
 If \code{force == TRUE}, the function will replace an already
 set key, without altering foreign keys previously pointing to that primary key.
 }
+\details{
+There can be only one primary key per table in a \code{\link{dm}}.
+It's possible though to set an unlimited number of unique keys using \code{\link[=dm_add_uk]{dm_add_uk()}}
+or adding foreign keys pointing to columns other than the primary key columns with \code{\link[=dm_add_fk]{dm_add_fk()}}.
+}
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 nycflights_dm <- dm(
@@ -71,9 +76,12 @@ try(
 }
 \seealso{
 Other primary key functions: 
+\code{\link{dm_add_uk}()},
 \code{\link{dm_get_all_pks}()},
+\code{\link{dm_get_all_uks}()},
 \code{\link{dm_has_pk}()},
 \code{\link{dm_rm_pk}()},
+\code{\link{dm_rm_uk}()},
 \code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}

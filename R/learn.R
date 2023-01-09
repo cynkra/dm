@@ -176,7 +176,8 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     summarize(fks = list(bind_rows(fks))) %>%
     ungroup()
 
-  def <- new_dm_def(tables, pks_df, fks_df)
+  # FIXME: add uks_df
+  def <- new_dm_def(tables, pks_df, fks_df = fks_df)
   new_dm3(def)
 }
 

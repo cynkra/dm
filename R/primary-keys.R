@@ -7,6 +7,10 @@
 #' If `force == TRUE`, the function will replace an already
 #' set key, without altering foreign keys previously pointing to that primary key.
 #'
+#' @details There can be only one primary key per table in a [`dm`].
+#' It's possible though to set an unlimited number of unique keys using [dm_add_uk()]
+#' or adding foreign keys pointing to columns other than the primary key columns with [dm_add_fk()].
+#'
 #' @inheritParams rlang::args_dots_empty
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
@@ -94,7 +98,7 @@ dm_add_pk_impl <- function(dm, table, column, autoincrement, force) {
     abort_key_set_force_false(table)
   }
 
-  def$pks[[i]] <- tibble(column = !!list(column), autoincrement = autoincrement)
+  def$pks[[i]] <- new_pk(column = list(column), autoincrement = autoincrement)
 
   new_dm3(def)
 }
@@ -159,7 +163,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #'
 #' @description
 #' `dm_get_all_pks()` checks the `dm` object for primary keys and
-#' returns the tables, the respective primary key columns, and their classes.
+#' returns the tables and the respective primary key columns.
 #'
 #' @family primary key functions
 #' @param table One or more table names, as character vector,
@@ -217,8 +221,9 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #' Remove a primary key
 #'
 #' @description
-#' `dm_rm_pk()` removes one or more primary keys from a table and leaves the [`dm`] object otherwise unaltered.
-#' An error is thrown if no private key matches the selection criteria.
+#' If a table name is provided, `dm_rm_pk()` removes the primary key from this table and leaves the [`dm`] object otherwise unaltered.
+#' If no table is given, the `dm` is stripped of all primary keys at once.
+#' An error is thrown if no primary key matches the selection criteria.
 #' If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
 #' Foreign keys are never removed.
 #'
@@ -239,6 +244,7 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
+#'   dm_rm_fk(flights, origin, airports) %>%
 #'   dm_rm_pk(airports, fail_fk = FALSE) %>%
 #'   dm_draw()
 dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE) {

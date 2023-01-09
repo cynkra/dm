@@ -5,6 +5,7 @@
 #' respect to a key of table `ref_table`.
 #' Usually the referenced columns are a primary key in `ref_table`,
 #' it is also possible to specify other columns via the `ref_columns` argument.
+#' In this case `ref_columns` will be added as a new unique key to the referenced table.
 #' If `check == TRUE`, then it will first check if the values in `columns` are a subset
 #' of the values of the key in table `ref_table`.
 #'
@@ -29,6 +30,11 @@
 #'   and might be considered by [dm_rows_delete()] in a future version.
 #'
 #' @family foreign key functions
+#'
+#' @details
+#' It is possible that a foreign key (FK) is pointing to columns that are neither primary (PK) nor
+#' unique keys (UK). This can happen, when the PK or UK is removed ([`dm_rm_pk()`]/[`dm_rm_uk()`])
+#' without first removing the associated FKs.
 #'
 #' @rdname dm_add_fk
 #'
@@ -84,6 +90,20 @@ dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ...,
     ref_col_name <- get_key_cols(ref_key)
   } else {
     ref_col_name <- names(eval_select_indices(ref_col_expr, colnames(ref_table_obj)))
+    # check if either a PK or UK already matches ref_col_name
+    all_keys <- dm_get_all_pks_impl(dm, ref_table_name) %>%
+      rename(uk_col = pk_col) %>%
+      bind_rows(dm_get_all_uks_impl(dm, ref_table_name))
+    # setequal() could also be used for matching, but IMHO the order should matter
+    matches_keys <- map_lgl(all_keys$uk_col, identical, ref_col_name)
+    if (!any(matches_keys)) {
+      if (check) {
+        if (!is_unique_key_se(ref_table_obj, ref_col_name)$unique) {
+          abort_not_unique_key(ref_table_name, ref_col_name)
+        }
+      }
+      dm <- dm_add_uk_impl(dm, ref_table_name, ref_col_name)
+    }
   }
 
   # FIXME: COMPOUND:: Clean check with proper error message
@@ -244,6 +264,10 @@ dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
 dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
   def <- dm_get_def(dm)
 
+  dm_get_all_fks_def_impl(def = def, parent_table = parent_table, ignore_on_delete = ignore_on_delete, id = id)
+}
+
+dm_get_all_fks_def_impl <- function(def, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
   def_sub <- def[c("table", "fks")]
   names(def_sub)[[1]] <- "parent_table"
 

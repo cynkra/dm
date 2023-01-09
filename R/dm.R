@@ -137,20 +137,23 @@ new_keyed_dm_def <- function(tables = list()) {
   unclassed_tables <- map(tables, unclass_keyed_tbl)
 
   pks_df <- pks_df_from_keys_info(tables[is_keyed])
+  uks_df <- uks_df_from_keys_info(tables[is_keyed])
   fks_df <- fks_df_from_keys_info(tables[is_keyed])
 
-  new_dm_def(unclassed_tables, pks_df, fks_df)
+  new_dm_def(unclassed_tables, pks_df, uks_df, fks_df)
 }
 
 
 new_dm_def <- function(tables = list(),
                        pks_df = tibble(table = character(), pks = list()),
+                       uks_df = tibble(table = character(), uks = list()),
                        fks_df = tibble(table = character(), fks = list())) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
 
   stopifnot(all(pks_df$table %in% table))
+  stopifnot(all(uks_df$table %in% table))
   stopifnot(all(fks_df$table %in% table))
 
   zoom <- new_zoom()
@@ -166,6 +169,8 @@ new_dm_def <- function(tables = list(),
     tibble(table, data, segment = NA_character_, display = NA_character_) %>%
     left_join(pks_df, by = "table") %>%
     mutate(pks = as_list_of(map(pks, `%||%`, new_pk()), .ptype = new_pk())) %>%
+    left_join(uks_df, by = "table") %>%
+    mutate(uks = as_list_of(map(uks, `%||%`, new_uk()), .ptype = new_uk())) %>%
     left_join(fks_df, by = "table") %>%
     mutate(fks = as_list_of(map(fks, `%||%`, new_fk()), .ptype = new_fk())) %>%
     mutate(filters = list_of(new_filter())) %>%
@@ -213,6 +218,11 @@ dm_get_def <- function(x, quiet = FALSE) {
 new_pk <- function(column = list(), autoincrement = logical(length(column))) {
   stopifnot(is.list(column), is.logical(autoincrement))
   tibble(column = column, autoincrement = autoincrement)
+}
+
+new_uk <- function(column = list()) {
+  stopifnot(is.list(column))
+  tibble(column = column)
 }
 
 new_fk <- function(ref_column = list(),
@@ -374,6 +384,8 @@ show_dm <- function(x) {
   cat_line("Tables: ", commas(tick(def$table)))
   cat_line("Columns: ", def_get_n_columns(def))
   cat_line("Primary keys: ", def_get_n_pks(def))
+  n_uks <- def_get_n_uks(def)
+  if (n_uks > 0) cat_line("Unique keys: ", n_uks)
   cat_line("Foreign keys: ", def_get_n_fks(def))
 
   filters <- dm_get_filters_impl(x)
@@ -408,6 +420,10 @@ def_get_n_columns <- function(def) {
 
 def_get_n_pks <- function(def) {
   sum(map_int(def$pks, vec_size))
+}
+
+def_get_n_uks <- function(def) {
+  sum(map_int(def$uks, vec_size))
 }
 
 def_get_n_fks <- function(def) {
@@ -588,6 +604,8 @@ tbl_def_impl <- function(def, idx, keyed) {
     pk <- NULL
   }
 
+  uk_def <- def$uks[[idx]]
+
   fks_in_def <-
     def$fks[[idx]] %>%
     left_join(uuid_lookup, by = "table")
@@ -741,6 +759,7 @@ empty_dm <- function() {
       segment = character(),
       display = character(),
       pks = list_of(new_pk()),
+      uks = list_of(new_uk()),
       fks = list_of(new_fk()),
       filters = list_of(new_filter()),
       zoom = list(),

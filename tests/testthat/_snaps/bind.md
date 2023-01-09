@@ -57,6 +57,7 @@
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
       Columns: 20
       Primary keys: 6
+      Unique keys: 1
       Foreign keys: 5
     Code
       dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique",
@@ -70,6 +71,7 @@
       Tables: `tf_1...1`, `tf_2...2`, `tf_3...3`, `tf_4...4`, `tf_5...5`, ... (17 total)
       Columns: 56
       Primary keys: 16
+      Unique keys: 2
       Foreign keys: 14
     Code
       writeLines(conditionMessage(expect_error(dm_bind(dm_for_filter(),
@@ -116,6 +118,7 @@
       Tables: `tf_1...1`, `tf_2...2`, `tf_3...3`, `tf_4...4`, `tf_5...5`, ... (17 total)
       Columns: 56
       Primary keys: 16
+      Unique keys: 2
       Foreign keys: 14
 
 # output for compound keys
@@ -162,6 +165,7 @@
         dm::dm_add_pk(dim_2, dim_2_pk) %>%
         dm::dm_add_pk(dim_3, dim_3_pk) %>%
         dm::dm_add_pk(dim_4, dim_4_pk) %>%
+        dm::dm_add_uk(tf_6, n) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -213,6 +217,7 @@
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_uk(tf_6, n) %>%
         dm::dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1) %>%
         dm::dm_add_fk(fact, dim_2_key, dim_2) %>%
         dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
