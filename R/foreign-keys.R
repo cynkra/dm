@@ -5,6 +5,7 @@
 #' respect to a key of table `ref_table`.
 #' Usually the referenced columns are a primary key in `ref_table`,
 #' it is also possible to specify other columns via the `ref_columns` argument.
+#' In this case `ref_columns` will be added as a new unique key to the referenced table.
 #' If `check == TRUE`, then it will first check if the values in `columns` are a subset
 #' of the values of the key in table `ref_table`.
 #'
@@ -29,6 +30,11 @@
 #'   and might be considered by [dm_rows_delete()] in a future version.
 #'
 #' @family foreign key functions
+#'
+#' @details
+#' It is possible that a foreign key (FK) is pointing to columns that are neither primary (PK) nor
+#' unique keys (UK). This can happen, when the PK or UK is removed ([`dm_rm_pk()`]/[`dm_rm_uk()`])
+#' without first removing the associated FKs.
 #'
 #' @rdname dm_add_fk
 #'
