@@ -100,7 +100,7 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     group_by(constraint_catalog, constraint_schema, constraint_name, dm_name) %>%
     summarize(pks = list(tibble(
       column = list(column_name),
-      autoincrement = as.logical(is_autoincrement)
+      autoincrement = any(as.logical(is_autoincrement))
     ))) %>%
     ungroup() %>%
     select(table = dm_name, pks)
