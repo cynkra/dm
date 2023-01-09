@@ -91,6 +91,12 @@
       * Table `flights`: foreign key `dest` into table `airports`: values of `flights$dest` not in `airports$faa`: SJU (30), BQN (6), STT (4), PSE (2)
       * Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
     Code
+      dm_add_fk(dm_nycflights_small(), flights, time_hour, weather, time_hour) %>%
+        dm_rm_uk(weather, time_hour, fail_fk = FALSE) %>% dm_get_all_uks()
+    Output
+      # A tibble: 0 x 2
+      # ... with 2 variables: table <chr>, uk_col <keys>
+    Code
       dm_rename(dm_for_filter(), tf_6, p = n) %>% dm_get_all_uks()
     Output
       # A tibble: 1 x 2

@@ -95,17 +95,16 @@ test_that("unique keys", {
           c(year, manufacturer, model)
         )
     )
-    # trying to remove a UK with a FK pointing to it and `fail_fk = FALSE`
-    # FIXME: reinstate once removing UKs also removes FKs (snapshot needs to be updated then)
-    # dm_add_fk(
-    #   dm_nycflights_small(),
-    #   flights,
-    #   time_hour,
-    #   weather,
-    #   time_hour
-    # ) %>%
-    #   dm_rm_uk(weather, time_hour, fail_fk = FALSE) %>%
-    #   dm_get_all_uks()
+
+    dm_add_fk(
+      dm_nycflights_small(),
+      flights,
+      time_hour,
+      weather,
+      time_hour
+    ) %>%
+      dm_rm_uk(weather, time_hour, fail_fk = FALSE) %>%
+      dm_get_all_uks()
 
     # key tracking needs to work also for UKs
     dm_rename(dm_for_filter(), tf_6, p = n) %>% dm_get_all_uks()
