@@ -69,7 +69,7 @@ dm_add_uk_impl <- function(dm, table, column) {
   def <- dm_get_def(dm)
   i <- which(def$table == table)
 
-  if (!is_empty(def$pks[[i]]$column) && vctrs::vec_in(def$pks[[i]]$column[1], list(column))) {
+  if (!is_empty(def$pks[[i]]$column) && identical(def$pks[[i]]$column[[1]], column)) {
     abort_no_uk_if_pk(table, column)
   }
 
