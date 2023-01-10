@@ -284,3 +284,20 @@ test_that("dm_get_all_fks() and order", {
   expect_equal(fks_34, bind_rows(fks_3, fks_4))
   expect_equal(fks_43, bind_rows(fks_4, fks_3))
 })
+
+test_that("dm_get_all_fks() with parent_table arg", {
+  expect_snapshot({
+    nyc_comp() %>%
+      dm_get_all_fks("weather")
+
+    nyc_comp() %>%
+      dm_get_all_fks(c("airlines", "weather"))
+  })
+})
+
+test_that("dm_get_all_fks() with parent_table arg fails nicely", {
+  expect_snapshot_error({
+    nyc_comp() %>%
+      dm_get_all_fks(c("airlines", "weather", "timetable", "tabletime"))
+  })
+})

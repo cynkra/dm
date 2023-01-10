@@ -229,3 +229,25 @@
       Error in `dm_add_fk()`:
       ! `on_delete` must be one of "no_action" or "cascade", not "a".
 
+# dm_get_all_fks() with parent_table arg
+
+    Code
+      nyc_comp() %>% dm_get_all_fks("weather")
+    Output
+      # A tibble: 1 x 5
+        child_table child_fk_cols     parent_table parent_key_cols   on_delete
+        <chr>       <keys>            <chr>        <keys>            <chr>    
+      1 flights     origin, time_hour weather      origin, time_hour no_action
+    Code
+      nyc_comp() %>% dm_get_all_fks(c("airlines", "weather"))
+    Output
+      # A tibble: 2 x 5
+        child_table child_fk_cols     parent_table parent_key_cols   on_delete
+        <chr>       <keys>            <chr>        <keys>            <chr>    
+      1 flights     carrier           airlines     carrier           no_action
+      2 flights     origin, time_hour weather      origin, time_hour no_action
+
+# dm_get_all_fks() with parent_table arg fails nicely
+
+    Table `timetable`, `tabletime` not in `dm` object. Available table names: `airlines`, `airports`, `flights`, `planes`, `weather`.
+
