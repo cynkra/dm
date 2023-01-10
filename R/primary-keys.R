@@ -233,9 +233,7 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #' @param columns Table columns, unquoted.
 #'   To refer to a compound key, use `c(col1, col2)`.
 #'   Pass `NULL` (the default) to remove all matching keys.
-#' @param fail_fk
-#'   Boolean: if `TRUE` (default), will throw an error
-#'   if there are foreign keys addressing the primary key that is to be removed.
+#' @param fail_fk `r lifecycle::badge("deprecated")`
 #'
 #' @family primary key functions
 #'
@@ -247,37 +245,32 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #'   dm_rm_fk(flights, origin, airports) %>%
 #'   dm_rm_pk(airports, fail_fk = FALSE) %>%
 #'   dm_draw()
-dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE) {
-  if (missing(fail_fk)) {
-    fail_fk <- NULL
+dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = NULL) {
+  if (!is.null(fail_fk)) {
+    lifecycle::deprecate_soft(
+      "1.0.4",
+      "dm_rm_pk(fail_fk =)",
+      details = "When removing a primary key, potential associated foreign keys will be pointing at an implicit unique key."
+    )
   }
-  dm_rm_pk_(dm, {{ table }}, {{ columns }}, ..., fail_fk = fail_fk)
+  dm_rm_pk_(dm, {{ table }}, {{ columns }}, ...)
 }
 
-dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL, fail_fk = NULL) {
+dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL) {
   check_dots_empty()
   check_not_zoomed(dm)
 
   if (!is.null(rm_referencing_fks)) {
-    deprecate_soft("0.2.1", "dm::dm_rm_pk(rm_referencing_fks = )", "dm::dm_rm_pk(fail_fk = )",
-      details = "Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed."
-    )
-    if (is.null(fail_fk)) {
-      fail_fk <- !rm_referencing_fks
-    }
-  }
-
-  if (is.null(fail_fk)) {
-    fail_fk <- TRUE
+    deprecate_soft("0.2.1", "dm::dm_rm_pk(rm_referencing_fks = )")
   }
 
   table_name <- dm_tbl_name_null(dm, {{ table }})
   columns <- enexpr(columns)
 
-  dm_rm_pk_impl(dm, table_name, columns, fail_fk)
+  dm_rm_pk_impl(dm, table_name, columns)
 }
 
-dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
+dm_rm_pk_impl <- function(dm, table_name, columns) {
   def <- dm_get_def(dm)
 
   if (is.null(table_name)) {
@@ -306,13 +299,6 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
   if (length(i) == 0 && dm_is_strict_keys(dm)) {
     abort_pk_not_defined()
   }
-
-  pwalk(list(def$fks[i], def$pks[i], def$table[i]), ~ {
-    is_match <- !is.na(vec_match(..1$ref_column, ..2$column))
-    if (fail_fk && any(is_match)) {
-      abort_first_rm_fks(..3, ..1$table[is_match])
-    }
-  })
 
   # Talk about it
   if (is.null(table_name)) {

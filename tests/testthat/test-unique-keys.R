@@ -103,7 +103,7 @@ test_that("unique keys", {
       weather,
       time_hour
     ) %>%
-      dm_rm_uk(weather, time_hour, fail_fk = FALSE) %>%
+      dm_rm_uk(weather, time_hour) %>%
       dm_get_all_uks()
 
     # key tracking needs to work also for UKs
@@ -122,19 +122,6 @@ test_that("unique keys", {
       check = TRUE
     ),
     class = dm_error("not_unique_key")
-  )
-
-  expect_snapshot_error(
-    # trying to remove a UK with a FK pointing to it and `fail_fk = TRUE`
-    dm_add_fk(
-      dm_nycflights_small(),
-      flights,
-      time_hour,
-      weather,
-      time_hour
-    ) %>%
-      dm_rm_uk(weather, time_hour, fail_fk = TRUE),
-    class = dm_error("first_rm_fks")
   )
 
   expect_snapshot_error(

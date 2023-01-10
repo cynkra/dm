@@ -92,7 +92,7 @@
       * Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
     Code
       dm_add_fk(dm_nycflights_small(), flights, time_hour, weather, time_hour) %>%
-        dm_rm_uk(weather, time_hour, fail_fk = FALSE) %>% dm_get_all_uks()
+        dm_rm_uk(weather, time_hour) %>% dm_get_all_uks()
     Output
       # A tibble: 0 x 2
       # ... with 2 variables: table <chr>, uk_col <keys>
@@ -133,12 +133,6 @@
 ---
 
     (`year`, `manufacturer`, `model`) not a unique key of `planes`.
-
----
-
-    i In index: 1.
-    Caused by error in `abort_first_rm_fks()`:
-    ! There are foreign keys pointing from table(s) `flights` to table `weather`. First remove those, or set `fail_fk = FALSE`.
 
 ---
 

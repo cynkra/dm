@@ -9,7 +9,7 @@
 # dm_rm_pk() supports partial filters
 
     Code
-      dm_for_filter() %>% dm_rm_pk(tf_4, fail_fk = FALSE) %>% get_all_keys()
+      dm_for_filter() %>% dm_rm_pk(tf_4) %>% get_all_keys()
     Output
       $pks
       # A tibble: 5 x 3
@@ -32,7 +32,7 @@
       5 tf_5        m             tf_6         n               no_action
       
     Code
-      dm_for_filter() %>% dm_rm_pk(tf_3, fail_fk = FALSE) %>% get_all_keys()
+      dm_for_filter() %>% dm_rm_pk(tf_3) %>% get_all_keys()
     Output
       $pks
       # A tibble: 5 x 3
@@ -82,8 +82,6 @@
     Condition
       Warning:
       The `rm_referencing_fks` argument of `dm_rm_pk()` is deprecated as of dm 0.2.1.
-      i Please use the `fail_fk` argument instead.
-      i Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed.
     Output
       $pks
       # A tibble: 5 x 3
@@ -132,8 +130,7 @@
       5 tf_5        m             tf_6         n               no_action
       
     Code
-      dm_for_filter() %>% dm_rm_pk(columns = c(f, f1), fail_fk = FALSE) %>%
-        get_all_keys()
+      dm_for_filter() %>% dm_rm_pk(columns = c(f, f1)) %>% get_all_keys()
     Message
       Removing primary keys: %>%
         dm_rm_pk(tf_3)
@@ -160,6 +157,10 @@
       
     Code
       dm_for_filter() %>% dm_rm_pk(fail_fk = FALSE) %>% get_all_keys()
+    Condition
+      Warning:
+      The `fail_fk` argument of `dm_rm_pk()` is deprecated as of dm 1.0.4.
+      i When removing a primary key, potential associated foreign keys will be pointing at an implicit unique key.
     Message
       Removing primary keys: %>%
         dm_rm_pk(tf_1) %>%

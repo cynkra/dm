@@ -149,37 +149,27 @@ dm_get_all_uks_def_impl <- function(def, table = NULL) {
 #' Foreign keys are never removed.
 #'
 #' @inheritParams dm_rm_pk
-#' @param fail_fk
-#'   Boolean: if `TRUE` (default), will throw an error
-#'   if there are foreign keys addressing the unique key that is to be removed.
 #'
 #' @family primary key functions
 #'
 #' @return An updated `dm` without the indicated unique key(s).
 #'
 #' @export
-dm_rm_uk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE) {
-  if (missing(fail_fk)) {
-    fail_fk <- NULL
-  }
-  dm_rm_uk_(dm, {{ table }}, {{ columns }}, ..., fail_fk = fail_fk)
+dm_rm_uk <- function(dm, table = NULL, columns = NULL, ...) {
+  dm_rm_uk_(dm, {{ table }}, {{ columns }}, ...)
 }
 
-dm_rm_uk_ <- function(dm, table, columns, ..., fail_fk = NULL) {
+dm_rm_uk_ <- function(dm, table, columns, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
-
-  if (is.null(fail_fk)) {
-    fail_fk <- TRUE
-  }
 
   table_name <- dm_tbl_name_null(dm, {{ table }})
   columns <- enexpr(columns)
 
-  dm_rm_uk_impl(dm, table_name, columns, fail_fk)
+  dm_rm_uk_impl(dm, table_name, columns)
 }
 
-dm_rm_uk_impl <- function(dm, table_name, columns, fail_fk) {
+dm_rm_uk_impl <- function(dm, table_name, columns) {
   def <- dm_get_def(dm)
 
   if (is.null(table_name)) {
@@ -218,13 +208,6 @@ dm_rm_uk_impl <- function(dm, table_name, columns, fail_fk) {
     # if no `column` is provided by user, use all columns for matching
     TRUE
   }
-
-  pwalk(list(def$fks[i], def$uks[i], def$table[i]), ~ {
-    is_match <- !is.na(vec_match(..1$ref_column, ..2$column[ii]))
-    if (fail_fk && any(is_match)) {
-      abort_first_rm_fks(..3, ..1$table[is_match])
-    }
-  })
 
   # Talk about it
   if (is.null(table_name) || quo_is_null(columns)) {

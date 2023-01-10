@@ -4,7 +4,7 @@
 \alias{dm_rm_pk}
 \title{Remove a primary key}
 \usage{
-dm_rm_pk(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE)
+dm_rm_pk(dm, table = NULL, columns = NULL, ..., fail_fk = NULL)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -18,8 +18,7 @@ Pass \code{NULL} (the default) to remove all matching keys.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{fail_fk}{Boolean: if \code{TRUE} (default), will throw an error
-if there are foreign keys addressing the primary key that is to be removed.}
+\item{fail_fk}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }
 \value{
 An updated \code{dm} without the indicated primary key(s).
