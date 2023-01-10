@@ -250,7 +250,7 @@ dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALS
   if (!is.null(parent_table)) {
     idx <- match(parent_table, def_sub$parent_table)
     if (anyNA(idx)) {
-      abort(paste0("Table not in dm object: ", parent_table[which(is.na(idx))[[1]]]))
+      abort_table_not_in_dm(parent_table[which(is.na(idx))[[1]]], def$parent_table)
     }
     def_sub <- def_sub[idx, ]
   }
