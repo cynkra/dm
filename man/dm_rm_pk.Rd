@@ -4,7 +4,7 @@
 \alias{dm_rm_pk}
 \title{Remove a primary key}
 \usage{
-dm_rm_pk(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE)
+dm_rm_pk(dm, table = NULL, columns = NULL, ..., fail_fk = NULL)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
