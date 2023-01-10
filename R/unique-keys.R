@@ -96,12 +96,18 @@ dm_add_uk_impl <- function(dm, table, column) {
 #'   If given, primary keys are returned in that order.
 #'   The default `NULL` returns information for all tables.
 #'
+#' @details There are 3 kinds of unique keys:
+#'    - `PK`: Primary key, set by [`dm_add_pk()`]
+#'    - `explicit UK`: Unique key, set by [`dm_add_uk()`]
+#'    - `implicit UK`: Unique key, not explicitly set, but referenced by a foreign key, using [`dm_add_fk()`]
+#'
 #' @inheritParams dm_add_uk
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`table`}{table name,}
-#'     \item{`uk_col`}{column name(s) of primary key, as list of character vectors.}
+#'     \item{`uk_col`}{column name(s) of primary key, as list of character vectors,}
+#'     \item{`kind`}{kind of unique key, see details.}
 #'   }
 #'
 #' @export
@@ -118,37 +124,56 @@ dm_get_all_uks_impl <- function(dm, table = NULL) {
   def <- dm %>%
     dm_get_def()
 
-  bind_rows(
-    dm_get_all_pks_def_impl(def, table) %>%
-      select(-autoincrement) %>%
-      rename(uk_col = pk_col) %>%
-      mutate(kind = "PK"),
-    dm_get_all_explicit_uks_def_impl(def, table) %>%
-      mutate(kind = "explicit UK")
-  )
-}
-
-dm_get_all_explicit_uks_def_impl <- function(def, table = NULL) {
-  # Optimized for speed
-
-  def_sub <- def[c("table", "uks")]
-
   if (!is.null(table)) {
-    idx <- match(table, def_sub$table)
+    idx <- match(table, def$table)
     if (anyNA(idx)) {
       abort(paste0("Table not in dm object: ", parent_table[which(is.na(idx))[[1]]]))
     }
-    def_sub <- def_sub[match(table, def_sub$table), ]
+    def <- def[match(table, def$table), ]
   }
 
+  all_pks <- dm_get_all_pks_def_impl(def, table) %>%
+    select(-autoincrement) %>%
+    rename(uk_col = pk_col)
+
+  all_explicit_uks <- dm_get_all_uks_def_impl(def)
+
+  all_explicit <- bind_rows(
+    mutate(all_pks, kind = "PK"),
+    mutate(all_explicit_uks, kind = "explicit UK")
+  )
+
+  all_implicit <- dm_get_all_implicit_uks_def_impl(def, table, all_explicit) %>%
+    mutate(kind = "implicit UK")
+
+  bind_rows(
+    all_explicit,
+    all_implicit
+  )
+}
+
+dm_get_all_uks_def_impl <- function(def, table = NULL) {
+  # Optimized for speed
+
+  def_sub <- def[c("table", "uks")]
   out <-
     def_sub %>%
     unnest_df("uks", tibble(column = list())) %>%
-    set_names(c("table", "uk_col"))
+    set_names(c("table", "uk_col")) %>%
+    mutate(kind = "explicit UK")
 
   out$uk_col <- new_keys(out$uk_col)
   out
 }
+
+dm_get_all_implicit_uks_def_impl <- function(def, table = NULL, all_explicit) {
+  dm_get_all_fks_def_impl(def) %>%
+    select(table = parent_table, uk_col = parent_key_cols) %>%
+    distinct() %>%
+    # rm those that are PKs or explicit UKs
+    anti_join(all_explicit, c("table", "uk_col"))
+}
+
 
 #' Remove a unique key
 #'

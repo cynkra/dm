@@ -260,7 +260,9 @@ update_zoomed_pk <- function(dm) {
 update_zoomed_uk <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- col_tracker_zoomed(dm)
-  orig_uk <- dm_get_all_uks_impl(dm, old_tbl_name)
+  orig_uk <- dm %>%
+    dm_get_def() %>%
+    dm_get_all_uks_def_impl(old_tbl_name)
   if (has_length(orig_uk$uk_col) && all(get_key_cols(orig_uk$uk_col) %in% tracked_cols)) {
     upd_uk <- new_uk(map(orig_uk$uk_col, ~ recode2(get_key_cols(.x), tracked_cols)))
   } else {
