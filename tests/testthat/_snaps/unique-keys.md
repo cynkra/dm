@@ -179,6 +179,20 @@
       2 tf_2        e, e1         tf_3         f, f1           no_action
       3 tf_4        j, j1         tf_3         f, f1           no_action
       4 tf_5        l             tf_4         h               cascade  
+    Code
+      nyc_1_uk %>% dm_get_all_uks("flights")
+    Output
+      # A tibble: 1 x 3
+        table   uk_col                      kind       
+        <chr>   <keys>                      <chr>      
+      1 flights year, month, ... (19 total) explicit UK
+    Code
+      nyc_1_uk %>% dm_get_all_uks("airports")
+    Output
+      # A tibble: 1 x 3
+        table    uk_col kind 
+        <chr>    <keys> <chr>
+      1 airports faa    PK   
 
 ---
 
@@ -187,4 +201,12 @@
 ---
 
     A PK (`carrier`) for table `airlines` already exists, not adding UK.
+
+---
+
+    Table `timetable` not in `dm` object. Available table names: `airlines`, `airports`, `flights`, `planes`, `weather`.
+
+---
+
+    A UK (`n`) for table `tf_6` already exists, not adding UK.
 
