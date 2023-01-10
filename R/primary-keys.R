@@ -233,9 +233,7 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #' @param columns Table columns, unquoted.
 #'   To refer to a compound key, use `c(col1, col2)`.
 #'   Pass `NULL` (the default) to remove all matching keys.
-#' @param fail_fk
-#'   Boolean: if `TRUE` (default), will throw an error
-#'   if there are foreign keys addressing the primary key that is to be removed.
+#' @param fail_fk `r lifecycle::badge("deprecated")`
 #'
 #' @family primary key functions
 #'

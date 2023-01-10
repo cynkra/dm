@@ -4,7 +4,7 @@
 \alias{dm_rm_uk}
 \title{Remove a unique key}
 \usage{
-dm_rm_uk(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE)
+dm_rm_uk(dm, table = NULL, columns = NULL, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -17,9 +17,6 @@ To refer to a compound key, use \code{c(col1, col2)}.
 Pass \code{NULL} (the default) to remove all matching keys.}
 
 \item{...}{These dots are for future extensions and must be empty.}
-
-\item{fail_fk}{Boolean: if \code{TRUE} (default), will throw an error
-if there are foreign keys addressing the unique key that is to be removed.}
 }
 \value{
 An updated \code{dm} without the indicated unique key(s).
