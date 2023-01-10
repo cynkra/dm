@@ -93,7 +93,7 @@ dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ...,
     # check if either a PK or UK already matches ref_col_name
     all_keys <- dm_get_all_pks_impl(dm, ref_table_name) %>%
       rename(uk_col = pk_col) %>%
-      bind_rows(dm_get_all_uks_impl(dm, ref_table_name))
+      bind_rows(dm_get_all_uks_def_impl(dm_get_def(dm), ref_table_name))
     # setequal() could also be used for matching, but IMHO the order should matter
     matches_keys <- map_lgl(all_keys$uk_col, identical, ref_col_name)
     if (!any(matches_keys)) {
@@ -274,7 +274,7 @@ dm_get_all_fks_def_impl <- function(def, parent_table = NULL, ignore_on_delete =
   if (!is.null(parent_table)) {
     idx <- match(parent_table, def_sub$parent_table)
     if (anyNA(idx)) {
-      abort(paste0("Table not in dm object: ", parent_table[which(is.na(idx))[[1]]]))
+      abort_table_not_in_dm(parent_table[which(is.na(idx))], def$table)
     }
     def_sub <- def_sub[idx, ]
   }

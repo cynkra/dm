@@ -69,10 +69,12 @@ dm_add_uk_impl <- function(dm, table, column) {
   def <- dm_get_def(dm)
   i <- which(def$table == table)
 
-  if (!is_empty(def$pks[[i]]$column) && vctrs::vec_in(def$pks[[i]]$column[1], list(column))) {
+  if (!is_empty(def$pks[[i]]$column) && identical(def$pks[[i]]$column[[1]], column)) {
     abort_no_uk_if_pk(table, column)
   }
-
+  if (any(map_lgl(def$uks[[i]]$column, identical, column))) {
+    abort_no_uk_if_pk(table, column, type = "UK")
+  }
 
   def$uks[[i]] <- vctrs::vec_rbind(
     def$uks[[i]],
@@ -82,24 +84,32 @@ dm_add_uk_impl <- function(dm, table, column) {
   new_dm3(def)
 }
 
-#' Get all primary keys of a [`dm`] object
+#' Get all unique keys of a [`dm`] object
 #'
 #' @description
-#' `dm_get_all_uks()` checks the `dm` object for unique keys and
-#' returns the tables and the respective unique key columns.
+#' `dm_get_all_uks()` checks the `dm` object for unique keys
+#' (primary keys, explicit and implicit unique keys) and returns the tables and
+#' the respective unique key columns.
 #'
 #' @family primary key functions
 #' @param table One or more table names, as character vector,
-#'   to return primary key information for.
-#'   If given, primary keys are returned in that order.
+#'   to return unique key information for.
 #'   The default `NULL` returns information for all tables.
+#'
+#' @details There are 3 kinds of unique keys:
+#'    - `PK`: Primary key, set by [`dm_add_pk()`]
+#'    - `explicit UK`: Unique key, set by [`dm_add_uk()`]
+#'    - `implicit UK`: Unique key, not explicitly set, but referenced by a foreign key.
+#'       Since [`dm_add_fk()`] adds an explicit unique key, this happens typically only, when
+#'       a primary key or a unique key is being removed.
 #'
 #' @inheritParams dm_add_uk
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`table`}{table name,}
-#'     \item{`uk_col`}{column name(s) of primary key, as list of character vectors.}
+#'     \item{`uk_col`}{column name(s) of primary key, as list of character vectors,}
+#'     \item{`kind`}{kind of unique key, see details.}
 #'   }
 #'
 #' @export
@@ -113,32 +123,59 @@ dm_get_all_uks <- function(dm, table = NULL, ...) {
 }
 
 dm_get_all_uks_impl <- function(dm, table = NULL) {
-  dm %>%
-    dm_get_def() %>%
-    dm_get_all_uks_def_impl(table)
+  def <- dm %>%
+    dm_get_def()
+
+  if (!is.null(table)) {
+    idx <- match(table, def$table)
+    if (anyNA(idx)) {
+      abort_table_not_in_dm(table[which(is.na(idx))], def$table)
+    }
+    def <- def[match(table, def$table), ]
+  }
+
+  all_pks <- dm_get_all_pks_def_impl(def, table) %>%
+    select(-autoincrement) %>%
+    rename(uk_col = pk_col)
+
+  all_explicit_uks <- dm_get_all_uks_def_impl(def)
+
+  all_explicit <- bind_rows(
+    mutate(all_pks, kind = "PK"),
+    mutate(all_explicit_uks, kind = "explicit UK")
+  )
+
+  all_implicit <- dm_get_all_implicit_uks_def_impl(def, table, all_explicit) %>%
+    mutate(kind = "implicit UK")
+
+  bind_rows(
+    all_explicit,
+    all_implicit
+  )
 }
 
 dm_get_all_uks_def_impl <- function(def, table = NULL) {
   # Optimized for speed
 
   def_sub <- def[c("table", "uks")]
-
-  if (!is.null(table)) {
-    idx <- match(table, def_sub$table)
-    if (anyNA(idx)) {
-      abort(paste0("Table not in dm object: ", parent_table[which(is.na(idx))[[1]]]))
-    }
-    def_sub <- def_sub[match(table, def_sub$table), ]
-  }
-
   out <-
     def_sub %>%
     unnest_df("uks", tibble(column = list())) %>%
-    set_names(c("table", "uk_col"))
+    set_names(c("table", "uk_col")) %>%
+    mutate(kind = "explicit UK")
 
   out$uk_col <- new_keys(out$uk_col)
   out
 }
+
+dm_get_all_implicit_uks_def_impl <- function(def, table = NULL, all_explicit) {
+  dm_get_all_fks_def_impl(def) %>%
+    select(table = parent_table, uk_col = parent_key_cols) %>%
+    distinct() %>%
+    # rm those that are PKs or explicit UKs
+    anti_join(all_explicit, c("table", "uk_col"))
+}
+
 
 #' Remove a unique key
 #'
@@ -240,7 +277,7 @@ error_txt_uk_not_defined <- function() {
   glue("No unique keys to remove.")
 }
 
-abort_no_uk_if_pk <- function(table, column) {
-  error_txt <- glue("A PK ({commas(tick(column))}) for table `{table}` already exists, not adding UK.")
+abort_no_uk_if_pk <- function(table, column, type = "PK") {
+  error_txt <- glue("A {type} ({commas(tick(column))}) for table `{table}` already exists, not adding UK.")
   abort(error_txt, class = dm_error_full("no_uk_if_pk"))
 }

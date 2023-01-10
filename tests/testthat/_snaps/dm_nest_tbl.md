@@ -8,7 +8,6 @@
       Tables: `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
       Columns: 19
       Primary keys: 5
-      Unique keys: 1
       Foreign keys: 4
     Code
       dm_packed_nested <- dm_nest_tbl(dm_packed, tf_2)
@@ -18,7 +17,6 @@
       Tables: `tf_3`, `tf_4`, `tf_5`, `tf_6`
       Columns: 15
       Primary keys: 4
-      Unique keys: 1
       Foreign keys: 3
     Code
       dm_packed_nested_unnested <- dm_unnest_tbl(dm_packed_nested, tf_3, tf_2, ptype = dm_for_filter())
@@ -28,7 +26,6 @@
       Tables: `tf_3`, `tf_4`, `tf_5`, `tf_6`, `tf_2`
       Columns: 19
       Primary keys: 5
-      Unique keys: 1
       Foreign keys: 4
     Code
       dm_packed_nested_unnested_unpacked <- dm_unpack_tbl(dm_packed_nested_unnested,
@@ -39,6 +36,5 @@
       Tables: `tf_3`, `tf_4`, `tf_5`, `tf_6`, `tf_2`, `tf_1`
       Columns: 20
       Primary keys: 6
-      Unique keys: 1
       Foreign keys: 5
 

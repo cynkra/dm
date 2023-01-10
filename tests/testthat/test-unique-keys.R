@@ -111,6 +111,16 @@ test_that("unique keys", {
     dm_rename(dm_for_filter(), tf_6, p = n) %>% dm_get_all_fks()
     dm_select(dm_for_filter(), tf_6, -n) %>% dm_get_all_uks()
     dm_select(dm_for_filter(), tf_6, -n) %>% dm_get_all_fks()
+
+    # test table arg for dm_get_all_uks()
+    nyc_1_uk %>%
+      dm_get_all_uks("flights")
+
+    nyc_1_uk %>%
+      dm_get_all_uks("airports")
+
+    nyc_1_uk %>%
+      dm_get_all_uks(c("airports", "weather", "flights", "airlines"))
   })
 
   expect_snapshot_error(
@@ -130,6 +140,30 @@ test_that("unique keys", {
       dm_nycflights_small(),
       airlines,
       carrier,
+    ),
+    class = dm_error("no_uk_if_pk")
+  )
+
+  expect_snapshot_error(
+    # trying to request a table not part of the dm
+    nyc_1_uk %>%
+      dm_get_all_uks("timetable"),
+    class = dm_error("table_not_in_dm")
+  )
+
+  expect_snapshot_error(
+    # trying to request 2 tables that are not part of the dm and a few others
+    nyc_1_uk %>%
+      dm_get_all_uks(c("timetable", "weather", "flights", "tabletime")),
+    class = dm_error("table_not_in_dm")
+  )
+
+  expect_snapshot_error(
+    # trying to add a UK for which a PK already exists
+    dm_add_uk(
+      dm_for_filter(),
+      tf_6,
+      n
     ),
     class = dm_error("no_uk_if_pk")
   )

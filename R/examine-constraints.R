@@ -120,7 +120,7 @@ kind_to_long <- function(kind) {
 
 check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
   pks <- bind_rows(
-    list(PK = dm_get_all_pks_impl(dm), UK = dm_get_all_uks_impl(dm) %>% rename(pk_col = uk_col)),
+    list(PK = dm_get_all_pks_impl(dm), UK = dm_get_all_uks_impl(dm) %>% rename(pk_col = uk_col) %>% select(-kind)),
     .id = "kind"
   ) %>%
     distinct(table, pk_col, .keep_all = TRUE)

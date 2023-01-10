@@ -203,7 +203,7 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
   if (!is.null(table)) {
     idx <- match(table, def_sub$table)
     if (anyNA(idx)) {
-      abort(paste0("Table not in dm object: ", parent_table[which(is.na(idx))[[1]]]))
+      abort_table_not_in_dm(table[which(is.na(idx))], def$table)
     }
     def_sub <- def_sub[match(table, def_sub$table), ]
   }
@@ -242,8 +242,7 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
-#'   dm_rm_fk(flights, origin, airports) %>%
-#'   dm_rm_pk(airports, fail_fk = FALSE) %>%
+#'   dm_rm_pk(airports) %>%
 #'   dm_draw()
 dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = NULL) {
   if (!is.null(fail_fk)) {

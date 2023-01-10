@@ -184,7 +184,8 @@ dm_paste_pks <- function(dm) {
 
 dm_paste_uks <- function(dm) {
   dm %>%
-    dm_get_all_uks_impl() %>%
+    dm_get_def() %>%
+    dm_get_all_uks_def_impl() %>%
     mutate(code = glue("dm::dm_add_uk({tick_if_needed(table)}, {deparse_keys(uk_col)})")) %>%
     pull()
 }

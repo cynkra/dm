@@ -92,8 +92,16 @@
       Upgrading dm object created with dm <= 0.3.0.
       Upgrading dm object created with dm <= 1.0.3.
     Output
-      # A tibble: 0 x 2
-      # ... with 2 variables: table <chr>, uk_col <keys>
+      # A tibble: 7 x 3
+        table uk_col kind       
+        <chr> <keys> <chr>      
+      1 tf_1  a      PK         
+      2 tf_2  c      PK         
+      3 tf_3  f, f1  PK         
+      4 tf_4  h      PK         
+      5 tf_5  k      PK         
+      6 tf_6  o      PK         
+      7 tf_6  n      implicit UK
 
 # can upgrade zoomed from v3
 
@@ -128,8 +136,16 @@
     Message
       Upgrading dm object created with dm <= 1.0.3.
     Output
-      # A tibble: 0 x 2
-      # ... with 2 variables: table <chr>, uk_col <keys>
+      # A tibble: 7 x 3
+        table uk_col kind       
+        <chr> <keys> <chr>      
+      1 tf_1  a      PK         
+      2 tf_2  c      PK         
+      3 tf_3  f, f1  PK         
+      4 tf_4  h      PK         
+      5 tf_5  k      PK         
+      6 tf_6  o      PK         
+      7 tf_6  n      implicit UK
 
 # can upgrade zoomed to v4
 

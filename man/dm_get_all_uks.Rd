@@ -2,7 +2,7 @@
 % Please edit documentation in R/unique-keys.R
 \name{dm_get_all_uks}
 \alias{dm_get_all_uks}
-\title{Get all primary keys of a \code{\link{dm}} object}
+\title{Get all unique keys of a \code{\link{dm}} object}
 \usage{
 dm_get_all_uks(dm, table = NULL, ...)
 }
@@ -10,8 +10,7 @@ dm_get_all_uks(dm, table = NULL, ...)
 \item{dm}{A \code{dm} object.}
 
 \item{table}{One or more table names, as character vector,
-to return primary key information for.
-If given, primary keys are returned in that order.
+to return unique key information for.
 The default \code{NULL} returns information for all tables.}
 
 \item{...}{These dots are for future extensions and must be empty.}
@@ -20,12 +19,24 @@ The default \code{NULL} returns information for all tables.}
 A tibble with the following columns:
 \describe{
 \item{\code{table}}{table name,}
-\item{\code{uk_col}}{column name(s) of primary key, as list of character vectors.}
+\item{\code{uk_col}}{column name(s) of primary key, as list of character vectors,}
+\item{\code{kind}}{kind of unique key, see details.}
 }
 }
 \description{
-\code{dm_get_all_uks()} checks the \code{dm} object for unique keys and
-returns the tables and the respective unique key columns.
+\code{dm_get_all_uks()} checks the \code{dm} object for unique keys
+(primary keys, explicit and implicit unique keys) and returns the tables and
+the respective unique key columns.
+}
+\details{
+There are 3 kinds of unique keys:
+\itemize{
+\item \code{PK}: Primary key, set by \code{\link[=dm_add_pk]{dm_add_pk()}}
+\item \verb{explicit UK}: Unique key, set by \code{\link[=dm_add_uk]{dm_add_uk()}}
+\item \verb{implicit UK}: Unique key, not explicitly set, but referenced by a foreign key.
+Since \code{\link[=dm_add_fk]{dm_add_fk()}} adds an explicit unique key, this happens typically only, when
+a primary key or a unique key is being removed.
+}
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

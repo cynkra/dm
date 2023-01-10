@@ -194,6 +194,22 @@ test_that("dm_get_all_pks() and order", {
   expect_equal(pks_all[2:1, ], pks_21)
 })
 
+test_that("dm_get_all_pks() with table arg", {
+  expect_snapshot({
+    nyc_comp() %>%
+      dm_get_all_pks("weather")
+
+    nyc_comp() %>%
+      dm_get_all_pks(c("airlines", "weather"))
+  })
+})
+
+test_that("dm_get_all_pks() with table arg fails nicely", {
+  expect_snapshot_error({
+    nyc_comp() %>%
+      dm_get_all_pks(c("airlines", "weather", "timetable", "tabletime"))
+  })
+})
 
 # tests for compound keys -------------------------------------------------
 
