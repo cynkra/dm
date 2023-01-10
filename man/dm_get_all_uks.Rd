@@ -20,12 +20,21 @@ The default \code{NULL} returns information for all tables.}
 A tibble with the following columns:
 \describe{
 \item{\code{table}}{table name,}
-\item{\code{uk_col}}{column name(s) of primary key, as list of character vectors.}
+\item{\code{uk_col}}{column name(s) of primary key, as list of character vectors,}
+\item{\code{kind}}{kind of unique key, see details.}
 }
 }
 \description{
 \code{dm_get_all_uks()} checks the \code{dm} object for unique keys and
 returns the tables and the respective unique key columns.
+}
+\details{
+There are 3 kinds of unique keys:
+\itemize{
+\item \code{PK}: Primary key, set by \code{\link[=dm_add_pk]{dm_add_pk()}}
+\item \verb{explicit UK}: Unique key, set by \code{\link[=dm_add_uk]{dm_add_uk()}}
+\item \verb{implicit UK}: Unique key, not explicitly set, but referenced by a foreign key, using \code{\link[=dm_add_fk]{dm_add_fk()}}
+}
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
