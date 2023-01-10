@@ -118,6 +118,9 @@ test_that("unique keys", {
 
     nyc_1_uk %>%
       dm_get_all_uks("airports")
+
+    nyc_1_uk %>%
+      dm_get_all_uks(c("airports", "weather", "flights", "airlines"))
   })
 
   expect_snapshot_error(

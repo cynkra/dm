@@ -193,6 +193,15 @@
         table    uk_col kind 
         <chr>    <keys> <chr>
       1 airports faa    PK   
+    Code
+      nyc_1_uk %>% dm_get_all_uks(c("airports", "weather", "flights", "airlines"))
+    Output
+      # A tibble: 3 x 3
+        table    uk_col                      kind       
+        <chr>    <keys>                      <chr>      
+      1 airports faa                         PK         
+      2 airlines carrier                     PK         
+      3 flights  year, month, ... (19 total) explicit UK
 
 ---
 
