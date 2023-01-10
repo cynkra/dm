@@ -604,7 +604,7 @@ tbl_def_impl <- function(def, idx, keyed) {
     pk <- NULL
   }
 
-  uk_def <- def$uks[[idx]]
+  uks <- def$uks[[idx]]
 
   fks_in_def <-
     def$fks[[idx]] %>%
@@ -630,6 +630,7 @@ tbl_def_impl <- function(def, idx, keyed) {
   new_keyed_tbl(
     data,
     pk = pk,
+    uks = uks,
     fks_in = fks_in,
     fks_out = fks_out,
     uuid = def$uuid[[idx]]

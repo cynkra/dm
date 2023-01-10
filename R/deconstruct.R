@@ -154,11 +154,12 @@ uks_df_from_keys_info <- function(tables) {
 
 new_uks_from_keys_info <- function(tbl) {
   df_keys <- keyed_get_info(tbl)
-  if (is.null(df_keys$uks)) {
-    return(NULL)
+
+  if (nrow(df_keys$uks) == 0) {
+    return(new_uk())
   }
 
-  missing_uks <- map_lgl(df_keys$uks$column, setdiff, colnames(tbl))
+  missing_uks <- map(df_keys$uks$column, setdiff, colnames(tbl))
   valid_uks <- (lengths(missing_uks) == 0)
 
   new_uk(df_keys$uks$column[valid_uks])
