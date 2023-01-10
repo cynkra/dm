@@ -72,7 +72,9 @@ dm_add_uk_impl <- function(dm, table, column) {
   if (!is_empty(def$pks[[i]]$column) && identical(def$pks[[i]]$column[[1]], column)) {
     abort_no_uk_if_pk(table, column)
   }
-
+  if (any(map_lgl(def$uks[[i]]$column, identical, column))) {
+    abort_no_uk_if_pk(table, column, type = "UK")
+  }
 
   def$uks[[i]] <- vctrs::vec_rbind(
     def$uks[[i]],
@@ -240,7 +242,7 @@ error_txt_uk_not_defined <- function() {
   glue("No unique keys to remove.")
 }
 
-abort_no_uk_if_pk <- function(table, column) {
-  error_txt <- glue("A PK ({commas(tick(column))}) for table `{table}` already exists, not adding UK.")
+abort_no_uk_if_pk <- function(table, column, type = "PK") {
+  error_txt <- glue("A {type} ({commas(tick(column))}) for table `{table}` already exists, not adding UK.")
   abort(error_txt, class = dm_error_full("no_uk_if_pk"))
 }
