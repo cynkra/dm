@@ -84,16 +84,16 @@ dm_add_uk_impl <- function(dm, table, column) {
   new_dm3(def)
 }
 
-#' Get all primary keys of a [`dm`] object
+#' Get all unique keys of a [`dm`] object
 #'
 #' @description
-#' `dm_get_all_uks()` checks the `dm` object for unique keys and
-#' returns the tables and the respective unique key columns.
+#' `dm_get_all_uks()` checks the `dm` object for unique keys
+#' (primary keys, explicit and implicit unique keys) and returns the tables and
+#' the respective unique key columns.
 #'
 #' @family primary key functions
 #' @param table One or more table names, as character vector,
-#'   to return primary key information for.
-#'   If given, primary keys are returned in that order.
+#'   to return unique key information for.
 #'   The default `NULL` returns information for all tables.
 #'
 #' @details There are 3 kinds of unique keys:

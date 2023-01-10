@@ -2,7 +2,7 @@
 % Please edit documentation in R/unique-keys.R
 \name{dm_get_all_uks}
 \alias{dm_get_all_uks}
-\title{Get all primary keys of a \code{\link{dm}} object}
+\title{Get all unique keys of a \code{\link{dm}} object}
 \usage{
 dm_get_all_uks(dm, table = NULL, ...)
 }
@@ -10,8 +10,7 @@ dm_get_all_uks(dm, table = NULL, ...)
 \item{dm}{A \code{dm} object.}
 
 \item{table}{One or more table names, as character vector,
-to return primary key information for.
-If given, primary keys are returned in that order.
+to return unique key information for.
 The default \code{NULL} returns information for all tables.}
 
 \item{...}{These dots are for future extensions and must be empty.}
@@ -25,8 +24,9 @@ A tibble with the following columns:
 }
 }
 \description{
-\code{dm_get_all_uks()} checks the \code{dm} object for unique keys and
-returns the tables and the respective unique key columns.
+\code{dm_get_all_uks()} checks the \code{dm} object for unique keys
+(primary keys, explicit and implicit unique keys) and returns the tables and
+the respective unique key columns.
 }
 \details{
 There are 3 kinds of unique keys:
