@@ -99,7 +99,9 @@ dm_add_uk_impl <- function(dm, table, column) {
 #' @details There are 3 kinds of unique keys:
 #'    - `PK`: Primary key, set by [`dm_add_pk()`]
 #'    - `explicit UK`: Unique key, set by [`dm_add_uk()`]
-#'    - `implicit UK`: Unique key, not explicitly set, but referenced by a foreign key, using [`dm_add_fk()`]
+#'    - `implicit UK`: Unique key, not explicitly set, but referenced by a foreign key.
+#'       Since [`dm_add_fk()`] adds an explicit unique key, this happens typically only, when
+#'       a primary key or a unique key is being removed.
 #'
 #' @inheritParams dm_add_uk
 #'
