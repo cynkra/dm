@@ -149,6 +149,13 @@ test_that("unique keys", {
   )
 
   expect_snapshot_error(
+    # trying to request 2 tables that are not part of the dm and a few others
+    nyc_1_uk %>%
+      dm_get_all_uks(c("timetable", "weather", "flights", "tabletime")),
+    class = dm_error("table_not_in_dm")
+  )
+
+  expect_snapshot_error(
     # trying to add a UK for which a PK already exists
     dm_add_uk(
       dm_for_filter(),

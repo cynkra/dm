@@ -208,5 +208,9 @@
 
 ---
 
+    Table `timetable`, `tabletime` not in `dm` object. Available table names: `airlines`, `airports`, `flights`, `planes`, `weather`.
+
+---
+
     A UK (`n`) for table `tf_6` already exists, not adding UK.
 

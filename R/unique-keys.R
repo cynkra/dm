@@ -129,7 +129,7 @@ dm_get_all_uks_impl <- function(dm, table = NULL) {
   if (!is.null(table)) {
     idx <- match(table, def$table)
     if (anyNA(idx)) {
-      abort_table_not_in_dm(table, names(dm))
+      abort_table_not_in_dm(table[which(is.na(idx))], def$table)
     }
     def <- def[match(table, def$table), ]
   }
