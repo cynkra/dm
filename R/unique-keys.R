@@ -115,12 +115,20 @@ dm_get_all_uks <- function(dm, table = NULL, ...) {
 }
 
 dm_get_all_uks_impl <- function(dm, table = NULL) {
-  dm %>%
-    dm_get_def() %>%
-    dm_get_all_uks_def_impl(table)
+  def <- dm %>%
+    dm_get_def()
+
+  bind_rows(
+    dm_get_all_pks_def_impl(def, table) %>%
+      select(-autoincrement) %>%
+      rename(uk_col = pk_col) %>%
+      mutate(kind = "PK"),
+    dm_get_all_explicit_uks_def_impl(def, table) %>%
+      mutate(kind = "explicit UK")
+  )
 }
 
-dm_get_all_uks_def_impl <- function(def, table = NULL) {
+dm_get_all_explicit_uks_def_impl <- function(def, table = NULL) {
   # Optimized for speed
 
   def_sub <- def[c("table", "uks")]
