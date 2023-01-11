@@ -41,11 +41,12 @@ dm_upgrade <- function(dm, quiet) {
 
   if (version < 4L) {
     if (!quiet) {
-      message("Upgrading dm object created with dm <= 1.0.4.") # TODO: Check that package version is correct
+      message("Upgrading dm object created with dm <= 1.0.3.")
     }
     def <- unclass(dm)$def
     def$pks <- map(def$pks, mutate, autoincrement = FALSE) %>%
       vctrs::as_list_of(new_pk())
+    def <- mutate(def, uks = vctrs::list_of(new_uk()), .after = pks)
     dm <- new_dm3(def, zoomed = is_zoomed(dm))
   }
 

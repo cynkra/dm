@@ -25,7 +25,7 @@ A tibble with the following columns:
 }
 \description{
 \code{dm_get_all_pks()} checks the \code{dm} object for primary keys and
-returns the tables, the respective primary key columns, and their classes.
+returns the tables and the respective primary key columns.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -36,8 +36,11 @@ dm_nycflights13() \%>\%
 \seealso{
 Other primary key functions: 
 \code{\link{dm_add_pk}()},
+\code{\link{dm_add_uk}()},
+\code{\link{dm_get_all_uks}()},
 \code{\link{dm_has_pk}()},
 \code{\link{dm_rm_pk}()},
+\code{\link{dm_rm_uk}()},
 \code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}

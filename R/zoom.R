@@ -149,6 +149,9 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
       # PK: either the same primary key as in the old table, renamed in the new table, or no primary key if none available
       pks = list_of(update_zoomed_pk(dm)),
 
+      # UK: either the same unique key as in the old table, renamed in the new table, or no unique key if none available
+      uks = list_of(update_zoomed_uk(dm)),
+
       # incoming FKs: in the new row, based on the old table;
       # if PK available, foreign key relations can be copied from the old table
       # if PK vanished, the entry will be empty
@@ -192,6 +195,7 @@ dm_update_zoomed <- function(dm) {
 
   if (upd_keys) {
     new_def$pks[[where]] <- update_zoomed_pk(dm)
+    new_def$uks[[where]] <- update_zoomed_uk(dm)
     new_def$fks[[where]] <- update_zoomed_incoming_fks(dm)
 
     tracked_cols <- new_def$col_tracker_zoom[[where]]
@@ -251,6 +255,21 @@ update_zoomed_pk <- function(dm) {
   }
 
   upd_pk
+}
+
+update_zoomed_uk <- function(dm) {
+  old_tbl_name <- orig_name_zoomed(dm)
+  tracked_cols <- col_tracker_zoomed(dm)
+  orig_uk <- dm %>%
+    dm_get_def() %>%
+    dm_get_all_uks_def_impl(old_tbl_name)
+  if (has_length(orig_uk$uk_col) && all(get_key_cols(orig_uk$uk_col) %in% tracked_cols)) {
+    upd_uk <- new_uk(map(orig_uk$uk_col, ~ recode2(get_key_cols(.x), tracked_cols)))
+  } else {
+    upd_uk <- new_uk()
+  }
+
+  upd_uk
 }
 
 update_zoomed_incoming_fks <- function(dm) {

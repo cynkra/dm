@@ -91,6 +91,8 @@ utils::globalVariables(c(
   "tbls",
   "text",
   "type",
+  "uk_col",
+  "uks",
   "unique_indexes",
   "value",
   "values",

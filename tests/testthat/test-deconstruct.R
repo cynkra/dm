@@ -519,6 +519,20 @@ test_that("pks_df_from_keys_info()", {
   })
 })
 
+test_that("uks_df_from_keys_info()", {
+  withr::local_seed(20220715)
+
+  dm <- dm_for_filter() %>%
+    dm_add_uk(tf_5, l)
+
+  expect_snapshot({
+    dm %>%
+      dm_get_keyed_tables_impl() %>%
+      uks_df_from_keys_info() %>%
+      jsonlite::toJSON(pretty = TRUE)
+  })
+})
+
 test_that("fks_df_from_keys_info()", {
   withr::local_seed(20220715)
 

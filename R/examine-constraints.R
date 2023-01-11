@@ -120,7 +120,7 @@ kind_to_long <- function(kind) {
 
 check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
   pks <- bind_rows(
-    list(PK = dm_get_all_pks_impl(dm), UK = dm_get_all_uks_impl(dm)),
+    list(PK = dm_get_all_pks_impl(dm), UK = dm_get_all_uks_impl(dm) %>% rename(pk_col = uk_col) %>% select(-kind)),
     .id = "kind"
   ) %>%
     distinct(table, pk_col, .keep_all = TRUE)
@@ -185,10 +185,4 @@ check_fk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
       kind = "FK"
     ) %>%
     select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
-}
-
-dm_get_all_uks_impl <- function(dm) {
-  dm_get_all_fks_impl(dm) %>%
-    select(table = parent_table, pk_col = parent_key_cols) %>%
-    distinct()
 }

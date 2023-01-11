@@ -7,6 +7,10 @@
 #' If `force == TRUE`, the function will replace an already
 #' set key, without altering foreign keys previously pointing to that primary key.
 #'
+#' @details There can be only one primary key per table in a [`dm`].
+#' It's possible though to set an unlimited number of unique keys using [dm_add_uk()]
+#' or adding foreign keys pointing to columns other than the primary key columns with [dm_add_fk()].
+#'
 #' @inheritParams rlang::args_dots_empty
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
@@ -94,7 +98,7 @@ dm_add_pk_impl <- function(dm, table, column, autoincrement, force) {
     abort_key_set_force_false(table)
   }
 
-  def$pks[[i]] <- tibble(column = !!list(column), autoincrement = autoincrement)
+  def$pks[[i]] <- new_pk(column = list(column), autoincrement = autoincrement)
 
   new_dm3(def)
 }
@@ -159,7 +163,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #'
 #' @description
 #' `dm_get_all_pks()` checks the `dm` object for primary keys and
-#' returns the tables, the respective primary key columns, and their classes.
+#' returns the tables and the respective primary key columns.
 #'
 #' @family primary key functions
 #' @param table One or more table names, as character vector,
@@ -217,8 +221,9 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #' Remove a primary key
 #'
 #' @description
-#' `dm_rm_pk()` removes one or more primary keys from a table and leaves the [`dm`] object otherwise unaltered.
-#' An error is thrown if no private key matches the selection criteria.
+#' If a table name is provided, `dm_rm_pk()` removes the primary key from this table and leaves the [`dm`] object otherwise unaltered.
+#' If no table is given, the `dm` is stripped of all primary keys at once.
+#' An error is thrown if no primary key matches the selection criteria.
 #' If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
 #' Foreign keys are never removed.
 #'
@@ -228,9 +233,7 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #' @param columns Table columns, unquoted.
 #'   To refer to a compound key, use `c(col1, col2)`.
 #'   Pass `NULL` (the default) to remove all matching keys.
-#' @param fail_fk
-#'   Boolean: if `TRUE` (default), will throw an error
-#'   if there are foreign keys addressing the primary key that is to be removed.
+#' @param fail_fk `r lifecycle::badge("deprecated")`
 #'
 #' @family primary key functions
 #'
@@ -239,39 +242,38 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
-#'   dm_rm_pk(airports, fail_fk = FALSE) %>%
+#'   dm_rm_pk(airports) %>%
 #'   dm_draw()
-dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE) {
-  if (missing(fail_fk)) {
-    fail_fk <- NULL
+dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = NULL) {
+  if (!is.null(fail_fk)) {
+    lifecycle::deprecate_soft(
+      "1.0.4",
+      "dm_rm_pk(fail_fk =)",
+      details = "When removing a primary key, potential associated foreign keys will be pointing at an implicit unique key."
+    )
   }
-  dm_rm_pk_(dm, {{ table }}, {{ columns }}, ..., fail_fk = fail_fk)
+  dm_rm_pk_(dm, {{ table }}, {{ columns }}, ...)
 }
 
-dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL, fail_fk = NULL) {
+dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL) {
   check_dots_empty()
   check_not_zoomed(dm)
 
   if (!is.null(rm_referencing_fks)) {
-    deprecate_soft("0.2.1", "dm::dm_rm_pk(rm_referencing_fks = )", "dm::dm_rm_pk(fail_fk = )",
-      details = "Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed."
+    deprecate_soft(
+      "0.2.1",
+      "dm::dm_rm_pk(rm_referencing_fks = )",
+      details = "When removing a primary key, potential associated foreign keys will be pointing at an implicit unique key."
     )
-    if (is.null(fail_fk)) {
-      fail_fk <- !rm_referencing_fks
-    }
-  }
-
-  if (is.null(fail_fk)) {
-    fail_fk <- TRUE
   }
 
   table_name <- dm_tbl_name_null(dm, {{ table }})
   columns <- enexpr(columns)
 
-  dm_rm_pk_impl(dm, table_name, columns, fail_fk)
+  dm_rm_pk_impl(dm, table_name, columns)
 }
 
-dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
+dm_rm_pk_impl <- function(dm, table_name, columns) {
   def <- dm_get_def(dm)
 
   if (is.null(table_name)) {
@@ -300,13 +302,6 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
   if (length(i) == 0 && dm_is_strict_keys(dm)) {
     abort_pk_not_defined()
   }
-
-  pwalk(list(def$fks[i], def$pks[i], def$table[i]), ~ {
-    is_match <- !is.na(vec_match(..1$ref_column, ..2$column))
-    if (fail_fk && any(is_match)) {
-      abort_first_rm_fks(..3, ..1$table[is_match])
-    }
-  })
 
   # Talk about it
   if (is.null(table_name)) {

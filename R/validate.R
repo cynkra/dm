@@ -86,6 +86,14 @@ dm_validate <- function(x) {
     )
   }
 
+  uks <- def %>%
+    select(table, uks) %>%
+    unnest_list_of_df("uks")
+
+  uks %>%
+    unnest_col("column", character()) %>%
+    check_colnames(dm_col_names, "UK")
+
   check_no_nulls(def)
 
   invisible(x)

@@ -3,8 +3,8 @@
 #' @description
 #' `dm_add_fk()` marks the specified `columns` as the foreign key of table `table` with
 #' respect to a key of table `ref_table`.
-#' Usually the referenced columns are a primary key in `ref_table`,
-#' it is also possible to specify other columns via the `ref_columns` argument.
+#' Usually the referenced columns are a primary key in `ref_table`.
+#' However, it is also possible to specify other columns via the `ref_columns` argument.
 #' If `check == TRUE`, then it will first check if the values in `columns` are a subset
 #' of the values of the key in table `ref_table`.
 #'
@@ -29,6 +29,15 @@
 #'   and might be considered by [dm_rows_delete()] in a future version.
 #'
 #' @family foreign key functions
+#'
+#' @details
+#' It is possible that a foreign key (FK) is pointing to columns that are neither primary (PK) nor
+#' explicit unique keys (UK).
+#' This can happen
+#'   1. when a FK is added without a corresponding PK or UK being present in the parent table
+#'   1. when the PK or UK is removed ([`dm_rm_pk()`]/[`dm_rm_uk()`]) without first removing the associated FKs.
+#'
+#' These columns are then a so-called "implicit unique key" of the referenced table and can be listed via [`dm_get_all_uks()`].
 #'
 #' @rdname dm_add_fk
 #'
@@ -244,6 +253,10 @@ dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
 dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
   def <- dm_get_def(dm)
 
+  dm_get_all_fks_def_impl(def = def, parent_table = parent_table, ignore_on_delete = ignore_on_delete, id = id)
+}
+
+dm_get_all_fks_def_impl <- function(def, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
   def_sub <- def[c("table", "fks")]
   names(def_sub)[[1]] <- "parent_table"
 

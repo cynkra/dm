@@ -63,11 +63,16 @@ test_that("dm_rm_pk() works as intended?", {
     class = "table_not_in_dm"
   )
 
-  # test if error is thrown if FK points to PK that is about to be removed
-  expect_dm_error(
-    dm_for_filter() %>%
-      dm_rm_pk(tf_4),
-    "first_rm_fks"
+  expect_deprecated(
+    expect_equivalent_dm(
+      dm_for_filter() %>%
+        dm_rm_pk(tf_4, fail_fk = TRUE),
+      dm_for_filter() %>%
+        dm_get_def() %>%
+        mutate(pks = if_else(table == "tf_4", list_of(new_pk()), pks)) %>%
+        new_dm3()
+    ),
+    "fail_fk"
   )
 
   # test if error is thrown if col not found
@@ -89,11 +94,11 @@ test_that("dm_rm_pk() supports partial filters", {
   expect_snapshot({
     # test logic if argument `fail_fk = FALSE`
     dm_for_filter() %>%
-      dm_rm_pk(tf_4, fail_fk = FALSE) %>%
+      dm_rm_pk(tf_4) %>%
       get_all_keys()
 
     dm_for_filter() %>%
-      dm_rm_pk(tf_3, fail_fk = FALSE) %>%
+      dm_rm_pk(tf_3) %>%
       get_all_keys()
 
     # no failure if pk not used in relationship
@@ -113,7 +118,7 @@ test_that("dm_rm_pk() supports partial filters", {
 
     # partial match for columns, with compound key
     dm_for_filter() %>%
-      dm_rm_pk(columns = c(f, f1), fail_fk = FALSE) %>%
+      dm_rm_pk(columns = c(f, f1)) %>%
       get_all_keys()
 
     # partial match for all tables
