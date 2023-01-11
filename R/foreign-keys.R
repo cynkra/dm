@@ -3,9 +3,8 @@
 #' @description
 #' `dm_add_fk()` marks the specified `columns` as the foreign key of table `table` with
 #' respect to a key of table `ref_table`.
-#' Usually the referenced columns are a primary key in `ref_table`,
-#' it is also possible to specify other columns via the `ref_columns` argument.
-#' In this case `ref_columns` will be added as a new unique key to the referenced table.
+#' Usually the referenced columns are a primary key in `ref_table`.
+#' However, it is also possible to specify other columns via the `ref_columns` argument.
 #' If `check == TRUE`, then it will first check if the values in `columns` are a subset
 #' of the values of the key in table `ref_table`.
 #'
@@ -33,8 +32,12 @@
 #'
 #' @details
 #' It is possible that a foreign key (FK) is pointing to columns that are neither primary (PK) nor
-#' unique keys (UK). This can happen, when the PK or UK is removed ([`dm_rm_pk()`]/[`dm_rm_uk()`])
-#' without first removing the associated FKs.
+#' explicit unique keys (UK).
+#' This can happen
+#'   1. when a FK is added without a corresponding PK or UK being present in the parent table
+#'   1. when the PK or UK is removed ([`dm_rm_pk()`]/[`dm_rm_uk()`]) without first removing the associated FKs.
+#'
+#' These columns are then a so-called "implicit unique key" of the referenced table and can be listed via [`dm_get_all_uks()`].
 #'
 #' @rdname dm_add_fk
 #'
@@ -90,20 +93,6 @@ dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ...,
     ref_col_name <- get_key_cols(ref_key)
   } else {
     ref_col_name <- names(eval_select_indices(ref_col_expr, colnames(ref_table_obj)))
-    # check if either a PK or UK already matches ref_col_name
-    all_keys <- dm_get_all_pks_impl(dm, ref_table_name) %>%
-      rename(uk_col = pk_col) %>%
-      bind_rows(dm_get_all_uks_def_impl(dm_get_def(dm), ref_table_name))
-    # setequal() could also be used for matching, but IMHO the order should matter
-    matches_keys <- map_lgl(all_keys$uk_col, identical, ref_col_name)
-    if (!any(matches_keys)) {
-      if (check) {
-        if (!is_unique_key_se(ref_table_obj, ref_col_name)$unique) {
-          abort_not_unique_key(ref_table_name, ref_col_name)
-        }
-      }
-      dm <- dm_add_uk_impl(dm, ref_table_name, ref_col_name)
-    }
   }
 
   # FIXME: COMPOUND:: Clean check with proper error message

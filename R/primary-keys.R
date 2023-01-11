@@ -260,7 +260,11 @@ dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL) {
   check_not_zoomed(dm)
 
   if (!is.null(rm_referencing_fks)) {
-    deprecate_soft("0.2.1", "dm::dm_rm_pk(rm_referencing_fks = )")
+    deprecate_soft(
+      "0.2.1",
+      "dm::dm_rm_pk(rm_referencing_fks = )",
+      details = "When removing a primary key, potential associated foreign keys will be pointing at an implicit unique key."
+    )
   }
 
   table_name <- dm_tbl_name_null(dm, {{ table }})

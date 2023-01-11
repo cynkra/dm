@@ -124,7 +124,7 @@
       * Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
     Code
       dm_add_fk(dm_nycflights_small(), flights, time_hour, weather, time_hour) %>%
-        dm_rm_uk(weather, time_hour) %>% dm_get_all_uks()
+        dm_get_all_uks()
     Output
       # A tibble: 4 x 3
         table    uk_col    kind       
@@ -133,6 +133,17 @@
       2 airports faa       PK         
       3 planes   tailnum   PK         
       4 weather  time_hour implicit UK
+    Code
+      dm_add_fk(dm_nycflights_small(), flights, time_hour, weather, time_hour) %>%
+        dm_add_uk(weather, time_hour) %>% dm_get_all_uks()
+    Output
+      # A tibble: 4 x 3
+        table    uk_col    kind       
+        <chr>    <keys>    <chr>      
+      1 airlines carrier   PK         
+      2 airports faa       PK         
+      3 planes   tailnum   PK         
+      4 weather  time_hour explicit UK
     Code
       dm_rename(dm_for_filter(), tf_6, p = n) %>% dm_get_all_uks()
     Output
@@ -145,7 +156,7 @@
       4 tf_4  h      PK         
       5 tf_5  k      PK         
       6 tf_6  o      PK         
-      7 tf_6  p      explicit UK
+      7 tf_6  p      implicit UK
     Code
       dm_rename(dm_for_filter(), tf_6, p = n) %>% dm_get_all_fks()
     Output
@@ -221,5 +232,5 @@
 
 ---
 
-    A UK (`n`) for table `tf_6` already exists, not adding UK.
+    A UK (`year`, `month`, `day`, `dep_time`, `sched_dep_time`, ... (19 total)) for table `flights` already exists, not adding UK.
 
