@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 1.0.3.9006
+
+## Bug fixes
+
+- Correct error message if nonexisting table is passed to `dm_get_all_pks()` (#1740).
+
+
 # dm 1.0.3.9005
 
 ## Continuous integration
