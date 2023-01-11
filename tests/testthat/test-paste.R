@@ -62,6 +62,12 @@ test_that("output", {
       dm_add_fk(b, z, c, y) %>%
       dm_paste()
 
+    #UKs
+    dm_for_filter() %>%
+      dm_add_uk(tf_5, l) %>%
+      dm_add_uk(tf_6, n) %>%
+      dm_paste()
+
     "on_delete if needed"
     dm(b, c) %>%
       dm_add_pk(c, x) %>%
