@@ -34,8 +34,6 @@ There are 3 kinds of unique keys:
 \item \code{PK}: Primary key, set by \code{\link[=dm_add_pk]{dm_add_pk()}}
 \item \verb{explicit UK}: Unique key, set by \code{\link[=dm_add_uk]{dm_add_uk()}}
 \item \verb{implicit UK}: Unique key, not explicitly set, but referenced by a foreign key.
-Since \code{\link[=dm_add_fk]{dm_add_fk()}} adds an explicit unique key, this happens typically only, when
-a primary key or a unique key is being removed.
 }
 }
 \examples{

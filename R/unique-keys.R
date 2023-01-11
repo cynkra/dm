@@ -8,14 +8,15 @@
 #' @inheritParams dm_add_pk
 #'
 #' @details The difference between a primary key (PK) and a unique key (UK) consists in the following:
-#' - when a local `dm` is copied to a database (DB) with `copy_dm_to()`, a PK will be set on the DB by default
-#' - a PK can be set as an `autoincrement` key (also implemented on certain DBMS when the `dm` is transferred to the DB)
-#' - there can be only one PK for each table, whereas there can be unlimited UKs
-#' - a UK will be used, if the same table has an autoincrement PK in addition, to ensure that during delta load processes
+#' - When a local `dm` is copied to a database (DB) with `copy_dm_to()`, a PK will be set on the DB by default, whereas a UK is being ignored.
+#' - A PK can be set as an `autoincrement` key (also implemented on certain DBMS when the `dm` is transferred to the DB)
+#' - There can be only one PK for each table, whereas there can be unlimited UKs
+#' - A UK will be used, if the same table has an autoincrement PK in addition, to ensure that during delta load processes
 #'   on the DB (cf. [dm_rows_append()]) the foreign keys are updated accordingly.
 #'   If no UK is available, the insertion is done row-wise, which also ensures a correct matching, but can be much slower.
-#' - a UK can generally enhance the data model by adding additional information
-#' - if a foreign key is added to point at a table without a corresponding PK or UK, a UK is automatically added to that table.
+#' - A UK can generally enhance the data model by adding additional information
+#' - There can also be implicit UKs, when the columns addressed by a foreign key are neither a PK nor a UK.
+#'   These implicit UKs are also listed by [`dm_get_all_uks()`]
 #'
 #' @family primary key functions
 #'
@@ -100,8 +101,6 @@ dm_add_uk_impl <- function(dm, table, column) {
 #'    - `PK`: Primary key, set by [`dm_add_pk()`]
 #'    - `explicit UK`: Unique key, set by [`dm_add_uk()`]
 #'    - `implicit UK`: Unique key, not explicitly set, but referenced by a foreign key.
-#'       Since [`dm_add_fk()`] adds an explicit unique key, this happens typically only, when
-#'       a primary key or a unique key is being removed.
 #'
 #' @inheritParams dm_add_uk
 #'
