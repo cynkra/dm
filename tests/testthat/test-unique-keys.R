@@ -103,7 +103,6 @@ test_that("unique keys", {
       weather,
       time_hour
     ) %>%
-      dm_rm_uk(weather, time_hour) %>%
       dm_get_all_uks()
 
     # key tracking needs to work also for UKs
@@ -161,9 +160,9 @@ test_that("unique keys", {
   expect_snapshot_error(
     # trying to add a UK for which a PK already exists
     dm_add_uk(
-      dm_for_filter(),
-      tf_6,
-      n
+      nyc_1_uk,
+      flights,
+      everything()
     ),
     class = dm_error("no_uk_if_pk")
   )

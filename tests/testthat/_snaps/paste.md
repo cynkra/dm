@@ -33,7 +33,6 @@
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, o) %>%
-        dm::dm_add_uk(tf_6, n) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -57,7 +56,6 @@
           dm::dm_add_pk(tf_4, h) %>%
           dm::dm_add_pk(tf_5, k) %>%
           dm::dm_add_pk(tf_6, o) %>%
-          dm::dm_add_uk(tf_6, n) %>%
           dm::dm_add_fk(tf_2, d, tf_1) %>%
           dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
           dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -81,7 +79,6 @@
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, o) %>%
-        dm::dm_add_uk(tf_6, n) %>%
         dm::dm_add_fk(tf_2, d, tf_1_new) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -127,7 +124,6 @@
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, o) %>%
-        dm::dm_add_uk(tf_6, n) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -171,7 +167,6 @@
         c,
       ) %>%
         dm::dm_add_pk(c, x) %>%
-        dm::dm_add_uk(c, y) %>%
         dm::dm_add_fk(b, y, c) %>%
         dm::dm_add_fk(b, z, c, y)
     Code
@@ -184,7 +179,6 @@
         c,
       ) %>%
         dm::dm_add_pk(c, x) %>%
-        dm::dm_add_uk(c, y) %>%
         dm::dm_add_fk(b, y, c, on_delete = "cascade") %>%
         dm::dm_add_fk(b, z, c, y)
     Code

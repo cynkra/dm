@@ -970,7 +970,6 @@
         dm::dm_add_pk(x, a) %>%
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, a) %>%
-        dm::dm_add_uk(z, c) %>%
         dm::dm_add_fk(x, a, y) %>%
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(y, c, z, c) %>%
@@ -1036,7 +1035,6 @@
         dm::dm_add_pk(x, a) %>%
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, b) %>%
-        dm::dm_add_uk(z, c) %>%
         dm::dm_add_fk(x, a, y) %>%
         dm::dm_add_fk(r, b, y) %>%
         dm::dm_add_fk(y, c, z, c) %>%
@@ -1105,7 +1103,6 @@
         dm::dm_add_pk(x, a) %>%
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, a) %>%
-        dm::dm_add_uk(z, a) %>%
         dm::dm_add_fk(x, a, y) %>%
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(y, a, z, a) %>%
@@ -1171,7 +1168,6 @@
         dm::dm_add_pk(x, a) %>%
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, b) %>%
-        dm::dm_add_uk(z, a) %>%
         dm::dm_add_fk(x, a, y) %>%
         dm::dm_add_fk(r, b, y) %>%
         dm::dm_add_fk(y, a, z, a) %>%
@@ -1240,7 +1236,6 @@
         dm::dm_add_pk(x, a) %>%
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, a) %>%
-        dm::dm_add_uk(z, c) %>%
         dm::dm_add_fk(x, a, y) %>%
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(x, c, z, c) %>%
@@ -1306,7 +1301,6 @@
         dm::dm_add_pk(x, a) %>%
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, b) %>%
-        dm::dm_add_uk(z, c) %>%
         dm::dm_add_fk(x, a, y) %>%
         dm::dm_add_fk(r, b, y) %>%
         dm::dm_add_fk(x, c, z, c) %>%
@@ -1375,7 +1369,6 @@
         dm::dm_add_pk(x, a) %>%
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, a) %>%
-        dm::dm_add_uk(z, b) %>%
         dm::dm_add_fk(x, a, y) %>%
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(x, b, z, b) %>%
@@ -1441,7 +1434,6 @@
         dm::dm_add_pk(x, a) %>%
         dm::dm_add_pk(y, b) %>%
         dm::dm_add_pk(r, b) %>%
-        dm::dm_add_uk(z, b) %>%
         dm::dm_add_fk(x, a, y) %>%
         dm::dm_add_fk(r, b, y) %>%
         dm::dm_add_fk(x, b, z, b) %>%
@@ -1706,11 +1698,7 @@
         },
         {
           "table": "tf_6",
-          "uks": [
-            {
-              "column": ["n"]
-            }
-          ]
+          "uks": []
         }
       ] 
 
