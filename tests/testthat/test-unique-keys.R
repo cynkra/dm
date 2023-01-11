@@ -105,6 +105,16 @@ test_that("unique keys", {
     ) %>%
       dm_get_all_uks()
 
+    dm_add_fk(
+      dm_nycflights_small(),
+      flights,
+      time_hour,
+      weather,
+      time_hour
+    ) %>%
+      dm_add_uk(weather, time_hour) %>%
+      dm_get_all_uks()
+
     # key tracking needs to work also for UKs
     dm_rename(dm_for_filter(), tf_6, p = n) %>% dm_get_all_uks()
     dm_rename(dm_for_filter(), tf_6, p = n) %>% dm_get_all_fks()

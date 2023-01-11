@@ -134,6 +134,17 @@
       3 planes   tailnum   PK         
       4 weather  time_hour implicit UK
     Code
+      dm_add_fk(dm_nycflights_small(), flights, time_hour, weather, time_hour) %>%
+        dm_add_uk(weather, time_hour) %>% dm_get_all_uks()
+    Output
+      # A tibble: 4 x 3
+        table    uk_col    kind       
+        <chr>    <keys>    <chr>      
+      1 airlines carrier   PK         
+      2 airports faa       PK         
+      3 planes   tailnum   PK         
+      4 weather  time_hour explicit UK
+    Code
       dm_rename(dm_for_filter(), tf_6, p = n) %>% dm_get_all_uks()
     Output
       # A tibble: 7 x 3
