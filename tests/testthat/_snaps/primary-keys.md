@@ -82,6 +82,7 @@
     Condition
       Warning:
       The `rm_referencing_fks` argument of `dm_rm_pk()` is deprecated as of dm 0.2.1.
+      i When removing a primary key, potential associated foreign keys will be pointing at an implicit unique key.
     Output
       $pks
       # A tibble: 5 x 3
