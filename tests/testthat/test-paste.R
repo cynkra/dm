@@ -62,7 +62,7 @@ test_that("output", {
       dm_add_fk(b, z, c, y) %>%
       dm_paste()
 
-    #UKs
+    # UKs
     dm_for_filter() %>%
       dm_add_uk(tf_5, l) %>%
       dm_add_uk(tf_6, n) %>%
