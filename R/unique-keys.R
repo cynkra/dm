@@ -118,7 +118,9 @@ dm_add_uk_impl <- function(dm, table, column) {
 dm_get_all_uks <- function(dm, table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
-  dm_get_all_uks_impl(dm, table)
+  table_expr <- enexpr(table) %||% src_tbls_impl(dm)
+  table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm)))
+  dm_get_all_uks_impl(dm, table_names)
 }
 
 dm_get_all_uks_impl <- function(dm, table = NULL) {
@@ -127,9 +129,6 @@ dm_get_all_uks_impl <- function(dm, table = NULL) {
 
   if (!is.null(table)) {
     idx <- match(table, def$table)
-    if (anyNA(idx)) {
-      abort_table_not_in_dm(table[which(is.na(idx))], def$table)
-    }
     def <- def[match(table, def$table), ]
   }
 
