@@ -18,7 +18,7 @@ set key, without altering foreign keys previously pointing to that primary key."
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9004</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9007</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -143,11 +143,20 @@ If <code>TRUE</code>, a potential old <code>pk</code> is deleted before setting 
 <p>An updated <code>dm</code> with an additional primary key.</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>There can be only one primary key per table in a <code><a href="dm.html">dm</a></code>.
+It's possible though to set an unlimited number of unique keys using <code><a href="dm_add_uk.html">dm_add_uk()</a></code>
+or adding foreign keys pointing to columns other than the primary key columns with <code><a href="dm_add_fk.html">dm_add_fk()</a></code>.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other primary key functions: 
+<code><a href="dm_add_uk.html">dm_add_uk</a>()</code>,
 <code><a href="dm_get_all_pks.html">dm_get_all_pks</a>()</code>,
+<code><a href="dm_get_all_uks.html">dm_get_all_uks</a>()</code>,
 <code><a href="dm_has_pk.html">dm_has_pk</a>()</code>,
 <code><a href="dm_rm_pk.html">dm_rm_pk</a>()</code>,
+<code><a href="dm_rm_uk.html">dm_rm_uk</a>()</code>,
 <code><a href="dm_enum_pk_candidates.html">enum_pk_candidates</a>()</code></p></div>
     </div>
 
