@@ -2,6 +2,12 @@
 
     Code
       packed <- json_pack_join(df1, df2, by = "key")
+    Condition
+      Warning in `left_join()`:
+      Each row in `x` is expected to match at most 1 row in `y`.
+      i Row 1 of `x` matches multiple rows.
+      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
+    Code
       packed
     Output
       # A tibble: 3 x 3
