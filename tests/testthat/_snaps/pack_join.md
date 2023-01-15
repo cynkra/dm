@@ -67,7 +67,7 @@
       pack_join(df4, df5, by = c(df5 = "col"))
     Output
       # A tibble: 0 x 1
-      # ... with 1 variable: df5 <tibble[,0]>
+      # * 1 variable: df5 <tibble[,0]>
 
 ---
 
@@ -75,5 +75,5 @@
       pack_join(df5, df6, by = c(col = "df6"))
     Output
       # A tibble: 0 x 2
-      # ... with 2 variables: col <int>, df6 <tibble[,0]>
+      # * 2 variables: col <int>, df6 <tibble[,0]>
 

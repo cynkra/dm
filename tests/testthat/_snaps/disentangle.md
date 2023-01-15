@@ -64,7 +64,7 @@
        8 d-2         d             e-3          e               no_action
        9 d-1         d             f-2          f               no_action
       10 d-2         d             f-4          f               no_action
-      # ... with 12 more rows
+      # * 12 more rows
     Code
       dm_disentangle(entangled_dm(), c) %>% dm_get_all_fks()
     Message
@@ -89,7 +89,7 @@
        8 d-2         d             e-3          e               no_action
        9 d-1         d             f-2          f               no_action
       10 d-2         d             f-4          f               no_action
-      # ... with 12 more rows
+      # * 12 more rows
     Code
       dm_disentangle(entangled_dm_2(), a) %>% dm_get_all_fks()
     Message

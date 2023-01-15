@@ -173,7 +173,7 @@
     Output
       $pks
       # A tibble: 0 x 3
-      # ... with 3 variables: table <chr>, pk_col <keys>, autoincrement <lgl>
+      # * 3 variables: table <chr>, pk_col <keys>, autoincrement <lgl>
       
       $fks
       # A tibble: 5 x 5

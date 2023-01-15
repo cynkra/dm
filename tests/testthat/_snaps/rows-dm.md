@@ -289,7 +289,7 @@
     Message
       Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.
     Output
-      # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
+      # * 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
     Code
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
@@ -308,7 +308,7 @@
       Warning:
       `dm_rows_truncate()` was deprecated in dm 1.0.0.
     Output
-      # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
+      # * 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
     Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
@@ -403,7 +403,7 @@
       10    10 J    
       
       $tf_2
-      # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
+      # * 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
       
       $tf_3
          f        f1 g    
@@ -429,7 +429,7 @@
       5 e     seven F         6
       
       $tf_5
-      # ... with 4 variables: ww <int>, k <int>, l <chr>, m <chr>
+      # * 4 variables: ww <int>, k <int>, l <chr>, m <chr>
       
       $tf_6
            zz n          o    
@@ -440,107 +440,4 @@
       4     1 streetlamp h    
       5     1 tree       f    
       
-
-# dm_rows_append() works with autoincrement PKs and FKS for selected DBs
-
-    Code
-      local_dm$t1
-    Output
-      # A tibble: 3 x 2
-            a o    
-        <int> <chr>
-      1     5 a    
-      2     6 b    
-      3     7 c    
-    Code
-      local_dm$t2
-    Output
-      # A tibble: 3 x 3
-            c     d o    
-        <int> <int> <chr>
-      1    10     7 c    
-      2     9     6 b    
-      3     8     5 a    
-    Code
-      local_dm$t3
-    Output
-      # A tibble: 3 x 2
-            e o    
-        <int> <chr>
-      1     6 b    
-      2     5 a    
-      3     7 c    
-    Code
-      local_dm$t4
-    Output
-      # A tibble: 3 x 3
-            g     h o    
-        <int> <int> <chr>
-      1     1     8 a    
-      2     2     9 b    
-      3     3    10 c    
-    Code
-      filled_dm$t1
-    Output
-      # A tibble: 3 x 2
-            a o    
-        <int> <chr>
-      1     5 a    
-      2     6 b    
-      3     7 c    
-    Code
-      filled_dm$t2
-    Output
-      # A tibble: 3 x 3
-            c     d o    
-        <int> <int> <chr>
-      1    10     7 c    
-      2     9     6 b    
-      3     8     5 a    
-    Code
-      filled_dm$t3
-    Output
-      # A tibble: 0 x 2
-      # ... with 2 variables: e <int>, o <chr>
-    Code
-      filled_dm$t4
-    Output
-      # A tibble: 3 x 3
-            g     h o    
-        <int> <int> <chr>
-      1    NA     8 a    
-      2    NA     9 b    
-      3    NA    10 c    
-    Code
-      filled_dm_in_place$t1
-    Output
-      # A tibble: 3 x 2
-            a o    
-        <int> <chr>
-      1     1 a    
-      2     2 b    
-      3     3 c    
-    Code
-      filled_dm_in_place$t2
-    Output
-      # A tibble: 3 x 3
-            c     d o    
-        <int> <int> <chr>
-      1     1     3 c    
-      2     2     2 b    
-      3     3     1 a    
-    Code
-      filled_dm_in_place$t3
-    Output
-      # A tibble: 0 x 2
-      # ... with 2 variables: e <int>, o <chr>
-    Code
-      filled_dm_in_place$t4
-    Output
-      # A tibble: 3 x 3
-            g     h o    
-        <int> <int> <chr>
-      1     1     3 a    
-      2     2     2 b    
-      3     3     1 c    
 
