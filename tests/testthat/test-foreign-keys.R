@@ -292,6 +292,13 @@ test_that("dm_get_all_fks() with parent_table arg", {
 
     nyc_comp() %>%
       dm_get_all_fks(c("airlines", "weather"))
+
+    # test tidyselect functions for parent_table arg
+    nyc_comp() %>%
+      dm_get_all_fks(ends_with("ports"))
+
+    nyc_comp() %>%
+      dm_get_all_fks(everything())
   })
 })
 

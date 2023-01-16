@@ -246,6 +246,23 @@
         <chr>       <keys>            <chr>        <keys>            <chr>    
       1 flights     carrier           airlines     carrier           no_action
       2 flights     origin, time_hour weather      origin, time_hour no_action
+    Code
+      nyc_comp() %>% dm_get_all_fks(ends_with("ports"))
+    Output
+      # A tibble: 1 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 flights     dest          airports     faa             no_action
+    Code
+      nyc_comp() %>% dm_get_all_fks(everything())
+    Output
+      # A tibble: 4 x 5
+        child_table child_fk_cols     parent_table parent_key_cols   on_delete
+        <chr>       <keys>            <chr>        <keys>            <chr>    
+      1 flights     carrier           airlines     carrier           no_action
+      2 flights     dest              airports     faa               no_action
+      3 flights     tailnum           planes       tailnum           no_action
+      4 flights     origin, time_hour weather      origin, time_hour no_action
 
 # dm_get_all_fks() with parent_table arg fails nicely
 

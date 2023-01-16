@@ -213,6 +213,24 @@
       1 airports faa                         PK         
       2 airlines carrier                     PK         
       3 flights  year, month, ... (19 total) explicit UK
+    Code
+      nyc_1_uk %>% dm_get_all_uks(starts_with("a"))
+    Output
+      # A tibble: 2 x 3
+        table    uk_col  kind 
+        <chr>    <keys>  <chr>
+      1 airlines carrier PK   
+      2 airports faa     PK   
+    Code
+      nyc_1_uk %>% dm_get_all_uks(everything())
+    Output
+      # A tibble: 4 x 3
+        table    uk_col                      kind       
+        <chr>    <keys>                      <chr>      
+      1 airlines carrier                     PK         
+      2 airports faa                         PK         
+      3 planes   tailnum                     PK         
+      4 flights  year, month, ... (19 total) explicit UK
 
 ---
 
