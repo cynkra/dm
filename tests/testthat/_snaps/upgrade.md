@@ -88,9 +88,6 @@
       [1] FALSE
     Code
       dm_get_all_uks(dm_v3)
-    Message
-      Upgrading dm object created with dm <= 0.3.0.
-      Upgrading dm object created with dm <= 1.0.3.
     Output
       # A tibble: 7 x 3
         table uk_col kind       
@@ -133,8 +130,6 @@
       [1] FALSE
     Code
       dm_get_all_uks(dm_v4)
-    Message
-      Upgrading dm object created with dm <= 1.0.3.
     Output
       # A tibble: 7 x 3
         table uk_col kind       
