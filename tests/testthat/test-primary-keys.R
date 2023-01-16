@@ -187,8 +187,8 @@ test_that("output", {
 test_that("dm_get_all_pks() and order", {
   dm <- nyc_comp()
   pks_all <- dm_get_all_pks(dm)
-  pks_12 <- dm_get_all_pks(dm, names(dm)[1:2])
-  pks_21 <- dm_get_all_pks(dm, names(dm)[2:1])
+  pks_12 <- dm_get_all_pks(dm, !!names(dm)[1:2])
+  pks_21 <- dm_get_all_pks(dm, !!names(dm)[2:1])
 
   expect_equal(pks_all[1:2, ], pks_12)
   expect_equal(pks_all[2:1, ], pks_21)
@@ -200,14 +200,14 @@ test_that("dm_get_all_pks() with table arg", {
       dm_get_all_pks("weather")
 
     nyc_comp() %>%
-      dm_get_all_pks(c("airlines", "weather"))
+      dm_get_all_pks(c(airlines, weather))
   })
 })
 
 test_that("dm_get_all_pks() with table arg fails nicely", {
   expect_snapshot_error({
     nyc_comp() %>%
-      dm_get_all_pks(c("airlines", "weather", "timetable", "tabletime"))
+      dm_get_all_pks(c(airlines, weather, timetable, tabletime))
   })
 })
 

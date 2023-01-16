@@ -236,7 +236,7 @@
         <chr>   <keys>            <lgl>        
       1 weather origin, time_hour FALSE        
     Code
-      nyc_comp() %>% dm_get_all_pks(c("airlines", "weather"))
+      nyc_comp() %>% dm_get_all_pks(c(airlines, weather))
     Output
       # A tibble: 2 x 3
         table    pk_col            autoincrement
@@ -246,7 +246,8 @@
 
 # dm_get_all_pks() with table arg fails nicely
 
-    Table `timetable`, `tabletime` not in `dm` object. Available table names: `airlines`, `airports`, `flights`, `planes`, `weather`.
+    Can't subset tables that don't exist.
+    x Table `timetable` doesn't exist.
 
 # dm_get_all_pks() with compound keys
 
