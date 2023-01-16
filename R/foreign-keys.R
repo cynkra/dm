@@ -247,13 +247,13 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
-  table_expr <- enexpr(parent_table) %||% src_tbls_impl(dm)
-  table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm)))
+  table_expr <- enexpr(parent_table) %||% src_tbls_impl(dm, quiet = TRUE)
+  table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
   dm_get_all_fks_impl(dm, table_names)
 }
 
 dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
-  def <- dm_get_def(dm)
+  def <- dm_get_def(dm, quiet = TRUE)
 
   dm_get_all_fks_def_impl(def = def, parent_table = parent_table, ignore_on_delete = ignore_on_delete, id = id)
 }
