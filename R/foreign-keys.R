@@ -253,7 +253,7 @@ dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
 }
 
 dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
-  def <- dm_get_def(dm, quiet = TRUE)
+  def <- dm_get_def(dm)
 
   dm_get_all_fks_def_impl(def = def, parent_table = parent_table, ignore_on_delete = ignore_on_delete, id = id)
 }

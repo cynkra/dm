@@ -193,7 +193,7 @@ dm_get_all_pks <- function(dm, table = NULL, ...) {
 
 dm_get_all_pks_impl <- function(dm, table = NULL) {
   dm %>%
-    dm_get_def(quiet = TRUE) %>%
+    dm_get_def() %>%
     dm_get_all_pks_def_impl(table)
 }
 
