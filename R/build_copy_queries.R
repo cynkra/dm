@@ -25,7 +25,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     # to be a scalar
     pk_col <-
       dm %>%
-      dm_get_all_pks(x) %>%
+      dm_get_all_pks(!!x) %>%
       filter(autoincrement) %>%
       pull(pk_col)
 
