@@ -274,11 +274,11 @@ test_that("dm_get_all_fks() and order", {
   dm <- dm_for_filter()
   fks_all <- dm_get_all_fks(dm)
   fks_1 <- dm_get_all_fks(dm, "tf_1")
-  fks_3 <- dm_get_all_fks(dm, "tf_3")
+  fks_3 <- dm_get_all_fks(dm, tf_3)
   fks_4 <- dm_get_all_fks(dm, "tf_4")
   fks_6 <- dm_get_all_fks(dm, "tf_6")
-  fks_34 <- dm_get_all_fks(dm, c("tf_3", "tf_4"))
-  fks_43 <- dm_get_all_fks(dm, c("tf_4", "tf_3"))
+  fks_34 <- dm_get_all_fks(dm, c(tf_3, tf_4))
+  fks_43 <- dm_get_all_fks(dm, c(tf_4, tf_3))
 
   expect_equal(fks_all, bind_rows(fks_1, fks_3, fks_4, fks_6))
   expect_equal(fks_34, bind_rows(fks_3, fks_4))
@@ -288,7 +288,7 @@ test_that("dm_get_all_fks() and order", {
 test_that("dm_get_all_fks() with parent_table arg", {
   expect_snapshot({
     nyc_comp() %>%
-      dm_get_all_fks("weather")
+      dm_get_all_fks(weather)
 
     nyc_comp() %>%
       dm_get_all_fks(c("airlines", "weather"))
@@ -298,6 +298,6 @@ test_that("dm_get_all_fks() with parent_table arg", {
 test_that("dm_get_all_fks() with parent_table arg fails nicely", {
   expect_snapshot_error({
     nyc_comp() %>%
-      dm_get_all_fks(c("airlines", "weather", "timetable", "tabletime"))
+      dm_get_all_fks(c(airlines, weather, timetable, tabletime))
   })
 })

@@ -232,7 +232,7 @@
 # dm_get_all_fks() with parent_table arg
 
     Code
-      nyc_comp() %>% dm_get_all_fks("weather")
+      nyc_comp() %>% dm_get_all_fks(weather)
     Output
       # A tibble: 1 x 5
         child_table child_fk_cols     parent_table parent_key_cols   on_delete
@@ -249,5 +249,6 @@
 
 # dm_get_all_fks() with parent_table arg fails nicely
 
-    Table `timetable`, `tabletime` not in `dm` object. Available table names: `airlines`, `airports`, `flights`, `planes`, `weather`.
+    Can't subset tables that don't exist.
+    x Table `timetable` doesn't exist.
 
