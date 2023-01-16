@@ -9,7 +9,7 @@ dm_get_all_fks(dm, parent_table = NULL, ...)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{parent_table}{One or more table names, as character vector,
+\item{parent_table}{One or more table names, unquoted,
 to return foreign key information for.
 If given, foreign keys are returned in that order.
 The default \code{NULL} returns information for all tables.}

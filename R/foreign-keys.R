@@ -233,7 +233,7 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 #'   }
 #'
 #' @inheritParams dm_has_fk
-#' @param parent_table One or more table names, as character vector,
+#' @param parent_table One or more table names, unquoted,
 #'   to return foreign key information for.
 #'   If given, foreign keys are returned in that order.
 #'   The default `NULL` returns information for all tables.

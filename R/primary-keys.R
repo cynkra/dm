@@ -166,7 +166,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' returns the tables and the respective primary key columns.
 #'
 #' @family primary key functions
-#' @param table One or more table names, as character vector,
+#' @param table One or more table names, unquoted,
 #'   to return primary key information for.
 #'   If given, primary keys are returned in that order.
 #'   The default `NULL` returns information for all tables.

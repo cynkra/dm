@@ -93,7 +93,7 @@ dm_add_uk_impl <- function(dm, table, column) {
 #' the respective unique key columns.
 #'
 #' @family primary key functions
-#' @param table One or more table names, as character vector,
+#' @param table One or more table names, unquoted,
 #'   to return unique key information for.
 #'   The default `NULL` returns information for all tables.
 #'
