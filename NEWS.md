@@ -1,5 +1,17 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 1.0.3.9008
+
+- Internal changes only.
+
+
+# dm 1.0.3.9007
+
+## Features
+
+- New `dm_add_uk()`, `dm_rm_uk()` and `dm_get_all_uks()` functions for explicit support of unique keys (#622, #1716).
+
+
 # dm 1.0.3.9006
 
 ## Bug fixes
