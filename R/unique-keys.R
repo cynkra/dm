@@ -118,14 +118,14 @@ dm_add_uk_impl <- function(dm, table, column) {
 dm_get_all_uks <- function(dm, table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
-  table_expr <- enexpr(table) %||% src_tbls_impl(dm)
+  table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
   table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm)))
   dm_get_all_uks_impl(dm, table_names)
 }
 
 dm_get_all_uks_impl <- function(dm, table = NULL) {
   def <- dm %>%
-    dm_get_def()
+    dm_get_def(quiet = TRUE)
 
   if (!is.null(table)) {
     idx <- match(table, def$table)
