@@ -368,7 +368,7 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
     tbl <- tbls[[i]]
     # FIXME: implement for in_place = FALSE
     if (is_src_db(x) && in_place && (rows_op_name == "append")) {
-      autoinc_col <- get_autoinc_col(x, table, colnames(y))
+      autoinc_col <- get_autoinc_col(x, table, colnames(tbl))
     } else if (!is_src_db(x) && (rows_op_name == "append")) {
       # `colnames(tbl)` could not contain the PK col, if it's left out in `y`
       # in order to apply the AI logic for local dm's we need `colnames(x[[table]])`
