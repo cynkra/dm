@@ -358,7 +358,7 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   ticker <- new_ticker(rows_op$pb_label, length(tables), progress)
   op_ticker <- ticker(rows_op$fun)
 
-  if (!in_place) {
+  if (!in_place || (!is_src_db(x) && rows_op_name == "append")) {
     op_results <- target_tbls
   }
 
