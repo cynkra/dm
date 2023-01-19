@@ -256,6 +256,8 @@ do_rows_insert <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
 do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col = NULL) {
   if (is.null(autoinc_col)) {
     return(rows_append(x, y, ..., in_place = in_place))
+  } else if (inherits(x, "data.frame")) {
+    return(rows_append_ai_local(x, y, ..., autoinc_col))
   }
 
   # Assuming in-place append operation on dbplyr data source
@@ -364,15 +366,21 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   for (i in seq_along(tables)) {
     table <- tables[[i]]
     tbl <- tbls[[i]]
-
     # FIXME: implement for in_place = FALSE
-    if (in_place && (rows_op_name == "append")) {
-      autoinc_col <- get_autoinc_col(x, table, colnames(tbl))
+    if (is_src_db(x) && in_place && (rows_op_name == "append")) {
+      autoinc_col <- get_autoinc_col(x, table, colnames(y))
+    } else if (!is_src_db(x) && (rows_op_name == "append")) {
+      # `colnames(tbl)` could not contain the PK col, if it's left out in `y`
+      # in order to apply the AI logic for local dm's we need `colnames(x[[table]])`
+      autoinc_col <- get_autoinc_col(x, table, colnames(x[[table]]))
     } else {
       autoinc_col <- NULL
     }
 
-    # Returns tibble if autoinc_col is set, `target_tbl` otherwise
+    # Returns
+    # 1. tibble if autoinc_col is set and remote
+    # 2. list of tibbles (res_tibble and ai-lookup) autoinc_col is set and local
+    # 3. `target_tbl` otherwise
     res <- op_ticker(
       target_tbls[[i]],
       tbl,
@@ -381,14 +389,22 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
       autoinc_col = autoinc_col
     )
 
-    if (!is.null(autoinc_col)) {
+    if (!is.null(autoinc_col) && is_src_db(x)) {
       tbls <- align_autoinc_fks(tbls, x, table, res)
+    } else if (!is.null(autoinc_col) && !is_src_db(x)) {
+      op_results[[i]] <- res$x_new
+      # `if` is necessary, since in case y doesn't contain the AI column, the target
+      # table should still have the AI values, but no update of potentially existing
+      # FKs should take place
+      if (!is.null(get_autoinc_col(x, table, colnames(tbl)))) {
+        tbls <- align_autoinc_fks(tbls, x, table, res$ai_lookup)
+      }
     } else if (!in_place) {
       op_results[[i]] <- res
     }
   }
 
-  if (in_place) {
+  if (in_place && is_src_db(x)) {
     invisible(x)
   } else {
     x %>%
@@ -437,7 +453,12 @@ align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
   names(returning_rows)[[2]] <- new_pk_col
 
   # Structure: <pk_col>, <new_pk_col>
-  align_tbl <- dbplyr::copy_inline(dm_get_con(target_dm), returning_rows)
+  if (is_src_db(target_dm)) {
+    align_tbl <- dbplyr::copy_inline(dm_get_con(target_dm), returning_rows)
+  } else {
+    align_tbl <- returning_rows
+  }
+
 
   for (i in seq_along(fks_target$child_table)) {
     child_table <- fks_target$child_table[[i]]
@@ -466,6 +487,26 @@ derive_temp_column_name <- function(tbl_names, base, suffix = "_new") {
     }
     new_name <- paste0(new_name, "_")
   }
+}
+
+rows_append_ai_local <- function(x, y, autoinc_col) {
+  num_new_rows <- nrow(y)
+  if (is_empty(x[[autoinc_col]])) {
+    init_ai_val <- 1L
+  } else {
+    init_ai_val <- max(x[[autoinc_col]]) + 1L
+  }
+  new_col_name <- derive_temp_column_name(colnames(x), autoinc_col)
+  ai_lu <- tibble(!!autoinc_col := y[[autoinc_col]], !!new_col_name := init_ai_val:(init_ai_val + num_new_rows - 1))
+  y_new <-
+    y %>%
+    mutate(!!new_col_name := init_ai_val:(init_ai_val + num_new_rows - 1)) %>%
+    select(
+      -intersect(colnames(y), autoinc_col),
+      !!autoinc_col := new_col_name,
+      !!!setdiff(colnames(x), autoinc_col)
+    )
+  list(x_new = rows_append(x, y_new), ai_lookup = ai_lu)
 }
 
 # Errors ------------------------------------------------------------------
