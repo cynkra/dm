@@ -308,7 +308,7 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
 })
 
 
-test_that("dm_rows_append() works with autoincrement PKs and FKS for locally", {
+test_that("dm_rows_append() works with autoincrement PKs and FKS locally", {
   skip_if_remote_src()
 
   # Setup
