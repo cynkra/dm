@@ -292,3 +292,62 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
     filled_dm_in_place$t4
   })
 })
+
+
+test_that("dm_rows_append() works with autoincrement PKs and FKS for locally", {
+  skip_if_remote_src()
+
+  # Setup
+  local_dm <-
+    dm_for_autoinc_1() %>%
+    dm_add_pk(t1, a, autoincrement = TRUE) %>%
+    dm_add_pk(t2, c, autoincrement = TRUE) %>%
+    dm_add_pk(t4, g, autoincrement = TRUE) %>%
+    dm_add_fk(t2, d, t1) %>%
+    dm_add_fk(t3, e, t1) %>%
+    dm_add_fk(t4, h, t2)
+
+  dm_ai_empty_remote <-
+    local_dm %>%
+    dm_ptype()
+
+  # Tests
+  dm_ai_insert <-
+    dm_for_autoinc_1() %>%
+    # Remove one PK column, only provided by local logic
+    dm_select(t4, -g) %>%
+    dm_zoom_to(t3) %>%
+    filter(0L == 1L) %>%
+    dm_update_zoomed()
+
+  expect_silent(
+    filled_dm <- dm_rows_append(
+      dm_ai_empty_remote,
+      dm_ai_insert,
+      in_place = FALSE,
+      progress = FALSE
+    ) %>%
+      collect()
+  )
+
+  expect_error(
+    filled_dm_in_place <- dm_rows_append(
+      dm_ai_empty_remote,
+      dm_ai_insert,
+      in_place = TRUE,
+      progress = FALSE
+    ) %>%
+      collect()
+  )
+
+  expect_snapshot({
+    local_dm$t1
+    local_dm$t2
+    local_dm$t3
+    local_dm$t4
+    filled_dm$t1
+    filled_dm$t2
+    filled_dm$t3
+    filled_dm$t4
+  })
+})
