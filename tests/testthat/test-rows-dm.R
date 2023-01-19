@@ -281,6 +281,16 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
       collect()
   )
 
+  expect_silent(
+    filled_dm_in_place_twice <- dm_rows_append(
+      dm_ai_empty_remote,
+      dm_ai_insert,
+      in_place = TRUE,
+      progress = FALSE
+    ) %>%
+      collect()
+  )
+
   expect_snapshot({
     local_dm$t1
     local_dm$t2
@@ -294,11 +304,15 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
     filled_dm_in_place$t2
     filled_dm_in_place$t3
     filled_dm_in_place$t4
+    filled_dm_in_place_twice$t1
+    filled_dm_in_place_twice$t2
+    filled_dm_in_place_twice$t3
+    filled_dm_in_place_twice$t4
   })
 })
 
 
-test_that("dm_rows_append() works with autoincrement PKs and FKS for locally", {
+test_that("dm_rows_append() works with autoincrement PKs and FKS locally", {
   skip_if_remote_src()
 
   # Setup
@@ -364,6 +378,15 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for locally", {
     )
   )
 
+  expect_silent(
+    filled_twice_dm <- dm_rows_append(
+      filled_dm,
+      dm_ai_insert,
+      in_place = FALSE,
+      progress = FALSE
+    )
+  )
+
   expect_snapshot({
     local_dm$t1
     local_dm$t2
@@ -373,5 +396,9 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for locally", {
     filled_dm$t2
     filled_dm$t3
     filled_dm$t4
+    filled_twice_dm$t1
+    filled_twice_dm$t2
+    filled_twice_dm$t3
+    filled_twice_dm$t4
   })
 })
