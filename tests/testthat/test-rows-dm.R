@@ -306,7 +306,8 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
       filled_dm_in_place_twice$t2
       filled_dm_in_place_twice$t3
       filled_dm_in_place_twice$t4
-    })
+    }
+  )
 })
 
 
@@ -381,5 +382,6 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS locally", {
       filled_twice_dm$t2
       filled_twice_dm$t3
       filled_twice_dm$t4
-    })
+    }
+  )
 })
