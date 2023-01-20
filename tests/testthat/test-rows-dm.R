@@ -287,24 +287,26 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
       collect()
   )
 
-  expect_snapshot({
-    local_dm$t1
-    local_dm$t2
-    local_dm$t3
-    local_dm$t4
-    filled_dm$t1
-    filled_dm$t2
-    filled_dm$t3
-    filled_dm$t4
-    filled_dm_in_place$t1
-    filled_dm_in_place$t2
-    filled_dm_in_place$t3
-    filled_dm_in_place$t4
-    filled_dm_in_place_twice$t1
-    filled_dm_in_place_twice$t2
-    filled_dm_in_place_twice$t3
-    filled_dm_in_place_twice$t4
-  })
+  expect_snapshot(
+    variant = my_test_src_name,
+    {
+      local_dm$t1
+      local_dm$t2
+      local_dm$t3
+      local_dm$t4
+      filled_dm$t1
+      filled_dm$t2
+      filled_dm$t3
+      filled_dm$t4
+      filled_dm_in_place$t1
+      filled_dm_in_place$t2
+      filled_dm_in_place$t3
+      filled_dm_in_place$t4
+      filled_dm_in_place_twice$t1
+      filled_dm_in_place_twice$t2
+      filled_dm_in_place_twice$t3
+      filled_dm_in_place_twice$t4
+    })
 })
 
 
@@ -364,18 +366,20 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS locally", {
       collect()
   )
 
-  expect_snapshot({
-    local_dm$t1
-    local_dm$t2
-    local_dm$t3
-    local_dm$t4
-    filled_dm$t1
-    filled_dm$t2
-    filled_dm$t3
-    filled_dm$t4
-    filled_twice_dm$t1
-    filled_twice_dm$t2
-    filled_twice_dm$t3
-    filled_twice_dm$t4
-  })
+  expect_snapshot(
+    variant = my_test_src_name,
+    {
+      local_dm$t1
+      local_dm$t2
+      local_dm$t3
+      local_dm$t4
+      filled_dm$t1
+      filled_dm$t2
+      filled_dm$t3
+      filled_dm$t4
+      filled_twice_dm$t1
+      filled_twice_dm$t2
+      filled_twice_dm$t3
+      filled_twice_dm$t4
+    })
 })
