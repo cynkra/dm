@@ -543,6 +543,48 @@
       1     1     3 a    
       2     2     2 b    
       3     3     1 c    
+    Code
+      filled_dm_in_place_twice$t1
+    Output
+      # A tibble: 6 x 2
+            a o    
+        <int> <chr>
+      1     1 a    
+      2     2 b    
+      3     3 c    
+      4     4 a    
+      5     5 b    
+      6     6 c    
+    Code
+      filled_dm_in_place_twice$t2
+    Output
+      # A tibble: 6 x 3
+            c     d o    
+        <int> <int> <chr>
+      1     1     3 c    
+      2     2     2 b    
+      3     3     1 a    
+      4     4     6 c    
+      5     5     5 b    
+      6     6     4 a    
+    Code
+      filled_dm_in_place_twice$t3
+    Output
+      # A tibble: 0 x 2
+      # ... with 2 variables: e <int>, o <chr>
+    Code
+      filled_dm_in_place_twice$t4
+    Output
+      # A tibble: 6 x 3
+            g     h o    
+        <int> <int> <chr>
+      1     1     3 a    
+      2     2     2 b    
+      3     3     1 c    
+      4     4     6 a    
+      5     5     5 b    
+      6     6     4 c    
+      
 
 # dm_rows_append() works with autoincrement PKs and FKS locally
 
