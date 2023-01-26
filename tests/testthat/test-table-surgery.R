@@ -15,13 +15,14 @@ test_that("decompose_table() decomposes tables nicely on chosen source", {
   #   # https://github.com/tidyverse/dbplyr/pull/496/files#r523986061
   #   across(where(is.integer), as.numeric)
   # )
-  expect_snapshot({
-    out$parent_table
-    list_of_data_ts_parent_and_child()$parent_table
-    out$child_table
-    list_of_data_ts_parent_and_child()$child_table
-  },
-  variant = my_test_src_name
+  expect_snapshot(
+    {
+      out$parent_table
+      list_of_data_ts_parent_and_child()$parent_table
+      out$child_table
+      list_of_data_ts_parent_and_child()$child_table
+    },
+    variant = my_test_src_name
   )
 })
 

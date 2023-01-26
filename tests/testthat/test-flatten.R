@@ -6,10 +6,11 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   #   result_from_flatten_new()
   # )
 
-  expect_snapshot({
-    dm_flatten_to_tbl(dm_for_flatten(), fact)
-    result_from_flatten_new()
-  },
+  expect_snapshot(
+    {
+      dm_flatten_to_tbl(dm_for_flatten(), fact)
+      result_from_flatten_new()
+    },
     variant = my_test_src_name
   )
 
@@ -75,10 +76,11 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
   ))
   # FIXME: Debug GHA fail
   # expect_equivalent_tbl(out, result_from_flatten_new())
-  expect_snapshot({
-    out
-  },
-  variant = my_test_src_name
+  expect_snapshot(
+    {
+      out
+    },
+    variant = my_test_src_name
   )
 })
 
