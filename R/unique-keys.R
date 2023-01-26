@@ -125,7 +125,7 @@ dm_get_all_uks <- function(dm, table = NULL, ...) {
 
 dm_get_all_uks_impl <- function(dm, table = NULL) {
   def <- dm %>%
-    dm_get_def(quiet = TRUE)
+    dm_get_def()
 
   if (!is.null(table)) {
     idx <- match(table, def$table)

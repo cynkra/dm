@@ -130,6 +130,13 @@ test_that("unique keys", {
 
     nyc_1_uk %>%
       dm_get_all_uks(c(airports, weather, flights, airlines))
+
+    # test tidyselect functions
+    nyc_1_uk %>%
+      dm_get_all_uks(starts_with("a"))
+
+    nyc_1_uk %>%
+      dm_get_all_uks(everything())
   })
 
   expect_snapshot_error(

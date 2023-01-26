@@ -201,6 +201,13 @@ test_that("dm_get_all_pks() with table arg", {
 
     nyc_comp() %>%
       dm_get_all_pks(c(airlines, weather))
+
+    # test tidyselect functions for parent_table arg
+    nyc_comp() %>%
+      dm_get_all_pks(starts_with("weat"))
+
+    nyc_comp() %>%
+      dm_get_all_pks(matches("^a.*s$"))
   })
 })
 
