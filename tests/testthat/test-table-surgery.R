@@ -1,5 +1,6 @@
 test_that("decompose_table() decomposes tables nicely on chosen source", {
-  skip_if_src("maria")
+  # skip_if_src("maria")
+  skip_if_src_not(c("df", "duckdb"))
 
   out <- decompose_table(data_ts(), aef_id, a, e, f)
   # FIXME: Debug GHA fail

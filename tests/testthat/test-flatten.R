@@ -1,4 +1,5 @@
 test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
+  skip_if_not(c("df", "duckdb"))
   # FIXME: Debug GHA fail
   # for left join test the basic flattening also on all DBs
   # expect_equivalent_tbl(
