@@ -2,11 +2,6 @@
 
     Code
       dm_get_data_model(dm_for_filter())
-    Condition
-      Warning in `full_join()`:
-      Each row in `x` is expected to match at most 1 row in `y`.
-      i Row 21 of `x` matches multiple rows.
-      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Output
       $tables
         table segment display
@@ -57,11 +52,6 @@
       [1] "data_model"
     Code
       dm_get_data_model(dm_for_filter(), column_types = TRUE)
-    Condition
-      Warning in `full_join()`:
-      Each row in `x` is expected to match at most 1 row in `y`.
-      i Row 21 of `x` matches multiple rows.
-      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Output
       $tables
         table segment display
