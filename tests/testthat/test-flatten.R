@@ -9,6 +9,8 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
 
   expect_snapshot(
     {
+      prepare_dm_for_flatten(dm_for_flatten(), tables = c("fact", "dim_1", "dim_2", "dim_3", "dim_4"), gotta_rename = TRUE) %>%
+        dm_get_tables()
       dm_flatten_to_tbl(dm_for_flatten(), fact)
       result_from_flatten_new()
     },
