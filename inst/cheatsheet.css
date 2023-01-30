@@ -13,7 +13,7 @@ pre {
 }
 
 @font-face {
-  font-family: "frutiger-light";
+  font-family: "frutiger-light", sans-serif;
   src: url("https://cynkraweb.s3.eu-central-1.amazonaws.com/fonts/1449009/e5acedaa-f4c6-4128-8b5a-2f3f8324f09b.eot"); /* IE9 Compat Modes */
   src: local("Frutiger Light"), local("frutiger-light"),
   url("https://cynkraweb.s3.eu-central-1.amazonaws.com/fonts/1449009/e5acedaa-f4c6-4128-8b5a-2f3f8324f09b.eot?#iefix")
