@@ -16,6 +16,12 @@
     <loc>https://cynkra.github.io/dm/dev/TODO.html</loc>
   </url>
   <url>
+    <loc>https://cynkra.github.io/dm/dev/articles/cheatsheet/cheatsheet-printable.html</loc>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/dm/dev/articles/cheatsheet.html</loc>
+  </url>
+  <url>
     <loc>https://cynkra.github.io/dm/dev/articles/dm.html</loc>
   </url>
   <url>
@@ -124,9 +130,6 @@
     <loc>https://cynkra.github.io/dm/dev/reference/dm_add_pk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_add_uk.html</loc>
-  </url>
-  <url>
     <loc>https://cynkra.github.io/dm/dev/reference/dm_deconstruct.html</loc>
   </url>
   <url>
@@ -167,9 +170,6 @@
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/dev/reference/dm_get_all_pks.html</loc>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_get_all_uks.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/dev/reference/dm_get_con.html</loc>
@@ -221,9 +221,6 @@
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/dev/reference/dm_rm_pk.html</loc>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_rm_uk.html</loc>
   </url>
   <url>
     <loc>https://cynkra.github.io/dm/dev/reference/dm_select.html</loc>
