@@ -250,16 +250,16 @@ Remove foreign key relations with `dm_rm_fk()` (parameter `columns = NULL` means
 try(
   flights_dm_with_fk %>%
     dm_rm_fk(table = flights, column = dest, ref_table = airports) %>%
-    dm_get_all_fks(c("flights", "airports"))
+    dm_get_all_fks(c(flights, airports))
 )
 
 flights_dm_with_fk %>%
   dm_rm_fk(flights, origin, airports) %>%
-  dm_get_all_fks(c("flights", "airports"))
+  dm_get_all_fks(c(flights, airports))
 
 flights_dm_with_fk %>%
   dm_rm_fk(flights, columns = NULL, airports) %>%
-  dm_get_all_fks(c("flights", "airports"))
+  dm_get_all_fks(c(flights, airports))
 ```
 
 Since the primary keys are defined in the `dm` object, you do not usually need to provide the referenced column name of `ref_table`.
