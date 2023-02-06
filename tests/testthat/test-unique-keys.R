@@ -123,13 +123,20 @@ test_that("unique keys", {
 
     # test table arg for dm_get_all_uks()
     nyc_1_uk %>%
-      dm_get_all_uks("flights")
+      dm_get_all_uks(flights)
 
     nyc_1_uk %>%
       dm_get_all_uks("airports")
 
     nyc_1_uk %>%
-      dm_get_all_uks(c("airports", "weather", "flights", "airlines"))
+      dm_get_all_uks(c(airports, weather, flights, airlines))
+
+    # test tidyselect functions
+    nyc_1_uk %>%
+      dm_get_all_uks(starts_with("a"))
+
+    nyc_1_uk %>%
+      dm_get_all_uks(everything())
   })
 
   expect_snapshot_error(
@@ -156,15 +163,13 @@ test_that("unique keys", {
   expect_snapshot_error(
     # trying to request a table not part of the dm
     nyc_1_uk %>%
-      dm_get_all_uks("timetable"),
-    class = dm_error("table_not_in_dm")
+      dm_get_all_uks(timetable)
   )
 
   expect_snapshot_error(
     # trying to request 2 tables that are not part of the dm and a few others
     nyc_1_uk %>%
-      dm_get_all_uks(c("timetable", "weather", "flights", "tabletime")),
-    class = dm_error("table_not_in_dm")
+      dm_get_all_uks(c(timetable, weather, flights, tabletime))
   )
 
   expect_snapshot_error(

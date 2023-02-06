@@ -233,7 +233,7 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 #'   }
 #'
 #' @inheritParams dm_has_fk
-#' @param parent_table One or more table names, as character vector,
+#' @param parent_table One or more table names, unquoted,
 #'   to return foreign key information for.
 #'   If given, foreign keys are returned in that order.
 #'   The default `NULL` returns information for all tables.
@@ -247,7 +247,9 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
-  dm_get_all_fks_impl(dm, parent_table)
+  table_expr <- enexpr(parent_table) %||% src_tbls_impl(dm, quiet = TRUE)
+  table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
+  dm_get_all_fks_impl(dm, table_names)
 }
 
 dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {

@@ -9,7 +9,7 @@ dm_get_all_uks(dm, table = NULL, ...)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{One or more table names, as character vector,
+\item{table}{One or more table names, unquoted,
 to return unique key information for.
 The default \code{NULL} returns information for all tables.}
 
