@@ -136,7 +136,9 @@ dm_get_data_model <- function(x, column_types = FALSE) {
     dm_get_all_fks_impl(x) %>%
     mutate(column = format(parent_key_cols)) %>%
     select(table = parent_table, column) %>%
-    mutate(key_fk = 2L)
+    mutate(key_fk = 2L) %>%
+    # `parent_table` and `column` can be referenced by multiple child tables
+    distinct()
 
   if (column_types) {
     types <- dm_get_all_column_types(x)
