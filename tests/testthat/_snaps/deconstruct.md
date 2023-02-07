@@ -1444,7 +1444,8 @@
 
     Code
       dm <- dm_nycflights13()
-      keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))
+      keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"),
+      multiple = "all")
     Output
       # A tibble: 1,800 x 32
       # Keys:     --- | 1 | 4
