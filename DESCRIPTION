@@ -52,7 +52,7 @@ Imports:
     backports,
     cli (>= 2.2.0),
     DBI,
-    dplyr (>= 1.0.9),
+    dplyr (>= 1.1.0),
     glue,
     igraph,
     lifecycle (>= 1.0.3),
