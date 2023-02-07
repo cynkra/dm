@@ -60,11 +60,11 @@ The table's \code{by} column(s) are automatically added if missing in the select
 
 \item{...}{see \code{\link[dplyr:mutate-joins]{dplyr::join}}}
 
-\item{keep}{Should the join keys from both \code{x} and \code{y} be preserved in the
-output?}
+\item{keep}{Should the new list-column contain join keys? The default
+will preserve the join keys for inequality joins.}
 
-\item{name}{The name of the list column nesting joins create.
-If \code{NULL} the name of \code{y} is used.}
+\item{name}{The name of the list-column created by the join. If \code{NULL},
+the default, the name of \code{y} is used.}
 }
 \description{
 Use these methods without the '.dm_zoomed' suffix (see examples).
