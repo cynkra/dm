@@ -869,40 +869,21 @@ test_that("output for compound keys", {
     # JOINS
 
     # left_join()
-    if (is_db(my_test_src())) {
-      zoomed_comp_dm %>%
-        left_join(flights) %>%
-        nrow()
-      # right_join()
-      zoomed_comp_dm %>%
-        right_join(flights) %>%
-        nrow()
-      # inner_join()
-      zoomed_comp_dm %>%
-        inner_join(flights) %>%
-        nrow()
-      # full_join()
-      zoomed_comp_dm %>%
-        full_join(flights) %>%
-        nrow()
-    } else {
-      zoomed_comp_dm %>%
-        left_join(flights, multiple = "all") %>%
-        nrow()
-      # right_join()
-      zoomed_comp_dm %>%
-        right_join(flights, multiple = "all") %>%
-        nrow()
-      # inner_join()
-      zoomed_comp_dm %>%
-        inner_join(flights, multiple = "all") %>%
-        nrow()
-      # full_join()
-      zoomed_comp_dm %>%
-        full_join(flights, multiple = "all") %>%
-        nrow()
-    }
-
+    zoomed_comp_dm %>%
+      left_join(flights, multiple = "all") %>%
+      nrow()
+    # right_join()
+    zoomed_comp_dm %>%
+      right_join(flights, multiple = "all") %>%
+      nrow()
+    # inner_join()
+    zoomed_comp_dm %>%
+      inner_join(flights, multiple = "all") %>%
+      nrow()
+    # full_join()
+    zoomed_comp_dm %>%
+      full_join(flights, multiple = "all") %>%
+      nrow()
     # semi_join()
     zoomed_comp_dm %>%
       semi_join(flights) %>%
