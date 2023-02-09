@@ -19,13 +19,14 @@ repair_table_names <- function(old_names, new_names, repair = "check_unique", qu
 }
 
 dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()),
-                            pks = list_of(new_pk()), fks = list_of(new_fk())) {
+                            pks = list_of(new_pk()), fks = list_of(new_fk()), uks = list_of(new_uk())) {
   def <- dm_get_def(dm)
 
   def_0 <- def[rep_along(table_name, NA_integer_), ]
   def_0$table <- table_name
   def_0$data <- unname(tbls)
   def_0$pks <- pks
+  def_0$uks <- uks
   def_0$fks <- fks
   def_0$filters <- filters
 
