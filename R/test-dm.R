@@ -1,28 +1,3 @@
-#' Loads `dm` objects into one or more registered sources
-#'
-#' @description Works like `dbplyr::test_load()`, just for `dm`_objects.
-#'
-#' @return A list of the same `dm` object on different \pkg{dplyr} sources.
-#'
-#' @noRd
-#' @examples
-#' dbplyr::test_register_src("df", dplyr::src_df(env = new.env()))
-#' dbplyr::test_register_src("sqlite", dplyr::src_sqlite(":memory:", create = TRUE))
-#' @examplesIf rlang::is_installed("nycflights13")
-#'
-#' dm_test_obj <- dm_nycflights13(cycle = TRUE)
-#' dm_test_obj_srcs <- dm_test_load(dm_test_obj)
-dm_test_load <- function(x,
-                         srcs = dbplyr:::test_srcs$get(), # FIXME: not exported from {dplyr}... could also "borrow" source code as new function here!?
-                         ignore = character(),
-                         set_key_constraints = TRUE) {
-  stopifnot(is.character(ignore))
-  srcs <- srcs[setdiff(names(srcs), ignore)]
-
-  map(srcs, ~ copy_dm_to(., dm = x, unique_table_names = TRUE, set_key_constraints = set_key_constraints))
-}
-
-
 # internal helper functions:
 
 # validates, that `table` is character and is part of the `dm` object
