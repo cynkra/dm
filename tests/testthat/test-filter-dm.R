@@ -199,7 +199,7 @@ test_that("dm_filter() works as intended for inbetween table", {
 test_that("dm_filter() works without primary keys", {
   expect_silent(
     dm_for_filter() %>%
-      dm_rm_pk(tf_5, fail_fk = FALSE) %>%
+      dm_rm_pk(tf_5) %>%
       dm_filter(tf_5 = (l == "c")) %>%
       collect()
   )
