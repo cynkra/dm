@@ -407,14 +407,14 @@ test_that("left join works as expected with keyed tables", {
 
   expect_snapshot({
     dm <- dm_nycflights13()
-    keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))
+    keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"), multiple = "all")
   })
 
   # results should be similar to zooming
-  zd1 <- dm_zoom_to(dm, weather) %>% left_join(flights)
+  zd1 <- dm_zoom_to(dm, weather) %>% left_join(flights, multiple = "all")
   zd2 <- dm_zoom_to(dm, flights) %>% left_join(weather)
 
-  jd1 <- keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))
+  jd1 <- keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"), multiple = "all")
   jd2 <- keyed_tbl_impl(dm, "flights") %>% left_join(keyed_tbl_impl(dm, "weather"))
 
   expect_equal(ncol(jd1), ncol(jd2))
@@ -517,6 +517,20 @@ test_that("pks_df_from_keys_info()", {
     dm %>%
       dm_get_keyed_tables_impl() %>%
       pks_df_from_keys_info() %>%
+      jsonlite::toJSON(pretty = TRUE)
+  })
+})
+
+test_that("uks_df_from_keys_info()", {
+  withr::local_seed(20220715)
+
+  dm <- dm_for_filter() %>%
+    dm_add_uk(tf_5, l)
+
+  expect_snapshot({
+    dm %>%
+      dm_get_keyed_tables_impl() %>%
+      uks_df_from_keys_info() %>%
       jsonlite::toJSON(pretty = TRUE)
   })
 })

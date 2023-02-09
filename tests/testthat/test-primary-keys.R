@@ -63,11 +63,16 @@ test_that("dm_rm_pk() works as intended?", {
     class = "table_not_in_dm"
   )
 
-  # test if error is thrown if FK points to PK that is about to be removed
-  expect_dm_error(
-    dm_for_filter() %>%
-      dm_rm_pk(tf_4),
-    "first_rm_fks"
+  expect_deprecated(
+    expect_equivalent_dm(
+      dm_for_filter() %>%
+        dm_rm_pk(tf_4, fail_fk = TRUE),
+      dm_for_filter() %>%
+        dm_get_def() %>%
+        mutate(pks = if_else(table == "tf_4", list_of(new_pk()), pks)) %>%
+        new_dm3()
+    ),
+    "fail_fk"
   )
 
   # test if error is thrown if col not found
@@ -89,11 +94,11 @@ test_that("dm_rm_pk() supports partial filters", {
   expect_snapshot({
     # test logic if argument `fail_fk = FALSE`
     dm_for_filter() %>%
-      dm_rm_pk(tf_4, fail_fk = FALSE) %>%
+      dm_rm_pk(tf_4) %>%
       get_all_keys()
 
     dm_for_filter() %>%
-      dm_rm_pk(tf_3, fail_fk = FALSE) %>%
+      dm_rm_pk(tf_3) %>%
       get_all_keys()
 
     # no failure if pk not used in relationship
@@ -113,7 +118,7 @@ test_that("dm_rm_pk() supports partial filters", {
 
     # partial match for columns, with compound key
     dm_for_filter() %>%
-      dm_rm_pk(columns = c(f, f1), fail_fk = FALSE) %>%
+      dm_rm_pk(columns = c(f, f1)) %>%
       get_all_keys()
 
     # partial match for all tables
@@ -177,6 +182,42 @@ test_that("output", {
 })
 
 
+# all primary keys --------------------------------------------------------------------
+
+test_that("dm_get_all_pks() and order", {
+  dm <- nyc_comp()
+  pks_all <- dm_get_all_pks(dm)
+  pks_12 <- dm_get_all_pks(dm, !!names(dm)[1:2])
+  pks_21 <- dm_get_all_pks(dm, !!names(dm)[2:1])
+
+  expect_equal(pks_all[1:2, ], pks_12)
+  expect_equal(pks_all[2:1, ], pks_21)
+})
+
+test_that("dm_get_all_pks() with table arg", {
+  expect_snapshot({
+    nyc_comp() %>%
+      dm_get_all_pks("weather")
+
+    nyc_comp() %>%
+      dm_get_all_pks(c(airlines, weather))
+
+    # test tidyselect functions for parent_table arg
+    nyc_comp() %>%
+      dm_get_all_pks(starts_with("weat"))
+
+    nyc_comp() %>%
+      dm_get_all_pks(matches("^a.*s$"))
+  })
+})
+
+test_that("dm_get_all_pks() with table arg fails nicely", {
+  expect_snapshot_error({
+    nyc_comp() %>%
+      dm_get_all_pks(c(airlines, weather, timetable, tabletime))
+  })
+})
+
 # tests for compound keys -------------------------------------------------
 
 test_that("dm_get_all_pks() with compound keys", {
@@ -187,6 +228,30 @@ test_that("dm_get_all_pks() with compound keys", {
     nyc_comp()
 
     nyc_comp() %>%
+      dm_get_all_pks()
+  })
+})
+
+# autoincrement -------------------------------------------------
+
+x <- tibble(
+  x_id = integer(0),
+  z = integer(0),
+  x_data = character(0),
+)
+
+test_that("autoincrement fails with compound keys", {
+  expect_snapshot(error = TRUE, {
+    dm(x) %>%
+      dm_add_pk(x, columns = c(x_id, z), autoincrement = TRUE)
+  })
+})
+
+test_that("set autoincrement PK", {
+  expect_snapshot({
+    dm(x, y = x) %>%
+      dm_add_pk(x, columns = c(x_id), autoincrement = TRUE) %>%
+      dm_add_pk(y, columns = c(x_id, z)) %>%
       dm_get_all_pks()
   })
 })

@@ -137,20 +137,23 @@ new_keyed_dm_def <- function(tables = list()) {
   unclassed_tables <- map(tables, unclass_keyed_tbl)
 
   pks_df <- pks_df_from_keys_info(tables[is_keyed])
+  uks_df <- uks_df_from_keys_info(tables[is_keyed])
   fks_df <- fks_df_from_keys_info(tables[is_keyed])
 
-  new_dm_def(unclassed_tables, pks_df, fks_df)
+  new_dm_def(unclassed_tables, pks_df, uks_df, fks_df)
 }
 
 
 new_dm_def <- function(tables = list(),
                        pks_df = tibble(table = character(), pks = list()),
+                       uks_df = tibble(table = character(), uks = list()),
                        fks_df = tibble(table = character(), fks = list())) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
 
   stopifnot(all(pks_df$table %in% table))
+  stopifnot(all(uks_df$table %in% table))
   stopifnot(all(fks_df$table %in% table))
 
   zoom <- new_zoom()
@@ -166,6 +169,8 @@ new_dm_def <- function(tables = list(),
     tibble(table, data, segment = NA_character_, display = NA_character_) %>%
     left_join(pks_df, by = "table") %>%
     mutate(pks = as_list_of(map(pks, `%||%`, new_pk()), .ptype = new_pk())) %>%
+    left_join(uks_df, by = "table") %>%
+    mutate(uks = as_list_of(map(uks, `%||%`, new_uk()), .ptype = new_uk())) %>%
     left_join(fks_df, by = "table") %>%
     mutate(fks = as_list_of(map(fks, `%||%`, new_fk()), .ptype = new_fk())) %>%
     mutate(filters = list_of(new_filter())) %>%
@@ -190,7 +195,7 @@ new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
     if (zoomed) "dm_zoomed",
     "dm"
   )
-  out <- structure(list(def = def), class = class, version = 3L)
+  out <- structure(list(def = def), class = class, version = 4L)
 
   # Enable for strict tests (search for INSTRUMENT in .github/workflows):
   # if (validate) { dm_validate(out) } # INSTRUMENT: validate
@@ -203,14 +208,19 @@ dm_get_def <- function(x, quiet = FALSE) {
   # Most callers already call it, but not all
   check_dm(x)
 
-  if (!identical(attr(x, "version"), 3L)) {
+  if (!identical(attr(x, "version"), 4L)) {
     x <- dm_upgrade(x, quiet)
   }
 
   unclass(x)$def
 }
 
-new_pk <- function(column = list()) {
+new_pk <- function(column = list(), autoincrement = logical(length(column))) {
+  stopifnot(is.list(column), is.logical(autoincrement))
+  tibble(column = column, autoincrement = autoincrement)
+}
+
+new_uk <- function(column = list()) {
   stopifnot(is.list(column))
   tibble(column = column)
 }
@@ -588,6 +598,8 @@ tbl_def_impl <- function(def, idx, keyed) {
     pk <- NULL
   }
 
+  uks <- def$uks[[idx]]
+
   fks_in_def <-
     def$fks[[idx]] %>%
     left_join(uuid_lookup, by = "table")
@@ -612,6 +624,7 @@ tbl_def_impl <- function(def, idx, keyed) {
   new_keyed_tbl(
     data,
     pk = pk,
+    uks = uks,
     fks_in = fks_in,
     fks_out = fks_out,
     uuid = def$uuid[[idx]]
@@ -741,6 +754,7 @@ empty_dm <- function() {
       segment = character(),
       display = character(),
       pks = list_of(new_pk()),
+      uks = list_of(new_uk()),
       fks = list_of(new_fk()),
       filters = list_of(new_filter()),
       zoom = list(),

@@ -1,4 +1,3 @@
-
 # db_schema_list() -------------------------------------------------------
 
 #' List schemas on a database

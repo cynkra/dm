@@ -22,6 +22,8 @@ reference:
   - dm_mutate_tbl
 - title: Primary keys
   contents: matches("_pk")
+- title: Unique keys
+  contents: matches("_uk")
 - title: Foreign keys
   contents: matches("_fk")
 - title: Visualize
