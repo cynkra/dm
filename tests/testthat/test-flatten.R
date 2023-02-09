@@ -431,5 +431,4 @@ test_that("tests with 'bad_dm' work (3)", {
       )
     )
   }
-
 })
