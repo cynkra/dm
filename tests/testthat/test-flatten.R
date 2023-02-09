@@ -304,14 +304,25 @@ test_that("tests with 'bad_dm' work", {
   # Warning, because since dplyr 1.1.0 dm_flatten_to_tbl()
   # issues warnings, when there are multiple rows in `y` to match rows in `x`
   # This means here, that the PK in the parent table is violating key constraints
-  expect_warning(
-    expect_equivalent_tbl(
-      dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3),
-      tbl_1() %>%
-        left_join(tbl_2(), by = c("a" = "id", "x")) %>%
-        left_join(tbl_3(), by = c("b" = "id"), multiple = "all")
+  if (is_db(my_test_src())) {
+    expect_warning(
+      expect_equivalent_tbl(
+        dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3),
+        tbl_1() %>%
+          left_join(tbl_2(), by = c("a" = "id", "x")) %>%
+          left_join(tbl_3(), by = c("b" = "id"))
+      )
     )
-  )
+  } else {
+    expect_warning(
+      expect_equivalent_tbl(
+        dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3),
+        tbl_1() %>%
+          left_join(tbl_2(), by = c("a" = "id", "x")) %>%
+          left_join(tbl_3(), by = c("b" = "id"), multiple = "all")
+      )
+    )
+  }
 
 
   skip_if_src("maria")
@@ -352,14 +363,25 @@ test_that("tests with 'bad_dm' work (2)", {
   bad_filtered_dm <- dm_filter(bad_dm(), tbl_1 = (a != 4))
 
   # flatten bad_dm() (no referential integrity)
-  expect_warning(
-    expect_equivalent_tbl(
-      dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = full_join),
-      tbl_1() %>%
-        full_join(tbl_2(), by = c("a" = "id", "x")) %>%
-        full_join(tbl_3(), by = c("b" = "id"), multiple = "all")
+  if (is_db(my_test_src())) {
+    expect_warning(
+      expect_equivalent_tbl(
+        dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = full_join),
+        tbl_1() %>%
+          full_join(tbl_2(), by = c("a" = "id", "x")) %>%
+          full_join(tbl_3(), by = c("b" = "id"))
+      )
     )
-  )
+  } else {
+    expect_warning(
+      expect_equivalent_tbl(
+        dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = full_join),
+        tbl_1() %>%
+          full_join(tbl_2(), by = c("a" = "id", "x")) %>%
+          full_join(tbl_3(), by = c("b" = "id"), multiple = "all")
+      )
+    )
+  }
 })
 
 test_that("tests with 'bad_dm' work (3)", {
@@ -372,20 +394,42 @@ test_that("tests with 'bad_dm' work (3)", {
   bad_filtered_dm <- dm_filter(bad_dm(), tbl_1 = (a != 4))
 
   # flatten bad_dm() (no referential integrity)
-  expect_equivalent_tbl(
-    dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = right_join),
-    tbl_1() %>%
-      right_join(tbl_2(), by = c("a" = "id", "x")) %>%
-      right_join(tbl_3(), by = c("b" = "id"), multiple = "all")
-  )
+  if (is_db(my_test_src())) {
+    expect_equivalent_tbl(
+      dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = right_join),
+      tbl_1() %>%
+        right_join(tbl_2(), by = c("a" = "id", "x")) %>%
+        right_join(tbl_3(), by = c("b" = "id"))
+    )
+  } else {
+    expect_equivalent_tbl(
+      dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = right_join),
+      tbl_1() %>%
+        right_join(tbl_2(), by = c("a" = "id", "x")) %>%
+        right_join(tbl_3(), by = c("b" = "id"), multiple = "all")
+    )
+  }
+
 
   # flatten bad_dm() (no referential integrity); different order
-  expect_warning(
-    expect_equivalent_tbl(
-      dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_3, tbl_2, .join = right_join),
-      tbl_1() %>%
-        right_join(tbl_3(), by = c("b" = "id"), multiple = "all") %>%
-        right_join(tbl_2(), by = c("a" = "id", "x"))
+  if (is_db(my_test_src())) {
+    expect_warning(
+      expect_equivalent_tbl(
+        dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_3, tbl_2, .join = right_join),
+        tbl_1() %>%
+          right_join(tbl_3(), by = c("b" = "id")) %>%
+          right_join(tbl_2(), by = c("a" = "id", "x"))
+      )
     )
-  )
+  } else {
+    expect_warning(
+      expect_equivalent_tbl(
+        dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_3, tbl_2, .join = right_join),
+        tbl_1() %>%
+          right_join(tbl_3(), by = c("b" = "id"), multiple = "all") %>%
+          right_join(tbl_2(), by = c("a" = "id", "x"))
+      )
+    )
+  }
+
 })
