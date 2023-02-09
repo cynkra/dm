@@ -1,4 +1,3 @@
-
 # db_schema_list() -------------------------------------------------------
 
 #' List schemas on a database
@@ -165,7 +164,7 @@ db_schema_exists.SQLiteConnection <- function(con, schema, ...) {
 #'
 #' The argument `schema` (and `dbname` for MSSQL) can be provided as `SQL` objects.
 #' Keep in mind, that in this case it is assumed that they are already correctly quoted as identifiers
-#' using [`DBI::dbQuoteIdentifier()`].
+#' using [DBI::dbQuoteIdentifier()].
 #'
 #' Additional arguments are:
 #'

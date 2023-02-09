@@ -36,9 +36,9 @@ dm_get_src(x)
 
 \item{df}{For \code{copy_to.dm()}: A table (can be on a different \code{src})}
 
-\item{name}{For \code{copy_to.dm()}: See \code{\link[dplyr:copy_to]{dplyr::copy_to}}}
+\item{name}{For \code{copy_to.dm()}: See \code{\link[dplyr:copy_to]{dplyr::copy_to()}}}
 
-\item{overwrite}{For \code{copy_to.dm()}: See \code{\link[dplyr:copy_to]{dplyr::copy_to}}; \code{TRUE} leads to an error}
+\item{overwrite}{For \code{copy_to.dm()}: See \code{\link[dplyr:copy_to]{dplyr::copy_to()}}; \code{TRUE} leads to an error}
 
 \item{temporary}{For \code{copy_to.dm()}: If the \code{dm} is on a DB, the copied version of \code{df} will only be written temporarily to the DB.
 After the connection is reset it will no longer be available.}
@@ -61,7 +61,7 @@ Use \code{\link[base:Extract]{[[}} instead of \code{tbl()} to access individual 
 Get the names from \code{\link[=dm_get_tables]{dm_get_tables()}} instead of calling \code{dm_get_src()}
 to list the table names in a \code{dm} object.
 
-Use \code{\link[=copy_to]{copy_to()}} on a table and then \code{\link[=dm_add_tbl]{dm_add_tbl()}} instead of \code{copy_to()}
+Use \code{\link[=copy_to]{copy_to()}} on a table and then \code{\link[=dm]{dm()}} instead of \code{copy_to()}
 on a \code{dm} object.
 }
 \keyword{internal}

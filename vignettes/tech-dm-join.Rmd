@@ -3,8 +3,8 @@ title: "Joining in relational data models"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Technical: Joining in relational data models}
   %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Technical: Joining in relational data models}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
@@ -21,12 +21,12 @@ A common task for multiple, separated tables that have a shared attribute is mer
 
 This document introduces you to the joining functions of {dm} and shows how to apply them using data from the [{nycflights13}](https://github.com/tidyverse/nycflights13) package.
 
-[Relational data models](https://cynkra.github.io/dm/articles/howto-dm-theory#model) consist of multiple tables that are linked with [foreign keys](https://cynkra.github.io/dm/articles/howto-dm-theory#fk). They are the building blocks for joining tables.
-Read more about relational data models in the vignette ["Introduction to Relational Data Models"](https://cynkra.github.io/dm/articles/howto-dm-theory).
+[Relational data models](https://dm.cynkra.com/articles/howto-dm-theory#model) consist of multiple tables that are linked with [foreign keys](https://dm.cynkra.com/articles/howto-dm-theory#fk). They are the building blocks for joining tables.
+Read more about relational data models in the vignette ["Introduction to Relational Data Models"](https://dm.cynkra.com/articles/howto-dm-theory).
 
 First, we load the packages that we need:
 
-```{r message=FALSE, warning=FALSE}
+```{r}
 library(dm)
 library(tidyverse)
 ```
@@ -35,13 +35,13 @@ library(tidyverse)
 
 To explore filtering with {dm}, we'll use the {nycflights13} data with its tables `flights`, `planes`, `airlines` and `airports`.
 
-This dataset contains information about the 336 776 flights that departed from New York City in 2013, with 3322 different planes and 1458 airports involved.
+This dataset contains information about the 336,776 flights that departed from New York City in 2013, with 3,322 different planes and 1,458 airports involved.
 The data comes from the US Bureau of Transportation Statistics, and is documented in `?nycflights13`.
 
 First, we have to create a `dm` object from the {nycflights13} data.
-This is implemented with `dm::dm_nycflights13()`.
+This is implemented with `dm_nycflights13()`.
 
-A [data model object](https://cynkra.github.io/dm/articles/tech-dm-class.html#class-dm) contains the data as well as metadata.
+A [data model object](https://dm.cynkra.com/articles/tech-dm-class.html) contains the data as well as metadata.
 
 If you would like to create a `dm` from other tables, please look at `?dm` and the function `new_dm()`.
 
@@ -58,7 +58,7 @@ See `?dplyr::join` for details.
 ### How it works
 
 A join is the combination of two tables based on shared information.
-In technical terms, we merge the tables that need to be directly connected by a [foreign key relation](https://cynkra.github.io/dm/articles/howto-dm-theory#fk).
+In technical terms, we merge the tables that need to be directly connected by a [foreign key relation](https://dm.cynkra.com/articles/howto-dm-theory#fk).
 
 The existing links can be inspected in two ways:
 
@@ -87,11 +87,11 @@ Let's look at some examples:
 ```{r}
 dm_joined <-
   dm %>%
-  dm_join_to_tbl(flights, airlines, join = left_join)
+  dm_flatten_to_tbl(flights, airlines, .join = left_join)
 dm_joined
 ```
 
-As you can see below, the `dm_joined` dataframe has one more column than the `flights` table.
+As you can see below, the `dm_joined` data frame has one more column than the `flights` table.
 The difference is the `name` column from the `airlines` table.
 
 ```{r}
@@ -105,7 +105,7 @@ dm_joined %>%
   names()
 ```
 
-The result is not a `dm` object anymore, but a conventional dataframe:
+The result is not a `dm` object anymore, but a (tibble) data frame:
 
 ```{r}
 dm_joined %>%
@@ -116,45 +116,56 @@ Another example:
 
 **Get all flights that can't be matched with airlines names.**
 
-We expect the flights data from {nycflights13} package to be clean and well organized, so no flights should remain.
+We expect the `flights` data from {nycflights13} package to be clean and well organized, so no flights should remain.
 You can check this with an `anti_join`:
 
 ```{r}
 dm %>%
-  dm_join_to_tbl(flights, airlines, join = anti_join)
+  dm_flatten_to_tbl(flights, airlines, .join = anti_join)
 ```
 
 An example with filtering on a `dm` and then merging:
 
-**Get all flights from Delta Air Lines which didn't depart from John F. Kennedy International Airport in May 2013 - and join all the airports data into the `flights` table.**
-
-Currently, it is important to call `dm_apply_filters()` after piping your conditions.
-Only then the underlying tables and key relations are updated and you can perform a join on the filtered data.
-We are working towards removing this inconvenience [#62](https://github.com/cynkra/dm/issues/62).
+**Get all May 2013 flights from Delta Air Lines which didn't depart from John F. Kennedy International Airport in - and join all the airports data into the `flights` table.**
 
 ```{r}
-dm_nycflights13() %>%
-  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  dm_filter(flights, month == 5) %>%
-  dm_apply_filters() %>%
-  dm_join_to_tbl(flights, airports, join = left_join)
+dm_nycflights13(subset = FALSE) %>%
+  dm_filter(
+    airlines = (name == "Delta Air Lines Inc."),
+    airports = (name != "John F Kennedy Intl"),
+    flights = (month == 5)
+  ) %>% 
+  dm_flatten_to_tbl(flights, airports, .join = left_join)
 ```
+
+See `vignette("tech-dm-filter")` for more details on filtering.
 
 A last example:
 
 **Merge all tables into one big table.**
 
 Sometimes you need everything in one place.
-In this case you can use the `dm_flatten_to_tbl()` function.
-It joins all the tables of your `dm` object together into one wide table.
+In this case, you can use the `dm_flatten_to_tbl()` function.
+It joins all the tables in your `dm` object together into one wide table.
 All you have to do is to specify the starting table.
 The following joins are determined by the foreign key links.
 
 ```{r}
 dm_nycflights13() %>%
   dm_select_tbl(-weather) %>%
-  dm_flatten_to_tbl(start = flights)
+  dm_flatten_to_tbl(.start = flights)
 ```
 
-Be aware that all column names need to be unique.
-The `dm_flatten_to_tbl` cares about automatically renaming the relevant columns and prints if something was changed, e.g. `name -> airlines.name`.
+To be more precise, `dm_flatten_to_tbl()` will join all tables from one level of hierarchy (i.e., direct neighbors to table `.start`).
+If you want to cover tables from all levels of hierarchy, use the argument `recursive = TRUE` for `dm_flatten_to_tbl()` instead.
+
+Also, be aware that all column names need to be unique.
+The `dm_flatten_to_tbl()` takes care of this by automatically renaming the relevant columns and informs the user if any names were changed, e.g. `dm_rename(airlines, airlines.name = name)`.
+
+If you want to merge all tables, but get a nested table in return, use `dm_wrap_tbl()` with `pull_tbl()` instead:
+
+```{r}
+dm_nycflights13() %>%
+  dm_wrap_tbl(root = flights) %>%
+  pull_tbl(flights)
+

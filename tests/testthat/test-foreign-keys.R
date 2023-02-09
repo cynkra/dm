@@ -244,7 +244,7 @@ test_that("enum_fk_candidates() works properly", {
   # FIXME: COMPOUND: Test for tf_2 -> tf_3 and other combinations too
   expect_silent(
     expect_equivalent_why(
-      enum_fk_candidates(zoomed_dm(), tf_1),
+      enum_fk_candidates(dm_zoomed(), tf_1),
       dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1)
     )
   )
@@ -264,5 +264,47 @@ test_that("bogus arguments are rejected", {
       dm_add_fk(a, x, b, x, on_delete = "bogus")
     dm(a = tibble(x = 1), b = tibble(x = 1)) %>%
       dm_add_fk(a, x, b, x, on_delete = letters)
+  })
+})
+
+
+# all foreign keys --------------------------------------------------------------------
+
+test_that("dm_get_all_fks() and order", {
+  dm <- dm_for_filter()
+  fks_all <- dm_get_all_fks(dm)
+  fks_1 <- dm_get_all_fks(dm, "tf_1")
+  fks_3 <- dm_get_all_fks(dm, tf_3)
+  fks_4 <- dm_get_all_fks(dm, "tf_4")
+  fks_6 <- dm_get_all_fks(dm, "tf_6")
+  fks_34 <- dm_get_all_fks(dm, c(tf_3, tf_4))
+  fks_43 <- dm_get_all_fks(dm, c(tf_4, tf_3))
+
+  expect_equal(fks_all, bind_rows(fks_1, fks_3, fks_4, fks_6))
+  expect_equal(fks_34, bind_rows(fks_3, fks_4))
+  expect_equal(fks_43, bind_rows(fks_4, fks_3))
+})
+
+test_that("dm_get_all_fks() with parent_table arg", {
+  expect_snapshot({
+    nyc_comp() %>%
+      dm_get_all_fks(weather)
+
+    nyc_comp() %>%
+      dm_get_all_fks(c("airlines", "weather"))
+
+    # test tidyselect functions for parent_table arg
+    nyc_comp() %>%
+      dm_get_all_fks(ends_with("ports"))
+
+    nyc_comp() %>%
+      dm_get_all_fks(everything())
+  })
+})
+
+test_that("dm_get_all_fks() with parent_table arg fails nicely", {
+  expect_snapshot_error({
+    nyc_comp() %>%
+      dm_get_all_fks(c(airlines, weather, timetable, tabletime))
   })
 })

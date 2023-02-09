@@ -2,6 +2,8 @@
 % Please edit documentation in R/zoom.R
 \name{dm_zoom_to}
 \alias{dm_zoom_to}
+\alias{zoomed_df}
+\alias{dm_zoomed_df}
 \alias{dm_insert_zoomed}
 \alias{dm_update_zoomed}
 \alias{dm_discard_zoomed}
@@ -22,10 +24,10 @@ dm_discard_zoomed(dm)
 
 \item{new_tbl_name}{Name of the new table.}
 
-\item{repair}{Either a string or a function. If a string, it must
-be one of \code{"check_unique"}, \code{"minimal"}, \code{"unique"}, or \code{"universal"}.
-If a function, it is invoked with a vector of minimal names and must
-return minimal names, otherwise an error is thrown.
+\item{repair}{Either a string or a function. If a string, it must be one of
+\code{"check_unique"}, \code{"minimal"}, \code{"unique"}, \code{"universal"}, \code{"unique_quiet"},
+or \code{"universal_quiet"}. If a function, it is invoked with a vector of
+minimal names and must return minimal names, otherwise an error is thrown.
 \itemize{
 \item Minimal names are never \code{NULL} or \code{NA}. When an element doesn't
 have a name, its minimal name is an empty string.
@@ -38,7 +40,13 @@ error.
 
 The \code{"check_unique"} option doesn't perform any name repair.
 Instead, an error is raised if the names don't suit the
-\code{"unique"} criteria.}
+\code{"unique"} criteria.
+
+The options \code{"unique_quiet"} and \code{"universal_quiet"} are here to help the
+user who calls this function indirectly, via another function which exposes
+\code{repair} but not \code{quiet}. Specifying \code{repair = "unique_quiet"} is like
+specifying \verb{repair = "unique", quiet = TRUE}. When the \code{"*_quiet"} options
+are used, any setting of \code{quiet} is silently overridden.}
 
 \item{quiet}{By default, the user is informed of any renaming
 caused by repairing the names. This only concerns unique and
@@ -49,13 +57,11 @@ Users can silence the name repair messages by setting the
 \code{"rlib_name_repair_verbosity"} global option to \code{"quiet"}.}
 }
 \value{
-For \code{dm_zoom_to()}: A \code{zoomed_dm} object.
+For \code{dm_zoom_to()}: A \code{dm_zoomed} object.
 
 For \code{dm_insert_zoomed()}, \code{dm_update_zoomed()} and \code{dm_discard_zoomed()}: A \code{dm} object.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Zooming to a table of a \code{\link{dm}} allows for the use of many \code{dplyr}-verbs directly on this table, while retaining the
 context of the \code{dm} object.
 
@@ -75,7 +81,7 @@ for a more detailed introduction.
 Whenever possible, the key relations of the original table are transferred to the resulting table
 when using \code{dm_insert_zoomed()} or \code{dm_update_zoomed()}.
 
-Functions from \code{dplyr} that are supported for a \code{zoomed_dm}: \code{\link[=group_by]{group_by()}}, \code{\link[=summarise]{summarise()}}, \code{\link[=mutate]{mutate()}},
+Functions from \code{dplyr} that are supported for a \code{dm_zoomed}: \code{\link[=group_by]{group_by()}}, \code{\link[=summarise]{summarise()}}, \code{\link[=mutate]{mutate()}},
 \code{\link[=transmute]{transmute()}}, \code{\link[=filter]{filter()}}, \code{\link[=select]{select()}}, \code{\link[=rename]{rename()}} and \code{\link[=ungroup]{ungroup()}}.
 You can use these functions just like you would
 with a normal table.
@@ -86,10 +92,10 @@ only with the latter, the filter expression is added to the list of table filter
 Furthermore, different \code{join()}-variants from {dplyr} are also supported,
 e.g. \code{\link[=left_join]{left_join()}} and \code{\link[=semi_join]{semi_join()}}.
 (Support for \code{\link[=nest_join]{nest_join()}} is planned.)
-The join-methods for \code{zoomed_dm} infer the columns to join by from the primary and foreign keys,
+The join-methods for \code{dm_zoomed} infer the columns to join by from the primary and foreign keys,
 and have an extra argument \code{select} that allows choosing the columns of the RHS table.
 
-And -- last but not least -- also the {tidyr}-functions \code{\link[=unite]{unite()}} and \code{\link[=separate]{separate()}} are supported for \code{zoomed_dm}.
+And -- last but not least -- also the {tidyr}-functions \code{\link[=unite]{unite()}} and \code{\link[=separate]{separate()}} are supported for \code{dm_zoomed}.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

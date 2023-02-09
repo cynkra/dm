@@ -28,7 +28,7 @@ test_that("validator speaks up when something's wrong", {
     "dm_invalid"
   )
 
-  # zoom column of `zoomed_dm` is empty
+  # zoom column of `dm_zoomed` is empty
   expect_dm_error(
     dm_for_filter() %>%
       dm_zoom_to(tf_1) %>%
@@ -75,7 +75,7 @@ test_that("validator speaks up when something's wrong", {
     dm_for_filter() %>%
       dm_zoom_to(tf_1) %>%
       dm_get_def() %>%
-      mutate(zoom = if_else(table == "tf_1", list(1), NULL)) %>%
+      mutate(zoom = if_else(table == "tf_1", list(1), list(NULL))) %>%
       new_dm3(zoomed = TRUE) %>%
       dm_validate(),
     "dm_invalid"
@@ -197,4 +197,15 @@ test_that("validator speaks up (sqlite())", {
       dm_validate(),
     "dm_invalid"
   )
+})
+
+test_that("validator accepts tbl_sql which is not tbl_dbi (from copy_inline())", {
+  skip_if_not_installed("dbplyr")
+  skip_if_src("df")
+
+  con <- my_test_con()
+  test_table <- dbplyr::copy_inline(con, tibble(a = 1:3))
+  # as of dbplyr v2.2.1, `copy_inline()` creates an object that's `tbl_sql`, but not `tbl_dbi`
+  testthat::expect_false(inherits(test_table, "tbl_dbi"))
+  expect_silent(dm_validate(dm(test_table)))
 })

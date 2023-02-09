@@ -1,12 +1,12 @@
 test_that("code generation works", {
   expect_identical(
     new_cg_block(),
-    structure(list(cg_input_object = list(), cg_f_list = list()), class = "cg_code_block")
+    structure(list(cg_input_object = list(), cg_f_list = list()), class = "dm_cg_code_block")
   )
 
   expect_snapshot({
     call_to_char(body(function(.) dm_add_tbl(., weather)))
-    call_to_char(quo(dm_add_tbl(., weather, airports, flights, airlines, planes, mtcars, penguins)))
+    call_to_char(expr(dm_add_tbl(., weather, airports, flights, airlines, planes, mtcars, penguins)))
     new_cg_block()
     new_cg_block(quo(dm_nycflights13()), list(function(.) dm_add_pk(., flights, flight_id)))
     table <- "flights"
@@ -21,10 +21,14 @@ test_that("code generation works", {
       cg_block$cg_input_object,
       list(
         function(.) dm_add_tbl(., mtcars),
-        function(.) dm_rm_tbl(., planes)
+        function(.) dm_select_tbl(., -planes)
       )
     )
     cg_block_2
     cg_eval_block(cg_block_2)
+  })
+
+  expect_snapshot({
+    format(new_cg_block(quo(dm_nycflights13()), list(function(.) dm_add_pk(., flights, flight_id))))
   })
 })

@@ -15,7 +15,7 @@ editor_options:
 source("setup/setup.R")
 ``````
 
-In this document we will present several specialized functions for conducting basic tests about key conditions and about relations between tables.
+In this document, we will present several specialized functions for conducting basic tests about key conditions and about relations between tables.
 We will also describe functions that can be used for splitting and uniting tables.
 
 ```{r}
@@ -32,7 +32,7 @@ This section contains information and examples about the following functions:
 1. `check_subset(t1, c1, t2, c2)`
 1. `check_set_equality(t1, c1, t2, c2)`
 
-When you have tables (data frames) that are connected by key relations, this package can help you to verify the assumed key relations and/or determine the existing key relations between the tables.
+When you have tables (data frames) that are connected by key relations, {dm} can help you to verify the assumed key relations and/or determine the existing key relations between the tables.
 For example, if you have tables:
 
 ```{r}
@@ -124,14 +124,15 @@ But not all of the parent table column values have to be referred to.
 This means that there is a "bijective" ("injective" AND "surjective") relation between the child table and the parent table w.r.t. the specified columns, i.e. the set of values of the two columns is equal and there are no duplicates in either of them.
 
 Also `examine_cardinality()` first performs the above mentioned tests to figure out, if the parent-child table relationship criteria are met.
-Subsequently, two further checks are made to determine the nature of the relation (surjective, injective, bijective or none of these) between the two columns.
+Subsequently, two further checks are made to determine the nature of the relation (surjective, injective, bijective, or none of these) between the two columns.
 
 ### Examples
 
 Given the following three data frames:
+
 ```{r}
 d1 <- tibble(a = 1:5)
-d2 <- tibble(c = c(1:5,5))
+d2 <- tibble(c = c(1:5, 5))
 d3 <- tibble(c = 1:4)
 d4 <- tibble(a = c(2:5, 5))
 ```
@@ -153,11 +154,18 @@ check_cardinality_0_1(d1, a, d3, c)
 ```
 
 `examine_cardinality()` returns the type of relation, e.g.:
+
 ```{r}
 examine_cardinality(d1, a, d3, c)
 examine_cardinality(d1, a, d2, c)
 examine_cardinality(d1, a, d1, a)
 examine_cardinality(d1, a, d4, a)
+```
+
+Just like the underlying cardinality functions, it will also inform you if any restrictions on cardinality are violated:
+
+```{r}
+examine_cardinality(d2, c, d1, a)
 ```
 
 
@@ -173,6 +181,7 @@ The first function implements table normalization.
 An existing table is split into a parent table (i.e. a lookup table) and a child table (containing the observations), linked by a key column (here: `new_id_column`).
 Basically, a foreign key relation would be created, pointing from the  `new_id_column` of the child table to the parent table's corresponding column, which can be seen as the parent table's primary key column.
 The function `decompose_table()` does that, as can be seen in the following example:
+
 ```{r}
 mtcars_tibble <- as_tibble(mtcars)
 mtcars_tibble
@@ -196,5 +205,5 @@ reunite_parent_child(child_table, parent_table, id_column = am_gear_carb_id)
 reunite_parent_child_from_list(decomposed_table, id_column = am_gear_carb_id)
 ```
 
-Currently these functions only exist as a low-level operation on tables.
+Currently, these functions only exist as a low-level operation on tables.
 We plan to extend this operation to `dm` objects in the future.

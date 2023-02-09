@@ -2,33 +2,44 @@
 % Please edit documentation in R/pack_join.R
 \name{pack_join}
 \alias{pack_join}
-\alias{pack_join.zoomed_dm}
+\alias{pack_join.dm_zoomed}
 \title{Pack Join}
 \usage{
 pack_join(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL)
 
-\method{pack_join}{zoomed_dm}(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL)
+\method{pack_join}{dm_zoomed}(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL)
 }
 \arguments{
 \item{x, y}{A pair of data frames or data frame extensions (e.g. a tibble).}
 
-\item{by}{A character vector of variables to join by.
+\item{by}{A join specification created with \code{\link[dplyr:join_by]{join_by()}}, or a character
+vector of variables to join by.
 
 If \code{NULL}, the default, \verb{*_join()} will perform a natural join, using all
-variables in common across \code{x} and \code{y}. A message lists the variables so that you
-can check they're correct; suppress the message by supplying \code{by} explicitly.
+variables in common across \code{x} and \code{y}. A message lists the variables so
+that you can check they're correct; suppress the message by supplying \code{by}
+explicitly.
 
-To join by different variables on \code{x} and \code{y}, use a named vector.
-For example, \code{by = c("a" = "b")} will match \code{x$a} to \code{y$b}.
+To join on different variables between \code{x} and \code{y}, use a \code{\link[dplyr:join_by]{join_by()}}
+specification. For example, \code{join_by(a == b)} will match \code{x$a} to \code{y$b}.
 
-To join by multiple variables, use a vector with length > 1.
-For example, \code{by = c("a", "b")} will match \code{x$a} to \code{y$a} and \code{x$b} to
-\code{y$b}. Use a named vector to match different variables in \code{x} and \code{y}.
-For example, \code{by = c("a" = "b", "c" = "d")} will match \code{x$a} to \code{y$b} and
-\code{x$c} to \code{y$d}.
+To join by multiple variables, use a \code{\link[dplyr:join_by]{join_by()}} specification with
+multiple expressions. For example, \code{join_by(a == b, c == d)} will match
+\code{x$a} to \code{y$b} and \code{x$c} to \code{y$d}. If the column names are the same between
+\code{x} and \code{y}, you can shorten this by listing only the variable names, like
+\code{join_by(a, c)}.
 
-To perform a cross-join, generating all combinations of \code{x} and \code{y},
-use \code{by = character()}.}
+\code{\link[dplyr:join_by]{join_by()}} can also be used to perform inequality, rolling, and overlap
+joins. See the documentation at \link[dplyr:join_by]{?join_by} for details on
+these types of joins.
+
+For simple equality joins, you can alternatively specify a character vector
+of variable names to join by. For example, \code{by = c("a", "b")} joins \code{x$a}
+to \code{y$a} and \code{x$b} to \code{y$b}. If variable names differ between \code{x} and \code{y},
+use a named character vector like \code{by = c("x_a" = "y_a", "x_b" = "y_b")}.
+
+To perform a cross-join, generating all combinations of \code{x} and \code{y}, see
+\code{\link[dplyr:cross_join]{cross_join()}}.}
 
 \item{...}{Other parameters passed onto methods.}
 
@@ -37,11 +48,11 @@ and \code{copy} is \code{TRUE}, then \code{y} will be copied into the
 same src as \code{x}.  This allows you to join tables across srcs, but
 it is a potentially expensive operation so you must opt into it.}
 
-\item{keep}{Should the join keys from both \code{x} and \code{y} be preserved in the
-output?}
+\item{keep}{Should the new list-column contain join keys? The default
+will preserve the join keys for inequality joins.}
 
-\item{name}{The name of the list column nesting joins create.
-If \code{NULL} the name of \code{y} is used.}
+\item{name}{The name of the list-column created by the join. If \code{NULL},
+the default, the name of \code{y} is used.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

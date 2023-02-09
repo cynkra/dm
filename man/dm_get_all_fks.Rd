@@ -9,8 +9,9 @@ dm_get_all_fks(dm, parent_table = NULL, ...)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{parent_table}{One or more table names, as character vector,
+\item{parent_table}{One or more table names, unquoted,
 to return foreign key information for.
+If given, foreign keys are returned in that order.
 The default \code{NULL} returns information for all tables.}
 
 \item{...}{These dots are for future extensions and must be empty.}
@@ -26,8 +27,6 @@ A tibble with the following columns:
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Get a summary of all foreign key relations in a \code{\link{dm}}.
 }
 \examples{

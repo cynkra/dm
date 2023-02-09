@@ -1,8 +1,6 @@
 #' Get connection
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_get_con()` returns the DBI connection for a `dm` object.
 #' This works only if the tables are stored on a database, otherwise an error
 #' is thrown.

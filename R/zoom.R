@@ -1,9 +1,6 @@
-
 #' Mark table for manipulation
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Zooming to a table of a [`dm`] allows for the use of many `dplyr`-verbs directly on this table, while retaining the
 #' context of the `dm` object.
 #'
@@ -26,7 +23,7 @@
 #' Whenever possible, the key relations of the original table are transferred to the resulting table
 #' when using `dm_insert_zoomed()` or `dm_update_zoomed()`.
 #'
-#' Functions from `dplyr` that are supported for a `zoomed_dm`: [group_by()], [summarise()], [mutate()],
+#' Functions from `dplyr` that are supported for a `dm_zoomed`: [group_by()], [summarise()], [mutate()],
 #' [transmute()], [filter()], [select()], [rename()] and [ungroup()].
 #' You can use these functions just like you would
 #' with a normal table.
@@ -37,14 +34,16 @@
 #' Furthermore, different `join()`-variants from {dplyr} are also supported,
 #' e.g. [left_join()] and [semi_join()].
 #' (Support for [nest_join()] is planned.)
-#' The join-methods for `zoomed_dm` infer the columns to join by from the primary and foreign keys,
+#' The join-methods for `dm_zoomed` infer the columns to join by from the primary and foreign keys,
 #' and have an extra argument `select` that allows choosing the columns of the RHS table.
 #'
-#' And -- last but not least -- also the {tidyr}-functions [unite()] and [separate()] are supported for `zoomed_dm`.
+#' And -- last but not least -- also the {tidyr}-functions [unite()] and [separate()] are supported for `dm_zoomed`.
 #'
 #' @rdname dm_zoom_to
+#' @aliases zoomed_df
+#' @aliases dm_zoomed_df
 #'
-#' @return For `dm_zoom_to()`: A `zoomed_dm` object.
+#' @return For `dm_zoom_to()`: A `dm_zoomed` object.
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
@@ -91,7 +90,7 @@ dm_zoom_to <- function(dm, table) {
 }
 
 is_zoomed <- function(dm) {
-  inherits(dm, "zoomed_dm")
+  inherits(dm, c("dm_zoomed", "zoomed_dm"))
 }
 
 #' @rdname dm_zoom_to
@@ -150,6 +149,9 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
       # PK: either the same primary key as in the old table, renamed in the new table, or no primary key if none available
       pks = list_of(update_zoomed_pk(dm)),
 
+      # UK: either the same unique key as in the old table, renamed in the new table, or no unique key if none available
+      uks = list_of(update_zoomed_uk(dm)),
+
       # incoming FKs: in the new row, based on the old table;
       # if PK available, foreign key relations can be copied from the old table
       # if PK vanished, the entry will be empty
@@ -193,6 +195,7 @@ dm_update_zoomed <- function(dm) {
 
   if (upd_keys) {
     new_def$pks[[where]] <- update_zoomed_pk(dm)
+    new_def$uks[[where]] <- update_zoomed_uk(dm)
     new_def$fks[[where]] <- update_zoomed_incoming_fks(dm)
 
     tracked_cols <- new_def$col_tracker_zoom[[where]]
@@ -254,6 +257,21 @@ update_zoomed_pk <- function(dm) {
   upd_pk
 }
 
+update_zoomed_uk <- function(dm) {
+  old_tbl_name <- orig_name_zoomed(dm)
+  tracked_cols <- col_tracker_zoomed(dm)
+  orig_uk <- dm %>%
+    dm_get_def() %>%
+    dm_get_all_uks_def_impl(old_tbl_name)
+  if (has_length(orig_uk$uk_col) && all(get_key_cols(orig_uk$uk_col) %in% tracked_cols)) {
+    upd_uk <- new_uk(map(orig_uk$uk_col, ~ recode2(get_key_cols(.x), tracked_cols)))
+  } else {
+    upd_uk <- new_uk()
+  }
+
+  upd_uk
+}
+
 update_zoomed_incoming_fks <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- col_tracker_zoomed(dm)
@@ -290,13 +308,16 @@ update_zoomed_outgoing <- function(fks, tbl_name, tracked_cols) {
   fks
 }
 
-dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name, old_tbl_name, tracked_cols) {
-  new_out_keys <-
-    dm_get_all_fks_impl(dm) %>%
+update_zoomed_fks <- function(dm, old_tbl_name, tracked_cols) {
+  dm_get_all_fks_impl(dm) %>%
     filter(child_table == !!old_tbl_name) %>%
     filter(map_lgl(child_fk_cols, ~ all(.x %in% !!tracked_cols))) %>%
     distinct() %>%
     mutate(child_fk_cols = new_keys(map(child_fk_cols, ~ (!!names(tracked_cols))[match(.x, !!tracked_cols, nomatch = 0L)])))
+}
+
+dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name, old_tbl_name, tracked_cols) {
+  new_out_keys <- update_zoomed_fks(dm, old_tbl_name, tracked_cols)
 
   dm %>%
     dm_add_fk_impl(
@@ -343,7 +364,7 @@ check_zoomed <- function(dm) {
   }
 
   fun_name <- as_string(sys.call(-1)[[1]])
-  # if a method for `zoomed_dm()` is used for a `dm`, we don't want `fun_name = method.dm` but rather `fun_name = method`
+  # if a method for `dm_zoomed()` is used for a `dm`, we don't want `fun_name = method.dm` but rather `fun_name = method`
   fun_name <- sub("\\.dm", "", fun_name)
   abort_only_possible_w_zoom(fun_name)
 }
@@ -354,16 +375,16 @@ check_not_zoomed <- function(dm) {
     return()
   }
 
-  fun_name <- gsub(".zoomed_dm", "", as_string(sys.call(-1)[[1]]))
-  # if a method for `dm()` is used for a `zoomed_dm`, we don't want `fun_name = method.zoomed_dm` but rather `fun_name = method`
-  fun_name <- sub("\\.zoomed_dm", "", fun_name)
+  fun_name <- gsub(".dm_zoomed", "", as_string(sys.call(-1)[[1]]))
+  # if a method for `dm()` is used for a `dm_zoomed`, we don't want `fun_name = method.dm_zoomed` but rather `fun_name = method`
+  fun_name <- sub("\\.dm_zoomed", "", fun_name)
   abort_only_possible_wo_zoom(fun_name)
 }
 
-# For `nest.zoomed_dm()`, we need the incoming foreign keys of the originally zoomed table
-get_orig_in_fks <- function(zoomed_dm, orig_table) {
+# For `nest.dm_zoomed()`, we need the incoming foreign keys of the originally zoomed table
+get_orig_in_fks <- function(dm_zoomed, orig_table) {
   # FIXME: maybe there is a more efficient implementation possible?
-  zoomed_dm %>%
+  dm_zoomed %>%
     dm_get_all_fks_impl() %>%
     filter(parent_table == orig_table) %>%
     select(-parent_table)

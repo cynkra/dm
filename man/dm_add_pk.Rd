@@ -4,7 +4,15 @@
 \alias{dm_add_pk}
 \title{Add a primary key}
 \usage{
-dm_add_pk(dm, table, columns, ..., check = FALSE, force = FALSE)
+dm_add_pk(
+  dm,
+  table,
+  columns,
+  ...,
+  autoincrement = FALSE,
+  check = FALSE,
+  force = FALSE
+)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -16,6 +24,10 @@ To define a compound key, use \code{c(col1, col2)}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
+\item{autoincrement}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+If \code{TRUE}, the  column specified in \code{columns} will be populated
+automatically with a sequence of integers.}
+
 \item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
 
 \item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key
@@ -26,13 +38,16 @@ If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 An updated \code{dm} with an additional primary key.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{dm_add_pk()} marks the specified columns as the primary key of the specified table.
 If \code{check == TRUE}, then it will first check if
 the given combination of columns is a unique key of the table.
 If \code{force == TRUE}, the function will replace an already
 set key, without altering foreign keys previously pointing to that primary key.
+}
+\details{
+There can be only one primary key per table in a \code{\link{dm}}.
+It's possible though to set an unlimited number of unique keys using \code{\link[=dm_add_uk]{dm_add_uk()}}
+or adding foreign keys pointing to columns other than the primary key columns with \code{\link[=dm_add_fk]{dm_add_fk()}}.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -61,9 +76,12 @@ try(
 }
 \seealso{
 Other primary key functions: 
+\code{\link{dm_add_uk}()},
 \code{\link{dm_get_all_pks}()},
+\code{\link{dm_get_all_uks}()},
 \code{\link{dm_has_pk}()},
 \code{\link{dm_rm_pk}()},
+\code{\link{dm_rm_uk}()},
 \code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}

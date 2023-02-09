@@ -1,15 +1,14 @@
 # waldo
 
     Code
-      dm_nycflights13() %>% waldo::compare(dm_nycflights13(), max_diffs = 10)
+      dm %>% waldo::compare(dm, max_diffs = 10)
     Output
       v No differences
 
 ---
 
     Code
-      dm_nycflights13() %>% dm_select_tbl(-airlines) %>% waldo::compare(
-        dm_nycflights13(), max_diffs = 10)
+      dm %>% dm_select_tbl(-airlines) %>% waldo::compare(dm, max_diffs = 10)
     Output
       `old` is length 4
       `new` is length 5
@@ -23,8 +22,7 @@
 ---
 
     Code
-      dm_nycflights13() %>% dm_select(airlines, -name) %>% waldo::compare(
-        dm_nycflights13(), max_diffs = 10)
+      dm %>% dm_select(airlines, -name) %>% waldo::compare(dm, max_diffs = 10)
     Output
       `old$airlines$data` is length 1
       `new$airlines$data` is length 2
@@ -38,8 +36,7 @@
 ---
 
     Code
-      dm_nycflights13() %>% dm_rm_fk() %>% waldo::compare(dm_nycflights13(),
-      max_diffs = 10)
+      dm %>% dm_rm_fk() %>% waldo::compare(dm, max_diffs = 10)
     Message
       Removing foreign keys: %>%
         dm_rm_fk(flights, carrier, airlines) %>%
@@ -82,8 +79,7 @@
 ---
 
     Code
-      dm_nycflights13() %>% dm_rm_pk(fail_fk = FALSE) %>% waldo::compare(
-        dm_nycflights13(), max_diffs = 10)
+      dm %>% dm_rm_pk() %>% waldo::compare(dm, max_diffs = 10)
     Message
       Removing primary keys: %>%
         dm_rm_pk(airlines) %>%
@@ -97,11 +93,17 @@
       `old$airlines$pks$column[[1]]` is absent
       `new$airlines$pks$column[[1]]` is a character vector ('carrier')
       
+      `old$airlines$pks$autoincrement`:      
+      `new$airlines$pks$autoincrement`: FALSE
+      
       `old$airports$pks$column` is length 0
       `new$airports$pks$column` is length 1
       
       `old$airports$pks$column[[1]]` is absent
       `new$airports$pks$column[[1]]` is a character vector ('faa')
+      
+      `old$airports$pks$autoincrement`:      
+      `new$airports$pks$autoincrement`: FALSE
       
       `old$planes$pks$column` is length 0
       `new$planes$pks$column` is length 1
@@ -109,17 +111,18 @@
       `old$planes$pks$column[[1]]` is absent
       `new$planes$pks$column[[1]]` is a character vector ('tailnum')
       
+      `old$planes$pks$autoincrement`:      
+      `new$planes$pks$autoincrement`: FALSE
+      
       `old$weather$pks$column` is length 0
       `new$weather$pks$column` is length 1
       
-      `old$weather$pks$column[[1]]` is absent
-      `new$weather$pks$column[[1]]` is a character vector ('origin', 'time_hour')
+      And 2 more differences ...
 
 ---
 
     Code
-      dm_nycflights13() %>% dm_set_colors(yellow = flights) %>% waldo::compare(
-        dm_nycflights13(), max_diffs = 10)
+      dm %>% dm_set_colors(yellow = flights) %>% waldo::compare(dm, max_diffs = 10)
     Output
       `old$flights$display`: "#FFFF00FF"
       `new$flights$display`: "#5B9BD5FF"
@@ -127,8 +130,7 @@
 ---
 
     Code
-      dm_nycflights13() %>% dm_zoom_to(flights) %>% waldo::compare(dm_nycflights13(),
-      max_diffs = 10)
+      dm %>% dm_zoom_to(flights) %>% waldo::compare(dm, max_diffs = 10)
     Output
       `old$flights$zoom` is an S3 object of class <tbl_df/tbl/data.frame>, a list
       `new$flights$zoom` is NULL

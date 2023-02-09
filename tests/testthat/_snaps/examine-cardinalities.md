@@ -36,3 +36,32 @@
     Message
       ! No FKs available in `dm`.
 
+# `dm_examine_cardinalities()` API
+
+    Code
+      dm_examine_cardinalities(dm_test_obj(), progress = FALSE)
+    Condition
+      Warning:
+      The `progress` argument of `dm_examine_cardinalities()` is deprecated as of dm 1.0.0.
+      i Please use the `.progress` argument instead.
+    Message
+      ! No FKs available in `dm`.
+    Code
+      dm_examine_cardinalities(dm = dm_test_obj())
+    Condition
+      Warning:
+      The `dm` argument of `dm_examine_cardinalities()` is deprecated as of dm 1.0.0.
+      i Please use the `.dm` argument instead.
+    Message
+      ! No FKs available in `dm`.
+
+---
+
+    Code
+      dm_examine_cardinalities(dm_test_obj(), foo = "bar")
+    Condition
+      Error in `dm_examine_cardinalities()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * foo = "bar"
+

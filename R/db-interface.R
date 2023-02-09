@@ -1,8 +1,6 @@
 #' Copy data model to data source
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `copy_dm_to()` takes a [dplyr::src_dbi] object or a [`DBI::DBIConnection-class`] object as its first argument
 #' and a [`dm`] object as its second argument.
 #' The latter is copied to the former.
@@ -287,7 +285,7 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
     walk(seq_len(n_chunks), ticker(~ {
       end <- .x * chunk_size
       idx <- seq2(end - (chunk_size - 1), min(end, nrow(table)))
-      values <- map(table[idx, ], dbplyr::escape, parens = FALSE, collapse = NULL, con = con)
+      values <- map(table[idx, ], mssql_escape, con = con)
       # Can't use dbAppendTable(): https://github.com/r-dbi/odbc/issues/480
       sql <- DBI::sqlAppendTable(con, DBI::SQL(remote_table), values, row.names = FALSE)
       DBI::dbExecute(con, sql, immediate = TRUE)

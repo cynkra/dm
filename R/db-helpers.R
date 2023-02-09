@@ -51,6 +51,10 @@ is_duckdb <- function(dest) {
   inherits(dest, c("duckdb_connection", "src_duckdb_connection"))
 }
 
+is_sqlite <- function(dest) {
+  inherits(dest, "SQLiteConnection")
+}
+
 is_mssql <- function(dest) {
   inherits(dest, c(
     "Microsoft SQL Server", "src_Microsoft SQL Server", "dblogConnection-Microsoft SQL Server", "src_dblogConnection-Microsoft SQL Server"
@@ -66,6 +70,21 @@ is_postgres <- function(dest) {
 
 is_mariadb <- function(dest) {
   inherits_any(dest, c("MariaDBConnection", "src_MariaDBConnection", "src_DoltConnection", "src_DoltLocalConnection"))
+}
+
+schema_supported_dbs <- function() {
+  tibble::tribble(
+    ~db_name, ~id_function, ~test_shortcut,
+    "SQL Server", "is_mssql", "mssql",
+    "Postgres", "is_postgres", "postgres",
+    "MariaDB", "is_mariadb", "maria",
+  )
+}
+
+is_schema_supported <- function(con) {
+  funs <- schema_supported_dbs()[["id_function"]]
+
+  any(purrr::map_lgl(funs, ~ do.call(., args = list(dest = con))))
 }
 
 src_from_src_or_con <- function(dest) {
@@ -90,7 +109,7 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
     names <- unique_db_table_name(names)
   } else {
     # permanent tables
-    if (!is.null(schema) && !is_mssql(con) && !is_postgres(con) && !is_mariadb(con)) {
+    if (!is.null(schema) && !is_schema_supported(con)) {
       abort_no_schemas_supported(con = con)
     }
     names <- table_names
@@ -110,7 +129,6 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
 
   if (!is.null(schema)) {
     check_param_class(schema, "character")
-    check_param_length(schema)
   }
 
   if (is_mssql(src)) {

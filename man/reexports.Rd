@@ -32,6 +32,7 @@
 \alias{rows_upsert}
 \alias{rows_delete}
 \alias{glimpse}
+\alias{tibble}
 \alias{unite}
 \alias{separate}
 \title{Objects exported from other packages}
@@ -41,9 +42,11 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dplyr}{\code{\link[dplyr:reexports]{\%>\%}}, \code{\link[dplyr:filter-joins]{anti_join}}, \code{\link[dplyr]{arrange}}, \code{\link[dplyr:compute]{collect}}, \code{\link[dplyr]{compute}}, \code{\link[dplyr]{copy_to}}, \code{\link[dplyr]{filter}}, \code{\link[dplyr:mutate-joins]{full_join}}, \code{\link[dplyr]{group_by}}, \code{\link[dplyr:mutate-joins]{inner_join}}, \code{\link[dplyr:mutate-joins]{left_join}}, \code{\link[dplyr]{mutate}}, \code{\link[dplyr]{rename}}, \code{\link[dplyr:mutate-joins]{right_join}}, \code{\link[dplyr:rows]{rows_append}}, \code{\link[dplyr:rows]{rows_delete}}, \code{\link[dplyr:rows]{rows_insert}}, \code{\link[dplyr:rows]{rows_patch}}, \code{\link[dplyr:rows]{rows_update}}, \code{\link[dplyr:rows]{rows_upsert}}, \code{\link[dplyr]{select}}, \code{\link[dplyr:filter-joins]{semi_join}}, \code{\link[dplyr]{src_tbls}}, \code{\link[dplyr]{summarise}}, \code{\link[dplyr:summarise]{summarize}}, \code{\link[dplyr]{tbl}}, \code{\link[dplyr:mutate]{transmute}}, \code{\link[dplyr:group_by]{ungroup}}}
+  \item{dplyr}{\code{\link[dplyr:reexports]{\%>\%}}, \code{\link[dplyr:filter-joins]{anti_join}}, \code{\link[dplyr]{arrange}}, \code{\link[dplyr:compute]{collect}}, \code{\link[dplyr]{compute}}, \code{\link[dplyr]{copy_to}}, \code{\link[dplyr]{filter}}, \code{\link[dplyr:mutate-joins]{full_join}}, \code{\link[dplyr]{group_by}}, \code{\link[dplyr:mutate-joins]{inner_join}}, \code{\link[dplyr:mutate-joins]{left_join}}, \code{\link[dplyr]{mutate}}, \code{\link[dplyr]{rename}}, \code{\link[dplyr:mutate-joins]{right_join}}, \code{\link[dplyr:rows]{rows_append}}, \code{\link[dplyr:rows]{rows_delete}}, \code{\link[dplyr:rows]{rows_insert}}, \code{\link[dplyr:rows]{rows_patch}}, \code{\link[dplyr:rows]{rows_update}}, \code{\link[dplyr:rows]{rows_upsert}}, \code{\link[dplyr]{select}}, \code{\link[dplyr:filter-joins]{semi_join}}, \code{\link[dplyr]{src_tbls}}, \code{\link[dplyr]{summarise}}, \code{\link[dplyr:summarise]{summarize}}, \code{\link[dplyr]{tbl}}, \code{\link[dplyr]{transmute}}, \code{\link[dplyr:group_by]{ungroup}}}
 
   \item{pillar}{\code{\link[pillar]{glimpse}}}
+
+  \item{tibble}{\code{\link[tibble]{tibble}}}
 
   \item{tidyr}{\code{\link[tidyr]{separate}}, \code{\link[tidyr]{unite}}}
 }}

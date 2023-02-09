@@ -1,5 +1,5 @@
 ---
-title: "Insert, update or remove rows in a database dm"
+title: "Insert, update, or remove rows in a database"
 date: "`r Sys.Date()`"
 author: James Wondrasek
 output: rmarkdown::html_vignette
@@ -20,23 +20,24 @@ source("setup/setup.R")
 This tutorial introduces the methods {dm} provides for modifying the data in the tables of a relational model.
 There are 6 methods:
 
-* [`dm_rows_insert()`](#insert) - adds new rows
+* [`dm_rows_insert()`](#insert) - adds new unique rows
+* [`dm_rows_append()`](#insert) - adds new rows unconditionally
 * [`dm_rows_update()`](#update) - changes values in rows
 * [`dm_rows_patch()`](#patch) - fills in missing values
 * [`dm_rows_upsert()`](#upsert) - adds new rows or changes values if pre-existing
 * [`dm_rows_delete()`](#delete) - deletes rows
-* [`dm_rows_truncate()`](#truncate) - removes all rows, leaving table structure intact
 
 ## The dm_rows_* process
 
 All six methods take the same arguments and using them follows the same process:
 
-1. Create a temporary *changeset dm* that defines the intended changes on the RDBMS
+1. Create a temporary *changeset dm* object that defines the intended changes on the RDBMS
 1. If desired, simulate changes with `in_place = FALSE` to double-check
 1. Apply changes with `in_place = TRUE`.
 
-To start, a dm object is created containing the tables, and rows, that you want to change.
-This changeset dm is then copied into the same source as the dm you want to modify.
+
+To start, a `dm` object is created containing the tables and rows that you want to change.
+This changeset `dm` is then copied into the same source as the dm you want to modify.
 With the dm in the same RDBMS as the destination dm, you call the appropriate method, such as `dm_rows_insert()`, to make your planned changes, along with an argument of `in_place = FALSE` so you can confirm you achieve the changes that you want.
 
 This verification can be done visually, looking at row counts and the like, or using {dm}'s constraint checking method, `dm_examine_constraints()`.
@@ -47,28 +48,29 @@ With the changes confirmed, you execute the method again, this time with the arg
 Note that `in_place = FALSE` is the default: you must opt in to actually change data on the database.
 
 Each method has its own requirements in order to maintain database consistency.
-These involve constraints on primary key values as they are how rows are identified.
+These involve constraints on primary key values that uniquely identify rows.
 
 | Method | Requirements |
 |--------|--------------|
-| `dm_rows_insert()` | The primary keys must differ from existing records.|
+| `dm_rows_insert()` | Records with existing primary keys are silently ignored (via `dplyr::rows_insert(conflict = "ignore")`). |
+| `dm_rows_append()` | All records are inserted, the underlying database might check for uniqueness of primary keys (and fail the operation) if a constraint is set. |
 | `dm_rows_update()` | Primary keys must match for all records to be updated.|
 | `dm_rows_patch()` | Updates missing values in existing records. Primary keys must match for all records to be patched.|
 | `dm_rows_upsert()` | Updates existing records and adds new records, based on the primary key.|
-| `dm_rows_delete()` | Removes matching records based on the primary key.|
-| `dm_rows_truncate()` | Removes all records, only for tables in the changeset dm.|
+| `dm_rows_delete()` | Removes matching records based on the primary key. Primary keys must match for all records to be deleted.|
 
 To ensure the integrity of all relations during the process, all methods automatically determine the correct processing order for the tables involved.
-For operations that create records, parent tables are processed before child tables.
-For `dm_rows_delete()` and `dm_rows_truncate()`, child tables are processed before their parent tables.
+For operations that create records, parent tables (which hold primary keys) are processed before child tables (which hold foreign keys).
+For `dm_rows_delete()`, child tables are processed before their parent tables.
+Note that the user is still responsible for setting transactions to ensure integrity of operations across multiple tables.
 For more details on this see `vignette("howto-dm-theory")` and `vignette("howto-dm-db")`.
 
 ## Usage {#usage}
 
-To demonstrate the use of these table modifying methods we will create a simple dm object with two tables linked by a foreign key.
-Note the foreign key of `NA` in the `child` table.
+To demonstrate the use of these table modifying methods, we will create a simple `dm` object with two tables linked by a foreign key.
+Note that the `child` table has a foreign key missing (`NA`).
 
-``````{r }
+``````{r}
 library(tidyverse)
 library(dm)
 parent <- tibble(value = c("A", "B", "C"), pk = 1:3)
@@ -87,9 +89,9 @@ demo_dm %>%
 
 {dm} doesn't check your key values when you create a dm, we add this check:[^null-fk]
 
-[^null-fk]: Be aware that when using `dm_examine_constraints()` NULL (`NA`) foreign keys are allowed and will be counted as a match.
+[^null-fk]: Be aware that when using `dm_examine_constraints()`, missing (denoted by `NULL` in SQL, while `NA` in R) foreign keys are allowed and will be counted as a match.
 In some cases this doesn't make sense and non-NULL columns should be enforced by the RDBMS.
-Currently {dm} does not specify or check non-NULL constraints for columns.
+Currently, {dm} does not specify or check non-NULL constraints for columns.
 
 ``````{r }
 dm_examine_constraints(demo_dm)
@@ -108,12 +110,12 @@ demo_sql
 ``````
 
 {dm}'s table modification methods can be piped together to create a repeatable sequence of operations that returns a dm incorporating all the changes required.
-This is a common use case for {dm} -- building by hand a sequence of operations using temporary results until it is complete and correct, then committing the result.
+This is a common use case for {dm} -- manually building a sequence of operations using temporary results until it is complete and correct, and then committing the result.
 
 ## `dm_rows_insert()` {#insert}
 
-To demonstrate `dm_rows_insert()` we create a dm with tables containing the rows to insert and copy it to `sqlite_db`, the same source as `demo_sql`.
-For all of the `dm_rows_*` methods the source and destination dm objects must be in the same RDBMS.
+To demonstrate `dm_rows_insert()`, we create a dm with tables containing the rows to insert and copy it to `sqlite_db`, the same source as `demo_sql`.
+For all of the `dm_rows_...()` methods, the source and destination `dm` objects must be in the same RDBMS.
 You will get an error message if this is not the case.
 
 The code below adds `parent` and `child` table entries for the letter "D".
@@ -137,7 +139,7 @@ dm_insert_out <-
   dm_rows_insert(dm_insert_in)
 ``````
 
-This gives us a warning that changes will not be persisted.
+This gives us a warning that changes will not persist (i.e., they are temporary).
 Inspecting the `child` table of the resulting `dm_insert_out` and `demo_sql`, we can see that's exactly what happened.
 {dm} returned to us a dm object with our inserted rows in place, but the underlying database has not changed.
 
@@ -180,8 +182,8 @@ demo_sql$child
 ## `dm_rows_delete()` {#delete}
 
 `dm_rows_delete()` is not currently implemented to work with an RDBMS, so we will shift our demonstrations back to the local R environment.
-We've made changes to `demo_sql` so we use `collect()` to copy the current tables out of SQLite.
-Note that persistence is not a concern with local dm objects.
+We've made changes to `demo_sql`, so we use `collect()` to copy the current tables out of SQLite.
+Note that persistence is not a concern for *local* `dm` objects.
 Every operation returns a new dm object containing the changes made.
 
 ``````{r }
@@ -229,27 +231,6 @@ dm_upserted$parent
 dm_upserted$child
 ``````
 
-## `dm_rows_truncate()` {#truncate}
-
-`dm_rows_truncate()` deletes all the rows in a table while leaving all other related information intact, including column names, column types, and key relations.
-The function derives its name from the SQL `TRUNCATE TABLE` statement, so we will return to our SQLite database to demonstrate its use.
-The example below truncates only the `child` table.
-Note how a modified version of the destination dm is used as "changeset dm": the rows in the changeset dm do not matter here.
-
-``````{r }
-dm_trunc_in <-
-  demo_sql %>%
-  dm_select_tbl(child)
-dm_trunc_in
-dm_trunc_out <-
-  demo_sql %>%
-  dm_rows_truncate(dm_trunc_in, in_place = TRUE)
-
-demo_sql$child
-``````
-
-
-
 When done, do not forget to disconnect:
 
 ``````{r disconnect}
@@ -258,8 +239,8 @@ DBI::dbDisconnect(sqlite_db)
 
 ## Conclusion {#conclusion}
 
-The `dm_rows_*` methods give you row-level granularity over the modifications you need to make to your relational model.
-By using the `in_place` argument they all share you can construct and verify your modifications before committing them.
+The `dm_rows_...()` methods give you row-level granularity over the modifications you need to make to your relational model.
+Using the common `in_place` argument, they all can construct and verify your modifications before committing them.
 There are a few limitations, as mentioned in the tutorial, but these will be addressed in future updates to {dm}.
 
 ## Further Reading
@@ -270,6 +251,6 @@ Is your data in an RDBMS? `vignette("howto-dm-db")` offers a detailed look at wo
 
 If your data is in data frames, then you may want to read `vignette("howto-dm-df")` next.
 
-If you feel you need to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
+If you would like to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
 
 If you're familiar with relational data models but want to know how to work with them in dm, then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.

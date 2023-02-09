@@ -1,86 +1,79 @@
 #' Flatten a part of a `dm` into a wide table
 #'
-#' `dm_flatten_to_tbl()` and `dm_squash_to_tbl()` gather all information of interest in one place in a wide table.
-#' Both functions perform a disambiguation of column names and a cascade of joins.
+#' `dm_flatten_to_tbl()` gathers all information of interest in one place in a wide table.
+#' It performs a disambiguation of column names and a cascade of joins.
 #'
 #' @inheritParams dm_join_to_tbl
-#' @param start The table from which all outgoing foreign key relations are considered
+#' @param .start The table from which all outgoing foreign key relations are considered
 #'   when establishing a processing order for the joins.
 #'   An interesting choice could be
 #'   for example a fact table in a star schema.
 #' @param ...
 #'   `r lifecycle::badge("experimental")`
-
-#'   Unquoted names of the tables to be included in addition to the `start` table.
+#'
+#'   Unquoted names of the tables to be included in addition to the `.start` table.
 #'   The order of the tables here determines the order of the joins.
 #'   If the argument is empty, all tables that can be reached will be included.
-#'   Only `dm_squash_to_tbl()` allows using tables that are not direct neighbors of `start`.
-#'   `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
+#'   `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
+#' @param .recursive Logical, defaults to `FALSE`. Should not only parent tables be joined to `.start`, but also their ancestors?
+#' @param .join The type of join to be performed, see [dplyr::join()].
 #' @family flattening functions
 #'
 #' @details
 #' With `...` left empty, this function will join together all the tables of your [`dm`]
-#' object that can be reached from the `start` table, in the direction of the foreign key relations
+#' object that can be reached from the `.start` table, in the direction of the foreign key relations
 #' (pointing from the child tables to the parent tables), using the foreign key relations to
 #' determine the argument `by` for the necessary joins.
 #' The result is one table with unique column names.
-#' Use the `...` argument if you would like to control which tables should be joined to the `start` table.
+#' Use the `...` argument if you would like to control which tables should be joined to the `.start` table.
 #'
-#' How does filtering affect the result?
-#'
-#' **Case 1**, either no filter conditions are set in the `dm`, or set only in the part that is unconnected to the `start` table:
-#' The necessary disambiguations of the column names are performed first.
-#' Then all involved foreign tables are joined to the `start` table successively, with the join function given in the `join` argument.
-#'
-#' **Case 2**, filter conditions are set for at least one table that is connected to `start`:
-#' First, disambiguation will be performed if necessary. The `start` table is then calculated using `dm[[start]]`.
-#' This implies
-#' that the effect of the filters on this table is taken into account.
-#' For `right_join`, `full_join` and `nest_join`, an error
-#' is thrown if any filters are set because filters will not affect the right hand side tables and the result will therefore be
-#' incorrect in general (calculating the effects on all RHS-tables would also be time-consuming, and is not supported;
-#' if desired, call `dm_apply_filters()` first to achieve that effect).
-#' For all other join types, filtering only the `start` table is enough because the effect is passed on by
-#' successive joins.
-#'
-#' Mind that calling `dm_flatten_to_tbl()` with `join = right_join` and no table order determined in the `...` argument
-#' will not lead to a well-defined result if two or more foreign tables are to be joined to `start`.
+#' Mind that calling `dm_flatten_to_tbl()` with `.join = right_join` and no table order determined in the `...` argument
+#' will not lead to a well-defined result if two or more foreign tables are to be joined to `.start`.
 #' The resulting
 #' table would depend on the order the tables that are listed in the `dm`.
 #' Therefore, trying this will result in a warning.
 #'
-#' Since `join = nest_join()` does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
+#' Since `.join = nest_join` does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 #' each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
 #'
-#' @return A single table that results from consecutively joining all affected tables to the `start` table.
+#' The difference between `.recursive = FALSE` and `.recursive = TRUE` is
+#' the following (see the examples):
 #'
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_select_tbl(-weather) %>%
-#'   dm_flatten_to_tbl(flights)
+#' - `.recursive = FALSE` allows only one level of hierarchy
+#'   (i.e., direct neighbors to table `.start`), while
+#'
+#' - `.recursive = TRUE` will go through all levels of hierarchy while joining.
+#'
+#' Additionally, these functions differ from `dm_wrap_tbl()`, which always
+#' returns a `dm` object.
+#'
+#' @return A single table that results from consecutively joining all affected tables to the `.start` table.
+#'
+#' @examplesIf dm:::dm_has_financial()
+#'
+#' dm_financial() %>%
+#'   dm_select_tbl(-loans) %>%
+#'   dm_flatten_to_tbl(.start = cards)
+#'
+#' dm_financial() %>%
+#'   dm_select_tbl(-loans) %>%
+#'   dm_flatten_to_tbl(.start = cards, .recursive = TRUE)
+#'
 #' @export
-dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
+dm_flatten_to_tbl <- function(dm, .start, ..., .recursive = FALSE, .join = left_join) {
   check_not_zoomed(dm)
-  join_name <- as_label(enexpr(join))
-  start <- dm_tbl_name(dm, {{ start }})
-  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
-}
+  join_name <- as_label(enexpr(.join))
+  if (.recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
 
-#' @rdname dm_flatten_to_tbl
-#' @export
-dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
-  check_not_zoomed(dm)
-  join_name <- as_label(enexpr(join))
-  if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
-  start <- dm_tbl_name(dm, {{ start }})
-  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
-}
+  start <- dm_tbl_name(dm, {{ .start }})
 
-
-dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   vars <- setdiff(src_tbls_impl(dm), start)
   list_of_pts <- eval_select_table(quo(c(...)), vars)
 
+  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = .join, join_name = join_name, squash = .recursive)
+}
+
+dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squash, .position = "suffix") {
   if (join_name == "nest_join") abort_no_flatten_with_nest_join()
 
   force(join)
@@ -120,7 +113,7 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # function to detect any reason for abort()
   check_flatten_to_tbl(
     join_name,
-    (nrow(dm_get_filters(dm)) > 0) && !is_empty(list_of_pts),
+    (nrow(dm_get_filters_impl(dm)) > 0) && !is_empty(list_of_pts),
     anyNA(order_df$name),
     g,
     auto_detect,
@@ -129,10 +122,10 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
     squash
   )
 
-  # rename dm and replace table `start` by its filtered, renamed version
-  prep_dm <- prepare_dm_for_flatten(dm, order_df$name, gotta_rename)
+  # rename dm and replace table `.start` by its filtered, renamed version
+  prep_dm <- prepare_dm_for_flatten(dm, order_df$name, gotta_rename, position = .position)
 
-  # Drop the first table in the list of join partners. (We have at least one table, `start`.)
+  # Drop the first table in the list of join partners. (We have at least one table, `.start`.)
   # (Working with `reduce2()` here and the `.init`-argument is the first table)
   # in the case of only one table in the `dm` (table "start"), all code below is a no-op
   order_df <- order_df[-1, ]
@@ -177,7 +170,7 @@ dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  dm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, other, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
 }
 
 parent_child_table <- function(dm, table_1, table_2) {
@@ -227,7 +220,7 @@ check_flatten_to_tbl <- function(join_name,
 
 
   # If called by `dm_join_to_tbl()` or `dm_flatten_to_tbl()`, the argument `squash = FALSE`.
-  # Then only one level of hierarchy is allowed (direct neighbors to table `start`).
+  # Then only one level of hierarchy is allowed (direct neighbors to table `.start`).
   if (!squash && has_grandparent) {
     abort_only_parents()
   }
@@ -242,7 +235,7 @@ check_flatten_to_tbl <- function(join_name,
   }
 }
 
-prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
+prepare_dm_for_flatten <- function(dm, tables, gotta_rename, position = "suffix") {
   start <- tables[1]
   # filters need to be empty, for the disambiguation to work
   # renaming will be minimized if we reduce the `dm` to the necessary tables here
@@ -255,7 +248,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
 
   if (gotta_rename) {
     table_colnames <- get_table_colnames(red_dm)
-    recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".")
+    recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".", position = position)
     explain_col_rename(recipe)
     # prepare `dm` by disambiguating columns (on a reduced dm)
     clean_dm <-

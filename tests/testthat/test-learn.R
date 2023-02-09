@@ -1,48 +1,5 @@
-# FIXME: #313: learn only from current source
-
 test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
-  skip_if_src_not(c("mssql", "postgres", "maria"))
-
-  # dm_learn_from_mssql() --------------------------------------------------
-  con_db <- my_test_con()
-
-  # create an object on the MSSQL-DB that can be learned
-  withr::defer(
-    try(walk(
-      remote_tbl_names,
-      ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
-    ))
-  )
-
-  dm_for_filter_copied <- copy_dm_to(con_db, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
-  order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
-
-  remote_tbl_names <-
-    map_chr(
-      dm_get_tables(dm_for_filter_copied)[order_of_deletion],
-      dbplyr::remote_name
-    ) %>%
-    SQL() %>%
-    DBI::dbUnquoteIdentifier(conn = con_db) %>%
-    map_chr(~ .x@name[["table"]])
-
-  remote_tbl_map <- set_names(remote_tbl_names, gsub("^(tf_.).*$", "\\1", remote_tbl_names))
-
-  # test 'get_src_tbl_names()'
-  src_tbl_names <- sort(unname(gsub("^.*\\.", "", get_src_tbl_names(con_db))))
-  expect_identical(
-    # fail if there are other tables in the default schema
-    src_tbl_names[grep("tf_._", src_tbl_names)],
-    sort(dbQuoteIdentifier(con_db, remote_tbl_names))
-  )
-
-  expect_snapshot({
-    dm_from_con(con_db)[integer()]
-  })
-})
-
-test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
-  skip_if_src_not(c("mssql", "postgres", "maria"))
+  skip_if_schema_not_supported()
 
   # dm_learn_from_mssql() --------------------------------------------------
   con_db <- my_test_con()
@@ -80,7 +37,8 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     dm_db_learned,
     dm_for_filter()[order_of_deletion],
     # FIXME: Enable fetching of on_delete information
-    ignore_on_delete = TRUE
+    ignore_on_delete = TRUE,
+    ignore_autoincrement = TRUE
   )
 
   # learning without keys:
@@ -109,7 +67,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 
 
 test_that("Learning from specific schema on MSSQL or Postgres works?", {
-  skip_if_src_not(c("mssql", "postgres", "maria"))
+  skip_if_schema_not_supported()
 
   # produces a randomized schema name with a length of 4-10 characters
   # consisting of the symbols in `reservoir`
@@ -164,7 +122,8 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
 
   expect_equivalent_dm(
     dm_db_learned,
-    dm_for_disambiguate()[order_of_deletion]
+    dm_for_disambiguate()[order_of_deletion],
+    ignore_autoincrement = TRUE
   )
 
   # learning without keys:
@@ -213,11 +172,11 @@ test_that("'schema_if()' works", {
         schema = "schema",
         table = "table",
         con = con_db,
-        dbname = "db"
+        dbname = "database"
       ),
       "SQL"
     )),
-    "\"db\".\"schema\".\"table\"|`db`.`schema`.`table`"
+    "\"database\".\"schema\".\"table\"|`database`.`schema`.`table`"
   )
 
   # schema and table set
@@ -301,7 +260,8 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
     dm_learned,
     dm_local_no_keys %>%
       dm_add_pk(test_1, b) %>%
-      dm_add_fk(test_2, c, test_1)
+      dm_add_fk(test_2, c, test_1),
+    ignore_autoincrement = TRUE
   )
 
   # learning without keys:
@@ -384,7 +344,8 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     dm_learned[c("test_1", "test_2")],
     dm_local_no_keys %>%
       dm_add_pk(test_1, b) %>%
-      dm_add_fk(test_2, c, test_1)
+      dm_add_fk(test_2, c, test_1),
+    ignore_autoincrement = TRUE
   )
 
   # learning without keys:
@@ -406,7 +367,7 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
 # Must be in the same file as the other learning tests
 # to avoid race conditions.
 test_that("dm_meta() contents", {
-  skip_if_src_not(c("mssql", "postgres", "maria"))
+  skip_if_schema_not_supported()
 
   # produces a randomized schema name with a length of 4-10 characters
   # consisting of the symbols in `reservoir`
@@ -439,7 +400,7 @@ test_that("dm_meta() contents", {
 
   meta <- dm_meta(con_db, schema = schema_name)
 
-  constraints <- dm_examine_constraints(meta, progress = FALSE)
+  constraints <- dm_examine_constraints(meta, .progress = FALSE)
   expect_true(all(constraints$is_key))
 
   arrange_all_but_constraint_name <- function(.x) {
@@ -473,6 +434,8 @@ test_that("dm_meta() contents", {
 
 test_that("dm_from_con() with mariaDB", {
   skip_if_offline()
+  skip_if_not(dm_has_financial())
+
   my_db <- RMariaDB::dbConnect(
     RMariaDB::MariaDB(),
     username = "guest",
@@ -481,6 +444,11 @@ test_that("dm_from_con() with mariaDB", {
     host = "relational.fit.cvut.cz"
   )
   expect_snapshot_output(my_dm <- dm_from_con(my_db))
+  expect_snapshot(dm::dm_get_all_fks(my_dm))
+  expect_snapshot(dm::dm_get_all_pks(my_dm))
+
+  # multiple schemata work
+  expect_snapshot_output(my_dm <- dm_from_con(my_db, schema = c("Accidents", "Ad")))
   expect_snapshot(dm::dm_get_all_fks(my_dm))
   expect_snapshot(dm::dm_get_all_pks(my_dm))
 })

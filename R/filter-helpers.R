@@ -1,8 +1,6 @@
 #' Number of rows
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Returns a named vector with the number of rows for each table.
 #'
 #' @param dm A [`dm`] object.
@@ -11,8 +9,7 @@
 #'
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
-#'   dm_filter(airports, faa %in% c("EWR", "LGA")) %>%
-#'   dm_apply_filters() %>%
+#'   dm_filter(airports = (faa %in% c("EWR", "LGA"))) %>%
 #'   dm_nrow()
 #' @export
 dm_nrow <- function(dm) {

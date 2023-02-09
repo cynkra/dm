@@ -4,33 +4,47 @@
 \alias{check_set_equality}
 \title{Check column values for set equality}
 \usage{
-check_set_equality(t1, c1, t2, c2)
+check_set_equality(
+  x,
+  y,
+  ...,
+  x_select = NULL,
+  y_select = NULL,
+  by_position = NULL
+)
 }
 \arguments{
-\item{t1}{The data frame that contains the columns \code{c1}.}
+\item{x, y}{A data frame or lazy table.}
 
-\item{c1}{The columns of \code{t1} that should only contain values that are also present in columns \code{c2} of data frame \code{t2}. Multiple columns can be chosen using \code{c(col1, col2)}.}
+\item{...}{These dots are for future extensions and must be empty.}
 
-\item{t2}{The data frame that contains the columns \code{c2}.}
+\item{x_select, y_select}{Key columns to restrict the check, processed with
+\code{\link[dplyr:select]{dplyr::select()}}.}
 
-\item{c2}{The columns of \code{t2} that should only contain values that are also present in columns \code{c1} of data frame \code{t1}. Multiple columns can be chosen using \code{c(col1, col2)}.}
+\item{by_position}{Set to \code{TRUE} to ignore column names and match
+by position instead.
+The default means matching by name, use \code{x_select} and/or \code{y_select}
+to align the names.}
 }
 \value{
-Returns \code{t1}, invisibly, if the check is passed.
+Returns \code{x}, invisibly, if the check is passed.
 Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
-\code{check_set_equality()} is a wrapper of \code{check_subset()}.
-It tests if one value set is a subset of another and vice versa, i.e., if both sets are the same.
+\code{check_set_equality()} is a wrapper of \code{\link[=check_subset]{check_subset()}}.
+
+It tests if one table is a subset of another and vice versa, i.e., if both sets are the same.
 If not, it throws an error.
 }
 \examples{
 data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 # this is failing:
-try(check_set_equality(data_1, a, data_2, a))
+try(check_set_equality(data_1, data_2, x_select = a, y_select = a))
 
 data_3 <- tibble::tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 # this is passing:
-check_set_equality(data_1, a, data_3, a)
+check_set_equality(data_1, data_3, x_select = a, y_select = a)
+# this is still failing:
+try(check_set_equality(data_2, data_3))
 }

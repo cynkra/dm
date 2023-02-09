@@ -3,107 +3,158 @@
 \name{examine_cardinality}
 \alias{examine_cardinality}
 \alias{check_cardinality_0_n}
+\alias{check_cardinality_...}
 \alias{check_cardinality_1_n}
 \alias{check_cardinality_1_1}
 \alias{check_cardinality_0_1}
 \title{Check table relations}
 \usage{
-check_cardinality_0_n(parent_table, pk_column, child_table, fk_column)
+check_cardinality_0_n(
+  x,
+  y,
+  ...,
+  x_select = NULL,
+  y_select = NULL,
+  by_position = NULL
+)
 
-check_cardinality_1_n(parent_table, pk_column, child_table, fk_column)
+check_cardinality_1_n(
+  x,
+  y,
+  ...,
+  x_select = NULL,
+  y_select = NULL,
+  by_position = NULL
+)
 
-check_cardinality_1_1(parent_table, pk_column, child_table, fk_column)
+check_cardinality_1_1(
+  x,
+  y,
+  ...,
+  x_select = NULL,
+  y_select = NULL,
+  by_position = NULL
+)
 
-check_cardinality_0_1(parent_table, pk_column, child_table, fk_column)
+check_cardinality_0_1(
+  x,
+  y,
+  ...,
+  x_select = NULL,
+  y_select = NULL,
+  by_position = NULL
+)
 
-examine_cardinality(parent_table, pk_column, child_table, fk_column)
+examine_cardinality(
+  x,
+  y,
+  ...,
+  x_select = NULL,
+  y_select = NULL,
+  by_position = NULL
+)
 }
 \arguments{
-\item{parent_table}{Data frame.}
+\item{x}{Parent table, data frame or lazy table.}
 
-\item{pk_column}{Columns of \code{parent_table} that have to be one of its unique keys, for multiple columns use \code{c(col1, col2)}.}
+\item{y}{Child table, data frame or lazy table.}
 
-\item{child_table}{Data frame.}
+\item{...}{These dots are for future extensions and must be empty.}
 
-\item{fk_column}{Columns of \code{child_table} that have to be a foreign key candidate to \code{pk_column} in \code{parent_table}, for multiple columns use \code{c(col1, col2)}.}
+\item{x_select, y_select}{Key columns to restrict the check, processed with
+\code{\link[dplyr:select]{dplyr::select()}}.}
+
+\item{by_position}{Set to \code{TRUE} to ignore column names and match
+by position instead.
+The default means matching by name, use \code{x_select} and/or \code{y_select}
+to align the names.}
 }
 \value{
-For \verb{check_cardinality_*()}: Functions return \code{parent_table}, invisibly, if the check is passed, to support pipes.
+\code{check_cardinality_...()} return \code{x}, invisibly,
+if the check is passed, to support pipes.
 Otherwise an error is thrown and the reason for it is explained.
 
-For \code{examine_cardinality()}: Returns a character variable specifying the type of relationship between the two columns.
+\code{examine_cardinality()} returns a character variable specifying the type of relationship between the two columns.
 }
 \description{
-All \verb{check_cardinality_*()} functions test the following conditions:
+All \code{check_cardinality_...()} functions test the following conditions:
 \enumerate{
-\item Is \code{pk_column} a unique key for \code{parent_table}?
-\item Is the set of values in \code{fk_column} of \code{child_table} a subset of the set of values of \code{pk_column}?
-\item Does the relation between the two tables of the data model meet the cardinality requirements?
+\item Are all rows in \code{x} unique?
+\item Are the rows in \code{y} a subset of the rows in \code{x}?
+\item Does the relation between \code{x} and \code{y} meet the cardinality requirements?
+One row from \code{x} must correspond to the requested number of rows in \code{y},
+e.g. \verb{_0_1} means that there must be zero or one rows in \code{y} for each
+row in \code{x}.
 }
 
 \code{examine_cardinality()} also checks the first two points and subsequently determines the type of cardinality.
+
+For convenience, the \code{x_select} and \code{y_select} arguments allow restricting the check
+to a set of key columns without affecting the return value.
 }
 \details{
-All cardinality-functions accept a \code{parent_table} (data frame), column names of this table,
-a \code{child_table}, and column names of the child table.
-The given columns of the \code{parent_table} have to be one of its
-unique keys (no duplicates are allowed).
-Furthermore, in all cases, the set of combinations of the child table's columns have
-to be a subset of the combinations of values of the parent table's columns.
+All cardinality functions accept a parent and a child table (\code{x} and \code{y}).
+All rows in \code{x} must be unique, and all rows in \code{y} must be a subset of the
+rows in \code{x}.
+The \code{x_select} and \code{y_select} arguments allow restricting the check
+to a set of key columns without affecting the return value.
+If given, both arguments must refer to the same number of key columns.
 
 The cardinality specifications "0_n", "1_n", "0_1", "1_1" refer to the expected relation that the child table has with the parent table.
 "0", "1" and "n" refer to the occurrences of value combinations
-in the columns of the child table that correspond to each combination in the
+in \code{y} that correspond to each combination in the
 columns of the parent table.
 "n" means "more than one" in this context, with no upper limit.
 
-\strong{"0_n"}: each combination of \code{pk_column} values has at least 0 and at most
-n corresponding occurrences in the columns of the child table
-(which translates to no further restrictions).
+\strong{"0_n"}: no restrictions, each row in \code{x} has at least 0 and at most
+n corresponding occurrences in \code{y}.
 
-\strong{"1_n"}: each combination of \code{pk_column} values has at least 1 and at most
-n corresponding occurrences in the columns of the child table.
+\strong{"1_n"}: each row in \code{x} has at least 1 and at most
+n corresponding occurrences in \code{y}.
 This means that there is a "surjective" mapping from the child table
-to the parent table w.r.t. the specified columns, i.e. each combination in the
-parent table columns exists at least once in the child table columns.
+to the parent table, i.e. each parent table row exists at least once in the
+child table.
 
-\strong{"0_1"}: each combination of \code{pk_column} values has at least 0 and at most
-1 corresponding occurrence in the column of the child table.
+\strong{"0_1"}: each row in \code{x} has at least 0 and at most
+1 corresponding occurrence in \code{y}.
 This means that there is a "injective" mapping from the child table
-to the parent table w.r.t. the specified columns, i.e. no combination of values in the
+to the parent table, i.e. no combination of values in the
 parent table columns is addressed multiple times.
-But not all of the parent table column values have to be referred to.
+But not all parent table rows have to be referred to.
 
-\strong{"1_1"}: each combination of \code{pk_column} values occurs exactly once
-in the corresponding columns of the child table.
+\strong{"1_1"}: each row in \code{x} occurs exactly once in \code{y}.
 This means that there is a "bijective" ("injective" AND "surjective") mapping
-between the child table and the parent table w.r.t. the specified columns, i.e. the
-respective sets of combinations within the two sets of columns are equal and there
-are no duplicates in either of them.
+between the child table and the parent table, i.e. the
+sets of rows are identical.
 
-Finally, \code{examine_cardinality()} tests for and returns the nature of the relationship (injective, surjective, bijective, or none of these)
-between the two given sets of columns. If either \code{pk_column} is not a unique key of \code{parent_table} or the values of \code{fk_column} are
-not a subset of the values in \code{pk_column}, the requirements for a cardinality test is not fulfilled. No error will be thrown, but
+Finally, \code{examine_cardinality()} tests for and returns the nature of the relationship
+(injective, surjective, bijective, or none of these)
+between the two given sets of columns.
+If either \code{x} is not unique or there are rows in \code{y} that are missing from \code{x},
+the requirements for a cardinality test is not fulfilled.
+No error will be thrown, but
 the result will contain the information which prerequisite was violated.
 }
 \examples{
 d1 <- tibble::tibble(a = 1:5)
-d2 <- tibble::tibble(c = c(1:5, 5))
-d3 <- tibble::tibble(c = 1:4)
-# This does not pass, `c` is not unique key of d2:
-try(check_cardinality_0_n(d2, c, d1, a))
+d2 <- tibble::tibble(a = c(1:4, 4L))
+d3 <- tibble::tibble(c = c(1:5, 5L), d = 0)
+# This does not pass, `a` is not unique key of d2:
+try(check_cardinality_0_n(d2, d1))
 
-# This passes, multiple values in d2$c are allowed:
-check_cardinality_0_n(d1, a, d2, c)
+# Columns are matched by name by default:
+try(check_cardinality_0_n(d1, d3))
+
+# This passes, multiple values in d3$c are allowed:
+check_cardinality_0_n(d1, d2)
 
 # This does not pass, injectivity is violated:
-try(check_cardinality_1_1(d1, a, d2, c))
+try(check_cardinality_1_1(d1, d3, y_select = c(a = c)))
+try(check_cardinality_0_1(d1, d3, x_select = c(c = a)))
 
-# This passes:
-check_cardinality_0_1(d1, a, d3, c)
-
-# Returns the kind of cardinality
-examine_cardinality(d1, a, d2, c)
+# What kind of cardinality is it?
+examine_cardinality(d1, d3, x_select = c(c = a))
+examine_cardinality(d1, d2)
 }
 \seealso{
 Other cardinality functions: 

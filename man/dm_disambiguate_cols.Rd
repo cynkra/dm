@@ -4,24 +4,33 @@
 \alias{dm_disambiguate_cols}
 \title{Resolve column name ambiguities}
 \usage{
-dm_disambiguate_cols(dm, sep = ".", ..., quiet = FALSE)
+dm_disambiguate_cols(
+  dm,
+  .sep = ".",
+  ...,
+  .quiet = FALSE,
+  .position = c("suffix", "prefix")
+)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{sep}{The character variable that separates the names of the table and the names of the ambiguous columns.}
+\item{.sep}{The character variable that separates the names of the table and the names of the ambiguous columns.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{quiet}{Boolean.
+\item{.quiet}{Boolean.
 By default, this function lists the renamed columns in a message, pass \code{TRUE} to suppress this message.}
+
+\item{.position}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+By default, table names are appended to the column names to resolve conflicts.
+Prepending table names was the default for versions before 1.0.0,
+use \code{"prefix"} to achieve this behavior.}
 }
 \value{
 A \code{dm} whose column names are unambiguous.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 This function ensures that all columns in a \code{dm} have unique names.
 }
 \details{

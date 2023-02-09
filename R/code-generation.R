@@ -1,5 +1,5 @@
 new_cg_block <- function(cg_input_object = list(), cg_f_list = list()) {
-  structure(list(cg_input_object = cg_input_object, cg_f_list = cg_f_list), class = "cg_code_block")
+  structure(list(cg_input_object = cg_input_object, cg_f_list = cg_f_list), class = "dm_cg_code_block")
 }
 
 cg_add_call <- function(cg_block, fn_call) {
@@ -9,34 +9,42 @@ cg_add_call <- function(cg_block, fn_call) {
 }
 
 #' @export
-print.cg_code_block <- function(x, ...) {
-  show_cg_input_object(x, is_empty(x$cg_f_list))
-  show_cg_f_list(x$cg_f_list)
+format.dm_cg_code_block <- function(x, ...) {
+  c(
+    cg_format_input_object(x, is_empty(x$cg_f_list)),
+    cg_format_f_list(x$cg_f_list)
+  )
 }
 
-show_cg_input_object <- function(x, has_no_f_call) {
+#' @export
+print.dm_cg_code_block <- function(x, ...) {
+  writeLines(format(x, ...))
+  invisible(x)
+}
+
+cg_format_input_object <- function(x, has_no_f_call) {
   if (has_no_f_call) {
     if (!is_empty(x$cg_input_object)) {
-      cat(cg_clean_in_obj_text(x))
+      cg_clean_in_obj_text(x)
     }
   } else {
-    cat(paste0(cg_clean_in_obj_text(x), " %>%\n"))
+    paste0(cg_clean_in_obj_text(x), " %>%")
   }
 }
 
-show_cg_f_list <- function(x) {
+cg_format_f_list <- function(x) {
   if (is_empty(x)) {
-    invisible(x)
+    character()
   } else {
     purrr::map_chr(x, ~ body(.) %>% call_to_char()) %>%
-      paste0("  ", ., collapse = " %>%\n") %>%
-      cat()
-    invisible(x)
+      paste0("  ", ., collapse = " %>%\n")
   }
 }
 
 call_to_char <- function(body) {
-  trimws(expr_deparse(body)) %>% paste0(collapse = "\n  ")
+  stopifnot(identical(body[[2]], sym(".")))
+  body <- as.call(as.list(body[-2]))
+  trimws(expr_deparse(body)) %>% paste0(collapse = " ")
 }
 
 cg_eval_block <- function(cg_block) {

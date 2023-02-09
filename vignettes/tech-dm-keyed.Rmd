@@ -1,0 +1,216 @@
+---
+title: "Manipulating individual tables"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Technical: Manipulating individual tables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+``````{r setup, include = FALSE}
+source("setup/setup.R")
+``````
+
+This vignette deals with situations where you want to transform tables of your `dm` object and then update an existing table or add a new table to the `dm` object.
+There are two approaches:
+
+1. extract the tables relevant to the calculation, perform the necessary transformations, and (if needed) recombine the resulting table into a `dm`,
+1. do all this within the `dm` object by zooming to a table and manipulating it.
+
+Both approaches aim at maintaining the key relations whenever possible.
+We will explore the first approach here. 
+For the second approach, see `vignette("tech-dm-zoom")`.
+
+## Enabling {dplyr}-workflow within a `dm`
+
+The `dm_get_tables()` and `pull_tbl()` functions have a new experimental argument `keyed`, which defaults to `FALSE`.
+If set to `TRUE`, a list of objects of class `dm_keyed_tbl` is returned instead.
+Because `dm_keyed_tbl` inherits from `tbl` or `tbl_lazy`, many {dplyr} and {tidyr} verbs will work unchanged.
+These objects will also attempt to track primary and foreign keys, so that they are available for joins and when recombining these tables later into a `dm` object.
+
+When you are finished with transforming your data, you can use `dm()` or `new_dm()` to recombine the tables into a `dm` object.
+The resulting tables in the `dm` will have all the primary and foreign keys available that could be tracked from the original table.
+Reconstructing the `dm` object is not strictly necessary if you're primarily interested in deriving one or multiple separate tables for analysis.
+
+If this workflow proves as useful as it seems, subsetting tables via `$`, `[[` will default to `keyed = TRUE` in a forthcoming major release of {dm}.
+
+
+## Examples
+
+So much for the theory, but how does it look and feel?
+To explore this, we once more make use of our trusted {nycflights13} data.
+
+### Use case 1: Add a new column to an existing table
+
+Imagine you want to have a column in `flights`, specifying if a flight left before noon or after.
+Just like with {dplyr}, we can tackle this with `mutate()`.
+Let us do this step by step:
+
+```{r zoom}
+library(dm)
+library(dplyr)
+
+flights_dm <- dm_nycflights13(cycle = TRUE)
+flights_dm
+flights_keyed <-
+  flights_dm %>%
+  dm_get_tables(keyed = TRUE)
+
+# The print output for a `dm_keyed_tbl` looks very much like that from a normal
+# `tibble`, with additional details about keys.
+flights_keyed$flights
+flights_tbl_mutate <-
+  flights_keyed$flights %>%
+  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm"), .after = dep_time)
+
+flights_tbl_mutate
+```
+
+To update the original `dm` with a new `flights` table we use `dm()`.
+The bang-bang-bang (`!!!`) is a technical necessity that will become superfluous in a forthcoming release.
+
+```{r zoom2}
+updated_flights_dm <- dm(
+  flights = flights_tbl_mutate,
+  !!!flights_keyed[c("airlines", "airports", "planes", "weather")]
+)
+
+# The only difference in the `dm` print output is the increased number of
+# columns
+updated_flights_dm
+# The schematic view of the data model remains unchanged
+dm_draw(updated_flights_dm)
+```
+
+### Use case 2: Creation of a surrogate key
+
+The same course of action could, for example, be employed to create a surrogate key for a table, a synthetic simple key that replaces a compound key.
+We can do this for the `weather` table.
+
+```{r}
+library(tidyr)
+
+flights_keyed$weather
+
+# Maybe there is some hidden candidate for a primary key that we overlooked?
+enum_pk_candidates(flights_keyed$weather)
+# Seems we have to construct a column with unique values
+# This can be done by combining column `origin` with `time_hour`, if the latter
+# is converted to a single time zone first; all within the `dm`:
+weather_tbl_mutate <-
+  flights_keyed$weather %>%
+  # first convert all times to the same time zone:
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  # paste together as character the airport code and the time
+  unite("origin_slot_id", origin, time_hour_fmt) %>%
+  select(origin_slot_id, everything())
+
+# check if we the result is as expected:
+weather_tbl_mutate %>%
+  enum_pk_candidates() %>%
+  filter(candidate)
+# We apply the same transformation to create
+# the foreign key in the flights table:
+flights_tbl_mutate <-
+  flights_keyed$flights %>%
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  unite("origin_slot_id", origin, time_hour_fmt) %>%
+  select(origin_slot_id, everything())
+
+surrogate_flights_dm <-
+  dm(
+    weather = weather_tbl_mutate,
+    flights = flights_tbl_mutate,
+    !!!flights_keyed[c("airlines", "airports", "planes")]
+  ) %>%
+  dm_add_pk(weather, origin_slot_id) %>%
+  dm_add_fk(flights, origin_slot_id, weather)
+
+surrogate_flights_dm %>%
+  dm_draw()
+```
+
+### Use case 3: Disentangle `dm`
+
+If you look at the `dm` created by `dm_nycflights13(cycle = TRUE)`, you see that two columns of `flights` relate to the same table, `airports`.
+One column stands for the departure airport and the other for the arrival airport.
+This generates a cycle which leads to failures with many operations that only work on cycle-free data models, such as `dm_flatten_to_tbl()`, `dm_filter()` or `dm_wrap_tbl()`.
+In such cases, it can be beneficial to "disentangle" the `dm` by duplicating the referred table.
+One way to do this in the {dm}-framework is as follows:
+
+```{r}
+disentangled_flights_dm <-
+  dm(
+    destination = flights_keyed$airports,
+    origin = flights_keyed$airports,
+    !!!flights_keyed[c("flights", "airlines", "planes", "weather")]
+  ) %>%
+  # Key relations are also duplicated, so the wrong ones need to be removed
+  dm_rm_fk(flights, dest, origin) %>%
+  dm_rm_fk(flights, origin, destination)
+
+disentangled_flights_dm %>%
+  dm_draw()
+```
+
+
+### Use case 4: Add summary table to `dm`
+
+Here is an example for adding a summary of a table as a new table to a `dm`. Foreign-key relations are taken care of automatically.
+This example shows an alternative approach of deconstruction reconstruction using `pull_tbl()`.
+
+```{r}
+flights_derived <-
+  flights_dm %>%
+  pull_tbl(flights, keyed = TRUE) %>%
+  count(origin, carrier)
+
+derived_flights_dm <- dm(flights_derived, !!!flights_keyed)
+
+derived_flights_dm %>%
+  dm_draw()
+```
+
+### Use case 5: Joining tables
+
+If you would like to join some or all of the columns of one table to another, you can make use of one of the `..._join()` methods for a `dm_keyed_tbl`.
+In many cases, using keyed tables derived from a `dm` object allows omitting the `by` argument without triggering a message, because they are safely inferred from the foreign keys stored in the `dm_keyed_tbl` objects.
+For the syntax, please see the example below.
+
+```{r}
+planes_for_join <-
+  flights_keyed$planes %>%
+  select(tailnum, plane_type = type)
+
+joined_flights_tbl <-
+  flights_keyed$flights %>%
+  # let's first reduce the number of columns of flights
+  select(-dep_delay:-arr_delay, -air_time:-minute, -starts_with("sched_")) %>%
+  # in the {dm}-method for the joins you can specify which columns you want to
+  # add to the subsetted table
+  left_join(planes_for_join)
+
+joined_flights_dm <- dm(
+  flights_plane_type = joined_flights_tbl,
+  !!!flights_keyed[c("airlines", "airports", "weather")]
+)
+
+# this is how the table looks now
+joined_flights_dm$flights_plane_type
+# also here, the FK-relations are transferred to the new table
+joined_flights_dm %>%
+  dm_draw()
+```
+
+### Use case 6: Retrieve all tables
+
+Retrieving all tables from a `dm` object requires a lot of boilerplate code.
+The `dm_deconstruct()` function helps creating that boilerplate.
+For a `dm` object, it prints the code necessary to create local variables for all tables.
+
+```{r}
+dm <- dm_nycflights13()
+dm_deconstruct(dm)
+```
+
+This code can be copy-pasted into your script or function.

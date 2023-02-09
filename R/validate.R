@@ -26,14 +26,14 @@ dm_validate <- function(x) {
 
   def <- dm_get_def(x)
 
-  boilerplate <- dm_get_def(new_dm2(validate = FALSE))
+  boilerplate <- new_dm_def()
 
   table_names <- def$table
   if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
 
   check_df_structure(def, boilerplate, "dm definition")
 
-  if (!all(map_lgl(def$data, ~ inherits(., "data.frame") || inherits(., "tbl_dbi")))) {
+  if (!all(map_lgl(def$data, ~ inherits(., "data.frame") || inherits(., "tbl_sql")))) {
     abort_dm_invalid(
       "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `dm_get_tables()`."
     )
@@ -64,6 +64,12 @@ dm_validate <- function(x) {
     select(table = ref_table, column = ref_column) %>%
     check_colnames(dm_col_names, "Parent key")
 
+  if (!all(map_int(def$pks, vctrs::vec_size) %in% 0:1)) {
+    abort_dm_invalid(
+      "Not all tables have maximally 1 primary key."
+    )
+  }
+
   pks <-
     def %>%
     select(table, pks) %>%
@@ -79,6 +85,14 @@ dm_validate <- function(x) {
       "Not all entries in `def$zoom` are of class `data.frame`, `tbl_dbi` or `NULL`."
     )
   }
+
+  uks <- def %>%
+    select(table, uks) %>%
+    unnest_list_of_df("uks")
+
+  uks %>%
+    unnest_col("column", character()) %>%
+    check_colnames(dm_col_names, "UK")
 
   check_no_nulls(def)
 
@@ -105,9 +119,9 @@ debug_dm_validate <- function(dm) {
   dm
 }
 
-check_dm <- function(dm) {
-  if (!is_dm(dm)) {
-    abort_is_not_dm(class(dm))
+check_dm <- function(x) {
+  if (!is_dm(x)) {
+    abort_is_not_dm(class(x))
   }
 }
 
@@ -148,20 +162,20 @@ check_one_zoom <- function(def, zoomed) {
       abort_dm_invalid("More than one table is zoomed.")
     }
     if (sum(!map_lgl(def$zoom, is_null)) < 1) {
-      abort_dm_invalid("Class is `zoomed_dm` but no zoomed table available.")
+      abort_dm_invalid("Class is `dm_zoomed` but no zoomed table available.")
     }
     if (sum(!map_lgl(def$col_tracker_zoom, is_null)) > 1) {
       abort_dm_invalid("Key tracking is active for more than one zoomed table.")
     }
     if (sum(!map_lgl(def$col_tracker_zoom, is_null)) < 1) {
-      abort_dm_invalid("No key tracking is active despite `dm` a `zoomed_dm`.")
+      abort_dm_invalid("No key tracking is active despite `dm` a `dm_zoomed`.")
     }
   } else {
     if (sum(!map_lgl(def$zoom, is_null)) != 0) {
-      abort_dm_invalid("Zoomed table(s) available despite `dm` not a `zoomed_dm`.")
+      abort_dm_invalid("Zoomed table(s) available despite `dm` not a `dm_zoomed`.")
     }
     if (sum(!map_lgl(def$col_tracker_zoom, is_null)) != 0) {
-      abort_dm_invalid("Key tracker for zoomed table activated despite `dm` not a `zoomed_dm`.")
+      abort_dm_invalid("Key tracker for zoomed table activated despite `dm` not a `dm_zoomed`.")
     }
   }
 }

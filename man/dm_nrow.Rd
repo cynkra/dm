@@ -13,15 +13,12 @@ dm_nrow(dm)
 A named vector with the number of rows for each table.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Returns a named vector with the number of rows for each table.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_filter(airports, faa \%in\% c("EWR", "LGA")) \%>\%
-  dm_apply_filters() \%>\%
+  dm_filter(airports = (faa \%in\% c("EWR", "LGA"))) \%>\%
   dm_nrow()
 \dontshow{\}) # examplesIf}
 }

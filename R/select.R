@@ -1,11 +1,9 @@
 #' Rename columns
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Rename the columns of your [`dm`] using syntax that is similar to `dplyr::rename()`.
 #'
-#' @inheritParams dm_filter
+#' @inheritParams dm_zoom_to
 #' @param ... One or more unquoted expressions separated by commas.
 #'   You can treat
 #'   variable names as if they were positions, and use expressions like x:y
@@ -41,8 +39,6 @@ dm_rename <- function(dm, table, ...) {
 #' Select columns
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Select columns of your [`dm`] using syntax that is similar to `dplyr::select()`.
 #'
 #' @inheritParams dm_rename

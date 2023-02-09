@@ -1,10 +1,7 @@
 url: https://cynkra.github.io/dm
-
 template:
-  bootstrap: 5
-  assets:
-  - pkgdown/assets
-
+  assets: pkgdown/assets
+  package: cynkratemplate
 reference:
 - title: Basic
   contents:
@@ -14,49 +11,43 @@ reference:
   - as_dm
   - is_dm
   - dm_get_con
-  - dm_get_tables
-
 - title: Tables
   contents:
-  - dm_add_tbl
-  - dm_rm_tbl
-  - dm_mutate_tbl
   - dm_select_tbl
   - dm_rename_tbl
+  - dm_get_tables
   - pull_tbl
-  - dm_bind
-
+  - dm_deconstruct
+  - glimpse
+  - dm_mutate_tbl
 - title: Primary keys
-  contents:
-  - matches("_pk")
-
+  contents: matches("_pk")
+- title: Unique keys
+  contents: matches("_uk")
 - title: Foreign keys
-  contents:
-  - matches("_fk")
-
+  contents: matches("_fk")
 - title: Visualize
   contents:
+  - dm_gui
   - dm_draw
   - ends_with("_colors")
   - dm_paste
-
 - title: Select columns
   contents:
   - dm_select
   - dm_rename
-
 - title: Flatten
   contents:
   - dm_flatten_to_tbl
-  - dm_squash_to_tbl
   - dm_disambiguate_cols
-
+- title: Filter
+  contents: dm_filter
 - title: Zoom
   contents:
   - dm_zoom_to
   - ends_with("_zoomed")
-  - ends_with(".zoomed_dm")
-
+  - ends_with(".dm_zoomed")
+  - -pack_join
 - title: Wrap
   contents:
   - dm_wrap_tbl
@@ -65,60 +56,52 @@ reference:
   - dm_pack_tbl
   - dm_unnest_tbl
   - dm_unpack_tbl
-
 - title: Operations on data frames and lazy tables
   contents:
   - pack_join
   - starts_with("json_")
-
 - title: Materialize
   contents:
   - compute.dm
   - collect.dm
-
 - title: Upload
   contents:
   - copy_dm_to
   - contains("rows")
-
-- title: Filter
-  contents:
-  - matches("_filter")
-
 - title: Table surgery
   contents:
   - decompose_table
   - reunite_parent_child
   - reunite_parent_child_from_list
-
 - title: Check keys and cardinalities
   contents:
   - matches("cardinality|cardinalities")
   - dm_examine_constraints
   - starts_with("check_")
-
 - title: Database schemas
-  contents:
-  - starts_with("db_schema_")
-
+  contents: starts_with("db_schema_")
 - title: Example dm objects
   contents:
   - dm_nycflights13
   - dm_financial
   - dm_financial_sqlite
   - dm_pixarfilms
-
 - title: Miscellaneous
   contents:
   - dm_nrow
   - dm_ptype
   - dm_validate
-  - glimpse.dm
-
 navbar:
   structure:
-    left:  [intro, reference, tutorials, tech, news]
-    right: [search, github]
+    left:
+    - intro
+    - reference
+    - tutorials
+    - tech
+    - news
+    right:
+    - search
+    - github
   components:
     tutorials:
       text: Tutorials
@@ -160,14 +143,20 @@ navbar:
       - text: Joining in relational data models
         href: articles/tech-dm-join.html
         desc: |
-         Joining is how separate, linked tables are virtually combined in order
-         to perform operations, generate summaries, or prepare data for extraction.
-         This article covers dm's methods for creating the different kind of joins
-         along with usage examples.
+          Joining is how separate, linked tables are virtually combined in order
+          to perform operations, generate summaries, or prepare data for extraction.
+          This article covers dm's methods for creating the different kind of joins
+          along with usage examples.
+      - text: Manipulating individual tables
+        href: articles/tech-dm-keyed.html
+        desc: |
+          Learn how to manipulate the data in the tables in your dm
+          using dplyr verbs and deconstruction/reconstruction.
       - text: Zooming and manipulating tables
         href: articles/tech-dm-zoom.html
         desc: |
-          Learn how to manipulate the data in the tables in your dm using dplyr verbs.
+          Learn how to manipulate the data in the tables in your dm
+          using dplyr verbs and zooming.
       - text: Filtering in relational data models
         href: articles/tech-dm-filter.html
         desc: |
@@ -198,16 +187,15 @@ navbar:
         desc: |
           If you were an early adopter, used dm version 0.0.5 or lower and want to
           migrate your code, this is for you.
-
 development:
   mode: auto
-
 authors:
   Kirill Müller:
     href: http://krlmlr.info
   energie360° AG:
-    html: '<img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"/>'
+    html: <img src="https://cynkra.github.io/dm/reference/figures/energie-72.png"
+      height="16"/>
     href: https://www.energie360.ch/de/
   cynkra GmbH:
-    html: '<img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"/>'
+    html: <img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"/>
     href: https://www.cynkra.com

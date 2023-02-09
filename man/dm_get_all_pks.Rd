@@ -9,8 +9,9 @@ dm_get_all_pks(dm, table = NULL, ...)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{One or more table names, as character vector,
+\item{table}{One or more table names, unquoted,
 to return primary key information for.
+If given, primary keys are returned in that order.
 The default \code{NULL} returns information for all tables.}
 
 \item{...}{These dots are for future extensions and must be empty.}
@@ -19,14 +20,12 @@ The default \code{NULL} returns information for all tables.}
 A tibble with the following columns:
 \describe{
 \item{\code{table}}{table name,}
-\item{\code{pk_cols}}{column name(s) of primary key, as list of character vectors.}
+\item{\code{pk_col}}{column name(s) of primary key, as list of character vectors.}
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
-\code{dm_get_all_pks()} checks the \code{dm} object for set primary keys and
-returns the tables, the respective primary key columns and their classes.
+\code{dm_get_all_pks()} checks the \code{dm} object for primary keys and
+returns the tables and the respective primary key columns.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -37,8 +36,11 @@ dm_nycflights13() \%>\%
 \seealso{
 Other primary key functions: 
 \code{\link{dm_add_pk}()},
+\code{\link{dm_add_uk}()},
+\code{\link{dm_get_all_uks}()},
 \code{\link{dm_has_pk}()},
 \code{\link{dm_rm_pk}()},
+\code{\link{dm_rm_uk}()},
 \code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}

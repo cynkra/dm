@@ -145,13 +145,13 @@ my_dm_keys %>%
 ![](/home/kirill/git/R/dm/vignettes/out/howto-dm-db_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 Once you have instantiated a dm object you can continue to add tables to
-it. For tables from the original source for the dm, use `dm_add_tbl()`
+it. For tables from the original source for the dm, use `dm()`
 
 ``` r
 trans <- tbl(my_db, "trans")
 
 my_dm_keys %>%
-  dm_add_tbl(trans)
+  dm(trans)
 #> ── Table source ───────────────────────────────────────────────────────────
 #> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
 #> ── Metadata ───────────────────────────────────────────────────────────────
@@ -182,7 +182,7 @@ my_dm_keys
 
 my_dm_trans <-
   my_dm_keys %>%
-  dm_add_tbl(trans)
+  dm(trans)
 
 my_dm_trans
 #> ── Table source ───────────────────────────────────────────────────────────

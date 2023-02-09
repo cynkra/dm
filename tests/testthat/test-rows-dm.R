@@ -87,8 +87,6 @@ test_that("dm_rows_insert()", {
 })
 
 test_that("dm_rows_update()", {
-  # duckdb+df: https://github.com/duckdb/duckdb/issues/4023
-  skip_if_src("duckdb", "maria", "df")
   expect_snapshot({
     # Test bad column order
     dm_filter_rearranged <-
@@ -104,17 +102,13 @@ test_that("dm_rows_update()", {
         a = 2L,
         b = "q"
       ),
-      tf_2 = tibble(
-        c = c("worm"),
-        d = 10L,
-      ),
       tf_4 = tibble(
         h = "e",
         i = "sieben",
       ),
       tf_5 = tibble(
         k = 3L,
-        m = "tree",
+        ww = 3,
       ),
     )
 
@@ -152,6 +146,8 @@ test_that("dm_rows_update()", {
 })
 
 test_that("dm_rows_truncate()", {
+  local_options(lifecycle_verbosity = "warning")
+
   expect_snapshot({
     suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_for_filter()))
 
@@ -204,6 +200,7 @@ test_that("dm_rows_truncate()", {
 
 test_that("output for compound keys", {
   skip("COMPOUND")
+  local_options(lifecycle_verbosity = "warning")
 
   expect_snapshot({
     target_dm <- dm_filter(nyc_comp(), weather, pressure > 1010) %>% dm_apply_filters()
@@ -213,5 +210,85 @@ test_that("output for compound keys", {
       dm_select_tbl(flights, weather)
     dm_rows_insert(target_dm, insert_dm, in_place = FALSE)
     dm_rows_truncate(nyc_comp(), insert_dm, in_place = FALSE)
+  })
+})
+
+
+# tests for autoincrement PKs ---------------------------------------------
+
+test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DBs", {
+  skip_if_src_not(c("postgres", "mssql", "sqlite"))
+
+  con_db <- my_test_con()
+
+  # Setup
+  dm_ai_w_keys <-
+    dm_for_autoinc_1() %>%
+    dm_add_pk(t1, a, autoincrement = TRUE) %>%
+    dm_add_pk(t2, c, autoincrement = TRUE) %>%
+    dm_add_pk(t4, g, autoincrement = TRUE) %>%
+    dm_add_fk(t2, d, t1) %>%
+    dm_add_fk(t3, e, t1) %>%
+    dm_add_fk(t4, h, t2)
+
+  local_dm <-
+    dm_ai_w_keys %>%
+    collect()
+
+  withr::defer({
+    order_of_deletion <- c("t4", "t2", "t3", "t1")
+    walk(
+      order_of_deletion,
+      ~ try(dbExecute(con_db, paste0("DROP TABLE ", dbplyr::ident_q(.x))))
+    )
+  })
+
+  dm_ai_empty_remote <-
+    local_dm %>%
+    dm_ptype() %>%
+    copy_dm_to(con_db, ., temporary = FALSE)
+
+  # Tests
+  dm_ai_insert <-
+    dm_for_autoinc_1() %>%
+    # Remove one PK column, only provided by database
+    dm_select(t4, -g) %>%
+    dm_zoom_to(t3) %>%
+    filter(0L == 1L) %>%
+    dm_update_zoomed()
+
+  expect_silent(
+    filled_dm <- dm_rows_append(
+      dm_ai_empty_remote,
+      dm_ai_insert,
+      in_place = FALSE,
+      progress = FALSE
+    ) %>%
+      collect()
+  )
+
+  expect_silent(
+    filled_dm_in_place <- dm_rows_append(
+      dm_ai_empty_remote,
+      dm_ai_insert,
+      in_place = TRUE,
+      progress = FALSE
+    ) %>%
+      collect()
+  )
+
+  expect_snapshot({
+    local_dm$t1
+    local_dm$t2
+    local_dm$t3
+    local_dm$t4
+    filled_dm$t1
+    filled_dm$t2
+    filled_dm$t3
+    filled_dm$t4
+    filled_dm_in_place$t1
+    filled_dm_in_place$t2
+    filled_dm_in_place$t3
+    filled_dm_in_place$t4
   })
 })

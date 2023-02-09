@@ -1,150 +1,308 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
-# dm 0.2.8.9008
+# dm 1.0.3.9009
 
 ## Features
 
-- `dm_from_con(learn_keys = TRUE)` works for MariaDB (#1106, #1123, #1169, @maelle).
+- Breaking change: `dm_get_all_pks()`, `dm_get_all_fks()`, and `dm_get_all_uks()` require unquoted table names as input, for consistency with other parts of the API (#1741).
 
-- New `nest_join()` and `pack_join()` for zoomed dm objects (@IndrajeetPatil, #1119).
+## Breaking changes
 
-## Documentation
+- Breaking change: `dm_get_all_pks()`, `dm_get_all_fks()`, and `dm_get_all_uks()` require unquoted table names as input, for consistency with other parts of the API (#1741).
 
-- Use fallback db also for vignettes (#1118).
 
-- Edits to dm class vignette (@IndrajeetPatil, #1158).
+# dm 1.0.3.9008
 
-- Add Conclusions to "how-to" tutorials (@IndrajeetPatil, #1132).
+- Internal changes only.
 
-- Consistent captioning in articles (@IndrajeetPatil, #1157).
 
-- Better message for learning error (#1081).
+# dm 1.0.3.9007
 
-- Moves "Further Reading" to article index (@IndrajeetPatil, #1120).
+## Features
 
-- Use selection helpers in `_pkgdown.yml` (@IndrajeetPatil, #1138).
+- New `dm_add_uk()`, `dm_rm_uk()` and `dm_get_all_uks()` functions for explicit support of unique keys (#622, #1716).
 
-- Document `glimpse()` S3 method for `dm` (@IndrajeetPatil, #1121).
 
-- Edits to zoom vignette (@IndrajeetPatil, #1112).
+# dm 1.0.3.9006
 
-- Edits to articles about dm from df and db (@IndrajeetPatil, #1082).
+## Bug fixes
 
-- Edits to dm draw vignette (@IndrajeetPatil, #1101).
+- Correct error message if nonexisting table is passed to `dm_get_all_pks()` (#1740).
 
-- Edits to function naming logic (@IndrajeetPatil, #1100).
+
+# dm 1.0.3.9005
+
+## Continuous integration
+
+- Avoid oldrel-4.
+
+
+# dm 1.0.3.9004
+
+- Internal changes only.
+
+
+# dm 1.0.3.9003
+
+- Internal changes only.
+
+
+# dm 1.0.3.9002
+
+## Bug fixes
+
+- `dm_examine_constraints()` works for `dm` objects on the database with compound keys (#1713).
 
 ## Chore
 
-- Draft of test expectations for enum_ops() (@egnha, #1150).
+- `dm_unpack_tbl()` sets PK before FK (#1715).
 
-- Add tests for `dm_meta()` contents (#1114).
+- Clean up `dm_rows_append()` implementation (#1714).
 
-- Middleware: Confirmation message if overwriting primary key (#1149).
+
+# dm 1.0.3.9001
+
+## Features
+
+- `dm_get_all_pks()` and `dm_get_all_fks()` keep order of `table` or `parent_table` argument (#1707).
+
+- Support AI PKs for dm_copy_to() for empty tables (ptype) (#1696).
+
+- Adapt dm structure to support autoincrement PKs (#1689).
+
+- Improve error message for `dm_add_pk()` when the `columns` argument is missing (#1644, #1646).
+
+## Chore
+
+- Accept dm tables that are tbl_sql but not tbl_dbi (#1695, #1710).
+
+- Use correctly typed missing value for lists (@DavisVaughan, #1686).
+
+- Require lifecycle >= 1.0.3 (#1637).
+
+## Continuous integration
+
+- Use `--no-multiarch` for Windows 3.6 tests.
+
+- Remove duplicate step in validate GHA (#1694).
+
+## Documentation
+
+- Fix link rot (#1671).
+
+## Uncategorized
+
+- Merge pull request #1698 from cynkra/1642-f-autoincrement-dm-rows-append.
+
+
+
+- Merge pull request #1640 from cynkra/docs-cynkra-pkgdown.
+
+
+
+- Harmonize yaml formatting.
+
+- Revert changes to matrix section.
+
+- Merged cran-1.0.3 into main.
+
+
+
+# dm 1.0.3.9000
+
+## Chore
+
+- Avoid running example without database connection.
+
+## Uncategorized
+
+- Merged cran-1.0.2 into main
+
+
+
+# dm 1.0.3
+
+## Chore
+
+- Avoid running example without database connection.
+
+
+# dm 1.0.2
+
+## Features
+
+- `dm_from_con()` can use multiple schemata (@mgirlich, #1441, #1449).
+
+- `pack_join(keep = TRUE)` preserves order of packed columns (#1513, #1514).
+
+- `pack_join(keep = TRUE)` keeps keys of `y` in the resulting packed column (#1451, #1452).
+
+- New `json_pack.tbl_lazy()` and `json_nest.tbl_lazy()` (#969, #975).
+
+## Bug fixes
+
+- `dm_paste()` gives correct output for factor columns with many levels (#1510, #1511).
+
+## Chore
+
+- Fix compatibility with duckdb 0.5.0 (#1509, #1518).
+
+- Refactor `dm_unwrap_tbl()` so it builds a "unwrap plan" first (#1446, #1447).
+
+- Reenable `dm_rows_update()` test (#1437).
+
+
+# dm 1.0.1
+
+## Features
+
+- New `dm_deconstruct()` creates code to deconstruct a `dm` object into individual keyed tables via `pull_tbl(keyed = TRUE)` (#1354).
+
+## Bug fixes
+
+- Use `dm_ptype()` in `dm_gui()`, generate better code (#1353).
+
+
+# dm 1.0.0
+
+## Features
+
+- New `dm_gui()` for interactive editing of `dm` objects (#1076, #1319).
+
+- `dm_get_tables()` and `pull_tbl()` gain a new `keyed = FALSE` argument. If set to `TRUE`, table objects of class `"dm_keyed_tbl"` are returned. These objects inherit from the underlying data structure (tibble or lazy table), keep track of primary and foreign keys, and can be used later on in a call to `dm()` to recreate a dm object with the keys (#1187).
+
+- New `by_position` argument to `check_subset()`, `check_set_equality()`, `check_cardinality_...()` and `examine_cardinality()` (#1253).
+
+- `dm()` accepts dm objects (#1226).
+
+- `dm_examine_constraints()` honors implicit unique keys defined by foreign keys (#1131, #1209).
+
+## Breaking changes
+
+- `dm_filter()` is now stable, with a new API that avoids exposing an intermediate state with filters not yet applied, with a compatibility wrapper (#424, #426, #1236).
+
+- `check_cardinality_...()`, `examine_cardinality()`, `check_subset()` and `check_set_equality()` are now stable and consistently use a common interface with arguments named `x`, `y`, `x_select` and `y_select`, with compatibility wrappers (#1194, #1229).
+
+- `dm_examine_cardinalities()` and `dm_examine_constraints()` are now stable with a new signature and a compatibility wrapper (#1193, #1195).
+
+- `dm_apply_filters()`, `dm_apply_filters_to_tbl()` and `dm_get_filters()` are deprecated (#424, #426, #1236).
+
+- `dm_disambiguate_cols()` adds table names as a suffix by default, and gains a `.position` argument to restore the original behavior. Arguments `sep` and `quiet` are renamed to `.sep` and `.quiet` (#1293, #1327).
+
+- `dm_squash_to_tbl()` is deprecated in favor of the new `.recursive` argument to `dm_flatten_to_tbl()`. Arguments `start` and `join` are renamed to `.start` and `.join` (#1272, #1324).
+
+- `dm_rm_tbl()` is deprecated in favor of `dm_select_tbl()` (#1275).
+
+- `dm_bind()` and `dm_add_tbl()` are deprecated in favor of `dm()` (#1226).
+
+- `rows_truncate()` and `dm_rows_truncate()` are deprecated, because they use DDL as opposed to all other verbs that use DML (#1031, #1321).
+
+- All internal S3 classes now use the `"dm_"` prefix (#1285, #1339).
+
+- Add ellipses to all generics (#1298).
+
+## API
+
+- Reexport `tibble()` (#1279).
+
+- `dm_ptype()`, `dm_financial()` and `dm_pixarfilms()` are stable now (#1254).
+
+- Turn all "questioning" functions to "experimental" (#1030, #1237).
+
+## Performance
+
+- `is_unique_key()`uses `vctrs::vec_count()` on local data frames for speed (@eutwt, #1247).
+
+- `check_key()` uses `vctrs::vec_duplicate_any()` on local data frames for speed (@eutwt, #1234).
+
+## Bug fixes
+
+- `dm_draw()` works if a table name has a space (#1219).
+
+- Don't print rule in `glimpse.dm()` for empty `dm()` (#1208).
+
+## Documentation
+
+- Work around ANSI escape issues in CRAN rendering of vignette (#1156, #1330).
+
+- Fix column names in `?dm_get_all_pks` (#1245).
+
+- Improve contrast for display of `dm_financial()` (#1073, #1250).
+
+- Add contributing guide (#1222).
 
 ## Internal
 
-- Dynamic code generation (#1095).
+- Use sensible node and edge IDs, corresponding to the data model, in SVG graph (#1214).
+
+- Tests for datamodelr code (#1215).
 
 
-# dm 0.2.8.9007
+# dm 0.3.0
 
-## Features 
+## Features
 
-- New `simple` argument to `dm_meta()` (#1083).
+- Implement `glimpse()` for `zoomed_df` (@IndrajeetPatil, #1003, #1161).
 
-- `nest_join()` and `pack_join()` support `zoomed_dm` objects (#1119, @IndrajeetPatil).
+- Remove message about automated key selection with the `select` argument in joins on `zoomed_df` (@IndrajeetPatil, #1113, #1176).
 
-## Documentation 
+- `dm_from_con(learn_keys = TRUE)` works for MariaDB (#1106, #1123, #1169, @maelle), and for compound keys in Postgres (#342, #1006, #1016) and SQL Server (#342).
 
-- simplify top of README (#1066, @maelle).
+- New `json_pack_join()`, `json_nest_join()`, `json_pack()` and `json_nest()`, similar to `pack_join()`, `dplyr::nest_join()`, `tidyr::pack()` and `tidyr::nest()`, but create character columns (#917, #918, #973, #974).
 
-- Minimal tweaks of intro vignette (#1075, @maelle).
-
-- Edits to dm theory vignette (#1079, @IndrajeetPatil).
-
-- BS5 for greater readability (#1067, @maelle).
-
-- Minor edits to the "Get Started" article (#1056, @IndrajeetPatil).
-
-
-# dm 0.2.8.9006
-
-## Chore 
-
-- Remove all uses of dm_from_src() (#1044).
-
-- Use dbplyr 2.2.0 and rlang 1.0.2 (#1024).
-
-- Fix dm_from_src() example if relational.fit is down (#993).
-
-- License year (#1029).
-
+- `nest_join()` and `pack_join()` support `zoomed_df` objects (#1119, @IndrajeetPatil).
 
 
 ## API 
 
-- Deprecate dm_join_to_tbl(), dm_is_referenced() and dm_get_referencing_tables() (#1038).
+- Marked stable functions as stable, in particular `dm()` and related functions (#1032, #1040).
+
+- Remove own `rows_*()` implementation for lazy tables, they are now available in dbplyr >= 2.2.0 (#912, #1024, #1028).
+
+- Deprecate `dm_join_to_tbl()`, `dm_is_referenced()` and `dm_get_referencing_tables()` (#1038).
 
 - New `dm_validate()` replaces now deprecated `validate_dm()` (#1033).
 
-- `dm_get_filters()` uses `dm` as argument name (#1036).
-
-- `dm_get_con()` uses `dm` as argument name (#1034).
-
-- `dm()` and related functions are stable (#1040).
+- `dm_get_con()` and `dm_get_filters()` use `dm` as argument name (#1034, #1036).
 
 - Mark `...` in `dm_flatten_to_tbl()` as experimental (#1037).
 
 - Add ellipses to `dm_disambiguate_cols()`, `dm_draw()`, `dm_examine_constraints()`, `dm_nycflights13()` and `dm_pixarfilms()` (#1035).
 
-- Mark functions as stable (#1032).
+- New `dm_from_con()`, soft-deprecated `dm_from_src()` (#1014, #1018, #1044).
+
+- Moved `pack_join()` arguments past the ellipsis for consistency (#920, #921).
 
 
-# dm 0.2.8.9005
+## Bug fixes
 
-## Bug fixes 
-
-- Learning for PostgreSQL, regression introduced in 0.2.8.9004 (#1016).
-
-- Avoid NULL if no fks after disentangle (#1012).
+- Compatibility fix for writing to SQL Server tables with dbplyr >= 2.2.0.
 
 
+## Documentation
 
-## API 
+- The pkgdown site now uses BS5 for greater readability (#1067, @maelle).
 
-- New `dm_from_con()`, soft-deprecated `dm_from_src()` (#1014, #1018).
+- Better message for `dm_rows_...()` functions if the `in_place` argument is missing (@IndrajeetPatil, #414, #1160).
 
+- Better message for learning error (#1081).
 
-# dm 0.2.8.9004
+- Greatly improved consistency, content, and language across all articles (@IndrajeetPatil, #1056, #1132, #1157, #1166, #1079, #1082, #1098, #1100, #1101, #1103, #1112, #1120, #1158, #1175).
 
-## Features 
+- Tweaks of intro vignette and README (#1066, #1075, @maelle).
 
-- Use dm_meta() to learn from Postgres, fixes learning of compound keys (#342, #1006).
-- New internal `dm_meta()` for learning a data model from the database, for now for SQL Server only, fixes learning of compound keys (#342).
+- Document `glimpse()` S3 method for `dm` (@IndrajeetPatil, #1121).
 
+- Update credentials to fallback databases for `dm_financial()` hosted on pacha.dev (#916, @pachadotdev), also used now for vignettes (#1118) and in `dm_from_con()` example (#993).
 
-# dm 0.2.8.9003
-
-- `dm_disentangle()` based on `enumerate_all_paths()` (#923).
-
-
-# dm 0.2.8.9002
-
-- Fix compatibility with dev dbplyr (#986).
-- Fix `json_pack()` (#973, #974).
+- Update license year (#1029).
 
 
-# dm 0.2.8.9001
+## Internal
 
-* New `json_pack_join()`, `json_nest_join()`, `json_pack()` and `json_nest()`, similar to `pack_join()`, `dplyr::nest_join()`, `tidyr::pack()` AND `tidyr::nest()`, but create character columns (#917, #918).
-- `pack_join()` arguments moved past the ellipsis (#920, #921).
-- Update credentials to fallback databases for `dm_financial()` hosted on pacha.dev (#916, @pachadotdev).
+- Switch to duckdb as default database backend (#1179).
 
-
-# dm 0.2.8.9000
-
-- Same as previous version.
+- Test duckdb and MariaDB on GHA (#1091, #1136).
 
 
 # dm 0.2.8
@@ -416,7 +574,7 @@
 ## Internal
 
 - Use `withCallingHandlers()` where appropriate (#422).
-- Consistent definition of `.dm` and `.zoomed_dm` methods (#300).
+- Consistent definition of `.dm` and `.dm_zoomed` methods (#300).
 - Examples involving `dm_financial()` are not run if connection can't be established (#418).
 - Fix database tests on CI (#416).
 
@@ -490,7 +648,7 @@
 - `dm_from_src()` now works for databases other than Postgres and MSSQL (#288), gives a warning if tables cannot be accessed with `table_name = NULL` (#348), and gains `learn_keys` argument to control querying of primary and foreign keys from the database (#340).
 - `dm_examine_constraints()` now prints a different message if a dm has no constraints defined.
 - Disambiguation message now only lists column names for easier copy-pasting.
-- New methods for `"zoomed_dm"`: `head()`, `tail()`, `pull()`, `group_data()`, `group_indices()`, `group_vars()`, `group_keys()` and `groups()` (#236, #203).
+- New methods for `"dm_zoomed"`: `head()`, `tail()`, `pull()`, `group_data()`, `group_indices()`, `group_vars()`, `group_keys()` and `groups()` (#236, #203).
 - `dm_paste()` supports writing colors and the table definition via the new `options` argument. The definition can be written to a file via the new `path` argument. The `select` argument is soft-deprecated (#218, #302).
 - `dm_add_tbl()` uses `rlang::list2()` internally, now accepts `:=` to specify table names.
 - New `dm_ptype()` (#301).
@@ -507,10 +665,10 @@
 - `dm_add_pk()`, `dm_rm_pk()`, `dm_add_fk()` and `dm_rm_fk()` are now stricter when keys exists or when attempting to remove keys that don't exist. A more relaxed mode of operation may be added later (#214).
 - `examine_cardinality()`, `dm_examine_constraints()` and `enum_pk_candidates()` now work for columns named `n`.
 - `dm_set_key_constraints()` (and by extension `dm_copy_to(set_key_constraints = TRUE)`) now quote identifiers for the SQL that creates foreign keys on the database.
-- `collect()` gives a better error message when called on a `"zoomed_dm"` (#294).
+- `collect()` gives a better error message when called on a `"dm_zoomed"` (#294).
 - `check_subset()` gives a clean error message if the tables are complex expressions.
 - `dm_from_src(schema = "...")` works on Postgres if `search_path` is not set on the connection.
-- `compute.zoomed_dm()` no longer throws an error.
+- `compute.dm_zoomed()` no longer throws an error.
 - Remove unused DT import (#295).
 
 
@@ -547,10 +705,10 @@
 # dm 0.1.0
 
 - Package is now in the "maturing" lifecycle (#154).
-- `filter.zoomed_dm()` no longer sets the filter.
+- `filter.dm_zoomed()` no longer sets the filter.
 - `examine_()` functions never throw an error (#238).
 - API overhaul: `dm_zoom_to()`, `dm_insert_zoomed()`, `dm_update_zoomed()` and `dm_discard_zoomed()`; `check_()` -> `examine_()`; `dm_get_filter()` -> `dm_get_filters()`; `dm_from_src()` + `dm_learn_from_db()` -> `dm_from_src()` (#233).
-- New `$.zoomed_dm()`, `[.zoomed_dm()`, `[[.zoomed_dm()`, `length.zoomed_dm()`, `names.zoomed_dm()`, `tbl_vars.zoomed_dm()` (#199, #216).
+- New `$.dm_zoomed()`, `[.dm_zoomed()`, `[[.dm_zoomed()`, `length.dm_zoomed()`, `names.dm_zoomed()`, `tbl_vars.dm_zoomed()` (#199, #216).
 - New `as.list()` methods (#213).
 - Help pages for dplyr methods (#209).
 - New migration guide from dm <= 0.0.5 (#234).
@@ -589,10 +747,10 @@
 
 ## Features
 
-- `cdm_filter()` and `filter.zoomed_dm()` apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in `cdm_apply_filters()`. This now allows using a variety of operations on filtered `dm` objects (#124).
+- `cdm_filter()` and `filter.dm_zoomed()` apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in `cdm_apply_filters()`. This now allows using a variety of operations on filtered `dm` objects (#124).
 - `dimnames()`, `colnames()`, `dim()`, `distinct()`, `arrange()`, `slice()`, `separate()` and `unite()` implemented for zoomed dm-s (#130).
 - Joins on zoomed dm objects now supported (#121). Joins use the same column name disambiguation algorithm as `cdm_flatten_to_tbl()` (#147).
-- `slice.zoomed_dm()`: user decides in arg `.keep_pk` if PK column is tracked or not (#152).
+- `slice.dm_zoomed()`: user decides in arg `.keep_pk` if PK column is tracked or not (#152).
 - Supported {dplyr} and {tidyr} verbs are reexported.
 - `enum_pk_candidates()` works with zoomed dm-s (#156).
 - New `enum_fk_candidates()` (#156).
@@ -607,7 +765,7 @@
 
 ## Bug fixes
 
-- Avoid asterisk when printing local `zoomed_dm` (#131).
+- Avoid asterisk when printing local `dm_zoomed` (#131).
 - `cdm_select_tbl()` works again when multiple foreign keys are defined between two tables (#122).
 
 

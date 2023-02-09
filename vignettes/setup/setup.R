@@ -1,10 +1,15 @@
+default_eval <- function() {
+  # Only build vignettes in pkgdown for now
+  (Sys.getenv("IN_PKGDOWN") != "") || grepl("^cran-", Sys.getenv("GITHUB_HEAD_REF"))
+}
+
 knitr::opts_chunk$set(
   error = (Sys.getenv("IN_PKGDOWN") == "") || !dm:::dm_has_financial(),
   # Only build vignettes:
   # - on pkgdown
   # - if not running in GitHub Actions
   # - if running in a branch that starts with CRAN in GitHub Actions
-  eval = (Sys.getenv("IN_PKGDOWN") != "") || (Sys.getenv("GITHUB_WORKFLOW") == "") || grepl("^cran-", Sys.getenv("GITHUB_HEAD_REF")),
+  eval = default_eval(),
   message = TRUE,
   collapse = TRUE,
   comment = "#>"
@@ -19,11 +24,16 @@ knit_print.grViz <- function(x, ...) {
     knitr::asis_output()
 }
 
-# If input loads dm...
+# If input loads dm or tidyverse, we load it here to omit warnings
 input <- readLines(knitr::current_input())
-if (rlang::has_length(grep("^library[(]dm[)]", input))) {
-  # we load it here to omit warnings
+if (rlang::has_length(grep('^library[(]"?dm"?[)]', input))) {
   library(dm)
+}
+if (rlang::has_length(grep('^library[(]"?tidyverse"?[)]', input))) {
+  library(tidyverse)
+}
+if (rlang::has_length(grep('^library[(]"?dplyr"?[)]', input))) {
+  library(dplyr)
 }
 
 ## Link helper to enable links only on pkgdown

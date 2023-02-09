@@ -1,13 +1,15 @@
 #' Add a primary key
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_add_pk()` marks the specified columns as the primary key of the specified table.
 #' If `check == TRUE`, then it will first check if
 #' the given combination of columns is a unique key of the table.
 #' If `force == TRUE`, the function will replace an already
 #' set key, without altering foreign keys previously pointing to that primary key.
+#'
+#' @details There can be only one primary key per table in a [`dm`].
+#' It's possible though to set an unlimited number of unique keys using [dm_add_uk()]
+#' or adding foreign keys pointing to columns other than the primary key columns with [dm_add_fk()].
 #'
 #' @inheritParams rlang::args_dots_empty
 #' @param dm A `dm` object.
@@ -18,12 +20,15 @@
 #' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key
 #'   set for this table.
 #'   If `TRUE`, a potential old `pk` is deleted before setting a new one.
+#' @param autoincrement
+#'   `r lifecycle::badge("experimental")`
+#'   If `TRUE`, the  column specified in `columns` will be populated
+#'   automatically with a sequence of integers.
 #'
 #' @family primary key functions
 #'
 #' @return An updated `dm` with an additional primary key.
 #'
-#' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' nycflights_dm <- dm(
 #'   planes = nycflights13::planes,
@@ -46,27 +51,41 @@
 #'   nycflights_dm %>%
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
 #' )
-dm_add_pk <- function(dm, table, columns, ..., check = FALSE, force = FALSE) {
+#' @export
+dm_add_pk <- function(dm, table, columns, ..., autoincrement = FALSE, check = FALSE, force = FALSE) {
   check_dots_empty()
-  check_not_zoomed(dm)
-  table_name <- dm_tbl_name(dm, {{ table }})
 
+  check_not_zoomed(dm)
+
+  table_name <- dm_tbl_name(dm, {{ table }})
   table <- dm_get_tables_impl(dm)[[table_name]]
+
+  check_required(columns)
   col_expr <- enexpr(columns)
   col_name <- names(eval_select_indices(col_expr, colnames(table)))
+
+  if (autoincrement && length(col_name) > 1L) {
+    abort(
+      c(
+        "Composite primary keys cannot be autoincremented.",
+        "Provide only a single column name to `columns`."
+      )
+    )
+  }
+
 
   if (check) {
     table_from_dm <- dm_get_filtered_table(dm, table_name)
     eval_tidy(expr(check_key(!!sym(table_name), !!col_expr)), list2(!!table_name := table_from_dm))
   }
 
-  dm_add_pk_impl(dm, table_name, col_name, force)
+  dm_add_pk_impl(dm, table_name, col_name, autoincrement, force)
 }
 
 # both "table" and "column" must be characters
 # in {datamodelr}, a primary key may consist of more than one columns
 # a key will be added, regardless of whether it is a unique key or not; not to be exported
-dm_add_pk_impl <- function(dm, table, column, force) {
+dm_add_pk_impl <- function(dm, table, column, autoincrement, force) {
   def <- dm_get_def(dm)
   i <- which(def$table == table)
 
@@ -79,7 +98,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
     abort_key_set_force_false(table)
   }
 
-  def$pks[[i]] <- tibble(column = !!list(column))
+  def$pks[[i]] <- new_pk(column = list(column), autoincrement = autoincrement)
 
   new_dm3(def)
 }
@@ -87,8 +106,6 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #' Check for primary key
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_has_pk()` checks if a given table has columns marked as its primary key.
 #'
 #' @inheritParams dm_add_pk
@@ -145,14 +162,13 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' Get all primary keys of a [`dm`] object
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
-#' `dm_get_all_pks()` checks the `dm` object for set primary keys and
-#' returns the tables, the respective primary key columns and their classes.
+#' `dm_get_all_pks()` checks the `dm` object for primary keys and
+#' returns the tables and the respective primary key columns.
 #'
 #' @family primary key functions
-#' @param table One or more table names, as character vector,
+#' @param table One or more table names, unquoted,
 #'   to return primary key information for.
+#'   If given, primary keys are returned in that order.
 #'   The default `NULL` returns information for all tables.
 #'
 #' @inheritParams dm_add_pk
@@ -160,7 +176,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`table`}{table name,}
-#'     \item{`pk_cols`}{column name(s) of primary key, as list of character vectors.}
+#'     \item{`pk_col`}{column name(s) of primary key, as list of character vectors.}
 #'   }
 #'
 #' @export
@@ -170,7 +186,9 @@ dm_get_pk_impl <- function(dm, table_name) {
 dm_get_all_pks <- function(dm, table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
-  dm_get_all_pks_impl(dm, table)
+  table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
+  table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
+  dm_get_all_pks_impl(dm, table_names)
 }
 
 dm_get_all_pks_impl <- function(dm, table = NULL) {
@@ -185,13 +203,14 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
   def_sub <- def[c("table", "pks")]
 
   if (!is.null(table)) {
-    def_sub <- def_sub[def_sub$table %in% table, ]
+    idx <- match(table, def_sub$table)
+    def_sub <- def_sub[match(table, def_sub$table), ]
   }
 
   out <-
     def_sub %>%
-    unnest_df("pks", tibble(column = list())) %>%
-    set_names(c("table", "pk_col"))
+    unnest_df("pks", tibble(column = list(), autoincrement = logical())) %>%
+    set_names(c("table", "pk_col", "autoincrement"))
 
   out$pk_col <- new_keys(out$pk_col)
   out
@@ -201,10 +220,9 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #' Remove a primary key
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
-#' `dm_rm_pk()` removes one or more primary keys from a table and leaves the [`dm`] object otherwise unaltered.
-#' An error is thrown if no private key matches the selection criteria.
+#' If a table name is provided, `dm_rm_pk()` removes the primary key from this table and leaves the [`dm`] object otherwise unaltered.
+#' If no table is given, the `dm` is stripped of all primary keys at once.
+#' An error is thrown if no primary key matches the selection criteria.
 #' If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
 #' Foreign keys are never removed.
 #'
@@ -214,9 +232,7 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #' @param columns Table columns, unquoted.
 #'   To refer to a compound key, use `c(col1, col2)`.
 #'   Pass `NULL` (the default) to remove all matching keys.
-#' @param fail_fk
-#'   Boolean: if `TRUE` (default), will throw an error
-#'   if there are foreign keys addressing the primary key that is to be removed.
+#' @param fail_fk `r lifecycle::badge("deprecated")`
 #'
 #' @family primary key functions
 #'
@@ -225,39 +241,38 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
-#'   dm_rm_pk(airports, fail_fk = FALSE) %>%
+#'   dm_rm_pk(airports) %>%
 #'   dm_draw()
-dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE) {
-  if (missing(fail_fk)) {
-    fail_fk <- NULL
+dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = NULL) {
+  if (!is.null(fail_fk)) {
+    lifecycle::deprecate_soft(
+      "1.0.4",
+      "dm_rm_pk(fail_fk =)",
+      details = "When removing a primary key, potential associated foreign keys will be pointing at an implicit unique key."
+    )
   }
-  dm_rm_pk_(dm, {{ table }}, {{ columns }}, ..., fail_fk = fail_fk)
+  dm_rm_pk_(dm, {{ table }}, {{ columns }}, ...)
 }
 
-dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL, fail_fk = NULL) {
+dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL) {
   check_dots_empty()
   check_not_zoomed(dm)
 
   if (!is.null(rm_referencing_fks)) {
-    deprecate_soft("0.2.1", "dm::dm_rm_pk(rm_referencing_fks = )", "dm::dm_rm_pk(fail_fk = )",
-      details = "Note the different semantics: `fail_fk = FALSE` roughly corresponds to `rm_referencing_fks = TRUE`, but foreign keys are no longer removed."
+    deprecate_soft(
+      "0.2.1",
+      "dm::dm_rm_pk(rm_referencing_fks = )",
+      details = "When removing a primary key, potential associated foreign keys will be pointing at an implicit unique key."
     )
-    if (is.null(fail_fk)) {
-      fail_fk <- !rm_referencing_fks
-    }
-  }
-
-  if (is.null(fail_fk)) {
-    fail_fk <- TRUE
   }
 
   table_name <- dm_tbl_name_null(dm, {{ table }})
   columns <- enexpr(columns)
 
-  dm_rm_pk_impl(dm, table_name, columns, fail_fk)
+  dm_rm_pk_impl(dm, table_name, columns)
 }
 
-dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
+dm_rm_pk_impl <- function(dm, table_name, columns) {
   def <- dm_get_def(dm)
 
   if (is.null(table_name)) {
@@ -287,13 +302,6 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
     abort_pk_not_defined()
   }
 
-  pwalk(list(def$fks[i], def$pks[i], def$table[i]), ~ {
-    is_match <- !is.na(vec_match(..1$ref_column, ..2$column))
-    if (fail_fk && any(is_match)) {
-      abort_first_rm_fks(..3, ..1$table[is_match])
-    }
-  })
-
   # Talk about it
   if (is.null(table_name)) {
     message("Removing primary keys: %>%")
@@ -309,7 +317,8 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
 
 #' Primary key candidate
 #'
-#' @description `r lifecycle::badge("questioning")`
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
 #' `enum_pk_candidates()` checks for each column of a
 #' table if the column contains only unique values, and is thus
@@ -323,12 +332,13 @@ dm_rm_pk_impl <- function(dm, table_name, columns, fail_fk) {
 #'   }
 #'
 #' @section Life cycle:
-#' These functions are marked "questioning" because we are not yet sure about
+#' These functions are marked "experimental" because we are not yet sure about
 #' the interface, in particular if we need both `dm_enum...()` and `enum...()`
 #' variants.
 #' Changing the interface later seems harmless because these functions are
 #' most likely used interactively.
 #'
+#' @rdname dm_enum_pk_candidates
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
 #' nycflights13::flights %>%
@@ -353,7 +363,6 @@ enum_pk_candidates <- function(table, ...) {
 #'
 #' @inheritParams dm_add_pk
 #'
-#' @rdname enum_pk_candidates
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
 #'

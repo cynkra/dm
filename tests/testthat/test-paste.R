@@ -6,10 +6,10 @@ test_that("path argument", {
   expect_identical(readLines(path), c("dm::dm(", ")"))
 })
 
-local_options(lifecycle_verbosity = "warning")
-
 test_that("output", {
   skip_if_not_installed("nycflights13")
+
+  local_options(lifecycle_verbosity = "warning")
 
   expect_snapshot({
     "empty"
@@ -33,7 +33,7 @@ test_that("output", {
     dm_for_filter() %>%
       dm_select(tf_5, k = k, m) %>%
       dm_select(tf_1, a) %>%
-      dm_add_tbl(x = copy_to_my_test_src(tibble(q = 1L), qq)) %>%
+      dm(x = copy_to_my_test_src(tibble(q = 1L), qq)) %>%
       dm_paste(options = "select")
 
     "produce code with colors"
@@ -62,6 +62,12 @@ test_that("output", {
       dm_add_fk(b, z, c, y) %>%
       dm_paste()
 
+    # UKs
+    dm_for_filter() %>%
+      dm_add_uk(tf_5, l) %>%
+      dm_add_uk(tf_6, n) %>%
+      dm_paste()
+
     "on_delete if needed"
     dm(b, c) %>%
       dm_add_pk(c, x) %>%
@@ -81,5 +87,20 @@ test_that("output", {
     writeLines(conditionMessage(
       expect_error(dm_paste(dm(), options = c("bogus", "all", "mad")))
     ))
+  })
+})
+
+test_that("output 2", {
+  skip_if(getRversion() < "4.2")
+  local_options(lifecycle_verbosity = "warning")
+
+  expect_snapshot({
+    "no error for factor column that leads to code with width > 500"
+    dm(tibble(a = factor(levels = expand.grid(
+      letters, as.character(1:5)
+    ) %>%
+      transmute(x = paste0(Var1, Var2)) %>%
+      pull()))) %>%
+      dm_paste(options = "tables")
   })
 })

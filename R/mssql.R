@@ -64,3 +64,12 @@ mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
     distinct() %>%
     left_join(sys_fkc_column_usage, by = c("constraint_catalog", "constraint_schema", "constraint_name"))
 }
+
+mssql_escape <- function(x, con) {
+  # https://github.com/tidyverse/dbplyr/issues/934
+  if (is.logical(x)) {
+    dbplyr::sql(if_else(x, "1", "0", "NULL"))
+  } else {
+    dbplyr::escape(x, parens = FALSE, collapse = NULL, con = con)
+  }
+}

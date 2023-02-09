@@ -1,8 +1,6 @@
 #' Draw a diagram of the data model
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_draw()` draws a diagram, a visual representation of the data model.
 #'
 #' @details
@@ -110,7 +108,7 @@ dm_draw <- function(dm,
 #' data model object for drawing.
 #'
 #' @noRd
-dm_get_data_model <- function(x, column_types) {
+dm_get_data_model <- function(x, column_types = FALSE) {
   def <- dm_get_def(x)
 
   tables <- data.frame(
@@ -121,8 +119,8 @@ dm_get_data_model <- function(x, column_types) {
   )
 
   references_for_columns <-
-    dm_get_all_fks_impl(x) %>%
-    transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_key_cols))
+    dm_get_all_fks_impl(x, id = TRUE) %>%
+    transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_key_cols), keyId = id)
 
   references <-
     references_for_columns %>%
@@ -138,7 +136,9 @@ dm_get_data_model <- function(x, column_types) {
     dm_get_all_fks_impl(x) %>%
     mutate(column = format(parent_key_cols)) %>%
     select(table = parent_table, column) %>%
-    mutate(key_fk = 2L)
+    mutate(key_fk = 2L) %>%
+    # `parent_table` and `column` can be referenced by multiple child tables
+    distinct()
 
   if (column_types) {
     types <- dm_get_all_column_types(x)
@@ -150,7 +150,12 @@ dm_get_data_model <- function(x, column_types) {
     types %>%
     full_join(keys_pk, by = c("table", "column")) %>%
     full_join(keys_fk, by = c("table", "column")) %>%
-    full_join(references_for_columns, by = c("table", "column")) %>%
+    # there is a legitimate interest to have duplicates in `table` and `column`
+    # in table `references_for_columns`.
+    # When using a dplyr version >= 1.1.0, we get a warning in that case, thus
+    # we need `multiple = "all"`.
+    # FIXME: is there another way? like this we need a min dplyr version 1.1.0.
+    full_join(references_for_columns, by = c("table", "column"), multiple = "all") %>%
     # Order matters: key == 2 if foreign key points to non-default primary key
     mutate(key = coalesce(key, key_fk, 0L)) %>%
     select(-key_fk) %>%
@@ -193,8 +198,6 @@ dm_get_all_column_types <- function(x) {
 #' Color in database diagrams
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model with [dm_draw()].
 #' The colors can either be either specified with hex color codes or using the names of the built-in R colors.
 #' An overview of the colors corresponding to the standard color names can be found at
@@ -204,7 +207,7 @@ dm_get_all_column_types <- function(x) {
 #' @inheritParams dm_draw
 #' @param ... Colors to set in the form `color = table`.
 #' Allowed colors are all hex coded colors (quoted) and the color names from `dm_get_available_colors()`.
-#' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
+#' `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
 #' @return For `dm_set_colors()`: the updated data model.
 #'
 #' @export

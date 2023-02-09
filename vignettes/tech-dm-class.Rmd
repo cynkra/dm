@@ -64,18 +64,20 @@ library(nycflights13)
 library(dm)
 empty_dm <- dm()
 empty_dm
-dm_add_tbl(empty_dm, airlines, airports, flights, planes, weather)
+dm(empty_dm, airlines, airports, flights, planes, weather)
 ```
 
 ### Coerce a list of tables
 
 Turn a named list of tables into a `dm` with `as_dm()`:
 ```{r}
-as_dm(list(airlines = airlines,
-           airports = airports,
-           flights = flights,
-           planes = planes,
-           weather = weather))
+as_dm(list(
+  airlines = airlines,
+  airports = airports,
+  flights = flights,
+  planes = planes,
+  weather = weather
+))
 ```
 
 ### Turn tables from a `src` into a `dm`
@@ -184,7 +186,9 @@ For performance reasons, the default is `check = FALSE`.
 See also [dm_examine_constraints()] for checking all constraints in a `dm`.
 
 ```{r error = TRUE}
-dm_add_pk(flights_dm, airports, tzone, check = TRUE)
+try(
+  dm_add_pk(flights_dm, airports, tzone, check = TRUE)
+)
 ```
 
 
@@ -211,7 +215,9 @@ flights_dm_with_key %>% dm_add_fk(flights, origin, airports)
 This will throw an error:
 
 ```{r error=TRUE}
-flights_dm %>% dm_add_fk(flights, origin, airports)
+try(
+  flights_dm %>% dm_add_fk(flights, origin, airports)
+)
 ```
 
 Let's create a `dm` object with a foreign key relation to work with later on:
@@ -223,7 +229,9 @@ flights_dm_with_fk <- dm_add_fk(flights_dm_with_key, flights, origin, airports)
 What if we tried to add another foreign key relation from `flights` to `airports` to the object? Column `dest` might work, since it also contains airport codes:
 
 ```{r error=TRUE}
-flights_dm_with_fk %>% dm_add_fk(flights, dest, airports, check = TRUE)
+try(
+  flights_dm_with_fk %>% dm_add_fk(flights, dest, airports, check = TRUE)
+)
 ```
 
 Checks are opt-in and executed only if `check = TRUE`.
@@ -239,9 +247,11 @@ dm_get_all_fks(dm_nycflights13(cycle = TRUE))
 Remove foreign key relations with `dm_rm_fk()` (parameter `columns = NULL` means that all relations will be removed, with a message):
 
 ```{r error=TRUE}
-flights_dm_with_fk %>%
-  dm_rm_fk(table = flights, column = dest, ref_table = airports) %>%
-  dm_get_all_fks(c(flights, airports))
+try(
+  flights_dm_with_fk %>%
+    dm_rm_fk(table = flights, column = dest, ref_table = airports) %>%
+    dm_get_all_fks(c(flights, airports))
+)
 
 flights_dm_with_fk %>%
   dm_rm_fk(flights, origin, airports) %>%

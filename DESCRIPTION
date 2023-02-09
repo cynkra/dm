@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.2.8.9008
-Date: 2022-06-28
+Version: 1.0.3.9009
+Date: 2023-02-02
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -10,7 +10,7 @@ Authors@R:
       person(given = "Kirill",
              family = "Müller",
              role = c("aut", "cre"),
-             email = "krlmlr+r@mailbox.org",
+             email = "kirill@cynkra.com",
              comment = c(ORCID = "0000-0002-1416-3412")),
       person(given = "Antoine",
              family = "Fabri",
@@ -25,6 +25,14 @@ Authors@R:
       person(given = "James",
              family = "Wondrasek",
              role = "ctb"),
+      person(given = "Indrajeet",
+             family = "Patil",
+             comment = c(ORCID = "0000-0003-1995-6531"),
+             role = "ctb"),
+      person(given = "Maëlle",
+             family = "Salmon",
+             comment = c(ORCID = "0000-0002-2815-0399"),
+             role = "ctb"),
       person(given = "energie360° AG",
              role = "fnd",
              email = "info@energie360.ch"),
@@ -36,7 +44,7 @@ Description: Provides tools for working with multiple related
     tables (data and metadata) are stored in a compound object, which can
     then be manipulated with a pipe-friendly syntax.
 License: MIT + file LICENSE
-URL: https://cynkra.github.io/dm/, https://github.com/cynkra/dm
+URL: https://dm.cynkra.com/, https://github.com/cynkra/dm
 BugReports: https://github.com/cynkra/dm/issues
 Depends: 
     R (>= 3.3)
@@ -44,10 +52,10 @@ Imports:
     backports,
     cli (>= 2.2.0),
     DBI,
-    dplyr (>= 1.0.9),
+    dplyr (>= 1.1.0),
     glue,
     igraph,
-    lifecycle,
+    lifecycle (>= 1.0.3),
     magrittr,
     memoise,
     methods,
@@ -60,6 +68,7 @@ Imports:
     vctrs (>= 0.3.2)
 Suggests: 
     brio,
+    colourpicker,
     covr,
     crayon,
     dbplyr (>= 2.2.0),
@@ -69,6 +78,8 @@ Suggests:
     duckdb (>= 0.4.0),
     fansi,
     forcats,
+    htmltools,
+    htmlwidgets,
     jsonlite,
     keyring,
     knitr,
@@ -78,21 +89,28 @@ Suggests:
     pixarfilms,
     pool,
     progress,
+    reactable,
     RMariaDB (>= 1.2.2),
     rmarkdown,
     RPostgres,
     RSQLite (>= 2.2.8),
+    rstudioapi,
+    shiny,
+    shinyAce,
+    shinydashboard,
     testthat (>= 3.1.2),
     tidyverse,
     waldo,
     withr
 VignetteBuilder: 
     knitr
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd"))
-RoxygenNote: 7.2.0
-Config/testthat/edition: 3
-Config/testthat/parallel: true
-Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm, draw-dm, bind, rows-dm
 Config/autostyle/scope: line_breaks
 Config/autostyle/strict: true
+Config/testthat/edition: 3
+Config/testthat/parallel: true
+Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm,
+    draw-dm, bind, rows-dm
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd"))
+RoxygenNote: 7.2.3
+Config/Needs/website: cynkra/cynkratemplate

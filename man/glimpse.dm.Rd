@@ -2,9 +2,12 @@
 % Please edit documentation in R/dm.R
 \name{glimpse.dm}
 \alias{glimpse.dm}
+\alias{glimpse.dm_zoomed}
 \title{Get a glimpse of your \code{dm} object}
 \usage{
 \method{glimpse}{dm}(x, width = NULL, ...)
+
+\method{glimpse}{dm_zoomed}(x, width = NULL, ...)
 }
 \arguments{
 \item{x}{A \code{dm} object.}
@@ -15,8 +18,6 @@ printing. If \code{NULL}, \code{getOption("width")} will be consulted.}
 \item{...}{Passed to \code{\link[pillar:glimpse]{pillar::glimpse()}}.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{glimpse()} provides an overview (dimensions, column data types, primary
 keys, etc.) of all tables included in the \code{dm} object. It will additionally
 print details about outgoing foreign keys for the child table.
@@ -27,5 +28,9 @@ See \code{\link[pillar:glimpse]{pillar::glimpse()}} for more details.
 \examples{
 
 dm_nycflights13() \%>\% glimpse()
+
+dm_nycflights13() \%>\%
+  dm_zoom_to(flights) \%>\%
+  glimpse()
 
 }

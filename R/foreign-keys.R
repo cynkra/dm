@@ -1,12 +1,10 @@
 #' Add foreign keys
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_add_fk()` marks the specified `columns` as the foreign key of table `table` with
 #' respect to a key of table `ref_table`.
-#' Usually the referenced columns are a primary key in `ref_table`,
-#' it is also possible to specify other columns via the `ref_columns` argument.
+#' Usually the referenced columns are a primary key in `ref_table`.
+#' However, it is also possible to specify other columns via the `ref_columns` argument.
 #' If `check == TRUE`, then it will first check if the values in `columns` are a subset
 #' of the values of the key in table `ref_table`.
 #'
@@ -31,6 +29,15 @@
 #'   and might be considered by [dm_rows_delete()] in a future version.
 #'
 #' @family foreign key functions
+#'
+#' @details
+#' It is possible that a foreign key (FK) is pointing to columns that are neither primary (PK) nor
+#' explicit unique keys (UK).
+#' This can happen
+#'   1. when a FK is added without a corresponding PK or UK being present in the parent table
+#'   1. when the PK or UK is removed ([`dm_rm_pk()`]/[`dm_rm_uk()`]) without first removing the associated FKs.
+#'
+#' These columns are then a so-called "implicit unique key" of the referenced table and can be listed via [`dm_get_all_uks()`].
 #'
 #' @rdname dm_add_fk
 #'
@@ -214,8 +221,6 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 #' Get foreign key constraints
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Get a summary of all foreign key relations in a [`dm`].
 #'
 #' @return A tibble with the following columns:
@@ -228,8 +233,9 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 #'   }
 #'
 #' @inheritParams dm_has_fk
-#' @param parent_table One or more table names, as character vector,
+#' @param parent_table One or more table names, unquoted,
 #'   to return foreign key information for.
+#'   If given, foreign keys are returned in that order.
 #'   The default `NULL` returns information for all tables.
 #'
 #' @family foreign key functions
@@ -241,32 +247,48 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
-  dm_get_all_fks_impl(dm, parent_table)
+  table_expr <- enexpr(parent_table) %||% src_tbls_impl(dm, quiet = TRUE)
+  table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
+  dm_get_all_fks_impl(dm, table_names)
 }
 
-dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE) {
+dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
   def <- dm_get_def(dm)
 
-  sub_def <- def[c("table", "fks")]
-  names(sub_def)[[1]] <- "parent_table"
+  dm_get_all_fks_def_impl(def = def, parent_table = parent_table, ignore_on_delete = ignore_on_delete, id = id)
+}
+
+dm_get_all_fks_def_impl <- function(def, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
+  def_sub <- def[c("table", "fks")]
+  names(def_sub)[[1]] <- "parent_table"
 
   if (!is.null(parent_table)) {
-    sub_def <- sub_def[sub_def$parent_table %in% parent_table, ]
+    idx <- match(parent_table, def_sub$parent_table)
+    if (anyNA(idx)) {
+      abort_table_not_in_dm(parent_table[which(is.na(idx))], def$table)
+    }
+    def_sub <- def_sub[idx, ]
   }
 
-  flat <- unnest_list_of_df(sub_def, "fks")
+  flat <- unnest_list_of_df(def_sub, "fks")
 
   names(flat) <- c("parent_table", "parent_key_cols", "child_table", "child_fk_cols", "on_delete")
   flat[[2]] <- new_keys(flat[[2]])
   flat[[4]] <- new_keys(flat[[4]])
-  flat[c(3:4, 1:2, if (!ignore_on_delete) 5L)]
+  out <- flat[c(3:4, 1:2, if (!ignore_on_delete) 5L)]
+  if (id) {
+    out <-
+      out %>%
+      group_by(child_table) %>%
+      mutate(id = paste0(child_table, "_", row_number())) %>%
+      ungroup()
+  }
+  out
 }
 
 #' Remove foreign keys
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `dm_rm_fk()` can remove either one reference between two tables, or multiple references at once (with a message).
 #' An error is thrown if no matching foreign key is found.
 #'
@@ -415,7 +437,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
 
 #' Foreign key candidates
 #'
-#' @description `r lifecycle::badge("questioning")`
+#' @description `r lifecycle::badge("experimental")`
 #'
 #' Determine which columns would be good candidates to be used as foreign keys of a table,
 #' to reference the primary key column of another table of the [`dm`] object.
@@ -438,7 +460,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
 #' - the error message triggered for unsuitable candidates that may include the types of mismatched columns
 #'
 #' @section Life cycle:
-#' These functions are marked "questioning" because we are not yet sure about
+#' These functions are marked "experimental" because we are not yet sure about
 #' the interface, in particular if we need both `dm_enum...()` and `enum...()`
 #' variants.
 #' Changing the interface later seems harmless because these functions are
@@ -484,20 +506,20 @@ dm_enum_fk_candidates <- function(dm, table, ref_table, ...) {
 #' @details `enum_fk_candidates()` works like `dm_enum_fk_candidates()` with the zoomed table as `table`.
 #'
 #' @rdname dm_enum_fk_candidates
-#' @param zoomed_dm A `dm` with a zoomed table.
+#' @param dm_zoomed A `dm` with a zoomed table.
 #' @export
-enum_fk_candidates <- function(zoomed_dm, ref_table, ...) {
+enum_fk_candidates <- function(dm_zoomed, ref_table, ...) {
   check_dots_empty()
-  check_zoomed(zoomed_dm)
-  check_no_filter(zoomed_dm)
+  check_zoomed(dm_zoomed)
+  check_no_filter(dm_zoomed)
 
-  table_name <- orig_name_zoomed(zoomed_dm)
-  ref_table_name <- dm_tbl_name(zoomed_dm, {{ ref_table }})
+  table_name <- orig_name_zoomed(dm_zoomed)
+  ref_table_name <- dm_tbl_name(dm_zoomed, {{ ref_table }})
 
-  ref_tbl_pk <- dm_get_pk_impl(zoomed_dm, ref_table_name)
+  ref_tbl_pk <- dm_get_pk_impl(dm_zoomed, ref_table_name)
 
-  ref_tbl <- dm_get_tables_impl(zoomed_dm)[[ref_table_name]]
-  enum_fk_candidates_impl(table_name, tbl_zoomed(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk) %>%
+  ref_tbl <- dm_get_tables_impl(dm_zoomed)[[ref_table_name]]
+  enum_fk_candidates_impl(table_name, tbl_zoomed(dm_zoomed), ref_table_name, ref_tbl, ref_tbl_pk) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 }
@@ -536,11 +558,13 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     count(!!!t2_vals) %>%
     ungroup()
 
-  any_value_na_expr <- reduce(
-    syms(val_names[-1]),
-    ~ call("|", .x, call("is.na", .y)),
-    .init = call("is.na", sym(val_names[[1]]))
-  )
+  val_names_na_expr <- map(syms(val_names), ~ call("is.na", .x))
+  any_value_na_expr <- reduce(val_names_na_expr, ~ call("|", .x, .y))
+
+  # Work around weird bug in R 3.6 and before
+  if (getRversion() < "4.0" && inherits(t1_join, "tbl_lazy")) {
+    dbplyr::sql_render(t1_join)
+  }
 
   res_tbl <- tryCatch(
     t1_join %>%

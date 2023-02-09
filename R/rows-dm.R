@@ -113,6 +113,7 @@ NULL
 #' This operation requires primary keys on all tables, use `dm_rows_append()`
 #' to insert unconditionally.
 #' @rdname rows-dm
+#' @aliases dm_rows_...
 #' @export
 dm_rows_insert <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
@@ -188,25 +189,11 @@ dm_rows_delete <- function(x, y, ..., in_place = NULL, progress = NA) {
   dm_rows(x, y, "delete", top_down = FALSE, in_place, require_keys = TRUE, progress = progress)
 }
 
-#' dm_rows_truncate
-#'
-#' `dm_rows_truncate()` removes all records via [rows_truncate()],
-#' only for tables in `dm`.
-#' The order in which the tables are processed is reversed.
-#'
-#' @rdname rows-dm
-#' @export
-dm_rows_truncate <- function(x, y, ..., in_place = NULL, progress = NA) {
-  check_dots_empty()
-
-  dm_rows(x, y, "truncate", top_down = FALSE, in_place, require_keys = FALSE, progress = progress)
-}
-
 dm_rows <- function(x, y, operation_name, top_down, in_place, require_keys, progress = NA) {
   dm_rows_check(x, y)
 
   if (is_null(in_place)) {
-    message("Not persisting, use `in_place = FALSE` to turn off this message.")
+    inform("Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.")
     in_place <- FALSE
   }
 
@@ -261,27 +248,85 @@ get_dm_rows_op <- function(operation_name) {
   )
 }
 
-do_rows_insert <- function(x, y, by = NULL, ...) {
+do_rows_insert <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
+  stopifnot(is.null(autoinc_col))
   rows_insert(x, y, by = by, ..., conflict = "ignore")
 }
 
-do_rows_append <- function(x, y, by = NULL, ...) {
-  rows_append(x, y, ...)
+do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col = NULL) {
+  if (is.null(autoinc_col)) {
+    return(rows_append(x, y, ..., in_place = in_place))
+  }
+
+  # Assuming in-place append operation on dbplyr data source
+  stopifnot(inherits(x, "tbl_dbi"))
+  stopifnot(in_place)
+
+  # FIXME: optimize if unique key exists
+  returning <- sym(autoinc_col)
+  key_values <-
+    y %>%
+    select(!!returning) %>%
+    collect() %>%
+    pull()
+
+  if (anyDuplicated(key_values)) {
+    abort(paste0("Duplicate values for autoincrement primary key ", autoinc_col, "."))
+  }
+
+  autoinc_col_new <- paste0(autoinc_col, "_new")
+  if (length(key_values) == 0) {
+    return(tibble(
+      !!sym(autoinc_col) := integer(),
+      !!sym(autoinc_col_new) := integer(),
+    ))
+  }
+
+  source_rows <- map(key_values, ~ select(filter(y, !!returning == !!.x), -!!returning))
+
+  con <- dbplyr::remote_con(x)
+  target_name <- dbplyr::remote_name(x)
+  insert_queries <- map(source_rows, ~ dbplyr::sql_query_append(
+    con,
+    target_name,
+    .x,
+    returning_cols = autoinc_col
+  ))
+
+  autoinc_col_orig <- paste0(autoinc_col, "_orig")
+
+  insert_sql <- map_chr(insert_queries, dbplyr::sql_render)
+
+  # Run INSERT INTO queries, side effect!
+  # Must run queries individually, e.g. on Postgres:
+  # > WITH clause containing a data-modifying statement must be at the top level
+  insert_res <- map(insert_queries, ~ DBI::dbGetQuery(con, .x))
+
+  out <- tibble(
+    bind_rows(!!!insert_res),
+    !!sym(autoinc_col_orig) := !!key_values
+  )
+
+  set_names(out[2:1], c(autoinc_col, autoinc_col_new))
 }
 
-do_rows_update <- function(x, y, by = NULL, ...) {
+do_rows_update <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
+  stopifnot(is.null(autoinc_col))
   rows_update(x, y, by = by, ..., unmatched = "ignore")
 }
 
-do_rows_patch <- function(x, y, by = NULL, ...) {
+do_rows_patch <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
+  stopifnot(is.null(autoinc_col))
   rows_patch(x, y, by = by, ..., unmatched = "ignore")
 }
 
-do_rows_upsert <- function(x, y, by = NULL, ...) {
+do_rows_upsert <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
+  stopifnot(is.null(autoinc_col))
   rows_upsert(x, y, by = by, ...)
 }
 
-do_rows_delete <- function(x, y, by = NULL, ...) {
+do_rows_delete <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
+  stopifnot(is.null(autoinc_col))
   rows_delete(x, y, by = by, ..., unmatched = "ignore")
 }
 
@@ -300,7 +345,7 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
     if (!(all(tables %in% all_pks$table))) {
       abort(glue("`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys for all target tables."))
     }
-    keys <- deframe(dm_get_all_pks(x))[tables]
+    keys <- all_pks$pk_col[match(tables, all_pks$table)]
   } else {
     keys <- rep_along(tables, list(NULL))
   }
@@ -309,25 +354,45 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
 
   rows_op <- get_dm_rows_op(rows_op_name)
   ticker <- new_ticker(rows_op$pb_label, length(tables), progress)
-  # run operation(target_tbl, source_tbl, in_place = in_place) for each table
-  op_results <- pmap(
-    list(x = target_tbls, y = tbls, by = keys),
-    ticker(rows_op$fun),
-    in_place = in_place
-  )
+  op_ticker <- ticker(rows_op$fun)
 
-  if (identical(unname(op_results), unname(target_tbls))) {
-    out <- x
-  } else {
-    out <-
-      x %>%
-      dm_patch_tbl(!!!op_results)
+  if (!in_place) {
+    op_results <- target_tbls
+  }
+
+  # run operation(target_tbl, tbl, in_place = in_place) for each table
+  for (i in seq_along(tables)) {
+    table <- tables[[i]]
+    tbl <- tbls[[i]]
+
+    # FIXME: implement for in_place = FALSE
+    if (in_place && (rows_op_name == "append")) {
+      autoinc_col <- get_autoinc_col(x, table, colnames(tbl))
+    } else {
+      autoinc_col <- NULL
+    }
+
+    # Returns tibble if autoinc_col is set, `target_tbl` otherwise
+    res <- op_ticker(
+      target_tbls[[i]],
+      tbl,
+      by = keys[[i]],
+      in_place = in_place,
+      autoinc_col = autoinc_col
+    )
+
+    if (!is.null(autoinc_col)) {
+      tbls <- align_autoinc_fks(tbls, x, table, res)
+    } else if (!in_place) {
+      op_results[[i]] <- res
+    }
   }
 
   if (in_place) {
-    invisible(out)
+    invisible(x)
   } else {
-    out
+    x %>%
+      dm_patch_tbl(!!!op_results)
   }
 }
 
@@ -344,6 +409,64 @@ dm_patch_tbl <- function(dm, ...) {
   new_dm3(def)
 }
 
+get_autoinc_col <- function(x, table, cols) {
+  my_pk <- dm_get_all_pks_impl(x, table)
+  stopifnot(nrow(my_pk) %in% 0:1)
+
+  if (!isTRUE(my_pk$autoincrement)) {
+    return(NULL)
+  }
+
+  pk_col <- get_key_cols(my_pk$pk_col[[1]])
+  if (!(pk_col %in% cols)) {
+    return(NULL)
+  }
+
+  pk_col
+}
+
+align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
+  fks <- dm_get_all_fks_impl(target_dm, table)
+  fks_target <- fks[fks$child_table %in% names(tbls), ]
+
+  all_target_tables <- dm_get_tables(target_dm)[fks_target$child_table]
+  all_target_cols <- unique(unlist(map(all_target_tables, colnames)))
+
+  pk_col <- names(returning_rows)[[1]]
+  new_pk_col <- derive_temp_column_name(all_target_cols, pk_col)
+  names(returning_rows)[[2]] <- new_pk_col
+
+  # Structure: <pk_col>, <new_pk_col>
+  align_tbl <- dbplyr::copy_inline(dm_get_con(target_dm), returning_rows)
+
+  for (i in seq_along(fks_target$child_table)) {
+    child_table <- fks_target$child_table[[i]]
+    child_fk_col <- get_key_cols(fks_target$child_fk_cols[[i]])
+    tbl <- tbls[[child_table]]
+
+    if (child_fk_col %in% colnames(tbl)) {
+      tbls[[child_table]] <-
+        tbl %>%
+        left_join(align_tbl, by = vec_c(!!child_fk_col := pk_col)) %>%
+        select(-!!sym(child_fk_col), !!sym(child_fk_col) := sym(new_pk_col)) %>%
+        select(!!!colnames(tbl))
+    }
+  }
+
+  tbls
+}
+
+derive_temp_column_name <- function(tbl_names, base, suffix = "_new") {
+  new_name <- paste0(base, suffix)
+  tbl_names <- colnames(tbl)
+
+  repeat {
+    if (!(new_name %in% tbl_names)) {
+      return(new_name)
+    }
+    new_name <- paste0(new_name, "_")
+  }
+}
 
 # Errors ------------------------------------------------------------------
 

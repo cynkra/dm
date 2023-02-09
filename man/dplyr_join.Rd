@@ -2,31 +2,49 @@
 % Please edit documentation in R/dplyr.R
 \name{dplyr_join}
 \alias{dplyr_join}
-\alias{left_join.zoomed_dm}
-\alias{inner_join.zoomed_dm}
-\alias{full_join.zoomed_dm}
-\alias{right_join.zoomed_dm}
-\alias{semi_join.zoomed_dm}
-\alias{anti_join.zoomed_dm}
-\alias{nest_join.zoomed_dm}
+\alias{left_join.dm_zoomed}
+\alias{left_join.dm_keyed_tbl}
+\alias{inner_join.dm_zoomed}
+\alias{inner_join.dm_keyed_tbl}
+\alias{full_join.dm_zoomed}
+\alias{full_join.dm_keyed_tbl}
+\alias{right_join.dm_zoomed}
+\alias{right_join.dm_keyed_tbl}
+\alias{semi_join.dm_zoomed}
+\alias{semi_join.dm_keyed_tbl}
+\alias{anti_join.dm_zoomed}
+\alias{anti_join.dm_keyed_tbl}
+\alias{nest_join.dm_zoomed}
 \title{\pkg{dplyr} join methods for zoomed dm objects}
 \usage{
-\method{left_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+\method{left_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
 
-\method{inner_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+\method{left_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
 
-\method{full_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+\method{inner_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
 
-\method{right_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+\method{inner_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
 
-\method{semi_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+\method{full_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
 
-\method{anti_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+\method{full_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
 
-\method{nest_join}{zoomed_dm}(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...)
+\method{right_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{right_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
+
+\method{semi_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{semi_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ...)
+
+\method{anti_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{anti_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ...)
+
+\method{nest_join}{dm_zoomed}(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...)
 }
 \arguments{
-\item{x, y}{tbls to join. \code{x} is the \code{zoomed_dm} and \code{y} is another table in the \code{dm}.}
+\item{x, y}{tbls to join. \code{x} is the \code{dm_zoomed} and \code{y} is another table in the \code{dm}.}
 
 \item{by}{If left \code{NULL} (default), the join will be performed by via the foreign key relation that exists between the originally zoomed table (now \code{x})
 and the other table (\code{y}).
@@ -37,19 +55,19 @@ If you provide a value (for the syntax see \code{\link[dplyr:mutate-joins]{dplyr
 \item{suffix}{Disabled, since columns are disambiguated automatically if necessary, changing the column names to \code{table_name.column_name}.}
 
 \item{select}{Select a subset of the \strong{RHS-table}'s columns, the syntax being \code{select = c(col_1, col_2, col_3)} (unquoted or quoted).
-This argument is specific for the \code{join}-methods for \code{zoomed_dm}.
+This argument is specific for the \code{join}-methods for \code{dm_zoomed}.
 The table's \code{by} column(s) are automatically added if missing in the selection.}
 
 \item{...}{see \code{\link[dplyr:mutate-joins]{dplyr::join}}}
 
-\item{keep}{Should the join keys from both \code{x} and \code{y} be preserved in the
-output?}
+\item{keep}{Should the new list-column contain join keys? The default
+will preserve the join keys for inequality joins.}
 
-\item{name}{The name of the list column nesting joins create.
-If \code{NULL} the name of \code{y} is used.}
+\item{name}{The name of the list-column created by the join. If \code{NULL},
+the default, the name of \code{y} is used.}
 }
 \description{
-Use these methods without the '.zoomed_dm' suffix (see examples).
+Use these methods without the '.dm_zoomed' suffix (see examples).
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

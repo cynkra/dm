@@ -58,3 +58,66 @@ test_that("can upgrade zoomed from v2", {
     is_zoomed(dm)
   })
 })
+
+test_that("can upgrade from v3", {
+  if (FALSE) {
+    # TODO:
+    # - Run this code with a version of dm before the format change
+    # - Search for attr(x, "version") and change
+    saveRDS(dm_for_filter(), "tests/testthat/dm/v3.rds", version = 2)
+    saveRDS(dm_for_filter() %>% dm_zoom_to(tf_2), "tests/testthat/dm/v3_zoomed.rds", version = 2)
+  }
+
+  dm_v3 <- readRDS(test_path("dm/v3.rds"))
+  expect_snapshot({
+    def <- dm_get_def(dm_v3, quiet = TRUE)
+    def <- dm_get_def(dm_v3)
+    dm <- new_dm3(def)
+    dm_validate(dm)
+    is_zoomed(dm)
+    dm_get_all_uks(dm_v3)
+    dm_get_all_pks(dm_v3)
+    dm_get_all_fks(dm_v3)
+  })
+})
+
+test_that("can upgrade zoomed from v3", {
+  dm_v3_zoomed <- readRDS(test_path("dm/v3_zoomed.rds"))
+  expect_snapshot({
+    def <- dm_get_def(dm_v3_zoomed, quiet = TRUE)
+    def <- dm_get_def(dm_v3_zoomed)
+    dm <- new_dm3(def, zoomed = TRUE)
+    dm_validate(dm)
+    is_zoomed(dm)
+  })
+})
+
+test_that("can upgrade to v4", {
+  if (FALSE) {
+    saveRDS(dm_for_filter(), "tests/testthat/dm/v4.rds", version = 2)
+    saveRDS(dm_for_filter() %>% dm_zoom_to(tf_2), "tests/testthat/dm/v4_zoomed.rds", version = 2)
+  }
+
+  dm_v4 <- readRDS(test_path("dm/v4.rds"))
+  expect_snapshot({
+    def <- dm_get_def(dm_v4, quiet = TRUE)
+    def <- dm_get_def(dm_v4)
+    dm <- new_dm3(def)
+    dm_validate(dm)
+    is_zoomed(dm)
+    dm_get_all_uks(dm_v4)
+    dm_get_all_pks(dm_v4)
+    dm_get_all_fks(dm_v4)
+  })
+})
+
+test_that("can upgrade zoomed to v4", {
+  dm_v4_zoomed <- readRDS(test_path("dm/v4_zoomed.rds"))
+  expect_snapshot({
+    def <- dm_get_def(dm_v4_zoomed, quiet = TRUE)
+    def <- dm_get_def(dm_v4_zoomed)
+    dm <- new_dm3(def, zoomed = TRUE)
+    dm_validate(dm)
+    is_zoomed(dm)
+  })
+})

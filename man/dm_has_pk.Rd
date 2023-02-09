@@ -17,8 +17,6 @@ dm_has_pk(dm, table, ...)
 A logical value: \code{TRUE} if the given table has a primary key, \code{FALSE} otherwise.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{dm_has_pk()} checks if a given table has columns marked as its primary key.
 }
 \examples{
@@ -32,8 +30,11 @@ dm_nycflights13() \%>\%
 \seealso{
 Other primary key functions: 
 \code{\link{dm_add_pk}()},
+\code{\link{dm_add_uk}()},
 \code{\link{dm_get_all_pks}()},
+\code{\link{dm_get_all_uks}()},
 \code{\link{dm_rm_pk}()},
+\code{\link{dm_rm_uk}()},
 \code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}

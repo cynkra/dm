@@ -19,8 +19,6 @@ dm_rename_tbl(dm, ...)
 The input \code{dm} with tables renamed or removed.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{dm_select_tbl()} keeps the selected tables and their relationships,
 optionally renaming them.
 
@@ -35,7 +33,4 @@ dm_nycflights13() \%>\%
 dm_nycflights13() \%>\%
   dm_rename_tbl(ap = airports, fl = flights)
 \dontshow{\}) # examplesIf}
-}
-\seealso{
-\code{\link[=dm_rm_tbl]{dm_rm_tbl()}}
 }

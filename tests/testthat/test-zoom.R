@@ -11,7 +11,7 @@ test_that("dm_zoom_to() works", {
 
   expect_s3_class(
     dm_for_filter() %>% dm_zoom_to(tf_3),
-    c("zoomed_dm", "dm")
+    c("dm_zoomed", "dm")
   )
 })
 
@@ -26,13 +26,13 @@ test_that("dm_discard_zoomed() works", {
   )
 })
 
-test_that("print() and format() methods for subclass `zoomed_dm` work", {
+test_that("print() and format() methods for subclass `dm_zoomed` work", {
   expect_snapshot(
-    dm_for_filter() %>% dm_zoom_to(tf_5) %>% as_zoomed_df() %>% tbl_sum()
+    dm_for_filter() %>% dm_zoom_to(tf_5) %>% as_dm_zoomed_df() %>% tbl_sum()
   )
 
   expect_snapshot(
-    dm_for_filter() %>% dm_zoom_to(tf_2) %>% as_zoomed_df() %>% tbl_sum()
+    dm_for_filter() %>% dm_zoom_to(tf_2) %>% as_dm_zoomed_df() %>% tbl_sum()
   )
 })
 
@@ -67,7 +67,7 @@ test_that("dm_insert_zoomed() works", {
     dm_zoom_to(dm_for_filter(), tf_4) %>%
       dm_insert_zoomed("tf_4_new"),
     dm_for_filter() %>%
-      dm_add_tbl(tf_4_new = tf_4()) %>%
+      dm(tf_4_new = tf_4()) %>%
       dm_add_pk(tf_4_new, h) %>%
       dm_add_fk(tf_4_new, c(j, j1), tf_3) %>%
       dm_add_fk(tf_5, l, tf_4_new, on_delete = "cascade")
@@ -87,7 +87,7 @@ test_that("dm_insert_zoomed() works", {
       dm_insert_zoomed("tf_4", repair = "unique", quiet = TRUE),
     dm_for_filter() %>%
       dm_rename_tbl(tf_4...4 = tf_4) %>%
-      dm_add_tbl(tf_4...7 = tf_4()) %>%
+      dm(tf_4...7 = tf_4()) %>%
       dm_add_pk(tf_4...7, h) %>%
       dm_add_fk(tf_4...7, c(j, j1), tf_3) %>%
       dm_add_fk(tf_5, l, tf_4...7, on_delete = "cascade")
@@ -99,8 +99,8 @@ test_that("dm_update_tbl() works", {
   new_dm_for_filter <-
     dm_get_def(dm_for_filter()) %>%
     mutate(
-      zoom = if_else(table == "tf_6", list(tf_7()), NULL),
-      col_tracker_zoom = if_else(table == "tf_6", list(character()), NULL),
+      zoom = if_else(table == "tf_6", list(tf_7()), list(NULL)),
+      col_tracker_zoom = if_else(table == "tf_6", list(character()), list(NULL)),
     ) %>%
     new_dm3(zoomed = TRUE)
 
@@ -108,8 +108,8 @@ test_that("dm_update_tbl() works", {
   expect_equivalent_dm(
     dm_update_zoomed(new_dm_for_filter),
     dm_for_filter() %>%
-      dm_rm_tbl(tf_6) %>%
-      dm_add_tbl(tf_6 = tf_7())
+      dm_select_tbl(-tf_6) %>%
+      dm(tf_6 = tf_7())
   )
 })
 

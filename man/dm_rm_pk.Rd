@@ -4,7 +4,7 @@
 \alias{dm_rm_pk}
 \title{Remove a primary key}
 \usage{
-dm_rm_pk(dm, table = NULL, columns = NULL, ..., fail_fk = TRUE)
+dm_rm_pk(dm, table = NULL, columns = NULL, ..., fail_fk = NULL)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -18,32 +18,33 @@ Pass \code{NULL} (the default) to remove all matching keys.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{fail_fk}{Boolean: if \code{TRUE} (default), will throw an error
-if there are foreign keys addressing the primary key that is to be removed.}
+\item{fail_fk}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }
 \value{
 An updated \code{dm} without the indicated primary key(s).
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
-\code{dm_rm_pk()} removes one or more primary keys from a table and leaves the \code{\link{dm}} object otherwise unaltered.
-An error is thrown if no private key matches the selection criteria.
+If a table name is provided, \code{dm_rm_pk()} removes the primary key from this table and leaves the \code{\link{dm}} object otherwise unaltered.
+If no table is given, the \code{dm} is stripped of all primary keys at once.
+An error is thrown if no primary key matches the selection criteria.
 If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
 Foreign keys are never removed.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_rm_pk(airports, fail_fk = FALSE) \%>\%
+  dm_rm_pk(airports) \%>\%
   dm_draw()
 \dontshow{\}) # examplesIf}
 }
 \seealso{
 Other primary key functions: 
 \code{\link{dm_add_pk}()},
+\code{\link{dm_add_uk}()},
 \code{\link{dm_get_all_pks}()},
+\code{\link{dm_get_all_uks}()},
 \code{\link{dm_has_pk}()},
+\code{\link{dm_rm_uk}()},
 \code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}
