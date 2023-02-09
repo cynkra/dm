@@ -51,7 +51,7 @@ pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALS
     # sort packed cols in original order
     y_packed[[name_var_unique]] <- y_packed[[name_var_unique]][(names(y_local))]
   }
-  joined <- left_join(x, y_packed, by = by, copy = copy, keep = FALSE)
+  joined <- left_join(x, y_packed, by = by, copy = copy, keep = FALSE, multiple = "all")
   # overwrite existing column silently in x if collision, not very safe but consistent with dplyr::nest_join
   if (name_var %in% x_nms) {
     joined[[name_var]] <- NULL

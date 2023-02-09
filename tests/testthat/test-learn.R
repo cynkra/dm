@@ -37,7 +37,8 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     dm_db_learned,
     dm_for_filter()[order_of_deletion],
     # FIXME: Enable fetching of on_delete information
-    ignore_on_delete = TRUE
+    ignore_on_delete = TRUE,
+    ignore_autoincrement = TRUE
   )
 
   # learning without keys:
@@ -121,7 +122,8 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
 
   expect_equivalent_dm(
     dm_db_learned,
-    dm_for_disambiguate()[order_of_deletion]
+    dm_for_disambiguate()[order_of_deletion],
+    ignore_autoincrement = TRUE
   )
 
   # learning without keys:
@@ -258,7 +260,8 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
     dm_learned,
     dm_local_no_keys %>%
       dm_add_pk(test_1, b) %>%
-      dm_add_fk(test_2, c, test_1)
+      dm_add_fk(test_2, c, test_1),
+    ignore_autoincrement = TRUE
   )
 
   # learning without keys:
@@ -341,7 +344,8 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     dm_learned[c("test_1", "test_2")],
     dm_local_no_keys %>%
       dm_add_pk(test_1, b) %>%
-      dm_add_fk(test_2, c, test_1)
+      dm_add_fk(test_2, c, test_1),
+    ignore_autoincrement = TRUE
   )
 
   # learning without keys:
@@ -396,7 +400,7 @@ test_that("dm_meta() contents", {
 
   meta <- dm_meta(con_db, schema = schema_name)
 
-  constraints <- dm_examine_constraints(meta, progress = FALSE)
+  constraints <- dm_examine_constraints(meta, .progress = FALSE)
   expect_true(all(constraints$is_key))
 
   arrange_all_but_constraint_name <- function(.x) {

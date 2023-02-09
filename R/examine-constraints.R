@@ -120,7 +120,7 @@ kind_to_long <- function(kind) {
 
 check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
   pks <- bind_rows(
-    list(PK = dm_get_all_pks_impl(dm), UK = dm_get_all_uks_impl(dm)),
+    list(PK = dm_get_all_pks_impl(dm), UK = dm_get_all_uks_impl(dm) %>% rename(pk_col = uk_col) %>% select(-kind)),
     .id = "kind"
   ) %>%
     distinct(table, pk_col, .keep_all = TRUE)
@@ -163,7 +163,7 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
     left_join(tbl_is_pk, by = c("table", "column"))
 }
 
-check_fk_constraints <- function(dm, progress = NA, top_level_fun = top_level_fun) {
+check_fk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
   fks <- dm_get_all_fks_impl(dm)
   pts <- map(fks$parent_table, tbl_impl, dm = dm)
   cts <- map(fks$child_table, tbl_impl, dm = dm)
@@ -185,10 +185,4 @@ check_fk_constraints <- function(dm, progress = NA, top_level_fun = top_level_fu
       kind = "FK"
     ) %>%
     select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
-}
-
-dm_get_all_uks_impl <- function(dm) {
-  dm_get_all_fks_impl(dm) %>%
-    select(table = parent_table, pk_col = parent_key_cols) %>%
-    distinct()
 }
