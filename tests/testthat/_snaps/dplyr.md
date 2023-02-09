@@ -517,7 +517,7 @@
           pressure        visib    time_hour 
         "pressure"      "visib"  "time_hour" 
     Code
-      zoomed_comp_dm %>% left_join(flights) %>% nrow()
+      zoomed_comp_dm %>% left_join(flights, multiple = "all") %>% nrow()
     Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
@@ -531,7 +531,7 @@
     Output
       [1] 1800
     Code
-      zoomed_comp_dm %>% right_join(flights) %>% nrow()
+      zoomed_comp_dm %>% right_join(flights, multiple = "all") %>% nrow()
     Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
@@ -545,7 +545,7 @@
     Output
       [1] 1761
     Code
-      zoomed_comp_dm %>% inner_join(flights) %>% nrow()
+      zoomed_comp_dm %>% inner_join(flights, multiple = "all") %>% nrow()
     Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
@@ -559,7 +559,7 @@
     Output
       [1] 1761
     Code
-      zoomed_comp_dm %>% full_join(flights) %>% nrow()
+      zoomed_comp_dm %>% full_join(flights, multiple = "all") %>% nrow()
     Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
