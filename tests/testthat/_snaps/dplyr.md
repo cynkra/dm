@@ -517,7 +517,17 @@
           pressure        visib    time_hour 
         "pressure"      "visib"  "time_hour" 
     Code
-      zoomed_comp_dm %>% left_join(flights, multiple = "all") %>% nrow()
+      if (is_db(my_test_src())) {
+        zoomed_comp_dm %>% left_join(flights) %>% nrow()
+        zoomed_comp_dm %>% right_join(flights) %>% nrow()
+        zoomed_comp_dm %>% inner_join(flights) %>% nrow()
+        zoomed_comp_dm %>% full_join(flights) %>% nrow()
+      } else {
+        zoomed_comp_dm %>% left_join(flights, multiple = "all") %>% nrow()
+        zoomed_comp_dm %>% right_join(flights, multiple = "all") %>% nrow()
+        zoomed_comp_dm %>% inner_join(flights, multiple = "all") %>% nrow()
+        zoomed_comp_dm %>% full_join(flights, multiple = "all") %>% nrow()
+      }
     Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
@@ -528,11 +538,6 @@
         dm_rename(flights, month.flights = month) %>%
         dm_rename(flights, day.flights = day) %>%
         dm_rename(flights, hour.flights = hour)
-    Output
-      [1] 1800
-    Code
-      zoomed_comp_dm %>% right_join(flights, multiple = "all") %>% nrow()
-    Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
         dm_rename(weather, month.weather = month) %>%
@@ -542,11 +547,6 @@
         dm_rename(flights, month.flights = month) %>%
         dm_rename(flights, day.flights = day) %>%
         dm_rename(flights, hour.flights = hour)
-    Output
-      [1] 1761
-    Code
-      zoomed_comp_dm %>% inner_join(flights, multiple = "all") %>% nrow()
-    Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
         dm_rename(weather, month.weather = month) %>%
@@ -556,11 +556,6 @@
         dm_rename(flights, month.flights = month) %>%
         dm_rename(flights, day.flights = day) %>%
         dm_rename(flights, hour.flights = hour)
-    Output
-      [1] 1761
-    Code
-      zoomed_comp_dm %>% full_join(flights, multiple = "all") %>% nrow()
-    Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
         dm_rename(weather, month.weather = month) %>%
