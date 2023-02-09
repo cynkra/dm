@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 1.0.3.9009
+
+## Features
+
+- Breaking change: `dm_get_all_pks()`, `dm_get_all_fks()`, and `dm_get_all_uks()` require unquoted table names as input, for consistency with other parts of the API (#1741).
+
+## Breaking changes
+
+- Breaking change: `dm_get_all_pks()`, `dm_get_all_fks()`, and `dm_get_all_uks()` require unquoted table names as input, for consistency with other parts of the API (#1741).
+
+
 # dm 1.0.3.9008
 
 - Internal changes only.

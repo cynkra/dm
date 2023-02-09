@@ -517,7 +517,7 @@
           pressure        visib    time_hour 
         "pressure"      "visib"  "time_hour" 
     Code
-      zoomed_comp_dm %>% left_join(flights) %>% nrow()
+      zoomed_comp_dm %>% left_join(flights, multiple = "all") %>% nrow()
     Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
@@ -528,15 +528,10 @@
         dm_rename(flights, month.flights = month) %>%
         dm_rename(flights, day.flights = day) %>%
         dm_rename(flights, hour.flights = hour)
-    Condition
-      Warning in `left_join()`:
-      Each row in `x` is expected to match at most 1 row in `y`.
-      i Row 6 of `x` matches multiple rows.
-      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Output
       [1] 1800
     Code
-      zoomed_comp_dm %>% right_join(flights) %>% nrow()
+      zoomed_comp_dm %>% right_join(flights, multiple = "all") %>% nrow()
     Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
@@ -547,15 +542,10 @@
         dm_rename(flights, month.flights = month) %>%
         dm_rename(flights, day.flights = day) %>%
         dm_rename(flights, hour.flights = hour)
-    Condition
-      Warning in `right_join()`:
-      Each row in `x` is expected to match at most 1 row in `y`.
-      i Row 6 of `x` matches multiple rows.
-      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Output
       [1] 1761
     Code
-      zoomed_comp_dm %>% inner_join(flights) %>% nrow()
+      zoomed_comp_dm %>% inner_join(flights, multiple = "all") %>% nrow()
     Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
@@ -566,15 +556,10 @@
         dm_rename(flights, month.flights = month) %>%
         dm_rename(flights, day.flights = day) %>%
         dm_rename(flights, hour.flights = hour)
-    Condition
-      Warning in `inner_join()`:
-      Each row in `x` is expected to match at most 1 row in `y`.
-      i Row 6 of `x` matches multiple rows.
-      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Output
       [1] 1761
     Code
-      zoomed_comp_dm %>% full_join(flights) %>% nrow()
+      zoomed_comp_dm %>% full_join(flights, multiple = "all") %>% nrow()
     Message
       Renaming ambiguous columns: %>%
         dm_rename(weather, year.weather = year) %>%
@@ -585,11 +570,6 @@
         dm_rename(flights, month.flights = month) %>%
         dm_rename(flights, day.flights = day) %>%
         dm_rename(flights, hour.flights = hour)
-    Condition
-      Warning in `full_join()`:
-      Each row in `x` is expected to match at most 1 row in `y`.
-      i Row 6 of `x` matches multiple rows.
-      i If multiple matches are expected, set `multiple = "all"` to silence this warning.
     Output
       [1] 1800
     Code

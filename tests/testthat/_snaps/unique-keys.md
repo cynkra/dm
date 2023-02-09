@@ -191,7 +191,7 @@
       3 tf_4        j, j1         tf_3         f, f1           no_action
       4 tf_5        l             tf_4         h               cascade  
     Code
-      nyc_1_uk %>% dm_get_all_uks("flights")
+      nyc_1_uk %>% dm_get_all_uks(flights)
     Output
       # A tibble: 1 x 3
         table   uk_col                      kind       
@@ -205,7 +205,7 @@
         <chr>    <keys> <chr>
       1 airports faa    PK   
     Code
-      nyc_1_uk %>% dm_get_all_uks(c("airports", "weather", "flights", "airlines"))
+      nyc_1_uk %>% dm_get_all_uks(c(airports, weather, flights, airlines))
     Output
       # A tibble: 3 x 3
         table    uk_col                      kind       
@@ -213,6 +213,24 @@
       1 airports faa                         PK         
       2 airlines carrier                     PK         
       3 flights  year, month, ... (19 total) explicit UK
+    Code
+      nyc_1_uk %>% dm_get_all_uks(starts_with("a"))
+    Output
+      # A tibble: 2 x 3
+        table    uk_col  kind 
+        <chr>    <keys>  <chr>
+      1 airlines carrier PK   
+      2 airports faa     PK   
+    Code
+      nyc_1_uk %>% dm_get_all_uks(everything())
+    Output
+      # A tibble: 4 x 3
+        table    uk_col                      kind       
+        <chr>    <keys>                      <chr>      
+      1 airlines carrier                     PK         
+      2 airports faa                         PK         
+      3 planes   tailnum                     PK         
+      4 flights  year, month, ... (19 total) explicit UK
 
 ---
 
@@ -224,11 +242,13 @@
 
 ---
 
-    Table `timetable` not in `dm` object. Available table names: `airlines`, `airports`, `flights`, `planes`, `weather`.
+    Can't subset tables that don't exist.
+    x Table `timetable` doesn't exist.
 
 ---
 
-    Table `timetable`, `tabletime` not in `dm` object. Available table names: `airlines`, `airports`, `flights`, `planes`, `weather`.
+    Can't subset tables that don't exist.
+    x Table `timetable` doesn't exist.
 
 ---
 
