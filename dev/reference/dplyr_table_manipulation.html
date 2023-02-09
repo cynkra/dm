@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9009</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -187,7 +187,8 @@ Can be <code>NULL</code> or a variable:</p><ul><li><p>If <code>NULL</code> (the 
 <dt>name</dt>
 <dd><p>The name of the new column in the output.</p>
 <p>If omitted, it will default to <code>n</code>. If there's already a column called <code>n</code>,
-it will error, and require you to specify the name.</p></dd>
+it will use <code>nn</code>. If there's a column called <code>n</code> and <code>nn</code>, it'll use
+<code>nnn</code>, and so on, adding <code>n</code>s until it gets a new name.</p></dd>
 
 
 <dt>.drop</dt>

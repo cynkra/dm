@@ -36,7 +36,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9009</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,7 +109,7 @@
                         <h4 data-toc-skip class="author">Katharina
 Brunner</h4>
             
-            <h4 data-toc-skip class="date">2023-01-30</h4>
+            <h4 data-toc-skip class="date">2023-02-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-theory.Rmd</code></div>
@@ -283,7 +283,7 @@ building data models with multiple tables can save memory compared to
 storing data in single a data frame:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 469680 bytes</span></span>
+<span><span class="co">#&gt; 476256 bytes</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">nycflights13_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 108020824 bytes</span></span></code></pre></div>
@@ -309,13 +309,13 @@ compound key.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 4 × 2</span></span>
-<span><span class="co">#&gt;   table    pk_col           </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;    &lt;keys&gt;           </span></span>
-<span><span class="co">#&gt; 1 airlines carrier          </span></span>
-<span><span class="co">#&gt; 2 airports faa              </span></span>
-<span><span class="co">#&gt; 3 planes   tailnum          </span></span>
-<span><span class="co">#&gt; 4 weather  origin, time_hour</span></span></code></pre>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
+<span><span class="co">#&gt;   table    pk_col            autoincrement</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;keys&gt;            &lt;lgl&gt;        </span></span>
+<span><span class="co">#&gt; 1 airlines carrier           FALSE        </span></span>
+<span><span class="co">#&gt; 2 airports faa               FALSE        </span></span>
+<span><span class="co">#&gt; 3 planes   tailnum           FALSE        </span></span>
+<span><span class="co">#&gt; 4 weather  origin, time_hour FALSE</span></span></code></pre>
 <p><code><a href="../reference/dm_enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> checks suitability of each
 column to serve as a simple primary key:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
