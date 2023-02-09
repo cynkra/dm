@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 1.0.3.9008
-Date: 2023-01-14
+Version: 1.0.3.9009
+Date: 2023-02-02
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -52,7 +52,7 @@ Imports:
     backports,
     cli (>= 2.2.0),
     DBI,
-    dplyr (>= 1.0.9),
+    dplyr (>= 1.1.0),
     glue,
     igraph,
     lifecycle (>= 1.0.3),

@@ -166,7 +166,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' returns the tables and the respective primary key columns.
 #'
 #' @family primary key functions
-#' @param table One or more table names, as character vector,
+#' @param table One or more table names, unquoted,
 #'   to return primary key information for.
 #'   If given, primary keys are returned in that order.
 #'   The default `NULL` returns information for all tables.
@@ -186,7 +186,9 @@ dm_get_pk_impl <- function(dm, table_name) {
 dm_get_all_pks <- function(dm, table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
-  dm_get_all_pks_impl(dm, table)
+  table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
+  table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
+  dm_get_all_pks_impl(dm, table_names)
 }
 
 dm_get_all_pks_impl <- function(dm, table = NULL) {
@@ -202,9 +204,6 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 
   if (!is.null(table)) {
     idx <- match(table, def_sub$table)
-    if (anyNA(idx)) {
-      abort_table_not_in_dm(table[which(is.na(idx))], def$table)
-    }
     def_sub <- def_sub[match(table, def_sub$table), ]
   }
 

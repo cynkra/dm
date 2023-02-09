@@ -76,6 +76,8 @@ test_that("can upgrade from v3", {
     dm_validate(dm)
     is_zoomed(dm)
     dm_get_all_uks(dm_v3)
+    dm_get_all_pks(dm_v3)
+    dm_get_all_fks(dm_v3)
   })
 })
 
@@ -104,6 +106,8 @@ test_that("can upgrade to v4", {
     dm_validate(dm)
     is_zoomed(dm)
     dm_get_all_uks(dm_v4)
+    dm_get_all_pks(dm_v4)
+    dm_get_all_fks(dm_v4)
   })
 })
 

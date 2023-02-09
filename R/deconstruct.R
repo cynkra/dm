@@ -188,8 +188,10 @@ fks_df_from_keys_info <- function(tables) {
   parent_uuid_lookup <- set_names(uuid_lookup, paste0("parent_", names(uuid_lookup)))
 
   fks %>%
-    left_join(child_uuid_lookup, by = "child_uuid") %>%
-    left_join(parent_uuid_lookup, by = "parent_uuid") %>%
+    # Multiple tables with the same uuid can occur due to aliasing,
+    # hence `multiple = "all"`
+    left_join(child_uuid_lookup, by = "child_uuid", multiple = "all") %>%
+    left_join(parent_uuid_lookup, by = "parent_uuid", multiple = "all") %>%
     select(-child_uuid, -parent_uuid) %>%
     filter(map2_lgl(child_fk_cols, child_data, ~ all(.x %in% colnames(.y)))) %>%
     filter(map2_lgl(parent_key_cols, parent_data, ~ all(.x %in% colnames(.y)))) %>%

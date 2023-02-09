@@ -426,7 +426,7 @@ dm_patch_tbl <- function(dm, ...) {
 }
 
 get_autoinc_col <- function(x, table, cols) {
-  my_pk <- dm_get_all_pks(x, table)
+  my_pk <- dm_get_all_pks_impl(x, table)
   stopifnot(nrow(my_pk) %in% 0:1)
 
   if (!isTRUE(my_pk$autoincrement)) {
@@ -442,7 +442,7 @@ get_autoinc_col <- function(x, table, cols) {
 }
 
 align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
-  fks <- dm_get_all_fks(target_dm, table)
+  fks <- dm_get_all_fks_impl(target_dm, table)
   fks_target <- fks[fks$child_table %in% names(tbls), ]
 
   all_target_tables <- dm_get_tables(target_dm)[fks_target$child_table]
