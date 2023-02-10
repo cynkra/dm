@@ -700,6 +700,15 @@ nyc_comp %<--% {
 dm_zoomed <- function() dm_zoom_to(dm_for_filter(), tf_2)
 dm_zoomed_2 <- function() dm_zoom_to(dm_for_filter(), tf_3)
 
+dm_for_autoinc_1 %<-% {
+  dm(
+    t1 = tibble(a = 5:7, o = letters[1:3]),
+    t2 = tibble(c = 10:8, d = 7:5, o = letters[3:1]),
+    t3 = tibble(e = c(6L, 5L, 7L), o = letters[c(2, 1, 3)]),
+    t4 = tibble(g = 1:3, h = 8:10, o = letters[1:3])
+  )
+}
+
 # FIXME: regarding PR #313: everything below this line needs to be at least reconsidered if not just dumped.
 
 # for database tests -------------------------------------------------

@@ -1,14 +1,168 @@
-<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+<!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.1.9000
+# dm 1.0.3.9010
 
-## Bug fixes
+## Chore
 
-- Use `dm_ptype()` in `dm_gui()`, generate better code (#1353).
+- Fix r-devel builds (#1776).
+
+- Establish compatibility with dplyr 1.1.0 (#1771).
+
+## Testing
+
+- Restore database checks on GHA (#1751).
+
+
+# dm 1.0.3.9009
 
 ## Features
 
-- New `dm_deconstruct()` creates code to deconstruct a `dm` object into individual keyed tables via `pull_tbl(keyed = TRUE)` (#1354).
+- Breaking change: `dm_get_all_pks()`, `dm_get_all_fks()`, and `dm_get_all_uks()` require unquoted table names as input, for consistency with other parts of the API (#1741).
+
+## Breaking changes
+
+- Breaking change: `dm_get_all_pks()`, `dm_get_all_fks()`, and `dm_get_all_uks()` require unquoted table names as input, for consistency with other parts of the API (#1741).
+
+
+# dm 1.0.3.9008
+
+- Internal changes only.
+
+
+# dm 1.0.3.9007
+
+## Features
+
+- New `dm_add_uk()`, `dm_rm_uk()` and `dm_get_all_uks()` functions for explicit support of unique keys (#622, #1716).
+
+
+# dm 1.0.3.9006
+
+## Bug fixes
+
+- Correct error message if nonexisting table is passed to `dm_get_all_pks()` (#1740).
+
+
+# dm 1.0.3.9005
+
+## Continuous integration
+
+- Avoid oldrel-4.
+
+
+# dm 1.0.3.9004
+
+- Internal changes only.
+
+
+# dm 1.0.3.9003
+
+- Internal changes only.
+
+
+# dm 1.0.3.9002
+
+## Bug fixes
+
+- `dm_examine_constraints()` works for `dm` objects on the database with compound keys (#1713).
+
+## Chore
+
+- `dm_unpack_tbl()` sets PK before FK (#1715).
+
+- Clean up `dm_rows_append()` implementation (#1714).
+
+
+# dm 1.0.3.9001
+
+## Features
+
+- `dm_get_all_pks()` and `dm_get_all_fks()` keep order of `table` or `parent_table` argument (#1707).
+
+- Support AI PKs for dm_copy_to() for empty tables (ptype) (#1696).
+
+- Adapt dm structure to support autoincrement PKs (#1689).
+
+- Improve error message for `dm_add_pk()` when the `columns` argument is missing (#1644, #1646).
+
+## Chore
+
+- Accept dm tables that are tbl_sql but not tbl_dbi (#1695, #1710).
+
+- Use correctly typed missing value for lists (@DavisVaughan, #1686).
+
+- Require lifecycle >= 1.0.3 (#1637).
+
+## Continuous integration
+
+- Use `--no-multiarch` for Windows 3.6 tests.
+
+- Remove duplicate step in validate GHA (#1694).
+
+## Documentation
+
+- Fix link rot (#1671).
+
+## Uncategorized
+
+- Merge pull request #1698 from cynkra/1642-f-autoincrement-dm-rows-append.
+
+
+
+- Merge pull request #1640 from cynkra/docs-cynkra-pkgdown.
+
+
+
+- Harmonize yaml formatting.
+
+- Revert changes to matrix section.
+
+- Merged cran-1.0.3 into main.
+
+
+
+# dm 1.0.3.9000
+
+## Chore
+
+- Avoid running example without database connection.
+
+## Uncategorized
+
+- Merged cran-1.0.2 into main
+
+
+
+# dm 1.0.3
+
+## Chore
+
+- Avoid running example without database connection.
+
+
+# dm 1.0.2
+
+## Features
+
+- `dm_from_con()` can use multiple schemata (@mgirlich, #1441, #1449).
+
+- `pack_join(keep = TRUE)` preserves order of packed columns (#1513, #1514).
+
+- `pack_join(keep = TRUE)` keeps keys of `y` in the resulting packed column (#1451, #1452).
+
+- New `json_pack.tbl_lazy()` and `json_nest.tbl_lazy()` (#969, #975).
+
+## Bug fixes
+
+- `dm_paste()` gives correct output for factor columns with many levels (#1510, #1511).
+
+## Chore
+
+- Fix compatibility with duckdb 0.5.0 (#1509, #1518).
+
+- Refactor `dm_unwrap_tbl()` so it builds a "unwrap plan" first (#1446, #1447).
+
+- Reenable `dm_rows_update()` test (#1437).
 
 
 # dm 1.0.1

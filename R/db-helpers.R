@@ -51,6 +51,10 @@ is_duckdb <- function(dest) {
   inherits(dest, c("duckdb_connection", "src_duckdb_connection"))
 }
 
+is_sqlite <- function(dest) {
+  inherits(dest, "SQLiteConnection")
+}
+
 is_mssql <- function(dest) {
   inherits(dest, c(
     "Microsoft SQL Server", "src_Microsoft SQL Server", "dblogConnection-Microsoft SQL Server", "src_dblogConnection-Microsoft SQL Server"
@@ -125,7 +129,6 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
 
   if (!is.null(schema)) {
     check_param_class(schema, "character")
-    check_param_length(schema)
   }
 
   if (is_mssql(src)) {

@@ -26,7 +26,7 @@ test_that("waldo", {
   })
   expect_snapshot({
     dm %>%
-      dm_rm_pk(fail_fk = FALSE) %>%
+      dm_rm_pk() %>%
       waldo::compare(dm, max_diffs = 10)
   })
   expect_snapshot({

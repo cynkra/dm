@@ -28,7 +28,7 @@ vctrs::s3_register("knitr::knit_print", "grViz")
 options(cli.num_colors = 256)
 ```
 
-# [dm](https://cynkra.github.io/dm/)
+# [dm](https://dm.cynkra.com/)
 
 <!-- badges: start -->
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
@@ -70,7 +70,7 @@ dm also offers:
 - consistency and constraint checks to help you understand (and fix) the limitations of your data
 
 That's just the tip of the iceberg.
-See [Getting started](https://cynkra.github.io/dm/articles/dm.html) to hit the ground running and explore all the features.
+See [Getting started](https://dm.cynkra.com/articles/dm.html) to hit the ground running and explore all the features.
 
 
 ## Installation
@@ -104,7 +104,7 @@ devtools::install_github("cynkra/dm")
 
 ## Usage
 
-Create a dm object (see [Getting started](https://cynkra.github.io/dm/articles/dm.html) for details).
+Create a dm object (see [Getting started](https://dm.cynkra.com/articles/dm.html) for details).
 
 ```{r}
 library(dm)
@@ -142,7 +142,7 @@ dm %>%
   dm_examine_constraints()
 ```
 
-Learn more in the [Getting started](https://cynkra.github.io/dm/articles/dm.html) article.
+Learn more in the [Getting started](https://dm.cynkra.com/articles/dm.html) article.
 
 ## Getting help
 
@@ -163,5 +163,5 @@ Funded by:
 
 ---
 
-Please note that the 'dm' project is released with a [Contributor Code of Conduct](https://cynkra.github.io/dm/CODE_OF_CONDUCT.html).
+Please note that the 'dm' project is released with a [Contributor Code of Conduct](https://dm.cynkra.com/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.

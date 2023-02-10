@@ -1,12 +1,3 @@
-# Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?
-
-    Code
-      dm_from_con(con_db)[integer()]
-    Message
-      Keys queried successfully, use `learn_keys = TRUE` to mute this message.
-    Output
-      dm()
-
 # dm_meta() contents
 
     Code
@@ -393,16 +384,44 @@
     Code
       dm::dm_get_all_pks(my_dm)
     Output
-      # A tibble: 9 x 2
-        table     pk_col
-        <chr>     <keys>
-      1 accounts  id    
-      2 cards     id    
-      3 clients   id    
-      4 disps     id    
-      5 districts id    
-      6 loans     id    
-      7 orders    id    
-      8 tkeys     id    
-      9 trans     id    
+      # A tibble: 9 x 3
+        table     pk_col autoincrement
+        <chr>     <keys> <lgl>        
+      1 accounts  id     NA           
+      2 cards     id     NA           
+      3 clients   id     NA           
+      4 disps     id     NA           
+      5 districts id     NA           
+      6 loans     id     NA           
+      7 orders    id     NA           
+      8 tkeys     id     NA           
+      9 trans     id     NA           
+
+---
+
+    
+
+---
+
+    Code
+      dm::dm_get_all_fks(my_dm)
+    Output
+      # A tibble: 3 x 5
+        child_table child_fk_cols parent_table  parent_key_cols  on_delete
+        <chr>       <keys>        <chr>         <keys>           <chr>    
+      1 oseba       id_nesreca    nesreca       id_nesreca       no_action
+      2 nesreca     upravna_enota upravna_enota id_upravna_enota no_action
+      3 oseba       upravna_enota upravna_enota id_upravna_enota no_action
+
+---
+
+    Code
+      dm::dm_get_all_pks(my_dm)
+    Output
+      # A tibble: 3 x 3
+        table         pk_col             autoincrement
+        <chr>         <keys>             <lgl>        
+      1 ad            ts, ad_id, user_id NA           
+      2 nesreca       id_nesreca         NA           
+      3 upravna_enota id_upravna_enota   NA           
 

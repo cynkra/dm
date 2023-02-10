@@ -290,27 +290,51 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
   )
 
   # works, if by is given
-  expect_equivalent_tbl(
-    left_join(dm_zoomed(), tf_4, by = c("e" = "j")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
-    left_join(tf_2(), tf_4(), by = c("e" = "j"))
-  )
+  if (is_db(my_test_src())) {
+    expect_equivalent_tbl(
+      left_join(dm_zoomed(), tf_4, by = c("e" = "j")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+      left_join(tf_2(), tf_4(), by = c("e" = "j"))
+    )
 
-  expect_equivalent_tbl(
-    left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
-    left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"))
-  )
+    expect_equivalent_tbl(
+      left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+      left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"))
+    )
 
-  # explicitly select columns from RHS using argument `select`
-  expect_equivalent_tbl(
-    left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
-    left_join(tf_3(), select(tf_2(), c, e, e1), by = c("f" = "e", "f1" = "e1"))
-  )
+    # explicitly select columns from RHS using argument `select`
+    expect_equivalent_tbl(
+      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
+      left_join(tf_3(), select(tf_2(), c, e, e1), by = c("f" = "e", "f1" = "e1"))
+    )
 
-  # explicitly select and rename columns from RHS using argument `select`
-  expect_equivalent_tbl(
-    left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
-    left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"))
-  )
+    # explicitly select and rename columns from RHS using argument `select`
+    expect_equivalent_tbl(
+      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
+      left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"))
+    )
+  } else {
+    expect_equivalent_tbl(
+      left_join(dm_zoomed(), tf_4, by = c("e" = "j"), multiple = "all") %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+      left_join(tf_2(), tf_4(), by = c("e" = "j"), multiple = "all")
+    )
+
+    expect_equivalent_tbl(
+      left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1"), multiple = "all") %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+      left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"), multiple = "all")
+    )
+
+    # explicitly select columns from RHS using argument `select`
+    expect_equivalent_tbl(
+      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1), multiple = "all") %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
+      left_join(tf_3(), select(tf_2(), c, e, e1), by = c("f" = "e", "f1" = "e1"), multiple = "all")
+    )
+
+    # explicitly select and rename columns from RHS using argument `select`
+    expect_equivalent_tbl(
+      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1), multiple = "all") %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
+      left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"), multiple = "all")
+    )
+  }
 
   # a former FK-relation could not be tracked
   expect_dm_error(
@@ -355,19 +379,35 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
 test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
   skip_if_src("sqlite")
   # test RHS-by name collision
-  expect_equivalent_dm(
-    dm_for_filter() %>%
-      dm_rename(tf_2, "...1" = d) %>%
-      dm_zoom_to(tf_3) %>%
-      right_join(tf_2) %>%
-      dm_update_zoomed(),
-    dm_for_filter() %>%
-      dm_zoom_to(tf_3) %>%
-      right_join(tf_2) %>%
-      dm_update_zoomed() %>%
-      dm_rename(tf_3, "...1" = d) %>%
-      dm_rename(tf_2, "...1" = d)
-  )
+  if (is_db(my_test_src())) {
+    expect_equivalent_dm(
+      dm_for_filter() %>%
+        dm_rename(tf_2, "...1" = d) %>%
+        dm_zoom_to(tf_3) %>%
+        right_join(tf_2) %>%
+        dm_update_zoomed(),
+      dm_for_filter() %>%
+        dm_zoom_to(tf_3) %>%
+        right_join(tf_2) %>%
+        dm_update_zoomed() %>%
+        dm_rename(tf_3, "...1" = d) %>%
+        dm_rename(tf_2, "...1" = d)
+    )
+  } else {
+    expect_equivalent_dm(
+      dm_for_filter() %>%
+        dm_rename(tf_2, "...1" = d) %>%
+        dm_zoom_to(tf_3) %>%
+        right_join(tf_2, multiple = "all") %>%
+        dm_update_zoomed(),
+      dm_for_filter() %>%
+        dm_zoom_to(tf_3) %>%
+        right_join(tf_2, multiple = "all") %>%
+        dm_update_zoomed() %>%
+        dm_rename(tf_3, "...1" = d) %>%
+        dm_rename(tf_2, "...1" = d)
+    )
+  }
 })
 
 test_that("basic test: 'join()'-methods for `dm` throws error", {
@@ -830,19 +870,19 @@ test_that("output for compound keys", {
 
     # left_join()
     zoomed_comp_dm %>%
-      left_join(flights) %>%
+      left_join(flights, multiple = "all") %>%
       nrow()
     # right_join()
     zoomed_comp_dm %>%
-      right_join(flights) %>%
+      right_join(flights, multiple = "all") %>%
       nrow()
     # inner_join()
     zoomed_comp_dm %>%
-      inner_join(flights) %>%
+      inner_join(flights, multiple = "all") %>%
       nrow()
     # full_join()
     zoomed_comp_dm %>%
-      full_join(flights) %>%
+      full_join(flights, multiple = "all") %>%
       nrow()
     # semi_join()
     zoomed_comp_dm %>%

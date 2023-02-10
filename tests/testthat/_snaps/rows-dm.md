@@ -77,9 +77,8 @@
       dm_filter_rearranged <- dm_for_filter() %>% dm_select(tf_2, d, everything()) %>%
         dm_select(tf_4, i, everything()) %>% dm_select(tf_5, l, m, everything())
       suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_filter_rearranged))
-      dm_update_local <- dm(tf_1 = tibble(a = 2L, b = "q"), tf_2 = tibble(c = c(
-        "worm"), d = 10L, ), tf_4 = tibble(h = "e", i = "sieben", ), tf_5 = tibble(k = 3L,
-        m = "tree", ), )
+      dm_update_local <- dm(tf_1 = tibble(a = 2L, b = "q"), tf_4 = tibble(h = "e", i = "sieben",
+        ), tf_5 = tibble(k = 3L, ww = 3, ), )
       dm_update_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_update_local))
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
@@ -101,9 +100,9 @@
       1     2 elephant D         4
       2     3 lion     E         5
       3     4 seal     F         6
-      4     6 dog      E         5
-      5     7 cat      F         6
-      6    10 worm     G         7
+      4     5 worm     G         7
+      5     6 dog      E         5
+      6     7 cat      F         6
     Code
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
@@ -124,9 +123,9 @@
       1     2 elephant D         4
       2     3 lion     E         5
       3     4 seal     F         6
-      4     6 dog      E         5
-      5     7 cat      F         6
-      6    10 worm     G         7
+      4     5 worm     G         7
+      5     6 dog      E         5
+      6     7 cat      F         6
     Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
@@ -218,9 +217,9 @@
       1     2 elephant D         4
       2     3 lion     E         5
       3     4 seal     F         6
-      4     6 dog      E         5
-      5     7 cat      F         6
-      6    10 worm     G         7
+      4     5 worm     G         7
+      5     6 dog      E         5
+      6     7 cat      F         6
       
       $tf_3
          f        f1 g    
@@ -250,7 +249,7 @@
         <chr> <chr>      <int> <int>
       1 b     house          2     1
       2 c     tree           2     2
-      3 d     tree           2     3
+      3 d     streetlamp     3     3
       4 e     streetlamp     2     4
       
       $tf_6
@@ -441,4 +440,107 @@
       4     1 streetlamp h    
       5     1 tree       f    
       
+
+# dm_rows_append() works with autoincrement PKs and FKS for selected DBs
+
+    Code
+      local_dm$t1
+    Output
+      # A tibble: 3 x 2
+            a o    
+        <int> <chr>
+      1     5 a    
+      2     6 b    
+      3     7 c    
+    Code
+      local_dm$t2
+    Output
+      # A tibble: 3 x 3
+            c     d o    
+        <int> <int> <chr>
+      1    10     7 c    
+      2     9     6 b    
+      3     8     5 a    
+    Code
+      local_dm$t3
+    Output
+      # A tibble: 3 x 2
+            e o    
+        <int> <chr>
+      1     6 b    
+      2     5 a    
+      3     7 c    
+    Code
+      local_dm$t4
+    Output
+      # A tibble: 3 x 3
+            g     h o    
+        <int> <int> <chr>
+      1     1     8 a    
+      2     2     9 b    
+      3     3    10 c    
+    Code
+      filled_dm$t1
+    Output
+      # A tibble: 3 x 2
+            a o    
+        <int> <chr>
+      1     5 a    
+      2     6 b    
+      3     7 c    
+    Code
+      filled_dm$t2
+    Output
+      # A tibble: 3 x 3
+            c     d o    
+        <int> <int> <chr>
+      1    10     7 c    
+      2     9     6 b    
+      3     8     5 a    
+    Code
+      filled_dm$t3
+    Output
+      # A tibble: 0 x 2
+      # ... with 2 variables: e <int>, o <chr>
+    Code
+      filled_dm$t4
+    Output
+      # A tibble: 3 x 3
+            g     h o    
+        <int> <int> <chr>
+      1    NA     8 a    
+      2    NA     9 b    
+      3    NA    10 c    
+    Code
+      filled_dm_in_place$t1
+    Output
+      # A tibble: 3 x 2
+            a o    
+        <int> <chr>
+      1     1 a    
+      2     2 b    
+      3     3 c    
+    Code
+      filled_dm_in_place$t2
+    Output
+      # A tibble: 3 x 3
+            c     d o    
+        <int> <int> <chr>
+      1     1     3 c    
+      2     2     2 b    
+      3     3     1 a    
+    Code
+      filled_dm_in_place$t3
+    Output
+      # A tibble: 0 x 2
+      # ... with 2 variables: e <int>, o <chr>
+    Code
+      filled_dm_in_place$t4
+    Output
+      # A tibble: 3 x 3
+            g     h o    
+        <int> <int> <chr>
+      1     1     3 a    
+      2     2     2 b    
+      3     3     1 c    
 
