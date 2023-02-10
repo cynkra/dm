@@ -1,4 +1,17 @@
-<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+<!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
+
+# dm 1.0.3.9010
+
+## Chore
+
+- Fix r-devel builds (#1776).
+
+- Establish compatibility with dplyr 1.1.0 (#1771).
+
+## Testing
+
+- Restore database checks on GHA (#1751).
+
 
 # dm 1.0.3.9009
 
