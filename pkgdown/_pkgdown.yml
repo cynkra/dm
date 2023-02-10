@@ -1,4 +1,5 @@
-url: https://cynkra.github.io/dm
+url: https://dm.cynkra.com/
+
 template:
   assets: pkgdown/assets
   package: cynkratemplate
