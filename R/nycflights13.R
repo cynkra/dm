@@ -38,7 +38,7 @@ dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, com
     airports <- data$airports
     planes <- data$planes
   } else {
-    rlang::is_installed("nycflights13")
+    check_suggested("nycflights13", use = TRUE)
 
     flights <- nycflights13::flights
     weather <- nycflights13::weather

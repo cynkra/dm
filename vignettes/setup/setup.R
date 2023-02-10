@@ -1,12 +1,6 @@
-are_suggested_pkgs_needed_for_vignettes_available <- function() {
-  pkgs_needed_for_vignettes <- c("tidyverse")
-  all(purrr::map_lgl(pkgs_needed_for_vignettes, rlang::is_installed))
-}
-
 default_eval <- function() {
-  are_suggested_pkgs_needed_for_vignettes_available() &&
-    ((Sys.getenv("IN_PKGDOWN") != "") || # Only build vignettes in pkgdown for now
-    grepl("^cran-", Sys.getenv("GITHUB_HEAD_REF")))
+  # Only build vignettes in pkgdown for now
+  (Sys.getenv("IN_PKGDOWN") != "") || grepl("^cran-", Sys.getenv("GITHUB_HEAD_REF"))
 }
 
 knitr::opts_chunk$set(
@@ -35,7 +29,7 @@ input <- readLines(knitr::current_input())
 if (rlang::has_length(grep('^library[(]"?dm"?[)]', input))) {
   library(dm)
 }
-if (rlang::has_length(grep('^library[(]"?tidyverse"?[)]', input)) && rlang::is_installed("tidyverse")) {
+if (rlang::has_length(grep('^library[(]"?tidyverse"?[)]', input))) {
   library(tidyverse)
 }
 if (rlang::has_length(grep('^library[(]"?dplyr"?[)]', input))) {
