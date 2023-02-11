@@ -74,128 +74,36 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.4" id="dm-104">dm 1.0.4<a class="anchor" aria-label="anchor" href="#dm-104"></a></h2>
 <div class="section level3">
-<h3 id="chore-1-0-4">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-4"></a></h3>
-<ul><li>Make sure <a href="https://dm.cynkra.com/">dm</a> passes “noSuggests” workflow (<a href="https://github.com/cynkra/dm/issues/1659" class="external-link">#1659</a>).</li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.3.9011" id="dm-1039011">dm 1.0.3.9011<a class="anchor" aria-label="anchor" href="#dm-1039011"></a></h2>
-<div class="section level3">
-<h3 id="documentation-1-0-3-9011">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-3-9011"></a></h3>
-<ul><li>Update pkgdown URL (<a href="https://github.com/cynkra/dm/issues/1652" class="external-link">#1652</a>).</li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.3.9010" id="dm-1039010">dm 1.0.3.9010<a class="anchor" aria-label="anchor" href="#dm-1039010"></a></h2>
-<div class="section level3">
-<h3 id="chore-1-0-3-9010">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-3-9010"></a></h3>
-<ul><li><p>Fix r-devel builds (<a href="https://github.com/cynkra/dm/issues/1776" class="external-link">#1776</a>).</p></li>
-<li><p>Establish compatibility with dplyr 1.1.0 (<a href="https://github.com/cynkra/dm/issues/1771" class="external-link">#1771</a>).</p></li>
+<h3 id="features-1-0-4">Features<a class="anchor" aria-label="anchor" href="#features-1-0-4"></a></h3>
+<ul><li><p><code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> gains <code>autoincrement</code> argument (<a href="https://github.com/cynkra/dm/issues/1689" class="external-link">#1689</a>), autoincrement primary keys are configured on the database with <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> (<a href="https://github.com/cynkra/dm/issues/1696" class="external-link">#1696</a>).</p></li>
+<li><p>New <code><a href="../reference/dm_add_uk.html">dm_add_uk()</a></code>, <code><a href="../reference/dm_rm_uk.html">dm_rm_uk()</a></code> and <code><a href="../reference/dm_get_all_uks.html">dm_get_all_uks()</a></code> functions for explicit support of unique keys (<a href="https://github.com/cynkra/dm/issues/622" class="external-link">#622</a>, <a href="https://github.com/cynkra/dm/issues/1716" class="external-link">#1716</a>).</p></li>
+<li><p><code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code> and <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code> return output in the order of <code>table</code> or <code>parent_table</code> argument (<a href="https://github.com/cynkra/dm/issues/1707" class="external-link">#1707</a>).</p></li>
+<li><p>Improve error message for <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> when the <code>columns</code> argument is missing (<a href="https://github.com/cynkra/dm/issues/1644" class="external-link">#1644</a>, <a href="https://github.com/cynkra/dm/issues/1646" class="external-link">#1646</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="testing-1-0-3-9010">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-3-9010"></a></h3>
-<ul><li>Restore database checks on GHA (<a href="https://github.com/cynkra/dm/issues/1751" class="external-link">#1751</a>).</li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.3.9009" id="dm-1039009">dm 1.0.3.9009<a class="anchor" aria-label="anchor" href="#dm-1039009"></a></h2>
-<div class="section level3">
-<h3 id="features-1-0-3-9009">Features<a class="anchor" aria-label="anchor" href="#features-1-0-3-9009"></a></h3>
-<ul><li>Breaking change: <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>, <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>, and <code><a href="../reference/dm_get_all_uks.html">dm_get_all_uks()</a></code> require unquoted table names as input, for consistency with other parts of the API (<a href="https://github.com/cynkra/dm/issues/1741" class="external-link">#1741</a>).</li>
+<h3 id="breaking-changes-1-0-4">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-4"></a></h3>
+<ul><li>
+<code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>, <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>, and <code><a href="../reference/dm_get_all_uks.html">dm_get_all_uks()</a></code> require unquoted table names as input, for consistency with other parts of the API (<a href="https://github.com/cynkra/dm/issues/1741" class="external-link">#1741</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="breaking-changes-1-0-3-9009">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-3-9009"></a></h3>
-<ul><li>Breaking change: <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>, <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>, and <code><a href="../reference/dm_get_all_uks.html">dm_get_all_uks()</a></code> require unquoted table names as input, for consistency with other parts of the API (<a href="https://github.com/cynkra/dm/issues/1741" class="external-link">#1741</a>).</li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.3.9008" id="dm-1039008">dm 1.0.3.9008<a class="anchor" aria-label="anchor" href="#dm-1039008"></a></h2>
-<ul><li>Internal changes only.</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.3.9007" id="dm-1039007">dm 1.0.3.9007<a class="anchor" aria-label="anchor" href="#dm-1039007"></a></h2>
-<div class="section level3">
-<h3 id="features-1-0-3-9007">Features<a class="anchor" aria-label="anchor" href="#features-1-0-3-9007"></a></h3>
-<ul><li>New <code><a href="../reference/dm_add_uk.html">dm_add_uk()</a></code>, <code><a href="../reference/dm_rm_uk.html">dm_rm_uk()</a></code> and <code><a href="../reference/dm_get_all_uks.html">dm_get_all_uks()</a></code> functions for explicit support of unique keys (<a href="https://github.com/cynkra/dm/issues/622" class="external-link">#622</a>, <a href="https://github.com/cynkra/dm/issues/1716" class="external-link">#1716</a>).</li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.3.9006" id="dm-1039006">dm 1.0.3.9006<a class="anchor" aria-label="anchor" href="#dm-1039006"></a></h2>
-<div class="section level3">
-<h3 id="bug-fixes-1-0-3-9006">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-3-9006"></a></h3>
-<ul><li>Correct error message if nonexisting table is passed to <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code> (<a href="https://github.com/cynkra/dm/issues/1740" class="external-link">#1740</a>).</li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.3.9005" id="dm-1039005">dm 1.0.3.9005<a class="anchor" aria-label="anchor" href="#dm-1039005"></a></h2>
-<div class="section level3">
-<h3 id="continuous-integration-1-0-3-9005">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-3-9005"></a></h3>
-<ul><li>Avoid oldrel-4.</li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.3.9004" id="dm-1039004">dm 1.0.3.9004<a class="anchor" aria-label="anchor" href="#dm-1039004"></a></h2>
-<ul><li>Internal changes only.</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.3.9003" id="dm-1039003">dm 1.0.3.9003<a class="anchor" aria-label="anchor" href="#dm-1039003"></a></h2>
-<ul><li>Internal changes only.</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.3.9002" id="dm-1039002">dm 1.0.3.9002<a class="anchor" aria-label="anchor" href="#dm-1039002"></a></h2>
-<div class="section level3">
-<h3 id="bug-fixes-1-0-3-9002">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-3-9002"></a></h3>
+<h3 id="bug-fixes-1-0-4">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-4"></a></h3>
 <ul><li>
 <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> works for <code>dm</code> objects on the database with compound keys (<a href="https://github.com/cynkra/dm/issues/1713" class="external-link">#1713</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="chore-1-0-3-9002">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-3-9002"></a></h3>
-<ul><li><p><code><a href="../reference/dm_unpack_tbl.html">dm_unpack_tbl()</a></code> sets PK before FK (<a href="https://github.com/cynkra/dm/issues/1715" class="external-link">#1715</a>).</p></li>
+<h3 id="documentation-1-0-4">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-4"></a></h3>
+<ul><li><p>Update pkgdown URL to <a href="https://dm.cynkra.com/" class="uri">https://dm.cynkra.com/</a> (<a href="https://github.com/cynkra/dm/issues/1652" class="external-link">#1652</a>).</p></li>
+<li><p>Fix link rot (<a href="https://github.com/cynkra/dm/issues/1671" class="external-link">#1671</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="internal-1-0-4">Internal<a class="anchor" aria-label="anchor" href="#internal-1-0-4"></a></h3>
+<ul><li><p>Require dplyr &gt;= 1.1.0 and lifecycle &gt;= 1.0.3 (<a href="https://github.com/cynkra/dm/issues/1771" class="external-link">#1771</a>, <a href="https://github.com/cynkra/dm/issues/1637" class="external-link">#1637</a>).</p></li>
+<li><p>Checks pass if all suggested packages are missing (<a href="https://github.com/cynkra/dm/issues/1659" class="external-link">#1659</a>).</p></li>
+<li><p>Fix r-devel builds (<a href="https://github.com/cynkra/dm/issues/1776" class="external-link">#1776</a>).</p></li>
+<li><p><code><a href="../reference/dm_unpack_tbl.html">dm_unpack_tbl()</a></code> sets PK before FK (<a href="https://github.com/cynkra/dm/issues/1715" class="external-link">#1715</a>).</p></li>
 <li><p>Clean up <code><a href="../reference/rows-dm.html">dm_rows_append()</a></code> implementation (<a href="https://github.com/cynkra/dm/issues/1714" class="external-link">#1714</a>).</p></li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.3.9001" id="dm-1039001">dm 1.0.3.9001<a class="anchor" aria-label="anchor" href="#dm-1039001"></a></h2>
-<div class="section level3">
-<h3 id="features-1-0-3-9001">Features<a class="anchor" aria-label="anchor" href="#features-1-0-3-9001"></a></h3>
-<ul><li><p><code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code> and <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code> keep order of <code>table</code> or <code>parent_table</code> argument (<a href="https://github.com/cynkra/dm/issues/1707" class="external-link">#1707</a>).</p></li>
-<li><p>Support AI PKs for dm_copy_to() for empty tables (ptype) (<a href="https://github.com/cynkra/dm/issues/1696" class="external-link">#1696</a>).</p></li>
-<li><p>Adapt dm structure to support autoincrement PKs (<a href="https://github.com/cynkra/dm/issues/1689" class="external-link">#1689</a>).</p></li>
-<li><p>Improve error message for <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> when the <code>columns</code> argument is missing (<a href="https://github.com/cynkra/dm/issues/1644" class="external-link">#1644</a>, <a href="https://github.com/cynkra/dm/issues/1646" class="external-link">#1646</a>).</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="chore-1-0-3-9001">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-3-9001"></a></h3>
-<ul><li><p>Accept dm tables that are tbl_sql but not tbl_dbi (<a href="https://github.com/cynkra/dm/issues/1695" class="external-link">#1695</a>, <a href="https://github.com/cynkra/dm/issues/1710" class="external-link">#1710</a>).</p></li>
+<li><p><code><a href="../reference/dm.html">dm()</a></code> accepts tables that are of class <code>"tbl_sql"</code> but not <code>"tbl_dbi"</code> (<a href="https://github.com/cynkra/dm/issues/1695" class="external-link">#1695</a>, <a href="https://github.com/cynkra/dm/issues/1710" class="external-link">#1710</a>).</p></li>
 <li><p>Use correctly typed missing value for lists (<a href="https://github.com/DavisVaughan" class="external-link">@DavisVaughan</a>, <a href="https://github.com/cynkra/dm/issues/1686" class="external-link">#1686</a>).</p></li>
-<li><p>Require lifecycle &gt;= 1.0.3 (<a href="https://github.com/cynkra/dm/issues/1637" class="external-link">#1637</a>).</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="continuous-integration-1-0-3-9001">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-3-9001"></a></h3>
-<ul><li><p>Use <code>--no-multiarch</code> for Windows 3.6 tests.</p></li>
-<li><p>Remove duplicate step in validate GHA (<a href="https://github.com/cynkra/dm/issues/1694" class="external-link">#1694</a>).</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="documentation-1-0-3-9001">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-3-9001"></a></h3>
-<ul><li>Fix link rot (<a href="https://github.com/cynkra/dm/issues/1671" class="external-link">#1671</a>).</li>
-</ul></div>
-<div class="section level3">
-<h3 id="uncategorized-1-0-3-9001">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-3-9001"></a></h3>
-<ul><li><p>Merge pull request <a href="https://github.com/cynkra/dm/issues/1698" class="external-link">#1698</a> from cynkra/1642-f-autoincrement-dm-rows-append.</p></li>
-<li><p>Merge pull request <a href="https://github.com/cynkra/dm/issues/1640" class="external-link">#1640</a> from cynkra/docs-cynkra-pkgdown.</p></li>
-<li><p>Harmonize yaml formatting.</p></li>
-<li><p>Revert changes to matrix section.</p></li>
-<li><p>Merged cran-1.0.3 into main.</p></li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.3.9000" id="dm-1039000">dm 1.0.3.9000<a class="anchor" aria-label="anchor" href="#dm-1039000"></a></h2>
-<div class="section level3">
-<h3 id="chore-1-0-3-9000">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-3-9000"></a></h3>
-<ul><li>Avoid running example without database connection.</li>
-</ul></div>
-<div class="section level3">
-<h3 id="uncategorized-1-0-3-9000">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-3-9000"></a></h3>
-<ul><li>Merged cran-1.0.2 into main</li>
 </ul></div>
 </div>
     <div class="section level2">
