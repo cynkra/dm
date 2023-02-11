@@ -172,8 +172,8 @@
       
       $fks
       # A tibble: 0 x 5
-      # ... with 5 variables: child_table <chr>, child_fk_cols <keys>,
-      #   parent_table <chr>, parent_key_cols <keys>, on_delete <chr>
+      # * 5 variables: child_table <chr>, child_fk_cols <keys>, parent_table <chr>,
+      #   parent_key_cols <keys>, on_delete <chr>
       
 
 # dm_enum_fk_candidates() works as intended?
