@@ -26,7 +26,7 @@ even after data transformations,
 and can be converted back to a dm object with \code{\link[=dm]{dm()}}.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm <- dm_nycflights13()
 dm_deconstruct(dm)
 airlines <- pull_tbl(dm, "airlines", keyed = TRUE)

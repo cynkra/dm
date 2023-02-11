@@ -23,8 +23,6 @@ test_that("`new_fks_out()` generates expected tibble", {
 })
 
 test_that("`new_keyed_tbl()` generates expected output", {
-  skip_if_not_installed("nycflights13")
-
   expect_snapshot({
     dm <- dm_nycflights13(cycle = TRUE)
 
@@ -52,8 +50,6 @@ test_that("`new_keyed_tbl()` generates expected output", {
 })
 
 test_that("dm_get_keyed_tables_impl()", {
-  skip_if_not_installed("nycflights13")
-
   withr::local_seed(20220715)
 
   expect_snapshot({
@@ -66,8 +62,6 @@ test_that("dm_get_keyed_tables_impl()", {
 
 
 test_that("`new_keyed_tbl()` formatting", {
-  skip_if_not_installed("nycflights13")
-
   expect_snapshot({
     keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "flights")
     keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
@@ -78,8 +72,6 @@ test_that("`new_keyed_tbl()` formatting", {
 # subsetting ----------------------------------
 
 test_that("both subsetting operators for `dm` produce the same object", {
-  skip_if_not_installed("nycflights13")
-
   dm <- dm_nycflights13(cycle = TRUE)
 
   expect_equal(dm$airlines, dm[["airlines"]])
@@ -87,8 +79,6 @@ test_that("both subsetting operators for `dm` produce the same object", {
 })
 
 test_that("subsetting `dm` produces `dm_keyed_tbl` objects", {
-  skip_if_not_installed("nycflights13")
-
   dm <- dm_nycflights13(cycle = TRUE)
 
   skip("keyed = TRUE")
@@ -101,8 +91,6 @@ test_that("subsetting `dm` produces `dm_keyed_tbl` objects", {
 # constructors ----------------------------------
 
 test_that("`dm()` and `new_dm()` can handle a list of `dm_keyed_tbl` objects", {
-  skip_if_not_installed("nycflights13")
-
   dm <- dm_nycflights13(cycle = TRUE)
 
   y1 <- keyed_tbl_impl(dm, "weather") %>%
@@ -457,8 +445,6 @@ test_that("semi_join()", {
 # arrange ----------------------------------
 
 test_that("arrange for keyed tables produces expected output", {
-  skip_if_not_installed("nycflights13")
-
   dm <- dm_nycflights13(cycle = TRUE)
 
   expect_snapshot({
@@ -469,8 +455,6 @@ test_that("arrange for keyed tables produces expected output", {
 # group_by ----------------------------------
 
 test_that("group_by for keyed tables produces expected output", {
-  skip_if_not_installed("nycflights13")
-
   expect_snapshot({
     dm <- dm_nycflights13(cycle = TRUE)
 
@@ -486,8 +470,6 @@ test_that("group_by for keyed tables produces expected output", {
 # summarize ----------------------------------
 
 test_that("summarize for keyed tables produces expected output", {
-  skip_if_not_installed("nycflights13")
-
   # FIXME: Brittle tests?
   local_options(dplyr.summarise.inform = FALSE)
 
@@ -505,8 +487,6 @@ test_that("summarize for keyed tables produces expected output", {
 
 
 test_that("summarize for keyed tables produces same output as zooming", {
-  skip_if_not_installed("nycflights13")
-
   dm <- dm_nycflights13(cycle = TRUE)
 
   z_summary <- dm %>%
@@ -529,8 +509,6 @@ test_that("summarize for keyed tables produces same output as zooming", {
 # reconstruction ----------------------------------
 
 test_that("pks_df_from_keys_info()", {
-  skip_if_not_installed("nycflights13")
-
   withr::local_seed(20220715)
 
   dm <- dm_nycflights13(cycle = TRUE)
@@ -558,8 +536,6 @@ test_that("uks_df_from_keys_info()", {
 })
 
 test_that("fks_df_from_keys_info()", {
-  skip_if_not_installed("nycflights13")
-
   withr::local_seed(20220715)
 
   dm <- dm_nycflights13(cycle = TRUE)
@@ -573,8 +549,6 @@ test_that("fks_df_from_keys_info()", {
 })
 
 test_that("primary and foreign keys survive the round trip", {
-  skip_if_not_installed("nycflights13")
-
   dm <- dm_nycflights13(cycle = TRUE)
   tbl <- keyed_tbl_impl(dm, "weather")
   tbl_mutate <- tbl %>% select(everything())

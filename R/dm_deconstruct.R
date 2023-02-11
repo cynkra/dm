@@ -17,7 +17,7 @@
 #'   generated code.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed("DiagrammeR")
 #' dm <- dm_nycflights13()
 #' dm_deconstruct(dm)
 #' airlines <- pull_tbl(dm, "airlines", keyed = TRUE)
