@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.3.9011
+
+## Documentation
+
+- Update pkgdown URL (#1652).
+
+
 # dm 1.0.3.9010
 
 ## Chore
