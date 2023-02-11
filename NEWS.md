@@ -1,12 +1,5 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.5
-
-## Chore
-
-- Make sure `{dm}` passes "noSuggests" workflow (#1659).
-
-
 # dm 1.0.4
 
 ## Chore
