@@ -2,149 +2,45 @@
 
 # dm 1.0.4
 
-## Chore
-
-- Make sure `{dm}` passes "noSuggests" workflow (#1659).
-
-
-# dm 1.0.3.9011
-
-## Documentation
-
-- Update pkgdown URL (#1652).
-
-
-# dm 1.0.3.9010
-
-## Chore
-
-- Fix r-devel builds (#1776).
-
-- Establish compatibility with dplyr 1.1.0 (#1771).
-
-## Testing
-
-- Restore database checks on GHA (#1751).
-
-
-# dm 1.0.3.9009
-
 ## Features
 
-- Breaking change: `dm_get_all_pks()`, `dm_get_all_fks()`, and `dm_get_all_uks()` require unquoted table names as input, for consistency with other parts of the API (#1741).
-
-## Breaking changes
-
-- Breaking change: `dm_get_all_pks()`, `dm_get_all_fks()`, and `dm_get_all_uks()` require unquoted table names as input, for consistency with other parts of the API (#1741).
-
-
-# dm 1.0.3.9008
-
-- Internal changes only.
-
-
-# dm 1.0.3.9007
-
-## Features
+- `dm_add_pk()` gains `autoincrement` argument (#1689), autoincrement primary keys are configured on the database with `copy_dm_to()` (#1696).
 
 - New `dm_add_uk()`, `dm_rm_uk()` and `dm_get_all_uks()` functions for explicit support of unique keys (#622, #1716).
 
+- `dm_get_all_pks()` and `dm_get_all_fks()` return output in the order of `table` or `parent_table` argument (#1707).
 
-# dm 1.0.3.9006
+- Improve error message for `dm_add_pk()` when the `columns` argument is missing (#1644, #1646).
 
-## Bug fixes
+## Breaking changes
 
-- Correct error message if nonexisting table is passed to `dm_get_all_pks()` (#1740).
-
-
-# dm 1.0.3.9005
-
-## Continuous integration
-
-- Avoid oldrel-4.
-
-
-# dm 1.0.3.9004
-
-- Internal changes only.
-
-
-# dm 1.0.3.9003
-
-- Internal changes only.
-
-
-# dm 1.0.3.9002
+- `dm_get_all_pks()`, `dm_get_all_fks()`, and `dm_get_all_uks()` require unquoted table names as input, for consistency with other parts of the API (#1741).
 
 ## Bug fixes
 
 - `dm_examine_constraints()` works for `dm` objects on the database with compound keys (#1713).
 
-## Chore
+## Documentation
+
+- Update pkgdown URL to <https://dm.cynkra.com/> (#1652).
+
+- Fix link rot (#1671).
+
+## Internal
+
+- Require dplyr >= 1.1.0 and lifecycle >= 1.0.3 (#1771, #1637).
+
+- Checks pass if all suggested packages are missing (#1659).
+
+- Fix r-devel builds (#1776).
 
 - `dm_unpack_tbl()` sets PK before FK (#1715).
 
 - Clean up `dm_rows_append()` implementation (#1714).
 
-
-# dm 1.0.3.9001
-
-## Features
-
-- `dm_get_all_pks()` and `dm_get_all_fks()` keep order of `table` or `parent_table` argument (#1707).
-
-- Support AI PKs for dm_copy_to() for empty tables (ptype) (#1696).
-
-- Adapt dm structure to support autoincrement PKs (#1689).
-
-- Improve error message for `dm_add_pk()` when the `columns` argument is missing (#1644, #1646).
-
-## Chore
-
-- Accept dm tables that are tbl_sql but not tbl_dbi (#1695, #1710).
+- `dm()` accepts tables that are of class `"tbl_sql"` but not `"tbl_dbi"` (#1695, #1710).
 
 - Use correctly typed missing value for lists (@DavisVaughan, #1686).
-
-- Require lifecycle >= 1.0.3 (#1637).
-
-## Continuous integration
-
-- Use `--no-multiarch` for Windows 3.6 tests.
-
-- Remove duplicate step in validate GHA (#1694).
-
-## Documentation
-
-- Fix link rot (#1671).
-
-## Uncategorized
-
-- Merge pull request #1698 from cynkra/1642-f-autoincrement-dm-rows-append.
-
-
-
-- Merge pull request #1640 from cynkra/docs-cynkra-pkgdown.
-
-
-
-- Harmonize yaml formatting.
-
-- Revert changes to matrix section.
-
-- Merged cran-1.0.3 into main.
-
-
-
-# dm 1.0.3.9000
-
-## Chore
-
-- Avoid running example without database connection.
-
-## Uncategorized
-
-- Merged cran-1.0.2 into main
-
 
 
 # dm 1.0.3
