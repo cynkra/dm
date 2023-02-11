@@ -163,6 +163,8 @@ test_that("Learning from SQLite works (#288)?", {
 
 
 test_that("'schema_if()' works", {
+  skip_if_not_installed("dbplyr")
+
   con_db <- my_db_test_src()$con
 
   # all 3 naming parameters set ('table' is required)

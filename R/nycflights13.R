@@ -24,11 +24,12 @@
 #' @return A `dm` object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
 #'   dm_draw()
 dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE) {
   check_dots_empty()
+
   if (subset) {
     data <- nycflights_subset()
     flights <- data$flights
@@ -37,6 +38,8 @@ dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, com
     airports <- data$airports
     planes <- data$planes
   } else {
+    check_suggested("nycflights13", use = TRUE)
+
     flights <- nycflights13::flights
     weather <- nycflights13::weather
     airlines <- nycflights13::airlines
