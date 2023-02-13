@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.4.9001
+
+- Merged cran-1.0.4 into main.
+
+
 # dm 1.0.4.9000
 
 ## Chore
