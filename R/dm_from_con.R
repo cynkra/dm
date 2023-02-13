@@ -16,12 +16,16 @@
 #'   foreign keys from the database.
 #'   Currently works only for Postgres and SQL Server databases.
 #'   The default attempts to query and issues an informative message.
+#' @param .name_repair Treatment of problematic table names. This argument is
+#'   passed on as `repair` to [vctrs::vec_as_names()].
 #' @param ... `r lifecycle::badge("experimental")`
 #'
 #'   Additional parameters for the schema learning query.
 #'
 #'   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres (default: `"public"`), and MariaDB/MySQL
 #'     (default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).
+#'     If multiple schema names are given as a vector, the returned `dm` object will have names of the form
+#'     `"schema.table"`.
 #'   - `dbname`: supported for MSSQL. Access different databases on the connected MSSQL-server;
 #'     default: active database.
 #'   - `table_type`: supported for Postgres (default: `"BASE TABLE"`). Specify the table type. Options are:
@@ -40,7 +44,7 @@
 #'
 #' # Avoid DBI::dbDisconnect() here, because we don't own the connection
 dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
-                        ...) {
+                        .name_repair = "check_unique", ...) {
   stopifnot(is(con, "DBIConnection") || inherits(con, "Pool"))
 
   if (inherits(con, "Pool")) {
@@ -84,7 +88,7 @@ dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
   }
 
   if (is_null(table_names)) {
-    src_tbl_names <- get_src_tbl_names(src, ...)
+    src_tbl_names <- get_src_tbl_names(src, ..., .name_repair = .name_repair)
   } else {
     src_tbl_names <- table_names
   }

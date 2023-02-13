@@ -157,7 +157,7 @@ make_local_names <- function(schema_names, table_names, repair = "minimal") {
   repaired_local_names
 }
 
-get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
+get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, .name_repair = "check_unique") {
   if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
     warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
@@ -193,7 +193,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
     collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
     transmute(
-      local_name = make_local_names(schema_name, table_name),
+      local_name = make_local_names(schema_name, table_name, repair = .name_repair),
       remote_name = schema_if(schema_name, table_name, con, dbname)
     ) %>%
     deframe()

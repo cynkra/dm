@@ -4,7 +4,13 @@
 \alias{dm_from_con}
 \title{Load a dm from a remote data source}
 \usage{
-dm_from_con(con = NULL, table_names = NULL, learn_keys = NULL, ...)
+dm_from_con(
+  con = NULL,
+  table_names = NULL,
+  learn_keys = NULL,
+  .name_repair = "check_unique",
+  ...
+)
 }
 \arguments{
 \item{con}{A \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} or a \code{Pool} object.}
@@ -18,12 +24,17 @@ foreign keys from the database.
 Currently works only for Postgres and SQL Server databases.
 The default attempts to query and issues an informative message.}
 
+\item{.name_repair}{Treatment of problematic table names. This argument is
+passed on as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
+
 \item{...}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Additional parameters for the schema learning query.
 \itemize{
 \item \code{schema}: supported for MSSQL (default: \code{"dbo"}), Postgres (default: \code{"public"}), and MariaDB/MySQL
 (default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).
+If multiple schema names are given as a vector, the returned \code{dm} object will have names of the form
+\code{"schema.table"}.
 \item \code{dbname}: supported for MSSQL. Access different databases on the connected MSSQL-server;
 default: active database.
 \item \code{table_type}: supported for Postgres (default: \code{"BASE TABLE"}). Specify the table type. Options are:
