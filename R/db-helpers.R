@@ -118,6 +118,16 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
   quote_ids(names, con_from_src_or_con(con), schema)
 }
 
+make_local_names <- function(schema_names, table_names) {
+
+  combined_names <- glue::glue("{schema_names}.{table_names}")
+
+  if (length(unique(schema_names)) == 1)
+    table_names
+  else
+    combined_names
+}
+
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
     warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
@@ -153,8 +163,10 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
     filter(schema_name %in% !!(if (inherits(schema, "sql")) glue_sql_collapse(schema) else schema)) %>%
     collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
-    mutate(remote_name = schema_if(schema_name, table_name, con, dbname)) %>%
-    select(-schema_name) %>%
+    transmute(
+      local_name = make_local_names(schema_name, table_name),
+      remote_name = schema_if(schema_name, table_name, con, dbname)
+    ) %>%
     deframe()
 }
 
