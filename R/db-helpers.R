@@ -150,7 +150,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   }
 
   names_table %>%
-    filter(schema_name == !!schema) %>%
+    filter(schema_name %in% !!(if (inherits(schema, "sql")) glue_sql_collapse(schema) else schema)) %>%
     collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
     mutate(remote_name = schema_if(schema_name, table_name, con, dbname)) %>%
