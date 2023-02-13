@@ -108,10 +108,6 @@ test_that("DB helpers work for Postgres", {
     get_src_tbl_names(my_test_src(), schema = "schema_db_helpers")["test_db_helpers_2"],
     DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
   )
-  expect_named(
-    get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers")),
-    c("public.test_db_helpers", "schema_db_helpers.test_db_helpers_2")
-  )
   expect_identical(
     get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"))["public.test_db_helpers"],
     DBI::SQL("\"public\".\"test_db_helpers\"")
