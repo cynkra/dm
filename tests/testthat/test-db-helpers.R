@@ -184,4 +184,55 @@ test_that("make local names", {
 
     c("sch1.tbl1", "sch2.tbl2", "sch3.tbl3")
   )
+
+
+  # If we have name clashes, there should be an error about non-unique names
+  expect_equal(
+    make_local_names(
+      rep("sch", 2),
+      c("table name", "Table Name"),
+      repair = "check_unique" # default from dm_from_con()
+    ),
+    c("table name", "Table Name") # i.e. these names are unique & therefore fine
+  )
+
+  expect_snapshot_error(
+    make_local_names(
+      rep("sch", 2),
+      c("table name", "Table Name"),
+      repair = tolower # passing in a custom "repair" function which leads to a clash
+    )
+  )
+
+  expect_equal(
+    make_local_names(
+      c("sch1", "sch2"), # this time, tables are in different schemas - so no clash of "schema.table" local names
+      c("table name", "Table Name"),
+      repair = tolower
+    ),
+    c("sch1.table name", "sch2.table name")
+  )
+
+})
+
+test_that("find name clashes", {
+
+  # If all old names change to different new names...
+  res <- find_name_clashes(
+    c("one", "two", "three"),
+    c("uno", "dos", "tres")
+  )
+  # ... we shouldn't get anything
+  expect_length(res, 0)
+
+
+  # If multiple old names change to the same new name...
+  res <- find_name_clashes(
+    c("one", "two", "three"),
+    c("uno", "uno", "tres")
+  )
+  # We should get a list, with one element per "clashing" new name
+  expect_named(res, "uno")
+  expect_equal(res[["uno"]], c("one", "two"))
+
 })

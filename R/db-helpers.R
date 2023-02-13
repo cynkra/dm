@@ -118,14 +118,43 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
   quote_ids(names, con_from_src_or_con(con), schema)
 }
 
-make_local_names <- function(schema_names, table_names) {
+find_name_clashes <- function(old, new) {
 
-  combined_names <- glue::glue("{schema_names}.{table_names}")
+  # Any entries in `new` with more than one corresponding entry in `old`
+  purrr::keep(split(old, new), ~ length(unique(.x)) > 1)
+}
 
-  if (length(unique(schema_names)) == 1)
+make_local_names <- function(schema_names, table_names, repair = "minimal") {
+#
+#   # Construct new table names - if we have multiple schemas, prepend schema
+#   repaired_schema_names <- vctrs::vec_as_names(schema_names, repair = repair)
+#   repaired_table_names <- vctrs::vec_as_names(table_names, repair = repair)
+
+  # if (length(unique(schema_names)) > 1) {
+  #   table_names <- glue::glue("{schema_names}.{table_names}")
+  #   repaired_table_names <- glue::glue("{repaired_schema_names}.{repaired_table_names}")
+  # }
+
+  local_names <- if (length(unique(schema_names)) == 1)
     table_names
   else
-    combined_names
+    glue::glue("{schema_names}.{table_names}")
+
+  repaired_local_names <- vctrs::vec_as_names(local_names, repair = repair)
+
+  # Ensure new table names don't clash
+  clashes <- find_name_clashes(local_names, repaired_local_names)
+
+  if (length(clashes) > 0)
+    cli::cli_abort(c(
+      "x" = "Repairing names caused name clashes; try again with a different `.name_repair` option.",
+      purrr::imap_chr(
+        clashes,
+        ~ glue::glue("* [{paste0(dQuote(.x, q = FALSE), collapse = ', ')}] => {dQuote(.y, q = FALSE)}")
+      )
+    ))
+
+  repaired_local_names
 }
 
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
