@@ -63,6 +63,18 @@ test_that("DB helpers work for MSSQL", {
     get_src_tbl_names(my_test_src(), dbname = "db_helpers_db", schema = "schema_db_helpers_2")["test_db_helpers_4"],
     DBI::SQL("\"db_helpers_db\".\"schema_db_helpers_2\".\"test_db_helpers_4\"")
   )
+  expect_named(
+    get_src_tbl_names(my_test_src(), schema = c("dbo", "schema_db_helpers")),
+    c("dbo.test_db_helpers", "schema_db_helpers.test_db_helpers_2")
+  )
+  expect_identical(
+    get_src_tbl_names(my_test_src(), schema = c("dbo", "schema_db_helpers"))["dbo.test_db_helpers"],
+    DBI::SQL("\"dbo\".\"test_db_helpers\"")
+  )
+  expect_identical(
+    get_src_tbl_names(my_test_src(), schema = c("dbo", "schema_db_helpers"))["schema_db_helpers.test_db_helpers_2"],
+    DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
+  )
 })
 
 
@@ -100,6 +112,18 @@ test_that("DB helpers work for Postgres", {
     get_src_tbl_names(my_test_src(), schema = "schema_db_helpers")["test_db_helpers_2"],
     DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
   )
+  expect_named(
+    get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers")),
+    c("public.test_db_helpers", "schema_db_helpers.test_db_helpers_2")
+  )
+  expect_identical(
+    get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"))["public.test_db_helpers"],
+    DBI::SQL("\"public\".\"test_db_helpers\"")
+  )
+  expect_identical(
+    get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"))["schema_db_helpers.test_db_helpers_2"],
+    DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
+  )
 })
 
 test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
@@ -135,5 +159,29 @@ test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
   expect_dm_warning(
     expect_true("test_db_helpers" %in% names(get_src_tbl_names(my_db_test_src(), dbname = "dbname"))),
     class = "arg_not"
+  )
+})
+
+test_that("make local names", {
+
+  # When we have only one schema, we should just use table names
+  expect_equal(make_local_names("sch", "tbl"), "tbl")
+  expect_equal(
+    make_local_names(
+      rep("sch", 3),
+      c("tbl1", "tbl2", "tbl3")
+    ),
+
+    c("tbl1", "tbl2", "tbl3")
+  )
+
+  # If we have multiple schemas, we should use "schema.table"
+  expect_equal(
+    make_local_names(
+      c("sch1", "sch2", "sch3"),
+      c("tbl1", "tbl2", "tbl3")
+    ),
+
+    c("sch1.tbl1", "sch2.tbl2", "sch3.tbl3")
   )
 })
