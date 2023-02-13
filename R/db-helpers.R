@@ -125,15 +125,6 @@ find_name_clashes <- function(old, new) {
 }
 
 make_local_names <- function(schema_names, table_names, repair = "minimal") {
-#
-#   # Construct new table names - if we have multiple schemas, prepend schema
-#   repaired_schema_names <- vctrs::vec_as_names(schema_names, repair = repair)
-#   repaired_table_names <- vctrs::vec_as_names(table_names, repair = repair)
-
-  # if (length(unique(schema_names)) > 1) {
-  #   table_names <- glue::glue("{schema_names}.{table_names}")
-  #   repaired_table_names <- glue::glue("{repaired_schema_names}.{repaired_table_names}")
-  # }
 
   local_names <- if (length(unique(schema_names)) == 1)
     table_names
