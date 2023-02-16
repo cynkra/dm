@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.4.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.4.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,6 +71,10 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.4.9001" id="dm-1049001">dm 1.0.4.9001<a class="anchor" aria-label="anchor" href="#dm-1049001"></a></h2>
+<ul><li>Merged cran-1.0.4 into main.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.4.9000" id="dm-1049000">dm 1.0.4.9000<a class="anchor" aria-label="anchor" href="#dm-1049000"></a></h2>
 <div class="section level3">
@@ -373,7 +377,7 @@
 <li>Implement <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_patch()</a></code> for DBI connections (<a href="https://github.com/cynkra/dm/issues/610" class="external-link">#610</a>, <a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>).</li>
 <li>Use <code>NO ACTION</code> instead of <code>CASCADE</code> in foreign key constraints to permit self-references.</li>
 <li>
-<code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> supports <code><a href="https://rdrr.io/pkg/pool/man/Pool-class.html" class="external-link">pool::Pool</a></code> objects (<a href="https://github.com/cynkra/dm/issues/599" class="external-link">#599</a>, <a href="https://github.com/moodymudskipper" class="external-link">@moodymudskipper</a>).</li>
+<code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> supports <code><a href="http://rstudio.github.io/pool/reference/Pool-class.html" class="external-link">pool::Pool</a></code> objects (<a href="https://github.com/cynkra/dm/issues/599" class="external-link">#599</a>, <a href="https://github.com/moodymudskipper" class="external-link">@moodymudskipper</a>).</li>
 <li>Better error message for <code><a href="../reference/rows-dm.html">dm_rows_update()</a></code> and related functions for dm objects with tables without primary key (<a href="https://github.com/cynkra/dm/issues/592" class="external-link">#592</a>).</li>
 <li>
 <code><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse()</a></code> is implemented for <code>dm</code> objects (<a href="https://github.com/cynkra/dm/issues/605" class="external-link">#605</a>).</li>
@@ -387,7 +391,7 @@
 <div class="section level3">
 <h3 id="internal-0-2-4">Internal<a class="anchor" aria-label="anchor" href="#internal-0-2-4"></a></h3>
 <ul><li>
-<code><a href="../reference/deprecated.html">sql_schema_list()</a></code> supports <code><a href="https://rdrr.io/pkg/pool/man/Pool-class.html" class="external-link">pool::Pool</a></code> objects (<a href="https://github.com/cynkra/dm/issues/633" class="external-link">#633</a>, <a href="https://github.com/brancengregory" class="external-link">@brancengregory</a>).</li>
+<code><a href="../reference/deprecated.html">sql_schema_list()</a></code> supports <code><a href="http://rstudio.github.io/pool/reference/Pool-class.html" class="external-link">pool::Pool</a></code> objects (<a href="https://github.com/cynkra/dm/issues/633" class="external-link">#633</a>, <a href="https://github.com/brancengregory" class="external-link">@brancengregory</a>).</li>
 <li>Establish compatibility with pillar 1.6.2, vctrs &gt; 0.3.8 and rlang &gt; 0.4.11 (<a href="https://github.com/cynkra/dm/issues/613" class="external-link">#613</a>).</li>
 <li>Use <code>check_suggested()</code> everywhere (<a href="https://github.com/cynkra/dm/issues/572" class="external-link">#572</a>, <a href="https://github.com/moodymudskipper" class="external-link">@moodymudskipper</a>).</li>
 <li>Add CI run for validating all new <code>dm</code> objects (<a href="https://github.com/cynkra/dm/issues/597" class="external-link">#597</a>).</li>
