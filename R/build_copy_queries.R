@@ -65,7 +65,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
       # SQL Server:
       if (is_mssql(dest)) {
-        types[pk_col] <- paste(types[pk_col], "IDENTITY")
+        types[pk_col] <- paste0(types[pk_col], " IDENTITY")
       }
 
       # MariaDB:
