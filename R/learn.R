@@ -168,7 +168,9 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
           delete_rule == "CASCADE" ~ "cascade", 
           .default = "no_action"
         ) %>% unique()
-        if(!is_scalar_character(x)) abort("delete_rule for all fk_cols in one constraint_name should be the same")
+        if(!is_empty(x) & !is_scalar_character(x)) {
+          abort("delete_rule for all fk_cols in one constraint_name should be the same")
+        }
         x
       }
     ))) %>%
