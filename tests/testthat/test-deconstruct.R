@@ -117,6 +117,8 @@ test_that("`dm()` and `new_dm()` can handle a list of `dm_keyed_tbl` objects", {
 })
 
 test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` objects", {
+  skip_if_not_installed("nycflights13")
+
   dm <- dm_nycflights13(cycle = TRUE)
 
   y1 <- keyed_tbl_impl(dm, "weather") %>%

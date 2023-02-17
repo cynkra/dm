@@ -105,7 +105,7 @@ dm_impl <- function(tbls, names) {
 #' @param tables A named list of the tables (tibble-objects, not names),
 #'   to be included in the `dm` object.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' library(dm)
 #' library(nycflights13)
 #'
