@@ -63,12 +63,9 @@ tasks:
 
       ## Start MariaDB server
       sudo service mysql start
-      
+
       ## Configure test database
       sudo mysql -e "CREATE DATABASE IF NOT EXISTS test; ALTER DATABASE test CHARACTER SET 'utf8'; FLUSH PRIVILEGES;"
-      sudo mysql -e "CREATE USER '$USER'@'localhost' IDENTIFIED BY ''; GRANT ALL PRIVILEGES ON *.* TO '$USER'@'localhost'; FLUSH PRIVILEGES;"
-      sudo mysql -D mysql < tools/tz.sql
-      sudo mysql -e "SET GLOBAL time_zone = 'Europe/Zurich';"
 
 vscode:
   extensions:
