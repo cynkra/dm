@@ -62,7 +62,7 @@ is_mssql <- function(dest) {
 }
 
 is_postgres <- function(dest) {
-  inherits_any(src, c(
+  inherits_any(dest, c(
     "src_PostgreSQLConnection", "src_PqConnection", "PostgreSQLConnection", "PqConnection", "src_PostgreSQL"
   ))
 }
