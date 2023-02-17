@@ -163,12 +163,14 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
       ref_column = list(ref_column),
       table = if (length(table) > 0) table[[1]] else NA_character_,
       column = list(column),
-      # FIXME: `case_when()` gets the `.default` arg in v1.1.0, then:
-      # .default = "no_action"
-      on_delete = case_when(
-        delete_rule == "CASCADE" ~ "cascade",
-        TRUE ~ "no_action"
-      )
+      on_delete = {
+        x <- case_when(
+          delete_rule == "CASCADE" ~ "cascade", 
+          .default = "no_action"
+        ) %>% unique()
+        if(!is_scalar_character(x)) abort("delete_rule for all fk_cols in one constraint_name should be the same")
+        x
+      }
     ))) %>%
     ungroup() %>%
     select(-(1:3)) %>%
