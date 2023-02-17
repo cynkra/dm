@@ -70,7 +70,17 @@ dm_meta_raw <- function(con, catalog) {
   # add is_autoincrement column to columns table
   if (is_mssql(src)) {
     columns <- columns %>%
-      mutate(is_autoincrement = sql("COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity')"))
+      mutate(is_autoincrement = sql("CAST(COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity') AS BIT)"))
+  } else if (is_postgres(src)) {
+    if(as.package_version(src$con@info$db.version) >= as.package_version("15.0")) {
+      columns <- columns %>%
+        mutate(is_autoincrement = sql("REGEXP_LIKE(column_default, 'nextval')"))
+    } else {
+      columns <- columns %>%
+        mutate(regex_match = sql("REGEXP_MATCH(column_default, 'nextval')")) %>%
+        mutate(is_autoincrement = if_else(!is.na(regex_match) & regex_match == "{nextval}", TRUE, FALSE))
+    }
+    
   } else {
     cli::cli_alert_warning("unable to fetch autoincrement metadata for src '{class(src)[1]}'")
     columns <- columns %>%
