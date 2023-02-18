@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.4.9003
+
+## Chore
+
+- Gitpod configuration with databases (@Antonov548, #1799).
+
+
 # dm 1.0.4.9002
 
 - Internal changes only.
