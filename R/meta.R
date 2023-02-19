@@ -59,7 +59,8 @@ dm_meta_raw <- function(con, catalog) {
     "character_maximum_length", "character_octet_length", "numeric_precision",
     "numeric_scale", "datetime_precision",
     "character_set_name", "collation_name",
-
+    if(is_mariadb(src)) "extra" else NULL,
+     
     # Optional, not RMySQL:
     # "numeric_precision_radix",
     # "character_set_catalog", "character_set_schema",
@@ -80,7 +81,11 @@ dm_meta_raw <- function(con, catalog) {
         mutate(is_autoincrement = sql("REGEXP_MATCH(column_default, 'nextval')")) %>%
         mutate(is_autoincrement = if_else(!is.na(is_autoincrement) & is_autoincrement == "{nextval}", TRUE, FALSE))
     }
-    
+   
+  } else if (is_mariadb(src)) {
+    columns <- columns %>%
+      mutate(is_autoincrement = sql("extra REGEXP 'auto_increment'")) %>%
+      select(-extra)
   } else {
     cli::cli_alert_warning("unable to fetch autoincrement metadata for src '{class(src)[1]}'")
     columns <- columns %>%
