@@ -77,8 +77,8 @@ dm_meta_raw <- function(con, catalog) {
         mutate(is_autoincrement = sql("REGEXP_LIKE(column_default, 'nextval')"))
     } else {
       columns <- columns %>%
-        mutate(regex_match = sql("REGEXP_MATCH(column_default, 'nextval')")) %>%
-        mutate(is_autoincrement = if_else(!is.na(regex_match) & regex_match == "{nextval}", TRUE, FALSE))
+        mutate(is_autoincrement = sql("REGEXP_MATCH(column_default, 'nextval')")) %>%
+        mutate(is_autoincrement = if_else(!is.na(is_autoincrement) & is_autoincrement == "{nextval}", TRUE, FALSE))
     }
     
   } else {
