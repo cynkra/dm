@@ -74,8 +74,7 @@ dm_meta_raw <- function(con, catalog) {
       mutate(is_autoincrement = sql("CAST(COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity') AS BIT)"))
   } else if (is_postgres(src)) {
     columns <- columns %>%
-      mutate(is_autoincrement = sql("REGEXP_MATCH(column_default, 'nextval')")) %>%
-      mutate(is_autoincrement = if_else(!is.na(is_autoincrement) & is_autoincrement == "{nextval}", TRUE, FALSE))
+      mutate(is_autoincrement = sql("CASE WHEN column_default IS NULL THEN FALSE ELSE column_default SIMILAR TO '%nextval%' END"))
   } else if (is_mariadb(src)) {
     columns <- columns %>%
       mutate(is_autoincrement = sql("extra REGEXP 'auto_increment'")) %>%
