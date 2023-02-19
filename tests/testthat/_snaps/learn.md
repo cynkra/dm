@@ -395,7 +395,7 @@
       6 loans     id     FALSE        
       7 orders    id     FALSE        
       8 tkeys     id     FALSE        
-      9 trans     id     FALSE           
+      9 trans     id     FALSE        
 
 ---
 
@@ -436,5 +436,5 @@
        7 nesreca       id_nesreca              FALSE        
        8 order         order_id                FALSE        
        9 trans         transaction_id          TRUE         
-      10 upravna_enota id_upravna_enota        FALSE           
+      10 upravna_enota id_upravna_enota        FALSE        
 
