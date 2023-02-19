@@ -73,15 +73,9 @@ dm_meta_raw <- function(con, catalog) {
     columns <- columns %>%
       mutate(is_autoincrement = sql("CAST(COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity') AS BIT)"))
   } else if (is_postgres(src)) {
-    if("info" %in% slotNames(src$con) && !is.null(src$con@info$db.version) && as.package_version(src$con@info$db.version) >= as.package_version("15.0")) {
-      columns <- columns %>%
-        mutate(is_autoincrement = sql("REGEXP_LIKE(column_default, 'nextval')"))
-    } else {
-      columns <- columns %>%
-        mutate(is_autoincrement = sql("REGEXP_MATCH(column_default, 'nextval')")) %>%
-        mutate(is_autoincrement = if_else(!is.na(is_autoincrement) & is_autoincrement == "{nextval}", TRUE, FALSE))
-    }
-   
+    columns <- columns %>%
+      mutate(is_autoincrement = sql("REGEXP_MATCH(column_default, 'nextval')")) %>%
+      mutate(is_autoincrement = if_else(!is.na(is_autoincrement) & is_autoincrement == "{nextval}", TRUE, FALSE))
   } else if (is_mariadb(src)) {
     columns <- columns %>%
       mutate(is_autoincrement = sql("extra REGEXP 'auto_increment'")) %>%
