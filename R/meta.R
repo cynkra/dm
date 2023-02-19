@@ -77,7 +77,7 @@ dm_meta_raw <- function(con, catalog) {
       mutate(is_autoincrement = sql("CASE WHEN column_default IS NULL THEN FALSE ELSE column_default SIMILAR TO '%nextval%' END"))
   } else if (is_mariadb(src)) {
     columns <- columns %>%
-      mutate(is_autoincrement = sql("extra REGEXP 'auto_increment'")) %>%
+      mutate(is_autoincrement = sql("CAST(extra REGEXP 'auto_increment' AS BINARY)")) %>%
       select(-extra)
   } else {
     cli::cli_alert_warning("unable to fetch autoincrement metadata for src '{class(src)[1]}'")
