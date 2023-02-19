@@ -72,7 +72,7 @@ dm_meta_raw <- function(con, catalog) {
     columns <- columns %>%
       mutate(is_autoincrement = sql("CAST(COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity') AS BIT)"))
   } else if (is_postgres(src)) {
-    if(as.package_version(src$con@info$db.version) >= as.package_version("15.0")) {
+    if("info" %in% slotNames(src$con) && !is.null(src$con@info$db.version) && as.package_version(src$con@info$db.version) >= as.package_version("15.0")) {
       columns <- columns %>%
         mutate(is_autoincrement = sql("REGEXP_LIKE(column_default, 'nextval')"))
     } else {
