@@ -48,6 +48,25 @@ tasks:
       # Install radian
       sudo pip install radian
 
+      ## Install Postgres server
+      sudo apt-get install -y postgresql
+
+      ## Start Postgres server
+      sudo service postgresql start
+
+      ## Configure test database
+      sudo sudo -u postgres createuser -s $USER
+      createdb ${USER}
+
+      ## Install MariaDB server
+      sudo apt-get install -y mariadb-server mariadb-client
+
+      ## Start MariaDB server
+      sudo service mysql start
+
+      ## Configure test database
+      sudo mysql -e "CREATE DATABASE IF NOT EXISTS test; ALTER DATABASE test CHARACTER SET 'utf8'; FLUSH PRIVILEGES;"
+
 vscode:
   extensions:
     - ms-vscode.cpptools
