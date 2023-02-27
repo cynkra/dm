@@ -1,315 +1,309 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://cynkra.github.io/dm/dev/CODE_OF_CONDUCT.html</loc>
+    <loc>https://dm.cynkra.com/dev/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/CONTRIBUTING.html</loc>
+    <loc>https://dm.cynkra.com/dev/CONTRIBUTING.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/LICENSE-text.html</loc>
+    <loc>https://dm.cynkra.com/dev/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/LICENSE.html</loc>
+    <loc>https://dm.cynkra.com/dev/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/TODO.html</loc>
+    <loc>https://dm.cynkra.com/dev/TODO.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/cheatsheet/cheatsheet-printable.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/dm.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/cheatsheet.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/howto-dm-copy.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/dm.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/howto-dm-db.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/howto-dm-copy.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/howto-dm-df.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/howto-dm-db.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/howto-dm-rows.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/howto-dm-df.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/howto-dm-theory.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/howto-dm-rows.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/howto-dm-theory.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/tech-dm-cdm.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/index.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/tech-dm-class.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/tech-dm-cdm.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/tech-dm-draw.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/tech-dm-class.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/tech-dm-filter.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/tech-dm-draw.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/tech-dm-join.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/tech-dm-filter.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/tech-dm-keyed.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/tech-dm-join.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/tech-dm-low-level.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/tech-dm-keyed.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/tech-dm-naming.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/tech-dm-low-level.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/tech-dm-zoom.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/tech-dm-naming.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/wip/dm-insert.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/tech-dm-zoom.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/wip/dm-readme-old.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/wip/dm-insert.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/wip/dm-shiny-dynafilter.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/wip/dm-readme-old.html</loc>
+    <loc>https://dm.cynkra.com/dev/articles/wip/dm-tips-and-tricks.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/wip/dm-shiny-dynafilter.html</loc>
+    <loc>https://dm.cynkra.com/dev/authors.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/articles/wip/dm-tips-and-tricks.html</loc>
+    <loc>https://dm.cynkra.com/dev/index.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/authors.html</loc>
+    <loc>https://dm.cynkra.com/dev/news/index.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/index.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/check_key.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/news/index.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/check_set_equality.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/check_key.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/check_subset.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/check_set_equality.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/copy_dm_to.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/check_subset.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/db_schema_create.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/copy_dm_to.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/db_schema_drop.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/db_schema_create.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/db_schema_exists.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/db_schema_drop.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/db_schema_list.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/db_schema_exists.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/decompose_table.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/db_schema_list.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/deprecated.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/decompose_table.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/deprecated.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_add_fk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_add_pk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_add_fk.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_add_uk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_add_pk.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_deconstruct.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_add_uk.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_disambiguate_cols.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_deconstruct.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_draw.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_disambiguate_cols.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_enum_fk_candidates.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_draw.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_enum_pk_candidates.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_enum_fk_candidates.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_examine_cardinalities.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_enum_pk_candidates.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_examine_constraints.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_examine_cardinalities.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_filter.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_examine_constraints.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_financial.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_filter.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_flatten_to_tbl.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_financial.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_from_con.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_flatten_to_tbl.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_from_src.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_from_con.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_get_all_fks.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_from_src.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_get_all_pks.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_get_all_fks.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_get_all_uks.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_get_all_pks.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_get_con.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_get_all_uks.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_get_pk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_get_con.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_get_tables.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_get_pk.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_gui.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_get_tables.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_has_fk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_gui.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_has_pk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_has_fk.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_mutate_tbl.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_has_pk.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_nest_tbl.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_mutate_tbl.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_nrow.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_nest_tbl.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_nycflights13.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_nrow.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_pack_tbl.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_nycflights13.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_paste.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_pack_tbl.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_pixarfilms.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_paste.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_ptype.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_pixarfilms.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_rename.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_ptype.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_rm_fk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_rename.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_rm_pk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_rm_fk.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_rm_uk.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_rm_pk.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_select.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_rm_uk.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_select_tbl.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_select.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_set_colors.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_select_tbl.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_unnest_tbl.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_set_colors.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_unpack_tbl.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_unnest_tbl.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_unwrap_tbl.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_unpack_tbl.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_validate.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_unwrap_tbl.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_wrap_tbl.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_validate.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dm_zoom_to.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_wrap_tbl.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dplyr_join.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dm_zoom_to.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dplyr_src.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dplyr_join.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/dplyr_table_manipulation.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dplyr_src.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/examine_cardinality.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/dplyr_table_manipulation.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/glimpse.dm.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/examine_cardinality.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/glimpse.dm.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/json_nest.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/index.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/json_nest_join.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/json_nest.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/json_pack.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/json_nest_join.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/json_pack_join.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/json_pack.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/materialize.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/json_pack_join.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/pack_join.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/materialize.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/pull_tbl.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/pack_join.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/reexports.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/pull_tbl.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/reunite_parent_child.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/reexports.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/rows-dm.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/reunite_parent_child.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/tidyr_table_manipulation.html</loc>
   </url>
   <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/rows-dm.html</loc>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/tidyr_table_manipulation.html</loc>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/dm/dev/reference/utils_table_manipulation.html</loc>
+    <loc>https://dm.cynkra.com/dev/reference/utils_table_manipulation.html</loc>
   </url>
 </urlset>
