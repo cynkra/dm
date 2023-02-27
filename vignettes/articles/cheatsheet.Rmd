@@ -39,10 +39,12 @@ get_svg <- function(path, alt) {
   svg <- xml2::read_xml(path)
   xml2::xml_remove(xml2::xml_find_all(svg, "//comment()"))
   xml2::xml_attr(svg, "class") <- "cheatsheet-svg"
-  xml2::xml_attr(svg, "aria-labelledby") <- sprintf("svgDescription-%s", basename(path))
+  xml2::xml_attr(svg, "role") <- "img"
+  xml2::xml_attr(svg, "aria-describedby") <- sprintf("svgDescription-%s", basename(path))
   xml2::xml_add_child(
     svg,
     .value = "description",
+    id = sprintf("svgDescription-%s", basename(path)),
     alt,
     .where = 0
   )
