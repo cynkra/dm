@@ -109,7 +109,7 @@
                         <h4 data-toc-skip class="author">James
 Wondrasek</h4>
             
-            <h4 data-toc-skip class="date">2023-02-20</h4>
+            <h4 data-toc-skip class="date">2023-02-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-rows.Rmd" class="external-link"><code>vignettes/howto-dm-rows.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-rows.Rmd</code></div>
@@ -291,7 +291,7 @@ this distinction apparent.</p>
 <span><span class="va">demo_sql</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">sqlite_db</span>, <span class="va">demo_dm</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">demo_sql</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.40.0 []</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.40.1 []</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `parent`, `child`</span></span>
 <span><span class="co">#&gt; Columns: 5</span></span>
@@ -351,7 +351,7 @@ rows in place, but the underlying database has not changed.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm_insert_out</span><span class="op">$</span><span class="va">child</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   SQL [4 x 3]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.40.0 []</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.40.1 []</span></span>
 <span><span class="co">#&gt;   value    pk    fk</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 a         1     1</span></span>
@@ -361,7 +361,7 @@ rows in place, but the underlying database has not changed.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   table&lt;`child`&gt; [3 x 3]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.40.0 []</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.40.1 []</span></span>
 <span><span class="co">#&gt;   value    pk    fk</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt; &lt;int&gt; &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 a         1     1</span></span>
@@ -377,7 +377,7 @@ rows in place, but the underlying database has not changed.</p>
 <span></span>
 <span><span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   table&lt;`child`&gt; [4 x 3]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.40.0 []</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.40.1 []</span></span>
 <span><span class="co">#&gt;   value    pk    fk</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt; &lt;int&gt; &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 a         1     1</span></span>
@@ -412,7 +412,7 @@ row in <code>parent</code>. And we will persist the changes.</p>
 <span></span>
 <span><span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   table&lt;`child`&gt; [4 x 3]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.40.0 []</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.40.1 []</span></span>
 <span><span class="co">#&gt;   value    pk    fk</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt; &lt;int&gt; &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 a         1     1</span></span>
