@@ -164,7 +164,7 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
       remote_dm %>%
         dm_get_tables() %>%
         map(dbplyr::remote_name) %>%
-        flatten_chr() %>%
+        list_c() %>%
         dbplyr::ident_q()
     )
   )
