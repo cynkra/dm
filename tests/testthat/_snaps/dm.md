@@ -2,6 +2,13 @@
 
     Code
       dm(a = tibble(), a = tibble(), .name_repair = "unique")
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       New names:
       * `a` -> `a...1`
@@ -14,6 +21,13 @@
       Foreign keys: 0
     Code
       dm(a = tibble(), a = tibble(), .name_repair = "unique", .quiet = TRUE)
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `a...1`, `a...2`
@@ -26,6 +40,12 @@
     Code
       dm(a = tibble(), a = tibble())
     Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
       Error in `dm()`:
       ! Names must be unique.
       x These names are duplicated:
@@ -36,6 +56,12 @@
     Code
       dm(a = dm())
     Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
       Error in `dm()`:
       ! All dm objects passed to `dm()` must be unnamed.
       i Argument 1 has name `a`.
@@ -54,6 +80,12 @@
     Code
       dm(dm_for_filter(), tf_1 = data_card_1(), .name_repair = "check_unique")
     Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
       Error in `dm()`:
       ! Names must be unique.
       x These names are duplicated:
@@ -64,6 +96,13 @@
     Code
       dm(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(options = c(
         "select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         fact,
@@ -93,6 +132,12 @@
     Code
       dm(dm_for_filter(), dm_for_flatten(), dm_for_filter())
     Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
       Error in `dm()`:
       ! Names must be unique.
       x These names are duplicated:
@@ -108,6 +153,10 @@
     Code
       writeLines(conditionMessage(expect_error(dm(dm_for_flatten(),
       dm_for_filter_duckdb()))))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
     Output
       All `dm` objects need to share the same `src`.
 
@@ -115,14 +164,35 @@
 
     Code
       dm()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       dm()
     Code
       dm(empty_dm())
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       dm()
     Code
       dm(dm_for_filter()) %>% collect()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
@@ -132,6 +202,13 @@
     Code
       dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique",
       .quiet = TRUE) %>% collect()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1...1`, `tf_2...2`, `tf_3...3`, `tf_4...4`, `tf_5...5`, ... (17 total)
@@ -144,6 +221,12 @@
     Code
       dm(dm_for_filter(), dm_for_flatten(), dm_for_filter())
     Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
       Error in `dm()`:
       ! Names must be unique.
       x These names are duplicated:
@@ -159,6 +242,13 @@
     Code
       dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique") %>%
         collect()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       New names:
       * `tf_1` -> `tf_1...1`
@@ -184,6 +274,13 @@
 
     Code
       dm(dm_for_filter(), dm_for_flatten()) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         tf_1,
@@ -230,6 +327,13 @@
         dm::dm_add_fk(fact, dim_4_key, dim_4)
     Code
       dm(dm_for_flatten(), dm_for_filter()) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         fact,
@@ -280,6 +384,13 @@
     Code
       dm(dm_for_flatten(), dm_for_flatten(), .name_repair = "unique") %>% dm_paste(
         options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       New names:
       * `fact` -> `fact...1`
@@ -335,6 +446,13 @@
 
     Code
       print(dm())
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       dm()
     Code
@@ -375,6 +493,13 @@
       Foreign keys: 4
     Code
       dm(nyc_comp(), car_table)
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `car_table`
@@ -642,6 +767,13 @@
     Code
       dm_nycflights13() %>% dm_select_tbl(weather) %>% dm_select(weather, -origin) %>%
         glimpse()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       dm of 1 tables: `weather`
       
@@ -672,6 +804,13 @@
 
     Code
       dm_nycflights13() %>% dm_zoom_to(airports) %>% glimpse()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
@@ -690,6 +829,13 @@
       $ tzone <chr> "America/New_York", "America/New_York", "America/Chicago", "Amer~
     Code
       dm_nycflights13() %>% dm_zoom_to(flights) %>% glimpse(width = 100)
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
@@ -723,6 +869,13 @@
       $ time_hour      <dttm> 2013-01-10 23:00:00, 2013-01-10 23:00:00, 2013-01-10 05:00:00, 2013-01-10 ~
     Code
       dm_nycflights13() %>% dm_zoom_to(weather) %>% select(-origin) %>% glimpse()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
@@ -747,6 +900,13 @@
     Code
       dm_nycflights13() %>% dm_zoom_to(weather) %>% rename(origin_location = origin) %>%
         glimpse()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
@@ -772,6 +932,13 @@
       $ time_hour       <dttm> 2013-01-10 00:00:00, 2013-01-10 01:00:00, 2013-01-10 ~
     Code
       dm_nycflights13() %>% dm_zoom_to(flights) %>% select(-carrier) %>% glimpse()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
@@ -803,6 +970,13 @@
       $ time_hour      <dttm> 2013-01-10 23:00:00, 2013-01-10 23:00:00, 2013-01-10 0~
     Code
       dm_nycflights13() %>% dm_zoom_to(flights) %>% select(-origin) %>% glimpse()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
@@ -834,6 +1008,13 @@
     Code
       dm_nycflights13() %>% dm_zoom_to(flights) %>% rename(origin_location = origin) %>%
         glimpse()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       

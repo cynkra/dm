@@ -24,6 +24,14 @@
 
     Code
       dm <- dm_nycflights13(cycle = TRUE)
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
+    Code
       keyed_tbl <- new_keyed_tbl(x = dm$airports, pk = "faa", fks_in = new_fks_in(
         child_uuid = "flights-uuid", child_fk_cols = new_keys(list("origin", "dest")),
         parent_key_cols = new_keys(list("faa"))), fks_out = new_fks_out(
@@ -61,6 +69,13 @@
     Code
       dm_nycflights13(cycle = TRUE) %>% dm_get_keyed_tables_impl() %>% map(
         keyed_get_info)
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       $airlines
       $airlines$pk
@@ -187,6 +202,13 @@
 
     Code
       keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "flights")
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       # A tibble: 1,761 x 19
       # Keys:     --- | 0 | 5
@@ -209,6 +231,13 @@
       #   5: arr_delay
     Code
       keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       # A tibble: 86 x 8
       # Keys:     `faa` | 2 | 0
@@ -227,6 +256,13 @@
       # ... with 76 more rows
     Code
       keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airlines")
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       # A tibble: 15 x 2
       # Keys:     `carrier` | 1 | 0
@@ -316,6 +352,13 @@
 
     Code
       dm(x = keyed$x["b"], y = keyed$y) %>% dm_paste()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -324,6 +367,13 @@
         dm::dm_add_pk(y, c(a, b))
     Code
       dm(x = keyed$x, y = keyed$y["b"]) %>% dm_paste()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -385,6 +435,13 @@
       } 
     Code
       dm(x, y, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -438,6 +495,13 @@
       } 
     Code
       dm(x, y, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -495,6 +559,13 @@
       } 
     Code
       dm(x, y, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -551,6 +622,13 @@
       } 
     Code
       dm(x, y, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -610,6 +688,13 @@
       } 
     Code
       dm(x, y, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -666,6 +751,13 @@
       } 
     Code
       dm(x, y, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -724,6 +816,13 @@
       } 
     Code
       dm(x, y, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -779,6 +878,13 @@
       } 
     Code
       dm(x, y, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -837,6 +943,13 @@
       } 
     Code
       dm(x, y, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -892,6 +1005,13 @@
       } 
     Code
       dm(x, y, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -956,6 +1076,13 @@
       } 
     Code
       dm(x, y, z, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -1021,6 +1148,13 @@
       } 
     Code
       dm(x, y, z, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -1089,6 +1223,13 @@
       } 
     Code
       dm(x, y, z, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -1154,6 +1295,13 @@
       } 
     Code
       dm(x, y, z, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -1222,6 +1370,13 @@
       } 
     Code
       dm(x, y, z, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -1287,6 +1442,13 @@
       } 
     Code
       dm(x, y, z, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -1355,6 +1517,13 @@
       } 
     Code
       dm(x, y, z, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -1420,6 +1589,13 @@
       } 
     Code
       dm(x, y, z, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -1444,6 +1620,14 @@
 
     Code
       dm <- dm_nycflights13()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
+    Code
       keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"),
       multiple = "all")
     Output
@@ -1472,6 +1656,13 @@
 
     Code
       dm(x, y, r = semi_join(x, y)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -1486,6 +1677,13 @@
         dm::dm_add_fk(r, a, y)
     Code
       dm(x, y, r = semi_join(y, x)) %>% dm_paste(options = c("select", "keys"))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         x,
@@ -1529,6 +1727,14 @@
 
     Code
       dm <- dm_nycflights13(cycle = TRUE)
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
+    Code
       keyed_tbl_impl(dm, "flights") %>% group_by(month)
     Output
       # A tibble: 1,761 x 19
@@ -1594,6 +1800,14 @@
 
     Code
       dm <- dm_nycflights13(cycle = TRUE)
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
+    Code
       keyed_tbl_impl(dm, "airports") %>% summarise(mean_alt = mean(alt))
     Output
       # A tibble: 1 x 1
