@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.4.9004
+
+## Documentation
+
+- Add alternative text to author images for pkgdown website (#1804).
+
+
 # dm 1.0.4.9003
 
 ## Chore
