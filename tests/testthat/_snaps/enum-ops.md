@@ -4,6 +4,14 @@
       parent <- tibble(a = c(1L, 1:3), b = -1)
       child <- tibble(a = 1:4, c = 3)
       dm <- dm(parent, child)
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
+    Code
       ops <- enum_ops(dm)
       ops
     Output
@@ -92,6 +100,14 @@
       parent <- tibble(a = c(1L, 1:3), b = -1)
       child <- tibble(a = 1:4, c = 3)
       dm <- dm(parent, child)
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
+    Code
       ops <- enum_ops(dm)
       ops
     Output
@@ -224,6 +240,14 @@
       parent <- tibble(a = c(1L, 1:3), b = -1)
       child <- tibble(a = 1:4, c = 3)
       dm <- dm(parent, child)
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
+    Code
       ops <- enum_ops(dm)
       ops
     Output
@@ -356,6 +380,14 @@
       parent <- tibble(a = c(1L, 1:3), b = -1)
       child <- tibble(a = 1:4, c = 3)
       dm <- dm(parent, child) %>% dm_add_pk(parent, b)
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
+    Code
       ops <- enum_ops(dm)
       ops
     Output

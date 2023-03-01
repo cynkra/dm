@@ -9,6 +9,13 @@
     Code
       # empty table
       dm(a = tibble()) %>% dm_paste(options = "tables")
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       a <- tibble::tibble(
       )
@@ -88,6 +95,13 @@
       # produce `dm_select()` statements in addition to the rest
       dm_for_filter() %>% dm_select(tf_5, k = k, m) %>% dm_select(tf_1, a) %>% dm(x = copy_to_my_test_src(
         tibble(q = 1L), qq)) %>% dm_paste(options = "select")
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         tf_1,
@@ -141,6 +155,13 @@
       dm(a) %>% dm_zoom_to(a) %>% dm_insert_zoomed("a b") %>% dm_add_pk(a, "a b") %>%
         dm_add_fk("a b", "a b", a) %>% dm_set_colors(green = "a b") %>% dm_paste(
         options = "all")
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       a <- tibble::tibble(
         `a b` = numeric(0),
@@ -161,6 +182,13 @@
       c <- tibble(x = "A", y = "A")
       dm(b, c) %>% dm_add_pk(c, x) %>% dm_add_fk(b, y, c) %>% dm_add_fk(b, z, c, y) %>%
         dm_paste()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         b,
@@ -197,6 +225,13 @@
       # on_delete if needed
       dm(b, c) %>% dm_add_pk(c, x) %>% dm_add_fk(b, y, c, on_delete = "cascade") %>%
         dm_add_fk(b, z, c, y, on_delete = "no_action") %>% dm_paste()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         b,
@@ -208,6 +243,13 @@
     Code
       # all of nycflights13
       dm_nycflights13() %>% dm_paste(options = "all")
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       airlines <- tibble::tibble(
         carrier = character(0),
@@ -299,6 +341,12 @@
       Warning:
       The `select` argument of `dm_paste()` is deprecated as of dm 0.1.2.
       i Please use the `options` argument instead.
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
       )
@@ -315,6 +363,13 @@
       # no error for factor column that leads to code with width > 500
       dm(tibble(a = factor(levels = expand.grid(letters, as.character(1:5)) %>%
         transmute(x = paste0(Var1, Var2)) %>% pull()))) %>% dm_paste(options = "tables")
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       `tibble(...)` <- tibble::tibble(
         a = structure(integer(0), class = "factor", levels = c("a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1", "i1", "j1", "k1", "l1", "m1", "n1", "o1", "p1", "q1", "r1", "s1", "t1", "u1", "v1", "w1", "x1", "y1", "z1", "a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2", "i2", "j2", "k2", "l2", "m2", "n2", "o2", "p2", "q2", "r2", "s2", "t2", "u2", "v2", "w2", "x2", "y2", "z2", "a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3", "i3", "j3", "k3", "l3", "m3", "n3", "o3", "p3", "q3", "r3", "s3", "t3", "u3", "v3", "w3", "x3", "y3", "z3", "a4", "b4", "c4", "d4", "e4", "f4", "g4", "h4", "i4", "j4", "k4", "l4", "m4", "n4", "o4", "p4", "q4", "r4", "s4", "t4", "u4", "v4", "w4", "x4", "y4", "z4", "a5", "b5", "c5", "d5", "e5", "f5", "g5", "h5", "i5", "j5", "k5", "l5", "m5", "n5", "o5", "p5", "q5", "r5", "s5", "t5", "u5", "v5", "w5", "x5", "y5", "z5")),

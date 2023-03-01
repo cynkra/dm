@@ -3,6 +3,12 @@
     Code
       dm(x = tibble(x = integer())) %>% dm_add_pk(x)
     Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
       Error in `dm_add_pk()`:
       ! `columns` is absent but must be supplied.
 
@@ -223,6 +229,12 @@
     Code
       dm(x = tibble(a = c(1, 1))) %>% dm_add_pk(x, a, check = TRUE)
     Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
       Error in `abort_not_unique_key()`:
       ! (`a`) not a unique key of `x`.
 
@@ -290,6 +302,12 @@
     Code
       dm(x) %>% dm_add_pk(x, columns = c(x_id, z), autoincrement = TRUE)
     Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
       Error in `dm_add_pk()`:
       ! Composite primary keys cannot be autoincremented.
       * Provide only a single column name to `columns`.
@@ -299,6 +317,13 @@
     Code
       dm(x, y = x) %>% dm_add_pk(x, columns = c(x_id), autoincrement = TRUE) %>%
         dm_add_pk(y, columns = c(x_id, z)) %>% dm_get_all_pks()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       # A tibble: 2 x 3
         table pk_col  autoincrement
