@@ -195,8 +195,9 @@ authors:
     href: http://krlmlr.info
   energie360° AG:
     html: <img src="https://cynkra.github.io/dm/reference/figures/energie-72.png"
-      height="16"/>
+      height="16" alt="energie360° AG"/>
     href: https://www.energie360.ch/de/
   cynkra GmbH:
-    html: <img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"/>
+    html: <img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png"
+      height="16" alt="cynkra GmbH"/>
     href: https://www.cynkra.com
