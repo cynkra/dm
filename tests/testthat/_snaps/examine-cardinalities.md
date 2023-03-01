@@ -2,6 +2,13 @@
 
     Code
       dm_examine_cardinalities(dm_for_card())
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       * FK: dc_2$(`a`, `b`) -> dc_1$(`a`, `b`): injective mapping (child: 0 or 1 -> parent: 1)
       * FK: dc_3$(`a`, `b`) -> dc_1$(`a`, `b`): surjective mapping (child: 1 to n -> parent: 1)
@@ -33,6 +40,13 @@
       * FK: dc_3$(`b`, `a`) -> dc_4$(`b`, `a`): generic mapping (child: 0 to n -> parent: 1)
     Code
       dm_examine_cardinalities(dm())
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       ! No FKs available in `dm`.
 

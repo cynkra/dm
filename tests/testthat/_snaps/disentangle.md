@@ -50,6 +50,13 @@
       12 tf_6-2      o             tf_7-2       p               no_action
     Code
       dm_disentangle(entangled_dm(), a, quiet = TRUE) %>% dm_get_all_fks()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       # A tibble: 22 x 5
          child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -92,6 +99,13 @@
       # ... with 12 more rows
     Code
       dm_disentangle(entangled_dm_2(), a) %>% dm_get_all_fks()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       Replaced table `b` with `b-1`, `b-2`.
       Replaced table `c` with `c-1`, `c-2`.

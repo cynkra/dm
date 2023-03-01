@@ -20,6 +20,14 @@
       Foreign keys: 3
     Code
       dm_packed_nested_unnested <- dm_unnest_tbl(dm_packed_nested, tf_3, tf_2, ptype = dm_for_filter())
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
+    Code
       dm_packed_nested_unnested
     Output
       -- Metadata --------------------------------------------------------------------
@@ -30,6 +38,14 @@
     Code
       dm_packed_nested_unnested_unpacked <- dm_unpack_tbl(dm_packed_nested_unnested,
         tf_2, tf_1, ptype = dm_for_filter())
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
+    Code
       dm_packed_nested_unnested_unpacked
     Output
       -- Metadata --------------------------------------------------------------------

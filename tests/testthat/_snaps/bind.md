@@ -6,6 +6,12 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
       Error in `dm_bind()`:
       ! Names must be unique.
       x These names are duplicated:
@@ -25,6 +31,9 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
     Output
       All `dm` objects need to share the same `src`.
 
@@ -44,6 +53,12 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       dm()
     Code
@@ -52,6 +67,12 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
@@ -65,6 +86,12 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1...1`, `tf_2...2`, `tf_3...3`, `tf_4...4`, `tf_5...5`, ... (17 total)
@@ -78,6 +105,12 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       Names must be unique.
       x These names are duplicated:
@@ -97,6 +130,12 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       New names:
       * `tf_1` -> `tf_1...1`
@@ -127,6 +166,12 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         tf_1,
@@ -178,6 +223,12 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       dm::dm(
         fact,
@@ -232,6 +283,12 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Message
       New names:
       * `fact` -> `fact...1`

@@ -181,6 +181,13 @@
     Code
       dm_nycflights13() %>% dm_enum_fk_candidates(flights, airports) %>% mutate(why = if_else(
         why != "", "<reason>", ""))
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       # A tibble: 19 x 3
          columns        candidate why       
@@ -210,6 +217,13 @@
     Code
       dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_add_fk(a, x, b, x, on_delete = "cascade") %>%
         dm_get_all_fks()
+    Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
     Output
       # A tibble: 1 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
@@ -221,11 +235,23 @@
     Code
       dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_add_fk(a, x, b, x, on_delete = "bogus")
     Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
       Error in `dm_add_fk()`:
       ! `on_delete` must be one of "no_action" or "cascade", not "bogus".
     Code
       dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_add_fk(a, x, b, x, on_delete = letters)
     Condition
+      Warning:
+      `flatten()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` or `purrr::list_c()`.
+      Warning:
+      `flatten_chr()` is deprecated as of rlang 1.1.0.
+      i Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
       Error in `dm_add_fk()`:
       ! `on_delete` must be one of "no_action" or "cascade", not "a".
 
