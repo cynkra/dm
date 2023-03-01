@@ -157,6 +157,7 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
     table_tibble <- sql_schema_table_list_mssql(src_db, "copy_dm_to_schema")
   }
 
+  tbl_names <- names(remote_dm)
   # compare names and remote names
   expect_identical(
     sort(deframe(table_tibble)),
@@ -165,7 +166,8 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
         dm_get_tables() %>%
         map(dbplyr::remote_name) %>%
         list_c() %>%
-        dbplyr::ident_q()
+        dbplyr::ident_q() %>%
+        set_names(tbl_names)
     )
   )
 })
