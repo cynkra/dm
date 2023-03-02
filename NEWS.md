@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.4.9005
+
+## Chore
+
+- Adapt to rlang 1.1.0 changes (#1817).
+
+## Uncategorized
+
+- Merge pull request #1812 from cynkra/b-typo-in-tests.
+
+
 # dm 1.0.4.9004
 
 ## Documentation

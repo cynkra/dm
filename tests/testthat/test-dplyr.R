@@ -313,15 +313,17 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
       left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"))
     )
   } else {
-    expect_equivalent_tbl(
-      left_join(dm_zoomed(), tf_4, by = c("e" = "j"), multiple = "all") %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
-      left_join(tf_2(), tf_4(), by = c("e" = "j"), multiple = "all")
-    )
+    if (utils::packageVersion("dplyr") >= "1.1.0.9000") {
+      expect_equivalent_tbl(
+        left_join(dm_zoomed(), tf_4, by = c("e" = "j"), relationship = "many-to-many") %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+        left_join(tf_2(), tf_4(), by = c("e" = "j"), relationship = "many-to-many")
+      )
 
-    expect_equivalent_tbl(
-      left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1"), multiple = "all") %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
-      left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"), multiple = "all")
-    )
+      expect_equivalent_tbl(
+        left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1"), relationship = "many-to-many") %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+        left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"), relationship = "many-to-many")
+      )
+    }
 
     # explicitly select columns from RHS using argument `select`
     expect_equivalent_tbl(
