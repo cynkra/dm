@@ -25,8 +25,16 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+      Warning in `duckdb_test_src()`:
+      restarting interrupted promise evaluation
+      Warning in `duckdb_test_src()`:
+      restarting interrupted promise evaluation
     Output
-      All `dm` objects need to share the same `src`.
+      'R_user_dir' is not an exported object from 'namespace:tools'
 
 # output
 
