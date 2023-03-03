@@ -261,7 +261,7 @@
 
 # dm_get_all_pks() with table arg fails nicely
 
-    Can't subset tables that don't exist.
+    Can't select tables that don't exist.
     x Table `timetable` doesn't exist.
 
 # dm_get_all_pks() with compound keys
