@@ -44,7 +44,7 @@ my_db <- dbConnect(
 )
 ``````
 
-``````{r show = FALSE}
+``````{r echo = FALSE}
 library(RMariaDB)
 my_db <- dm:::financial_db_con()
 ``````
@@ -82,7 +82,7 @@ my_manual_dm <- dm(loans, accounts)
 my_manual_dm
 ``````
 
-## Define Primary and Foreign Keys
+## Defining Primary and Foreign Keys
 
 Primary keys and foreign keys are how relational database tables are linked with each other.
 A primary key is a column or column tuple that has a unique value for each row within a table.
@@ -138,8 +138,52 @@ my_dm_keys %>%
   dm(trans)
 ``````
 
-For tables from other sources or from the local environment, `dplyr::copy_to()` is used.
-`copy_to()` is discussed later in this article.
+## Serializing a dm object
+
+A dm object is always linked to a database connection.
+This connection is lost when the dm object is saved to disk, e.g., when saving the workspace in R or in Posit Workbench, or when using knitr chunks:
+
+``````{r error = TRUE}
+unserialize(serialize(my_dm_keys, NULL))
+``````
+
+The connection is tightly coupled with the tables in the dm object and cannot be replaced.
+A practical solution is to define, for each dm object your project uses, a function that recreates it using a new database connection:
+
+``````{r }
+my_db_fun <- function() {
+  dbConnect(
+    MariaDB(),
+    username = "guest",
+    password = "relational",
+    dbname = "Financial_ijs",
+    host = "relational.fit.cvut.cz"
+  )
+}
+
+my_dm_fun <- function(my_db = my_db_fun()) {
+  loans <- tbl(my_db, "loans")
+  accounts <- tbl(my_db, "accounts")
+  dm(loans, accounts) %>%
+    dm_add_pk(accounts, id) %>%
+    dm_add_pk(loans, id) %>%
+    dm_add_fk(loans, account_id, accounts) %>%
+    dm_set_colors(green = loans, orange = accounts)
+}
+``````
+
+``````{r echo = FALSE}
+my_db_fun <- function() {
+  dm:::financial_db_con()
+}
+``````
+
+``````{r echo = FALSE}
+my_dm_fun() %>%
+  dm_draw()
+``````
+
+To avoid reconnecting and/or recreating every time you need a dm object, you can use `memoise::memoise()` to memoize the connection and/or dm functions.
 
 ## Transient nature of operations
 
