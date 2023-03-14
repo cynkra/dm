@@ -1,3 +1,4 @@
+#' @autoglobal
 build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary = TRUE, table_names = set_names(names(dm))) {
   con <- con_from_src_or_con(dest)
 
