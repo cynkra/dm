@@ -363,7 +363,7 @@ tally.dm_zoomed <- function(x, ...) {
 }
 
 #' @export
-pull.dm <- function(.data, var = -1, name = NULL) {
+pull.dm <- function(.data, var = -1, name = NULL, ...) {
   check_zoomed(.data)
 }
 
