@@ -39,7 +39,7 @@ fin_db <- dbConnect(
 )
 ``````
 
-``````{r connect-real, show = FALSE}
+``````{r connect-real, echo = FALSE}
 library(RMariaDB)
 
 fin_db <- dm:::financial_db_con()
