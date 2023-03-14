@@ -19,7 +19,6 @@ In this document, we will present several specialized functions for conducting b
 We will also describe functions that can be used for splitting and uniting tables.
 
 ```{r}
-library(tidyverse)
 library(dm)
 ```
 
@@ -183,7 +182,7 @@ Basically, a foreign key relation would be created, pointing from the  `new_id_c
 The function `decompose_table()` does that, as can be seen in the following example:
 
 ```{r}
-mtcars_tibble <- as_tibble(mtcars)
+mtcars_tibble <- tibble::as_tibble(mtcars)
 mtcars_tibble
 decomposed_table <- decompose_table(mtcars_tibble, am_gear_carb_id, am, gear, carb)
 decomposed_table

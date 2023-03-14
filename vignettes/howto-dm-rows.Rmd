@@ -71,7 +71,6 @@ To demonstrate the use of these table modifying methods, we will create a simple
 Note that the `child` table has a foreign key missing (`NA`).
 
 ``````{r}
-library(tidyverse)
 library(dm)
 parent <- tibble(value = c("A", "B", "C"), pk = 1:3)
 parent
