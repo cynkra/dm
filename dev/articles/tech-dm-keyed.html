@@ -420,7 +420,7 @@ deconstruction reconstruction using <code><a href="../reference/pull_tbl.html">p
 <code class="sourceCode R"><span><span class="va">flights_derived</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="va">flights</span>, keyed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">carrier</span><span class="op">)</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">carrier</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">derived_flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="va">flights_derived</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">flights_keyed</span><span class="op">)</span></span>
 <span></span>
