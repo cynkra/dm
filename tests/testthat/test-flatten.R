@@ -299,6 +299,10 @@ test_that("tests with 'bad_dm' work", {
   # can't create bad_dm() on Postgres due to strict constraint checks
   skip_if_src("postgres")
 
+  # duckdb doesn't work before R 4.0
+  skip_if(getRversion() < "4.0")
+
+
   # flatten bad_dm() (no referential integrity)
   #
   # Warning, because since dplyr 1.1.0 dm_flatten_to_tbl()
@@ -358,6 +362,9 @@ test_that("tests with 'bad_dm' work (2)", {
   # full & right join not available on SQLite and MariaDB
   skip_if_src("sqlite", "maria")
 
+  # duckdb doesn't work before R 4.0
+  skip_if(getRversion() < "4.0")
+
   bad_filtered_dm <- dm_filter(bad_dm(), tbl_1 = (a != 4))
 
   # flatten bad_dm() (no referential integrity)
@@ -386,6 +393,9 @@ test_that("tests with 'bad_dm' work (3)", {
 
   # full & right join not available on SQLite
   skip_if_src("sqlite")
+
+  # duckdb doesn't work before R 4.0
+  skip_if(getRversion() < "4.0")
 
   bad_filtered_dm <- dm_filter(bad_dm(), tbl_1 = (a != 4))
 
