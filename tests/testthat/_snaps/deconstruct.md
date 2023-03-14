@@ -346,7 +346,7 @@
 # joins without child PK
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -399,7 +399,7 @@
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(x, a, r, a)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -455,7 +455,7 @@
 # joins with other child PK
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -511,7 +511,7 @@
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(x, a, r, a)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -570,7 +570,7 @@
 # joins with other child PK and name conflict
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -626,7 +626,7 @@
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(x, a, r, a)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -685,7 +685,7 @@
 # joins with same child PK
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -740,7 +740,7 @@
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(x, a, r)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -798,7 +798,7 @@
 # joins with same child PK and same name
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -853,7 +853,7 @@
         dm::dm_add_fk(r, b, y) %>%
         dm::dm_add_fk(x, b, r)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -911,7 +911,7 @@
 # joins with other FK from parent
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -976,7 +976,7 @@
         dm::dm_add_fk(r, c, z, c) %>%
         dm::dm_add_fk(x, a, r)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1044,7 +1044,7 @@
 # joins with other FK from parent and name conflict
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1109,7 +1109,7 @@
         dm::dm_add_fk(r, a, z, a) %>%
         dm::dm_add_fk(x, a, r)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1177,7 +1177,7 @@
 # joins with other FK from child
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1242,7 +1242,7 @@
         dm::dm_add_fk(r, c, z, c) %>%
         dm::dm_add_fk(x, a, r)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1310,7 +1310,7 @@
 # joins with other FK from child and name conflict
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1375,7 +1375,7 @@
         dm::dm_add_fk(r, b, z, b) %>%
         dm::dm_add_fk(x, a, r)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1620,8 +1620,8 @@
 # pks_df_from_keys_info()
 
     Code
-      dm %>% dm_get_keyed_tables_impl() %>% pks_df_from_keys_info() %>% jsonlite::toJSON(
-        pretty = TRUE)
+      dm %>% dm_get_keyed_tables_impl() %>% pks_df_from_keys_info() %>%
+        to_snapshot_json()
     Output
       [
         {
@@ -1669,8 +1669,8 @@
 # uks_df_from_keys_info()
 
     Code
-      dm %>% dm_get_keyed_tables_impl() %>% uks_df_from_keys_info() %>% jsonlite::toJSON(
-        pretty = TRUE)
+      dm %>% dm_get_keyed_tables_impl() %>% uks_df_from_keys_info() %>%
+        to_snapshot_json()
     Output
       [
         {
@@ -1706,8 +1706,8 @@
 # fks_df_from_keys_info()
 
     Code
-      dm %>% dm_get_keyed_tables_impl() %>% fks_df_from_keys_info() %>% jsonlite::toJSON(
-        pretty = TRUE)
+      dm %>% dm_get_keyed_tables_impl() %>% fks_df_from_keys_info() %>%
+        to_snapshot_json()
     Output
       [
         {

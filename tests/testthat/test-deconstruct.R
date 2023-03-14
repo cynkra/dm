@@ -192,11 +192,11 @@ test_that("joins without child PK", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -216,11 +216,11 @@ test_that("joins with other child PK", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -240,11 +240,11 @@ test_that("joins with other child PK and name conflict", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -264,11 +264,11 @@ test_that("joins with same child PK", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -288,11 +288,11 @@ test_that("joins with same child PK and same name", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -314,11 +314,11 @@ test_that("joins with other FK from parent", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -340,11 +340,11 @@ test_that("joins with other FK from parent and name conflict", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -366,11 +366,11 @@ test_that("joins with other FK from child", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -392,11 +392,11 @@ test_that("joins with other FK from child and name conflict", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -517,7 +517,7 @@ test_that("pks_df_from_keys_info()", {
     dm %>%
       dm_get_keyed_tables_impl() %>%
       pks_df_from_keys_info() %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
   })
 })
 
@@ -531,7 +531,7 @@ test_that("uks_df_from_keys_info()", {
     dm %>%
       dm_get_keyed_tables_impl() %>%
       uks_df_from_keys_info() %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
   })
 })
 
@@ -544,7 +544,7 @@ test_that("fks_df_from_keys_info()", {
     dm %>%
       dm_get_keyed_tables_impl() %>%
       fks_df_from_keys_info() %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
   })
 })
 
