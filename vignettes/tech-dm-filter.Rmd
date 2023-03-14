@@ -172,7 +172,7 @@ And indeed, all included flights departed in January (`month == 1`):
 
 ```{r}
 dm_delta_may$flights %>%
-  count(month)
+  dplyr::count(month)
 ```
 
 For comparison, let's review the equivalent manual query for `flights` in `dplyr` syntax:
