@@ -101,6 +101,16 @@ Suggests:
     testthat (>= 3.1.2),
     waldo,
     withr
+Config/Needs/website:
+    brio,
+    bslib,
+    cynkra/cynkratemplate,
+    htmltools,
+    pagedown,
+    purrr,
+    rmarkdown,
+    whisker,
+    xml2
 VignetteBuilder: 
     knitr
 Config/autostyle/scope: line_breaks
@@ -112,4 +122,3 @@ Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm,
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd"))
 RoxygenNote: 7.2.3
-Config/Needs/website: cynkra/cynkratemplate
