@@ -267,7 +267,7 @@ materialization
 <span>  <span class="fu">check_not_zoomed</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="fu">check_same_src</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html" class="external-link">walk2</a></span><span class="op">(</span><span class="fu"><a href="../../reference/dm_get_tables.html">dm_get_tables</a></span><span class="op">(</span><span class="va">target_dm</span><span class="op">)</span>, <span class="fu"><a href="../../reference/dm_get_tables.html">dm_get_tables</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>, <span class="va">check_columns_superset</span><span class="op">)</span></span>
+<span>  <span class="fu">walk2</span><span class="op">(</span><span class="fu"><a href="../../reference/dm_get_tables.html">dm_get_tables</a></span><span class="op">(</span><span class="va">target_dm</span><span class="op">)</span>, <span class="fu"><a href="../../reference/dm_get_tables.html">dm_get_tables</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>, <span class="va">check_columns_superset</span><span class="op">)</span></span>
 <span>  <span class="fu">check_keys_compatible</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
