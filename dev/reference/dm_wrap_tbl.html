@@ -96,7 +96,7 @@ on the dm.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dm_wrap_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">root</span>, strict <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dm_wrap_tbl</span><span class="op">(</span><span class="va">dm</span>, <span class="va">root</span>, strict <span class="op">=</span> <span class="cn">TRUE</span>, progress <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -112,6 +112,12 @@ on the dm.</p>
 <dt>strict</dt>
 <dd><p>Whether to fail for cyclic dms that cannot be wrapped into a
 single table, if <code>FALSE</code> a partially wrapped dm will be returned.</p></dd>
+
+
+<dt>progress</dt>
+<dd><p>Whether to display a progress bar, if <code>NA</code> (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.</p></dd>
 
 </dl></div>
     <div class="section level2">
