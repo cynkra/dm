@@ -25,7 +25,6 @@ Our example data is drawn from the [{nycflights13}](https://github.com/tidyverse
 First, we will load the packages that we need:
 
 ```{r message=FALSE, warning=FALSE}
-library(tidyverse)
 library(nycflights13)
 library(dm)
 ```

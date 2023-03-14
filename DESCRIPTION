@@ -99,7 +99,6 @@ Suggests:
     shinyAce,
     shinydashboard,
     testthat (>= 3.1.2),
-    tidyverse,
     waldo,
     withr
 VignetteBuilder: 

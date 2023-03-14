@@ -19,7 +19,6 @@ In this document, we will present several specialized functions for conducting b
 We will also describe functions that can be used for splitting and uniting tables.
 
 ```{r}
-library(tidyverse)
 library(dm)
 ```
 

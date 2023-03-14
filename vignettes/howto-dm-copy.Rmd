@@ -38,7 +38,6 @@ The steps for this were already introduced in `vignette("howto-dm-db")` and will
 
 ``````{r }
 library(dm)
-library(tidyverse)
 library(dbplyr)
 
 fin_dm <-

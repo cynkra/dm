@@ -29,9 +29,6 @@ input <- readLines(knitr::current_input())
 if (rlang::has_length(grep('^library[(]"?dm"?[)]', input))) {
   library(dm)
 }
-if (rlang::has_length(grep('^library[(]"?tidyverse"?[)]', input))) {
-  library(tidyverse)
-}
 if (rlang::has_length(grep('^library[(]"?dplyr"?[)]', input))) {
   library(dplyr)
 }
