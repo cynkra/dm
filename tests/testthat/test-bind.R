@@ -49,6 +49,7 @@ test_that("errors: src mismatches", {
 
   skip_if_not_installed("dbplyr")
   skip_if_not_installed("duckdb")
+  skip_if_not(getRversion() >= "4.0")
   expect_dm_error(dm_bind(dm_for_flatten(), dm_for_filter_duckdb()), "not_same_src")
 })
 
@@ -94,6 +95,7 @@ test_that("test error output for src mismatches", {
   local_options(lifecycle_verbosity = "warning")
 
   skip_if_not_installed("dbplyr")
+  skip_if_not(getRversion() >= "4.0")
 
   expect_snapshot({
     writeLines(conditionMessage(expect_error(
