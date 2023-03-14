@@ -194,6 +194,7 @@ test_that("auto-renaming works", {
 
 test_that("test error output for src mismatches", {
   skip_if_not_installed("dbplyr")
+  skip_if_not(getRversion() >= "4.0")
 
   expect_snapshot({
     writeLines(conditionMessage(expect_error(
@@ -468,6 +469,8 @@ test_that("dm_get_con() errors", {
 })
 
 test_that("dm_get_con() works", {
+  skip_if_not_installed("dbplyr")
+
   expect_identical(
     dm_get_con(dm_for_filter_db()),
     con_from_src_or_con(my_db_test_src())
