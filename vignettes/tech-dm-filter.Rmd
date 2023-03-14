@@ -213,7 +213,7 @@ dm %>%
     flights = (month == 1)
   ) %>%
   dm_get_tables() %>%
-  map(dbplyr::sql_render)
+  purrr::map(dbplyr::sql_render)
 ```
 
 Further reading: {dm}'s function for copying data [from and to databases](https://dm.cynkra.com/articles/dm.html).
