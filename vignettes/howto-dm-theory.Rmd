@@ -70,7 +70,6 @@ Details like the full name of an airport are not available immediately; these ca
 In classical {dplyr} notation, you will need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes`, `airports`, and `weather` tables to create one wide data frame.
 
 ```{r}
-library(tidyverse)
 library(dm)
 library(nycflights13)
 

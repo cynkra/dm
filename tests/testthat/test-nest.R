@@ -38,6 +38,8 @@ test_that("'nest_join_dm_zoomed()'-method for `dm_zoomed` works", {
 })
 
 test_that("'nest_join_dm_zoomed()' fails for DB-'dm'", {
+  skip_if_not_installed("dbplyr")
+
   expect_dm_error(
     dm_zoom_to(dm_for_filter_duckdb(), tf_3) %>% nest_join_dm_zoomed(),
     "only_for_local_src"

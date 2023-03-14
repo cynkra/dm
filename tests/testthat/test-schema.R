@@ -204,19 +204,19 @@ test_that("schema handling on SQLite all throw errors", {
   con_db <- src_db$con
 
   expect_dm_error(
-    db_schema_exists(src_db, "test"),
+    expect_deprecated(db_schema_exists(src_db, "test"), "DBI connection"),
     "no_schemas_supported"
   )
   expect_dm_error(
-    db_schema_list(src_db),
+    expect_deprecated(db_schema_list(src_db), "DBI connection"),
     "no_schemas_supported"
   )
   expect_dm_error(
-    db_schema_drop(src_db, "test"),
+    expect_deprecated(db_schema_drop(src_db, "test"), "DBI connection"),
     "no_schemas_supported"
   )
   expect_dm_error(
-    db_schema_exists(src_db, "test"),
+    expect_deprecated(db_schema_exists(src_db, "test"), "DBI connection"),
     "no_schemas_supported"
   )
 
