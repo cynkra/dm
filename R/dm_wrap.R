@@ -144,7 +144,7 @@ dm_unwrap_tbl <- function(dm, ptype, progress = NA) {
   )
 
   unwrapped_dm <- reduce(
-    transpose(unwrap_plan),
+    unwrap_plan,
     function(dm, row) {
       exec(row$action, dm, row$table, row$col, ptype)
     },
