@@ -136,7 +136,9 @@ dm_get_data_model <- function(x, column_types = FALSE) {
     dm_get_all_fks_impl(x) %>%
     mutate(column = format(parent_key_cols)) %>%
     select(table = parent_table, column) %>%
-    mutate(key_fk = 2L)
+    mutate(key_fk = 2L) %>%
+    # `parent_table` and `column` can be referenced by multiple child tables
+    distinct()
 
   if (column_types) {
     types <- dm_get_all_column_types(x)
@@ -148,7 +150,12 @@ dm_get_data_model <- function(x, column_types = FALSE) {
     types %>%
     full_join(keys_pk, by = c("table", "column")) %>%
     full_join(keys_fk, by = c("table", "column")) %>%
-    full_join(references_for_columns, by = c("table", "column")) %>%
+    # there is a legitimate interest to have duplicates in `table` and `column`
+    # in table `references_for_columns`.
+    # When using a dplyr version >= 1.1.0, we get a warning in that case, thus
+    # we need `multiple = "all"`.
+    # FIXME: is there another way? like this we need a min dplyr version 1.1.0.
+    full_join(references_for_columns, by = c("table", "column"), multiple = "all") %>%
     # Order matters: key == 2 if foreign key points to non-default primary key
     mutate(key = coalesce(key, key_fk, 0L)) %>%
     select(-key_fk) %>%

@@ -51,8 +51,8 @@
     Condition
       Warning:
       `dm_add_tbl()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
-      Use `.name_repair = "unique"` if necessary.
+      i Please use `dm()` instead.
+      i Use `.name_repair = "unique"` if necessary.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `weather`, `mtcars`

@@ -44,12 +44,14 @@ new_fks_out <- function(child_fk_cols = NULL, parent_uuid = NULL, parent_key_col
 new_keyed_tbl <- function(x,
                           ...,
                           pk = NULL,
+                          uks = NULL,
                           fks_in = NULL,
                           fks_out = NULL,
                           uuid = NULL) {
   check_dots_empty()
 
   pk <- vec_cast(pk, character())
+  uks <- vec_cast(uks, new_uk()) %||% new_uk()
   fks_in <- vec_cast(fks_in, new_fks_in()) %||% new_fks_in()
   fks_out <- vec_cast(fks_out, new_fks_out()) %||% new_fks_out()
 
@@ -60,6 +62,7 @@ new_keyed_tbl <- function(x,
   class(x) <- unique(c("dm_keyed_tbl", class(x)))
   attr(x, "dm_key_info") <- list(
     pk = pk,
+    uks = uks,
     fks_in = fks_in,
     fks_out = fks_out,
     uuid = uuid
@@ -144,6 +147,24 @@ new_pks_from_keys_info <- function(tbl) {
   }
 }
 
+uks_df_from_keys_info <- function(tables) {
+  uks <- map(unname(tables), new_uks_from_keys_info)
+  tibble(table = names2(tables), uks)
+}
+
+new_uks_from_keys_info <- function(tbl) {
+  df_keys <- keyed_get_info(tbl)
+
+  if (nrow(df_keys$uks) == 0) {
+    return(new_uk())
+  }
+
+  missing_uks <- map(df_keys$uks$column, setdiff, colnames(tbl))
+  valid_uks <- (lengths(missing_uks) == 0)
+
+  new_uk(df_keys$uks$column[valid_uks])
+}
+
 fks_df_from_keys_info <- function(tables) {
   info <- map(tables, keyed_get_info)
 
@@ -167,8 +188,10 @@ fks_df_from_keys_info <- function(tables) {
   parent_uuid_lookup <- set_names(uuid_lookup, paste0("parent_", names(uuid_lookup)))
 
   fks %>%
-    left_join(child_uuid_lookup, by = "child_uuid") %>%
-    left_join(parent_uuid_lookup, by = "parent_uuid") %>%
+    # Multiple tables with the same uuid can occur due to aliasing,
+    # hence `multiple = "all"`
+    left_join(child_uuid_lookup, by = "child_uuid", multiple = "all") %>%
+    left_join(parent_uuid_lookup, by = "parent_uuid", multiple = "all") %>%
     select(-child_uuid, -parent_uuid) %>%
     filter(map2_lgl(child_fk_cols, child_data, ~ all(.x %in% colnames(.y)))) %>%
     filter(map2_lgl(parent_key_cols, parent_data, ~ all(.x %in% colnames(.y)))) %>%

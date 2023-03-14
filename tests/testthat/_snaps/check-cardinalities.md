@@ -24,7 +24,7 @@
     Condition
       Warning:
       The `pk_column` argument of `eval()` is deprecated as of dm 1.0.0.
-      Please use the `x_select` argument instead.
+      i Please use the `x_select` argument instead.
       * Use `y_select` instead of `fk_column`, and `x` and `y` instead of `parent_table` and `child_table`.
       * Using `by_position = TRUE` for compatibility.
     Output

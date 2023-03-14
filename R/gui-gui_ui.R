@@ -1,4 +1,3 @@
-
 # do not add 'btn-default' class, so we can customize
 actionButton2 <- function(inputId, label, icon = NULL, width = NULL, ...) {
   value <- shiny::restoreInput(id = inputId, default = NULL)

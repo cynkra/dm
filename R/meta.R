@@ -225,6 +225,10 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
   force(catalog)
   force(schema)
 
+  if (length(schema) > 1 && anyNA(schema)) {
+    cli::cli_abort("{.arg schema} must not contain NA if it has more than one element.")
+  }
+
   schemata <- dm_meta$schemata
   tables <- dm_meta$tables
   columns <- dm_meta$columns
@@ -241,7 +245,7 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
     constraint_column_usage <- constraint_column_usage %>% filter(table_catalog %in% !!catalog)
   }
 
-  if (!is.null(schema) && !is.na(schema)) {
+  if (!is.null(schema) && !anyNA(schema)) {
     schemata <- schemata %>% filter(schema_name %in% !!schema)
     tables <- tables %>% filter(table_schema %in% !!schema)
     columns <- columns %>% filter(table_schema %in% !!schema)

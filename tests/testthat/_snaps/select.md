@@ -3,15 +3,15 @@
     Code
       dm_for_filter() %>% dm_rename(tf_3, new_f = f) %>% dm_get_all_pks_impl()
     Output
-      # A tibble: 6 x 2
-        table pk_col   
-        <chr> <keys>   
-      1 tf_1  a        
-      2 tf_2  c        
-      3 tf_3  new_f, f1
-      4 tf_4  h        
-      5 tf_5  k        
-      6 tf_6  o        
+      # A tibble: 6 x 3
+        table pk_col    autoincrement
+        <chr> <keys>    <lgl>        
+      1 tf_1  a         FALSE        
+      2 tf_2  c         FALSE        
+      3 tf_3  new_f, f1 FALSE        
+      4 tf_4  h         FALSE        
+      5 tf_5  k         FALSE        
+      6 tf_6  o         FALSE        
 
 # dm_rename() works for replacing fks
 
@@ -33,14 +33,14 @@
     Code
       dm_for_filter() %>% dm_select(tf_3, new_f = f) %>% dm_get_all_pks_impl()
     Output
-      # A tibble: 5 x 2
-        table pk_col
-        <chr> <keys>
-      1 tf_1  a     
-      2 tf_2  c     
-      3 tf_4  h     
-      4 tf_5  k     
-      5 tf_6  o     
+      # A tibble: 5 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      FALSE        
+      2 tf_2  c      FALSE        
+      3 tf_4  h      FALSE        
+      4 tf_5  k      FALSE        
+      5 tf_6  o      FALSE        
 
 # dm_select() works for replacing fks, and removes missing ones
 
