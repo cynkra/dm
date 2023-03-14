@@ -13,7 +13,7 @@ vec_ptype2.dm_keys.dm_keys <- function(x, y, ...) new_keys()
 vec_cast.dm_keys.dm_keys <- function(x, to, ...) x
 
 #' @export
-vec_ptype_abbr.dm_keys <- function(x) {
+vec_ptype_abbr.dm_keys <- function(x, ..., prefix_named, suffix_shape) {
   "keys"
 }
 
@@ -33,7 +33,7 @@ vec_proxy_compare.dm_keys <- function(x, ...) {
 }
 
 #' @export
-pillar_shaft.dm_keys <- function(x) {
+pillar_shaft.dm_keys <- function(x, ...) {
   x <- map_chr(x, commas, max_commas = 3)
   pillar::pillar_shaft(x)
 }
