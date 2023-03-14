@@ -95,6 +95,7 @@ test_that("test error output for src mismatches", {
   local_options(lifecycle_verbosity = "warning")
 
   skip_if_not_installed("dbplyr")
+  skip_if_not(getRversion() >= "4.0")
 
   expect_snapshot({
     writeLines(conditionMessage(expect_error(
