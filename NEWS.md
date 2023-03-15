@@ -1,5 +1,28 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.4.9006
+
+## Features
+
+- Progress bars for dm_wrap_tbl() and dm_unwrap_tbl() (#835, #1450).
+
+## Chore
+
+- Compatibility with dev jsonlite (#1837).
+
+- Remove tidyverse dependency (#1798, #1834).
+
+- Minimal patch to fix multiple match updates (@DavisVaughan, #1806).
+
+- Fix tests (#1831).
+
+## Documentation
+
+- Add cheat sheet as a vignette (#1653).
+
+- Suggest creating a function for your database dm object (#1827, #1828).
+
+
 # dm 1.0.4.9005
 
 ## Chore
