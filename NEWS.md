@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9001
+
+## Chore
+
+- Release automatically via fledge.
+
+
 # dm 1.0.5.9000
 
 - Internal changes only.
