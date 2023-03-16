@@ -3,6 +3,8 @@ name: fledge
 on:
   # for manual triggers
   workflow_dispatch:
+  # for debugging
+  push:
   # daily run
   schedule:
   - cron: "30 0 * * *"
@@ -43,11 +45,16 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           install-r: false
           cache-version: fledge-1
-          packages: cynkra/fledge
+          packages: cynkra/fledge@cran-watching
 
       - name: Bump version
         run: |
           if (fledge::bump_version(which = "dev", no_change_behavior = "noop")) {
             fledge::finalize_version(push = TRUE)
           }
+        shell: Rscript {0}
+
+      - name: Check release
+        run: |
+          fledge:::release_after_cran_built_binaries()
         shell: Rscript {0}
