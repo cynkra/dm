@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9002
+
+## Documentation
+
+- Avoid tidyverse package.
+
+
 # dm 1.0.5.9001
 
 ## Chore
