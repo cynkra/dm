@@ -75,17 +75,17 @@ reactable_column <- function(data, table_name) {
               dplyr::if_else(
                 data$is_pk[index],
                 list(htmltools::span(style = "margin-right: 10px;", title = "Primary key", shiny::icon(verify_fa = FALSE, "key"))),
-                NULL
+                list(NULL)
               ),
               dplyr::if_else(
                 data$is_child_fk[index],
                 list(htmltools::span(style = "margin-right: 10px;", title = "Child in foreign key", shiny::icon(verify_fa = FALSE, "angle-double-right"))),
-                NULL
+                list(NULL)
               ),
               dplyr::if_else(
                 data$is_parent_key[index],
                 list(htmltools::span(style = "margin-right: 10px;", title = "Parent key", shiny::icon(verify_fa = FALSE, "angle-double-left"))),
-                NULL
+                list(NULL)
               ),
               shiny::span(class = "tag", style = "color: #999; border-color: #999;", title = paste0("Data type: ", data$type[index]), data$type[index])
             )

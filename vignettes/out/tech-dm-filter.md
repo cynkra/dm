@@ -351,7 +351,7 @@ dm %>%
   dm_filter(airports, name != "John F Kennedy Intl") %>%
   dm_apply_filters() %>%
   dm_get_tables() %>%
-  map(dbplyr::sql_render)
+  purrr::map(dbplyr::sql_render)
 #> $flights
 #> <SQL> SELECT * FROM (SELECT * FROM `flights_2020_08_28_07_13_03_12345_1` AS `LHS`
 #> WHERE EXISTS (

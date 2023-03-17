@@ -5,7 +5,7 @@
     Condition
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
+      i Please use `dm()` instead.
       Error in `dm_bind()`:
       ! Names must be unique.
       x These names are duplicated:
@@ -24,7 +24,7 @@
     Condition
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
+      i Please use `dm()` instead.
     Output
       All `dm` objects need to share the same `src`.
 
@@ -35,7 +35,7 @@
     Condition
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
+      i Please use `dm()` instead.
     Output
       dm()
     Code
@@ -43,7 +43,7 @@
     Condition
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
+      i Please use `dm()` instead.
     Output
       dm()
     Code
@@ -51,7 +51,7 @@
     Condition
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
+      i Please use `dm()` instead.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
@@ -64,7 +64,7 @@
     Condition
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
+      i Please use `dm()` instead.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1...1`, `tf_2...2`, `tf_3...3`, `tf_4...4`, `tf_5...5`, ... (17 total)
@@ -77,7 +77,7 @@
     Condition
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
+      i Please use `dm()` instead.
     Output
       Names must be unique.
       x These names are duplicated:
@@ -96,7 +96,7 @@
     Condition
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
+      i Please use `dm()` instead.
     Message
       New names:
       * `tf_1` -> `tf_1...1`
@@ -126,7 +126,7 @@
     Condition
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
+      i Please use `dm()` instead.
     Message
       dm::dm(
         tf_1,
@@ -177,7 +177,7 @@
     Condition
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
+      i Please use `dm()` instead.
     Message
       dm::dm(
         fact,
@@ -231,7 +231,7 @@
     Condition
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
+      i Please use `dm()` instead.
     Message
       New names:
       * `fact` -> `fact...1`

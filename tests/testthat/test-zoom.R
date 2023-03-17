@@ -99,8 +99,8 @@ test_that("dm_update_tbl() works", {
   new_dm_for_filter <-
     dm_get_def(dm_for_filter()) %>%
     mutate(
-      zoom = if_else(table == "tf_6", list(tf_7()), NULL),
-      col_tracker_zoom = if_else(table == "tf_6", list(character()), NULL),
+      zoom = if_else(table == "tf_6", list(tf_7()), list(NULL)),
+      col_tracker_zoom = if_else(table == "tf_6", list(character()), list(NULL)),
     ) %>%
     new_dm3(zoomed = TRUE)
 

@@ -43,7 +43,7 @@
     Condition
       Warning:
       The `progress` argument of `dm_examine_cardinalities()` is deprecated as of dm 1.0.0.
-      Please use the `.progress` argument instead.
+      i Please use the `.progress` argument instead.
     Message
       ! No FKs available in `dm`.
     Code
@@ -51,7 +51,7 @@
     Condition
       Warning:
       The `dm` argument of `dm_examine_cardinalities()` is deprecated as of dm 1.0.0.
-      Please use the `.dm` argument instead.
+      i Please use the `.dm` argument instead.
     Message
       ! No FKs available in `dm`.
 

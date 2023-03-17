@@ -1,4 +1,74 @@
-<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+<!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
+
+# dm 1.0.5
+
+## Features
+
+- Progress bars for `dm_wrap_tbl()` and `dm_unwrap_tbl()` (#835, #1450).
+
+## Documentation
+
+- Add cheat sheet as a vignette (#1653).
+
+- Suggest creating a function for your database `dm` object (#1827, #1828).
+
+- Add alternative text to author images for pkgdown website (#1804).
+
+## Chore
+
+- Compatibility with dev jsonlite (#1837).
+
+- Remove tidyverse dependency (#1798, #1834).
+
+- Minimal patch to fix multiple match updates (@DavisVaughan, #1806).
+
+- Adapt to rlang 1.1.0 changes (#1817).
+
+- Make sure `{dm}` passes "noSuggests" workflow (#1659).
+
+
+# dm 1.0.4
+
+## Features
+
+- `dm_add_pk()` gains `autoincrement` argument (#1689), autoincrement primary keys are configured on the database with `copy_dm_to()` (#1696).
+
+- New `dm_add_uk()`, `dm_rm_uk()` and `dm_get_all_uks()` functions for explicit support of unique keys (#622, #1716).
+
+- `dm_get_all_pks()` and `dm_get_all_fks()` return output in the order of `table` or `parent_table` argument (#1707).
+
+- Improve error message for `dm_add_pk()` when the `columns` argument is missing (#1644, #1646).
+
+## Breaking changes
+
+- `dm_get_all_pks()`, `dm_get_all_fks()`, and `dm_get_all_uks()` require unquoted table names as input, for consistency with other parts of the API (#1741).
+
+## Bug fixes
+
+- `dm_examine_constraints()` works for `dm` objects on the database with compound keys (#1713).
+
+## Documentation
+
+- Update pkgdown URL to <https://dm.cynkra.com/> (#1652).
+
+- Fix link rot (#1671).
+
+## Internal
+
+- Require dplyr >= 1.1.0 and lifecycle >= 1.0.3 (#1771, #1637).
+
+- Checks pass if all suggested packages are missing (#1659).
+
+- Fix r-devel builds (#1776).
+
+- `dm_unpack_tbl()` sets PK before FK (#1715).
+
+- Clean up `dm_rows_append()` implementation (#1714).
+
+- `dm()` accepts tables that are of class `"tbl_sql"` but not `"tbl_dbi"` (#1695, #1710).
+
+- Use correctly typed missing value for lists (@DavisVaughan, #1686).
+
 
 # dm 1.0.3
 

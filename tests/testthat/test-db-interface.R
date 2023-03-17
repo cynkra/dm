@@ -157,6 +157,7 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
     table_tibble <- sql_schema_table_list_mssql(src_db, "copy_dm_to_schema")
   }
 
+  tbl_names <- names(remote_dm)
   # compare names and remote names
   expect_identical(
     sort(deframe(table_tibble)),
@@ -164,8 +165,9 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
       remote_dm %>%
         dm_get_tables() %>%
         map(dbplyr::remote_name) %>%
-        flatten_chr() %>%
-        dbplyr::ident_q()
+        list_c() %>%
+        dbplyr::ident_q() %>%
+        set_names(tbl_names)
     )
   )
 })
@@ -251,5 +253,46 @@ test_that("build_copy_queries avoids duplicate indexes", {
     {
       as.list(queries)
     }
+  )
+})
+
+test_that("copy_dm_to() works with autoincrement PKs and FKS on selected DBs", {
+  skip_if_src_not(c("postgres", "sqlite", "mssql", "maria"))
+
+  con_db <- my_test_con()
+  local_dm_ptype <-
+    dm_for_autoinc_1() %>%
+    dm_ptype() %>%
+    dm_add_pk(t1, a, autoincrement = TRUE) %>%
+    dm_add_pk(t2, c, autoincrement = TRUE) %>%
+    dm_add_fk(t2, d, t1) %>%
+    dm_add_fk(t3, e, t1) %>%
+    dm_add_fk(t4, h, t2) %>%
+    # Avoid clash with other test that uses the same table names
+    dm_rename_tbl(xt1 = t1, xt2 = t2, xt3 = t3, xt4 = t4)
+
+  withr::defer({
+    order_of_deletion <- c("xt4", "xt2", "xt3", "xt1")
+    walk(
+      dm_get_tables_impl(remote_dm)[order_of_deletion],
+      ~ try(dbExecute(con_db, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
+    )
+  })
+
+  # FIXME: how to check if autoincrement is actually set on DB?
+  expect_silent(
+    remote_dm <- copy_dm_to(
+      con_db,
+      local_dm_ptype,
+      temporary = FALSE
+    )
+  )
+
+  collected_dm <- remote_dm %>%
+    collect()
+
+  expect_equivalent_dm(
+    local_dm_ptype,
+    collected_dm
   )
 })

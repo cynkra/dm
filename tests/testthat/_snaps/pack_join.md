@@ -3,7 +3,7 @@
     Code
       pack_join(df1, df2)
     Message
-      Joining, by = "key"
+      Joining with `by = join_by(key)`
     Output
       # A tibble: 2 x 3
          col1 key   df2$col2
@@ -16,7 +16,7 @@
     Code
       pack_join(df1, df2, name = "packed_col")
     Message
-      Joining, by = "key"
+      Joining with `by = join_by(key)`
     Output
       # A tibble: 2 x 3
          col1 key   packed_col$col2

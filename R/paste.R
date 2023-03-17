@@ -13,7 +13,7 @@
 #'     derived from [dm_ptype()], overrides `"select"`.
 #'   - `"select"`: [dm_select()] statements for columns that are part
 #'     of the dm.
-#'   - `"keys"`: [dm_add_pk()] and [dm_add_fk()] statements for adding keys.
+#'   - `"keys"`: [dm_add_pk()], [dm_add_fk()] and [dm_add_uk()] statements for adding keys.
 #'   - `"color"`: [dm_set_colors()] statements to set color.
 #'   - `"all"`: All options above except `"select"`
 #'
@@ -109,6 +109,9 @@ dm_paste_impl <- function(dm, options, tab_width) {
   # adding code for establishing PKs
   code_pks <- if ("keys" %in% options) dm_paste_pks(dm)
 
+  # adding code for establishing UKs
+  code_uks <- if ("keys" %in% options) dm_paste_uks(dm)
+
   # adding code for establishing FKs
   code_fks <- if ("keys" %in% options) dm_paste_fks(dm)
 
@@ -121,6 +124,7 @@ dm_paste_impl <- function(dm, options, tab_width) {
       code_construct,
       code_select,
       code_pks,
+      code_uks,
       code_fks,
       code_color
     ),
@@ -168,7 +172,21 @@ dm_paste_select <- function(dm) {
 dm_paste_pks <- function(dm) {
   dm %>%
     dm_get_all_pks_impl() %>%
-    mutate(code = glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")) %>%
+    mutate(
+      code = if_else(
+        !is.na(autoincrement) & autoincrement,
+        glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)}, autoincrement = TRUE)"),
+        glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")
+      )
+    ) %>%
+    pull()
+}
+
+dm_paste_uks <- function(dm) {
+  dm %>%
+    dm_get_def() %>%
+    dm_get_all_uks_def_impl() %>%
+    mutate(code = glue("dm::dm_add_uk({tick_if_needed(table)}, {deparse_keys(uk_col)})")) %>%
     pull()
 }
 
@@ -176,7 +194,7 @@ dm_paste_fks <- function(dm) {
   pks <-
     dm %>%
     dm_get_all_pks_impl() %>%
-    set_names(c("parent_table", "parent_default_pk_cols"))
+    set_names(c("parent_table", "parent_default_pk_cols", "autoincrement"))
 
   fks <-
     dm %>%

@@ -1,6 +1,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# [dm](https://cynkra.github.io/dm/)
+# [dm](https://dm.cynkra.com/)
 
 <!-- badges: start -->
 
@@ -29,7 +29,7 @@ dm makes it easy to bring an existing relational data model into your R session.
 -   simpler joins that “know” how tables are related, including a “flatten” operation that automatically follows keys and performs column name disambiguation
 -   consistency and constraint checks to help you understand (and fix) the limitations of your data
 
-That’s just the tip of the iceberg. See [Getting started](https://cynkra.github.io/dm/articles/dm.html) to hit the ground running and explore all the features.
+That’s just the tip of the iceberg. See [Getting started](https://dm.cynkra.com/articles/dm.html) to hit the ground running and explore all the features.
 
 ## Installation
 
@@ -59,11 +59,11 @@ or from GitHub:
 
 ## Usage
 
-Create a dm object (see [Getting started](https://cynkra.github.io/dm/articles/dm.html) for details).
+Create a dm object (see [Getting started](https://dm.cynkra.com/articles/dm.html) for details).
 
 <pre class='chroma'>
-<span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://cynkra.github.io/dm/'>dm</a></span><span class='o'>)</span>
-<span class='nv'>dm</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://cynkra.github.io/dm/reference/dm_nycflights13.html'>dm_nycflights13</a></span><span class='o'>(</span><span class='o'>)</span>
+<span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://dm.cynkra.com/'>dm</a></span><span class='o'>)</span>
+<span class='nv'>dm</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://dm.cynkra.com/reference/dm_nycflights13.html'>dm_nycflights13</a></span><span class='o'>(</span><span class='o'>)</span>
 <span class='nv'>dm</span>
 <span class='c'>#&gt; <span style='color: #FFAFFF;'>──</span> <span style='color: #FFAFFF;'>Metadata</span> <span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
 <span class='c'>#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
@@ -91,14 +91,14 @@ Visualize relationships at any time:
 
 <pre class='chroma'>
 <span class='nv'>dm</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='nf'><a href='https://cynkra.github.io/dm/reference/dm_draw.html'>dm_draw</a></span><span class='o'>(</span><span class='o'>)</span></pre>
+  <span class='nf'><a href='https://dm.cynkra.com/reference/dm_draw.html'>dm_draw</a></span><span class='o'>(</span><span class='o'>)</span></pre>
 <img src="man/figures/README-draw.svg" />
 
 Simple joins:
 
 <pre class='chroma'>
 <span class='nv'>dm</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='nf'><a href='https://cynkra.github.io/dm/reference/dm_flatten_to_tbl.html'>dm_flatten_to_tbl</a></span><span class='o'>(</span><span class='nv'>flights</span><span class='o'>)</span>
+  <span class='nf'><a href='https://dm.cynkra.com/reference/dm_flatten_to_tbl.html'>dm_flatten_to_tbl</a></span><span class='o'>(</span><span class='nv'>flights</span><span class='o'>)</span>
 <span class='c'>#&gt; Renaming ambiguous columns: %&gt;%</span>
 <span class='c'>#&gt;   dm_rename(flights, flights.year = year) %&gt;%</span>
 <span class='c'>#&gt;   dm_rename(flights, flights.month = month) %&gt;%</span>
@@ -136,11 +136,11 @@ Check consistency:
 
 <pre class='chroma'>
 <span class='nv'>dm</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='nf'><a href='https://cynkra.github.io/dm/reference/dm_examine_constraints.html'>dm_examine_constraints</a></span><span class='o'>(</span><span class='o'>)</span>
+  <span class='nf'><a href='https://dm.cynkra.com/reference/dm_examine_constraints.html'>dm_examine_constraints</a></span><span class='o'>(</span><span class='o'>)</span>
 <span class='c'>#&gt; <span style='color: #BBBB00;'>!</span> Unsatisfied constraints:</span>
 <span class='c'>#&gt; <span style='color: #BB0000;'>•</span> Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</span></pre>
 
-Learn more in the [Getting started](https://cynkra.github.io/dm/articles/dm.html) article.
+Learn more in the [Getting started](https://dm.cynkra.com/articles/dm.html) article.
 
 ## Getting help
 
@@ -156,4 +156,4 @@ Funded by:
 
 ------------------------------------------------------------------------
 
-Please note that the ‘dm’ project is released with a [Contributor Code of Conduct](https://cynkra.github.io/dm/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+Please note that the ‘dm’ project is released with a [Contributor Code of Conduct](https://dm.cynkra.com/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.

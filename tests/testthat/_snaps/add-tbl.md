@@ -5,8 +5,8 @@
     Condition
       Warning:
       `dm_add_tbl()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
-      Use `.name_repair = "unique"` if necessary.
+      i Please use `dm()` instead.
+      i Use `.name_repair = "unique"` if necessary.
       Error in `abort_need_unique_names()`:
       ! Each new table needs to have a unique name. Duplicate new name(s): `tf_1`.
 
@@ -18,8 +18,8 @@
     Condition
       Warning:
       `dm_add_tbl()` was deprecated in dm 1.0.0.
-      Please use `dm()` instead.
-      Use `.name_repair = "unique"` if necessary.
+      i Please use `dm()` instead.
+      i Use `.name_repair = "unique"` if necessary.
     Message
       dm::dm(
         fact,
@@ -51,7 +51,7 @@
     Condition
       Warning:
       `dm_rm_tbl()` was deprecated in dm 1.0.0.
-      Please use `dm_select_tbl()` instead.
+      i Please use `dm_select_tbl()` instead.
     Message
       dm::dm(
         fact,
@@ -74,7 +74,7 @@
     Condition
       Warning:
       `dm_rm_tbl()` was deprecated in dm 1.0.0.
-      Please use `dm_select_tbl()` instead.
+      i Please use `dm_select_tbl()` instead.
     Message
       dm::dm(
         dim_1,

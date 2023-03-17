@@ -34,6 +34,10 @@
       $pk
       [1] "faa"
       
+      $uks
+      # A tibble: 0 x 1
+      # ... with 1 variable: column <list>
+      
       $fks_in
       # A tibble: 2 x 3
         child_uuid   child_fk_cols parent_key_cols
@@ -62,6 +66,10 @@
       $airlines$pk
       [1] "carrier"
       
+      $airlines$uks
+      # A tibble: 0 x 1
+      # ... with 1 variable: column <list>
+      
       $airlines$fks_in
       # A tibble: 1 x 3
         child_uuid                           child_fk_cols parent_key_cols
@@ -80,6 +88,10 @@
       $airports
       $airports$pk
       [1] "faa"
+      
+      $airports$uks
+      # A tibble: 0 x 1
+      # ... with 1 variable: column <list>
       
       $airports$fks_in
       # A tibble: 2 x 3
@@ -100,6 +112,10 @@
       $flights
       $flights$pk
       NULL
+      
+      $flights$uks
+      # A tibble: 0 x 1
+      # ... with 1 variable: column <list>
       
       $flights$fks_in
       # A tibble: 0 x 3
@@ -124,6 +140,10 @@
       $planes$pk
       [1] "tailnum"
       
+      $planes$uks
+      # A tibble: 0 x 1
+      # ... with 1 variable: column <list>
+      
       $planes$fks_in
       # A tibble: 1 x 3
         child_uuid                           child_fk_cols parent_key_cols
@@ -142,6 +162,10 @@
       $weather
       $weather$pk
       [1] "origin"    "time_hour"
+      
+      $weather$uks
+      # A tibble: 0 x 1
+      # ... with 1 variable: column <list>
       
       $weather$fks_in
       # A tibble: 1 x 3
@@ -322,7 +346,7 @@
 # joins without child PK
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -375,7 +399,7 @@
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(x, a, r, a)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -431,7 +455,7 @@
 # joins with other child PK
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -487,7 +511,7 @@
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(x, a, r, a)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -546,7 +570,7 @@
 # joins with other child PK and name conflict
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -602,7 +626,7 @@
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(x, a, r, a)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -661,7 +685,7 @@
 # joins with same child PK
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -716,7 +740,7 @@
         dm::dm_add_fk(r, a, y) %>%
         dm::dm_add_fk(x, a, r)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -774,7 +798,7 @@
 # joins with same child PK and same name
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -829,7 +853,7 @@
         dm::dm_add_fk(r, b, y) %>%
         dm::dm_add_fk(x, b, r)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -887,7 +911,7 @@
 # joins with other FK from parent
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -952,7 +976,7 @@
         dm::dm_add_fk(r, c, z, c) %>%
         dm::dm_add_fk(x, a, r)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1020,7 +1044,7 @@
 # joins with other FK from parent and name conflict
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1085,7 +1109,7 @@
         dm::dm_add_fk(r, a, z, a) %>%
         dm::dm_add_fk(x, a, r)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1153,7 +1177,7 @@
 # joins with other FK from child
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1218,7 +1242,7 @@
         dm::dm_add_fk(r, c, z, c) %>%
         dm::dm_add_fk(x, a, r)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1286,7 +1310,7 @@
 # joins with other FK from child and name conflict
 
     Code
-      keyed_build_join_spec(x, y) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1351,7 +1375,7 @@
         dm::dm_add_fk(r, b, z, b) %>%
         dm::dm_add_fk(x, a, r)
     Code
-      keyed_build_join_spec(y, x) %>% jsonlite::toJSON(pretty = TRUE)
+      keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
       {
         "x_tbl": [
@@ -1420,7 +1444,8 @@
 
     Code
       dm <- dm_nycflights13()
-      keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"))
+      keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"),
+      multiple = "all")
     Output
       # A tibble: 1,800 x 32
       # Keys:     --- | 1 | 4
@@ -1595,15 +1620,16 @@
 # pks_df_from_keys_info()
 
     Code
-      dm %>% dm_get_keyed_tables_impl() %>% pks_df_from_keys_info() %>% jsonlite::toJSON(
-        pretty = TRUE)
+      dm %>% dm_get_keyed_tables_impl() %>% pks_df_from_keys_info() %>%
+        to_snapshot_json()
     Output
       [
         {
           "table": "airlines",
           "pks": [
             {
-              "column": ["carrier"]
+              "column": ["carrier"],
+              "autoincrement": false
             }
           ]
         },
@@ -1611,7 +1637,8 @@
           "table": "airports",
           "pks": [
             {
-              "column": ["faa"]
+              "column": ["faa"],
+              "autoincrement": false
             }
           ]
         },
@@ -1623,7 +1650,8 @@
           "table": "planes",
           "pks": [
             {
-              "column": ["tailnum"]
+              "column": ["tailnum"],
+              "autoincrement": false
             }
           ]
         },
@@ -1631,17 +1659,55 @@
           "table": "weather",
           "pks": [
             {
-              "column": ["origin", "time_hour"]
+              "column": ["origin", "time_hour"],
+              "autoincrement": false
             }
           ]
+        }
+      ] 
+
+# uks_df_from_keys_info()
+
+    Code
+      dm %>% dm_get_keyed_tables_impl() %>% uks_df_from_keys_info() %>%
+        to_snapshot_json()
+    Output
+      [
+        {
+          "table": "tf_1",
+          "uks": []
+        },
+        {
+          "table": "tf_2",
+          "uks": []
+        },
+        {
+          "table": "tf_3",
+          "uks": []
+        },
+        {
+          "table": "tf_4",
+          "uks": []
+        },
+        {
+          "table": "tf_5",
+          "uks": [
+            {
+              "column": ["l"]
+            }
+          ]
+        },
+        {
+          "table": "tf_6",
+          "uks": []
         }
       ] 
 
 # fks_df_from_keys_info()
 
     Code
-      dm %>% dm_get_keyed_tables_impl() %>% fks_df_from_keys_info() %>% jsonlite::toJSON(
-        pretty = TRUE)
+      dm %>% dm_get_keyed_tables_impl() %>% fks_df_from_keys_info() %>%
+        to_snapshot_json()
     Output
       [
         {

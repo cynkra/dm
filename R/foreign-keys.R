@@ -3,8 +3,8 @@
 #' @description
 #' `dm_add_fk()` marks the specified `columns` as the foreign key of table `table` with
 #' respect to a key of table `ref_table`.
-#' Usually the referenced columns are a primary key in `ref_table`,
-#' it is also possible to specify other columns via the `ref_columns` argument.
+#' Usually the referenced columns are a primary key in `ref_table`.
+#' However, it is also possible to specify other columns via the `ref_columns` argument.
 #' If `check == TRUE`, then it will first check if the values in `columns` are a subset
 #' of the values of the key in table `ref_table`.
 #'
@@ -29,6 +29,15 @@
 #'   and might be considered by [dm_rows_delete()] in a future version.
 #'
 #' @family foreign key functions
+#'
+#' @details
+#' It is possible that a foreign key (FK) is pointing to columns that are neither primary (PK) nor
+#' explicit unique keys (UK).
+#' This can happen
+#'   1. when a FK is added without a corresponding PK or UK being present in the parent table
+#'   1. when the PK or UK is removed ([`dm_rm_pk()`]/[`dm_rm_uk()`]) without first removing the associated FKs.
+#'
+#' These columns are then a so-called "implicit unique key" of the referenced table and can be listed via [`dm_get_all_uks()`].
 #'
 #' @rdname dm_add_fk
 #'
@@ -224,8 +233,9 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 #'   }
 #'
 #' @inheritParams dm_has_fk
-#' @param parent_table One or more table names, as character vector,
+#' @param parent_table One or more table names, unquoted,
 #'   to return foreign key information for.
+#'   If given, foreign keys are returned in that order.
 #'   The default `NULL` returns information for all tables.
 #'
 #' @family foreign key functions
@@ -237,20 +247,30 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
-  dm_get_all_fks_impl(dm, parent_table)
+  table_expr <- enexpr(parent_table) %||% src_tbls_impl(dm, quiet = TRUE)
+  table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
+  dm_get_all_fks_impl(dm, table_names)
 }
 
 dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
   def <- dm_get_def(dm)
 
-  sub_def <- def[c("table", "fks")]
-  names(sub_def)[[1]] <- "parent_table"
+  dm_get_all_fks_def_impl(def = def, parent_table = parent_table, ignore_on_delete = ignore_on_delete, id = id)
+}
+
+dm_get_all_fks_def_impl <- function(def, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
+  def_sub <- def[c("table", "fks")]
+  names(def_sub)[[1]] <- "parent_table"
 
   if (!is.null(parent_table)) {
-    sub_def <- sub_def[sub_def$parent_table %in% parent_table, ]
+    idx <- match(parent_table, def_sub$parent_table)
+    if (anyNA(idx)) {
+      abort_table_not_in_dm(parent_table[which(is.na(idx))], def$table)
+    }
+    def_sub <- def_sub[idx, ]
   }
 
-  flat <- unnest_list_of_df(sub_def, "fks")
+  flat <- unnest_list_of_df(def_sub, "fks")
 
   names(flat) <- c("parent_table", "parent_key_cols", "child_table", "child_fk_cols", "on_delete")
   flat[[2]] <- new_keys(flat[[2]])
@@ -538,11 +558,13 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     count(!!!t2_vals) %>%
     ungroup()
 
-  any_value_na_expr <- reduce(
-    syms(val_names[-1]),
-    ~ call("|", .x, call("is.na", .y)),
-    .init = call("is.na", sym(val_names[[1]]))
-  )
+  val_names_na_expr <- map(syms(val_names), ~ call("is.na", .x))
+  any_value_na_expr <- reduce(val_names_na_expr, ~ call("|", .x, .y))
+
+  # Work around weird bug in R 3.6 and before
+  if (getRversion() < "4.0" && inherits(t1_join, "tbl_lazy")) {
+    dbplyr::sql_render(t1_join)
+  }
 
   res_tbl <- tryCatch(
     t1_join %>%

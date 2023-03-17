@@ -29,3 +29,4 @@
 ^\.gitpod\.Dockerfile$
 ^\.gitpod\.yml$
 ^inst/htmlwidgets/lib/jquery/\.bower\.json$
+^inst/htmlwidgets/lib/jquery/\.bower\.json$

@@ -51,6 +51,10 @@ is_duckdb <- function(dest) {
   inherits(dest, c("duckdb_connection", "src_duckdb_connection"))
 }
 
+is_sqlite <- function(dest) {
+  inherits(dest, "SQLiteConnection")
+}
+
 is_mssql <- function(dest) {
   inherits(dest, c(
     "Microsoft SQL Server", "src_Microsoft SQL Server", "dblogConnection-Microsoft SQL Server", "src_dblogConnection-Microsoft SQL Server"

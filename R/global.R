@@ -20,6 +20,7 @@ utils::globalVariables(c(
   # dm
   "any_na",
   "arrange_col",
+  "autoincrement",
   "candidate",
   "cardinality",
   "child_cols",
@@ -90,6 +91,8 @@ utils::globalVariables(c(
   "tbls",
   "text",
   "type",
+  "uk_col",
+  "uks",
   "unique_indexes",
   "value",
   "values",
