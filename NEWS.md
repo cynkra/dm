@@ -21,14 +21,17 @@
 
 # dm 1.0.5
 
-- Same as previous version.
-
-
-# dm 1.0.4.9006
-
 ## Features
 
-- Progress bars for dm_wrap_tbl() and dm_unwrap_tbl() (#835, #1450).
+- Progress bars for `dm_wrap_tbl()` and `dm_unwrap_tbl()` (#835, #1450).
+
+## Documentation
+
+- Add cheat sheet as a vignette (#1653).
+
+- Suggest creating a function for your database `dm` object (#1827, #1828).
+
+- Add alternative text to author images for pkgdown website (#1804).
 
 ## Chore
 
@@ -38,53 +41,7 @@
 
 - Minimal patch to fix multiple match updates (@DavisVaughan, #1806).
 
-- Fix tests (#1831).
-
-## Documentation
-
-- Add cheat sheet as a vignette (#1653).
-
-- Suggest creating a function for your database dm object (#1827, #1828).
-
-
-# dm 1.0.4.9005
-
-## Chore
-
 - Adapt to rlang 1.1.0 changes (#1817).
-
-## Uncategorized
-
-- Merge pull request #1812 from cynkra/b-typo-in-tests.
-
-
-# dm 1.0.4.9004
-
-## Documentation
-
-- Add alternative text to author images for pkgdown website (#1804).
-
-
-# dm 1.0.4.9003
-
-## Chore
-
-- Gitpod configuration with databases (@Antonov548, #1799).
-
-
-# dm 1.0.4.9002
-
-- Internal changes only.
-
-
-# dm 1.0.4.9001
-
-- Merged cran-1.0.4 into main.
-
-
-# dm 1.0.4.9000
-
-## Chore
 
 - Make sure `{dm}` passes "noSuggests" workflow (#1659).
 
