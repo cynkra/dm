@@ -8,6 +8,7 @@ test_that("DB helpers work for MSSQL", {
 
   withr::defer({
     try(dbExecute(con_mssql, "DROP TABLE test_db_helpers"))
+    try(dbExecute(con_mssql, "DROP TABLE test_db_helpers_2"))
     try(dbExecute(con_mssql, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
     try(dbExecute(con_mssql, "DROP SCHEMA schema_db_helpers"))
     try(dbExecute(con_mssql, "DROP TABLE [db_helpers_db].[dbo].[test_db_helpers_3]"))
@@ -96,6 +97,7 @@ test_that("DB helpers work for Postgres", {
 
   withr::defer({
     try(dbExecute(con_postgres, "DROP TABLE test_db_helpers"))
+    try(dbExecute(con_postgres, "DROP TABLE test_db_helpers_2"))
     try(dbExecute(con_postgres, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
     try(dbExecute(con_postgres, "DROP SCHEMA schema_db_helpers"))
   })
