@@ -167,7 +167,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   # to more than one remote_name
   # In such a case, raise a warning, and keep only the first relevant schema
   if (length(schema) > 1) {
-    clashes <- with(names_table, find_name_clashes(local_name, remote_name))
+    clashes <- with(names_table, find_name_clashes(table_name, remote_name))
 
     if (length(clashes) > 0)
       cli::cli_warn(c(
@@ -184,14 +184,12 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
 
     # Keep only first schema (positionally) for each local_name
     names_table <- names_table %>%
-      mutate(schema = factor(schema, labels = schemas)) %>%
-      group_by(local_name) %>%
-      slice_min(schema) %>%
-      ungroup()
+      mutate(schema = factor(schema, labels = !!schema)) %>%
+      slice_min(schema, by = table_name)
   }
 
   names_table %>%
-    select(local_name, remote_name) %>%
+    select(table_name, remote_name) %>%
     deframe()
 }
 
