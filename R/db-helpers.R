@@ -118,14 +118,10 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
   quote_ids(names, con_from_src_or_con(con), schema)
 }
 
-make_local_names <- function(schema_names, table_names) {
+find_name_clashes <- function(old, new) {
 
-  combined_names <- glue::glue("{schema_names}.{table_names}")
-
-  if (length(unique(schema_names)) == 1)
-    table_names
-  else
-    combined_names
+  # Any entries in `new` with more than one corresponding entry in `old`
+  purrr::keep(split(old, new), ~ length(unique(.x)) > 1)
 }
 
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
@@ -159,14 +155,43 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
     names_table <- get_names_table_mariadb(con)
   }
 
-  names_table %>%
+  names_table <- names_table %>%
     filter(schema_name %in% !!(if (inherits(schema, "sql")) glue_sql_collapse(schema) else schema)) %>%
     collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
-    transmute(
-      local_name = make_local_names(schema_name, table_name),
-      remote_name = schema_if(schema_name, table_name, con, dbname)
-    ) %>%
+    mutate(remote_name = schema_if(schema_name, table_name, con, dbname))
+
+
+  # SQL table names are only guaranteed to be unique in a single schema, so if
+  # we have multiple schemas, we might end up with the same local_name pointing
+  # to more than one remote_name
+  # In such a case, raise a warning, and keep only the first relevant schema
+  if (length(schema) > 1) {
+    clashes <- with(names_table, find_name_clashes(local_name, remote_name))
+
+    if (length(clashes) > 0)
+      cli::cli_warn(c(
+        "Some table names aren't unique:",
+        purrr::imap_chr(
+          clashes,
+          ~ cli::format_inline(
+            "Local name {.field {.y}} will refer to {.cls {(.x[1])}}, ",
+            "rather than to {.or {.cls {(.x[-1])}}}"
+          )
+        ) %>%
+          purrr::set_names(rep("*", length(clashes)))
+      ))
+
+    # Keep only first schema (positionally) for each local_name
+    names_table <- names_table %>%
+      mutate(schema = factor(schema, labels = schemas)) %>%
+      group_by(local_name) %>%
+      slice_min(schema) %>%
+      ungroup()
+  }
+
+  names_table %>%
+    select(local_name, remote_name) %>%
     deframe()
 }
 
