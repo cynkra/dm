@@ -124,31 +124,7 @@ find_name_clashes <- function(old, new) {
   purrr::keep(split(old, new), ~ length(unique(.x)) > 1)
 }
 
-make_local_names <- function(schema_names, table_names, repair = "minimal") {
-
-  local_names <- if (length(unique(schema_names)) == 1)
-    table_names
-  else
-    glue::glue("{schema_names}.{table_names}")
-
-  repaired_local_names <- vctrs::vec_as_names(local_names, repair = repair)
-
-  # Ensure new table names don't clash
-  clashes <- find_name_clashes(local_names, repaired_local_names)
-
-  if (length(clashes) > 0)
-    cli::cli_abort(c(
-      "x" = "Repairing names caused name clashes; try again with a different `.name_repair` option.",
-      purrr::imap_chr(
-        clashes,
-        ~ glue::glue("* [{paste0(dQuote(.x, q = FALSE), collapse = ', ')}] => {dQuote(.y, q = FALSE)}")
-      )
-    ))
-
-  repaired_local_names
-}
-
-get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, .name_repair = "check_unique") {
+get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
   if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
     warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
@@ -179,19 +155,28 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, .name_repair = 
     names_table <- get_names_table_mariadb(con)
   }
 
+  # Use smart default for `.names`, if it wasn't provided
+  names_pattern <- if (length(schema) == 1) {
+    names %||% "{.table}"
+  } else {
+    names %||% "{.schema}.{.table}"
+  }
+
   names_table <- names_table %>%
     filter(schema_name %in% !!(if (inherits(schema, "sql")) glue_sql_collapse(schema) else schema)) %>%
     collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
-    mutate(remote_name = schema_if(schema_name, table_name, con, dbname))
-
+    mutate(
+      local_name = glue(names_pattern, .table = table_name, .schema = schema_name),
+      remote_name = schema_if(schema_name, table_name, con, dbname)
+    )
 
   # SQL table names are only guaranteed to be unique in a single schema, so if
   # we have multiple schemas, we might end up with the same local_name pointing
   # to more than one remote_name
   # In such a case, raise a warning, and keep only the first relevant schema
   if (length(schema) > 1) {
-    clashes <- with(names_table, find_name_clashes(table_name, remote_name))
+    clashes <- with(names_table, find_name_clashes(local_name, remote_name))
 
     if (length(clashes) > 0)
       cli::cli_warn(c(
@@ -209,11 +194,11 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, .name_repair = 
     # Keep only first schema (positionally) for each local_name
     names_table <- names_table %>%
       mutate(schema = factor(schema, labels = !!schema)) %>%
-      slice_min(schema, by = table_name)
+      slice_min(schema, by = local_name)
   }
 
   names_table %>%
-    select(table_name, remote_name) %>%
+    select(local_name, remote_name) %>%
     deframe()
 }
 

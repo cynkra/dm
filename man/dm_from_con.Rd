@@ -8,7 +8,7 @@ dm_from_con(
   con = NULL,
   table_names = NULL,
   learn_keys = NULL,
-  .name_repair = "check_unique",
+  .names = NULL,
   ...
 )
 }
@@ -24,8 +24,12 @@ foreign keys from the database.
 Currently works only for Postgres and SQL Server databases.
 The default attempts to query and issues an informative message.}
 
-\item{.name_repair}{Treatment of problematic table names. This argument is
-passed on as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
+\item{.names}{A glue specification that describes how to name the tables
+within the output. This can use \code{{.table}} to stand for the table name, and
+\code{{.schema}} to stand for the name of the schema which the table lives
+within. The default (\code{NULL}) is equivalent to \code{"{.table}"} when a single
+schema is specified in \code{schema}, and \code{"{.schema}.{.table}"} for the case
+where multiple schemas are given.}
 
 \item{...}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
@@ -33,8 +37,6 @@ Additional parameters for the schema learning query.
 \itemize{
 \item \code{schema}: supported for MSSQL (default: \code{"dbo"}), Postgres (default: \code{"public"}), and MariaDB/MySQL
 (default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).
-If multiple schema names are given as a vector, the returned \code{dm} object will have names of the form
-\code{"schema.table"}.
 \item \code{dbname}: supported for MSSQL. Access different databases on the connected MSSQL-server;
 default: active database.
 \item \code{table_type}: supported for Postgres (default: \code{"BASE TABLE"}). Specify the table type. Options are:

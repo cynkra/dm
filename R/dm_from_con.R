@@ -16,16 +16,18 @@
 #'   foreign keys from the database.
 #'   Currently works only for Postgres and SQL Server databases.
 #'   The default attempts to query and issues an informative message.
-#' @param .name_repair Treatment of problematic table names. This argument is
-#'   passed on as `repair` to [vctrs::vec_as_names()].
+#' @param .names A glue specification that describes how to name the tables
+#'   within the output. This can use `{.table}` to stand for the table name, and
+#'   `{.schema}` to stand for the name of the schema which the table lives
+#'   within. The default (`NULL`) is equivalent to `"{.table}"` when a single
+#'   schema is specified in `schema`, and `"{.schema}.{.table}"` for the case
+#'   where multiple schemas are given.
 #' @param ... `r lifecycle::badge("experimental")`
 #'
 #'   Additional parameters for the schema learning query.
 #'
 #'   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres (default: `"public"`), and MariaDB/MySQL
 #'     (default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).
-#'     If multiple schema names are given as a vector, the returned `dm` object will have names of the form
-#'     `"schema.table"`.
 #'   - `dbname`: supported for MSSQL. Access different databases on the connected MSSQL-server;
 #'     default: active database.
 #'   - `table_type`: supported for Postgres (default: `"BASE TABLE"`). Specify the table type. Options are:
@@ -44,7 +46,7 @@
 #'
 #' # Avoid DBI::dbDisconnect() here, because we don't own the connection
 dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
-                        .name_repair = "check_unique", ...) {
+                        .names = NULL, ...) {
   stopifnot(is(con, "DBIConnection") || inherits(con, "Pool"))
 
   if (inherits(con, "Pool")) {
@@ -88,7 +90,7 @@ dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
   }
 
   if (is_null(table_names)) {
-    src_tbl_names <- get_src_tbl_names(src, ..., .name_repair = .name_repair)
+    src_tbl_names <- get_src_tbl_names(src, ..., names = .names)
   } else {
     src_tbl_names <- table_names
   }
