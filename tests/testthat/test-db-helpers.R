@@ -142,7 +142,6 @@ test_that("DB helpers work for Postgres", {
       get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers", "public"))["test_db_helpers_2"],
       DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
     ),
-
     'Local name test_db_helpers_2 will refer to <"schema_db_helpers"."test_db_helpers_2">, rather than to <"public"."test_db_helpers_2">',
     fixed = TRUE
   )
