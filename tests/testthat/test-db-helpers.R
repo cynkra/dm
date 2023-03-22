@@ -8,6 +8,7 @@ test_that("DB helpers work for MSSQL", {
 
   withr::defer({
     try(dbExecute(con_mssql, "DROP TABLE test_db_helpers"))
+    try(dbExecute(con_mssql, "DROP TABLE test_db_helpers_2"))
     try(dbExecute(con_mssql, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
     try(dbExecute(con_mssql, "DROP SCHEMA schema_db_helpers"))
     try(dbExecute(con_mssql, "DROP TABLE [db_helpers_db].[dbo].[test_db_helpers_3]"))
@@ -16,10 +17,15 @@ test_that("DB helpers work for MSSQL", {
     try(dbExecute(con_mssql, "DROP DATABASE db_helpers_db"))
   })
 
-  # create table in 'dbo'
+  # create tables in 'dbo'
   dbWriteTable(
     con_mssql,
     DBI::Id(schema = "dbo", table = "test_db_helpers"),
+    value = tibble(a = 1)
+  )
+  dbWriteTable(
+    con_mssql,
+    DBI::Id(schema = "dbo", table = "test_db_helpers_2"),
     value = tibble(a = 1)
   )
   # create table in a schema
@@ -63,13 +69,22 @@ test_that("DB helpers work for MSSQL", {
     get_src_tbl_names(my_test_src(), dbname = "db_helpers_db", schema = "schema_db_helpers_2")["test_db_helpers_4"],
     DBI::SQL("\"db_helpers_db\".\"schema_db_helpers_2\".\"test_db_helpers_4\"")
   )
-  expect_identical(
-    get_src_tbl_names(my_test_src(), schema = c("dbo", "schema_db_helpers"))["dbo.test_db_helpers"],
-    DBI::SQL("\"dbo\".\"test_db_helpers\"")
+  expect_warning(
+    expect_identical(
+      get_src_tbl_names(my_test_src(), schema = c("dbo", "schema_db_helpers"))["test_db_helpers_2"],
+      DBI::SQL("\"dbo\".\"test_db_helpers_2\"")
+    ),
+    'Local name test_db_helpers_2 will refer to <"dbo"."test_db_helpers_2">, rather than to <"schema_db_helpers"."test_db_helpers_2">',
+    fixed = TRUE
   )
-  expect_identical(
-    get_src_tbl_names(my_test_src(), schema = c("dbo", "schema_db_helpers"))["schema_db_helpers.test_db_helpers_2"],
-    DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
+  expect_warning(
+    expect_identical(
+      get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers", "dbo"))["test_db_helpers_2"],
+      DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
+    ),
+
+    'Local name test_db_helpers_2 will refer to <"schema_db_helpers"."test_db_helpers_2">, rather than to <"dbo"."test_db_helpers_2">',
+    fixed = TRUE
   )
 })
 
@@ -82,14 +97,20 @@ test_that("DB helpers work for Postgres", {
 
   withr::defer({
     try(dbExecute(con_postgres, "DROP TABLE test_db_helpers"))
+    try(dbExecute(con_postgres, "DROP TABLE test_db_helpers_2"))
     try(dbExecute(con_postgres, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
     try(dbExecute(con_postgres, "DROP SCHEMA schema_db_helpers"))
   })
 
-  # create table in 'public'
+  # create tables in 'public'
   dbWriteTable(
     con_postgres,
     DBI::Id(schema = "public", table = "test_db_helpers"),
+    value = tibble(a = 1)
+  )
+  dbWriteTable(
+    con_postgres,
+    DBI::Id(schema = "public", table = "test_db_helpers_2"),
     value = tibble(a = 1)
   )
   # create table in a schema
@@ -108,13 +129,22 @@ test_that("DB helpers work for Postgres", {
     get_src_tbl_names(my_test_src(), schema = "schema_db_helpers")["test_db_helpers_2"],
     DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
   )
-  expect_identical(
-    get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"))["public.test_db_helpers"],
-    DBI::SQL("\"public\".\"test_db_helpers\"")
+  expect_warning(
+    expect_identical(
+      get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"))["test_db_helpers_2"],
+      DBI::SQL("\"public\".\"test_db_helpers_2\"")
+    ),
+    'Local name test_db_helpers_2 will refer to <"public"."test_db_helpers_2">, rather than to <"schema_db_helpers"."test_db_helpers_2">',
+    fixed = TRUE
   )
-  expect_identical(
-    get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"))["schema_db_helpers.test_db_helpers_2"],
-    DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
+  expect_warning(
+    expect_identical(
+      get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers", "public"))["test_db_helpers_2"],
+      DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
+    ),
+
+    'Local name test_db_helpers_2 will refer to <"schema_db_helpers"."test_db_helpers_2">, rather than to <"public"."test_db_helpers_2">',
+    fixed = TRUE
   )
 })
 
@@ -152,59 +182,6 @@ test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
     expect_true("test_db_helpers" %in% names(get_src_tbl_names(my_db_test_src(), dbname = "dbname"))),
     class = "arg_not"
   )
-})
-
-test_that("make local names", {
-
-  # When we have only one schema, we should just use table names
-  expect_equal(make_local_names("sch", "tbl"), "tbl")
-  expect_equal(
-    make_local_names(
-      rep("sch", 3),
-      c("tbl1", "tbl2", "tbl3")
-    ),
-
-    c("tbl1", "tbl2", "tbl3")
-  )
-
-  # If we have multiple schemas, we should use "schema.table"
-  expect_equal(
-    make_local_names(
-      c("sch1", "sch2", "sch3"),
-      c("tbl1", "tbl2", "tbl3")
-    ),
-
-    c("sch1.tbl1", "sch2.tbl2", "sch3.tbl3")
-  )
-
-
-  # If we have name clashes, there should be an error about non-unique names
-  expect_equal(
-    make_local_names(
-      rep("sch", 2),
-      c("table name", "Table Name"),
-      repair = "check_unique" # default from dm_from_con()
-    ),
-    c("table name", "Table Name") # i.e. these names are unique & therefore fine
-  )
-
-  expect_snapshot_error(
-    make_local_names(
-      rep("sch", 2),
-      c("table name", "Table Name"),
-      repair = tolower # passing in a custom "repair" function which leads to a clash
-    )
-  )
-
-  expect_equal(
-    make_local_names(
-      c("sch1", "sch2"), # this time, tables are in different schemas - so no clash of "schema.table" local names
-      c("table name", "Table Name"),
-      repair = tolower
-    ),
-    c("sch1.table name", "sch2.table name")
-  )
-
 })
 
 test_that("find name clashes", {
