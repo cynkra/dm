@@ -176,9 +176,16 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
   # to more than one remote_name
   # In such a case, raise a warning, and keep only the first relevant schema
   if (length(schema) > 1) {
-    clashes <- with(names_table, find_name_clashes(local_name, remote_name))
 
-    if (length(clashes) > 0)
+    # Order according to ordering of `schema`, so that in a moment we can keep "first" table in event of a clash
+    names_table <- names_table %>%
+      mutate(schema_name = factor(schema_name, levels = schema)) %>%
+      arrange(schema_name)
+
+    clashes <- with(names_table, find_name_clashes(remote_name, local_name))
+
+    if (length(clashes) > 0) {
+
       cli::cli_warn(c(
         "Some table names aren't unique:",
         purrr::imap_chr(
@@ -191,10 +198,9 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
           purrr::set_names(rep("*", length(clashes)))
       ))
 
-    # Keep only first schema (positionally) for each local_name
-    names_table <- names_table %>%
-      mutate(schema_name = factor(schema_name, labels = schema)) %>%
-      slice_min(schema_name, by = local_name)
+      # Keep only first schema for each local_name
+      names_table <- slice_head(names_table, by = local_name)
+    }
   }
 
   names_table %>%
