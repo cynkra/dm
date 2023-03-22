@@ -168,7 +168,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   # In such a case, raise a warning, and keep only the first relevant schema
   if (length(schema) > 1) {
 
-    clashes <- with(names_table, find_name_clashes(table_name, remote_name))
+    clashes <- with(names_table, find_name_clashes(remote_name, table_name))
 
     if (length(clashes) > 0) {
 
