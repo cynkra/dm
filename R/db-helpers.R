@@ -184,8 +184,8 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
 
     # Keep only first schema (positionally) for each local_name
     names_table <- names_table %>%
-      mutate(schema = factor(schema, labels = !!schema)) %>%
-      slice_min(schema, by = table_name)
+      mutate(schema_name = factor(schema_name, labels = schema)) %>%
+      slice_min(schema_name, by = table_name)
   }
 
   names_table %>%
