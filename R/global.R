@@ -48,6 +48,7 @@ utils::globalVariables(c(
   "key_fk",
   "col_tracker_zoom",
   "kind",
+  "local_name",
   "mismatch_or_null",
   "n_c",
   "n_p",
