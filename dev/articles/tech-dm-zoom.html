@@ -189,23 +189,23 @@ tackle this with <code><a href="https://dplyr.tidyverse.org/reference/mutate.htm
 <span><span class="va">flights_zoomed</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Zoomed table: flights</span></span>
 <span><span class="co">#&gt; # A tibble:     1,761 × 19</span></span>
-<span><span class="co">#&gt;     year month   day dep_time sched_dep_t…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵</span></span>
-<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;         &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1  2013     1    10        3          2359       4     426     437     -11</span></span>
-<span><span class="co">#&gt;  2  2013     1    10       16          2359      17     447     444       3</span></span>
-<span><span class="co">#&gt;  3  2013     1    10      450           500     -10     634     648     -14</span></span>
-<span><span class="co">#&gt;  4  2013     1    10      520           525      -5     813     820      -7</span></span>
-<span><span class="co">#&gt;  5  2013     1    10      530           530       0     824     829      -5</span></span>
-<span><span class="co">#&gt;  6  2013     1    10      531           540      -9     832     850     -18</span></span>
-<span><span class="co">#&gt;  7  2013     1    10      535           540      -5    1015    1017      -2</span></span>
-<span><span class="co">#&gt;  8  2013     1    10      546           600     -14     645     709     -24</span></span>
-<span><span class="co">#&gt;  9  2013     1    10      549           600     -11     652     724     -32</span></span>
-<span><span class="co">#&gt; 10  2013     1    10      550           600     -10     649     703     -14</span></span>
-<span><span class="co">#&gt; # … with 1,751 more rows, 10 more variables: carrier &lt;chr&gt;, flight &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, and</span></span>
-<span><span class="co">#&gt; #   abbreviated variable names ¹​sched_dep_time, ²​dep_delay, ³​arr_time,</span></span>
-<span><span class="co">#&gt; #   ⁴​sched_arr_time, ⁵​arr_delay</span></span></code></pre>
+<span><span class="co">#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1  2013     1    10        3           2359         4      426</span></span>
+<span><span class="co">#&gt;  2  2013     1    10       16           2359        17      447</span></span>
+<span><span class="co">#&gt;  3  2013     1    10      450            500       -10      634</span></span>
+<span><span class="co">#&gt;  4  2013     1    10      520            525        -5      813</span></span>
+<span><span class="co">#&gt;  5  2013     1    10      530            530         0      824</span></span>
+<span><span class="co">#&gt;  6  2013     1    10      531            540        -9      832</span></span>
+<span><span class="co">#&gt;  7  2013     1    10      535            540        -5     1015</span></span>
+<span><span class="co">#&gt;  8  2013     1    10      546            600       -14      645</span></span>
+<span><span class="co">#&gt;  9  2013     1    10      549            600       -11      652</span></span>
+<span><span class="co">#&gt; 10  2013     1    10      550            600       -10      649</span></span>
+<span><span class="co">#&gt; # ℹ 1,751 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 12 more variables: sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   time_hour &lt;dttm&gt;</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">flights_zoomed_mutate</span> <span class="op">&lt;-</span></span>
@@ -217,23 +217,23 @@ tackle this with <code><a href="https://dplyr.tidyverse.org/reference/mutate.htm
 <span><span class="va">flights_zoomed_mutate</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Zoomed table: flights</span></span>
 <span><span class="co">#&gt; # A tibble:     1,761 × 20</span></span>
-<span><span class="co">#&gt;     year month   day dep_time am_pm_dep sched_dep…¹ dep_d…² arr_t…³ sched…⁴</span></span>
-<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt; &lt;chr&gt;           &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1  2013     1    10        3 am               2359       4     426     437</span></span>
-<span><span class="co">#&gt;  2  2013     1    10       16 am               2359      17     447     444</span></span>
-<span><span class="co">#&gt;  3  2013     1    10      450 am                500     -10     634     648</span></span>
-<span><span class="co">#&gt;  4  2013     1    10      520 am                525      -5     813     820</span></span>
-<span><span class="co">#&gt;  5  2013     1    10      530 am                530       0     824     829</span></span>
-<span><span class="co">#&gt;  6  2013     1    10      531 am                540      -9     832     850</span></span>
-<span><span class="co">#&gt;  7  2013     1    10      535 am                540      -5    1015    1017</span></span>
-<span><span class="co">#&gt;  8  2013     1    10      546 am                600     -14     645     709</span></span>
-<span><span class="co">#&gt;  9  2013     1    10      549 am                600     -11     652     724</span></span>
-<span><span class="co">#&gt; 10  2013     1    10      550 am                600     -10     649     703</span></span>
-<span><span class="co">#&gt; # … with 1,751 more rows, 11 more variables: arr_delay &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt; &lt;chr&gt;              &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1  2013     1    10        3 am                  2359         4      426</span></span>
+<span><span class="co">#&gt;  2  2013     1    10       16 am                  2359        17      447</span></span>
+<span><span class="co">#&gt;  3  2013     1    10      450 am                   500       -10      634</span></span>
+<span><span class="co">#&gt;  4  2013     1    10      520 am                   525        -5      813</span></span>
+<span><span class="co">#&gt;  5  2013     1    10      530 am                   530         0      824</span></span>
+<span><span class="co">#&gt;  6  2013     1    10      531 am                   540        -9      832</span></span>
+<span><span class="co">#&gt;  7  2013     1    10      535 am                   540        -5     1015</span></span>
+<span><span class="co">#&gt;  8  2013     1    10      546 am                   600       -14      645</span></span>
+<span><span class="co">#&gt;  9  2013     1    10      549 am                   600       -11      652</span></span>
+<span><span class="co">#&gt; 10  2013     1    10      550 am                   600       -10      649</span></span>
+<span><span class="co">#&gt; # ℹ 1,751 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 12 more variables: sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   time_hour &lt;dttm&gt;, and abbreviated variable names ¹​sched_dep_time,</span></span>
-<span><span class="co">#&gt; #   ²​dep_delay, ³​arr_time, ⁴​sched_arr_time</span></span></code></pre>
+<span><span class="co">#&gt; #   time_hour &lt;dttm&gt;</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:</span></span>
@@ -280,21 +280,21 @@ compound key. We can do this for the <code>weather</code> table.</p>
 <span><span class="va">weather_zoomed</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Zoomed table: weather</span></span>
 <span><span class="co">#&gt; # A tibble:     144 × 15</span></span>
-<span><span class="co">#&gt;    origin  year month   day  hour  temp  dewp humid wind_…¹ wind_…² wind_…³</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 EWR     2013     1    10     0  41    32    70.1     230    8.06    NA  </span></span>
-<span><span class="co">#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9     210    9.21    NA  </span></span>
-<span><span class="co">#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8     230    6.90    NA  </span></span>
-<span><span class="co">#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5     270    5.75    NA  </span></span>
-<span><span class="co">#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0     320    6.90    NA  </span></span>
-<span><span class="co">#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0     300   12.7     20.7</span></span>
-<span><span class="co">#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8     280    6.90    17.3</span></span>
-<span><span class="co">#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6     330    6.90    NA  </span></span>
-<span><span class="co">#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7     330    8.06    NA  </span></span>
-<span><span class="co">#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6     320   17.3     26.5</span></span>
-<span><span class="co">#&gt; # … with 134 more rows, 4 more variables: precip &lt;dbl&gt;, pressure &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   visib &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names</span></span>
-<span><span class="co">#&gt; #   ¹​wind_dir, ²​wind_speed, ³​wind_gust</span></span></code></pre>
+<span><span class="co">#&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 EWR     2013     1    10     0  41    32    70.1      230       8.06</span></span>
+<span><span class="co">#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21</span></span>
+<span><span class="co">#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90</span></span>
+<span><span class="co">#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75</span></span>
+<span><span class="co">#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90</span></span>
+<span><span class="co">#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 </span></span>
+<span><span class="co">#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90</span></span>
+<span><span class="co">#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90</span></span>
+<span><span class="co">#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06</span></span>
+<span><span class="co">#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 </span></span>
+<span><span class="co">#&gt; # ℹ 134 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 5 more variables: wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;, pressure &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Maybe there is some hidden candidate for a primary key that we overlooked</span></span>
 <span><span class="fu"><a href="../reference/dm_enum_pk_candidates.html">enum_pk_candidates</a></span><span class="op">(</span><span class="va">weather_zoomed</span><span class="op">)</span></span></code></pre></div>
@@ -484,20 +484,20 @@ join is always the zoomed table.</p>
 <span><span class="co"># this is how the table looks now</span></span>
 <span><span class="va">joined_flights_dm</span><span class="op">$</span><span class="va">flights_plane_type</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1,761 × 11</span></span>
-<span><span class="co">#&gt;     year month   day dep_time sched_d…¹ carrier flight tailnum origin dest </span></span>
-<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;</span></span>
-<span><span class="co">#&gt;  1  2013     1    10        3      2359 B6         727 N571JB  JFK    BQN  </span></span>
-<span><span class="co">#&gt;  2  2013     1    10       16      2359 B6         739 N564JB  JFK    PSE  </span></span>
-<span><span class="co">#&gt;  3  2013     1    10      450       500 US        1117 N171US  EWR    CLT  </span></span>
-<span><span class="co">#&gt;  4  2013     1    10      520       525 UA        1018 N35204  EWR    IAH  </span></span>
-<span><span class="co">#&gt;  5  2013     1    10      530       530 UA         404 N815UA  LGA    IAH  </span></span>
-<span><span class="co">#&gt;  6  2013     1    10      531       540 AA        1141 N5EAAA  JFK    MIA  </span></span>
-<span><span class="co">#&gt;  7  2013     1    10      535       540 B6         725 N784JB  JFK    BQN  </span></span>
-<span><span class="co">#&gt;  8  2013     1    10      546       600 B6         380 N337JB  EWR    BOS  </span></span>
-<span><span class="co">#&gt;  9  2013     1    10      549       600 EV        6055 N19554  LGA    IAD  </span></span>
-<span><span class="co">#&gt; 10  2013     1    10      550       600 US        2114 N740UW  LGA    BOS  </span></span>
-<span><span class="co">#&gt; # … with 1,751 more rows, 1 more variable: plane_type &lt;chr&gt;, and</span></span>
-<span><span class="co">#&gt; #   abbreviated variable name ¹​sched_dep_time</span></span></code></pre>
+<span><span class="co">#&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; </span></span>
+<span><span class="co">#&gt;  1  2013     1    10        3           2359 B6         727 N571JB  JFK   </span></span>
+<span><span class="co">#&gt;  2  2013     1    10       16           2359 B6         739 N564JB  JFK   </span></span>
+<span><span class="co">#&gt;  3  2013     1    10      450            500 US        1117 N171US  EWR   </span></span>
+<span><span class="co">#&gt;  4  2013     1    10      520            525 UA        1018 N35204  EWR   </span></span>
+<span><span class="co">#&gt;  5  2013     1    10      530            530 UA         404 N815UA  LGA   </span></span>
+<span><span class="co">#&gt;  6  2013     1    10      531            540 AA        1141 N5EAAA  JFK   </span></span>
+<span><span class="co">#&gt;  7  2013     1    10      535            540 B6         725 N784JB  JFK   </span></span>
+<span><span class="co">#&gt;  8  2013     1    10      546            600 B6         380 N337JB  EWR   </span></span>
+<span><span class="co">#&gt;  9  2013     1    10      549            600 EV        6055 N19554  LGA   </span></span>
+<span><span class="co">#&gt; 10  2013     1    10      550            600 US        2114 N740UW  LGA   </span></span>
+<span><span class="co">#&gt; # ℹ 1,751 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 2 more variables: dest &lt;chr&gt;, plane_type &lt;chr&gt;</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># also here, the FK-relations are transferred to the new table</span></span>
 <span><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="va">joined_flights_dm</span><span class="op">)</span></span></code></pre></div>
@@ -533,20 +533,20 @@ example once more:</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">planes</span>, select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tailnum</span>, plane_type <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1,761 × 11</span></span>
-<span><span class="co">#&gt;     year month   day dep_time sched_d…¹ carrier flight tailnum origin dest </span></span>
-<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;</span></span>
-<span><span class="co">#&gt;  1  2013     1    10        3      2359 B6         727 N571JB  JFK    BQN  </span></span>
-<span><span class="co">#&gt;  2  2013     1    10       16      2359 B6         739 N564JB  JFK    PSE  </span></span>
-<span><span class="co">#&gt;  3  2013     1    10      450       500 US        1117 N171US  EWR    CLT  </span></span>
-<span><span class="co">#&gt;  4  2013     1    10      520       525 UA        1018 N35204  EWR    IAH  </span></span>
-<span><span class="co">#&gt;  5  2013     1    10      530       530 UA         404 N815UA  LGA    IAH  </span></span>
-<span><span class="co">#&gt;  6  2013     1    10      531       540 AA        1141 N5EAAA  JFK    MIA  </span></span>
-<span><span class="co">#&gt;  7  2013     1    10      535       540 B6         725 N784JB  JFK    BQN  </span></span>
-<span><span class="co">#&gt;  8  2013     1    10      546       600 B6         380 N337JB  EWR    BOS  </span></span>
-<span><span class="co">#&gt;  9  2013     1    10      549       600 EV        6055 N19554  LGA    IAD  </span></span>
-<span><span class="co">#&gt; 10  2013     1    10      550       600 US        2114 N740UW  LGA    BOS  </span></span>
-<span><span class="co">#&gt; # … with 1,751 more rows, 1 more variable: plane_type &lt;chr&gt;, and</span></span>
-<span><span class="co">#&gt; #   abbreviated variable name ¹​sched_dep_time</span></span></code></pre>
+<span><span class="co">#&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; </span></span>
+<span><span class="co">#&gt;  1  2013     1    10        3           2359 B6         727 N571JB  JFK   </span></span>
+<span><span class="co">#&gt;  2  2013     1    10       16           2359 B6         739 N564JB  JFK   </span></span>
+<span><span class="co">#&gt;  3  2013     1    10      450            500 US        1117 N171US  EWR   </span></span>
+<span><span class="co">#&gt;  4  2013     1    10      520            525 UA        1018 N35204  EWR   </span></span>
+<span><span class="co">#&gt;  5  2013     1    10      530            530 UA         404 N815UA  LGA   </span></span>
+<span><span class="co">#&gt;  6  2013     1    10      531            540 AA        1141 N5EAAA  JFK   </span></span>
+<span><span class="co">#&gt;  7  2013     1    10      535            540 B6         725 N784JB  JFK   </span></span>
+<span><span class="co">#&gt;  8  2013     1    10      546            600 B6         380 N337JB  EWR   </span></span>
+<span><span class="co">#&gt;  9  2013     1    10      549            600 EV        6055 N19554  LGA   </span></span>
+<span><span class="co">#&gt; 10  2013     1    10      550            600 US        2114 N740UW  LGA   </span></span>
+<span><span class="co">#&gt; # ℹ 1,751 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 2 more variables: dest &lt;chr&gt;, plane_type &lt;chr&gt;</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="possible-pitfalls-and-caveats">Possible pitfalls and caveats<a class="anchor" aria-label="anchor" href="#possible-pitfalls-and-caveats"></a>

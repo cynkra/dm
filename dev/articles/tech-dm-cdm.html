@@ -107,7 +107,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Migration guide: 'cdm' -&gt; 'dm'</h1>
             
-            <h4 data-toc-skip class="date">2023-03-23</h4>
+            <h4 data-toc-skip class="date">2023-03-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-cdm.Rmd" class="external-link"><code>vignettes/tech-dm-cdm.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-cdm.Rmd</code></div>
@@ -189,41 +189,41 @@ syntax:</p>
 <span><span class="co">#&gt;  8 BTV   Burlington Intl                44.5  -73.2   335    -5 A     Amer…</span></span>
 <span><span class="co">#&gt;  9 BUF   Buffalo Niagara Intl           42.9  -78.7   724    -5 A     Amer…</span></span>
 <span><span class="co">#&gt; 10 BUR   Bob Hope                       34.2 -118.    778    -8 A     Amer…</span></span>
-<span><span class="co">#&gt; # … with 76 more rows</span></span></code></pre>
+<span><span class="co">#&gt; # ℹ 76 more rows</span></span></code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm</span><span class="op">$</span><span class="va">planes</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 945 × 9</span></span>
-<span><span class="co">#&gt;    tailnum  year type              manuf…¹ model engines seats speed engine</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;             &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; </span></span>
-<span><span class="co">#&gt;  1 N10156   2004 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt;  2 N104UW   1999 Fixed wing multi… AIRBUS… A320…       2   182    NA Turbo…</span></span>
-<span><span class="co">#&gt;  3 N10575   2002 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt;  4 N105UW   1999 Fixed wing multi… AIRBUS… A320…       2   182    NA Turbo…</span></span>
-<span><span class="co">#&gt;  5 N110UW   1999 Fixed wing multi… AIRBUS… A320…       2   182    NA Turbo…</span></span>
-<span><span class="co">#&gt;  6 N11106   2002 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt;  7 N11107   2002 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt;  8 N11109   2002 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt;  9 N11121   2003 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt; 10 N11137   2003 Fixed wing multi… EMBRAER EMB-…       2    55    NA Turbo…</span></span>
-<span><span class="co">#&gt; # … with 935 more rows, and abbreviated variable name ¹​manufacturer</span></span></code></pre>
+<span><span class="co">#&gt;    tailnum  year type         manufacturer model engines seats speed engine</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; </span></span>
+<span><span class="co">#&gt;  1 N10156   2004 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  2 N104UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span></span>
+<span><span class="co">#&gt;  3 N10575   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  4 N105UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span></span>
+<span><span class="co">#&gt;  5 N110UW   1999 Fixed wing … AIRBUS INDU… A320…       2   182    NA Turbo…</span></span>
+<span><span class="co">#&gt;  6 N11106   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  7 N11107   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  8 N11109   2002 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt;  9 N11121   2003 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt; 10 N11137   2003 Fixed wing … EMBRAER      EMB-…       2    55    NA Turbo…</span></span>
+<span><span class="co">#&gt; # ℹ 935 more rows</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm</span><span class="op">[[</span><span class="st">"weather"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 144 × 15</span></span>
-<span><span class="co">#&gt;    origin  year month   day  hour  temp  dewp humid wind_…¹ wind_…² wind_…³</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 EWR     2013     1    10     0  41    32    70.1     230    8.06    NA  </span></span>
-<span><span class="co">#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9     210    9.21    NA  </span></span>
-<span><span class="co">#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8     230    6.90    NA  </span></span>
-<span><span class="co">#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5     270    5.75    NA  </span></span>
-<span><span class="co">#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0     320    6.90    NA  </span></span>
-<span><span class="co">#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0     300   12.7     20.7</span></span>
-<span><span class="co">#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8     280    6.90    17.3</span></span>
-<span><span class="co">#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6     330    6.90    NA  </span></span>
-<span><span class="co">#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7     330    8.06    NA  </span></span>
-<span><span class="co">#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6     320   17.3     26.5</span></span>
-<span><span class="co">#&gt; # … with 134 more rows, 4 more variables: precip &lt;dbl&gt;, pressure &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   visib &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names</span></span>
-<span><span class="co">#&gt; #   ¹​wind_dir, ²​wind_speed, ³​wind_gust</span></span></code></pre>
+<span><span class="co">#&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 EWR     2013     1    10     0  41    32    70.1      230       8.06</span></span>
+<span><span class="co">#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21</span></span>
+<span><span class="co">#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90</span></span>
+<span><span class="co">#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75</span></span>
+<span><span class="co">#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90</span></span>
+<span><span class="co">#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 </span></span>
+<span><span class="co">#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90</span></span>
+<span><span class="co">#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90</span></span>
+<span><span class="co">#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06</span></span>
+<span><span class="co">#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 </span></span>
+<span><span class="co">#&gt; # ℹ 134 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 5 more variables: wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;, pressure &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</span></span></code></pre>
 <p>After the update the same result is achieved by this type of function
 call:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">

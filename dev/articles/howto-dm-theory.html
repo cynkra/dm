@@ -109,7 +109,7 @@
                         <h4 data-toc-skip class="author">Katharina
 Brunner</h4>
             
-            <h4 data-toc-skip class="date">2023-03-23</h4>
+            <h4 data-toc-skip class="date">2023-03-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-theory.Rmd</code></div>
@@ -215,25 +215,25 @@ wide data frame.</p>
 <span></span>
 <span><span class="va">nycflights13_df</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 336,776 × 48</span></span>
-<span><span class="co">#&gt;    year.x month.x day.x dep_time sched_de…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵</span></span>
-<span><span class="co">#&gt;     &lt;int&gt;   &lt;int&gt; &lt;int&gt;    &lt;int&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1   2013       1     1      517        515       2     830     819      11</span></span>
-<span><span class="co">#&gt;  2   2013       1     1      533        529       4     850     830      20</span></span>
-<span><span class="co">#&gt;  3   2013       1     1      542        540       2     923     850      33</span></span>
-<span><span class="co">#&gt;  4   2013       1     1      544        545      -1    1004    1022     -18</span></span>
-<span><span class="co">#&gt;  5   2013       1     1      554        600      -6     812     837     -25</span></span>
-<span><span class="co">#&gt;  6   2013       1     1      554        558      -4     740     728      12</span></span>
-<span><span class="co">#&gt;  7   2013       1     1      555        600      -5     913     854      19</span></span>
-<span><span class="co">#&gt;  8   2013       1     1      557        600      -3     709     723     -14</span></span>
-<span><span class="co">#&gt;  9   2013       1     1      557        600      -3     838     846      -8</span></span>
-<span><span class="co">#&gt; 10   2013       1     1      558        600      -2     753     745       8</span></span>
-<span><span class="co">#&gt; # … with 336,766 more rows, 39 more variables: carrier &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   distance &lt;dbl&gt;, hour.x &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;,</span></span>
-<span><span class="co">#&gt; #   name.x &lt;chr&gt;, year.y &lt;int&gt;, type &lt;chr&gt;, manufacturer &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   name.y &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   tzone &lt;chr&gt;, year &lt;int&gt;, month.y &lt;int&gt;, day.y &lt;int&gt;, hour.y &lt;int&gt;, …</span></span></code></pre>
+<span><span class="co">#&gt;    year.x month.x day.x dep_time sched_dep_time dep_delay arr_time</span></span>
+<span><span class="co">#&gt;     &lt;int&gt;   &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1   2013       1     1      517            515         2      830</span></span>
+<span><span class="co">#&gt;  2   2013       1     1      533            529         4      850</span></span>
+<span><span class="co">#&gt;  3   2013       1     1      542            540         2      923</span></span>
+<span><span class="co">#&gt;  4   2013       1     1      544            545        -1     1004</span></span>
+<span><span class="co">#&gt;  5   2013       1     1      554            600        -6      812</span></span>
+<span><span class="co">#&gt;  6   2013       1     1      554            558        -4      740</span></span>
+<span><span class="co">#&gt;  7   2013       1     1      555            600        -5      913</span></span>
+<span><span class="co">#&gt;  8   2013       1     1      557            600        -3      709</span></span>
+<span><span class="co">#&gt;  9   2013       1     1      557            600        -3      838</span></span>
+<span><span class="co">#&gt; 10   2013       1     1      558            600        -2      753</span></span>
+<span><span class="co">#&gt; # ℹ 336,766 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 41 more variables: sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour.x &lt;dbl&gt;, minute &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   time_hour &lt;dttm&gt;, name.x &lt;chr&gt;, year.y &lt;int&gt;, type &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   speed &lt;int&gt;, engine &lt;chr&gt;, name.y &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;, …</span></span></code></pre>
 <p>{dm} offers a more elegant and shorter way to combine tables while
 augmenting {dplyr}/{dbplyr} workflows.</p>
 <p>It is possible to have the best of both worlds: manage your data with
@@ -475,7 +475,7 @@ truth</em>.</p>
 <span><span class="co">#&gt;  8   5708 ExpressJet Airlines Inc.</span></span>
 <span><span class="co">#&gt;  9     79 JetBlue Airways         </span></span>
 <span><span class="co">#&gt; 10    301 American Airlines Inc.  </span></span>
-<span><span class="co">#&gt; # … with 336,766 more rows</span></span></code></pre>
+<span><span class="co">#&gt; # ℹ 336,766 more rows</span></span></code></pre>
 <p>Another way to demonstrate normalization is splitting a table into
 two parts.</p>
 <p>Let’s look at the <code>planes</code> table, which consists of 3322
@@ -504,7 +504,7 @@ rows:</p>
 <span><span class="co">#&gt;  8 N108UW   1999 Turbo-fan       93</span></span>
 <span><span class="co">#&gt;  9 N109UW   1999 Turbo-fan       93</span></span>
 <span><span class="co">#&gt; 10 N110UW   1999 Turbo-fan       93</span></span>
-<span><span class="co">#&gt; # … with 3,312 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 3,312 more rows</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $parent_table</span></span>
 <span><span class="co">#&gt; # A tibble: 147 × 7</span></span>
@@ -520,7 +520,7 @@ rows:</p>
 <span><span class="co">#&gt;  8      112 CL-600-2D24 BOMBARDIER INC   Fixed wing mu…       2    95    NA</span></span>
 <span><span class="co">#&gt;  9       30 737-724     BOEING           Fixed wing mu…       2   149    NA</span></span>
 <span><span class="co">#&gt; 10       27 737-524     BOEING           Fixed wing mu…       2   149    NA</span></span>
-<span><span class="co">#&gt; # … with 137 more rows</span></span></code></pre>
+<span><span class="co">#&gt; # ℹ 137 more rows</span></span></code></pre>
 <p>While <code>child_table</code> contains 3322 unique
 <code>tailnum</code> rows and therefore consists of 3322 rows, just like
 the original <code>planes</code> table, the <code>parent_table</code>
