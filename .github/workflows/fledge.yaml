@@ -5,6 +5,8 @@ on:
   workflow_dispatch:
   # for debugging
   push:
+    branches:
+      - "main"
   # daily run
   schedule:
   - cron: "30 0 * * *"
