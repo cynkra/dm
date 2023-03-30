@@ -1,5 +1,26 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9004
+
+## Chore
+
+- Use fledge from main branch.
+
+## Uncategorized
+
+- Merge pull request #1861 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-maria-covr-true-desc-MariaDB-with-covr.
+
+- Merge pull request #1859 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-postgres-covr-true-desc-Postgres-with-covr.
+
+- Merge pull request #1858 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-sqlite-covr-true-desc-SQLite-with-covr.
+
+- Merge pull request #1856 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-duckdb-covr-true-desc-DuckDB-with-covr.
+
+- Merge pull request #1855 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-20-04-r-release-test-src-test-mssql-covr-false-desc-SQL-Server-without-covr.
+
+- Merge pull request #1845 from cynkra/snapshot-main-rcc-smoke-null.
+
+
 # dm 1.0.5.9003
 
 - Merged cran-1.0.5 into main.
