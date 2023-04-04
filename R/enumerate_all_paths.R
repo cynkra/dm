@@ -65,6 +65,7 @@ enumerate_all_paths_impl <- function(node,
     pwalk(enumerate_all_paths_impl, path, all_fks, helper_env)
 }
 
+#' @autoglobal
 rename_unique <- function(all_paths) {
   node_lookup <-
     bind_rows(
@@ -112,6 +113,7 @@ add_path_to_all_paths <- function(all_fks,
   )
 }
 
+#' @autoglobal
 split_to_list <- function(all_paths) {
   table_mapping <- bind_rows(
     select(all_paths, new_table = new_child_table, table = child_table),

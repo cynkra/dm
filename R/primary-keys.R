@@ -343,6 +343,7 @@ dm_rm_pk_impl <- function(dm, table_name, columns) {
 #' @examplesIf rlang::is_installed("nycflights13")
 #' nycflights13::flights %>%
 #'   enum_pk_candidates()
+#' @autoglobal
 enum_pk_candidates <- function(table, ...) {
   check_dots_empty()
   # a list of ayes and noes:
@@ -384,6 +385,7 @@ dm_enum_pk_candidates <- function(dm, table, ...) {
     mutate(columns = new_keys(columns))
 }
 
+#' @autoglobal
 enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table))) {
   tibble(column = new_keys(columns)) %>%
     mutate(why = map_chr(column, ~ check_pk(table, .x))) %>%
