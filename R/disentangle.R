@@ -1,4 +1,3 @@
-
 #' @autoglobal
 dm_disentangle <- function(dm, start, quiet = FALSE) {
   check_not_zoomed(dm)

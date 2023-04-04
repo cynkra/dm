@@ -1,4 +1,3 @@
-
 #' @autoglobal
 dm_upgrade <- function(dm, quiet) {
   # Versioned dm objects introduced in dm 0.2.1, unversioned dm same as version 0
