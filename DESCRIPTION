@@ -60,7 +60,7 @@ Imports:
     memoise,
     methods,
     pillar (>= 1.7.0),
-    purrr,
+    purrr (>= 1.0.0),
     rlang (>= 1.0.2),
     tibble (>= 3.0.0),
     tidyr (>= 1.0.0),
