@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9005
+
+## Chore
+
+- Require purrr \>= 1.0.0 for `list_c()` (#1847, #1848).
+
+
 # dm 1.0.5.9004
 
 ## Chore
