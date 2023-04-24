@@ -127,9 +127,9 @@ dm_get_data_model <- function(x, column_types = FALSE) {
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
   keys_pk <-
-    dm_get_all_pks_impl(x) %>%
-    mutate(column = format(pk_col)) %>%
-    select(table, column) %>%
+    dm_get_all_uks_impl(x) %>%
+    mutate(column = format(uk_col)) %>%
+    select(table, column, kind) %>%
     mutate(key = 1L)
 
   keys_fk <-
