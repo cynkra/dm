@@ -55,7 +55,7 @@ bdm_create_graph_list <- function(data_model,
                                   focus = NULL,
                                   col_attr = "column",
                                   columnArrows = FALSE,
-                                  table_description = NULL) {
+                                  table_description = list()) {
   # hidden tables
 
   if (!is.null(focus) && is.list(focus)) {
@@ -113,7 +113,7 @@ bdm_create_graph_list <- function(data_model,
         palette_id = data_model$tables[data_model$tables$table == x, "display"],
         col_attr = col_attr,
         columnArrows = columnArrows,
-        table_description = table_description[x]
+        table_description = table_description[[x]]
       )
     })
 
@@ -370,7 +370,6 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
     trans = trans,
     table_description
   )
-
   ret <- sprintf("<%s>", trimws(ret))
 
   ret

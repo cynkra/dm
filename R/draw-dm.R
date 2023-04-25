@@ -99,7 +99,7 @@ dm_draw <- function(dm,
     edge_attrs = edge_attrs,
     focus = focus,
     graph_name = graph_name,
-    table_description
+    table_description = if (is.null(table_description)) {list()} else {as.list(table_description)}
   )
   bdm_render_graph(graph, top_level_fun = "dm_draw")
 }
