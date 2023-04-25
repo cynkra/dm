@@ -194,7 +194,7 @@ dot_graph <- function(graph, columnArrows = FALSE) {
         graph$edges_df$to,
         graph$edges_df$toCol,
         graph$edges_df$keyId,
-        if_else(graph$edges_df$kind_fk != "PK",", style=\"dashed\"","")
+        if_else(graph$edges_df$kind_fk != "PK", ", style=\"dashed\"", "")
       ),
       collapse = "\n"
     )
