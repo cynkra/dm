@@ -27,7 +27,8 @@
 #' @param backend Currently, only the default `"DiagrammeR"` is accepted.
 #'   Pass this value explicitly if your code not only uses this function
 #'   to display a data model but relies on the type of the return value.
-#'
+#' @param table_description Provide a named character vector or a named list with the names
+#'   corresponding to the table names to describe.
 #'
 #' @seealso [dm_set_colors()] for defining the table colors.
 #'

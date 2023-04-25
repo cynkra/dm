@@ -51,6 +51,9 @@ It defines the level of details for rendering tables
 \item{backend}{Currently, only the default \code{"DiagrammeR"} is accepted.
 Pass this value explicitly if your code not only uses this function
 to display a data model but relies on the type of the return value.}
+
+\item{table_description}{Provide a named character vector or a named list with the names
+corresponding to the table names to describe.}
 }
 \value{
 An object with a \code{\link[=print]{print()}} method, which,
