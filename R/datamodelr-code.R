@@ -9,12 +9,14 @@ bdm_create_graph <- function(data_model,
                              view_type = "all",
                              focus = NULL,
                              col_attr = "column",
-                             columnArrows = FALSE) {
+                             columnArrows = FALSE,
+                             table_description = NULL) {
   g_list <-
     bdm_create_graph_list(
       data_model = data_model, view_type = view_type,
       focus = focus, col_attr = col_attr,
-      columnArrows = columnArrows
+      columnArrows = columnArrows,
+      table_description = table_description
     )
   if (length(g_list$nodes$nodes) == 0) {
     warning("The number of tables to render is 0.")
@@ -45,15 +47,15 @@ bdm_render_graph <- function(graph, width = NULL, height = NULL, top_level_fun =
   if (is.null(graph$dot_code)) {
     graph$dot_code <- dot_graph(graph)
   }
-
-  DiagrammeR::grViz(graph$dot_code, allow_subst = FALSE, width, height)
+  DiagrammeR::grViz(graph$dot_code, engine = "twopi", allow_subst = FALSE, width, height)
 }
 
 bdm_create_graph_list <- function(data_model,
                                   view_type = "all",
                                   focus = NULL,
                                   col_attr = "column",
-                                  columnArrows = FALSE) {
+                                  columnArrows = FALSE,
+                                  table_description = NULL) {
   # hidden tables
 
   if (!is.null(focus) && is.list(focus)) {
@@ -110,7 +112,8 @@ bdm_create_graph_list <- function(data_model,
         title = x,
         palette_id = data_model$tables[data_model$tables$table == x, "display"],
         col_attr = col_attr,
-        columnArrows = columnArrows
+        columnArrows = columnArrows,
+        table_description = table_description[x]
       )
     })
 
@@ -246,7 +249,8 @@ to_html_table <- function(x,
                           attr_font,
                           attr_td = NULL,
                           trans = NULL,
-                          cols = names(x)) {
+                          cols = names(x),
+                          table_description = NULL) {
   html_table(atrs = attr_table, c(
     # header
     html_tr(
@@ -256,6 +260,15 @@ to_html_table <- function(x,
         collapse = NULL
       )
     ),
+    if (!is.null(table_description)) {
+      html_tr(
+        html_td(
+          html_font(table_description, atrs = c(attr_font, "POINT-SIZE"=9)),
+          atrs = attr_header,
+          collapse = NULL
+        )
+      )
+    },
     # rows
     unique(sapply(seq_len(nrow(x)), function(r) {
       html_tr(c(
@@ -271,7 +284,7 @@ to_html_table <- function(x,
 }
 
 dot_html_label <- function(x, title, palette_id = "default", col_attr = c("column"),
-                           columnArrows = FALSE) {
+                           columnArrows = FALSE, table_description = NULL) {
   cols <- c("ref", col_attr)
   if (is.null(palette_id) || palette_id == "show") {
     palette_id <- "default"
@@ -344,7 +357,6 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
     }
     return(value)
   }
-
   ret <- to_html_table(x,
     title = title,
     attr_table = attr_table,
@@ -352,7 +364,8 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
     attr_font = attr_font,
     attr_td = attr_td,
     cols = cols,
-    trans = trans
+    trans = trans,
+    table_description
   )
 
   ret <- sprintf("<%s>", trimws(ret))

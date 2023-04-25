@@ -62,7 +62,8 @@ dm_draw <- function(dm,
                     focus = NULL,
                     graph_name = "Data Model",
                     column_types = NULL,
-                    backend = "DiagrammeR") {
+                    backend = "DiagrammeR",
+                    table_description = NULL) {
   #
   check_not_zoomed(dm)
   check_dots_empty()
@@ -97,7 +98,8 @@ dm_draw <- function(dm,
     node_attrs = node_attrs,
     edge_attrs = edge_attrs,
     focus = focus,
-    graph_name = graph_name
+    graph_name = graph_name,
+    table_description
   )
   bdm_render_graph(graph, top_level_fun = "dm_draw")
 }
