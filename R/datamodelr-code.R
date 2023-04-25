@@ -135,6 +135,7 @@ bdm_create_graph_list <- function(data_model,
           fromCol = column,
           toCol = ref_col,
           keyId = keyId,
+          kind_fk = kind_fk,
           stringsAsFactors = FALSE
         )
       )
@@ -187,12 +188,13 @@ dot_graph <- function(graph, columnArrows = FALSE) {
   if (columnArrows) {
     dot_edges <- paste(
       sprintf(
-        '"%s":"%s"->"%s":"%s" [id="%s"]',
+        '"%s":"%s"->"%s":"%s" [id="%s"%s]',
         graph$edges_df$from,
         graph$edges_df$fromCol,
         graph$edges_df$to,
         graph$edges_df$toCol,
-        graph$edges_df$keyId
+        graph$edges_df$keyId,
+        if_else(graph$edges_df$kind_fk != "PK",", style=\"dashed\"","")
       ),
       collapse = "\n"
     )
