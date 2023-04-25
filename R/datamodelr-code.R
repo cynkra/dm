@@ -376,8 +376,10 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
 }
 
 repair_html <- function(x) {
-  x <- gsub("'", "&apos;", x)
-  # Note: it's likely that other exceptions will need to be repaired here, so
-  # let's keep this as a function
+  x <- gsub("&", "&amp;", x)
+  x <- gsub("'", "&#39;", x)
+  x <- gsub("<", "&lt;", x)
+  x <- gsub(">", "&gt;", x)
+  x <- gsub("\"", "&#34;", x)
   x
 }
