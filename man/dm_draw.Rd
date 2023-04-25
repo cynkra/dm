@@ -17,7 +17,8 @@ dm_draw(
   focus = NULL,
   graph_name = "Data Model",
   column_types = NULL,
-  backend = "DiagrammeR"
+  backend = "DiagrammeR",
+  table_description = NULL
 )
 }
 \arguments{

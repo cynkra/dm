@@ -265,7 +265,7 @@ to_html_table <- function(x,
       map_chr(table_description, function(desc) {
         html_tr(
           html_td(
-            html_font(desc, atrs = c(attr_font, "POINT-SIZE"=9)),
+            html_font(desc, atrs = c(attr_font, "POINT-SIZE" = 9)),
             atrs = attr_header,
             collapse = NULL
           )
