@@ -47,7 +47,7 @@ bdm_render_graph <- function(graph, width = NULL, height = NULL, top_level_fun =
   if (is.null(graph$dot_code)) {
     graph$dot_code <- dot_graph(graph)
   }
-  DiagrammeR::grViz(graph$dot_code, engine = "twopi", allow_subst = FALSE, width, height)
+  DiagrammeR::grViz(graph$dot_code, allow_subst = FALSE, width, height)
 }
 
 bdm_create_graph_list <- function(data_model,
