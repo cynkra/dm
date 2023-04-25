@@ -261,13 +261,16 @@ to_html_table <- function(x,
       )
     ),
     if (!is.null(table_description)) {
-      html_tr(
-        html_td(
-          html_font(table_description, atrs = c(attr_font, "POINT-SIZE"=9)),
-          atrs = attr_header,
-          collapse = NULL
+      table_description <- strsplit(table_description, "\n")[[1]]
+      map_chr(table_description, function(desc) {
+        html_tr(
+          html_td(
+            html_font(desc, atrs = c(attr_font, "POINT-SIZE"=9)),
+            atrs = attr_header,
+            collapse = NULL
+          )
         )
-      )
+      })
     },
     # rows
     unique(sapply(seq_len(nrow(x)), function(r) {
