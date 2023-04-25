@@ -265,7 +265,7 @@ to_html_table <- function(x,
       map_chr(table_description, function(desc) {
         html_tr(
           html_td(
-            html_font(desc, atrs = c(attr_font, "POINT-SIZE" = 9)),
+            html_font(repair_html(desc), atrs = c(attr_font, "POINT-SIZE" = 9)),
             atrs = attr_header,
             collapse = NULL
           )
@@ -373,4 +373,11 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
   ret <- sprintf("<%s>", trimws(ret))
 
   ret
+}
+
+repair_html <- function(x) {
+  x <- gsub("'", "&apos;", x)
+  # Note: it's likely that other exceptions will need to be repaired here, so
+  # let's keep this as a function
+  x
 }
