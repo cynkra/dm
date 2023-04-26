@@ -29,7 +29,8 @@
 #'   to display a data model but relies on the type of the return value.
 #' @param table_description Provide a named character vector or a named list with the names
 #'   corresponding to the table names to describe.
-#' @param font_size_table_description Font size for `table_description`.
+#'   Descriptions across several lines can be achieved using the newline symbol `\n`.
+#' @param font_size_table_description Font size for `table_description`, defaults to `8`.
 #'
 #' @seealso [dm_set_colors()] for defining the table colors.
 #'

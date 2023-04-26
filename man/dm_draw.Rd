@@ -54,9 +54,10 @@ Pass this value explicitly if your code not only uses this function
 to display a data model but relies on the type of the return value.}
 
 \item{table_description}{Provide a named character vector or a named list with the names
-corresponding to the table names to describe.}
+corresponding to the table names to describe.
+Descriptions across several lines can be achieved using the newline symbol \verb{\\n}.}
 
-\item{font_size_table_description}{Font size for \code{table_description}.}
+\item{font_size_table_description}{Font size for \code{table_description}, defaults to \code{8}.}
 }
 \value{
 An object with a \code{\link[=print]{print()}} method, which,
