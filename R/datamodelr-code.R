@@ -10,13 +10,15 @@ bdm_create_graph <- function(data_model,
                              focus = NULL,
                              col_attr = "column",
                              columnArrows = FALSE,
-                             table_description = NULL) {
+                             table_description = NULL,
+                             font_size_table_description = 8L) {
   g_list <-
     bdm_create_graph_list(
       data_model = data_model, view_type = view_type,
       focus = focus, col_attr = col_attr,
       columnArrows = columnArrows,
-      table_description = table_description
+      table_description = table_description,
+      font_size_table_description = font_size_table_description
     )
   if (length(g_list$nodes$nodes) == 0) {
     warning("The number of tables to render is 0.")
@@ -55,7 +57,8 @@ bdm_create_graph_list <- function(data_model,
                                   focus = NULL,
                                   col_attr = "column",
                                   columnArrows = FALSE,
-                                  table_description = list()) {
+                                  table_description = list(),
+                                  font_size_table_description = 8L) {
   # hidden tables
 
   if (!is.null(focus) && is.list(focus)) {
@@ -113,7 +116,8 @@ bdm_create_graph_list <- function(data_model,
         palette_id = data_model$tables[data_model$tables$table == x, "display"],
         col_attr = col_attr,
         columnArrows = columnArrows,
-        table_description = table_description[[x]]
+        table_description = table_description[[x]],
+        font_size_table_description = font_size_table_description
       )
     })
 
@@ -250,7 +254,8 @@ to_html_table <- function(x,
                           attr_td = NULL,
                           trans = NULL,
                           cols = names(x),
-                          table_description = NULL) {
+                          table_description = NULL,
+                          font_size_table_description = 8L) {
   html_table(atrs = attr_table, c(
     # header
     html_tr(
@@ -265,7 +270,7 @@ to_html_table <- function(x,
       map_chr(table_description, function(desc) {
         html_tr(
           html_td(
-            html_font(repair_html(desc), atrs = c(attr_font, "POINT-SIZE" = 9)),
+            html_font(repair_html(desc), atrs = c(attr_font, "POINT-SIZE" = font_size_table_description)),
             atrs = attr_header,
             collapse = NULL
           )
@@ -287,7 +292,7 @@ to_html_table <- function(x,
 }
 
 dot_html_label <- function(x, title, palette_id = "default", col_attr = c("column"),
-                           columnArrows = FALSE, table_description = NULL) {
+                           columnArrows = FALSE, table_description = NULL, font_size_table_description = 8L) {
   cols <- c("ref", col_attr)
   if (is.null(palette_id) || palette_id == "show") {
     palette_id <- "default"
@@ -368,7 +373,8 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
     attr_td = attr_td,
     cols = cols,
     trans = trans,
-    table_description = table_description
+    table_description = table_description,
+    font_size_table_description = font_size_table_description
   )
   ret <- sprintf("<%s>", trimws(ret))
 
