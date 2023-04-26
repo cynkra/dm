@@ -368,7 +368,7 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
     attr_td = attr_td,
     cols = cols,
     trans = trans,
-    table_description
+    table_description = table_description
   )
   ret <- sprintf("<%s>", trimws(ret))
 
