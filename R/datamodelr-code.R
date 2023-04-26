@@ -255,7 +255,8 @@ to_html_table <- function(x,
                           trans = NULL,
                           cols = names(x),
                           table_description = NULL,
-                          font_size_table_description = 8L) {
+                          font_size_table_description = 8L,
+                          attr_desc) {
   html_table(atrs = attr_table, c(
     # header
     html_tr(
@@ -270,8 +271,8 @@ to_html_table <- function(x,
       map_chr(table_description, function(desc) {
         html_tr(
           html_td(
-            html_font(repair_html(desc), atrs = c(attr_font, "POINT-SIZE" = font_size_table_description)),
-            atrs = attr_header,
+            html_font(repair_html(desc), atrs = c(attr_desc, "POINT-SIZE" = font_size_table_description)),
+            atrs = attr_desc,
             collapse = NULL
           )
         )
@@ -305,12 +306,15 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
       line_color = "#555555",
       header_bgcolor = "#EFEBDD",
       header_font = "#000000",
-      bgcolor = "#FFFFFF"
+      bgcolor = "#FFFFFF",
+      desccol = "#F9F8F3"
     )
   } else {
     header_bgcol_rgb <- col2rgb(palette_id, alpha = TRUE)
     bodycol_rgb <- calc_bodycol_rgb(header_bgcol_rgb)
     bodycol <- hex_from_rgb(bodycol_rgb)
+    desccol_rgb <- calc_bodycol_rgb(header_bgcol_rgb, ratio = 0.65)
+    desccol <- hex_from_rgb(desccol_rgb)
     # if header background too dark, use white font color
     header_font <- if (is_dark_color(header_bgcol_rgb)) "#FFFFFF" else "#000000"
     line_color_rgb <- header_bgcol_rgb / 1.5
@@ -320,7 +324,8 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
       line_color = line_color,
       header_bgcolor = palette_id,
       header_font = header_font,
-      bgcolor = bodycol
+      bgcolor = bodycol,
+      desccol = desccol
     )
   }
 
@@ -334,8 +339,12 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
   attr_header <- list(
     COLSPAN = length(cols) - columnArrows, BGCOLOR = col[["header_bgcolor"]], BORDER = 0
   )
-  attr_font <- list()
   attr_font <- list(COLOR = col[["header_font"]])
+
+  attr_desc <- attr_header
+  attr_desc[["COLOR"]] <- "#000000"
+  attr_desc[["BGCOLOR"]] <- col[["desccol"]]
+  attr_desc[["BORDER"]] <- 0
 
   attr_td <- function(col_name, row_values, value) {
     ret <- list(ALIGN = "LEFT", BGCOLOR = col[["bgcolor"]])
@@ -374,7 +383,8 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
     cols = cols,
     trans = trans,
     table_description = table_description,
-    font_size_table_description = font_size_table_description
+    font_size_table_description = font_size_table_description,
+    attr_desc
   )
   ret <- sprintf("<%s>", trimws(ret))
 
