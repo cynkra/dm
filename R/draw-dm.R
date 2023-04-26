@@ -71,6 +71,10 @@ dm_draw <- function(dm,
   #
   check_not_zoomed(dm)
   check_dots_empty()
+  if (!is.null(table_description)) {
+    if (!is_named(table_description)) {abort_arg_needs_names("table_description")}
+    walk(names(table_description), dm_tbl_name, dm = dm)
+  }
 
   view_type <- arg_match(view_type)
 
