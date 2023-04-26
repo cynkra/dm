@@ -18,7 +18,8 @@ dm_draw(
   graph_name = "Data Model",
   column_types = NULL,
   backend = "DiagrammeR",
-  table_description = NULL
+  table_description = NULL,
+  font_size_table_description = 8L
 )
 }
 \arguments{
@@ -54,6 +55,8 @@ to display a data model but relies on the type of the return value.}
 
 \item{table_description}{Provide a named character vector or a named list with the names
 corresponding to the table names to describe.}
+
+\item{font_size_table_description}{Font size for \code{table_description}.}
 }
 \value{
 An object with a \code{\link[=print]{print()}} method, which,
