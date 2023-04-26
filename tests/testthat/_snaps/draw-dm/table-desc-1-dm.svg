@@ -35,9 +35,9 @@
 <title>flights</title>
 <polygon fill="#efebdd" stroke="transparent" points="1,-127 1,-147 55,-147 55,-127 1,-127"/>
 <text text-anchor="start" x="10.1115" y="-132.4" font-family="Times,serif" font-size="14.00" fill="#000000">flights</text>
-<polygon fill="#efebdd" stroke="transparent" points="1,-114 1,-127 55,-127 55,-114 1,-114"/>
+<polygon fill="#f9f8f3" stroke="transparent" points="1,-114 1,-127 55,-127 55,-114 1,-114"/>
 <text text-anchor="start" x="4.334" y="-117.8" font-family="Times,serif" font-size="8.00" fill="#000000">high in the sky</text>
-<polygon fill="#efebdd" stroke="transparent" points="1,-101 1,-114 55,-114 55,-101 1,-101"/>
+<polygon fill="#f9f8f3" stroke="transparent" points="1,-101 1,-114 55,-114 55,-101 1,-101"/>
 <text text-anchor="start" x="2.8952" y="-104.8" font-family="Times,serif" font-size="8.00" fill="#000000">flying from NY</text>
 <polygon fill="#ffffff" stroke="transparent" points="1,-81 1,-101 55,-101 55,-81 1,-81"/>
 <text text-anchor="start" x="3" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#444444">carrier</text>
