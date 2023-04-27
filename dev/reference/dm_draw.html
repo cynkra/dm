@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9007</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,7 +94,9 @@
 <span>  focus <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  graph_name <span class="op">=</span> <span class="st">"Data Model"</span>,</span>
 <span>  column_types <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  backend <span class="op">=</span> <span class="st">"DiagrammeR"</span></span>
+<span>  backend <span class="op">=</span> <span class="st">"DiagrammeR"</span>,</span>
+<span>  table_description <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  font_size_table_description <span class="op">=</span> <span class="fl">8L</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -154,6 +156,18 @@ It defines the level of details for rendering tables
 <dd><p>Currently, only the default <code>"DiagrammeR"</code> is accepted.
 Pass this value explicitly if your code not only uses this function
 to display a data model but relies on the type of the return value.</p></dd>
+
+
+<dt>table_description</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
+<p>Provide a named character vector or a named list with the names
+corresponding to the table names to describe.
+Descriptions across several lines can be achieved using the newline symbol <code>\n</code>.</p></dd>
+
+
+<dt>font_size_table_description</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
+<p>Font size for <code>table_description</code>, defaults to <code>8</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

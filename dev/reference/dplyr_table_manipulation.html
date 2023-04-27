@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9007</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -192,9 +192,12 @@ it will use <code>nn</code>. If there's a column called <code>n</code> and <code
 
 
 <dt>.drop</dt>
-<dd><p>For <code>count()</code>: if <code>FALSE</code> will include counts for empty groups
-(i.e. for levels of factors that don't exist in the data). Deprecated in
-<code>add_count()</code> since it didn't actually affect the output.</p></dd>
+<dd><p>Handling of factor levels that don't appear in the data, passed
+on to <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by()</a></code>.</p>
+<p>For <code>count()</code>: if <code>FALSE</code> will include counts for empty groups (i.e. for
+levels of factors that don't exist in the data).</p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> For <code>add_count()</code>: deprecated since it
+can't actually affect the output.</p></dd>
 
 
 <dt>var</dt>

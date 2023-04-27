@@ -14,7 +14,7 @@ The methods for regular dm objects extract the first or last tables."><meta prop
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9007</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,8 @@ The methods for regular <code>dm</code> objects extract the first or last tables
 
 <dt>n</dt>
 <dd><p>an integer vector of length up to <code>dim(x)</code> (or 1,
-    for non-dimensioned objects). Values specify the indices to be
+    for non-dimensioned objects).  A <code>logical</code> is silently coerced to
+    integer.  Values specify the indices to be
     selected in the corresponding dimension (or along the length) of the
     object. A positive value of <code>n[i]</code> includes the first/last
     <code>n[i]</code> indices in that dimension, while a negative value
