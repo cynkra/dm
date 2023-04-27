@@ -142,7 +142,7 @@ bdm_create_graph_list <- function(data_model,
           fromCol = column,
           toCol = ref_col,
           keyId = keyId,
-          kind_fk = kind_fk,
+          uk_col = uk_col,
           stringsAsFactors = FALSE
         )
       )
@@ -201,7 +201,7 @@ dot_graph <- function(graph, columnArrows = FALSE) {
         graph$edges_df$to,
         graph$edges_df$toCol,
         graph$edges_df$keyId,
-        if_else(graph$edges_df$kind_fk != "PK", ", style=\"dashed\"", "")
+        graph$edges_df$uk_col
       ),
       collapse = "\n"
     )
