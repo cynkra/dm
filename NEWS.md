@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9008
+
+## Features
+
+- UK support for `dm_draw()` (#1731, #1877).
+
+- Allow for additional description of tables in dm_draw() (#1875, #1876).
+
+
 # dm 1.0.5.9007
 
 - Internal changes only.
