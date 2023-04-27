@@ -135,18 +135,27 @@ dm_get_data_model <- function(x, column_types = FALSE) {
     stringsAsFactors = FALSE
   )
 
-  references_for_columns <-
-    dm_get_all_fks_impl(x, id = TRUE) %>%
-    transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_key_cols), keyId = id)
+  all_uks <- dm_get_all_uks_impl(x)
+  references_for_columns <- dm_get_all_fks_impl(x, id = TRUE) %>%
+    left_join(all_uks, by = c("parent_table" = "table", "parent_key_cols" = "uk_col")) %>%
+    rename(uk_col = kind) %>%
+    transmute(
+      table = child_table,
+      column = format(child_fk_cols),
+      ref = parent_table,
+      ref_col = format(parent_key_cols),
+      keyId = id,
+      uk_col = if_else(uk_col != "PK", ", style=\"dashed\"", "")
+    )
 
   references <-
     references_for_columns %>%
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
   keys_pk <-
-    dm_get_all_pks_impl(x) %>%
-    mutate(column = format(pk_col)) %>%
-    select(table, column) %>%
+    all_uks %>%
+    mutate(column = format(uk_col)) %>%
+    select(table, column, kind) %>%
     mutate(key = 1L)
 
   keys_fk <-

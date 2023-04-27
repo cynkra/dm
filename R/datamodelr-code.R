@@ -142,6 +142,7 @@ bdm_create_graph_list <- function(data_model,
           fromCol = column,
           toCol = ref_col,
           keyId = keyId,
+          uk_col = uk_col,
           stringsAsFactors = FALSE
         )
       )
@@ -194,12 +195,13 @@ dot_graph <- function(graph, columnArrows = FALSE) {
   if (columnArrows) {
     dot_edges <- paste(
       sprintf(
-        '"%s":"%s"->"%s":"%s" [id="%s"]',
+        '"%s":"%s"->"%s":"%s" [id="%s"%s]',
         graph$edges_df$from,
         graph$edges_df$fromCol,
         graph$edges_df$to,
         graph$edges_df$toCol,
-        graph$edges_df$keyId
+        graph$edges_df$keyId,
+        graph$edges_df$uk_col
       ),
       collapse = "\n"
     )
@@ -366,8 +368,10 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
         value <- NULL
       }
     }
-    if (col_name == "column" && row_values[["key"]] == 1) {
+    if (col_name == "column" && row_values[["key"]] == 1 && row_values[["kind"]] == "PK") {
       value <- sprintf("<U>%s</U>", value)
+    } else if (col_name == "column" && row_values[["key"]] == 1 && row_values[["kind"]] != "PK") {
+      value <- sprintf('<I>%s</I>', value)
     }
     if (!is.null(value) && is.na(value)) {
       value <- ""
