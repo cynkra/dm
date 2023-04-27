@@ -221,7 +221,13 @@ copy_dm_to <- function(dest, dm, ...,
   # populate tables
   pwalk(
     queries[c("name", "remote_name")],
-    ticker_populate(~ db_append_table(dest_con, .y, dm[[.x]], progress))
+    ticker_populate(~ db_append_table(
+      con = dest_con, 
+      remote_table = .y, 
+      table = dm[[.x]], 
+      progress = progress, 
+      autoinc = dm_get_all_pks(dm, table = !!.x)$autoincrement
+    ))
   )
 
   ticker_index <- new_ticker(
@@ -265,7 +271,7 @@ check_naming <- function(table_names, dm_table_names) {
   }
 }
 
-db_append_table <- function(con, remote_table, table, progress, top_level_fun = "copy_dm_to") {
+db_append_table <- function(con, remote_table, table, progress, top_level_fun = "copy_dm_to", autoinc) {
   if (nrow(table) == 0 || ncol(table) == 0) {
     return(invisible())
   }
@@ -281,13 +287,20 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
       progress = progress,
       top_level_fun = top_level_fun
     )
-
+    
     walk(seq_len(n_chunks), ticker(~ {
       end <- .x * chunk_size
       idx <- seq2(end - (chunk_size - 1), min(end, nrow(table)))
       values <- map(table[idx, ], mssql_escape, con = con)
       # Can't use dbAppendTable(): https://github.com/r-dbi/odbc/issues/480
       sql <- DBI::sqlAppendTable(con, DBI::SQL(remote_table), values, row.names = FALSE)
+      if(autoinc) {
+        sql <- DBI::SQL(paste0(
+          "SET IDENTITY_INSERT ", DBI::SQL(remote_table), " ON\n",
+          sql, "\n",
+          "SET IDENTITY_INSERT ", DBI::SQL(remote_table), " OFF"
+        )) 
+      }
       DBI::dbExecute(con, sql, immediate = TRUE)
     }))
   } else if (is_postgres(con)) {

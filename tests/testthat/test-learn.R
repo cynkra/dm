@@ -36,9 +36,8 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   expect_equivalent_dm(
     dm_db_learned,
     dm_for_filter()[order_of_deletion],
-    # FIXME: Enable fetching of on_delete information
-    ignore_on_delete = TRUE,
-    ignore_autoincrement = TRUE
+    ignore_on_delete = FALSE,
+    ignore_autoincrement = FALSE
   )
 
   # learning without keys:
@@ -123,7 +122,8 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
   expect_equivalent_dm(
     dm_db_learned,
     dm_for_disambiguate()[order_of_deletion],
-    ignore_autoincrement = TRUE
+    ignore_autoincrement = FALSE,
+    ignore_on_delete = FALSE
   )
 
   # learning without keys:
@@ -347,7 +347,8 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     dm_local_no_keys %>%
       dm_add_pk(test_1, b) %>%
       dm_add_fk(test_2, c, test_1),
-    ignore_autoincrement = TRUE
+    ignore_autoincrement = FALSE,
+    ignore_on_delete = FALSE
   )
 
   # learning without keys:

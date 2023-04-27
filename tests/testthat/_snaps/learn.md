@@ -46,121 +46,141 @@
             "table_name": "tf_1",
             "column_name": "a",
             "ordinal_position": 1,
-            "is_nullable": "NO"
+            "is_nullable": "NO",
+            "is_autoincrement": true
           },
           {
             "table_name": "tf_1",
             "column_name": "b",
             "ordinal_position": 2,
-            "is_nullable": "YES"
+            "is_nullable": "YES",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_2",
             "column_name": "c",
             "ordinal_position": 1,
-            "is_nullable": "NO"
+            "is_nullable": "NO",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_2",
             "column_name": "d",
             "ordinal_position": 2,
-            "is_nullable": "YES"
+            "is_nullable": "YES",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_2",
             "column_name": "e",
             "ordinal_position": 3,
-            "is_nullable": "YES"
+            "is_nullable": "YES",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_2",
             "column_name": "e1",
             "ordinal_position": 4,
-            "is_nullable": "YES"
+            "is_nullable": "YES",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_3",
             "column_name": "f",
             "ordinal_position": 1,
-            "is_nullable": "NO"
+            "is_nullable": "NO",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_3",
             "column_name": "f1",
             "ordinal_position": 2,
-            "is_nullable": "NO"
+            "is_nullable": "NO",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_3",
             "column_name": "g",
             "ordinal_position": 3,
-            "is_nullable": "YES"
+            "is_nullable": "YES",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_4",
             "column_name": "h",
             "ordinal_position": 1,
-            "is_nullable": "NO"
+            "is_nullable": "NO",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_4",
             "column_name": "i",
             "ordinal_position": 2,
-            "is_nullable": "YES"
+            "is_nullable": "YES",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_4",
             "column_name": "j",
             "ordinal_position": 3,
-            "is_nullable": "YES"
+            "is_nullable": "YES",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_4",
             "column_name": "j1",
             "ordinal_position": 4,
-            "is_nullable": "YES"
+            "is_nullable": "YES",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_5",
             "column_name": "k",
             "ordinal_position": 2,
-            "is_nullable": "NO"
+            "is_nullable": "NO",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_5",
             "column_name": "l",
             "ordinal_position": 3,
-            "is_nullable": "YES"
+            "is_nullable": "YES",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_5",
             "column_name": "m",
             "ordinal_position": 4,
-            "is_nullable": "YES"
+            "is_nullable": "YES",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_5",
             "column_name": "ww",
             "ordinal_position": 1,
-            "is_nullable": "YES"
+            "is_nullable": "YES",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_6",
             "column_name": "n",
             "ordinal_position": 2,
-            "is_nullable": "YES"
+            "is_nullable": "YES",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_6",
             "column_name": "o",
             "ordinal_position": 3,
-            "is_nullable": "NO"
+            "is_nullable": "NO",
+            "is_autoincrement": false
           },
           {
             "table_name": "tf_6",
             "column_name": "zz",
             "ordinal_position": 1,
-            "is_nullable": "YES"
+            "is_nullable": "YES",
+            "is_autoincrement": false
           }
         ],
         "table_constraints": [
@@ -172,12 +192,14 @@
           {
             "constraint_name": 2,
             "table_name": "tf_2",
-            "constraint_type": "FOREIGN KEY"
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "NO ACTION"
           },
           {
             "constraint_name": 3,
             "table_name": "tf_2",
-            "constraint_type": "FOREIGN KEY"
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "NO ACTION"
           },
           {
             "constraint_name": 4,
@@ -192,7 +214,8 @@
           {
             "constraint_name": 6,
             "table_name": "tf_4",
-            "constraint_type": "FOREIGN KEY"
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "NO ACTION"
           },
           {
             "constraint_name": 7,
@@ -202,12 +225,14 @@
           {
             "constraint_name": 8,
             "table_name": "tf_5",
-            "constraint_type": "FOREIGN KEY"
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "CASCADE"
           },
           {
             "constraint_name": 9,
             "table_name": "tf_5",
-            "constraint_type": "FOREIGN KEY"
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "NO ACTION"
           },
           {
             "constraint_name": 10,
