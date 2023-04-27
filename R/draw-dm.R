@@ -27,7 +27,14 @@
 #' @param backend Currently, only the default `"DiagrammeR"` is accepted.
 #'   Pass this value explicitly if your code not only uses this function
 #'   to display a data model but relies on the type of the return value.
+#' @param table_description `r lifecycle::badge("experimental")`
 #'
+#'   Provide a named character vector or a named list with the names
+#'   corresponding to the table names to describe.
+#'   Descriptions across several lines can be achieved using the newline symbol `\n`.
+#' @param font_size_table_description `r lifecycle::badge("experimental")`
+#'
+#'   Font size for `table_description`, defaults to `8`.
 #'
 #' @seealso [dm_set_colors()] for defining the table colors.
 #'
@@ -62,10 +69,18 @@ dm_draw <- function(dm,
                     focus = NULL,
                     graph_name = "Data Model",
                     column_types = NULL,
-                    backend = "DiagrammeR") {
+                    backend = "DiagrammeR",
+                    table_description = NULL,
+                    font_size_table_description = 8L) {
   #
   check_not_zoomed(dm)
   check_dots_empty()
+  if (!is.null(table_description)) {
+    if (!is_named(table_description)) {
+      abort_arg_needs_names("table_description")
+    }
+    walk(names(table_description), dm_tbl_name, dm = dm)
+  }
 
   view_type <- arg_match(view_type)
 
@@ -97,7 +112,9 @@ dm_draw <- function(dm,
     node_attrs = node_attrs,
     edge_attrs = edge_attrs,
     focus = focus,
-    graph_name = graph_name
+    graph_name = graph_name,
+    table_description = as.list(table_description),
+    font_size_table_description = font_size_table_description
   )
   bdm_render_graph(graph, top_level_fun = "dm_draw")
 }
