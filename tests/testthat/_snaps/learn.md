@@ -10,6 +10,15 @@
           constraint_name)))
       } else {
         .x
+      }) %>% imap(~ if (is_mariadb(con_db) && .y == "columns") {
+        mutate(.x, is_autoincrement = as.logical(is_autoincrement))
+      } else {
+        .x
+      }) %>% imap(~ if (is_mariadb(con_db) && .y == "table_constraints") {
+        mutate(.x, delete_rule = if_else(delete_rule == "RESTRICT", "NO ACTION",
+        delete_rule))
+      } else {
+        .x
       }) %>% map(arrange_all) %>% jsonlite::toJSON(pretty = TRUE) %>% gsub(
         schema_name, "schema_name", .) %>% gsub("(_catalog\": \")[^\"]*(\")",
         "\\1catalog\\2", .) %>% writeLines()
