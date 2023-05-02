@@ -20,8 +20,8 @@
       ) %>%
         dm::dm_select(schemata, catalog_name, schema_name) %>%
         dm::dm_select(tables, table_catalog, table_schema, table_name, table_type) %>%
-        dm::dm_select(columns, table_catalog, table_schema, table_name, column_name, ordinal_position, column_default, is_nullable) %>%
-        dm::dm_select(table_constraints, constraint_catalog, constraint_schema, constraint_name, table_catalog, table_schema, table_name, constraint_type) %>%
+        dm::dm_select(columns, table_catalog, table_schema, table_name, column_name, ordinal_position, column_default, is_nullable, is_autoincrement) %>%
+        dm::dm_select(table_constraints, constraint_catalog, constraint_schema, constraint_name, table_catalog, table_schema, table_name, constraint_type, delete_rule) %>%
         dm::dm_select(key_column_usage, constraint_catalog, constraint_schema, constraint_name, table_catalog, table_schema, table_name, column_name, ordinal_position) %>%
         dm::dm_select(constraint_column_usage, table_catalog, table_schema, table_name, column_name, constraint_catalog, constraint_schema, constraint_name, ordinal_position) %>%
         dm::dm_add_pk(schemata, c(catalog_name, schema_name)) %>%
