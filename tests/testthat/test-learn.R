@@ -427,6 +427,20 @@ test_that("dm_meta() contents", {
       } else {
         .x
       }) %>%
+      imap(~ if (is_mariadb(con_db) && .y == "columns") {
+        # mariadb output on autoincrement column is integer
+        # transform this to boolean
+        mutate(.x, is_autoincrement = as.logical(is_autoincrement))
+      } else {
+        .x
+      }) %>%
+      imap(~ if (is_mariadb(con_db) && .y == "table_constraints") {
+        # mariadb default action for delete_rule is RESTRICT (synonym for NO ACTION)
+        # https://mariadb.com/kb/en/foreign-keys/#constraints
+        mutate(.x, delete_rule = if_else(delete_rule == "RESTRICT", "NO ACTION", delete_rule))
+      } else {
+        .x
+      }) %>%
       map(arrange_all) %>%
       jsonlite::toJSON(pretty = TRUE) %>%
       gsub(schema_name, "schema_name", .) %>%
