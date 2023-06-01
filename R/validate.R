@@ -17,6 +17,7 @@
 #'
 #' bad_dm <- structure(list(bad = "dm"), class = "dm")
 #' try(dm_validate(bad_dm))
+#' @autoglobal
 dm_validate <- function(x) {
   check_dm(x)
 

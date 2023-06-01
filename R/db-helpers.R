@@ -118,6 +118,7 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
   quote_ids(names, con_from_src_or_con(con), schema)
 }
 
+#' @autoglobal
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
     warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))

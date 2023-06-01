@@ -27,6 +27,7 @@
 #' @examplesIf rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
 #'   dm_draw()
+#' @autoglobal
 dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE) {
   check_dots_empty()
 

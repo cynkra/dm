@@ -11,6 +11,7 @@ mssql_sys_db <- function(con, dbname, name, vars = NULL) {
     select(catalog, everything())
 }
 
+#' @autoglobal
 mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
   info_fkc <-
     table_constraints %>%

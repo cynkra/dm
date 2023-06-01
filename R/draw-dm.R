@@ -125,6 +125,7 @@ dm_draw <- function(dm,
 #' data model object for drawing.
 #'
 #' @noRd
+#' @autoglobal
 dm_get_data_model <- function(x, column_types = FALSE) {
   def <- dm_get_def(x)
 
@@ -207,6 +208,7 @@ dm_get_all_columns <- function(x) {
     select(table, column, id)
 }
 
+#' @autoglobal
 dm_get_all_column_types <- function(x) {
   x %>%
     dm_get_tables_impl() %>%
@@ -254,6 +256,7 @@ dm_get_all_column_types <- function(x) {
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(!!!nyc_cols) %>%
 #'   dm_draw()
+#' @autoglobal
 dm_set_colors <- function(dm, ...) {
   quos <- enquos(...)
   if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")

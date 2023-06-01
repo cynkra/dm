@@ -34,6 +34,7 @@ dm_get_referencing_tables <- function(dm, table) {
   def$fks[[i]]$table
 }
 
+#' @autoglobal
 create_graph_from_dm <- function(dm, directed = FALSE) {
   def <- dm_get_def(dm)
   def %>%
