@@ -45,11 +45,12 @@ utils::globalVariables(c(
   "ref_column", # <tbl_def_impl>
   "column", # <tbl_def_impl>
   "renames", # <prepare_join>
+  "kind", # <dm_get_data_model>
   "child_table", # <dm_get_data_model>
   "child_fk_cols", # <dm_get_data_model>
   "parent_table", # <dm_get_data_model>
   "parent_key_cols", # <dm_get_data_model>
-  "pk_col", # <dm_get_data_model>
+  "uk_col", # <dm_get_data_model>
   "column", # <dm_get_data_model>
   "key", # <dm_get_data_model>
   "key_fk", # <dm_get_data_model>
