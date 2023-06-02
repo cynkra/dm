@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9009
+
+## Chore
+
+- Use roxyglobals (#1838).
+
+
 # dm 1.0.5.9008
 
 ## Features
