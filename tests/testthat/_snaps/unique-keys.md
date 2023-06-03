@@ -242,12 +242,12 @@
 
 ---
 
-    Can't subset tables that don't exist.
+    Can't select tables that don't exist.
     x Table `timetable` doesn't exist.
 
 ---
 
-    Can't subset tables that don't exist.
+    Can't select tables that don't exist.
     x Table `timetable` doesn't exist.
 
 ---
