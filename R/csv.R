@@ -22,10 +22,11 @@
 #' @examples
 #' ## extract example dm into csv files
 #' x <- dm_nycflights13()
-#' dm_export_csv(x, path="csv")
-#' list.files("csv")
+#' path <- file.path(tempdir(), "csv")
+#' dm_export_csv(x, path=path)
+#' list.files(path)
 #' ## read csv files into db
-#' dm <- dm_import_csv("csv")
+#' dm <- dm_import_csv(path)
 #' dm
 dm_import_csv <- function(path = ".", pk=NULL, fk=NULL) {
   if (!dir.exists(path))
