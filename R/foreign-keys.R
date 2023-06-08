@@ -319,6 +319,7 @@ dm_rm_fk <- function(dm, table = NULL, columns = NULL, ref_table = NULL, ref_col
   dm_rm_fk_impl(dm, table_name, column_expr, ref_table_name, ref_column_expr)
 }
 
+#' @autoglobal
 dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
   def <- dm_get_def(dm)
 
@@ -524,6 +525,7 @@ enum_fk_candidates <- function(dm_zoomed, ref_table, ...) {
     mutate(columns = new_keys(columns))
 }
 
+#' @autoglobal
 enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk) {
   if (is_empty(ref_tbl_pk)) {
     abort_ref_tbl_has_no_pk(ref_table_name)

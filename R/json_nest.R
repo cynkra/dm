@@ -73,6 +73,8 @@ sql_json_nest <- function(con, cols, names_sep, packed_col, id_cols, data, ...) 
 }
 
 #' @export
+#' @autoglobal
+#' @global JSON_AGG JSON_BUILD_OBJECT
 sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols, data, ...) {
   inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
   inside_cols_idented <- dbplyr::ident(inside_cols)

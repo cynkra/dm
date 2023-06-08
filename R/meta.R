@@ -40,6 +40,7 @@ dm_meta <- function(con, catalog = NA, schema = NULL, simple = FALSE) {
   out
 }
 
+#' @autoglobal
 dm_meta_raw <- function(con, catalog) {
   src <- src_from_src_or_con(con)
 
@@ -171,6 +172,7 @@ dm_meta_raw <- function(con, catalog) {
     dm_meta_add_keys()
 }
 
+#' @autoglobal
 dm_meta_add_keys <- function(dm_meta) {
   dm_meta %>%
     dm_meta_simple_add_keys() %>%
@@ -216,6 +218,7 @@ dm_meta_simple_raw <- function(con) {
     dm_meta_simple_add_keys()
 }
 
+#' @autoglobal
 dm_meta_simple_add_keys <- function(dm_meta) {
   dm_meta %>%
     dm_add_pk(schemata, c(catalog_name, schema_name)) %>%
@@ -248,6 +251,7 @@ tbl_lc <- function(con, name, vars) {
   out
 }
 
+#' @autoglobal
 select_dm_meta <- function(dm_meta) {
   dm_meta %>%
     dm_select(schemata, catalog_name, schema_name) %>%
@@ -258,6 +262,8 @@ select_dm_meta <- function(dm_meta) {
     dm_select(constraint_column_usage, table_catalog, table_schema, table_name, column_name, constraint_catalog, constraint_schema, constraint_name, ordinal_position)
 }
 
+#' @autoglobal
+#' @global DATABASE
 filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
   force(catalog)
   force(schema)
@@ -309,6 +315,7 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
     dm_meta_add_keys()
 }
 
+#' @autoglobal
 filter_dm_meta_simple <- function(dm_meta, catalog = NULL, schema = NULL) {
   force(catalog)
   force(schema)
