@@ -87,6 +87,9 @@ reference:
   - dm_financial
   - dm_financial_sqlite
   - dm_pixarfilms
+- title: Remote csv files as dm
+  contents:
+  - dm_duckdb_csv
 - title: Miscellaneous
   contents:
   - dm_nrow
