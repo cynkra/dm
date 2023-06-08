@@ -70,5 +70,5 @@ d <- dm_duckdb_csv(path, conn)
 d
 
 ## cleanup db connection
-DBI::dbDisconnect(conn)
+DBI::dbDisconnect(conn, shutdown=TRUE)
 }
