@@ -32,6 +32,7 @@ reference:
   - dm_gui
   - dm_draw
   - ends_with("_colors")
+  - ends_with("_table_description")
   - dm_paste
 - title: Select columns
   contents:
