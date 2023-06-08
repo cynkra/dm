@@ -42,6 +42,9 @@
 #'
 #' @export
 #' @examples
+#' if (!requireNamespace("duckdb", quietly=TRUE))
+#'   stop("'duckdb' package must be installed in order to use dm_duckdb_csv()")
+#'
 #' ## create exanple source data directory
 #' path <- file.path(tempdir(), "data")
 #' dir.create(path, showWarnings=FALSE)
@@ -61,6 +64,8 @@
 #' ## cleanup db connection
 #' DBI::dbDisconnect(conn)
 dm_duckdb_csv <- function(path = ".", conn) {
+  if (!requireNamespace("duckdb", quietly=TRUE))
+    stop("'duckdb' package must be installed in order to use dm_duckdb_csv()")
   if (!is.character(path) || length(path)!=1L || is.na(path))
     stop("Argument 'path' must be non-NA scalar character")
   if (!dir.exists(path))

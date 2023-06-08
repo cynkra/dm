@@ -50,6 +50,9 @@ So the following are supported:
 }
 
 \examples{
+if (!requireNamespace("duckdb", quietly=TRUE))
+  stop("'duckdb' package must be installed in order to use dm_duckdb_csv()")
+
 ## create exanple source data directory
 path <- file.path(tempdir(), "data")
 dir.create(path, showWarnings=FALSE)

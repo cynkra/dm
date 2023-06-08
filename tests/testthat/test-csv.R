@@ -1,3 +1,6 @@
+if (!requireNamespace("duckdb", quietly=TRUE))
+  stop("'duckdb' package must be installed in order to use dm_duckdb_csv()")
+
 test_that("dm_duckdb_csv() examples", {
 
   ## create exanple source data directory
