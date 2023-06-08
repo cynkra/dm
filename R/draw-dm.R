@@ -27,11 +27,6 @@
 #' @param backend Currently, only the default `"DiagrammeR"` is accepted.
 #'   Pass this value explicitly if your code not only uses this function
 #'   to display a data model but relies on the type of the return value.
-#' @param table_description `r lifecycle::badge("experimental")`
-#'
-#'   Provide a named character vector or a named list with the names
-#'   corresponding to the table names to describe.
-#'   Descriptions across several lines can be achieved using the newline symbol `\n`.
 #' @param font_size_table_description `r lifecycle::badge("experimental")`
 #'
 #'   Font size for `table_description`, defaults to `8`.
@@ -70,17 +65,12 @@ dm_draw <- function(dm,
                     graph_name = "Data Model",
                     column_types = NULL,
                     backend = "DiagrammeR",
-                    table_description = NULL,
                     font_size_table_description = 8L) {
-  #
   check_not_zoomed(dm)
   check_dots_empty()
-  if (!is.null(table_description)) {
-    if (!is_named(table_description)) {
-      abort_arg_needs_names("table_description")
-    }
-    walk(names(table_description), dm_tbl_name, dm = dm)
-  }
+
+  table_description <- dm_get_table_description_impl(dm, set_names(src_tbls_impl(dm, quiet = TRUE))) %>%
+    prep_recode()
 
   view_type <- arg_match(view_type)
 
@@ -333,4 +323,52 @@ dm_get_colors <- function(dm) {
 #' @export
 dm_get_available_colors <- function() {
   c("default", colors())
+}
+
+dm_set_table_description <- function(dm, ...) {
+  check_not_zoomed(dm)
+  selected <- eval_select_table(quo(c(...)), src_tbls_impl(dm), unique = FALSE)
+  def <- dm_get_def(dm, quiet = TRUE)
+  reduce2(
+    selected,
+    names(selected),
+    function(def, table, desc) {
+      # `eval_select_table()` interprets the name `NULL` as "NULL"
+      # downside is, that no table description can be defined as "NULL"
+      desc <- if (desc == "NULL") {
+        NULL
+      } else {
+        desc
+      }
+      def$data[[which(def$table == table)]] <- structure(
+        def$data[[which(def$table == table)]],
+        "description" = desc
+      )
+      def
+    },
+    .init = def
+  ) %>%
+    new_dm3()
+}
+
+dm_get_table_description <- function(dm, table = NULL, ...) {
+  check_dots_empty()
+  check_not_zoomed(dm)
+
+  table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
+  table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
+
+  dm_get_table_description_impl(dm, table_names)
+}
+
+dm_get_table_description_impl <- function(dm, table_names) {
+  def <- dm_get_def(dm, quiet = TRUE)
+  map(
+    table_names,
+    function(table_name) {
+      attr(def[def$table == table_name,]$data[[1]], "description")
+    }
+  ) %>%
+    purrr::discard(is.null) %>%
+    prep_recode()
 }
