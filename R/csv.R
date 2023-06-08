@@ -62,7 +62,7 @@
 #' d
 #'
 #' ## cleanup db connection
-#' DBI::dbDisconnect(conn)
+#' DBI::dbDisconnect(conn, shutdown=TRUE)
 dm_duckdb_csv <- function(path = ".", conn) {
   if (!requireNamespace("duckdb", quietly=TRUE))
     stop("'duckdb' package must be installed in order to use dm_duckdb_csv()")

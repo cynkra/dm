@@ -27,7 +27,7 @@ test_that("dm_duckdb_csv() examples", {
   )
 
   ## cleanup db connection
-  invisible(DBI::dbDisconnect(conn))
+  DBI::dbDisconnect(conn, shutdown=TRUE)
 })
 
 test_that("dm_duckdb_csv() handles partitioning", {
@@ -60,7 +60,7 @@ test_that("dm_duckdb_csv() handles partitioning", {
     sapply(lapply(lapply(d, dplyr::count), collect), `[[`, "n"),
     c(iris=nrow(iris), state=nrow(state.x77), titanic=nrow(ti))
   )
-  DBI::dbDisconnect(conn)
+  DBI::dbDisconnect(conn, shutdown=TRUE)
 })
 
 test_that("dm_duckdb_csv() handles nested partitioning", {
@@ -88,7 +88,7 @@ test_that("dm_duckdb_csv() handles nested partitioning", {
     sapply(lapply(lapply(d, dplyr::count), collect), `[[`, "n"),
     c(state=nrow(state.x77), titanic=nrow(ti))
   )
-  DBI::dbDisconnect(conn)
+  DBI::dbDisconnect(conn, shutdown=TRUE)
 })
 
 test_that("dm_duckdb_csv() handles mixed partitioning", {
@@ -123,7 +123,7 @@ test_that("dm_duckdb_csv() handles mixed partitioning", {
     sapply(lapply(lapply(d, dplyr::count), collect), `[[`, "n"),
     c(iris=nrow(iris), state=nrow(state.x77), titanic=nrow(ti))
   )
-  DBI::dbDisconnect(conn)
+  DBI::dbDisconnect(conn, shutdown=TRUE)
 })
 
 test_that("dm_duckdb_csv() handles updates to data", {
@@ -144,7 +144,7 @@ test_that("dm_duckdb_csv() handles updates to data", {
   utils::write.csv(df, file=file, row.names=FALSE)
   expect_equal(collect(d$data), tibble(a=c(1,20), b=3:4))
 
-  invisible(DBI::dbDisconnect(conn))
+  DBI::dbDisconnect(conn, shutdown=TRUE)
 })
 
 test_that("dm_duckdb_csv() handles inserts to data", {
@@ -165,7 +165,7 @@ test_that("dm_duckdb_csv() handles inserts to data", {
   ## test inserting to new (non existing before) partition
   ## TODO
 
-  invisible(DBI::dbDisconnect(conn))
+  DBI::dbDisconnect(conn, shutdown=TRUE)
 })
 
 test_that("dm_duckdb_csv() handles partitioned tables of 2+ csv files per partition", {
