@@ -32,6 +32,7 @@
 #'   Font size for `table_description`, defaults to `8`.
 #'
 #' @seealso [dm_set_colors()] for defining the table colors.
+#' @seealso [dm_set_table_description()] for adding details to one or more tables in the diagram
 #'
 #' @export
 #'
@@ -325,6 +326,22 @@ dm_get_available_colors <- function() {
   c("default", colors())
 }
 
+
+#' Add info about a dm's tables
+#'
+#' @inheritParams dm_draw
+#' @param ... Descriptions for tables to set in the form `description = table`.
+#' These descriptions will be displayed when creating a diagram with [dm_draw()].
+#' Multi-line descriptions can be achieved using the newline symbol `\n`.
+#' The currently set descriptions can be checked using [dm_get_table_description()].
+#' Descriptions can be removed using `NULL = table`.
+#'
+#' `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
+#'
+#' @return A `dm` object containing descriptions for specified tables.
+#' @export
+#'
+#' @examples
 dm_set_table_description <- function(dm, ...) {
   check_not_zoomed(dm)
   selected <- eval_select_table(quo(c(...)), src_tbls_impl(dm), unique = FALSE)
@@ -351,6 +368,15 @@ dm_set_table_description <- function(dm, ...) {
     new_dm3()
 }
 
+
+#' @inheritParams dm_add_pk
+#' @rdname dm_set_table_description
+#'
+#' @return A named vector of tables, with the descriptions in the names.
+#'
+#' @export
+#'
+#' @examples
 dm_get_table_description <- function(dm, table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
