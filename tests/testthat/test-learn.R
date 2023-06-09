@@ -110,8 +110,12 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
   }
 
   # test 'get_src_tbl_names()'
+  src_tbl_names <- purrr::map_chr(
+    get_src_tbl_names(con_db, schema = schema_name),
+    ~ DBI::dbQuoteIdentifier(con_db, .x)
+  )
   expect_identical(
-    sort(normalize_table_name(get_src_tbl_names(con_db, schema = schema_name))),
+    sort(normalize_table_name(SQL(src_tbl_names))),
     SQL(sort(normalize_table_name(remote_tbl_names)))
   )
 
@@ -168,42 +172,33 @@ test_that("'schema_if()' works", {
   con_db <- my_db_test_src()$con
 
   # all 3 naming parameters set ('table' is required)
-  expect_match(
-    unclass(expect_s4_class(
-      schema_if(
-        schema = "schema",
-        table = "table",
-        con = con_db,
-        dbname = "database"
-      ),
-      "SQL"
-    )),
-    "\"database\".\"schema\".\"table\"|`database`.`schema`.`table`"
+  expect_equal(
+    schema_if(
+      schema = "schema",
+      table = "table",
+      con = con_db,
+      dbname = "database"
+    )[[1]],
+    DBI::Id(database = "database", schema = "schema", table = "table")
   )
 
   # schema and table set
-  expect_match(
-    unclass(expect_s4_class(
-      schema_if(
-        schema = "schema",
-        table = "table",
-        con = con_db
-      ),
-      "SQL"
-    )),
-    "\"schema\".\"table\"|`schema`.`table`"
+  expect_equal(
+    schema_if(
+      schema = "schema",
+      table = "table",
+      con = con_db
+    )[[1]],
+    DBI::Id(schema = "schema", table = "table")
   )
 
   # dbname and table set
   expect_error(schema_if(schema = NA, con = con_db, table = "table", dbname = "db"))
 
   # only table set
-  expect_match(
-    unclass(expect_s4_class(
-      schema_if(schema = NA, table = "table", con = con_db),
-      "SQL"
-    )),
-    "\"table\"|`table`"
+  expect_equal(
+    schema_if(schema = NA, table = "table", con = con_db)[[1]],
+    DBI::Id(table = "table")
   )
 })
 

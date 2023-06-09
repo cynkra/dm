@@ -285,7 +285,7 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
   source_rows <- map(key_values, ~ select(filter(y, !!returning == !!.x), -!!returning))
 
   con <- dbplyr::remote_con(x)
-  target_name <- dbplyr::remote_name(x)
+  target_name <- remote_name_qual(x)
   insert_queries <- map(source_rows, ~ dbplyr::sql_query_append(
     con,
     target_name,

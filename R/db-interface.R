@@ -170,12 +170,8 @@ copy_dm_to <- function(dest, dm, ...,
         abort_copy_dm_to_table_names_duplicated(problem)
       }
 
-      table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, unclass(table_names_out[src_names])))
       names(table_names_out) <- src_names
     }
-
-    # create `ident`-class objects from the table names
-    table_names_out <- map(table_names_out, dbplyr::ident_q)
   } else {
     # FIXME: Other data sources than local and database possible
     deprecate_soft(
@@ -294,9 +290,9 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
     # https://github.com/r-dbi/RPostgres/issues/384
     table <- as.data.frame(table)
     # https://github.com/r-dbi/RPostgres/issues/382
-    DBI::dbAppendTable(con, DBI::SQL(remote_table), table, copy = FALSE)
+    DBI::dbAppendTable(con, remote_table, table, copy = FALSE)
   } else {
-    DBI::dbAppendTable(con, DBI::SQL(remote_table), table)
+    DBI::dbAppendTable(con, remote_table, table)
   }
 
   invisible()

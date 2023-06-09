@@ -6,6 +6,7 @@ mssql_sys_db <- function(con, dbname, name, vars = NULL) {
     fq_name <- paste0(dbname, ".", name)
     sql_name <- dbname
   }
+  browser()
   tbl(con, dbplyr::ident_q(fq_name), vars = vars) %>%
     mutate(catalog = !!sql_name) %>%
     select(catalog, everything())

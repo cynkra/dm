@@ -82,7 +82,8 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     ungroup() %>%
     pull_tbl()
 
-  tables <- map2(table_info$from, table_info$vars, ~ tbl(con, dbplyr::ident_q(.x), vars = .y))
+  table_info$from_id <- DBI::dbUnquoteIdentifier(con, DBI::SQL(table_info$from))
+  tables <- map2(table_info$from_id, table_info$vars, ~ tbl(con, .x, vars = .y))
   names(tables) <- table_info$dm_name
 
   pks_df <-
@@ -173,19 +174,24 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
 }
 
 schema_if <- function(schema, table, con, dbname = NULL) {
-  table_sql <- DBI::dbQuoteIdentifier(con, table)
   if (is_null(dbname) || is.na(dbname) || dbname == "") {
-    if_else(
-      are_na(schema),
-      table_sql,
-      # need 'coalesce()' cause in case 'schema' is NA, 'if_else()' also tests
-      # the FALSE option (to see if same class) and then 'dbQuoteIdentifier()' throws an error
-      SQL(paste0(DBI::dbQuoteIdentifier(con, coalesce(schema, "")), ".", table_sql))
+    purrr::map2(
+      schema, table,
+      ~ {
+        if (is.na(.x)) {
+          DBI::Id(table = .y)
+        } else {
+          DBI::Id(schema = .x, table = .y)
+        }
+      }
     )
   } else {
     # 'schema_if()' only used internally (can e.g. be set to default schema beforehand)
     # so IMHO we don't need a formal 'dm_error' here
     if (anyNA(schema)) abort("`schema` must be given if `dbname` is not NULL`.")
-    SQL(paste0(DBI::dbQuoteIdentifier(con, dbname), ".", DBI::dbQuoteIdentifier(con, schema), ".", table_sql))
+    purrr::map2(
+      table, schema,
+      ~ DBI::Id(database = dbname, schema = .y, table = .x)
+    )
   }
 }
