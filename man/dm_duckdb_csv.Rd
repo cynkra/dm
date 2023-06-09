@@ -22,7 +22,7 @@ files and creates \code{dm} from those tables. It uses \code{duckdb} to create r
 }
 \details{
 Function operates on remote tables, therefore data are not being loaded to R.
-The are following consequences of that:
+There are following consequences of that:
 \itemize{
 \item{ Size of data can exceed machine's memory limit. }
 \item{ Queries run against csv are likely to be slower than if data are
