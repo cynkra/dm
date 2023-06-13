@@ -209,6 +209,7 @@ dm_update_zoomed <- function(dm) {
 
 #' @rdname dm_zoom_to
 #' @export
+#' @autoglobal
 dm_discard_zoomed <- function(dm) {
   if (!is_zoomed(dm)) {
     return(dm)

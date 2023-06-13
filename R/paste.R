@@ -159,6 +159,7 @@ dm_paste_construct <- function(dm, tab) {
   )
 }
 
+#' @autoglobal
 dm_paste_select <- function(dm) {
   tbl_select <-
     dm %>%

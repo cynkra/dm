@@ -1,5 +1,5 @@
 test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
-  skip_if_not(c("df", "duckdb"))
+  skip_if_src_not(c("df", "duckdb"))
   # FIXME: Debug GHA fail
   # for left join test the basic flattening also on all DBs
   # expect_equivalent_tbl(
@@ -299,26 +299,17 @@ test_that("tests with 'bad_dm' work", {
   # can't create bad_dm() on Postgres due to strict constraint checks
   skip_if_src("postgres")
 
+  # duckdb doesn't work before R 4.0
+  skip_if(getRversion() < "4.0")
+
+
   # flatten bad_dm() (no referential integrity)
-  #
-  # Warning, because since dplyr 1.1.0 dm_flatten_to_tbl()
-  # issues warnings, when there are multiple rows in `y` to match rows in `x`
-  # This means here, that the PK in the parent table is violating key constraints
-  if (is_db(my_test_src())) {
+  if (is_db(my_test_src()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
     expect_equivalent_tbl(
       dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3),
       tbl_1() %>%
         left_join(tbl_2(), by = c("a" = "id", "x")) %>%
         left_join(tbl_3(), by = c("b" = "id"))
-    )
-  } else {
-    expect_warning(
-      expect_equivalent_tbl(
-        dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3),
-        tbl_1() %>%
-          left_join(tbl_2(), by = c("a" = "id", "x")) %>%
-          left_join(tbl_3(), by = c("b" = "id"), multiple = "all")
-      )
     )
   }
 
@@ -358,24 +349,18 @@ test_that("tests with 'bad_dm' work (2)", {
   # full & right join not available on SQLite and MariaDB
   skip_if_src("sqlite", "maria")
 
+  # duckdb doesn't work before R 4.0
+  skip_if(getRversion() < "4.0")
+
   bad_filtered_dm <- dm_filter(bad_dm(), tbl_1 = (a != 4))
 
   # flatten bad_dm() (no referential integrity)
-  if (is_db(my_test_src())) {
+  if (is_db(my_test_src()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
     expect_equivalent_tbl(
       dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = full_join),
       tbl_1() %>%
         full_join(tbl_2(), by = c("a" = "id", "x")) %>%
         full_join(tbl_3(), by = c("b" = "id"))
-    )
-  } else {
-    expect_warning(
-      expect_equivalent_tbl(
-        dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = full_join),
-        tbl_1() %>%
-          full_join(tbl_2(), by = c("a" = "id", "x")) %>%
-          full_join(tbl_3(), by = c("b" = "id"), multiple = "all")
-      )
     )
   }
 })
@@ -387,42 +372,29 @@ test_that("tests with 'bad_dm' work (3)", {
   # full & right join not available on SQLite
   skip_if_src("sqlite")
 
+  # duckdb doesn't work before R 4.0
+  skip_if(getRversion() < "4.0")
+
   bad_filtered_dm <- dm_filter(bad_dm(), tbl_1 = (a != 4))
 
   # flatten bad_dm() (no referential integrity)
-  if (is_db(my_test_src())) {
+  if (is_db(my_test_src()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
     expect_equivalent_tbl(
       dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = right_join),
       tbl_1() %>%
         right_join(tbl_2(), by = c("a" = "id", "x")) %>%
         right_join(tbl_3(), by = c("b" = "id"))
     )
-  } else {
-    expect_equivalent_tbl(
-      dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = right_join),
-      tbl_1() %>%
-        right_join(tbl_2(), by = c("a" = "id", "x")) %>%
-        right_join(tbl_3(), by = c("b" = "id"), multiple = "all")
-    )
   }
 
 
   # flatten bad_dm() (no referential integrity); different order
-  if (is_db(my_test_src())) {
+  if (is_db(my_test_src()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
     expect_equivalent_tbl(
       dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_3, tbl_2, .join = right_join),
       tbl_1() %>%
         right_join(tbl_3(), by = c("b" = "id")) %>%
         right_join(tbl_2(), by = c("a" = "id", "x"))
-    )
-  } else {
-    expect_warning(
-      expect_equivalent_tbl(
-        dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_3, tbl_2, .join = right_join),
-        tbl_1() %>%
-          right_join(tbl_3(), by = c("b" = "id"), multiple = "all") %>%
-          right_join(tbl_2(), by = c("a" = "id", "x"))
-      )
     )
   }
 })

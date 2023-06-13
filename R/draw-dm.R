@@ -27,7 +27,14 @@
 #' @param backend Currently, only the default `"DiagrammeR"` is accepted.
 #'   Pass this value explicitly if your code not only uses this function
 #'   to display a data model but relies on the type of the return value.
+#' @param table_description `r lifecycle::badge("experimental")`
 #'
+#'   Provide a named character vector or a named list with the names
+#'   corresponding to the table names to describe.
+#'   Descriptions across several lines can be achieved using the newline symbol `\n`.
+#' @param font_size_table_description `r lifecycle::badge("experimental")`
+#'
+#'   Font size for `table_description`, defaults to `8`.
 #'
 #' @seealso [dm_set_colors()] for defining the table colors.
 #'
@@ -62,10 +69,18 @@ dm_draw <- function(dm,
                     focus = NULL,
                     graph_name = "Data Model",
                     column_types = NULL,
-                    backend = "DiagrammeR") {
+                    backend = "DiagrammeR",
+                    table_description = NULL,
+                    font_size_table_description = 8L) {
   #
   check_not_zoomed(dm)
   check_dots_empty()
+  if (!is.null(table_description)) {
+    if (!is_named(table_description)) {
+      abort_arg_needs_names("table_description")
+    }
+    walk(names(table_description), dm_tbl_name, dm = dm)
+  }
 
   view_type <- arg_match(view_type)
 
@@ -97,7 +112,9 @@ dm_draw <- function(dm,
     node_attrs = node_attrs,
     edge_attrs = edge_attrs,
     focus = focus,
-    graph_name = graph_name
+    graph_name = graph_name,
+    table_description = as.list(table_description),
+    font_size_table_description = font_size_table_description
   )
   bdm_render_graph(graph, top_level_fun = "dm_draw")
 }
@@ -108,6 +125,7 @@ dm_draw <- function(dm,
 #' data model object for drawing.
 #'
 #' @noRd
+#' @autoglobal
 dm_get_data_model <- function(x, column_types = FALSE) {
   def <- dm_get_def(x)
 
@@ -118,18 +136,27 @@ dm_get_data_model <- function(x, column_types = FALSE) {
     stringsAsFactors = FALSE
   )
 
-  references_for_columns <-
-    dm_get_all_fks_impl(x, id = TRUE) %>%
-    transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_key_cols), keyId = id)
+  all_uks <- dm_get_all_uks_impl(x)
+  references_for_columns <- dm_get_all_fks_impl(x, id = TRUE) %>%
+    left_join(all_uks, by = c("parent_table" = "table", "parent_key_cols" = "uk_col")) %>%
+    rename(uk_col = kind) %>%
+    transmute(
+      table = child_table,
+      column = format(child_fk_cols),
+      ref = parent_table,
+      ref_col = format(parent_key_cols),
+      keyId = id,
+      uk_col = if_else(uk_col != "PK", ", style=\"dashed\"", "")
+    )
 
   references <-
     references_for_columns %>%
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
   keys_pk <-
-    dm_get_all_pks_impl(x) %>%
-    mutate(column = format(pk_col)) %>%
-    select(table, column) %>%
+    all_uks %>%
+    mutate(column = format(uk_col)) %>%
+    select(table, column, kind) %>%
     mutate(key = 1L)
 
   keys_fk <-
@@ -181,6 +208,7 @@ dm_get_all_columns <- function(x) {
     select(table, column, id)
 }
 
+#' @autoglobal
 dm_get_all_column_types <- function(x) {
   x %>%
     dm_get_tables_impl() %>%
@@ -228,6 +256,7 @@ dm_get_all_column_types <- function(x) {
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(!!!nyc_cols) %>%
 #'   dm_draw()
+#' @autoglobal
 dm_set_colors <- function(dm, ...) {
   quos <- enquos(...)
   if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")

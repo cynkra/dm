@@ -17,7 +17,7 @@ on:
     - cron: "10 0 * * *"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || '' }}-${{ github.base_ref || '' }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || github.sha }}-${{ github.base_ref || '' }}
   cancel-in-progress: true
 
 name: rcc
@@ -138,7 +138,6 @@ jobs:
         config:
           - {os: windows-latest, r: 'release'}
           # Use 3.6 to trigger usage of RTools35
-          - {os: windows-latest, r: '3.6'}
 
     steps:
       - uses: actions/checkout@v3

@@ -82,7 +82,7 @@ This argument is specific for the \code{slice.dm_zoomed()} method.}
 
 \item{x}{For \code{ungroup.dm_zoomed}: object of class \code{dm_zoomed}}
 
-\item{wt}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Frequency weights.
+\item{wt}{<\code{\link[rlang:args_data_masking]{data-masking}}> Frequency weights.
 Can be \code{NULL} or a variable:
 \itemize{
 \item If \code{NULL} (the default), counts the number of rows in each group.
@@ -97,9 +97,14 @@ If omitted, it will default to \code{n}. If there's already a column called \cod
 it will use \code{nn}. If there's a column called \code{n} and \code{nn}, it'll use
 \code{nnn}, and so on, adding \code{n}s until it gets a new name.}
 
-\item{.drop}{For \code{count()}: if \code{FALSE} will include counts for empty groups
-(i.e. for levels of factors that don't exist in the data). Deprecated in
-\code{add_count()} since it didn't actually affect the output.}
+\item{.drop}{Handling of factor levels that don't appear in the data, passed
+on to \code{\link[dplyr:group_by]{group_by()}}.
+
+For \code{count()}: if \code{FALSE} will include counts for empty groups (i.e. for
+levels of factors that don't exist in the data).
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} For \code{add_count()}: deprecated since it
+can't actually affect the output.}
 
 \item{var}{A variable specified as:
 \itemize{

@@ -5,12 +5,12 @@ dm_bind_impl <- function(dms, repair, quiet, repair_arg = "", caller = caller_en
 
   walk(dms, check_dm)
   walk(dms, check_not_zoomed)
-  if (!all_same_source(map(dms, dm_get_tables_impl) %>% flatten())) {
+  if (!all_same_source(map(dms, dm_get_tables_impl) %>% list_c())) {
     abort_not_same_src(dm_bind = TRUE)
   }
 
   # repair table names
-  table_names <- map(dms, src_tbls_impl) %>% flatten_chr()
+  table_names <- map(dms, src_tbls_impl) %>% list_c()
   new_table_names <- vec_as_names(
     table_names,
     repair = repair,

@@ -16,6 +16,7 @@
 #'   primary and foreign keys and optionally colored.
 #'
 #' @export
+#' @autoglobal
 #' @examplesIf rlang::is_installed("pixarfilms") && rlang::is_installed("DiagrammeR")
 #' dm_pixarfilms()
 #' dm_pixarfilms() %>%

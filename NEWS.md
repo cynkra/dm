@@ -1,13 +1,121 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.4.9001
+# dm 1.0.5.9010
 
-- Merged cran-1.0.4 into main.
+## Documentation
+
+- Vignette corrections (@MikeJohnPage, #1882).
+
+## Testing
+
+- Fix snapshots.
+
+## Uncategorized
+
+- Merge pull request #1872 from cynkra/change_font_url.
 
 
-# dm 1.0.4.9000
+# dm 1.0.5.9009
 
 ## Chore
+
+- Use roxyglobals (#1838).
+
+
+# dm 1.0.5.9008
+
+## Features
+
+- UK support for `dm_draw()` (#1731, #1877).
+
+- Allow for additional description of tables in dm_draw() (#1875, #1876).
+
+
+# dm 1.0.5.9007
+
+- Internal changes only.
+
+
+# dm 1.0.5.9006
+
+- Internal changes only.
+
+
+# dm 1.0.5.9005
+
+## Chore
+
+- Require purrr \>= 1.0.0 for `list_c()` (#1847, #1848).
+
+
+# dm 1.0.5.9004
+
+## Chore
+
+- Use fledge from main branch.
+
+## Uncategorized
+
+- Merge pull request #1861 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-maria-covr-true-desc-MariaDB-with-covr.
+
+- Merge pull request #1859 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-postgres-covr-true-desc-Postgres-with-covr.
+
+- Merge pull request #1858 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-sqlite-covr-true-desc-SQLite-with-covr.
+
+- Merge pull request #1856 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-duckdb-covr-true-desc-DuckDB-with-covr.
+
+- Merge pull request #1855 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-20-04-r-release-test-src-test-mssql-covr-false-desc-SQL-Server-without-covr.
+
+- Merge pull request #1845 from cynkra/snapshot-main-rcc-smoke-null.
+
+
+# dm 1.0.5.9003
+
+- Merged cran-1.0.5 into main.
+
+
+# dm 1.0.5.9002
+
+## Documentation
+
+- Avoid tidyverse package.
+
+
+# dm 1.0.5.9001
+
+## Chore
+
+- Release automatically via fledge.
+
+
+# dm 1.0.5.9000
+
+- Internal changes only.
+
+
+# dm 1.0.5
+
+## Features
+
+- Progress bars for `dm_wrap_tbl()` and `dm_unwrap_tbl()` (#835, #1450).
+
+## Documentation
+
+- Add cheat sheet as a vignette (#1653).
+
+- Suggest creating a function for your database `dm` object (#1827, #1828).
+
+- Add alternative text to author images for pkgdown website (#1804).
+
+## Chore
+
+- Compatibility with dev jsonlite (#1837).
+
+- Remove tidyverse dependency (#1798, #1834).
+
+- Minimal patch to fix multiple match updates (@DavisVaughan, #1806).
+
+- Adapt to rlang 1.1.0 changes (#1817).
 
 - Make sure `{dm}` passes "noSuggests" workflow (#1659).
 

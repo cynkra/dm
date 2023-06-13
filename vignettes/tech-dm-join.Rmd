@@ -28,7 +28,6 @@ First, we load the packages that we need:
 
 ```{r}
 library(dm)
-library(tidyverse)
 ```
 
 ## Data: nycflights13
@@ -168,4 +167,3 @@ If you want to merge all tables, but get a nested table in return, use `dm_wrap_
 dm_nycflights13() %>%
   dm_wrap_tbl(root = flights) %>%
   pull_tbl(flights)
-

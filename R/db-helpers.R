@@ -119,11 +119,11 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
 }
 
 find_name_clashes <- function(old, new) {
-
   # Any entries in `new` with more than one corresponding entry in `old`
   purrr::keep(split(old, new), ~ length(unique(.x)) > 1)
 }
 
+#' @autoglobal
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
     warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))

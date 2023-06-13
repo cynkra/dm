@@ -199,6 +199,7 @@ dm_apply_filters_to_tbl_impl <- function(dm, table) {
 
 # calculates the necessary semi-joins from all tables that were filtered to
 # the requested table
+#' @autoglobal
 dm_get_filtered_table <- function(dm, from) {
   filters <- dm_get_filters_impl(dm)
   # Shortcut for speed, not really necessary
@@ -292,6 +293,7 @@ dm_get_filters <- function(dm) {
   filters
 }
 
+#' @autoglobal
 dm_get_filters_impl <- function(dm) {
   filter_df <-
     dm_get_def(dm) %>%
