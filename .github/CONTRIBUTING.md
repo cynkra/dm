@@ -111,8 +111,16 @@ Switches:
 
 ### Test against a specific database backend
 
+macOS:
+
 ```sh
 DM_TEST_SRC=mssql DM_TEST_DOCKER_HOST=192.168.64.2 R -q -e 'testthat::test_local()'
+```
+
+Linux:
+
+```sh
+DM_TEST_SRC=mssql DM_TEST_DOCKER_HOST=localhost DM_TEST_MSSQL_ODBC_LIB=/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 R -q -e 'testthat::test_local()'
 ```
 
 Controlled with environment variables:
@@ -139,9 +147,18 @@ Controlled with environment variables:
 
 FIXME: Automate this.
 
+macOS:
+
 ```sh
 DM_TEST_DOCKER_HOST=192.168.64.2 R -q -e 'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
 ```
+
+Linux:
+
+```sh
+DM_TEST_DOCKER_HOST=localhost DM_TEST_MSSQL_ODBC_LIB=/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 R -q -e 'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
+```
+
 
 ## Code of Conduct
 
