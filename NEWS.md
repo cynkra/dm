@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9011
+
+## Bug fixes
+
+- Work around vctrs bug in jsonlite 1.8.5.
+
+
 # dm 1.0.5.9010
 
 ## Documentation
