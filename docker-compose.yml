@@ -1,4 +1,7 @@
 version: '3'
+volumes:
+  postgres-db:
+    driver: local
 services:
   maria:
     container_name: maria
@@ -21,9 +24,12 @@ services:
       - "1433:1433"
   postgres:
     container_name: postgres
-    image: postgres
+    # FIXME: brittle tests fail with latest PostgreSQL
+    image: postgres:14
     environment:
       POSTGRES_USER: compose
       POSTGRES_PASSWORD: "YourStrong!Passw0rd"
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
