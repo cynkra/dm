@@ -1,3 +1,5 @@
+# See .github/CONTRIBUTING.md for details.
+
 version: '3'
 volumes:
   postgres-db:
