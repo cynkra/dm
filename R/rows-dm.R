@@ -286,9 +286,12 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
 
   con <- dbplyr::remote_con(x)
   if (utils::packageVersion("dbplyr") >= "2.3.2.9000") {
+    dbplyr_ns <- asNamespace("dbplyr")
+    remote_table <- mget("remote_table", dbplyr_ns, mode = "function", ifnotfound = list(NULL))[[1]]
+
     insert_queries <- map(source_rows, ~ dbplyr::sql_query_append(
       con,
-      dbplyr::remote_table(x),
+      remote_table(x),
       from = dbplyr::sql_render(.x, con),
       insert_cols = colnames(.x),
       returning_cols = autoinc_col
