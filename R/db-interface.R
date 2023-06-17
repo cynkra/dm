@@ -190,7 +190,10 @@ copy_dm_to <- function(dest, dm, ...,
   # FIXME: if same_src(), can use compute() but need to set NOT NULL and other
   # constraints
 
-  dm <- collect(dm, progress = progress)
+  # use 0-rows dm object from now on
+  dmdata <- dm ## we still need it to copy actual data, we will collect tables one by one to reduce peak memory usage
+  dm <- dm |> dm_ptype() |> collect()
+  #dm <- collect(dm, progress = progress)
 
   # Shortcut necessary to avoid copying into .GlobalEnv
   if (!is_db(dest)) {
@@ -221,7 +224,7 @@ copy_dm_to <- function(dest, dm, ...,
   # populate tables
   pwalk(
     queries[c("name", "remote_name")],
-    ticker_populate(~ db_append_table(dest_con, .y, dm[[.x]], progress))
+    ticker_populate(~ db_append_table(dest_con, .y, dmdata[[.x]], progress))
   )
 
   ticker_index <- new_ticker(
@@ -266,6 +269,7 @@ check_naming <- function(table_names, dm_table_names) {
 }
 
 db_append_table <- function(con, remote_table, table, progress, top_level_fun = "copy_dm_to") {
+  table <- collect(table)
   if (nrow(table) == 0 || ncol(table) == 0) {
     return(invisible())
   }
