@@ -186,14 +186,16 @@ copy_dm_to <- function(dest, dm, ...,
   # FIXME: if same_src(), can use compute() but need to set NOT NULL and other
   # constraints
 
-  dm <- collect(dm, progress = progress)
+  # use 0-rows dm object from now on
+  dm ## we still need it to copy actual data, we will collect tables one by one to reduce peak memory usage
+  ptype_dm <- collect(dm_ptype(dm))
 
   # Shortcut necessary to avoid copying into .GlobalEnv
   if (!is_db(dest)) {
     return(dm)
   }
 
-  queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
+  queries <- build_copy_queries(dest_con, ptype_dm, set_key_constraints, temporary, table_names_out)
 
   ticker_create <- new_ticker(
     "creating tables",
@@ -238,8 +240,8 @@ copy_dm_to <- function(dest, dm, ...,
     set_names(queries$name) %>%
     map(tbl, src = dest_con)
   # remote dm is same as source dm with replaced data
-  def <- dm_get_def(dm)
-  def$data <- unname(remote_tables[names(dm)])
+  def <- dm_get_def(ptype_dm)
+  def$data <- unname(remote_tables[names(ptype_dm)])
   remote_dm <- new_dm3(def)
 
   invisible(debug_dm_validate(remote_dm))
@@ -262,6 +264,7 @@ check_naming <- function(table_names, dm_table_names) {
 }
 
 db_append_table <- function(con, remote_table, table, progress, top_level_fun = "copy_dm_to") {
+  table <- collect(table)
   if (nrow(table) == 0 || ncol(table) == 0) {
     return(invisible())
   }
