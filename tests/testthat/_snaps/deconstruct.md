@@ -346,41 +346,45 @@
     Code
       keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "a": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "a",
-            "y": "b"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": {},
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["a"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["a"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["0800020b-0c07-030f-0a0e-0105060d0904"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 1
+            a
+        <dbl>
+      1     1
+      
+      $y_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 a     b    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      NULL
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             a              
+      
+      $new_fks_out
+      # A tibble: 1 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 a             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      
+      $new_uuid
+      [1] "0800020b-0c07-030f-0a0e-0105060d0904"
+      
     Code
       dm(x, y, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -399,41 +403,45 @@
     Code
       keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "a": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "b",
-            "y": "a"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": {},
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["b"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["03000c09-0a07-050d-020e-01040b08060f"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $y_tbl
+      # A tibble: 1 x 1
+            a
+        <dbl>
+      1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 b     a    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      NULL
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             b              
+      
+      $new_fks_out
+      # A tibble: 1 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 b             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      
+      $new_uuid
+      [1] "03000c09-0a07-050d-020e-01040b08060f"
+      
     Code
       dm(x, y, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -455,42 +463,45 @@
     Code
       keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "a": 1,
-            "c": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "a",
-            "y": "b"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["c"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["a"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["a"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["0800020b-0c07-030f-0a0e-0105060d0904"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 2
+            a     c
+        <dbl> <dbl>
+      1     1     1
+      
+      $y_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 a     b    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "c"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             a              
+      
+      $new_fks_out
+      # A tibble: 1 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 a             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      
+      $new_uuid
+      [1] "0800020b-0c07-030f-0a0e-0105060d0904"
+      
     Code
       dm(x, y, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -511,42 +522,45 @@
     Code
       keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "a": 1,
-            "c": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "b",
-            "y": "a"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["c"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["b"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["03000c09-0a07-050d-020e-01040b08060f"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $y_tbl
+      # A tibble: 1 x 2
+            a     c
+        <dbl> <dbl>
+      1     1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 b     a    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "c"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             b              
+      
+      $new_fks_out
+      # A tibble: 1 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 b             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      
+      $new_uuid
+      [1] "03000c09-0a07-050d-020e-01040b08060f"
+      
     Code
       dm(x, y, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -570,42 +584,45 @@
     Code
       keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "a": 1,
-            "b": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "a",
-            "y": "b"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["b"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["a"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["a"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["0800020b-0c07-030f-0a0e-0105060d0904"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 2
+            a     b
+        <dbl> <dbl>
+      1     1     1
+      
+      $y_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 a     b    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "b"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             a              
+      
+      $new_fks_out
+      # A tibble: 1 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 a             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      
+      $new_uuid
+      [1] "0800020b-0c07-030f-0a0e-0105060d0904"
+      
     Code
       dm(x, y, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -626,42 +643,45 @@
     Code
       keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "a": 1,
-            "b": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "b",
-            "y": "a"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["b"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["b"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["03000c09-0a07-050d-020e-01040b08060f"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $y_tbl
+      # A tibble: 1 x 2
+            a     b
+        <dbl> <dbl>
+      1     1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 b     a    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "b"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             b              
+      
+      $new_fks_out
+      # A tibble: 1 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 b             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      
+      $new_uuid
+      [1] "03000c09-0a07-050d-020e-01040b08060f"
+      
     Code
       dm(x, y, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -685,41 +705,45 @@
     Code
       keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "a": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "a",
-            "y": "b"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["a"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["a"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["a"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["0800020b-0c07-030f-0a0e-0105060d0904"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 1
+            a
+        <dbl>
+      1     1
+      
+      $y_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 a     b    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "a"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             a              
+      
+      $new_fks_out
+      # A tibble: 1 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 a             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      
+      $new_uuid
+      [1] "0800020b-0c07-030f-0a0e-0105060d0904"
+      
     Code
       dm(x, y, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -740,41 +764,45 @@
     Code
       keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "a": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "b",
-            "y": "a"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["b"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["b"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["03000c09-0a07-050d-020e-01040b08060f"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $y_tbl
+      # A tibble: 1 x 1
+            a
+        <dbl>
+      1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 b     a    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "b"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             b              
+      
+      $new_fks_out
+      # A tibble: 1 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 b             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      
+      $new_uuid
+      [1] "03000c09-0a07-050d-020e-01040b08060f"
+      
     Code
       dm(x, y, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -798,41 +826,45 @@
     Code
       keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "b",
-            "y": "b"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["b"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["b"],
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["b"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["0800020b-0c07-030f-0a0e-0105060d0904"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $y_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 b     b    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "b"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 b             b              
+      
+      $new_fks_out
+      # A tibble: 1 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 b             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      
+      $new_uuid
+      [1] "0800020b-0c07-030f-0a0e-0105060d0904"
+      
     Code
       dm(x, y, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -853,41 +885,45 @@
     Code
       keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "b",
-            "y": "b"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["b"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["b"],
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["b"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["03000c09-0a07-050d-020e-01040b08060f"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $y_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 b     b    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "b"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 b             b              
+      
+      $new_fks_out
+      # A tibble: 1 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 b             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      
+      $new_uuid
+      [1] "03000c09-0a07-050d-020e-01040b08060f"
+      
     Code
       dm(x, y, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -911,47 +947,46 @@
     Code
       keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "a": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "b": 1,
-            "c": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "a",
-            "y": "b"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["a"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["a"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["a"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          },
-          {
-            "child_fk_cols": ["c"],
-            "parent_uuid": "0800020b-0c07-030f-0a0e-0105060d0904",
-            "parent_key_cols": ["c"]
-          }
-        ],
-        "new_uuid": ["0c0e080a-0307-0904-0b06-0205010f000d"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 1
+            a
+        <dbl>
+      1     1
+      
+      $y_tbl
+      # A tibble: 1 x 2
+            b     c
+        <dbl> <dbl>
+      1     1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 a     b    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "a"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             a              
+      
+      $new_fks_out
+      # A tibble: 2 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 a             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      2 c             0800020b-0c07-030f-0a0e-0105060d0904 c              
+      
+      $new_uuid
+      [1] "0c0e080a-0307-0904-0b06-0205010f000d"
+      
     Code
       dm(x, y, z, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -976,47 +1011,46 @@
     Code
       keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "b": 1,
-            "c": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "a": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "b",
-            "y": "a"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["b"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["c"],
-            "parent_uuid": "0800020b-0c07-030f-0a0e-0105060d0904",
-            "parent_key_cols": ["c"]
-          },
-          {
-            "child_fk_cols": ["b"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["0108090a-0403-0f05-0d0c-0b0006020e07"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 2
+            b     c
+        <dbl> <dbl>
+      1     1     1
+      
+      $y_tbl
+      # A tibble: 1 x 1
+            a
+        <dbl>
+      1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 b     a    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "b"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             b              
+      
+      $new_fks_out
+      # A tibble: 2 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 c             0800020b-0c07-030f-0a0e-0105060d0904 c              
+      2 b             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      
+      $new_uuid
+      [1] "0108090a-0403-0f05-0d0c-0b0006020e07"
+      
     Code
       dm(x, y, z, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -1044,47 +1078,46 @@
     Code
       keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "a": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "b": 1,
-            "a": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "a",
-            "y": "b"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["a"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["a"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["a"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          },
-          {
-            "child_fk_cols": ["a"],
-            "parent_uuid": "0800020b-0c07-030f-0a0e-0105060d0904",
-            "parent_key_cols": ["a"]
-          }
-        ],
-        "new_uuid": ["0c0e080a-0307-0904-0b06-0205010f000d"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 1
+            a
+        <dbl>
+      1     1
+      
+      $y_tbl
+      # A tibble: 1 x 2
+            b     a
+        <dbl> <dbl>
+      1     1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 a     b    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "a"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             a              
+      
+      $new_fks_out
+      # A tibble: 2 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 a             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      2 a             0800020b-0c07-030f-0a0e-0105060d0904 a              
+      
+      $new_uuid
+      [1] "0c0e080a-0307-0904-0b06-0205010f000d"
+      
     Code
       dm(x, y, z, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -1109,47 +1142,46 @@
     Code
       keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "b": 1,
-            "a": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "a": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "b",
-            "y": "a"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["b"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["a"],
-            "parent_uuid": "0800020b-0c07-030f-0a0e-0105060d0904",
-            "parent_key_cols": ["a"]
-          },
-          {
-            "child_fk_cols": ["b"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["0108090a-0403-0f05-0d0c-0b0006020e07"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 2
+            b     a
+        <dbl> <dbl>
+      1     1     1
+      
+      $y_tbl
+      # A tibble: 1 x 1
+            a
+        <dbl>
+      1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 b     a    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "b"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             b              
+      
+      $new_fks_out
+      # A tibble: 2 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 a             0800020b-0c07-030f-0a0e-0105060d0904 a              
+      2 b             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      
+      $new_uuid
+      [1] "0108090a-0403-0f05-0d0c-0b0006020e07"
+      
     Code
       dm(x, y, z, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -1177,47 +1209,46 @@
     Code
       keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "a": 1,
-            "c": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "a",
-            "y": "b"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["a"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["a"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["a"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          },
-          {
-            "child_fk_cols": ["c"],
-            "parent_uuid": "0800020b-0c07-030f-0a0e-0105060d0904",
-            "parent_key_cols": ["c"]
-          }
-        ],
-        "new_uuid": ["0c0e080a-0307-0904-0b06-0205010f000d"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 2
+            a     c
+        <dbl> <dbl>
+      1     1     1
+      
+      $y_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 a     b    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "a"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             a              
+      
+      $new_fks_out
+      # A tibble: 2 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 a             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      2 c             0800020b-0c07-030f-0a0e-0105060d0904 c              
+      
+      $new_uuid
+      [1] "0c0e080a-0307-0904-0b06-0205010f000d"
+      
     Code
       dm(x, y, z, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -1242,47 +1273,46 @@
     Code
       keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "a": 1,
-            "c": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "b",
-            "y": "a"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["b"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["b"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          },
-          {
-            "child_fk_cols": ["c"],
-            "parent_uuid": "0800020b-0c07-030f-0a0e-0105060d0904",
-            "parent_key_cols": ["c"]
-          }
-        ],
-        "new_uuid": ["0108090a-0403-0f05-0d0c-0b0006020e07"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $y_tbl
+      # A tibble: 1 x 2
+            a     c
+        <dbl> <dbl>
+      1     1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 b     a    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "b"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             b              
+      
+      $new_fks_out
+      # A tibble: 2 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 b             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      2 c             0800020b-0c07-030f-0a0e-0105060d0904 c              
+      
+      $new_uuid
+      [1] "0108090a-0403-0f05-0d0c-0b0006020e07"
+      
     Code
       dm(x, y, z, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -1310,47 +1340,46 @@
     Code
       keyed_build_join_spec(x, y) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "a": 1,
-            "b": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "a",
-            "y": "b"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["a"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["a"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["a"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          },
-          {
-            "child_fk_cols": ["b"],
-            "parent_uuid": "0800020b-0c07-030f-0a0e-0105060d0904",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["0c0e080a-0307-0904-0b06-0205010f000d"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 2
+            a     b
+        <dbl> <dbl>
+      1     1     1
+      
+      $y_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 a     b    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "a"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             a              
+      
+      $new_fks_out
+      # A tibble: 2 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 a             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      2 b             0800020b-0c07-030f-0a0e-0105060d0904 b              
+      
+      $new_uuid
+      [1] "0c0e080a-0307-0904-0b06-0205010f000d"
+      
     Code
       dm(x, y, z, r = left_join(x, y)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -1375,47 +1404,46 @@
     Code
       keyed_build_join_spec(y, x) %>% to_snapshot_json()
     Output
-      {
-        "x_tbl": [
-          {
-            "b": 1
-          }
-        ],
-        "y_tbl": [
-          {
-            "a": 1,
-            "b": 1
-          }
-        ],
-        "by": [
-          {
-            "x": "b",
-            "y": "a"
-          }
-        ],
-        "suffix": [".x", ".y"],
-        "new_pk": ["b"],
-        "new_fks_in": [
-          {
-            "child_uuid": "0109020c-0b0a-030e-0d04-05060f070008",
-            "child_fk_cols": ["a"],
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_fks_out": [
-          {
-            "child_fk_cols": ["b"],
-            "parent_uuid": "04080601-0b0a-0c02-0503-0e070f0d0009",
-            "parent_key_cols": ["b"]
-          },
-          {
-            "child_fk_cols": ["b"],
-            "parent_uuid": "0800020b-0c07-030f-0a0e-0105060d0904",
-            "parent_key_cols": ["b"]
-          }
-        ],
-        "new_uuid": ["0108090a-0403-0f05-0d0c-0b0006020e07"]
-      } 
+      $x_tbl
+      # A tibble: 1 x 1
+            b
+        <dbl>
+      1     1
+      
+      $y_tbl
+      # A tibble: 1 x 2
+            a     b
+        <dbl> <dbl>
+      1     1     1
+      
+      $by
+      # A tibble: 1 x 2
+        x     y    
+        <chr> <chr>
+      1 b     a    
+      
+      $suffix
+      [1] ".x" ".y"
+      
+      $new_pk
+      [1] "b"
+      
+      $new_fks_in
+      # A tibble: 1 x 3
+        child_uuid                           child_fk_cols parent_key_cols
+        <chr>                                <keys>        <keys>         
+      1 0109020c-0b0a-030e-0d04-05060f070008 a             b              
+      
+      $new_fks_out
+      # A tibble: 2 x 3
+        child_fk_cols parent_uuid                          parent_key_cols
+        <keys>        <chr>                                <keys>         
+      1 b             04080601-0b0a-0c02-0503-0e070f0d0009 b              
+      2 b             0800020b-0c07-030f-0a0e-0105060d0904 b              
+      
+      $new_uuid
+      [1] "0108090a-0403-0f05-0d0c-0b0006020e07"
+      
     Code
       dm(x, y, z, r = left_join(y, x)) %>% dm_paste(options = c("select", "keys"))
     Message
@@ -1621,48 +1649,14 @@
       dm %>% dm_get_keyed_tables_impl() %>% pks_df_from_keys_info() %>%
         to_snapshot_json()
     Output
-      [
-        {
-          "table": "airlines",
-          "pks": [
-            {
-              "column": ["carrier"],
-              "autoincrement": false
-            }
-          ]
-        },
-        {
-          "table": "airports",
-          "pks": [
-            {
-              "column": ["faa"],
-              "autoincrement": false
-            }
-          ]
-        },
-        {
-          "table": "flights",
-          "pks": {}
-        },
-        {
-          "table": "planes",
-          "pks": [
-            {
-              "column": ["tailnum"],
-              "autoincrement": false
-            }
-          ]
-        },
-        {
-          "table": "weather",
-          "pks": [
-            {
-              "column": ["origin", "time_hour"],
-              "autoincrement": false
-            }
-          ]
-        }
-      ] 
+      # A tibble: 5 x 2
+        table    pks             
+        <chr>    <list>          
+      1 airlines <tibble [1 x 2]>
+      2 airports <tibble [1 x 2]>
+      3 flights  <NULL>          
+      4 planes   <tibble [1 x 2]>
+      5 weather  <tibble [1 x 2]>
 
 # uks_df_from_keys_info()
 
@@ -1670,36 +1664,15 @@
       dm %>% dm_get_keyed_tables_impl() %>% uks_df_from_keys_info() %>%
         to_snapshot_json()
     Output
-      [
-        {
-          "table": "tf_1",
-          "uks": []
-        },
-        {
-          "table": "tf_2",
-          "uks": []
-        },
-        {
-          "table": "tf_3",
-          "uks": []
-        },
-        {
-          "table": "tf_4",
-          "uks": []
-        },
-        {
-          "table": "tf_5",
-          "uks": [
-            {
-              "column": ["l"]
-            }
-          ]
-        },
-        {
-          "table": "tf_6",
-          "uks": []
-        }
-      ] 
+      # A tibble: 6 x 2
+        table uks             
+        <chr> <list>          
+      1 tf_1  <tibble [0 x 1]>
+      2 tf_2  <tibble [0 x 1]>
+      3 tf_3  <tibble [0 x 1]>
+      4 tf_4  <tibble [0 x 1]>
+      5 tf_5  <tibble [1 x 1]>
+      6 tf_6  <tibble [0 x 1]>
 
 # fks_df_from_keys_info()
 
@@ -1707,56 +1680,11 @@
       dm %>% dm_get_keyed_tables_impl() %>% fks_df_from_keys_info() %>%
         to_snapshot_json()
     Output
-      [
-        {
-          "table": "airlines",
-          "fks": [
-            {
-              "ref_column": ["carrier"],
-              "table": "flights",
-              "column": ["carrier"],
-              "on_delete": "no_action"
-            }
-          ]
-        },
-        {
-          "table": "airports",
-          "fks": [
-            {
-              "ref_column": ["faa"],
-              "table": "flights",
-              "column": ["origin"],
-              "on_delete": "no_action"
-            },
-            {
-              "ref_column": ["faa"],
-              "table": "flights",
-              "column": ["dest"],
-              "on_delete": "no_action"
-            }
-          ]
-        },
-        {
-          "table": "planes",
-          "fks": [
-            {
-              "ref_column": ["tailnum"],
-              "table": "flights",
-              "column": ["tailnum"],
-              "on_delete": "no_action"
-            }
-          ]
-        },
-        {
-          "table": "weather",
-          "fks": [
-            {
-              "ref_column": ["origin", "time_hour"],
-              "table": "flights",
-              "column": ["origin", "time_hour"],
-              "on_delete": "no_action"
-            }
-          ]
-        }
-      ] 
+      # A tibble: 4 x 2
+        table    fks             
+        <chr>    <list>          
+      1 airlines <tibble [1 x 4]>
+      2 airports <tibble [2 x 4]>
+      3 planes   <tibble [1 x 4]>
+      4 weather  <tibble [1 x 4]>
 
