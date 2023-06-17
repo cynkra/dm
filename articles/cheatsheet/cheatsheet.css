@@ -14,21 +14,21 @@ pre {
 
 @font-face {
   font-family: "frutiger-light", sans-serif;
-  src: url("https://cynkraweb.s3.eu-central-1.amazonaws.com/fonts/1449009/e5acedaa-f4c6-4128-8b5a-2f3f8324f09b.eot"); /* IE9 Compat Modes */
+  src: url("https://cynkra.com/user/fonts/1449009/e5acedaa-f4c6-4128-8b5a-2f3f8324f09b.eot"); /* IE9 Compat Modes */
   src: local("Frutiger Light"), local("frutiger-light"),
-  url("https://cynkraweb.s3.eu-central-1.amazonaws.com/fonts/1449009/e5acedaa-f4c6-4128-8b5a-2f3f8324f09b.eot?#iefix")
+  url("https://cynkra.com/user/fonts/1449009/e5acedaa-f4c6-4128-8b5a-2f3f8324f09b.eot?#iefix")
       format("embedded-opentype"),
     /* IE6-IE8 */
-      url("https://cynkraweb.s3.eu-central-1.amazonaws.com/fonts/1449009/b3ca2df2-7bee-4fc0-84cb-b029b99c3b61.woff2")
+      url("https://cynkra.com/user/fonts/1449009/b3ca2df2-7bee-4fc0-84cb-b029b99c3b61.woff2")
       format("woff2"),
     /* Super Modern Browsers */
-      url("https://cynkraweb.s3.eu-central-1.amazonaws.com/fonts/1449009/554d0bc9-df00-45eb-993e-f62841c80ab1.woff")
+      url("https://cynkra.com/user/fonts/1449009/554d0bc9-df00-45eb-993e-f62841c80ab1.woff")
       format("woff"),
     /* Pretty Modern Browsers */
-      url("https://cynkraweb.s3.eu-central-1.amazonaws.com/fonts/1449009/3512931d-90c5-4aa4-b0dc-3a3630c65f37.ttf")
+      url("https://cynkra.com/user/fonts/1449009/3512931d-90c5-4aa4-b0dc-3a3630c65f37.ttf")
       format("truetype"),
     /* Safari, Android, iOS */
-      url("https://cynkraweb.s3.eu-central-1.amazonaws.com/fonts/1449009/f8b7e418-9dc4-4040-ac46-c50501eac7b5.svg#f8b7e418-9dc4-4040-ac46-c50501eac7b5")
+      url("https://cynkra.com/user/fonts/1449009/f8b7e418-9dc4-4040-ac46-c50501eac7b5.svg#f8b7e418-9dc4-4040-ac46-c50501eac7b5")
       format("svg"); /* Legacy iOS */
   font-weight: normal;
   font-style: normal;
