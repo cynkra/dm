@@ -90,12 +90,13 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     df_col_types
   }
 
+  .con = con ## avoid scoping issue in mutate, attempt to fix: https://github.com/cynkra/dm/actions/runs/5298754082/jobs/9591289658
   col_defs <-
     dm %>%
     src_tbls_impl() %>%
     set_names() %>%
     map_dfr(get_sql_col_types, .id = "name") %>%
-    mutate(col_def = glue("{DBI::dbQuoteIdentifier(con, col)} {type}{autoincrement_attribute}")) %>%
+    mutate(col_def = sprintf("%s %s%s", DBI::dbQuoteIdentifier(.con, col), type, autoincrement_attribute)) %>%
     group_by(name) %>%
     summarize(
       col_defs = paste(col_def, collapse = ",\n  "),
