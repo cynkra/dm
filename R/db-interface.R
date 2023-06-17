@@ -191,15 +191,15 @@ copy_dm_to <- function(dest, dm, ...,
   # constraints
 
   # use 0-rows dm object from now on
-  dmdata <- dm ## we still need it to copy actual data, we will collect tables one by one to reduce peak memory usage
-  dm <- collect(dm_ptype(dm))
+  dm ## we still need it to copy actual data, we will collect tables one by one to reduce peak memory usage
+  ptype_dm <- collect(dm_ptype(dm))
 
   # Shortcut necessary to avoid copying into .GlobalEnv
   if (!is_db(dest)) {
     return(dm)
   }
 
-  queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
+  queries <- build_copy_queries(dest_con, ptype_dm, set_key_constraints, temporary, table_names_out)
 
   ticker_create <- new_ticker(
     "creating tables",
@@ -223,7 +223,7 @@ copy_dm_to <- function(dest, dm, ...,
   # populate tables
   pwalk(
     queries[c("name", "remote_name")],
-    ticker_populate(~ db_append_table(dest_con, .y, dmdata[[.x]], progress))
+    ticker_populate(~ db_append_table(dest_con, .y, dm[[.x]], progress))
   )
 
   ticker_index <- new_ticker(
@@ -244,8 +244,8 @@ copy_dm_to <- function(dest, dm, ...,
     set_names(queries$name) %>%
     map(tbl, src = dest_con)
   # remote dm is same as source dm with replaced data
-  def <- dm_get_def(dm)
-  def$data <- unname(remote_tables[names(dm)])
+  def <- dm_get_def(ptype_dm)
+  def$data <- unname(remote_tables[names(ptype_dm)])
   remote_dm <- new_dm3(def)
 
   invisible(debug_dm_validate(remote_dm))
