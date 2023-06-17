@@ -192,8 +192,7 @@ copy_dm_to <- function(dest, dm, ...,
 
   # use 0-rows dm object from now on
   dmdata <- dm ## we still need it to copy actual data, we will collect tables one by one to reduce peak memory usage
-  dm <- dm |> dm_ptype() |> collect()
-  #dm <- collect(dm, progress = progress)
+  ptype_dm <- collect(dm_ptype(dm))
 
   # Shortcut necessary to avoid copying into .GlobalEnv
   if (!is_db(dest)) {
