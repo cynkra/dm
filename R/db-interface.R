@@ -274,8 +274,10 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
     chunk_size <- 1000L
     n_chunks <- ceiling(nrow(table) / chunk_size)
 
+    remote_table_id <- dbQuoteIdentifier(con, remote_table)
+
     ticker <- new_ticker(
-      paste0("inserting into ", remote_table),
+      paste0("inserting into ", remote_table_id),
       n = n_chunks,
       progress = progress,
       top_level_fun = top_level_fun
@@ -286,7 +288,7 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
       idx <- seq2(end - (chunk_size - 1), min(end, nrow(table)))
       values <- map(table[idx, ], mssql_escape, con = con)
       # Can't use dbAppendTable(): https://github.com/r-dbi/odbc/issues/480
-      sql <- DBI::sqlAppendTable(con, DBI::SQL(remote_table), values, row.names = FALSE)
+      sql <- DBI::sqlAppendTable(con, remote_table_id, values, row.names = FALSE)
       DBI::dbExecute(con, sql, immediate = TRUE)
     }))
   } else if (is_postgres(con)) {
