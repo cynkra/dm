@@ -425,8 +425,31 @@ test_that("left join works as expected with keyed tables", {
   })
 
   # results should be similar to zooming
-  zd1 <- dm_zoom_to(dm, weather) %>% left_join(flights, multiple = "all")
-  zd2 <- dm_zoom_to(dm, flights) %>% left_join(weather)
+  zd1 <-
+    dm %>%
+    dm_rename(weather, year.weather = year) %>%
+    dm_rename(weather, month.weather = month) %>%
+    dm_rename(weather, day.weather = day) %>%
+    dm_rename(weather, hour.weather = hour) %>%
+    dm_rename(flights, year.flights = year) %>%
+    dm_rename(flights, month.flights = month) %>%
+    dm_rename(flights, day.flights = day) %>%
+    dm_rename(flights, hour.flights = hour) %>%
+    dm_zoom_to(weather) %>%
+    left_join(flights, multiple = "all")
+
+  zd2 <-
+    dm %>%
+    dm_rename(flights, year.flights = year) %>%
+    dm_rename(flights, month.flights = month) %>%
+    dm_rename(flights, day.flights = day) %>%
+    dm_rename(flights, hour.flights = hour) %>%
+    dm_rename(weather, year.weather = year) %>%
+    dm_rename(weather, month.weather = month) %>%
+    dm_rename(weather, day.weather = day) %>%
+    dm_rename(weather, hour.weather = hour) %>%
+    dm_zoom_to(flights) %>%
+    left_join(weather)
 
   jd1 <- keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"), multiple = "all")
   jd2 <- keyed_tbl_impl(dm, "flights") %>% left_join(keyed_tbl_impl(dm, "weather"))
