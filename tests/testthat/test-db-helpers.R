@@ -57,11 +57,11 @@ test_that("DB helpers work for MSSQL", {
   )
   expect_identical(
     get_src_tbl_names(my_test_src(), dbname = "db_helpers_db")[["test_db_helpers_3"]],
-    DBI::Id(database = "db_helpers_db", schema = "dbo", table = "test_db_helpers_3")
+    DBI::Id(catalog = "db_helpers_db", schema = "dbo", table = "test_db_helpers_3")
   )
   expect_identical(
     get_src_tbl_names(my_test_src(), dbname = "db_helpers_db", schema = "schema_db_helpers_2")[["test_db_helpers_4"]],
-    DBI::Id(database = "db_helpers_db", schema = "schema_db_helpers_2", table = "test_db_helpers_4")
+    DBI::Id(catalog = "db_helpers_db", schema = "schema_db_helpers_2", table = "test_db_helpers_4")
   )
 })
 
