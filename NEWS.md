@@ -1,5 +1,20 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9012
+
+## Chore
+
+- Clean pillar options for stable tests.
+
+- Adapt to dev tidyselect (#1901).
+
+- In `copy_dm_to()`, call `collect()` only when copying data, table by table (@jangorecki, #1900).
+
+## Documentation
+
+- Describe Docker setup (#1898).
+
+
 # dm 1.0.5.9011
 
 ## Bug fixes
