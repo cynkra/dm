@@ -1,6 +1,54 @@
 ## SQL script backend for copy_dm_to()
 ## taken to new file to avoid merge conflicts to ongoing changes in db-interface.R #1739
 
+#' @name dm_sql
+#'
+#' @title Create \emph{DDL} and \emph{DML} scripts for `dm` and database connection
+#'
+#' @description
+#' Generate SQL scripts to create tables, load data and set constraints, keys and indices.
+#'
+#' @param dm A `dm` object.
+#' @param dest Connection to database.
+#' @param set_key_constraints If `TRUE` (default) will mirror `dm` primary and foreign key constraints on a database
+#'   and create unique indexes.
+#' @param table_names See argument description in \link{copy_dm_to}. Default to names of `dm`.
+#' @param temporary Should the tables be marked as \emph{temporary}? Defaults to `TRUE`.
+#' @param schema Name of schema to copy the `dm` to.
+#'
+#' @details
+#' \itemize{
+#'   \item{ `dm_ddl_pre` generates `CREATE TABLE` statements (including `PRIMARY KEY` definition). }
+#'   \item{ `dm_dml_load` generates `INSERT INTO` statements. }
+#'   \item{ `dm_ddl_post` generates scripts for `FOREIGN KEYS`, `UNIQUE KEYS` and `INDEXES`. }
+#'   \item{ `dm_sql` calls all three above and returns complete set of scripts. }
+#' }
+#'
+#' @return character vector of SQL statements.
+#'
+#' @export
+#' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("dbplyr")
+#' con <- DBI::dbConnect(RSQLite::SQLite())
+#' dm <- dm_nycflights13()
+#' s <- dm_sql(dm, con)
+#' s
+#' DBI::dbDisconnect(con)
+dm_sql <- function(dm,
+                   dest,
+                   set_key_constraints = TRUE,
+                   table_names = set_names(names(dm)),
+                   temporary = TRUE,
+                   schema = NULL) {
+  c(
+    ## CREATE TABLE and PRIMARY KEY (unless !set_key_constraints)
+    dm_ddl_pre(dm, dest, table_names=table_names, set_key_constraints=set_key_constraints, schema=schema),
+    ## INSERT INTO, handle autoincrement, TODO handle+test ai together with !set_key_constraints
+    dm_dml_load(dm, dest, table_names=table_names, schema=schema),
+    ## FOREIGN KEYS, UNIQUE KEYS, INDEXES
+    if (set_key_constraints) dm_ddl_post(dm, dest, table_names=table_names, schema=schema)
+  )
+}
+
 ## database-specific type conversions
 ## could that go into DBI package as improvement to dbDataType?
 db_types_mapping <- function(types, autoincrement=character(), dest) {
@@ -115,53 +163,5 @@ dm_ddl_post <- function(dm, dest, table_names=set_names(names(dm)), schema=NULL)
     ddl_fk(dm, dest, table_names=table_names, schema=schema),
     ddl_unq(dm, dest, table_names=table_names, schema=schema),
     ddl_idx(dm, dest, table_names=table_names, schema=schema)
-  )
-}
-
-#' @name dm_sql
-#'
-#' @title Create \emph{DDL} and \emph{DML} scripts for `dm` and database connection
-#'
-#' @description
-#' Generate SQL scripts to create tables, load data and set constraints, keys and indices.
-#'
-#' @param dm A `dm` object.
-#' @param dest Connection to database.
-#' @param set_key_constraints If `TRUE` (default) will mirror `dm` primary and foreign key constraints on a database
-#'   and create unique indexes.
-#' @param table_names See argument description in \link{copy_dm_to}. Default to names of `dm`.
-#' @param temporary Should the tables be marked as \emph{temporary}? Defaults to `TRUE`.
-#' @param schema Name of schema to copy the `dm` to.
-#'
-#' @details
-#' \itemize{
-#'   \item{ `dm_ddl_pre` generates `CREATE TABLE` statements (including `PRIMARY KEY` definition). }
-#'   \item{ `dm_dml_load` generates `INSERT INTO` statements. }
-#'   \item{ `dm_ddl_post` generates scripts for `FOREIGN KEYS`, `UNIQUE KEYS` and `INDEXES`. }
-#'   \item{ `dm_sql` calls all three above and returns complete set of scripts. }
-#' }
-#'
-#' @return character vector of SQL statements.
-#'
-#' @export
-#' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("dbplyr")
-#' con <- DBI::dbConnect(RSQLite::SQLite())
-#' dm <- dm_nycflights13()
-#' s <- dm_sql(dm, con)
-#' s
-#' DBI::dbDisconnect(con)
-dm_sql <- function(dm,
-                   dest,
-                   set_key_constraints = TRUE,
-                   table_names = set_names(names(dm)),
-                   temporary = TRUE,
-                   schema = NULL) {
-  c(
-    ## CREATE TABLE and PRIMARY KEY (unless !set_key_constraints)
-    dm_ddl_pre(dm, dest, table_names=table_names, set_key_constraints=set_key_constraints, schema=schema),
-    ## INSERT INTO, handle autoincrement, TODO handle+test ai together with !set_key_constraints
-    dm_dml_load(dm, dest, table_names=table_names, schema=schema),
-    ## FOREIGN KEYS, UNIQUE KEYS, INDEXES
-    if (set_key_constraints) dm_ddl_post(dm, dest, table_names=table_names, schema=schema)
   )
 }
