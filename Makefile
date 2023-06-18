@@ -3,12 +3,12 @@ all: qtest
 # Quiet tests
 # Run with make -j $(nproc) -O
 # or with pmake
-qtest: qtest-sqlite qtest-postgres qtest-mssql qtest-duckdb qtest-maria
+qtest: qtest-df qtest-sqlite qtest-postgres qtest-mssql qtest-duckdb qtest-maria
 
 # Progress tests
 # Run with make -j 1 -O none test
 # or with sake test
-test: test-sqlite test-postgres test-mssql test-duckdb test-maria
+test: test-df test-sqlite test-postgres test-mssql test-duckdb test-maria
 
 # Connectivity tests
 connect: connect-sqlite connect-postgres connect-mssql connect-duckdb connect-maria
