@@ -48,20 +48,20 @@ test_that("DB helpers work for MSSQL", {
   )
 
   expect_identical(
-    get_src_tbl_names(my_test_src())["test_db_helpers"],
-    DBI::SQL("\"dbo\".\"test_db_helpers\"")
+    get_src_tbl_names(my_test_src())[["test_db_helpers"]],
+    DBI::Id(schema = "dbo", table = "test_db_helpers")
   )
   expect_identical(
-    get_src_tbl_names(my_test_src(), schema = "schema_db_helpers")["test_db_helpers_2"],
-    DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
+    get_src_tbl_names(my_test_src(), schema = "schema_db_helpers")[["test_db_helpers_2"]],
+    DBI::Id(schema = "schema_db_helpers", table = "test_db_helpers_2")
   )
   expect_identical(
-    get_src_tbl_names(my_test_src(), dbname = "db_helpers_db")["test_db_helpers_3"],
-    DBI::SQL("\"db_helpers_db\".\"dbo\".\"test_db_helpers_3\"")
+    get_src_tbl_names(my_test_src(), dbname = "db_helpers_db")[["test_db_helpers_3"]],
+    DBI::Id(database = "db_helpers_db", schema = "dbo", table = "test_db_helpers_3")
   )
   expect_identical(
-    get_src_tbl_names(my_test_src(), dbname = "db_helpers_db", schema = "schema_db_helpers_2")["test_db_helpers_4"],
-    DBI::SQL("\"db_helpers_db\".\"schema_db_helpers_2\".\"test_db_helpers_4\"")
+    get_src_tbl_names(my_test_src(), dbname = "db_helpers_db", schema = "schema_db_helpers_2")[["test_db_helpers_4"]],
+    DBI::Id(database = "db_helpers_db", schema = "schema_db_helpers_2", table = "test_db_helpers_4")
   )
 })
 
