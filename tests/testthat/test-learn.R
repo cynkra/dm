@@ -179,7 +179,7 @@ test_that("'schema_if()' works", {
       con = con_db,
       dbname = "database"
     )[[1]],
-    DBI::Id(database = "database", schema = "schema", table = "table")
+    DBI::Id(catalog = "database", schema = "schema", table = "table")
   )
 
   # schema and table set
@@ -236,14 +236,12 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
 
 
   # test 'get_src_tbl_names()'
-  src_tbl_names <- unname(get_src_tbl_names(con_db, dbname = "test_database_dm"))
   expect_identical(
-    src_tbl_names,
-    sort(DBI::SQL(paste0(
-      DBI::dbQuoteIdentifier(con_db, "test_database_dm"), ".",
-      DBI::dbQuoteIdentifier(con_db, "dbo"), ".",
-      DBI::dbQuoteIdentifier(con_db, c("test_1", "test_2"))
-    )))
+    get_src_tbl_names(con_db, dbname = "test_database_dm"),
+    list(
+      test_1 = DBI::Id(catalog = "test_database_dm", schema = "dbo", table = "test_1"),
+      test_2 = DBI::Id(catalog = "test_database_dm", schema = "dbo", table = "test_2")
+    )
   )
 
   dm_local_no_keys <- dm(
@@ -251,7 +249,11 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
     test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
 
-  expect_message(dm_db_learned <- dm_from_con(con_db, dbname = "test_database_dm"))
+  expect_message(
+    dm_db_learned <- dm_from_con(con_db, dbname = "test_database_dm"),
+    "queried successfully",
+    fixed = TRUE
+  )
   dm_learned <- dm_db_learned %>% collect()
   expect_equivalent_dm(
     dm_learned,
@@ -262,8 +264,8 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
   )
 
   # learning without keys:
-  dm_learned_no_keys <- expect_silent(
-    dm_from_con(
+  expect_silent(
+    dm_learned_no_keys <- dm_from_con(
       con_db,
       dbname = "test_database_dm",
       learn_keys = FALSE
@@ -320,14 +322,12 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
   })
 
   # test 'get_src_tbl_names()'
-  src_tbl_names <- unname(get_src_tbl_names(con_db, schema = "dm_test", dbname = "test_database_dm"))
   expect_identical(
-    src_tbl_names,
-    sort(DBI::SQL(paste0(
-      DBI::dbQuoteIdentifier(con_db, "test_database_dm"), ".",
-      DBI::dbQuoteIdentifier(con_db, "dm_test"), ".",
-      DBI::dbQuoteIdentifier(con_db, c("test_1", "test_2"))
-    )))
+    get_src_tbl_names(con_db, schema = "dm_test", dbname = "test_database_dm"),
+    list(
+      test_1 = DBI::Id(catalog = "test_database_dm", schema = "dm_test", table = "test_1"),
+      test_2 = DBI::Id(catalog = "test_database_dm", schema = "dm_test", table = "test_2")
+    )
   )
 
   dm_local_no_keys <- dm(

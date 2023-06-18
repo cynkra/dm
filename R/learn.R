@@ -191,7 +191,7 @@ schema_if <- function(schema, table, con, dbname = NULL) {
     if (anyNA(schema)) abort("`schema` must be given if `dbname` is not NULL`.")
     purrr::map2(
       table, schema,
-      ~ DBI::Id(database = dbname, schema = .y, table = .x)
+      ~ DBI::Id(catalog = dbname, schema = .y, table = .x)
     )
   }
 }
