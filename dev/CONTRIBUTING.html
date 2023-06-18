@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9011</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9012</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -157,9 +157,9 @@
 <div class="section level3">
 <h3 id="test-against-a-specific-database-backend">Test against a specific database backend<a class="anchor" aria-label="anchor" href="#test-against-a-specific-database-backend"></a></h3>
 <p>macOS:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_SRC</span><span class="op">=</span>mssql <span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>192.168.64.2 <span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'testthat::test_local()'</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>192.168.64.2 <span class="fu">make</span> test-mssql</span></code></pre></div>
 <p>Linux:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_SRC</span><span class="op">=</span>mssql <span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>localhost <span class="va">DM_TEST_MSSQL_ODBC_LIB</span><span class="op">=</span>/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 <span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'testthat::test_local()'</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>localhost <span class="va">DM_TEST_MSSQL_ODBC_LIB</span><span class="op">=</span>/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 <span class="fu">make</span> test-mssql</span></code></pre></div>
 <p>Controlled with environment variables:</p>
 <ul><li>
 <p><code>DM_TEST_SRC</code>: backend, one of:</p>
@@ -172,14 +172,22 @@
 </ul></li>
 <li><p><code>DM_TEST_DOCKER_HOST</code>: <code>localhost</code> on Linux, see output of <code>colima status</code> on macOS</p></li>
 <li><p><code>DM_TEST_MSSQL_ODBC_LIB</code>: mssql, path to ODBC library (<code>libmsodbcsql-*.so</code> or similar), the default should work for Homebrew-installed drivers on macOS arm64</p></li>
-</ul></div>
+</ul><p>See also the <code>Makefile</code>.</p>
+</div>
+<div class="section level3">
+<h3 id="test-against-all-backends">Test against all backends<a class="anchor" aria-label="anchor" href="#test-against-all-backends"></a></h3>
+<p>macOS:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>192.168.64.2 <span class="fu">make</span> <span class="at">-j8</span> qtest</span></code></pre></div>
+<p>Linux:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>localhost <span class="va">DM_TEST_MSSQL_ODBC_LIB</span><span class="op">=</span>/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 <span class="fu">make</span> <span class="at">-j8</span> qtest</span></code></pre></div>
+</div>
 <div class="section level3">
 <h3 id="mssql-for-a-new-container-create-the-database">mssql: For a new container, create the database<a class="anchor" aria-label="anchor" href="#mssql-for-a-new-container-create-the-database"></a></h3>
 <p>FIXME: Automate this.</p>
 <p>macOS:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>192.168.64.2 <span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>192.168.64.2 <span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'</span></span></code></pre></div>
 <p>Linux:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>localhost <span class="va">DM_TEST_MSSQL_ODBC_LIB</span><span class="op">=</span>/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 <span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>localhost <span class="va">DM_TEST_MSSQL_ODBC_LIB</span><span class="op">=</span>/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 <span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
