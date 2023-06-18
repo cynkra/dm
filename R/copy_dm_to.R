@@ -53,7 +53,7 @@ ddl_tbl <- function(x, name, dest, pk, autoincrement, temporary, set_key_constra
   istmp <- if (temporary) "TEMPORARY " else ""
   cols_def <- paste(ddl_cols(x, dest, pk[autoincrement]), collapse=",\n  ")
   qname <- DBI::dbQuoteIdentifier(dest, name)
-  if (set_key_constraints) pk_def <- ddl_pk(pk, dest)
+  pk_def <- if (set_key_constraints) ddl_pk(pk, dest)
   sprintf("CREATE %sTABLE %s (\n  %s\n)",
           istmp,  qname,  paste(c(cols_def, pk_def), collapse=",\n"))
 }
