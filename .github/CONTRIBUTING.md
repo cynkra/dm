@@ -114,13 +114,13 @@ Switches:
 macOS:
 
 ```sh
-DM_TEST_SRC=mssql DM_TEST_DOCKER_HOST=192.168.64.2 R -q -e 'testthat::test_local()'
+DM_TEST_DOCKER_HOST=192.168.64.2 make test-mssql
 ```
 
 Linux:
 
 ```sh
-DM_TEST_SRC=mssql DM_TEST_DOCKER_HOST=localhost DM_TEST_MSSQL_ODBC_LIB=/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 R -q -e 'testthat::test_local()'
+DM_TEST_DOCKER_HOST=localhost DM_TEST_MSSQL_ODBC_LIB=/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 make test-mssql
 ```
 
 Controlled with environment variables:
@@ -142,6 +142,23 @@ Controlled with environment variables:
 - `DM_TEST_DOCKER_HOST`: `localhost` on Linux, see output of `colima status` on macOS
 
 - `DM_TEST_MSSQL_ODBC_LIB`: mssql, path to ODBC library (`libmsodbcsql-*.so` or similar), the default should work for Homebrew-installed drivers on macOS arm64
+
+See also the `Makefile`.
+
+### Test against all backends
+
+macOS:
+
+```sh
+DM_TEST_DOCKER_HOST=192.168.64.2 make -j8 qtest
+```
+
+Linux:
+
+```sh
+DM_TEST_DOCKER_HOST=localhost DM_TEST_MSSQL_ODBC_LIB=/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 make -j8 qtest
+```
+
 
 ### mssql: For a new container, create the database
 
