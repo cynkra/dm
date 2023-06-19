@@ -144,7 +144,7 @@ make test-mssql
 ### Test against all backends
 
 ```sh
-make -j8 qtest
+make -j1 test
 ```
 
 
