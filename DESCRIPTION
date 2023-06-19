@@ -102,8 +102,7 @@ Suggests:
     waldo,
     withr
 Remotes: 
-    r-lib/tidyselect,
-    tidyverse/dbplyr
+    r-lib/tidyselect
 Config/Needs/website:
     brio,
     bslib,
