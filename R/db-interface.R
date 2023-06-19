@@ -191,7 +191,6 @@ copy_dm_to <- function(dest, dm, ...,
   # constraints
 
   # use 0-rows dm object from now on
-  dm ## we still need it to copy actual data, we will collect tables one by one to reduce peak memory usage
   ptype_dm <- collect(dm_ptype(dm))
 
   # Shortcut necessary to avoid copying into .GlobalEnv
@@ -199,7 +198,7 @@ copy_dm_to <- function(dest, dm, ...,
     return(dm)
   }
 
-  queries <- build_copy_queries(dest_con, ptype_dm, set_key_constraints, temporary, table_names_out)
+  queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
 
   ticker_create <- new_ticker(
     "creating tables",
