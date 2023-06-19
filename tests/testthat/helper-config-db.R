@@ -51,7 +51,7 @@ test_src_mssql <- function(database = TRUE) {
   } else if (Sys.getenv("DM_TEST_DOCKER_HOST") != "") {
     con <- DBI::dbConnect(
       odbc::odbc(),
-      driver = Sys.getenv("DM_TEST_MSSQL_ODBC_LIB", "/opt/homebrew/lib/libmsodbcsql.18.dylib"),
+      driver = "ODBC Driver 18 for SQL Server",
       server = Sys.getenv("DM_TEST_DOCKER_HOST"),
       database = if (database) "test",
       uid = "SA",

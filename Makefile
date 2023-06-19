@@ -24,3 +24,9 @@ ltest-%:
 
 connect-%:
 	DM_TEST_SRC=$@ R -q -e 'suppressMessages(pkgload::load_all()); my_test_con()'
+
+docker-build:
+	docker build --platform linux/amd64 -t ghcr.io/cynkra/dm:main .
+
+docker-test:
+	docker run --rm -ti --platform linux/amd64 -e DM_TEST_DOCKER_HOST=192.168.64.2 -e TESTTHAT_CPUS=4 -v $$(pwd):/root/workspace dm make test

@@ -120,14 +120,12 @@ DM_TEST_DOCKER_HOST=192.168.64.2 make connect
 Linux:
 
 ```sh
-DM_TEST_DOCKER_HOST=localhost DM_TEST_MSSQL_ODBC_LIB=/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 make connect
+DM_TEST_DOCKER_HOST=localhost make connect
 ```
 
 Controlled with environment variables:
 
 - `DM_TEST_DOCKER_HOST`: `localhost` on Linux, see output of `colima status` on macOS
-
-- `DM_TEST_MSSQL_ODBC_LIB`: mssql, path to ODBC library (`libmsodbcsql-*.so` or similar), the default should work for Homebrew-installed drivers on macOS arm64
 
 See also the `Makefile`.
 
@@ -145,6 +143,14 @@ make test-mssql
 
 ```sh
 make -j1 test
+```
+
+
+### Test on Docker
+
+```sh
+# make docker-build
+make docker-test
 ```
 
 
