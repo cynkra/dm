@@ -221,8 +221,8 @@ copy_dm_to <- function(dest, dm, ...,
 
   # populate tables
   pwalk(
-    queries[c("name", "remote_name")],
-    ticker_populate(~ db_append_table(dest_con, .y, dm[[.x]], progress))
+    queries["dml"],
+    ticker_populate(~ db_dml_exec(dest_con, .))
   )
 
   ticker_index <- new_ticker(
@@ -304,6 +304,10 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
   invisible()
 }
 
+db_dml_exec <- function(con, dml) {
+  DBI::dbExecute(con, dml, immediate = TRUE)
+  invisible()
+}
 
 # Errors ------------------------------------------------------------------
 

@@ -43,7 +43,7 @@ dm_sql <- function(dm,
     ## CREATE TABLE and PRIMARY KEY (unless !set_key_constraints)
     dm_ddl_pre(dm, dest, table_names=table_names, set_key_constraints=set_key_constraints, schema=schema),
     ## INSERT INTO, handle autoincrement, TODO handle+test ai together with !set_key_constraints
-    dm_dml_load(dm, dest, table_names=table_names, schema=schema),
+    dm_dml_load(dm, dest, table_names=table_names),
     ## FOREIGN KEYS, UNIQUE KEYS, INDEXES
     if (set_key_constraints) dm_ddl_post(dm, dest, table_names=table_names, schema=schema)
   )
@@ -140,7 +140,7 @@ dm_dml_load <- function(dm, dest, table_names=set_names(names(dm))) {
     selectvals <- dbplyr::sql_render(dbplyr::copy_inline(con, x))
     ## for some DBes we could skip columns specification, but only when no autoincrement, easier to just specify that always
     ## duckdb autoincrement tests are skipped, could be added by inserting from sequence
-    ins <- paste0("INSERT INTO ", remote_tbl_id, " (", paste(DBI::dbQuoteIdentifier(con, names(x)), collapse=", "), ")\n")
+    ins <- paste0("INSERT INTO ", DBI::SQL(remote_tbl_id), " (", paste(DBI::dbQuoteIdentifier(con, names(x)), collapse=", "), ")\n")
     paste0(ins, selectvals)
   }
   DBI::SQL(unlist(

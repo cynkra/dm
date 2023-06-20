@@ -25,7 +25,7 @@ dm_ddl_pre(
   schema = NULL
 )
 
-dm_dml_load(dm, dest, table_names = set_names(names(dm)), schema = NULL)
+dm_dml_load(dm, dest, table_names = set_names(names(dm)))
 
 dm_ddl_post(dm, dest, table_names = set_names(names(dm)), schema = NULL)
 }

@@ -56,10 +56,10 @@
       pack_join(df1, dm_fin$accounts, by = c(col1 = "id"), copy = TRUE)
     Output
       # A tibble: 2 x 3
-         col1 key   `dm_fin$accounts`$district_id $frequency       $date
-        <int> <chr>                         <int> <chr>            <int>
-      1     1 a                                18 POPLATEK MESICNE  9213
-      2     2 b                                 1 POPLATEK MESICNE  8457
+         col1 key   `dm_fin$accounts`$district_id $frequency       $date     
+        <int> <chr>                         <int> <chr>            <chr>     
+      1     1 a                                18 POPLATEK MESICNE 1995-03-24
+      2     2 b                                 1 POPLATEK MESICNE 1993-02-26
 
 ---
 
