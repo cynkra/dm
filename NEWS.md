@@ -1,5 +1,22 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9014
+
+## Chore
+
+- Get DM_TEST_DOCKER_HOST from environment.
+
+- New docker-build and docker-test targets.
+
+- Compatibility with dbplyr \> 2.3.2 (@mgirlich, #1894).
+
+- Avoid qtest target in docs \[ci skip\].
+
+## Uncategorized
+
+- Merge branch 'docs'.
+
+
 # dm 1.0.5.9013
 
 ## Chore
