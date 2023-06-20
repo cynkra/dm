@@ -130,24 +130,22 @@ dm_ddl_pre <- function(dm, dest, temporary=TRUE, table_names=set_names(names(dm)
 #' @rdname dm_sql
 #' @export
 dm_dml_load <- function(dm, dest, table_names=set_names(names(dm))) {
-  pksdf <- lapply(set_names(names(dm)), dm_get_all_pks_impl, dm=dm) ## lapply so we have entries for tables that does not have PK
-  pks <- lapply(pksdf, function(x) if (nrow(x)) x[["pk_col"]][[1L]] else character())
-  ais <- vapply(pksdf, function(x) if (nrow(x)) x[["autoincrement"]] else FALSE, NA)
-
   tbl_dml_load <- function(tbl_name, dm, remote_name, con) {
     pkdf = dm_get_all_pks_impl(dm, tbl_name)
-    x <- dm[[tbl_name]]
-    remote_tbl_id <- DBI::dbQuoteIdentifier(remote_name[tbl_name])
+    x <- collect(dm[[tbl_name]])
+    remote_tbl_id <- remote_name[[tbl_name]]
     if (isTRUE(pkdf[["autoincrement"]])) {
-      x <- x[!mames(x) %in% pkdf[["pk_col"]][[1]]]
+      x <- x[!names(x) %in% pkdf[["pk_col"]][[1L]]]
     }
     selectvals <- dbplyr::sql_render(dbplyr::copy_inline(con, x))
     ## for some DBes we could skip columns specification, but only when no autoincrement, easier to just specify that always
     ## duckdb autoincrement tests are skipped, could be added by inserting from sequence
-    ins <- paste0("INSERT INTO ", remote_tbl_id, " (", paste(DBI::dbQuoteIdentifier(names(x)), collapse=", "), ")\n")
+    ins <- paste0("INSERT INTO ", remote_tbl_id, " (", paste(DBI::dbQuoteIdentifier(con, names(x)), collapse=", "), ")\n")
     paste0(ins, selectvals)
   }
-  unlist(lapply(names(table_names), tbl_dml_load, dm=dm, remote_name=table_names, con=dest), recursive=FALSE, use.names=FALSE)
+  DBI::SQL(unlist(
+    lapply(set_names(names(table_names)), tbl_dml_load, dm=dm, remote_name=table_names, con=dest),
+  recursive=FALSE))
 }
 
 ddl_fk <- function(dm, dest, table_names, schema) {
