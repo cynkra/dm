@@ -109,48 +109,66 @@ Switches:
 - `-d`: Daemon mode, run in the background, use `docker-compose stop` to stop
 - `maria`, `mssql`, `postgres`: Run only a particular service
 
-### Test against a specific database backend
+### Connectivity test
 
 macOS:
 
 ```sh
-DM_TEST_SRC=mssql DM_TEST_DOCKER_HOST=192.168.64.2 R -q -e 'testthat::test_local()'
+DM_TEST_DOCKER_HOST=192.168.64.2 make connect
 ```
 
 Linux:
 
 ```sh
-DM_TEST_SRC=mssql DM_TEST_DOCKER_HOST=localhost DM_TEST_MSSQL_ODBC_LIB=/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 R -q -e 'testthat::test_local()'
+DM_TEST_DOCKER_HOST=localhost make connect
 ```
 
 Controlled with environment variables:
 
-- `DM_TEST_SRC`: backend, one of:
-
-    - `df` (default)
-    
-    - `sqlite`
-    
-    - `duckdb`
-    
-    - `postgres`
-    
-    - `maria`
-    
-    - `mssql` (needs to create a database, see below)
-
 - `DM_TEST_DOCKER_HOST`: `localhost` on Linux, see output of `colima status` on macOS
 
-- `DM_TEST_MSSQL_ODBC_LIB`: mssql, path to ODBC library (`libmsodbcsql-*.so` or similar), the default should work for Homebrew-installed drivers on macOS arm64
+See also the `Makefile`.
+
+It is recommended to adapt your `.Renviron` once connectivity has been established.
+The subsequent instructions omit setting the environment variables explicitly.
+
+
+### Test against a specific database backend
+
+```sh
+make test-mssql
+```
+
+### Test against all backends
+
+```sh
+make -j1 test
+```
+
+
+### Test on Docker
+
+```sh
+# make docker-build
+make docker-test
+```
+
 
 ### mssql: For a new container, create the database
 
 FIXME: Automate this.
 
-macOS:
+```sh
+R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
+```
+
+
+### maria: For a new container, grant permissions
+
+FIXME: Automate this.
 
 ```sh
-DM_TEST_DOCKER_HOST=192.168.64.2 R -q -e 'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
+R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$con, "FLUSH PRIVILEGES")'
 ```
 
 Linux:
