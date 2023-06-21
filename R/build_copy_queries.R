@@ -10,6 +10,17 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     map_chr(x, ~ toString(map_chr(.x, DBI::dbQuoteIdentifier, conn = con)))
   }
 
+  ## helper to set on delete statement for fks if required
+  set_on_delete_col <- function(x) {
+    map_chr(x, ~ {
+      switch(.x,
+        "no_action" = "",
+        "cascade" = " ON DELETE CASCADE",
+        abort(glue("on_delete column value '{.x}' not supported"))
+      )
+    })
+  }
+
   ## fetch types, keys and uniques
   pks <- dm_get_all_pks_impl(ptype_dm) %>% rename(name = table)
   fks <- dm_get_all_fks_impl(ptype_dm)
@@ -57,7 +68,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
       # SQL Server:
       if (is_mssql(dest)) {
-        types[pk_col] <- "INT IDENTITY"
+        types[pk_col] <- paste0(types[pk_col], " IDENTITY")
       }
 
       # MariaDB:
@@ -140,11 +151,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
     # foreign key definitions and indexing queries
     # https://github.com/r-lib/rlang/issues/1422
-    if (is_duckdb(con) && package_version(asNamespace("duckdb")$.__NAMESPACE__.$spec[["version"]]) < "0.3.4.1") {
-      if (nrow(fks)) {
-        warn("duckdb doesn't support foreign keys, these won't be set in the remote database but are preserved in the `dm`")
-      }
-    } else if (is_mariadb(con) && temporary) {
+    if (is_mariadb(con) && temporary) {
       if (nrow(fks) > 0 && !is_testing()) {
         warn("MySQL and MariaDB don't support foreign keys for temporary tables, these won't be set in the remote database but are preserved in the `dm`")
       }
@@ -160,7 +167,8 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
             purrr::map_chr(table_names[fks$parent_table], ~ DBI::dbQuoteIdentifier(con, .x)),
             " (",
             quote_enum_col(parent_key_cols),
-            ")"
+            ")",
+            set_on_delete_col(on_delete)
           )
         ) %>%
         group_by(name) %>%

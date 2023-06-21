@@ -36,9 +36,8 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   expect_equivalent_dm(
     dm_db_learned,
     dm_for_filter()[order_of_deletion],
-    # FIXME: Enable fetching of on_delete information
-    ignore_on_delete = TRUE,
-    ignore_autoincrement = TRUE
+    ignore_on_delete = FALSE,
+    ignore_autoincrement = FALSE
   )
 
   # learning without keys:
@@ -127,7 +126,8 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
   expect_equivalent_dm(
     dm_db_learned,
     dm_for_disambiguate()[order_of_deletion],
-    ignore_autoincrement = TRUE
+    ignore_autoincrement = FALSE,
+    ignore_on_delete = FALSE
   )
 
   # learning without keys:
@@ -342,7 +342,8 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     dm_local_no_keys %>%
       dm_add_pk(test_1, b) %>%
       dm_add_fk(test_2, c, test_1),
-    ignore_autoincrement = TRUE
+    ignore_autoincrement = FALSE,
+    ignore_on_delete = FALSE
   )
 
   # learning without keys:
@@ -421,6 +422,20 @@ test_that("dm_meta() contents", {
       } else {
         .x
       }) %>%
+      imap(~ if (is_mariadb(con_db) && .y == "columns") {
+        # mariadb output on autoincrement column is integer
+        # transform this to boolean
+        mutate(.x, is_autoincrement = as.logical(is_autoincrement))
+      } else {
+        .x
+      }) %>%
+      imap(~ if (is_mariadb(con_db) && .y == "table_constraints") {
+        # mariadb default action for delete_rule is RESTRICT (synonym for NO ACTION)
+        # https://mariadb.com/kb/en/foreign-keys/#constraints
+        mutate(.x, delete_rule = if_else(delete_rule == "RESTRICT", "NO ACTION", delete_rule))
+      } else {
+        .x
+      }) %>%
       map(arrange_all) %>%
       jsonlite::toJSON(pretty = TRUE) %>%
       gsub(schema_name, "schema_name", .) %>%
@@ -445,7 +460,7 @@ test_that("dm_from_con() with mariaDB", {
   expect_snapshot(dm::dm_get_all_pks(my_dm))
 
   # multiple schemata work
-  expect_snapshot_output(my_dm <- dm_from_con(my_db, schema = c("Accidents", "Ad")))
+  expect_snapshot_output(my_dm <- dm_from_con(my_db, schema = c("Accidents", "Ad", "Financial_std")))
   expect_snapshot(dm::dm_get_all_fks(my_dm))
   expect_snapshot(dm::dm_get_all_pks(my_dm))
 })
