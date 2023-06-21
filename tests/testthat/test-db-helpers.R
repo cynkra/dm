@@ -199,7 +199,6 @@ test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
 })
 
 test_that("find name clashes", {
-
   # If all old names change to different new names...
   res <- find_name_clashes(
     c("one", "two", "three"),
@@ -217,5 +216,4 @@ test_that("find name clashes", {
   # We should get a list, with one element per "clashing" new name
   expect_named(res, "uno")
   expect_equal(res[["uno"]], c("one", "two"))
-
 })
