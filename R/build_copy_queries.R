@@ -6,6 +6,18 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
   quote_enum_col <- function(x) {
     map_chr(x, ~ toString(map_chr(.x, DBI::dbQuoteIdentifier, conn = con)))
   }
+  
+  ## helper to set on delete statement for fks if required
+  set_on_delete_col <- function(x) {
+    map_chr(x, ~ {
+      switch(
+        .x,
+        "no_action" = "",
+        "cascade" = " ON DELETE CASCADE",
+        abort(glue("on_delete column value '{.x}' not supported"))
+      )
+    })
+  }
 
   ## fetch types, keys and uniques
   pks <- dm_get_all_pks_impl(dm) %>% rename(name = table)
@@ -54,7 +66,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
       # SQL Server:
       if (is_mssql(dest)) {
-        types[pk_col] <- "INT IDENTITY"
+        types[pk_col] <- paste0(types[pk_col], " IDENTITY")
       }
 
       # MariaDB:
@@ -157,7 +169,8 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
             purrr::map_chr(table_names[fks$parent_table], ~ DBI::dbQuoteIdentifier(con, .x)),
             " (",
             quote_enum_col(parent_key_cols),
-            ")"
+            ")",
+            set_on_delete_col(on_delete)
           )
         ) %>%
         group_by(name) %>%

@@ -98,9 +98,12 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     dm_update_zoomed() %>%
     dm_select_tbl(-table_constraints) %>%
     dm_flatten_to_tbl(key_column_usage, .recursive = TRUE) %>%
-    select(constraint_catalog, constraint_schema, constraint_name, dm_name, column_name) %>%
+    select(constraint_catalog, constraint_schema, constraint_name, dm_name, column_name, is_autoincrement) %>%
     group_by(constraint_catalog, constraint_schema, constraint_name, dm_name) %>%
-    summarize(pks = list(tibble(column = list(column_name)))) %>%
+    summarize(pks = list(tibble(
+      column = list(column_name),
+      autoincrement = any(as.logical(is_autoincrement))
+    ))) %>%
     ungroup() %>%
     select(table = dm_name, pks)
 
@@ -111,6 +114,7 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     dm_update_zoomed() %>%
     dm_zoom_to(key_column_usage) %>%
     semi_join(table_constraints) %>%
+    left_join(table_constraints, select = c(delete_rule)) %>%
     left_join(columns, select = c(column_name, dm_name, table_catalog, table_schema, table_name)) %>%
     dm_update_zoomed() %>%
     dm_select_tbl(-table_constraints) %>%
@@ -137,6 +141,7 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
       constraint_schema,
       constraint_name,
       ordinal_position,
+      delete_rule,
       ref_table = constraint_column_usage.dm_name,
       ref_column = constraint_column_usage.column_name,
       table = key_column_usage.dm_name,
@@ -160,7 +165,16 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
       ref_column = list(ref_column),
       table = if (length(table) > 0) table[[1]] else NA_character_,
       column = list(column),
-      on_delete = "no_action"
+      on_delete = {
+        x <- case_when(
+          delete_rule == "CASCADE" ~ "cascade", 
+          .default = "no_action"
+        ) %>% unique()
+        if(!is_empty(x) & !is_scalar_character(x)) {
+          abort("delete_rule for all fk_cols in one constraint_name should be the same")
+        }
+        x
+      }
     ))) %>%
     ungroup() %>%
     select(-(1:3)) %>%

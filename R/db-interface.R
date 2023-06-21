@@ -219,7 +219,13 @@ copy_dm_to <- function(dest, dm, ...,
   # populate tables
   pwalk(
     queries[c("name", "remote_name")],
-    ticker_populate(~ db_append_table(dest_con, .y, dm[[.x]], progress))
+    ticker_populate(~ db_append_table(
+      con = dest_con, 
+      remote_table = .y, 
+      table = dm[[.x]], 
+      progress = progress, 
+      autoinc = dm_get_all_pks(dm, table = !!.x)$autoincrement
+    ))
   )
 
   ticker_index <- new_ticker(
@@ -263,11 +269,13 @@ check_naming <- function(table_names, dm_table_names) {
   }
 }
 
-db_append_table <- function(con, remote_table, table, progress, top_level_fun = "copy_dm_to") {
+db_append_table <- function(con, remote_table, table, progress, top_level_fun = "copy_dm_to", autoinc = logical(0)) {
   table <- collect(table)
   if (nrow(table) == 0 || ncol(table) == 0) {
     return(invisible())
   }
+
+  remote_table_name <- DBI::dbQuoteIdentifier(con, remote_table)
 
   if (is_mssql(con)) {
     # FIXME: Make adaptive
@@ -282,13 +290,21 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
       progress = progress,
       top_level_fun = top_level_fun
     )
-
+    
     walk(seq_len(n_chunks), ticker(~ {
       end <- .x * chunk_size
       idx <- seq2(end - (chunk_size - 1), min(end, nrow(table)))
       values <- map(table[idx, ], mssql_escape, con = con)
       # Can't use dbAppendTable(): https://github.com/r-dbi/odbc/issues/480
       sql <- DBI::sqlAppendTable(con, remote_table_id, values, row.names = FALSE)
+      if(length(autoinc) > 1L) abort("more than one autoincrement key in one table")
+      if(!is_empty(autoinc) && autoinc) {
+        sql <- DBI::SQL(paste0(
+          "SET IDENTITY_INSERT ", remote_table_name, " ON\n",
+          sql, "\n",
+          "SET IDENTITY_INSERT ", remote_table_name, " OFF"
+        ))
+      }
       DBI::dbExecute(con, sql, immediate = TRUE)
     }))
   } else if (is_postgres(con)) {
