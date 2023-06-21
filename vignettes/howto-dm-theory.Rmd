@@ -67,10 +67,9 @@ The information is stored in five tables.
 
 Details like the full name of an airport are not available immediately; these can only be obtained by joining or merging the constituent tables, which can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other forms of data merging.
 
-In classical {dplyr} notation, you will need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes`, `airports`, and `weather` tables to create one wide data frame.
+In classical {dplyr} notation, you will need four `left_join()` calls to gradually merge the `flights` table to the `airlines`, `planes`, `airports`, and `weather` tables to create one wide data frame.
 
 ```{r}
-library(tidyverse)
 library(dm)
 library(nycflights13)
 

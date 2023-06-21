@@ -73,6 +73,7 @@ is_unique_key <- function(.data, column) {
   is_unique_key_se(.data, col_name)
 }
 
+#' @autoglobal
 is_unique_key_se <- function(.data, colname) {
   val_names <- paste0("value", seq_along(colname))
   col_syms <- syms(colname)

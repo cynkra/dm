@@ -87,6 +87,8 @@ test_that("dm_rows_insert()", {
 })
 
 test_that("dm_rows_update()", {
+  skip_if_not_installed("dbplyr")
+
   expect_snapshot({
     # Test bad column order
     dm_filter_rearranged <-
@@ -146,6 +148,7 @@ test_that("dm_rows_update()", {
 })
 
 test_that("dm_rows_truncate()", {
+  skip_if_not_installed("dbplyr")
   local_options(lifecycle_verbosity = "warning")
 
   expect_snapshot({

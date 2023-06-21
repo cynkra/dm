@@ -15,7 +15,7 @@
       # A tibble: 5 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_5  k      FALSE        
@@ -38,7 +38,7 @@
       # A tibble: 5 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_4  h      FALSE        
       4 tf_5  k      FALSE        
@@ -61,7 +61,7 @@
       # A tibble: 5 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -88,7 +88,7 @@
       # A tibble: 5 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_5  k      FALSE        
@@ -114,7 +114,7 @@
       # A tibble: 5 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_3  f, f1  FALSE        
       3 tf_4  h      FALSE        
       4 tf_5  k      FALSE        
@@ -140,7 +140,7 @@
       # A tibble: 5 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_4  h      FALSE        
       4 tf_5  k      FALSE        
@@ -173,7 +173,7 @@
     Output
       $pks
       # A tibble: 0 x 3
-      # ... with 3 variables: table <chr>, pk_col <keys>, autoincrement <lgl>
+      # i 3 variables: table <chr>, pk_col <keys>, autoincrement <lgl>
       
       $fks
       # A tibble: 5 x 5
@@ -261,7 +261,7 @@
 
 # dm_get_all_pks() with table arg fails nicely
 
-    Can't subset tables that don't exist.
+    Can't select tables that don't exist.
     x Table `timetable` doesn't exist.
 
 # dm_get_all_pks() with compound keys

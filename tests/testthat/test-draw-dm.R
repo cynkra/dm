@@ -158,3 +158,46 @@ test_that("output", {
     "empty-table-in-dm.svg"
   )
 })
+
+test_that("table_description works", {
+  expect_dm_error(dm_draw(dm_nycflights_small(), table_description = "Flüge"), "arg_needs_names")
+  expect_dm_error(dm_draw(dm_nycflights_small(), table_description = c("flight" = "Flüge")), "table_not_in_dm")
+
+  expect_snapshot_diagram(
+    dm_nycflights_small() %>%
+      dm_draw(
+        table_description = c("flights" = "high in the sky\nflying from NY")
+      ),
+    "table-desc-1-dm.svg"
+  )
+
+  expect_snapshot_diagram(
+    dm_nycflights_small() %>%
+      dm_draw(
+        table_description = c("flights" = "high in the sky\nflying from NY"),
+        font_size_table_description = 6L
+      ),
+    "table-desc-2-dm.svg"
+  )
+})
+
+test_that("UK support works", {
+  expect_snapshot_diagram(
+    dm_nycflights_small() %>%
+      dm_add_uk(weather, time_hour) %>%
+      dm_draw(
+        table_description = c("flights" = "high in the sky\nflying from NY"),
+        view_type = "all"
+      ),
+    "table-uk-1-dm.svg"
+  )
+
+  expect_snapshot_diagram(
+    dm_nycflights_small() %>%
+      dm_add_fk(flights, time_hour, weather, time_hour) %>%
+      dm_draw(
+        table_description = c("weather" = "Wetter\npogoda")
+      ),
+    "table-uk-2-dm.svg"
+  )
+})

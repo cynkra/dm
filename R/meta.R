@@ -40,6 +40,7 @@ dm_meta <- function(con, catalog = NA, schema = NULL, simple = FALSE) {
   out
 }
 
+#' @autoglobal
 dm_meta_raw <- function(con, catalog) {
   src <- src_from_src_or_con(con)
 
@@ -59,6 +60,7 @@ dm_meta_raw <- function(con, catalog) {
     "character_maximum_length", "character_octet_length", "numeric_precision",
     "numeric_scale", "datetime_precision",
     "character_set_name", "collation_name",
+    if (is_mariadb(src)) "extra" else NULL,
 
     # Optional, not RMySQL:
     # "numeric_precision_radix",
@@ -67,19 +69,55 @@ dm_meta_raw <- function(con, catalog) {
     # "domain_schema", "domain_name"
   ))
 
+  # add is_autoincrement column to columns table
+  if (is_mssql(src)) {
+    columns <- columns %>%
+      mutate(is_autoincrement = sql("CAST(COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity') AS BIT)"))
+  } else if (is_postgres(src)) {
+    columns <- columns %>%
+      mutate(is_autoincrement = sql("CASE WHEN column_default IS NULL THEN FALSE ELSE column_default SIMILAR TO '%nextval%' END"))
+  } else if (is_mariadb(src)) {
+    columns <- columns %>%
+      mutate(is_autoincrement = sql("extra REGEXP 'auto_increment'")) %>%
+      select(-extra)
+  } else {
+    cli::cli_alert_warning("unable to fetch autoincrement metadata for src '{class(src)[1]}'")
+    columns <- columns %>%
+      mutate(is_autoincrement = NA)
+  }
+
   if (is_mariadb(src)) {
     table_constraints <- tbl_lc(src, "information_schema.table_constraints", vars = vec_c(
       "constraint_catalog", "constraint_schema", "constraint_name",
       "table_name", "constraint_type"
     )) %>%
       mutate(table_catalog = constraint_catalog, table_schema = constraint_schema, .before = table_name) %>%
-      mutate(constraint_name = if_else(constraint_type == "PRIMARY KEY", paste0("pk_", table_name), constraint_name))
+      mutate(constraint_name = if_else(constraint_type == "PRIMARY KEY", paste0("pk_", table_name), constraint_name)) %>%
+      left_join(
+        tbl_lc(src, "information_schema.referential_constraints", vars = vec_c(
+          "constraint_catalog", "constraint_schema", "constraint_name",
+          # "unique_constraint_catalog", "unique_constraint_schema",
+          # "unique_constraint_name", "match_option", "update_rule",
+          # "table_name", "referenced_table_name"
+          "delete_rule"
+        )),
+        by = c("constraint_catalog", "constraint_schema", "constraint_name")
+      )
   } else {
     table_constraints <- tbl_lc(src, "information_schema.table_constraints", vars = vec_c(
       "constraint_catalog", "constraint_schema", "constraint_name",
       "table_catalog", "table_schema", "table_name", "constraint_type",
       "is_deferrable", "initially_deferred",
-    ))
+    )) %>%
+      left_join(
+        tbl_lc(src, "information_schema.referential_constraints", vars = vec_c(
+          "constraint_catalog", "constraint_schema", "constraint_name",
+          # "unique_constraint_catalog", "unique_constraint_schema",
+          # "unique_constraint_name", "match_option", "update_rule",
+          "delete_rule"
+        )),
+        by = c("constraint_catalog", "constraint_schema", "constraint_name")
+      )
   }
 
   key_column_usage <- tbl_lc(src, "information_schema.key_column_usage", vars = vec_c(
@@ -134,6 +172,7 @@ dm_meta_raw <- function(con, catalog) {
     dm_meta_add_keys()
 }
 
+#' @autoglobal
 dm_meta_add_keys <- function(dm_meta) {
   dm_meta %>%
     dm_meta_simple_add_keys() %>%
@@ -179,6 +218,7 @@ dm_meta_simple_raw <- function(con) {
     dm_meta_simple_add_keys()
 }
 
+#' @autoglobal
 dm_meta_simple_add_keys <- function(dm_meta) {
   dm_meta %>%
     dm_add_pk(schemata, c(catalog_name, schema_name)) %>%
@@ -211,16 +251,19 @@ tbl_lc <- function(con, name, vars) {
   out
 }
 
+#' @autoglobal
 select_dm_meta <- function(dm_meta) {
   dm_meta %>%
     dm_select(schemata, catalog_name, schema_name) %>%
     dm_select(tables, table_catalog, table_schema, table_name, table_type) %>%
-    dm_select(columns, table_catalog, table_schema, table_name, column_name, ordinal_position, column_default, is_nullable) %>%
-    dm_select(table_constraints, constraint_catalog, constraint_schema, constraint_name, table_catalog, table_schema, table_name, constraint_type) %>%
+    dm_select(columns, table_catalog, table_schema, table_name, column_name, ordinal_position, column_default, is_nullable, is_autoincrement) %>%
+    dm_select(table_constraints, constraint_catalog, constraint_schema, constraint_name, table_catalog, table_schema, table_name, constraint_type, delete_rule) %>%
     dm_select(key_column_usage, constraint_catalog, constraint_schema, constraint_name, table_catalog, table_schema, table_name, column_name, ordinal_position) %>%
     dm_select(constraint_column_usage, table_catalog, table_schema, table_name, column_name, constraint_catalog, constraint_schema, constraint_name, ordinal_position)
 }
 
+#' @autoglobal
+#' @global DATABASE
 filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
   force(catalog)
   force(schema)
@@ -272,6 +315,7 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
     dm_meta_add_keys()
 }
 
+#' @autoglobal
 filter_dm_meta_simple <- function(dm_meta, catalog = NULL, schema = NULL) {
   force(catalog)
   force(schema)

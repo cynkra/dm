@@ -24,7 +24,6 @@ knit_print.grViz <- function(x, ...) {
     knitr::asis_output()
 }
 library(nycflights13)
-library(tidyverse)
 library(dm)
 ```
 

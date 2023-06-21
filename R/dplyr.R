@@ -363,7 +363,7 @@ tally.dm_zoomed <- function(x, ...) {
 }
 
 #' @export
-pull.dm <- function(.data, var = -1, name = NULL) {
+pull.dm <- function(.data, var = -1, name = NULL, ...) {
   check_zoomed(.data)
 }
 
@@ -648,6 +648,7 @@ nest_join.dm_zoomed <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, nam
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
+#' @autoglobal
 prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) {
   y_name <- dm_tbl_name(x, {{ y }})
   select_quo <- enquo(selected)

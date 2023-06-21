@@ -106,6 +106,7 @@ test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` 
 
 test_that("cdm_get_src() works", {
   skip_on_cran()
+  skip_if_not_installed("dbplyr")
   local_options(lifecycle_verbosity = "quiet")
 
   expect_dm_error(
