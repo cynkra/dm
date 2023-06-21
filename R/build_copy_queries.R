@@ -215,7 +215,11 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
   queries <- left_join(create_table_queries, index_queries, by = "name")
 
-  queries$dml <- dm_dml_load(dm, con, table_names=table_names)
+  queries$dml <- dm_dml_load(
+    dm, con,
+    ## queries DF order does not match to table_names order so we need to match to order here
+    table_names = table_names[match(queries$name, names(table_names))]
+  )
 
   ## Reorder queries according to topological sort so pks are created before associated fks
   graph <- create_graph_from_dm(dm, directed = TRUE)
