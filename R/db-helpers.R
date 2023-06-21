@@ -117,6 +117,11 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
   quote_ids(names, con_from_src_or_con(con), schema)
 }
 
+find_name_clashes <- function(old, new) {
+  # Any entries in `new` with more than one corresponding entry in `old`
+  purrr::keep(split(old, new), ~ length(unique(.x)) > 1)
+}
+
 #' @autoglobal
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
@@ -152,12 +157,47 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
     names_table <- get_names_table_mariadb(con)
   }
 
-  names_table %>%
-    filter(schema_name == !!schema) %>%
+  names_table <- names_table %>%
+    filter(schema_name %in% !!(if (inherits(schema, "sql")) glue_sql_collapse(schema) else schema)) %>%
     collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
-    mutate(remote_name = schema_if(schema_name, table_name, con, dbname)) %>%
-    select(-schema_name) %>%
+    mutate(remote_name = schema_if(schema_name, table_name, con, dbname))
+
+
+  # SQL table names are only guaranteed to be unique in a single schema, so if
+  # we have multiple schemas, we might end up with the same local_name pointing
+  # to more than one remote_name
+  # In such a case, raise a warning, and keep only the first relevant schema
+  if (length(schema) > 1) {
+
+    # Order according to ordering of `schema`, so that in a moment we can keep "first" table in event of a clash
+    names_table <- names_table %>%
+      mutate(schema_name = factor(schema_name, levels = schema)) %>%
+      arrange(schema_name)
+
+    clashes <- with(names_table, find_name_clashes(remote_name, table_name))
+
+    if (length(clashes) > 0) {
+
+      cli::cli_warn(c(
+        "Some table names aren't unique:",
+        purrr::imap_chr(
+          clashes,
+          ~ cli::format_inline(
+            "Local name {.field {.y}} will refer to {.cls {DBI::dbQuoteIdentifier(con, .x[[1]])}}, ",
+            "rather than to {.or {.cls {map(.x[-1], DBI::dbQuoteIdentifier, conn = con)}}}"
+          )
+        ) %>%
+          purrr::set_names(rep("*", length(clashes)))
+      ))
+
+      # Keep only first schema for each table_name
+      names_table <- slice_head(names_table, by = table_name)
+    }
+  }
+
+  names_table %>%
+    select(table_name, remote_name) %>%
     deframe()
 }
 
