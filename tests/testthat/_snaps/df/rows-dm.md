@@ -58,7 +58,7 @@
       filled_dm$t3
     Output
       # A tibble: 0 x 2
-      # ... with 2 variables: e <int>, o <chr>
+      # i 2 variables: e <int>, o <chr>
     Code
       filled_dm$t4
     Output
@@ -96,7 +96,7 @@
       filled_twice_dm$t3
     Output
       # A tibble: 0 x 2
-      # ... with 2 variables: e <int>, o <chr>
+      # i 2 variables: e <int>, o <chr>
     Code
       filled_twice_dm$t4
     Output
