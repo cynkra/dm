@@ -65,13 +65,9 @@
     Code
       abort_no_cycles(create_graph_from_dm(dm_for_filter_w_cycle()))
     Condition
-      Warning in `dm_for_filter_w_cycle()`:
-      restarting interrupted promise evaluation
-      Error in `pmap()`:
-      i In index: 1.
-      Caused by error:
-      ! rapi_execute: Failed to run query
-      Error: Constraint Error: NOT NULL constraint failed: tf_1_45_2023_06_21_19_22_02_35836_19415.a
+      Error in `abort_no_cycles()`:
+      ! Cycles in the relationship graph not yet supported.
+      i Shortest cycle: tf_5 -> tf_6 -> tf_7 -> tf_2 -> tf_3 -> tf_4 -> tf_5
     Code
       abort_tables_not_reachable_from_start()
     Condition
