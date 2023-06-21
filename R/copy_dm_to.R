@@ -35,8 +35,6 @@
 #' DBI::dbDisconnect(con)
 dm_sql <- function(dm,
                    dest,
-                   set_key_constraints = TRUE,
-                   table_names = set_names(names(dm)),
                    temporary = TRUE,
                    schema = NULL) {
   c(
