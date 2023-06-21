@@ -285,17 +285,30 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
   source_rows <- map(key_values, ~ select(filter(y, !!returning == !!.x), -!!returning))
 
   con <- dbplyr::remote_con(x)
-  target_name <- dbplyr::remote_name(x)
-  insert_queries <- map(source_rows, ~ dbplyr::sql_query_append(
-    con,
-    target_name,
-    .x,
-    returning_cols = autoinc_col
-  ))
+  if (utils::packageVersion("dbplyr") >= "2.3.2.9000") {
+    dbplyr_ns <- asNamespace("dbplyr")
+    remote_table <- mget("remote_table", dbplyr_ns, mode = "function", ifnotfound = list(NULL))[[1]]
+
+    insert_queries <- map(source_rows, ~ dbplyr::sql_query_append(
+      con,
+      remote_table(x),
+      from = dbplyr::sql_render(.x, con),
+      insert_cols = colnames(.x),
+      returning_cols = autoinc_col
+    ))
+  } else {
+    target_name <- remote_name_qual(x)
+    insert_queries <- map(source_rows, ~ dbplyr::sql_query_append(
+      con,
+      target_name,
+      .x,
+      returning_cols = autoinc_col
+    ))
+  }
 
   autoinc_col_orig <- paste0(autoinc_col, "_orig")
 
-  insert_sql <- map_chr(insert_queries, dbplyr::sql_render)
+  insert_sql <- sql(unlist(insert_queries))
 
   # Run INSERT INTO queries, side effect!
   # Must run queries individually, e.g. on Postgres:

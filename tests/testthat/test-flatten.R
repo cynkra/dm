@@ -1,5 +1,13 @@
 test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   skip_if_src_not(c("df", "duckdb"))
+
+  local_options(
+    pillar.min_title_chars = NULL,
+    pillar.max_title_chars = NULL,
+    pillar.max_footer_lines = NULL,
+    pillar.bold = NULL,
+  )
+
   # FIXME: Debug GHA fail
   # for left join test the basic flattening also on all DBs
   # expect_equivalent_tbl(
@@ -73,6 +81,13 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
 })
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
+  local_options(
+    pillar.min_title_chars = NULL,
+    pillar.max_title_chars = NULL,
+    pillar.max_footer_lines = NULL,
+    pillar.bold = NULL,
+  )
+
   out <- expect_message_obj(dm_flatten_to_tbl(
     dm_for_flatten(), fact,
     .join = inner_join

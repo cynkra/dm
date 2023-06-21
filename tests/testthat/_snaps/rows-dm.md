@@ -289,7 +289,7 @@
     Message
       Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.
     Output
-      # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
+      # i 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
     Code
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
@@ -308,7 +308,7 @@
       Warning:
       `dm_rows_truncate()` was deprecated in dm 1.0.0.
     Output
-      # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
+      # i 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
     Code
       dm_copy %>% dm_get_tables() %>% map(arrange_all)
     Output
@@ -403,7 +403,7 @@
       10    10 J    
       
       $tf_2
-      # ... with 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
+      # i 4 variables: c <chr>, d <int>, e <chr>, e1 <int>
       
       $tf_3
          f        f1 g    
@@ -429,7 +429,7 @@
       5 e     seven F         6
       
       $tf_5
-      # ... with 4 variables: ww <int>, k <int>, l <chr>, m <chr>
+      # i 4 variables: ww <int>, k <int>, l <chr>, m <chr>
       
       $tf_6
            zz n          o    
@@ -501,7 +501,7 @@
       filled_dm$t3
     Output
       # A tibble: 0 x 2
-      # ... with 2 variables: e <int>, o <chr>
+      # i 2 variables: e <int>, o <chr>
     Code
       filled_dm$t4
     Output
@@ -533,7 +533,7 @@
       filled_dm_in_place$t3
     Output
       # A tibble: 0 x 2
-      # ... with 2 variables: e <int>, o <chr>
+      # i 2 variables: e <int>, o <chr>
     Code
       filled_dm_in_place$t4
     Output

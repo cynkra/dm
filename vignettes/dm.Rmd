@@ -39,7 +39,7 @@ fin_db <- dbConnect(
 )
 ``````
 
-``````{r connect-real, show = FALSE}
+``````{r connect-real, echo = FALSE}
 library(RMariaDB)
 
 fin_db <- dm:::financial_db_con()
@@ -180,7 +180,7 @@ If you want to make permanent changes to your data model on an RDBMS, please see
 It's always smart to check that your data model follows its specifications.
 When building our own model or changing existing models by adding tables or keys, it is even more important that the new model is validated.
 
-`dm_examine_constrains()` checks all primary and foreign keys and reports if they violate their expected constraints.
+`dm_examine_constraints()` checks all primary and foreign keys and reports if they violate their expected constraints.
 
 ```{r constraints}
 fin_dm_total %>%
@@ -197,7 +197,7 @@ dbDisconnect(fin_db)
 
 Now that you have been introduced to the basic operation of dm, the next step is to learn more about the dm methods that your particular use case requires.
 
-Is your data in an RDBMS? Then move on to `vignette("howto-dm-db")` for a more detailed looking at working with an existing relational data model.
+Is your data in an RDBMS? Then move on to `vignette("howto-dm-db")` for a more detailed look at working with an existing relational data model.
 
 If your data is in data frames, then you want to read `vignette("howto-dm-df")` next.
 

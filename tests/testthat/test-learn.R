@@ -12,7 +12,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     ))
   )
 
-  dm_for_filter_copied <- copy_dm_to(con_db, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
+  dm_for_filter_copied <- copy_dm_to(con_db, dm_for_filter(), temporary = FALSE, table_names = ~ unique_db_table_name(.x))
   order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
 
   remote_tbl_names <-
@@ -36,9 +36,8 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   expect_equivalent_dm(
     dm_db_learned,
     dm_for_filter()[order_of_deletion],
-    # FIXME: Enable fetching of on_delete information
-    ignore_on_delete = TRUE,
-    ignore_autoincrement = TRUE
+    ignore_on_delete = FALSE,
+    ignore_autoincrement = FALSE
   )
 
   # learning without keys:
@@ -110,8 +109,12 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
   }
 
   # test 'get_src_tbl_names()'
+  src_tbl_names <- purrr::map_chr(
+    get_src_tbl_names(con_db, schema = schema_name),
+    ~ DBI::dbQuoteIdentifier(con_db, .x)
+  )
   expect_identical(
-    sort(normalize_table_name(get_src_tbl_names(con_db, schema = schema_name))),
+    sort(normalize_table_name(SQL(src_tbl_names))),
     SQL(sort(normalize_table_name(remote_tbl_names)))
   )
 
@@ -123,7 +126,8 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
   expect_equivalent_dm(
     dm_db_learned,
     dm_for_disambiguate()[order_of_deletion],
-    ignore_autoincrement = TRUE
+    ignore_autoincrement = FALSE,
+    ignore_on_delete = FALSE
   )
 
   # learning without keys:
@@ -168,42 +172,33 @@ test_that("'schema_if()' works", {
   con_db <- my_db_test_src()$con
 
   # all 3 naming parameters set ('table' is required)
-  expect_match(
-    unclass(expect_s4_class(
-      schema_if(
-        schema = "schema",
-        table = "table",
-        con = con_db,
-        dbname = "database"
-      ),
-      "SQL"
-    )),
-    "\"database\".\"schema\".\"table\"|`database`.`schema`.`table`"
+  expect_equal(
+    schema_if(
+      schema = "schema",
+      table = "table",
+      con = con_db,
+      dbname = "database"
+    )[[1]],
+    DBI::Id(catalog = "database", schema = "schema", table = "table")
   )
 
   # schema and table set
-  expect_match(
-    unclass(expect_s4_class(
-      schema_if(
-        schema = "schema",
-        table = "table",
-        con = con_db
-      ),
-      "SQL"
-    )),
-    "\"schema\".\"table\"|`schema`.`table`"
+  expect_equal(
+    schema_if(
+      schema = "schema",
+      table = "table",
+      con = con_db
+    )[[1]],
+    DBI::Id(schema = "schema", table = "table")
   )
 
   # dbname and table set
   expect_error(schema_if(schema = NA, con = con_db, table = "table", dbname = "db"))
 
   # only table set
-  expect_match(
-    unclass(expect_s4_class(
-      schema_if(schema = NA, table = "table", con = con_db),
-      "SQL"
-    )),
-    "\"table\"|`table`"
+  expect_equal(
+    schema_if(schema = NA, table = "table", con = con_db)[[1]],
+    DBI::Id(table = "table")
   )
 })
 
@@ -241,14 +236,12 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
 
 
   # test 'get_src_tbl_names()'
-  src_tbl_names <- unname(get_src_tbl_names(con_db, dbname = "test_database_dm"))
   expect_identical(
-    src_tbl_names,
-    sort(DBI::SQL(paste0(
-      DBI::dbQuoteIdentifier(con_db, "test_database_dm"), ".",
-      DBI::dbQuoteIdentifier(con_db, "dbo"), ".",
-      DBI::dbQuoteIdentifier(con_db, c("test_1", "test_2"))
-    )))
+    get_src_tbl_names(con_db, dbname = "test_database_dm"),
+    list(
+      test_1 = DBI::Id(catalog = "test_database_dm", schema = "dbo", table = "test_1"),
+      test_2 = DBI::Id(catalog = "test_database_dm", schema = "dbo", table = "test_2")
+    )
   )
 
   dm_local_no_keys <- dm(
@@ -256,7 +249,11 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
     test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
 
-  expect_message(dm_db_learned <- dm_from_con(con_db, dbname = "test_database_dm"))
+  expect_message(
+    dm_db_learned <- dm_from_con(con_db, dbname = "test_database_dm"),
+    "queried successfully",
+    fixed = TRUE
+  )
   dm_learned <- dm_db_learned %>% collect()
   expect_equivalent_dm(
     dm_learned,
@@ -267,8 +264,8 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
   )
 
   # learning without keys:
-  dm_learned_no_keys <- expect_silent(
-    dm_from_con(
+  expect_silent(
+    dm_learned_no_keys <- dm_from_con(
       con_db,
       dbname = "test_database_dm",
       learn_keys = FALSE
@@ -325,14 +322,12 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
   })
 
   # test 'get_src_tbl_names()'
-  src_tbl_names <- unname(get_src_tbl_names(con_db, schema = "dm_test", dbname = "test_database_dm"))
   expect_identical(
-    src_tbl_names,
-    sort(DBI::SQL(paste0(
-      DBI::dbQuoteIdentifier(con_db, "test_database_dm"), ".",
-      DBI::dbQuoteIdentifier(con_db, "dm_test"), ".",
-      DBI::dbQuoteIdentifier(con_db, c("test_1", "test_2"))
-    )))
+    get_src_tbl_names(con_db, schema = "dm_test", dbname = "test_database_dm"),
+    list(
+      test_1 = DBI::Id(catalog = "test_database_dm", schema = "dm_test", table = "test_1"),
+      test_2 = DBI::Id(catalog = "test_database_dm", schema = "dm_test", table = "test_2")
+    )
   )
 
   dm_local_no_keys <- dm(
@@ -347,7 +342,8 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     dm_local_no_keys %>%
       dm_add_pk(test_1, b) %>%
       dm_add_fk(test_2, c, test_1),
-    ignore_autoincrement = TRUE
+    ignore_autoincrement = FALSE,
+    ignore_on_delete = FALSE
   )
 
   # learning without keys:
@@ -426,6 +422,20 @@ test_that("dm_meta() contents", {
       } else {
         .x
       }) %>%
+      imap(~ if (is_mariadb(con_db) && .y == "columns") {
+        # mariadb output on autoincrement column is integer
+        # transform this to boolean
+        mutate(.x, is_autoincrement = as.logical(is_autoincrement))
+      } else {
+        .x
+      }) %>%
+      imap(~ if (is_mariadb(con_db) && .y == "table_constraints") {
+        # mariadb default action for delete_rule is RESTRICT (synonym for NO ACTION)
+        # https://mariadb.com/kb/en/foreign-keys/#constraints
+        mutate(.x, delete_rule = if_else(delete_rule == "RESTRICT", "NO ACTION", delete_rule))
+      } else {
+        .x
+      }) %>%
       map(arrange_all) %>%
       jsonlite::toJSON(pretty = TRUE) %>%
       gsub(schema_name, "schema_name", .) %>%
@@ -450,7 +460,7 @@ test_that("dm_from_con() with mariaDB", {
   expect_snapshot(dm::dm_get_all_pks(my_dm))
 
   # multiple schemata work
-  expect_snapshot_output(my_dm <- dm_from_con(my_db, schema = c("Accidents", "Ad")))
+  expect_snapshot_output(my_dm <- dm_from_con(my_db, schema = c("Accidents", "Ad", "Financial_std")))
   expect_snapshot(dm::dm_get_all_fks(my_dm))
   expect_snapshot(dm::dm_get_all_pks(my_dm))
 })

@@ -89,17 +89,12 @@ dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
     src_tbl_names <- table_names
   }
 
-  if (inherits(src_tbl_names, "SQL")) {
-    tbls <-
-      src_tbl_names %>%
-      map(dbplyr::ident_q) %>%
-      map(possibly(tbl, NULL), src = src)
-  } else {
-    tbls <-
-      set_names(src_tbl_names) %>%
-      quote_ids(con) %>%
-      map(possibly(tbl, NULL), src = src)
-  }
+  nms <- purrr::map_chr(src_tbl_names, ~ .x@name[["table"]])
+
+  tbls <-
+    set_names(src_tbl_names, nms) %>%
+    quote_ids(con) %>%
+    map(possibly(tbl, NULL), src = src)
 
   bad <- map_lgl(tbls, is_null)
   if (any(bad)) {
@@ -139,15 +134,9 @@ quote_ids <- function(x, con, schema = NULL) {
   }
 
   if (is_null(schema)) {
-    map(
-      x,
-      ~ dbplyr::ident_q(dbplyr::build_sql(dbplyr::ident(.x), con = con))
-    )
+    map_if(x, ~ !inherits(.x, "Id"), ~ DBI::Id(table = .x))
   } else {
-    map(
-      x,
-      ~ dbplyr::ident_q(schema_if(rep(schema, length(.x)), .x, con))
-    )
+    map_if(x, ~ !inherits(.x, "Id"), ~ schema_if(rep(schema, length(.x)), .x, con)[[1]])
   }
 }
 

@@ -70,10 +70,6 @@ is_db_test_src <- function() {
   my_test_src_name != "df"
 }
 
-is_my_test_src_sqlite <- function() {
-  inherits(my_db_test_src(), "src_SQLiteConnection")
-}
-
 my_test_src_fun %<--% {
   fun <- paste0("test_src_", my_test_src_name)
   get0(fun, inherits = TRUE)
@@ -304,7 +300,7 @@ dm_for_filter_w_cycle %<-% {
   dm(
     tf_1 = tf_1(), tf_2 = tf_2(), tf_3 = tf_3(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6(), tf_7 = tf_7()
   ) %>%
-    dm_add_pk(tf_1, a) %>%
+    dm_add_pk(tf_1, a, autoincrement = TRUE) %>%
     dm_add_pk(tf_3, c(f, f1)) %>%
     #
     dm_add_pk(tf_2, c) %>%

@@ -98,12 +98,16 @@ navbar:
     - intro
     - reference
     - tutorials
+    - cheatsheet
     - tech
     - news
     right:
     - search
     - github
   components:
+    cheatsheet:
+      text: Cheatsheet
+      href: articles/cheatsheet.html
     tutorials:
       text: Tutorials
       menu:

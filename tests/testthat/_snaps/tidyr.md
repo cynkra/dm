@@ -7,7 +7,7 @@
       # A tibble: 5 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_3  f, f1  FALSE        
       3 tf_4  h      FALSE        
       4 tf_5  k      FALSE        
@@ -30,7 +30,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -56,7 +56,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -82,7 +82,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        

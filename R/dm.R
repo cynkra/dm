@@ -144,6 +144,7 @@ new_keyed_dm_def <- function(tables = list()) {
 }
 
 
+#' @autoglobal
 new_dm_def <- function(tables = list(),
                        pks_df = tibble(table = character(), pks = list()),
                        uks_df = tibble(table = character(), uks = list()),
@@ -551,6 +552,7 @@ length.dm_zoomed <- function(x) {
 }
 
 #' @export
+#' @autoglobal
 str.dm <- function(object, ...) {
   # for both dm and dm_zoomed
   object <-
@@ -560,6 +562,7 @@ str.dm <- function(object, ...) {
 }
 
 #' @export
+#' @autoglobal
 str.dm_zoomed <- function(object, ...) {
   object <-
     dm_get_def(object, quiet = TRUE) %>%
@@ -582,6 +585,7 @@ tbl_impl <- function(dm, from, quiet = FALSE, keyed = FALSE) {
   tbl_def_impl(def, idx, keyed)
 }
 
+#' @autoglobal
 tbl_def_impl <- function(def, idx, keyed) {
   data <- def$data[[idx]]
 

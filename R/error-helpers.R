@@ -631,6 +631,10 @@ abort_one_of_schema_table_names <- function() {
   )
 }
 
+abort_arg_needs_names <- function(arg_name) {
+  abort(glue("Argument `{arg_name}` needs to be named."), class = dm_error_full("arg_needs_names"))
+}
+
 s_if_plural <- function(vec) {
   if (length(vec) > 1) {
     # n = noun, v = verb

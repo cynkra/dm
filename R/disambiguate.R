@@ -87,6 +87,7 @@ get_table_colnames <- function(dm, tables = NULL, exclude_pk = TRUE) {
 #' @param table_colnames a table containing table name and col names of dm
 #' @param sep separator used to create new names for dupe cols
 #' @noRd
+#' @autoglobal
 compute_disambiguate_cols_recipe <- function(table_colnames, sep, position = "suffix") {
   dupes <- vec_duplicate_detect(table_colnames$column)
   dup_colnames <- table_colnames[dupes, ]
@@ -114,6 +115,7 @@ compute_disambiguate_cols_recipe <- function(table_colnames, sep, position = "su
 #'
 #' @param recipe created by `compute_disambiguate_cols_recipe`
 #' @noRd
+#' @autoglobal
 explain_col_rename <- function(recipe) {
   if (nrow(recipe) == 0) {
     return()

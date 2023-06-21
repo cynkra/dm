@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 1.0.4.9005
-Date: 2023-03-02
+Version: 1.0.5.9014
+Date: 2023-06-20
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -60,11 +60,11 @@ Imports:
     memoise,
     methods,
     pillar (>= 1.7.0),
-    purrr,
+    purrr (>= 1.0.0),
     rlang (>= 1.0.2),
     tibble (>= 3.0.0),
     tidyr (>= 1.0.0),
-    tidyselect (>= 1.0.1),
+    tidyselect (>= 1.2.0.9000),
     vctrs (>= 0.3.2)
 Suggests: 
     brio,
@@ -99,9 +99,21 @@ Suggests:
     shinyAce,
     shinydashboard,
     testthat (>= 3.1.2),
-    tidyverse,
     waldo,
     withr
+Remotes: 
+    r-lib/tidyselect
+Config/Needs/website:
+    brio,
+    bslib,
+    cynkra/cynkratemplate,
+    htmltools,
+    pagedown,
+    purrr,
+    rmarkdown,
+    whisker,
+    xml2
+Config/Needs/check: anthonynorth/roxyglobals
 VignetteBuilder: 
     knitr
 Config/autostyle/scope: line_breaks
@@ -111,6 +123,8 @@ Config/testthat/parallel: true
 Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm,
     draw-dm, bind, rows-dm
 Encoding: UTF-8
-Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd"))
+Roxygen: list(
+      markdown = TRUE,
+      roclets = c("collate", "namespace", "rd", "roxyglobals::global_roclet")
+    )
 RoxygenNote: 7.2.3
-Config/Needs/website: cynkra/cynkratemplate

@@ -13,7 +13,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -39,7 +39,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -68,7 +68,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c_new  FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -93,7 +93,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -118,7 +118,7 @@
       # A tibble: 6 x 3
         table pk_col    autoincrement
         <chr> <keys>    <lgl>        
-      1 tf_1  a         FALSE        
+      1 tf_1  a         TRUE         
       2 tf_2  c         FALSE        
       3 tf_3  f_new, f1 FALSE        
       4 tf_4  h         FALSE        
@@ -144,7 +144,7 @@
       # A tibble: 7 x 3
         table   pk_col autoincrement
         <chr>   <keys> <lgl>        
-      1 tf_1    a      FALSE        
+      1 tf_1    a      TRUE         
       2 tf_2    c      FALSE        
       3 tf_3    f, f1  FALSE        
       4 tf_4    h      FALSE        
@@ -171,7 +171,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -200,7 +200,7 @@
       # A tibble: 7 x 3
         table   pk_col autoincrement
         <chr>   <keys> <lgl>        
-      1 tf_1    a      FALSE        
+      1 tf_1    a      TRUE         
       2 tf_2    c      FALSE        
       3 tf_3    f, f1  FALSE        
       4 tf_4    h      FALSE        
@@ -230,7 +230,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -259,7 +259,7 @@
       # A tibble: 7 x 3
         table   pk_col autoincrement
         <chr>   <keys> <lgl>        
-      1 tf_1    a      FALSE        
+      1 tf_1    a      TRUE         
       2 tf_2    c      FALSE        
       3 tf_3    f, f1  FALSE        
       4 tf_4    h      FALSE        
@@ -286,7 +286,7 @@
       # A tibble: 7 x 3
         table   pk_col autoincrement
         <chr>   <keys> <lgl>        
-      1 tf_1    a      FALSE        
+      1 tf_1    a      TRUE         
       2 tf_2    c      FALSE        
       3 tf_3    f, f1  FALSE        
       4 tf_4    h      FALSE        
@@ -314,7 +314,7 @@
       # A tibble: 7 x 3
         table   pk_col autoincrement
         <chr>   <keys> <lgl>        
-      1 tf_1    a      FALSE        
+      1 tf_1    a      TRUE         
       2 tf_2    c      FALSE        
       3 tf_3    f, f1  FALSE        
       4 tf_4    h      FALSE        
@@ -347,7 +347,7 @@
       # A tibble: 7 x 3
         table   pk_col autoincrement
         <chr>   <keys> <lgl>        
-      1 tf_1    a      FALSE        
+      1 tf_1    a      TRUE         
       2 tf_2    c      FALSE        
       3 tf_3    f, f1  FALSE        
       4 tf_4    h      FALSE        
@@ -505,7 +505,7 @@
       4 EWR     2013     1    10     4  41    26.1  55.0      320       6.90        NA
       5 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75        NA
       6 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90        NA
-      # ... with 4 more variables: precip <dbl>, pressure <dbl>, visib <dbl>,
+      # i 4 more variables: precip <dbl>, pressure <dbl>, visib <dbl>,
       #   time_hour <dttm>
     Code
       zoomed_comp_dm %>% slice(c(1:3, 5:3), .keep_pk = TRUE) %>% col_tracker_zoomed()

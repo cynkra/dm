@@ -30,7 +30,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -55,7 +55,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -81,7 +81,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -108,7 +108,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -134,7 +134,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -163,7 +163,7 @@
       # A tibble: 6 x 3
         table pk_col autoincrement
         <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
+      1 tf_1  a      TRUE         
       2 tf_2  c      FALSE        
       3 tf_3  f, f1  FALSE        
       4 tf_4  h      FALSE        
@@ -172,8 +172,8 @@
       
       $fks
       # A tibble: 0 x 5
-      # ... with 5 variables: child_table <chr>, child_fk_cols <keys>,
-      #   parent_table <chr>, parent_key_cols <keys>, on_delete <chr>
+      # i 5 variables: child_table <chr>, child_fk_cols <keys>, parent_table <chr>,
+      #   parent_key_cols <keys>, on_delete <chr>
       
 
 # dm_enum_fk_candidates() works as intended?
@@ -266,6 +266,6 @@
 
 # dm_get_all_fks() with parent_table arg fails nicely
 
-    Can't subset tables that don't exist.
+    Can't select tables that don't exist.
     x Table `timetable` doesn't exist.
 
