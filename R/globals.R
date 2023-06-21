@@ -17,7 +17,8 @@ utils::globalVariables(c(
   "index_name", # <build_copy_queries>
   "columns", # <build_copy_queries>
   "table_name", # <get_src_tbl_names>
-  "table_schema", # <get_src_tbl_names>
+  "schema_name", # <get_src_tbl_names>
+  "remote_name", # <get_src_tbl_names>
   "child_uuid", # <fks_df_from_keys_info>
   "parent_uuid", # <fks_df_from_keys_info>
   "child_fk_cols", # <fks_df_from_keys_info>
