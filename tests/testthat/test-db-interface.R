@@ -137,7 +137,7 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
     order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
     walk(
       dm_get_tables_impl(remote_dm)[order_of_deletion],
-      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
+      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", remote_name_qual(.x))))
     )
     try(dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
   })
@@ -160,15 +160,8 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
   tbl_names <- names(remote_dm)
   # compare names and remote names
   expect_identical(
-    sort(deframe(table_tibble)),
-    sort(
-      remote_dm %>%
-        dm_get_tables() %>%
-        map(dbplyr::remote_name) %>%
-        list_c() %>%
-        dbplyr::ident_q() %>%
-        set_names(tbl_names)
-    )
+    table_tibble %>% arrange(table_name) %>% deframe(),
+    purrr::map(set_names(tbl_names), ~ DBI::Id(schema = "copy_dm_to_schema", table = .x))
   )
 })
 
@@ -208,10 +201,7 @@ test_that("build_copy_queries snapshot test for pixarfilms", {
       pixar_dm %>%
         build_copy_queries(
           src_db,
-          .,
-          table_names = names(.) %>%
-            repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
-            map(dbplyr::ident_q)
+          .
         ) %>%
         as.list() # to print full queries
     }
@@ -240,8 +230,7 @@ test_that("build_copy_queries avoids duplicate indexes", {
       ambiguous_dm,
       table_names =
         names(ambiguous_dm) %>%
-          repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
-          map(dbplyr::ident_q)
+          repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL)
     )
 
   expect_equal(anyDuplicated(unlist(queries$index_name)), 0)

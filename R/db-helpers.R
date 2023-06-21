@@ -62,10 +62,9 @@ is_mssql <- function(dest) {
 }
 
 is_postgres <- function(dest) {
-  inherits(dest, "src_PostgreSQLConnection") ||
-    inherits(dest, "src_PqConnection") ||
-    inherits(dest, "PostgreSQLConnection") ||
-    inherits(dest, "PqConnection")
+  inherits_any(dest, c(
+    "src_PostgreSQLConnection", "src_PqConnection", "PostgreSQLConnection", "PqConnection", "src_PostgreSQL"
+  ))
 }
 
 is_mariadb <- function(dest) {
@@ -128,7 +127,10 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
     warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
-    return(set_names(src_tbls(src)))
+    tables <- src_tbls(src)
+    out <- purrr::map(tables, ~ DBI::Id(table = .x))
+
+    return(set_names(out, tables))
   }
 
   con <- con_from_src_or_con(src)

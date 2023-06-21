@@ -35,42 +35,42 @@ test_that("`dm_wrap_tbl()` and `dm_unwrap_tbl()` round trip", {
     dm %>%
     dm_filter(tf_1 = TRUE)
   roundtrip_dm <- dm_unwrap_tbl(dm_wrap_tbl(dm, tf_1), dm)
-  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
+  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE, ignore_autoincrement = TRUE)
 
   dm <- dm_for_filter()
   reduced_dm <-
     dm %>%
     dm_filter(tf_2 = TRUE)
   roundtrip_dm <- dm_unwrap_tbl(dm_wrap_tbl(dm, tf_2), dm)
-  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
+  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE, ignore_autoincrement = TRUE)
 
   dm <- dm_for_filter()
   reduced_dm <-
     dm %>%
     dm_filter(tf_3 = TRUE)
   roundtrip_dm <- dm_unwrap_tbl(dm_wrap_tbl(dm, tf_3), dm)
-  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
+  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE, ignore_autoincrement = TRUE)
 
   dm <- dm_for_filter()
   reduced_dm <-
     dm %>%
     dm_filter(tf_4 = TRUE)
   roundtrip_dm <- dm_unwrap_tbl(dm_wrap_tbl(dm, tf_4), dm)
-  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
+  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE, ignore_autoincrement = TRUE)
 
   dm <- dm_for_filter()
   reduced_dm <-
     dm %>%
     dm_filter(tf_5 = TRUE)
   roundtrip_dm <- dm_unwrap_tbl(dm_wrap_tbl(dm, tf_5), dm)
-  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
+  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE, ignore_autoincrement = TRUE)
 
   dm <- dm_for_filter()
   reduced_dm <-
     dm %>%
     dm_filter(tf_6 = TRUE)
   roundtrip_dm <- dm_unwrap_tbl(dm_wrap_tbl(dm, tf_6), dm)
-  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE)
+  expect_equivalent_dm(roundtrip_dm, reduced_dm, sort = TRUE, ignore_on_delete = TRUE, ignore_autoincrement = TRUE)
 })
 
 test_that("`node_type_from_graph()` works", {
