@@ -28,5 +28,14 @@ connect-%:
 docker-build:
 	docker build --platform linux/amd64 -t ghcr.io/cynkra/dm:main .
 
+docker-pull:
+	docker pull --platform linux/amd64 ghcr.io/cynkra/dm:main
+
+docker-shell:
+	docker run --rm -ti --platform linux/amd64 -e DM_TEST_DOCKER_HOST=$$(Rscript -e 'cat(Sys.getenv("DM_TEST_DOCKER_HOST"))' | tail -n 1) -e TESTTHAT_CPUS=4 -v $$(pwd):/root/workspace ghcr.io/cynkra/dm:main
+
+docker-connect:
+	docker run --rm -ti --platform linux/amd64 -e DM_TEST_DOCKER_HOST=$$(Rscript -e 'cat(Sys.getenv("DM_TEST_DOCKER_HOST"))' | tail -n 1) -e TESTTHAT_CPUS=4 -v $$(pwd):/root/workspace ghcr.io/cynkra/dm:main make connect
+
 docker-test:
-	docker run --rm -ti --platform linux/amd64 -e DM_TEST_DOCKER_HOST=$$(Rscript --vanilla -e 'cat(Sys.getenv("DM_TEST_DOCKER_HOST"))') -e TESTTHAT_CPUS=4 -v $$(pwd):/root/workspace dm make test
+	docker run --rm -ti --platform linux/amd64 -e DM_TEST_DOCKER_HOST=$$(Rscript -e 'cat(Sys.getenv("DM_TEST_DOCKER_HOST"))' | tail -n 1) -e TESTTHAT_CPUS=4 -v $$(pwd):/root/workspace ghcr.io/cynkra/dm:main make test
