@@ -60,15 +60,15 @@ dm_meta_raw <- function(con, catalog) {
     "character_maximum_length", "character_octet_length", "numeric_precision",
     "numeric_scale", "datetime_precision",
     "character_set_name", "collation_name",
-    if(is_mariadb(src)) "extra" else NULL,
-     
+    if (is_mariadb(src)) "extra" else NULL,
+
     # Optional, not RMySQL:
     # "numeric_precision_radix",
     # "character_set_catalog", "character_set_schema",
     # "collation_catalog", "collation_schema", "domain_catalog",
     # "domain_schema", "domain_name"
   ))
-  
+
   # add is_autoincrement column to columns table
   if (is_mssql(src)) {
     columns <- columns %>%
@@ -96,7 +96,7 @@ dm_meta_raw <- function(con, catalog) {
       left_join(
         tbl_lc(src, "information_schema.referential_constraints", vars = vec_c(
           "constraint_catalog", "constraint_schema", "constraint_name",
-          # "unique_constraint_catalog", "unique_constraint_schema", 
+          # "unique_constraint_catalog", "unique_constraint_schema",
           # "unique_constraint_name", "match_option", "update_rule",
           # "table_name", "referenced_table_name"
           "delete_rule"
@@ -112,7 +112,7 @@ dm_meta_raw <- function(con, catalog) {
       left_join(
         tbl_lc(src, "information_schema.referential_constraints", vars = vec_c(
           "constraint_catalog", "constraint_schema", "constraint_name",
-          # "unique_constraint_catalog", "unique_constraint_schema", 
+          # "unique_constraint_catalog", "unique_constraint_schema",
           # "unique_constraint_name", "match_option", "update_rule",
           "delete_rule"
         )),
