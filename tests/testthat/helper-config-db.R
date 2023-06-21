@@ -40,15 +40,7 @@ test_src_maria <- function(root = FALSE) {
 }
 
 test_src_mssql <- function(database = TRUE) {
-  if (Sys.getenv("CI") != "") {
-    con <- DBI::dbConnect(
-      odbc::odbc(),
-      "mssql-test",
-      uid = "SA",
-      pwd = "YourStrong!Passw0rd",
-      port = 1433
-    )
-  } else if (Sys.getenv("DM_TEST_DOCKER_HOST") != "") {
+  if (Sys.getenv("DM_TEST_DOCKER_HOST") != "") {
     con <- DBI::dbConnect(
       odbc::odbc(),
       driver = "ODBC Driver 18 for SQL Server",
@@ -58,6 +50,14 @@ test_src_mssql <- function(database = TRUE) {
       pwd = "YourStrong!Passw0rd",
       port = 1433,
       TrustServerCertificate = "yes"
+    )
+  } else if (Sys.getenv("CI") != "") {
+    con <- DBI::dbConnect(
+      odbc::odbc(),
+      "mssql-test",
+      uid = "SA",
+      pwd = "YourStrong!Passw0rd",
+      port = 1433
     )
   } else {
     con <- DBI::dbConnect(
