@@ -275,6 +275,8 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
     return(invisible())
   }
 
+  remote_table_name <- DBI::dbQuoteIdentifier(con, remote_table)
+
   if (is_mssql(con)) {
     # FIXME: Make adaptive
     chunk_size <- 1000L
@@ -298,10 +300,10 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
       if(length(autoinc) > 1L) abort("more than one autoincrement key in one table")
       if(!is_empty(autoinc) && autoinc) {
         sql <- DBI::SQL(paste0(
-          "SET IDENTITY_INSERT ", DBI::SQL(remote_table), " ON\n",
+          "SET IDENTITY_INSERT ", remote_table_name, " ON\n",
           sql, "\n",
-          "SET IDENTITY_INSERT ", DBI::SQL(remote_table), " OFF"
-        )) 
+          "SET IDENTITY_INSERT ", remote_table_name, " OFF"
+        ))
       }
       DBI::dbExecute(con, sql, immediate = TRUE)
     }))
