@@ -164,7 +164,6 @@ test_that("DB helpers work for Postgres", {
 
 test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
   # FIXME: Why does it fail for those databases?
-  skip_if_src("mssql", "postgres")
   skip_if_not_installed("dbplyr")
 
   # for other DBMS than "MSSQL" or "Postgrs", get_src_tbl_names() translates to `src_tbls_impl()`
@@ -178,24 +177,13 @@ test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
     try(dbExecute(con_db, "DROP TABLE test_db_helpers"))
   })
 
-  skip_if_src("maria")
+  expect_true("test_db_helpers" %in% names(get_src_tbl_names(my_db_test_src())))
 
-  # test for 2 warnings and if the output contains the new table
-  expect_dm_warning(
-    expect_dm_warning(
-      expect_true("test_db_helpers" %in% names(get_src_tbl_names(my_db_test_src(), schema = "schema", dbname = "dbname"))),
-      class = "arg_not"
-    ),
-    class = "arg_not"
-  )
+  # test that the output doesn't contain the new tabe if dbname and schema are passed
+  expect_false("test_db_helpers" %in% names(get_src_tbl_names(my_db_test_src(), schema = "schema", dbname = "dbname")))
 
-  skip_if_src("mssql", "postgres")
-
-  # test for warning and if the output contains the new table
-  expect_dm_warning(
-    expect_true("test_db_helpers" %in% names(get_src_tbl_names(my_db_test_src(), dbname = "dbname"))),
-    class = "arg_not"
-  )
+  # test that the output doesn't contain the new tabe if dbname is passed
+  expect_false("test_db_helpers" %in% names(get_src_tbl_names(my_db_test_src(), dbname = "dbname")))
 })
 
 test_that("find name clashes", {
