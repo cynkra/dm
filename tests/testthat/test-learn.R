@@ -12,7 +12,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     ))
   )
 
-  dm_for_filter_copied <- copy_dm_to(con_db, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
+  dm_for_filter_copied <- copy_dm_to(con_db, dm_for_filter(), temporary = FALSE, table_names = ~ unique_db_table_name(.x))
   order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
 
   remote_tbl_names <-
@@ -109,8 +109,12 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
   }
 
   # test 'get_src_tbl_names()'
+  src_tbl_names <- purrr::map_chr(
+    get_src_tbl_names(con_db, schema = schema_name),
+    ~ DBI::dbQuoteIdentifier(con_db, .x)
+  )
   expect_identical(
-    sort(normalize_table_name(get_src_tbl_names(con_db, schema = schema_name))),
+    sort(normalize_table_name(SQL(src_tbl_names))),
     SQL(sort(normalize_table_name(remote_tbl_names)))
   )
 
@@ -168,42 +172,33 @@ test_that("'schema_if()' works", {
   con_db <- my_db_test_src()$con
 
   # all 3 naming parameters set ('table' is required)
-  expect_match(
-    unclass(expect_s4_class(
-      schema_if(
-        schema = "schema",
-        table = "table",
-        con = con_db,
-        dbname = "database"
-      ),
-      "SQL"
-    )),
-    "\"database\".\"schema\".\"table\"|`database`.`schema`.`table`"
+  expect_equal(
+    schema_if(
+      schema = "schema",
+      table = "table",
+      con = con_db,
+      dbname = "database"
+    )[[1]],
+    DBI::Id(catalog = "database", schema = "schema", table = "table")
   )
 
   # schema and table set
-  expect_match(
-    unclass(expect_s4_class(
-      schema_if(
-        schema = "schema",
-        table = "table",
-        con = con_db
-      ),
-      "SQL"
-    )),
-    "\"schema\".\"table\"|`schema`.`table`"
+  expect_equal(
+    schema_if(
+      schema = "schema",
+      table = "table",
+      con = con_db
+    )[[1]],
+    DBI::Id(schema = "schema", table = "table")
   )
 
   # dbname and table set
   expect_error(schema_if(schema = NA, con = con_db, table = "table", dbname = "db"))
 
   # only table set
-  expect_match(
-    unclass(expect_s4_class(
-      schema_if(schema = NA, table = "table", con = con_db),
-      "SQL"
-    )),
-    "\"table\"|`table`"
+  expect_equal(
+    schema_if(schema = NA, table = "table", con = con_db)[[1]],
+    DBI::Id(table = "table")
   )
 })
 
@@ -241,14 +236,12 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
 
 
   # test 'get_src_tbl_names()'
-  src_tbl_names <- unname(get_src_tbl_names(con_db, dbname = "test_database_dm"))
   expect_identical(
-    src_tbl_names,
-    sort(DBI::SQL(paste0(
-      DBI::dbQuoteIdentifier(con_db, "test_database_dm"), ".",
-      DBI::dbQuoteIdentifier(con_db, "dbo"), ".",
-      DBI::dbQuoteIdentifier(con_db, c("test_1", "test_2"))
-    )))
+    get_src_tbl_names(con_db, dbname = "test_database_dm"),
+    list(
+      test_1 = DBI::Id(catalog = "test_database_dm", schema = "dbo", table = "test_1"),
+      test_2 = DBI::Id(catalog = "test_database_dm", schema = "dbo", table = "test_2")
+    )
   )
 
   dm_local_no_keys <- dm(
@@ -256,7 +249,11 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
     test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
 
-  expect_message(dm_db_learned <- dm_from_con(con_db, dbname = "test_database_dm"))
+  expect_message(
+    dm_db_learned <- dm_from_con(con_db, dbname = "test_database_dm"),
+    "queried successfully",
+    fixed = TRUE
+  )
   dm_learned <- dm_db_learned %>% collect()
   expect_equivalent_dm(
     dm_learned,
@@ -267,8 +264,8 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
   )
 
   # learning without keys:
-  dm_learned_no_keys <- expect_silent(
-    dm_from_con(
+  expect_silent(
+    dm_learned_no_keys <- dm_from_con(
       con_db,
       dbname = "test_database_dm",
       learn_keys = FALSE
@@ -325,14 +322,12 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
   })
 
   # test 'get_src_tbl_names()'
-  src_tbl_names <- unname(get_src_tbl_names(con_db, schema = "dm_test", dbname = "test_database_dm"))
   expect_identical(
-    src_tbl_names,
-    sort(DBI::SQL(paste0(
-      DBI::dbQuoteIdentifier(con_db, "test_database_dm"), ".",
-      DBI::dbQuoteIdentifier(con_db, "dm_test"), ".",
-      DBI::dbQuoteIdentifier(con_db, c("test_1", "test_2"))
-    )))
+    get_src_tbl_names(con_db, schema = "dm_test", dbname = "test_database_dm"),
+    list(
+      test_1 = DBI::Id(catalog = "test_database_dm", schema = "dm_test", table = "test_1"),
+      test_2 = DBI::Id(catalog = "test_database_dm", schema = "dm_test", table = "test_2")
+    )
   )
 
   dm_local_no_keys <- dm(

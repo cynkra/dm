@@ -166,7 +166,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
             "FOREIGN KEY (",
             quote_enum_col(child_fk_cols),
             ") REFERENCES ",
-            unlist(table_names[parent_table]),
+            purrr::map_chr(table_names[fks$parent_table], ~ DBI::dbQuoteIdentifier(con, .x)),
             " (",
             quote_enum_col(parent_key_cols),
             ")",
@@ -181,7 +181,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
         mutate(
           name = child_table,
           index_name = map_chr(child_fk_cols, paste, collapse = "_"),
-          remote_name = unlist(table_names[name]) %||% character(0),
+          remote_name = purrr::map_chr(table_names[name], ~ DBI::dbQuoteIdentifier(con, .x)),
           remote_name_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)), ~ .x@name[["table"]]),
           index_name = make.unique(paste0(remote_name_unquoted, "__", index_name), sep = "__")
         ) %>%
@@ -220,7 +220,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     ) %>%
     ungroup() %>%
     transmute(name, remote_name, columns, sql_table = DBI::SQL(glue(
-      "CREATE {if (temporary) 'TEMPORARY ' else ''}TABLE {unlist(remote_name)} (\n  {all_defs}\n)"
+      "CREATE {if (temporary) 'TEMPORARY ' else ''}TABLE {purrr::map_chr(remote_name, ~ DBI::dbQuoteIdentifier(con, .x))} (\n  {all_defs}\n)"
     )))
 
   queries <- left_join(create_table_queries, index_queries, by = "name")

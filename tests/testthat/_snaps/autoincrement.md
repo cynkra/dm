@@ -14,17 +14,17 @@
     Code
       df$sql_table
     Output
-      <SQL> CREATE TEMPORARY TABLE x (
+      <SQL> CREATE TEMPORARY TABLE `x` (
         `x_id` INTEGER,
         `x_data` TEXT,
         PRIMARY KEY (`x_id`)
       )
-      <SQL> CREATE TEMPORARY TABLE y (
+      <SQL> CREATE TEMPORARY TABLE `y` (
         `y_id` INTEGER,
         `x_id` INTEGER,
         `y_data` TEXT,
         PRIMARY KEY (`y_id`),
-        FOREIGN KEY (`x_id`) REFERENCES x (`x_id`)
+        FOREIGN KEY (`x_id`) REFERENCES `x` (`x_id`)
       )
 
 ---

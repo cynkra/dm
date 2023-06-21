@@ -62,6 +62,13 @@ test_that("dm_get_keyed_tables_impl()", {
 
 
 test_that("`new_keyed_tbl()` formatting", {
+  local_options(
+    pillar.min_title_chars = NULL,
+    pillar.max_title_chars = NULL,
+    pillar.max_footer_lines = NULL,
+    pillar.bold = NULL,
+  )
+
   expect_snapshot({
     keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "flights")
     keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
@@ -405,14 +412,44 @@ test_that("joins with other FK from child and name conflict", {
 test_that("left join works as expected with keyed tables", {
   withr::local_seed(20220717)
 
+  local_options(
+    pillar.min_title_chars = NULL,
+    pillar.max_title_chars = NULL,
+    pillar.max_footer_lines = NULL,
+    pillar.bold = NULL,
+  )
+
   expect_snapshot({
     dm <- dm_nycflights13()
     keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"), multiple = "all")
   })
 
   # results should be similar to zooming
-  zd1 <- dm_zoom_to(dm, weather) %>% left_join(flights, multiple = "all")
-  zd2 <- dm_zoom_to(dm, flights) %>% left_join(weather)
+  zd1 <-
+    dm %>%
+    dm_rename(weather, year.weather = year) %>%
+    dm_rename(weather, month.weather = month) %>%
+    dm_rename(weather, day.weather = day) %>%
+    dm_rename(weather, hour.weather = hour) %>%
+    dm_rename(flights, year.flights = year) %>%
+    dm_rename(flights, month.flights = month) %>%
+    dm_rename(flights, day.flights = day) %>%
+    dm_rename(flights, hour.flights = hour) %>%
+    dm_zoom_to(weather) %>%
+    left_join(flights, multiple = "all")
+
+  zd2 <-
+    dm %>%
+    dm_rename(flights, year.flights = year) %>%
+    dm_rename(flights, month.flights = month) %>%
+    dm_rename(flights, day.flights = day) %>%
+    dm_rename(flights, hour.flights = hour) %>%
+    dm_rename(weather, year.weather = year) %>%
+    dm_rename(weather, month.weather = month) %>%
+    dm_rename(weather, day.weather = day) %>%
+    dm_rename(weather, hour.weather = hour) %>%
+    dm_zoom_to(flights) %>%
+    left_join(weather)
 
   jd1 <- keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"), multiple = "all")
   jd2 <- keyed_tbl_impl(dm, "flights") %>% left_join(keyed_tbl_impl(dm, "weather"))
@@ -425,6 +462,13 @@ test_that("left join works as expected with keyed tables", {
 
 test_that("semi_join()", {
   withr::local_seed(20220720)
+
+  local_options(
+    pillar.min_title_chars = NULL,
+    pillar.max_title_chars = NULL,
+    pillar.max_footer_lines = NULL,
+    pillar.bold = NULL,
+  )
 
   dm <-
     dm(x = tibble(a = 1), y = tibble(b = 1)) %>%
@@ -455,6 +499,13 @@ test_that("arrange for keyed tables produces expected output", {
 # group_by ----------------------------------
 
 test_that("group_by for keyed tables produces expected output", {
+  local_options(
+    pillar.min_title_chars = NULL,
+    pillar.max_title_chars = NULL,
+    pillar.max_footer_lines = NULL,
+    pillar.bold = NULL,
+  )
+
   expect_snapshot({
     dm <- dm_nycflights13(cycle = TRUE)
 
@@ -487,6 +538,13 @@ test_that("summarize for keyed tables produces expected output", {
 
 
 test_that("summarize for keyed tables produces same output as zooming", {
+  local_options(
+    pillar.min_title_chars = NULL,
+    pillar.max_title_chars = NULL,
+    pillar.max_footer_lines = NULL,
+    pillar.bold = NULL,
+  )
+
   dm <- dm_nycflights13(cycle = TRUE)
 
   z_summary <- dm %>%

@@ -161,6 +161,18 @@ test_that("unique keys", {
   )
 
   expect_snapshot_error(
+    # trying to add a UK for which a PK already exists
+    dm_add_uk(
+      nyc_1_uk,
+      flights,
+      everything()
+    ),
+    class = dm_error("no_uk_if_pk")
+  )
+})
+
+test_that("dm_get_all_uks() with table arg fails nicely", {
+  expect_snapshot_error(
     # trying to request a table not part of the dm
     nyc_1_uk %>%
       dm_get_all_uks(timetable)
@@ -170,15 +182,5 @@ test_that("unique keys", {
     # trying to request 2 tables that are not part of the dm and a few others
     nyc_1_uk %>%
       dm_get_all_uks(c(timetable, weather, flights, tabletime))
-  )
-
-  expect_snapshot_error(
-    # trying to add a UK for which a PK already exists
-    dm_add_uk(
-      nyc_1_uk,
-      flights,
-      everything()
-    ),
-    class = dm_error("no_uk_if_pk")
   )
 })
