@@ -184,8 +184,8 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
         purrr::imap_chr(
           clashes,
           ~ cli::format_inline(
-            "Local name {.field {.y}} will refer to {.cls {(.x[1])}}, ",
-            "rather than to {.or {.cls {(.x[-1])}}}"
+            "Local name {.field {.y}} will refer to {.cls {DBI::dbQuoteIdentifier(con, .x[[1]])}}, ",
+            "rather than to {.or {.cls {map(.x[-1], DBI::dbQuoteIdentifier, conn = con)}}}"
           )
         ) %>%
           purrr::set_names(rep("*", length(clashes)))
