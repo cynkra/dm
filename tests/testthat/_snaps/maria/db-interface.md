@@ -1,30 +1,17 @@
 # build_copy_queries snapshot test for pixarfilms
 
     Code
-      pixar_dm %>% build_copy_queries(src_db, ., table_names = names(.) %>%
-        repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL) %>%
-        map(dbplyr::ident_q)) %>% as.list()
+      pixar_dm %>% build_copy_queries(src_db, .) %>% as.list()
     Output
       $name
       [1] "pixar_films"     "academy"         "box_office"      "genres"         
       [5] "public_response"
       
       $remote_name
-      $remote_name$pixar_films
-      <IDENT> `pixar_films`
-      
-      $remote_name$academy
-      <IDENT> `academy`
-      
-      $remote_name$box_office
-      <IDENT> `box_office`
-      
-      $remote_name$genres
-      <IDENT> `genres`
-      
-      $remote_name$public_response
-      <IDENT> `public_response`
-      
+            pixar_films           academy        box_office            genres 
+          "pixar_films"         "academy"      "box_office"          "genres" 
+        public_response 
+      "public_response" 
       
       $columns
       $columns[[1]]
@@ -127,16 +114,16 @@
       
       $remote_name
       $remote_name$parent1
-      <IDENT> `parent1`
+      <Id> table = parent1
       
       $remote_name$parent2
-      <IDENT> `parent2`
+      <Id> table = parent2
       
       $remote_name$child
-      <IDENT> `child`
+      <Id> table = child
       
       $remote_name$child__a
-      <IDENT> `child__a`
+      <Id> table = child__a
       
       
       $columns
