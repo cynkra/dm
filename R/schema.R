@@ -270,9 +270,7 @@ sql_schema_table_list_mssql <- function(con, schema = NULL, dbname = NULL) {
     get_src_tbl_names(src, schema = sql_to_character(src$con, schema), dbname = dbname),
     name = "table_name",
     value = "remote_name"
-  ) %>%
-    # FIXME: maybe better a DBI identifier?
-    mutate(remote_name = dbplyr::ident_q(remote_name))
+  )
 }
 
 # FIXME: this should be done using a dplyr function
@@ -286,9 +284,7 @@ sql_schema_table_list_postgres <- function(con, schema = NULL) {
     get_src_tbl_names(src, schema = sql_to_character(src$con, schema)),
     name = "table_name",
     value = "remote_name"
-  ) %>%
-    # FIXME: maybe better a DBI identifier?
-    mutate(remote_name = dbplyr::ident_q(remote_name))
+  )
 }
 
 # db_schema_drop() -------------------------------------------------------

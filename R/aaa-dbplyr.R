@@ -39,3 +39,15 @@ register_if_dbplyr_hasnt <- function(...) {
   invisible()
 }
 # nocov end
+
+remote_name_qual <- function(x) {
+  dbplyr_ns <- asNamespace("dbplyr")
+
+  value <- mget("remote_table", dbplyr_ns, mode = "function", ifnotfound = list(NULL))[[1]]
+  if (!is.null(value)) {
+    table <- value(x)
+    dbplyr::escape(table, con = dbplyr::remote_con(x))
+  } else {
+    dbplyr::remote_name(x)
+  }
+}

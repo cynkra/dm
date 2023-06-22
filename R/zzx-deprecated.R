@@ -353,6 +353,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
+#' @autoglobal
 cdm_enum_fk_candidates <- function(dm, table, ref_table) {
   deprecate_soft("0.1.0", "dm::cdm_enum_fk_candidates()", "dm::dm_enum_fk_candidates()")
   check_not_zoomed(dm)

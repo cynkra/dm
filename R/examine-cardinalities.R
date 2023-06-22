@@ -58,6 +58,7 @@ dm_examine_cardinalities <- function(.dm, ..., .progress = NA,
     new_dm_examine_cardinalities()
 }
 
+#' @autoglobal
 dm_examine_cardinalities_impl <- function(dm, progress = NA, top_level_fun = NULL) {
   fks <-
     dm_get_all_fks_impl(dm) %>%
@@ -118,6 +119,7 @@ print.dm_examine_cardinalities <- function(x, ...) {
     bullets_cardinalities()
 }
 
+#' @autoglobal
 bullets_cardinalities <- function(x) {
   x <- mutate(
     x,

@@ -31,6 +31,7 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_constraints()
+#' @autoglobal
 dm_examine_constraints <- function(.dm, ..., .progress = NA,
                                    dm = deprecated(), progress = deprecated()) {
   check_dots_empty()
@@ -74,6 +75,7 @@ new_dm_examine_constraints <- function(x) {
 }
 
 #' @export
+#' @autoglobal
 print.dm_examine_constraints <- function(x, ...) {
   key_df <-
     x %>%
@@ -118,6 +120,7 @@ kind_to_long <- function(kind) {
   )
 }
 
+#' @autoglobal
 check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
   pks <- bind_rows(
     list(PK = dm_get_all_pks_impl(dm), UK = dm_get_all_uks_impl(dm) %>% rename(pk_col = uk_col) %>% select(-kind)),
@@ -163,6 +166,7 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
     left_join(tbl_is_pk, by = c("table", "column"))
 }
 
+#' @autoglobal
 check_fk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
   fks <- dm_get_all_fks_impl(dm)
   pts <- map(fks$parent_table, tbl_impl, dm = dm)

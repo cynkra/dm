@@ -54,20 +54,20 @@ test_that("DB helpers work for MSSQL", {
   )
 
   expect_identical(
-    get_src_tbl_names(my_test_src())["test_db_helpers"],
-    DBI::SQL("\"dbo\".\"test_db_helpers\"")
+    get_src_tbl_names(my_test_src())[["test_db_helpers"]],
+    DBI::Id(schema = "dbo", table = "test_db_helpers")
   )
   expect_identical(
-    get_src_tbl_names(my_test_src(), schema = "schema_db_helpers")["test_db_helpers_2"],
-    DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
+    get_src_tbl_names(my_test_src(), schema = "schema_db_helpers")[["test_db_helpers_2"]],
+    DBI::Id(schema = "schema_db_helpers", table = "test_db_helpers_2")
   )
   expect_identical(
-    get_src_tbl_names(my_test_src(), dbname = "db_helpers_db")["test_db_helpers_3"],
-    DBI::SQL("\"db_helpers_db\".\"dbo\".\"test_db_helpers_3\"")
+    get_src_tbl_names(my_test_src(), dbname = "db_helpers_db")[["test_db_helpers_3"]],
+    DBI::Id(catalog = "db_helpers_db", schema = "dbo", table = "test_db_helpers_3")
   )
   expect_identical(
-    get_src_tbl_names(my_test_src(), dbname = "db_helpers_db", schema = "schema_db_helpers_2")["test_db_helpers_4"],
-    DBI::SQL("\"db_helpers_db\".\"schema_db_helpers_2\".\"test_db_helpers_4\"")
+    get_src_tbl_names(my_test_src(), dbname = "db_helpers_db", schema = "schema_db_helpers_2")[["test_db_helpers_4"]],
+    DBI::Id(catalog = "db_helpers_db", schema = "schema_db_helpers_2", table = "test_db_helpers_4")
   )
   expect_identical(
     get_src_tbl_names(my_test_src(), schema = c("dbo", "schema_db_helpers"))["dbo.test_db_helpers_2"],
@@ -82,13 +82,25 @@ test_that("DB helpers work for MSSQL", {
     'Local name test_db_helpers_2 will refer to <"dbo"."test_db_helpers_2">, rather than to <"schema_db_helpers"."test_db_helpers_2">',
     fixed = TRUE
   )
-  expect_identical(out, DBI::SQL("\"dbo\".\"test_db_helpers_2\""))
+  expect_identical(
+    out,
+    list(test_db_helpers_2 = DBI::Id(
+      schema = "dbo",
+      table = "test_db_helpers_2"
+    ))
+  )
   expect_warning(
     out <- get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers", "dbo"), .names = "{.table}")["test_db_helpers_2"],
     'Local name test_db_helpers_2 will refer to <"schema_db_helpers"."test_db_helpers_2">, rather than to <"dbo"."test_db_helpers_2">',
     fixed = TRUE
   )
-  expect_identical(out, DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\""))
+  expect_identical(
+    out,
+    list(test_db_helpers_2 = DBI::Id(
+      schema = "schema_db_helpers",
+      table = "test_db_helpers_2"
+    ))
+  )
 })
 
 
@@ -125,12 +137,12 @@ test_that("DB helpers work for Postgres", {
   )
 
   expect_identical(
-    get_src_tbl_names(my_test_src())["test_db_helpers"],
-    DBI::SQL("\"public\".\"test_db_helpers\"")
+    get_src_tbl_names(my_test_src())["test_db_helpers"][[1]],
+    DBI::Id(schema = "public", table = "test_db_helpers")
   )
   expect_identical(
-    get_src_tbl_names(my_test_src(), schema = "schema_db_helpers")["test_db_helpers_2"],
-    DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
+    get_src_tbl_names(my_test_src(), schema = "schema_db_helpers")["test_db_helpers_2"][[1]],
+    DBI::Id(schema = "schema_db_helpers", table = "test_db_helpers_2")
   )
   expect_identical(
     get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"))["public.test_db_helpers_2"],
@@ -145,13 +157,25 @@ test_that("DB helpers work for Postgres", {
     'Local name test_db_helpers_2 will refer to <"public"."test_db_helpers_2">, rather than to <"schema_db_helpers"."test_db_helpers_2">',
     fixed = TRUE
   )
-  expect_identical(out, DBI::SQL("\"public\".\"test_db_helpers_2\""))
+  expect_identical(
+    out,
+    list(test_db_helpers_2 = DBI::Id(
+      schema = "public",
+      table = "test_db_helpers_2"
+    ))
+  )
   expect_warning(
     out <- get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers", "public"), .names = "{.table}")["test_db_helpers_2"],
     'Local name test_db_helpers_2 will refer to <"schema_db_helpers"."test_db_helpers_2">, rather than to <"public"."test_db_helpers_2">',
     fixed = TRUE
   )
-  expect_identical(out, DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\""))
+  expect_identical(
+    out,
+    list(test_db_helpers_2 = DBI::Id(
+      schema = "schema_db_helpers",
+      table = "test_db_helpers_2"
+    ))
+  )
 })
 
 test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
@@ -191,7 +215,6 @@ test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
 })
 
 test_that("find name clashes", {
-
   # If all old names change to different new names...
   res <- find_name_clashes(
     c("one", "two", "three"),
@@ -209,5 +232,4 @@ test_that("find name clashes", {
   # We should get a list, with one element per "clashing" new name
   expect_named(res, "uno")
   expect_equal(res[["uno"]], c("one", "two"))
-
 })

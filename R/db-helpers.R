@@ -62,10 +62,9 @@ is_mssql <- function(dest) {
 }
 
 is_postgres <- function(dest) {
-  inherits(dest, "src_PostgreSQLConnection") ||
-    inherits(dest, "src_PqConnection") ||
-    inherits(dest, "PostgreSQLConnection") ||
-    inherits(dest, "PqConnection")
+  inherits_any(dest, c(
+    "src_PostgreSQLConnection", "src_PqConnection", "PostgreSQLConnection", "PqConnection", "src_PostgreSQL"
+  ))
 }
 
 is_mariadb <- function(dest) {
@@ -119,16 +118,19 @@ repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL
 }
 
 find_name_clashes <- function(old, new) {
-
   # Any entries in `new` with more than one corresponding entry in `old`
   purrr::keep(split(old, new), ~ length(unique(.x)) > 1)
 }
 
+#' @autoglobal
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
   if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
     warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
-    return(set_names(src_tbls(src)))
+    tables <- src_tbls(src)
+    out <- purrr::map(tables, ~ DBI::Id(table = .x))
+
+    return(set_names(out, tables))
   }
 
   con <- con_from_src_or_con(src)
@@ -176,7 +178,6 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
   # to more than one remote_name
   # In such a case, raise a warning, and keep only the first relevant schema
   if (length(schema) > 1) {
-
     # Order according to ordering of `schema`, so that in a moment we can keep "first" table in event of a clash
     names_table <- names_table %>%
       mutate(schema_name = factor(schema_name, levels = schema)) %>%
@@ -185,14 +186,13 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
     clashes <- with(names_table, find_name_clashes(remote_name, local_name))
 
     if (length(clashes) > 0) {
-
       cli::cli_warn(c(
         "Some table names aren't unique:",
         purrr::imap_chr(
           clashes,
           ~ cli::format_inline(
-            "Local name {.field {.y}} will refer to {.cls {(.x[1])}}, ",
-            "rather than to {.or {.cls {(.x[-1])}}}"
+            "Local name {.field {.y}} will refer to {.cls {DBI::dbQuoteIdentifier(con, .x[[1]])}}, ",
+            "rather than to {.or {.cls {map(.x[-1], DBI::dbQuoteIdentifier, conn = con)}}}"
           )
         ) %>%
           purrr::set_names(rep("*", length(clashes)))

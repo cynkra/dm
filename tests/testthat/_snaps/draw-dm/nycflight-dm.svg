@@ -29,13 +29,13 @@
 <polygon fill="#fbe5d5" stroke="transparent" points="244.5,-261 244.5,-281 289.5,-281 289.5,-261 244.5,-261"/>
 <text text-anchor="start" x="246.5" y="-267.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">carrier</text>
 <polygon fill="#fbe5d5" stroke="transparent" points="244.5,-241 244.5,-261 289.5,-261 289.5,-241 244.5,-241"/>
-<text text-anchor="start" x="246.5" y="-246.4" font-family="Times,serif" font-size="14.00" fill="#444444">name</text>
+<text text-anchor="start" x="246.5" y="-247.4" font-family="Times,serif" font-style="italic" font-size="14.00" fill="#444444">name</text>
 <polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="243,-240 243,-302 290,-302 290,-240 243,-240"/>
 </g>
 <!-- agency&#45;&gt;airlines -->
 <g id="agency_1" class="edge">
 <title>agency:airline_name&#45;&gt;airlines:name</title>
-<path fill="none" stroke="#555555" d="M166.5,-251C197.5104,-251 207.716,-251 234.3379,-251"/>
+<path fill="none" stroke="#555555" stroke-dasharray="5,2" d="M166.5,-251C197.5104,-251 207.716,-251 234.3379,-251"/>
 <polygon fill="#555555" stroke="#555555" points="234.5,-254.5001 244.5,-251 234.5,-247.5001 234.5,-254.5001"/>
 </g>
 <!-- airports -->

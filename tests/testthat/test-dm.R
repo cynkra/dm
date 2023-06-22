@@ -194,6 +194,7 @@ test_that("auto-renaming works", {
 
 test_that("test error output for src mismatches", {
   skip_if_not_installed("dbplyr")
+  skip_if_not(getRversion() >= "4.0")
 
   expect_snapshot({
     writeLines(conditionMessage(expect_error(
