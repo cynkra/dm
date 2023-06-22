@@ -71,14 +71,14 @@ test_that("DB helpers work for MSSQL", {
   )
   expect_identical(
     get_src_tbl_names(my_test_src(), schema = c("dbo", "schema_db_helpers"))["dbo.test_db_helpers_2"],
-    DBI::SQL("\"dbo\".\"test_db_helpers_2\"")
+    DBI::Id(schema = "dbo", table = "test_db_helpers_2")
   )
   expect_identical(
     get_src_tbl_names(my_test_src(), schema = c("dbo", "schema_db_helpers"))["schema_db_helpers.test_db_helpers_2"],
-    DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
+    DBI::Id(schema = "schema_db_helpers", table = "test_db_helpers_2")
   )
   expect_warning(
-    out <- get_src_tbl_names(my_test_src(), schema = c("dbo", "schema_db_helpers"), .names = "{.table}")["test_db_helpers_2"],
+    out <- get_src_tbl_names(my_test_src(), schema = c("dbo", "schema_db_helpers"), names = "{.table}")["test_db_helpers_2"],
     'Local name test_db_helpers_2 will refer to <"dbo"."test_db_helpers_2">, rather than to <"schema_db_helpers"."test_db_helpers_2">',
     fixed = TRUE
   )
@@ -90,7 +90,7 @@ test_that("DB helpers work for MSSQL", {
     ))
   )
   expect_warning(
-    out <- get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers", "dbo"), .names = "{.table}")["test_db_helpers_2"],
+    out <- get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers", "dbo"), names = "{.table}")["test_db_helpers_2"],
     'Local name test_db_helpers_2 will refer to <"schema_db_helpers"."test_db_helpers_2">, rather than to <"dbo"."test_db_helpers_2">',
     fixed = TRUE
   )
@@ -146,14 +146,14 @@ test_that("DB helpers work for Postgres", {
   )
   expect_identical(
     get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"))["public.test_db_helpers_2"],
-    DBI::SQL("\"public\".\"test_db_helpers_2\"")
+    DBI::Id(schema = "public", table = "test_db_helpers_2")
   )
   expect_identical(
     get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"))["schema_db_helpers.test_db_helpers_2"],
-    DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
+    DBI::Id(schema = "schema_db_helpers", table = "test_db_helpers_2")
   )
   expect_warning(
-    out <- get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"), .names = "{.table}")["test_db_helpers_2"],
+    out <- get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"), names = "{.table}")["test_db_helpers_2"],
     'Local name test_db_helpers_2 will refer to <"public"."test_db_helpers_2">, rather than to <"schema_db_helpers"."test_db_helpers_2">',
     fixed = TRUE
   )
@@ -165,7 +165,7 @@ test_that("DB helpers work for Postgres", {
     ))
   )
   expect_warning(
-    out <- get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers", "public"), .names = "{.table}")["test_db_helpers_2"],
+    out <- get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers", "public"), names = "{.table}")["test_db_helpers_2"],
     'Local name test_db_helpers_2 will refer to <"schema_db_helpers"."test_db_helpers_2">, rather than to <"public"."test_db_helpers_2">',
     fixed = TRUE
   )
