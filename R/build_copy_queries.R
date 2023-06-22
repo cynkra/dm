@@ -223,8 +223,49 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
   queries <- left_join(create_table_queries, index_queries, by = "name")
 
+  ## DML statements
+  # rather than having set_key_constraints argument in dm_sql, we just remove keys when needed
+  dml_dm <- dm
+  if (!set_key_constraints) {
+    if (nrow(dm_get_all_uks(dml_dm, kind="explicit UK"))) {
+      dml_dm <- dml_dm %>% dm_rm_uk
+    }
+    if (dm_has_fk(dml_dm)) {
+      dml_dm <- dml_dm %>% dm_rm_fk
+    }
+    if (dm_has_pk(dml_dm)) {
+      dml_dm <- dml_dm %>% dm_rm_pk
+    }
+  }
+  ## we have to reorder tbls so results of dm_dml_load matches the order of queries table
+  ## commented out as explained in https://github.com/cynkra/dm/pull/1904#discussion_r1238941351
+  #if (!identical(queries$name, names(table_names))) {
+  #  #TODO
+  #  table_names[match(queries$name, names(table_names))]
+  #  dml_tbl_ordered_as_queries <- NULL
+  #  cl <- as.call(c(
+  #    as.name("dm_select_tbl"),
+  #    as.name("dml_dm"),
+  #    dml_tbl_ordered_as_queries
+  #  ))
+  #}
+  ## rather than having table_names argument in dm_sql, we just name tables when needed
+  #dml_remote_tbls <- vapply(queries$remote_name, function(x) x@name[["table"]], "")
+  #dml_rename <- !identical(queries$name, unname(db_remote_tbls))
+  #if (dml_rename) {
+  #  dml_tbl_syms <- set_names(
+  #    lapply(queries$name, as.name),
+  #    dml_remote_tbls
+  #  )
+  #  cl <- as.call(c(
+  #    as.name("dm_rename_tbl"),
+  #    as.name("dml_dm"),
+  #    dml_tbl_syms
+  #  ))
+  #  eval(cl) ## dm_rename_tbl(dml_dm, remote_nane1 = name1, ...)
+  #}
   queries$dml <- dm_dml_load(
-    dm, con,
+    dml_dm, con,
     ## queries DF order does not match to table_names order so we need to match to order here
     table_names = table_names[match(queries$name, names(table_names))]
   )
