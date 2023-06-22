@@ -196,6 +196,35 @@ copy_dm_to <- function(dest, dm, ...,
 
   queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
 
+  ## workaround for #1909
+  if (is_duckdb(dest_con)) {
+    pks <- dm_get_all_pks_impl(dm)
+    wai <- which(pks$autoincrement)
+    if (length(wai)) {
+      duckdb_add_ai = function(table) {
+        thisq <- queries[queries$name==table,]
+        thisp <- pks[pks$table==table,]
+        thisp_col <- thisp$pk_col
+        if (length(thisp_col)!=1L) stop("only single PK definition alllowed")
+        if (length(thisp_col[[1L]])!=1L) stop("autoincrement PK must be single column PKs")
+        seq_name <- sprintf("seq_%s_%s",
+                            DBI::dbQuoteIdentifier(dest_con, thisq$remote_name[[1L]]),
+                            thisp_col[[1L]])
+        create_seq <- sprintf("CREATE %sSEQUENCE %s START 1;", if (temporary) 'TEMPORARY ' else '', seq_name)
+        ## CREATE sequence
+        DBI::dbExecute(dest_con, create_seq)
+        ## edit CREATE TABLE
+        tmp <- strsplit(thisq$sql_table, "\n", fixed=TRUE)[[1L]]
+        wtmp <- which(startsWith(tmp, paste0("  ", thisp_col[[1L]], " ")))
+        default_suffix <- sprintf("default nextval('%s')", seq_name)
+        tmp[wtmp] <- paste0(substr(tmp[wtmp], 1L, nchar(tmp[wtmp]) - 1L),
+                            " ", default_suffix, ",")
+        paste(tmp, collapse="\n")
+      }
+      queries[wai, "sql_table"] <- DBI::SQL(unlist(lapply(pks[wai,]$table, duckdb_add_ai), recursive=FALSE))
+    }
+  }
+
   ticker_create <- new_ticker(
     "creating tables",
     n = length(queries$sql_table),
