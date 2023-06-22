@@ -108,18 +108,8 @@
     Code
       writeLines(conditionMessage(expect_error(dm(dm_for_flatten(),
       dm_for_filter_duckdb()))))
-    Condition
-      Warning in `dm_for_filter_duckdb()`:
-      restarting interrupted promise evaluation
-      Warning in `dm_for_filter_duckdb()`:
-      restarting interrupted promise evaluation
     Output
-      i In index: 2.
-      Caused by error in `pmap()`:
-      i In index: 1.
-      Caused by error:
-      ! rapi_execute: Failed to run query
-      Error: Constraint Error: NOT NULL constraint failed: tf_1_8_2023_06_21_19_37_06_37906_20856.a
+      All `dm` objects need to share the same `src`.
 
 # output for dm() with dm
 

@@ -25,15 +25,8 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
-      Warning in `dm_for_filter_duckdb()`:
-      restarting interrupted promise evaluation
-      Warning in `dm_for_filter_duckdb()`:
-      restarting interrupted promise evaluation
     Output
-      i In index: 1.
-      Caused by error:
-      ! rapi_execute: Failed to run query
-      Error: Constraint Error: NOT NULL constraint failed: tf_1_4_2023_06_21_19_38_53_046159_21413.a
+      All `dm` objects need to share the same `src`.
 
 # output
 
