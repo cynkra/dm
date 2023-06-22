@@ -1,5 +1,22 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9015
+
+## Features
+
+- `dm_from_con()` can retrieve multiple schemas, pass a character vector to the `schema` argument (@owenjonesuob, #1533, #1789).
+
+- `build_copy_queries()` and `db_learn_from_db()` improvements (@samssann, #1642, #1677, #1739).
+
+## Chore
+
+- Remove dead code, duckdb \>= 0.4.0 is already specified (@jangorecki, #1892).
+
+- Fix and enhance Makefile.
+
+- DM_TEST_DOCKER_HOST has precedence over CI.
+
+
 # dm 1.0.5.9014
 
 ## Chore
