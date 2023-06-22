@@ -7,14 +7,7 @@
 \alias{dm_ddl_post}
 \title{Create \emph{DDL} and \emph{DML} scripts for \code{dm} and database connection}
 \usage{
-dm_sql(
-  dm,
-  dest,
-  set_key_constraints = TRUE,
-  table_names = set_names(names(dm)),
-  temporary = TRUE,
-  schema = NULL
-)
+dm_sql(dm, dest, temporary = TRUE, schema = NULL)
 
 dm_ddl_pre(
   dm,
@@ -34,14 +27,14 @@ dm_ddl_post(dm, dest, table_names = set_names(names(dm)), schema = NULL)
 
 \item{dest}{Connection to database.}
 
-\item{set_key_constraints}{If \code{TRUE} (default) will mirror \code{dm} primary and foreign key constraints on a database
-and create unique indexes.}
-
-\item{table_names}{See argument description in \link{copy_dm_to}. Default to names of \code{dm}.}
-
 \item{temporary}{Should the tables be marked as \emph{temporary}? Defaults to \code{TRUE}.}
 
 \item{schema}{Name of schema to copy the \code{dm} to.}
+
+\item{table_names}{See argument description in \link{copy_dm_to}. Default to names of \code{dm}.}
+
+\item{set_key_constraints}{If \code{TRUE} (default) will mirror \code{dm} primary and foreign key constraints on a database
+and create unique indexes.}
 }
 \value{
 character vector of SQL statements.

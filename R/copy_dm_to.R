@@ -40,11 +40,11 @@ dm_sql <- function(dm,
   c(
     ## CREATE TABLE and PRIMARY KEY (unless !set_key_constraints)
     ## TODO: set_key_constraints not needed because user can rm PK from dm before calling dm_sql, same with renaming tables in table_names
-    dm_ddl_pre(dm, dest, table_names=names(dm), set_key_constraints=TRUE, schema=schema),
+    dm_ddl_pre(dm, dest, table_names=set_names(names(dm)), set_key_constraints=TRUE, schema=schema),
     ## INSERT INTO, handle autoincrement, TODO handle+test ai together with !set_key_constraints
-    dm_dml_load(dm, dest, table_names=names(dm)),
+    dm_dml_load(dm, dest, table_names=set_names(names(dm))),
     ## FOREIGN KEYS, UNIQUE KEYS, INDEXES
-    dm_ddl_post(dm, dest, table_names=names(dm), schema=schema)
+    dm_ddl_post(dm, dest, table_names=set_names(names(dm)), schema=schema)
   )
 }
 
