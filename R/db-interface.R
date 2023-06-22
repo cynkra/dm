@@ -198,7 +198,7 @@ copy_dm_to <- function(dest, dm, ...,
 
   ## workaround for #1909
   if (is_duckdb(dest_con)) {
-    pks <- dm_get_all_pks_impl(dm)
+    pks <- dm_get_all_pks_impl(dm, table=queries$name)
     wai <- which(pks$autoincrement)
     if (length(wai)) {
       duckdb_add_ai = function(table) {
