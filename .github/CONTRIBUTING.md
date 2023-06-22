@@ -109,28 +109,51 @@ Switches:
 - `-d`: Daemon mode, run in the background, use `docker-compose stop` to stop
 - `maria`, `mssql`, `postgres`: Run only a particular service
 
-### Connectivity test
-
-macOS:
-
-```sh
-DM_TEST_DOCKER_HOST=192.168.64.2 make connect
-```
-
-Linux:
-
-```sh
-DM_TEST_DOCKER_HOST=localhost make connect
-```
+### Configure docker host
 
 Controlled with environment variables:
 
-- `DM_TEST_DOCKER_HOST`: `localhost` on Linux, see output of `colima status` on macOS
+- `DM_TEST_DOCKER_HOST`: `127.0.0.1` on Linux, see output of `colima status` on macOS
+
+On Linux using `localhost` instead of `127.0.0.1` is causing problems for MariaDB.
 
 See also the `Makefile`.
 
 It is recommended to adapt your `.Renviron` once connectivity has been established.
+
+```sh
+## Linux
+echo 'DM_TEST_DOCKER_HOST=127.0.0.1' >> .Renviron
+```
+
 The subsequent instructions omit setting the environment variables explicitly.
+
+
+### Create Database objects
+
+### mssql: For a new container, create the database
+
+FIXME: Automate this.
+
+```sh
+R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
+```
+
+
+### maria: For a new container, grant permissions
+
+FIXME: Automate this.
+
+```sh
+R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$con, "FLUSH PRIVILEGES")'
+```
+
+
+### Connectivity test
+
+```sh
+make connect
+```
 
 
 ### Test against a specific database backend
@@ -151,30 +174,6 @@ make -j1 test
 ```sh
 # make docker-build
 make docker-test
-```
-
-
-### mssql: For a new container, create the database
-
-FIXME: Automate this.
-
-```sh
-R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
-```
-
-
-### maria: For a new container, grant permissions
-
-FIXME: Automate this.
-
-```sh
-R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$con, "FLUSH PRIVILEGES")'
-```
-
-Linux:
-
-```sh
-DM_TEST_DOCKER_HOST=localhost DM_TEST_MSSQL_ODBC_LIB=/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 R -q -e 'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
 ```
 
 
