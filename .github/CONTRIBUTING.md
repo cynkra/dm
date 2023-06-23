@@ -109,27 +109,38 @@ Switches:
 - `-d`: Daemon mode, run in the background, use `docker-compose stop` to stop
 - `maria`, `mssql`, `postgres`: Run only a particular service
 
-### Configure docker host
+### Connectivity test
+
+macOS:
+
+```sh
+DM_TEST_DOCKER_HOST=192.168.64.2 make connect
+```
+
+Linux:
+
+```sh
+DM_TEST_DOCKER_HOST=127.0.0.1 make connect
+```
 
 Controlled with environment variables:
 
-- `DM_TEST_DOCKER_HOST`: `127.0.0.1` on Linux, see output of `colima status` on macOS
+- `DM_TEST_DOCKER_HOST`: `127.0.0.1` or `localhost` on Linux, see output of `colima status` on macOS
 
-On Linux using `localhost` instead of `127.0.0.1` is causing problems for MariaDB.
+    (On Linux, using `localhost` instead of `127.0.0.1` may cause problems for MariaDB.)
 
 See also the `Makefile`.
 
 It is recommended to adapt your `.Renviron` once connectivity has been established.
-
-```sh
-## Linux
-echo 'DM_TEST_DOCKER_HOST=127.0.0.1' >> .Renviron
-```
-
 The subsequent instructions omit setting the environment variables explicitly.
 
 
-### Create Database objects
+### Test against a specific database backend
+
+```sh
+make test-postgres
+```
+
 
 ### mssql: For a new container, create the database
 
@@ -145,22 +156,9 @@ R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FA
 FIXME: Automate this.
 
 ```sh
-R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$con, "FLUSH PRIVILEGES")'
+R -q -e 'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
 ```
 
-
-### Connectivity test
-
-```sh
-make connect
-```
-
-
-### Test against a specific database backend
-
-```sh
-make test-mssql
-```
 
 ### Test against all backends
 
@@ -172,7 +170,7 @@ make -j1 test
 ### Test on Docker
 
 ```sh
-# make docker-build
+# make docker-build # not necessary, image available on ghcr.io
 make docker-test
 ```
 
