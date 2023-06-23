@@ -142,7 +142,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   meta <- dm_meta(con, catalog = dbname, schema = schema, simple = TRUE)
 
   meta$tables %>%
-    rename(table_schema = table_name) %>%
+    rename(schema_name = table_name) %>%
     collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
     mutate(remote_name = schema_if(schema_name, table_name, con, dbname))
