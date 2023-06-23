@@ -120,12 +120,14 @@ DM_TEST_DOCKER_HOST=192.168.64.2 make connect
 Linux:
 
 ```sh
-DM_TEST_DOCKER_HOST=localhost make connect
+DM_TEST_DOCKER_HOST=127.0.0.1 make connect
 ```
 
 Controlled with environment variables:
 
-- `DM_TEST_DOCKER_HOST`: `localhost` on Linux, see output of `colima status` on macOS
+- `DM_TEST_DOCKER_HOST`: `127.0.0.1` or `localhost` on Linux, see output of `colima status` on macOS
+
+    (On Linux, using `localhost` instead of `127.0.0.1` may cause problems for MariaDB.)
 
 See also the `Makefile`.
 
@@ -136,21 +138,7 @@ The subsequent instructions omit setting the environment variables explicitly.
 ### Test against a specific database backend
 
 ```sh
-make test-mssql
-```
-
-### Test against all backends
-
-```sh
-make -j1 test
-```
-
-
-### Test on Docker
-
-```sh
-# make docker-build
-make docker-test
+make test-postgres
 ```
 
 
@@ -168,13 +156,22 @@ R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FA
 FIXME: Automate this.
 
 ```sh
-R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$con, "FLUSH PRIVILEGES")'
+R -q -e 'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
 ```
 
-Linux:
+
+### Test against all backends
 
 ```sh
-DM_TEST_DOCKER_HOST=localhost DM_TEST_MSSQL_ODBC_LIB=/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 R -q -e 'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
+make -j1 test
+```
+
+
+### Test on Docker
+
+```sh
+# make docker-build # not necessary, image available on ghcr.io
+make docker-test
 ```
 
 
