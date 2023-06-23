@@ -159,37 +159,37 @@
 <p>macOS:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>192.168.64.2 <span class="fu">make</span> connect</span></code></pre></div>
 <p>Linux:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>localhost <span class="fu">make</span> connect</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>127.0.0.1 <span class="fu">make</span> connect</span></code></pre></div>
 <p>Controlled with environment variables:</p>
 <ul><li>
-<code>DM_TEST_DOCKER_HOST</code>: <code>localhost</code> on Linux, see output of <code>colima status</code> on macOS</li>
+<p><code>DM_TEST_DOCKER_HOST</code>: <code>127.0.0.1</code> or <code>localhost</code> on Linux, see output of <code>colima status</code> on macOS</p>
+<p>(On Linux, using <code>localhost</code> instead of <code>127.0.0.1</code> may cause problems for MariaDB.)</p>
+</li>
 </ul><p>See also the <code>Makefile</code>.</p>
 <p>It is recommended to adapt your <code>.Renviron</code> once connectivity has been established. The subsequent instructions omit setting the environment variables explicitly.</p>
 </div>
 <div class="section level3">
 <h3 id="test-against-a-specific-database-backend">Test against a specific database backend<a class="anchor" aria-label="anchor" href="#test-against-a-specific-database-backend"></a></h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> test-mssql</span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="test-against-all-backends">Test against all backends<a class="anchor" aria-label="anchor" href="#test-against-all-backends"></a></h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-j1</span> test</span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="test-on-docker">Test on Docker<a class="anchor" aria-label="anchor" href="#test-on-docker"></a></h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make docker-build</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> docker-test</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> test-postgres</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="mssql-for-a-new-container-create-the-database">mssql: For a new container, create the database<a class="anchor" aria-label="anchor" href="#mssql-for-a-new-container-create-the-database"></a></h3>
 <p>FIXME: Automate this.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="maria-for-a-new-container-grant-permissions">maria: For a new container, grant permissions<a class="anchor" aria-label="anchor" href="#maria-for-a-new-container-grant-permissions"></a></h3>
 <p>FIXME: Automate this.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$con, "FLUSH PRIVILEGES")'</span></span></code></pre></div>
-<p>Linux:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>localhost <span class="va">DM_TEST_MSSQL_ODBC_LIB</span><span class="op">=</span>/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 <span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="test-against-all-backends">Test against all backends<a class="anchor" aria-label="anchor" href="#test-against-all-backends"></a></h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-j1</span> test</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="test-on-docker">Test on Docker<a class="anchor" aria-label="anchor" href="#test-on-docker"></a></h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make docker-build # not necessary, image available on ghcr.io</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> docker-test</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
