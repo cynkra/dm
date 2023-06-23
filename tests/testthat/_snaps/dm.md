@@ -108,8 +108,15 @@
     Code
       writeLines(conditionMessage(expect_error(dm(dm_for_flatten(),
       dm_for_filter_duckdb()))))
+    Condition
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
     Output
-      All `dm` objects need to share the same `src`.
+      i In index: 2.
+      Caused by error in `copy_dm_to()`:
+      ! object 'ptype_dm' not found
 
 # output for dm() with dm
 
