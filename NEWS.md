@@ -1,5 +1,76 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9016
+
+## Documentation
+
+- Tweak testing instructions.
+
+
+# dm 1.0.5.9015
+
+## Features
+
+- `dm_from_con()` can retrieve multiple schemas, pass a character vector to the `schema` argument (@owenjonesuob, #1533, #1789).
+
+- `build_copy_queries()` and `db_learn_from_db()` improvements (@samssann, #1642, #1677, #1739).
+
+## Chore
+
+- Remove dead code, duckdb \>= 0.4.0 is already specified (@jangorecki, #1892).
+
+- Fix and enhance Makefile.
+
+- DM_TEST_DOCKER_HOST has precedence over CI.
+
+
+# dm 1.0.5.9014
+
+## Chore
+
+- Get DM_TEST_DOCKER_HOST from environment.
+
+- New docker-build and docker-test targets.
+
+- Compatibility with dbplyr \> 2.3.2 (@mgirlich, #1894).
+
+- Avoid qtest target in docs \[ci skip\].
+
+## Uncategorized
+
+- Merge branch 'docs'.
+
+
+# dm 1.0.5.9013
+
+## Chore
+
+- Add df test.
+
+- Ltest and connect, tweak and simplify instructions.
+
+- Mention Makefile in CONTRIBUTING.md.
+
+## Testing
+
+- Silence test.
+
+
+# dm 1.0.5.9012
+
+## Chore
+
+- Clean pillar options for stable tests.
+
+- Adapt to dev tidyselect (#1901).
+
+- In `copy_dm_to()`, call `collect()` only when copying data, table by table (@jangorecki, #1900).
+
+## Documentation
+
+- Describe Docker setup (#1898).
+
+
 # dm 1.0.5.9011
 
 ## Bug fixes

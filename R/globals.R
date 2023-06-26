@@ -10,6 +10,7 @@ utils::globalVariables(c(
   "unique_def", # <build_copy_queries>
   "child_table", # <build_copy_queries>
   "child_fk_cols", # <build_copy_queries>
+  "on_delete", # <build_copy_queries>
   "fk_def", # <build_copy_queries>
   "remote_name", # <build_copy_queries>
   "remote_name_unquoted", # <build_copy_queries>
@@ -17,6 +18,7 @@ utils::globalVariables(c(
   "columns", # <build_copy_queries>
   "schema_name", # <get_src_tbl_names>
   "table_name", # <get_src_tbl_names>
+  "remote_name", # <get_src_tbl_names>
   "child_uuid", # <fks_df_from_keys_info>
   "parent_uuid", # <fks_df_from_keys_info>
   "child_fk_cols", # <fks_df_from_keys_info>
@@ -138,7 +140,9 @@ utils::globalVariables(c(
   "constraint_catalog", # <dm_learn_from_db>
   "constraint_schema", # <dm_learn_from_db>
   "constraint_name", # <dm_learn_from_db>
+  "is_autoincrement", # <dm_learn_from_db>
   "pks", # <dm_learn_from_db>
+  "delete_rule", # <dm_learn_from_db>
   "constraint_column_usage.dm_name", # <dm_learn_from_db>
   "constraint_column_usage.column_name", # <dm_learn_from_db>
   "key_column_usage.dm_name", # <dm_learn_from_db>
@@ -147,6 +151,7 @@ utils::globalVariables(c(
   "ref_column", # <dm_learn_from_db>
   "column", # <dm_learn_from_db>
   "fks", # <dm_learn_from_db>
+  "extra", # <dm_meta_raw>
   "constraint_catalog", # <dm_meta_raw>
   "constraint_schema", # <dm_meta_raw>
   "table_name", # <dm_meta_raw>
@@ -190,11 +195,13 @@ utils::globalVariables(c(
   "ordinal_position", # <select_dm_meta>
   "column_default", # <select_dm_meta>
   "is_nullable", # <select_dm_meta>
+  "is_autoincrement", # <select_dm_meta>
   "table_constraints", # <select_dm_meta>
   "constraint_catalog", # <select_dm_meta>
   "constraint_schema", # <select_dm_meta>
   "constraint_name", # <select_dm_meta>
   "constraint_type", # <select_dm_meta>
+  "delete_rule", # <select_dm_meta>
   "key_column_usage", # <select_dm_meta>
   "constraint_column_usage", # <select_dm_meta>
   "DATABASE", # <filter_dm_meta>

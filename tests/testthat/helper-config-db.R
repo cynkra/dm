@@ -24,12 +24,12 @@ test_src_postgres <- function() {
   dbplyr::src_dbi(con, auto_disconnect = TRUE)
 }
 
-test_src_maria <- function() {
+test_src_maria <- function(root = FALSE) {
   if (Sys.getenv("DM_TEST_DOCKER_HOST") != "") {
     con <- DBI::dbConnect(
       RMariaDB::MariaDB(),
       host = Sys.getenv("DM_TEST_DOCKER_HOST"),
-      username = "compose",
+      username = if (root) "root" else "compose",
       password = "YourStrong!Passw0rd",
       dbname = "test"
     )
@@ -40,24 +40,24 @@ test_src_maria <- function() {
 }
 
 test_src_mssql <- function(database = TRUE) {
-  if (Sys.getenv("CI") != "") {
+  if (Sys.getenv("DM_TEST_DOCKER_HOST") != "") {
     con <- DBI::dbConnect(
       odbc::odbc(),
-      "mssql-test",
-      uid = "SA",
-      pwd = "YourStrong!Passw0rd",
-      port = 1433
-    )
-  } else if (Sys.getenv("DM_TEST_DOCKER_HOST") != "") {
-    con <- DBI::dbConnect(
-      odbc::odbc(),
-      driver = Sys.getenv("DM_TEST_MSSQL_ODBC_LIB", "/opt/homebrew/lib/libmsodbcsql.18.dylib"),
+      driver = "ODBC Driver 18 for SQL Server",
       server = Sys.getenv("DM_TEST_DOCKER_HOST"),
       database = if (database) "test",
       uid = "SA",
       pwd = "YourStrong!Passw0rd",
       port = 1433,
       TrustServerCertificate = "yes"
+    )
+  } else if (Sys.getenv("CI") != "") {
+    con <- DBI::dbConnect(
+      odbc::odbc(),
+      "mssql-test",
+      uid = "SA",
+      pwd = "YourStrong!Passw0rd",
+      port = 1433
     )
   } else {
     con <- DBI::dbConnect(
