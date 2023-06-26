@@ -191,7 +191,7 @@ copy_dm_to <- function(dest, dm, ...,
     return(dm)
   }
 
-  queries <- build_copy_queries(dest_con, ptype_dm, set_key_constraints, temporary, table_names_out)
+  queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
 
   ticker_create <- new_ticker(
     "creating tables",
