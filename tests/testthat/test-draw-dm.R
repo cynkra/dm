@@ -200,7 +200,7 @@ test_that("table_description works", {
     dm_nycflights_small() %>%
       dm_set_table_description(!!!table_desc) %>%
       dm_get_table_description()
-    })
+  })
 })
 
 test_that("UK support works", {

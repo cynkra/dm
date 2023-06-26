@@ -392,7 +392,7 @@ dm_get_table_description_impl <- function(dm, table_names) {
   map(
     table_names,
     function(table_name) {
-      attr(def[def$table == table_name,]$data[[1]], "description")
+      attr(def[def$table == table_name, ]$data[[1]], "description")
     }
   ) %>%
     purrr::discard(is.null) %>%
