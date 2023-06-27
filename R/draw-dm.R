@@ -344,11 +344,11 @@ dm_get_available_colors <- function() {
 #' @examples
 dm_set_table_description <- function(dm, ...) {
   check_not_zoomed(dm)
-  selected <- eval_select_table(quo(c(...)), src_tbls_impl(dm), unique = FALSE)
+  selected <- eval_select_both(quo(c(...)), src_tbls_impl(dm))
   def <- dm_get_def(dm, quiet = TRUE)
   reduce2(
-    selected,
-    names(selected),
+    selected$indices,
+    names(selected$indices),
     function(def, table, desc) {
       # `eval_select_table()` interprets the name `NULL` as "NULL"
       # downside is, that no table description can be defined as "NULL"
@@ -357,8 +357,8 @@ dm_set_table_description <- function(dm, ...) {
       } else {
         desc
       }
-      def$data[[which(def$table == table)]] <- structure(
-        def$data[[which(def$table == table)]],
+      def$data[[table]] <- structure(
+        def$data[[table]],
         "description" = desc
       )
       def
