@@ -16,11 +16,16 @@
 #' @examples
 dm_set_table_description <- function(dm, ...) {
   check_not_zoomed(dm)
-  selected <- eval_select_both(quo(c(...)), src_tbls_impl(dm))
+  selected <- eval_select_both(quo(c(...)), src_tbls_impl(dm))$indices
   def <- dm_get_def(dm, quiet = TRUE)
+
+  dm_set_table_description_impl(def, selected, names = names(selected))
+}
+
+dm_set_table_description_impl <- function(def, selected, names) {
   reduce2(
-    selected$indices,
-    names(selected$indices),
+    selected,
+    names,
     function(def, table, desc) {
       labelled::label_attribute(def$data[[table]]) <- desc
       def
@@ -57,4 +62,15 @@ dm_get_table_description_impl <- function(dm, tables) {
   ) %>%
     purrr::discard(is.null) %>%
     prep_recode()
+}
+
+dm_reset_table_description <- function(dm, table = NULL, ...) {
+  check_dots_empty()
+  check_not_zoomed(dm)
+
+  table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
+  tables <- eval_select_both(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))$indices
+  def <- dm_get_def(dm, quiet = TRUE)
+
+  dm_set_table_description_impl(def, tables, names = rep(list(NULL), length(tables)))
 }
