@@ -16,7 +16,7 @@
 #' @examples
 dm_set_table_description <- function(dm, ...) {
   check_not_zoomed(dm)
-  selected <- eval_select_both(quo(c(...)), src_tbls_impl(dm))$indices
+  selected <- eval_select_indices(quo(c(...)), src_tbls_impl(dm))
   def <- dm_get_def(dm, quiet = TRUE)
 
   dm_set_table_description_impl(def, selected, names = names(selected))
@@ -49,9 +49,9 @@ dm_get_table_description <- function(dm, table = NULL, ...) {
   check_not_zoomed(dm)
 
   table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
-  tables <- eval_select_both(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
+  tables <- eval_select_indices(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
 
-  dm_get_table_description_impl(dm, tables$indices)
+  dm_get_table_description_impl(dm, tables)
 }
 
 dm_get_table_description_impl <- function(dm, tables) {
@@ -69,7 +69,7 @@ dm_reset_table_description <- function(dm, table = NULL, ...) {
   check_not_zoomed(dm)
 
   table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
-  tables <- eval_select_both(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))$indices
+  tables <- eval_select_indices(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
   def <- dm_get_def(dm, quiet = TRUE)
 
   dm_set_table_description_impl(def, tables, names = rep(list(NULL), length(tables)))
