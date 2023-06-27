@@ -1,4 +1,3 @@
-
 #' Add info about a dm's tables
 #'
 #' @inheritParams dm_draw
