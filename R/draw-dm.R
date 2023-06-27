@@ -70,7 +70,8 @@ dm_draw <- function(dm,
   check_not_zoomed(dm)
   check_dots_empty()
 
-  table_description <- dm_get_table_description_impl(dm, set_names(src_tbls_impl(dm, quiet = TRUE))) %>%
+  tbl_names <- src_tbls_impl(dm, quiet = TRUE)
+  table_description <- dm_get_table_description_impl(dm, set_names(seq_along(tbl_names), tbl_names)) %>%
     prep_recode()
 
   view_type <- arg_match(view_type)
