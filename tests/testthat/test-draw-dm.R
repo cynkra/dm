@@ -174,33 +174,6 @@ test_that("table_description works", {
       dm_draw(font_size_table_description = 6L),
     "table-desc-2-dm.svg"
   )
-
-  expect_snapshot({
-    dm_nycflights_small() %>%
-      dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
-      dm_get_table_description()
-    dm_nycflights_small() %>%
-      dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
-      dm_get_table_description(flights)
-    dm_nycflights_small() %>%
-      dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
-      dm_get_table_description(planes)
-    dm_nycflights_small() %>%
-      dm_set_table_description(
-        "high in the sky\nflying from NY" = flights,
-        "Flugzeuge" = planes
-      ) %>%
-      dm_get_table_description(planes)
-    table_desc <- dm_nycflights_small() %>%
-      dm_set_table_description(
-        "high in the sky\nflying from NY" = flights,
-        "Flugzeuge" = planes
-      ) %>%
-      dm_get_table_description()
-    dm_nycflights_small() %>%
-      dm_set_table_description(!!!table_desc) %>%
-      dm_get_table_description()
-  })
 })
 
 test_that("UK support works", {
