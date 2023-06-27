@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9017
+
+## Chore
+
+- Move `ptype_dm` to `build_copy_queries()` (#1912).
+
+## Uncategorized
+
+- Merge branch 'docs'.
+
+
 # dm 1.0.5.9016
 
 ## Documentation
