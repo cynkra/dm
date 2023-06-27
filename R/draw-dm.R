@@ -350,17 +350,7 @@ dm_set_table_description <- function(dm, ...) {
     selected$indices,
     names(selected$indices),
     function(def, table, desc) {
-      # `eval_select_table()` interprets the name `NULL` as "NULL"
-      # downside is, that no table description can be defined as "NULL"
-      desc <- if (desc == "NULL") {
-        NULL
-      } else {
-        desc
-      }
-      def$data[[table]] <- structure(
-        def$data[[table]],
-        "description" = desc
-      )
+      labelled::label_attribute(def$data[[table]]) <- desc
       def
     },
     .init = def
@@ -382,18 +372,16 @@ dm_get_table_description <- function(dm, table = NULL, ...) {
   check_not_zoomed(dm)
 
   table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
-  table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
+  tables <- eval_select_both(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
 
-  dm_get_table_description_impl(dm, table_names)
+  dm_get_table_description_impl(dm, tables$indices)
 }
 
-dm_get_table_description_impl <- function(dm, table_names) {
+dm_get_table_description_impl <- function(dm, tables) {
   def <- dm_get_def(dm, quiet = TRUE)
   map(
-    table_names,
-    function(table_name) {
-      attr(def[def$table == table_name, ]$data[[1]], "description")
-    }
+    tables,
+     ~ labelled::label_attribute(def$data[[.x]])
   ) %>%
     purrr::discard(is.null) %>%
     prep_recode()
