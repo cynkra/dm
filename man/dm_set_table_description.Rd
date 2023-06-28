@@ -3,30 +3,44 @@
 \name{dm_set_table_description}
 \alias{dm_set_table_description}
 \alias{dm_get_table_description}
+\alias{dm_reset_table_description}
 \title{Add info about a dm's tables}
 \usage{
 dm_set_table_description(dm, ...)
 
 dm_get_table_description(dm, table = NULL, ...)
+
+dm_reset_table_description(dm, table = NULL, ...)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object.}
 
-\item{...}{Descriptions for tables to set in the form \code{description = table}.
-These descriptions will be displayed when creating a diagram with \code{\link[=dm_draw]{dm_draw()}}.
-Multi-line descriptions can be achieved using the newline symbol \verb{\\n}.
-The currently set descriptions can be checked using \code{\link[=dm_get_table_description]{dm_get_table_description()}}.
-Descriptions can be removed using \code{NULL = table}.
+\item{...}{For \code{dm_set_table_description()}: Descriptions for tables to set in the form \code{description = table}.
+\code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.
 
-\code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
+For \code{dm_get_table_description()} and \code{dm_reset_table_description()}: These dots are for future extensions and must be empty.}
 
-\item{table}{A table in the \code{dm}.}
+\item{table}{One or more table names, unquoted, for which to
+\enumerate{
+\item get information about the current description(s) with \code{\link[=dm_get_table_description]{dm_get_table_description()}}.
+\item remove descriptions with \code{\link[=dm_reset_table_description]{dm_reset_table_description()}}.
+}
+
+In both cases the default applies to all tables in the \code{dm}.}
 }
 \value{
-A \code{dm} object containing descriptions for specified tables.
+For \code{dm_set_table_description()}: A \code{dm} object containing descriptions for specified tables.
 
-A named vector of tables, with the descriptions in the names.
+For \code{dm_get_table_description}: A named vector of tables, with the descriptions in the names.
+
+For \code{dm_reset_table_description()}: A \code{dm} object without descriptions for specified tables.
 }
 \description{
-Add info about a dm's tables
+When creating a diagram from a \code{dm} using \code{\link[=dm_draw]{dm_draw()}} the table descriptions set with \code{dm_set_table_description()} will be displayed.
+}
+\details{
+Multi-line descriptions can be achieved using the newline symbol \verb{\\n}.
+Descriptions are set with \code{dm_set_table_description()}.
+The currently set descriptions can be checked using \code{dm_get_table_description()}.
+Descriptions can be removed using \code{dm_reset_table_description()}.
 }

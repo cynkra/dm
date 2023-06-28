@@ -1,15 +1,22 @@
 #' Add info about a dm's tables
 #'
-#' @inheritParams dm_draw
-#' @param ... Descriptions for tables to set in the form `description = table`.
-#' These descriptions will be displayed when creating a diagram with [dm_draw()].
-#' Multi-line descriptions can be achieved using the newline symbol `\n`.
-#' The currently set descriptions can be checked using [dm_get_table_description()].
-#' Descriptions can be removed using `NULL = table`.
+#' @description
+#' When creating a diagram from a `dm` using [dm_draw()] the table descriptions set with `dm_set_table_description()` will be displayed.
 #'
+#' @inheritParams dm_draw
+#' @param ...
+#' For `dm_set_table_description()`: Descriptions for tables to set in the form `description = table`.
 #' `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
 #'
-#' @return A `dm` object containing descriptions for specified tables.
+#' For `dm_get_table_description()` and `dm_reset_table_description()`: These dots are for future extensions and must be empty.
+#'
+#' @details
+#' Multi-line descriptions can be achieved using the newline symbol `\n`.
+#' Descriptions are set with `dm_set_table_description()`.
+#' The currently set descriptions can be checked using `dm_get_table_description()`.
+#' Descriptions can be removed using `dm_reset_table_description()`.
+#'
+#' @return For `dm_set_table_description()`: A `dm` object containing descriptions for specified tables.
 #' @export
 #'
 #' @examples
@@ -35,10 +42,9 @@ dm_set_table_description_impl <- function(def, selected, names) {
 }
 
 
-#' @inheritParams dm_add_pk
 #' @rdname dm_set_table_description
 #'
-#' @return A named vector of tables, with the descriptions in the names.
+#' @return For `dm_get_table_description`: A named vector of tables, with the descriptions in the names.
 #'
 #' @export
 #'
@@ -63,6 +69,19 @@ dm_get_table_description_impl <- function(dm, tables) {
     prep_recode()
 }
 
+#' @inheritParams dm_get_all_pks
+#' @rdname dm_set_table_description
+#' @param table One or more table names, unquoted, for which to
+#'
+#' 1. get information about the current description(s) with [dm_get_table_description()].
+#' 2. remove descriptions with [dm_reset_table_description()].
+#'
+#' In both cases the default applies to all tables in the `dm`.
+#'
+#' @return For `dm_reset_table_description()`: A `dm` object without descriptions for specified tables.
+#' @export
+#'
+#' @examples
 dm_reset_table_description <- function(dm, table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
