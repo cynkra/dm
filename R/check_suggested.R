@@ -8,7 +8,11 @@
 #' @param message optional custom message, by default the message follows a template
 #' @return whether check was triggered and all packages are installed
 #' @noRd
-check_suggested <- function(packages, use, top_level_fun = NULL, message = NULL) {
+check_suggested <- function(packages,
+                            use,
+                            top_level_fun = NULL,
+                            message = NULL,
+                            version = NULL) {
   # If NA, inform that package isn't installed, but only in interactive mode
   if (is.na(use)) {
     use <- is_interactive()
@@ -17,9 +21,10 @@ check_suggested <- function(packages, use, top_level_fun = NULL, message = NULL)
     }
 
     installed <- map_lgl(packages, ~ {
-      installed <- is_installed(.)
+      installed <- is_installed(., version = version)
       if (!installed) {
         if (is.null(message)) {
+          # FIXME: Mention version
           message <- glue("`{top_level_fun}()` is improved by the '{.}' package. Consider `install.packages(\"{.}\")`.")
         }
         inform(message)

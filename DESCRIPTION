@@ -83,7 +83,7 @@ Suggests:
     jsonlite,
     keyring,
     knitr,
-    labelled,
+    labelled (>= 2.12.0),
     mockr,
     nycflights13,
     odbc,
