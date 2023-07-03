@@ -25,23 +25,24 @@ dm_set_table_description <- function(dm, ...) {
 
   check_suggested("labelled", use = TRUE)
 
-  selected <- eval_select_indices(quo(c(...)), src_tbls_impl(dm))
   def <- dm_get_def(dm, quiet = TRUE)
+  selected <- eval_select_indices(quo(c(...)), src_tbls_impl(dm))
+  labels <- names(selected)
 
-  dm_set_table_description_impl(def, selected, names = names(selected))
+  out <- dm_set_table_description_impl(def, selected, labels)
+  new_dm3(out)
 }
 
-dm_set_table_description_impl <- function(def, selected, names) {
+dm_set_table_description_impl <- function(def, selected, labels) {
   reduce2(
     selected,
-    names,
+    labels,
     function(def, table, desc) {
       labelled::label_attribute(def$data[[table]]) <- desc
       def
     },
     .init = def
-  ) %>%
-    new_dm3()
+  )
 }
 
 
@@ -94,8 +95,10 @@ dm_reset_table_description <- function(dm, table = NULL, ...) {
   check_suggested("labelled", use = TRUE)
 
   table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
-  tables <- eval_select_indices(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
   def <- dm_get_def(dm, quiet = TRUE)
+  tables <- eval_select_indices(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
+  labels <- rep(list(NULL), length(tables))
 
-  dm_set_table_description_impl(def, tables, names = rep(list(NULL), length(tables)))
+  out <- dm_set_table_description_impl(def, tables, labels)
+  new_dm3(out)
 }
