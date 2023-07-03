@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9018
+
+- Merge pull request #1917 from cynkra/snapshot-main-R-CMD-check-base-null.
+
+
 # dm 1.0.5.9017
 
 ## Chore
