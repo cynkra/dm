@@ -35,9 +35,14 @@
 #'   )
 #' nyc_desc %>%
 #'   dm_draw()
+#'
 #' dm_get_table_description(nyc_desc)
 #' dm_reset_table_description(nyc_desc, flights) %>%
 #'   dm_draw()
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("labelled")
+#'
+#' pull_tbl(nyc_desc, flights) %>%
+#'   labelled::label_attribute()
 dm_set_table_description <- function(dm, ...) {
   check_not_zoomed(dm)
 

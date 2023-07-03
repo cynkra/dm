@@ -61,8 +61,14 @@ nyc_desc <- dm_nycflights13() \%>\%
   )
 nyc_desc \%>\%
   dm_draw()
+
 dm_get_table_description(nyc_desc)
 dm_reset_table_description(nyc_desc, flights) \%>\%
   dm_draw()
+\dontshow{\}) # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("labelled")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+
+pull_tbl(nyc_desc, flights) \%>\%
+  labelled::label_attribute()
 \dontshow{\}) # examplesIf}
 }
