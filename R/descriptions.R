@@ -22,6 +22,9 @@
 #' @examples
 dm_set_table_description <- function(dm, ...) {
   check_not_zoomed(dm)
+
+  check_suggested("labelled", use = TRUE)
+
   selected <- eval_select_indices(quo(c(...)), src_tbls_impl(dm))
   def <- dm_get_def(dm, quiet = TRUE)
 
@@ -52,6 +55,8 @@ dm_set_table_description_impl <- function(def, selected, names) {
 dm_get_table_description <- function(dm, table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
+
+  check_suggested("labelled", use = TRUE)
 
   table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
   tables <- eval_select_indices(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
@@ -85,6 +90,8 @@ dm_get_table_description_impl <- function(dm, tables) {
 dm_reset_table_description <- function(dm, table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
+
+  check_suggested("labelled", use = TRUE)
 
   table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
   tables <- eval_select_indices(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
