@@ -19,7 +19,25 @@
 #' @return For `dm_set_table_description()`: A `dm` object containing descriptions for specified tables.
 #' @export
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
+#' desc_flights <- rlang::set_names(
+#'   "flights",
+#'   paste(
+#'     "On-time data for all flights",
+#'     "that departed NYC (i.e. JFK, LGA or EWR) in 2013.",
+#'     sep = "\n"
+#'   )
+#' )
+#' nyc_desc <- dm_nycflights13() %>%
+#'   dm_set_table_description(
+#'     !!desc_flights,
+#'     "Weather at the airport of\norigin at time of departure" = weather
+#'   )
+#' nyc_desc %>%
+#'   dm_draw()
+#' dm_get_table_description(nyc_desc)
+#' dm_reset_table_description(nyc_desc, flights) %>%
+#'   dm_draw()
 dm_set_table_description <- function(dm, ...) {
   check_not_zoomed(dm)
 

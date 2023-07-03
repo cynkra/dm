@@ -44,3 +44,25 @@ Descriptions are set with \code{dm_set_table_description()}.
 The currently set descriptions can be checked using \code{dm_get_table_description()}.
 Descriptions can be removed using \code{dm_reset_table_description()}.
 }
+\examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+desc_flights <- rlang::set_names(
+  "flights",
+  paste(
+    "On-time data for all flights",
+    "that departed NYC (i.e. JFK, LGA or EWR) in 2013.",
+    sep = "\n"
+  )
+)
+nyc_desc <- dm_nycflights13() \%>\%
+  dm_set_table_description(
+    !!desc_flights,
+    "Weather at the airport of\norigin at time of departure" = weather
+  )
+nyc_desc \%>\%
+  dm_draw()
+dm_get_table_description(nyc_desc)
+dm_reset_table_description(nyc_desc, flights) \%>\%
+  dm_draw()
+\dontshow{\}) # examplesIf}
+}
