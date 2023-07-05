@@ -38,7 +38,7 @@
 #'
 #' dm_get_table_description(nyc_desc)
 #' dm_reset_table_description(nyc_desc, flights) %>%
-#'   dm_draw()
+#'   dm_draw(font_size = c(header = 18L, table_description = 9L, column = 15L))
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("labelled")
 #'
 #' pull_tbl(nyc_desc, flights) %>%
@@ -74,8 +74,6 @@ dm_set_table_description_impl <- function(def, selected, labels) {
 #' @return For `dm_get_table_description`: A named vector of tables, with the descriptions in the names.
 #'
 #' @export
-#'
-#' @examples
 dm_get_table_description <- function(dm, table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
@@ -109,8 +107,6 @@ dm_get_table_description_impl <- function(dm, tables) {
 #'
 #' @return For `dm_reset_table_description()`: A `dm` object without descriptions for specified tables.
 #' @export
-#'
-#' @examples
 dm_reset_table_description <- function(dm, table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
