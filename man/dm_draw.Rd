@@ -18,7 +18,7 @@ dm_draw(
   graph_name = "Data Model",
   column_types = NULL,
   backend = "DiagrammeR",
-  font_size_table_description = 8L
+  font_size = NULL
 )
 }
 \arguments{
@@ -52,9 +52,14 @@ It defines the level of details for rendering tables
 Pass this value explicitly if your code not only uses this function
 to display a data model but relies on the type of the return value.}
 
-\item{font_size_table_description}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\item{font_size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Font size for \code{table_description}, defaults to \code{8}.}
+Font size for:
+- \code{header}, defaults to \code{16}
+- \code{column}, defaults to \code{16}
+- \code{table_description}, defaults to \code{8}
+
+Can be set as a named integer vector, e.g. \code{c(table_headers = 18L, table_description = 6L)}.}
 }
 \value{
 An object with a \code{\link[=print]{print()}} method, which,
