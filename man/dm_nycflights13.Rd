@@ -9,7 +9,8 @@ dm_nycflights13(
   cycle = FALSE,
   color = TRUE,
   subset = TRUE,
-  compound = TRUE
+  compound = TRUE,
+  table_description = FALSE
 )
 }
 \arguments{
@@ -29,6 +30,9 @@ colors assigned to different tables for visualization with \code{dm_draw()}.}
 
 \item{compound}{Boolean, if \code{FALSE}, no link will be established between tables \code{flights} and \code{weather},
 because this requires compound keys.}
+
+\item{table_description}{Boolean, if \code{TRUE}, a description will be added for each table that will be displayed
+when drawing the table with \code{\link[=dm_draw]{dm_draw()}}.}
 }
 \value{
 A \code{dm} object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.

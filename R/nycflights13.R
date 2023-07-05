@@ -20,6 +20,8 @@
 #' @param subset Boolean, if `TRUE` (default), the `flights` table is reduced to flights with column `day` equal to 10.
 #' @param compound Boolean, if `FALSE`, no link will be established between tables `flights` and `weather`,
 #'   because this requires compound keys.
+#' @param table_description Boolean, if `TRUE`, a description will be added for each table that will be displayed
+#'   when drawing the table with [dm_draw()].
 #'
 #' @return A `dm` object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
 #'
