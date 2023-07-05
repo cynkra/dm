@@ -28,7 +28,7 @@
 #' dm_nycflights13() %>%
 #'   dm_draw()
 #' @autoglobal
-dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE) {
+dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE, table_description = FALSE) {
   check_dots_empty()
 
   if (subset) {
@@ -78,6 +78,30 @@ dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, com
     dm <-
       dm %>%
       dm_add_fk(flights, dest, airports, check = FALSE)
+  }
+
+  if (table_description) {
+    dm <-
+      dm %>%
+      dm_set_table_description(
+        rlang::set_names(
+            c("flights", "airports", "planes", "weather", "airlines"),
+            c(paste(
+              "On-time data for all flights",
+              "that departed NYC (i.e. JFK, LGA or EWR) in 2013.",
+              sep = "\n"
+            ),
+            "Airports of origin or destination of the flights",
+            "Planes used for the flights",
+            paste(
+              "Weather data at the time of the flights at",
+              "the airports of origin",
+              sep = "\n"
+            ),
+            "Airlines operating the flights"
+            )
+          )
+      )
   }
 
   dm
