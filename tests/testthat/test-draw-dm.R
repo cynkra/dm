@@ -181,6 +181,12 @@ test_that("table_description works", {
       dm_draw(font_size = c(table_description = 6L, header = 19L, column = 14L)),
     "table-desc-3-dm.svg"
   )
+
+  expect_snapshot_diagram(
+    dm_nycflights13(table_description = TRUE) %>%
+      dm_draw(font_size = c(table_description = 6L, header = 19L, column = 14L)),
+    "table-desc-4-dm.svg"
+  )
 })
 
 test_that("UK support works", {
