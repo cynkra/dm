@@ -27,9 +27,14 @@
 #' @param backend Currently, only the default `"DiagrammeR"` is accepted.
 #'   Pass this value explicitly if your code not only uses this function
 #'   to display a data model but relies on the type of the return value.
-#' @param font_size_table_description `r lifecycle::badge("experimental")`
+#' @param font_size `r lifecycle::badge("experimental")`
 #'
-#'   Font size for `table_description`, defaults to `8`.
+#'   Font size for:
+#'     - `header`, defaults to `16`
+#'     - `column`, defaults to `16`
+#'     - `table_description`, defaults to `8`
+#'
+#'   Can be set as a named integer vector, e.g. `c(table_headers = 18L, table_description = 6L)`.
 #'
 #' @seealso [dm_set_colors()] for defining the table colors.
 #' @seealso [dm_set_table_description()] for adding details to one or more tables in the diagram
@@ -66,7 +71,7 @@ dm_draw <- function(dm,
                     graph_name = "Data Model",
                     column_types = NULL,
                     backend = "DiagrammeR",
-                    font_size_table_description = 8L) {
+                    font_size = NULL) {
   check_not_zoomed(dm)
   check_dots_empty()
 
@@ -106,7 +111,7 @@ dm_draw <- function(dm,
     focus = focus,
     graph_name = graph_name,
     table_description = as.list(table_description),
-    font_size_table_description = font_size_table_description
+    font_size = as.list(font_size)
   )
   bdm_render_graph(graph, top_level_fun = "dm_draw")
 }
