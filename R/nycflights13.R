@@ -87,8 +87,9 @@ dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, com
       dm %>%
       dm_set_table_description(
         rlang::set_names(
-            c("flights", "airports", "planes", "weather", "airlines"),
-            c(paste(
+          c("flights", "airports", "planes", "weather", "airlines"),
+          c(
+            paste(
               "On-time data for all flights that",
               "departed NYC (i.e. JFK, LGA or EWR) in 2013",
               sep = "\n"
