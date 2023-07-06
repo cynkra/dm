@@ -63,20 +63,15 @@ test_that("table_description works", {
       dm_get_table_description(),
     rlang::set_names(
       c("airlines", "airports", "flights", "planes", "weather"),
-      c(
-        "Airlines operating the flights",
+      c("Airlines that operated the flights",
         "Airports of origin or destination of the flights",
         paste(
-          "On-time data for all flights",
-          "that departed NYC (i.e. JFK, LGA or EWR) in 2013.",
+          "On-time data for all flights that",
+          "departed NYC (i.e. JFK, LGA or EWR) in 2013",
           sep = "\n"
         ),
         "Planes used for the flights",
-        paste(
-          "Weather data at the time of the flights at",
-          "the airports of origin",
-          sep = "\n"
-        )
+        "Hourly meteorological data for LGA, JFK and EWR in 2013"
       )
     )
   )

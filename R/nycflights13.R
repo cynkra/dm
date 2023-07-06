@@ -87,21 +87,34 @@ dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, com
       dm %>%
       dm_set_table_description(
         rlang::set_names(
+<<<<<<< HEAD
           c("flights", "airports", "planes", "weather", "airlines"),
           c(
             paste(
               "On-time data for all flights",
               "that departed NYC (i.e. JFK, LGA or EWR) in 2013.",
+=======
+            c("flights", "airports", "planes", "weather", "airlines"),
+            c(paste(
+              "On-time data for all flights that",
+              "departed NYC (i.e. JFK, LGA or EWR) in 2013",
+>>>>>>> bebc26ed2 (tweaks to nycflights13 table descriptions)
               sep = "\n"
             ),
             "Airports of origin or destination of the flights",
             "Planes used for the flights",
+<<<<<<< HEAD
             paste(
               "Weather data at the time of the flights at",
               "the airports of origin",
               sep = "\n"
             ),
             "Airlines operating the flights"
+=======
+            "Hourly meteorological data for LGA, JFK and EWR in 2013",
+            "Airlines that operated the flights"
+            )
+>>>>>>> bebc26ed2 (tweaks to nycflights13 table descriptions)
           )
         )
       )
