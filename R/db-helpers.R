@@ -123,7 +123,7 @@ find_name_clashes <- function(old, new) {
 }
 
 #' @autoglobal
-get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
+get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
   if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
     warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
@@ -157,12 +157,24 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
     names_table <- get_names_table_mariadb(con)
   }
 
+  # Use smart default for `.names`, if it wasn't provided
+  if (!is.null(names)) {
+    names_pattern <- names
+  } else if (length(schema) == 1) {
+    names_pattern <- "{.table}"
+  } else {
+    names_pattern <- "{.schema}.{.table}"
+    cli::cli_inform('Using {.code .names = "{names_pattern}"}')
+  }
+
   names_table <- names_table %>%
     filter(schema_name %in% !!(if (inherits(schema, "sql")) glue_sql_collapse(schema) else schema)) %>%
     collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
-    mutate(remote_name = schema_if(schema_name, table_name, con, dbname))
-
+    mutate(
+      local_name = glue(names_pattern, .table = table_name, .schema = schema_name),
+      remote_name = schema_if(schema_name, table_name, con, dbname)
+    )
 
   # SQL table names are only guaranteed to be unique in a single schema, so if
   # we have multiple schemas, we might end up with the same local_name pointing
@@ -174,7 +186,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
       mutate(schema_name = factor(schema_name, levels = schema)) %>%
       arrange(schema_name)
 
-    clashes <- with(names_table, find_name_clashes(remote_name, table_name))
+    clashes <- with(names_table, find_name_clashes(remote_name, local_name))
 
     if (length(clashes) > 0) {
       cli::cli_warn(c(
@@ -189,13 +201,13 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
           purrr::set_names(rep("*", length(clashes)))
       ))
 
-      # Keep only first schema for each table_name
-      names_table <- slice_head(names_table, by = table_name)
+      # Keep only first schema for each local_name
+      names_table <- slice_head(names_table, by = local_name)
     }
   }
 
   names_table %>%
-    select(table_name, remote_name) %>%
+    select(local_name, remote_name) %>%
     deframe()
 }
 
