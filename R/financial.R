@@ -47,7 +47,7 @@ dm_has_financial <- function() {
   if (Sys.getenv("CI") != "true") return(FALSE)
 
   # Crashes observed with R < 3.5:
-  if (getRversion() < 3.5) return(FALSE)
+  if (getRversion() < "3.5") return(FALSE)
 
   # Connectivity:
   try_connect <- try(dm_financial(), silent = TRUE)
