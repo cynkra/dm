@@ -158,10 +158,14 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
   }
 
   # Use smart default for `.names`, if it wasn't provided
-  names_pattern <- if (length(schema) == 1) {
-    names %||% "{.table}"
+  if (!is.null(names)) {
+    names_pattern <- names
+  } else if (length(schema) == 1) {
+    names_pattern <- "{.table}"
+    cli::cli_inform('Using {.code .names = "{names_pattern}"}')
   } else {
-    names %||% "{.schema}.{.table}"
+    names_pattern <- "{.schema}.{.table}"
+    cli::cli_inform('Using {.code .names = "{names_pattern}"}')
   }
 
   names_table <- names_table %>%
