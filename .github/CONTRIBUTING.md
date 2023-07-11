@@ -156,7 +156,7 @@ R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FA
 FIXME: Automate this.
 
 ```sh
-R -q -e 'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
+R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$con, "FLUSH PRIVILEGES")'
 ```
 
 
