@@ -297,6 +297,7 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
       returning_cols = autoinc_col
     ))
   } else {
+    # FIXME: dbplyr::remote_table() private in dbplyr 2.3.3, public in dbplyr 2.4.0
     dbplyr_ns <- asNamespace("dbplyr")
     remote_table <- mget("remote_table", dbplyr_ns, mode = "function", ifnotfound = list(NULL))[[1]]
 
