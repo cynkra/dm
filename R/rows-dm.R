@@ -286,7 +286,6 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
 
   con <- dbplyr::remote_con(x)
   # FIXME can be removed after depending on dbplyr >= 2.4.0
-  sql_query_append <- dbplyr::sql_query_append
   append_args <- rlang::fn_fmls_names(dbplyr::sql_query_append)
   old_interface <- identical(append_args, c("con", "x_name", "y", "...", "returning_cols"))
   if (old_interface) {
