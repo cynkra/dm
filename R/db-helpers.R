@@ -162,7 +162,6 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
     names_pattern <- names
   } else if (length(schema) == 1) {
     names_pattern <- "{.table}"
-    cli::cli_inform('Using {.code .names = "{names_pattern}"}')
   } else {
     names_pattern <- "{.schema}.{.table}"
     cli::cli_inform('Using {.code .names = "{names_pattern}"}')
