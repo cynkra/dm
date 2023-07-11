@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9017</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9018</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,8 +95,7 @@
 <span>  graph_name <span class="op">=</span> <span class="st">"Data Model"</span>,</span>
 <span>  column_types <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  backend <span class="op">=</span> <span class="st">"DiagrammeR"</span>,</span>
-<span>  table_description <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  font_size_table_description <span class="op">=</span> <span class="fl">8L</span></span>
+<span>  font_size <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -158,16 +157,13 @@ Pass this value explicitly if your code not only uses this function
 to display a data model but relies on the type of the return value.</p></dd>
 
 
-<dt>table_description</dt>
+<dt>font_size</dt>
 <dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
-<p>Provide a named character vector or a named list with the names
-corresponding to the table names to describe.
-Descriptions across several lines can be achieved using the newline symbol <code>\n</code>.</p></dd>
-
-
-<dt>font_size_table_description</dt>
-<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
-<p>Font size for <code>table_description</code>, defaults to <code>8</code>.</p></dd>
+<p>Font size for:
+- <code>header</code>, defaults to <code>16</code>
+- <code>column</code>, defaults to <code>16</code>
+- <code>table_description</code>, defaults to <code>8</code></p>
+<p>Can be set as a named integer vector, e.g. <code>c(table_headers = 18L, table_description = 6L)</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -188,7 +184,8 @@ If you rely on DiagrammeR, pass an explicit value for the <code>backend</code> a
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="dm_set_colors.html">dm_set_colors()</a></code> for defining the table colors.</p></div>
+    <div class="dont-index"><p><code><a href="dm_set_colors.html">dm_set_colors()</a></code> for defining the table colors.</p>
+<p><code><a href="dm_set_table_description.html">dm_set_table_description()</a></code> for adding details to one or more tables in the diagram</p></div>
     </div>
 
     <div class="section level2">

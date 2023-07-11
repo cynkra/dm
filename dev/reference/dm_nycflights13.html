@@ -20,7 +20,7 @@ data integrity constraints.'><meta property="og:image" content="https://dm.cynkr
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9017</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9018</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,8 @@ data integrity constraints.</p>
 <span>  cycle <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  color <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  subset <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  compound <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  compound <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  table_description <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -132,6 +133,11 @@ colors assigned to different tables for visualization with <code><a href="dm_dra
 <dt>compound</dt>
 <dd><p>Boolean, if <code>FALSE</code>, no link will be established between tables <code>flights</code> and <code>weather</code>,
 because this requires compound keys.</p></dd>
+
+
+<dt>table_description</dt>
+<dd><p>Boolean, if <code>TRUE</code>, a description will be added for each table that will be displayed
+when drawing the table with <code><a href="dm_draw.html">dm_draw()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
