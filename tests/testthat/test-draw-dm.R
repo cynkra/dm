@@ -160,24 +160,32 @@ test_that("output", {
 })
 
 test_that("table_description works", {
-  expect_dm_error(dm_draw(dm_nycflights_small(), table_description = "Flüge"), "arg_needs_names")
-  expect_dm_error(dm_draw(dm_nycflights_small(), table_description = c("flight" = "Flüge")), "table_not_in_dm")
-
+  expect_error(dm_set_table_description(dm_nycflights_small(), "flight" = "Flüge"))
   expect_snapshot_diagram(
     dm_nycflights_small() %>%
-      dm_draw(
-        table_description = c("flights" = "high in the sky\nflying from NY")
-      ),
+      dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
+      dm_draw(),
     "table-desc-1-dm.svg"
   )
 
   expect_snapshot_diagram(
     dm_nycflights_small() %>%
-      dm_draw(
-        table_description = c("flights" = "high in the sky\nflying from NY"),
-        font_size_table_description = 6L
-      ),
+      dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
+      dm_draw(font_size = list(table_description = 6L)),
     "table-desc-2-dm.svg"
+  )
+
+  expect_snapshot_diagram(
+    dm_nycflights_small() %>%
+      dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
+      dm_draw(font_size = c(table_description = 6L, header = 19L, column = 14L)),
+    "table-desc-3-dm.svg"
+  )
+
+  expect_snapshot_diagram(
+    dm_nycflights13(table_description = TRUE) %>%
+      dm_draw(font_size = c(table_description = 6L, header = 19L, column = 14L)),
+    "table-desc-4-dm.svg"
   )
 })
 
@@ -185,19 +193,16 @@ test_that("UK support works", {
   expect_snapshot_diagram(
     dm_nycflights_small() %>%
       dm_add_uk(weather, time_hour) %>%
-      dm_draw(
-        table_description = c("flights" = "high in the sky\nflying from NY"),
-        view_type = "all"
-      ),
+      dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
+      dm_draw(view_type = "all"),
     "table-uk-1-dm.svg"
   )
 
   expect_snapshot_diagram(
     dm_nycflights_small() %>%
       dm_add_fk(flights, time_hour, weather, time_hour) %>%
-      dm_draw(
-        table_description = c("weather" = "Wetter\npogoda")
-      ),
+      dm_set_table_description("Wetter\npogoda" = weather) %>%
+      dm_draw(),
     "table-uk-2-dm.svg"
   )
 })

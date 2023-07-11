@@ -12,7 +12,7 @@ test_that("snapshot test for datamodelr code", {
   data_model <- dm_get_data_model(dm)
 
   path <- tempfile(fileext = ".dot")
-  writeLines(bdm_create_graph(data_model)$dot_code, path)
+  writeLines(bdm_create_graph(data_model, font_size = list())$dot_code, path)
 
   expect_snapshot_file(path, "nycflights13.dot")
 })
@@ -28,7 +28,8 @@ test_that("snapshot test 2 for datamodelr code", {
       table_description = list(
         "flights" = "Flüge",
         "planes" = "Flugzeuge\nl'avion\nel & <\"avión flying in the sky\">"
-      )
+      ),
+      font_size = list()
     )$dot_code,
     path
   )
@@ -48,7 +49,7 @@ test_that("snapshot test 3 for datamodelr code", {
         "flights" = "Flüge",
         "planes" = "Flugzeuge\nl'avion\nel & <\"avión flying in the sky\">"
       ),
-      font_size_table_description = 10L
+      font_size = list(table_description = 10L)
     )$dot_code,
     path
   )
@@ -69,7 +70,7 @@ test_that("snapshot test 4 for datamodelr code", {
         "flights" = "Flüge",
         "planes" = "Flugzeuge\nl'avion\nel & <\"avión flying in the sky\">"
       ),
-      font_size_table_description = 10L
+      font_size = list(table_description = 10L)
     )$dot_code,
     path
   )
@@ -90,7 +91,7 @@ test_that("snapshot test 5 for datamodelr code", {
         "flights" = "Flüge",
         "planes" = "Flugzeuge\nl'avion\nel & <\"avión flying in the sky\">"
       ),
-      font_size_table_description = 10L
+      font_size = list(table_description = 10L)
     )$dot_code,
     path
   )
@@ -98,7 +99,26 @@ test_that("snapshot test 5 for datamodelr code", {
   expect_snapshot_file(path, "nycflights13_draw_uk_2.dot")
 })
 
+test_that("snapshot test 6 for datamodelr code", {
+  dm <- dm_nycflights13(cycle = TRUE) %>%
+    dm_add_fk(flights, time_hour, weather, time_hour)
+  data_model <- dm_get_data_model(dm)
 
+  path <- tempfile(fileext = ".dot")
+  writeLines(
+    bdm_create_graph(
+      data_model,
+      table_description = list(
+        "flights" = "Flüge",
+        "planes" = "Flugzeuge\nl'avion\nel & <\"avión flying in the sky\">"
+      ),
+      font_size = list(table_description = 10L, column = 12L, header = 19L)
+    )$dot_code,
+    path
+  )
+
+  expect_snapshot_file(path, "nycflights13_draw_uk_3.dot")
+})
 
 
 test_that("snapshot test for weird data models", {
@@ -108,7 +128,7 @@ test_that("snapshot test for weird data models", {
   data_model <- dm_get_data_model(dm)
 
   path <- tempfile(fileext = ".dot")
-  writeLines(bdm_create_graph(data_model)$dot_code, path)
+  writeLines(bdm_create_graph(data_model, font_size = list())$dot_code, path)
 
   expect_snapshot_file(path, "weird.dot")
 })
