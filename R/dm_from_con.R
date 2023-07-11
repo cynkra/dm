@@ -16,12 +16,16 @@
 #'   foreign keys from the database.
 #'   Currently works only for Postgres and SQL Server databases.
 #'   The default attempts to query and issues an informative message.
-#' @param .names A glue specification that describes how to name the tables
-#'   within the output. This can use `{.table}` to stand for the table name, and
+#' @param .names
+#'   `r lifecycle::badge("experimental")`
+#'
+#'   A glue specification that describes how to name the tables
+#'   within the output, currently only for MSSQL, Postgres and MySQL/MariaDB.
+#'   This can use `{.table}` to stand for the table name, and
 #'   `{.schema}` to stand for the name of the schema which the table lives
 #'   within. The default (`NULL`) is equivalent to `"{.table}"` when a single
 #'   schema is specified in `schema`, and `"{.schema}.{.table}"` for the case
-#'   where multiple schemas are given.
+#'   where multiple schemas are given, and may change in future versions.
 #' @param ... `r lifecycle::badge("experimental")`
 #'
 #'   Additional parameters for the schema learning query.
