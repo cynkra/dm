@@ -218,12 +218,12 @@ dm_get_def <- function(x, quiet = FALSE) {
 
 new_pk <- function(column = list(), autoincrement = logical(length(column))) {
   stopifnot(is.list(column), is.logical(autoincrement))
-  tibble(column = column, autoincrement = autoincrement)
+  fast_tibble(column = column, autoincrement = autoincrement)
 }
 
 new_uk <- function(column = list()) {
   stopifnot(is.list(column))
-  tibble(column = column)
+  fast_tibble(column = column)
 }
 
 new_fk <- function(ref_column = list(),
@@ -238,11 +238,16 @@ new_fk <- function(ref_column = list(),
     length(on_delete) %in% c(1L, length(table))
   )
 
-  tibble(ref_column, table, column, on_delete)
+  fast_tibble(
+    ref_column = ref_column,
+    table = table,
+    column = column,
+    on_delete = on_delete
+  )
 }
 
 new_filter <- function(quos = list(), zoomed = logical()) {
-  tibble(filter_expr = unclass(quos), zoomed = zoomed)
+  fast_tibble(filter_expr = unclass(quos), zoomed = zoomed)
 }
 
 # Legacy!
