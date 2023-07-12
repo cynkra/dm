@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9022
+
+- Initiated release of version 1.0.6 from version 1.0.5.9021.
+
+
 # dm 1.0.5.9021
 
 ## Documentation
