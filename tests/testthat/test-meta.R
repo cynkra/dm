@@ -15,9 +15,8 @@ test_that("dm_meta() data model", {
 })
 
 test_that("dm_meta(simple = TRUE) columns", {
-  tryCatch(
-    columns <-
-      my_db_test_src() %>%
+  columns <- tryCatch(
+    my_db_test_src() %>%
       dm_meta(simple = TRUE) %>%
       .$columns %>%
       filter(tolower(table_schema) == "information_schema") %>%
@@ -25,11 +24,11 @@ test_that("dm_meta(simple = TRUE) columns", {
       select(-table_catalog) %>%
       collect(),
     error = function(e) {
-      skip(conditionMessage(e))
+      data.frame(error = conditionMessage(e))
     }
   )
 
-  path <- tempfile(fileext = ".csv")
+  path <- withr::local_tempfile(fileext = ".csv")
   write.csv(columns, path, na = "")
 
   expect_snapshot_file(path, name = "columns.csv", variant = my_test_src_name)

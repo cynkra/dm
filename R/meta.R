@@ -334,7 +334,7 @@ filter_dm_meta_simple <- function(dm_meta, catalog = NULL, schema = NULL) {
     schemata <- schemata %>% filter(schema_name %in% !!schema)
     tables <- tables %>% filter(table_schema %in% !!schema)
     columns <- columns %>% filter(table_schema %in% !!schema)
-  } else if (!is.na(schema) && is_mariadb(dm_get_con(dm_meta))) {
+  } else if (!is.null(schema) && !is.na(schema) && is_mariadb(dm_get_con(dm_meta))) {
     schemata <- schemata %>% filter(schema_name == DATABASE() | is.na(DATABASE()))
     tables <- tables %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
     columns <- columns %>% filter(table_schema == DATABASE() | is.na(DATABASE()))

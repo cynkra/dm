@@ -32,3 +32,4 @@
 ^inst/htmlwidgets/lib/jquery/\.bower\.json$
 ^docker-compose\.yml$
 ^Dockerfile$
+^\.vscode$
