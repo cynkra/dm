@@ -182,8 +182,8 @@
         l STRING,
         m STRING,
         PRIMARY KEY (k),
-        FOREIGN KEY (l) REFERENCES tf_4 (h) ON DELETE CASCADE,
-        FOREIGN KEY (m) REFERENCES tf_6 (n)
+        FOREIGN KEY (m) REFERENCES tf_6 (n),
+        FOREIGN KEY (l) REFERENCES tf_4 (h) ON DELETE CASCADE
       )
       
       $sql_index
@@ -204,8 +204,8 @@
       <SQL> CREATE INDEX tf_4__j_j1 ON tf_4 (j, j1)
       
       $sql_index[[6]]
-      <SQL> CREATE INDEX tf_5__l ON tf_5 (l)
       <SQL> CREATE INDEX tf_5__m ON tf_5 (m)
+      <SQL> CREATE INDEX tf_5__l ON tf_5 (l)
       
       
       $index_name
@@ -225,7 +225,7 @@
       [1] "tf_4__j_j1"
       
       $index_name[[6]]
-      [1] "tf_5__l" "tf_5__m"
+      [1] "tf_5__m" "tf_5__l"
       
       
 
