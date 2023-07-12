@@ -62,7 +62,7 @@ Create a dm object (see [Getting started](https://dm.cynkra.com/articles/dm.html
 
 <pre class='chroma'>
 <span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://dm.cynkra.com/'>dm</a></span><span class='o'>)</span></span>
-<span><span class='nv'>dm</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://dm.cynkra.com/reference/dm_nycflights13.html'>dm_nycflights13</a></span><span class='o'>(</span><span class='o'>)</span></span>
+<span><span class='nv'>dm</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://dm.cynkra.com/reference/dm_nycflights13.html'>dm_nycflights13</a></span><span class='o'>(</span>table_description <span class='o'>=</span> <span class='kc'>TRUE</span><span class='o'>)</span></span>
 <span><span class='nv'>dm</span></span>
 <span><span class='c'>#&gt; <span style='color: #FFAFFF;'>──</span> <span style='color: #FFAFFF;'>Metadata</span> <span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class='c'>#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>

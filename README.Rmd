@@ -107,7 +107,7 @@ Create a dm object (see [Getting started](https://dm.cynkra.com/articles/dm.html
 
 ```{r}
 library(dm)
-dm <- dm_nycflights13()
+dm <- dm_nycflights13(table_description = TRUE)
 dm
 ```
 
