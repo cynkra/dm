@@ -708,7 +708,9 @@ collect.dm <- function(x, ..., progress = NA) {
 
 #' @export
 collect.dm_zoomed <- function(x, ...) {
-  message("Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.")
+  if (all(!grepl("pull_tbl()", match.call()))) {
+    message("Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.")
+  }
 
   collect(pull_tbl(x))
 }
