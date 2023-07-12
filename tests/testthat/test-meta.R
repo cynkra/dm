@@ -15,6 +15,9 @@ test_that("dm_meta() data model", {
 })
 
 test_that("dm_meta(simple = TRUE) columns", {
+  # Still stored as snapshot in columns.csv, never cleared
+  skip("Dependent on database version, find better way to record this info")
+
   columns <- tryCatch(
     my_db_test_src() %>%
       dm_meta(simple = TRUE) %>%
