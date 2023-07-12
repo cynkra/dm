@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,6 +74,41 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.6" id="dm-106">dm 1.0.6<a class="anchor" aria-label="anchor" href="#dm-106"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-6">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-6"></a></h3>
+<ul><li><p>Compare version returned by <code><a href="https://rdrr.io/r/base/numeric_version.html" class="external-link">getRversion()</a></code> with string instead of number.</p></li>
+<li><p>Work around vctrs bug in jsonlite 1.8.5.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="features-1-0-6">Features<a class="anchor" aria-label="anchor" href="#features-1-0-6"></a></h3>
+<ul><li><p><code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> gains <code>.names</code> argument for pattern-based construction of table names in the dm object (<a href="https://github.com/owenjonesuob" class="external-link">@owenjonesuob</a>, <a href="https://github.com/cynkra/dm/issues/1790" class="external-link">#1790</a>).</p></li>
+<li><p>New <code>dm_set_table_descriptions()</code>, <code>dm_get_table_descriptions()</code> and <code>dm_reset_table_descriptions()</code> to set table labels as persistent attributes of the table object (<a href="https://github.com/cynkra/dm/issues/1888" class="external-link">#1888</a>).</p></li>
+<li><p><code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> can retrieve multiple schemas, pass a character vector to the <code>schema</code> argument (<a href="https://github.com/owenjonesuob" class="external-link">@owenjonesuob</a>, <a href="https://github.com/cynkra/dm/issues/1533" class="external-link">#1533</a>, <a href="https://github.com/cynkra/dm/issues/1789" class="external-link">#1789</a>).</p></li>
+<li><p><code>build_copy_queries()</code> and <code>db_learn_from_db()</code> improvements (<a href="https://github.com/samssann" class="external-link">@samssann</a>, <a href="https://github.com/cynkra/dm/issues/1642" class="external-link">#1642</a>, <a href="https://github.com/cynkra/dm/issues/1677" class="external-link">#1677</a>, <a href="https://github.com/cynkra/dm/issues/1739" class="external-link">#1739</a>).</p></li>
+<li><p>UK support for <code><a href="../reference/dm_draw.html">dm_draw()</a></code> (<a href="https://github.com/cynkra/dm/issues/1731" class="external-link">#1731</a>, <a href="https://github.com/cynkra/dm/issues/1877" class="external-link">#1877</a>).</p></li>
+<li><p>Allow for additional description of tables in dm_draw() (<a href="https://github.com/cynkra/dm/issues/1875" class="external-link">#1875</a>, <a href="https://github.com/cynkra/dm/issues/1876" class="external-link">#1876</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-6">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-6"></a></h3>
+<ul><li><p>Establish compatibility with dbplyr 2.3.3 and 2.4.0 (<a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>, <a href="https://github.com/cynkra/dm/issues/1919" class="external-link">#1919</a>).</p></li>
+<li><p>In <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code>, call <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> only when copying data, table by table (<a href="https://github.com/jangorecki" class="external-link">@jangorecki</a>, <a href="https://github.com/cynkra/dm/issues/1900" class="external-link">#1900</a>).</p></li>
+<li><p>Use roxyglobals (<a href="https://github.com/cynkra/dm/issues/1838" class="external-link">#1838</a>).</p></li>
+<li><p>Require purrr &gt;= 1.0.0 for <code>list_c()</code> (<a href="https://github.com/cynkra/dm/issues/1847" class="external-link">#1847</a>, <a href="https://github.com/cynkra/dm/issues/1848" class="external-link">#1848</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-0-6">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-6"></a></h3>
+<ul><li><p>Add table description to diagram in README.</p></li>
+<li><p>Tweak testing instructions. Mention <code>Makefile</code> in CONTRIBUTING.md. Describe Docker setup (<a href="https://github.com/cynkra/dm/issues/1898" class="external-link">#1898</a>).</p></li>
+<li><p>Vignette corrections (<a href="https://github.com/MikeJohnPage" class="external-link">@MikeJohnPage</a>, <a href="https://github.com/cynkra/dm/issues/1882" class="external-link">#1882</a>).</p></li>
+<li><p>Avoid tidyverse package.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing-1-0-6">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-6"></a></h3>
+<ul><li>Fix local tests (<a href="https://github.com/cynkra/dm/issues/1921" class="external-link">#1921</a>).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.5" id="dm-105">dm 1.0.5<a class="anchor" aria-label="anchor" href="#dm-105"></a></h2><p class="text-muted">CRAN release: 2023-03-16</p>
 <div class="section level3">

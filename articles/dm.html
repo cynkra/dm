@@ -35,7 +35,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,7 +106,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Getting started with dm</h1>
             
-            <h4 data-toc-skip class="date">2023-06-23</h4>
+            <h4 data-toc-skip class="date">2023-07-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/dm.Rmd" class="external-link"><code>vignettes/dm.Rmd</code></a></small>
       <div class="d-none name"><code>dm.Rmd</code></div>
@@ -372,7 +372,7 @@ RDBMS, please see the “Persisting results” section in
 specifications. When building our own model or changing existing models
 by adding tables or keys, it is even more important that the new model
 is validated.</p>
-<p><code>dm_examine_constrains()</code> checks all primary and foreign
+<p><code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> checks all primary and foreign
 keys and reports if they violate their expected constraints.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fin_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -389,8 +389,8 @@ candidate columns for keys, and normalization, see
 next step is to learn more about the dm methods that your particular use
 case requires.</p>
 <p>Is your data in an RDBMS? Then move on to
-<code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> for a more detailed looking at
-working with an existing relational data model.</p>
+<code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> for a more detailed look at working
+with an existing relational data model.</p>
 <p>If your data is in data frames, then you want to read
 <code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code> next.</p>
 <p>If you would like to know more about relational data models in order

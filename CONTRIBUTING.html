@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,7 +76,7 @@
 
 <div id="contributing-to-dm" class="section level1">
 
-<p>This outlines how to propose a change to dm.</p>
+<p>This outlines how to propose a change to dm and how to set up a local development environment with test databases.</p>
 <div class="section level2">
 <h2 id="fixing-typos">Fixing typos<a class="anchor" aria-label="anchor" href="#fixing-typos"></a></h2>
 <p>You can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the <em>source</em> file. This generally means you’ll need to edit <a href="https://roxygen2.r-lib.org/articles/roxygen2.html" class="external-link">roxygen2 comments</a> in an <code>.R</code>, not a <code>.Rd</code> file. You can find the <code>.R</code> file that generates the <code>.Rd</code> by reading the comment in the first line.</p>
@@ -118,6 +118,78 @@
 <div class="section level3">
 <h3 id="error-messages">Error messages<a class="anchor" aria-label="anchor" href="#error-messages"></a></h3>
 <p>We strive to standardise error messages in {dm}. A failure should be triggered by <code>abort()</code> through a function defined in “error-helpers.R” where the error class is defined with <code>dm_error_full()</code> and the error message is created by a separate function. Please follow the pattern used in <code>"error-helpers.R"</code>. Exceptions might exist but they are mostly waiting to be harmonised.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="test-databases">Test databases<a class="anchor" aria-label="anchor" href="#test-databases"></a></h2>
+<p>This repository comes with a <code>docker-compose.yml</code> file that sets up the databases required for testing. All shell commands are expected to be run from the top-level directory of a clone of this repository.</p>
+<div class="section level3">
+<h3 id="macos-only-install-colima-to-run-docker-containers">macOS only: Install colima to run Docker containers<a class="anchor" aria-label="anchor" href="#macos-only-install-colima-to-run-docker-containers"></a></h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install colima docker-compose</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">colima</span> start <span class="at">-c</span> 4 <span class="at">-m</span> 4 <span class="at">--vm-type</span> vz <span class="at">--vz-rosetta</span> <span class="at">--network-address</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">colima</span> status</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#  INFO[0000] colima is running using macOS Virtualization.Framework</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#  INFO[0000] arch: aarch64</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#  INFO[0000] runtime: docker</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#  INFO[0000] mountType: virtiofs</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#  INFO[0000] address: 192.168.64.2</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#  INFO[0000] socket: unix:///Users/kirill/.colima/default/docker.sock</span></span></code></pre></div>
+<p>Take note of the <code>address</code> in the output, it will be used later.</p>
+<p>See also <a href="https://docs.google.com/document/d/1axInaYK6oK6riRio72uTAeQazuork1X0clY9UL9gYoE/edit?usp=sharing" class="external-link uri">https://docs.google.com/document/d/1axInaYK6oK6riRio72uTAeQazuork1X0clY9UL9gYoE/edit?usp=sharing</a> for more details on colima.</p>
+</div>
+<div class="section level3">
+<h3 id="mssql-odbc-drivers">mssql: ODBC drivers<a class="anchor" aria-label="anchor" href="#mssql-odbc-drivers"></a></h3>
+<ul><li><p>Linux: <a href="https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-ver16&amp;tabs=ubuntu18-install%2Calpine17-install%2Cdebian8-install%2Credhat7-13-install%2Crhel7-offline" class="external-link uri">https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-ver16&amp;tabs=ubuntu18-install%2Calpine17-install%2Cdebian8-install%2Credhat7-13-install%2Crhel7-offline</a></p></li>
+<li><p>macOS: <a href="https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16" class="external-link uri">https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16</a></p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="start-the-containers">Start the containers<a class="anchor" aria-label="anchor" href="#start-the-containers"></a></h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># May take several minutes to pull the images</span></span></code></pre></div>
+<p>Switches:</p>
+<ul><li>
+<code>--force-recreate</code>: Recreate all databases from scratch</li>
+<li>
+<code>-d</code>: Daemon mode, run in the background, use <code>docker-compose stop</code> to stop</li>
+<li>
+<code>maria</code>, <code>mssql</code>, <code>postgres</code>: Run only a particular service</li>
+</ul></div>
+<div class="section level3">
+<h3 id="connectivity-test">Connectivity test<a class="anchor" aria-label="anchor" href="#connectivity-test"></a></h3>
+<p>macOS:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>192.168.64.2 <span class="fu">make</span> connect</span></code></pre></div>
+<p>Linux:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>127.0.0.1 <span class="fu">make</span> connect</span></code></pre></div>
+<p>Controlled with environment variables:</p>
+<ul><li>
+<p><code>DM_TEST_DOCKER_HOST</code>: <code>127.0.0.1</code> or <code>localhost</code> on Linux, see output of <code>colima status</code> on macOS</p>
+<p>(On Linux, using <code>localhost</code> instead of <code>127.0.0.1</code> may cause problems for MariaDB.)</p>
+</li>
+</ul><p>See also the <code>Makefile</code>.</p>
+<p>It is recommended to adapt your <code>.Renviron</code> once connectivity has been established. The subsequent instructions omit setting the environment variables explicitly.</p>
+</div>
+<div class="section level3">
+<h3 id="test-against-a-specific-database-backend">Test against a specific database backend<a class="anchor" aria-label="anchor" href="#test-against-a-specific-database-backend"></a></h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> test-postgres</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="mssql-for-a-new-container-create-the-database">mssql: For a new container, create the database<a class="anchor" aria-label="anchor" href="#mssql-for-a-new-container-create-the-database"></a></h3>
+<p>FIXME: Automate this.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="maria-for-a-new-container-grant-permissions">maria: For a new container, grant permissions<a class="anchor" aria-label="anchor" href="#maria-for-a-new-container-grant-permissions"></a></h3>
+<p>FIXME: Automate this.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$con, "FLUSH PRIVILEGES")'</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="test-against-all-backends">Test against all backends<a class="anchor" aria-label="anchor" href="#test-against-all-backends"></a></h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-j1</span> test</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="test-on-docker">Test on Docker<a class="anchor" aria-label="anchor" href="#test-on-docker"></a></h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make docker-build # not necessary, image available on ghcr.io</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> docker-test</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

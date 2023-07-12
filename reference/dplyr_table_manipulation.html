@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -174,7 +174,7 @@ This argument is specific for the <code>slice.dm_zoomed()</code> method.</p></dd
 
 
 <dt>wt</dt>
-<dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_data_masking.html" class="external-link">data-masking</a></code>&gt; Frequency weights.
+<dd><p>&lt;<code><a href="https://rlang.r-lib.org/reference/args_data_masking.html" class="external-link">data-masking</a></code>&gt; Frequency weights.
 Can be <code>NULL</code> or a variable:</p><ul><li><p>If <code>NULL</code> (the default), counts the number of rows in each group.</p></li>
 <li><p>If a variable, computes <code>sum(wt)</code> for each group.</p></li>
 </ul></dd>
@@ -192,9 +192,12 @@ it will use <code>nn</code>. If there's a column called <code>n</code> and <code
 
 
 <dt>.drop</dt>
-<dd><p>For <code>count()</code>: if <code>FALSE</code> will include counts for empty groups
-(i.e. for levels of factors that don't exist in the data). Deprecated in
-<code>add_count()</code> since it didn't actually affect the output.</p></dd>
+<dd><p>Handling of factor levels that don't appear in the data, passed
+on to <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by()</a></code>.</p>
+<p>For <code>count()</code>: if <code>FALSE</code> will include counts for empty groups (i.e. for
+levels of factors that don't exist in the data).</p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> For <code>add_count()</code>: deprecated since it
+can't actually affect the output.</p></dd>
 
 
 <dt>var</dt>

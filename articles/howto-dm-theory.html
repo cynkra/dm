@@ -35,7 +35,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,7 +108,7 @@
                         <h4 data-toc-skip class="author">Katharina
 Brunner</h4>
             
-            <h4 data-toc-skip class="date">2023-06-23</h4>
+            <h4 data-toc-skip class="date">2023-07-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-theory.Rmd</code></div>
@@ -196,11 +196,11 @@ immediately; these can only be obtained by joining or merging the
 constituent tables, which can result in long and inflated pipe chains
 full of <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code> and other
 forms of data merging.</p>
-<p>In classical {dplyr} notation, you will need three
-<code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code> calls to merge the <code>flights</code> table
-gradually to <code>airlines</code>, <code>planes</code>,
-<code>airports</code>, and <code>weather</code> tables to create one
-wide data frame.</p>
+<p>In classical {dplyr} notation, you will need four
+<code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code> calls to gradually merge the
+<code>flights</code> table to the <code>airlines</code>,
+<code>planes</code>, <code>airports</code>, and <code>weather</code>
+tables to create one wide data frame.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dm.cynkra.com/">dm</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span></span>
@@ -567,6 +567,7 @@ for Microsoft SQL Server and Postgres, but not for SQLite. Therefore,
 the <code>dm</code> contains the tables but not the keys:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-message"><code><span><span class="co">#&gt; ! unable to fetch autoincrement metadata for src 'src_SQLiteConnection'</span></span></code></pre>
 <pre class="fansi fansi-message"><code><span><span class="co">#&gt; Keys could not be queried: ℹ In index: 1.</span></span>
 <span><span class="co">#&gt; Caused by error in `.f()`:</span></span>
 <span><span class="co">#&gt; ! Failed to collect lazy table.</span></span>
