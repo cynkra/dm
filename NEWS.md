@@ -1,5 +1,22 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.5.9019
+
+## Bug fixes
+
+- Compare version with string.
+
+## Features
+
+- `dm_from_con()` gains `.names` argument for pattern-based construction of table names in the dm object (@owenjonesuob, #1790).
+
+- New `dm_set_table_descriptions()`, `dm_get_table_descriptions()` and `dm_reset_table_descriptions()` to set table labels as persistent attributes of the table object (#1888).
+
+## Chore
+
+- Establish compatibility with dbplyr 2.3.3 and 2.4.0 (@mgirlich, #1919).
+
+
 # dm 1.0.5.9018
 
 - Merge pull request #1917 from cynkra/snapshot-main-R-CMD-check-base-null.
