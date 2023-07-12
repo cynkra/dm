@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9018</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9019</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -180,7 +180,7 @@
 <div class="section level3">
 <h3 id="maria-for-a-new-container-grant-permissions">maria: For a new container, grant permissions<a class="anchor" aria-label="anchor" href="#maria-for-a-new-container-grant-permissions"></a></h3>
 <p>FIXME: Automate this.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$con, "FLUSH PRIVILEGES")'</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="test-against-all-backends">Test against all backends<a class="anchor" aria-label="anchor" href="#test-against-all-backends"></a></h3>
