@@ -74,14 +74,14 @@ filter_recode_table_def <- function(data, selected) {
   idx <- match(selected, data$table, nomatch = 0L)
 
   data[idx, ] %>%
-    mutate(table = recode(table, !!!prep_recode(selected)))
+    mutate(table = recode_compat(table, prep_recode(selected)))
 }
 
 filter_recode_fks_of_table <- function(data, selected) {
   # data$table can have multiple entries, we don't care about the order
   idx <- data$table %in% selected
   out <- data[idx, ]
-  out$table <- recode(out$table, !!!prep_recode(selected))
+  out$table <- recode_compat(out$table, prep_recode(selected))
   out
 }
 
@@ -99,6 +99,6 @@ recode2 <- function(x, new) {
   if (is_empty(recipe)) {
     x
   } else {
-    recode(x, !!!recipe)
+    recode_compat(x, recipe)
   }
 }
