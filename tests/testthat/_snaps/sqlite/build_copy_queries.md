@@ -108,6 +108,127 @@
       
       
 
+# build_copy_queries snapshot test for dm_for_filter()
+
+    Code
+      dm_for_filter() %>% build_copy_queries(src_db, .) %>% as.list()
+    Output
+      $name
+      [1] "tf_1" "tf_3" "tf_6" "tf_2" "tf_4" "tf_5"
+      
+      $remote_name
+        tf_1   tf_3   tf_6   tf_2   tf_4   tf_5 
+      "tf_1" "tf_3" "tf_6" "tf_2" "tf_4" "tf_5" 
+      
+      $columns
+      $columns[[1]]
+      [1] "a" "b"
+      
+      $columns[[2]]
+      [1] "f"  "f1" "g" 
+      
+      $columns[[3]]
+      [1] "zz" "n"  "o" 
+      
+      $columns[[4]]
+      [1] "c"  "d"  "e"  "e1"
+      
+      $columns[[5]]
+      [1] "h"  "i"  "j"  "j1"
+      
+      $columns[[6]]
+      [1] "ww" "k"  "l"  "m" 
+      
+      
+      $sql_table
+      <SQL> CREATE TEMPORARY TABLE `tf_1` (
+        `a` INT,
+        `b` TEXT,
+        PRIMARY KEY (`a`)
+      )
+      <SQL> CREATE TEMPORARY TABLE `tf_3` (
+        `f` TEXT,
+        `f1` INT,
+        `g` TEXT,
+        PRIMARY KEY (`f`, `f1`)
+      )
+      <SQL> CREATE TEMPORARY TABLE `tf_6` (
+        `zz` INT,
+        `n` TEXT,
+        `o` TEXT,
+        PRIMARY KEY (`o`),
+        UNIQUE (`n`)
+      )
+      <SQL> CREATE TEMPORARY TABLE `tf_2` (
+        `c` TEXT,
+        `d` INT,
+        `e` TEXT,
+        `e1` INT,
+        PRIMARY KEY (`c`),
+        FOREIGN KEY (`d`) REFERENCES `tf_1` (`a`),
+        FOREIGN KEY (`e`, `e1`) REFERENCES `tf_3` (`f`, `f1`)
+      )
+      <SQL> CREATE TEMPORARY TABLE `tf_4` (
+        `h` TEXT,
+        `i` TEXT,
+        `j` TEXT,
+        `j1` INT,
+        PRIMARY KEY (`h`),
+        FOREIGN KEY (`j`, `j1`) REFERENCES `tf_3` (`f`, `f1`)
+      )
+      <SQL> CREATE TEMPORARY TABLE `tf_5` (
+        `ww` INT,
+        `k` INT,
+        `l` TEXT,
+        `m` TEXT,
+        PRIMARY KEY (`k`),
+        FOREIGN KEY (`l`) REFERENCES `tf_4` (`h`) ON DELETE CASCADE,
+        FOREIGN KEY (`m`) REFERENCES `tf_6` (`n`)
+      )
+      
+      $sql_index
+      $sql_index[[1]]
+      NULL
+      
+      $sql_index[[2]]
+      NULL
+      
+      $sql_index[[3]]
+      NULL
+      
+      $sql_index[[4]]
+      <SQL> CREATE INDEX tf_2__d ON `tf_2` (`d`)
+      <SQL> CREATE INDEX tf_2__e_e1 ON `tf_2` (`e`, `e1`)
+      
+      $sql_index[[5]]
+      <SQL> CREATE INDEX tf_4__j_j1 ON `tf_4` (`j`, `j1`)
+      
+      $sql_index[[6]]
+      <SQL> CREATE INDEX tf_5__l ON `tf_5` (`l`)
+      <SQL> CREATE INDEX tf_5__m ON `tf_5` (`m`)
+      
+      
+      $index_name
+      $index_name[[1]]
+      NULL
+      
+      $index_name[[2]]
+      NULL
+      
+      $index_name[[3]]
+      NULL
+      
+      $index_name[[4]]
+      [1] "tf_2__d"    "tf_2__e_e1"
+      
+      $index_name[[5]]
+      [1] "tf_4__j_j1"
+      
+      $index_name[[6]]
+      [1] "tf_5__l" "tf_5__m"
+      
+      
+
 # build_copy_queries avoids duplicate indexes
 
     Code
