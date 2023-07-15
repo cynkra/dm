@@ -87,6 +87,11 @@ dm_get_table_description <- function(dm, table = NULL, ...) {
 }
 
 dm_get_table_description_impl <- function(dm, tables) {
+  # FIXME: Is this correct?
+  if (!is_installed("labelled")) {
+    return(set_names(character()))
+  }
+
   def <- dm_get_def(dm, quiet = TRUE)
   map(
     tables,
