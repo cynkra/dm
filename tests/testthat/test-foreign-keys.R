@@ -303,6 +303,8 @@ test_that("dm_get_all_fks() with parent_table arg", {
 })
 
 test_that("dm_get_all_fks() with parent_table arg fails nicely", {
+  skip_if(packageVersion("tidyselect") > "1.2.0")
+
   expect_snapshot_error({
     nyc_comp() %>%
       dm_get_all_fks(c(airlines, weather, timetable, tabletime))

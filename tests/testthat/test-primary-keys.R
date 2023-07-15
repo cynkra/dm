@@ -212,6 +212,8 @@ test_that("dm_get_all_pks() with table arg", {
 })
 
 test_that("dm_get_all_pks() with table arg fails nicely", {
+  skip_if(packageVersion("tidyselect") > "1.2.0")
+
   expect_snapshot_error({
     nyc_comp() %>%
       dm_get_all_pks(c(airlines, weather, timetable, tabletime))
