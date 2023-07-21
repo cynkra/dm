@@ -86,7 +86,7 @@ filter_recode_fks_of_table <- function(data, selected) {
 }
 
 prep_recode <- function(x) {
-  set_names(names(x), x)
+  set_names(names2(x), x)
 }
 
 prep_compact_recode <- function(x) {
