@@ -97,7 +97,13 @@ dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
 
   # Fetch only the tbls which were specifically requested
   if (!is.null(table_names)) {
-    tbl_ids <- tbl_ids[table_names]
+    not_found <- setdiff(table_names, names(tbl_ids))
+
+    if (length(not_found) > 0) {
+      cli::cli_warn("Could not find table{?s}: {not_found}")
+    }
+
+    tbl_ids <- tbl_ids[intersect(table_names, names(tbl_ids))]
   }
 
   tbls <- map(tbl_ids, possibly(tbl, NULL), src = src)
