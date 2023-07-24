@@ -93,18 +93,14 @@ dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
     )
   }
 
-  if (is_null(table_names)) {
-    src_tbl_names <- get_src_tbl_names(src, ..., names = .names)
-  } else {
-    src_tbl_names <- table_names
+  tbl_ids <- get_src_tbl_names(src, ..., names = .names)
+
+  # Fetch only the tbls which were specifically requested
+  if (!is.null(table_names)) {
+    tbl_ids <- tbl_ids[table_names]
   }
 
-  nms <- purrr::map_chr(src_tbl_names, ~ .x@name[["table"]])
-
-  tbls <-
-    set_names(src_tbl_names, nms) %>%
-    quote_ids(con) %>%
-    map(possibly(tbl, NULL), src = src)
+  tbls <- map(tbl_ids, possibly(tbl, NULL), src = src)
 
   bad <- map_lgl(tbls, is_null)
   if (any(bad)) {
