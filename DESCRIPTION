@@ -64,7 +64,7 @@ Imports:
     rlang (>= 1.0.2),
     tibble (>= 3.0.0),
     tidyr (>= 1.0.0),
-    tidyselect (>= 1.2.0),
+    tidyselect (>= 1.2.0.9000),
     vctrs (>= 0.3.2)
 Suggests: 
     brio,
@@ -102,6 +102,8 @@ Suggests:
     testthat (>= 3.1.2),
     waldo,
     withr
+Remotes: 
+    r-lib/tidyselect
 Config/Needs/website:
     brio,
     bslib,
