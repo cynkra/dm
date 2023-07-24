@@ -1,33 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.5.9022
-
-- Initiated release of version 1.0.6 from version 1.0.5.9021.
-
-
-# dm 1.0.5.9021
-
-## Documentation
-
-- Add table description to diagram in README.
-
-
-# dm 1.0.5.9020
-
-## Chore
-
-- Stabilize tests.
-
-## Testing
-
-- Fix local tests (#1921).
-
-
-# dm 1.0.5.9019
+# dm 1.0.6
 
 ## Bug fixes
 
-- Compare version with string.
+- Compare version returned by `getRversion()` with string instead of number.
+
+- Work around vctrs bug in jsonlite 1.8.5.
 
 ## Features
 
@@ -35,196 +14,37 @@
 
 - New `dm_set_table_descriptions()`, `dm_get_table_descriptions()` and `dm_reset_table_descriptions()` to set table labels as persistent attributes of the table object (#1888).
 
-## Chore
-
-- Establish compatibility with dbplyr 2.3.3 and 2.4.0 (@mgirlich, #1919).
-
-
-# dm 1.0.5.9018
-
-- Merge pull request #1917 from cynkra/snapshot-main-R-CMD-check-base-null.
-
-
-# dm 1.0.5.9017
-
-## Chore
-
-- Move `ptype_dm` to `build_copy_queries()` (#1912).
-
-## Uncategorized
-
-- Merge branch 'docs'.
-
-
-# dm 1.0.5.9016
-
-## Documentation
-
-- Tweak testing instructions.
-
-
-# dm 1.0.5.9015
-
-## Features
-
 - `dm_from_con()` can retrieve multiple schemas, pass a character vector to the `schema` argument (@owenjonesuob, #1533, #1789).
 
 - `build_copy_queries()` and `db_learn_from_db()` improvements (@samssann, #1642, #1677, #1739).
-
-## Chore
-
-- Remove dead code, duckdb \>= 0.4.0 is already specified (@jangorecki, #1892).
-
-- Fix and enhance Makefile.
-
-- DM_TEST_DOCKER_HOST has precedence over CI.
-
-
-# dm 1.0.5.9014
-
-## Chore
-
-- Get DM_TEST_DOCKER_HOST from environment.
-
-- New docker-build and docker-test targets.
-
-- Compatibility with dbplyr \> 2.3.2 (@mgirlich, #1894).
-
-- Avoid qtest target in docs \[ci skip\].
-
-## Uncategorized
-
-- Merge branch 'docs'.
-
-
-# dm 1.0.5.9013
-
-## Chore
-
-- Add df test.
-
-- Ltest and connect, tweak and simplify instructions.
-
-- Mention Makefile in CONTRIBUTING.md.
-
-## Testing
-
-- Silence test.
-
-
-# dm 1.0.5.9012
-
-## Chore
-
-- Clean pillar options for stable tests.
-
-- Adapt to dev tidyselect (#1901).
-
-- In `copy_dm_to()`, call `collect()` only when copying data, table by table (@jangorecki, #1900).
-
-## Documentation
-
-- Describe Docker setup (#1898).
-
-
-# dm 1.0.5.9011
-
-## Bug fixes
-
-- Work around vctrs bug in jsonlite 1.8.5.
-
-
-# dm 1.0.5.9010
-
-## Documentation
-
-- Vignette corrections (@MikeJohnPage, #1882).
-
-## Testing
-
-- Fix snapshots.
-
-## Uncategorized
-
-- Merge pull request #1872 from cynkra/change_font_url.
-
-
-# dm 1.0.5.9009
-
-## Chore
-
-- Use roxyglobals (#1838).
-
-
-# dm 1.0.5.9008
-
-## Features
 
 - UK support for `dm_draw()` (#1731, #1877).
 
 - Allow for additional description of tables in dm_draw() (#1875, #1876).
 
-
-# dm 1.0.5.9007
-
-- Internal changes only.
-
-
-# dm 1.0.5.9006
-
-- Internal changes only.
-
-
-# dm 1.0.5.9005
-
 ## Chore
+
+- Establish compatibility with dbplyr 2.3.3 and 2.4.0 (@mgirlich, #1919).
+
+- In `copy_dm_to()`, call `collect()` only when copying data, table by table (@jangorecki, #1900).
+
+- Use roxyglobals (#1838).
 
 - Require purrr \>= 1.0.0 for `list_c()` (#1847, #1848).
 
-
-# dm 1.0.5.9004
-
-## Chore
-
-- Use fledge from main branch.
-
-## Uncategorized
-
-- Merge pull request #1861 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-maria-covr-true-desc-MariaDB-with-covr.
-
-- Merge pull request #1859 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-postgres-covr-true-desc-Postgres-with-covr.
-
-- Merge pull request #1858 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-sqlite-covr-true-desc-SQLite-with-covr.
-
-- Merge pull request #1856 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-duckdb-covr-true-desc-DuckDB-with-covr.
-
-- Merge pull request #1855 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-20-04-r-release-test-src-test-mssql-covr-false-desc-SQL-Server-without-covr.
-
-- Merge pull request #1845 from cynkra/snapshot-main-rcc-smoke-null.
-
-
-# dm 1.0.5.9003
-
-- Merged cran-1.0.5 into main.
-
-
-# dm 1.0.5.9002
-
 ## Documentation
+
+- Add table description to diagram in README.
+
+- Tweak testing instructions. Mention `Makefile` in CONTRIBUTING.md. Describe Docker setup (#1898).
+
+- Vignette corrections (@MikeJohnPage, #1882).
 
 - Avoid tidyverse package.
 
+## Testing
 
-# dm 1.0.5.9001
-
-## Chore
-
-- Release automatically via fledge.
-
-
-# dm 1.0.5.9000
-
-- Internal changes only.
+- Fix local tests (#1921).
 
 
 # dm 1.0.5
