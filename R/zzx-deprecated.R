@@ -53,6 +53,25 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
   "generic mapping (child: 0 to n -> parent: 1)"
 }
 
+# similar to `check_subset()`, but evaluates to a boolean
+is_subset <- function(t1, c1, t2, c2) {
+  t1q <- enquo(t1)
+  t2q <- enquo(t2)
+
+  t1s <- eval_tidy(t1q) %>% select({{ c1 }})
+  t2s <- eval_tidy(t2q) %>% select({{ c2 }})
+
+  is_subset_se(t1s, t2s)
+}
+
+# an internal function to check if a column is a unique key of a table
+is_unique_key <- function(.data, column) {
+  col_q <- enexpr(column)
+  col_name <- names(eval_select_indices(col_q, colnames(.data)))
+
+  is_unique_key_se(.data, col_name)
+}
+
 #' @rdname deprecated
 #' @keywords internal
 #' @export

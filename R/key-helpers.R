@@ -61,14 +61,6 @@ check_key_impl0 <- function(x, x_label) {
   }
 }
 
-# an internal function to check if a column is a unique key of a table
-is_unique_key <- function(.data, column) {
-  col_q <- enexpr(column)
-  col_name <- names(eval_select_indices(col_q, colnames(.data)))
-
-  is_unique_key_se(.data, col_name)
-}
-
 #' Check column values for set equality
 #'
 #' @description
@@ -186,17 +178,6 @@ check_subset_impl0 <- function(x, y, x_label, y_label) {
   print(collect(head(res, n = 10)))
 
   abort_not_subset_of(x_label, colnames(x), y_label, colnames(y))
-}
-
-# similar to `check_subset()`, but evaluates to a boolean
-is_subset <- function(t1, c1, t2, c2) {
-  t1q <- enquo(t1)
-  t2q <- enquo(t2)
-
-  t1s <- eval_tidy(t1q) %>% select({{ c1 }})
-  t2s <- eval_tidy(t2q) %>% select({{ c2 }})
-
-  is_subset_se(t1s, t2s)
 }
 
 check_api <- function(x, y,
