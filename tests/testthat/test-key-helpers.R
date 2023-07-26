@@ -1,3 +1,5 @@
+# check_key ---------------------------------------------------------------------------
+
 test_that("check_key() API", {
   local_options(lifecycle_verbosity = "warning")
 
@@ -50,7 +52,67 @@ test_that("check_key() checks primary key properly?", {
   )
 })
 
-test_that("check_api() new interface", {
+
+# check_key_impl0 ---------------------------------------------------------------------
+
+# tested by check_key()
+
+
+# check_set_equality ------------------------------------------------------------------
+
+test_that("check_set_equality() checks properly if 2 sets of values are equal?", {
+  expect_silent(check_set_equality(data_mcard_1(), data_mcard_3(), x_select = a))
+
+  expect_snapshot(error = TRUE, {
+    check_set_equality(data_mcard_1(), data_mcard_2(), x_select = c(a, c))
+  })
+})
+
+# FIXME: COMPOUND:: regarding compound keys: should `check_subset()` and `check_set_equality()`
+# also work for multiple columns? (matching needs to be provided, implicitly by order?)
+
+
+# check_set_equality_impl0 ------------------------------------------------------------
+
+# tested by check_set_equality()
+
+
+# check_subset ------------------------------------------------------------------------
+
+test_that("check_subset() checks if tf_1$c1 column values are subset of tf_2$c2 properly?", {
+  expect_silent(check_subset(data_mcard_1(), data_mcard_2(), x_select = a, y_select = a))
+})
+
+test_that("output for legacy API", {
+  expect_snapshot({
+    check_subset(data_mcard_1(), a, data_mcard_2(), a)
+  })
+})
+
+test_that("output", {
+  expect_snapshot(error = TRUE, {
+    check_subset(data_mcard_1(), data_mcard_2(), x_select = c(x = a))
+  })
+  expect_snapshot(error = TRUE, {
+    check_subset(data_mcard_2(), data_mcard_1(), x_select = a)
+  })
+})
+
+test_that("output for compound keys", {
+  expect_snapshot(error = TRUE, {
+    check_subset(data_mcard_2(), data_mcard_1(), x_select = c(a, b))
+  })
+})
+
+
+# check_subset_impl0 ------------------------------------------------------------------
+
+# tested by check_subset()
+
+
+# check_api ---------------------------------------------------------------------------
+
+test_that("`check_api()` new interface", {
   local_options(lifecycle_verbosity = "quiet")
 
   expect_same(
@@ -72,7 +134,7 @@ test_that("check_api() new interface", {
   )
 })
 
-test_that("check_api() compatibility", {
+test_that("`check_api()` compatibility", {
   local_options(lifecycle_verbosity = "quiet")
 
   expect_same(
@@ -319,38 +381,7 @@ test_that("check_api() compatibility", {
   )
 })
 
-test_that("check_subset() checks if tf_1$c1 column values are subset of tf_2$c2 properly?", {
-  expect_silent(check_subset(data_mcard_1(), data_mcard_2(), x_select = a, y_select = a))
-})
 
-test_that("output for legacy API", {
-  expect_snapshot({
-    check_subset(data_mcard_1(), a, data_mcard_2(), a)
-  })
-})
+# check_api_impl ----------------------------------------------------------------------
 
-test_that("output", {
-  expect_snapshot(error = TRUE, {
-    check_subset(data_mcard_1(), data_mcard_2(), x_select = c(x = a))
-  })
-  expect_snapshot(error = TRUE, {
-    check_subset(data_mcard_2(), data_mcard_1(), x_select = a)
-  })
-})
-
-test_that("output for compound keys", {
-  expect_snapshot(error = TRUE, {
-    check_subset(data_mcard_2(), data_mcard_1(), x_select = c(a, b))
-  })
-})
-
-test_that("check_set_equality() checks properly if 2 sets of values are equal?", {
-  expect_silent(check_set_equality(data_mcard_1(), data_mcard_3(), x_select = a))
-
-  expect_snapshot(error = TRUE, {
-    check_set_equality(data_mcard_1(), data_mcard_2(), x_select = c(a, c))
-  })
-})
-
-# FIXME: COMPOUND:: regarding compound keys: should `check_subset()` and `check_set_equality()`
-# also work for multiple columns? (matching needs to be provided, implicitly by order?)
+# tested by check_api()
