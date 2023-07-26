@@ -428,6 +428,52 @@ check_pk <- function(table, columns) {
   paste0("has ", problem)
 }
 
+#' @autoglobal
+is_unique_key_se <- function(.data, colname) {
+  val_names <- paste0("value", seq_along(colname))
+  col_syms <- syms(colname)
+  names(col_syms) <- val_names
+
+  any_value_na_expr <-
+    syms(val_names) %>%
+    map(call2, .fn = quote(is.na)) %>%
+    reduce(call2, .fn = quote(`|`))
+
+  if (inherits(.data, "data.frame")) {
+    count_tbl <-
+      .data %>%
+      select(!!!col_syms) %>%
+      vctrs::vec_count() %>%
+      unpack(key) %>%
+      rename(n = count)
+  } else {
+    count_tbl <-
+      .data %>%
+      safe_count(!!!col_syms)
+  }
+  res_tbl <-
+    count_tbl %>%
+    mutate(any_na = if_else(!!any_value_na_expr, 1L, 0L)) %>%
+    filter(n != 1 | any_na != 0L) %>%
+    arrange(desc(n), !!!syms(val_names)) %>%
+    utils::head(MAX_COMMAS + 1) %>%
+    collect()
+
+  res_tbl[val_names] <- map(res_tbl[val_names], format, trim = TRUE, justify = "none")
+  res_tbl[val_names[-1]] <- map(res_tbl[val_names[-1]], ~ paste0(", ", .x))
+  res_tbl$value <- if_else(res_tbl$any_na != 0, NA_character_, exec(paste0, !!!res_tbl[val_names]))
+
+  duplicate_rows <-
+    res_tbl %>%
+    {
+      # https://github.com/tidyverse/tidyr/issues/734
+      tibble(data = list(.))
+    } %>%
+    mutate(unique = map_lgl(data, ~ nrow(.) == 0))
+
+  duplicate_rows
+}
+
 
 # Error -------------------------------------------------------------------
 

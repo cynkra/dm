@@ -123,10 +123,6 @@ utils::globalVariables(c(
   "JSON_BUILD_OBJECT", # <sql_json_pack.PqConnection>
   "JSON_AGG", # <sql_json_nest.PqConnection>
   "JSON_BUILD_OBJECT", # <sql_json_nest.PqConnection>
-  "key", # <is_unique_key_se>
-  "any_na", # <is_unique_key_se>
-  ".", # <is_unique_key_se>
-  "data", # <is_unique_key_se>
   "schemata", # <dm_learn_from_db>
   "table_catalog", # <dm_learn_from_db>
   "table_schema", # <dm_learn_from_db>
@@ -241,6 +237,10 @@ utils::globalVariables(c(
   "column", # <enum_pk_candidates_impl>
   "why", # <enum_pk_candidates_impl>
   "candidate", # <enum_pk_candidates_impl>
+  "key", # <is_unique_key_se>
+  "any_na", # <is_unique_key_se>
+  ".", # <is_unique_key_se>
+  "data", # <is_unique_key_se>
   "pks", # <dm_upgrade>
   "ref_table", # <dm_validate>
   "ref_column", # <dm_validate>
