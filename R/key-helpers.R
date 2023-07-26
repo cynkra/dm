@@ -29,11 +29,7 @@ check_key <- function(x, ..., .data = deprecated()) {
     return(check_key_impl0({{ .data }}, {{ x }}, ...))
   }
 
-  check_key_impl({{ x }}, ...)
-}
-
-check_key_impl <- function(.data, ...) {
-  data_q <- enquo(.data)
+  data_q <- enquo(x)
   .data <- eval_tidy(data_q)
 
   if (dots_n(...) > 0) {
