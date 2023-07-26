@@ -99,7 +99,7 @@ dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ...,
   stopifnot(length(ref_col_name) == length(col_name))
 
   if (check) {
-    if (!is_subset(table_obj, !!col_name, ref_table_obj, !!ref_col_name)) {
+    if (!is_subset_se(table_obj, col_name, ref_table_obj, ref_col_name)) {
       abort_not_subset_of(table_name, col_name, ref_table_name, ref_col_name)
     }
   }
