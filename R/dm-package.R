@@ -1,3 +1,7 @@
+#' @keywords internal
+"_PACKAGE"
+
+## usethis namespace: start
 #' @import cli
 #' @import rlang
 #' @importFrom vctrs vec_ptype2 vec_ptype_abbr vec_slice vec_cast vec_proxy_compare vec_data vec_c
@@ -17,4 +21,5 @@
 #' @import lifecycle
 #' @importFrom grDevices col2rgb colors rgb
 #' @importFrom pillar pillar_shaft
+## usethis namespace: end
 NULL
