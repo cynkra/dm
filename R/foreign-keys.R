@@ -107,6 +107,11 @@ dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ...,
   dm_add_fk_impl(dm, table_name, list(col_name), ref_table_name, list(ref_col_name), on_delete)
 }
 
+is_subset_se <- function(x, y) {
+  res <- anti_join(x, y, by = set_names(colnames(y), colnames(x)))
+  pull(count(head(res, 1))) == 0
+}
+
 dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column, on_delete) {
   column <- unclass(column)
   ref_column <- unclass(ref_column)

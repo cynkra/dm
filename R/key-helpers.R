@@ -249,11 +249,6 @@ is_subset <- function(t1, c1, t2, c2) {
   is_subset_se(t1s, t2s)
 }
 
-is_subset_se <- function(x, y) {
-  res <- anti_join(x, y, by = set_names(colnames(y), colnames(x)))
-  pull(count(head(res, 1))) == 0
-}
-
 check_api <- function(x, y,
                       ...,
                       x_select = NULL, y_select = NULL,
