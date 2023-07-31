@@ -8,7 +8,7 @@ on:
   - cron: "30 0 * * *"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || '' }}-${{ github.base_ref || '' }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || github.sha }}-${{ github.base_ref || '' }}
   cancel-in-progress: true
 
 jobs:
@@ -50,4 +50,9 @@ jobs:
           if (fledge::bump_version(which = "dev", no_change_behavior = "noop")) {
             fledge::finalize_version(push = TRUE)
           }
+        shell: Rscript {0}
+
+      - name: Check release
+        run: |
+          fledge:::release_after_cran_built_binaries()
         shell: Rscript {0}

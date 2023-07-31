@@ -4,7 +4,13 @@
 \alias{dm_from_con}
 \title{Load a dm from a remote data source}
 \usage{
-dm_from_con(con = NULL, table_names = NULL, learn_keys = NULL, ...)
+dm_from_con(
+  con = NULL,
+  table_names = NULL,
+  learn_keys = NULL,
+  .names = NULL,
+  ...
+)
 }
 \arguments{
 \item{con}{A \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} or a \code{Pool} object.}
@@ -17,6 +23,16 @@ Set to \code{TRUE} to query the definition of primary and
 foreign keys from the database.
 Currently works only for Postgres and SQL Server databases.
 The default attempts to query and issues an informative message.}
+
+\item{.names}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+A glue specification that describes how to name the tables
+within the output, currently only for MSSQL, Postgres and MySQL/MariaDB.
+This can use \code{{.table}} to stand for the table name, and
+\code{{.schema}} to stand for the name of the schema which the table lives
+within. The default (\code{NULL}) is equivalent to \code{"{.table}"} when a single
+schema is specified in \code{schema}, and \code{"{.schema}.{.table}"} for the case
+where multiple schemas are given, and may change in future versions.}
 
 \item{...}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 

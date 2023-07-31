@@ -165,6 +165,7 @@ new_uks_from_keys_info <- function(tbl) {
   new_uk(df_keys$uks$column[valid_uks])
 }
 
+#' @autoglobal
 fks_df_from_keys_info <- function(tables) {
   info <- map(tables, keyed_get_info)
 

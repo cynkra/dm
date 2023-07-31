@@ -62,6 +62,13 @@ test_that("dm_get_keyed_tables_impl()", {
 
 
 test_that("`new_keyed_tbl()` formatting", {
+  local_options(
+    pillar.min_title_chars = NULL,
+    pillar.max_title_chars = NULL,
+    pillar.max_footer_lines = NULL,
+    pillar.bold = NULL,
+  )
+
   expect_snapshot({
     keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "flights")
     keyed_tbl_impl(dm_nycflights13(cycle = TRUE), "airports")
@@ -192,11 +199,11 @@ test_that("joins without child PK", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -216,11 +223,11 @@ test_that("joins with other child PK", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -240,11 +247,11 @@ test_that("joins with other child PK and name conflict", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -264,11 +271,11 @@ test_that("joins with same child PK", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -288,11 +295,11 @@ test_that("joins with same child PK and same name", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -314,11 +321,11 @@ test_that("joins with other FK from parent", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -340,11 +347,11 @@ test_that("joins with other FK from parent and name conflict", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -366,11 +373,11 @@ test_that("joins with other FK from child", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -392,11 +399,11 @@ test_that("joins with other FK from child and name conflict", {
 
   expect_snapshot({
     keyed_build_join_spec(x, y) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(x, y)) %>%
       dm_paste(options = c("select", "keys"))
     keyed_build_join_spec(y, x) %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
     dm(x, y, z, r = left_join(y, x)) %>%
       dm_paste(options = c("select", "keys"))
   })
@@ -405,14 +412,44 @@ test_that("joins with other FK from child and name conflict", {
 test_that("left join works as expected with keyed tables", {
   withr::local_seed(20220717)
 
+  local_options(
+    pillar.min_title_chars = NULL,
+    pillar.max_title_chars = NULL,
+    pillar.max_footer_lines = NULL,
+    pillar.bold = NULL,
+  )
+
   expect_snapshot({
     dm <- dm_nycflights13()
     keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"), multiple = "all")
   })
 
   # results should be similar to zooming
-  zd1 <- dm_zoom_to(dm, weather) %>% left_join(flights, multiple = "all")
-  zd2 <- dm_zoom_to(dm, flights) %>% left_join(weather)
+  zd1 <-
+    dm %>%
+    dm_rename(weather, year.weather = year) %>%
+    dm_rename(weather, month.weather = month) %>%
+    dm_rename(weather, day.weather = day) %>%
+    dm_rename(weather, hour.weather = hour) %>%
+    dm_rename(flights, year.flights = year) %>%
+    dm_rename(flights, month.flights = month) %>%
+    dm_rename(flights, day.flights = day) %>%
+    dm_rename(flights, hour.flights = hour) %>%
+    dm_zoom_to(weather) %>%
+    left_join(flights, multiple = "all")
+
+  zd2 <-
+    dm %>%
+    dm_rename(flights, year.flights = year) %>%
+    dm_rename(flights, month.flights = month) %>%
+    dm_rename(flights, day.flights = day) %>%
+    dm_rename(flights, hour.flights = hour) %>%
+    dm_rename(weather, year.weather = year) %>%
+    dm_rename(weather, month.weather = month) %>%
+    dm_rename(weather, day.weather = day) %>%
+    dm_rename(weather, hour.weather = hour) %>%
+    dm_zoom_to(flights) %>%
+    left_join(weather)
 
   jd1 <- keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"), multiple = "all")
   jd2 <- keyed_tbl_impl(dm, "flights") %>% left_join(keyed_tbl_impl(dm, "weather"))
@@ -425,6 +462,13 @@ test_that("left join works as expected with keyed tables", {
 
 test_that("semi_join()", {
   withr::local_seed(20220720)
+
+  local_options(
+    pillar.min_title_chars = NULL,
+    pillar.max_title_chars = NULL,
+    pillar.max_footer_lines = NULL,
+    pillar.bold = NULL,
+  )
 
   dm <-
     dm(x = tibble(a = 1), y = tibble(b = 1)) %>%
@@ -455,6 +499,13 @@ test_that("arrange for keyed tables produces expected output", {
 # group_by ----------------------------------
 
 test_that("group_by for keyed tables produces expected output", {
+  local_options(
+    pillar.min_title_chars = NULL,
+    pillar.max_title_chars = NULL,
+    pillar.max_footer_lines = NULL,
+    pillar.bold = NULL,
+  )
+
   expect_snapshot({
     dm <- dm_nycflights13(cycle = TRUE)
 
@@ -487,6 +538,13 @@ test_that("summarize for keyed tables produces expected output", {
 
 
 test_that("summarize for keyed tables produces same output as zooming", {
+  local_options(
+    pillar.min_title_chars = NULL,
+    pillar.max_title_chars = NULL,
+    pillar.max_footer_lines = NULL,
+    pillar.bold = NULL,
+  )
+
   dm <- dm_nycflights13(cycle = TRUE)
 
   z_summary <- dm %>%
@@ -517,7 +575,7 @@ test_that("pks_df_from_keys_info()", {
     dm %>%
       dm_get_keyed_tables_impl() %>%
       pks_df_from_keys_info() %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
   })
 })
 
@@ -531,7 +589,7 @@ test_that("uks_df_from_keys_info()", {
     dm %>%
       dm_get_keyed_tables_impl() %>%
       uks_df_from_keys_info() %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
   })
 })
 
@@ -544,7 +602,7 @@ test_that("fks_df_from_keys_info()", {
     dm %>%
       dm_get_keyed_tables_impl() %>%
       fks_df_from_keys_info() %>%
-      jsonlite::toJSON(pretty = TRUE)
+      to_snapshot_json()
   })
 })
 

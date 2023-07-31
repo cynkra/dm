@@ -20,6 +20,8 @@
 #' @param subset Boolean, if `TRUE` (default), the `flights` table is reduced to flights with column `day` equal to 10.
 #' @param compound Boolean, if `FALSE`, no link will be established between tables `flights` and `weather`,
 #'   because this requires compound keys.
+#' @param table_description Boolean, if `TRUE`, a description will be added for each table that will be displayed
+#'   when drawing the table with [dm_draw()].
 #'
 #' @return A `dm` object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
 #'
@@ -27,7 +29,8 @@
 #' @examplesIf rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
 #'   dm_draw()
-dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE) {
+#' @autoglobal
+dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE, table_description = FALSE) {
   check_dots_empty()
 
   if (subset) {
@@ -77,6 +80,27 @@ dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, com
     dm <-
       dm %>%
       dm_add_fk(flights, dest, airports, check = FALSE)
+  }
+
+  if (table_description) {
+    dm <-
+      dm %>%
+      dm_set_table_description(
+        rlang::set_names(
+          c("flights", "airports", "planes", "weather", "airlines"),
+          c(
+            paste(
+              "On-time data for all flights that",
+              "departed NYC (i.e. JFK, LGA or EWR) in 2013",
+              sep = "\n"
+            ),
+            "Airports of origin or destination of the flights",
+            "Planes used for the flights",
+            "Hourly meteorological data for LGA, JFK and EWR in 2013",
+            "Airlines that operated the flights"
+          )
+        )
+      )
   }
 
   dm

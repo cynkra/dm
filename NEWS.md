@@ -1,43 +1,80 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.4.9005
+# dm 1.0.6.9000
+
+- Merge branch 'cran-1.0.6'.
+
+
+# dm 1.0.6
+
+## Bug fixes
+
+- Compare version returned by `getRversion()` with string instead of number.
+
+- Work around vctrs bug in jsonlite 1.8.5.
+
+## Features
+
+- `dm_from_con()` gains `.names` argument for pattern-based construction of table names in the dm object (@owenjonesuob, #1790).
+
+- New `dm_set_table_descriptions()`, `dm_get_table_descriptions()` and `dm_reset_table_descriptions()` to set table labels as persistent attributes of the table object (#1888).
+
+- `dm_from_con()` can retrieve multiple schemas, pass a character vector to the `schema` argument (@owenjonesuob, #1533, #1789).
+
+- `build_copy_queries()` and `db_learn_from_db()` improvements (@samssann, #1642, #1677, #1739).
+
+- UK support for `dm_draw()` (#1731, #1877).
+
+- Allow for additional description of tables in dm_draw() (#1875, #1876).
 
 ## Chore
 
-- Adapt to rlang 1.1.0 changes (#1817).
+- Establish compatibility with dbplyr 2.3.3 and 2.4.0 (@mgirlich, #1919).
 
-## Uncategorized
+- In `copy_dm_to()`, call `collect()` only when copying data, table by table (@jangorecki, #1900).
 
-- Merge pull request #1812 from cynkra/b-typo-in-tests.
+- Use roxyglobals (#1838).
 
-
-# dm 1.0.4.9004
+- Require purrr \>= 1.0.0 for `list_c()` (#1847, #1848).
 
 ## Documentation
 
+- Add table description to diagram in README.
+
+- Tweak testing instructions. Mention `Makefile` in CONTRIBUTING.md. Describe Docker setup (#1898).
+
+- Vignette corrections (@MikeJohnPage, #1882).
+
+- Avoid tidyverse package.
+
+## Testing
+
+- Fix local tests (#1921).
+
+
+# dm 1.0.5
+
+## Features
+
+- Progress bars for `dm_wrap_tbl()` and `dm_unwrap_tbl()` (#835, #1450).
+
+## Documentation
+
+- Add cheat sheet as a vignette (#1653).
+
+- Suggest creating a function for your database `dm` object (#1827, #1828).
+
 - Add alternative text to author images for pkgdown website (#1804).
 
-
-# dm 1.0.4.9003
-
 ## Chore
 
-- Gitpod configuration with databases (@Antonov548, #1799).
+- Compatibility with dev jsonlite (#1837).
 
+- Remove tidyverse dependency (#1798, #1834).
 
-# dm 1.0.4.9002
+- Minimal patch to fix multiple match updates (@DavisVaughan, #1806).
 
-- Internal changes only.
-
-
-# dm 1.0.4.9001
-
-- Merged cran-1.0.4 into main.
-
-
-# dm 1.0.4.9000
-
-## Chore
+- Adapt to rlang 1.1.0 changes (#1817).
 
 - Make sure `{dm}` passes "noSuggests" workflow (#1659).
 

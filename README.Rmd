@@ -31,13 +31,12 @@ options(cli.num_colors = 256)
 # [dm](https://dm.cynkra.com/)
 
 <!-- badges: start -->
-[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R build status](https://github.com/cynkra/dm/workflows/rcc/badge.svg)](https://github.com/cynkra/dm/actions)
-[![Codecov test coverage](https://codecov.io/gh/cynkra/dm/branch/master/graph/badge.svg)](https://app.codecov.io/gh/cynkra/dm?branch=master)
-<!-- badges: end -->
-
+[![Codecov test coverage](https://codecov.io/gh/cynkra/dm/branch/main/graph/badge.svg)](https://app.codecov.io/gh/cynkra/dm?branch=main)
 [![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm)
 [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
+<!-- badges: end -->
 
 > Are you using multiple data frames or database tables in R? Organize them with dm.
 >
@@ -108,7 +107,7 @@ Create a dm object (see [Getting started](https://dm.cynkra.com/articles/dm.html
 
 ```{r}
 library(dm)
-dm <- dm_nycflights13()
+dm <- dm_nycflights13(table_description = TRUE)
 dm
 ```
 

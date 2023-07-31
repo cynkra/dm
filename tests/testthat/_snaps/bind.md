@@ -152,7 +152,7 @@
         dm::dm_select(dim_2, dim_2_pk, something) %>%
         dm::dm_select(dim_3, dim_3_pk, something) %>%
         dm::dm_select(dim_4, dim_4_pk, something) %>%
-        dm::dm_add_pk(tf_1, a) %>%
+        dm::dm_add_pk(tf_1, a, autoincrement = TRUE) %>%
         dm::dm_add_pk(tf_2, c) %>%
         dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
@@ -207,7 +207,7 @@
         dm::dm_add_pk(dim_2, dim_2_pk) %>%
         dm::dm_add_pk(dim_3, dim_3_pk) %>%
         dm::dm_add_pk(dim_4, dim_4_pk) %>%
-        dm::dm_add_pk(tf_1, a) %>%
+        dm::dm_add_pk(tf_1, a, autoincrement = TRUE) %>%
         dm::dm_add_pk(tf_2, c) %>%
         dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%

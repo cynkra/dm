@@ -170,12 +170,8 @@ copy_dm_to <- function(dest, dm, ...,
         abort_copy_dm_to_table_names_duplicated(problem)
       }
 
-      table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, unclass(table_names_out[src_names])))
       names(table_names_out) <- src_names
     }
-
-    # create `ident`-class objects from the table names
-    table_names_out <- map(table_names_out, dbplyr::ident_q)
   } else {
     # FIXME: Other data sources than local and database possible
     deprecate_soft(
@@ -189,8 +185,6 @@ copy_dm_to <- function(dest, dm, ...,
 
   # FIXME: if same_src(), can use compute() but need to set NOT NULL and other
   # constraints
-
-  dm <- collect(dm, progress = progress)
 
   # Shortcut necessary to avoid copying into .GlobalEnv
   if (!is_db(dest)) {
@@ -221,7 +215,13 @@ copy_dm_to <- function(dest, dm, ...,
   # populate tables
   pwalk(
     queries[c("name", "remote_name")],
-    ticker_populate(~ db_append_table(dest_con, .y, dm[[.x]], progress))
+    ticker_populate(~ db_append_table(
+      con = dest_con,
+      remote_table = .y,
+      table = dm[[.x]],
+      progress = progress,
+      autoinc = dm_get_all_pks(dm, table = !!.x)$autoincrement
+    ))
   )
 
   ticker_index <- new_ticker(
@@ -265,18 +265,23 @@ check_naming <- function(table_names, dm_table_names) {
   }
 }
 
-db_append_table <- function(con, remote_table, table, progress, top_level_fun = "copy_dm_to") {
+db_append_table <- function(con, remote_table, table, progress, top_level_fun = "copy_dm_to", autoinc = logical(0)) {
+  table <- collect(table)
   if (nrow(table) == 0 || ncol(table) == 0) {
     return(invisible())
   }
+
+  remote_table_name <- DBI::dbQuoteIdentifier(con, remote_table)
 
   if (is_mssql(con)) {
     # FIXME: Make adaptive
     chunk_size <- 1000L
     n_chunks <- ceiling(nrow(table) / chunk_size)
 
+    remote_table_id <- dbQuoteIdentifier(con, remote_table)
+
     ticker <- new_ticker(
-      paste0("inserting into ", remote_table),
+      paste0("inserting into ", remote_table_id),
       n = n_chunks,
       progress = progress,
       top_level_fun = top_level_fun
@@ -287,16 +292,24 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
       idx <- seq2(end - (chunk_size - 1), min(end, nrow(table)))
       values <- map(table[idx, ], mssql_escape, con = con)
       # Can't use dbAppendTable(): https://github.com/r-dbi/odbc/issues/480
-      sql <- DBI::sqlAppendTable(con, DBI::SQL(remote_table), values, row.names = FALSE)
+      sql <- DBI::sqlAppendTable(con, remote_table_id, values, row.names = FALSE)
+      if (length(autoinc) > 1L) abort("more than one autoincrement key in one table")
+      if (!is_empty(autoinc) && autoinc) {
+        sql <- DBI::SQL(paste0(
+          "SET IDENTITY_INSERT ", remote_table_name, " ON\n",
+          sql, "\n",
+          "SET IDENTITY_INSERT ", remote_table_name, " OFF"
+        ))
+      }
       DBI::dbExecute(con, sql, immediate = TRUE)
     }))
   } else if (is_postgres(con)) {
     # https://github.com/r-dbi/RPostgres/issues/384
     table <- as.data.frame(table)
     # https://github.com/r-dbi/RPostgres/issues/382
-    DBI::dbAppendTable(con, DBI::SQL(remote_table), table, copy = FALSE)
+    DBI::dbAppendTable(con, remote_table, table, copy = FALSE)
   } else {
-    DBI::dbAppendTable(con, DBI::SQL(remote_table), table)
+    DBI::dbAppendTable(con, remote_table, table)
   }
 
   invisible()
