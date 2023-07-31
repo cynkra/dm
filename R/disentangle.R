@@ -98,7 +98,7 @@ dm_recycle <- function(dm, ptype) {
     # multiple means, that for one FK relation in the disentangled dm there's more than 1 match in
     # the ptype. Happens, when 2+ ptype-tables have the same column names in the same order with the same classes.
     # FIXME: need to catch this error and explain to the user
-    multiple = "error"
+    relationship = "many-to-one"
   ) %>%
     select(
       child_table_target,
