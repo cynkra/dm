@@ -52,14 +52,14 @@ dm_recycle <- function(dm, ptype) {
   # compare classes of matched columns
   target_tables <- dm_get_def(ptype) %>%
     mutate(coltypes = map_chr(data, function(x) {
-      paste0(map_chr(x, ~ class(.x)), collapse = "")
+      paste0(map_chr(x, ~ class(.x)[1]), collapse = "")
     })) %>%
     select(table, coltypes)
 
   source_tables <- dm_ptype(dm) %>%
     dm_get_def() %>%
     mutate(coltypes = map_chr(data, function(x) {
-      paste0(map_chr(x, ~ class(.x)), collapse = "")
+      paste0(map_chr(x, ~ class(.x)[1]), collapse = "")
     })) %>%
     select(table, coltypes)
 
