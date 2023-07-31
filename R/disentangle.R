@@ -36,6 +36,7 @@ dm_disentangle <- function(dm, start, quiet = FALSE) {
     new_dm3()
 }
 
+#' @autoglobal
 dm_recycle <- function(dm, ptype) {
   all_tbls_source <- dm_get_tables(dm)
   all_tbls_target <- dm_get_tables(ptype)

@@ -34,6 +34,15 @@ utils::globalVariables(c(
   "new_table", # <dm_disentangle>
   "fks", # <dm_disentangle>
   "uks", # <dm_disentangle>
+  "data", # <dm_recycle>
+  "coltypes", # <dm_recycle>
+  "child_table", # <dm_recycle>
+  "parent_table", # <dm_recycle>
+  "child_table_target", # <dm_recycle>
+  "child_table_source", # <dm_recycle>
+  "parent_table_target", # <dm_recycle>
+  "parent_table_source", # <dm_recycle>
+  "target_table", # <dm_recycle>
   "pks", # <new_dm_def>
   "uks", # <new_dm_def>
   "fks", # <new_dm_def>
