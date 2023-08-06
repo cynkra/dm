@@ -14,6 +14,26 @@
       The `.data` argument of `check_key()` is deprecated as of dm 1.0.0.
       i Please use the `x` argument instead.
 
+# check_set_equality() checks properly if 2 sets of values are equal?
+
+    Code
+      check_set_equality(data_mcard_1(), data_mcard_2(), x_select = c(a, c))
+    Output
+      # A tibble: 2 x 2
+            a     c
+        <dbl> <dbl>
+      1     1     5
+      2     2     6
+      # A tibble: 2 x 2
+            a     c
+        <dbl> <dbl>
+      1     2     8
+      2     3     9
+    Condition
+      Error in `abort_sets_not_equal()`:
+      ! Columns (`a`, `c`) of table `data_mcard_1()` contain values (see examples above) that are not present in columns (`a`, `c`) of table `data_mcard_2()`.
+        Columns (`a`, `c`) of table `data_mcard_2()` contain values (see examples above) that are not present in columns (`a`, `c`) of table `data_mcard_1()`.
+
 # output for legacy API
 
     Code
@@ -60,24 +80,4 @@
     Condition
       Error in `abort_not_subset_of()`:
       ! Columns (`a`, `b`) of table `data_mcard_2()` contain values (see examples above) that are not present in columns (`a`, `b`) of table `data_mcard_1()`.
-
-# check_set_equality() checks properly if 2 sets of values are equal?
-
-    Code
-      check_set_equality(data_mcard_1(), data_mcard_2(), x_select = c(a, c))
-    Output
-      # A tibble: 2 x 2
-            a     c
-        <dbl> <dbl>
-      1     1     5
-      2     2     6
-      # A tibble: 2 x 2
-            a     c
-        <dbl> <dbl>
-      1     2     8
-      2     3     9
-    Condition
-      Error in `abort_sets_not_equal()`:
-      ! Columns (`a`, `c`) of table `data_mcard_1()` contain values (see examples above) that are not present in columns (`a`, `c`) of table `data_mcard_2()`.
-        Columns (`a`, `c`) of table `data_mcard_2()` contain values (see examples above) that are not present in columns (`a`, `c`) of table `data_mcard_1()`.
 
