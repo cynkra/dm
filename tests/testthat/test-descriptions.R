@@ -1,4 +1,5 @@
 test_that("table_description works", {
+  skip_if_not_installed("labelled")
   expect_identical(
     dm_nycflights_small() %>%
       dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
