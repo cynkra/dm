@@ -26,9 +26,6 @@ copy_dm_to(
 
 \item{dm}{A \code{dm} object.}
 
-\item{...}{Passed on to \code{\link[dplyr:copy_to]{dplyr::copy_to()}} or to the function specified
-by the \code{copy_to} argument.}
-
 \item{overwrite, types, indexes, unique_indexes}{Must remain \code{NULL}.}
 
 \item{set_key_constraints}{If \code{TRUE} will mirror \code{dm} primary and foreign key constraints on a database
@@ -83,12 +80,7 @@ Not all DBMS are supported.}
 hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.}
 
-\item{copy_to}{By default, \code{\link[dplyr:copy_to]{dplyr::copy_to()}} is called to upload the
-individual tables to the target data source.
-This argument allows overriding the standard behavior in cases
-when the default does not work as expected, such as spatial data frames
-or other tables with special data types.
-If not \code{NULL}, this argument is processed with \code{\link[rlang:as_function]{rlang::as_function()}}.}
+\item{copy_to, ...}{Deprecated.}
 }
 \value{
 A \code{dm} object on the given \code{src} with the same table names

@@ -62,14 +62,7 @@
 #'
 #'   Use qualified names corresponding to your database's syntax
 #'   to specify e.g. database and schema for your tables.
-#' @param copy_to By default, [dplyr::copy_to()] is called to upload the
-#'   individual tables to the target data source.
-#'   This argument allows overriding the standard behavior in cases
-#'   when the default does not work as expected, such as spatial data frames
-#'   or other tables with special data types.
-#'   If not `NULL`, this argument is processed with [rlang::as_function()].
-#' @param ... Passed on to [dplyr::copy_to()] or to the function specified
-#'   by the `copy_to` argument.
+#' @param copy_to,... Deprecated.
 #'
 #' @family DB interaction functions
 #'
@@ -137,6 +130,20 @@ copy_dm_to <- function(dest, dm, ...,
     if (is.null(table_names) && temporary && !unique_table_names) {
       table_names <- identity
     }
+  }
+
+  if (!is.null(copy_to)) {
+    deprecate_soft(
+      "1.0.0", "dm::copy_dm_to(copy_to = )",
+      details = "Use `dm_ddl()` for more control over the schema creation process."
+    )
+  }
+
+  if (dots_n(...) > 0) {
+    deprecate_soft(
+      "1.0.0", "dm::copy_dm_to(... = )",
+      details = "Use `dm_ddl()` for more control over the schema creation process."
+    )
   }
 
   dest <- src_from_src_or_con(dest)
