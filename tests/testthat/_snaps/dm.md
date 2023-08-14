@@ -419,7 +419,8 @@
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()
     Message
-      Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.
+      Detaching table from dm.
+      i Use `. %>% pull_tbl() %>% collect()` instead to silence this message.
     Output
       # A tibble: 144 x 15
          origin  year month   day  hour  temp  dewp humid wind_dir wind_speed

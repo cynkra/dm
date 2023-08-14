@@ -723,7 +723,10 @@ collect.dm <- function(x, ..., progress = NA) {
 collect.dm_zoomed <- function(x, ...) {
   check_dots_empty()
 
-  message("Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.")
+  inform(c(
+    "Detaching table from dm.",
+    i = "Use `. %>% pull_tbl() %>% collect()` instead to silence this message."
+  ))
 
   collect(pull_tbl(x))
 }
