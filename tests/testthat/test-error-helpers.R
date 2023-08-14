@@ -38,7 +38,7 @@ test_that("output", {
     abort_con_only_for_dbi()
     abort_only_possible_wo_zoom("dm_zoom_to")
     abort_only_possible_w_zoom("dm_update_zoomed")
-    abort_learn_keys("some reason")
+    abort_learn_keys(error_cnd(message = "some reason"))
     abort_tbl_access("accessdenied")
     abort_need_unique_names("clone")
     abort_fk_not_tracked("hook", "eye")
