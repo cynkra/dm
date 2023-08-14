@@ -124,11 +124,6 @@ and in addition foreign key constraints are set on MSSQL and Postgres databases.
 <dd><p>A <code>dm</code> object.</p></dd>
 
 
-<dt>...</dt>
-<dd><p>Passed on to <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">dplyr::copy_to()</a></code> or to the function specified
-by the <code>copy_to</code> argument.</p></dd>
-
-
 <dt>overwrite, types, indexes, unique_indexes</dt>
 <dd><p>Must remain <code>NULL</code>.</p></dd>
 
@@ -188,13 +183,8 @@ hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.</p></dd>
 
 
-<dt>copy_to</dt>
-<dd><p>By default, <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">dplyr::copy_to()</a></code> is called to upload the
-individual tables to the target data source.
-This argument allows overriding the standard behavior in cases
-when the default does not work as expected, such as spatial data frames
-or other tables with special data types.
-If not <code>NULL</code>, this argument is processed with <code><a href="https://rlang.r-lib.org/reference/as_function.html" class="external-link">rlang::as_function()</a></code>.</p></dd>
+<dt>copy_to, ...</dt>
+<dd><p>Deprecated.</p></dd>
 
 </dl></div>
     <div class="section level2">
