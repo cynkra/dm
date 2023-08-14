@@ -415,8 +415,8 @@ test_that("dm_meta() contents", {
       dm_update_zoomed() %>%
       dm_get_tables() %>%
       map(select, -any_of("column_default"), -contains("catalog"), -contains("schema")) %>%
-      map(arrange_all_but_constraint_name) %>%
       map(collect) %>%
+      map(arrange_all_but_constraint_name) %>%
       map(~ if ("constraint_name" %in% colnames(.x)) {
         .x %>% mutate(constraint_name = as.integer(forcats::fct_inorder(constraint_name)))
       } else {
