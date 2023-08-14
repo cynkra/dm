@@ -489,7 +489,7 @@ derive_temp_column_name <- function(tbl_names, base, suffix = "_new") {
 
 abort_columns_missing <- function(...) {
   # FIXME
-  abort("")
+  abort("abort_columns_missing()")
 }
 
 error_txt_columns_missing <- function(...) {
@@ -498,7 +498,7 @@ error_txt_columns_missing <- function(...) {
 
 abort_tables_missing <- function(...) {
   # FIXME
-  abort("")
+  abort("abort_tables_missing()")
 }
 
 error_txt_tables_missing <- function(...) {
