@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9001
+
+## Chore
+
+- Fix test compatibility.
+
+- Don't cache with scheduled builds.
+
+
 # dm 1.0.6.9000
 
 - Merge branch 'cran-1.0.6'.
