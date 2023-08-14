@@ -711,12 +711,12 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
 
     if (has_length(x_renames)) {
       x_tbl <- x_tbl %>% rename(!!!x_renames[[1]])
-      names(by) <- recode(names2(by), !!!prep_recode(x_renames[[1]]))
-      names(new_col_names) <- recode(names(new_col_names), !!!prep_recode(x_renames[[1]]))
+      names(by) <- recode_compat(names2(by), prep_recode(x_renames[[1]]))
+      names(new_col_names) <- recode_compat(names(new_col_names), prep_recode(x_renames[[1]]))
     }
 
     if (has_length(y_renames)) {
-      names(selected_wo_by) <- recode(names(selected_wo_by), !!!prep_recode(y_renames[[1]]))
+      names(selected_wo_by) <- recode_compat(names(selected_wo_by), prep_recode(y_renames[[1]]))
     }
   }
 
@@ -737,7 +737,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   y_tbl <- select(y_tbl, !!!selected_repaired)
 
   # the `by` argument needs to be updated: LHS stays, RHS needs to be replaced with new names
-  repaired_by <- set_names(recode(by, !!!prep_recode(by_rhs_rename)), names(by))
+  repaired_by <- set_names(recode_compat(by, prep_recode(by_rhs_rename)), names(by))
 
   # in case key columns of x_tbl have the same name as selected columns of y_tbl
   # the column names of x will be adapted (not for `semi_join()` and `anti_join()`)
