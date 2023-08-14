@@ -235,9 +235,11 @@ tbl_lc <- function(con, name, vars) {
   if (is.null(vars)) {
     from <- name
   } else {
+    quoted_vars <- DBI::dbQuoteIdentifier(con_from_src_or_con(con), vars)
     from <- sql(paste0(
       "SELECT ",
-      paste0(DBI::dbQuoteIdentifier(con_from_src_or_con(con), vars), collapse = ", "),
+      # Be especially persuasive for MySQL
+      paste0(quoted_vars, " AS ", quoted_vars, collapse = ", "),
       "\nFROM ", name
     ))
   }

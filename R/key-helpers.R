@@ -106,7 +106,9 @@ is_unique_key_se <- function(.data, colname) {
 
   res_tbl[val_names] <- map(res_tbl[val_names], format, trim = TRUE, justify = "none")
   res_tbl[val_names[-1]] <- map(res_tbl[val_names[-1]], ~ paste0(", ", .x))
-  res_tbl$value <- if_else(res_tbl$any_na != 0, NA_character_, exec(paste0, !!!res_tbl[val_names]))
+  # Work around bit64 incompatibility
+  res_tbl$value <- NA_character_
+  res_tbl$value[res_tbl$any_na == 0] <- exec(paste0, !!!res_tbl[res_tbl$any_na == 0, val_names])
 
   duplicate_rows <-
     res_tbl %>%

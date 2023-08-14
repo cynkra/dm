@@ -184,7 +184,7 @@ dm_for_card %<--% {
     dc_2 = data_card_11(),
     dc_3 = data_card_12(),
     dc_4 = data_card_13(),
-    dc_5 = data_card_1(),
+    dc_5 = suppress_mssql_message(compute(data_card_1())),
     dc_6 = data_card_7()
   ) %>%
     dm_add_fk(dc_2, c(a, b), dc_1, c(a, b)) %>%

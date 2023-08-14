@@ -14,7 +14,7 @@ test: test-df test-sqlite test-postgres test-mssql test-duckdb test-maria
 connect: connect-sqlite connect-postgres connect-mssql connect-duckdb connect-maria
 
 qtest-%:
-	TESTTHAT_PARALLEL=FALSE DM_TEST_SRC=$@ time R -q -e 'options("crayon.enabled" = TRUE); testthat::test_local(filter = "${DM_TEST_FILTER}")'
+	DM_TEST_SRC=$@ time R -q -e 'options("crayon.enabled" = TRUE); Sys.setenv(TESTTHAT_PARALLEL = FALSE); testthat::test_local(filter = "${DM_TEST_FILTER}")'
 
 test-%:
 	DM_TEST_SRC=$@ time R -q -e 'testthat::test_local(filter = "${DM_TEST_FILTER}")'
