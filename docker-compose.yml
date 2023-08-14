@@ -8,7 +8,7 @@ services:
   # https://www.beekeeperstudio.io/blog/how-to-use-mariadb-with-docker
   maria:
     container_name: maria
-    image: mariadb
+    image: mysql # FIXME: mariadb doesn't work, tables are written incorrectly?
     environment:
       MYSQL_ROOT_PASSWORD: "YourStrong!Passw0rd"
       MYSQL_DATABASE: test
