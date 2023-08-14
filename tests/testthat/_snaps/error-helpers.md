@@ -65,9 +65,10 @@
     Code
       abort_no_cycles(create_graph_from_dm(dm_for_filter_w_cycle()))
     Condition
-      Error in `abort_no_cycles()`:
-      ! Cycles in the relationship graph not yet supported.
-      i Shortest cycle: tf_5 -> tf_6 -> tf_7 -> tf_2 -> tf_3 -> tf_4 -> tf_5
+      Warning in `dm_for_filter_w_cycle()`:
+      restarting interrupted promise evaluation
+      Error in `my_test_src()`:
+      ! Data source not known: mysql
     Code
       abort_tables_not_reachable_from_start()
     Condition
