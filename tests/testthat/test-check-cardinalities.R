@@ -23,13 +23,15 @@ test_that("check_card_api() new interface", {
 test_that("check_cardinality_...() functions work without `x_select` and `y_select`", {
   expect_silent(check_cardinality_0_n(data_card_1(), data_card_11()))
   expect_silent(check_cardinality_1_n(data_card_1(), data_card_12()))
-  expect_silent(check_cardinality_1_1(data_card_1(), data_card_1()))
+  # compute(): Can't open the same table twice on MySQL
+  expect_silent(check_cardinality_1_1(data_card_1(), suppress_mssql_message(compute(data_card_1()))))
   expect_silent(check_cardinality_0_1(data_card_1(), data_card_11()))
 
   expect_snapshot({
     examine_cardinality(data_card_1(), data_card_11())
     examine_cardinality(data_card_1(), data_card_12())
-    examine_cardinality(data_card_1(), data_card_1())
+    # compute(): Can't open the same table twice on MySQL
+    examine_cardinality(data_card_1(), suppress_mssql_message(compute(data_card_1())))
     examine_cardinality(data_card_1(), data_card_11())
   })
 })
@@ -387,7 +389,8 @@ test_that("check_cardinality_...() functions are supporting compound keys", {
   # successes
   expect_silent(check_cardinality_0_n(data_card_1(), data_card_11(), x_select = c(a, b), y_select = c(a, b)))
   expect_silent(check_cardinality_1_n(data_card_1(), data_card_12(), x_select = c(a, b), y_select = c(a, b)))
-  expect_silent(check_cardinality_1_1(data_card_1(), data_card_1(), x_select = c(a, b), y_select = c(a, b)))
+  # compute(): Can't open the same table twice on MySQL
+  expect_silent(check_cardinality_1_1(data_card_1(), suppress_mssql_message(compute(data_card_1())), x_select = c(a, b), y_select = c(a, b)))
   expect_silent(check_set_equality(data_card_12(), data_card_1(), x_select = c(a, b), y_select = c(a, b)))
   expect_silent(check_cardinality_0_1(data_card_1(), data_card_11(), x_select = c(a, b), y_select = c(a, b)))
 
@@ -409,7 +412,8 @@ test_that("check_cardinality_...() functions are supporting compound keys", {
   )
 
   expect_identical(
-    examine_cardinality(data_card_1(), data_card_1(), x_select = c(b, a), y_select = c(b, a)),
+    # compute(): Can't open the same table twice on MySQL
+    examine_cardinality(data_card_1(), suppress_mssql_message(compute(data_card_1())), x_select = c(b, a), y_select = c(b, a)),
     "bijective mapping (child: 1 -> parent: 1)"
   )
 
