@@ -10,6 +10,8 @@ qtest: qtest-df qtest-sqlite qtest-postgres qtest-mssql qtest-duckdb qtest-maria
 # or with sake test
 test: test-df test-sqlite test-postgres test-mssql test-duckdb test-maria
 
+ltest: ltest-df ltest-sqlite ltest-postgres ltest-mssql ltest-duckdb ltest-maria
+
 # Connectivity tests
 connect: connect-sqlite connect-postgres connect-mssql connect-duckdb connect-maria
 
@@ -39,3 +41,5 @@ docker-connect:
 
 docker-test:
 	docker run --rm -ti --platform linux/amd64 -e DM_TEST_DOCKER_HOST=$$(Rscript -e 'cat(Sys.getenv("DM_TEST_DOCKER_HOST"))' | tail -n 1) -e TESTTHAT_CPUS=4 -v $$(pwd):/root/workspace ghcr.io/cynkra/dm:main make test
+
+.NOTPARALLEL: test ltest
