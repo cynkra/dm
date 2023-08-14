@@ -66,7 +66,10 @@ dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
       {
         dm_learned <- dm_learn_from_db(con, ...)
         if (is_null(learn_keys)) {
-          inform("Keys queried successfully, use `learn_keys = TRUE` to mute this message.")
+          inform(c(
+            "Keys queried successfully.",
+            i = "Use `learn_keys = TRUE` to mute this message."
+          ))
         }
 
         if (is_null(table_names)) {
@@ -84,10 +87,13 @@ dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
       },
       error = function(e) {
         if (isTRUE(learn_keys)) {
-          abort_learn_keys(conditionMessage(e))
+          abort_learn_keys(e)
         }
-        # FIXME: Use new-style error messages.
-        inform(paste0("Keys could not be queried: ", conditionMessage(e), ". Use `learn_keys = FALSE` to mute this message."))
+        inform(
+          "Keys could not be queried.",
+          x = conditionMessage(e),
+          i = "Use `learn_keys = FALSE` to mute this message."
+        )
         NULL
       }
     )
@@ -152,15 +158,14 @@ quote_ids <- function(x, con, schema = NULL) {
 
 # Errors ------------------------------------------------------------------
 
-abort_learn_keys <- function(reason) {
-  abort(error_txt_learn_keys(reason), class = dm_error_full("learn_keys"))
+abort_learn_keys <- function(parent) {
+  abort(error_txt_learn_keys(), class = dm_error_full("learn_keys"), parent = parent)
 }
 
-error_txt_learn_keys <- function(reason) {
-  # FIXME: Use new-style error messages.
-  paste0(
-    "Failed to learn keys from database: ", reason,
-    ". Use `learn_keys = FALSE` to work around, or `dm:::dm_learn_from_db()` to debug."
+error_txt_learn_keys <- function() {
+  c(
+    "Failed to learn keys from database.",
+    i = "Use `learn_keys = FALSE` to work around, or `dm:::dm_meta()` to debug."
   )
 }
 
