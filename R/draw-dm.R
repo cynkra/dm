@@ -30,9 +30,10 @@
 #' @param font_size `r lifecycle::badge("experimental")`
 #'
 #'   Font size for:
-#'     - `header`, defaults to `16`
-#'     - `column`, defaults to `16`
-#'     - `table_description`, defaults to `8`
+#'
+#'   - `header`, defaults to `16`
+#'   - `column`, defaults to `16`
+#'   - `table_description`, defaults to `8`
 #'
 #'   Can be set as a named integer vector, e.g. `c(table_headers = 18L, table_description = 6L)`.
 #'

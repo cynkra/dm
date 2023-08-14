@@ -55,9 +55,11 @@ to display a data model but relies on the type of the return value.}
 \item{font_size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Font size for:
-- \code{header}, defaults to \code{16}
-- \code{column}, defaults to \code{16}
-- \code{table_description}, defaults to \code{8}
+\itemize{
+\item \code{header}, defaults to \code{16}
+\item \code{column}, defaults to \code{16}
+\item \code{table_description}, defaults to \code{8}
+}
 
 Can be set as a named integer vector, e.g. \code{c(table_headers = 18L, table_description = 6L)}.}
 }
