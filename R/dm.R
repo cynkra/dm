@@ -457,7 +457,7 @@ new_dm_zoomed_df <- function(x, ...) {
 # this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
 # therefore, we need to have our own subclass but the main class needs to be `tbl`
 #' @export
-tbl_sum.dm_zoomed_df <- function(x) {
+tbl_sum.dm_zoomed_df <- function(x, ...) {
   c(
     structure(attr(x, "name_df"), names = "Zoomed table"),
     NextMethod()
