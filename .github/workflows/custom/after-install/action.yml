@@ -19,8 +19,13 @@ runs:
       with:
         mariadb-version: 10.9
 
+    - uses: ankane/setup-mysql@v1
+      if: env.DM_TEST_SRC == 'test-mysql-maria'
+      with:
+        mysql-version: "8.0"
+
     - name: Create database (MariaDB), set it to UTF-8, add time zone info
-      if: env.DM_TEST_SRC == 'test-maria'
+      if: env.DM_TEST_SRC == 'test-maria' || env.DM_TEST_SRC == 'test-mysql-maria'
       run: |
         mysql -e "CREATE DATABASE IF NOT EXISTS test; ALTER DATABASE test CHARACTER SET 'utf8'; FLUSH PRIVILEGES;"
       shell: bash
