@@ -319,6 +319,8 @@ as_dm <- function(x, ...) {
 
 #' @export
 as_dm.default <- function(x, ...) {
+  check_dots_empty()
+
   if (!is.list(x) || is.object(x)) {
     abort(paste0("Can't coerce <", class(x)[[1]], "> to <dm>."))
   }
@@ -342,11 +344,15 @@ tbl_src <- function(x) {
 
 #' @export
 as_dm.src <- function(x, ...) {
+  check_dots_empty()
+
   dm_from_con(con = con_from_src_or_con(x), table_names = NULL)
 }
 
 #' @export
 as_dm.DBIConnection <- function(x, ...) {
+  check_dots_empty()
+
   dm_from_con(con = x, table_names = NULL)
 }
 
@@ -489,6 +495,8 @@ format.dm_zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) 
 
 #' @export
 `[[.dm` <- function(x, id, ...) {
+  check_dots_empty()
+
   # for both dm and dm_zoomed
   if (is.numeric(id)) id <- src_tbls_impl(x)[id] else id <- as_string(id)
   tbl_impl(x, id, quiet = TRUE)
@@ -713,6 +721,8 @@ collect.dm <- function(x, ..., progress = NA) {
 
 #' @export
 collect.dm_zoomed <- function(x, ...) {
+  check_dots_empty()
+
   message("Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.")
 
   collect(pull_tbl(x))
@@ -805,6 +815,8 @@ pull_tbl <- function(dm, table, ..., keyed = FALSE) {
 
 #' @export
 pull_tbl.dm <- function(dm, table, ..., keyed = FALSE) {
+  check_dots_empty()
+
   # for both dm and dm_zoomed
   # FIXME: shall we issue a special error in case someone tries sth. like: `pull_tbl(dm_for_filter, c(t4, t3))`?
   table_name <- as_string(enexpr(table))
@@ -817,6 +829,8 @@ pull_tbl.dm_zoomed <- function(dm, table, ..., keyed = FALSE) {
   if (isTRUE(keyed)) {
     abort("`keyed = TRUE` not supported for zoomed dm objects.")
   }
+
+  check_dots_empty()
 
   table_name <- as_string(enexpr(table))
   zoomed <- dm_get_zoom(dm)
@@ -835,12 +849,16 @@ pull_tbl.dm_zoomed <- function(dm, table, ..., keyed = FALSE) {
 
 #' @export
 as.list.dm <- function(x, ...) {
+  check_dots_empty()
+
   # for both dm and dm_zoomed
   dm_get_tables_impl(x)
 }
 
 #' @export
 as.list.dm_zoomed <- function(x, ...) {
+  check_dots_empty()
+
   as.list(tbl_zoomed(x))
 }
 

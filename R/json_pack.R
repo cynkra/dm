@@ -66,6 +66,8 @@ sql_json_pack <- function(con, cols, names_sep, packed_col, data, ...) {
 #' @autoglobal
 #' @global JSON_BUILD_OBJECT
 sql_json_pack.PqConnection <- function(con, cols, names_sep, packed_col, data, ...) {
+  check_dots_empty()
+
   inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
   inside_cols_idented <- dbplyr::ident(inside_cols)
   exprs <- vctrs::vec_interleave(as.list(inside_cols_idented), syms(cols))
@@ -86,6 +88,8 @@ remove_prefix_and_sep <- function(x, prefix, sep) {
 #' @autoglobal
 #' @global JSON_AGG JSON_BUILD_OBJECT
 sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols, data, ...) {
+  check_dots_empty()
+
   inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
   inside_cols_idented <- dbplyr::ident(inside_cols)
   exprs <- vctrs::vec_interleave(as.list(inside_cols_idented), syms(cols))

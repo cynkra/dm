@@ -62,6 +62,8 @@ json_nest_aggregate <- function(con, data, id_cols, sql_exprs, ...) {
 
 #' @export
 json_nest_aggregate.default <- function(con, data, id_cols, sql_exprs, ...) {
+  check_dots_empty()
+
   data %>%
     group_by(across(!!!syms(id_cols))) %>%
     summarize(!!!sql_exprs) %>%
@@ -76,6 +78,8 @@ sql_json_nest <- function(con, cols, names_sep, packed_col, id_cols, data, ...) 
 #' @autoglobal
 #' @global JSON_AGG JSON_BUILD_OBJECT
 sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols, data, ...) {
+  check_dots_empty()
+
   inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
   inside_cols_idented <- dbplyr::ident(inside_cols)
   exprs <- vctrs::vec_interleave(as.list(inside_cols_idented), syms(cols))
