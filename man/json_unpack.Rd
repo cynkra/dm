@@ -44,5 +44,10 @@ strategies used to enforce them.}
 An object of the same type as \code{data}
 }
 \description{
-Unpack a JSON column
+A wrapper around \code{\link[tidyr:pack]{tidyr::unpack()}} that extracts its data from a JSON column.
+The inverse of \code{\link[=json_pack]{json_pack()}}.
+}
+\examples{
+tibble(a = 1, b = '{ "c": 2, "d": 3 }') \%>\%
+  json_unpack(b)
 }

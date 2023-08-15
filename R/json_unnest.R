@@ -1,5 +1,8 @@
 #' Unnest a JSON column
 #'
+#' A wrapper around [tidyr::unnest()] that extracts its data from a JSON column.
+#' The inverse of [json_nest()].
+#'
 #' @param data A data frame, a data frame extension (e.g. a tibble), or  a lazy
 #'   data frame (e.g. from dbplyr or dtplyr).
 #' @inheritParams rlang::args_dots_used
@@ -7,6 +10,9 @@
 #'
 #' @return An object of the same type as `data`
 #' @export
+#' @examples
+#' tibble(a = 1, b = '[{ "c": 2 }, { "c": 3 }]') %>%
+#'   json_unnest(b)
 json_unnest <- function(data, cols, ..., names_sep = NULL, names_repair = "check_unique") {
   check_dots_used()
 

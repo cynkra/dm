@@ -40,5 +40,10 @@ strategies used to enforce them.}
 An object of the same type as \code{data}
 }
 \description{
-Unnest a JSON column
+A wrapper around \code{\link[tidyr:unnest]{tidyr::unnest()}} that extracts its data from a JSON column.
+The inverse of \code{\link[=json_nest]{json_nest()}}.
+}
+\examples{
+tibble(a = 1, b = '[{ "c": 2 }, { "c": 3 }]') \%>\%
+  json_unnest(b)
 }
