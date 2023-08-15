@@ -138,7 +138,7 @@ dm_unwrap_tbl <- function(dm, ptype, progress = NA) {
 
   ticker <- new_ticker(
     "Unwrapping dm object",
-    n = nrow(unwrap_plan),
+    n = length(unwrap_plan),
     progress = progress,
     top_level_fun = "dm_unwrap_tbl"
   )

@@ -1,4 +1,7 @@
 new_ticker <- function(label, n, progress = NA, top_level_fun = NULL) {
+  stopifnot(is_bare_string(label))
+  stopifnot(is_bare_integerish(n, 1))
+
   suggested <- check_suggested("progress",
     top_level_fun = top_level_fun,
     use = progress
