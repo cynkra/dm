@@ -70,6 +70,7 @@ reference:
   contents:
   - copy_dm_to
   - contains("rows")
+  - dm_sql
 - title: Table surgery
   contents:
   - decompose_table
