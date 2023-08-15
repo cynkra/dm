@@ -1,5 +1,44 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9002
+
+## Features
+
+- Breaking change: Add `check_dots_empty()` calls (#1929, #1943).
+
+- Test MySQL on GHA (#1940).
+
+- Improve MySQL compatibility regarding learning of database schemas and checking of constraints (#1938).
+
+## Chore
+
+- Reorganize `build_copy_queries()` (#1923).
+
+- Add ellipsis to `tbl_sum()` signature (#1941).
+
+## Documentation
+
+- `collect.zoomed_dm()` shows a more helpful error message (#1929, #1945).
+
+- Deprecate `copy_dm_to(copy_to = )` argument (#1944).
+
+- Add information on default font size to `?dm_draw` (#1935).
+
+## Performance
+
+- Replace `tibble()` by `fast_tibble()` (@mgirlich, #1928).
+
+- Replace superseded `dplyr::recode()` (@mgirlich, #1927).
+
+## Breaking changes
+
+- Breaking change: Add `check_dots_empty()` calls (#1929, #1943).
+
+## Uncategorized
+
+- Merge pull request #1942 from cynkra/f-error-msg.
+
+
 # dm 1.0.6.9001
 
 ## Chore
