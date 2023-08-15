@@ -156,8 +156,9 @@ dm_unwrap_tbl <- function(dm, ptype, progress = NA) {
 dm_unwrap_tbl_plan <- function(table, table_name) {
   nms <- names(table)
 
-  children <- nms[map_lgl(table, inherits, "nested")]
-  parents <- nms[map_lgl(table, inherits, "packed")]
+  # detect parent and children tables
+  children <- nms[map_lgl(table, is_bare_list)]
+  parents <- nms[map_lgl(table, is.data.frame)]
 
   unnest_plan <-
     tibble(
