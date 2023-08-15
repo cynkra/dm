@@ -24,9 +24,10 @@ test_that("dm_rows_insert()", {
 
   # Target database:
   flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
-  print(dm_nrow(flights_sqlite))
 
   expect_snapshot({
+    print(dm_nrow(flights_sqlite))
+
     # First update:
     flights_hour10 <-
       dm_nycflights13() %>%

@@ -6,6 +6,11 @@
 # dm_rows_insert()
 
     Code
+      print(dm_nrow(flights_sqlite))
+    Output
+      airlines airports  flights   planes  weather 
+            15       86        0      945        0 
+    Code
       flights_hour10 <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
         dm_zoom_to(flights) %>% filter(month == 1, day == 10, hour == 10) %>%
         dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(month == 1, day == 10,
