@@ -9,24 +9,24 @@ test_that("dm_rows_insert()", {
   skip_if_not_installed("RSQLite")
   local_options(lifecycle_verbosity = "quiet")
 
+  # Entire dataset with all dimension tables populated
+  # with flights and weather data truncated:
+  flights_init <-
+    dm_nycflights13() %>%
+    dm_zoom_to(flights) %>%
+    filter(FALSE) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(weather) %>%
+    filter(FALSE) %>%
+    dm_update_zoomed()
+
+  sqlite <- dbConnect(RSQLite::SQLite())
+
+  # Target database:
+  flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
+  print(dm_nrow(flights_sqlite))
+
   expect_snapshot({
-    # Entire dataset with all dimension tables populated
-    # with flights and weather data truncated:
-    flights_init <-
-      dm_nycflights13() %>%
-      dm_zoom_to(flights) %>%
-      filter(FALSE) %>%
-      dm_update_zoomed() %>%
-      dm_zoom_to(weather) %>%
-      filter(FALSE) %>%
-      dm_update_zoomed()
-
-    sqlite <- dbConnect(RSQLite::SQLite())
-
-    # Target database:
-    flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
-    print(dm_nrow(flights_sqlite))
-
     # First update:
     flights_hour10 <-
       dm_nycflights13() %>%
@@ -89,33 +89,33 @@ test_that("dm_rows_insert()", {
 test_that("dm_rows_update()", {
   skip_if_not_installed("dbplyr")
 
+  # Test bad column order
+  dm_filter_rearranged <-
+    dm_for_filter() %>%
+    dm_select(tf_2, d, everything()) %>%
+    dm_select(tf_4, i, everything()) %>%
+    dm_select(tf_5, l, m, everything())
+
+  dm_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_filter_rearranged))
+
+  dm_update_local <- dm(
+    tf_1 = tibble(
+      a = 2L,
+      b = "q"
+    ),
+    tf_4 = tibble(
+      h = "e",
+      i = "sieben",
+    ),
+    tf_5 = tibble(
+      k = 3L,
+      ww = 3,
+    ),
+  )
+
+  dm_update_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_update_local))
+
   expect_snapshot({
-    # Test bad column order
-    dm_filter_rearranged <-
-      dm_for_filter() %>%
-      dm_select(tf_2, d, everything()) %>%
-      dm_select(tf_4, i, everything()) %>%
-      dm_select(tf_5, l, m, everything())
-
-    suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_filter_rearranged))
-
-    dm_update_local <- dm(
-      tf_1 = tibble(
-        a = 2L,
-        b = "q"
-      ),
-      tf_4 = tibble(
-        h = "e",
-        i = "sieben",
-      ),
-      tf_5 = tibble(
-        k = 3L,
-        ww = 3,
-      ),
-    )
-
-    dm_update_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_update_local))
-
     dm_copy %>%
       pull_tbl(tf_2) %>%
       arrange_all()
@@ -151,22 +151,22 @@ test_that("dm_rows_truncate()", {
   skip_if_not_installed("dbplyr")
   local_options(lifecycle_verbosity = "warning")
 
+  suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_for_filter()))
+
+  dm_truncate_local <- dm(
+    tf_2 = tibble(
+      c = c("worm"),
+      d = 10L,
+    ),
+    tf_5 = tibble(
+      k = 3L,
+      m = "tree",
+    ),
+  )
+
+  dm_truncate_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_truncate_local))
+
   expect_snapshot({
-    suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_for_filter()))
-
-    dm_truncate_local <- dm(
-      tf_2 = tibble(
-        c = c("worm"),
-        d = 10L,
-      ),
-      tf_5 = tibble(
-        k = 3L,
-        m = "tree",
-      ),
-    )
-
-    dm_truncate_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_truncate_local))
-
     dm_copy %>%
       pull_tbl(tf_2) %>%
       arrange_all()

@@ -6,16 +6,6 @@
 # dm_rows_insert()
 
     Code
-      flights_init <- dm_nycflights13() %>% dm_zoom_to(flights) %>% filter(FALSE) %>%
-        dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(FALSE) %>%
-        dm_update_zoomed()
-      sqlite <- dbConnect(RSQLite::SQLite())
-      flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
-      print(dm_nrow(flights_sqlite))
-    Output
-      airlines airports  flights   planes  weather 
-            15       86        0      945        0 
-    Code
       flights_hour10 <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
         dm_zoom_to(flights) %>% filter(month == 1, day == 10, hour == 10) %>%
         dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(month == 1, day == 10,
@@ -74,12 +64,6 @@
 # dm_rows_update()
 
     Code
-      dm_filter_rearranged <- dm_for_filter() %>% dm_select(tf_2, d, everything()) %>%
-        dm_select(tf_4, i, everything()) %>% dm_select(tf_5, l, m, everything())
-      suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_filter_rearranged))
-      dm_update_local <- dm(tf_1 = tibble(a = 2L, b = "q"), tf_4 = tibble(h = "e", i = "sieben",
-        ), tf_5 = tibble(k = 3L, ww = 3, ), )
-      dm_update_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_update_local))
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
             d c        e        e1
@@ -265,11 +249,6 @@
 # dm_rows_truncate()
 
     Code
-      suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_for_filter()))
-      dm_truncate_local <- dm(tf_2 = tibble(c = c("worm"), d = 10L, ), tf_5 = tibble(
-        k = 3L, m = "tree", ), )
-      dm_truncate_copy <- suppressMessages(copy_dm_to(my_db_test_src(),
-      dm_truncate_local))
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
         c            d e        e1
