@@ -40,6 +40,17 @@
 
     Code
       unwrapped <- dm_unwrap_tbl(dm_wrap_tbl(dm_for_filter(), tf_4), dm_for_filter())
+    Condition
+      Warning:
+      There were 4 warnings in `filter()`.
+      The first warning was:
+      i In argument: `n_distinct(c_across()) == ncol(.)`.
+      i In row 1.
+      Caused by warning:
+      ! Using `c_across()` without supplying `cols` was deprecated in dplyr 1.1.0.
+      i Please supply `cols` instead.
+      i Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
+    Code
       unwrapped
     Output
       -- Metadata --------------------------------------------------------------------
