@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9001</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,6 +74,39 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.6.9002" id="dm-1069002">dm 1.0.6.9002<a class="anchor" aria-label="anchor" href="#dm-1069002"></a></h2>
+<div class="section level3">
+<h3 id="features-1-0-6-9002">Features<a class="anchor" aria-label="anchor" href="#features-1-0-6-9002"></a></h3>
+<ul><li><p>Breaking change: Add <code>check_dots_empty()</code> calls (<a href="https://github.com/cynkra/dm/issues/1929" class="external-link">#1929</a>, <a href="https://github.com/cynkra/dm/issues/1943" class="external-link">#1943</a>).</p></li>
+<li><p>Test MySQL on GHA (<a href="https://github.com/cynkra/dm/issues/1940" class="external-link">#1940</a>).</p></li>
+<li><p>Improve MySQL compatibility regarding learning of database schemas and checking of constraints (<a href="https://github.com/cynkra/dm/issues/1938" class="external-link">#1938</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-6-9002">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-6-9002"></a></h3>
+<ul><li><p>Reorganize <code>build_copy_queries()</code> (<a href="https://github.com/cynkra/dm/issues/1923" class="external-link">#1923</a>).</p></li>
+<li><p>Add ellipsis to <code>tbl_sum()</code> signature (<a href="https://github.com/cynkra/dm/issues/1941" class="external-link">#1941</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-0-6-9002">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-6-9002"></a></h3>
+<ul><li><p><code>collect.zoomed_dm()</code> shows a more helpful error message (<a href="https://github.com/cynkra/dm/issues/1929" class="external-link">#1929</a>, <a href="https://github.com/cynkra/dm/issues/1945" class="external-link">#1945</a>).</p></li>
+<li><p>Deprecate <code>copy_dm_to(copy_to = )</code> argument (<a href="https://github.com/cynkra/dm/issues/1944" class="external-link">#1944</a>).</p></li>
+<li><p>Add information on default font size to <code><a href="../reference/dm_draw.html">?dm_draw</a></code> (<a href="https://github.com/cynkra/dm/issues/1935" class="external-link">#1935</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="performance-1-0-6-9002">Performance<a class="anchor" aria-label="anchor" href="#performance-1-0-6-9002"></a></h3>
+<ul><li><p>Replace <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble()</a></code> by <code>fast_tibble()</code> (<a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>, <a href="https://github.com/cynkra/dm/issues/1928" class="external-link">#1928</a>).</p></li>
+<li><p>Replace superseded <code><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">dplyr::recode()</a></code> (<a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>, <a href="https://github.com/cynkra/dm/issues/1927" class="external-link">#1927</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-1-0-6-9002">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-6-9002"></a></h3>
+<ul><li>Breaking change: Add <code>check_dots_empty()</code> calls (<a href="https://github.com/cynkra/dm/issues/1929" class="external-link">#1929</a>, <a href="https://github.com/cynkra/dm/issues/1943" class="external-link">#1943</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="uncategorized-1-0-6-9002">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-6-9002"></a></h3>
+<ul><li>Merge pull request <a href="https://github.com/cynkra/dm/issues/1942" class="external-link">#1942</a> from cynkra/f-error-msg.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.6.9001" id="dm-1069001">dm 1.0.6.9001<a class="anchor" aria-label="anchor" href="#dm-1069001"></a></h2>
 <div class="section level3">
