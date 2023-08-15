@@ -519,9 +519,9 @@ rows_append_ai_local <- function(x, y, autoinc_col) {
     y %>%
     mutate(!!new_col_name := init_ai_val:(init_ai_val + num_new_rows - 1)) %>%
     select(
-      -intersect(colnames(y), autoinc_col),
-      !!autoinc_col := new_col_name,
-      !!!setdiff(colnames(x), autoinc_col)
+      -!!intersect(colnames(y), autoinc_col),
+      !!autoinc_col := !!new_col_name,
+      !!setdiff(colnames(x), autoinc_col)
     )
   list(x_new = rows_append(x, y_new), ai_lookup = ai_lu)
 }
