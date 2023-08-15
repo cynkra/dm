@@ -20,6 +20,21 @@
       Foreign keys: 3
     Code
       dm_packed_nested_unnested <- dm_unnest_tbl(dm_packed_nested, tf_3, tf_2)
+    Condition
+      Warning:
+      `type_of()` is deprecated as of rlang 0.4.0.
+      Please use `typeof()` or your own version instead.
+      This warning is displayed once every 8 hours.
+      Warning:
+      There were 4 warnings in `filter()`.
+      The first warning was:
+      i In argument: `n_distinct(c_across()) == ncol(.)`.
+      i In row 1.
+      Caused by warning:
+      ! Using `c_across()` without supplying `cols` was deprecated in dplyr 1.1.0.
+      i Please supply `cols` instead.
+      i Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
+    Code
       dm_packed_nested_unnested
     Output
       -- Metadata --------------------------------------------------------------------
