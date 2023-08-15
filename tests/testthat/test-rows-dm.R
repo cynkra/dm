@@ -315,6 +315,17 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for locally", {
     local_dm %>%
     dm_ptype()
 
+  # Corner case: empty + empty = empty
+  expect_identical(
+    expect_silent(dm_rows_append(
+      dm_ai_empty,
+      dm_ai_empty,
+      in_place = FALSE,
+      progress = FALSE
+    )),
+    dm_ai_empty
+  )
+
   # Tests
   dm_ai_insert <-
     dm_for_autoinc_1() %>%
@@ -331,6 +342,17 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for locally", {
       in_place = FALSE,
       progress = FALSE
     )
+  )
+
+  # Corner case: data + empty = data
+  expect_identical(
+    expect_silent(dm_rows_append(
+      filled_dm,
+      dm_ai_empty,
+      in_place = FALSE,
+      progress = FALSE
+    )),
+    filled_dm
   )
 
   expect_error(

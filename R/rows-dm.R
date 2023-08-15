@@ -514,10 +514,13 @@ rows_append_ai_local <- function(x, y, autoinc_col) {
     init_ai_val <- max(x[[autoinc_col]]) + 1L
   }
   new_col_name <- derive_temp_column_name(colnames(x), autoinc_col)
-  ai_lu <- tibble(!!autoinc_col := y[[autoinc_col]], !!new_col_name := init_ai_val:(init_ai_val + num_new_rows - 1))
+  ai_lu <- tibble(
+    !!autoinc_col := y[[autoinc_col]],
+    !!new_col_name := seq.int(init_ai_val, length.out = num_new_rows)
+  )
   y_new <-
     y %>%
-    mutate(!!new_col_name := init_ai_val:(init_ai_val + num_new_rows - 1)) %>%
+    mutate(!!new_col_name := !!ai_lu[[new_col_name]]) %>%
     select(
       -!!intersect(colnames(y), autoinc_col),
       !!autoinc_col := !!new_col_name,
