@@ -4,6 +4,9 @@ test_that("`json_pack()` works", {
     packed <- json_pack(df, x = c(x1, x2, x3), y = y)
     packed
   })
+
+  df_roundtrip <- json_unpack(packed, c(x, y))
+  expect_equal(df, df_roundtrip)
 })
 
 test_that("`json_pack()` works remotely", {
