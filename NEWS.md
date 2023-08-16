@@ -1,5 +1,32 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9003
+
+## Bug fixes
+
+- Minor fixes in `dm_pack_tbl()` and `dm_unwrap_tbl()` (#1947).
+
+## Features
+
+- New `json_unnest()` and `json_unpack()`, currently implemented for data frames only (#991, #997).
+
+- `dm_rows_append()` also works for local dm, with support for autoincrement primary keys (#1727, #1745).
+
+- Add `dm_sql()` and friends, still need tests (#1915).
+
+## Chore
+
+- Fix typo, dm_unwrapped_tbl -\> dm_unwrapped.
+
+- New targets, for silent testing.
+
+- Enhance test snapshot from last change.
+
+- Stabilize tests.
+
+- New `ltest` and `.NOTPARALLEL` targets.
+
+
 # dm 1.0.6.9002
 
 ## Features
