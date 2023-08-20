@@ -5,52 +5,91 @@ template:
   package: cynkratemplate
 reference:
 - title: Basic
+  desc: >
+    Construct a `dm` object from data frames, see also `vignette("howto-dm-df")`.
   contents:
   - dm
-  - dm_from_con
   - new_dm
   - as_dm
   - is_dm
+  - dm_validate
+- title: Database
+  desc: >
+    Construct a `dm` object from a database, see also `vignette("howto-dm-db")`.
+  contents:
+  - dm_from_con
   - dm_get_con
-- title: Tables
+- title: Tables and columns
+  desc: >
+    Operate on the tables and columns stored in a `dm` objects.
   contents:
   - dm_select_tbl
   - dm_rename_tbl
   - dm_get_tables
   - pull_tbl
-  - dm_deconstruct
-  - glimpse
   - dm_mutate_tbl
+  - dm_nrow
+  - dm_select
+  - dm_rename
 - title: Primary keys
-  contents: matches("_pk")
+  desc: >
+    Primary keys uniquely identify rows in a table.
+    A table can have at most one primary key.
+    See also `vignette("howto-dm-theory")`.
+  contents:
+  - matches("_pk")
+  - -enum_pk_candidates
+  - -dm_enum_pk_candidates
 - title: Unique keys
+  desc: >
+    Unique keys are similar to primary keys.
+    Each table can have at most one record for each combination of values in a unique key.
+    A table can have more than one unique key.
   contents: matches("_uk")
 - title: Foreign keys
-  contents: matches("_fk")
+  desc: >
+    Foreign keys establish links between tables
+    by pointing to a primary or unique key in another table.
+    See also `vignette("howto-dm-theory")`.
+  contents:
+  - matches("_fk")
+  - -enum_fk_candidates
+  - -dm_enum_fk_candidates
 - title: Visualize
+  desc: >
+    Show a `dm` object, see also `vignette("tech-dm-draw")`.
   contents:
   - dm_gui
   - dm_draw
   - ends_with("_colors")
   - ends_with("_table_description")
-  - dm_paste
-- title: Select columns
+- title: Deconstruct
+  desc: >
+    Rip a `dm` object apart and put it together, see also `vignette("tech-dm-keyed")`.
   contents:
-  - dm_select
-  - dm_rename
+  - dm_deconstruct
 - title: Flatten
+  desc: >
+    Combine multiple related tables, see also `vignette("tech-dm-join")`.
   contents:
   - dm_flatten_to_tbl
   - dm_disambiguate_cols
 - title: Filter
-  contents: dm_filter
+  desc: >
+    Filter across multiple tables, see also `vignette("tech-dm-filter")`.
+  contents:
+  - dm_filter
 - title: Zoom
+  desc: >
+    Focus on a single table, see also `vignette("tech-dm-zoom")`.
   contents:
   - dm_zoom_to
   - ends_with("_zoomed")
   - ends_with(".dm_zoomed")
   - -pack_join
 - title: Wrap
+  desc: >
+    Turn a `dm` object into a single table and back.
   contents:
   - dm_wrap_tbl
   - dm_unwrap_tbl
@@ -58,42 +97,61 @@ reference:
   - dm_pack_tbl
   - dm_unnest_tbl
   - dm_unpack_tbl
-- title: Operations on data frames and lazy tables
+- title: Nested and packed data
+  desc: >
+    New verbs that power wrapping.
   contents:
   - pack_join
   - starts_with("json_")
-- title: Materialize
+- title: Materialize and upload
+  desc: >
+    Get data from and to the database, see also `vignette("howto-dm-copy")`.
   contents:
   - compute.dm
   - collect.dm
-- title: Upload
-  contents:
-  - copy_dm_to
   - contains("rows")
+  - copy_dm_to
   - dm_sql
+- title: Modify
+  desc: >
+    Manipulate individual rows on the database, see also `vignette("howto-dm-rows")`.
+  contents:
+  - contains("rows")
+- title: Keys and cardinalities
+  desc: >
+    Check fulfillment and nature of relationships between tables.
+  contents:
+  - dm_examine_constraints
+  - enum_pk_candidates
+  - enum_fk_candidates
+  - matches("cardinality|cardinalities")
+  - starts_with("check_")
 - title: Table surgery
+  desc: >
+    Normalize and denormalize tables.
   contents:
   - decompose_table
   - reunite_parent_child
   - reunite_parent_child_from_list
-- title: Check keys and cardinalities
-  contents:
-  - matches("cardinality|cardinalities")
-  - dm_examine_constraints
-  - starts_with("check_")
 - title: Database schemas
-  contents: starts_with("db_schema_")
+  desc: >
+    New verbs that power access to database schemas.
+  contents:
+  - starts_with("db_schema_")
 - title: Example dm objects
+  desc: >
+    Ready to use and play with.
   contents:
   - dm_nycflights13
   - dm_financial
   - dm_financial_sqlite
   - dm_pixarfilms
-- title: Miscellaneous
+- title: Structure and contents
+  desc: >
+    Recreate a `dm` object.
   contents:
-  - dm_nrow
+  - dm_paste
   - dm_ptype
-  - dm_validate
 navbar:
   structure:
     left:
@@ -147,6 +205,16 @@ navbar:
     tech:
       text: Technical articles
       menu:
+      - text: Visualizing dm objects
+        href: articles/tech-dm-draw.html
+        desc: |
+          A quick guide to dm's methods for drawing your data model for exploration,
+          verification, or documentation purposes. Learn how to customize the diagrams.
+      - text: Manipulating individual tables
+        href: articles/tech-dm-keyed.html
+        desc: |
+          Learn how to manipulate the data in the tables in your dm
+          using dplyr verbs and deconstruction/reconstruction.
       - text: Joining in relational data models
         href: articles/tech-dm-join.html
         desc: |
@@ -154,27 +222,17 @@ navbar:
           to perform operations, generate summaries, or prepare data for extraction.
           This article covers dm's methods for creating the different kind of joins
           along with usage examples.
-      - text: Manipulating individual tables
-        href: articles/tech-dm-keyed.html
-        desc: |
-          Learn how to manipulate the data in the tables in your dm
-          using dplyr verbs and deconstruction/reconstruction.
-      - text: Zooming and manipulating tables
-        href: articles/tech-dm-zoom.html
-        desc: |
-          Learn how to manipulate the data in the tables in your dm
-          using dplyr verbs and zooming.
       - text: Filtering in relational data models
         href: articles/tech-dm-filter.html
         desc: |
           Need a subset of your data across tables? This introduction to dm's
           filtering methods will show you how to apply them to data that is separated
           into multiple tables.
-      - text: Visualizing dm objects
-        href: articles/tech-dm-draw.html
+      - text: Zooming and manipulating tables
+        href: articles/tech-dm-zoom.html
         desc: |
-          A quick guide to dm's methods for drawing your data model for exploration,
-          verification, or documentation purposes. Learn how to customize the diagrams.
+          Learn how to manipulate the data in the tables in your dm
+          using dplyr verbs and zooming.
       - text: Model verification - keys, constraints and normalization
         href: articles/tech-dm-low-level.html
         desc: |
