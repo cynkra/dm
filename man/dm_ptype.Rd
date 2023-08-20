@@ -14,7 +14,7 @@ The prototype contains all tables, all primary and foreign keys,
 but no data.
 All tables are truncated and converted to zero-row tibbles,
 also for remote data models.
-Column names retain their type.
+Columns retain their type.
 This is useful for performing creation and population of a database
 in separate steps.
 }

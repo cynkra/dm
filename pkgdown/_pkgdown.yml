@@ -21,7 +21,7 @@ reference:
   - dm_get_con
 - title: Tables and columns
   desc: >
-    Operate on the tables and columns stored in a `dm` objects.
+    Operate on the tables and columns stored in a `dm` object.
   contents:
   - dm_select_tbl
   - dm_rename_tbl
@@ -109,7 +109,6 @@ reference:
   contents:
   - compute.dm
   - collect.dm
-  - contains("rows")
   - copy_dm_to
   - dm_sql
 - title: Modify
