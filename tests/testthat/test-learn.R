@@ -51,7 +51,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
       pks = list_of(new_pk()),
       fks = list_of(new_fk())
     ) %>%
-    new_dm3()
+    dm_from_def()
 
   # Select and fix table names
   dm_db_learned_no_keys <-
@@ -142,7 +142,7 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
       pks = list_of(new_pk()),
       fks = list_of(new_fk())
     ) %>%
-    new_dm3()
+    dm_from_def()
 
   expect_equivalent_dm(
     dm_db_learned_no_keys,

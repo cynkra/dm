@@ -166,6 +166,6 @@ dm_patch_tbl <- function(dm, ...) {
   def <- dm_get_def(dm)
   idx <- match(names(new_tables), def$table)
   def[idx, "data"] <- unname(new_tables)
-  new_dm3(def)
+  dm_from_def(def)
 }
 ```

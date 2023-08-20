@@ -44,7 +44,7 @@ bind_rename_tbl <- function(dm, renamed) {
   def %>%
     bind_filter_recode_table_def(renamed) %>%
     filter_recode_table_fks(renamed_names) %>%
-    new_dm3()
+    dm_from_def()
 }
 
 bind_filter_recode_table_def <- function(def, renamed) {

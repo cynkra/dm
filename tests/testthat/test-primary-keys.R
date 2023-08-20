@@ -70,7 +70,7 @@ test_that("dm_rm_pk() works as intended?", {
       dm_for_filter() %>%
         dm_get_def() %>%
         mutate(pks = if_else(table == "tf_4", list_of(new_pk()), pks)) %>%
-        new_dm3()
+        dm_from_def()
     ),
     "fail_fk"
   )

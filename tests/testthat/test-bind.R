@@ -13,7 +13,7 @@ test_that("dm_bind() works?", {
       dm_get_def(dm_for_flatten()),
       dm_get_def(dm_for_disambiguate())
     ) %>%
-      new_dm3()
+      dm_from_def()
   )
 })
 
@@ -83,7 +83,7 @@ test_that("auto-renaming works", {
         tf_6...17 = tf_6
       ))
     ) %>%
-      new_dm3()
+      dm_from_def()
   )
 
   expect_silent(

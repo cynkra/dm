@@ -86,7 +86,7 @@ dm_zoom_to <- function(dm, table) {
   def$zoom[[where]] <- zoomed_tbl
   def$col_tracker_zoom[[where]] <- set_names(colnames(zoomed_tbl))
 
-  new_dm3(def, zoomed = TRUE)
+  dm_from_def(def, zoomed = TRUE)
 }
 
 is_zoomed <- function(dm) {
@@ -204,7 +204,7 @@ dm_update_zoomed <- function(dm) {
 
   new_def %>%
     clean_zoom() %>%
-    new_dm3()
+    dm_from_def()
 }
 
 #' @rdname dm_zoom_to
@@ -227,14 +227,14 @@ dm_discard_zoomed <- function(dm) {
 
   def %>%
     clean_zoom() %>%
-    new_dm3()
+    dm_from_def()
 }
 
 dm_clean_zoomed <- function(dm) {
   dm %>%
     dm_get_def() %>%
     clean_zoom() %>%
-    new_dm3()
+    dm_from_def()
 }
 
 clean_zoom <- function(def) {
@@ -355,7 +355,7 @@ replace_zoomed_tbl <- function(dm, new_zoomed_tbl, tracked_cols = NULL) {
   if (!is_null(tracked_cols)) {
     def$col_tracker_zoom[[where]] <- tracked_cols
   }
-  new_dm3(def, zoomed = TRUE)
+  dm_from_def(def, zoomed = TRUE)
 }
 
 check_zoomed <- function(dm) {

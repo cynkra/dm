@@ -157,7 +157,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column, on_delete) 
     new_fk(ref_column, table, column, on_delete)
   )
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 #' Check if foreign keys exists
@@ -433,7 +433,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
   # Execute
   def$fks[idx] <- map2(def$fks[idx], idx_fk, ~ .x[-.y, ])
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 #' Foreign key candidates

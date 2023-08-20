@@ -125,7 +125,7 @@ test_that("dm() works for dm objects", {
       dm_get_def(dm_for_flatten()),
       dm_get_def(dm_for_disambiguate())
     ) %>%
-      new_dm3()
+      dm_from_def()
   )
 })
 
@@ -184,7 +184,7 @@ test_that("auto-renaming works", {
         tf_6...17 = tf_6
       ))
     ) %>%
-      new_dm3()
+      dm_from_def()
   )
 
   expect_silent(
@@ -398,7 +398,7 @@ test_that("`pull_tbl()`-methods work (2)", {
     dm_for_filter() %>%
       dm_get_def() %>%
       mutate(zoom = list(tf_1)) %>%
-      new_dm3(zoomed = TRUE, validate = FALSE) %>%
+      dm_from_def(zoomed = TRUE, validate = FALSE) %>%
       pull_tbl(),
     "not_pulling_multiple_zoomed"
   )

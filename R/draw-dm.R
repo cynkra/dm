@@ -283,7 +283,7 @@ dm_set_colors <- function(dm, ...) {
     mutate(display = coalesce(new_display, display)) %>%
     select(-new_display)
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 color_quos_to_display <- function(...) {

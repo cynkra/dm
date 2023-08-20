@@ -55,7 +55,7 @@ dm_select_tbl_impl <- function(dm, selected) {
     filter_recode_table_def(selected) %>%
     filter_recode_table_fks(selected)
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 filter_recode_table_fks <- function(def, selected) {

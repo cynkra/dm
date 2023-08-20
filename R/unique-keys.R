@@ -82,7 +82,7 @@ dm_add_uk_impl <- function(dm, table, column) {
     new_uk(list(column))
   )
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 #' Get all unique keys of a [`dm`] object
@@ -262,7 +262,7 @@ dm_rm_uk_impl <- function(dm, table_name, columns) {
     list_of(filter(def$uks[[i]], !ii))
   }
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 # Error -------------------------------------------------------------------

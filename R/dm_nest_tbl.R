@@ -90,7 +90,7 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
   def[def$table == parent_name, ][["fks"]][[1]] <- new_parent_table_fk
   def <- def[def$table != table_name, ]
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 #' dm_pack_tbl()
@@ -157,7 +157,7 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   def$data[def$table == child_name] <- list(packed_data)
   def <- def[def$table != table_name, ]
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 check_table_can_be_packed <- function(table_name, children_names, fks) {

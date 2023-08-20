@@ -102,7 +102,7 @@ test_that("dm_update_tbl() works", {
       zoom = if_else(table == "tf_6", list(tf_7()), list(NULL)),
       col_tracker_zoom = if_else(table == "tf_6", list(character()), list(NULL)),
     ) %>%
-    new_dm3(zoomed = TRUE)
+    dm_from_def(zoomed = TRUE)
 
   # test that the old table is updated correctly
   expect_equivalent_dm(

@@ -334,7 +334,7 @@ dm_for_filter_duckdb %<--% copy_dm_to(duckdb_test_src(), dm_for_filter())
 
 dm_for_filter_rev %<-% {
   def_dm_for_filter <- dm_get_def(dm_for_filter())
-  new_dm3(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])
+  dm_from_def(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])
 }
 
 # Deprecated tests

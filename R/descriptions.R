@@ -53,7 +53,7 @@ dm_set_table_description <- function(dm, ...) {
   labels <- names(selected)
 
   out <- dm_set_table_description_impl(def, selected, labels)
-  new_dm3(out)
+  dm_from_def(out)
 }
 
 dm_set_table_description_impl <- function(def, selected, labels) {
@@ -124,5 +124,5 @@ dm_reset_table_description <- function(dm, table = NULL, ...) {
   labels <- rep(list(NULL), length(tables))
 
   out <- dm_set_table_description_impl(def, tables, labels)
-  new_dm3(out)
+  dm_from_def(out)
 }
