@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9002</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9003</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,6 +74,27 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.6.9003" id="dm-1069003">dm 1.0.6.9003<a class="anchor" aria-label="anchor" href="#dm-1069003"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-6-9003">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-6-9003"></a></h3>
+<ul><li>Minor fixes in <code><a href="../reference/dm_pack_tbl.html">dm_pack_tbl()</a></code> and <code><a href="../reference/dm_unwrap_tbl.html">dm_unwrap_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/1947" class="external-link">#1947</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="features-1-0-6-9003">Features<a class="anchor" aria-label="anchor" href="#features-1-0-6-9003"></a></h3>
+<ul><li><p>New <code><a href="../reference/json_unnest.html">json_unnest()</a></code> and <code><a href="../reference/json_unpack.html">json_unpack()</a></code>, currently implemented for data frames only (<a href="https://github.com/cynkra/dm/issues/991" class="external-link">#991</a>, <a href="https://github.com/cynkra/dm/issues/997" class="external-link">#997</a>).</p></li>
+<li><p><code><a href="../reference/rows-dm.html">dm_rows_append()</a></code> also works for local dm, with support for autoincrement primary keys (<a href="https://github.com/cynkra/dm/issues/1727" class="external-link">#1727</a>, <a href="https://github.com/cynkra/dm/issues/1745" class="external-link">#1745</a>).</p></li>
+<li><p>Add <code><a href="../reference/dm_sql.html">dm_sql()</a></code> and friends, still need tests (<a href="https://github.com/cynkra/dm/issues/1915" class="external-link">#1915</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-6-9003">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-6-9003"></a></h3>
+<ul><li><p>Fix typo, dm_unwrapped_tbl -&gt; dm_unwrapped.</p></li>
+<li><p>New targets, for silent testing.</p></li>
+<li><p>Enhance test snapshot from last change.</p></li>
+<li><p>Stabilize tests.</p></li>
+<li><p>New <code>ltest</code> and <code>.NOTPARALLEL</code> targets.</p></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.6.9002" id="dm-1069002">dm 1.0.6.9002<a class="anchor" aria-label="anchor" href="#dm-1069002"></a></h2>
 <div class="section level3">
