@@ -93,7 +93,10 @@ jobs:
         with:
           results: ${{ matrix.package }}
 
-  R-CMD-check-dev:
+  R-CMD-check-suggests:
+    env:
+      _R_CHECK_FORCE_SUGGESTS_: false
+
     needs:
       - matrix
       - R-CMD-check-base
@@ -143,6 +146,24 @@ jobs:
 
       - uses: ./.github/workflows/custom/after-install
         if: hashFiles('.github/workflows/custom/after-install/action.yml') != ''
+
+      - name: Define _R_CHECK_FORCE_SUGGESTS_
+        run: |
+          cat('_R_CHECK_FORCE_SUGGESTS_=false\n', file = Sys.getenv("GITHUB_ENV"), append = TRUE)
+        shell: Rscript {0}
+
+      - name: Must allow NOTEs, even with _R_CHECK_FORCE_SUGGESTS_
+        run: |
+          if (Sys.getenv("RCMDCHECK_ERROR_ON") %in% c("", "note")) {
+            cat('RCMDCHECK_ERROR_ON="warning"\n', file = Sys.getenv("GITHUB_ENV"), append = TRUE)
+          }
+        shell: Rscript {0}
+
+      - name: Check env vars
+        run: |
+          print(Sys.getenv('_R_CHECK_FORCE_SUGGESTS_'))
+          print(Sys.getenv('RCMDCHECK_ERROR_ON'))
+        shell: Rscript {0}
 
       - uses: ./.github/workflows/check
         with:
