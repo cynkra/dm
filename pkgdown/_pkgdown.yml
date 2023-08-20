@@ -19,7 +19,6 @@ reference:
   - dm_get_tables
   - pull_tbl
   - dm_deconstruct
-  - glimpse
   - dm_mutate_tbl
 - title: Primary keys
   contents:
