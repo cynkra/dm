@@ -158,11 +158,6 @@
         <dd>Add a primary key</dd>
       </dl><dl><dt>
           
-          <code><a href="dm_enum_pk_candidates.html">enum_pk_candidates()</a></code> <code><a href="dm_enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> 
-        </dt>
-        <dd>Primary key candidate</dd>
-      </dl><dl><dt>
-          
           <code><a href="dm_get_all_pks.html">dm_get_all_pks()</a></code> 
         </dt>
         <dd>Get all primary keys of a <code>dm</code> object</dd>
@@ -176,6 +171,32 @@
           <code><a href="dm_rm_pk.html">dm_rm_pk()</a></code> 
         </dt>
         <dd>Remove a primary key</dd>
+      </dl></div><div class="section level2">
+      <h2 id="foreign-keys">Foreign keys<a class="anchor" aria-label="anchor" href="#foreign-keys"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="dm_add_fk.html">dm_add_fk()</a></code> 
+        </dt>
+        <dd>Add foreign keys</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dm_get_all_fks.html">dm_get_all_fks()</a></code> 
+        </dt>
+        <dd>Get foreign key constraints</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dm_rm_fk.html">dm_rm_fk()</a></code> 
+        </dt>
+        <dd>Remove foreign keys</dd>
       </dl></div><div class="section level2">
       <h2 id="unique-keys">Unique keys<a class="anchor" aria-label="anchor" href="#unique-keys"></a></h2>
       
@@ -202,37 +223,6 @@
           <code><a href="dm_rm_uk.html">dm_rm_uk()</a></code> 
         </dt>
         <dd>Remove a unique key</dd>
-      </dl></div><div class="section level2">
-      <h2 id="foreign-keys">Foreign keys<a class="anchor" aria-label="anchor" href="#foreign-keys"></a></h2>
-      
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="dm_add_fk.html">dm_add_fk()</a></code> 
-        </dt>
-        <dd>Add foreign keys</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code> <code><a href="dm_enum_fk_candidates.html">enum_fk_candidates()</a></code> 
-        </dt>
-        <dd>Foreign key candidates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dm_get_all_fks.html">dm_get_all_fks()</a></code> 
-        </dt>
-        <dd>Get foreign key constraints</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dm_rm_fk.html">dm_rm_fk()</a></code> 
-        </dt>
-        <dd>Remove foreign keys</dd>
       </dl></div><div class="section level2">
       <h2 id="visualize">Visualize<a class="anchor" aria-label="anchor" href="#visualize"></a></h2>
       
@@ -270,7 +260,7 @@
         </dt>
         <dd>Create R code for a dm object</dd>
       </dl></div><div class="section level2">
-      <h2 id="select-columns">Select columns<a class="anchor" aria-label="anchor" href="#select-columns"></a></h2>
+      <h2 id="columns">Columns<a class="anchor" aria-label="anchor" href="#columns"></a></h2>
       
       
 
@@ -410,7 +400,7 @@
         </dt>
         <dd>Unpack columns from a wrapped table</dd>
       </dl></div><div class="section level2">
-      <h2 id="operations-on-data-frames-and-lazy-tables">Operations on data frames and lazy tables<a class="anchor" aria-label="anchor" href="#operations-on-data-frames-and-lazy-tables"></a></h2>
+      <h2 id="nested-and-packed-data">Nested and packed data<a class="anchor" aria-label="anchor" href="#nested-and-packed-data"></a></h2>
       
       
 
@@ -519,7 +509,7 @@
         </dt>
         <dd>Merge two tables that are linked by a foreign key relation</dd>
       </dl></div><div class="section level2">
-      <h2 id="check-keys-and-cardinalities">Check keys and cardinalities<a class="anchor" aria-label="anchor" href="#check-keys-and-cardinalities"></a></h2>
+      <h2 id="keys-and-cardinalities">Keys and cardinalities<a class="anchor" aria-label="anchor" href="#keys-and-cardinalities"></a></h2>
       
       
 
@@ -544,6 +534,16 @@
           <code><a href="dm_examine_constraints.html">dm_examine_constraints()</a></code> 
         </dt>
         <dd>Validate your data model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dm_enum_pk_candidates.html">enum_pk_candidates()</a></code> <code><a href="dm_enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> 
+        </dt>
+        <dd>Primary key candidate</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code> <code><a href="dm_enum_fk_candidates.html">enum_fk_candidates()</a></code> 
+        </dt>
+        <dd>Foreign key candidates</dd>
       </dl><dl><dt>
           
           <code><a href="check_key.html">check_key()</a></code> 
