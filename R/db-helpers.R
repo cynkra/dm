@@ -27,18 +27,6 @@ get_pid <- function() {
   }
 }
 
-class_to_db_class <- function(dest, class_vector) {
-  if (is_mssql(dest) || is_postgres(dest)) {
-    case_when(
-      class_vector == "character" ~ "VARCHAR(100)",
-      class_vector == "integer" ~ "INT",
-      TRUE ~ class_vector
-    )
-  } else {
-    return(class_vector)
-  }
-}
-
 is_db <- function(x) {
   inherits(x, "src_sql")
 }

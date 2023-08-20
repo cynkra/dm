@@ -169,31 +169,6 @@ error_txt_tables_not_reachable_from_start <- function() {
 
 # errors in table surgery -------------------------------------------------
 
-abort_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
-  abort(error_txt_wrong_col_names(table_name, actual_colnames, wrong_colnames),
-    class = dm_error_full("wrong_col_names")
-  )
-}
-
-error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
-  if (length(wrong_colnames) > 1) {
-    glue(
-      "Not all specified variables ",
-      "{commas(tick(wrong_colnames))} ",
-      "are columns of {tick(table_name)}. ",
-      "Its columns are: \n",
-      "{commas(tick(actual_colnames))}."
-    )
-  } else {
-    glue(
-      "{tick(wrong_colnames)} is not a column of ",
-      "{tick(table_name)}. Its columns are: \n",
-      "{commas(tick(actual_colnames))}."
-    )
-  }
-}
-
-
 abort_dupl_new_id_col_name <- function(table_name) {
   abort(error_txt_dupl_new_id_col_name(table_name), class = dm_error_full("dupl_new_id_col_name"))
 }
@@ -233,22 +208,6 @@ abort_no_unique_indexes <- function() {
 
 error_txt_no_unique_indexes <- function() {
   "`copy_dm_to()` does not support the `unique_indexes` argument."
-}
-
-abort_key_constraints_need_db <- function() {
-  abort(error_txt_key_constraints_need_db(), class = dm_error_full("key_constraints_need_db"))
-}
-
-error_txt_key_constraints_need_db <- function() {
-  "Setting key constraints only works if the tables of the `dm` are on a database."
-}
-
-abort_no_src_or_con <- function() {
-  abort(error_txt_no_src_or_con(), class = dm_error_full("no_src_or_con"))
-}
-
-error_txt_no_src_or_con <- function() {
-  "Argument `src` needs to be a `src` or a `con` object."
 }
 
 abort_update_not_supported <- function() {
@@ -408,16 +367,6 @@ abort_one_name_for_copy_to <- function(name) {
   )
 }
 
-# table for which key should be set not in list of tables when creating dm -----------------------
-
-abort_unnamed_table_list <- function() {
-  abort(error_txt_unnamed_table_list(), class = dm_error_full("unnamed_table_list"))
-}
-
-error_txt_unnamed_table_list <- function() {
-  "Table list in `new_dm()` needs to be named."
-}
-
 # new table name needs to be unique ---------------------------------------
 
 abort_need_unique_names <- function(duplicate_names) {
@@ -525,18 +474,6 @@ abort_wrong_syntax_set_cols <- function() {
 
 error_txt_wrong_syntax_set_cols <- function() {
   "You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set_colors()` for examples."
-}
-
-abort_temp_table_requested <- function(table_names, tbls_in_dm) {
-  abort(error_txt_temp_table_requested(table_names, tbls_in_dm), class = dm_error_full("temp_table_requested"))
-}
-
-error_txt_temp_table_requested <- function(table_names, tbls_in_dm) {
-  temp_tables <- setdiff(table_names, tbls_in_dm)
-  glue(
-    "The following requested tables from the DB are temporary tables and can't be included in the result: ",
-    "{commas(tick(temp_tables))}."
-  )
 }
 
 abort_parameter_not_correct_class <- function(parameter, correct_class, class) {
