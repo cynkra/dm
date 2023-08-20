@@ -22,11 +22,17 @@ reference:
   - glimpse
   - dm_mutate_tbl
 - title: Primary keys
-  contents: matches("_pk")
+  contents:
+  - matches("_pk")
+  - -enum_pk_candidates
+  - -dm_enum_pk_candidates
+- title: Foreign keys
+  contents:
+  - matches("_fk")
+  - -enum_fk_candidates
+  - -dm_enum_fk_candidates
 - title: Unique keys
   contents: matches("_uk")
-- title: Foreign keys
-  contents: matches("_fk")
 - title: Visualize
   contents:
   - dm_gui
@@ -34,7 +40,7 @@ reference:
   - ends_with("_colors")
   - ends_with("_table_description")
   - dm_paste
-- title: Select columns
+- title: Columns
   contents:
   - dm_select
   - dm_rename
@@ -58,7 +64,7 @@ reference:
   - dm_pack_tbl
   - dm_unnest_tbl
   - dm_unpack_tbl
-- title: Operations on data frames and lazy tables
+- title: Nested and packed data
   contents:
   - pack_join
   - starts_with("json_")
@@ -76,10 +82,12 @@ reference:
   - decompose_table
   - reunite_parent_child
   - reunite_parent_child_from_list
-- title: Check keys and cardinalities
+- title: Keys and cardinalities
   contents:
   - matches("cardinality|cardinalities")
   - dm_examine_constraints
+  - enum_pk_candidates
+  - enum_fk_candidates
   - starts_with("check_")
 - title: Database schemas
   contents: starts_with("db_schema_")
