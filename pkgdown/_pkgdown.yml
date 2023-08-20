@@ -84,10 +84,10 @@ reference:
   - reunite_parent_child_from_list
 - title: Keys and cardinalities
   contents:
-  - matches("cardinality|cardinalities")
   - dm_examine_constraints
   - enum_pk_candidates
   - enum_fk_candidates
+  - matches("cardinality|cardinalities")
   - starts_with("check_")
 - title: Database schemas
   contents: starts_with("db_schema_")
