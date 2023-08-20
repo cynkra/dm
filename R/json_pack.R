@@ -85,18 +85,6 @@ remove_prefix_and_sep <- function(x, prefix, sep) {
 
 
 #' @export
-#' @autoglobal
-#' @global JSON_AGG JSON_BUILD_OBJECT
-sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols, data, ...) {
-  check_dots_empty()
-
-  inside_cols <- remove_prefix_and_sep(cols, prefix = packed_col, sep = names_sep)
-  inside_cols_idented <- dbplyr::ident(inside_cols)
-  exprs <- vctrs::vec_interleave(as.list(inside_cols_idented), syms(cols))
-  dbplyr::translate_sql(JSON_AGG(JSON_BUILD_OBJECT(!!!exprs)), con = con)
-}
-
-#' @export
 `json_pack.tbl_Microsoft SQL Server` <- function(.data, ..., .names_sep = NULL) {
   dots <- quos(...)
   if ("" %in% names2(dots)) {

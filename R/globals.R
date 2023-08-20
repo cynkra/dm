@@ -121,8 +121,6 @@ utils::globalVariables(c(
   "JSON_AGG", # <sql_json_nest.PqConnection>
   "JSON_BUILD_OBJECT", # <sql_json_nest.PqConnection>
   "JSON_BUILD_OBJECT", # <sql_json_pack.PqConnection>
-  "JSON_AGG", # <sql_json_nest.PqConnection>
-  "JSON_BUILD_OBJECT", # <sql_json_nest.PqConnection>
   "key", # <is_unique_key_se>
   "any_na", # <is_unique_key_se>
   ".", # <is_unique_key_se>
