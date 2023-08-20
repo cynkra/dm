@@ -74,18 +74,6 @@
       Error in `abort_tables_not_reachable_from_start()`:
       ! All selected tables must be reachable from `.start`.
     Code
-      abort_wrong_col_names("table_name", c("col_1", "col_2"), c("col_one", "col_2"))
-    Condition
-      Error in `abort_wrong_col_names()`:
-      ! Not all specified variables `col_one`, `col_2` are columns of `table_name`. Its columns are: 
-      `col_1`, `col_2`.
-    Code
-      abort_wrong_col_names("table_name", c("col_1", "col_2"), "col_one")
-    Condition
-      Error in `abort_wrong_col_names()`:
-      ! `col_one` is not a column of `table_name`. Its columns are: 
-      `col_1`, `col_2`.
-    Code
       abort_dupl_new_id_col_name("tibbletable")
     Condition
       Error in `abort_dupl_new_id_col_name()`:
@@ -111,11 +99,6 @@
       Error in `abort_no_unique_indexes()`:
       ! `copy_dm_to()` does not support the `unique_indexes` argument.
     Code
-      abort_key_constraints_need_db()
-    Condition
-      Error in `abort_key_constraints_need_db()`:
-      ! Setting key constraints only works if the tables of the `dm` are on a database.
-    Code
       abort_pk_not_defined()
     Condition
       Error in `abort_pk_not_defined()`:
@@ -130,11 +113,6 @@
     Condition
       Error in `abort_first_rm_fks()`:
       ! There are foreign keys pointing from table(s) `child_1`, `child_2` to table `parent`. First remove those, or set `fail_fk = FALSE`.
-    Code
-      abort_no_src_or_con()
-    Condition
-      Error in `abort_no_src_or_con()`:
-      ! Argument `src` needs to be a `src` or a `con` object.
     Code
       abort_update_not_supported()
     Condition
@@ -217,11 +195,6 @@
       ! Table(s) `accessdenied` cannot be accessed.
       i Use `tbl(src, ...)` to troubleshoot.
     Code
-      abort_unnamed_table_list()
-    Condition
-      Error in `abort_unnamed_table_list()`:
-      ! Table list in `new_dm()` needs to be named.
-    Code
       abort_need_unique_names("clone")
     Condition
       Error in `abort_need_unique_names()`:
@@ -266,12 +239,6 @@
     Condition
       Error in `abort_wrong_syntax_set_cols()`:
       ! You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set_colors()` for examples.
-    Code
-      abort_temp_table_requested(c("i_am_temporary", "i_am_permanent"),
-      "i_am_permanent")
-    Condition
-      Error in `abort_temp_table_requested()`:
-      ! The following requested tables from the DB are temporary tables and can't be included in the result: `i_am_temporary`.
     Code
       abort_pk_not_tracked("house", "house_number")
     Condition
