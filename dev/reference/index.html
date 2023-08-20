@@ -40,11 +40,11 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-technical-articles">Technical articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-technical-articles">
-    <a class="dropdown-item" href="../articles/tech-dm-join.html">Joining in relational data models</a>
-    <a class="dropdown-item" href="../articles/tech-dm-keyed.html">Manipulating individual tables</a>
-    <a class="dropdown-item" href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
-    <a class="dropdown-item" href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
     <a class="dropdown-item" href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
+    <a class="dropdown-item" href="../articles/tech-dm-keyed.html">Manipulating individual tables</a>
+    <a class="dropdown-item" href="../articles/tech-dm-join.html">Joining in relational data models</a>
+    <a class="dropdown-item" href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
+    <a class="dropdown-item" href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
     <a class="dropdown-item" href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
     <a class="dropdown-item" href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
     <a class="dropdown-item" href="../articles/tech-dm-naming.html">Function naming logic</a>
@@ -76,7 +76,7 @@
     <div class="section level2">
       <h2 id="basic">Basic<a class="anchor" aria-label="anchor" href="#basic"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Construct a <code>dm</code> object from data frames, see also <code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code>.</p>
 
       
     </div><div id="" class="section level2">
@@ -91,6 +91,22 @@
         <dd>Data model class</dd>
       </dl><dl><dt>
           
+          <code><a href="dm_validate.html">dm_validate()</a></code> 
+        </dt>
+        <dd>Validator</dd>
+      </dl></div><div class="section level2">
+      <h2 id="database">Database<a class="anchor" aria-label="anchor" href="#database"></a></h2>
+      
+      <p class="section-desc"></p><p>Construct a <code>dm</code> object from a database, see also <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code>.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
           <code><a href="dm_from_con.html">dm_from_con()</a></code> 
         </dt>
         <dd>Load a dm from a remote data source</dd>
@@ -100,9 +116,9 @@
         </dt>
         <dd>Get connection</dd>
       </dl></div><div class="section level2">
-      <h2 id="tables">Tables<a class="anchor" aria-label="anchor" href="#tables"></a></h2>
+      <h2 id="tables-and-columns">Tables and columns<a class="anchor" aria-label="anchor" href="#tables-and-columns"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Operate on the tables and columns stored in a <code>dm</code> objects.</p>
 
       
     </div><div id="" class="section level2">
@@ -127,23 +143,28 @@
         <dd>Retrieve a table</dd>
       </dl><dl><dt>
           
-          <code><a href="dm_deconstruct.html">dm_deconstruct()</a></code> 
-        </dt>
-        <dd>Create code to deconstruct a dm object</dd>
-      </dl><dl><dt>
-          
-          <code><a href="reexports.html">reexports</a></code> <code><a href="reexports.html">%&gt;%</a></code> <code><a href="reexports.html">filter</a></code> <code><a href="reexports.html">mutate</a></code> <code><a href="reexports.html">transmute</a></code> <code><a href="reexports.html">summarise</a></code> <code><a href="reexports.html">summarize</a></code> <code><a href="reexports.html">select</a></code> <code><a href="reexports.html">rename</a></code> <code><a href="reexports.html">group_by</a></code> <code><a href="reexports.html">ungroup</a></code> <code><a href="reexports.html">left_join</a></code> <code><a href="reexports.html">inner_join</a></code> <code><a href="reexports.html">full_join</a></code> <code><a href="reexports.html">semi_join</a></code> <code><a href="reexports.html">anti_join</a></code> <code><a href="reexports.html">right_join</a></code> <code><a href="reexports.html">collect</a></code> <code><a href="reexports.html">compute</a></code> <code><a href="reexports.html">copy_to</a></code> <code><a href="reexports.html">src_tbls</a></code> <code><a href="reexports.html">tbl</a></code> <code><a href="reexports.html">arrange</a></code> <code><a href="reexports.html">rows_insert</a></code> <code><a href="reexports.html">rows_append</a></code> <code><a href="reexports.html">rows_update</a></code> <code><a href="reexports.html">rows_patch</a></code> <code><a href="reexports.html">rows_upsert</a></code> <code><a href="reexports.html">rows_delete</a></code> <code><a href="reexports.html">glimpse</a></code> <code><a href="reexports.html">tibble</a></code> <code><a href="reexports.html">unite</a></code> <code><a href="reexports.html">separate</a></code> 
-        </dt>
-        <dd>Objects exported from other packages</dd>
-      </dl><dl><dt>
-          
           <code><a href="dm_mutate_tbl.html">dm_mutate_tbl()</a></code> 
         </dt>
         <dd>Update tables in a <code>dm</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="dm_nrow.html">dm_nrow()</a></code> 
+        </dt>
+        <dd>Number of rows</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dm_select.html">dm_select()</a></code> 
+        </dt>
+        <dd>Select columns</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dm_rename.html">dm_rename()</a></code> 
+        </dt>
+        <dd>Rename columns</dd>
       </dl></div><div class="section level2">
       <h2 id="primary-keys">Primary keys<a class="anchor" aria-label="anchor" href="#primary-keys"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Primary keys uniquely identify rows in a table. A table can have at most one primary key. See also <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
 
       
     </div><div id="" class="section level2">
@@ -172,35 +193,9 @@
         </dt>
         <dd>Remove a primary key</dd>
       </dl></div><div class="section level2">
-      <h2 id="foreign-keys">Foreign keys<a class="anchor" aria-label="anchor" href="#foreign-keys"></a></h2>
-      
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="dm_add_fk.html">dm_add_fk()</a></code> 
-        </dt>
-        <dd>Add foreign keys</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dm_get_all_fks.html">dm_get_all_fks()</a></code> 
-        </dt>
-        <dd>Get foreign key constraints</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dm_rm_fk.html">dm_rm_fk()</a></code> 
-        </dt>
-        <dd>Remove foreign keys</dd>
-      </dl></div><div class="section level2">
       <h2 id="unique-keys">Unique keys<a class="anchor" aria-label="anchor" href="#unique-keys"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Unique keys are similar to primary keys. Each table can have at most one record for each combination of values in a unique key. A table can have more than one unique key.</p>
 
       
     </div><div id="" class="section level2">
@@ -224,9 +219,35 @@
         </dt>
         <dd>Remove a unique key</dd>
       </dl></div><div class="section level2">
+      <h2 id="foreign-keys">Foreign keys<a class="anchor" aria-label="anchor" href="#foreign-keys"></a></h2>
+      
+      <p class="section-desc"></p><p>Foreign keys establish links between tables by pointing to a primary or unique key in another table. See also <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="dm_add_fk.html">dm_add_fk()</a></code> 
+        </dt>
+        <dd>Add foreign keys</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dm_get_all_fks.html">dm_get_all_fks()</a></code> 
+        </dt>
+        <dd>Get foreign key constraints</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dm_rm_fk.html">dm_rm_fk()</a></code> 
+        </dt>
+        <dd>Remove foreign keys</dd>
+      </dl></div><div class="section level2">
       <h2 id="visualize">Visualize<a class="anchor" aria-label="anchor" href="#visualize"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Show a <code>dm</code> object, see also <code><a href="../articles/tech-dm-draw.html">vignette("tech-dm-draw")</a></code>.</p>
 
       
     </div><div id="" class="section level2">
@@ -254,15 +275,10 @@
           <code><a href="dm_set_table_description.html">dm_set_table_description()</a></code> <code><a href="dm_set_table_description.html">dm_get_table_description()</a></code> <code><a href="dm_set_table_description.html">dm_reset_table_description()</a></code> 
         </dt>
         <dd>Add info about a dm's tables</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dm_paste.html">dm_paste()</a></code> 
-        </dt>
-        <dd>Create R code for a dm object</dd>
       </dl></div><div class="section level2">
-      <h2 id="columns">Columns<a class="anchor" aria-label="anchor" href="#columns"></a></h2>
+      <h2 id="deconstruct">Deconstruct<a class="anchor" aria-label="anchor" href="#deconstruct"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Rip a <code>dm</code> object apart and put it together, see also <code><a href="../articles/tech-dm-keyed.html">vignette("tech-dm-keyed")</a></code>.</p>
 
       
     </div><div id="" class="section level2">
@@ -272,18 +288,13 @@
 
       <dl><dt>
           
-          <code><a href="dm_select.html">dm_select()</a></code> 
+          <code><a href="dm_deconstruct.html">dm_deconstruct()</a></code> 
         </dt>
-        <dd>Select columns</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dm_rename.html">dm_rename()</a></code> 
-        </dt>
-        <dd>Rename columns</dd>
+        <dd>Create code to deconstruct a dm object</dd>
       </dl></div><div class="section level2">
       <h2 id="flatten">Flatten<a class="anchor" aria-label="anchor" href="#flatten"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Combine multiple related tables, see also <code><a href="../articles/tech-dm-join.html">vignette("tech-dm-join")</a></code>.</p>
 
       
     </div><div id="" class="section level2">
@@ -304,7 +315,7 @@
       </dl></div><div class="section level2">
       <h2 id="filter">Filter<a class="anchor" aria-label="anchor" href="#filter"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Filter across multiple tables, see also <code><a href="../articles/tech-dm-filter.html">vignette("tech-dm-filter")</a></code>.</p>
 
       
     </div><div id="" class="section level2">
@@ -320,7 +331,7 @@
       </dl></div><div class="section level2">
       <h2 id="zoom">Zoom<a class="anchor" aria-label="anchor" href="#zoom"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Focus on a single table, see also <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code>.</p>
 
       
     </div><div id="" class="section level2">
@@ -361,7 +372,7 @@
       </dl></div><div class="section level2">
       <h2 id="wrap">Wrap<a class="anchor" aria-label="anchor" href="#wrap"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Turn a <code>dm</code> object into a single table and back.</p>
 
       
     </div><div id="" class="section level2">
@@ -402,7 +413,7 @@
       </dl></div><div class="section level2">
       <h2 id="nested-and-packed-data">Nested and packed data<a class="anchor" aria-label="anchor" href="#nested-and-packed-data"></a></h2>
       
-      
+      <p class="section-desc"></p><p>New verbs that power wrapping.</p>
 
       
     </div><div id="" class="section level2">
@@ -446,9 +457,9 @@
         </dt>
         <dd>Unpack a JSON column</dd>
       </dl></div><div class="section level2">
-      <h2 id="materialize">Materialize<a class="anchor" aria-label="anchor" href="#materialize"></a></h2>
+      <h2 id="materialize-and-upload">Materialize and upload<a class="anchor" aria-label="anchor" href="#materialize-and-upload"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Get data from and to the database, see also <code><a href="../articles/howto-dm-copy.html">vignette("howto-dm-copy")</a></code>.</p>
 
       
     </div><div id="" class="section level2">
@@ -461,22 +472,6 @@
           <code><a href="materialize.html">compute(<i>&lt;dm&gt;</i>)</a></code> <code><a href="materialize.html">collect(<i>&lt;dm&gt;</i>)</a></code> 
         </dt>
         <dd>Materialize</dd>
-      </dl></div><div class="section level2">
-      <h2 id="upload">Upload<a class="anchor" aria-label="anchor" href="#upload"></a></h2>
-      
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="copy_dm_to.html">copy_dm_to()</a></code> 
-        </dt>
-        <dd>Copy data model to data source</dd>
       </dl><dl><dt>
           
           <code><a href="rows-dm.html">dm_rows_insert()</a></code> <code><a href="rows-dm.html">dm_rows_append()</a></code> <code><a href="rows-dm.html">dm_rows_update()</a></code> <code><a href="rows-dm.html">dm_rows_patch()</a></code> <code><a href="rows-dm.html">dm_rows_upsert()</a></code> <code><a href="rows-dm.html">dm_rows_delete()</a></code> 
@@ -484,13 +479,18 @@
         <dd>Modifying rows for multiple tables</dd>
       </dl><dl><dt>
           
+          <code><a href="copy_dm_to.html">copy_dm_to()</a></code> 
+        </dt>
+        <dd>Copy data model to data source</dd>
+      </dl><dl><dt>
+          
           <code><a href="dm_sql.html">dm_sql()</a></code> <code><a href="dm_sql.html">dm_ddl_pre()</a></code> <code><a href="dm_sql.html">dm_dml_load()</a></code> <code><a href="dm_sql.html">dm_ddl_post()</a></code> 
         </dt>
         <dd>Create <em>DDL</em> and <em>DML</em> scripts for <code>dm</code> and database connection</dd>
       </dl></div><div class="section level2">
-      <h2 id="table-surgery">Table surgery<a class="anchor" aria-label="anchor" href="#table-surgery"></a></h2>
+      <h2 id="modify">Modify<a class="anchor" aria-label="anchor" href="#modify"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Manipulate individual rows on the database, see also <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code>.</p>
 
       
     </div><div id="" class="section level2">
@@ -500,18 +500,13 @@
 
       <dl><dt>
           
-          <code><a href="decompose_table.html">decompose_table()</a></code> 
+          <code><a href="rows-dm.html">dm_rows_insert()</a></code> <code><a href="rows-dm.html">dm_rows_append()</a></code> <code><a href="rows-dm.html">dm_rows_update()</a></code> <code><a href="rows-dm.html">dm_rows_patch()</a></code> <code><a href="rows-dm.html">dm_rows_upsert()</a></code> <code><a href="rows-dm.html">dm_rows_delete()</a></code> 
         </dt>
-        <dd>Decompose a table into two linked tables</dd>
-      </dl><dl><dt>
-          
-          <code><a href="reunite_parent_child.html">reunite_parent_child()</a></code> <code><a href="reunite_parent_child.html">reunite_parent_child_from_list()</a></code> 
-        </dt>
-        <dd>Merge two tables that are linked by a foreign key relation</dd>
+        <dd>Modifying rows for multiple tables</dd>
       </dl></div><div class="section level2">
       <h2 id="keys-and-cardinalities">Keys and cardinalities<a class="anchor" aria-label="anchor" href="#keys-and-cardinalities"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Check fulfillment and nature of relationships between tables.</p>
 
       
     </div><div id="" class="section level2">
@@ -560,9 +555,30 @@
         </dt>
         <dd>Check column values for subset</dd>
       </dl></div><div class="section level2">
+      <h2 id="table-surgery">Table surgery<a class="anchor" aria-label="anchor" href="#table-surgery"></a></h2>
+      
+      <p class="section-desc"></p><p>Normalize and denormalize tables.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="decompose_table.html">decompose_table()</a></code> 
+        </dt>
+        <dd>Decompose a table into two linked tables</dd>
+      </dl><dl><dt>
+          
+          <code><a href="reunite_parent_child.html">reunite_parent_child()</a></code> <code><a href="reunite_parent_child.html">reunite_parent_child_from_list()</a></code> 
+        </dt>
+        <dd>Merge two tables that are linked by a foreign key relation</dd>
+      </dl></div><div class="section level2">
       <h2 id="database-schemas">Database schemas<a class="anchor" aria-label="anchor" href="#database-schemas"></a></h2>
       
-      
+      <p class="section-desc"></p><p>New verbs that power access to database schemas.</p>
 
       
     </div><div id="" class="section level2">
@@ -593,7 +609,7 @@
       </dl></div><div class="section level2">
       <h2 id="example-dm-objects">Example dm objects<a class="anchor" aria-label="anchor" href="#example-dm-objects"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Ready to use and play with.</p>
 
       
     </div><div id="" class="section level2">
@@ -617,9 +633,9 @@
         </dt>
         <dd>Creates a dm object for the <span class="pkg">pixarfilms</span> data</dd>
       </dl></div><div class="section level2">
-      <h2 id="miscellaneous">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous"></a></h2>
+      <h2 id="structure-and-contents">Structure and contents<a class="anchor" aria-label="anchor" href="#structure-and-contents"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Recreate a <code>dm</code> object.</p>
 
       
     </div><div id="" class="section level2">
@@ -629,19 +645,14 @@
 
       <dl><dt>
           
-          <code><a href="dm_nrow.html">dm_nrow()</a></code> 
+          <code><a href="dm_paste.html">dm_paste()</a></code> 
         </dt>
-        <dd>Number of rows</dd>
+        <dd>Create R code for a dm object</dd>
       </dl><dl><dt>
           
           <code><a href="dm_ptype.html">dm_ptype()</a></code> 
         </dt>
         <dd>Prototype for a dm object</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dm_validate.html">dm_validate()</a></code> 
-        </dt>
-        <dd>Validator</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
