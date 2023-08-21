@@ -283,7 +283,7 @@ jobs:
 
     runs-on: ubuntu-22.04
 
-    name: ${{ matrix.package }}
+    name: Without ${{ matrix.package }}
 
     if: ${{ needs.suggests-matrix.outputs.matrix != '' }}
 
