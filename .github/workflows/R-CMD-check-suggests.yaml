@@ -41,6 +41,8 @@ jobs:
 
     name: Check deps
 
+    if: ${{ needs.matrix.outputs.matrix != '' }}
+
     steps:
       - name: Install json2yaml
         run: |
@@ -104,6 +106,8 @@ jobs:
     runs-on: ubuntu-22.04
 
     name: ${{ matrix.package }}
+
+    if: ${{ needs.matrix.outputs.matrix != '' }}
 
     # Begin custom: services
     # End custom: services
