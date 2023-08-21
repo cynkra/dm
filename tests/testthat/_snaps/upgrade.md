@@ -17,7 +17,7 @@
       Upgrading dm object created with dm <= 0.3.0.
       Upgrading dm object created with dm <= 1.0.3.
     Code
-      dm <- new_dm3(def)
+      dm <- dm_from_def(def)
       dm_validate(dm)
       is_zoomed(dm)
     Output
@@ -34,7 +34,7 @@
       Upgrading dm object created with dm <= 0.3.0.
       Upgrading dm object created with dm <= 1.0.3.
     Code
-      dm <- new_dm3(def, zoomed = TRUE)
+      dm <- dm_from_def(def, zoomed = TRUE)
       dm_validate(dm)
       is_zoomed(dm)
     Output
@@ -50,7 +50,7 @@
       Upgrading dm object created with dm <= 0.3.0.
       Upgrading dm object created with dm <= 1.0.3.
     Code
-      dm <- new_dm3(def)
+      dm <- dm_from_def(def)
       dm_validate(dm)
       is_zoomed(dm)
     Output
@@ -66,7 +66,7 @@
       Upgrading dm object created with dm <= 0.3.0.
       Upgrading dm object created with dm <= 1.0.3.
     Code
-      dm <- new_dm3(def, zoomed = TRUE)
+      dm <- dm_from_def(def, zoomed = TRUE)
       dm_validate(dm)
       is_zoomed(dm)
     Output
@@ -81,7 +81,7 @@
       Upgrading dm object created with dm <= 0.3.0.
       Upgrading dm object created with dm <= 1.0.3.
     Code
-      dm <- new_dm3(def)
+      dm <- dm_from_def(def)
       dm_validate(dm)
       is_zoomed(dm)
     Output
@@ -141,7 +141,7 @@
       Upgrading dm object created with dm <= 0.3.0.
       Upgrading dm object created with dm <= 1.0.3.
     Code
-      dm <- new_dm3(def, zoomed = TRUE)
+      dm <- dm_from_def(def, zoomed = TRUE)
       dm_validate(dm)
       is_zoomed(dm)
     Output
@@ -155,7 +155,7 @@
     Message
       Upgrading dm object created with dm <= 1.0.3.
     Code
-      dm <- new_dm3(def)
+      dm <- dm_from_def(def)
       dm_validate(dm)
       is_zoomed(dm)
     Output
@@ -211,7 +211,7 @@
     Message
       Upgrading dm object created with dm <= 1.0.3.
     Code
-      dm <- new_dm3(def, zoomed = TRUE)
+      dm <- dm_from_def(def, zoomed = TRUE)
       dm_validate(dm)
       is_zoomed(dm)
     Output

@@ -15,7 +15,7 @@ dm_upgrade <- function(dm, quiet) {
       .x <- .x[c("ref_column", "table", "column")]
       .x
     }))
-    dm <- new_dm3(def, zoomed = is_zoomed(dm), validate = FALSE)
+    dm <- dm_from_def(def, zoomed = is_zoomed(dm), validate = FALSE)
   }
 
   if (version < 2L) {
@@ -26,7 +26,7 @@ dm_upgrade <- function(dm, quiet) {
     }
     def <- unclass(dm)$def
     def$fks <- list_of(!!!map(def$fks, mutate, on_delete = "no_action"))
-    dm <- new_dm3(def, zoomed = is_zoomed(dm), validate = FALSE)
+    dm <- dm_from_def(def, zoomed = is_zoomed(dm), validate = FALSE)
   }
 
   if (version < 3L) {
@@ -37,7 +37,7 @@ dm_upgrade <- function(dm, quiet) {
     }
     def <- unclass(dm)$def
     def$uuid <- vec_new_uuid_along(def$table)
-    dm <- new_dm3(def, zoomed = is_zoomed(dm), validate = FALSE)
+    dm <- dm_from_def(def, zoomed = is_zoomed(dm), validate = FALSE)
   }
 
   if (version < 4L) {
@@ -48,7 +48,7 @@ dm_upgrade <- function(dm, quiet) {
     def$pks <- map(def$pks, mutate, autoincrement = FALSE) %>%
       vctrs::as_list_of(new_pk())
     def <- mutate(def, uks = vctrs::list_of(new_uk()), .after = pks)
-    dm <- new_dm3(def, zoomed = is_zoomed(dm))
+    dm <- dm_from_def(def, zoomed = is_zoomed(dm))
   }
 
   dm

@@ -184,7 +184,7 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
 
   # FIXME: add uks_df
   def <- new_dm_def(tables, pks_df, fks_df = fks_df)
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 schema_if <- function(schema, table, con, dbname = NULL) {

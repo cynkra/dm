@@ -150,7 +150,7 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 
   i <- which(def$table == table)
   def$filters[[i]] <- vec_rbind(def$filters[[i]], new_filter(filter_exprs, zoomed))
-  new_dm3(def, zoomed = zoomed)
+  dm_from_def(def, zoomed = zoomed)
 }
 
 
@@ -174,7 +174,7 @@ dm_apply_filters_impl <- function(dm) {
 
   def$data <- map(def$table, ~ dm_get_filtered_table(dm, .))
 
-  dm_reset_all_filters(new_dm3(def))
+  dm_reset_all_filters(dm_from_def(def))
 }
 
 #' @rdname deprecated

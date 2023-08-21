@@ -100,7 +100,7 @@ dm_add_pk_impl <- function(dm, table, column, autoincrement, force) {
 
   def$pks[[i]] <- new_pk(column = list(column), autoincrement = autoincrement)
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 #' Check for primary key
@@ -311,7 +311,7 @@ dm_rm_pk_impl <- function(dm, table_name, columns) {
   # Execute
   def$pks[i] <- list_of(new_pk())
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 

@@ -81,7 +81,7 @@ dm <- function(...,
   dm_tbl <- dm_impl(dots[!is_dm], names(quos_auto_name(quos[!is_dm])))
   def <- dm_bind_impl(c(dots[is_dm], list(dm_tbl)), .name_repair, .quiet, repair_arg = "")
 
-  dm <- new_dm3(def)
+  dm <- dm_from_def(def)
   dm_validate(dm)
   dm
 }
@@ -126,7 +126,7 @@ dm_impl <- function(tbls, names) {
 #' @export
 new_dm <- function(tables = list()) {
   def <- new_keyed_dm_def(tables)
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 new_keyed_dm_def <- function(tables = list()) {
@@ -182,7 +182,7 @@ new_dm_def <- function(tables = list(),
   def
 }
 
-new_dm3 <- function(def, zoomed = FALSE, validate = TRUE) {
+dm_from_def <- function(def, zoomed = FALSE, validate = TRUE) {
   if (is.null(def[["uuid"]])) {
     def$uuid <- vec_new_uuid_along(def$table)
   } else {
@@ -697,7 +697,7 @@ compute.dm <- function(x, ...) {
     dm_apply_filters_impl() %>%
     dm_get_def() %>%
     mutate(data = map(data, compute, ...)) %>%
-    new_dm3()
+    dm_from_def()
 }
 
 #' Materialize
@@ -716,7 +716,7 @@ collect.dm <- function(x, ..., progress = NA) {
 
   ticker <- new_ticker("downloading data", nrow(def), progress = progress)
   def$data <- map(def$data, ticker(collect), ...)
-  new_dm3(def, zoomed = is_zoomed(x))
+  dm_from_def(def, zoomed = is_zoomed(x))
 }
 
 #' @export
@@ -758,7 +758,7 @@ tbl_vars.dm_zoomed <- function(x) {
 dm_reset_all_filters <- function(dm) {
   def <- dm_get_def(dm)
   def$filters <- list_of(new_filter())
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 all_same_source <- function(tables) {
@@ -769,7 +769,7 @@ all_same_source <- function(tables) {
 
 # creates an empty `dm`-object, `src` is defined by implementation of `dm_get_src_impl()`.
 empty_dm <- function() {
-  new_dm3(
+  dm_from_def(
     tibble(
       table = character(),
       data = list(),

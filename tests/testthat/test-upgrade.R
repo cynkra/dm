@@ -15,7 +15,7 @@ test_that("can upgrade from v1", {
   expect_snapshot({
     def <- dm_get_def(dm_v1, quiet = TRUE)
     def <- dm_get_def(dm_v1)
-    dm <- new_dm3(def)
+    dm <- dm_from_def(def)
     dm_validate(dm)
     is_zoomed(dm)
   })
@@ -26,7 +26,7 @@ test_that("can upgrade zoomed from v1", {
   expect_snapshot({
     def <- dm_get_def(dm_v1_zoomed, quiet = TRUE)
     def <- dm_get_def(dm_v1_zoomed)
-    dm <- new_dm3(def, zoomed = TRUE)
+    dm <- dm_from_def(def, zoomed = TRUE)
     dm_validate(dm)
     is_zoomed(dm)
   })
@@ -42,7 +42,7 @@ test_that("can upgrade from v2", {
   expect_snapshot({
     def <- dm_get_def(dm_v2, quiet = TRUE)
     def <- dm_get_def(dm_v2)
-    dm <- new_dm3(def)
+    dm <- dm_from_def(def)
     dm_validate(dm)
     is_zoomed(dm)
   })
@@ -53,7 +53,7 @@ test_that("can upgrade zoomed from v2", {
   expect_snapshot({
     def <- dm_get_def(dm_v2_zoomed, quiet = TRUE)
     def <- dm_get_def(dm_v2_zoomed)
-    dm <- new_dm3(def, zoomed = TRUE)
+    dm <- dm_from_def(def, zoomed = TRUE)
     dm_validate(dm)
     is_zoomed(dm)
   })
@@ -72,7 +72,7 @@ test_that("can upgrade from v3", {
   expect_snapshot({
     def <- dm_get_def(dm_v3, quiet = TRUE)
     def <- dm_get_def(dm_v3)
-    dm <- new_dm3(def)
+    dm <- dm_from_def(def)
     dm_validate(dm)
     is_zoomed(dm)
     dm_get_all_uks(dm_v3)
@@ -86,7 +86,7 @@ test_that("can upgrade zoomed from v3", {
   expect_snapshot({
     def <- dm_get_def(dm_v3_zoomed, quiet = TRUE)
     def <- dm_get_def(dm_v3_zoomed)
-    dm <- new_dm3(def, zoomed = TRUE)
+    dm <- dm_from_def(def, zoomed = TRUE)
     dm_validate(dm)
     is_zoomed(dm)
   })
@@ -102,7 +102,7 @@ test_that("can upgrade to v4", {
   expect_snapshot({
     def <- dm_get_def(dm_v4, quiet = TRUE)
     def <- dm_get_def(dm_v4)
-    dm <- new_dm3(def)
+    dm <- dm_from_def(def)
     dm_validate(dm)
     is_zoomed(dm)
     dm_get_all_uks(dm_v4)
@@ -116,7 +116,7 @@ test_that("can upgrade zoomed to v4", {
   expect_snapshot({
     def <- dm_get_def(dm_v4_zoomed, quiet = TRUE)
     def <- dm_get_def(dm_v4_zoomed)
-    dm <- new_dm3(def, zoomed = TRUE)
+    dm <- dm_from_def(def, zoomed = TRUE)
     dm_validate(dm)
     is_zoomed(dm)
   })

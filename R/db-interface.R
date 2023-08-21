@@ -253,7 +253,7 @@ copy_dm_to <- function(dest, dm, ...,
   # remote dm is same as source dm with replaced data
   def <- dm_get_def(dm)
   def$data <- unname(remote_tables[names(dm)])
-  remote_dm <- new_dm3(def)
+  remote_dm <- dm_from_def(def)
 
   invisible(debug_dm_validate(remote_dm))
 }

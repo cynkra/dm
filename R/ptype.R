@@ -26,6 +26,6 @@ dm_ptype <- function(dm) {
   dm %>%
     dm_get_def() %>%
     mutate(data = map(data, ~ head(.x, 0))) %>%
-    new_dm3() %>%
+    dm_from_def() %>%
     collect()
 }

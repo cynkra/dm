@@ -30,7 +30,7 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()
   def_0$fks <- fks
   def_0$filters <- filters
 
-  new_dm3(vec_rbind(def, def_0))
+  dm_from_def(vec_rbind(def, def_0))
 }
 
 check_new_tbls <- function(dm, tbls) {
@@ -80,5 +80,5 @@ dm_mutate_tbl <- function(dm, ...) {
 
   def <- dm_get_def(dm)
   def$data <- unname(old_tables)
-  new_dm3(def)
+  dm_from_def(def)
 }
