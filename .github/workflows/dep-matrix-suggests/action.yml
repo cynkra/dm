@@ -30,13 +30,13 @@ runs:
 
         if (Sys.getenv("GITHUB_BASE_REF") != "") {
           print(Sys.getenv("GITHUB_BASE_REF"))
-          diff <- system("git diff ${{ github.event.pull_request.base.sha }}... | egrep '^[+][^+]' | grep ::", intern = TRUE)
-          writeLines(diff)
-          if (length(diff) == 0) {
+          has_diff <- (system("git diff ${{ github.event.pull_request.base.sha }}... | egrep '^[+][^+]' | grep -q ::") == 0)
+          if (has_diff) {
+            system("git diff ${{ github.event.pull_request.base.sha }}... | egrep '^[+][^+]' | grep -q ::")
+            packages <- get_deps()
+          } else {
             writeLines("No changes using :: found, not checking without suggested packages")
             packages <- character()
-          } else {
-            packages <- get_deps()
           }
         } else {
           packages <- get_deps()
