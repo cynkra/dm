@@ -1,5 +1,24 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9004
+
+## Chore
+
+- Avoid `dbplyr::ident_q()` (#1788).
+
+  Closes #1788.
+
+- Remove dead code (#1871).
+
+  Closes #1871.
+
+## Documentation
+
+- Tweaks.
+
+- Recategorize and describe function reference.
+
+
 # dm 1.0.6.9003
 
 ## Bug fixes
