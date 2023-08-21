@@ -28,15 +28,29 @@ runs:
           setdiff(packages, c(off_limits, off_limits_dep))
         }
 
-        packages <- get_deps()
+        if (Sys.getenv("GITHUB_BASE_REF") != "") {
+          print(Sys.getenv("GITHUB_BASE_REF"))
+          diff <- system("git diff ${{ github.event.pull_request.base.sha }}... | egrep '^[+][^+]' | grep ::", intern = TRUE)
+          writeLines(diff)
+          if (length(diff) == 0) {
+            writeLines("No changes using :: found, not checking without suggested packages")
+            packages <- character()
+          } else {
+            packages <- get_deps()
+          }
+        } else {
+          packages <- get_deps()
+        }
 
-        json <- paste0(
-          '{"package":[',
-          paste0('"', packages, '"', collapse = ","),
-          ']}'
-        )
-        writeLines(json)
         if (length(packages) > 0) {
+          json <- paste0(
+            '{"package":[',
+            paste0('"', packages, '"', collapse = ","),
+            ']}'
+          )
+          writeLines(json)
           writeLines(paste0("matrix=", json), Sys.getenv("GITHUB_OUTPUT"))
+        } else {
+          writeLines("Package list empty!")
         }
       shell: Rscript {0}
