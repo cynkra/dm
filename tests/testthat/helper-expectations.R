@@ -106,6 +106,9 @@ expect_equivalent_tbl_lists <- function(object, expected, sort_tables = FALSE, s
 }
 
 expect_snapshot_diagram <- function(diagram, name) {
+  skip_if_not_installed("DiagrammeR")
+  skip_if_not_installed("DiagrammeRsvg")
+
   dir <- withr::local_tempdir()
   path <- file.path(dir, name)
 

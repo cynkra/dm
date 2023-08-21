@@ -33,7 +33,7 @@ Called on a \code{dm} object, these methods create a copy of all tables in the \
 Depending on the size of your data this may take a long time.
 }
 \examples{
-\dontshow{if (dm:::dm_has_financial()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (dm:::dm_has_financial() && rlang::is_installed("RSQLite")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 financial <- dm_financial_sqlite()
 
 financial \%>\%

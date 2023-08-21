@@ -1,5 +1,6 @@
 test_that("dm_from_con() supports 'Pool'", {
   skip_if_not_installed("pool")
+  skip_if_not_installed("RSQLite")
 
   # expect no error
   conn <- pool::dbPool(RSQLite::SQLite(), dbname = "", timeout = 10)

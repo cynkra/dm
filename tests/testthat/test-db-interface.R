@@ -56,6 +56,8 @@ test_that("copy_dm_to() fails with duplicate table names", {
 })
 
 test_that("default table repair works", {
+  skip_if_not_installed("mockr")
+
   con <- con_from_src_or_con(my_db_test_src())
 
   table_names <- c("t1", "t2", "t3")

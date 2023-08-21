@@ -19,7 +19,7 @@
 #' @return For `dm_set_table_description()`: A `dm` object containing descriptions for specified tables.
 #' @export
 #'
-#' @examplesIf rlang::is_installed("nycflights13")
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("labelled") && rlang::is_installed("DiagrammeR")
 #' desc_flights <- rlang::set_names(
 #'   "flights",
 #'   paste(
@@ -39,7 +39,6 @@
 #' dm_get_table_description(nyc_desc)
 #' dm_reset_table_description(nyc_desc, flights) %>%
 #'   dm_draw(font_size = c(header = 18L, table_description = 9L, column = 15L))
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("labelled")
 #'
 #' pull_tbl(nyc_desc, flights) %>%
 #'   labelled::label_attribute()

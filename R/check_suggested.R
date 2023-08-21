@@ -45,7 +45,11 @@ check_suggested <- function(packages,
       if (is.null(message)) {
         message <- glue("`{top_level_fun}()` needs the '{pkg}' package. Do you need `install.packages(\"{pkg}\")` ?")
       }
-      abort(message)
+      if (is_testing()) {
+        testthat::skip(message)
+      } else {
+        abort(message)
+      }
     }
   }
   TRUE

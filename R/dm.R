@@ -673,7 +673,7 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 #' @return A `dm` object of the same structure as the input.
 #' @name materialize
 #' @export
-#' @examplesIf dm:::dm_has_financial()
+#' @examplesIf dm:::dm_has_financial() && rlang::is_installed("RSQLite")
 #' financial <- dm_financial_sqlite()
 #'
 #' financial %>%

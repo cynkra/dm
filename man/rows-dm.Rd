@@ -88,7 +88,7 @@ based on the primary key.
 The order in which the tables are processed is reversed.
 }
 \examples{
-\dontshow{if (rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Establish database connection:
 sqlite <- DBI::dbConnect(RSQLite::SQLite())
 

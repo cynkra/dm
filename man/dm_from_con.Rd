@@ -64,8 +64,6 @@ are imported from the database.
 \dontshow{if (dm:::dm_has_financial()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 con <- dm_get_con(dm_financial())
 
-dm_from_src(con)
-
 # Avoid DBI::dbDisconnect() here, because we don't own the connection
 \dontshow{\}) # examplesIf}
 }

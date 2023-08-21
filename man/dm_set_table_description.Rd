@@ -45,7 +45,7 @@ The currently set descriptions can be checked using \code{dm_get_table_descripti
 Descriptions can be removed using \code{dm_reset_table_description()}.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("labelled") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 desc_flights <- rlang::set_names(
   "flights",
   paste(
@@ -65,8 +65,6 @@ nyc_desc \%>\%
 dm_get_table_description(nyc_desc)
 dm_reset_table_description(nyc_desc, flights) \%>\%
   dm_draw(font_size = c(header = 18L, table_description = 9L, column = 15L))
-\dontshow{\}) # examplesIf}
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("labelled")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 pull_tbl(nyc_desc, flights) \%>\%
   labelled::label_attribute()
