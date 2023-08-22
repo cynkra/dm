@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9005
+
+## Chore
+
+- Remove dead code (#979, #1950).
+
+- Rename internal `new_dm3()` to `dm_from_def()` (#1225, #1949).
+
+- New GHA checks for the case of missing suggested packages (#1952).
+
+- Carefully check if suggested packages are installed.
+
+
 # dm 1.0.6.9004
 
 ## Chore
