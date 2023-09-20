@@ -49,7 +49,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           install-r: false
-          cache-version: rcc-smoke-1
+          cache-version: rcc-smoke-2
           needs: check
           extra-packages: any::rcmdcheck any::roxygen2 r-lib/styler
 
