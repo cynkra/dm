@@ -6,13 +6,16 @@ test_that("`pack_join()` works", {
   expect_snapshot(pack_join(df1, df2, name = "packed_col"))
   expect_snapshot(pack_join(df1, df3, by = c(key = "key3")))
   expect_snapshot(pack_join(df1, df3, by = c(key = "key3"), keep = TRUE))
+})
 
+test_that("`pack_join()` works with remote table", {
+  df1 <- tibble(col1 = 1:2, key = letters[1:2])
 
   # fails with remote table
-  dm_fin <- skip_if_error(dm_financial_sqlite())
-  expect_snapshot_error(pack_join(df1, dm_fin$accounts, by = c(col1 = "id")))
+  dm_remote <- dm_for_filter_duckdb()
+  expect_snapshot_error(pack_join(df1, dm_remote$tf_1, by = c(col1 = "a")))
   # unless copy = TRUE
-  expect_snapshot(pack_join(df1, dm_fin$accounts, by = c(col1 = "id"), copy = TRUE))
+  expect_snapshot(pack_join(df1, dm_remote$tf_1, by = c(col1 = "a"), copy = TRUE))
 
   # when we have conflicting columns, the column in x is overwritten silently
   # consistent with dplyr::nest_join
