@@ -96,18 +96,19 @@ See also <https://docs.google.com/document/d/1axInaYK6oK6riRio72uTAeQazuork1X0cl
 
 - macOS: <https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16>
 
-### Start the containers
+### Start new database containers
 
 ```sh
-docker-compose up
+make db-start
 # May take several minutes to pull the images
 ```
 
-Switches:
+### Start database containers without forcing recreation
 
-- `--force-recreate`: Recreate all databases from scratch
-- `-d`: Daemon mode, run in the background, use `docker-compose stop` to stop
-- `maria`, `mssql`, `postgres`: Run only a particular service
+```sh
+make db-restart
+# May take several minutes to pull the images
+```
 
 ### Connectivity test
 
@@ -139,24 +140,6 @@ The subsequent instructions omit setting the environment variables explicitly.
 
 ```sh
 make test-postgres
-```
-
-
-### mssql: For a new container, create the database
-
-FIXME: Automate this.
-
-```sh
-R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
-```
-
-
-### maria: For a new container, grant permissions
-
-FIXME: Automate this.
-
-```sh
-R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$con, "FLUSH PRIVILEGES")'
 ```
 
 
