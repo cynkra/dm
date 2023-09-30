@@ -120,7 +120,7 @@ Config/autostyle/strict: true
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm,
-    draw-dm, bind, rows-dm
+    draw-dm, bind, rows-dm, learn
 Encoding: UTF-8
 Roxygen: list(
       markdown = TRUE,
