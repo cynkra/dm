@@ -32,6 +32,17 @@ ltest-%:
 connect-%:
 	DM_TEST_SRC=$@ R -q -e 'suppressMessages(pkgload::load_all()); my_test_con()'
 
+db-start:
+	docker-compose up -d --force-recreate
+	R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$$con, "FLUSH PRIVILEGES")'
+	R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$$con, "CREATE DATABASE test")'
+
+db-restart:
+	docker-compose up -d
+
+db-stop:
+	docker-compose down
+
 docker-build:
 	docker build --platform linux/amd64 -t ghcr.io/cynkra/dm:main .
 
