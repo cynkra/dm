@@ -38,6 +38,13 @@ skip_if_ide <- function() {
   }
 }
 
+skip_if_offline <- function() {
+  if (Sys.getenv("DM_OFFLINE") != "") {
+    skip("DM_OFFLINE environment variable set")
+  }
+  testthat::skip_if_offline()
+}
+
 suppress_mssql_message <- function(code) {
   if (my_test_src_name == "mssql") {
     suppressMessages(code)

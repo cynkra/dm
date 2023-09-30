@@ -6,7 +6,10 @@ test_that("`pack_join()` works", {
   expect_snapshot(pack_join(df1, df2, name = "packed_col"))
   expect_snapshot(pack_join(df1, df3, by = c(key = "key3")))
   expect_snapshot(pack_join(df1, df3, by = c(key = "key3"), keep = TRUE))
+})
 
+test_that("`pack_join()` works with remote table", {
+  skip_if_offline()
 
   # fails with remote table
   dm_fin <- skip_if_error(dm_financial_sqlite())
