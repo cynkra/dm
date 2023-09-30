@@ -4,6 +4,10 @@
 #' @return A `MariaDBConnection` object
 #' @noRd
 financial_db_con <- function() {
+  if (Sys.getenv("DM_OFFLINE") != "") {
+    abort("Offline")
+  }
+
   err_relational <- tryCatch(return(relational_con()), error = identity)
   err_dbedu <- tryCatch(return(dbedu_con()), error = identity)
 
