@@ -47,8 +47,12 @@
 #' con <- dm_get_con(dm_financial())
 #'
 #' # Avoid DBI::dbDisconnect() here, because we don't own the connection
-dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
-                        .names = NULL, ...) {
+dm_from_con <- function(
+    con = NULL,
+    table_names = NULL,
+    learn_keys = NULL,
+    .names = NULL,
+    ...) {
   stopifnot(is(con, "DBIConnection") || inherits(con, "Pool"))
 
   check_suggested("dbplyr", use = TRUE)

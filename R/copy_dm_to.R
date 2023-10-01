@@ -33,10 +33,11 @@
 #' s <- dm_sql(dm, con)
 #' s
 #' DBI::dbDisconnect(con)
-dm_sql <- function(dm,
-                   dest,
-                   temporary = TRUE,
-                   schema = NULL) {
+dm_sql <- function(
+    dm,
+    dest,
+    temporary = TRUE,
+    schema = NULL) {
   c(
     ## CREATE TABLE and PRIMARY KEY (unless !set_key_constraints)
     ## TODO: set_key_constraints not needed because user can rm PK from dm before calling dm_sql, same with renaming tables in table_names
@@ -69,7 +70,7 @@ db_types_mapping <- function(types, autoincrement = character(), dest) {
     if (is_mariadb(dest)) {
       # Doesn't have a special data type. Uses `AUTO_INCREMENT` attribute instead.
       # Ref: https://mariadb.com/kb/en/auto_increment/
-      types[names(types) == autoincrement] = paste(types[names(types) == autoincrement], "AUTO_INCREMENT")
+      types[names(types) == autoincrement] <- paste(types[names(types) == autoincrement], "AUTO_INCREMENT")
     }
     # DuckDB:
     # Doesn't have a special data type. Uses `CREATE SEQUENCE` instead.
@@ -134,7 +135,7 @@ dm_ddl_pre <- function(dm, dest, temporary = TRUE, table_names = set_names(names
 #' @export
 dm_dml_load <- function(dm, dest, table_names = set_names(names(dm))) {
   tbl_dml_load <- function(tbl_name, dm, remote_name, con) {
-    pkdf = dm_get_all_pks_impl(dm, tbl_name)
+    pkdf <- dm_get_all_pks_impl(dm, tbl_name)
     x <- collect(dm[[tbl_name]])
     remote_tbl_id <- remote_name[[tbl_name]]
     if (isTRUE(pkdf[["autoincrement"]])) {

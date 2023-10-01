@@ -44,18 +44,26 @@ dm_financial <- function() {
 
 dm_has_financial <- function() {
   # Not on CRAN:
-  if (Sys.getenv("CI") != "true") return(FALSE)
+  if (Sys.getenv("CI") != "true") {
+    return(FALSE)
+  }
 
   # Crashes observed with R < 3.5:
-  if (getRversion() < "3.5") return(FALSE)
+  if (getRversion() < "3.5") {
+    return(FALSE)
+  }
 
   # Connectivity:
   try_connect <- try(dm_financial(), silent = TRUE)
-  if (inherits(try_connect, "try-error")) return(FALSE)
+  if (inherits(try_connect, "try-error")) {
+    return(FALSE)
+  }
 
   # Accessing the connection:
   try_count <- try(collect(count(dm_financial()$districts)), silent = TRUE)
-  if (inherits(try_connect, "try-error")) return(FALSE)
+  if (inherits(try_connect, "try-error")) {
+    return(FALSE)
+  }
 
   TRUE
 }

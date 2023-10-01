@@ -371,7 +371,7 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
     if (col_name == "column" && row_values[["key"]] == 1 && row_values[["kind"]] == "PK") {
       value <- sprintf("<U>%s</U>", value)
     } else if (col_name == "column" && row_values[["key"]] == 1 && row_values[["kind"]] != "PK") {
-      value <- sprintf('<I>%s</I>', value)
+      value <- sprintf("<I>%s</I>", value)
     }
     if (!is.null(value) && is.na(value)) {
       value <- ""
