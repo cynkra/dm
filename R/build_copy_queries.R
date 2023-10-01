@@ -20,13 +20,18 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
   ## helper to set on delete statement for fks if required
   set_on_delete_col <- function(x) {
-    map_chr(x, ~ {
-      switch(.x,
-        "no_action" = "",
-        "cascade" = " ON DELETE CASCADE",
-        abort(glue("on_delete column value '{.x}' not supported"))
-      )
-    })
+    if (is_duckdb(dest) && any(x == "cascade")) {
+      inform(glue('`on_delete = "cascade"` not supported for duckdb'))
+      ""
+    } else {
+      map_chr(x, ~ {
+        switch(.x,
+          "no_action" = "",
+          "cascade" = " ON DELETE CASCADE",
+          abort(glue('`on_delete = "{.x}"` not supported'))
+        )
+      })
+    }
   }
 
   ## fetch types, keys and uniques
