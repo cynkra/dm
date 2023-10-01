@@ -101,12 +101,12 @@ duckdb_test_src %<--% {
   if (getRversion() < "4.0") {
     testthat::skip("duckdb failing for R < 4.0")
   }
-  skip_if_not_installed("duckdb")
+  testthat::skip_if_not_installed("duckdb")
   dbplyr::src_dbi(DBI::dbConnect(duckdb::duckdb()), auto_disconnect = TRUE)
 }
 
 my_db_test_src <- function() {
-  skip_if_not_installed("dbplyr")
+  testthat::skip_if_not_installed("dbplyr")
 
   if (is_db_test_src()) {
     my_test_src()
