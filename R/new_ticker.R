@@ -6,7 +6,9 @@ new_ticker <- function(label, n, progress = NA, top_level_fun = NULL) {
     top_level_fun = top_level_fun,
     use = progress
   )
-  if (!suggested) return(identity)
+  if (!suggested) {
+    return(identity)
+  }
 
   # pb to be updated by reference by output function
   pb <- progress::progress_bar$new(
