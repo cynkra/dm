@@ -112,6 +112,8 @@
 
     Code
       dm_for_filter() %>% build_copy_queries(src_db, .) %>% as.list()
+    Message
+      `on_delete = "cascade"` not supported for duckdb
     Output
       $name
       [1] "tf_1" "tf_3" "tf_6" "tf_2" "tf_4" "tf_5"
@@ -183,7 +185,7 @@
         m STRING,
         PRIMARY KEY (k),
         FOREIGN KEY (m) REFERENCES tf_6 (n),
-        FOREIGN KEY (l) REFERENCES tf_4 (h) ON DELETE CASCADE
+        FOREIGN KEY (l) REFERENCES tf_4 (h)
       )
       
       $sql_index
