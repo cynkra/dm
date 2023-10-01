@@ -38,14 +38,15 @@ dm_sql <- function(
     dest,
     temporary = TRUE,
     schema = NULL) {
-  c(
+  #
+  list(
     ## CREATE TABLE and PRIMARY KEY (unless !set_key_constraints)
     ## TODO: set_key_constraints not needed because user can rm PK from dm before calling dm_sql, same with renaming tables in table_names
-    dm_ddl_pre(dm, dest, table_names = set_names(names(dm)), set_key_constraints = TRUE, schema = schema),
+    pre = dm_ddl_pre(dm, dest, table_names = set_names(names(dm)), set_key_constraints = TRUE, schema = schema),
     ## INSERT INTO, handle autoincrement, TODO handle+test ai together with !set_key_constraints
-    dm_dml_load(dm, dest, table_names = set_names(names(dm))),
+    load = dm_dml_load(dm, dest, table_names = set_names(names(dm))),
     ## FOREIGN KEYS, UNIQUE KEYS, INDEXES
-    dm_ddl_post(dm, dest, table_names = set_names(names(dm)), schema = schema)
+    post = dm_ddl_post(dm, dest, table_names = set_names(names(dm)), schema = schema)
   )
 }
 
@@ -102,10 +103,10 @@ ddl_tbl <- function(x, name, dest, pk, autoincrement, temporary, set_key_constra
   cols_def <- paste(ddl_cols(x, dest, pk[autoincrement]), collapse = ",\n  ")
   qname <- DBI::dbQuoteIdentifier(dest, name)
   pk_def <- if (set_key_constraints) ddl_pk(pk, dest)
-  sprintf(
+  DBI::SQL(sprintf(
     "CREATE %sTABLE %s (\n  %s\n)",
     istmp, qname, paste(c(cols_def, pk_def), collapse = ",\n")
-  )
+  ))
 }
 
 #' @rdname dm_sql
@@ -119,14 +120,17 @@ dm_ddl_pre <- function(dm, dest, temporary = TRUE, table_names = set_names(names
     length(dm) == length(names(dm)), length(dm) == length(pks), length(dm) == length(ais),
     length(table_names) == length(dm), !is.null(names(table_names))
   )
-  tbl_def <- mapply(
+  tbl_def <- pmap(
+    list(
+      name = table_names[names(dm)],
+      x = dm_get_tables(dm), ## dm
+      pk = pks, ## list of character vectors
+      autoincrement = ais ## logical vector
+    ),
     ddl_tbl,
-    x = dm, ## dm
-    name = table_names[names(dm)],
-    pk = pks, ## list of character vectors
-    autoincrement = ais, ## logical vector
-    MoreArgs = list(dest = dest, temporary = temporary, set_key_constraints = set_key_constraints),
-    SIMPLIFY = FALSE
+    dest = dest,
+    temporary = temporary,
+    set_key_constraints = set_key_constraints
   )
   tbl_def
 }
@@ -147,28 +151,32 @@ dm_dml_load <- function(dm, dest, table_names = set_names(names(dm))) {
     ins <- paste0("INSERT INTO ", DBI::dbQuoteIdentifier(con, remote_tbl_id), " (", paste(DBI::dbQuoteIdentifier(con, names(x)), collapse = ", "), ")\n")
     paste0(ins, selectvals)
   }
-  DBI::SQL(unlist(
-    lapply(set_names(names(table_names)), tbl_dml_load, dm = dm, remote_name = table_names, con = dest),
-    recursive = FALSE
-  ))
+  sql <- map_chr(
+    set_names(names(table_names)),
+    tbl_dml_load,
+    dm = dm,
+    remote_name = table_names,
+    con = dest
+  )
+  map(sql, DBI::SQL)
 }
 
 ddl_fk <- function(dm, dest, table_names, schema) {
-  character()
+  list()
 }
 ddl_unq <- function(dm, dest, table_names, schema) {
-  character()
+  list()
 }
 ddl_idx <- function(dm, dest, table_names, schema) {
-  character()
+  list()
 }
 
 #' @rdname dm_sql
 #' @export
 dm_ddl_post <- function(dm, dest, table_names = set_names(names(dm)), schema = NULL) {
-  c(
-    ddl_fk(dm, dest, table_names = table_names, schema = schema),
-    ddl_unq(dm, dest, table_names = table_names, schema = schema),
-    ddl_idx(dm, dest, table_names = table_names, schema = schema)
+  list(
+    fk = ddl_fk(dm, dest, table_names = table_names, schema = schema),
+    unique = ddl_unq(dm, dest, table_names = table_names, schema = schema),
+    indexes = ddl_idx(dm, dest, table_names = table_names, schema = schema)
   )
 }
