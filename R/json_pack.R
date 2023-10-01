@@ -75,7 +75,9 @@ sql_json_pack.PqConnection <- function(con, cols, names_sep, packed_col, data, .
 }
 
 remove_prefix_and_sep <- function(x, prefix, sep) {
-  if (is.null(sep)) return(x)
+  if (is.null(sep)) {
+    return(x)
+  }
   prefix_and_sep <- paste0(prefix, sep)
   prefixed_lgl <- startsWith(x, prefix_and_sep)
   # `substr()` rather than `sub()` to avoid escaping special regex chars
