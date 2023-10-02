@@ -16,6 +16,13 @@ utils::globalVariables(c(
   "remote_name_unquoted", # <build_copy_queries>
   "index_name", # <build_copy_queries>
   "columns", # <build_copy_queries>
+  "name", # <dm_ddl_pre>
+  "col_def", # <dm_ddl_pre>
+  "pk_col", # <dm_ddl_pre>
+  "uk_def", # <dm_ddl_pre>
+  "fk_def", # <dm_ddl_pre>
+  "columns", # <dm_ddl_pre>
+  "remote_name", # <dm_ddl_pre>
   "schema_name", # <get_src_tbl_names>
   "table_name", # <get_src_tbl_names>
   "remote_name", # <get_src_tbl_names>
