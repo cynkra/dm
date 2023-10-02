@@ -11,6 +11,22 @@
         PRIMARY KEY (a)
       )
       
+      $pre$tf_3
+      <SQL> CREATE TEMPORARY TABLE tf_3 (
+        f STRING,
+        f1 INTEGER,
+        g STRING,
+        PRIMARY KEY (f, f1)
+      )
+      
+      $pre$tf_6
+      <SQL> CREATE TEMPORARY TABLE tf_6 (
+        zz INTEGER,
+        n STRING,
+        o STRING,
+        PRIMARY KEY (o)
+      )
+      
       $pre$tf_2
       <SQL> CREATE TEMPORARY TABLE tf_2 (
         c STRING,
@@ -18,14 +34,6 @@
         e STRING,
         e1 INTEGER,
         PRIMARY KEY (c)
-      )
-      
-      $pre$tf_3
-      <SQL> CREATE TEMPORARY TABLE tf_3 (
-        f STRING,
-        f1 INTEGER,
-        g STRING,
-        PRIMARY KEY (f, f1)
       )
       
       $pre$tf_4
@@ -46,26 +54,30 @@
         PRIMARY KEY (k)
       )
       
-      $pre$tf_6
-      <SQL> CREATE TEMPORARY TABLE tf_6 (
-        zz INTEGER,
-        n STRING,
-        o STRING,
-        PRIMARY KEY (o)
-      )
-      
       
       $load
       $load$tf_1
-      <SQL> INSERT INTO tf_1 (b)
-      SELECT CAST(b AS TEXT) AS b
+      <SQL> INSERT INTO tf_1 (a, b)
+      SELECT CAST(a AS INTEGER) AS a, CAST(b AS TEXT) AS b
       FROM (
         (
-          SELECT NULL AS b
+          SELECT NULL AS a, NULL AS b
           WHERE (0 = 1)
         )
         UNION ALL
-        (VALUES ('A'), ('B'), ('C'), ('D'), ('E'), ('F'), ('G'), ('H'), ('I'), ('J'))
+        (
+        VALUES
+          (1, 'A'),
+          (2, 'B'),
+          (3, 'C'),
+          (4, 'D'),
+          (5, 'E'),
+          (6, 'F'),
+          (7, 'G'),
+          (8, 'H'),
+          (9, 'I'),
+          (10, 'J')
+        )
       ) values_table
       
       $load$tf_2
@@ -182,14 +194,14 @@
       
       
       $post
-      $post$fk
-      list()
+      $post$uk
+      named list()
       
-      $post$unique
-      list()
+      $post$fk
+      named list()
       
       $post$indexes
-      list()
+      named list()
       
       
 
