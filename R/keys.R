@@ -22,11 +22,15 @@ vec_proxy_compare.dm_keys <- function(x, ...) {
   # Not called: https://github.com/r-lib/vctrs/issues/1373
   x_raw <- vec_data(x)
 
-  # First figure out the maximum length
-  n <- max(vapply(x_raw, length, integer(1)))
+  if (length(x_raw) > 0) {
+    # First figure out the maximum length
+    n <- max(lengths(x_raw))
 
-  # Then expand all vectors to this length by filling in with zeros
-  full <- lapply(x_raw, function(x) c(x, rep("", n - length(x))))
+    # Then expand all vectors to this length by filling in with zeros
+    full <- map(x_raw, function(x) c(x, rep("", n - length(x))))
+  } else {
+    full <- list()
+  }
 
   # Then turn into a data frame
   as.data.frame(do.call(rbind, full))
