@@ -62,9 +62,21 @@
       
       $load
       $load$tf_1
-      <SQL> INSERT INTO "tf_1" ("b")
-      SELECT CAST("b" AS TEXT) AS "b"
-      FROM (  VALUES ('A'), ('B'), ('C'), ('D'), ('E'), ('F'), ('G'), ('H'), ('I'), ('J')) AS drvd("b")
+      <SQL> INSERT INTO "tf_1" ("a", "b")
+      SELECT CAST("a" AS INTEGER) AS "a", CAST("b" AS TEXT) AS "b"
+      FROM (
+        VALUES
+          (1, 'A'),
+          (2, 'B'),
+          (3, 'C'),
+          (4, 'D'),
+          (5, 'E'),
+          (6, 'F'),
+          (7, 'G'),
+          (8, 'H'),
+          (9, 'I'),
+          (10, 'J')
+      ) AS drvd("a", "b")
       
       $load$tf_2
       <SQL> INSERT INTO "tf_2" ("c", "d", "e", "e1")
@@ -151,14 +163,53 @@
       
       
       $post
-      $post$fk
-      list()
+      $post$uk
+      $post$uk$tf_1
+      <SQL> ALTER TABLE "tf_1" ADD UNIQUE ("a")
       
-      $post$unique
-      list()
+      $post$uk$tf_2
+      <SQL> ALTER TABLE "tf_2" ADD UNIQUE ("c")
+      
+      $post$uk$tf_3
+      <SQL> ALTER TABLE "tf_3" ADD UNIQUE ("f", "f1")
+      <SQL> ALTER TABLE "tf_3" ADD UNIQUE ("g")
+      
+      $post$uk$tf_4
+      <SQL> ALTER TABLE "tf_4" ADD UNIQUE ("h")
+      
+      $post$uk$tf_5
+      <SQL> ALTER TABLE "tf_5" ADD UNIQUE ("k")
+      
+      $post$uk$tf_6
+      <SQL> ALTER TABLE "tf_6" ADD UNIQUE ("o")
+      <SQL> ALTER TABLE "tf_6" ADD UNIQUE ("n")
+      
+      
+      $post$fk
+      $post$fk$tf_2
+      <SQL> ALTER TABLE "tf_2" ADD FOREIGN KEY ("d") REFERENCES "tf_1" ("a")
+      <SQL> ALTER TABLE "tf_2" ADD FOREIGN KEY ("e", "e1") REFERENCES "tf_3" ("f", "f1")
+      
+      $post$fk$tf_4
+      <SQL> ALTER TABLE "tf_4" ADD FOREIGN KEY ("j", "j1") REFERENCES "tf_3" ("f", "f1")
+      
+      $post$fk$tf_5
+      <SQL> ALTER TABLE "tf_5" ADD FOREIGN KEY ("l") REFERENCES "tf_4" ("h") ON DELETE CASCADE
+      <SQL> ALTER TABLE "tf_5" ADD FOREIGN KEY ("m") REFERENCES "tf_6" ("n")
+      
       
       $post$indexes
-      list()
+      $post$indexes$tf_2
+      <SQL> CREATE INDEX tf_2__d ON "tf_2" ("d")
+      <SQL> CREATE INDEX tf_2__e_e1 ON "tf_2" ("e", "e1")
+      
+      $post$indexes$tf_4
+      <SQL> CREATE INDEX tf_4__j_j1 ON "tf_4" ("j", "j1")
+      
+      $post$indexes$tf_5
+      <SQL> CREATE INDEX tf_5__l ON "tf_5" ("l")
+      <SQL> CREATE INDEX tf_5__m ON "tf_5" ("m")
+      
       
       
 
