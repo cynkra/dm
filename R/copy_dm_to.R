@@ -148,7 +148,13 @@ dm_dml_load <- function(dm, dest, table_names = set_names(names(dm))) {
     selectvals <- dbplyr::sql_render(dbplyr::copy_inline(con, x))
     ## for some DBes we could skip columns specification, but only when no autoincrement, easier to just specify that always
     ## duckdb autoincrement tests are skipped, could be added by inserting from sequence
-    ins <- paste0("INSERT INTO ", DBI::dbQuoteIdentifier(con, remote_tbl_id), " (", paste(DBI::dbQuoteIdentifier(con, names(x)), collapse = ", "), ")\n")
+    ins <- paste0(
+      "INSERT INTO ",
+      DBI::dbQuoteIdentifier(con, remote_tbl_id),
+      " (",
+      paste(DBI::dbQuoteIdentifier(con, names(x)), collapse = ", "),
+      ")\n"
+    )
     paste0(ins, selectvals)
   }
   sql <- map_chr(
