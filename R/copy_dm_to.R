@@ -112,9 +112,9 @@ ddl_tbl <- function(x, name, dest, pk, autoincrement, temporary, set_key_constra
 #' @rdname dm_sql
 #' @export
 dm_ddl_pre <- function(dm, dest, temporary = TRUE, table_names = set_names(names(dm)), set_key_constraints = TRUE, schema = NULL) {
-  pksdf <- lapply(names(dm), dm_get_all_pks_impl, dm = dm) ## lapply so we have entries for tables that does not have PK
-  pks <- lapply(pksdf, function(x) if (nrow(x)) x[["pk_col"]][[1L]] else character())
-  ais <- vapply(pksdf, function(x) if (nrow(x)) x[["autoincrement"]] else FALSE, NA)
+  pksdf <- map(names(dm), dm_get_all_pks_impl, dm = dm) ## map so we have entries for tables that does not have PK
+  pks <- map(pksdf, function(x) if (nrow(x)) x[["pk_col"]][[1L]] else character())
+  ais <- map_lgl(pksdf, function(x) if (nrow(x)) x[["autoincrement"]] else FALSE)
   ## CREATE TABLE, including PK
   stopifnot(
     length(dm) == length(names(dm)), length(dm) == length(pks), length(dm) == length(ais),
