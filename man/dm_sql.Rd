@@ -5,49 +5,43 @@
 \alias{dm_ddl_pre}
 \alias{dm_dml_load}
 \alias{dm_ddl_post}
-\title{Create \emph{DDL} and \emph{DML} scripts for \code{dm} and database connection}
+\title{Create \emph{DDL} and \emph{DML} scripts for a \code{dm} a and database connection}
 \usage{
-dm_sql(dm, dest, temporary = TRUE, schema = NULL)
+dm_sql(dm, dest, table_names = NULL, temporary = TRUE)
 
-dm_ddl_pre(
-  dm,
-  dest,
-  temporary = TRUE,
-  table_names = set_names(names(dm)),
-  set_key_constraints = TRUE,
-  schema = NULL
-)
+dm_ddl_pre(dm, dest, table_names = NULL, temporary = TRUE)
 
-dm_dml_load(dm, dest, table_names = set_names(names(dm)))
+dm_dml_load(dm, dest, table_names = NULL, temporary = TRUE)
 
-dm_ddl_post(dm, dest, table_names = set_names(names(dm)), schema = NULL)
+dm_ddl_post(dm, dest, table_names = NULL, temporary = TRUE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{dest}{Connection to database.}
 
+\item{table_names}{A named character vector or vector of \link[DBI:Id]{DBI::Id} objects,
+with one unique element for each table in \code{dm}.
+The default, \code{NULL}, means to use the original table names.}
+
 \item{temporary}{Should the tables be marked as \emph{temporary}? Defaults to \code{TRUE}.}
-
-\item{schema}{Name of schema to copy the \code{dm} to.}
-
-\item{table_names}{See argument description in \link{copy_dm_to}. Default to names of \code{dm}.}
-
-\item{set_key_constraints}{If \code{TRUE} (default) will mirror \code{dm} primary and foreign key constraints on a database
-and create unique indexes.}
 }
 \value{
-character vector of SQL statements.
+Nested list of SQL statements.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Generate SQL scripts to create tables, load data and set constraints, keys and indices.
+This function powers \code{\link[=copy_dm_to]{copy_dm_to()}} and is useful if you need more control
+over the process of copying a \code{dm} to a database.
 }
 \details{
 \itemize{
-\item{ \code{dm_ddl_pre} generates \verb{CREATE TABLE} statements (including \verb{PRIMARY KEY} definition). }
-\item{ \code{dm_dml_load} generates \verb{INSERT INTO} statements. }
-\item{ \code{dm_ddl_post} generates scripts for \verb{FOREIGN KEYS}, \verb{UNIQUE KEYS} and \code{INDEXES}. }
-\item{ \code{dm_sql} calls all three above and returns complete set of scripts. }
+\item{ \code{dm_ddl_pre()} generates \verb{CREATE TABLE} statements (including \verb{PRIMARY KEY} definition). }
+\item{ \code{dm_dml_load()} generates \verb{INSERT INTO} statements. }
+\item{ \code{dm_ddl_post()} generates scripts for \verb{FOREIGN KEY}, \verb{UNIQUE KEY} and \code{INDEX}. }
+\item{ \code{dm_sql()} calls all three above and returns a complete set of scripts. }
 }
 }
 \examples{
