@@ -245,13 +245,15 @@ copy_dm_to <- function(dest, dm, ...,
     DBI::dbExecute(dest_con, .x, immediate = TRUE)
   }))
 
-  # build remote dm
-  remote_tables <-
-    queries$remote_name %>%
-    set_names(queries$name) %>%
-    map(tbl, src = dest_con)
   # remote dm is same as source dm with replaced data
   def <- dm_get_def(dm)
+
+  remote_tables <- map2(
+    table_names_out,
+    map(def$data, colnames),
+    ~ tbl(dest_con, ..1, vars = ..2)
+  )
+
   def$data <- unname(remote_tables[names(dm)])
   remote_dm <- dm_from_def(def)
 
