@@ -21,7 +21,7 @@ qtest-%:
 	DM_TEST_SRC=$@ time R -q -e 'options("crayon.enabled" = TRUE); Sys.setenv(TESTTHAT_PARALLEL = FALSE); testthat::test_local(filter = "${DM_TEST_FILTER}")'
 
 test-%:
-	DM_TEST_SRC=$@ time R -q -e 'testthat::test_local(filter = "${DM_TEST_FILTER}")'
+	DM_TEST_SRC=$@ time R -q -e 'Sys.setenv(TESTTHAT_PARALLEL = TRUE); testthat::test_local(filter = "${DM_TEST_FILTER}")'
 
 stest-%:
 	DM_TEST_SRC=$@ time R -q -e 'options(testthat.progress.max_fails = 1); testthat::test_local(filter = "${DM_TEST_FILTER}", reporter = "silent")'
