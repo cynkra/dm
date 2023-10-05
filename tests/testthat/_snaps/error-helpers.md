@@ -84,21 +84,6 @@
       Error in `abort_no_overwrite()`:
       ! `eval()` does not support the `overwrite` argument.
     Code
-      abort_no_types()
-    Condition
-      Error in `abort_no_types()`:
-      ! `copy_dm_to()` does not support the `types` argument.
-    Code
-      abort_no_indexes()
-    Condition
-      Error in `abort_no_indexes()`:
-      ! `copy_dm_to()` does not support the `indexes` argument.
-    Code
-      abort_no_unique_indexes()
-    Condition
-      Error in `abort_no_unique_indexes()`:
-      ! `copy_dm_to()` does not support the `unique_indexes` argument.
-    Code
       abort_pk_not_defined()
     Condition
       Error in `abort_pk_not_defined()`:
