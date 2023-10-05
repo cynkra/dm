@@ -88,10 +88,12 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
     pillar.bold = NULL,
   )
 
-  out <- expect_message_obj(dm_flatten_to_tbl(
-    dm_for_flatten(), fact,
-    .join = inner_join
-  ))
+  out <- expect_message_obj(
+    arrange(
+      dm_flatten_to_tbl(dm_for_flatten(), fact, .join = inner_join),
+      pick(everything())
+    )
+  )
   # FIXME: Debug GHA fail
   # expect_equivalent_tbl(out, result_from_flatten_new())
   expect_snapshot(
