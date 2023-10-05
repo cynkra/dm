@@ -3,10 +3,16 @@ test_src_df <- function() {
 }
 
 test_src_sqlite <- function() {
+  testthat::skip_if_not_installed("DBI")
+  testthat::skip_if_not_installed("dbplyr")
+  testthat::skip_if_not_installed("RSQLite")
   dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
 }
 
 test_src_duckdb <- function() {
+  testthat::skip_if_not_installed("DBI")
+  testthat::skip_if_not_installed("dbplyr")
+  testthat::skip_if_not_installed("duckdb")
   dbplyr::src_dbi(DBI::dbConnect(duckdb::duckdb()), auto_disconnect = TRUE)
 }
 
