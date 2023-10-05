@@ -22,27 +22,22 @@ test_that("copy_dm_to() copies data frames to databases", {
 })
 
 test_that("copy_dm_to() copies data frames from any source", {
-  expect_equivalent_dm(
-    expect_deprecated_obj(
-      copy_dm_to(default_local_src(), dm_for_filter())
-    ),
-    dm_for_filter()
-  )
+  expect_snapshot(error = TRUE, {
+    copy_dm_to(default_local_src(), dm_for_filter())
+  })
 })
 
 # FIXME: Add test that set_key_constraints = FALSE doesn't set key constraints,
 # in combination with dm_learn_from_db
 
 test_that("copy_dm_to() rejects overwrite and types arguments", {
-  expect_dm_error(
-    copy_dm_to(my_test_src(), dm_for_filter(), overwrite = TRUE),
-    class = "no_overwrite"
-  )
+  expect_snapshot(error = TRUE, {
+    copy_dm_to(my_test_src(), dm_for_filter(), overwrite = TRUE)
+  })
 
-  expect_dm_error(
-    copy_dm_to(my_test_src(), dm_for_filter(), types = character()),
-    class = "no_types"
-  )
+  expect_snapshot(error = TRUE, {
+    copy_dm_to(my_test_src(), dm_for_filter(), types = character())
+  })
 })
 
 test_that("copy_dm_to() fails with duplicate table names", {
