@@ -20,12 +20,9 @@ test_that("copy_dm_to() copies data frames to databases", {
 })
 
 test_that("copy_dm_to() copies data frames from any source", {
-  expect_equivalent_dm(
-    expect_deprecated_obj(
-      copy_dm_to(default_local_src(), dm_for_filter())
-    ),
-    dm_for_filter()
-  )
+  expect_snapshot(error = TRUE, {
+    copy_dm_to(default_local_src(), dm_for_filter())
+  })
 })
 
 # FIXME: Add test that set_key_constraints = FALSE doesn't set key constraints,
