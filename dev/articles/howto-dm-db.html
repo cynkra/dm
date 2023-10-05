@@ -36,7 +36,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9005</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9006</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,7 +109,7 @@
                         <h4 data-toc-skip class="author">James
 Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2023-09-20</h4>
+            <h4 data-toc-skip class="date">2023-10-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-db.Rmd" class="external-link"><code>vignettes/howto-dm-db.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-db.Rmd</code></div>
@@ -154,9 +154,11 @@ argument.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dm.cynkra.com/">dm</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">my_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">my_db</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Keys queried successfully, use `learn_keys = TRUE` to mute this message.</span></span>
-<span><span class="va">my_dm</span></span></code></pre></div>
+<span><span class="va">my_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">my_db</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-message"><code><span><span class="co">#&gt; Keys queried successfully.</span></span>
+<span><span class="co">#&gt; ℹ Use `learn_keys = TRUE` to mute this message.</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_dm</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
@@ -180,7 +182,7 @@ perhaps from different schemas.</p>
 the financial database. Then we create our dm by passing the tables in
 as arguments. Note that the tables arguments have to all be from the
 same source, in this case <code>my_db</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">dbListTables</span><span class="op">(</span><span class="va">my_db</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "accounts"  "cards"     "clients"   "disps"     "districts" "loans"    </span></span>
 <span><span class="co">#&gt; [7] "orders"    "tkeys"     "trans"</span></span>
@@ -214,7 +216,7 @@ more information on keys and a crash course on databases, see
 all keys set. If not, dm allows us to define primary and foreign keys
 ourselves. For this, we use <code>learn_keys = FALSE</code> to obtain a
 <code>dm</code> object with only the tables.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dm.cynkra.com/">dm</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fin_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">my_db</span>, learn_keys <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -249,7 +251,7 @@ and foreign key constraints on the database are currently only imported
 for Postgres, SQL Server databases and MariaDB, and only when
 <code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> is used. This process of key definition needs
 to be done manually for other databases.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_keys</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">my_manual_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">accounts</span>, <span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -269,7 +271,7 @@ to be done manually for other databases.</p>
 <path fill="none" stroke="#555555" d="M66.5,-11C79.1302,-11 84.5819,-11 93.735,-11"></path><polygon fill="#555555" stroke="#555555" points="94,-14.5001 104,-11 94,-7.5001 94,-14.5001"></polygon></g></g></svg><p>Once you have instantiated a dm object, you can continue to add
 tables to it. For tables from the original source for the dm, use
 <code><a href="../reference/dm.html">dm()</a></code></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">my_db</span>, <span class="st">"trans"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">my_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -289,7 +291,7 @@ tables to it. For tables from the original source for the dm, use
 connection is lost when the dm object is saved to disk, e.g., when
 saving the workspace in R or in Posit Workbench, or when using knitr
 chunks:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/serialize.html" class="external-link">unserialize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/serialize.html" class="external-link">serialize</a></span><span class="op">(</span><span class="va">my_dm_keys</span>, <span class="cn">NULL</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span></code></pre>
 <pre><code><span><span class="co">#&gt; Error: Invalid connection</span></span></code></pre>
@@ -297,7 +299,7 @@ chunks:</p>
 and cannot be replaced. A practical solution is to define, for each dm
 object your project uses, a function that recreates it using a new
 database connection:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_db_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">dbConnect</span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rmariadb.r-dbi.org/reference/dbConnect-MariaDBDriver-method.html" class="external-link">MariaDB</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -333,7 +335,7 @@ connection and/or dm functions.</p>
 </h2>
 <p>Like other R objects, a dm is immutable and all operations performed
 on it are transient unless stored in a new variable.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_keys</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span></span>
@@ -342,7 +344,7 @@ on it are transient unless stored in a new variable.</p>
 <span><span class="co">#&gt; Columns: 11</span></span>
 <span><span class="co">#&gt; Primary keys: 2</span></span>
 <span><span class="co">#&gt; Foreign keys: 1</span></span></code></pre>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">my_dm_trans</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">my_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -358,7 +360,7 @@ on it are transient unless stored in a new variable.</p>
 <span><span class="co">#&gt; Foreign keys: 1</span></span></code></pre>
 <p>And, like {dbplyr}, results are never written to a database unless
 explicitly requested.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span></span>
@@ -380,7 +382,7 @@ explicitly requested.</p>
 <span><span class="co">#&gt; 10  4990        110 1997-09-08 162576       36     4516 C               36</span></span>
 <span><span class="co">#&gt; # ℹ more rows</span></span>
 <span><span class="co">#&gt; # ℹ 2 more variables: frequency &lt;chr&gt;, date.accounts &lt;date&gt;</span></span></code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">my_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -416,7 +418,7 @@ permanent, we assign the result of <code><a href="../reference/dm_zoom_to.html">
 new object, <code>my_dm_total</code>. This is a new dm object, derived
 from <code>my_dm_keys</code>, with a new lazy table
 <code>total_loans</code> linked to the <code>accounts</code> table.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_total</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">my_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -438,7 +440,7 @@ created by <code><a href="https://dplyr.tidyverse.org/reference/summarise.html" 
 <code>total_loans</code>. Because the grouping variable
 <code>account_id</code> is a primary key, the new derived table is
 automatically linked to the <code>accounts</code> table.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_set_colors.html">dm_set_colors</a></span><span class="op">(</span>violet <span class="op">=</span> <span class="va">total_loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -453,7 +455,7 @@ automatically linked to the <code>accounts</code> table.</p>
 <polygon fill="#ee82ee" stroke="transparent" points="1.5,-21 1.5,-41 66.5,-41 66.5,-21 1.5,-21"></polygon><text text-anchor="start" x="3.2819" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">total_loans</text><polygon fill="#fbe6fb" stroke="transparent" points="1.5,-1 1.5,-21 66.5,-21 66.5,-1 1.5,-1"></polygon><text text-anchor="start" x="3.2875" y="-6.4" font-family="Times,serif" font-size="14.00" fill="#444444">account_id</text><polygon fill="none" stroke="#9e569e" stroke-opacity="0.666667" points="0,0 0,-42 67,-42 67,0 0,0"></polygon></g><!-- total_loans&#45;&gt;accounts --><g id="total_loans_1" class="edge"><title>total_loans:account_id-&gt;accounts:id</title>
 <path fill="none" stroke="#555555" d="M66.5,-11C83.675,-11 83.6705,-30.4257 94.1348,-38.0138"></path><polygon fill="#555555" stroke="#555555" points="93.4148,-41.4526 104,-41 95.4429,-34.7529 93.4148,-41.4526"></polygon></g></g></svg><p>The resulting table <code>total_loans</code> can be accessed like any
 other table in the dm object.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_total</span><span class="op">$</span><span class="va">total_loans</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   SQL [?? x 2]</span></span>
 <span><span class="co">#&gt; # Database: mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span></span>
@@ -473,7 +475,7 @@ other table in the dm object.</p>
 <p>It is a <em>lazy table</em> powered by the {<a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a>} package: the results
 are not materialized; instead, an SQL query is built and executed each
 time the data is requested.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_total</span><span class="op">$</span><span class="va">total_loans</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;SQL&gt; SELECT `account_id`, SUM(`amount`) AS `total_amount`</span></span>
@@ -492,7 +494,7 @@ dm objects for databases are limited to report only the first ten
 results. <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> forces the evaluation of all SQL queries
 and the generation of the complete set of results. The resulting tables
 are transferred from the RDBMS and stored as local tibbles.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_local</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">my_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -515,7 +517,7 @@ are transferred from the RDBMS and stored as local tibbles.</p>
 <p>Use this method with caution. If you are not sure of the size of the
 dataset you will be downloading, you can call <code><a href="../reference/dm_nrow.html">dm_nrow()</a></code> on
 your <code>dm</code> for the row count of your data model’s tables.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       loans    accounts total_loans </span></span>
@@ -530,7 +532,7 @@ as is using <code><a href="https://dplyr.tidyverse.org/reference/compute.html" c
 connection and a dm object. In the example below, a local SQLite
 database is used to demonstrate it, but {dm} is designed to work with
 any RDBMS supported by {DBI}.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">destination_db</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">deployed_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">destination_db</span>, <span class="va">my_dm_local</span><span class="op">)</span></span>
@@ -543,7 +545,7 @@ any RDBMS supported by {DBI}.</p>
 <span><span class="co">#&gt; Columns: 13</span></span>
 <span><span class="co">#&gt; Primary keys: 2</span></span>
 <span><span class="co">#&gt; Foreign keys: 2</span></span></code></pre>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_local</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `loans`, `accounts`, `total_loans`</span></span>
@@ -556,7 +558,7 @@ any RDBMS supported by {DBI}.</p>
 <p>Persisting tables are covered in more detail in
 <code><a href="../articles/howto-dm-copy.html">vignette("howto-dm-copy")</a></code>.</p>
 <p>When done, do not forget to disconnect:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">destination_db</span><span class="op">)</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">my_db</span><span class="op">)</span></span></code></pre></div>
 </div>

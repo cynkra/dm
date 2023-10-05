@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9005</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9006</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -143,23 +143,21 @@
 <li><p>macOS: <a href="https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16" class="external-link uri">https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16</a></p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="start-the-containers">Start the containers<a class="anchor" aria-label="anchor" href="#start-the-containers"></a></h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up</span>
+<h3 id="start-new-database-containers">Start new database containers<a class="anchor" aria-label="anchor" href="#start-new-database-containers"></a></h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> db-start</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># May take several minutes to pull the images</span></span></code></pre></div>
-<p>Switches:</p>
-<ul><li>
-<code>--force-recreate</code>: Recreate all databases from scratch</li>
-<li>
-<code>-d</code>: Daemon mode, run in the background, use <code>docker-compose stop</code> to stop</li>
-<li>
-<code>maria</code>, <code>mssql</code>, <code>postgres</code>: Run only a particular service</li>
-</ul></div>
+</div>
+<div class="section level3">
+<h3 id="start-database-containers-without-forcing-recreation">Start database containers without forcing recreation<a class="anchor" aria-label="anchor" href="#start-database-containers-without-forcing-recreation"></a></h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> db-restart</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># May take several minutes to pull the images</span></span></code></pre></div>
+</div>
 <div class="section level3">
 <h3 id="connectivity-test">Connectivity test<a class="anchor" aria-label="anchor" href="#connectivity-test"></a></h3>
 <p>macOS:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>192.168.64.2 <span class="fu">make</span> connect</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>192.168.64.2 <span class="fu">make</span> connect</span></code></pre></div>
 <p>Linux:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>127.0.0.1 <span class="fu">make</span> connect</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">DM_TEST_DOCKER_HOST</span><span class="op">=</span>127.0.0.1 <span class="fu">make</span> connect</span></code></pre></div>
 <p>Controlled with environment variables:</p>
 <ul><li>
 <p><code>DM_TEST_DOCKER_HOST</code>: <code>127.0.0.1</code> or <code>localhost</code> on Linux, see output of <code>colima status</code> on macOS</p>
@@ -170,26 +168,16 @@
 </div>
 <div class="section level3">
 <h3 id="test-against-a-specific-database-backend">Test against a specific database backend<a class="anchor" aria-label="anchor" href="#test-against-a-specific-database-backend"></a></h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> test-postgres</span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="mssql-for-a-new-container-create-the-database">mssql: For a new container, create the database<a class="anchor" aria-label="anchor" href="#mssql-for-a-new-container-create-the-database"></a></h3>
-<p>FIXME: Automate this.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="maria-for-a-new-container-grant-permissions">maria: For a new container, grant permissions<a class="anchor" aria-label="anchor" href="#maria-for-a-new-container-grant-permissions"></a></h3>
-<p>FIXME: Automate this.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> <span class="at">-q</span> <span class="at">-e</span> <span class="st">'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$con, "FLUSH PRIVILEGES")'</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> test-postgres</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="test-against-all-backends">Test against all backends<a class="anchor" aria-label="anchor" href="#test-against-all-backends"></a></h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-j1</span> test</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-j1</span> test</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="test-on-docker">Test on Docker<a class="anchor" aria-label="anchor" href="#test-on-docker"></a></h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make docker-build # not necessary, image available on ghcr.io</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> docker-test</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make docker-build # not necessary, image available on ghcr.io</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> docker-test</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
