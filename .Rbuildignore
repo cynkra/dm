@@ -33,3 +33,4 @@
 ^docker-compose\.yml$
 ^Dockerfile$
 ^\.vscode$
+^renovate\.json$
