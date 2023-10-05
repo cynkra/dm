@@ -90,15 +90,21 @@
 #'
 #' DBI::dbDisconnect(con)
 #' @export
-copy_dm_to <- function(dest, dm, ...,
-                       types = NULL, overwrite = NULL,
-                       indexes = NULL, unique_indexes = NULL,
-                       set_key_constraints = TRUE, unique_table_names = NULL,
-                       table_names = NULL,
-                       temporary = TRUE,
-                       schema = NULL,
-                       progress = NA,
-                       copy_to = NULL) {
+copy_dm_to <- function(
+    dest,
+    dm,
+    ...,
+    types = NULL,
+    overwrite = NULL,
+    indexes = NULL,
+    unique_indexes = NULL,
+    set_key_constraints = TRUE,
+    unique_table_names = NULL,
+    table_names = NULL,
+    temporary = TRUE,
+    schema = NULL,
+    progress = NA,
+    copy_to = NULL) {
   # for the time being, we will be focusing on MSSQL
   # we want to
   #   1. change `dm_get_src_impl(dm)` to `dest`
