@@ -208,48 +208,62 @@ copy_dm_to <- function(
 
   queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
 
-  ticker_create <- new_ticker(
-    "creating tables",
-    n = length(queries$sql_table),
-    progress = progress,
-    top_level_fun = "copy_dm_to"
-  )
+  table_names_out <- ddl_check_table_names(table_names_out, dm)
 
-  # create tables
-  walk(queries$sql_table, ticker_create(~ {
-    DBI::dbExecute(dest_con, .x, immediate = TRUE)
-  }))
+  ddl <- dm_sql(dm, dest_con, table_names_out, temporary)
 
-  ticker_populate <- new_ticker(
-    "populating tables",
-    n = length(queries$name),
-    progress = progress,
-    top_level_fun = "copy_dm_to"
-  )
+  for (q in unlist(ddl)) {
+    DBI::dbExecute(dest_con, q, immediate = TRUE)
+  }
 
-  # populate tables
-  pwalk(
-    queries[c("name", "remote_name")],
-    ticker_populate(~ db_append_table(
-      con = dest_con,
-      remote_table = .y,
-      table = dm[[.x]],
-      progress = progress,
-      autoinc = dm_get_all_pks(dm, table = !!.x)$autoincrement
-    ))
-  )
+  # ticker_create <- new_ticker(
+  #   "creating tables",
+  #   n = length(queries$sql_table),
+  #   progress = progress,
+  #   top_level_fun = "copy_dm_to"
+  # )
+  #
+  # # create tables
+  # walk(queries$sql_table, ticker_create(~ {
+  #   DBI::dbExecute(dest_con, .x, immediate = TRUE)
+  # }))
+  #
+  # ticker_populate <- new_ticker(
+  #   "populating tables",
+  #   n = length(queries$name),
+  #   progress = progress,
+  #   top_level_fun = "copy_dm_to"
+  # )
+  #
+  # # populate tables
+  # pwalk(
+  #   queries[c("name", "remote_name")],
+  #   ticker_populate(~ db_append_table(
+  #     con = dest_con,
+  #     remote_table = .y,
+  #     table = dm[[.x]],
+  #     progress = progress,
+  #     autoinc = dm_get_all_pks(dm, table = !!.x)$autoincrement
+  #   ))
+  # )
+  #
+  # ticker_index <- new_ticker(
+  #   "creating indexes",
+  #   n = sum(lengths(queries$sql_index)),
+  #   progress = progress,
+  #   top_level_fun = "copy_dm_to"
+  # )
+  #
+  # # create indexes
+  # walk(unlist(queries$sql_index), ticker_index(~ {
+  #   DBI::dbExecute(dest_con, .x, immediate = TRUE)
+  # }))
 
-  ticker_index <- new_ticker(
-    "creating indexes",
-    n = sum(lengths(queries$sql_index)),
-    progress = progress,
-    top_level_fun = "copy_dm_to"
-  )
-
-  # create indexes
-  walk(unlist(queries$sql_index), ticker_index(~ {
-    DBI::dbExecute(dest_con, .x, immediate = TRUE)
-  }))
+  # # build remote dm
+  # remote_tables <-
+  #   queries$remote_name %>%
+  #   set_names(queries$name) %>%
+  #   map(tbl, src = dest_con)
 
   # remote dm is same as source dm with replaced data
   def <- dm_get_def(dm)
