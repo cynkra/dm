@@ -20,6 +20,7 @@ test_that("dm_rows_insert()", {
     filter(FALSE) %>%
     dm_update_zoomed()
 
+  # Must use SQLite because other databases have strict foreign key constraints
   sqlite <- dbConnect(RSQLite::SQLite())
 
   # Target database:
