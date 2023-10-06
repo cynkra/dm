@@ -1,5 +1,54 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9007
+
+## Bug fixes
+
+- Compatibility with duckdb 0.9.0.
+
+## Features
+
+- `dm_sql()` returns nested named lists.
+
+## Chore
+
+### deps
+
+- Update docker/build-push-action digest to 4c1b68d.
+
+- Stabilize test.
+
+- Indent.
+
+- Use `table_names_out` as source of truth for remote table names.
+
+- Explicit parallelization.
+
+- Reformat.
+
+- Prefer `map*()` over `lapply()` and `vapply()`.
+
+- `styler::style_pkg(scope = "tokens")`.
+
+- Better error and information messages when querying keys.
+
+- Explicit qualification.
+
+- Fast offline checks with environment variable.
+
+- Prioritize learning test.
+
+- Add skips to `test_src_*()` calls.
+
+## Documentation
+
+- Add db-\* rules to Makefile.
+
+## Uncategorized
+
+- Merge pull request #1954 from cynkra/renovate/configure.
+
+
 # dm 1.0.6.9006
 
 ## Chore
