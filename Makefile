@@ -27,7 +27,7 @@ stest-%:
 	DM_TEST_SRC=$@ time R -q -e 'options(testthat.progress.max_fails = 1); testthat::test_local(filter = "${DM_TEST_FILTER}", reporter = "silent")'
 
 ltest-%:
-	DM_TEST_SRC=$@ time R -q -e 'lazytest::lazytest_local()'
+	DM_TEST_SRC=$@ time R -q -e 'Sys.setenv(TESTTHAT_PARALLEL = TRUE); lazytest::lazytest_local()'
 
 connect-%:
 	DM_TEST_SRC=$@ R -q -e 'suppressMessages(pkgload::load_all()); my_test_con()'
