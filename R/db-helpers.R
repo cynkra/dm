@@ -56,7 +56,17 @@ is_postgres <- function(dest) {
 }
 
 is_mariadb <- function(dest) {
-  inherits_any(dest, c("MariaDBConnection", "src_MariaDBConnection", "src_DoltConnection", "src_DoltLocalConnection"))
+  inherits_any(
+    dest,
+    c(
+      "MariaDBConnection",
+      "src_MariaDBConnection",
+      "MySQLConnection",
+      "src_MySQLConnection",
+      "src_DoltConnection",
+      "src_DoltLocalConnection"
+    )
+  )
 }
 
 schema_supported_dbs <- function() {

@@ -71,7 +71,7 @@ Suggests:
     colourpicker,
     covr,
     crayon,
-    dbplyr (>= 2.2.0),
+    dbplyr (>= 2.3.4.9000),
     DiagrammeR,
     DiagrammeRsvg,
     digest,
@@ -91,7 +91,7 @@ Suggests:
     pool,
     progress,
     reactable,
-    RMariaDB (>= 1.2.2),
+    RMariaDB (>= 1.2.2.9008),
     rmarkdown,
     RPostgres,
     RSQLite (>= 2.2.8),
@@ -127,3 +127,6 @@ Roxygen: list(
       roclets = c("collate", "namespace", "rd", "roxyglobals::global_roclet")
     )
 RoxygenNote: 7.2.3
+Remotes: 
+    r-dbi/RMariaDB#303,
+    tidyverse/dbplyr#1375

@@ -33,7 +33,7 @@ test_src_postgres <- function() {
 test_src_maria <- function(root = FALSE) {
   if (Sys.getenv("DM_TEST_DOCKER_HOST") != "") {
     con <- DBI::dbConnect(
-      RMariaDB::MariaDB(),
+      RMariaDB::MariaDB(mysql = TRUE),
       host = Sys.getenv("DM_TEST_DOCKER_HOST"),
       username = if (root) "root" else "compose",
       password = "YourStrong!Passw0rd",
