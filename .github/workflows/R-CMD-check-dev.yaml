@@ -13,7 +13,7 @@ name: rcc dev
 
 jobs:
   matrix:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
 
