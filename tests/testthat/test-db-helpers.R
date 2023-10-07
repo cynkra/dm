@@ -18,26 +18,26 @@ test_that("DB helpers work for MSSQL", {
   })
 
   # create tables in 'dbo'
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_mssql,
     DBI::Id(schema = "dbo", table = "test_db_helpers"),
     value = tibble(a = 1)
   )
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_mssql,
     DBI::Id(schema = "dbo", table = "test_db_helpers_2"),
     value = tibble(a = 1)
   )
   # create table in a schema
-  dbExecute(con_mssql, "CREATE SCHEMA schema_db_helpers")
-  dbWriteTable(
+  DBI::dbExecute(con_mssql, "CREATE SCHEMA schema_db_helpers")
+  DBI::dbWriteTable(
     con_mssql,
     DBI::Id(schema = "schema_db_helpers", table = "test_db_helpers_2"),
     value = tibble(a = 1)
   )
   # create table on 'dbo' on another DB
-  dbExecute(con_mssql, "CREATE DATABASE db_helpers_db")
-  dbWriteTable(
+  DBI::dbExecute(con_mssql, "CREATE DATABASE db_helpers_db")
+  DBI::dbWriteTable(
     con_mssql,
     DBI::Id(db = "db_helpers_db", schema = "dbo", table = "test_db_helpers_3"),
     value = tibble(a = 1)
@@ -47,7 +47,7 @@ test_that("DB helpers work for MSSQL", {
   DBI::dbExecute(con_mssql, "USE db_helpers_db")
   DBI::dbExecute(con_mssql, "CREATE SCHEMA schema_db_helpers_2")
   DBI::dbExecute(con_mssql, paste0("USE ", original_dbname))
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_mssql,
     DBI::Id(db = "db_helpers_db", schema = "schema_db_helpers_2", table = "test_db_helpers_4"),
     value = tibble(a = 1)
@@ -118,19 +118,19 @@ test_that("DB helpers work for Postgres", {
   })
 
   # create tables in 'public'
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_postgres,
     DBI::Id(schema = "public", table = "test_db_helpers"),
     value = tibble(a = 1)
   )
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_postgres,
     DBI::Id(schema = "public", table = "test_db_helpers_2"),
     value = tibble(a = 1)
   )
   # create table in a schema
-  dbExecute(con_postgres, "CREATE SCHEMA schema_db_helpers")
-  dbWriteTable(
+  DBI::dbExecute(con_postgres, "CREATE SCHEMA schema_db_helpers")
+  DBI::dbWriteTable(
     con_postgres,
     DBI::Id(schema = "schema_db_helpers", table = "test_db_helpers_2"),
     value = tibble(a = 1)
@@ -185,7 +185,7 @@ test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
 
   # for other DBMS than "MSSQL" or "Postgrs", get_src_tbl_names() translates to `src_tbls_impl()`
   con_db <- my_db_test_src()$con
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(table = "test_db_helpers"),
     value = tibble(a = 1)

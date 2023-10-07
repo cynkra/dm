@@ -21,7 +21,7 @@ test_that("dm_rows_insert()", {
     dm_update_zoomed()
 
   # Must use SQLite because other databases have strict foreign key constraints
-  sqlite <- dbConnect(RSQLite::SQLite())
+  sqlite <- DBI::dbConnect(RSQLite::SQLite())
 
   # Target database:
   flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
@@ -84,7 +84,7 @@ test_that("dm_rows_insert()", {
     print(dm_nrow(flights_sqlite))
 
     # Disconnect
-    dbDisconnect(sqlite)
+    DBI::dbDisconnect(sqlite)
   })
 })
 

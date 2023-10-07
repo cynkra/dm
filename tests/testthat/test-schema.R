@@ -47,7 +47,7 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_false("test_schema_1" %in% sql_schema_table_list(src_db)$table_name)
 
 
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(table = "test_schema_1"),
     value = tibble(a = 1:5)
@@ -68,7 +68,7 @@ test_that("schema handling on MSSQL and Postgres works", {
 
   expect_message(expect_deprecated(db_schema_create(src_db, "1-dm_schema_TEST")), "created")
 
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(schema = "1-dm_schema_TEST", table = "test_schema_2"),
     value = tibble(b = letters[1:5])
@@ -102,7 +102,7 @@ test_that("schema handling on Postgres works", {
   con_db <- src_db$con
 
   db_schema_create(con_db, "2-dm_schema_TEST")
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(schema = "2-dm_schema_TEST", table = "test_schema_2"),
     value = tibble(b = letters[1:5])
@@ -175,7 +175,7 @@ test_that("schema handling on MSSQL works for different DBs", {
     )
   )
 
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(db = "test_db_for_schema_dm", schema = "test_schema", table = "test_1"),
     value = tibble(c = c(5L))

@@ -51,7 +51,6 @@ Depends:
 Imports:
     backports,
     cli (>= 2.2.0),
-    DBI,
     dplyr (>= 1.1.0),
     glue,
     igraph,
@@ -70,6 +69,7 @@ Suggests:
     colourpicker,
     covr,
     crayon,
+    DBI,
     dbplyr (>= 2.2.0),
     DiagrammeR,
     DiagrammeRsvg,
