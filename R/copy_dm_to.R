@@ -39,6 +39,8 @@ dm_sql <- function(
   #
   table_names <- ddl_check_table_names(table_names, dm)
 
+  dm <- ddl_reorder_dm(dm, dest)
+
   list(
     ## CREATE TABLE and PRIMARY KEY
     pre = dm_ddl_pre(dm, dest, table_names, temporary),
@@ -61,7 +63,35 @@ ddl_quote_enum_col <- function(x, con) {
   map_chr(x, ~ paste(DBI::dbQuoteIdentifier(.x, conn = con), collapse = ", "))
 }
 
+ddl_need_early_constraints <- function(con) {
+  is_duckdb(con) || is_sqlite(con)
+}
 
+ddl_reorder_dm <- function(dm, con) {
+  if (!ddl_need_early_constraints(con)) {
+    return(dm)
+  }
+
+  ## For databases that do not support adding constraints after table creation,
+  ## reorder queries according to topological sort so uks are created before associated fks
+  graph <- create_graph_from_dm(dm, directed = TRUE)
+  topo <- names(igraph::topo_sort(graph, mode = "in"))
+
+  if (length(topo) == length(dm)) {
+    dm <- dm[topo]
+  } else {
+    cli_warn(c(
+      # FIXME: show cycle
+      "Cycles in the relationship graph prevent creation of foreign key constraints.",
+      i = if (is_duckdb(dest)) "DuckDB does not support adding constraints after table creation.",
+      i = if (is_sqlite(dest)) "SQLite does not support adding constraints after table creation.",
+      NULL
+    ))
+    dm <- dm_rm_fk(dm)
+  }
+
+  dm
+}
 
 #' @rdname dm_sql
 #' @export
@@ -74,27 +104,7 @@ dm_ddl_pre <- function(
   #
   table_names <- ddl_check_table_names(table_names, dm)
 
-  ## These databases do not support adding constraints after table creation
-  need_constraints_now <- is_duckdb(dest) || is_sqlite(dest)
-
-  if (need_constraints_now) {
-    ## Reorder queries according to topological sort so uks are created before associated fks
-    graph <- create_graph_from_dm(dm, directed = TRUE)
-    topo <- names(igraph::topo_sort(graph, mode = "in"))
-
-    if (length(topo) == length(dm)) {
-      dm <- dm[topo]
-    } else {
-      cli_warn(c(
-        # FIXME: show cycle
-        "Cycles in the relationship graph prevent creation of foreign key constraints.",
-        i = if (is_duckdb(dest)) "DuckDB does not support adding constraints after table creation.",
-        i = if (is_sqlite(dest)) "SQLite does not support adding constraints after table creation.",
-        NULL
-      ))
-      dm <- dm_rm_fk(dm)
-    }
-  }
+  dm <- ddl_reorder_dm(dm, dest)
 
   ## use 0-rows object
   ptype_dm <- collect(dm_ptype(dm))
@@ -183,7 +193,7 @@ dm_ddl_pre <- function(
     )
 
   # Only add constraints if not adding them later
-  if (!need_constraints_now) {
+  if (!ddl_need_early_constraints(dest)) {
     uks <- vec_slice(uks, 0)
     fks <- vec_slice(fks, 0)
   }
@@ -232,6 +242,8 @@ dm_dml_load <- function(
     temporary = TRUE) {
   #
   table_names <- ddl_check_table_names(table_names, dm)
+
+  dm <- ddl_reorder_dm(dm, dest)
 
   if (is_mssql(dest)) {
     pks <- dm_get_all_pks_impl(dm)
@@ -410,7 +422,7 @@ dm_ddl_post <- function(
   # unique constraint definitions
   if (nrow(uks) == 0) {
     # No action
-  } else if (is_duckdb(con) || is_sqlite(con)) {
+  } else if (ddl_need_early_constraints(dest)) {
     uks <- vec_slice(uks, 0)
   }
 
@@ -432,7 +444,7 @@ dm_ddl_post <- function(
       warn("MySQL and MariaDB don't support foreign keys for temporary tables, these won't be set in the remote database but are preserved in the `dm`")
     }
     fks <- vec_slice(fks, 0)
-  } else if (is_duckdb(con) || is_sqlite(con)) {
+  } else if (ddl_need_early_constraints(dest)) {
     fks <- vec_slice(fks, 0)
   }
 
