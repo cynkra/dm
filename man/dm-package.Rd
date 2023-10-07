@@ -2,8 +2,6 @@
 % Please edit documentation in R/dm-package.R
 \docType{package}
 \name{dm-package}
-\alias{dm}
-\alias{dm-package}
 \title{dm: Relational Data Models}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}

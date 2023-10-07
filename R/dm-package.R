@@ -1,4 +1,5 @@
 #' @keywords internal
+#' @aliases NULL
 "_PACKAGE"
 
 #' @import rlang
