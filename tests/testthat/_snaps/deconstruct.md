@@ -1669,7 +1669,7 @@
         <chr> <list>          
       1 tf_1  <tibble [0 x 1]>
       2 tf_2  <tibble [0 x 1]>
-      3 tf_3  <tibble [0 x 1]>
+      3 tf_3  <tibble [1 x 1]>
       4 tf_4  <tibble [0 x 1]>
       5 tf_5  <tibble [1 x 1]>
       6 tf_6  <tibble [0 x 1]>

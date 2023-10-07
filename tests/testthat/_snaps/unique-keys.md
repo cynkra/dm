@@ -147,7 +147,7 @@
     Code
       dm_rename(dm_for_filter(), tf_6, p = n) %>% dm_get_all_uks()
     Output
-      # A tibble: 7 x 3
+      # A tibble: 8 x 3
         table uk_col kind       
         <chr> <keys> <chr>      
       1 tf_1  a      PK         
@@ -156,7 +156,8 @@
       4 tf_4  h      PK         
       5 tf_5  k      PK         
       6 tf_6  o      PK         
-      7 tf_6  p      implicit UK
+      7 tf_3  g      explicit UK
+      8 tf_6  p      implicit UK
     Code
       dm_rename(dm_for_filter(), tf_6, p = n) %>% dm_get_all_fks()
     Output
@@ -171,15 +172,16 @@
     Code
       dm_select(dm_for_filter(), tf_6, -n) %>% dm_get_all_uks()
     Output
-      # A tibble: 6 x 3
-        table uk_col kind 
-        <chr> <keys> <chr>
-      1 tf_1  a      PK   
-      2 tf_2  c      PK   
-      3 tf_3  f, f1  PK   
-      4 tf_4  h      PK   
-      5 tf_5  k      PK   
-      6 tf_6  o      PK   
+      # A tibble: 7 x 3
+        table uk_col kind       
+        <chr> <keys> <chr>      
+      1 tf_1  a      PK         
+      2 tf_2  c      PK         
+      3 tf_3  f, f1  PK         
+      4 tf_4  h      PK         
+      5 tf_5  k      PK         
+      6 tf_6  o      PK         
+      7 tf_3  g      explicit UK
     Code
       dm_select(dm_for_filter(), tf_6, -n) %>% dm_get_all_fks()
     Output
