@@ -92,7 +92,9 @@ test_that("`dm_examine_constraints()` API", {
     dm_examine_constraints(dm_test_obj(), progress = FALSE)
     dm_examine_constraints(dm = dm_test_obj())
   })
+})
 
+test_that("`dm_examine_constraints()` API (2)", {
   expect_snapshot(error = TRUE, {
     dm_examine_constraints(dm_test_obj(), foo = "bar")
   })

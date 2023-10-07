@@ -139,7 +139,7 @@
       Primary keys: 16
       Foreign keys: 14
 
----
+# output for dm() with dm (2)
 
     Code
       dm(dm_for_filter(), dm_for_flatten(), dm_for_filter())
@@ -154,7 +154,7 @@
         * "tf_5" at locations 5 and 16.
         * ...
 
----
+# output for dm() with dm (3)
 
     Code
       dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique") %>%

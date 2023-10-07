@@ -210,11 +210,15 @@ test_that("output for dm() with dm", {
     dm(dm_for_filter()) %>% collect()
     dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique", .quiet = TRUE) %>% collect()
   })
+})
 
+test_that("output for dm() with dm (2)", {
   expect_snapshot(error = TRUE, {
     dm(dm_for_filter(), dm_for_flatten(), dm_for_filter())
   })
+})
 
+test_that("output for dm() with dm (3)", {
   expect_snapshot({
     dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique") %>% collect()
   })
