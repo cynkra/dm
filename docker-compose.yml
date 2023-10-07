@@ -4,16 +4,20 @@ version: '3'
 volumes:
   postgres-db:
     driver: local
+  maria-db:
+    driver: local
 services:
   # https://www.beekeeperstudio.io/blog/how-to-use-mariadb-with-docker
   maria:
     container_name: maria
-    image: mysql # FIXME: mariadb doesn't work, tables are written incorrectly?
+    image: mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: "YourStrong!Passw0rd"
-      MYSQL_DATABASE: test
-      MYSQL_USER: compose
-      MYSQL_PASSWORD: "YourStrong!Passw0rd"
+      MARIADB_ROOT_PASSWORD: "YourStrong!Passw0rd"
+      MARIADB_DATABASE: test
+      MARIADB_USER: compose
+      MARIADB_PASSWORD: "YourStrong!Passw0rd"
+    volumes:
+      - maria-db:/var/lib/mysql
     ports:
       - "3306:3306"
 
