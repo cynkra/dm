@@ -18,6 +18,5 @@
 #' @importFrom igraph V E
 #' @importFrom utils head tail str packageVersion
 #' @importFrom grDevices col2rgb colors rgb
-#' @importFrom pillar pillar_shaft
 ## usethis namespace: end
 NULL
