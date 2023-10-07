@@ -108,8 +108,18 @@
     Code
       writeLines(conditionMessage(expect_error(dm(dm_for_flatten(),
       dm_for_filter_duckdb()))))
+    Condition
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
     Output
-      All `dm` objects need to share the same `src`.
+      i In index: 2.
+      Caused by error in `map()`:
+      i In index: 1.
+      i With name: tf_1.
+      Caused by error in `extract2()`:
+      ! could not find function "extract2"
 
 # output for dm() with dm
 
