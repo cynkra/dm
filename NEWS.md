@@ -1,5 +1,42 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9008
+
+## Chore
+
+### deps
+
+- Update dependency ubuntu to v22 (#1969).
+
+### deps
+
+- Update dependency font-awesome to v6.4.2 (#1965).
+
+### deps
+
+- Update actions/checkout action to v4 (#1966).
+
+### deps
+
+- Update dessant/lock-threads action to v4 (#1967).
+
+### deps
+
+- Update peter-evans/create-pull-request action to v5 (#1968).
+
+### deps
+
+- Update docker/login-action digest to b4bedf8 (#1960).
+
+### deps
+
+- Update docker/metadata-action digest to 879dcbb (#1962).
+
+### deps
+
+- Update docker/setup-buildx-action digest to dedd61c (#1963).
+
+
 # dm 1.0.6.9007
 
 ## Bug fixes
