@@ -36,11 +36,13 @@ vec_proxy_compare.dm_keys <- function(x, ...) {
   as.data.frame(do.call(rbind, full))
 }
 
-#' @export
 pillar_shaft.dm_keys <- function(x, ...) {
   x <- map_chr(x, commas, max_commas = 3)
   pillar::pillar_shaft(x)
 }
+on_load({
+  s3_register("pillar::pillar_shaft", "dm_keys", pillar_shaft.dm_keys)
+})
 
 #' @export
 format.dm_keys <- function(x, ...) {
