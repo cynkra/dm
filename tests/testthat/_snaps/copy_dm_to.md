@@ -201,7 +201,17 @@
       named list()
       
       $post$indexes
-      named list()
+      $post$indexes$tf_2
+      <SQL> CREATE INDEX tf_2__d ON tf_2 (d)
+      <SQL> CREATE INDEX tf_2__e_e1 ON tf_2 (e, e1)
+      
+      $post$indexes$tf_4
+      <SQL> CREATE INDEX tf_4__j_j1 ON tf_4 (j, j1)
+      
+      $post$indexes$tf_5
+      <SQL> CREATE INDEX tf_5__l ON tf_5 (l)
+      <SQL> CREATE INDEX tf_5__m ON tf_5 (m)
+      
       
       
 

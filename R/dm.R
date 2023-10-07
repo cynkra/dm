@@ -133,6 +133,11 @@ new_keyed_dm_def <- function(tables = list()) {
   is_keyed <- map_lgl(unname(tables), is_dm_keyed_tbl)
   stopifnot(!anyDuplicated(names(tables)[is_keyed]))
 
+  # Performance
+  if (!any(is_keyed)) {
+    return(new_dm_def(tables))
+  }
+
   # data should be saved as a tibble
   unclassed_tables <- map(tables, unclass_keyed_tbl)
 
