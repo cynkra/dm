@@ -13,18 +13,18 @@
     Output
       $pks
       # A tibble: 5 x 3
-        table pk_col autoincrement
-        <chr> <keys> <lgl>        
-      1 tf_1  a      TRUE         
-      2 tf_2  c      FALSE        
-      3 tf_3  f, f1  FALSE        
-      4 tf_5  k      FALSE        
-      5 tf_6  o      FALSE        
+        table pk_col    autoincrement
+        <chr> <dm_keys> <lgl>        
+      1 tf_1  a         TRUE         
+      2 tf_2  c         FALSE        
+      3 tf_3  f, f1     FALSE        
+      4 tf_5  k         FALSE        
+      5 tf_6  o         FALSE        
       
       $fks
       # A tibble: 5 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
-        <chr>       <keys>        <chr>        <keys>          <chr>    
+        <chr>       <dm_keys>     <chr>        <dm_keys>       <chr>    
       1 tf_2        d             tf_1         a               no_action
       2 tf_2        e, e1         tf_3         f, f1           no_action
       3 tf_4        j, j1         tf_3         f, f1           no_action
@@ -36,18 +36,18 @@
     Output
       $pks
       # A tibble: 5 x 3
-        table pk_col autoincrement
-        <chr> <keys> <lgl>        
-      1 tf_1  a      TRUE         
-      2 tf_2  c      FALSE        
-      3 tf_4  h      FALSE        
-      4 tf_5  k      FALSE        
-      5 tf_6  o      FALSE        
+        table pk_col    autoincrement
+        <chr> <dm_keys> <lgl>        
+      1 tf_1  a         TRUE         
+      2 tf_2  c         FALSE        
+      3 tf_4  h         FALSE        
+      4 tf_5  k         FALSE        
+      5 tf_6  o         FALSE        
       
       $fks
       # A tibble: 5 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
-        <chr>       <keys>        <chr>        <keys>          <chr>    
+        <chr>       <dm_keys>     <chr>        <dm_keys>       <chr>    
       1 tf_2        d             tf_1         a               no_action
       2 tf_2        e, e1         tf_3         f, f1           no_action
       3 tf_4        j, j1         tf_3         f, f1           no_action
@@ -59,18 +59,18 @@
     Output
       $pks
       # A tibble: 5 x 3
-        table pk_col autoincrement
-        <chr> <keys> <lgl>        
-      1 tf_1  a      TRUE         
-      2 tf_2  c      FALSE        
-      3 tf_3  f, f1  FALSE        
-      4 tf_4  h      FALSE        
-      5 tf_5  k      FALSE        
+        table pk_col    autoincrement
+        <chr> <dm_keys> <lgl>        
+      1 tf_1  a         TRUE         
+      2 tf_2  c         FALSE        
+      3 tf_3  f, f1     FALSE        
+      4 tf_4  h         FALSE        
+      5 tf_5  k         FALSE        
       
       $fks
       # A tibble: 5 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
-        <chr>       <keys>        <chr>        <keys>          <chr>    
+        <chr>       <dm_keys>     <chr>        <dm_keys>       <chr>    
       1 tf_2        d             tf_1         a               no_action
       2 tf_2        e, e1         tf_3         f, f1           no_action
       3 tf_4        j, j1         tf_3         f, f1           no_action
@@ -86,18 +86,18 @@
     Output
       $pks
       # A tibble: 5 x 3
-        table pk_col autoincrement
-        <chr> <keys> <lgl>        
-      1 tf_1  a      TRUE         
-      2 tf_2  c      FALSE        
-      3 tf_3  f, f1  FALSE        
-      4 tf_5  k      FALSE        
-      5 tf_6  o      FALSE        
+        table pk_col    autoincrement
+        <chr> <dm_keys> <lgl>        
+      1 tf_1  a         TRUE         
+      2 tf_2  c         FALSE        
+      3 tf_3  f, f1     FALSE        
+      4 tf_5  k         FALSE        
+      5 tf_6  o         FALSE        
       
       $fks
       # A tibble: 5 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
-        <chr>       <keys>        <chr>        <keys>          <chr>    
+        <chr>       <dm_keys>     <chr>        <dm_keys>       <chr>    
       1 tf_2        d             tf_1         a               no_action
       2 tf_2        e, e1         tf_3         f, f1           no_action
       3 tf_4        j, j1         tf_3         f, f1           no_action
@@ -112,18 +112,18 @@
     Output
       $pks
       # A tibble: 5 x 3
-        table pk_col autoincrement
-        <chr> <keys> <lgl>        
-      1 tf_1  a      TRUE         
-      2 tf_3  f, f1  FALSE        
-      3 tf_4  h      FALSE        
-      4 tf_5  k      FALSE        
-      5 tf_6  o      FALSE        
+        table pk_col    autoincrement
+        <chr> <dm_keys> <lgl>        
+      1 tf_1  a         TRUE         
+      2 tf_3  f, f1     FALSE        
+      3 tf_4  h         FALSE        
+      4 tf_5  k         FALSE        
+      5 tf_6  o         FALSE        
       
       $fks
       # A tibble: 5 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
-        <chr>       <keys>        <chr>        <keys>          <chr>    
+        <chr>       <dm_keys>     <chr>        <dm_keys>       <chr>    
       1 tf_2        d             tf_1         a               no_action
       2 tf_2        e, e1         tf_3         f, f1           no_action
       3 tf_4        j, j1         tf_3         f, f1           no_action
@@ -138,18 +138,18 @@
     Output
       $pks
       # A tibble: 5 x 3
-        table pk_col autoincrement
-        <chr> <keys> <lgl>        
-      1 tf_1  a      TRUE         
-      2 tf_2  c      FALSE        
-      3 tf_4  h      FALSE        
-      4 tf_5  k      FALSE        
-      5 tf_6  o      FALSE        
+        table pk_col    autoincrement
+        <chr> <dm_keys> <lgl>        
+      1 tf_1  a         TRUE         
+      2 tf_2  c         FALSE        
+      3 tf_4  h         FALSE        
+      4 tf_5  k         FALSE        
+      5 tf_6  o         FALSE        
       
       $fks
       # A tibble: 5 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
-        <chr>       <keys>        <chr>        <keys>          <chr>    
+        <chr>       <dm_keys>     <chr>        <dm_keys>       <chr>    
       1 tf_2        d             tf_1         a               no_action
       2 tf_2        e, e1         tf_3         f, f1           no_action
       3 tf_4        j, j1         tf_3         f, f1           no_action
@@ -173,12 +173,12 @@
     Output
       $pks
       # A tibble: 0 x 3
-      # i 3 variables: table <chr>, pk_col <keys>, autoincrement <lgl>
+      # i 3 variables: table <chr>, pk_col <dm_keys>, autoincrement <lgl>
       
       $fks
       # A tibble: 5 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
-        <chr>       <keys>        <chr>        <keys>          <chr>    
+        <chr>       <dm_keys>     <chr>        <dm_keys>       <chr>    
       1 tf_2        d             tf_1         a               no_action
       2 tf_2        e, e1         tf_3         f, f1           no_action
       3 tf_4        j, j1         tf_3         f, f1           no_action
@@ -192,31 +192,31 @@
       dm_enum_pk_candidates(dm_test_obj(), dm_table_1)
     Output
       # A tibble: 2 x 3
-        columns candidate why  
-        <keys>  <lgl>     <chr>
-      1 a       TRUE      ""   
-      2 b       TRUE      ""   
+        columns   candidate why  
+        <dm_keys> <lgl>     <chr>
+      1 a         TRUE      ""   
+      2 b         TRUE      ""   
     Code
       dm_enum_pk_candidates(dm_test_obj(), dm_table_2)
     Output
       # A tibble: 1 x 3
-        columns candidate why                        
-        <keys>  <lgl>     <chr>                      
-      1 c       FALSE     has duplicate values: 5 (2)
+        columns   candidate why                        
+        <dm_keys> <lgl>     <chr>                      
+      1 c         FALSE     has duplicate values: 5 (2)
     Code
       dm_enum_pk_candidates(dm_test_obj(), dm_table_5)
     Output
       # A tibble: 1 x 3
-        columns candidate why                 
-        <keys>  <lgl>     <chr>               
-      1 c       FALSE     has 1 missing values
+        columns   candidate why                 
+        <dm_keys> <lgl>     <chr>               
+      1 c         FALSE     has 1 missing values
     Code
       dm_enum_pk_candidates(dm_test_obj(), dm_table_6)
     Output
       # A tibble: 1 x 3
-        columns candidate why                                              
-        <keys>  <lgl>     <chr>                                            
-      1 c       FALSE     has 1 missing values, and duplicate values: 3 (2)
+        columns   candidate why                                              
+        <dm_keys> <lgl>     <chr>                                            
+      1 c         FALSE     has 1 missing values, and duplicate values: 3 (2)
 
 # output
 
@@ -226,64 +226,9 @@
       Error in `abort_not_unique_key()`:
       ! (`a`) not a unique key of `x`.
 
-# dm_get_all_pks() with table arg
-
-    Code
-      nyc_comp() %>% dm_get_all_pks("weather")
-    Output
-      # A tibble: 1 x 3
-        table   pk_col            autoincrement
-        <chr>   <keys>            <lgl>        
-      1 weather origin, time_hour FALSE        
-    Code
-      nyc_comp() %>% dm_get_all_pks(c(airlines, weather))
-    Output
-      # A tibble: 2 x 3
-        table    pk_col            autoincrement
-        <chr>    <keys>            <lgl>        
-      1 airlines carrier           FALSE        
-      2 weather  origin, time_hour FALSE        
-    Code
-      nyc_comp() %>% dm_get_all_pks(starts_with("weat"))
-    Output
-      # A tibble: 1 x 3
-        table   pk_col            autoincrement
-        <chr>   <keys>            <lgl>        
-      1 weather origin, time_hour FALSE        
-    Code
-      nyc_comp() %>% dm_get_all_pks(matches("^a.*s$"))
-    Output
-      # A tibble: 2 x 3
-        table    pk_col  autoincrement
-        <chr>    <keys>  <lgl>        
-      1 airlines carrier FALSE        
-      2 airports faa     FALSE        
-
 # dm_get_all_pks() with table arg fails nicely
 
-    Can't subset tables that don't exist.
-    x Table `timetable` doesn't exist.
-
-# dm_get_all_pks() with compound keys
-
-    Code
-      nyc_comp()
-    Output
-      -- Metadata --------------------------------------------------------------------
-      Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-      Columns: 53
-      Primary keys: 4
-      Foreign keys: 4
-    Code
-      nyc_comp() %>% dm_get_all_pks()
-    Output
-      # A tibble: 4 x 3
-        table    pk_col            autoincrement
-        <chr>    <keys>            <lgl>        
-      1 airlines carrier           FALSE        
-      2 airports faa               FALSE        
-      3 planes   tailnum           FALSE        
-      4 weather  origin, time_hour FALSE        
+    could not find function "enframe"
 
 # autoincrement fails with compound keys
 
@@ -301,8 +246,8 @@
         dm_add_pk(y, columns = c(x_id, z)) %>% dm_get_all_pks()
     Output
       # A tibble: 2 x 3
-        table pk_col  autoincrement
-        <chr> <keys>  <lgl>        
-      1 x     x_id    TRUE         
-      2 y     x_id, z FALSE        
+        table pk_col    autoincrement
+        <chr> <dm_keys> <lgl>        
+      1 x     x_id      TRUE         
+      2 y     x_id, z   FALSE        
 

@@ -16,7 +16,7 @@
     Output
       # A tibble: 6 x 5
         child_table child_fk_cols parent_table parent_key_cols cardinality            
-        <chr>       <keys>        <chr>        <keys>          <chr>                  
+        <chr>       <dm_keys>     <chr>        <dm_keys>       <chr>                  
       1 dc_2        a, b          dc_1         a, b            injective mapping (chi~
       2 dc_3        a, b          dc_1         a, b            surjective mapping (ch~
       3 dc_5        b, a          dc_1         b, a            bijective mapping (chi~

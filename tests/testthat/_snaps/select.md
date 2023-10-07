@@ -5,7 +5,7 @@
     Output
       # A tibble: 6 x 3
         table pk_col    autoincrement
-        <chr> <keys>    <lgl>        
+        <chr> <dm_keys> <lgl>        
       1 tf_1  a         TRUE         
       2 tf_2  c         FALSE        
       3 tf_3  new_f, f1 FALSE        
@@ -21,7 +21,7 @@
     Output
       # A tibble: 5 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
-        <chr>       <keys>        <chr>        <keys>          <chr>    
+        <chr>       <dm_keys>     <chr>        <dm_keys>       <chr>    
       1 tf_2        new_d         tf_1         a               no_action
       2 tf_2        new_e, e1     tf_3         f, f1           no_action
       3 tf_4        j, j1         tf_3         f, f1           no_action
@@ -34,13 +34,13 @@
       dm_for_filter() %>% dm_select(tf_3, new_f = f) %>% dm_get_all_pks_impl()
     Output
       # A tibble: 5 x 3
-        table pk_col autoincrement
-        <chr> <keys> <lgl>        
-      1 tf_1  a      TRUE         
-      2 tf_2  c      FALSE        
-      3 tf_4  h      FALSE        
-      4 tf_5  k      FALSE        
-      5 tf_6  o      FALSE        
+        table pk_col    autoincrement
+        <chr> <dm_keys> <lgl>        
+      1 tf_1  a         TRUE         
+      2 tf_2  c         FALSE        
+      3 tf_4  h         FALSE        
+      4 tf_5  k         FALSE        
+      5 tf_6  o         FALSE        
 
 # dm_select() works for replacing fks, and removes missing ones
 
@@ -49,7 +49,7 @@
     Output
       # A tibble: 4 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
-        <chr>       <keys>        <chr>        <keys>          <chr>    
+        <chr>       <dm_keys>     <chr>        <dm_keys>       <chr>    
       1 tf_2        new_d         tf_1         a               no_action
       2 tf_4        j, j1         tf_3         f, f1           no_action
       3 tf_5        l             tf_4         h               cascade  

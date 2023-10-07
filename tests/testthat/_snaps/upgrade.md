@@ -93,15 +93,15 @@
       Upgrading dm object created with dm <= 1.0.3.
     Output
       # A tibble: 7 x 3
-        table uk_col kind       
-        <chr> <keys> <chr>      
-      1 tf_1  a      PK         
-      2 tf_2  c      PK         
-      3 tf_3  f, f1  PK         
-      4 tf_4  h      PK         
-      5 tf_5  k      PK         
-      6 tf_6  o      PK         
-      7 tf_6  n      implicit UK
+        table uk_col    kind       
+        <chr> <dm_keys> <chr>      
+      1 tf_1  a         PK         
+      2 tf_2  c         PK         
+      3 tf_3  f, f1     PK         
+      4 tf_4  h         PK         
+      5 tf_5  k         PK         
+      6 tf_6  o         PK         
+      7 tf_6  n         implicit UK
     Code
       dm_get_all_pks(dm_v3)
     Message
@@ -109,14 +109,14 @@
       Upgrading dm object created with dm <= 1.0.3.
     Output
       # A tibble: 6 x 3
-        table pk_col autoincrement
-        <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
-      2 tf_2  c      FALSE        
-      3 tf_3  f, f1  FALSE        
-      4 tf_4  h      FALSE        
-      5 tf_5  k      FALSE        
-      6 tf_6  o      FALSE        
+        table pk_col    autoincrement
+        <chr> <dm_keys> <lgl>        
+      1 tf_1  a         FALSE        
+      2 tf_2  c         FALSE        
+      3 tf_3  f, f1     FALSE        
+      4 tf_4  h         FALSE        
+      5 tf_5  k         FALSE        
+      6 tf_6  o         FALSE        
     Code
       dm_get_all_fks(dm_v3)
     Message
@@ -125,7 +125,7 @@
     Output
       # A tibble: 5 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
-        <chr>       <keys>        <chr>        <keys>          <chr>    
+        <chr>       <dm_keys>     <chr>        <dm_keys>       <chr>    
       1 tf_2        d             tf_1         a               no_action
       2 tf_2        e, e1         tf_3         f, f1           no_action
       3 tf_4        j, j1         tf_3         f, f1           no_action
@@ -166,29 +166,29 @@
       Upgrading dm object created with dm <= 1.0.3.
     Output
       # A tibble: 7 x 3
-        table uk_col kind       
-        <chr> <keys> <chr>      
-      1 tf_1  a      PK         
-      2 tf_2  c      PK         
-      3 tf_3  f, f1  PK         
-      4 tf_4  h      PK         
-      5 tf_5  k      PK         
-      6 tf_6  o      PK         
-      7 tf_6  n      implicit UK
+        table uk_col    kind       
+        <chr> <dm_keys> <chr>      
+      1 tf_1  a         PK         
+      2 tf_2  c         PK         
+      3 tf_3  f, f1     PK         
+      4 tf_4  h         PK         
+      5 tf_5  k         PK         
+      6 tf_6  o         PK         
+      7 tf_6  n         implicit UK
     Code
       dm_get_all_pks(dm_v4)
     Message
       Upgrading dm object created with dm <= 1.0.3.
     Output
       # A tibble: 6 x 3
-        table pk_col autoincrement
-        <chr> <keys> <lgl>        
-      1 tf_1  a      FALSE        
-      2 tf_2  c      FALSE        
-      3 tf_3  f, f1  FALSE        
-      4 tf_4  h      FALSE        
-      5 tf_5  k      FALSE        
-      6 tf_6  o      FALSE        
+        table pk_col    autoincrement
+        <chr> <dm_keys> <lgl>        
+      1 tf_1  a         FALSE        
+      2 tf_2  c         FALSE        
+      3 tf_3  f, f1     FALSE        
+      4 tf_4  h         FALSE        
+      5 tf_5  k         FALSE        
+      6 tf_6  o         FALSE        
     Code
       dm_get_all_fks(dm_v4)
     Message
@@ -196,7 +196,7 @@
     Output
       # A tibble: 5 x 5
         child_table child_fk_cols parent_table parent_key_cols on_delete
-        <chr>       <keys>        <chr>        <keys>          <chr>    
+        <chr>       <dm_keys>     <chr>        <dm_keys>       <chr>    
       1 tf_2        d             tf_1         a               no_action
       2 tf_2        e, e1         tf_3         f, f1           no_action
       3 tf_4        j, j1         tf_3         f, f1           no_action
