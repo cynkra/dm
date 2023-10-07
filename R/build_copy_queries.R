@@ -72,7 +72,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     # database-specific autoincrementing column types
     if (length(pk_col) > 0L) {
       # extract column name representing primary key
-      pk_col <- pk_col %>% extract2(1L)
+      pk_col <- pk_col[[1]]
 
       # Postgres:
       if (is_postgres(dest)) {

@@ -144,13 +144,9 @@ reunite_parent_child_from_list <- function(list_of_parent_child_tables, id_colum
   id_col_chr <-
     as_name(id_col_q)
 
-  child_table <-
-    list_of_parent_child_tables %>%
-    extract2("child_table")
+  child_table <- list_of_parent_child_tables[["child_table"]]
 
-  parent_table <-
-    list_of_parent_child_tables %>%
-    extract2("parent_table")
+  parent_table <- list_of_parent_child_tables[["parent_table"]]
 
   child_table %>%
     left_join(parent_table, by = id_col_chr) %>%
