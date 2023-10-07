@@ -147,6 +147,7 @@ abort_no_cycles <- function(g) {
     names()
   # add the first element after the last element, so it's more clear that it's a cycle
   shortest_cycle <- paste(c(shortest_cycle, shortest_cycle[1]), collapse = " -> ")
+  # FIXME: extract, also identify parallel edges as circles
   abort(error_txt_no_cycles(shortest_cycle), class = dm_error_full("no_cycles"))
 }
 
