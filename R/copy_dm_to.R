@@ -75,7 +75,9 @@ dm_ddl_pre <- function(
   table_names <- ddl_check_table_names(table_names, dm)
 
   ## These databases do not support adding constraints after table creation
-  if (is_duckdb(dest) || is_sqlite(dest)) {
+  need_constraints_now <- is_duckdb(dest) || is_sqlite(dest)
+
+  if (need_constraints_now) {
     ## Reorder queries according to topological sort so uks are created before associated fks
     graph <- create_graph_from_dm(dm, directed = TRUE)
     topo <- names(igraph::topo_sort(graph, mode = "in"))
@@ -101,6 +103,8 @@ dm_ddl_pre <- function(
 
   ## fetch types, keys and uniques
   pks <- dm_get_all_pks_impl(ptype_dm)
+  uks <- dm_get_all_uks_impl(ptype_dm)
+  fks <- dm_get_all_fks_impl(ptype_dm)
 
   ## build sql definitions to use in `CREATE TABLE ...`
 
@@ -178,18 +182,35 @@ dm_ddl_pre <- function(
       pk_defs = paste0("PRIMARY KEY (", ddl_quote_enum_col(pk_col, con), ")")
     )
 
+  # Only add constraints if not adding them later
+  if (!need_constraints_now) {
+    uks <- vec_slice(uks, 0)
+    fks <- vec_slice(fks, 0)
+  }
+
+  uk_defs <-
+    ddl_get_uk_defs(uks, con, table_names) %>%
+    group_by(name) %>%
+    summarize(uk_defs = paste(uk_def, collapse = ",\n  "))
+  fk_defs <-
+    ddl_get_fk_defs(fks, con, table_names) %>%
+    group_by(name) %>%
+    summarize(fk_defs = paste(fk_def, collapse = ",\n  "))
+
   ## compile `CREATE TABLE ...` queries
   create_table_queries <-
     tbl_defs %>%
     left_join(col_defs, by = "name") %>%
     left_join(pk_defs, by = "name") %>%
+    left_join(uk_defs, by = "name") %>%
+    left_join(fk_defs, by = "name") %>%
     group_by(name, columns) %>%
     mutate(
       remote_name = table_names[name],
       all_defs = paste(
         Filter(
           Negate(is.na),
-          c(col_defs, pk_defs)
+          c(col_defs, pk_defs, uk_defs, fk_defs)
         ),
         collapse = ",\n  "
       )
@@ -312,7 +333,7 @@ ddl_get_uk_defs <- function(uks, con, table_names) {
     rename(name = table) %>%
     transmute(
       name,
-      remote_name = table_names[name],
+      remote_name = unname(table_names[name]),
       uk_def = paste0(
         "UNIQUE (",
         ddl_quote_enum_col(uk_col, con),
@@ -336,7 +357,7 @@ ddl_get_fk_defs <- function(fks, con, table_names) {
 
   ## helper to set on delete statement for fks if required
   set_on_delete_col <- function(x) {
-    if (is_duckdb(dest) && any(x == "cascade")) {
+    if (is_duckdb(con) && any(x == "cascade")) {
       inform(glue('`on_delete = "cascade"` not supported for duckdb'))
       ""
     } else {
@@ -354,10 +375,10 @@ ddl_get_fk_defs <- function(fks, con, table_names) {
     fks %>%
     transmute(
       name = child_table,
-      remote_name = table_names[name],
+      remote_name = unname(table_names[name]),
       fk_def = paste0(
         "FOREIGN KEY (",
-        ddl_quote_enum_col(child_fk_col, con),
+        ddl_quote_enum_col(child_fk_cols, con),
         ") REFERENCES ",
         purrr::map_chr(table_names[fks$parent_table], ~ DBI::dbQuoteIdentifier(con, .x)),
         " (",
@@ -400,15 +421,7 @@ dm_ddl_post <- function(
   # unique constraint definitions
   if (nrow(uks) == 0) {
     # No action
-  } else if (is_duckdb(con)) {
-    if (!is_testing()) {
-      warn("DuckDB doesn't support adding unique keys to existing tables, these won't be set in the remote database but are preserved in the `dm`")
-    }
-    uks <- vec_slice(uks, 0)
-  } else if (is_sqlite(con)) {
-    if (!is_testing()) {
-      warn("SQLite doesn't support adding unique keys to existing tables, these won't be set in the remote database but are preserved in the `dm`")
-    }
+  } else if (is_duckdb(con) || is_sqlite(con)) {
     uks <- vec_slice(uks, 0)
   }
 
@@ -430,15 +443,7 @@ dm_ddl_post <- function(
       warn("MySQL and MariaDB don't support foreign keys for temporary tables, these won't be set in the remote database but are preserved in the `dm`")
     }
     fks <- vec_slice(fks, 0)
-  } else if (is_duckdb(con)) {
-    if (!is_testing()) {
-      warn("DuckDB doesn't support adding foreign keys to existing tables, these won't be set in the remote database but are preserved in the `dm`")
-    }
-    fks <- vec_slice(fks, 0)
-  } else if (is_sqlite(con)) {
-    if (!is_testing()) {
-      warn("SQLite doesn't support adding foreign keys to existing tables, these won't be set in the remote database but are preserved in the `dm`")
-    }
+  } else if (is_duckdb(con) || is_sqlite(con)) {
     fks <- vec_slice(fks, 0)
   }
 
