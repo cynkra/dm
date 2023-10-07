@@ -304,7 +304,9 @@ dm_for_filter_w_cycle %<-% {
     tf_1 = tf_1(), tf_2 = tf_2(), tf_3 = tf_3(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6(), tf_7 = tf_7()
   ) %>%
     dm_add_pk(tf_1, a, autoincrement = TRUE) %>%
+    #
     dm_add_pk(tf_3, c(f, f1)) %>%
+    dm_add_uk(tf_3, g) %>%
     #
     dm_add_pk(tf_2, c) %>%
     dm_add_fk(tf_2, d, tf_1) %>%
