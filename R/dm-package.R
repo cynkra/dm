@@ -1,5 +1,5 @@
 #' @keywords internal
-#' @aliases NULL
+#' @aliases NULL dm-package
 "_PACKAGE"
 
 #' @import rlang
