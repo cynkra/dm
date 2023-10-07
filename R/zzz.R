@@ -16,7 +16,7 @@
   register_pkgdown_methods()
 
   check_version_on_load
-  s3_register("waldo::compare_proxy", "dm")
+  vctrs::s3_register("waldo::compare_proxy", "dm")
 
   check_version_on_load("RSQLite", "2.2.8", "to use the {.code returning} argument in {.code rows_*()}.")
   check_version_on_load("dbplyr", "2.2.0", "to use the {.code rows_*()} functions.")
@@ -33,7 +33,7 @@
   # rigg(dm_rm_fk_impl)
   # rigg(cdm_rm_fk)
 
-  run_on_load()
+  rlang::run_on_load()
 }
 
 rigg <- function(fun) {

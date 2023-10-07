@@ -1,4 +1,4 @@
-if (!is_attached("dm_cache")) {
+if (!rlang::is_attached("dm_cache")) {
   ((attach))(new_environment(), pos = length(search()) - 1, name = "dm_cache")
 }
 cache <- search_env("dm_cache")
