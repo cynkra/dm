@@ -2,13 +2,16 @@
 
     Code
       dm_for_filter() %>% dm_sql(test_src_duckdb()$con)
+    Message
+      `on_delete = "cascade"` not supported for duckdb
     Output
       $pre
       $pre$tf_1
       <SQL> CREATE TEMPORARY TABLE tf_1 (
         a INTEGER,
         b STRING,
-        PRIMARY KEY (a)
+        PRIMARY KEY (a),
+        UNIQUE (a)
       )
       
       $pre$tf_3
@@ -16,7 +19,9 @@
         f STRING,
         f1 INTEGER,
         g STRING,
-        PRIMARY KEY (f, f1)
+        PRIMARY KEY (f, f1),
+        UNIQUE (f, f1),
+        UNIQUE (g)
       )
       
       $pre$tf_6
@@ -24,7 +29,9 @@
         zz INTEGER,
         n STRING,
         o STRING,
-        PRIMARY KEY (o)
+        PRIMARY KEY (o),
+        UNIQUE (o),
+        UNIQUE (n)
       )
       
       $pre$tf_2
@@ -33,7 +40,10 @@
         d INTEGER,
         e STRING,
         e1 INTEGER,
-        PRIMARY KEY (c)
+        PRIMARY KEY (c),
+        UNIQUE (c),
+        FOREIGN KEY (d) REFERENCES tf_1 (a),
+        FOREIGN KEY (e, e1) REFERENCES tf_3 (f, f1)
       )
       
       $pre$tf_4
@@ -42,7 +52,9 @@
         i STRING,
         j STRING,
         j1 INTEGER,
-        PRIMARY KEY (h)
+        PRIMARY KEY (h),
+        UNIQUE (h),
+        FOREIGN KEY (j, j1) REFERENCES tf_3 (f, f1)
       )
       
       $pre$tf_5
@@ -51,7 +63,10 @@
         k INTEGER,
         l STRING,
         m STRING,
-        PRIMARY KEY (k)
+        PRIMARY KEY (k),
+        UNIQUE (k),
+        FOREIGN KEY (m) REFERENCES tf_6 (n),
+        FOREIGN KEY (l) REFERENCES tf_4 (h)
       )
       
       
