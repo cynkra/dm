@@ -57,6 +57,12 @@ ddl_check_table_names <- function(table_names, dm) {
   table_names
 }
 
+ddl_quote_enum_col <- function(x, con) {
+  map_chr(x, ~ paste(DBI::dbQuoteIdentifier(.x, conn = con), collapse = ", "))
+}
+
+
+
 #' @rdname dm_sql
 #' @export
 #' @autoglobal
@@ -68,12 +74,24 @@ dm_ddl_pre <- function(
   #
   table_names <- ddl_check_table_names(table_names, dm)
 
-  ## Reorder queries according to topological sort so pks are created before associated fks
-  graph <- create_graph_from_dm(dm, directed = TRUE)
-  topo <- names(igraph::topo_sort(graph, mode = "in"))
+  ## These databases do not support adding constraints after table creation
+  if (is_duckdb(dest) || is_sqlite(dest)) {
+    ## Reorder queries according to topological sort so uks are created before associated fks
+    graph <- create_graph_from_dm(dm, directed = TRUE)
+    topo <- names(igraph::topo_sort(graph, mode = "in"))
 
-  if (length(topo) == length(dm)) {
-    dm <- dm[topo]
+    if (length(topo) == length(dm)) {
+      dm <- dm[topo]
+    } else {
+      cli_warn(c(
+        # FIXME: show cycle
+        "Cycles in the relationship graph prevent creation of foreign key constraints.",
+        i = if (is_duckdb(dest)) "DuckDB does not support adding constraints after table creation.",
+        i = if (is_sqlite(dest)) "SQLite does not support adding constraints after table creation.",
+        NULL
+      ))
+      dm <- dm_rm_fk(dm)
+    }
   }
 
   ## use 0-rows object
@@ -81,29 +99,8 @@ dm_ddl_pre <- function(
 
   con <- con_from_src_or_con(dest)
 
-  ## helper to quote all elements of a column and enumerate (concat) element wise
-  quote_enum_col <- function(x) {
-    map_chr(x, ~ toString(map_chr(.x, DBI::dbQuoteIdentifier, conn = con)))
-  }
-
-  ## helper to set on delete statement for fks if required
-  set_on_delete_col <- function(x) {
-    if (is_duckdb(dest) && any(x == "cascade")) {
-      inform(glue('`on_delete = "cascade"` not supported for duckdb'))
-      ""
-    } else {
-      map_chr(x, ~ {
-        switch(.x,
-          "no_action" = "",
-          "cascade" = " ON DELETE CASCADE",
-          abort(glue('`on_delete = "{.x}"` not supported'))
-        )
-      })
-    }
-  }
-
   ## fetch types, keys and uniques
-  pks <- dm_get_all_pks_impl(ptype_dm) %>% rename(name = table)
+  pks <- dm_get_all_pks_impl(ptype_dm)
 
   ## build sql definitions to use in `CREATE TABLE ...`
 
@@ -177,8 +174,8 @@ dm_ddl_pre <- function(
   pk_defs <-
     pks %>%
     transmute(
-      name,
-      pk_defs = paste0("PRIMARY KEY (", quote_enum_col(pk_col), ")")
+      name = table,
+      pk_defs = paste0("PRIMARY KEY (", ddl_quote_enum_col(pk_col, con), ")")
     )
 
   ## compile `CREATE TABLE ...` queries
@@ -263,32 +260,78 @@ dm_dml_load <- function(
   compact(map(set_names(names(dm)), tbl_dml_load))
 }
 
-#' @rdname dm_sql
-#' @export
-dm_ddl_post <- function(
-    dm,
-    dest,
-    table_names = NULL,
-    temporary = TRUE) {
-  #
-  table_names <- ddl_check_table_names(table_names, dm)
-
-  ## Reorder queries according to topological sort so pks are created before associated fks
-  graph <- create_graph_from_dm(dm, directed = TRUE)
-  topo <- names(igraph::topo_sort(graph, mode = "in"))
-
-  if (length(topo) == length(dm)) {
-    dm <- dm[topo]
+ddl_get_index_defs <- function(fks, con, table_names) {
+  index_defs <- tibble(
+    name = character(0),
+    index_defs = list(),
+    index_name = list()
+  )
+  if (nrow(fks) == 0) {
+    return(index_defs)
   }
 
-  ## use 0-rows object
-  ptype_dm <- collect(dm_ptype(dm))
+  out <-
+    fks %>%
+    mutate(
+      name = child_table,
+      index_name = map_chr(child_fk_cols, paste, collapse = "_"),
+      remote_name = purrr::map_chr(table_names[name], ~ DBI::dbQuoteIdentifier(con, .x)),
+      remote_name_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)), ~ .x@name[["table"]]),
+      index_name = make.unique(paste0(remote_name_unquoted, "__", index_name), sep = "__")
+    ) %>%
+    group_by(name) %>%
+    summarize(
+      index_defs = list(DBI::SQL(paste0(
+        "CREATE INDEX ",
+        index_name,
+        " ON ",
+        remote_name,
+        " (",
+        ddl_quote_enum_col(child_fk_cols, con),
+        ")"
+      ))),
+      index_name = list(index_name)
+    )
 
-  con <- con_from_src_or_con(dest)
+  vec_assert(out, index_defs)
+  out
+}
 
-  ## helper to quote all elements of a column and enumerate (concat) element wise
-  quote_enum_col <- function(x) {
-    map_chr(x, ~ toString(map_chr(.x, DBI::dbQuoteIdentifier, conn = con)))
+ddl_get_uk_defs <- function(uks, con, table_names) {
+  uk_defs <- tibble(
+    name = character(),
+    remote_name = unname(vec_ptype(table_names)),
+    uk_def = character()
+  )
+  if (nrow(uks) == 0) {
+    return(uk_defs)
+  }
+
+  out <-
+    uks %>%
+    rename(name = table) %>%
+    transmute(
+      name,
+      remote_name = table_names[name],
+      uk_def = paste0(
+        "UNIQUE (",
+        ddl_quote_enum_col(uk_col, con),
+        ")"
+      )
+    )
+
+  vec_assert(out, uk_defs)
+  out
+}
+
+ddl_get_fk_defs <- function(fks, con, table_names) {
+  fk_defs <- tibble(
+    name = character(),
+    remote_name = unname(vec_ptype(table_names)),
+    fk_def = character()
+  )
+  if (nrow(fks) == 0) {
+    return(fk_defs)
   }
 
   ## helper to set on delete statement for fks if required
@@ -307,23 +350,52 @@ dm_ddl_post <- function(
     }
   }
 
+  out <-
+    fks %>%
+    transmute(
+      name = child_table,
+      remote_name = table_names[name],
+      fk_def = paste0(
+        "FOREIGN KEY (",
+        ddl_quote_enum_col(child_fk_col, con),
+        ") REFERENCES ",
+        purrr::map_chr(table_names[fks$parent_table], ~ DBI::dbQuoteIdentifier(con, .x)),
+        " (",
+        ddl_quote_enum_col(parent_key_cols, con),
+        ")",
+        set_on_delete_col(on_delete)
+      )
+    )
+
+  vec_assert(out, fk_defs)
+  out
+}
+
+#' @rdname dm_sql
+#' @export
+dm_ddl_post <- function(
+    dm,
+    dest,
+    table_names = NULL,
+    temporary = TRUE) {
+  #
+  table_names <- ddl_check_table_names(table_names, dm)
+
+  ## use 0-rows object
+  ptype_dm <- collect(dm_ptype(dm))
+
+  con <- con_from_src_or_con(dest)
+
   ## fetch types, keys and uniques
-  pks <- dm_get_all_pks_impl(ptype_dm) %>% rename(name = table)
+  uks <- dm_get_all_uks_impl(ptype_dm)
   fks <- dm_get_all_fks_impl(ptype_dm)
-  uks <- dm_get_all_uks_impl(ptype_dm) %>% rename(name = table)
 
   ## build sql definitions to use in `CREATE TABLE ...`
 
   tbl_defs <- tibble(name = names(ptype_dm))
 
-  # default values
-  fk_defs <- tibble(name = character(0), fk_defs = list())
-  uk_defs <- tibble(name = character(0), uk_defs = list())
-  index_queries <- tibble(
-    name = character(0),
-    index_defs = list(),
-    index_name = list()
-  )
+  # Get this before we perhaps erase fks
+  index_defs <- ddl_get_index_defs(fks, con, table_names)
 
   # unique constraint definitions
   if (nrow(uks) == 0) {
@@ -332,29 +404,22 @@ dm_ddl_post <- function(
     if (!is_testing()) {
       warn("DuckDB doesn't support adding unique keys to existing tables, these won't be set in the remote database but are preserved in the `dm`")
     }
+    uks <- vec_slice(uks, 0)
   } else if (is_sqlite(con)) {
     if (!is_testing()) {
       warn("SQLite doesn't support adding unique keys to existing tables, these won't be set in the remote database but are preserved in the `dm`")
     }
-  } else {
-    uk_defs <-
-      uks %>%
-      transmute(
-        name,
-        remote_name = table_names[name],
-        unique_def = paste0(
-          "UNIQUE (",
-          quote_enum_col(uk_col),
-          ")"
-        )
-      ) %>%
-      group_by(name) %>%
-      summarize(uk_defs = list(DBI::SQL(glue(
-        # FIXME: Designate temporary table if possible
-        "ALTER TABLE {DBI::dbQuoteIdentifier(con, remote_name[[1]])} ADD {unique_def}"
-      )))) %>%
-      ungroup()
+    uks <- vec_slice(uks, 0)
   }
+
+  uk_defs <-
+    ddl_get_uk_defs(uks, con, table_names) %>%
+    group_by(name) %>%
+    summarize(uk_defs = if (length(remote_name) == 0) list(NULL) else list(DBI::SQL(glue(
+      # FIXME: Designate temporary table if possible
+      "ALTER TABLE {DBI::dbQuoteIdentifier(dest, remote_name[[1]])} ADD {uk_def}"
+    )))) %>%
+    ungroup()
 
   # foreign key definitions and indexing queries
   # https://github.com/r-lib/rlang/issues/1422
@@ -364,67 +429,33 @@ dm_ddl_post <- function(
     if (!is_testing()) {
       warn("MySQL and MariaDB don't support foreign keys for temporary tables, these won't be set in the remote database but are preserved in the `dm`")
     }
+    fks <- vec_slice(fks, 0)
   } else if (is_duckdb(con)) {
     if (!is_testing()) {
       warn("DuckDB doesn't support adding foreign keys to existing tables, these won't be set in the remote database but are preserved in the `dm`")
     }
+    fks <- vec_slice(fks, 0)
   } else if (is_sqlite(con)) {
     if (!is_testing()) {
       warn("SQLite doesn't support adding foreign keys to existing tables, these won't be set in the remote database but are preserved in the `dm`")
     }
-  } else {
-    fk_defs <-
-      fks %>%
-      transmute(
-        name = child_table,
-        remote_name = table_names[name],
-        fk_def = paste0(
-          "FOREIGN KEY (",
-          quote_enum_col(child_fk_cols),
-          ") REFERENCES ",
-          purrr::map_chr(table_names[fks$parent_table], ~ DBI::dbQuoteIdentifier(con, .x)),
-          " (",
-          quote_enum_col(parent_key_cols),
-          ")",
-          set_on_delete_col(on_delete)
-        )
-      ) %>%
-      group_by(name) %>%
-      summarize(fk_defs = list(DBI::SQL(glue(
-        # FIXME: Designate temporary table if possible
-        "ALTER TABLE {DBI::dbQuoteIdentifier(con, remote_name[[1]])} ADD {fk_def}"
-      )))) %>%
-      ungroup()
-
-    index_queries <-
-      fks %>%
-      mutate(
-        name = child_table,
-        index_name = map_chr(child_fk_cols, paste, collapse = "_"),
-        remote_name = purrr::map_chr(table_names[name], ~ DBI::dbQuoteIdentifier(con, .x)),
-        remote_name_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)), ~ .x@name[["table"]]),
-        index_name = make.unique(paste0(remote_name_unquoted, "__", index_name), sep = "__")
-      ) %>%
-      group_by(name) %>%
-      summarize(
-        index_defs = list(DBI::SQL(paste0(
-          "CREATE INDEX ",
-          index_name,
-          " ON ",
-          remote_name,
-          " (",
-          quote_enum_col(child_fk_cols),
-          ")"
-        ))),
-        index_name = list(index_name)
-      )
+    fks <- vec_slice(fks, 0)
   }
+
+  fk_defs <-
+    ddl_get_fk_defs(fks, con, table_names) %>%
+    group_by(name) %>%
+    summarize(fk_defs = if (length(remote_name) == 0) list(NULL) else list(DBI::SQL(glue(
+      # FIXME: Designate temporary table if possible
+      "ALTER TABLE {DBI::dbQuoteIdentifier(dest, remote_name[[1]])} ADD {fk_def}"
+    )))) %>%
+    ungroup()
 
   queries <-
     tbl_defs %>%
     left_join(uk_defs, by = "name") %>%
     left_join(fk_defs, by = "name") %>%
-    left_join(index_queries, by = "name")
+    left_join(index_defs, by = "name")
 
   list(
     uk = compact(set_names(queries$uk_defs, queries$name)),
