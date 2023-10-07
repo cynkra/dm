@@ -1,11 +1,11 @@
 cache_attach <- function(algo = "sha512", base_attach = attach, name = paste0(utils::packageName(), "_cache")) {
   force(algo)
 
-  if (!is_attached(name)) {
-    env <- new_environment(list(...cache = new_environment()))
+  if (!rlang::is_attached(name)) {
+    env <- rlang::new_environment(list(...cache = rlang::new_environment()))
     base_attach(env, pos = length(search()) - 1, name = name)
   }
-  cache <- search_env(name)$...cache
+  cache <- rlang::search_env(name)$...cache
 
   cache_reset <- function() {
     rm(list = ls(cache), envir = cache)
