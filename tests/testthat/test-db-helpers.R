@@ -29,8 +29,8 @@ test_that("DB helpers work for MSSQL", {
     value = tibble(a = 1)
   )
   # create table in a schema
-  dbExecute(con_mssql, "CREATE SCHEMA schema_db_helpers")
-  dbWriteTable(
+  DBI::dbExecute(con_mssql, "CREATE SCHEMA schema_db_helpers")
+  DBI::dbWriteTable(
     con_mssql,
     DBI::Id(schema = "schema_db_helpers", table = "test_db_helpers_2"),
     value = tibble(a = 1)
