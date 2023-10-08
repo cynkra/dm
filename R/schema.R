@@ -207,7 +207,7 @@ db_schema_create.PqConnection <- function(con, schema, ...) {
     withr::defer(DBI::dbExecute(con, glue::glue("USE {DBI::dbQuoteIdentifier(con, original_dbname)}")))
   }
   msg_suffix <- fix_msg(sql_to_character(con, dbname))
-  DBI::dbExecute(con, SQL(glue::glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(con, schema)}")))
+  DBI::dbExecute(con, glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(con, schema)}"))
   message(glue::glue("Schema {tick(sql_to_character(con, schema))} created{msg_suffix}."))
   invisible(NULL)
 }
