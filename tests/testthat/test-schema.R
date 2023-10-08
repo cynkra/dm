@@ -47,7 +47,7 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_false("test_schema_1" %in% sql_schema_table_list(src_db)$table_name)
 
 
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(table = "test_schema_1"),
     value = tibble(a = 1:5)
