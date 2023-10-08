@@ -64,7 +64,7 @@
       airlines airports  flights   planes  weather 
             15       86       88      945        6 
     Code
-      dbDisconnect(sqlite)
+      DBI::dbDisconnect(sqlite)
 
 # dm_rows_update()
 

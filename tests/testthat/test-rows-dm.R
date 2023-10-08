@@ -84,7 +84,7 @@ test_that("dm_rows_insert()", {
     print(dm_nrow(flights_sqlite))
 
     # Disconnect
-    dbDisconnect(sqlite)
+    DBI::dbDisconnect(sqlite)
   })
 })
 
