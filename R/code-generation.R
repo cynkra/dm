@@ -51,7 +51,7 @@ cg_eval_block <- function(cg_block) {
   if (is_empty(cg_block$cg_f_list)) {
     eval_tidy(cg_block$cg_input_object)
   } else {
-    freduce(eval_tidy(cg_block$cg_input_object), cg_block$cg_f_list)
+    magrittr::freduce(eval_tidy(cg_block$cg_input_object), cg_block$cg_f_list)
   }
 }
 
