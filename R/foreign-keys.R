@@ -26,6 +26,7 @@
 #'        and the operation is aborted if child rows exist
 #'     - `"cascade"` means that the child row is also deleted
 #'   This setting is picked up by [copy_dm_to()] with `set_key_constraints = TRUE`,
+#'   and by [dm_sql()],
 #'   and might be considered by [dm_rows_delete()] in a future version.
 #'
 #' @family foreign key functions
