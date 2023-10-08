@@ -194,7 +194,7 @@ db_schema_create.src_dbi <- function(con, schema, ...) {
 
 #' @export
 db_schema_create.PqConnection <- function(con, schema, ...) {
-  DBI::dbExecute(con, SQL(glue::glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(con, schema)}")))
+  DBI::dbExecute(con, glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(con, schema)}"))
   message(glue::glue("Schema {tick(sql_to_character(con, schema))} created."))
   invisible(NULL)
 }
