@@ -87,7 +87,7 @@
     Message
       i No constraints defined.
 
----
+# `dm_examine_constraints()` API (2)
 
     Code
       dm_examine_constraints(dm_test_obj(), foo = "bar")
