@@ -293,7 +293,7 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
   DBI::dbExecute(con_db, "CREATE SCHEMA dm_test")
   DBI::dbExecute(con_db, paste0("USE ", original_dbname))
 
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(db = "test_database_dm", schema = "dm_test", table = "test_1"),
     value = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5)
