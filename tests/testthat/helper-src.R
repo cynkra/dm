@@ -678,7 +678,11 @@ bad_dm %<--% {
 }
 
 dm_nycflights_small_base %<-% {
-  dm(!!!dm_get_tables(dm_nycflights13()))
+  tables <- dm_get_tables(dm_nycflights13())
+  # https://github.com/tidyverse/dbplyr/pull/1195
+  tables$flights <- mutate(tables$flights, time_hour = as.character(time_hour))
+  tables$weather <- mutate(tables$weather, time_hour = as.character(time_hour))
+  dm(!!!tables)
 }
 
 # Do not add PK and FK constraints to the database
