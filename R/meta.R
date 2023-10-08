@@ -9,12 +9,12 @@ dm_meta <- function(con, catalog = NA, schema = NULL, simple = FALSE) {
 
     if (!is.na(catalog)) {
       message("Temporarily switching to database ", tick(catalog), ".")
-      old_dbname <- dbGetQuery(con, "SELECT DB_NAME()")[[1]]
-      sql <- paste0("USE ", dbQuoteIdentifier(con, catalog))
-      old_sql <- paste0("USE ", dbQuoteIdentifier(con, old_dbname))
-      dbExecute(con, sql, immediate = TRUE)
+      old_dbname <- DBI::dbGetQuery(con, "SELECT DB_NAME()")[[1]]
+      sql <- paste0("USE ", DBI::dbQuoteIdentifier(con, catalog))
+      old_sql <- paste0("USE ", DBI::dbQuoteIdentifier(con, old_dbname))
+      DBI::dbExecute(con, sql, immediate = TRUE)
       withr::defer({
-        dbExecute(con, old_sql, immediate = TRUE)
+        DBI::dbExecute(con, old_sql, immediate = TRUE)
       })
       need_collect <- TRUE
     }
