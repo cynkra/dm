@@ -12,10 +12,10 @@ systime_convenient <- function() {
   local_options(digits.secs = 6)
 
   if (Sys.getenv("IN_PKGDOWN") != "") {
-    "2020_08_28_07_13_03"
+    "20200828_071303"
   } else {
     time <- as.character(Sys.time())
-    gsub("[-:. ]", "_", time)
+    gsub("[-:.]", "", gsub(" ", "_", time))
   }
 }
 
