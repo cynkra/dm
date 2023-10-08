@@ -13,6 +13,10 @@ on:
     branches:
       - main
       - master
+  merge_group:
+    branches:
+      - main
+      - master
   schedule:
     - cron: "10 0 * * *"
 
