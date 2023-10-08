@@ -20,7 +20,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
       dm_get_tables(dm_for_filter_copied)[order_of_deletion],
       dbplyr::remote_name
     ) %>%
-    SQL() %>%
+    DBI::SQL() %>%
     DBI::dbUnquoteIdentifier(conn = con_db) %>%
     map_chr(~ .x@name[["table"]])
 
