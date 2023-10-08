@@ -225,6 +225,11 @@ jobs:
       - uses: ./.github/workflows/custom/after-install
         if: hashFiles('.github/workflows/custom/after-install/action.yml') != ''
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
+
       - uses: ./.github/workflows/update-snapshots
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
 
