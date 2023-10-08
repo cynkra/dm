@@ -185,7 +185,7 @@ test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
 
   # for other DBMS than "MSSQL" or "Postgrs", get_src_tbl_names() translates to `src_tbls_impl()`
   con_db <- my_db_test_src()$con
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(table = "test_db_helpers"),
     value = tibble(a = 1)
