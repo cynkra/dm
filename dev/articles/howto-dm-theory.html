@@ -557,11 +557,9 @@ database systems.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">con_sqlite</span>, <span class="va">dm</span><span class="op">)</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html" class="external-link">dbListTables</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "airlines_1_2020_08_28_07_13_03_12345"</span></span>
-<span><span class="co">#&gt; [2] "airports_1_2020_08_28_07_13_03_12345"</span></span>
-<span><span class="co">#&gt; [3] "flights_1_2020_08_28_07_13_03_12345" </span></span>
-<span><span class="co">#&gt; [4] "planes_1_2020_08_28_07_13_03_12345"  </span></span>
-<span><span class="co">#&gt; [5] "weather_1_2020_08_28_07_13_03_12345"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "airlines_1_20200828_071303_12345" "airports_1_20200828_071303_12345"</span></span>
+<span><span class="co">#&gt; [3] "flights_1_20200828_071303_12345"  "planes_1_20200828_071303_12345"  </span></span>
+<span><span class="co">#&gt; [5] "weather_1_20200828_071303_12345"</span></span></code></pre></div>
 <p>In the opposite direction, <code>dm</code> can also be populated with
 data from a database. Unfortunately, keys currently can be learned only
 for Microsoft SQL Server and Postgres, but not for SQLite. Therefore,
@@ -573,7 +571,7 @@ the <code>dm</code> contains the tables but not the keys:</p>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; src:  sqlite 3.41.2 []</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; Tables: `airlines_1_2020_08_28_07_13_03_12345`, `airports_1_2020_08_28_07_13_03_12345`, `flights_1_2020_08_28_07_13_03_12345`, `planes_1_2020_08_28_07_13_03_12345`, `weather_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt; Tables: `airlines_1_20200828_071303_12345`, `airports_1_20200828_071303_12345`, `flights_1_20200828_071303_12345`, `planes_1_20200828_071303_12345`, `weather_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt; Columns: 53</span></span>
 <span><span class="co">#&gt; Primary keys: 0</span></span>
 <span><span class="co">#&gt; Foreign keys: 0</span></span></code></pre>
