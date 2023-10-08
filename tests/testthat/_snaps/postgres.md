@@ -16,22 +16,6 @@
         PRIMARY KEY ("a")
       )
       
-      $pre$tf_3
-      <SQL> CREATE TEMPORARY TABLE "tf_3" (
-        "f" TEXT,
-        "f1" INTEGER,
-        "g" TEXT,
-        PRIMARY KEY ("f", "f1")
-      )
-      
-      $pre$tf_6
-      <SQL> CREATE TEMPORARY TABLE "tf_6" (
-        "zz" INTEGER,
-        "n" TEXT,
-        "o" TEXT,
-        PRIMARY KEY ("o")
-      )
-      
       $pre$tf_2
       <SQL> CREATE TEMPORARY TABLE "tf_2" (
         "c" TEXT,
@@ -39,6 +23,14 @@
         "e" TEXT,
         "e1" INTEGER,
         PRIMARY KEY ("c")
+      )
+      
+      $pre$tf_3
+      <SQL> CREATE TEMPORARY TABLE "tf_3" (
+        "f" TEXT,
+        "f1" INTEGER,
+        "g" TEXT,
+        PRIMARY KEY ("f", "f1")
       )
       
       $pre$tf_4
@@ -57,6 +49,14 @@
         "l" TEXT,
         "m" TEXT,
         PRIMARY KEY ("k")
+      )
+      
+      $pre$tf_6
+      <SQL> CREATE TEMPORARY TABLE "tf_6" (
+        "zz" INTEGER,
+        "n" TEXT,
+        "o" TEXT,
+        PRIMARY KEY ("o")
       )
       
       
@@ -167,22 +167,22 @@
       $post$uk$tf_1
       <SQL> ALTER TABLE "tf_1" ADD UNIQUE ("a")
       
+      $post$uk$tf_2
+      <SQL> ALTER TABLE "tf_2" ADD UNIQUE ("c")
+      
       $post$uk$tf_3
       <SQL> ALTER TABLE "tf_3" ADD UNIQUE ("f", "f1")
       <SQL> ALTER TABLE "tf_3" ADD UNIQUE ("g")
-      
-      $post$uk$tf_6
-      <SQL> ALTER TABLE "tf_6" ADD UNIQUE ("o")
-      <SQL> ALTER TABLE "tf_6" ADD UNIQUE ("n")
-      
-      $post$uk$tf_2
-      <SQL> ALTER TABLE "tf_2" ADD UNIQUE ("c")
       
       $post$uk$tf_4
       <SQL> ALTER TABLE "tf_4" ADD UNIQUE ("h")
       
       $post$uk$tf_5
       <SQL> ALTER TABLE "tf_5" ADD UNIQUE ("k")
+      
+      $post$uk$tf_6
+      <SQL> ALTER TABLE "tf_6" ADD UNIQUE ("o")
+      <SQL> ALTER TABLE "tf_6" ADD UNIQUE ("n")
       
       
       $post$fk
@@ -194,8 +194,8 @@
       <SQL> ALTER TABLE "tf_4" ADD FOREIGN KEY ("j", "j1") REFERENCES "tf_3" ("f", "f1")
       
       $post$fk$tf_5
-      <SQL> ALTER TABLE "tf_5" ADD FOREIGN KEY ("m") REFERENCES "tf_6" ("n")
       <SQL> ALTER TABLE "tf_5" ADD FOREIGN KEY ("l") REFERENCES "tf_4" ("h") ON DELETE CASCADE
+      <SQL> ALTER TABLE "tf_5" ADD FOREIGN KEY ("m") REFERENCES "tf_6" ("n")
       
       
       $post$indexes
@@ -207,8 +207,8 @@
       <SQL> CREATE INDEX tf_4__j_j1 ON "tf_4" ("j", "j1")
       
       $post$indexes$tf_5
-      <SQL> CREATE INDEX tf_5__m ON "tf_5" ("m")
       <SQL> CREATE INDEX tf_5__l ON "tf_5" ("l")
+      <SQL> CREATE INDEX tf_5__m ON "tf_5" ("m")
       
       
       
