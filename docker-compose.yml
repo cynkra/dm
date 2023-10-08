@@ -47,7 +47,7 @@ services:
   postgres:
     container_name: postgres
     # FIXME: brittle tests fail with latest PostgreSQL
-    image: postgres:14
+    image: postgres:16
     environment:
       POSTGRES_USER: compose
       POSTGRES_PASSWORD: "YourStrong!Passw0rd"
