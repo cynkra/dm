@@ -102,7 +102,7 @@ test_that("schema handling on Postgres works", {
   con_db <- src_db$con
 
   db_schema_create(con_db, "2-dm_schema_TEST")
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(schema = "2-dm_schema_TEST", table = "test_schema_2"),
     value = tibble(b = letters[1:5])
