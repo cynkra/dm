@@ -365,8 +365,8 @@ db_schema_drop.PqConnection <- function(con, schema, force = FALSE, ...) {
     check_param_class(dbname, "character")
     check_param_length(dbname)
     original_dbname <- attributes(con)$info$dbname
-    DBI::dbExecute(con, glue::glue("USE {dbname}"))
-    withr::defer(DBI::dbExecute(con, glue::glue("USE {original_dbname}")))
+    DBI::dbExecute(con, glue("USE {dbname}"))
+    withr::defer(DBI::dbExecute(con, glue("USE {original_dbname}")))
   }
   msg_infix <- fix_msg(sql_to_character(con, dbname))
   DBI::dbExecute(con, SQL(glue::glue("DROP SCHEMA {DBI::dbQuoteIdentifier(con, schema)}")))
