@@ -345,7 +345,10 @@ db_schema_drop.PqConnection <- function(con, schema, force = FALSE, ...) {
     force_infix <- ""
     force_suffix <- ""
   }
-  DBI::dbExecute(con, SQL(glue::glue("DROP SCHEMA {DBI::dbQuoteIdentifier(con, schema)}{force_suffix}")))
+  DBI::dbExecute(
+    con,
+    glue("DROP SCHEMA {DBI::dbQuoteIdentifier(con, schema)}{force_suffix}")
+  )
   message(glue::glue("Dropped schema {tick(sql_to_character(con, schema))}{force_infix}."))
   invisible(NULL)
 }
