@@ -129,8 +129,8 @@ test_that("DB helpers work for Postgres", {
     value = tibble(a = 1)
   )
   # create table in a schema
-  dbExecute(con_postgres, "CREATE SCHEMA schema_db_helpers")
-  dbWriteTable(
+  DBI::dbExecute(con_postgres, "CREATE SCHEMA schema_db_helpers")
+  DBI::dbWriteTable(
     con_postgres,
     DBI::Id(schema = "schema_db_helpers", table = "test_db_helpers_2"),
     value = tibble(a = 1)
