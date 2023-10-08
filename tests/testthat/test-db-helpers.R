@@ -36,8 +36,8 @@ test_that("DB helpers work for MSSQL", {
     value = tibble(a = 1)
   )
   # create table on 'dbo' on another DB
-  dbExecute(con_mssql, "CREATE DATABASE db_helpers_db")
-  dbWriteTable(
+  DBI::dbExecute(con_mssql, "CREATE DATABASE db_helpers_db")
+  DBI::dbWriteTable(
     con_mssql,
     DBI::Id(db = "db_helpers_db", schema = "dbo", table = "test_db_helpers_3"),
     value = tibble(a = 1)
