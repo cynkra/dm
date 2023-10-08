@@ -1,3 +1,4 @@
+# This file is part of .Rbuildignore
 local({
   if (file.exists("../../man")) {
     names <- c("cynkra-72.png", "energie-72.png")
