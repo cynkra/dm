@@ -136,14 +136,14 @@ dm_ddl_pre <- function(
 
       # SQL Server:
       if (is_mssql(dest)) {
-        types[pk_col_name] <- paste0(types[pk_col], " IDENTITY")
+        types[pk_col_name] <- paste0(types[pk_col_name], " IDENTITY")
       }
 
       # MariaDB:
       # Doesn't have a special data type. Uses `AUTO_INCREMENT` attribute instead.
       # Ref: https://mariadb.com/kb/en/auto_increment/
       if (is_mariadb(dest)) {
-        autoincrement_attribute <- paste0(types[pk_col], " AUTO_INCREMENT")
+        types[pk_col_name] <- paste0(types[pk_col_name], " AUTO_INCREMENT")
       }
 
       # DuckDB:
