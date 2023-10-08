@@ -506,7 +506,7 @@
       5 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75        NA
       6 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90        NA
       # i 4 more variables: precip <dbl>, pressure <dbl>, visib <dbl>,
-      #   time_hour <dttm>
+      #   time_hour <chr>
     Code
       zoomed_comp_dm %>% slice(c(1:3, 5:3), .keep_pk = TRUE) %>% col_tracker_zoomed()
     Output
