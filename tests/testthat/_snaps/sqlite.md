@@ -13,7 +13,28 @@
       <SQL> CREATE TEMPORARY TABLE `tf_1` (
         `a` INTEGER,
         `b` TEXT,
-        PRIMARY KEY (`a`)
+        PRIMARY KEY (`a`),
+        UNIQUE (`a`)
+      )
+      
+      $pre$tf_3
+      <SQL> CREATE TEMPORARY TABLE `tf_3` (
+        `f` TEXT,
+        `f1` INTEGER,
+        `g` TEXT,
+        PRIMARY KEY (`f`, `f1`),
+        UNIQUE (`f`, `f1`),
+        UNIQUE (`g`)
+      )
+      
+      $pre$tf_6
+      <SQL> CREATE TEMPORARY TABLE `tf_6` (
+        `zz` INTEGER,
+        `n` TEXT,
+        `o` TEXT,
+        PRIMARY KEY (`o`),
+        UNIQUE (`o`),
+        UNIQUE (`n`)
       )
       
       $pre$tf_2
@@ -22,15 +43,10 @@
         `d` INTEGER,
         `e` TEXT,
         `e1` INTEGER,
-        PRIMARY KEY (`c`)
-      )
-      
-      $pre$tf_3
-      <SQL> CREATE TEMPORARY TABLE `tf_3` (
-        `f` TEXT,
-        `f1` INTEGER,
-        `g` TEXT,
-        PRIMARY KEY (`f`, `f1`)
+        PRIMARY KEY (`c`),
+        UNIQUE (`c`),
+        FOREIGN KEY (`d`) REFERENCES `tf_1` (`a`),
+        FOREIGN KEY (`e`, `e1`) REFERENCES `tf_3` (`f`, `f1`)
       )
       
       $pre$tf_4
@@ -39,7 +55,9 @@
         `i` TEXT,
         `j` TEXT,
         `j1` INTEGER,
-        PRIMARY KEY (`h`)
+        PRIMARY KEY (`h`),
+        UNIQUE (`h`),
+        FOREIGN KEY (`j`, `j1`) REFERENCES `tf_3` (`f`, `f1`)
       )
       
       $pre$tf_5
@@ -48,47 +66,32 @@
         `k` INTEGER,
         `l` TEXT,
         `m` TEXT,
-        PRIMARY KEY (`k`)
-      )
-      
-      $pre$tf_6
-      <SQL> CREATE TEMPORARY TABLE `tf_6` (
-        `zz` INTEGER,
-        `n` TEXT,
-        `o` TEXT,
-        PRIMARY KEY (`o`)
+        PRIMARY KEY (`k`),
+        UNIQUE (`k`),
+        FOREIGN KEY (`m`) REFERENCES `tf_6` (`n`),
+        FOREIGN KEY (`l`) REFERENCES `tf_4` (`h`) ON DELETE CASCADE
       )
       
       
       $load
       $load$tf_1
-      <SQL> INSERT INTO `tf_1` (`b`)
-      SELECT CAST(`b` AS TEXT) AS `b`
+      <SQL> INSERT INTO `tf_1` (`a`, `b`)
+      SELECT CAST(`a` AS INTEGER) AS `a`, CAST(`b` AS TEXT) AS `b`
       FROM (
-        SELECT NULL AS `b`
-        WHERE (0 = 1)
-        UNION ALL
-        VALUES ('A'), ('B'), ('C'), ('D'), ('E'), ('F'), ('G'), ('H'), ('I'), ('J')
-      ) AS `values_table`
-      
-      $load$tf_2
-      <SQL> INSERT INTO `tf_2` (`c`, `d`, `e`, `e1`)
-      SELECT
-        CAST(`c` AS TEXT) AS `c`,
-        CAST(`d` AS INTEGER) AS `d`,
-        CAST(`e` AS TEXT) AS `e`,
-        CAST(`e1` AS INTEGER) AS `e1`
-      FROM (
-        SELECT NULL AS `c`, NULL AS `d`, NULL AS `e`, NULL AS `e1`
+        SELECT NULL AS `a`, NULL AS `b`
         WHERE (0 = 1)
         UNION ALL
         VALUES
-          ('elephant', 2, 'D', 4),
-          ('lion', 3, 'E', 5),
-          ('seal', 4, 'F', 6),
-          ('worm', 5, 'G', 7),
-          ('dog', 6, 'E', 5),
-          ('cat', 7, 'F', 6)
+          (1, 'A'),
+          (2, 'B'),
+          (3, 'C'),
+          (4, 'D'),
+          (5, 'E'),
+          (6, 'F'),
+          (7, 'G'),
+          (8, 'H'),
+          (9, 'I'),
+          (10, 'J')
       ) AS `values_table`
       
       $load$tf_3
@@ -112,6 +115,44 @@
           ('I', 7, 'eight'),
           ('J', 10, 'nine'),
           ('K', 11, 'ten')
+      ) AS `values_table`
+      
+      $load$tf_6
+      <SQL> INSERT INTO `tf_6` (`zz`, `n`, `o`)
+      SELECT
+        CAST(`zz` AS INTEGER) AS `zz`,
+        CAST(`n` AS TEXT) AS `n`,
+        CAST(`o` AS TEXT) AS `o`
+      FROM (
+        SELECT NULL AS `zz`, NULL AS `n`, NULL AS `o`
+        WHERE (0 = 1)
+        UNION ALL
+        VALUES
+          (1, 'house', 'e'),
+          (1, 'tree', 'f'),
+          (1, 'hill', 'g'),
+          (1, 'streetlamp', 'h'),
+          (1, 'garden', 'i')
+      ) AS `values_table`
+      
+      $load$tf_2
+      <SQL> INSERT INTO `tf_2` (`c`, `d`, `e`, `e1`)
+      SELECT
+        CAST(`c` AS TEXT) AS `c`,
+        CAST(`d` AS INTEGER) AS `d`,
+        CAST(`e` AS TEXT) AS `e`,
+        CAST(`e1` AS INTEGER) AS `e1`
+      FROM (
+        SELECT NULL AS `c`, NULL AS `d`, NULL AS `e`, NULL AS `e1`
+        WHERE (0 = 1)
+        UNION ALL
+        VALUES
+          ('elephant', 2, 'D', 4),
+          ('lion', 3, 'E', 5),
+          ('seal', 4, 'F', 6),
+          ('worm', 5, 'G', 7),
+          ('dog', 6, 'E', 5),
+          ('cat', 7, 'F', 6)
       ) AS `values_table`
       
       $load$tf_4
@@ -151,34 +192,26 @@
           (2, 4, 'e', 'streetlamp')
       ) AS `values_table`
       
-      $load$tf_6
-      <SQL> INSERT INTO `tf_6` (`zz`, `n`, `o`)
-      SELECT
-        CAST(`zz` AS INTEGER) AS `zz`,
-        CAST(`n` AS TEXT) AS `n`,
-        CAST(`o` AS TEXT) AS `o`
-      FROM (
-        SELECT NULL AS `zz`, NULL AS `n`, NULL AS `o`
-        WHERE (0 = 1)
-        UNION ALL
-        VALUES
-          (1, 'house', 'e'),
-          (1, 'tree', 'f'),
-          (1, 'hill', 'g'),
-          (1, 'streetlamp', 'h'),
-          (1, 'garden', 'i')
-      ) AS `values_table`
-      
       
       $post
-      $post$fk
-      list()
+      $post$uk
+      named list()
       
-      $post$unique
-      list()
+      $post$fk
+      named list()
       
       $post$indexes
-      list()
+      $post$indexes$tf_2
+      <SQL> CREATE INDEX tf_2__d ON `tf_2` (`d`)
+      <SQL> CREATE INDEX tf_2__e_e1 ON `tf_2` (`e`, `e1`)
+      
+      $post$indexes$tf_4
+      <SQL> CREATE INDEX tf_4__j_j1 ON `tf_4` (`j`, `j1`)
+      
+      $post$indexes$tf_5
+      <SQL> CREATE INDEX tf_5__m ON `tf_5` (`m`)
+      <SQL> CREATE INDEX tf_5__l ON `tf_5` (`l`)
+      
       
       
 

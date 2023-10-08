@@ -3,28 +3,31 @@
 
 #' @name dm_sql
 #'
-#' @title Create \emph{DDL} and \emph{DML} scripts for `dm` and database connection
+#' @title Create \emph{DDL} and \emph{DML} scripts for a `dm` a and database connection
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Generate SQL scripts to create tables, load data and set constraints, keys and indices.
+#' This function powers [copy_dm_to()] and is useful if you need more control
+#' over the process of copying a `dm` to a database.
 #'
 #' @param dm A `dm` object.
 #' @param dest Connection to database.
-#' @param set_key_constraints If `TRUE` (default) will mirror `dm` primary and foreign key constraints on a database
-#'   and create unique indexes.
-#' @param table_names See argument description in \link{copy_dm_to}. Default to names of `dm`.
+#' @param table_names A named character vector or vector of [DBI::Id] objects,
+#'   with one unique element for each table in `dm`.
+#'   The default, `NULL`, means to use the original table names.
 #' @param temporary Should the tables be marked as \emph{temporary}? Defaults to `TRUE`.
-#' @param schema Name of schema to copy the `dm` to.
 #'
 #' @details
 #' \itemize{
-#'   \item{ `dm_ddl_pre` generates `CREATE TABLE` statements (including `PRIMARY KEY` definition). }
-#'   \item{ `dm_dml_load` generates `INSERT INTO` statements. }
-#'   \item{ `dm_ddl_post` generates scripts for `FOREIGN KEYS`, `UNIQUE KEYS` and `INDEXES`. }
-#'   \item{ `dm_sql` calls all three above and returns complete set of scripts. }
+#'   \item{ `dm_ddl_pre()` generates `CREATE TABLE` statements (including `PRIMARY KEY` definition). }
+#'   \item{ `dm_dml_load()` generates `INSERT INTO` statements. }
+#'   \item{ `dm_ddl_post()` generates scripts for `FOREIGN KEY`, `UNIQUE KEY` and `INDEX`. }
+#'   \item{ `dm_sql()` calls all three above and returns a complete set of scripts. }
 #' }
 #'
-#' @return character vector of SQL statements.
+#' @return Nested list of SQL statements.
 #'
 #' @export
 #' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("dbplyr")
@@ -36,153 +39,487 @@
 dm_sql <- function(
     dm,
     dest,
-    temporary = TRUE,
-    schema = NULL) {
+    table_names = NULL,
+    temporary = TRUE) {
   #
+  check_suggested("dbplyr", use = TRUE)
+
+  table_names <- ddl_check_table_names(table_names, dm)
+
+  dm <- ddl_reorder_dm(dm, dest)
+
   list(
-    ## CREATE TABLE and PRIMARY KEY (unless !set_key_constraints)
-    ## TODO: set_key_constraints not needed because user can rm PK from dm before calling dm_sql, same with renaming tables in table_names
-    pre = dm_ddl_pre(dm, dest, table_names = set_names(names(dm)), set_key_constraints = TRUE, schema = schema),
-    ## INSERT INTO, handle autoincrement, TODO handle+test ai together with !set_key_constraints
-    load = dm_dml_load(dm, dest, table_names = set_names(names(dm))),
-    ## FOREIGN KEYS, UNIQUE KEYS, INDEXES
-    post = dm_ddl_post(dm, dest, table_names = set_names(names(dm)), schema = schema)
+    ## CREATE TABLE and PRIMARY KEY, FOREIGN KEYS and UNIQUE KEYS on DuckDB and SQLite
+    pre = dm_ddl_pre(dm, dest, table_names, temporary),
+    ## INSERT INTO, handle autoincrement
+    load = dm_dml_load(dm, dest, table_names, temporary),
+    ## FOREIGN KEYS and UNIQUE KEYS (except DuckDB and SQLite), INDEXES
+    post = dm_ddl_post(dm, dest, table_names, temporary)
   )
 }
 
-## database-specific type conversions
-## could that go into DBI package as improvement to dbDataType?
-db_types_mapping <- function(types, autoincrement = character(), dest) {
-  ## data type mapping
-  if (is_mariadb(dest)) {
-    types[types == "TEXT"] <- "VARCHAR(255)"
+ddl_check_table_names <- function(table_names, dm) {
+  if (is.null(table_names)) {
+    table_names <- set_names(names(dm))
   }
-  if (is_sqlite(dest)) {
-    types[types == "INT"] <- "INTEGER"
-  }
-  ## autoincrement types mapping
-  if (length(autoincrement)) {
-    if (is_postgres(dest)) {
-      types[names(types) == autoincrement] <- "SERIAL"
-    }
-    if (is_mssql(dest)) {
-      types[names(types) == autoincrement] <- "INT IDENTITY"
-    }
-    if (is_mariadb(dest)) {
-      # Doesn't have a special data type. Uses `AUTO_INCREMENT` attribute instead.
-      # Ref: https://mariadb.com/kb/en/auto_increment/
-      types[names(types) == autoincrement] <- paste(types[names(types) == autoincrement], "AUTO_INCREMENT")
-    }
-    # DuckDB:
-    # Doesn't have a special data type. Uses `CREATE SEQUENCE` instead.
-    # Ref: https://duckdb.org/docs/sql/statements/create_sequence
-    # SQLite:
-    # For a primary key, autoincrementing works by default, and it is almost never
-    # necessary to use the `AUTOINCREMENT` keyword. So nothing we need to do here.
-    # Ref: https://www.sqlite.org/autoinc.html
-  }
-  types
+
+  table_names
 }
 
-ddl_cols <- function(x, dest, autoincrement) {
-  qcols <- DBI::dbQuoteIdentifier(dest, names(x))
-  types <- DBI::dbDataType(dest, x)
-  types <- db_types_mapping(types, autoincrement, dest)
-  paste(qcols, types)
-}
-ddl_pk <- function(x, dest) {
-  if (length(x)) {
-    paste0("  PRIMARY KEY (", paste(DBI::dbQuoteIdentifier(dest, x), collapse = ", "), ")")
-  } else {
-    character()
+ddl_reorder_dm <- function(dm, con) {
+  if (!ddl_need_early_constraints(con)) {
+    return(dm)
   }
+
+  ## For databases that do not support adding constraints after table creation,
+  ## reorder queries according to topological sort so uks are created before associated fks
+  graph <- create_graph_from_dm(dm, directed = TRUE)
+  topo <- names(igraph::topo_sort(graph, mode = "in"))
+
+  if (length(topo) == length(dm)) {
+    dm <- dm[topo]
+  } else {
+    cli_warn(c(
+      # FIXME: show cycle
+      "Cycles in the relationship graph prevent creation of foreign key constraints.",
+      i = if (is_duckdb(dest)) "DuckDB does not support adding constraints after table creation.",
+      i = if (is_sqlite(dest)) "SQLite does not support adding constraints after table creation.",
+      NULL
+    ))
+    dm <- dm_rm_fk(dm)
+  }
+
+  dm
 }
-ddl_tbl <- function(x, name, dest, pk, autoincrement, temporary, set_key_constraints) {
-  stopifnot(is.character(pk), is.logical(autoincrement), is.logical(temporary))
-  istmp <- if (temporary) "TEMPORARY " else ""
-  cols_def <- paste(ddl_cols(x, dest, pk[autoincrement]), collapse = ",\n  ")
-  qname <- DBI::dbQuoteIdentifier(dest, name)
-  pk_def <- if (set_key_constraints) ddl_pk(pk, dest)
-  DBI::SQL(sprintf(
-    "CREATE %sTABLE %s (\n  %s\n)",
-    istmp, qname, paste(c(cols_def, pk_def), collapse = ",\n")
+
+#' @rdname dm_sql
+#' @export
+#' @autoglobal
+dm_ddl_pre <- function(
+    dm,
+    dest,
+    table_names = NULL,
+    temporary = TRUE) {
+  #
+  check_suggested("dbplyr", use = TRUE)
+
+  table_names <- ddl_check_table_names(table_names, dm)
+
+  dm <- ddl_reorder_dm(dm, dest)
+
+  ## use 0-rows object
+  ptype_dm <- collect(dm_ptype(dm))
+
+  con <- con_from_src_or_con(dest)
+
+  ## fetch types, keys and uniques
+  pks <- dm_get_all_pks_impl(ptype_dm)
+  uks <- dm_get_all_uks_impl(ptype_dm)
+  fks <- dm_get_all_fks_impl(ptype_dm)
+
+  ## build sql definitions to use in `CREATE TABLE ...`
+
+  tbl_defs <- tibble(name = names(ptype_dm))
+
+  # column definitions
+  col_defs <-
+    ptype_dm %>%
+    dm_get_tables() %>%
+    ddl_get_col_defs(con, table_names, pks) %>%
+    group_by(name) %>%
+    summarize(
+      col_defs = paste(col_def, collapse = ",\n  ")
+    ) %>%
+    ungroup()
+
+  # primary key definitions
+  pk_defs <-
+    pks %>%
+    ddl_get_pk_def(con, table_names)
+
+  # Only add constraints if not adding them later
+  if (!ddl_need_early_constraints(dest)) {
+    uks <- vec_slice(uks, 0)
+    fks <- vec_slice(fks, 0)
+  }
+
+  uk_defs <-
+    uks %>%
+    ddl_get_uk_defs(con, table_names) %>%
+    group_by(name) %>%
+    summarize(uk_defs = paste(uk_def, collapse = ",\n  ")) %>%
+    ungroup()
+
+  fk_defs <-
+    fks %>%
+    ddl_get_fk_defs(con, table_names) %>%
+    group_by(name) %>%
+    summarize(fk_defs = paste(fk_def, collapse = ",\n  ")) %>%
+    ungroup()
+
+  ## compile `CREATE TABLE ...` queries
+  create_table_queries <-
+    tbl_defs %>%
+    left_join(col_defs, by = "name") %>%
+    left_join(pk_defs, by = "name") %>%
+    left_join(uk_defs, by = "name") %>%
+    left_join(fk_defs, by = "name") %>%
+    rowwise() %>%
+    mutate(
+      remote_name = table_names[name],
+      all_defs = paste(
+        Filter(
+          Negate(is.na),
+          c(col_defs, pk_def, uk_defs, fk_defs)
+        ),
+        collapse = ",\n  "
+      )
+    ) %>%
+    ungroup() %>%
+    transmute(name, remote_name, sql_table = DBI::SQL(glue(
+      "CREATE {if (temporary) 'TEMPORARY ' else ''}TABLE {purrr::map_chr(remote_name, ~ DBI::dbQuoteIdentifier(con, .x))} (\n  {all_defs}\n)"
+    )))
+
+  set_names(map(create_table_queries$sql_table, DBI::SQL), create_table_queries$name)
+}
+
+#' @rdname dm_sql
+#' @export
+dm_dml_load <- function(
+    dm,
+    dest,
+    table_names = NULL,
+    temporary = TRUE) {
+  #
+  check_suggested("dbplyr", use = TRUE)
+
+  table_names <- ddl_check_table_names(table_names, dm)
+
+  dm <- ddl_reorder_dm(dm, dest)
+
+  if (is_mssql(dest)) {
+    pks <- dm_get_all_pks_impl(dm)
+  } else {
+    pks <- NULL
+  }
+
+  dm %>%
+    names() %>%
+    set_names() %>%
+    map(dml_tbl_load, dm, table_names, pks, dest) %>%
+    compact()
+}
+
+#' @rdname dm_sql
+#' @export
+dm_ddl_post <- function(
+    dm,
+    dest,
+    table_names = NULL,
+    temporary = TRUE) {
+  #
+  check_suggested("dbplyr", use = TRUE)
+
+  table_names <- ddl_check_table_names(table_names, dm)
+
+  ## use 0-rows object
+  ptype_dm <- collect(dm_ptype(dm))
+
+  con <- con_from_src_or_con(dest)
+
+  ## fetch types, keys and uniques
+  uks <- dm_get_all_uks_impl(ptype_dm)
+  fks <- dm_get_all_fks_impl(ptype_dm)
+
+  ## build sql definitions to use in `CREATE TABLE ...`
+
+  tbl_defs <- tibble(name = names(ptype_dm))
+
+  # Get this before we perhaps erase fks
+  index_defs <- ddl_get_index_defs(fks, con, table_names)
+
+  # unique constraint definitions
+  if (nrow(uks) == 0) {
+    # No action
+  } else if (ddl_need_early_constraints(dest)) {
+    uks <- vec_slice(uks, 0)
+  }
+
+  uk_defs <-
+    ddl_get_uk_defs(uks, con, table_names) %>%
+    group_by(name) %>%
+    summarize(uk_defs = if (length(remote_name) == 0) list(NULL) else list(DBI::SQL(glue(
+      # FIXME: Designate temporary table if possible
+      "ALTER TABLE {DBI::dbQuoteIdentifier(dest, remote_name[[1]])} ADD {uk_def}"
+    )))) %>%
+    ungroup()
+
+  # foreign key definitions and indexing queries
+  # https://github.com/r-lib/rlang/issues/1422
+  if (nrow(fks) == 0) {
+    # No action
+  } else if (is_mariadb(con) && temporary) {
+    if (!is_testing()) {
+      warn("MySQL and MariaDB don't support foreign keys for temporary tables, these won't be set in the remote database but are preserved in the `dm`")
+    }
+    fks <- vec_slice(fks, 0)
+  } else if (ddl_need_early_constraints(dest)) {
+    fks <- vec_slice(fks, 0)
+  }
+
+  fk_defs <-
+    ddl_get_fk_defs(fks, con, table_names) %>%
+    group_by(name) %>%
+    summarize(fk_defs = if (length(remote_name) == 0) list(NULL) else list(DBI::SQL(glue(
+      # FIXME: Designate temporary table if possible
+      "ALTER TABLE {DBI::dbQuoteIdentifier(dest, remote_name[[1]])} ADD {fk_def}"
+    )))) %>%
+    ungroup()
+
+  queries <-
+    tbl_defs %>%
+    left_join(uk_defs, by = "name") %>%
+    left_join(fk_defs, by = "name") %>%
+    left_join(index_defs, by = "name")
+
+  list(
+    uk = compact(set_names(queries$uk_defs, queries$name)),
+    fk = compact(set_names(queries$fk_defs, queries$name)),
+    indexes = compact(set_names(queries$index_defs, queries$name))
+  )
+}
+
+ddl_need_early_constraints <- function(con) {
+  is_duckdb(con) || is_sqlite(con)
+}
+
+ddl_quote_enum_col <- function(x, con) {
+  map_chr(x, ~ paste(DBI::dbQuoteIdentifier(.x, conn = con), collapse = ", "))
+}
+
+ddl_get_col_defs <- function(tables, con, table_names, pks) {
+  get_sql_col_types <- function(tbl, name) {
+    # autoincrementing is not possible for composite keys, so `pk_col` is guaranteed
+    # to be a scalar
+    pk_col <- vec_slice(pks, pks$table == name)
+
+    types <- DBI::dbDataType(con, tbl)
+
+    # database-specific type conversions
+    if (is_mariadb(con)) {
+      types[types == "TEXT"] <- "VARCHAR(255)"
+    }
+    if (is_sqlite(con)) {
+      types[types == "INT"] <- "INTEGER"
+    }
+
+    # database-specific autoincrementing column types
+    if (isTRUE(pk_col$autoincrement)) {
+      # extract column name representing primary key
+      pk_col_name <- pk_col$pk_col[[1]]
+
+      # Postgres:
+      if (is_postgres(con)) {
+        types[pk_col_name] <- "SERIAL"
+      }
+
+      # SQL Server:
+      if (is_mssql(con)) {
+        types[pk_col_name] <- paste0(types[pk_col_name], " IDENTITY")
+      }
+
+      # MariaDB:
+      # Doesn't have a special data type. Uses `AUTO_INCREMENT` attribute instead.
+      # Ref: https://mariadb.com/kb/en/auto_increment/
+      if (is_mariadb(con)) {
+        types[pk_col_name] <- paste0(types[pk_col_name], " AUTO_INCREMENT")
+      }
+
+      # DuckDB:
+      # Doesn't have a special data type. Uses `CREATE SEQUENCE` instead.
+      # Ref: https://duckdb.org/docs/sql/statements/create_sequence
+
+      # SQLite:
+      # For a primary key, autoincrementing works by default, and it is almost never
+      # necessary to use the `AUTOINCREMENT` keyword. So nothing we need to do here.
+      # Ref: https://www.sqlite.org/autoinc.html
+    }
+
+    enframe(types, "col", "type")
+  }
+
+  tables %>%
+    imap(get_sql_col_types) %>%
+    list_rbind(names_to = "name") %>%
+    mutate(col_def = glue("{DBI::dbQuoteIdentifier(con, col)} {type}"))
+}
+
+ddl_get_pk_def <- function(pks, con, table_names) {
+  pk_defs <- tibble(
+    name = character(),
+    remote_name = unname(vec_ptype(table_names)),
+    pk_def = character()
+  )
+  if (nrow(pks) == 0) {
+    return(pk_defs)
+  }
+
+  out <-
+    pks %>%
+    rename(name = table) %>%
+    transmute(
+      name,
+      remote_name = unname(table_names[name]),
+      pk_def = paste0("PRIMARY KEY (", ddl_quote_enum_col(pk_col, con), ")")
+    )
+
+  vec_assert(out, pk_defs)
+  out
+}
+
+ddl_get_uk_defs <- function(uks, con, table_names) {
+  uk_defs <- tibble(
+    name = character(),
+    remote_name = unname(vec_ptype(table_names)),
+    uk_def = character()
+  )
+  if (nrow(uks) == 0) {
+    return(uk_defs)
+  }
+
+  out <-
+    uks %>%
+    rename(name = table) %>%
+    transmute(
+      name,
+      remote_name = unname(table_names[name]),
+      uk_def = paste0("UNIQUE (", ddl_quote_enum_col(uk_col, con), ")")
+    )
+
+  vec_assert(out, uk_defs)
+  out
+}
+
+ddl_get_fk_defs <- function(fks, con, table_names) {
+  fk_defs <- tibble(
+    name = character(),
+    remote_name = unname(vec_ptype(table_names)),
+    fk_def = character()
+  )
+  if (nrow(fks) == 0) {
+    return(fk_defs)
+  }
+
+  ## helper to set on delete statement for fks if required
+  set_on_delete_col <- function(x) {
+    if (is_duckdb(con) && any(x == "cascade")) {
+      inform(glue('`on_delete = "cascade"` not supported for duckdb'))
+      ""
+    } else {
+      map_chr(x, ~ {
+        switch(.x,
+          "no_action" = "",
+          "cascade" = " ON DELETE CASCADE",
+          abort(glue('`on_delete = "{.x}"` not supported'))
+        )
+      })
+    }
+  }
+
+  out <-
+    fks %>%
+    transmute(
+      name = child_table,
+      remote_name = unname(table_names[name]),
+      fk_def = paste0(
+        "FOREIGN KEY (",
+        ddl_quote_enum_col(child_fk_cols, con),
+        ") REFERENCES ",
+        purrr::map_chr(table_names[fks$parent_table], ~ DBI::dbQuoteIdentifier(con, .x)),
+        " (",
+        ddl_quote_enum_col(parent_key_cols, con),
+        ")",
+        set_on_delete_col(on_delete)
+      )
+    )
+
+  vec_assert(out, fk_defs)
+  out
+}
+
+dml_tbl_load <- function(tbl_name, dm, table_names, pks, dest) {
+  tbl <- collect(dm[[tbl_name]])
+  if (nrow(tbl) == 0) {
+    return(NULL)
+  }
+
+  # pks is NULL if not mssql
+  mssql_autoinc <- !is.null(pks) && isTRUE(pks$autoincrement[tbl_name == pks$table])
+
+  remote_name <- table_names[[tbl_name]]
+  remote_tbl_quoted <- DBI::dbQuoteIdentifier(dest, remote_name)
+  selectvals <- dbplyr::sql_render(dbplyr::copy_inline(dest, tbl))
+
+  if (is_mariadb(dest)) {
+    # Work around https://github.com/tidyverse/dbplyr/pull/1195
+    selectvals <- strsplit(selectvals, "\n", fixed = TRUE)[[1]]
+    from <- grep("^FROM", selectvals)[[1]]
+    idx <- seq_len(from - 1L)
+    # https://github.com/tidyverse/dbplyr/pull/1195
+    selectvals[idx] <- gsub(" AS NUMERIC", " AS DOUBLE", selectvals[idx])
+    selectvals <- paste(selectvals, collapse = "\n")
+  }
+
+  ## for some DBes we could skip columns specification, but only when no autoincrement, easier to just specify that always
+  ## duckdb autoincrement tests are skipped, could be added by inserting from sequence
+  out <- paste0(
+    "INSERT INTO ",
+    remote_tbl_quoted,
+    " (",
+    paste(DBI::dbQuoteIdentifier(dest, names(tbl)), collapse = ", "),
+    ")\n",
+    selectvals
+  )
+  DBI::SQL(paste0(
+    if (mssql_autoinc) paste0("SET IDENTITY_INSERT ", remote_tbl_quoted, " ON\n"),
+    out,
+    if (mssql_autoinc) paste0("\nSET IDENTITY_INSERT ", remote_tbl_quoted, " OFF")
   ))
 }
 
-#' @rdname dm_sql
-#' @export
-dm_ddl_pre <- function(dm, dest, temporary = TRUE, table_names = set_names(names(dm)), set_key_constraints = TRUE, schema = NULL) {
-  pksdf <- map(names(dm), dm_get_all_pks_impl, dm = dm) ## map so we have entries for tables that does not have PK
-  pks <- map(pksdf, function(x) if (nrow(x)) x[["pk_col"]][[1L]] else character())
-  ais <- map_lgl(pksdf, function(x) if (nrow(x)) x[["autoincrement"]] else FALSE)
-  ## CREATE TABLE, including PK
-  stopifnot(
-    length(dm) == length(names(dm)), length(dm) == length(pks), length(dm) == length(ais),
-    length(table_names) == length(dm), !is.null(names(table_names))
+ddl_get_index_defs <- function(fks, con, table_names) {
+  index_defs <- tibble(
+    name = character(0),
+    index_defs = list(),
+    index_name = list()
   )
-  tbl_def <- pmap(
-    list(
-      name = table_names[names(dm)],
-      x = dm_get_tables(dm), ## dm
-      pk = pks, ## list of character vectors
-      autoincrement = ais ## logical vector
-    ),
-    ddl_tbl,
-    dest = dest,
-    temporary = temporary,
-    set_key_constraints = set_key_constraints
-  )
-  tbl_def
-}
-
-#' @rdname dm_sql
-#' @export
-dm_dml_load <- function(dm, dest, table_names = set_names(names(dm))) {
-  tbl_dml_load <- function(tbl_name, dm, remote_name, con) {
-    pkdf <- dm_get_all_pks_impl(dm, tbl_name)
-    x <- collect(dm[[tbl_name]])
-    remote_tbl_id <- remote_name[[tbl_name]]
-    if (isTRUE(pkdf[["autoincrement"]])) {
-      x <- x[!names(x) %in% pkdf[["pk_col"]][[1L]]]
-    }
-    selectvals <- dbplyr::sql_render(dbplyr::copy_inline(con, x))
-    ## for some DBes we could skip columns specification, but only when no autoincrement, easier to just specify that always
-    ## duckdb autoincrement tests are skipped, could be added by inserting from sequence
-    ins <- paste0(
-      "INSERT INTO ",
-      DBI::dbQuoteIdentifier(con, remote_tbl_id),
-      " (",
-      paste(DBI::dbQuoteIdentifier(con, names(x)), collapse = ", "),
-      ")\n"
-    )
-    paste0(ins, selectvals)
+  if (nrow(fks) == 0) {
+    return(index_defs)
   }
-  sql <- map_chr(
-    set_names(names(table_names)),
-    tbl_dml_load,
-    dm = dm,
-    remote_name = table_names,
-    con = dest
-  )
-  map(sql, DBI::SQL)
-}
 
-ddl_fk <- function(dm, dest, table_names, schema) {
-  list()
-}
-ddl_unq <- function(dm, dest, table_names, schema) {
-  list()
-}
-ddl_idx <- function(dm, dest, table_names, schema) {
-  list()
-}
+  out <-
+    fks %>%
+    mutate(
+      name = child_table,
+      index_name = map_chr(child_fk_cols, paste, collapse = "_"),
+      remote_name = purrr::map_chr(table_names[name], ~ DBI::dbQuoteIdentifier(con, .x)),
+      remote_name_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)), ~ .x@name[["table"]]),
+      index_name = make.unique(paste0(remote_name_unquoted, "__", index_name), sep = "__")
+    ) %>%
+    group_by(name) %>%
+    summarize(
+      index_defs = list(DBI::SQL(paste0(
+        "CREATE INDEX ",
+        index_name,
+        " ON ",
+        remote_name,
+        " (",
+        ddl_quote_enum_col(child_fk_cols, con),
+        ")"
+      ))),
+      index_name = list(index_name)
+    )
 
-#' @rdname dm_sql
-#' @export
-dm_ddl_post <- function(dm, dest, table_names = set_names(names(dm)), schema = NULL) {
-  list(
-    fk = ddl_fk(dm, dest, table_names = table_names, schema = schema),
-    unique = ddl_unq(dm, dest, table_names = table_names, schema = schema),
-    indexes = ddl_idx(dm, dest, table_names = table_names, schema = schema)
-  )
+  vec_assert(out, index_defs)
+  out
 }
