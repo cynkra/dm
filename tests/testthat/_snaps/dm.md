@@ -108,8 +108,17 @@
     Code
       writeLines(conditionMessage(expect_error(dm(dm_for_flatten(),
       dm_for_filter_duckdb()))))
+    Condition
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+    Message
+      `on_delete = "cascade"` not supported for duckdb
     Output
-      All `dm` objects need to share the same `src`.
+      i In index: 2.
+      Caused by error:
+      ! argument "use" is missing, with no default
 
 # output for dm() with dm
 
