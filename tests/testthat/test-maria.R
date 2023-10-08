@@ -6,7 +6,7 @@ test_that("dummy", {
 
 test_that("dm_sql()", {
   # Need skip in every test block, unfortunately
-  skip_if_src_not("postgres")
+  skip_if_src_not("maria")
 
   # https://github.com/tidyverse/dbplyr/pull/1190
   skip_if(is(my_test_con(), "MySQLConnection") && packageVersion("dbplyr") < "2.4.0")

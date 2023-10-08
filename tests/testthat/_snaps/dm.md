@@ -439,7 +439,7 @@
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
       # i 134 more rows
       # i 5 more variables: wind_gust <dbl>, precip <dbl>, pressure <dbl>,
-      #   visib <dbl>, time_hour <dttm>
+      #   visib <dbl>, time_hour <chr>
     Code
       pull_tbl(nyc_comp(), weather)
     Output
@@ -458,7 +458,7 @@
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
       # i 134 more rows
       # i 5 more variables: wind_gust <dbl>, precip <dbl>, pressure <dbl>,
-      #   visib <dbl>, time_hour <dttm>
+      #   visib <dbl>, time_hour <chr>
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% pull_tbl()
     Output
@@ -477,7 +477,7 @@
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
       # i 134 more rows
       # i 5 more variables: wind_gust <dbl>, precip <dbl>, pressure <dbl>,
-      #   visib <dbl>, time_hour <dttm>
+      #   visib <dbl>, time_hour <chr>
 
 # glimpse.dm() works
 
