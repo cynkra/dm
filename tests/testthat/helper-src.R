@@ -749,6 +749,6 @@ clear_postgres <- function() {
   walk(
     get_test_tables_from_postgres() %>%
       pull(),
-    ~ dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
+    ~ DBI::dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
   )
 }
