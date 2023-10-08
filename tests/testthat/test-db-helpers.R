@@ -7,14 +7,14 @@ test_that("DB helpers work for MSSQL", {
   expect_identical(dbname_mssql(con_mssql, NULL), set_names("", ""))
 
   withr::defer({
-    try(dbExecute(con_mssql, "DROP TABLE test_db_helpers"))
-    try(dbExecute(con_mssql, "DROP TABLE test_db_helpers_2"))
-    try(dbExecute(con_mssql, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
-    try(dbExecute(con_mssql, "DROP SCHEMA schema_db_helpers"))
-    try(dbExecute(con_mssql, "DROP TABLE [db_helpers_db].[dbo].[test_db_helpers_3]"))
-    try(dbExecute(con_mssql, "DROP TABLE [db_helpers_db].[schema_db_helpers_2].[test_db_helpers_4]"))
+    try(DBI::dbExecute(con_mssql, "DROP TABLE test_db_helpers"))
+    try(DBI::dbExecute(con_mssql, "DROP TABLE test_db_helpers_2"))
+    try(DBI::dbExecute(con_mssql, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
+    try(DBI::dbExecute(con_mssql, "DROP SCHEMA schema_db_helpers"))
+    try(DBI::dbExecute(con_mssql, "DROP TABLE [db_helpers_db].[dbo].[test_db_helpers_3]"))
+    try(DBI::dbExecute(con_mssql, "DROP TABLE [db_helpers_db].[schema_db_helpers_2].[test_db_helpers_4]"))
     # dropping schema is unnecessary
-    try(dbExecute(con_mssql, "DROP DATABASE db_helpers_db"))
+    try(DBI::dbExecute(con_mssql, "DROP DATABASE db_helpers_db"))
   })
 
   # create tables in 'dbo'
@@ -111,10 +111,10 @@ test_that("DB helpers work for Postgres", {
   expect_identical(schema_postgres(con_postgres, NULL), "public")
 
   withr::defer({
-    try(dbExecute(con_postgres, "DROP TABLE test_db_helpers"))
-    try(dbExecute(con_postgres, "DROP TABLE test_db_helpers_2"))
-    try(dbExecute(con_postgres, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
-    try(dbExecute(con_postgres, "DROP SCHEMA schema_db_helpers"))
+    try(DBI::dbExecute(con_postgres, "DROP TABLE test_db_helpers"))
+    try(DBI::dbExecute(con_postgres, "DROP TABLE test_db_helpers_2"))
+    try(DBI::dbExecute(con_postgres, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
+    try(DBI::dbExecute(con_postgres, "DROP SCHEMA schema_db_helpers"))
   })
 
   # create tables in 'public'
@@ -191,7 +191,7 @@ test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
     value = tibble(a = 1)
   )
   withr::defer({
-    try(dbExecute(con_db, "DROP TABLE test_db_helpers"))
+    try(DBI::dbExecute(con_db, "DROP TABLE test_db_helpers"))
   })
 
   skip_if_src("maria")
