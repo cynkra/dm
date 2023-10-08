@@ -1,5 +1,32 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9009
+
+## Chore
+
+- Prepare for removal of magrittr imports (#1983).
+
+- Add FIXME.
+
+- Support loading with empty NAMESPACE file.
+
+- Move pillar to Suggests (#1976).
+
+- Switch to usethis imports, blanket vctrs import.
+
+- Switch internal testing to MariaDB.
+
+- Explain reasoning behind SQLite.
+
+- Parallel.
+
+## Testing
+
+- Add explicit unique key to `dm_for_filter()`.
+
+- Add Postgres test for `dm_sql()`.
+
+
 # dm 1.0.6.9008
 
 ## Chore
