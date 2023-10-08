@@ -18,7 +18,7 @@ test_that("table identifiers are quoted", {
   on.exit({
     walk(
       remote_tbl_names_copied,
-      ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
+      ~ try(DBI::dbExecute(con_db, paste0("DROP TABLE ", .x)))
     )
   })
 
@@ -60,7 +60,7 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
   on.exit({
     walk(
       remote_tbl_names_copied,
-      ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
+      ~ try(DBI::dbExecute(con_db, paste0("DROP TABLE ", .x)))
     )
   })
 
