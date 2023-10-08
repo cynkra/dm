@@ -118,7 +118,7 @@ test_that("DB helpers work for Postgres", {
   })
 
   # create tables in 'public'
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_postgres,
     DBI::Id(schema = "public", table = "test_db_helpers"),
     value = tibble(a = 1)
