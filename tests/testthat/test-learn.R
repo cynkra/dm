@@ -298,7 +298,7 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     DBI::Id(db = "test_database_dm", schema = "dm_test", table = "test_1"),
     value = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5)
   )
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(db = "test_database_dm", schema = "dm_test", table = "test_2"),
     value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
