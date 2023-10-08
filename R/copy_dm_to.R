@@ -37,6 +37,8 @@ dm_sql <- function(
     table_names = NULL,
     temporary = TRUE) {
   #
+  check_suggested("dbplyr")
+
   table_names <- ddl_check_table_names(table_names, dm)
 
   dm <- ddl_reorder_dm(dm, dest)
@@ -102,6 +104,8 @@ dm_ddl_pre <- function(
     table_names = NULL,
     temporary = TRUE) {
   #
+  check_suggested("dbplyr")
+
   table_names <- ddl_check_table_names(table_names, dm)
 
   dm <- ddl_reorder_dm(dm, dest)
@@ -241,6 +245,8 @@ dm_dml_load <- function(
     table_names = NULL,
     temporary = TRUE) {
   #
+  check_suggested("dbplyr")
+
   table_names <- ddl_check_table_names(table_names, dm)
 
   dm <- ddl_reorder_dm(dm, dest)
@@ -412,6 +418,8 @@ dm_ddl_post <- function(
     table_names = NULL,
     temporary = TRUE) {
   #
+  check_suggested("dbplyr")
+
   table_names <- ddl_check_table_names(table_names, dm)
 
   ## use 0-rows object
