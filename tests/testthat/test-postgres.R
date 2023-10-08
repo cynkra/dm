@@ -4,9 +4,9 @@ test_that("dummy", {
   })
 })
 
-test_that("snapshot test", {
-  skip_if_src_not("postgres")
+skip_if_src_not("postgres")
 
+test_that("dm_sql()", {
   expect_snapshot({
     dm_for_filter() %>%
       collect() %>%
