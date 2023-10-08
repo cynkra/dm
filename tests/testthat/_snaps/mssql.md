@@ -6,7 +6,7 @@
 # dm_sql()
 
     Code
-      dm_for_filter() %>% collect() %>% dm_sql(my_test_con())
+      dm_for_filter_df() %>% dm_sql(my_test_con())
     Output
       $pre
       $pre$tf_1
@@ -107,16 +107,16 @@
         TRY_CAST("g" AS VARCHAR(MAX)) AS "g"
       FROM (
         VALUES
-          ('I', 7, 'eight'),
-          ('F', 6, 'five'),
-          ('E', 5, 'four'),
-          ('J', 10, 'nine'),
           ('C', 2, 'one'),
-          ('H', 7, 'seven'),
-          ('G', 7, 'six'),
-          ('K', 11, 'ten'),
+          ('C', 3, 'two'),
           ('D', 4, 'three'),
-          ('C', 3, 'two')
+          ('E', 5, 'four'),
+          ('F', 6, 'five'),
+          ('G', 7, 'six'),
+          ('H', 7, 'seven'),
+          ('I', 7, 'eight'),
+          ('J', 10, 'nine'),
+          ('K', 11, 'ten')
       ) AS drvd("f", "f1", "g")
       
       $load$tf_4

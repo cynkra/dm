@@ -12,8 +12,7 @@ test_that("dm_sql()", {
   skip_if(is(my_test_con(), "MySQLConnection") && packageVersion("dbplyr") < "2.4.0")
 
   expect_snapshot({
-    dm_for_filter() %>%
-      collect() %>%
+    dm_for_filter_df() %>%
       dm_sql(my_test_con())
   })
 })

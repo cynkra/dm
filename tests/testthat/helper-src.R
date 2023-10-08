@@ -335,6 +335,10 @@ dm_for_filter_db %<--% {
   copy_dm_to(my_db_test_src(), dm_for_filter())
 }
 
+dm_for_filter_df %<--% {
+  collect(dm_for_filter())
+}
+
 dm_for_filter_duckdb %<--% copy_dm_to(duckdb_test_src(), dm_for_filter())
 
 dm_for_filter_rev %<-% {

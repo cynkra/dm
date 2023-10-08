@@ -6,7 +6,7 @@
 # dm_sql()
 
     Code
-      dm_for_filter() %>% collect() %>% dm_sql(my_test_con())
+      dm_for_filter_df() %>% dm_sql(my_test_con())
     Message
       `on_delete = "cascade"` not supported for duckdb
     Output
