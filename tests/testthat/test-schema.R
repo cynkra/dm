@@ -68,7 +68,7 @@ test_that("schema handling on MSSQL and Postgres works", {
 
   expect_message(expect_deprecated(db_schema_create(src_db, "1-dm_schema_TEST")), "created")
 
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(schema = "1-dm_schema_TEST", table = "test_schema_2"),
     value = tibble(b = letters[1:5])
