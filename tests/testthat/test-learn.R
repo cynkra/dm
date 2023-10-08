@@ -114,8 +114,8 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     ~ DBI::dbQuoteIdentifier(con_db, .x)
   )
   expect_identical(
-    sort(normalize_table_name(SQL(src_tbl_names))),
-    SQL(sort(normalize_table_name(remote_tbl_names)))
+    sort(normalize_table_name(DBI::SQL(src_tbl_names))),
+    DBI::SQL(sort(normalize_table_name(remote_tbl_names)))
   )
 
   # learning with keys:
