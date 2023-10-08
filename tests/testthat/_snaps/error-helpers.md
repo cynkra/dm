@@ -65,9 +65,14 @@
     Code
       abort_no_cycles(create_graph_from_dm(dm_for_filter_w_cycle()))
     Condition
-      Error in `abort_no_cycles()`:
-      ! Cycles in the relationship graph not yet supported.
-      i Shortest cycle: tf_5 -> tf_6 -> tf_7 -> tf_2 -> tf_3 -> tf_4 -> tf_5
+      Warning in `dm_for_filter_w_cycle()`:
+      restarting interrupted promise evaluation
+      Error:
+      ! You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ROW(1, 'A'),
+          ROW(2, 'B'),
+          ROW(3, 'C'),
+          ROW(4, 'D'),
+          ROW(5, 'E...' at line 11 [1064]
     Code
       abort_tables_not_reachable_from_start()
     Condition
