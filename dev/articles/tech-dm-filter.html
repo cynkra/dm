@@ -408,13 +408,13 @@ with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class
 <span><span class="co">#&gt;   SELECT *</span></span>
 <span><span class="co">#&gt;   FROM (</span></span>
 <span><span class="co">#&gt;     SELECT *</span></span>
-<span><span class="co">#&gt;     FROM `flights_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;     FROM `flights_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;     WHERE ((`month` = 1.0))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
 <span><span class="co">#&gt;   WHERE EXISTS (</span></span>
 <span><span class="co">#&gt;     SELECT 1 FROM (</span></span>
 <span><span class="co">#&gt;     SELECT *</span></span>
-<span><span class="co">#&gt;     FROM `airlines_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;     FROM `airlines_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;     WHERE ((`name` = 'Delta Air Lines Inc.'))</span></span>
 <span><span class="co">#&gt; ) AS `RHS`</span></span>
 <span><span class="co">#&gt;     WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span></span>
@@ -423,7 +423,7 @@ with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class
 <span><span class="co">#&gt; WHERE EXISTS (</span></span>
 <span><span class="co">#&gt;   SELECT 1 FROM (</span></span>
 <span><span class="co">#&gt;   SELECT *</span></span>
-<span><span class="co">#&gt;   FROM `airports_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;   FROM `airports_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;   WHERE ((`name` != 'John F Kennedy Intl'))</span></span>
 <span><span class="co">#&gt; ) AS `RHS`</span></span>
 <span><span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span></span>
@@ -433,7 +433,7 @@ with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class
 <span><span class="co">#&gt; &lt;SQL&gt; SELECT *</span></span>
 <span><span class="co">#&gt; FROM (</span></span>
 <span><span class="co">#&gt;   SELECT *</span></span>
-<span><span class="co">#&gt;   FROM `airlines_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;   FROM `airlines_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;   WHERE ((`name` = 'Delta Air Lines Inc.'))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
 <span><span class="co">#&gt; WHERE EXISTS (</span></span>
@@ -441,13 +441,13 @@ with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class
 <span><span class="co">#&gt;   SELECT *</span></span>
 <span><span class="co">#&gt;   FROM (</span></span>
 <span><span class="co">#&gt;     SELECT *</span></span>
-<span><span class="co">#&gt;     FROM `flights_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;     FROM `flights_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;     WHERE ((`month` = 1.0))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
 <span><span class="co">#&gt;   WHERE EXISTS (</span></span>
 <span><span class="co">#&gt;     SELECT 1 FROM (</span></span>
 <span><span class="co">#&gt;     SELECT *</span></span>
-<span><span class="co">#&gt;     FROM `airports_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;     FROM `airports_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;     WHERE ((`name` != 'John F Kennedy Intl'))</span></span>
 <span><span class="co">#&gt; ) AS `RHS`</span></span>
 <span><span class="co">#&gt;     WHERE (`LHS`.`origin` = `RHS`.`faa`)</span></span>
@@ -460,7 +460,7 @@ with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class
 <span><span class="co">#&gt; &lt;SQL&gt; SELECT *</span></span>
 <span><span class="co">#&gt; FROM (</span></span>
 <span><span class="co">#&gt;   SELECT *</span></span>
-<span><span class="co">#&gt;   FROM `airports_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;   FROM `airports_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;   WHERE ((`name` != 'John F Kennedy Intl'))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
 <span><span class="co">#&gt; WHERE EXISTS (</span></span>
@@ -468,13 +468,13 @@ with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class
 <span><span class="co">#&gt;   SELECT *</span></span>
 <span><span class="co">#&gt;   FROM (</span></span>
 <span><span class="co">#&gt;     SELECT *</span></span>
-<span><span class="co">#&gt;     FROM `flights_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;     FROM `flights_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;     WHERE ((`month` = 1.0))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
 <span><span class="co">#&gt;   WHERE EXISTS (</span></span>
 <span><span class="co">#&gt;     SELECT 1 FROM (</span></span>
 <span><span class="co">#&gt;     SELECT *</span></span>
-<span><span class="co">#&gt;     FROM `airlines_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt;     FROM `airlines_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;     WHERE ((`name` = 'Delta Air Lines Inc.'))</span></span>
 <span><span class="co">#&gt; ) AS `RHS`</span></span>
 <span><span class="co">#&gt;     WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span></span>
