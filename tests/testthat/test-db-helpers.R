@@ -7,37 +7,37 @@ test_that("DB helpers work for MSSQL", {
   expect_identical(dbname_mssql(con_mssql, NULL), set_names("", ""))
 
   withr::defer({
-    try(dbExecute(con_mssql, "DROP TABLE test_db_helpers"))
-    try(dbExecute(con_mssql, "DROP TABLE test_db_helpers_2"))
-    try(dbExecute(con_mssql, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
-    try(dbExecute(con_mssql, "DROP SCHEMA schema_db_helpers"))
-    try(dbExecute(con_mssql, "DROP TABLE [db_helpers_db].[dbo].[test_db_helpers_3]"))
-    try(dbExecute(con_mssql, "DROP TABLE [db_helpers_db].[schema_db_helpers_2].[test_db_helpers_4]"))
+    try(DBI::dbExecute(con_mssql, "DROP TABLE test_db_helpers"))
+    try(DBI::dbExecute(con_mssql, "DROP TABLE test_db_helpers_2"))
+    try(DBI::dbExecute(con_mssql, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
+    try(DBI::dbExecute(con_mssql, "DROP SCHEMA schema_db_helpers"))
+    try(DBI::dbExecute(con_mssql, "DROP TABLE [db_helpers_db].[dbo].[test_db_helpers_3]"))
+    try(DBI::dbExecute(con_mssql, "DROP TABLE [db_helpers_db].[schema_db_helpers_2].[test_db_helpers_4]"))
     # dropping schema is unnecessary
-    try(dbExecute(con_mssql, "DROP DATABASE db_helpers_db"))
+    try(DBI::dbExecute(con_mssql, "DROP DATABASE db_helpers_db"))
   })
 
   # create tables in 'dbo'
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_mssql,
     DBI::Id(schema = "dbo", table = "test_db_helpers"),
     value = tibble(a = 1)
   )
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_mssql,
     DBI::Id(schema = "dbo", table = "test_db_helpers_2"),
     value = tibble(a = 1)
   )
   # create table in a schema
-  dbExecute(con_mssql, "CREATE SCHEMA schema_db_helpers")
-  dbWriteTable(
+  DBI::dbExecute(con_mssql, "CREATE SCHEMA schema_db_helpers")
+  DBI::dbWriteTable(
     con_mssql,
     DBI::Id(schema = "schema_db_helpers", table = "test_db_helpers_2"),
     value = tibble(a = 1)
   )
   # create table on 'dbo' on another DB
-  dbExecute(con_mssql, "CREATE DATABASE db_helpers_db")
-  dbWriteTable(
+  DBI::dbExecute(con_mssql, "CREATE DATABASE db_helpers_db")
+  DBI::dbWriteTable(
     con_mssql,
     DBI::Id(db = "db_helpers_db", schema = "dbo", table = "test_db_helpers_3"),
     value = tibble(a = 1)
@@ -47,7 +47,7 @@ test_that("DB helpers work for MSSQL", {
   DBI::dbExecute(con_mssql, "USE db_helpers_db")
   DBI::dbExecute(con_mssql, "CREATE SCHEMA schema_db_helpers_2")
   DBI::dbExecute(con_mssql, paste0("USE ", original_dbname))
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_mssql,
     DBI::Id(db = "db_helpers_db", schema = "schema_db_helpers_2", table = "test_db_helpers_4"),
     value = tibble(a = 1)
@@ -111,26 +111,26 @@ test_that("DB helpers work for Postgres", {
   expect_identical(schema_postgres(con_postgres, NULL), "public")
 
   withr::defer({
-    try(dbExecute(con_postgres, "DROP TABLE test_db_helpers"))
-    try(dbExecute(con_postgres, "DROP TABLE test_db_helpers_2"))
-    try(dbExecute(con_postgres, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
-    try(dbExecute(con_postgres, "DROP SCHEMA schema_db_helpers"))
+    try(DBI::dbExecute(con_postgres, "DROP TABLE test_db_helpers"))
+    try(DBI::dbExecute(con_postgres, "DROP TABLE test_db_helpers_2"))
+    try(DBI::dbExecute(con_postgres, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
+    try(DBI::dbExecute(con_postgres, "DROP SCHEMA schema_db_helpers"))
   })
 
   # create tables in 'public'
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_postgres,
     DBI::Id(schema = "public", table = "test_db_helpers"),
     value = tibble(a = 1)
   )
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_postgres,
     DBI::Id(schema = "public", table = "test_db_helpers_2"),
     value = tibble(a = 1)
   )
   # create table in a schema
-  dbExecute(con_postgres, "CREATE SCHEMA schema_db_helpers")
-  dbWriteTable(
+  DBI::dbExecute(con_postgres, "CREATE SCHEMA schema_db_helpers")
+  DBI::dbWriteTable(
     con_postgres,
     DBI::Id(schema = "schema_db_helpers", table = "test_db_helpers_2"),
     value = tibble(a = 1)
@@ -185,13 +185,13 @@ test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
 
   # for other DBMS than "MSSQL" or "Postgrs", get_src_tbl_names() translates to `src_tbls_impl()`
   con_db <- my_db_test_src()$con
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(table = "test_db_helpers"),
     value = tibble(a = 1)
   )
   withr::defer({
-    try(dbExecute(con_db, "DROP TABLE test_db_helpers"))
+    try(DBI::dbExecute(con_db, "DROP TABLE test_db_helpers"))
   })
 
   skip_if_src("maria")

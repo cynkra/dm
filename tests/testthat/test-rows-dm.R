@@ -21,7 +21,7 @@ test_that("dm_rows_insert()", {
     dm_update_zoomed()
 
   # Must use SQLite because other databases have strict foreign key constraints
-  sqlite <- dbConnect(RSQLite::SQLite())
+  sqlite <- DBI::dbConnect(RSQLite::SQLite())
 
   # Target database:
   flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
@@ -84,7 +84,7 @@ test_that("dm_rows_insert()", {
     print(dm_nrow(flights_sqlite))
 
     # Disconnect
-    dbDisconnect(sqlite)
+    DBI::dbDisconnect(sqlite)
   })
 })
 
@@ -244,7 +244,7 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
     order_of_deletion <- c("t4", "t2", "t3", "t1")
     walk(
       order_of_deletion,
-      ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
+      ~ try(DBI::dbExecute(con_db, paste0("DROP TABLE ", .x)))
     )
   })
 

@@ -194,7 +194,7 @@ db_schema_create.src_dbi <- function(con, schema, ...) {
 
 #' @export
 db_schema_create.PqConnection <- function(con, schema, ...) {
-  DBI::dbExecute(con, SQL(glue::glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(con, schema)}")))
+  DBI::dbExecute(con, glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(con, schema)}"))
   message(glue::glue("Schema {tick(sql_to_character(con, schema))} created."))
   invisible(NULL)
 }
@@ -207,7 +207,7 @@ db_schema_create.PqConnection <- function(con, schema, ...) {
     withr::defer(DBI::dbExecute(con, glue::glue("USE {DBI::dbQuoteIdentifier(con, original_dbname)}")))
   }
   msg_suffix <- fix_msg(sql_to_character(con, dbname))
-  DBI::dbExecute(con, SQL(glue::glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(con, schema)}")))
+  DBI::dbExecute(con, glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(con, schema)}"))
   message(glue::glue("Schema {tick(sql_to_character(con, schema))} created{msg_suffix}."))
   invisible(NULL)
 }
@@ -345,7 +345,10 @@ db_schema_drop.PqConnection <- function(con, schema, force = FALSE, ...) {
     force_infix <- ""
     force_suffix <- ""
   }
-  DBI::dbExecute(con, SQL(glue::glue("DROP SCHEMA {DBI::dbQuoteIdentifier(con, schema)}{force_suffix}")))
+  DBI::dbExecute(
+    con,
+    glue("DROP SCHEMA {DBI::dbQuoteIdentifier(con, schema)}{force_suffix}")
+  )
   message(glue::glue("Dropped schema {tick(sql_to_character(con, schema))}{force_infix}."))
   invisible(NULL)
 }
@@ -362,11 +365,11 @@ db_schema_drop.PqConnection <- function(con, schema, force = FALSE, ...) {
     check_param_class(dbname, "character")
     check_param_length(dbname)
     original_dbname <- attributes(con)$info$dbname
-    DBI::dbExecute(con, glue::glue("USE {dbname}"))
-    withr::defer(DBI::dbExecute(con, glue::glue("USE {original_dbname}")))
+    DBI::dbExecute(con, glue("USE {dbname}"))
+    withr::defer(DBI::dbExecute(con, glue("USE {original_dbname}")))
   }
   msg_infix <- fix_msg(sql_to_character(con, dbname))
-  DBI::dbExecute(con, SQL(glue::glue("DROP SCHEMA {DBI::dbQuoteIdentifier(con, schema)}")))
+  DBI::dbExecute(con, glue("DROP SCHEMA {DBI::dbQuoteIdentifier(con, schema)}"))
   message(glue::glue("Dropped schema {tick(sql_to_character(con, schema))}{msg_infix}."))
   invisible(NULL)
 }

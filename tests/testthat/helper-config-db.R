@@ -74,7 +74,7 @@ test_src_mssql <- function(database = TRUE) {
     )
   }
 
-  dbExecute(con, "SET IMPLICIT_TRANSACTIONS OFF", immediate = TRUE)
+  DBI::dbExecute(con, "SET IMPLICIT_TRANSACTIONS OFF", immediate = TRUE)
 
   dbplyr::src_dbi(con, auto_disconnect = TRUE)
 }

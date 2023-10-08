@@ -771,7 +771,7 @@ rows_truncate.tbl_sql <- function(x, ...,
   if (!is_null(name)) {
     con <- dbplyr::remote_con(x)
     sql <- sql_rows_truncate(x)
-    dbExecute(con, sql, immediate = TRUE)
+    DBI::dbExecute(con, sql, immediate = TRUE)
     invisible(x)
   } else {
     x %>%

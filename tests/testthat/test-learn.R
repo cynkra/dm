@@ -8,7 +8,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   withr::defer(
     try(walk(
       remote_tbl_names,
-      ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
+      ~ try(DBI::dbExecute(con_db, paste0("DROP TABLE ", .x)))
     ))
   )
 
@@ -20,7 +20,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
       dm_get_tables(dm_for_filter_copied)[order_of_deletion],
       dbplyr::remote_name
     ) %>%
-    SQL() %>%
+    DBI::SQL() %>%
     DBI::dbUnquoteIdentifier(conn = con_db) %>%
     map_chr(~ .x@name[["table"]])
 
@@ -99,9 +99,9 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
   withr::defer({
     walk(
       remote_tbl_names,
-      ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
+      ~ try(DBI::dbExecute(con_db, paste0("DROP TABLE ", .x)))
     )
-    try(dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q)))
+    try(DBI::dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q)))
   })
 
   normalize_table_name <- function(x) {
@@ -114,8 +114,8 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     ~ DBI::dbQuoteIdentifier(con_db, .x)
   )
   expect_identical(
-    sort(normalize_table_name(SQL(src_tbl_names))),
-    SQL(sort(normalize_table_name(remote_tbl_names)))
+    sort(normalize_table_name(DBI::SQL(src_tbl_names))),
+    DBI::SQL(sort(normalize_table_name(remote_tbl_names)))
   )
 
   # learning with keys:
@@ -211,19 +211,19 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
 
   # delete database after test
   withr::defer({
-    try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_2]"))
-    try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_1]"))
-    try(dbExecute(con_db, "DROP DATABASE test_database_dm"))
+    try(DBI::dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_2]"))
+    try(DBI::dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_1]"))
+    try(DBI::dbExecute(con_db, "DROP DATABASE test_database_dm"))
   })
 
   # create another DB and 2 connected tables
   DBI::dbExecute(con_db, "CREATE DATABASE test_database_dm")
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(db = "test_database_dm", schema = "dbo", table = "test_1"),
     value = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5)
   )
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(db = "test_database_dm", schema = "dbo", table = "test_2"),
     value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
@@ -293,12 +293,12 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
   DBI::dbExecute(con_db, "CREATE SCHEMA dm_test")
   DBI::dbExecute(con_db, paste0("USE ", original_dbname))
 
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(db = "test_database_dm", schema = "dm_test", table = "test_1"),
     value = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5)
   )
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(db = "test_database_dm", schema = "dm_test", table = "test_2"),
     value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
@@ -315,10 +315,10 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
 
   # delete database after test
   withr::defer({
-    try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_2]"))
-    try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_1]"))
+    try(DBI::dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_2]"))
+    try(DBI::dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_1]"))
     # dropping schema is unnecessary
-    try(dbExecute(con_db, "DROP DATABASE test_database_dm"))
+    try(DBI::dbExecute(con_db, "DROP DATABASE test_database_dm"))
   })
 
   # test 'get_src_tbl_names()'
@@ -388,9 +388,9 @@ test_that("dm_meta() contents", {
   withr::defer({
     try(walk(
       order_of_deletion,
-      ~ try(dbExecute(con_db, paste0("DROP TABLE ", schema_name_q, ".", .x, " CASCADE")))
+      ~ try(DBI::dbExecute(con_db, paste0("DROP TABLE ", schema_name_q, ".", .x, " CASCADE")))
     ))
-    try(dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q)))
+    try(DBI::dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q)))
   })
 
   dm_for_filter_copied <- copy_dm_to(con_db, dm_for_filter(), temporary = FALSE, schema = schema_name)

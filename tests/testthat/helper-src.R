@@ -733,7 +733,7 @@ get_test_tables_from_postgres <- function() {
   con_postgres <- src_postgres$con
 
   con_postgres %>%
-    dbGetQuery("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
+    DBI::dbGetQuery("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
     as_tibble() %>%
     filter(grepl("^tf_[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+", table_name))
 }
@@ -749,6 +749,6 @@ clear_postgres <- function() {
   walk(
     get_test_tables_from_postgres() %>%
       pull(),
-    ~ dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
+    ~ DBI::dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
   )
 }

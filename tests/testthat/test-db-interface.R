@@ -105,7 +105,7 @@ test_that("copy_dm_to() fails legibly with schema argument for MSSQL & Postgres"
   db_schema_create(src_db$con, "copy_dm_to_schema")
 
   withr::defer({
-    try(dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
+    try(DBI::dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
   })
 
   expect_dm_error(
@@ -139,9 +139,9 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
     order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
     walk(
       dm_get_tables_impl(remote_dm)[order_of_deletion],
-      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", remote_name_qual(.x))))
+      ~ try(DBI::dbExecute(src_db$con, paste0("DROP TABLE ", remote_name_qual(.x))))
     )
-    try(dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
+    try(DBI::dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
   })
 
   expect_silent(
@@ -202,7 +202,7 @@ test_that("copy_dm_to() works with autoincrement PKs and FKS on selected DBs", {
     order_of_deletion <- c("xt4", "xt2", "xt3", "xt1")
     walk(
       dm_get_tables_impl(remote_dm)[order_of_deletion],
-      ~ try(dbExecute(con_db, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
+      ~ try(DBI::dbExecute(con_db, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
     )
   })
 
