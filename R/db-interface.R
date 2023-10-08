@@ -285,7 +285,7 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
     chunk_size <- 1000L
     n_chunks <- ceiling(nrow(table) / chunk_size)
 
-    remote_table_id <- dbQuoteIdentifier(con, remote_table)
+    remote_table_id <- DBI::dbQuoteIdentifier(con, remote_table)
 
     ticker <- new_ticker(
       paste0("inserting into ", remote_table_id),
