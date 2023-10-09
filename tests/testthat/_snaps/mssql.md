@@ -158,11 +158,11 @@
         TRY_CAST("o" AS VARCHAR(MAX)) AS "o"
       FROM (
         VALUES
-          (1, 'house', 'e'),
-          (1, 'tree', 'f'),
+          (1, 'garden', 'i'),
           (1, 'hill', 'g'),
+          (1, 'house', 'e'),
           (1, 'streetlamp', 'h'),
-          (1, 'garden', 'i')
+          (1, 'tree', 'f')
       ) AS drvd("zz", "n", "o")
       
       

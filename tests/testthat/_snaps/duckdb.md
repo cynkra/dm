@@ -135,11 +135,11 @@
         UNION ALL
         (
         VALUES
-          (1, 'house', 'e'),
-          (1, 'tree', 'f'),
+          (1, 'garden', 'i'),
           (1, 'hill', 'g'),
+          (1, 'house', 'e'),
           (1, 'streetlamp', 'h'),
-          (1, 'garden', 'i')
+          (1, 'tree', 'f')
         )
       ) values_table
       
@@ -158,12 +158,12 @@
         UNION ALL
         (
         VALUES
+          ('cat', 7, 'F', 6),
+          ('dog', 6, 'E', 5),
           ('elephant', 2, 'D', 4),
           ('lion', 3, 'E', 5),
           ('seal', 4, 'F', 6),
-          ('worm', 5, 'G', 7),
-          ('dog', 6, 'E', 5),
-          ('cat', 7, 'F', 6)
+          ('worm', 5, 'G', 7)
         )
       ) values_table
       

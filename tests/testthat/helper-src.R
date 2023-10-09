@@ -336,7 +336,27 @@ dm_for_filter_db %<--% {
 }
 
 dm_for_filter_df %<--% {
-  collect(dm_for_filter())
+  # FIXME: Do it the other way round, data frame first, then copy to db
+  dm_for_filter() %>%
+    collect() %>%
+    dm_zoom_to(tf_1) %>%
+    arrange(pick(everything())) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(tf_2) %>%
+    arrange(pick(everything())) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(tf_3) %>%
+    arrange(pick(everything())) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(tf_4) %>%
+    arrange(pick(everything())) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(tf_5) %>%
+    arrange(pick(everything())) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(tf_6) %>%
+    arrange(pick(everything())) %>%
+    dm_update_zoomed()
 }
 
 dm_for_filter_duckdb %<--% copy_dm_to(duckdb_test_src(), dm_for_filter())

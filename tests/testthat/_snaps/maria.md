@@ -63,7 +63,7 @@
       $load
       $load$tf_1
       <SQL> INSERT INTO `tf_1` (`a`, `b`)
-      SELECT CAST(`a` AS INTEGER) AS `a`, CAST(`b` AS CHAR) AS `b`
+      SELECT `a`, CAST(`b` AS CHAR) AS `b`
       FROM (
         (
           SELECT NULL AS `a`, NULL AS `b`
@@ -89,9 +89,9 @@
       <SQL> INSERT INTO `tf_2` (`c`, `d`, `e`, `e1`)
       SELECT
         CAST(`c` AS CHAR) AS `c`,
-        CAST(`d` AS INTEGER) AS `d`,
+        `d`,
         CAST(`e` AS CHAR) AS `e`,
-        CAST(`e1` AS INTEGER) AS `e1`
+        `e1`
       FROM (
         (
           SELECT NULL AS `c`, NULL AS `d`, NULL AS `e`, NULL AS `e1`
@@ -113,7 +113,7 @@
       <SQL> INSERT INTO `tf_3` (`f`, `f1`, `g`)
       SELECT
         CAST(`f` AS CHAR) AS `f`,
-        CAST(`f1` AS INTEGER) AS `f1`,
+        `f1`,
         CAST(`g` AS CHAR) AS `g`
       FROM (
         (
@@ -142,7 +142,7 @@
         CAST(`h` AS CHAR) AS `h`,
         CAST(`i` AS CHAR) AS `i`,
         CAST(`j` AS CHAR) AS `j`,
-        CAST(`j1` AS INTEGER) AS `j1`
+        `j1`
       FROM (
         (
           SELECT NULL AS `h`, NULL AS `i`, NULL AS `j`, NULL AS `j1`
@@ -162,8 +162,8 @@
       $load$tf_5
       <SQL> INSERT INTO `tf_5` (`ww`, `k`, `l`, `m`)
       SELECT
-        CAST(`ww` AS INTEGER) AS `ww`,
-        CAST(`k` AS INTEGER) AS `k`,
+        `ww`,
+        `k`,
         CAST(`l` AS CHAR) AS `l`,
         CAST(`m` AS CHAR) AS `m`
       FROM (
@@ -184,7 +184,7 @@
       $load$tf_6
       <SQL> INSERT INTO `tf_6` (`zz`, `n`, `o`)
       SELECT
-        CAST(`zz` AS INTEGER) AS `zz`,
+        `zz`,
         CAST(`n` AS CHAR) AS `n`,
         CAST(`o` AS CHAR) AS `o`
       FROM (
@@ -195,11 +195,11 @@
         UNION ALL
         (
         VALUES
-          (1, 'house', 'e'),
-          (1, 'tree', 'f'),
+          (1, 'garden', 'i'),
           (1, 'hill', 'g'),
+          (1, 'house', 'e'),
           (1, 'streetlamp', 'h'),
-          (1, 'garden', 'i')
+          (1, 'tree', 'f')
         )
       ) `values_table`
       
