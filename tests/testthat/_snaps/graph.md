@@ -10,13 +10,13 @@
     Code
       create_graph_from_dm(empty_dm())
     Output
-      IGRAPH 1c33ea7 UN-- 0 0 -- 
+      IGRAPH 09d08a5 UN-- 0 0 -- 
       + attr: name (v/c)
-      + edges from 1c33ea7 (vertex names):
+      + edges from 09d08a5 (vertex names):
     Code
       create_graph_from_dm(dm(x = tibble(a = 1)))
     Output
-      IGRAPH 2b92189 UN-- 1 0 -- 
+      IGRAPH 58c94e2 UN-- 1 0 -- 
       + attr: name (v/c)
-      + edges from 2b92189 (vertex names):
+      + edges from 58c94e2 (vertex names):
 
