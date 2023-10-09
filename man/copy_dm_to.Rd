@@ -9,11 +9,11 @@ copy_dm_to(
   dm,
   ...,
   set_key_constraints = TRUE,
-  unique_table_names = NULL,
   table_names = NULL,
   temporary = TRUE,
   schema = NULL,
   progress = NA,
+  unique_table_names = NULL,
   copy_to = NULL
 )
 }
@@ -27,8 +27,6 @@ copy_dm_to(
 \item{set_key_constraints}{If \code{TRUE} will mirror \code{dm} primary and foreign key constraints on a database
 and create indexes for foreign key constraints.
 Set to \code{FALSE} if your data model currently does not satisfy primary or foreign key constraints.}
-
-\item{unique_table_names}{Deprecated.}
 
 \item{table_names}{Desired names for the tables on \code{dest}; the names within the \code{dm} remain unchanged.
 Can be \code{NULL}, a named character vector, or a vector of \link[DBI:Id]{DBI::Id} objects.
@@ -76,7 +74,7 @@ Not all DBMS are supported.}
 hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.}
 
-\item{copy_to}{Must be \code{NULL}.}
+\item{unique_table_names, copy_to}{Must be \code{NULL}.}
 }
 \value{
 A \code{dm} object on the given \code{src} with the same table names

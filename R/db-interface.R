@@ -16,7 +16,6 @@
 #' @param set_key_constraints If `TRUE` will mirror `dm` primary and foreign key constraints on a database
 #'   and create indexes for foreign key constraints.
 #'   Set to `FALSE` if your data model currently does not satisfy primary or foreign key constraints.
-#' @param unique_table_names Deprecated.
 #' @param temporary If `TRUE`, only temporary tables will be created.
 #'   These tables will vanish when disconnecting from the database.
 #' @param schema Name of schema to copy the `dm` to.
@@ -55,7 +54,7 @@
 #'
 #'   Use qualified names corresponding to your database's syntax
 #'   to specify e.g. database and schema for your tables.
-#' @param copy_to Must be `NULL`.
+#' @param unique_table_names,copy_to Must be `NULL`.
 #'
 #' @family DB interaction functions
 #'
@@ -88,11 +87,11 @@ copy_dm_to <- function(
     dm,
     ...,
     set_key_constraints = TRUE,
-    unique_table_names = NULL,
     table_names = NULL,
     temporary = TRUE,
     schema = NULL,
     progress = NA,
+    unique_table_names = NULL,
     copy_to = NULL) {
   # for the time being, we will be focusing on MSSQL
   # we want to
