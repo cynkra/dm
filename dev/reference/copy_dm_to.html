@@ -101,11 +101,11 @@ and in addition foreign key constraints are set on MSSQL and Postgres databases.
 <span>  <span class="va">dm</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  set_key_constraints <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  unique_table_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  temporary <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  schema <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  unique_table_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  copy_to <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -128,10 +128,6 @@ and in addition foreign key constraints are set on MSSQL and Postgres databases.
 <dd><p>If <code>TRUE</code> will mirror <code>dm</code> primary and foreign key constraints on a database
 and create indexes for foreign key constraints.
 Set to <code>FALSE</code> if your data model currently does not satisfy primary or foreign key constraints.</p></dd>
-
-
-<dt>unique_table_names</dt>
-<dd><p>Deprecated.</p></dd>
 
 
 <dt>table_names</dt>
@@ -179,7 +175,7 @@ hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.</p></dd>
 
 
-<dt>copy_to</dt>
+<dt>unique_table_names, copy_to</dt>
 <dd><p>Must be <code>NULL</code>.</p></dd>
 
 </dl></div>
