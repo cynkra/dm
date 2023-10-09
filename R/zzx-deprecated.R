@@ -127,12 +127,20 @@ cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, indexes =
     }
   }
 
-  copy_dm_to(
-    dest = dest, dm = dm, ... = ..., types = types,
-    overwrite = overwrite, indexes = indexes, unique_indexes = unique_indexes,
+  inject(copy_dm_to(
+    dest = dest,
+    dm = dm,
+    ... = ...,
+    !!!compact(list(
+      types = types,
+      overwrite = overwrite,
+      indexes = indexes,
+      unique_indexes = unique_indexes
+    )),
     set_key_constraints = set_key_constraints,
-    table_names = table_names, temporary = temporary
-  )
+    table_names = table_names,
+    temporary = temporary
+  ))
 }
 
 #' @rdname deprecated

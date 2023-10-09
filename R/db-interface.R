@@ -8,31 +8,24 @@
 #' Unless `set_key_constraints` is `FALSE`, primary key constraints are set on all databases,
 #' and in addition foreign key constraints are set on MSSQL and Postgres databases.
 #'
-#' @details
-#' No tables will be overwritten; passing `overwrite = TRUE` to the function will give an error.
-#' Types are determined separately for each table, setting the `types` argument will
-#' also throw an error.
-#' The arguments are included in the signature to avoid passing them via the
-#' `...` ellipsis.
-#'
 #' @inheritParams dm_examine_constraints
 #'
 #' @param dest An object of class `"src"` or `"DBIConnection"`.
 #' @param dm A `dm` object.
-#' @param overwrite,types,indexes,unique_indexes Must remain `NULL`.
+#' @inheritParams rlang::args_dots_empty
 #' @param set_key_constraints If `TRUE` will mirror `dm` primary and foreign key constraints on a database
-#'   and create unique indexes.
+#'   and create indexes for foreign key constraints.
 #'   Set to `FALSE` if your data model currently does not satisfy primary or foreign key constraints.
 #' @param unique_table_names Deprecated.
 #' @param temporary If `TRUE`, only temporary tables will be created.
 #'   These tables will vanish when disconnecting from the database.
 #' @param schema Name of schema to copy the `dm` to.
-#' If `schema` is provided, an error will be thrown if `temporary = FALSE` or
-#' `table_names` is not `NULL`.
+#'   If `schema` is provided, an error will be thrown if `temporary = FALSE` or
+#'   `table_names` is not `NULL`.
 #'
-#' Not all DBMS are supported.
+#'   Not all DBMS are supported.
 #' @param table_names Desired names for the tables on `dest`; the names within the `dm` remain unchanged.
-#'   Can be `NULL`, a named character vector, a function or a one-sided formula.
+#'   Can be `NULL`, a named character vector, or a vector of [DBI::Id] objects.
 #'
 #'   If left `NULL` (default), the names will be determined automatically depending on the `temporary` argument:
 #'
@@ -62,7 +55,7 @@
 #'
 #'   Use qualified names corresponding to your database's syntax
 #'   to specify e.g. database and schema for your tables.
-#' @param copy_to,... Deprecated.
+#' @param copy_to Must be `NULL`.
 #'
 #' @family DB interaction functions
 #'
@@ -94,10 +87,6 @@ copy_dm_to <- function(
     dest,
     dm,
     ...,
-    types = NULL,
-    overwrite = NULL,
-    indexes = NULL,
-    unique_indexes = NULL,
     set_key_constraints = TRUE,
     unique_table_names = NULL,
     table_names = NULL,
@@ -111,24 +100,8 @@ copy_dm_to <- function(
   #   2. copy the tables to `dest`
   #   3. implement the key situation within our `dm` on the DB
 
-  if (!is_null(overwrite)) {
-    abort_no_overwrite()
-  }
-
-  if (!is_null(types)) {
-    abort_no_types()
-  }
-
-  if (!is_null(indexes)) {
-    abort_no_indexes()
-  }
-
-  if (!is_null(unique_indexes)) {
-    abort_no_unique_indexes()
-  }
-
   if (!is.null(unique_table_names)) {
-    deprecate_soft(
+    deprecate_warn(
       "0.1.4", "dm::copy_dm_to(unique_table_names = )",
       details = "Use `table_names = identity` to use unchanged names for temporary tables."
     )
@@ -139,18 +112,15 @@ copy_dm_to <- function(
   }
 
   if (!is.null(copy_to)) {
-    deprecate_soft(
+    deprecate_stop(
       "1.0.0", "dm::copy_dm_to(copy_to = )",
-      details = "Use `dm_ddl()` for more control over the schema creation process."
+      details = "Use `dm_sql()` for more control over the schema creation process."
     )
   }
 
-  if (dots_n(...) > 0) {
-    deprecate_soft(
-      "1.0.0", "dm::copy_dm_to(... = )",
-      details = "Use `dm_ddl()` for more control over the schema creation process."
-    )
-  }
+  check_dots_empty()
+
+  check_not_zoomed(dm)
 
   check_suggested("dbplyr", use = TRUE)
 
@@ -189,14 +159,12 @@ copy_dm_to <- function(
     }
   } else {
     # FIXME: Other data sources than local and database possible
-    deprecate_soft(
+    deprecate_warn(
       "0.1.6", "dm::copy_dm_to(dest = 'must refer to a remote data source')",
       "dm::collect.dm()"
     )
     table_names_out <- set_names(src_names)
   }
-
-  check_not_zoomed(dm)
 
   # FIXME: if same_src(), can use compute() but need to set NOT NULL and other
   # constraints
