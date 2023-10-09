@@ -48,7 +48,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@4c1b68d83ad20cc1a09620ca477d5bbbb5fa14d0
+        uses: docker/build-push-action@0f847266c302569530c95bfa228489494c43b002
         with:
           context: .
           cache-from: ${{ github.event_name != 'schedule' && 'type=gha' || '' }}
