@@ -1,5 +1,38 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9010
+
+## Bug fixes
+
+- Snapshot test.
+
+- Stable sort order in test.
+
+- Remove unwanted changes.
+
+## Features
+
+- Reuse existing `build_copy_queries()` code for `dm_sql()` (#2011).
+
+## Chore
+
+- Remove DBI import (#1974).
+
+- Add technical helper to `.Rbuildignore`.
+
+- Simplify `merge_group` in GHA.
+
+- Stabilize tests, add snapshot tests for `dm_sql()` for all databases (#1987).
+
+- Enable merge queue.
+
+- Indicate MySQL server, bump to dev version of RMariaDB, work around tidyverse/dbplyr#1190 (#1989).
+
+- Snapshots (#1985).
+
+- Remove magrittr import (#1975).
+
+
 # dm 1.0.6.9009
 
 ## Chore
