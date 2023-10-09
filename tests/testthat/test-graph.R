@@ -30,3 +30,13 @@ test_that("functions working with graphs do the right thing?", {
     attr(igraph::E(create_graph_from_dm(nyc_comp())), "vnames")
   })
 })
+
+test_that("empty graph", {
+  opt <- igraph::igraph_options(print.id = FALSE)
+  on.exit(igraph::igraph_options(opt))
+
+  expect_snapshot({
+    create_graph_from_dm(empty_dm())
+    create_graph_from_dm(dm(x = tibble(a = 1)))
+  })
+})
