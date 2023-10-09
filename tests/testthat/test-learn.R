@@ -65,7 +65,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 })
 
 
-test_that("Learning from specific schema on MSSQL or Postgres works?", {
+test_that("Learning from specific schema works?", {
   skip_if_schema_not_supported()
 
   # produces a randomized schema name with a length of 4-10 characters
@@ -92,7 +92,7 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
   )
   order_of_deletion <- c("iris_3", "iris_2", "iris_1")
   remote_tbl_names <- set_names(
-    paste0(schema_name_q, ".\"", order_of_deletion, "\""),
+    paste0(schema_name_q, ".", DBI::dbQuoteIdentifier(con_db, order_of_deletion)),
     order_of_deletion
   )
 
