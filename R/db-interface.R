@@ -164,6 +164,8 @@ copy_dm_to <- function(
     dm_for_sql <- dm
   } else {
     def_no_keys <- dm_get_def(dm)
+    # FIXME: Add test
+    def_no_keys$pks[] <- list(new_pk())
     def_no_keys$uks[] <- list(new_uk())
     def_no_keys$fks[] <- list(new_fk())
     # Must keep primary keys
