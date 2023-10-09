@@ -467,6 +467,8 @@ dml_tbl_load <- function(tbl_name, dm, table_names, pks, dest) {
     idx <- seq_len(from - 1L)
     # https://github.com/tidyverse/dbplyr/pull/1195
     selectvals[idx] <- gsub(" AS NUMERIC", " AS DOUBLE", selectvals[idx])
+    # https://github.com/tidyverse/dbplyr/pull/1375
+    selectvals[idx] <- gsub("CAST[(]`[^`]*(?:``[^`]*)*` AS INTEGER[)] AS ", "", selectvals[idx])
     selectvals <- paste(selectvals, collapse = "\n")
   }
 
