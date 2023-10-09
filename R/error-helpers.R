@@ -187,30 +187,6 @@ error_txt_no_overwrite <- function(fun_name) {
   glue("`{fun_name}()` does not support the `overwrite` argument.")
 }
 
-abort_no_types <- function() {
-  abort(error_txt_no_types(), class = dm_error_full("no_types"))
-}
-
-error_txt_no_types <- function() {
-  "`copy_dm_to()` does not support the `types` argument."
-}
-
-abort_no_indexes <- function() {
-  abort(error_txt_no_indexes(), class = dm_error_full("no_indexes"))
-}
-
-error_txt_no_indexes <- function() {
-  "`copy_dm_to()` does not support the `indexes` argument."
-}
-
-abort_no_unique_indexes <- function() {
-  abort(error_txt_no_unique_indexes(), class = dm_error_full("no_unique_indexes"))
-}
-
-error_txt_no_unique_indexes <- function() {
-  "`copy_dm_to()` does not support the `unique_indexes` argument."
-}
-
 abort_update_not_supported <- function() {
   abort(error_txt_update_not_supported(), class = dm_error_full("update_not_supported"))
 }

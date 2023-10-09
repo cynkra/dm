@@ -34,15 +34,13 @@ test_that("copy_dm_to() copies data frames from any source", {
 # in combination with dm_learn_from_db
 
 test_that("copy_dm_to() rejects overwrite and types arguments", {
-  expect_dm_error(
-    copy_dm_to(my_test_src(), dm_for_filter(), overwrite = TRUE),
-    class = "no_overwrite"
-  )
+  expect_snapshot(error = TRUE, {
+    copy_dm_to(my_test_src(), dm_for_filter(), overwrite = TRUE)
+  })
 
-  expect_dm_error(
-    copy_dm_to(my_test_src(), dm_for_filter(), types = character()),
-    class = "no_types"
-  )
+  expect_snapshot(error = TRUE, {
+    copy_dm_to(my_test_src(), dm_for_filter(), types = character())
+  })
 })
 
 test_that("copy_dm_to() fails with duplicate table names", {
