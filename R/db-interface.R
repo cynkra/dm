@@ -6,15 +6,19 @@
 #' The latter is copied to the former.
 #' The default is to create temporary tables, set `temporary = FALSE` to create permanent tables.
 #' Unless `set_key_constraints` is `FALSE`, primary key, foreign key, and unique constraints
-#' are set on all databases.
+#' are set, and indexes for foreign keys are created, on all databases.
 #'
 #' @inheritParams dm_examine_constraints
 #'
 #' @param dest An object of class `"src"` or `"DBIConnection"`.
 #' @param dm A `dm` object.
-#' @param set_key_constraints If `TRUE` will mirror `dm` primary and foreign key constraints on a database
-#'   and create indexes for foreign key constraints.
-#'   Set to `FALSE` if your data model currently does not satisfy primary or foreign key constraints.
+#' @inheritParams rlang::args_dots_empty
+#' @param set_key_constraints If `TRUE` will mirror
+#'   the primary, foreign, and unique key constraints
+#'   and create indexes for foreign key constraints
+#'   for the primary and foreign keys in the `dm` object.
+#'   Set to `FALSE` if your data model currently does not satisfy
+#'   primary or foreign key constraints.
 #' @param temporary If `TRUE`, only temporary tables will be created.
 #'   These tables will vanish when disconnecting from the database.
 #' @param schema Name of schema to copy the `dm` to.
@@ -22,9 +26,38 @@
 #'   `table_names` is not `NULL`.
 #'
 #'   Not all DBMS are supported.
-#' @inheritParams dm_sql
-#' @inheritParams rlang::args_dots_empty
-#' @param unique_table_names,copy_to Deprecated.
+#' @param table_names Desired names for the tables on `dest`; the names within the `dm` remain unchanged.
+#'   Can be `NULL`, a named character vector, or a vector of [DBI::Id] objects.
+#'
+#'   If left `NULL` (default), the names will be determined automatically depending on the `temporary` argument:
+#'
+#'   1. `temporary = TRUE` (default): unique table names based on the names of the tables in the `dm` are created.
+#'   1. `temporary = FALSE`: the table names in the `dm` are used as names for the tables on `dest`.
+#'
+#'   If a function or one-sided formula, `table_names` is converted to a function
+#'   using [rlang::as_function()].
+#'   This function is called with the unquoted table names of the `dm` object
+#'   as the only argument.
+#'   The output of this function is processed by [DBI::dbQuoteIdentifier()],
+#'   that result should be a vector of identifiers of the same length
+#'   as the original table names.
+#'
+#'   Use a variant of
+#'   `table_names = ~ DBI::SQL(paste0("schema_name", ".", .x))`
+#'   to specify the same schema for all tables.
+#'   Use `table_names = identity` with `temporary = TRUE`
+#'   to avoid giving temporary tables unique names.
+#'
+#'   If a named character vector,
+#'   the names of this vector need to correspond to the table names in the `dm`,
+#'   and its values are the desired names on `dest`.
+#'   The value is processed by [DBI::dbQuoteIdentifier()],
+#'   that result should be a vector of identifiers of the same length
+#'   as the original table names.
+#'
+#'   Use qualified names corresponding to your database's syntax
+#'   to specify e.g. database and schema for your tables.
+#' @param unique_table_names,copy_to Must be `NULL`.
 #'
 #' @family DB interaction functions
 #'
@@ -63,11 +96,7 @@ copy_dm_to <- function(
     progress = NA,
     unique_table_names = NULL,
     copy_to = NULL) {
-  # for the time being, we will be focusing on MSSQL
-  # we want to
-  #   1. change `dm_get_src_impl(dm)` to `dest`
-  #   2. copy the tables to `dest`
-  #   3. implement the key situation within our `dm` on the DB
+  #
 
   if (!is.null(unique_table_names)) {
     deprecate_stop(
