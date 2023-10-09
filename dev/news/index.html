@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9009</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9010</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,6 +74,30 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.6.9010" id="dm-1069010">dm 1.0.6.9010<a class="anchor" aria-label="anchor" href="#dm-1069010"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-6-9010">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-6-9010"></a></h3>
+<ul><li><p>Snapshot test.</p></li>
+<li><p>Stable sort order in test.</p></li>
+<li><p>Remove unwanted changes.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="features-1-0-6-9010">Features<a class="anchor" aria-label="anchor" href="#features-1-0-6-9010"></a></h3>
+<ul><li>Reuse existing <code>build_copy_queries()</code> code for <code><a href="../reference/dm_sql.html">dm_sql()</a></code> (<a href="https://github.com/cynkra/dm/issues/2011" class="external-link">#2011</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-6-9010">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-6-9010"></a></h3>
+<ul><li><p>Remove DBI import (<a href="https://github.com/cynkra/dm/issues/1974" class="external-link">#1974</a>).</p></li>
+<li><p>Add technical helper to <code>.Rbuildignore</code>.</p></li>
+<li><p>Simplify <code>merge_group</code> in GHA.</p></li>
+<li><p>Stabilize tests, add snapshot tests for <code><a href="../reference/dm_sql.html">dm_sql()</a></code> for all databases (<a href="https://github.com/cynkra/dm/issues/1987" class="external-link">#1987</a>).</p></li>
+<li><p>Enable merge queue.</p></li>
+<li><p>Indicate MySQL server, bump to dev version of RMariaDB, work around tidyverse/dbplyr#1190 (<a href="https://github.com/cynkra/dm/issues/1989" class="external-link">#1989</a>).</p></li>
+<li><p>Snapshots (<a href="https://github.com/cynkra/dm/issues/1985" class="external-link">#1985</a>).</p></li>
+<li><p>Remove magrittr import (<a href="https://github.com/cynkra/dm/issues/1975" class="external-link">#1975</a>).</p></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.6.9009" id="dm-1069009">dm 1.0.6.9009<a class="anchor" aria-label="anchor" href="#dm-1069009"></a></h2>
 <div class="section level3">
