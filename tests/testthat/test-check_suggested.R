@@ -1,4 +1,5 @@
 test_that("`check_suggested()` works", {
+  withr::local_envvar("TESTTHAT" = "")
   expect_snapshot({
     check_suggested("rlang", TRUE, top_level_fun = "foo")
 
@@ -13,6 +14,7 @@ test_that("`check_suggested()` works", {
 })
 
 test_that("`check_suggested()` works for error messages", {
+  withr::local_envvar("TESTTHAT" = "")
   expect_snapshot(error = TRUE, {
     check_suggested("iurtnkjvmomweicopbt", TRUE, top_level_fun = "foo")
     check_suggested("iurtnkjvmomweicopbt", TRUE, message = "not installed!")

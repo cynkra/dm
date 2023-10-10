@@ -35,10 +35,10 @@
       check_suggested("iurtnkjvmomweicopbt", TRUE, top_level_fun = "foo")
     Condition
       Error:
-      ! `foo()` needs the 'iurtnkjvmomweicopbt' package. Do you need `install.packages("iurtnkjvmomweicopbt")` ?
+      ! The package "iurtnkjvmomweicopbt" is required to use `foo()`.
     Code
       check_suggested("iurtnkjvmomweicopbt", TRUE, message = "not installed!")
     Condition
       Error:
-      ! not installed!
+      ! The package "iurtnkjvmomweicopbt" is required not installed!
 
