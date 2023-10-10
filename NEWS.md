@@ -1,5 +1,22 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9011
+
+## Features
+
+- `copy_dm_to()` now warns unconditionally on unsupported arguments, and fails if `copy_to` is provided. Use the new `dm_sql()` function as a replacement for `copy_dm_to(copy_to = )`.
+
+## Chore
+
+### deps
+
+- Update docker/build-push-action digest to 0f84726.
+
+- Move deprecated argument.
+
+- Stabilize and improve tests (#2031).
+
+
 # dm 1.0.6.9010
 
 ## Bug fixes
