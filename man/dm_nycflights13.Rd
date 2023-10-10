@@ -40,8 +40,8 @@ A \code{dm} object consisting of {nycflights13} tables, complete with primary an
 \description{
 Creates an example \code{\link{dm}} object from the tables in \pkg{nycflights13},
 along with the references.
-See \link[nycflights13:flights]{nycflights13::flights} for a description of the data.
-As described in \link[nycflights13:planes]{nycflights13::planes}, the relationship
+See \code{\link[nycflights13:flights]{nycflights13::flights}} for a description of the data.
+As described in \code{\link[nycflights13:planes]{nycflights13::planes}}, the relationship
 between the \code{flights} table and the \code{planes} tables is "weak", it does not satisfy
 data integrity constraints.
 }
@@ -50,4 +50,7 @@ data integrity constraints.
 dm_nycflights13() \%>\%
   dm_draw()
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\code{vignette("howto-dm-df")}
 }
