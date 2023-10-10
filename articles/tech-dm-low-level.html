@@ -35,7 +35,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.7</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,11 +66,11 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-technical-articles">Technical articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-technical-articles">
-    <a class="dropdown-item" href="../articles/tech-dm-join.html">Joining in relational data models</a>
-    <a class="dropdown-item" href="../articles/tech-dm-keyed.html">Manipulating individual tables</a>
-    <a class="dropdown-item" href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
-    <a class="dropdown-item" href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
     <a class="dropdown-item" href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
+    <a class="dropdown-item" href="../articles/tech-dm-keyed.html">Manipulating individual tables</a>
+    <a class="dropdown-item" href="../articles/tech-dm-join.html">Joining in relational data models</a>
+    <a class="dropdown-item" href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
+    <a class="dropdown-item" href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
     <a class="dropdown-item" href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
     <a class="dropdown-item" href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
     <a class="dropdown-item" href="../articles/tech-dm-naming.html">Function naming logic</a>
@@ -106,7 +106,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Model verification - keys, constraints and normalization</h1>
             
-            <h4 data-toc-skip class="date">2023-07-24</h4>
+            <h4 data-toc-skip class="date">2023-10-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-low-level.Rmd" class="external-link"><code>vignettes/tech-dm-low-level.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-low-level.Rmd</code></div>
@@ -161,7 +161,7 @@ key to some other table. What about the inverse relation?</p>
 <span><span class="co">#&gt;       a</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1     3</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_subset_of()` at dm/R/key-helpers.R:238:2:</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_subset_of()` at dm/R/key-helpers.R:240:2:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></span></code></pre>
 <p>It should be kept in mind that <code><a href="../reference/check_subset.html">check_subset()</a></code> does not
 test if column <code>c2</code> is a unique key of table <code>t2</code>.
@@ -182,7 +182,7 @@ values of <code>c_1</code> in <code>t_1</code> are the same as those of
 <span><span class="co">#&gt;       a</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1     3</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_sets_not_equal()` at dm/R/key-helpers.R:188:4:</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_sets_not_equal()` at dm/R/key-helpers.R:190:4:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></span></code></pre>
 <p>Introducing one more table enables us to show how it looks when the
 test is passed:</p>

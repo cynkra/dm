@@ -35,7 +35,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.7</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,11 +66,11 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-technical-articles">Technical articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-technical-articles">
-    <a class="dropdown-item" href="../articles/tech-dm-join.html">Joining in relational data models</a>
-    <a class="dropdown-item" href="../articles/tech-dm-keyed.html">Manipulating individual tables</a>
-    <a class="dropdown-item" href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
-    <a class="dropdown-item" href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
     <a class="dropdown-item" href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
+    <a class="dropdown-item" href="../articles/tech-dm-keyed.html">Manipulating individual tables</a>
+    <a class="dropdown-item" href="../articles/tech-dm-join.html">Joining in relational data models</a>
+    <a class="dropdown-item" href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
+    <a class="dropdown-item" href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
     <a class="dropdown-item" href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
     <a class="dropdown-item" href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
     <a class="dropdown-item" href="../articles/tech-dm-naming.html">Function naming logic</a>
@@ -108,7 +108,7 @@
                         <h4 data-toc-skip class="author">Katharina
 Brunner</h4>
             
-            <h4 data-toc-skip class="date">2023-07-24</h4>
+            <h4 data-toc-skip class="date">2023-10-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-theory.Rmd</code></div>
@@ -556,11 +556,9 @@ database systems.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">con_sqlite</span>, <span class="va">dm</span><span class="op">)</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html" class="external-link">dbListTables</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "airlines_1_2020_08_28_07_13_03_12345"</span></span>
-<span><span class="co">#&gt; [2] "airports_1_2020_08_28_07_13_03_12345"</span></span>
-<span><span class="co">#&gt; [3] "flights_1_2020_08_28_07_13_03_12345" </span></span>
-<span><span class="co">#&gt; [4] "planes_1_2020_08_28_07_13_03_12345"  </span></span>
-<span><span class="co">#&gt; [5] "weather_1_2020_08_28_07_13_03_12345"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "airlines_1_20200828_071303_12345" "airports_1_20200828_071303_12345"</span></span>
+<span><span class="co">#&gt; [3] "flights_1_20200828_071303_12345"  "planes_1_20200828_071303_12345"  </span></span>
+<span><span class="co">#&gt; [5] "weather_1_20200828_071303_12345"</span></span></code></pre></div>
 <p>In the opposite direction, <code>dm</code> can also be populated with
 data from a database. Unfortunately, keys currently can be learned only
 for Microsoft SQL Server and Postgres, but not for SQLite. Therefore,
@@ -568,20 +566,16 @@ the <code>dm</code> contains the tables but not the keys:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-message"><code><span><span class="co">#&gt; ! unable to fetch autoincrement metadata for src 'src_SQLiteConnection'</span></span></code></pre>
-<pre class="fansi fansi-message"><code><span><span class="co">#&gt; Keys could not be queried: ℹ In index: 1.</span></span>
-<span><span class="co">#&gt; Caused by error in `.f()`:</span></span>
-<span><span class="co">#&gt; ! Failed to collect lazy table.</span></span>
-<span><span class="co">#&gt; Caused by error:</span></span>
-<span><span class="co">#&gt; ! no such table: information_schema.tables. Use `learn_keys = FALSE` to mute this message.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Keys could not be queried.</span></span></code></pre>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; src:  sqlite 3.41.2 []</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; Tables: `airlines_1_2020_08_28_07_13_03_12345`, `airports_1_2020_08_28_07_13_03_12345`, `flights_1_2020_08_28_07_13_03_12345`, `planes_1_2020_08_28_07_13_03_12345`, `weather_1_2020_08_28_07_13_03_12345`</span></span>
+<span><span class="co">#&gt; Tables: `airlines_1_20200828_071303_12345`, `airports_1_20200828_071303_12345`, `flights_1_20200828_071303_12345`, `planes_1_20200828_071303_12345`, `weather_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt; Columns: 53</span></span>
 <span><span class="co">#&gt; Primary keys: 0</span></span>
 <span><span class="co">#&gt; Foreign keys: 0</span></span></code></pre>
 <p>Remember to terminate the database connection:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">

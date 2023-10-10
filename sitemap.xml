@@ -124,6 +124,9 @@
     <loc>https://dm.cynkra.com/reference/deprecated.html</loc>
   </url>
   <url>
+    <loc>https://dm.cynkra.com/reference/dm-package.html</loc>
+  </url>
+  <url>
     <loc>https://dm.cynkra.com/reference/dm.html</loc>
   </url>
   <url>
@@ -247,6 +250,9 @@
     <loc>https://dm.cynkra.com/reference/dm_set_table_description.html</loc>
   </url>
   <url>
+    <loc>https://dm.cynkra.com/reference/dm_sql.html</loc>
+  </url>
+  <url>
     <loc>https://dm.cynkra.com/reference/dm_unnest_tbl.html</loc>
   </url>
   <url>
@@ -293,6 +299,12 @@
   </url>
   <url>
     <loc>https://dm.cynkra.com/reference/json_pack_join.html</loc>
+  </url>
+  <url>
+    <loc>https://dm.cynkra.com/reference/json_unnest.html</loc>
+  </url>
+  <url>
+    <loc>https://dm.cynkra.com/reference/json_unpack.html</loc>
   </url>
   <url>
     <loc>https://dm.cynkra.com/reference/materialize.html</loc>
