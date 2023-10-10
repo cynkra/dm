@@ -90,6 +90,7 @@ dm_draw <- function(dm,
   }
 
   stopifnot(identical(backend, "DiagrammeR"))
+  rlang::check_installed("DiagrammeR")
 
   if (is_empty(dm)) {
     message("The dm cannot be drawn because it is empty.")
