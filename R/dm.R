@@ -877,7 +877,7 @@ as.list.dm_zoomed <- function(x, ...) {
 #' keys, etc.) of all tables included in the `dm` object. It will additionally
 #' print details about outgoing foreign keys for the child table.
 #'
-#' `glimpse()` is provided by the pillar package, and re-exported by {dm}.
+#' `glimpse()` is provided by the pillar package, and re-exported by \pkg{dm}.
 #'  See [pillar::glimpse()] for more details.
 #'
 #' @examples

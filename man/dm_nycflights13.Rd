@@ -35,7 +35,7 @@ because this requires compound keys.}
 when drawing the table with \code{\link[=dm_draw]{dm_draw()}}.}
 }
 \value{
-A \code{dm} object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
+A \code{dm} object consisting of \pkg{nycflights13} tables, complete with primary and foreign keys and optionally colored.
 }
 \description{
 Creates an example \code{\link{dm}} object from the tables in \pkg{nycflights13},

@@ -23,7 +23,7 @@
 #' @param table_description Boolean, if `TRUE`, a description will be added for each table that will be displayed
 #'   when drawing the table with [dm_draw()].
 #'
-#' @return A `dm` object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
+#' @return A `dm` object consisting of \pkg{nycflights13} tables, complete with primary and foreign keys and optionally colored.
 #'
 #' @export
 #' @seealso `vignette("howto-dm-df")`

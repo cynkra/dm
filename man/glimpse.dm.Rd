@@ -22,7 +22,7 @@ printing. If \code{NULL}, \code{getOption("width")} will be consulted.}
 keys, etc.) of all tables included in the \code{dm} object. It will additionally
 print details about outgoing foreign keys for the child table.
 
-\code{glimpse()} is provided by the pillar package, and re-exported by {dm}.
+\code{glimpse()} is provided by the pillar package, and re-exported by \pkg{dm}.
 See \code{\link[pillar:glimpse]{pillar::glimpse()}} for more details.
 }
 \examples{
