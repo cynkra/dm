@@ -121,7 +121,7 @@ copy_dm_to <- function(
 
   check_not_zoomed(dm)
 
-  check_suggested("dbplyr", use = TRUE)
+  check_suggested("dbplyr", use = TRUE, "copy_dm_to")
 
   dest <- src_from_src_or_con(dest)
   src_names <- src_tbls_impl(dm)

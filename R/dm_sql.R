@@ -42,7 +42,7 @@ dm_sql <- function(
     table_names = NULL,
     temporary = TRUE) {
   #
-  check_suggested("dbplyr", use = TRUE)
+  check_suggested("dbplyr", use = TRUE, top_level_fun = "dm_sql")
 
   table_names <- ddl_check_table_names(table_names, dm)
 
@@ -101,7 +101,7 @@ dm_ddl_pre <- function(
     table_names = NULL,
     temporary = TRUE) {
   #
-  check_suggested("dbplyr", use = TRUE)
+  check_suggested("dbplyr", use = TRUE, "dm_ddl_pre")
 
   table_names <- ddl_check_table_names(table_names, dm)
 
@@ -191,7 +191,7 @@ dm_dml_load <- function(
     table_names = NULL,
     temporary = TRUE) {
   #
-  check_suggested("dbplyr", use = TRUE)
+  check_suggested("dbplyr", use = TRUE, "dm_dml_load")
 
   table_names <- ddl_check_table_names(table_names, dm)
 
@@ -218,7 +218,7 @@ dm_ddl_post <- function(
     table_names = NULL,
     temporary = TRUE) {
   #
-  check_suggested("dbplyr", use = TRUE)
+  check_suggested("dbplyr", use = TRUE, "dm_ddl_post")
 
   table_names <- ddl_check_table_names(table_names, dm)
 
