@@ -42,13 +42,17 @@ check_suggested <- function(packages,
   # If TRUE, fail if package is not installed
   for (pkg in packages) {
     if (!is_installed(pkg)) {
-      if (is.null(message)) {
-        message <- glue("`{top_level_fun}()` needs the '{pkg}' package. Do you need `install.packages(\"{pkg}\")` ?")
-      }
       if (is_testing()) {
+        if (is.null(message)) {
+          message <- glue("`{top_level_fun}()` needs the '{pkg}' package.")
+        }
         testthat::skip(message)
       } else {
-        abort(message)
+        if (is.null(message)) {
+          message <- glue("to use `{top_level_fun}()`.")
+        }
+        # Could use the version argument too.
+        rlang::check_installed(packages, message)
       }
     }
   }

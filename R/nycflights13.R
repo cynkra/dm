@@ -3,8 +3,8 @@
 #' @description
 #' Creates an example [`dm`] object from the tables in \pkg{nycflights13},
 #' along with the references.
-#' See [nycflights13::flights] for a description of the data.
-#' As described in [nycflights13::planes], the relationship
+#' See [`nycflights13::flights`] for a description of the data.
+#' As described in [`nycflights13::planes`], the relationship
 #' between the `flights` table and the `planes` tables is "weak", it does not satisfy
 #' data integrity constraints.
 #'
@@ -26,6 +26,7 @@
 #' @return A `dm` object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
 #'
 #' @export
+#' @seealso `vignette("howto-dm-df")`
 #' @examplesIf rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
 #'   dm_draw()
