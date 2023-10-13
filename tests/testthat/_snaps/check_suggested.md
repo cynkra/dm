@@ -13,7 +13,7 @@
     Output
       [1] FALSE
     Code
-      check_suggested("iurtnkjvmomweicopbt", NA, message = "not installed!")
+      check_suggested("iurtnkjvmomweicopbt", NA)
     Output
       [1] FALSE
     Code
@@ -25,7 +25,7 @@
     Output
       [1] FALSE
     Code
-      check_suggested("iurtnkjvmomweicopbt", FALSE, message = "not installed!")
+      check_suggested("iurtnkjvmomweicopbt", FALSE)
     Output
       [1] FALSE
 
@@ -37,8 +37,8 @@
       Error:
       ! The package "iurtnkjvmomweicopbt" is required to use `foo()`.
     Code
-      check_suggested("iurtnkjvmomweicopbt", TRUE, message = "not installed!")
+      check_suggested("iurtnkjvmomweicopbt", TRUE)
     Condition
       Error:
-      ! The package "iurtnkjvmomweicopbt" is required not installed!
+      ! The package "iurtnkjvmomweicopbt" is required.
 

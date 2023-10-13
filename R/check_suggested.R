@@ -11,7 +11,6 @@
 check_suggested <- function(packages,
                             use,
                             top_level_fun = NULL,
-                            message = NULL,
                             version = NULL) {
   # If NA, inform that package isn't installed, but only in interactive mode
   if (is.na(use)) {
@@ -20,13 +19,11 @@ check_suggested <- function(packages,
       return(FALSE)
     }
 
-    installed <- map_lgl(packages, ~ {
-      installed <- is_installed(., version = version)
+    installed <- map_lgl(packages, function(pkg) {
+      installed <- is_installed(pkg, version = version)
       if (!installed) {
-        if (is.null(message)) {
-          # FIXME: Mention version
-          message <- glue("`{top_level_fun}()` is improved by the '{.}' package. Consider `install.packages(\"{.}\")`.")
-        }
+        # FIXME: Mention version
+        message <- glue("`{top_level_fun}()` is improved by the '{pkg}' package. Consider `install.packages(\"{pkg}\")`.")
         inform(message)
       }
       installed
@@ -39,22 +36,36 @@ check_suggested <- function(packages,
     return(FALSE)
   }
 
-  # If TRUE, fail if package is not installed
-  for (pkg in packages) {
-    if (!is_installed(pkg)) {
-      if (is_testing()) {
-        if (is.null(message)) {
-          message <- glue("`{top_level_fun}()` needs the '{pkg}' package.")
-        }
+  # Return early if all packages are installed.
+  if (rlang::is_installed(packages, version = version)) {
+    return(TRUE)
+  }
+
+  # Skip if some packages are not installed when testing
+  # And say which package was not installed.
+  if (is_testing()) {
+    for (pkg in packages) {
+      if (!is_installed(pkg)) {
+        message <- glue("`{top_level_fun}()` needs the '{pkg}' package.")
         testthat::skip(message)
-      } else {
-        if (is.null(message)) {
-          message <- glue("to use `{top_level_fun}()`.")
-        }
-        # Could use the version argument too.
-        rlang::check_installed(packages, message)
       }
     }
-  }
+
+    } else {
+
+      # If in interactive session, a prompt will ask user if they want
+      # to install the package.
+      # check_installed() uses pak for installation
+      # if it's installed on the user system.
+
+      # Which message to display in the prompt (if top_level_fun is mentioned.)
+      message <- if (is.null(top_level_fun)) {
+        NULL
+      } else {
+        glue("to use `{top_level_fun}()`.")
+      }
+      rlang::check_installed(packages, reason = message)
+    }
+
   TRUE
 }

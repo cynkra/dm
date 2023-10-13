@@ -12,9 +12,10 @@ register_pkgdown_methods <- function() {
     return()
   }
 
+  # FIXME Should we use Config/Needs/website in DESCRIPTION instead?
   check_suggested(c("DiagrammeR", "DiagrammeRsvg"),
     use = TRUE,
-    message = "DiagrammeR and DiagrammeRsvg packages needed for this function to work. Please install it."
+    top_level_fun = "register_pkgdown_methods"
   )
 
   # For dev pkgdown
