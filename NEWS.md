@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9012
+
+## Chore
+
+- Improve handling of suggested packages, add link in doc (@olivroy, #2036).
+
+
 # dm 1.0.6.9011
 
 ## Features
