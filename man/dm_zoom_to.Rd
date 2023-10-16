@@ -89,13 +89,13 @@ with a normal table.
 Calling \code{\link[=filter]{filter()}} on a zoomed \code{dm} is different from calling \code{\link[=dm_filter]{dm_filter()}}:
 only with the latter, the filter expression is added to the list of table filters stored in the dm.
 
-Furthermore, different \code{join()}-variants from {dplyr} are also supported,
+Furthermore, different \code{join()}-variants from \pkg{dplyr} are also supported,
 e.g. \code{\link[=left_join]{left_join()}} and \code{\link[=semi_join]{semi_join()}}.
 (Support for \code{\link[=nest_join]{nest_join()}} is planned.)
 The join-methods for \code{dm_zoomed} infer the columns to join by from the primary and foreign keys,
 and have an extra argument \code{select} that allows choosing the columns of the RHS table.
 
-And -- last but not least -- also the {tidyr}-functions \code{\link[=unite]{unite()}} and \code{\link[=separate]{separate()}} are supported for \code{dm_zoomed}.
+And -- last but not least -- also the \pkg{tidyr}-functions \code{\link[=unite]{unite()}} and \code{\link[=separate]{separate()}} are supported for \code{dm_zoomed}.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

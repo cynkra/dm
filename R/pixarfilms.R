@@ -12,7 +12,7 @@
 #' `pixar_films` contains missing values so cannot be made a proper primary key.
 #' Set to `TRUE` to remove those records.
 #'
-#' @return A `dm` object consisting of {pixarfilms} tables, complete with
+#' @return A `dm` object consisting of \pkg{pixarfilms} tables, complete with
 #'   primary and foreign keys and optionally colored.
 #'
 #' @export

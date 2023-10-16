@@ -18,7 +18,7 @@ have colors assigned to different tables for visualization with
 Set to \code{TRUE} to remove those records.}
 }
 \value{
-A \code{dm} object consisting of {pixarfilms} tables, complete with
+A \code{dm} object consisting of \pkg{pixarfilms} tables, complete with
 primary and foreign keys and optionally colored.
 }
 \description{
