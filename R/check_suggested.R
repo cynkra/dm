@@ -21,7 +21,7 @@ check_suggested <- function(packages, use, top_level_fun = NULL) {
   installed <- map_lgl(packages, is_installed)
 
   if (all(installed)) {
-    return(TRUE)
+    return(use)
   }
 
   if (only_msg) {
