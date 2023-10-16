@@ -30,19 +30,20 @@
 dm_gui <- function(..., dm = NULL, select_tables = TRUE, debug = FALSE) {
   check_dots_empty()
 
-  check_suggested(c(
-    "colourpicker",
-    "htmltools",
-    "htmlwidgets",
-    "reactable",
-    "rstudioapi",
-    "shiny",
-    "shinyAce",
-    "shinydashboard"
+  check_suggested(
+    c(
+      "colourpicker",
+      "htmltools",
+      "htmlwidgets",
+      "reactable",
+      "rstudioapi",
+      "shiny",
+      "shinyAce",
+      "shinydashboard"
     ),
     use = TRUE,
     top_level_fun = "dm_gui"
-    )
+  )
 
   dm <- dm_ptype(dm)
 
