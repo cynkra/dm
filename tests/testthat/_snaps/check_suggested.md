@@ -41,4 +41,12 @@
     Condition
       Error:
       ! The package "iurtnkjvmomweicopbt" is required.
+    Code
+      rlang::local_interactive(TRUE)
+      check_suggested(c("iurtnkjvmomweicopbt (>= 0.5)", "xxx", "cli"), NA,
+      top_level_fun = "foo")
+    Message
+      `foo()` is improved by the 'iurtnkjvmomweicopbt (>= 0.5) and xxx' package. Consider installing them.
+    Output
+      [1] FALSE
 

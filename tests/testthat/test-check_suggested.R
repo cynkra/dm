@@ -17,12 +17,16 @@ test_that("`check_suggested()` works for error messages", {
   expect_snapshot(error = TRUE, {
     check_suggested("iurtnkjvmomweicopbt", TRUE, top_level_fun = "foo")
     check_suggested("iurtnkjvmomweicopbt", TRUE)
+    # A message
+    rlang::local_interactive(TRUE)
+    check_suggested(c("iurtnkjvmomweicopbt (>= 0.5)", "xxx", "cli"), NA, top_level_fun = "foo")
   })
 })
 
 
 test_that("`check_suggested will skip.", {
   # this should be skipped.
-  withr::with_envvar(c("TESTTHAT" = "true"),check_suggested("iurtnkjvmomweicopbt", TRUE, top_level_fun = "foo"))
+  check_suggested("iurtnkjvmomweicopbt", TRUE, top_level_fun = "foo")
+  # Catching an error if it is not skipped.
   expect_equal("skipped", "not skipped")
 })
