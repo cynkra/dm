@@ -19,13 +19,11 @@ check_suggested <- function(packages,
       return(FALSE)
     }
 
-    installed <- map_lgl(packages, function(pkg) {
-      is_installed(pkg)
-    })
+    installed <- map_lgl(packages, is_installed)
 
-    if (any(!installed)) {
+    if (!all(installed)) {
       pkgs_not_installed <- packages[!installed]
-      message <- "{.fn {top_level_fun}} is improved by the '{.pkg {pkgs_not_installed}}' package. Consider installing them."
+      message <- "{.fn {top_level_fun}} is improved by the {.pkg {.val {pkgs_not_installed}}} package{?s}. Consider installing {?it/them}."
       cli::cli_inform(message)
     }
 
@@ -45,11 +43,10 @@ check_suggested <- function(packages,
   # Skip if some packages are not installed when testing
   # And say which package was not installed.
   if (is_testing()) {
-    installed <- map_lgl(packages, function(pkg) {
-      is_installed(pkg)
-    })
+    installed <- map_lgl(packages, is_installed)
+
     pkgs_not_installed <- packages[!installed]
-    message <- cli::format_inline("{.fn {top_level_fun}} needs the {.pkg {pkgs_not_installed}} package.")
+    message <- cli::format_inline("{.fn {top_level_fun}} needs the {.pkg {.val {pkgs_not_installed}}} package{?s}.")
     testthat::skip(message)
   } else {
     # If in interactive session, a prompt will ask user if they want
