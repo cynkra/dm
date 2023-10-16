@@ -17,7 +17,7 @@
 #'
 #' @export
 #' @autoglobal
-#' @examplesIf rlang::is_installed("pixarfilms") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed(c("pixarfilms", "DiagrammeR"))
 #' dm_pixarfilms()
 #' dm_pixarfilms() %>%
 #'   dm_draw()

@@ -47,7 +47,7 @@
 #' Currently, this is an object of class `grViz` (see also
 #' [DiagrammeR::grViz()]), but this is subject to change.
 #'
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #' dm_nycflights13() %>%
 #'   dm_draw()
 #'
@@ -237,7 +237,7 @@ dm_get_all_column_types <- function(x) {
 #' @return For `dm_set_colors()`: the updated data model.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(
 #'     darkblue = starts_with("air"),

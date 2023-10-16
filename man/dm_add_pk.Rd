@@ -50,7 +50,7 @@ It's possible though to set an unlimited number of unique keys using \code{\link
 or adding foreign keys pointing to columns other than the primary key columns with \code{\link[=dm_add_fk]{dm_add_fk()}}.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 nycflights_dm <- dm(
   planes = nycflights13::planes,
   airports = nycflights13::airports,

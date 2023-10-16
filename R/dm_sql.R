@@ -30,7 +30,7 @@
 #' @return Nested list of SQL statements.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("dbplyr")
+#' @examplesIf rlang::is_installed(c("RSQLite", "dbplyr"))
 #' con <- DBI::dbConnect(RSQLite::SQLite())
 #' dm <- dm_nycflights13()
 #' s <- dm_sql(dm, con)

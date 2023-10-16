@@ -22,7 +22,7 @@
 #'
 #' @return An updated `dm` with an additional unqiue key.
 #'
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #'
 #' nycflights_dm <- dm(
 #'   planes = nycflights13::planes,
