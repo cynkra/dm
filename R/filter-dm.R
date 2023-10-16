@@ -273,7 +273,7 @@ dm_get_filtered_table <- function(dm, from) {
 #'     \item{`zoomed`}{logical, does the filter condition relate to the zoomed table.}
 #'   }
 #'
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
+#' @examplesIf rlang::is_installed(c("nycflights13", "dbplyr"))
 #' dm_nycflights13() %>%
 #'   dm_get_filters()
 #' @noRd

@@ -61,7 +61,7 @@
 #' @return A `dm` object on the given `src` with the same table names
 #'   as the input `dm`.
 #'
-#' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
+#' @examplesIf rlang::is_installed(c("RSQLite", "nycflights13", "dbplyr"))
 #' con <- DBI::dbConnect(RSQLite::SQLite())
 #'
 #' # Copy to temporary tables, unique table names by default:

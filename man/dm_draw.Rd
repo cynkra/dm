@@ -80,7 +80,7 @@ The backend for drawing the diagrams might change in the future.
 If you rely on DiagrammeR, pass an explicit value for the \code{backend} argument.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_draw()
 

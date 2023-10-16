@@ -19,7 +19,7 @@
 #' @return For `dm_set_table_description()`: A `dm` object containing descriptions for specified tables.
 #' @export
 #'
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("labelled") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed(c("nycflights13", "labelled", "DiagrammeR"))
 #' desc_flights <- rlang::set_names(
 #'   "flights",
 #'   paste(

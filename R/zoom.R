@@ -46,7 +46,7 @@
 #' @return For `dm_zoom_to()`: A `dm_zoomed` object.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #' flights_zoomed <- dm_zoom_to(dm_nycflights13(), flights)
 #'
 #' flights_zoomed

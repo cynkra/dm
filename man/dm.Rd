@@ -62,7 +62,7 @@ dm(trees, mtcars)
 new_dm(list(trees = trees, mtcars = mtcars))
 
 as_dm(list(trees = trees, mtcars = mtcars))
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "dbplyr"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 is_dm(dm_nycflights13())
 
