@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9013
+
+## Chore
+
+- Add more `top_level_function` arguments in `check_suggested()` calls (#2044).
+
+- Remove curly braces. add `\pkg` (@olivroy, #2042).
+
+## Documentation
+
+- Use vectorized `is_installed()`to decide if examples should be run (@olivroy, #2043).
+
+
 # dm 1.0.6.9012
 
 ## Chore
