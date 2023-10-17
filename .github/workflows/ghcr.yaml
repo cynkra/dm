@@ -39,7 +39,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: docker/setup-buildx-action@dedd61cf5d839122591f5027c89bf3ad27691d18
+      - uses: docker/setup-buildx-action@5d9862498505fcac67b9f455d6e94ec0339f7b90
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
