@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9015
+
+## Documentation
+
+- Use `rlang::check_installed()` internally to install missing suggested packages on the fly (@olivroy, #2039, #2040).
+
+## Uncategorized
+
+- Merge pull request #2045 from cynkra/f-long-strings.
+
+
 # dm 1.0.6.9014
 
 ## Chore
