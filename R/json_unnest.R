@@ -37,20 +37,20 @@ json_unnest.data.frame <- function(data, cols, ..., keep_empty = FALSE, ptype = 
 }
 
 # @export
-json_unnest.tbl_lazy <- function(data, cols, ..., keep_empty = FALSE, ptype = NULL,
-                                 names_sep = NULL, names_repair = "check_unique") {
-  # select string_agg(quotename(k) + case t
-  #                   when 0 then ' nchar(1)'       -- javascript null
-  #                   when 1 then ' nvarchar(max)'  -- javascript string
-  #                   when 2 then ' float'          -- javascript number
-  #                   when 3 then ' bit'            -- javascript boolean
-  #                   else ' nvarchar(max) as json' -- javascript array or object
-  #                   end, ', ') within group (order by k)
-  # from (
-  #   select j2.[key], max(j2.[type])
-  #   from test
-  #   cross apply openjson(case when json_col like '{%}' then '[' + json_col + ']' else json_col end) as j1
-  #   cross apply openjson(j1.value) as j2
-  #   group by j2.[key]
-  # ) as kt(k, t)
-}
+# json_unnest.tbl_lazy <- function(data, cols, ..., keep_empty = FALSE, ptype = NULL,
+#                                  names_sep = NULL, names_repair = "check_unique") {
+# select string_agg(quotename(k) + case t
+#                   when 0 then ' nchar(1)'       -- javascript null
+#                   when 1 then ' nvarchar(max)'  -- javascript string
+#                   when 2 then ' float'          -- javascript number
+#                   when 3 then ' bit'            -- javascript boolean
+#                   else ' nvarchar(max) as json' -- javascript array or object
+#                   end, ', ') within group (order by k)
+# from (
+#   select j2.[key], max(j2.[type])
+#   from test
+#   cross apply openjson(case when json_col like '{%}' then '[' + json_col + ']' else json_col end) as j1
+#   cross apply openjson(j1.value) as j2
+#   group by j2.[key]
+# ) as kt(k, t)
+# }
