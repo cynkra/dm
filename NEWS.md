@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9016
+
+## Chore
+
+- Backport changes from attempted CRAN release (#2046).
+
+
 # dm 1.0.6.9015
 
 ## Documentation
