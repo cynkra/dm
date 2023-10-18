@@ -15,4 +15,14 @@ test_that("dm_sql()", {
     dm_for_filter_df() %>%
       dm_sql(my_test_con())
   })
+
+  expect_snapshot({
+    dm(x = data.frame(a = strrep("x", 300))) %>%
+      dm_sql(my_test_con())
+  })
+
+  expect_snapshot({
+    dm(x = data.frame(a = strrep("x", 10000))) %>%
+      dm_sql(my_test_con())
+  })
 })
