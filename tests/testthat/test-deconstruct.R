@@ -129,7 +129,7 @@ test_that("`dm()` and `new_dm()` can handle a mix of tables and `dm_keyed_tbl` o
   y1 <- keyed_tbl_impl(dm, "weather") %>%
     mutate() %>%
     select(everything())
-  y2 <- nycflights13::airports
+  y2 <- dm$airports
 
   expect_s3_class(y1, "dm_keyed_tbl")
   expect_s3_class(y2, "tbl_df")
