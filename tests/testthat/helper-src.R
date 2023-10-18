@@ -80,6 +80,8 @@ my_test_src_cache %<--% {
 }
 
 my_test_src <- function() {
+  testthat::skip_if_not_installed("dbplyr")
+
   fun <- my_test_src_fun()
   if (is.null(fun)) {
     abort(paste0("Data source not known: ", my_test_src_name))

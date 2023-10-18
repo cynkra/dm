@@ -27,8 +27,6 @@ test_that("dm_select_tbl() can reorder the tables in a `dm`", {
 })
 
 test_that("dm_select_tbl() remembers all FKs", {
-  skip_if_not_installed("nycflights13")
-
   expect_snapshot({
     dm_nycflights_small() %>%
       dm_add_fk(flights, origin, airports) %>%

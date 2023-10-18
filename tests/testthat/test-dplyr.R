@@ -666,8 +666,6 @@ test_that("key tracking works for distinct() and arrange()", {
 
   # dm_nycflights13() (with FK constraints) doesn't work on DB
   # here, FK constraints are not implemented on the DB
-  skip_if_not_installed("dbplyr")
-  skip_if_not_installed("nycflights13")
 
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
@@ -745,8 +743,6 @@ test_that("can use column as primary and foreign key", {
 })
 
 test_that("'summarize_at()' etc. work", {
-  skip_if_not_installed("nycflights13")
-
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%

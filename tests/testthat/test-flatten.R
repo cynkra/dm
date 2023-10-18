@@ -348,8 +348,6 @@ test_that("tests with 'bad_dm' work", {
     bad_filtered_dm %>% dm_flatten_to_tbl(tbl_1, .join = semi_join)
   )
 
-  skip_if_not_installed("nycflights13")
-
   # fails when there is a cycle
   expect_dm_error(
     dm_nycflights_small() %>%

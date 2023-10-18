@@ -115,8 +115,6 @@ test_that("dm_update_tbl() works", {
 
 # after #271:
 test_that("all cols are tracked in zoomed table", {
-  skip_if_not_installed("nycflights13")
-
   expect_identical(
     dm_nycflights_small() %>%
       dm_zoom_to(flights) %>%

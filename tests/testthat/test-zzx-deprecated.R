@@ -23,7 +23,6 @@ test_that("cdm_rm_tbl() works", {
 
 test_that("cdm_copy_to() behaves correctly", {
   skip_on_cran()
-  skip_if_not_installed("dbplyr")
   local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_dm(
@@ -44,7 +43,6 @@ test_that("cdm_disambiguate_cols() works as intended", {
 
 test_that("cdm_get_colors() behaves as intended", {
   skip_on_cran()
-  skip_if_not_installed("nycflights13")
   local_options(lifecycle_verbosity = "quiet")
 
   expect_equal(
@@ -106,7 +104,6 @@ test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` 
 
 test_that("cdm_get_src() works", {
   skip_on_cran()
-  skip_if_not_installed("dbplyr")
   local_options(lifecycle_verbosity = "quiet")
 
   expect_dm_error(

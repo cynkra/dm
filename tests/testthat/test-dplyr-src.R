@@ -1,8 +1,6 @@
 test_that("can access tables", {
   local_options(lifecycle_verbosity = "quiet")
 
-  skip_if_not_installed("nycflights13")
-
   expect_identical(tbl(dm_nycflights13(), "airlines"), nycflights_subset()$airlines)
   expect_dm_error(
     tbl_impl(dm_nycflights13(), "x"),
@@ -77,8 +75,6 @@ test_that("'copy_to.dm()' works (2)", {
     dm(mtcars) %>% copy_to(mtcars, repair = "check_unique"),
     "need_unique_names"
   )
-
-  skip_if_not_installed("dbplyr")
 
   # copying `tibble` from chosen src to sqlite() `dm`
   expect_equivalent_dm(

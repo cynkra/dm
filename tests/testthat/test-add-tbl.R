@@ -72,8 +72,6 @@ test_that("dm_add_tbl() works", {
     dm_add_tbl(dm_for_filter(), tf_7_new = tf_7()) %>% dm_select_tbl(tf_1, tf_7_new, everything())
   )
 
-  skip_if_not_installed("dbplyr")
-
   # error in case table srcs don't match
   expect_dm_error(
     dm_add_tbl(dm_for_filter(), data_card_1_duckdb()),
