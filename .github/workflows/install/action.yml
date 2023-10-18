@@ -38,7 +38,7 @@ runs:
         echo "_R_CHECK_SYSTEM_CLOCK_=false" | tee -a $GITHUB_ENV
         echo "_R_CHECK_FUTURE_FILE_TIMESTAMPS_=false" | tee -a $GITHUB_ENV
         echo "_R_CHECK_S3_METHODS_SHOW_POSSIBLE_ISSUES_=true" | tee -a $GITHUB_ENV
-        if [[ "${{ github.head_ref }}" =~ cran-.* ]]; then echo "_R_CHECK_CRAN_INCOMING_=true" | tee -a $GITHUB_ENV; fi
+        if [[ "${{ github.head_ref }}" =~ "^cran-" ]]; then echo "_R_CHECK_CRAN_INCOMING_=true" | tee -a $GITHUB_ENV; fi
         # FIXME: False positive with cynkra.com?
         echo "_R_CHECK_CRAN_INCOMING_REMOTE_=false" | tee -a $GITHUB_ENV
 
