@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9014
+
+## Chore
+
+### deps
+
+- Update docker/setup-buildx-action digest to 5d98624.
+
+### deps
+
+- Update docker/build-push-action digest to fdf7f43.
+
+
 # dm 1.0.6.9013
 
 ## Chore
