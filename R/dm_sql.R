@@ -107,8 +107,12 @@ dm_ddl_pre <- function(
 
   dm <- ddl_reorder_dm(dm, dest)
 
-  ## use 0-rows object
-  ptype_dm <- collect(dm_ptype(dm))
+  ## use 0-rows object if from database
+  if (is_src_db(dm)) {
+    ptype_dm <- collect(dm_ptype(dm))
+  } else {
+    ptype_dm <- dm
+  }
 
   con <- con_from_src_or_con(dest)
 
@@ -307,6 +311,7 @@ ddl_get_col_defs <- function(tables, con, table_names, pks) {
 
     # database-specific type conversions
     if (is_mariadb(con)) {
+      # FIXME: This is wrong in general, only needed for index columns
       types[types == "TEXT"] <- "VARCHAR(255)"
     }
     if (is_sqlite(con)) {
