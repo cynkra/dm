@@ -356,13 +356,14 @@ test_that("`pull_tbl()`-methods work", {
 })
 
 test_that("`pull_tbl()`-methods work for (0)", {
-  expect_identical(
+  tbl <-
     dm_nycflights_small() %>%
-      dm_set_table_description("Flugzeuge" = planes) %>%
-      pull_tbl(planes, keyed = TRUE) %>%
-      labelled::label_attribute(),
-    "Flugzeuge"
-  )
+    dm_set_table_description("Flugzeuge" = planes) %>%
+    pull_tbl(planes, keyed = TRUE)
+
+  skip_if_not_installed("labelled")
+
+  expect_identical(labelled::label_attribute(tbl), "Flugzeuge")
 })
 
 test_that("`pull_tbl()`-methods work for (1)", {
