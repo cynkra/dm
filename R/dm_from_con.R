@@ -55,7 +55,7 @@ dm_from_con <- function(
     ...) {
   stopifnot(is(con, "DBIConnection") || inherits(con, "Pool"))
 
-  check_suggested("dbplyr", use = TRUE, "dm_from_con")
+  check_suggested("dbplyr", "dm_from_con")
 
   if (inherits(con, "Pool")) {
     con <- pool_con <- pool::poolCheckout(con)

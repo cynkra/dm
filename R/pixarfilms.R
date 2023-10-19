@@ -25,10 +25,7 @@ dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE) {
   check_dots_empty()
 
   # Check for data package installed
-  check_suggested("pixarfilms",
-    use = TRUE,
-    top_level_fun = "dm_pixarfilms"
-  )
+  check_suggested("pixarfilms", "dm_pixarfilms")
 
   # Extract data objects
   pixar_films <- pixarfilms::pixar_films

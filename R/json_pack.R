@@ -22,7 +22,7 @@ json_pack <- function(.data, ..., .names_sep = NULL) {
 
 #' @export
 json_pack.data.frame <- function(.data, ..., .names_sep = NULL) {
-  check_suggested("jsonlite", use = TRUE, top_level_fun = "json_pack")
+  check_suggested("jsonlite", "json_pack")
   dot_nms <- ...names()
   tidyr::pack(.data, ..., .names_sep = .names_sep) %>%
     mutate(across(all_of(dot_nms), to_packed_json))

@@ -13,10 +13,7 @@
 #' dm_financial() %>%
 #'   dm_draw()
 dm_financial <- function() {
-  check_suggested("RMariaDB",
-    use = TRUE,
-    top_level_fun = "dm_financial"
-  )
+  check_suggested("RMariaDB", "dm_financial")
 
   my_db <- financial_db_con()
 
@@ -76,10 +73,7 @@ dm_has_financial <- function() {
 #' @rdname dm_financial
 #' @export
 dm_financial_sqlite <- function() {
-  check_suggested("RSQLite",
-    use = TRUE,
-    top_level_fun = "dm_financial_sqlite"
-  )
+  check_suggested("RSQLite", "dm_financial_sqlite")
 
   my_dm <-
     dm_financial() %>%

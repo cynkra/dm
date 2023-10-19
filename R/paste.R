@@ -46,10 +46,7 @@ dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
   options <- check_paste_options(options, select, caller_env())
 
   if (!is.null(path)) {
-    check_suggested("brio",
-      use = TRUE,
-      top_level_fun = "dm_paste"
-    )
+    check_suggested("brio", "dm_paste")
   }
 
   code <- dm_paste_impl(dm = dm, options, tab_width = tab_width)

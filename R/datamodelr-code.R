@@ -41,10 +41,7 @@ bdm_create_graph <- function(data_model,
 }
 
 bdm_render_graph <- function(graph, width = NULL, height = NULL, top_level_fun = NULL) {
-  check_suggested("DiagrammeR",
-    use = TRUE,
-    top_level_fun = top_level_fun
-  )
+  check_suggested("DiagrammeR", top_level_fun)
 
   if (is.null(graph$dot_code)) {
     graph$dot_code <- dot_graph(graph)
