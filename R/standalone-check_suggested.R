@@ -1,3 +1,23 @@
+# ---
+# repo: cynkra/dm
+# file: standalone-check_suggested.R
+# last-updated: 2023-02-23
+# license: https://unlicense.org
+# imports: rlang
+# ---
+#
+# This file provides a wrapper around `rlang::check_installed()` that skips tests
+# and supports optional usage.
+#
+# Needs functions from rlang, and purrr or standalone-purrr.R.
+#
+# ## Changelog
+#
+# 2023-10-19:
+# * Initial
+
+# nocov start
+
 #' Check if suggested package is installed
 #'
 #' @param packages vector of package names to check
@@ -53,3 +73,5 @@ check_suggested <- function(packages, top_level_fun, use = TRUE) {
   # If check_installed() returns, all packages are installed
   TRUE
 }
+
+# nocov end
