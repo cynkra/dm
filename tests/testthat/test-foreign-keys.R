@@ -231,8 +231,6 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     class = "ref_tbl_has_no_pk"
   )
 
-  skip_if_not_installed("nycflights13")
-
   expect_snapshot({
     dm_nycflights13() %>%
       dm_enum_fk_candidates(flights, airports) %>%

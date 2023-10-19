@@ -5,7 +5,6 @@ test_that("dumma", {
 })
 
 test_that("dm_rows_insert()", {
-  skip_if_not_installed("nycflights13")
   skip_if_not_installed("RSQLite")
   local_options(lifecycle_verbosity = "quiet")
 
@@ -89,8 +88,6 @@ test_that("dm_rows_insert()", {
 })
 
 test_that("dm_rows_update()", {
-  skip_if_not_installed("dbplyr")
-
   # Test bad column order
   dm_filter_rearranged <-
     dm_for_filter() %>%
@@ -150,7 +147,6 @@ test_that("dm_rows_update()", {
 })
 
 test_that("dm_rows_truncate()", {
-  skip_if_not_installed("dbplyr")
   local_options(lifecycle_verbosity = "warning")
 
   suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_for_filter()))

@@ -3,8 +3,6 @@ test_that("data source found", {
   expect_silent(my_test_src_fun()())
 })
 
-skip_if_not_installed("dbplyr")
-
 test_that("copy_dm_to() copies data frames to databases", {
   skip_if_ide()
 

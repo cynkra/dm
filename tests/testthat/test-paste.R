@@ -1,14 +1,10 @@
 test_that("path argument", {
-  skip_if_not_installed("brio")
-
   path <- tempfile()
   dm() %>% dm_paste(path = path)
   expect_identical(readLines(path), c("dm::dm(", ")"))
 })
 
 test_that("output", {
-  skip_if_not_installed("nycflights13")
-
   local_options(lifecycle_verbosity = "warning")
 
   expect_snapshot({

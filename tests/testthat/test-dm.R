@@ -91,8 +91,6 @@ test_that("dm() works for adding tables", {
     dm(dm_for_filter(), tf_7_new = tf_7()) %>% dm_select_tbl(tf_1, tf_7_new, everything())
   )
 
-  skip_if_not_installed("dbplyr")
-
   # error in case table srcs don't match
   expect_dm_error(
     dm(dm_for_filter(), data_card_1_duckdb()),
@@ -151,8 +149,6 @@ test_that("errors: duplicate table names, src mismatches", {
     dm(dm_for_filter(), dm_for_flatten(), dm_for_filter())
   })
 
-  skip_if_not_installed("dbplyr")
-  skip_if_not_installed("duckdb")
   expect_dm_error(dm(dm_for_flatten(), dm_for_filter_duckdb()), "not_same_src")
 })
 
@@ -193,7 +189,6 @@ test_that("auto-renaming works", {
 })
 
 test_that("test error output for src mismatches", {
-  skip_if_not_installed("dbplyr")
   skip_if_not(getRversion() >= "4.0")
 
   expect_snapshot({
@@ -361,14 +356,14 @@ test_that("`pull_tbl()`-methods work", {
 })
 
 test_that("`pull_tbl()`-methods work for (0)", {
-  skip_if_not_installed("labelled")
-  expect_identical(
+  tbl <-
     dm_nycflights_small() %>%
-      dm_set_table_description("Flugzeuge" = planes) %>%
-      pull_tbl(planes, keyed = TRUE) %>%
-      labelled::label_attribute(),
-    "Flugzeuge"
-  )
+    dm_set_table_description("Flugzeuge" = planes) %>%
+    pull_tbl(planes, keyed = TRUE)
+
+  skip_if_not_installed("labelled")
+
+  expect_identical(labelled::label_attribute(tbl), "Flugzeuge")
 })
 
 test_that("`pull_tbl()`-methods work for (1)", {
@@ -486,8 +481,6 @@ test_that("dm_get_con() errors", {
 })
 
 test_that("dm_get_con() works", {
-  skip_if_not_installed("dbplyr")
-
   expect_identical(
     dm_get_con(dm_for_filter_db()),
     con_from_src_or_con(my_db_test_src())
@@ -509,8 +502,6 @@ test_that("str()", {
 })
 
 test_that("output", {
-  skip_if_not_installed("nycflights13")
-
   expect_snapshot({
     print(dm())
 
