@@ -41,8 +41,7 @@ dm_gui <- function(..., dm = NULL, select_tables = TRUE, debug = FALSE) {
       "shinyAce",
       "shinydashboard"
     ),
-    use = TRUE,
-    top_level_fun = "dm_gui"
+    "dm_gui"
   )
 
   dm <- dm_ptype(dm)

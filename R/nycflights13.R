@@ -42,7 +42,7 @@ dm_nycflights13 <- function(..., cycle = FALSE, color = TRUE, subset = TRUE, com
     airports <- data$airports
     planes <- data$planes
   } else {
-    check_suggested("nycflights13", use = TRUE, top_level_fun = "dm_nycflights13")
+    check_suggested("nycflights13", "dm_nycflights13")
 
     flights <- nycflights13::flights
     weather <- nycflights13::weather
