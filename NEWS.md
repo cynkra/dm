@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9017
+
+## Chore
+
+- Make `check_suggested()` a standalone (#2054).
+
+## Testing
+
+- Remove most skips from tests (#2052).
+
+
 # dm 1.0.6.9016
 
 ## Chore
