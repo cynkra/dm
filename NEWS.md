@@ -1,195 +1,69 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.6.9017
+# dm 1.0.7
 
-## Chore
+## Breaking changes
 
-- Make `check_suggested()` a standalone (#2054).
+- Breaking change: Add `check_dots_empty()` calls (#1929, #1943).
 
-## Testing
+## Bug fixes
 
-- Remove most skips from tests (#2052).
-
-
-# dm 1.0.6.9016
-
-## Chore
-
-- Backport changes from attempted CRAN release (#2046).
-
-
-# dm 1.0.6.9015
-
-## Documentation
-
-- Use `rlang::check_installed()` internally to install missing suggested packages on the fly (@olivroy, #2039, #2040).
-
-## Uncategorized
-
-- Merge pull request #2045 from cynkra/f-long-strings.
-
-
-# dm 1.0.6.9014
-
-## Chore
-
-### deps
-
-- Update docker/setup-buildx-action digest to 5d98624.
-
-### deps
-
-- Update docker/build-push-action digest to fdf7f43.
-
-
-# dm 1.0.6.9013
-
-## Chore
-
-- Add more `top_level_function` arguments in `check_suggested()` calls (#2044).
-
-- Remove curly braces. add `\pkg` (@olivroy, #2042).
-
-## Documentation
-
-- Use vectorized `is_installed()`to decide if examples should be run (@olivroy, #2043).
-
-
-# dm 1.0.6.9012
-
-## Chore
-
-- Improve handling of suggested packages, add link in doc (@olivroy, #2036).
-
-
-# dm 1.0.6.9011
+- Snapshot test.
+- Stable sort order in test.
+- Remove unwanted changes.
+- Compatibility with duckdb 0.9.0.
+- Minor fixes in `dm_pack_tbl()` and `dm_unwrap_tbl()` (#1947).
 
 ## Features
 
 - `copy_dm_to()` now warns unconditionally on unsupported arguments, and fails if `copy_to` is provided. Use the new `dm_sql()` function as a replacement for `copy_dm_to(copy_to = )`.
+- Reuse existing `build_copy_queries()` code for `dm_sql()` (#2011).
+- `dm_sql()` returns nested named lists.
+- New `json_unnest()` and `json_unpack()`, currently implemented for data frames only (#991, #997).
+- `dm_rows_append()` also works for local dm, with support for autoincrement primary keys (#1727, #1745).
+- Add `dm_sql()` and friends, still need tests (#1915).
+- Breaking change: Add `check_dots_empty()` calls (#1929, #1943).
+- Test MySQL on GHA (#1940).
+- Improve MySQL compatibility regarding learning of database schemas and checking of constraints (#1938).
 
 ## Chore
 
-### deps
-
+- Make `check_suggested()` a standalone (#2054).
+- Backport changes from attempted CRAN release (#2046).
+- Update docker/setup-buildx-action digest to 5d98624.
+- Update docker/build-push-action digest to fdf7f43.
+- Add more `top_level_function` arguments in `check_suggested()` calls (#2044).
+- Remove curly braces. add `\pkg` (@olivroy, #2042).
+- Improve handling of suggested packages, add link in doc (@olivroy, #2036).
 - Update docker/build-push-action digest to 0f84726.
 
 - Move deprecated argument.
 
 - Stabilize and improve tests (#2031).
-
-
-# dm 1.0.6.9010
-
-## Bug fixes
-
-- Snapshot test.
-
-- Stable sort order in test.
-
-- Remove unwanted changes.
-
-## Features
-
-- Reuse existing `build_copy_queries()` code for `dm_sql()` (#2011).
-
-## Chore
-
 - Remove DBI import (#1974).
-
 - Add technical helper to `.Rbuildignore`.
-
 - Simplify `merge_group` in GHA.
-
 - Stabilize tests, add snapshot tests for `dm_sql()` for all databases (#1987).
-
 - Enable merge queue.
-
 - Indicate MySQL server, bump to dev version of RMariaDB, work around tidyverse/dbplyr#1190 (#1989).
-
 - Snapshots (#1985).
-
 - Remove magrittr import (#1975).
-
-
-# dm 1.0.6.9009
-
-## Chore
-
 - Prepare for removal of magrittr imports (#1983).
-
 - Add FIXME.
-
 - Support loading with empty NAMESPACE file.
-
 - Move pillar to Suggests (#1976).
-
 - Switch to usethis imports, blanket vctrs import.
-
 - Switch internal testing to MariaDB.
-
 - Explain reasoning behind SQLite.
-
 - Parallel.
-
-## Testing
-
-- Add explicit unique key to `dm_for_filter()`.
-
-- Add Postgres test for `dm_sql()`.
-
-
-# dm 1.0.6.9008
-
-## Chore
-
-### deps
-
 - Update dependency ubuntu to v22 (#1969).
-
-### deps
-
 - Update dependency font-awesome to v6.4.2 (#1965).
-
-### deps
-
 - Update actions/checkout action to v4 (#1966).
-
-### deps
-
 - Update dessant/lock-threads action to v4 (#1967).
-
-### deps
-
 - Update peter-evans/create-pull-request action to v5 (#1968).
-
-### deps
-
 - Update docker/login-action digest to b4bedf8 (#1960).
-
-### deps
-
 - Update docker/metadata-action digest to 879dcbb (#1962).
-
-### deps
-
 - Update docker/setup-buildx-action digest to dedd61c (#1963).
-
-
-# dm 1.0.6.9007
-
-## Bug fixes
-
-- Compatibility with duckdb 0.9.0.
-
-## Features
-
-- `dm_sql()` returns nested named lists.
-
-## Chore
-
-### deps
-
 - Update docker/build-push-action digest to 4c1b68d.
 
 - Stabilize test.
@@ -215,132 +89,52 @@
 - Prioritize learning test.
 
 - Add skips to `test_src_*()` calls.
-
-## Documentation
-
-- Add db-\* rules to Makefile.
-
-## Uncategorized
-
-- Merge pull request #1954 from cynkra/renovate/configure.
-
-
-# dm 1.0.6.9006
-
-## Chore
-
 - Throw away GHA cache.
-
-
-# dm 1.0.6.9005
-
-## Chore
-
 - Remove dead code (#979, #1950).
-
 - Rename internal `new_dm3()` to `dm_from_def()` (#1225, #1949).
-
 - New GHA checks for the case of missing suggested packages (#1952).
-
 - Carefully check if suggested packages are installed.
-
-
-# dm 1.0.6.9004
-
-## Chore
-
 - Avoid `dbplyr::ident_q()` (#1788).
-
   Closes #1788.
-
 - Remove dead code (#1871).
-
   Closes #1871.
-
-## Documentation
-
-- Tweaks.
-
-- Recategorize and describe function reference.
-
-
-# dm 1.0.6.9003
-
-## Bug fixes
-
-- Minor fixes in `dm_pack_tbl()` and `dm_unwrap_tbl()` (#1947).
-
-## Features
-
-- New `json_unnest()` and `json_unpack()`, currently implemented for data frames only (#991, #997).
-
-- `dm_rows_append()` also works for local dm, with support for autoincrement primary keys (#1727, #1745).
-
-- Add `dm_sql()` and friends, still need tests (#1915).
-
-## Chore
-
 - Fix typo, dm_unwrapped_tbl -\> dm_unwrapped.
-
 - New targets, for silent testing.
-
 - Enhance test snapshot from last change.
-
 - Stabilize tests.
-
 - New `ltest` and `.NOTPARALLEL` targets.
-
-
-# dm 1.0.6.9002
-
-## Features
-
-- Breaking change: Add `check_dots_empty()` calls (#1929, #1943).
-
-- Test MySQL on GHA (#1940).
-
-- Improve MySQL compatibility regarding learning of database schemas and checking of constraints (#1938).
-
-## Chore
-
 - Reorganize `build_copy_queries()` (#1923).
-
 - Add ellipsis to `tbl_sum()` signature (#1941).
+- Fix test compatibility.
+- Don't cache with scheduled builds.
 
 ## Documentation
 
+- Use `rlang::check_installed()` internally to install missing suggested packages on the fly (@olivroy, #2039, #2040).
+- Use vectorized `is_installed()`to decide if examples should be run (@olivroy, #2043).
+- Add db-\* rules to Makefile.
+- Tweaks.
+- Recategorize and describe function reference.
 - `collect.zoomed_dm()` shows a more helpful error message (#1929, #1945).
-
 - Deprecate `copy_dm_to(copy_to = )` argument (#1944).
-
 - Add information on default font size to `?dm_draw` (#1935).
 
 ## Performance
 
 - Replace `tibble()` by `fast_tibble()` (@mgirlich, #1928).
-
 - Replace superseded `dplyr::recode()` (@mgirlich, #1927).
 
-## Breaking changes
+## Testing
 
-- Breaking change: Add `check_dots_empty()` calls (#1929, #1943).
+- Remove most skips from tests (#2052).
+- Add explicit unique key to `dm_for_filter()`.
+- Add Postgres test for `dm_sql()`.
 
 ## Uncategorized
 
+- Merge pull request #2045 from cynkra/f-long-strings.
+- Merge pull request #1954 from cynkra/renovate/configure.
 - Merge pull request #1942 from cynkra/f-error-msg.
-
-
-# dm 1.0.6.9001
-
-## Chore
-
-- Fix test compatibility.
-
-- Don't cache with scheduled builds.
-
-
-# dm 1.0.6.9000
-
 - Merge branch 'cran-1.0.6'.
 
 
