@@ -78,57 +78,126 @@
 <h2 class="pkg-version" data-toc-text="1.0.7" id="dm-107">dm 1.0.7<a class="anchor" aria-label="anchor" href="#dm-107"></a></h2>
 <div class="section level3">
 <h3 id="breaking-changes-1-0-7">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-7"></a></h3>
-<ul><li>Breaking change: Add <code>check_dots_empty()</code> calls to methods (<a href="https://github.com/cynkra/dm/issues/1929" class="external-link">#1929</a>, <a href="https://github.com/cynkra/dm/issues/1943" class="external-link">#1943</a>).</li>
+<ul><li>Breaking change: Add <code>check_dots_empty()</code> calls (<a href="https://github.com/cynkra/dm/issues/1929" class="external-link">#1929</a>, <a href="https://github.com/cynkra/dm/issues/1943" class="external-link">#1943</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-0-7">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-7"></a></h3>
-<ul><li><p>Compatibility with duckdb 0.9.0.</p></li>
-<li><p>Minor fixes in <code><a href="../reference/dm_pack_tbl.html">dm_pack_tbl()</a></code> and <code><a href="../reference/dm_unwrap_tbl.html">dm_unwrap_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/1947" class="external-link">#1947</a>).</p></li>
+<ul><li>Snapshot test.</li>
+<li>Stable sort order in test.</li>
+<li>Remove unwanted changes.</li>
+<li>Compatibility with duckdb 0.9.0.</li>
+<li>Minor fixes in <code><a href="../reference/dm_pack_tbl.html">dm_pack_tbl()</a></code> and <code><a href="../reference/dm_unwrap_tbl.html">dm_unwrap_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/1947" class="external-link">#1947</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="features-1-0-7">Features<a class="anchor" aria-label="anchor" href="#features-1-0-7"></a></h3>
-<ul><li><p><code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> now warns unconditionally on unsupported arguments, and fails if <code>copy_to</code> is provided. Use the new <code><a href="../reference/dm_sql.html">dm_sql()</a></code> function (<a href="https://github.com/cynkra/dm/issues/1915" class="external-link">#1915</a>, <a href="https://github.com/cynkra/dm/issues/2011" class="external-link">#2011</a>, <a href="https://github.com/jangorecki" class="external-link">@jangorecki</a>) as a replacement for <code>copy_dm_to(copy_to = )</code> (<a href="https://github.com/cynkra/dm/issues/1944" class="external-link">#1944</a>).</p></li>
-<li><p>New <code><a href="../reference/json_unnest.html">json_unnest()</a></code> and <code><a href="../reference/json_unpack.html">json_unpack()</a></code>, currently implemented for data frames only (<a href="https://github.com/cynkra/dm/issues/991" class="external-link">#991</a>, <a href="https://github.com/cynkra/dm/issues/997" class="external-link">#997</a>).</p></li>
-<li><p><code><a href="../reference/rows-dm.html">dm_rows_append()</a></code> also works for local dm, with support for autoincrement primary keys (<a href="https://github.com/cynkra/dm/issues/1727" class="external-link">#1727</a>, <a href="https://github.com/cynkra/dm/issues/1745" class="external-link">#1745</a>).</p></li>
-<li><p>Breaking change: Add <code>check_dots_empty()</code> calls (<a href="https://github.com/cynkra/dm/issues/1929" class="external-link">#1929</a>, <a href="https://github.com/cynkra/dm/issues/1943" class="external-link">#1943</a>).</p></li>
-<li><p>Test MySQL on GHA (<a href="https://github.com/cynkra/dm/issues/1940" class="external-link">#1940</a>).</p></li>
-<li><p>Improve MySQL compatibility regarding learning of database schemas and checking of constraints (<a href="https://github.com/cynkra/dm/issues/1938" class="external-link">#1938</a>).</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="documentation-1-0-7">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-7"></a></h3>
-<ul><li><p>Recategorize and describe function reference.</p></li>
-<li><p>Better error and information messages when querying keys.</p></li>
-<li><p><code>collect.zoomed_dm()</code> shows a more helpful error message (<a href="https://github.com/cynkra/dm/issues/1929" class="external-link">#1929</a>, <a href="https://github.com/cynkra/dm/issues/1945" class="external-link">#1945</a>).</p></li>
-<li><p>Add information on default font size to <code><a href="../reference/dm_draw.html">?dm_draw</a></code> (<a href="https://github.com/cynkra/dm/issues/1935" class="external-link">#1935</a>).</p></li>
-<li><p>Add <code>db-*</code> rules to Makefile to simplify Docker-based database setup.</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="performance-1-0-7">Performance<a class="anchor" aria-label="anchor" href="#performance-1-0-7"></a></h3>
-<ul><li><p>Replace <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble()</a></code> by <code>fast_tibble()</code> (<a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>, <a href="https://github.com/cynkra/dm/issues/1928" class="external-link">#1928</a>).</p></li>
-<li><p>Replace superseded <code><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">dplyr::recode()</a></code> (<a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>, <a href="https://github.com/cynkra/dm/issues/1927" class="external-link">#1927</a>).</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="testing-1-0-7">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-7"></a></h3>
-<ul><li><p>Add explicit unique key to <code>dm_for_filter()</code>.</p></li>
-<li><p>Add Postgres test for <code><a href="../reference/dm_sql.html">dm_sql()</a></code>.</p></li>
-<li><p>Switch internal testing to MariaDB.</p></li>
-<li><p>Fast offline checks with new <code>"DM_OFFLINE"</code> environment variable.</p></li>
-<li><p>New GHA checks for the case of missing suggested packages (<a href="https://github.com/cynkra/dm/issues/1952" class="external-link">#1952</a>).</p></li>
+<ul><li>
+<code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> now warns unconditionally on unsupported arguments, and fails if <code>copy_to</code> is provided. Use the new <code><a href="../reference/dm_sql.html">dm_sql()</a></code> function as a replacement for <code>copy_dm_to(copy_to = )</code>.</li>
+<li>Reuse existing <code>build_copy_queries()</code> code for <code><a href="../reference/dm_sql.html">dm_sql()</a></code> (<a href="https://github.com/cynkra/dm/issues/2011" class="external-link">#2011</a>).</li>
+<li>
+<code><a href="../reference/dm_sql.html">dm_sql()</a></code> returns nested named lists.</li>
+<li>New <code><a href="../reference/json_unnest.html">json_unnest()</a></code> and <code><a href="../reference/json_unpack.html">json_unpack()</a></code>, currently implemented for data frames only (<a href="https://github.com/cynkra/dm/issues/991" class="external-link">#991</a>, <a href="https://github.com/cynkra/dm/issues/997" class="external-link">#997</a>).</li>
+<li>
+<code><a href="../reference/rows-dm.html">dm_rows_append()</a></code> also works for local dm, with support for autoincrement primary keys (<a href="https://github.com/cynkra/dm/issues/1727" class="external-link">#1727</a>, <a href="https://github.com/cynkra/dm/issues/1745" class="external-link">#1745</a>).</li>
+<li>Add <code><a href="../reference/dm_sql.html">dm_sql()</a></code> and friends, still need tests (<a href="https://github.com/cynkra/dm/issues/1915" class="external-link">#1915</a>).</li>
+<li>Breaking change: Add <code>check_dots_empty()</code> calls (<a href="https://github.com/cynkra/dm/issues/1929" class="external-link">#1929</a>, <a href="https://github.com/cynkra/dm/issues/1943" class="external-link">#1943</a>).</li>
+<li>Test MySQL on GHA (<a href="https://github.com/cynkra/dm/issues/1940" class="external-link">#1940</a>).</li>
+<li>Improve MySQL compatibility regarding learning of database schemas and checking of constraints (<a href="https://github.com/cynkra/dm/issues/1938" class="external-link">#1938</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="chore-1-0-7">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-7"></a></h3>
-<ul><li><p>Move magrittr (<a href="https://github.com/cynkra/dm/issues/1975" class="external-link">#1975</a>, <a href="https://github.com/cynkra/dm/issues/1983" class="external-link">#1983</a>), DBI (<a href="https://github.com/cynkra/dm/issues/1974" class="external-link">#1974</a>), and pillar (<a href="https://github.com/cynkra/dm/issues/1976" class="external-link">#1976</a>) to <code>"Suggests"</code>.</p></li>
-<li><p>Require RMariaDB 1.3.0, work around tidyverse/dbplyr#1190 and tidyverse/dbplyr#1195 (<a href="https://github.com/cynkra/dm/issues/1989" class="external-link">#1989</a>).</p></li>
+<ul><li><p>Make <code>check_suggested()</code> a standalone (<a href="https://github.com/cynkra/dm/issues/2054" class="external-link">#2054</a>).</p></li>
+<li><p>Backport changes from attempted CRAN release (<a href="https://github.com/cynkra/dm/issues/2046" class="external-link">#2046</a>).</p></li>
+<li><p>Update docker/setup-buildx-action digest to 5d98624.</p></li>
+<li><p>Update docker/build-push-action digest to fdf7f43.</p></li>
+<li><p>Add more <code>top_level_function</code> arguments in <code>check_suggested()</code> calls (<a href="https://github.com/cynkra/dm/issues/2044" class="external-link">#2044</a>).</p></li>
+<li><p>Remove curly braces. add <code>\pkg</code> (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2042" class="external-link">#2042</a>).</p></li>
+<li><p>Improve handling of suggested packages, add link in doc (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2036" class="external-link">#2036</a>).</p></li>
+<li><p>Update docker/build-push-action digest to 0f84726.</p></li>
+<li><p>Move deprecated argument.</p></li>
+<li><p>Stabilize and improve tests (<a href="https://github.com/cynkra/dm/issues/2031" class="external-link">#2031</a>).</p></li>
+<li><p>Remove DBI import (<a href="https://github.com/cynkra/dm/issues/1974" class="external-link">#1974</a>).</p></li>
+<li><p>Add technical helper to <code>.Rbuildignore</code>.</p></li>
+<li><p>Simplify <code>merge_group</code> in GHA.</p></li>
+<li><p>Stabilize tests, add snapshot tests for <code><a href="../reference/dm_sql.html">dm_sql()</a></code> for all databases (<a href="https://github.com/cynkra/dm/issues/1987" class="external-link">#1987</a>).</p></li>
+<li><p>Enable merge queue.</p></li>
+<li><p>Indicate MySQL server, bump to dev version of RMariaDB, work around tidyverse/dbplyr#1190 (<a href="https://github.com/cynkra/dm/issues/1989" class="external-link">#1989</a>).</p></li>
+<li><p>Snapshots (<a href="https://github.com/cynkra/dm/issues/1985" class="external-link">#1985</a>).</p></li>
+<li><p>Remove magrittr import (<a href="https://github.com/cynkra/dm/issues/1975" class="external-link">#1975</a>).</p></li>
+<li><p>Prepare for removal of magrittr imports (<a href="https://github.com/cynkra/dm/issues/1983" class="external-link">#1983</a>).</p></li>
+<li><p>Add FIXME.</p></li>
+<li><p>Support loading with empty NAMESPACE file.</p></li>
+<li><p>Move pillar to Suggests (<a href="https://github.com/cynkra/dm/issues/1976" class="external-link">#1976</a>).</p></li>
+<li><p>Switch to usethis imports, blanket vctrs import.</p></li>
+<li><p>Switch internal testing to MariaDB.</p></li>
+<li><p>Explain reasoning behind SQLite.</p></li>
+<li><p>Parallel.</p></li>
+<li><p>Update dependency ubuntu to v22 (<a href="https://github.com/cynkra/dm/issues/1969" class="external-link">#1969</a>).</p></li>
+<li><p>Update dependency font-awesome to v6.4.2 (<a href="https://github.com/cynkra/dm/issues/1965" class="external-link">#1965</a>).</p></li>
+<li><p>Update actions/checkout action to v4 (<a href="https://github.com/cynkra/dm/issues/1966" class="external-link">#1966</a>).</p></li>
+<li><p>Update dessant/lock-threads action to v4 (<a href="https://github.com/cynkra/dm/issues/1967" class="external-link">#1967</a>).</p></li>
+<li><p>Update peter-evans/create-pull-request action to v5 (<a href="https://github.com/cynkra/dm/issues/1968" class="external-link">#1968</a>).</p></li>
+<li><p>Update docker/login-action digest to b4bedf8 (<a href="https://github.com/cynkra/dm/issues/1960" class="external-link">#1960</a>).</p></li>
+<li><p>Update docker/metadata-action digest to 879dcbb (<a href="https://github.com/cynkra/dm/issues/1962" class="external-link">#1962</a>).</p></li>
+<li><p>Update docker/setup-buildx-action digest to dedd61c (<a href="https://github.com/cynkra/dm/issues/1963" class="external-link">#1963</a>).</p></li>
+<li><p>Update docker/build-push-action digest to 4c1b68d.</p></li>
+<li><p>Stabilize test.</p></li>
+<li><p>Indent.</p></li>
+<li><p>Use <code>table_names_out</code> as source of truth for remote table names.</p></li>
+<li><p>Explicit parallelization.</p></li>
+<li><p>Reformat.</p></li>
+<li><p>Prefer <code>map*()</code> over <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code> and <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply()</a></code>.</p></li>
+<li><p><code>styler::style_pkg(scope = "tokens")</code>.</p></li>
+<li><p>Better error and information messages when querying keys.</p></li>
+<li><p>Explicit qualification.</p></li>
+<li><p>Fast offline checks with environment variable.</p></li>
+<li><p>Prioritize learning test.</p></li>
+<li><p>Add skips to <code>test_src_*()</code> calls.</p></li>
+<li><p>Throw away GHA cache.</p></li>
+<li><p>Remove dead code (<a href="https://github.com/cynkra/dm/issues/979" class="external-link">#979</a>, <a href="https://github.com/cynkra/dm/issues/1950" class="external-link">#1950</a>).</p></li>
+<li><p>Rename internal <code>new_dm3()</code> to <code>dm_from_def()</code> (<a href="https://github.com/cynkra/dm/issues/1225" class="external-link">#1225</a>, <a href="https://github.com/cynkra/dm/issues/1949" class="external-link">#1949</a>).</p></li>
+<li><p>New GHA checks for the case of missing suggested packages (<a href="https://github.com/cynkra/dm/issues/1952" class="external-link">#1952</a>).</p></li>
+<li><p>Carefully check if suggested packages are installed.</p></li>
+<li><p>Avoid <code><a href="https://dbplyr.tidyverse.org/reference/ident_q.html" class="external-link">dbplyr::ident_q()</a></code> (<a href="https://github.com/cynkra/dm/issues/1788" class="external-link">#1788</a>). Closes <a href="https://github.com/cynkra/dm/issues/1788" class="external-link">#1788</a>.</p></li>
+<li><p>Remove dead code (<a href="https://github.com/cynkra/dm/issues/1871" class="external-link">#1871</a>). Closes <a href="https://github.com/cynkra/dm/issues/1871" class="external-link">#1871</a>.</p></li>
+<li><p>Fix typo, dm_unwrapped_tbl -&gt; dm_unwrapped.</p></li>
+<li><p>New targets, for silent testing.</p></li>
+<li><p>Enhance test snapshot from last change.</p></li>
+<li><p>Stabilize tests.</p></li>
+<li><p>New <code>ltest</code> and <code>.NOTPARALLEL</code> targets.</p></li>
+<li><p>Reorganize <code>build_copy_queries()</code> (<a href="https://github.com/cynkra/dm/issues/1923" class="external-link">#1923</a>).</p></li>
+<li><p>Add ellipsis to <code>tbl_sum()</code> signature (<a href="https://github.com/cynkra/dm/issues/1941" class="external-link">#1941</a>).</p></li>
+<li><p>Fix test compatibility.</p></li>
+<li><p>Don’t cache with scheduled builds.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="internal-1-0-7">Internal<a class="anchor" aria-label="anchor" href="#internal-1-0-7"></a></h3>
-<ul><li><p>Prefer <code>map*()</code> over <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code> and <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply()</a></code>.</p></li>
-<li><p><code>styler::style_pkg(scope = "tokens")</code>.</p></li>
-<li><p>Rename internal <code>new_dm3()</code> to <code>dm_from_def()</code> (<a href="https://github.com/cynkra/dm/issues/1225" class="external-link">#1225</a>, <a href="https://github.com/cynkra/dm/issues/1949" class="external-link">#1949</a>).</p></li>
-<li><p>Remove dead code (<a href="https://github.com/cynkra/dm/issues/979" class="external-link">#979</a>, <a href="https://github.com/cynkra/dm/issues/1950" class="external-link">#1950</a>, <a href="https://github.com/cynkra/dm/issues/1871" class="external-link">#1871</a>).</p></li>
-<li><p>Reorganize <code>build_copy_queries()</code> (<a href="https://github.com/cynkra/dm/issues/1923" class="external-link">#1923</a>).</p></li>
-<li><p>Avoid <code><a href="https://dbplyr.tidyverse.org/reference/ident_q.html" class="external-link">dbplyr::ident_q()</a></code> (<a href="https://github.com/cynkra/dm/issues/1788" class="external-link">#1788</a>).</p></li>
-<li><p>Add ellipsis to <code>tbl_sum()</code> signature (<a href="https://github.com/cynkra/dm/issues/1941" class="external-link">#1941</a>).</p></li>
+<h3 id="documentation-1-0-7">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-7"></a></h3>
+<ul><li>Use <code><a href="https://rlang.r-lib.org/reference/is_installed.html" class="external-link">rlang::check_installed()</a></code> internally to install missing suggested packages on the fly (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2039" class="external-link">#2039</a>, <a href="https://github.com/cynkra/dm/issues/2040" class="external-link">#2040</a>).</li>
+<li>Use vectorized <code>is_installed()</code>to decide if examples should be run (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2043" class="external-link">#2043</a>).</li>
+<li>Add db-* rules to Makefile.</li>
+<li>Tweaks.</li>
+<li>Recategorize and describe function reference.</li>
+<li>
+<code>collect.zoomed_dm()</code> shows a more helpful error message (<a href="https://github.com/cynkra/dm/issues/1929" class="external-link">#1929</a>, <a href="https://github.com/cynkra/dm/issues/1945" class="external-link">#1945</a>).</li>
+<li>Deprecate <code>copy_dm_to(copy_to = )</code> argument (<a href="https://github.com/cynkra/dm/issues/1944" class="external-link">#1944</a>).</li>
+<li>Add information on default font size to <code><a href="../reference/dm_draw.html">?dm_draw</a></code> (<a href="https://github.com/cynkra/dm/issues/1935" class="external-link">#1935</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="performance-1-0-7">Performance<a class="anchor" aria-label="anchor" href="#performance-1-0-7"></a></h3>
+<ul><li>Replace <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble()</a></code> by <code>fast_tibble()</code> (<a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>, <a href="https://github.com/cynkra/dm/issues/1928" class="external-link">#1928</a>).</li>
+<li>Replace superseded <code><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">dplyr::recode()</a></code> (<a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>, <a href="https://github.com/cynkra/dm/issues/1927" class="external-link">#1927</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing-1-0-7">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-7"></a></h3>
+<ul><li>Remove most skips from tests (<a href="https://github.com/cynkra/dm/issues/2052" class="external-link">#2052</a>).</li>
+<li>Add explicit unique key to <code>dm_for_filter()</code>.</li>
+<li>Add Postgres test for <code><a href="../reference/dm_sql.html">dm_sql()</a></code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="uncategorized-1-0-7">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-7"></a></h3>
+<ul><li>Merge pull request <a href="https://github.com/cynkra/dm/issues/2045" class="external-link">#2045</a> from cynkra/f-long-strings.</li>
+<li>Merge pull request <a href="https://github.com/cynkra/dm/issues/1954" class="external-link">#1954</a> from cynkra/renovate/configure.</li>
+<li>Merge pull request <a href="https://github.com/cynkra/dm/issues/1942" class="external-link">#1942</a> from cynkra/f-error-msg.</li>
+<li>Merge branch ‘cran-1.0.6’.</li>
 </ul></div>
 </div>
     <div class="section level2">
