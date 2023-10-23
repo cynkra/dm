@@ -228,7 +228,7 @@ dm_get_all_column_types <- function(x) {
 #' The colors can either be either specified with hex color codes or using the names of the built-in R colors.
 #' An overview of the colors corresponding to the standard color names can be found at
 #' the bottom of
-#' [http://rpubs.com/krlmlr/colors](http://rpubs.com/krlmlr/colors).
+#' [https://rpubs.com/krlmlr/colors](https://rpubs.com/krlmlr/colors).
 #'
 #' @inheritParams dm_draw
 #' @param ... Colors to set in the form `color = table`.
