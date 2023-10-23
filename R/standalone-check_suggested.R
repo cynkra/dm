@@ -25,7 +25,6 @@
 #'   `message` is provided
 #' @param use whether to trigger the check, `NA` means `TRUE` if `is_interactive()`
 #'   and `FALSE` otherwise
-#' @param message optional custom message, by default the message follows a template
 #' @return whether check was triggered and all packages are installed
 #' @noRd
 check_suggested <- function(packages, top_level_fun, use = TRUE) {
