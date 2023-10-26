@@ -1,5 +1,26 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.6.9018
+
+## Chore
+
+### deps
+
+- Update docker/metadata-action digest to 62339db.
+
+### deps
+
+- Update docker/setup-buildx-action digest to 3762d45.
+
+### deps
+
+- Update docker/login-action digest to 1f401f7.
+
+### deps
+
+- Update docker/login-action digest to 1220aa3.
+
+
 # dm 1.0.6.9017
 
 ## Chore
