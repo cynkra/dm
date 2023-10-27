@@ -34,7 +34,7 @@ For \code{dm_get_available_colors()}, a vector with the available colors.
 The colors can either be either specified with hex color codes or using the names of the built-in R colors.
 An overview of the colors corresponding to the standard color names can be found at
 the bottom of
-\url{http://rpubs.com/krlmlr/colors}.
+\url{https://rpubs.com/krlmlr/colors}.
 
 \code{dm_get_colors()} returns the colors defined for a data model.
 
