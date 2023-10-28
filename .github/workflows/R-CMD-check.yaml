@@ -35,7 +35,7 @@ jobs:
     # End custom: services
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - uses: ./.github/workflows/rate-limit
         with:
@@ -87,7 +87,7 @@ jobs:
     # End custom: services
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           ref: ${{ needs.rcc-smoke.outputs.sha }}
 
@@ -141,7 +141,7 @@ jobs:
           # Use 3.6 to trigger usage of RTools35
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           ref: ${{ needs.rcc-smoke.outputs.sha }}
 
@@ -209,7 +209,7 @@ jobs:
           # End custom: matrix elements
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           ref: ${{ needs.rcc-smoke.outputs.sha }}
 
@@ -241,7 +241,7 @@ jobs:
     name: Collect suggests deps
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           fetch-depth: 0
 
@@ -249,7 +249,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r@e40ad904310fc92e96951c1b0d64f3de6cbe9e14 # v2
         with:
           install-r: false
           use-public-rspm: true
@@ -296,7 +296,7 @@ jobs:
       matrix: ${{fromJson(needs.suggests-matrix.outputs.matrix)}}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - uses: ./.github/workflows/custom/before-install
         if: hashFiles('.github/workflows/custom/before-install/action.yml') != ''
@@ -380,7 +380,7 @@ jobs:
       # End custom: env vars
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - uses: ./.github/workflows/custom/before-install
         if: hashFiles('.github/workflows/custom/before-install/action.yml') != ''
