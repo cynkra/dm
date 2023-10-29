@@ -9,7 +9,11 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
   }
 
   ## use 0-rows object
-  ptype_dm <- collect(dm_ptype(dm))
+  if (is_src_db(dm)) {
+    ptype_dm <- collect(dm_ptype(dm))
+  } else {
+    ptype_dm <- dm
+  }
 
   con <- con_from_src_or_con(dest)
 
