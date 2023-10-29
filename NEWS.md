@@ -44,7 +44,7 @@
 
 ## Documentation
 
-- Use `rlang::check_installed()` internally to install missing suggested packages on the fly (@olivroy, #2036, #2039, #2040).
+- Use `rlang::check_installed()` internally to install missing suggested packages on the fly (@olivroy, #1348, #2036, #2039, #2040).
 
 - Use vectorized `rlang::is_installed()`to decide if examples should be run (@olivroy, #2043).
 
