@@ -111,7 +111,7 @@
 # build_copy_queries snapshot test for dm_for_filter()
 
     Code
-      dm_for_filter() %>% build_copy_queries(src_db, .) %>% as.list()
+      dm_for_filter() %>% collect() %>% build_copy_queries(src_db, .) %>% as.list()
     Output
       $name
       [1] "tf_1" "tf_3" "tf_6" "tf_2" "tf_4" "tf_5"

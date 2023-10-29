@@ -111,7 +111,7 @@
 # build_copy_queries snapshot test for dm_for_filter()
 
     Code
-      dm_for_filter() %>% build_copy_queries(src_db, .) %>% as.list()
+      dm_for_filter() %>% collect() %>% build_copy_queries(src_db, .) %>% as.list()
     Message
       `on_delete = "cascade"` not supported for duckdb
     Output
