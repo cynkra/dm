@@ -26,3 +26,20 @@ test_that("dm_sql()", {
       dm_sql(my_test_con())
   })
 })
+
+test_that("long text columns with copy_dm_to()", {
+  # Need skip in every test block, unfortunately
+  skip_if_src_not("duckdb")
+
+  dm <- dm(x = data.frame(a = strrep("x", 300)))
+  dm_out <- copy_dm_to(my_test_con(), dm)
+  expect_equal(collect(dm_out$x)$a, dm$x$a)
+  dm_out_out <- copy_dm_to(my_test_con(), dm_out)
+  expect_equal(collect(dm_out_out$x)$a, dm$x$a)
+
+  dm <- dm(x = data.frame(a = strrep("x", 10000)))
+  dm_out <- copy_dm_to(my_test_con(), dm)
+  expect_equal(collect(dm_out$x)$a, dm$x$a)
+  dm_out_out <- copy_dm_to(my_test_con(), dm_out)
+  expect_equal(collect(dm_out_out$x)$a, dm$x$a)
+})
