@@ -36,7 +36,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9017</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.7.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,7 +109,7 @@
                         <h4 data-toc-skip class="author">Katharina
 Brunner</h4>
             
-            <h4 data-toc-skip class="date">2023-10-25</h4>
+            <h4 data-toc-skip class="date">2023-10-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-filter.Rmd" class="external-link"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-filter.Rmd</code></div>
@@ -403,81 +403,73 @@ with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class
 <span>  <span class="fu"><a href="../reference/dm_get_tables.html">dm_get_tables</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fu">dbplyr</span><span class="fu">::</span><span class="va"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; $flights</span></span>
-<span><span class="co">#&gt; &lt;SQL&gt; SELECT *</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt; SELECT `LHS`.*</span></span>
 <span><span class="co">#&gt; FROM (</span></span>
-<span><span class="co">#&gt;   SELECT *</span></span>
+<span><span class="co">#&gt;   SELECT `LHS`.*</span></span>
 <span><span class="co">#&gt;   FROM (</span></span>
-<span><span class="co">#&gt;     SELECT *</span></span>
+<span><span class="co">#&gt;     SELECT `flights_1_20200828_071303_12345`.*</span></span>
 <span><span class="co">#&gt;     FROM `flights_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;     WHERE ((`month` = 1.0))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
 <span><span class="co">#&gt;   WHERE EXISTS (</span></span>
-<span><span class="co">#&gt;     SELECT 1 FROM (</span></span>
-<span><span class="co">#&gt;     SELECT *</span></span>
-<span><span class="co">#&gt;     FROM `airlines_1_20200828_071303_12345`</span></span>
-<span><span class="co">#&gt;     WHERE ((`name` = 'Delta Air Lines Inc.'))</span></span>
-<span><span class="co">#&gt; ) AS `RHS`</span></span>
-<span><span class="co">#&gt;     WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span></span>
+<span><span class="co">#&gt;     SELECT 1 FROM `airlines_1_20200828_071303_12345`</span></span>
+<span><span class="co">#&gt;     WHERE</span></span>
+<span><span class="co">#&gt;       (`LHS`.`carrier` = `airlines_1_20200828_071303_12345`.`carrier`) AND</span></span>
+<span><span class="co">#&gt;       ((`airlines_1_20200828_071303_12345`.`name` = 'Delta Air Lines Inc.'))</span></span>
 <span><span class="co">#&gt;   )</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
 <span><span class="co">#&gt; WHERE EXISTS (</span></span>
-<span><span class="co">#&gt;   SELECT 1 FROM (</span></span>
-<span><span class="co">#&gt;   SELECT *</span></span>
-<span><span class="co">#&gt;   FROM `airports_1_20200828_071303_12345`</span></span>
-<span><span class="co">#&gt;   WHERE ((`name` != 'John F Kennedy Intl'))</span></span>
-<span><span class="co">#&gt; ) AS `RHS`</span></span>
-<span><span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span></span>
+<span><span class="co">#&gt;   SELECT 1 FROM `airports_1_20200828_071303_12345`</span></span>
+<span><span class="co">#&gt;   WHERE</span></span>
+<span><span class="co">#&gt;     (`LHS`.`origin` = `airports_1_20200828_071303_12345`.`faa`) AND</span></span>
+<span><span class="co">#&gt;     ((`airports_1_20200828_071303_12345`.`name` != 'John F Kennedy Intl'))</span></span>
 <span><span class="co">#&gt; )</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $airlines</span></span>
-<span><span class="co">#&gt; &lt;SQL&gt; SELECT *</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt; SELECT `LHS`.*</span></span>
 <span><span class="co">#&gt; FROM (</span></span>
-<span><span class="co">#&gt;   SELECT *</span></span>
+<span><span class="co">#&gt;   SELECT `airlines_1_20200828_071303_12345`.*</span></span>
 <span><span class="co">#&gt;   FROM `airlines_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;   WHERE ((`name` = 'Delta Air Lines Inc.'))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
 <span><span class="co">#&gt; WHERE EXISTS (</span></span>
 <span><span class="co">#&gt;   SELECT 1 FROM (</span></span>
-<span><span class="co">#&gt;   SELECT *</span></span>
+<span><span class="co">#&gt;   SELECT `LHS`.*</span></span>
 <span><span class="co">#&gt;   FROM (</span></span>
-<span><span class="co">#&gt;     SELECT *</span></span>
+<span><span class="co">#&gt;     SELECT `flights_1_20200828_071303_12345`.*</span></span>
 <span><span class="co">#&gt;     FROM `flights_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;     WHERE ((`month` = 1.0))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
 <span><span class="co">#&gt;   WHERE EXISTS (</span></span>
-<span><span class="co">#&gt;     SELECT 1 FROM (</span></span>
-<span><span class="co">#&gt;     SELECT *</span></span>
-<span><span class="co">#&gt;     FROM `airports_1_20200828_071303_12345`</span></span>
-<span><span class="co">#&gt;     WHERE ((`name` != 'John F Kennedy Intl'))</span></span>
-<span><span class="co">#&gt; ) AS `RHS`</span></span>
-<span><span class="co">#&gt;     WHERE (`LHS`.`origin` = `RHS`.`faa`)</span></span>
+<span><span class="co">#&gt;     SELECT 1 FROM `airports_1_20200828_071303_12345`</span></span>
+<span><span class="co">#&gt;     WHERE</span></span>
+<span><span class="co">#&gt;       (`LHS`.`origin` = `airports_1_20200828_071303_12345`.`faa`) AND</span></span>
+<span><span class="co">#&gt;       ((`airports_1_20200828_071303_12345`.`name` != 'John F Kennedy Intl'))</span></span>
 <span><span class="co">#&gt;   )</span></span>
 <span><span class="co">#&gt; ) AS `RHS`</span></span>
 <span><span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span></span>
 <span><span class="co">#&gt; )</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $airports</span></span>
-<span><span class="co">#&gt; &lt;SQL&gt; SELECT *</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt; SELECT `LHS`.*</span></span>
 <span><span class="co">#&gt; FROM (</span></span>
-<span><span class="co">#&gt;   SELECT *</span></span>
+<span><span class="co">#&gt;   SELECT `airports_1_20200828_071303_12345`.*</span></span>
 <span><span class="co">#&gt;   FROM `airports_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;   WHERE ((`name` != 'John F Kennedy Intl'))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
 <span><span class="co">#&gt; WHERE EXISTS (</span></span>
 <span><span class="co">#&gt;   SELECT 1 FROM (</span></span>
-<span><span class="co">#&gt;   SELECT *</span></span>
+<span><span class="co">#&gt;   SELECT `LHS`.*</span></span>
 <span><span class="co">#&gt;   FROM (</span></span>
-<span><span class="co">#&gt;     SELECT *</span></span>
+<span><span class="co">#&gt;     SELECT `flights_1_20200828_071303_12345`.*</span></span>
 <span><span class="co">#&gt;     FROM `flights_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;     WHERE ((`month` = 1.0))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
 <span><span class="co">#&gt;   WHERE EXISTS (</span></span>
-<span><span class="co">#&gt;     SELECT 1 FROM (</span></span>
-<span><span class="co">#&gt;     SELECT *</span></span>
-<span><span class="co">#&gt;     FROM `airlines_1_20200828_071303_12345`</span></span>
-<span><span class="co">#&gt;     WHERE ((`name` = 'Delta Air Lines Inc.'))</span></span>
-<span><span class="co">#&gt; ) AS `RHS`</span></span>
-<span><span class="co">#&gt;     WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span></span>
+<span><span class="co">#&gt;     SELECT 1 FROM `airlines_1_20200828_071303_12345`</span></span>
+<span><span class="co">#&gt;     WHERE</span></span>
+<span><span class="co">#&gt;       (`LHS`.`carrier` = `airlines_1_20200828_071303_12345`.`carrier`) AND</span></span>
+<span><span class="co">#&gt;       ((`airlines_1_20200828_071303_12345`.`name` = 'Delta Air Lines Inc.'))</span></span>
 <span><span class="co">#&gt;   )</span></span>
 <span><span class="co">#&gt; ) AS `RHS`</span></span>
 <span><span class="co">#&gt;   WHERE (`LHS`.`faa` = `RHS`.`origin`)</span></span>

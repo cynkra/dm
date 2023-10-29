@@ -36,7 +36,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9017</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.7.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,7 +109,7 @@
                         <h4 data-toc-skip class="author">James
 Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2023-10-25</h4>
+            <h4 data-toc-skip class="date">2023-10-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/howto-dm-copy.Rmd" class="external-link"><code>vignettes/howto-dm-copy.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-copy.Rmd</code></div>
@@ -435,9 +435,9 @@ prefix to the table names to provide uniqueness.</p>
 <span><span class="co">#&gt; Foreign keys: 6</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html" class="external-link">remote_name</a></span><span class="op">(</span><span class="va">dup_dm</span><span class="op">$</span><span class="va">accounts</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;IDENT&gt; dup_accounts</span></span>
+<span><span class="co">#&gt; [1] "dup_accounts"</span></span>
 <span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html" class="external-link">remote_name</a></span><span class="op">(</span><span class="va">deployed_dm</span><span class="op">$</span><span class="va">accounts</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;IDENT&gt; `accounts`</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "accounts"</span></span></code></pre></div>
 <p>Note the different table names for <code>dup_dm$accounts</code> and
 <code>deployed_dm$accounts</code>. For both, the table name is
 <code>accounts</code> in the <code>dm</code> object, but they link to

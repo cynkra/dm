@@ -16,7 +16,7 @@ over the process of copying a dm to a database."><meta property="og:image" conte
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9017</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.7.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -234,7 +234,9 @@ The default, <code>NULL</code>, means to use the original table names.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> FROM (</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   SELECT NULL AS `carrier`, NULL AS `name`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   WHERE (0 = 1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   UNION ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   VALUES</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ('9E', 'Endeavor Air Inc.'),</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ('AA', 'American Airlines Inc.'),</span>
@@ -275,7 +277,9 @@ The default, <code>NULL</code>, means to use the original table names.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL AS `dst`,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL AS `tzone`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   WHERE (0 = 1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   UNION ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   VALUES</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ('ALB', 'Albany Intl', 42.748267, -73.801692, 285.0, -5.0, 'A', 'America/New_York'),</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ('ATL', 'Hartsfield Jackson Atlanta Intl', 33.636719, -84.428067, 1026.0, -5.0, 'A', 'America/New_York'),</span>
@@ -389,7 +393,9 @@ The default, <code>NULL</code>, means to use the original table names.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL AS `speed`,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL AS `engine`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   WHERE (0 = 1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   UNION ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   VALUES</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ('N10156', 2004, 'Fixed wing multi engine', 'EMBRAER', 'EMB-145XR', 2, 55, NULL, 'Turbo-fan'),</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ('N104UW', 1999, 'Fixed wing multi engine', 'AIRBUS INDUSTRIE', 'A320-214', 2, 182, NULL, 'Turbo-fan'),</span>
@@ -1374,7 +1380,9 @@ The default, <code>NULL</code>, means to use the original table names.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL AS `visib`,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL AS `time_hour`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   WHERE (0 = 1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   UNION ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   VALUES</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ('EWR', 2013, 1, 10, 0, 41.0, 32.0, 70.08, 230.0, 8.05546, NULL, 0.0, 1024.6, 10.0, '2013-01-10T05:00:00Z'),</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ('EWR', 2013, 1, 10, 1, 39.02, 30.02, 69.86, 210.0, 9.20624, NULL, 0.0, 1025.9, 10.0, '2013-01-10T06:00:00Z'),</span>
@@ -1566,7 +1574,9 @@ The default, <code>NULL</code>, means to use the original table names.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL AS `minute`,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL AS `time_hour`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   WHERE (0 = 1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   UNION ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   VALUES</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     (2013, 1, 10, 3, 2359, 4.0, 426, 437, -11.0, 'B6', 727, 'N571JB', 'JFK', 'BQN', 183.0, 1576.0, 23.0, 59.0, '2013-01-11T04:00:00Z'),</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     (2013, 1, 10, 16, 2359, 17.0, 447, 444, 3.0, 'B6', 739, 'N564JB', 'JFK', 'PSE', 191.0, 1617.0, 23.0, 59.0, '2013-01-11T04:00:00Z'),</span>
