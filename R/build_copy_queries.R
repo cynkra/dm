@@ -1,5 +1,7 @@
 #' @autoglobal
 build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary = TRUE, table_names = set_names(names(dm))) {
+  stopifnot(!is_src_db(dm))
+
   ## Reorder queries according to topological sort so pks are created before associated fks
   graph <- create_graph_from_dm(dm, directed = TRUE)
   topo <- names(igraph::topo_sort(graph, mode = "in"))
@@ -7,9 +9,6 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
   if (length(topo) == length(dm)) {
     dm <- dm[topo]
   }
-
-  ## use 0-rows object
-  ptype_dm <- collect(dm_ptype(dm))
 
   con <- con_from_src_or_con(dest)
 
@@ -35,8 +34,8 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
   }
 
   ## fetch types, keys and uniques
-  pks <- dm_get_all_pks_impl(ptype_dm) %>% rename(name = table)
-  fks <- dm_get_all_fks_impl(ptype_dm)
+  pks <- dm_get_all_pks_impl(dm) %>% rename(name = table)
+  fks <- dm_get_all_fks_impl(dm)
 
   # if a that doesn't match a pk, this non-pk col should be unique
   uniques <-
@@ -52,12 +51,12 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     # autoincrementing is not possible for composite keys, so `pk_col` is guaranteed
     # to be a scalar
     pk_col <-
-      ptype_dm %>%
+      dm %>%
       dm_get_all_pks(!!x) %>%
       filter(autoincrement) %>%
       pull(pk_col)
 
-    tbl <- tbl_impl(ptype_dm, x)
+    tbl <- tbl_impl(dm, x)
     types <- DBI::dbDataType(con, tbl)
     autoincrement_attribute <- ""
 
@@ -117,10 +116,10 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     df_col_types
   }
 
-  tbl_defs <- tibble(name = names(ptype_dm))
+  tbl_defs <- tibble(name = names(dm))
 
   col_defs <-
-    ptype_dm %>%
+    dm %>%
     src_tbls_impl() %>%
     set_names() %>%
     map_dfr(get_sql_col_types, .id = "name") %>%
