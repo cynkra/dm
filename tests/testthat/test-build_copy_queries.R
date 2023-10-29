@@ -34,6 +34,7 @@ test_that("build_copy_queries snapshot test for dm_for_filter()", {
     variant = my_test_src_name,
     {
       dm_for_filter() %>%
+        collect() %>%
         build_copy_queries(
           src_db,
           .

@@ -173,6 +173,9 @@ copy_dm_to <- function(
     return(dm)
   }
 
+  # Must be done here because table types may depend on string length, #2066
+  dm <- collect(dm, progress = progress)
+
   queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
 
   ticker_create <- new_ticker(
@@ -240,7 +243,7 @@ check_naming <- function(table_names, dm_table_names) {
 }
 
 db_append_table <- function(con, remote_table, table, progress, top_level_fun = "copy_dm_to", autoinc = logical(0)) {
-  table <- collect(table)
+  stopifnot(is.data.frame(table))
   if (nrow(table) == 0 || ncol(table) == 0) {
     return(invisible())
   }
