@@ -20,7 +20,7 @@
 
 ## Features
 
-- `copy_dm_to()` now warns unconditionally on unsupported arguments, and fails if `copy_to` is provided (#1944). Use the new `dm_sql()` function as a replacement for `copy_dm_to(copy_to = )` (#1915, #2011).
+- `copy_dm_to()` now warns unconditionally on unsupported arguments, and fails if `copy_to` is provided (#1944). Use the new `dm_sql()` function as a replacement for `copy_dm_to(copy_to = )` (#1915, #2011, @jangorecki).
 
 - New `json_unnest()` and `json_unpack()`, currently implemented for data frames only (#991, #997).
 
@@ -357,7 +357,7 @@
 - `nest_join()` and `pack_join()` support `zoomed_df` objects (#1119, @IndrajeetPatil).
 
 
-## API 
+## API
 
 - Marked stable functions as stable, in particular `dm()` and related functions (#1032, #1040).
 
@@ -436,7 +436,7 @@
 ## Features
 
 - New `dm_wrap_tbl()`, `dm_unwrap_tbl()`, `dm_nest_tbl()`, `dm_unnest_tbl()`, `dm_pack_tbl()` and `dm_unpack_tbl()` (#595, #733, #737).
-- New `dm_examine_cardinality()` (#264, #735). 
+- New `dm_examine_cardinality()` (#264, #735).
 - New `pack_join()` generic and method for data frames, the same to `tidyr::pack()` as `dplyr::nest_join()` is to `tidyr::nest()` (#721, #722).
 - `dm_pixarfilms()` is exported and gains a `consistent = FALSE` argument; if `TRUE` the data is modified so that all referential constraints are satisfied (#703, #707, #708, @erictleung).
 
