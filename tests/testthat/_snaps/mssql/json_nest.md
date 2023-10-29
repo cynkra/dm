@@ -5,7 +5,7 @@
         dbplyr::sql_render()
       gsub("test_frame_[_0-9]+", "test_frame_...", query)
     Output
-      <SQL> SELECT *
+      <SQL> SELECT "q01".*
       FROM (
       SELECT "grp", (SELECT "a_i", "a_j" FROM (SELECT *
       FROM "#test_frame_...") "*tmp_a*" WHERE ("grp" = "*tmp*"."grp") FOR JSON PATH) AS "a" FROM (SELECT *
@@ -25,7 +25,7 @@
         arrange(grp) %>% dbplyr::sql_render()
       gsub("test_frame_[_0-9]+", "test_frame_...", query)
     Output
-      <SQL> SELECT *
+      <SQL> SELECT "q01".*
       FROM (
       SELECT "grp", (SELECT "a_i" "i", "a_j" "j" FROM (SELECT *
       FROM "#test_frame_...") "*tmp_a*" WHERE ("grp" = "*tmp*"."grp") FOR JSON PATH) AS "a" FROM (SELECT *
