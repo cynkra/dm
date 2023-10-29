@@ -20,14 +20,15 @@
 
 #' Check if suggested package is installed
 #'
-#' @param packages vector of package names to check
-#' @param top_level_fun the name of the top level function called, not used if
-#'   `message` is provided
+#' @param packages Vector of package names to check. Can supply a version
+#'   between parenthesis. (See examples).
+#' @param top_level_fun the name of the top level function called.
 #' @param use whether to trigger the check, `NA` means `TRUE` if `is_interactive()`
 #'   and `FALSE` otherwise
-#' @param message optional custom message, by default the message follows a template
 #' @return whether check was triggered and all packages are installed
 #' @noRd
+#' @examples
+#' check_suggested(c("testthat (>= 3.2.0)", "xxx"), "foo")
 check_suggested <- function(packages, top_level_fun, use = TRUE) {
   # If NA, inform that package isn't installed, but only in interactive mode
   only_msg <- is.na(use)
