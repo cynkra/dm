@@ -311,6 +311,13 @@ test_that("'compute.dm_zoomed()' computes tables on DB", {
   expect_equal(lengths(remote_names), rep_along(remote_names, 1))
 })
 
+test_that("'compute.dm()' fails with `temporary = FALSE` (#2059)", {
+  expect_snapshot(error = TRUE, {
+    dm_for_filter_duckdb() %>%
+      compute(temporary = FALSE)
+  })
+})
+
 test_that("some methods/functions for `dm_zoomed` work", {
   expect_identical(
     colnames(dm_zoom_to(dm_for_filter(), tf_1)),
