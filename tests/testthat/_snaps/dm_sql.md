@@ -2,6 +2,9 @@
 
     Code
       dm_for_filter() %>% dm_sql(test_src_duckdb()$con)
+    Condition
+      Warning:
+      Autoincrementing columns not yet supported for DuckDB, these won't be set in the remote database but are preserved in the `dm`
     Message
       `on_delete = "cascade"` not supported for duckdb
     Output
