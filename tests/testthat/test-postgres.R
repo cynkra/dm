@@ -9,7 +9,7 @@ test_that("dm_sql()", {
   skip_if_src_not("postgres")
 
   # https://github.com/tidyverse/dbplyr/pull/1190
-  skip_if(is(my_test_con(), "MySQLConnection") && packageVersion("dbplyr") < "2.4.0")
+  skip_if(is(my_test_con(), "MySQLConnection"))
 
   expect_snapshot({
     dm_for_filter_df() %>%
