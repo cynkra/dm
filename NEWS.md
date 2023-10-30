@@ -1,5 +1,28 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.7.9001
+
+## Documentation
+
+- Update documentation of `check_suggested()` (@olivroy, #2055).
+
+## news
+
+- Add link to issue.
+
+- Add Jan as contributor.
+
+## Uncategorized
+
+- Merge pull request #2073 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-sqlite-covr-true-desc-SQLite-with-covr.
+
+- Merge pull request #2076 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-duckdb-covr-true-desc-DuckDB-with-covr.
+
+- Merge pull request #2074 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-mysql-maria-covr-true-desc-MySQL-with-covr.
+
+- Merge pull request #2067 from cynkra/snapshot-main-rcc-smoke-null.
+
+
 # dm 1.0.7.9000
 
 - Merge branch 'cran-1.0.7'.
@@ -44,7 +67,7 @@
 
 ## Documentation
 
-- Use `rlang::check_installed()` internally to install missing suggested packages on the fly (@olivroy, #2036, #2039, #2040).
+- Use `rlang::check_installed()` internally to install missing suggested packages on the fly (@olivroy, #1348, #2036, #2039, #2040).
 
 - Use vectorized `rlang::is_installed()`to decide if examples should be run (@olivroy, #2043).
 

@@ -44,6 +44,8 @@ dm_sql <- function(
   #
   check_suggested("dbplyr", "dm_sql")
 
+  stopifnot(is(dest, "DBIConnection"))
+
   table_names <- ddl_check_table_names(table_names, dm)
 
   dm <- ddl_reorder_dm(dm, dest)
