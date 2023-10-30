@@ -219,3 +219,31 @@ test_that("copy_dm_to() works with autoincrement PKs and FKS on selected DBs", {
     collected_dm
   )
 })
+
+test_that("copy_dm_to(table_names = ) (#250)", {
+  dm <- dm(x = tibble(a = 1))
+  dm_copy <- copy_dm_to(
+    my_db_test_con(),
+    dm,
+    table_names = c(x = "y"),
+    temporary = FALSE
+  )
+  withr::defer({
+    try(DBI::dbExecute(my_db_test_con(), "DROP TABLE y", immediate = TRUE))
+  })
+  expect_equal(dbplyr::remote_name(dm_copy$x), "y")
+
+  dm <- dm(x = tibble(a = 1), y = tibble(b = 1))
+  dm_copy <- copy_dm_to(
+    my_db_test_con(),
+    dm,
+    table_names = ~ paste0(.x, "1"),
+    temporary = FALSE
+  )
+  withr::defer({
+    try(DBI::dbExecute(my_db_test_con(), "DROP TABLE x1", immediate = TRUE))
+    try(DBI::dbExecute(my_db_test_con(), "DROP TABLE y1", immediate = TRUE))
+  })
+  expect_equal(dbplyr::remote_name(dm_copy$x), "x1")
+  expect_equal(dbplyr::remote_name(dm_copy$y), "y1")
+})
