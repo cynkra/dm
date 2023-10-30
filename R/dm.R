@@ -81,9 +81,8 @@ dm <- function(...,
   dm_tbl <- dm_impl(dots[!is_dm], names(quos_auto_name(quos[!is_dm])))
   def <- dm_bind_impl(c(dots[is_dm], list(dm_tbl)), .name_repair, .quiet, repair_arg = "")
 
-  dm <- dm_from_def(def)
-  dm_validate(dm)
-  dm
+  # Validation occurs in CI/CD
+  dm_from_def(def)
 }
 
 dm_impl <- function(tbls, names) {
@@ -132,6 +131,9 @@ new_dm <- function(tables = list()) {
 new_keyed_dm_def <- function(tables = list()) {
   is_keyed <- map_lgl(unname(tables), is_dm_keyed_tbl)
   stopifnot(!anyDuplicated(names(tables)[is_keyed]))
+  if (!any(is_keyed)) {
+    return(new_dm_def(tables))
+  }
 
   # data should be saved as a tibble
   unclassed_tables <- map(tables, unclass_keyed_tbl)
@@ -144,11 +146,7 @@ new_keyed_dm_def <- function(tables = list()) {
 }
 
 
-#' @autoglobal
-new_dm_def <- function(tables = list(),
-                       pks_df = tibble(table = character(), pks = list()),
-                       uks_df = tibble(table = character(), uks = list()),
-                       fks_df = tibble(table = character(), fks = list())) {
+new_dm_def <- function(tables = list(), pks_df = NULL, uks_df = NULL, fks_df = NULL) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
@@ -157,27 +155,29 @@ new_dm_def <- function(tables = list(),
   stopifnot(all(uks_df$table %in% table))
   stopifnot(all(fks_df$table %in% table))
 
-  zoom <- new_zoom()
-  col_tracker_zoom <- new_col_tracker_zoom()
+  def <- fast_tibble(
+    table = table,
+    data = data,
+    segment = NA_character_,
+    display = NA_character_,
+    pks = list_of(new_pk()),
+    uks = list_of(new_uk()),
+    fks = list_of(new_fk()),
+    filters = list_of(new_filter()),
+    zoom = list(NULL),
+    col_tracker_zoom = list(NULL),
+    uuid = vec_new_uuid_along(table),
+  )
 
-  filters <-
-    tibble(
-      table = table,
-      filters = list_of(new_filter())
-    )
-
-  def <-
-    tibble(table, data, segment = NA_character_, display = NA_character_) %>%
-    left_join(pks_df, by = "table") %>%
-    mutate(pks = as_list_of(map(pks, `%||%`, new_pk()), .ptype = new_pk())) %>%
-    left_join(uks_df, by = "table") %>%
-    mutate(uks = as_list_of(map(uks, `%||%`, new_uk()), .ptype = new_uk())) %>%
-    left_join(fks_df, by = "table") %>%
-    mutate(fks = as_list_of(map(fks, `%||%`, new_fk()), .ptype = new_fk())) %>%
-    mutate(filters = list_of(new_filter())) %>%
-    left_join(zoom, by = "table") %>%
-    left_join(col_tracker_zoom, by = "table") %>%
-    mutate(uuid = vec_new_uuid_along(table))
+  if (!is.null(pks_df)) {
+    def$pks[match(pks_df$table, def$table)] <- map(pks_df$pks, `%||%`, new_pk())
+  }
+  if (!is.null(uks_df)) {
+    def$uks[match(uks_df$table, def$table)] <- map(uks_df$uks, `%||%`, new_pk())
+  }
+  if (!is.null(fks_df)) {
+    def$fks[match(fks_df$table, def$table)] <- map(fks_df$fks, `%||%`, new_pk())
+  }
 
   def
 }
@@ -250,19 +250,6 @@ new_filter <- function(quos = list(), zoomed = logical()) {
   fast_tibble(filter_expr = unclass(quos), zoomed = zoomed)
 }
 
-# Legacy!
-new_filters <- function() {
-  tibble(table = character(), filter = list())
-}
-
-new_zoom <- function() {
-  tibble(table = character(), zoom = list())
-}
-
-new_col_tracker_zoom <- function() {
-  tibble(table = character(), col_tracker_zoom = list())
-}
-
 unnest_pks <- function(def) {
   # Optimized
   pk_df <- tibble(
@@ -327,9 +314,7 @@ as_dm.default <- function(x, ...) {
 
   # Automatic name repair
   names(x) <- vec_as_names(names2(x), repair = "unique")
-  dm <- new_dm(x)
-  dm_validate(dm)
-  dm
+  new_dm(x)
 }
 
 tbl_src <- function(x) {
