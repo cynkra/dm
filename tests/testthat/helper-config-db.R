@@ -45,6 +45,23 @@ test_src_maria <- function(root = FALSE) {
   dbplyr::src_dbi(con, auto_disconnect = TRUE)
 }
 
+test_src_mysql <- function(root = FALSE) {
+  if (Sys.getenv("DM_TEST_DOCKER_HOST") != "") {
+    con <- DBI::dbConnect(
+      RMariaDB::MariaDB(),
+      host = Sys.getenv("DM_TEST_DOCKER_HOST"),
+      username = if (root) "root" else "compose",
+      password = "YourStrong!Passw0rd",
+      dbname = "test",
+      port = 3307,
+      mysql = TRUE
+    )
+  } else {
+    con <- DBI::dbConnect(RMariaDB::MariaDB(), dbname = "test", mysql = TRUE)
+  }
+  dbplyr::src_dbi(con, auto_disconnect = TRUE)
+}
+
 test_src_mssql <- function(database = TRUE) {
   if (Sys.getenv("DM_TEST_DOCKER_HOST") != "") {
     con <- DBI::dbConnect(

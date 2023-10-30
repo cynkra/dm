@@ -19,6 +19,7 @@ local({
   sources <- c(
     "duckdb",
     "maria",
+    "mysql",
     "mssql",
     "postgres",
     "sqlite",
