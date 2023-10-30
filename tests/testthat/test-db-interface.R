@@ -237,4 +237,3 @@ test_that("copy_dm_to(table_names = ) (#250)", {
   expect_equal(dbplyr::remote_name(dm_copy$x), "x1")
   expect_equal(dbplyr::remote_name(dm_copy$y), "y1")
 })
-
