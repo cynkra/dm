@@ -65,9 +65,14 @@
     Code
       abort_no_cycles(create_graph_from_dm(dm_for_filter_w_cycle()))
     Condition
-      Error in `abort_no_cycles()`:
-      ! Cycles in the relationship graph not yet supported.
-      i Shortest cycle: tf_5 -> tf_6 -> tf_7 -> tf_2 -> tf_3 -> tf_4 -> tf_5
+      Warning in `dm_for_filter_w_cycle()`:
+      restarting interrupted promise evaluation
+      Warning in `my_test_src_cache()`:
+      restarting interrupted promise evaluation
+      Warning in `my_test_src_cache()`:
+      restarting interrupted promise evaluation
+      Error in `value[[3L]]()`:
+      ! Data source mysql not accessible: Failed to connect: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
     Code
       abort_tables_not_reachable_from_start()
     Condition
