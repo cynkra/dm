@@ -661,15 +661,19 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 #' Materialize
 #'
 #' @description
-#' `compute()` materializes all tables in a `dm` to new (temporary or permanent)
+#' `compute()` materializes all tables in a `dm` to new temporary
 #' tables on the database.
 #'
 #' @details
 #' Called on a `dm` object, these methods create a copy of all tables in the `dm`.
 #' Depending on the size of your data this may take a long time.
 #'
+#' To create permament tables, first create the database schema using [copy_dm_to()]
+#' or [dm_sql()], and then use [dm_rows_append()].
+#'
 #' @inheritParams dm_get_tables
 #' @param ... Passed on to [compute()].
+#' @param temporary Must remain `TRUE`.
 #' @return A `dm` object of the same structure as the input.
 #' @name materialize
 #' @export
@@ -691,7 +695,11 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 #'   collect() %>%
 #'   pull_tbl(districts) %>%
 #'   class()
-compute.dm <- function(x, ...) {
+compute.dm <- function(x, ..., temporary = TRUE) {
+  if (!isTRUE(temporary)) {
+    abort("`compute.dm()` does not support `temporary = FALSE`.")
+  }
+
   # for both dm and dm_zoomed
   x %>%
     dm_apply_filters_impl() %>%

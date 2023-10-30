@@ -23,7 +23,7 @@ hide in non-interactive mode, show in interactive mode. Requires the
 A \code{dm} object of the same structure as the input.
 }
 \description{
-\code{compute()} materializes all tables in a \code{dm} to new (temporary or permanent)
+\code{compute()} materializes all tables in a \code{dm} to new temporary
 tables on the database.
 
 \code{collect()} downloads the tables in a \code{dm} object as local \link{tibble}s.
@@ -31,6 +31,9 @@ tables on the database.
 \details{
 Called on a \code{dm} object, these methods create a copy of all tables in the \code{dm}.
 Depending on the size of your data this may take a long time.
+
+To create permament tables, first create the database schema using \code{\link[=copy_dm_to]{copy_dm_to()}}
+or \code{\link[=dm_sql]{dm_sql()}}, and then use \code{\link[=dm_rows_append]{dm_rows_append()}}.
 }
 \examples{
 \dontshow{if (dm:::dm_has_financial() && rlang::is_installed("RSQLite")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

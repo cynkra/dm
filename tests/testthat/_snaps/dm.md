@@ -333,6 +333,14 @@
         dm::dm_add_fk(fact...6, dim_3_key, dim_3...9) %>%
         dm::dm_add_fk(fact...6, dim_4_key, dim_4...10)
 
+# 'compute.dm()' fails with `temporary = FALSE` (#2059)
+
+    Code
+      dm_for_filter_duckdb() %>% compute(temporary = FALSE)
+    Condition
+      Error in `compute()`:
+      ! `compute.dm()` does not support `temporary = FALSE`.
+
 # output
 
     Code
