@@ -270,8 +270,6 @@ test_that("'collect.dm_zoomed()' collects tables, with message", {
 })
 
 test_that("'compute.dm()' computes tables on DB", {
-  skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
-
   def <-
     dm_for_filter_duckdb() %>%
     dm_filter(tf_1 = a > 3) %>%
@@ -285,8 +283,6 @@ test_that("'compute.dm()' computes tables on DB", {
 })
 
 test_that("'compute.dm_zoomed()' computes tables on DB", {
-  skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
-
   dm_zoomed_for_compute <-
     dm_for_filter_duckdb() %>%
     dm_zoom_to(tf_1) %>%
