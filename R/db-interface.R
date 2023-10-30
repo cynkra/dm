@@ -264,7 +264,7 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
     walk(seq_len(n_chunks), ticker(~ {
       end <- .x * chunk_size
       idx <- seq2(end - (chunk_size - 1), min(end, nrow(table)))
-      values <- map(table[idx, ], mssql_escape, con = con)
+      values <- map(table[idx, , drop = FALSE], mssql_escape, con = con)
       # Can't use dbAppendTable(): https://github.com/r-dbi/odbc/issues/480
       sql <- DBI::sqlAppendTable(con, remote_table_id, values, row.names = FALSE)
       if (length(autoinc) > 1L) abort("more than one autoincrement key in one table")
