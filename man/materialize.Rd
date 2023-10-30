@@ -6,7 +6,7 @@
 \alias{collect.dm}
 \title{Materialize}
 \usage{
-\method{compute}{dm}(x, ...)
+\method{compute}{dm}(x, ..., temporary = TRUE)
 
 \method{collect}{dm}(x, ..., progress = NA)
 }
@@ -14,6 +14,8 @@
 \item{x}{A \code{dm} object.}
 
 \item{...}{Passed on to \code{\link[=compute]{compute()}}.}
+
+\item{temporary}{Must remain \code{TRUE}.}
 
 \item{progress}{Whether to display a progress bar, if \code{NA} (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
