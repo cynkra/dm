@@ -304,6 +304,8 @@ ddl_quote_enum_col <- function(x, con) {
 }
 
 ddl_get_col_defs <- function(tables, con, table_names, pks) {
+  duckdb_auto_warned <- FALSE
+
   get_sql_col_types <- function(tbl, name) {
     # autoincrementing is not possible for composite keys, so `pk_col` is guaranteed
     # to be a scalar
@@ -345,6 +347,15 @@ ddl_get_col_defs <- function(tables, con, table_names, pks) {
       # DuckDB:
       # Doesn't have a special data type. Uses `CREATE SEQUENCE` instead.
       # Ref: https://duckdb.org/docs/sql/statements/create_sequence
+      # https://stackoverflow.com/a/72883259/946850
+      if (is_duckdb(con)) {
+        if (!duckdb_auto_warned) {
+          cli_warn(
+            "Autoincrementing columns not yet supported for DuckDB, these won't be set in the remote database but are preserved in the `dm`"
+          )
+          duckdb_auto_warned <<- TRUE
+        }
+      }
 
       # SQLite:
       # For a primary key, autoincrementing works by default, and it is almost never
