@@ -1,5 +1,22 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.7.9002
+
+## Chore
+
+- Turn off renovate automerge.
+
+- Add assertion.
+
+## Testing
+
+- Work around test failures for dbplyr 2.4.0.
+
+## Uncategorized
+
+- Merge pull request #2077 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-20-04-r-release-test-src-test-mssql-covr-false-desc-SQL-Server-without-covr.
+
+
 # dm 1.0.7.9001
 
 ## Documentation
