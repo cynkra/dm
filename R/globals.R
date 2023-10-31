@@ -34,9 +34,6 @@ utils::globalVariables(c(
   "new_table", # <dm_disentangle>
   "fks", # <dm_disentangle>
   "uks", # <dm_disentangle>
-  "pks", # <new_dm_def>
-  "uks", # <new_dm_def>
-  "fks", # <new_dm_def>
   "pks", # <str.dm>
   "fks", # <str.dm>
   "filters", # <str.dm>

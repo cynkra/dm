@@ -1,3 +1,6 @@
+# Run at installation time
+boilerplate <- new_dm_def()
+
 #' Validator
 #'
 #' `dm_validate()` checks the internal consistency of a `dm` object.
@@ -26,8 +29,6 @@ dm_validate <- function(x) {
   }
 
   def <- dm_get_def(x)
-
-  boilerplate <- new_dm_def()
 
   table_names <- def$table
   if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
