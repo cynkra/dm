@@ -270,8 +270,6 @@ test_that("'collect.dm_zoomed()' collects tables, with message", {
 })
 
 test_that("'compute.dm()' computes tables on DB", {
-  skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
-
   def <-
     dm_for_filter_duckdb() %>%
     dm_filter(tf_1 = a > 3) %>%
@@ -285,8 +283,6 @@ test_that("'compute.dm()' computes tables on DB", {
 })
 
 test_that("'compute.dm_zoomed()' computes tables on DB", {
-  skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
-
   dm_zoomed_for_compute <-
     dm_for_filter_duckdb() %>%
     dm_zoom_to(tf_1) %>%
@@ -309,6 +305,13 @@ test_that("'compute.dm_zoomed()' computes tables on DB", {
 
   remote_names <- map(def$data, dbplyr::remote_name)
   expect_equal(lengths(remote_names), rep_along(remote_names, 1))
+})
+
+test_that("'compute.dm()' fails with `temporary = FALSE` (#2059)", {
+  expect_snapshot(error = TRUE, {
+    dm_for_filter_duckdb() %>%
+      compute(temporary = FALSE)
+  })
 })
 
 test_that("some methods/functions for `dm_zoomed` work", {
