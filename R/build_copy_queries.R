@@ -62,7 +62,16 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
     # database-specific type conversions
     if (is_mariadb(dest)) {
-      types[types == "TEXT"] <- "VARCHAR(255)"
+      if (nrow(tbl) == 0) {
+        types[types == "TEXT"] <- "VARCHAR(255)"
+      } else {
+        for (i in which(types == "TEXT")) {
+          chars <- max(nchar(tbl[[i]], type = "bytes"))
+          if (chars <= 255) {
+            types[[i]] <- paste0("VARCHAR(", chars, ")")
+          }
+        }
+      }
     }
     if (is_sqlite(dest)) {
       types[types == "INT"] <- "INTEGER"

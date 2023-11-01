@@ -316,7 +316,16 @@ ddl_get_col_defs <- function(tables, con, table_names, pks) {
     # database-specific type conversions
     if (is_mariadb(con)) {
       # FIXME: This is wrong in general, only needed for index columns
-      types[types == "TEXT"] <- "VARCHAR(255)"
+      if (nrow(tbl) == 0) {
+        types[types == "TEXT"] <- "VARCHAR(255)"
+      } else {
+        for (i in which(types == "TEXT")) {
+          chars <- max(nchar(tbl[[i]], type = "bytes"))
+          if (chars <= 255) {
+            types[[i]] <- paste0("VARCHAR(", chars, ")")
+          }
+        }
+      }
     }
     if (is_sqlite(con)) {
       types[types == "INT"] <- "INTEGER"
