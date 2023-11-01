@@ -423,6 +423,7 @@ jobs:
 
   merge-queue:
     name: Merge queue
+    if: ${{ always() }}
     needs:
       - rcc-smoke
       - rcc-full
