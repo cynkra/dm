@@ -420,3 +420,19 @@ jobs:
       - name: Test coverage
         run: covr::codecov()
         shell: Rscript {0}
+
+  merge-queue:
+    name: Merge queue
+    needs:
+      - rcc-smoke
+      - rcc-full
+      - rcc-windows
+      - rcc-suggests
+      - pkgdown
+      - validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dummy
+        run: |
+          true
+        shell: bash
