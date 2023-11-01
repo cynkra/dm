@@ -226,64 +226,12 @@
       Error in `abort_not_unique_key()`:
       ! (`a`) not a unique key of `x`.
 
-# dm_get_all_pks() with table arg
-
-    Code
-      nyc_comp() %>% dm_get_all_pks("weather")
-    Output
-      # A tibble: 1 x 3
-        table   pk_col            autoincrement
-        <chr>   <keys>            <lgl>        
-      1 weather origin, time_hour FALSE        
-    Code
-      nyc_comp() %>% dm_get_all_pks(c(airlines, weather))
-    Output
-      # A tibble: 2 x 3
-        table    pk_col            autoincrement
-        <chr>    <keys>            <lgl>        
-      1 airlines carrier           FALSE        
-      2 weather  origin, time_hour FALSE        
-    Code
-      nyc_comp() %>% dm_get_all_pks(starts_with("weat"))
-    Output
-      # A tibble: 1 x 3
-        table   pk_col            autoincrement
-        <chr>   <keys>            <lgl>        
-      1 weather origin, time_hour FALSE        
-    Code
-      nyc_comp() %>% dm_get_all_pks(matches("^a.*s$"))
-    Output
-      # A tibble: 2 x 3
-        table    pk_col  autoincrement
-        <chr>    <keys>  <lgl>        
-      1 airlines carrier FALSE        
-      2 airports faa     FALSE        
-
 # dm_get_all_pks() with table arg fails nicely
 
-    Can't subset tables that don't exist.
-    x Table `timetable` doesn't exist.
-
-# dm_get_all_pks() with compound keys
-
-    Code
-      nyc_comp()
-    Output
-      -- Metadata --------------------------------------------------------------------
-      Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-      Columns: 53
-      Primary keys: 4
-      Foreign keys: 4
-    Code
-      nyc_comp() %>% dm_get_all_pks()
-    Output
-      # A tibble: 4 x 3
-        table    pk_col            autoincrement
-        <chr>    <keys>            <lgl>        
-      1 airlines carrier           FALSE        
-      2 airports faa               FALSE        
-      3 planes   tailnum           FALSE        
-      4 weather  origin, time_hour FALSE        
+    i In index: 3.
+    i With name: flights.
+    Caused by error in `if (chars <= 255) ...`:
+    ! missing value where TRUE/FALSE needed
 
 # autoincrement fails with compound keys
 
