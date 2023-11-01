@@ -219,11 +219,11 @@ tables, <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class
 <code>name</code> argument. See <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">?compute</a></code> for more
 details.</p>
 <p>When called on a whole <code>dm</code> object (without zoom),
-<code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> materializes all tables into new (temporary or
-persistent) tables by executing the associated SQL query and storing the
-full results. Depending on the size of your data, this may take
-considerable time or may even be unfeasible. It may be useful
-occasionally to create snapshots of data that is subject to change.</p>
+<code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> materializes all tables into new temporary tables
+by executing the associated SQL query and storing the full results.
+Depending on the size of your data, this may take considerable time or
+may even be infeasible. It may be useful occasionally to create
+snapshots of data that is subject to change.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_total_snapshot</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">my_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
