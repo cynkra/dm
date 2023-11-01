@@ -241,7 +241,7 @@
       $pre
       $pre$x
       <SQL> CREATE TEMPORARY TABLE `x` (
-        `a` VARCHAR(255)
+        `a` TEXT
       )
       
       
@@ -279,7 +279,7 @@
       $pre
       $pre$x
       <SQL> CREATE TEMPORARY TABLE `x` (
-        `a` VARCHAR(255)
+        `a` TEXT
       )
       
       
