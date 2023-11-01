@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.7.9003
+
+## Features
+
+- Warn about DuckDB not supporting autoincrementing primary keys (#2099).
+
+## Performance
+
+- Speed up `dm()`, `new_dm()`, `as_dm()` and `dm_validate()`. `dm()` and `as_dm()` no longer call `dm_validate()` (#2108).
+
+
 # dm 1.0.7.9002
 
 ## Chore
