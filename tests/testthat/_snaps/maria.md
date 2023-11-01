@@ -12,32 +12,32 @@
       $pre$tf_1
       <SQL> CREATE TEMPORARY TABLE `tf_1` (
         `a` INT AUTO_INCREMENT,
-        `b` VARCHAR(255),
+        `b` VARCHAR(1),
         PRIMARY KEY (`a`)
       )
       
       $pre$tf_2
       <SQL> CREATE TEMPORARY TABLE `tf_2` (
-        `c` VARCHAR(255),
+        `c` VARCHAR(8),
         `d` INT,
-        `e` VARCHAR(255),
+        `e` VARCHAR(1),
         `e1` INT,
         PRIMARY KEY (`c`)
       )
       
       $pre$tf_3
       <SQL> CREATE TEMPORARY TABLE `tf_3` (
-        `f` VARCHAR(255),
+        `f` VARCHAR(1),
         `f1` INT,
-        `g` VARCHAR(255),
+        `g` VARCHAR(5),
         PRIMARY KEY (`f`, `f1`)
       )
       
       $pre$tf_4
       <SQL> CREATE TEMPORARY TABLE `tf_4` (
-        `h` VARCHAR(255),
-        `i` VARCHAR(255),
-        `j` VARCHAR(255),
+        `h` VARCHAR(1),
+        `i` VARCHAR(5),
+        `j` VARCHAR(1),
         `j1` INT,
         PRIMARY KEY (`h`)
       )
@@ -46,16 +46,16 @@
       <SQL> CREATE TEMPORARY TABLE `tf_5` (
         `ww` INT,
         `k` INT,
-        `l` VARCHAR(255),
-        `m` VARCHAR(255),
+        `l` VARCHAR(1),
+        `m` VARCHAR(10),
         PRIMARY KEY (`k`)
       )
       
       $pre$tf_6
       <SQL> CREATE TEMPORARY TABLE `tf_6` (
         `zz` INT,
-        `n` VARCHAR(255),
-        `o` VARCHAR(255),
+        `n` VARCHAR(10),
+        `o` VARCHAR(1),
         PRIMARY KEY (`o`)
       )
       
@@ -241,7 +241,7 @@
       $pre
       $pre$x
       <SQL> CREATE TEMPORARY TABLE `x` (
-        `a` VARCHAR(255)
+        `a` TEXT
       )
       
       
@@ -279,7 +279,7 @@
       $pre
       $pre$x
       <SQL> CREATE TEMPORARY TABLE `x` (
-        `a` VARCHAR(255)
+        `a` TEXT
       )
       
       
