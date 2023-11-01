@@ -34,21 +34,21 @@
       
       $sql_table
       <SQL> CREATE TEMPORARY TABLE `pixar_films` (
-        `number` VARCHAR(255),
-        `film` VARCHAR(255),
+        `number` VARCHAR(2),
+        `film` VARCHAR(19),
         `release_date` DATE,
         `run_time` DOUBLE,
-        `film_rating` VARCHAR(255),
+        `film_rating` VARCHAR(3),
         PRIMARY KEY (`film`)
       )
       <SQL> CREATE TEMPORARY TABLE `academy` (
-        `film` VARCHAR(255),
-        `award_type` VARCHAR(255),
-        `status` VARCHAR(255),
+        `film` VARCHAR(19),
+        `award_type` VARCHAR(19),
+        `status` VARCHAR(24),
         PRIMARY KEY (`film`, `award_type`)
       )
       <SQL> CREATE TEMPORARY TABLE `box_office` (
-        `film` VARCHAR(255),
+        `film` VARCHAR(19),
         `budget` DOUBLE,
         `box_office_us_canada` DOUBLE,
         `box_office_other` DOUBLE,
@@ -56,15 +56,15 @@
         PRIMARY KEY (`film`)
       )
       <SQL> CREATE TEMPORARY TABLE `genres` (
-        `film` VARCHAR(255),
-        `genre` VARCHAR(255),
+        `film` VARCHAR(19),
+        `genre` VARCHAR(9),
         PRIMARY KEY (`film`, `genre`)
       )
       <SQL> CREATE TEMPORARY TABLE `public_response` (
-        `film` VARCHAR(255),
+        `film` VARCHAR(19),
         `rotten_tomatoes` DOUBLE,
         `metacritic` DOUBLE,
-        `cinema_score` VARCHAR(255),
+        `cinema_score` VARCHAR(2),
         `critics_choice` DOUBLE,
         PRIMARY KEY (`film`)
       )
@@ -139,41 +139,41 @@
       $sql_table
       <SQL> CREATE TEMPORARY TABLE `tf_1` (
         `a` INT AUTO_INCREMENT,
-        `b` VARCHAR(255),
+        `b` VARCHAR(1),
         PRIMARY KEY (`a`)
       )
       <SQL> CREATE TEMPORARY TABLE `tf_3` (
-        `f` VARCHAR(255),
+        `f` VARCHAR(1),
         `f1` INT,
-        `g` VARCHAR(255),
+        `g` VARCHAR(5),
         PRIMARY KEY (`f`, `f1`)
       )
       <SQL> CREATE TEMPORARY TABLE `tf_6` (
         `zz` INT,
-        `n` VARCHAR(255),
-        `o` VARCHAR(255),
+        `n` VARCHAR(10),
+        `o` VARCHAR(1),
         PRIMARY KEY (`o`),
         UNIQUE (`n`)
       )
       <SQL> CREATE TEMPORARY TABLE `tf_2` (
-        `c` VARCHAR(255),
+        `c` VARCHAR(8),
         `d` INT,
-        `e` VARCHAR(255),
+        `e` VARCHAR(1),
         `e1` INT,
         PRIMARY KEY (`c`)
       )
       <SQL> CREATE TEMPORARY TABLE `tf_4` (
-        `h` VARCHAR(255),
-        `i` VARCHAR(255),
-        `j` VARCHAR(255),
+        `h` VARCHAR(1),
+        `i` VARCHAR(5),
+        `j` VARCHAR(1),
         `j1` INT,
         PRIMARY KEY (`h`)
       )
       <SQL> CREATE TEMPORARY TABLE `tf_5` (
         `ww` INT,
         `k` INT,
-        `l` VARCHAR(255),
-        `m` VARCHAR(255),
+        `l` VARCHAR(1),
+        `m` VARCHAR(10),
         PRIMARY KEY (`k`)
       )
       
