@@ -10,7 +10,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,21 +75,60 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.6.9017" id="dm-1069017">dm 1.0.6.9017<a class="anchor" aria-label="anchor" href="#dm-1069017"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.8" id="dm-108">dm 1.0.8<a class="anchor" aria-label="anchor" href="#dm-108"></a></h2>
 <div class="section level3">
-<h3 id="chore-1-0-6-9017">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-6-9017"></a></h3>
-<ul><li>Make <code>check_suggested()</code> a standalone (<a href="https://github.com/cynkra/dm/issues/2054" class="external-link">#2054</a>).</li>
+<h3 id="news-1-0-8">news<a class="anchor" aria-label="anchor" href="#news-1-0-8"></a></h3>
+<ul><li>Add link to issue.</li>
+<li>Add Jan as contributor.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="testing-1-0-6-9017">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-6-9017"></a></h3>
-<ul><li>Remove most skips from tests (<a href="https://github.com/cynkra/dm/issues/2052" class="external-link">#2052</a>).</li>
+<h3 id="bug-fixes-1-0-8">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-8"></a></h3>
+<ul><li>
+<code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> creates string columns of necessary lengths for MariaDB and SQL Server. This worked before for SQL Server in dm 1.0.5, now also works on MariaDB (<a href="https://github.com/cynkra/dm/issues/311" class="external-link">#311</a>, <a href="https://github.com/cynkra/dm/issues/2066" class="external-link">#2066</a>, <a href="https://github.com/cynkra/dm/issues/2082" class="external-link">#2082</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="features-1-0-8">Features<a class="anchor" aria-label="anchor" href="#features-1-0-8"></a></h3>
+<ul><li>Explicitly fail on <code>compute(temporary = TRUE)</code>, which never worked correctly (<a href="https://github.com/cynkra/dm/issues/2059" class="external-link">#2059</a>, <a href="https://github.com/cynkra/dm/issues/2103" class="external-link">#2103</a>).</li>
+<li>Warn about DuckDB not supporting autoincrementing primary keys (<a href="https://github.com/cynkra/dm/issues/2099" class="external-link">#2099</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-8">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-8"></a></h3>
+<ul><li>Turn off renovate automerge.</li>
+<li>Add assertion.</li>
+<li>Make <code>check_suggested()</code> a standalone (<a href="https://github.com/cynkra/dm/issues/2054" class="external-link">#2054</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-0-8">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-8"></a></h3>
+<ul><li>Tweak vignette for <code>compute(temporary = TRUE)</code>.</li>
+<li>Update documentation of <code>check_suggested()</code> (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2055" class="external-link">#2055</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="performance-1-0-8">Performance<a class="anchor" aria-label="anchor" href="#performance-1-0-8"></a></h3>
+<ul><li>Speed up <code><a href="../reference/dm.html">dm()</a></code>, <code><a href="../reference/dm.html">new_dm()</a></code>, <code><a href="../reference/dm.html">as_dm()</a></code> and <code><a href="../reference/dm_validate.html">dm_validate()</a></code>. <code><a href="../reference/dm.html">dm()</a></code> and <code><a href="../reference/dm.html">as_dm()</a></code> no longer call <code><a href="../reference/dm_validate.html">dm_validate()</a></code> (<a href="https://github.com/cynkra/dm/issues/2108" class="external-link">#2108</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing-1-0-8">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-8"></a></h3>
+<ul><li>Add test for <code>copy_dm_to(table_names = )</code> (<a href="https://github.com/cynkra/dm/issues/2101" class="external-link">#2101</a>). Closes <a href="https://github.com/cynkra/dm/issues/250" class="external-link">#250</a>.</li>
+<li>Remove final step, requiring all checks to pass (<a href="https://github.com/cynkra/dm/issues/2119" class="external-link">#2119</a>). For Aviator.</li>
+<li>Add final step that collects all checks (<a href="https://github.com/cynkra/dm/issues/2113" class="external-link">#2113</a>).</li>
+<li>Work around test failures for dbplyr 2.4.0.</li>
+<li>Remove most skips from tests (<a href="https://github.com/cynkra/dm/issues/2052" class="external-link">#2052</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="uncategorized-1-0-8">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-8"></a></h3>
+<ul><li>Merge pull request <a href="https://github.com/cynkra/dm/issues/2077" class="external-link">#2077</a> from cynkra/snapshot-main-rcc-full-config-os-ubuntu-20-04-r-release-test-src-test-mssql-covr-false-desc-SQL-Server-without-covr.</li>
+<li>Merge pull request <a href="https://github.com/cynkra/dm/issues/2073" class="external-link">#2073</a> from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-sqlite-covr-true-desc-SQLite-with-covr.</li>
+<li>Merge pull request <a href="https://github.com/cynkra/dm/issues/2076" class="external-link">#2076</a> from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-duckdb-covr-true-desc-DuckDB-with-covr.</li>
+<li>Merge pull request <a href="https://github.com/cynkra/dm/issues/2074" class="external-link">#2074</a> from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-mysql-maria-covr-true-desc-MySQL-with-covr.</li>
+<li>Merge pull request <a href="https://github.com/cynkra/dm/issues/2067" class="external-link">#2067</a> from cynkra/snapshot-main-rcc-smoke-null.</li>
+<li>Merge branch ‘cran-1.0.7’.</li>
 </ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.7" id="dm-107">dm 1.0.7<a class="anchor" aria-label="anchor" href="#dm-107"></a></h2><p class="text-muted">CRAN release: 2023-10-24</p>
 <div class="section level3">
 <h3 id="features-1-0-7">Features<a class="anchor" aria-label="anchor" href="#features-1-0-7"></a></h3>
-<ul><li><p><code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> now warns unconditionally on unsupported arguments, and fails if <code>copy_to</code> is provided (<a href="https://github.com/cynkra/dm/issues/1944" class="external-link">#1944</a>). Use the new <code><a href="../reference/dm_sql.html">dm_sql()</a></code> function as a replacement for <code>copy_dm_to(copy_to = )</code> (<a href="https://github.com/cynkra/dm/issues/1915" class="external-link">#1915</a>, <a href="https://github.com/cynkra/dm/issues/2011" class="external-link">#2011</a>).</p></li>
+<ul><li><p><code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> now warns unconditionally on unsupported arguments, and fails if <code>copy_to</code> is provided (<a href="https://github.com/cynkra/dm/issues/1944" class="external-link">#1944</a>). Use the new <code><a href="../reference/dm_sql.html">dm_sql()</a></code> function as a replacement for <code>copy_dm_to(copy_to = )</code> (<a href="https://github.com/cynkra/dm/issues/1915" class="external-link">#1915</a>, <a href="https://github.com/cynkra/dm/issues/2011" class="external-link">#2011</a>, <a href="https://github.com/jangorecki" class="external-link">@jangorecki</a>).</p></li>
 <li><p>New <code><a href="../reference/json_unnest.html">json_unnest()</a></code> and <code><a href="../reference/json_unpack.html">json_unpack()</a></code>, currently implemented for data frames only (<a href="https://github.com/cynkra/dm/issues/991" class="external-link">#991</a>, <a href="https://github.com/cynkra/dm/issues/997" class="external-link">#997</a>).</p></li>
 <li><p><code><a href="../reference/rows-dm.html">dm_rows_append()</a></code> also works for local dm, with support for autoincrement primary keys (<a href="https://github.com/cynkra/dm/issues/1727" class="external-link">#1727</a>, <a href="https://github.com/cynkra/dm/issues/1745" class="external-link">#1745</a>).</p></li>
 <li><p>Breaking change: Add <code>check_dots_empty()</code> calls (<a href="https://github.com/cynkra/dm/issues/1929" class="external-link">#1929</a>, <a href="https://github.com/cynkra/dm/issues/1943" class="external-link">#1943</a>).</p></li>
@@ -107,7 +146,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="documentation-1-0-7">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-7"></a></h3>
-<ul><li><p>Use <code><a href="https://rlang.r-lib.org/reference/is_installed.html" class="external-link">rlang::check_installed()</a></code> internally to install missing suggested packages on the fly (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2036" class="external-link">#2036</a>, <a href="https://github.com/cynkra/dm/issues/2039" class="external-link">#2039</a>, <a href="https://github.com/cynkra/dm/issues/2040" class="external-link">#2040</a>).</p></li>
+<ul><li><p>Use <code><a href="https://rlang.r-lib.org/reference/is_installed.html" class="external-link">rlang::check_installed()</a></code> internally to install missing suggested packages on the fly (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/1348" class="external-link">#1348</a>, <a href="https://github.com/cynkra/dm/issues/2036" class="external-link">#2036</a>, <a href="https://github.com/cynkra/dm/issues/2039" class="external-link">#2039</a>, <a href="https://github.com/cynkra/dm/issues/2040" class="external-link">#2040</a>).</p></li>
 <li><p>Use vectorized <code><a href="https://rlang.r-lib.org/reference/is_installed.html" class="external-link">rlang::is_installed()</a></code>to decide if examples should be run (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2043" class="external-link">#2043</a>).</p></li>
 <li><p>Recategorize and describe function reference.</p></li>
 <li><p>Better error and information messages when querying keys.</p></li>
