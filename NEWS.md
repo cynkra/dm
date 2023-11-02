@@ -1,6 +1,6 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.7.9004
+# dm 1.0.8
 
 ## Bug fixes
 
@@ -10,88 +10,27 @@
 
 - Explicitly fail on `compute(temporary = TRUE)`, which never worked correctly (#2059, #2103).
 
-## Documentation
-
-- Tweak vignette for `compute(temporary = TRUE)`.
-
-## Testing
-
-- Add test for `copy_dm_to(table_names = )` (#2101).
-
-  Closes #250.
-
-- Remove final step, requiring all checks to pass (#2119).
-
-  For Aviator.
-
-- Add final step that collects all checks (#2113).
-
-  For Aviator.
-
-
-# dm 1.0.7.9003
-
-## Features
-
 - Warn about DuckDB not supporting autoincrementing primary keys (#2099).
-
-## Performance
-
-- Speed up `dm()`, `new_dm()`, `as_dm()` and `dm_validate()`. `dm()` and `as_dm()` no longer call `dm_validate()` (#2108).
-
-
-# dm 1.0.7.9002
-
-## Chore
-
-- Turn off renovate automerge.
-
-- Add assertion.
-
-## Testing
-
-- Work around test failures for dbplyr 2.4.0.
-
-## Uncategorized
-
-- Merge pull request #2077 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-20-04-r-release-test-src-test-mssql-covr-false-desc-SQL-Server-without-covr.
-
-
-# dm 1.0.7.9001
-
-## Documentation
-
-- Update documentation of `check_suggested()` (@olivroy, #2055).
-
-## news
-
-- Add link to issue.
-
-- Add Jan as contributor.
-
-## Uncategorized
-
-- Merge pull request #2073 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-sqlite-covr-true-desc-SQLite-with-covr.
-
-- Merge pull request #2076 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-duckdb-covr-true-desc-DuckDB-with-covr.
-
-- Merge pull request #2074 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-mysql-maria-covr-true-desc-MySQL-with-covr.
-
-- Merge pull request #2067 from cynkra/snapshot-main-rcc-smoke-null.
-
-
-# dm 1.0.7.9000
-
-- Merge branch 'cran-1.0.7'.
-
-
-# dm 1.0.6.9017
 
 ## Chore
 
 - Make `check_suggested()` a standalone (#2054).
 
+## Documentation
+
+- Tweak vignette for `compute(temporary = TRUE)`.
+
+- Update documentation of `check_suggested()` (@olivroy, #2055).
+
+## Performance
+
+- Speed up `dm()`, `new_dm()`, `as_dm()` and `dm_validate()`. `dm()` and `as_dm()` no longer call `dm_validate()` (#2108).
+
 ## Testing
+
+- Add test for `copy_dm_to(table_names = )` (#250, #2101).
+
+- Work around test failures for dbplyr 2.4.0.
 
 - Remove most skips from tests (#2052).
 
