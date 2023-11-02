@@ -2,11 +2,6 @@
 
 # dm 1.0.8
 
-## news
-
-- Add link to issue.
-- Add Jan as contributor.
-
 ## Bug fixes
 
 - `copy_dm_to()` creates string columns of necessary lengths for MariaDB and SQL Server. This worked before for SQL Server in dm 1.0.5, now also works on MariaDB (#311, #2066, #2082).
@@ -14,17 +9,17 @@
 ## Features
 
 - Explicitly fail on `compute(temporary = TRUE)`, which never worked correctly (#2059, #2103).
+
 - Warn about DuckDB not supporting autoincrementing primary keys (#2099).
 
 ## Chore
 
-- Turn off renovate automerge.
-- Add assertion.
 - Make `check_suggested()` a standalone (#2054).
 
 ## Documentation
 
 - Tweak vignette for `compute(temporary = TRUE)`.
+
 - Update documentation of `check_suggested()` (@olivroy, #2055).
 
 ## Performance
@@ -33,22 +28,11 @@
 
 ## Testing
 
-- Add test for `copy_dm_to(table_names = )` (#2101).
-  Closes #250.
-- Remove final step, requiring all checks to pass (#2119).
-  For Aviator.
-- Add final step that collects all checks (#2113).
+- Add test for `copy_dm_to(table_names = )` (#250, #2101).
+
 - Work around test failures for dbplyr 2.4.0.
+
 - Remove most skips from tests (#2052).
-
-## Uncategorized
-
-- Merge pull request #2077 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-20-04-r-release-test-src-test-mssql-covr-false-desc-SQL-Server-without-covr.
-- Merge pull request #2073 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-sqlite-covr-true-desc-SQLite-with-covr.
-- Merge pull request #2076 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-duckdb-covr-true-desc-DuckDB-with-covr.
-- Merge pull request #2074 from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-mysql-maria-covr-true-desc-MySQL-with-covr.
-- Merge pull request #2067 from cynkra/snapshot-main-rcc-smoke-null.
-- Merge branch 'cran-1.0.7'.
 
 
 # dm 1.0.7
