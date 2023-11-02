@@ -77,30 +77,23 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.8" id="dm-108">dm 1.0.8<a class="anchor" aria-label="anchor" href="#dm-108"></a></h2>
 <div class="section level3">
-<h3 id="news-1-0-8">news<a class="anchor" aria-label="anchor" href="#news-1-0-8"></a></h3>
-<ul><li>Add link to issue.</li>
-<li>Add Jan as contributor.</li>
-</ul></div>
-<div class="section level3">
 <h3 id="bug-fixes-1-0-8">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-8"></a></h3>
 <ul><li>
 <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> creates string columns of necessary lengths for MariaDB and SQL Server. This worked before for SQL Server in dm 1.0.5, now also works on MariaDB (<a href="https://github.com/cynkra/dm/issues/311" class="external-link">#311</a>, <a href="https://github.com/cynkra/dm/issues/2066" class="external-link">#2066</a>, <a href="https://github.com/cynkra/dm/issues/2082" class="external-link">#2082</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="features-1-0-8">Features<a class="anchor" aria-label="anchor" href="#features-1-0-8"></a></h3>
-<ul><li>Explicitly fail on <code>compute(temporary = TRUE)</code>, which never worked correctly (<a href="https://github.com/cynkra/dm/issues/2059" class="external-link">#2059</a>, <a href="https://github.com/cynkra/dm/issues/2103" class="external-link">#2103</a>).</li>
-<li>Warn about DuckDB not supporting autoincrementing primary keys (<a href="https://github.com/cynkra/dm/issues/2099" class="external-link">#2099</a>).</li>
+<ul><li><p>Explicitly fail on <code>compute(temporary = TRUE)</code>, which never worked correctly (<a href="https://github.com/cynkra/dm/issues/2059" class="external-link">#2059</a>, <a href="https://github.com/cynkra/dm/issues/2103" class="external-link">#2103</a>).</p></li>
+<li><p>Warn about DuckDB not supporting autoincrementing primary keys (<a href="https://github.com/cynkra/dm/issues/2099" class="external-link">#2099</a>).</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="chore-1-0-8">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-8"></a></h3>
-<ul><li>Turn off renovate automerge.</li>
-<li>Add assertion.</li>
-<li>Make <code>check_suggested()</code> a standalone (<a href="https://github.com/cynkra/dm/issues/2054" class="external-link">#2054</a>).</li>
+<ul><li>Make <code>check_suggested()</code> a standalone (<a href="https://github.com/cynkra/dm/issues/2054" class="external-link">#2054</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="documentation-1-0-8">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-8"></a></h3>
-<ul><li>Tweak vignette for <code>compute(temporary = TRUE)</code>.</li>
-<li>Update documentation of <code>check_suggested()</code> (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2055" class="external-link">#2055</a>).</li>
+<ul><li><p>Tweak vignette for <code>compute(temporary = TRUE)</code>.</p></li>
+<li><p>Update documentation of <code>check_suggested()</code> (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2055" class="external-link">#2055</a>).</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="performance-1-0-8">Performance<a class="anchor" aria-label="anchor" href="#performance-1-0-8"></a></h3>
@@ -108,20 +101,9 @@
 </ul></div>
 <div class="section level3">
 <h3 id="testing-1-0-8">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-8"></a></h3>
-<ul><li>Add test for <code>copy_dm_to(table_names = )</code> (<a href="https://github.com/cynkra/dm/issues/2101" class="external-link">#2101</a>). Closes <a href="https://github.com/cynkra/dm/issues/250" class="external-link">#250</a>.</li>
-<li>Remove final step, requiring all checks to pass (<a href="https://github.com/cynkra/dm/issues/2119" class="external-link">#2119</a>). For Aviator.</li>
-<li>Add final step that collects all checks (<a href="https://github.com/cynkra/dm/issues/2113" class="external-link">#2113</a>).</li>
-<li>Work around test failures for dbplyr 2.4.0.</li>
-<li>Remove most skips from tests (<a href="https://github.com/cynkra/dm/issues/2052" class="external-link">#2052</a>).</li>
-</ul></div>
-<div class="section level3">
-<h3 id="uncategorized-1-0-8">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-8"></a></h3>
-<ul><li>Merge pull request <a href="https://github.com/cynkra/dm/issues/2077" class="external-link">#2077</a> from cynkra/snapshot-main-rcc-full-config-os-ubuntu-20-04-r-release-test-src-test-mssql-covr-false-desc-SQL-Server-without-covr.</li>
-<li>Merge pull request <a href="https://github.com/cynkra/dm/issues/2073" class="external-link">#2073</a> from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-sqlite-covr-true-desc-SQLite-with-covr.</li>
-<li>Merge pull request <a href="https://github.com/cynkra/dm/issues/2076" class="external-link">#2076</a> from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-duckdb-covr-true-desc-DuckDB-with-covr.</li>
-<li>Merge pull request <a href="https://github.com/cynkra/dm/issues/2074" class="external-link">#2074</a> from cynkra/snapshot-main-rcc-full-config-os-ubuntu-22-04-r-release-test-src-test-mysql-maria-covr-true-desc-MySQL-with-covr.</li>
-<li>Merge pull request <a href="https://github.com/cynkra/dm/issues/2067" class="external-link">#2067</a> from cynkra/snapshot-main-rcc-smoke-null.</li>
-<li>Merge branch ‘cran-1.0.7’.</li>
+<ul><li><p>Add test for <code>copy_dm_to(table_names = )</code> (<a href="https://github.com/cynkra/dm/issues/250" class="external-link">#250</a>, <a href="https://github.com/cynkra/dm/issues/2101" class="external-link">#2101</a>).</p></li>
+<li><p>Work around test failures for dbplyr 2.4.0.</p></li>
+<li><p>Remove most skips from tests (<a href="https://github.com/cynkra/dm/issues/2052" class="external-link">#2052</a>).</p></li>
 </ul></div>
 </div>
     <div class="section level2">
