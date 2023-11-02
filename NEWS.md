@@ -1,5 +1,34 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.7.9004
+
+## Bug fixes
+
+- `copy_dm_to()` creates string columns of necessary lengths for MariaDB and SQL Server. This worked before for SQL Server in dm 1.0.5, now also works on MariaDB (#311, #2066, #2082).
+
+## Features
+
+- Explicitly fail on `compute(temporary = TRUE)`, which never worked correctly (#2059, #2103).
+
+## Documentation
+
+- Tweak vignette for `compute(temporary = TRUE)`.
+
+## Testing
+
+- Add test for `copy_dm_to(table_names = )` (#2101).
+
+  Closes #250.
+
+- Remove final step, requiring all checks to pass (#2119).
+
+  For Aviator.
+
+- Add final step that collects all checks (#2113).
+
+  For Aviator.
+
+
 # dm 1.0.7.9003
 
 ## Features
