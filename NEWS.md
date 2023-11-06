@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.8.9001
+
+## Chore
+
+- Add Aviator configuration.
+
+
 # dm 1.0.8.9000
 
 - Merge branch 'cran-1.0.8'.
