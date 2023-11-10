@@ -10,7 +10,7 @@
     Output
       $pre
       $pre$tf_1
-      <SQL> CREATE TEMPORARY TABLE `tf_1` (
+      <SQL> CREATE TEMPORARY TABLE ```tf_1``` (
         `a` INTEGER,
         `b` TEXT,
         PRIMARY KEY (`a`),
@@ -18,7 +18,7 @@
       )
       
       $pre$tf_3
-      <SQL> CREATE TEMPORARY TABLE `tf_3` (
+      <SQL> CREATE TEMPORARY TABLE ```tf_3``` (
         `f` TEXT,
         `f1` INTEGER,
         `g` TEXT,
@@ -28,7 +28,7 @@
       )
       
       $pre$tf_6
-      <SQL> CREATE TEMPORARY TABLE `tf_6` (
+      <SQL> CREATE TEMPORARY TABLE ```tf_6``` (
         `zz` INTEGER,
         `n` TEXT,
         `o` TEXT,
@@ -38,44 +38,44 @@
       )
       
       $pre$tf_2
-      <SQL> CREATE TEMPORARY TABLE `tf_2` (
+      <SQL> CREATE TEMPORARY TABLE ```tf_2``` (
         `c` TEXT,
         `d` INTEGER,
         `e` TEXT,
         `e1` INTEGER,
         PRIMARY KEY (`c`),
         UNIQUE (`c`),
-        FOREIGN KEY (`d`) REFERENCES `tf_1` (`a`),
-        FOREIGN KEY (`e`, `e1`) REFERENCES `tf_3` (`f`, `f1`)
+        FOREIGN KEY (`d`) REFERENCES ```tf_1``` (`a`),
+        FOREIGN KEY (`e`, `e1`) REFERENCES ```tf_3``` (`f`, `f1`)
       )
       
       $pre$tf_4
-      <SQL> CREATE TEMPORARY TABLE `tf_4` (
+      <SQL> CREATE TEMPORARY TABLE ```tf_4``` (
         `h` TEXT,
         `i` TEXT,
         `j` TEXT,
         `j1` INTEGER,
         PRIMARY KEY (`h`),
         UNIQUE (`h`),
-        FOREIGN KEY (`j`, `j1`) REFERENCES `tf_3` (`f`, `f1`)
+        FOREIGN KEY (`j`, `j1`) REFERENCES ```tf_3``` (`f`, `f1`)
       )
       
       $pre$tf_5
-      <SQL> CREATE TEMPORARY TABLE `tf_5` (
+      <SQL> CREATE TEMPORARY TABLE ```tf_5``` (
         `ww` INTEGER,
         `k` INTEGER,
         `l` TEXT,
         `m` TEXT,
         PRIMARY KEY (`k`),
         UNIQUE (`k`),
-        FOREIGN KEY (`m`) REFERENCES `tf_6` (`n`),
-        FOREIGN KEY (`l`) REFERENCES `tf_4` (`h`) ON DELETE CASCADE
+        FOREIGN KEY (`m`) REFERENCES ```tf_6``` (`n`),
+        FOREIGN KEY (`l`) REFERENCES ```tf_4``` (`h`) ON DELETE CASCADE
       )
       
       
       $load
       $load$tf_1
-      <SQL> INSERT INTO `tf_1` (`a`, `b`)
+      <SQL> INSERT INTO ```tf_1``` (`a`, `b`)
       SELECT CAST(`a` AS INTEGER) AS `a`, CAST(`b` AS TEXT) AS `b`
       FROM (
         SELECT NULL AS `a`, NULL AS `b`
@@ -97,7 +97,7 @@
       ) AS `values_table`
       
       $load$tf_3
-      <SQL> INSERT INTO `tf_3` (`f`, `f1`, `g`)
+      <SQL> INSERT INTO ```tf_3``` (`f`, `f1`, `g`)
       SELECT
         CAST(`f` AS TEXT) AS `f`,
         CAST(`f1` AS INTEGER) AS `f1`,
@@ -122,7 +122,7 @@
       ) AS `values_table`
       
       $load$tf_6
-      <SQL> INSERT INTO `tf_6` (`zz`, `n`, `o`)
+      <SQL> INSERT INTO ```tf_6``` (`zz`, `n`, `o`)
       SELECT
         CAST(`zz` AS INTEGER) AS `zz`,
         CAST(`n` AS TEXT) AS `n`,
@@ -142,7 +142,7 @@
       ) AS `values_table`
       
       $load$tf_2
-      <SQL> INSERT INTO `tf_2` (`c`, `d`, `e`, `e1`)
+      <SQL> INSERT INTO ```tf_2``` (`c`, `d`, `e`, `e1`)
       SELECT
         CAST(`c` AS TEXT) AS `c`,
         CAST(`d` AS INTEGER) AS `d`,
@@ -164,7 +164,7 @@
       ) AS `values_table`
       
       $load$tf_4
-      <SQL> INSERT INTO `tf_4` (`h`, `i`, `j`, `j1`)
+      <SQL> INSERT INTO ```tf_4``` (`h`, `i`, `j`, `j1`)
       SELECT
         CAST(`h` AS TEXT) AS `h`,
         CAST(`i` AS TEXT) AS `i`,
@@ -185,7 +185,7 @@
       ) AS `values_table`
       
       $load$tf_5
-      <SQL> INSERT INTO `tf_5` (`ww`, `k`, `l`, `m`)
+      <SQL> INSERT INTO ```tf_5``` (`ww`, `k`, `l`, `m`)
       SELECT
         CAST(`ww` AS INTEGER) AS `ww`,
         CAST(`k` AS INTEGER) AS `k`,
@@ -214,15 +214,15 @@
       
       $post$indexes
       $post$indexes$tf_2
-      <SQL> CREATE INDEX tf_2__d ON `tf_2` (`d`)
-      <SQL> CREATE INDEX tf_2__e_e1 ON `tf_2` (`e`, `e1`)
+      <SQL> CREATE INDEX `tf_2`__d ON ```tf_2``` (`d`)
+      <SQL> CREATE INDEX `tf_2`__e_e1 ON ```tf_2``` (`e`, `e1`)
       
       $post$indexes$tf_4
-      <SQL> CREATE INDEX tf_4__j_j1 ON `tf_4` (`j`, `j1`)
+      <SQL> CREATE INDEX `tf_4`__j_j1 ON ```tf_4``` (`j`, `j1`)
       
       $post$indexes$tf_5
-      <SQL> CREATE INDEX tf_5__m ON `tf_5` (`m`)
-      <SQL> CREATE INDEX tf_5__l ON `tf_5` (`l`)
+      <SQL> CREATE INDEX `tf_5`__m ON ```tf_5``` (`m`)
+      <SQL> CREATE INDEX `tf_5`__l ON ```tf_5``` (`l`)
       
       
       
@@ -234,14 +234,14 @@
     Output
       $pre
       $pre$x
-      <SQL> CREATE TEMPORARY TABLE `x` (
+      <SQL> CREATE TEMPORARY TABLE ```x``` (
         `a` TEXT
       )
       
       
       $load
       $load$x
-      <SQL> INSERT INTO `x` (`a`)
+      <SQL> INSERT INTO ```x``` (`a`)
       SELECT CAST(`a` AS TEXT) AS `a`
       FROM (
         SELECT NULL AS `a`
@@ -272,14 +272,14 @@
     Output
       $pre
       $pre$x
-      <SQL> CREATE TEMPORARY TABLE `x` (
+      <SQL> CREATE TEMPORARY TABLE ```x``` (
         `a` TEXT
       )
       
       
       $load
       $load$x
-      <SQL> INSERT INTO `x` (`a`)
+      <SQL> INSERT INTO ```x``` (`a`)
       SELECT CAST(`a` AS TEXT) AS `a`
       FROM (
         SELECT NULL AS `a`
