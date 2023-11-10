@@ -14,7 +14,9 @@
 #'
 #' @param dm A `dm` object.
 #' @param dest Connection to database.
-#' @param table_names A named character vector or vector of [DBI::Id] objects,
+#' @param table_names A named character vector or named vector of [DBI::Id],
+#'   [DBI::SQL] or dbplyr objects created with [dbplyr::ident()], [dbplyr::in_schema()]
+#'   or [dbplyr::in_catalog()],
 #'   with one unique element for each table in `dm`.
 #'   The default, `NULL`, means to use the original table names.
 #' @param temporary Should the tables be marked as \emph{temporary}? Defaults to `TRUE`.
@@ -46,7 +48,7 @@ dm_sql <- function(
 
   stopifnot(is(dest, "DBIConnection"))
 
-  table_names <- ddl_check_table_names(table_names, dm)
+  table_names <- ddl_quote_table_names(table_names, dm, dest)
 
   dm <- ddl_reorder_dm(dm, dest)
 
@@ -60,12 +62,20 @@ dm_sql <- function(
   )
 }
 
-ddl_check_table_names <- function(table_names, dm) {
+ddl_quote_table_names <- function(table_names, dm, dest) {
   if (is.null(table_names)) {
     table_names <- set_names(names(dm))
+  } else {
+    stopifnot(names(dm) %in% names(table_names))
   }
 
-  table_names
+  map(table_names, ~ {
+    if (is.character(.x) || is(.x, "Id")) {
+      .x <- DBI::dbQuoteIdentifier(dest, .x)
+    }
+
+    dbplyr::escape(.x, con = dest)
+  })
 }
 
 ddl_reorder_dm <- function(dm, con) {
@@ -105,7 +115,7 @@ dm_ddl_pre <- function(
   #
   check_suggested("dbplyr", "dm_ddl_pre")
 
-  table_names <- ddl_check_table_names(table_names, dm)
+  table_names <- ddl_quote_table_names(table_names, dm, dest)
 
   dm <- ddl_reorder_dm(dm, dest)
 
@@ -183,7 +193,7 @@ dm_ddl_pre <- function(
     ) %>%
     ungroup() %>%
     transmute(name, remote_name, sql_table = DBI::SQL(glue(
-      "CREATE {if (temporary) 'TEMPORARY ' else ''}TABLE {purrr::map_chr(remote_name, ~ DBI::dbQuoteIdentifier(con, .x))} (\n  {all_defs}\n)"
+      "CREATE {if (temporary) 'TEMPORARY ' else ''}TABLE {remote_name} (\n  {all_defs}\n)"
     )))
 
   set_names(map(create_table_queries$sql_table, DBI::SQL), create_table_queries$name)
@@ -199,7 +209,7 @@ dm_dml_load <- function(
   #
   check_suggested("dbplyr", "dm_dml_load")
 
-  table_names <- ddl_check_table_names(table_names, dm)
+  table_names <- ddl_quote_table_names(table_names, dm, dest)
 
   dm <- ddl_reorder_dm(dm, dest)
 
@@ -226,7 +236,7 @@ dm_ddl_post <- function(
   #
   check_suggested("dbplyr", "dm_ddl_post")
 
-  table_names <- ddl_check_table_names(table_names, dm)
+  table_names <- ddl_quote_table_names(table_names, dm, dest)
 
   ## use 0-rows object
   ptype_dm <- collect(dm_ptype(dm))
@@ -278,7 +288,7 @@ dm_ddl_post <- function(
     group_by(name) %>%
     summarize(fk_defs = if (length(remote_name) == 0) list(NULL) else list(DBI::SQL(glue(
       # FIXME: Designate temporary table if possible
-      "ALTER TABLE {DBI::dbQuoteIdentifier(dest, remote_name[[1]])} ADD {fk_def}"
+      "ALTER TABLE {remote_name[[1]]} ADD {fk_def}"
     )))) %>%
     ungroup()
 
@@ -462,7 +472,7 @@ ddl_get_fk_defs <- function(fks, con, table_names) {
         "FOREIGN KEY (",
         ddl_quote_enum_col(child_fk_cols, con),
         ") REFERENCES ",
-        purrr::map_chr(table_names[fks$parent_table], ~ DBI::dbQuoteIdentifier(con, .x)),
+        table_names[fks$parent_table],
         " (",
         ddl_quote_enum_col(parent_key_cols, con),
         ")",
@@ -484,7 +494,6 @@ dml_tbl_load <- function(tbl_name, dm, table_names, pks, dest) {
   mssql_autoinc <- !is.null(pks) && isTRUE(pks$autoincrement[tbl_name == pks$table])
 
   remote_name <- table_names[[tbl_name]]
-  remote_tbl_quoted <- DBI::dbQuoteIdentifier(dest, remote_name)
   selectvals <- dbplyr::sql_render(dbplyr::copy_inline(dest, tbl))
 
   if (is_mariadb(dest)) {
@@ -503,16 +512,16 @@ dml_tbl_load <- function(tbl_name, dm, table_names, pks, dest) {
   ## duckdb autoincrement tests are skipped, could be added by inserting from sequence
   out <- paste0(
     "INSERT INTO ",
-    remote_tbl_quoted,
+    remote_name,
     " (",
     paste(DBI::dbQuoteIdentifier(dest, names(tbl)), collapse = ", "),
     ")\n",
     selectvals
   )
   DBI::SQL(paste0(
-    if (mssql_autoinc) paste0("SET IDENTITY_INSERT ", remote_tbl_quoted, " ON\n"),
+    if (mssql_autoinc) paste0("SET IDENTITY_INSERT ", remote_name, " ON\n"),
     out,
-    if (mssql_autoinc) paste0("\nSET IDENTITY_INSERT ", remote_tbl_quoted, " OFF")
+    if (mssql_autoinc) paste0("\nSET IDENTITY_INSERT ", remote_name, " OFF")
   ))
 }
 
@@ -531,7 +540,7 @@ ddl_get_index_defs <- function(fks, con, table_names) {
     mutate(
       name = child_table,
       index_name = map_chr(child_fk_cols, paste, collapse = "_"),
-      remote_name = purrr::map_chr(table_names[name], ~ DBI::dbQuoteIdentifier(con, .x)),
+      remote_name = table_names[name],
       remote_name_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)), ~ .x@name[["table"]]),
       index_name = make.unique(paste0(remote_name_unquoted, "__", index_name), sep = "__")
     ) %>%

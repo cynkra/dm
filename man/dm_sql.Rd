@@ -20,7 +20,9 @@ dm_ddl_post(dm, dest, table_names = NULL, temporary = TRUE)
 
 \item{dest}{Connection to database.}
 
-\item{table_names}{A named character vector or vector of \link[DBI:Id]{DBI::Id} objects,
+\item{table_names}{A named character vector or named vector of \link[DBI:Id]{DBI::Id},
+\link[DBI:SQL]{DBI::SQL} or dbplyr objects created with \code{\link[dbplyr:ident]{dbplyr::ident()}}, \code{\link[dbplyr:in_schema]{dbplyr::in_schema()}}
+or \code{\link[dbplyr:in_schema]{dbplyr::in_catalog()}},
 with one unique element for each table in \code{dm}.
 The default, \code{NULL}, means to use the original table names.}
 
