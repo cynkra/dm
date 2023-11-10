@@ -169,24 +169,24 @@
       $post
       $post$uk
       $post$uk$tf_1
-      <SQL> ALTER TABLE "tf_1" ADD UNIQUE ("a")
+      <SQL> ALTER TABLE """tf_1""" ADD UNIQUE ("a")
       
       $post$uk$tf_2
-      <SQL> ALTER TABLE "tf_2" ADD UNIQUE ("c")
+      <SQL> ALTER TABLE """tf_2""" ADD UNIQUE ("c")
       
       $post$uk$tf_3
-      <SQL> ALTER TABLE "tf_3" ADD UNIQUE ("f", "f1")
-      <SQL> ALTER TABLE "tf_3" ADD UNIQUE ("g")
+      <SQL> ALTER TABLE """tf_3""" ADD UNIQUE ("f", "f1")
+      <SQL> ALTER TABLE """tf_3""" ADD UNIQUE ("g")
       
       $post$uk$tf_4
-      <SQL> ALTER TABLE "tf_4" ADD UNIQUE ("h")
+      <SQL> ALTER TABLE """tf_4""" ADD UNIQUE ("h")
       
       $post$uk$tf_5
-      <SQL> ALTER TABLE "tf_5" ADD UNIQUE ("k")
+      <SQL> ALTER TABLE """tf_5""" ADD UNIQUE ("k")
       
       $post$uk$tf_6
-      <SQL> ALTER TABLE "tf_6" ADD UNIQUE ("o")
-      <SQL> ALTER TABLE "tf_6" ADD UNIQUE ("n")
+      <SQL> ALTER TABLE """tf_6""" ADD UNIQUE ("o")
+      <SQL> ALTER TABLE """tf_6""" ADD UNIQUE ("n")
       
       
       $post$fk
