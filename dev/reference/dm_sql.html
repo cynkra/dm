@@ -16,7 +16,7 @@ over the process of copying a dm to a database."><meta property="og:image" conte
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.8.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.8.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,7 +110,9 @@ over the process of copying a <code>dm</code> to a database.</p>
 
 
 <dt>table_names</dt>
-<dd><p>A named character vector or vector of <a href="https://dbi.r-dbi.org/reference/Id.html" class="external-link">DBI::Id</a> objects,
+<dd><p>A named character vector or named vector of <a href="https://dbi.r-dbi.org/reference/Id.html" class="external-link">DBI::Id</a>,
+<a href="https://dbi.r-dbi.org/reference/SQL.html" class="external-link">DBI::SQL</a> or dbplyr objects created with <code><a href="https://dbplyr.tidyverse.org/reference/ident.html" class="external-link">dbplyr::ident()</a></code>, <code><a href="https://dbplyr.tidyverse.org/reference/in_schema.html" class="external-link">dbplyr::in_schema()</a></code>
+or <code><a href="https://dbplyr.tidyverse.org/reference/in_schema.html" class="external-link">dbplyr::in_catalog()</a></code>,
 with one unique element for each table in <code>dm</code>.
 The default, <code>NULL</code>, means to use the original table names.</p></dd>
 
