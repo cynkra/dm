@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.8.9002
+
+## Features
+
+- `dm_sql()` now processes `table_names` with `dbplyr::escape()`, therefore also accepting dbplyr objects (#2129).
+
+
 # dm 1.0.8.9001
 
 ## Chore
