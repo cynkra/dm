@@ -24,7 +24,7 @@ test_that("table identifiers are quoted", {
     suppress_mssql_warning(dm_from_con(con_db, learn_keys = FALSE)) %>%
     dm_select_tbl(!!!map(
       DBI::dbUnquoteIdentifier(con_db, DBI::SQL(remote_tbl_names_copied)),
-      ~ .x@name[["table"]]
+      ~ .x@name[[length(.x@name)]]
     ))
 
   remote_tbl_names_learned <-

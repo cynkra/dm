@@ -107,12 +107,13 @@ dm_from_con <- function(
     src_tbl_names <- get_src_tbl_names(src, ..., names = .names)
   } else {
     src_tbl_names <- table_names
+    if (is.null(names(src_tbl_names))) {
+      names(src_tbl_names) <- src_tbl_names
+    }
   }
 
-  nms <- purrr::map_chr(src_tbl_names, ~ .x@name[["table"]])
-
   tbls <-
-    set_names(src_tbl_names, nms) %>%
+    src_tbl_names %>%
     quote_ids(con) %>%
     map(possibly(tbl, NULL), src = src)
 

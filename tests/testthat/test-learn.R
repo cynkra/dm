@@ -22,7 +22,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     ) %>%
     DBI::SQL() %>%
     DBI::dbUnquoteIdentifier(conn = con_db) %>%
-    map_chr(~ .x@name[["table"]])
+    map_chr(~ .x@name[[length(.x@name)]])
 
   remote_tbl_map <- set_names(remote_tbl_names, gsub("^(tf_.).*$", "\\1", remote_tbl_names))
 
