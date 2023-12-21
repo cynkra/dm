@@ -223,6 +223,9 @@
     Code
       dm_for_filter_rev() %>% dm_filter(tf_1 = a < 8 & a > 3) %>% dm_get_tables() %>%
         map(harmonize_tbl)
+    Condition
+      Warning:
+      Autoincrementing columns not yet supported for DuckDB, these won't be set in the remote database but are preserved in the `dm`
     Output
       $tf_6
       # A tibble: 2 x 3
