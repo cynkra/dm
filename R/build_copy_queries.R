@@ -203,7 +203,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
           name = child_table,
           index_name = map_chr(child_fk_cols, paste, collapse = "_"),
           remote_name = purrr::map_chr(table_names[name], ~ DBI::dbQuoteIdentifier(con, .x)),
-          remote_name_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)), ~ .x@name[["table"]]),
+          remote_name_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)), ~ .x@name[[length(.x@name)]]),
           index_name = make.unique(paste0(remote_name_unquoted, "__", index_name), sep = "__")
         ) %>%
         group_by(name) %>%
