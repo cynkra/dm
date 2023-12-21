@@ -239,16 +239,16 @@
       
       $remote_name
       $remote_name$parent1
-      <Id> table = parent1
+      <Id> "parent1"
       
       $remote_name$parent2
-      <Id> table = parent2
+      <Id> "parent2"
       
       $remote_name$child
-      <Id> table = child
+      <Id> "child"
       
       $remote_name$child__a
-      <Id> table = child__a
+      <Id> "child__a"
       
       
       $columns
