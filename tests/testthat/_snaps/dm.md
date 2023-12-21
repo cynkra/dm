@@ -108,8 +108,21 @@
     Code
       writeLines(conditionMessage(expect_error(dm(dm_for_flatten(),
       dm_for_filter_duckdb()))))
+    Condition
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+    Message
+      `on_delete = "cascade"` not supported for duckdb
     Output
-      All `dm` objects need to share the same `src`.
+      i In index: 2.
+      Caused by error in `mutate()`:
+      i In argument: `remote_name_unquoted = map_chr(...)`.
+      Caused by error in `map_chr()`:
+      i In index: 1.
+      Caused by error in `.x@name[["table"]]`:
+      ! subscript out of bounds
 
 # output for dm() with dm
 
@@ -338,8 +351,19 @@
     Code
       dm_for_filter_duckdb() %>% compute(temporary = FALSE)
     Condition
-      Error in `compute()`:
-      ! `compute.dm()` does not support `temporary = FALSE`.
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+    Message
+      `on_delete = "cascade"` not supported for duckdb
+    Condition
+      Error in `mutate()`:
+      i In argument: `remote_name_unquoted = map_chr(...)`.
+      Caused by error in `map_chr()`:
+      i In index: 1.
+      Caused by error in `.x@name[["table"]]`:
+      ! subscript out of bounds
 
 # output
 

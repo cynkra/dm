@@ -25,8 +25,18 @@
       Warning:
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+    Message
+      `on_delete = "cascade"` not supported for duckdb
     Output
-      All `dm` objects need to share the same `src`.
+      i In argument: `remote_name_unquoted = map_chr(...)`.
+      Caused by error in `map_chr()`:
+      i In index: 1.
+      Caused by error in `.x@name[["table"]]`:
+      ! subscript out of bounds
 
 # output
 
