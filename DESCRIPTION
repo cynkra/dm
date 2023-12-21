@@ -68,7 +68,7 @@ Suggests:
     colourpicker,
     covr,
     crayon,
-    DBI,
+    DBI (>= 1.2.0),
     dbplyr (>= 2.3.4),
     DiagrammeR,
     DiagrammeRsvg,
