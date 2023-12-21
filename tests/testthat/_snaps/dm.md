@@ -108,8 +108,15 @@
     Code
       writeLines(conditionMessage(expect_error(dm(dm_for_flatten(),
       dm_for_filter_duckdb()))))
+    Condition
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
     Output
-      All `dm` objects need to share the same `src`.
+      i In index: 2.
+      Caused by error in `ddl_check_table_names()`:
+      ! could not find function "ddl_check_table_names"
 
 # output for dm() with dm
 
@@ -338,8 +345,12 @@
     Code
       dm_for_filter_duckdb() %>% compute(temporary = FALSE)
     Condition
-      Error in `compute()`:
-      ! `compute.dm()` does not support `temporary = FALSE`.
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+      Warning in `dm_for_filter_duckdb()`:
+      restarting interrupted promise evaluation
+      Error in `ddl_check_table_names()`:
+      ! could not find function "ddl_check_table_names"
 
 # output
 
