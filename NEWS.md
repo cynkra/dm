@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.8.9003
+
+## Chore
+
+- Bump DBI to 1.2.0 (#2155).
+
+- Avoid Aviator auto-update for all branches.
+
+- Adapt to DBI \>= 1.2.0 (#2148).
+
+
 # dm 1.0.8.9002
 
 ## Features
