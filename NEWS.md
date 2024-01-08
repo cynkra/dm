@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.8.9004
+
+## Continuous integration
+
+- Bump MariaDB version.
+
+
 # dm 1.0.8.9003
 
 ## Chore
