@@ -8,18 +8,7 @@
 
 ## Chore
 
-- Bump DBI to 1.2.0 (#2155).
-- Avoid Aviator auto-update for all branches.
-- Adapt to DBI \>= 1.2.0 (#2148).
-- Add Aviator configuration.
-
-## Continuous integration
-
-- Bump MariaDB version.
-
-## Uncategorized
-
-- Merge branch 'cran-1.0.8'.
+- Adapt to DBI \>= 1.2.0 (#2148, #2155).
 
 
 # dm 1.0.8
