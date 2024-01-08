@@ -1,40 +1,14 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.8.9004
-
-## Continuous integration
-
-- Bump MariaDB version.
-
-
-# dm 1.0.8.9003
-
-## Chore
-
-- Bump DBI to 1.2.0 (#2155).
-
-- Avoid Aviator auto-update for all branches.
-
-- Adapt to DBI \>= 1.2.0 (#2148).
-
-
-# dm 1.0.8.9002
+# dm 1.0.9
 
 ## Features
 
 - `dm_sql()` now processes `table_names` with `dbplyr::escape()`, therefore also accepting dbplyr objects (#2129).
 
-
-# dm 1.0.8.9001
-
 ## Chore
 
-- Add Aviator configuration.
-
-
-# dm 1.0.8.9000
-
-- Merge branch 'cran-1.0.8'.
+- Adapt to DBI \>= 1.2.0 (#2148, #2155).
 
 
 # dm 1.0.8
