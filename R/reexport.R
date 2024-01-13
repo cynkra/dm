@@ -83,7 +83,7 @@ dplyr::rows_upsert
 dplyr::rows_delete
 
 #' @export
-pillar::glimpse
+tibble::glimpse
 
 #' @export
 tibble::tibble
