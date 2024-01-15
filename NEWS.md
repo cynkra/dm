@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.9.9001
+
+## Chore
+
+- Reexport `tibble::glimpse()` instead of `pillar::glimpse()` to avoid pillar dependency with roxygen2 7.3.0 (#2179).
+
+
 # dm 1.0.9.9000
 
 - Merge branch 'cran-1.0.9'.
