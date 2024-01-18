@@ -34,6 +34,7 @@ connect-%:
 
 db-start:
 	docker-compose up -d --force-recreate
+	./.github/oracle_helpers/file.sh
 	R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$$con, "FLUSH PRIVILEGES")'
 	R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$$con, "CREATE DATABASE test")'
 
@@ -42,6 +43,10 @@ db-restart:
 
 db-stop:
 	docker-compose down
+
+db-reset:
+	docker-compose down --volumes
+	docker-compose build --no-cache
 
 docker-build:
 	docker build --platform linux/amd64 -t ghcr.io/cynkra/dm:main .
