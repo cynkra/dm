@@ -1,0 +1,26 @@
+name: unblock
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/unblock.yaml
+  # for manual triggers
+  workflow_dispatch:
+  # daily run
+  schedule:
+  - cron: "30 1 * * *"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || github.sha }}-${{ github.base_ref || '' }}
+  cancel-in-progress: true
+
+jobs:
+  unblock:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if the repo is forked
+        id: check
+        run: |
+          gh pr list --json number -q '.[].number' | xargs -n 1 gh pr edit --remove-label blocked
