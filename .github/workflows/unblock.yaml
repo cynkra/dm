@@ -20,7 +20,8 @@ jobs:
   unblock:
     runs-on: ubuntu-latest
     steps:
-      - name: Check if the repo is forked
-        id: check
+      - name: Remove blocked label from all PRs
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh pr list --json number -q '.[].number' | xargs -n 1 gh pr edit --remove-label blocked
