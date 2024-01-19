@@ -34,7 +34,7 @@ connect-%:
 
 db-start:
 	docker-compose up -d --force-recreate
-	./.github/oracle_helpers/file.sh
+	./.github/oracle_helpers/create_oracle_users.sh
 	R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$$con, "FLUSH PRIVILEGES")'
 	R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$$con, "CREATE DATABASE test")'
 
