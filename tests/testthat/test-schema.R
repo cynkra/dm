@@ -177,7 +177,7 @@ test_that("schema handling on MSSQL works for different DBs", {
 
   DBI::dbWriteTable(
     con_db,
-    DBI::Id(db = "test_db_for_schema_dm", schema = "test_schema", table = "test_1"),
+    DBI::Id(catalog = "test_db_for_schema_dm", schema = "test_schema", table = "test_1"),
     value = tibble(c = c(5L))
   )
 
