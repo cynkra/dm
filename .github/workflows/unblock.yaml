@@ -20,6 +20,8 @@ jobs:
   unblock:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: Remove blocked label from all PRs
         env:
           GH_TOKEN: ${{ github.token }}
