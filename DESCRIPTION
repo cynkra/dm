@@ -103,7 +103,8 @@ Suggests:
     waldo,
     withr
 Remotes: 
-    r-dbi/odbc
+    r-dbi/odbc,
+    tidyverse/dbplyr@f-id
 Config/Needs/website:
     brio,
     bslib,
