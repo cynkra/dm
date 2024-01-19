@@ -218,12 +218,12 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
   DBI::dbExecute(con_db, "CREATE DATABASE test_database_dm")
   DBI::dbWriteTable(
     con_db,
-    DBI::Id(db = "test_database_dm", schema = "dbo", table = "test_1"),
+    DBI::Id(catalog = "test_database_dm", schema = "dbo", table = "test_1"),
     value = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5)
   )
   DBI::dbWriteTable(
     con_db,
-    DBI::Id(db = "test_database_dm", schema = "dbo", table = "test_2"),
+    DBI::Id(catalog = "test_database_dm", schema = "dbo", table = "test_2"),
     value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
   # set PK
@@ -285,6 +285,12 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
 
   original_dbname <- attributes(con_db)$info$dbname
 
+  # delete database after test
+  withr::defer({
+    # dropping tables and schema is unnecessary
+    try(DBI::dbExecute(con_db, "DROP DATABASE test_database_dm"))
+  })
+
   # create another DB, a schema and 2 connected tables
   DBI::dbExecute(con_db, "CREATE DATABASE test_database_dm")
   DBI::dbExecute(con_db, "USE test_database_dm")
@@ -293,12 +299,12 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
 
   DBI::dbWriteTable(
     con_db,
-    DBI::Id(db = "test_database_dm", schema = "dm_test", table = "test_1"),
+    DBI::Id(catalog = "test_database_dm", schema = "dm_test", table = "test_1"),
     value = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5)
   )
   DBI::dbWriteTable(
     con_db,
-    DBI::Id(db = "test_database_dm", schema = "dm_test", table = "test_2"),
+    DBI::Id(catalog = "test_database_dm", schema = "dm_test", table = "test_2"),
     value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
   # set PK
@@ -310,14 +316,6 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     "ALTER TABLE [test_database_dm].[dm_test].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dm_test].[test_1] ([b]) ON DELETE NO ACTION ON UPDATE NO ACTION"
   )
 
-
-  # delete database after test
-  withr::defer({
-    try(DBI::dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_2]"))
-    try(DBI::dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_1]"))
-    # dropping schema is unnecessary
-    try(DBI::dbExecute(con_db, "DROP DATABASE test_database_dm"))
-  })
 
   # test 'get_src_tbl_names()'
   expect_identical(

@@ -102,6 +102,9 @@ Suggests:
     testthat (>= 3.1.2),
     waldo,
     withr
+Remotes: 
+    r-dbi/odbc,
+    tidyverse/dbplyr@f-id
 Config/Needs/website:
     brio,
     bslib,
