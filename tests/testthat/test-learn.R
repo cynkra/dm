@@ -285,6 +285,12 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
 
   original_dbname <- attributes(con_db)$info$dbname
 
+  # delete database after test
+  withr::defer({
+    # dropping tables and schema is unnecessary
+    try(DBI::dbExecute(con_db, "DROP DATABASE test_database_dm"))
+  })
+
   # create another DB, a schema and 2 connected tables
   DBI::dbExecute(con_db, "CREATE DATABASE test_database_dm")
   DBI::dbExecute(con_db, "USE test_database_dm")
@@ -310,14 +316,6 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     "ALTER TABLE [test_database_dm].[dm_test].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dm_test].[test_1] ([b]) ON DELETE NO ACTION ON UPDATE NO ACTION"
   )
 
-
-  # delete database after test
-  withr::defer({
-    try(DBI::dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_2]"))
-    try(DBI::dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_1]"))
-    # dropping schema is unnecessary
-    try(DBI::dbExecute(con_db, "DROP DATABASE test_database_dm"))
-  })
 
   # test 'get_src_tbl_names()'
   expect_identical(
