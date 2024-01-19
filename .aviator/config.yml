@@ -2,7 +2,7 @@ merge_rules:
   labels:
     trigger: mergequeue
     skip_line: mergequeue-priority
-    merge_failed: blocked
+    merge_failed: ''
     skip_delete_branch: ''
   update_latest: true
   delete_branch: false
