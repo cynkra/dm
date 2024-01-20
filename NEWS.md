@@ -1,5 +1,24 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.9.9002
+
+## Chore
+
+- Use dev odbc to fix SQL Server problem (#2178).
+
+- Configure Aviator to avoid setting the blocked label.
+
+- Snapshot updates for rcc-smoke (#2182).
+
+## Continuous integration
+
+- Fix unblock.
+
+- Fix unblock.
+
+- Add workflow that regularly unblocks all PRs.
+
+
 # dm 1.0.9.9001
 
 ## Chore
