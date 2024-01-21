@@ -345,11 +345,16 @@ get_all_filtered_connected <- function(dm, table) {
       distance = finite_distances
     )
 
+  # igraph >= 2.0.0:
+  all_edges$parent[is.na(all_edges$parent)] <- all_edges$node[is.na(all_edges$parent)]
+  stopifnot(!anyNA(all_edges$parent))
+
   # Edges of interest, will be grown until source node `table` is reachable
   # from all nodes
   edges <-
     all_edges %>%
     filter(node %in% !!c(filtered_tables, table))
+
   # Recursive join
   repeat {
     missing <- setdiff(edges$parent, edges$node)
