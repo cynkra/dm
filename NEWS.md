@@ -4,22 +4,9 @@
 
 ## Chore
 
-- Establish compatibility with igraph \>= 2.0.0 (#2187).
-- Unblock every three hours.
-- Fix withr 3.0.0 compatibility (#2184).
-- Use dev odbc to fix SQL Server problem (#2178).
-- Configure Aviator to avoid setting the blocked label.
-- Snapshot updates for rcc-smoke (#2182).
+- Establish compatibility with igraph \>= 2.0.0 (#2187) and withr 3.0.0(#2184).
+
 - Reexport `tibble::glimpse()` instead of `pillar::glimpse()` to avoid pillar dependency with roxygen2 7.3.0 (#2179).
-
-## Continuous integration
-
-- Fix unblock.
-- Add workflow that regularly unblocks all PRs.
-
-## Uncategorized
-
-- Merge branch 'cran-1.0.9'.
 
 
 # dm 1.0.9
