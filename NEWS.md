@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.10.9000
+
+- Merge branch 'cran-1.0.10'.
+
+
 # dm 1.0.10
 
 ## Chore
