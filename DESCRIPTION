@@ -1,6 +1,6 @@
 Package: dm
 Title: Relational Data Models
-Version: 1.0.9.9003
+Version: 1.0.10
 Date: 2024-01-21
 Authors@R: 
     c(person(given = "Tobias",
@@ -102,9 +102,6 @@ Suggests:
     testthat (>= 3.1.2),
     waldo,
     withr
-Remotes: 
-    r-dbi/odbc,
-    tidyverse/dbplyr@f-id
 Config/Needs/website:
     brio,
     bslib,
