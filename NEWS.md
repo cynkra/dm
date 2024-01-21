@@ -1,43 +1,23 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.9.9003
+# dm 1.0.10
 
 ## Chore
 
 - Establish compatibility with igraph \>= 2.0.0 (#2187).
-
 - Unblock every three hours.
-
 - Fix withr 3.0.0 compatibility (#2184).
-
-
-# dm 1.0.9.9002
-
-## Chore
-
 - Use dev odbc to fix SQL Server problem (#2178).
-
 - Configure Aviator to avoid setting the blocked label.
-
 - Snapshot updates for rcc-smoke (#2182).
+- Reexport `tibble::glimpse()` instead of `pillar::glimpse()` to avoid pillar dependency with roxygen2 7.3.0 (#2179).
 
 ## Continuous integration
 
 - Fix unblock.
-
-- Fix unblock.
-
 - Add workflow that regularly unblocks all PRs.
 
-
-# dm 1.0.9.9001
-
-## Chore
-
-- Reexport `tibble::glimpse()` instead of `pillar::glimpse()` to avoid pillar dependency with roxygen2 7.3.0 (#2179).
-
-
-# dm 1.0.9.9000
+## Uncategorized
 
 - Merge branch 'cran-1.0.9'.
 
