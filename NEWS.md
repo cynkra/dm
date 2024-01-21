@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.9.9003
+
+## Chore
+
+- Establish compatibility with igraph \>= 2.0.0 (#2187).
+
+- Unblock every three hours.
+
+- Fix withr 3.0.0 compatibility (#2184).
+
+
 # dm 1.0.9.9002
 
 ## Chore
