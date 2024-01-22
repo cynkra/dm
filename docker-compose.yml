@@ -6,10 +6,11 @@ volumes:
     driver: local
   maria-db:
     driver: local
+  mysql-db:
+    driver: local
 services:
   # https://www.beekeeperstudio.io/blog/how-to-use-mariadb-with-docker
   mysql:
-    # FIXME: Still need to add Makefile rules to provision MySQL database
     container_name: mysql
     image: mysql
     environment:
@@ -17,6 +18,8 @@ services:
       MYSQL_DATABASE: test
       MYSQL_USER: compose
       MYSQL_PASSWORD: "YourStrong!Passw0rd"
+    volumes:
+      - mysql-db:/var/lib/mysql
     ports:
       - "3307:3306"
   maria:

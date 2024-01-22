@@ -3,19 +3,19 @@ all: qtest
 # Quiet tests
 # Run with make -j $(nproc) -O
 # or with pmake
-qtest: qtest-df qtest-sqlite qtest-postgres qtest-mssql qtest-duckdb qtest-maria
+qtest: qtest-df qtest-sqlite qtest-postgres qtest-mssql qtest-duckdb qtest-maria qtest-mysql
 
 # Progress tests
-test: test-df test-sqlite test-postgres test-mssql test-duckdb test-maria
+test: test-df test-sqlite test-postgres test-mssql test-duckdb test-maria test-mysql
 
 # Testing with lazytest
-ltest: ltest-df ltest-sqlite ltest-postgres ltest-mssql ltest-duckdb ltest-maria
+ltest: ltest-df ltest-sqlite ltest-postgres ltest-mssql ltest-duckdb ltest-maria ltest-mysql
 
 # Silent testing
-stest: stest-df stest-sqlite stest-postgres stest-mssql stest-duckdb stest-maria
+stest: stest-df stest-sqlite stest-postgres stest-mssql stest-duckdb stest-maria stest-mysql
 
 # Connectivity tests
-connect: connect-sqlite connect-postgres connect-mssql connect-duckdb connect-maria
+connect: connect-sqlite connect-postgres connect-mssql connect-duckdb connect-maria connect-mysql
 
 qtest-%:
 	DM_TEST_SRC=$@ time R -q -e 'options("crayon.enabled" = TRUE); Sys.setenv(TESTTHAT_PARALLEL = FALSE); testthat::test_local(filter = "${DM_TEST_FILTER}")'
@@ -32,10 +32,20 @@ ltest-%:
 connect-%:
 	DM_TEST_SRC=$@ R -q -e 'suppressMessages(pkgload::load_all()); my_test_con()'
 
+db-init-maria:
+	while ! R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$$con, "FLUSH PRIVILEGES")'; do sleep 1; done
+
+db-init-mysql:
+	while ! R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mysql(root = TRUE)$$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_mysql()$$con, "FLUSH PRIVILEGES")'; do sleep 1; done
+
+db-init-mssql:
+	while ! R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$$con, "CREATE DATABASE test")'; do sleep 1; done
+
+db-init: db-init-maria db-init-mysql db-init-mssql
+
 db-start:
-	docker-compose up -d --force-recreate
-	R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$$con, "FLUSH PRIVILEGES")'
-	R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$$con, "CREATE DATABASE test")'
+	docker-compose up -d --force-recreate --wait
+	$(MAKE) db-init
 
 db-restart:
 	docker-compose up -d
