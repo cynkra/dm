@@ -85,7 +85,7 @@ Suggests:
     magrittr,
     mockr,
     nycflights13,
-    odbc,
+    odbc (>= 1.4.2),
     pillar,
     pixarfilms,
     pool,
@@ -115,6 +115,8 @@ Config/Needs/website:
 Config/Needs/check: anthonynorth/roxyglobals
 VignetteBuilder: 
     knitr
+Remotes: 
+    tidyverse/dbplyr@simplify-escaping
 Config/autostyle/scope: line_breaks
 Config/autostyle/strict: true
 Config/testthat/edition: 3
