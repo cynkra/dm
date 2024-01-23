@@ -46,8 +46,10 @@ RUN mkdir -p $(dirname $ODBC_FILE) && \
     { \
       echo "[oracle]"; \
       echo "Driver      = OracleODBC-19c"; \
-      echo "Server      = 127.0.0.1"; \
-      echo "ServerName  = //127.0.0.1:1521/FREE"; \
+      #echo "Server      = 127.0.0.1"; \
+      #echo "ServerName  = //127.0.0.1:1521/FREE"; \
+      echo "Server      = oracle"; \
+      echo "ServerName  = //oracle:1521/FREE"; \
       echo "Port        = 1521"; \
       echo "Database    = FREE"; \
       echo ""; \
@@ -67,5 +69,6 @@ RUN mkdir -p $(dirname $ODBCI_FILE) && \
     } >> $ODBCI_FILE
 
 
+WORKDIR /root/workspace
 
 

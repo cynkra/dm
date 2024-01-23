@@ -8,42 +8,40 @@ volumes:
     driver: local
   oracle-data:
     driver: local
-services:
-  # https://www.beekeeperstudio.io/blog/how-to-use-mariadb-with-docker
-  mysql:
-    # FIXME: Still need to add Makefile rules to provision MySQL database
-    container_name: mysql
-    image: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: "YourStrong!Passw0rd"
-      MYSQL_DATABASE: test
-      MYSQL_USER: compose
-      MYSQL_PASSWORD: "YourStrong!Passw0rd"
-    ports:
-      - "3307:3306"
-  maria:
-    container_name: maria
-    image: mariadb
-    environment:
-      MARIADB_ROOT_PASSWORD: "YourStrong!Passw0rd"
-      MARIADB_DATABASE: test
-      MARIADB_USER: compose
-      MARIADB_PASSWORD: "YourStrong!Passw0rd"
-    volumes:
-      - maria-db:/var/lib/mysql
-    ports:
-      - "3306:3306"
 
-  # https://blog.logrocket.com/docker-sql-server/
-  mssql:
-    container_name: mssql
-    image: mcr.microsoft.com/mssql/server:2022-RTM-ubuntu-20.04
+networks:
+  mynetwork:
+
+services:
+  rdm:
+    container_name: rdm
+    image: ghcr.io/cynkra/dm:main
+    # in case manual build is necessary
+    # build: .
     platform: linux/amd64
-    environment:
-      SA_PASSWORD: "YourStrong!Passw0rd"
-      ACCEPT_EULA: "Y"
+    tty: true
+    stdin_open: true
+    networks:
+      - mynetwork
+    depends_on:
+      - oracle
+
+  #https://www.oracle.com/database/technologies/oracle-database-software-downloads.html#db_free
+  #entreprise version requires access and license
+  oracle:
+    image: container-registry.oracle.com/database/free:latest
+    #command: ["/bin/bash", "-c", "/oracle_init.sh"]
+    container_name: oracle
     ports:
-      - "1433:1433"
+      - "1521:1521"
+    networks:
+      - mynetwork
+    #environment:
+      # doesn't work...
+     # ORACLE_USER: compose
+     # ORACLE_PASSWORD: 'password1'
+    volumes:
+      - oracle-data:/opt/oracle/oradata
 
   # https://geshan.com.np/blog/2021/12/docker-postgres/
   postgres:
@@ -57,17 +55,48 @@ services:
       - postgres-db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - mynetwork
 
-  #https://www.oracle.com/database/technologies/oracle-database-software-downloads.html#db_free
-  # entreprise version requires access and license
-  oracle:
-    image: container-registry.oracle.com/database/free:latest
-    container_name: oracle
+  # https://www.beekeeperstudio.io/blog/how-to-use-mariadb-with-docker
+  mysql:
+    # FIXME: Still need to add Makefile rules to provision MySQL database
+    container_name: mysql
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "YourStrong!Passw0rd"
+      MYSQL_DATABASE: test
+      MYSQL_USER: compose
+      MYSQL_PASSWORD: "YourStrong!Passw0rd"
     ports:
-      - "1521:1521"
-    #environment:
-      # doesn't work...
-     # ORACLE_USER: compose
-     # ORACLE_PASSWORD: 'password1'
+      - "3307:3306"
+    networks:
+      - mynetwork
+
+  maria:
+    container_name: maria
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: "YourStrong!Passw0rd"
+      MARIADB_DATABASE: test
+      MARIADB_USER: compose
+      MARIADB_PASSWORD: "YourStrong!Passw0rd"
     volumes:
-      - oracle-data:/opt/oracle/oradata
+      - maria-db:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - mynetwork
+
+  #https://blog.logrocket.com/docker-sql-server/
+  mssql:
+    container_name: mssql
+    image: mcr.microsoft.com/mssql/server:2022-RTM-ubuntu-20.04
+    platform: linux/amd64
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - mynetwork
