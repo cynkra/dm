@@ -1,15 +1,5 @@
 #!/bin/bash
 
-# adding users through compose does not work
-# tried different options, this is the one that finally worked...
-
-#msql database creation
-
-
-# docker exec -it R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$$con, "CREATE DATABASE test")
-
-#!/bin/bash
-
 # Check if the Docker container named 'msql' exists
 if docker ps -a --format '{{.Names}}' | grep -q "^mssql$"; then
     echo "Container 'msql' exists. Proceeding..."
@@ -49,8 +39,4 @@ else
     echo "Container 'oracle' does not exist."
     # Commands to execute if the container does not exist
 fi
-
-
-
-
 

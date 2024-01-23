@@ -100,3 +100,30 @@ services:
       - "1433:1433"
     networks:
       - mynetwork
+
+  # https://geshan.com.np/blog/2021/12/docker-postgres/
+  postgres:
+    container_name: postgres
+    # FIXME: brittle tests fail with latest PostgreSQL
+    image: postgres:14
+    environment:
+      POSTGRES_USER: compose
+      POSTGRES_PASSWORD: "YourStrong!Passw0rd"
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  #https://www.oracle.com/database/technologies/oracle-database-software-downloads.html#db_free
+  # entreprise version requires access and license
+  oracle:
+    image: container-registry.oracle.com/database/free:latest
+    container_name: oracle
+    ports:
+      - "1521:1521"
+    #environment:
+      # doesn't work...
+     # ORACLE_USER: compose
+     # ORACLE_PASSWORD: 'password1'
+    volumes:
+      - oracle-data:/opt/oracle/oradata
