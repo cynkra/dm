@@ -1,66 +1,31 @@
 # See .github/CONTRIBUTING.md for details.
 
+# FIXME: Does docker-compose have an include directive so that the file can be split into multiple files?
+
 version: '3'
 volumes:
   postgres-db:
     driver: local
   maria-db:
     driver: local
-  oracle-data:
+  mssql-db:
     driver: local
-
 networks:
-  mynetwork:
+  postgres-network:
+    driver: bridge
+  mssql-network:
+    driver: bridge
+  mysql-network:
+    driver: bridge
+  maria-network:
+    driver: bridge
+  oracle-network:
+    driver: bridge
 
 services:
-  rdm:
-    container_name: rdm
-    image: ghcr.io/cynkra/dm:main
-    # in case manual build is necessary
-    # build: .
-    platform: linux/amd64
-    tty: true
-    stdin_open: true
-    networks:
-      - mynetwork
-    depends_on:
-      - oracle
-
-  #https://www.oracle.com/database/technologies/oracle-database-software-downloads.html#db_free
-  #entreprise version requires access and license
-  oracle:
-    image: container-registry.oracle.com/database/free:latest
-    #command: ["/bin/bash", "-c", "/oracle_init.sh"]
-    container_name: oracle
-    ports:
-      - "1521:1521"
-    networks:
-      - mynetwork
-    #environment:
-      # doesn't work...
-     # ORACLE_USER: compose
-     # ORACLE_PASSWORD: 'password1'
-    volumes:
-      - oracle-data:/opt/oracle/oradata
-
-  # https://geshan.com.np/blog/2021/12/docker-postgres/
-  postgres:
-    container_name: postgres
-    # FIXME: brittle tests fail with latest PostgreSQL
-    image: postgres:14
-    environment:
-      POSTGRES_USER: compose
-      POSTGRES_PASSWORD: "YourStrong!Passw0rd"
-    volumes:
-      - postgres-db:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    networks:
-      - mynetwork
-
   # https://www.beekeeperstudio.io/blog/how-to-use-mariadb-with-docker
   mysql:
-    # FIXME: Still need to add Makefile rules to provision MySQL database
+  # FIXME: Still need to add Makefile rules to provision MySQL database
     container_name: mysql
     image: mysql
     environment:
@@ -68,10 +33,53 @@ services:
       MYSQL_DATABASE: test
       MYSQL_USER: compose
       MYSQL_PASSWORD: "YourStrong!Passw0rd"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pYourStrong!Passw0rd"]
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     ports:
       - "3307:3306"
     networks:
-      - mynetwork
+      - mysql-network
+
+  init_mysql:
+    container_name: init_mysql
+    image: ghcr.io/cynkra/dm:main
+    platform: linux/amd64
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - mysql-network
+    volumes:
+      - .:/root/workspace
+
+  rdm_mysql:
+    container_name: rdm_mysql
+    image: ghcr.io/cynkra/dm:main
+    platform: linux/amd64
+    # environment:
+    #   DM_TEST_DOCKER_HOST: mssql
+    #   SA_PASSWORD: "YourStrong!Passw0rd"
+    #   ACCEPT_EULA: "Y"
+    depends_on:
+      - init_mysql
+    networks:
+      - mysql-network
+    volumes:
+      - .:/root/workspace
+    tty: true
+    stdin_open: true
+    # testing if connection works
+    # entrypoint: ["R"]
+    entrypoint: ["R", "-e", 'DBI::dbConnect(
+                                  RMariaDB::MariaDB(),
+                                  host = "mysql",
+                                  username = "compose",
+                                  password = "YourStrong!Passw0rd",
+                                  dbname = "test")']
 
   maria:
     container_name: maria
@@ -83,12 +91,53 @@ services:
       MARIADB_PASSWORD: "YourStrong!Passw0rd"
     volumes:
       - maria-db:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      start_period: 20s
+      start_interval: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
     ports:
       - "3306:3306"
     networks:
-      - mynetwork
+      - maria-network
 
-  #https://blog.logrocket.com/docker-sql-server/
+  init_maria:
+    container_name: init_maria
+    image: ghcr.io/cynkra/dm:main
+    platform: linux/amd64
+    depends_on:
+      maria:
+        condition: service_healthy
+    networks:
+      - maria-network
+    volumes:
+      - .:/root/workspace
+      - maria-db:/var/lib/mysql
+
+  rdm_maria:
+    container_name: rdm_maria
+    image: ghcr.io/cynkra/dm:main
+    platform: linux/amd64
+    depends_on:
+      - init_maria
+    networks:
+      - maria-network
+    volumes:
+      - .:/root/workspace
+    tty: true
+    stdin_open: true
+    # testing if connection works
+    # entrypoint: ["R"]
+    entrypoint: ["R", "-e", 'DBI::dbConnect(
+                                  RMariaDB::MariaDB(),
+                                  host = "maria",
+                                  username = "compose",
+                                  password = "YourStrong!Passw0rd",
+                                  dbname = "test")']
+
+  # https://blog.logrocket.com/docker-sql-server/
   mssql:
     container_name: mssql
     image: mcr.microsoft.com/mssql/server:2022-RTM-ubuntu-20.04
@@ -96,10 +145,70 @@ services:
     environment:
       SA_PASSWORD: "YourStrong!Passw0rd"
       ACCEPT_EULA: "Y"
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "YourStrong!Passw0rd" -Q "SELECT 1" -b -o /dev/null
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    volumes:
+      - mssql-db:/var/opt/mssql
     ports:
       - "1433:1433"
     networks:
-      - mynetwork
+      - mssql-network
+
+  init_mssql:
+    container_name: init_mssql
+    image: ghcr.io/cynkra/dm:main
+    platform: linux/amd64
+    environment:
+      # FIXME Kirill: Handle differently, perhaps using the default code path
+      DM_TEST_DOCKER_HOST: mssql
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    depends_on:
+      mssql:
+        condition: service_healthy
+    networks:
+      - mssql-network
+    volumes:
+      - .:/root/workspace
+      - mssql-db:/var/opt/mssql
+      - ./.github/init.sh:/init.sh
+    command: ["/bin/bash", "-c", "/init.sh 'mssql'"]
+    #command: ["R", "-q", "-e", "suppressMessages(pkgload::load_all()); try(DBI::dbExecute(test_src_mssql(FALSE)[['con']], 'CREATE DATABASE test'))"]
+    # FIXME: Move code to standalone script
+    # FIXME: Wait until mssql is ready (healthcheck enough?=
+    # FIXME: Write a dummy file into the mssql-db value to ensure that the init_mssql container is run only once
+
+  rdm_mssql:
+    container_name: rdm_mssql
+    image: ghcr.io/cynkra/dm:main
+    platform: linux/amd64
+    environment:
+      DM_TEST_DOCKER_HOST: mssql
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    depends_on:
+      init_mssql:
+        condition: service_completed_successfully
+    networks:
+      - mssql-network
+    volumes:
+      - .:/root/workspace
+    tty: true
+    stdin_open: true
+    # entrypoint: ["R"]
+    entrypoint: ["R", "-e", "DBI::dbConnect(
+                    odbc::odbc(),
+                    driver = 'ODBC Driver 18 for SQL Server',
+                    server = 'mssql',
+                    database = 'test',
+                    uid = 'SA',
+                    pwd = 'YourStrong!Passw0rd',
+                    port = 1433,
+                    TrustServerCertificate = 'yes')"]
 
   # https://geshan.com.np/blog/2021/12/docker-postgres/
   postgres:
@@ -109,21 +218,45 @@ services:
     environment:
       POSTGRES_USER: compose
       POSTGRES_PASSWORD: "YourStrong!Passw0rd"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - postgres-db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - postgres-network
 
-  #https://www.oracle.com/database/technologies/oracle-database-software-downloads.html#db_free
-  # entreprise version requires access and license
-  oracle:
-    image: container-registry.oracle.com/database/free:latest
-    container_name: oracle
-    ports:
-      - "1521:1521"
-    #environment:
-      # doesn't work...
-     # ORACLE_USER: compose
-     # ORACLE_PASSWORD: 'password1'
+  init_postgres:
+    container_name: init_postgres
+    image: ghcr.io/cynkra/dm:main
+    platform: linux/amd64
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - postgres-network
+
+  rdm_postgres:
+    container_name: rdm_postgres
+    image: ghcr.io/cynkra/dm:main
+    platform: linux/amd64
+    depends_on:
+      - init_postgres
+    networks:
+      - postgres-network
     volumes:
-      - oracle-data:/opt/oracle/oradata
+      - .:/root/workspace
+    tty: true
+    stdin_open: true
+    # testing if connection works
+    # entrypoint: ["R"]
+    entrypoint: ["R", "-e", "DBI::dbConnect(
+                    RPostgres::Postgres(),
+                    host = 'postgres',
+                    user = 'compose',
+                    password = 'YourStrong!Passw0rd')"]
+
