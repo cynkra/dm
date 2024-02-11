@@ -1,5 +1,20 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.10.9003
+
+## Chore
+
+### deps
+
+- Update nick-fields/retry action to v3.
+
+### deps
+
+- Update actions/cache action to v4 (#2186).
+
+- Use dev odbc and dbplyr to fix CI/CD (#2189).
+
+
 # dm 1.0.10.9002
 
 ## Chore
