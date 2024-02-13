@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.10.9004
+
+## Chore
+
+### deps
+
+- Update peter-evans/create-pull-request action to v6.
+
+
 # dm 1.0.10.9003
 
 ## Chore
