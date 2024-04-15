@@ -3,6 +3,7 @@ url: https://dm.cynkra.com/
 template:
   assets: pkgdown/assets
   package: cynkratemplate
+  bootstrap: 5
 reference:
 - title: Basic
   desc: >
