@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.10.9006
+
+## Documentation
+
+- Set BS version explicitly for now.
+
+  https://github.com/cynkra/cynkratemplate/issues/53
+
+
 # dm 1.0.10.9005
 
 ## Chore
