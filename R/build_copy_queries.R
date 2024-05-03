@@ -83,7 +83,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       pk_col <- pk_col[[1]]
 
       # Postgres:
-      if (is_postgres(dest)) {
+      if (is_postgres(dest) || is_redshift(dest)) {
         types[pk_col] <- "SERIAL"
       }
 

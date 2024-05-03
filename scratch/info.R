@@ -56,7 +56,7 @@ info_local <-
   collect()
 
 quote_fq_schema <- function(con, catalog, schema) {
-  if (is_postgres(con) || is_mssql(con)) {
+  if (is_postgres(con) || is_redshift(con) || is_mssql(con)) {
     catalog <- dbQuoteIdentifier(con, catalog)
     schema <- dbQuoteIdentifier(con, schema)
     paste0(catalog, ".", schema)
