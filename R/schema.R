@@ -299,7 +299,7 @@ sql_schema_table_list_postgres <- function(con, schema = NULL) {
 #'
 #' @inheritParams db_schema_create
 #' @param force Boolean, default `FALSE`. Set to `TRUE` to drop a schema and
-#' all objects it contains at once. Currently only supported for Postgres.
+#' all objects it contains at once. Currently only supported for Postgres/Redshift.
 #'
 #' @details Methods are not available for all DBMS.
 #'
@@ -357,7 +357,7 @@ db_schema_drop.PqConnection <- function(con, schema, force = FALSE, ...) {
 `db_schema_drop.Microsoft SQL Server` <- function(con, schema, force = FALSE, dbname = NULL, ...) {
   warn_if_arg_not(
     force,
-    only_on = "Postgres",
+    only_on = c("Postgres", "Redshift"),
     correct = FALSE,
     additional_msg = "Please remove potential objects from the schema manually."
   )

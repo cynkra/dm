@@ -6,7 +6,7 @@
 #' The latter is copied to the former.
 #' The default is to create temporary tables, set `temporary = FALSE` to create permanent tables.
 #' Unless `set_key_constraints` is `FALSE`, primary key constraints are set on all databases,
-#' and in addition foreign key constraints are set on MSSQL and Postgres databases.
+#' and in addition foreign key constraints are set on MSSQL and Postgres/Redshift databases.
 #'
 #' @inheritParams dm_examine_constraints
 #'
@@ -280,7 +280,7 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
       }
       DBI::dbExecute(con, sql, immediate = TRUE)
     }))
-  } else if (is_postgres(con)) {
+  } else if (is_postgres(con) || is_redshift(con)) {
     # https://github.com/r-dbi/RPostgres/issues/384
     table <- as.data.frame(table)
     # https://github.com/r-dbi/RPostgres/issues/382
