@@ -62,7 +62,7 @@ my_test_src_name <- {
     src <- "df"
   }
   name <- gsub("^.*-", "", src)
-  inform(crayon::green(paste0("Testing on ", name)))
+  cli::cli_inform(cli::col_green("Testing on {name}"))
   name
 }
 
