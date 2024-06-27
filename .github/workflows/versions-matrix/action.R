@@ -9,7 +9,7 @@ covr <- data.frame(os = "ubuntu-22.04", r = r_versions[2], covr = "true", desc =
 include_list <- list(macos, windows, linux_devel, linux, covr)
 
 if (file.exists(".github/versions-matrix.R")) {
-  custom <- source(".github/versions-matrix.R")
+  custom <- source(".github/versions-matrix.R")$value
   include_list <- c(include_list, list(custom))
 }
 
