@@ -5,7 +5,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="dm">
 <title>Filtering in relational data models • dm</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -16,87 +15,68 @@
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Fira_Mono-0.4.9/font.css" rel="stylesheet">
-<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Filtering in relational data models">
-<meta property="og:description" content="dm">
-<meta property="og:image" content="https://dm.cynkra.com/logo.png">
 <meta name="robots" content="noindex">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><script defer data-domain="dm.cynkra.com" src="https://plausible.io/js/plausible.js"></script>
+<script defer data-domain="dm.cynkra.com" src="https://plausible.io/js/plausible.js"></script>
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.10.9005</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.10.9006</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../articles/dm.html">Get started</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../articles/dm.html">Get started</a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-tutorials">Tutorials</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-tutorials">
-    <a class="dropdown-item" href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
-    <a class="dropdown-item" href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
-    <a class="dropdown-item" href="../articles/howto-dm-db.html">Create a dm object from a database</a>
-    <a class="dropdown-item" href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
-    <a class="dropdown-item" href="../articles/howto-dm-rows.html">Insert, update, or remove rows in a database</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-tutorials" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Tutorials</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-tutorials">
+<li><a class="dropdown-item" href="../articles/howto-dm-theory.html">Introduction to relational data models</a></li>
+    <li><a class="dropdown-item" href="../articles/howto-dm-df.html">Create a dm object from data frames</a></li>
+    <li><a class="dropdown-item" href="../articles/howto-dm-db.html">Create a dm object from a database</a></li>
+    <li><a class="dropdown-item" href="../articles/howto-dm-copy.html">Copy data to and from a database</a></li>
+    <li><a class="dropdown-item" href="../articles/howto-dm-rows.html">Insert, update, or remove rows in a database</a></li>
+  </ul>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../articles/cheatsheet.html">Cheatsheet</a>
+<li class="nav-item"><a class="nav-link" href="../articles/cheatsheet.html">Cheatsheet</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-technical-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Technical articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-technical-articles">
+<li><a class="dropdown-item" href="../articles/tech-dm-draw.html">Visualizing dm objects</a></li>
+    <li><a class="dropdown-item" href="../articles/tech-dm-keyed.html">Manipulating individual tables</a></li>
+    <li><a class="dropdown-item" href="../articles/tech-dm-join.html">Joining in relational data models</a></li>
+    <li><a class="dropdown-item" href="../articles/tech-dm-filter.html">Filtering in relational data models</a></li>
+    <li><a class="dropdown-item" href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a></li>
+    <li><a class="dropdown-item" href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a></li>
+    <li><a class="dropdown-item" href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a></li>
+    <li><a class="dropdown-item" href="../articles/tech-dm-naming.html">Function naming logic</a></li>
+    <li><a class="dropdown-item" href="../articles/tech-dm-cdm.html">Migration guide: 'cdm' -&gt; 'dm'</a></li>
+  </ul>
 </li>
-<li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-technical-articles">Technical articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-technical-articles">
-    <a class="dropdown-item" href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
-    <a class="dropdown-item" href="../articles/tech-dm-keyed.html">Manipulating individual tables</a>
-    <a class="dropdown-item" href="../articles/tech-dm-join.html">Joining in relational data models</a>
-    <a class="dropdown-item" href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
-    <a class="dropdown-item" href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
-    <a class="dropdown-item" href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
-    <a class="dropdown-item" href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
-    <a class="dropdown-item" href="../articles/tech-dm-naming.html">Function naming logic</a>
-    <a class="dropdown-item" href="../articles/tech-dm-cdm.html">Migration guide: 'cdm' -&gt; 'dm'</a>
-  </div>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/cynkra/dm/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/cynkra/dm/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -109,9 +89,9 @@
                         <h4 data-toc-skip class="author">Katharina
 Brunner</h4>
             
-            <h4 data-toc-skip class="date">2024-04-15</h4>
+            <h4 data-toc-skip class="date">2024-06-27</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/HEAD/vignettes/tech-dm-filter.Rmd" class="external-link"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/main/vignettes/tech-dm-filter.Rmd" class="external-link"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-filter.Rmd</code></div>
     </div>
 
@@ -256,10 +236,11 @@ International Airport.</strong></p>
 <span>  <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">rows_per_table</span></span>
 <span><span class="co">#&gt; airlines airports  flights   planes  weather </span></span>
-<span><span class="co">#&gt;       10        1      602      336       38</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">rows_per_table</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 987</span></span></code></pre></div>
+<span><span class="co">#&gt;       10        1      602      336       38</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">rows_per_table</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 987</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sum_nrow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">sum_nrow_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="fu"><a href="../reference/deprecated.html">dm_apply_filters</a></span><span class="op">(</span><span class="va">filtered_dm</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: `dm_apply_filters()` was deprecated in dm 1.0.0.</span></span>
@@ -274,7 +255,7 @@ table).</p>
 <p><strong>Get a <code>dm</code> object containing data for flights from
 New York to the Dulles International Airport in Washington D.C.,
 abbreviated with <code>IAD</code>.</strong></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span>flights <span class="op">=</span> <span class="op">(</span><span class="va">dest</span> <span class="op">==</span> <span class="st">"IAD"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -284,7 +265,7 @@ abbreviated with <code>IAD</code>.</strong></p>
 <p>An example:</p>
 <p><strong>Get all January 2013 flights from Delta Air Lines which
 didn’t depart from John F. Kennedy International Airport.</strong></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm_delta_may</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span></span>
@@ -298,7 +279,7 @@ didn’t depart from John F. Kennedy International Airport.</strong></p>
 <span><span class="co">#&gt; Columns: 53</span></span>
 <span><span class="co">#&gt; Primary keys: 4</span></span>
 <span><span class="co">#&gt; Foreign keys: 4</span></span></code></pre>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm_delta_may</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; airlines airports  flights   planes  weather </span></span>
@@ -306,14 +287,14 @@ didn’t depart from John F. Kennedy International Airport.</strong></p>
 <p>You can inspect the filtered tables by subsetting them.</p>
 <p>In the <code>airlines</code> table, Delta is the only remaining
 carrier:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm_delta_may</span><span class="op">$</span><span class="va">airlines</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
 <span><span class="co">#&gt;   carrier name                </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;               </span></span>
 <span><span class="co">#&gt; 1 DL      Delta Air Lines Inc.</span></span></code></pre>
 <p>Which planes were used to service these flights?</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm_delta_may</span><span class="op">$</span><span class="va">planes</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 58 × 9</span></span>
 <span><span class="co">#&gt;    tailnum  year type         manufacturer model engines seats speed engine</span></span>
@@ -331,7 +312,7 @@ carrier:</p>
 <span><span class="co">#&gt; # ℹ 48 more rows</span></span></code></pre>
 <p>And indeed, all included flights departed in January
 (<code>month == 1</code>):</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm_delta_may</span><span class="op">$</span><span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">month</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
@@ -340,7 +321,7 @@ carrier:</p>
 <span><span class="co">#&gt; 1     1    75</span></span></code></pre>
 <p>For comparison, let’s review the equivalent manual query for
 <code>flights</code> in <code>dplyr</code> syntax:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">airlines_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"Delta Air Lines Inc."</span><span class="op">)</span></span>
 <span><span class="va">airports_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">!=</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span></span>
 <span><span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -391,7 +372,7 @@ in-memory database using the built-in function <code><a href="../reference/copy_
 and <code><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">dbplyr::src_memdb</a></code>.</p>
 <p>Then we filter the data, and print the corresponding SQL statement
 with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">dbplyr::sql_render()</a></code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">src_memdb</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -477,20 +458,18 @@ with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class
 <p>Further reading: {dm}’s function for copying data <a href="https://dm.cynkra.com/articles/dm.html">from and to
 databases</a>.</p>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p>
-<p>Developed by <a href="https://cynkra.com/about/" class="external-link">Tobias Schieferdecker</a>, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16" alt="energie360° AG"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16" alt="cynkra GmbH"></a>.</p>
+  <p>Developed by <a href="https://cynkra.com/about/" class="external-link">Tobias Schieferdecker</a>, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16" alt="energie360° AG"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16" alt="cynkra GmbH"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p>
-<p>
+  <p>
 Sponsored by <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-footer" alt="cynkra"></a>
 </p>
 </div>
@@ -498,9 +477,9 @@ Sponsored by <a href="https://cynkra.com" class="external-link"><img src="https:
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>
