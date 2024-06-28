@@ -1,5 +1,30 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.10.9007
+
+## Chore
+
+- Auto-update from GitHub Actions.
+
+  Run: https://github.com/cynkra/dm/actions/runs/9692097886
+
+## Continuous integration
+
+- Avoid checking bashisms on Windows.
+
+- Better commit message.
+
+- Harmonize workflows.
+
+- Use value after `source()`.
+
+- Bump versions, better default.
+
+- Recent updates.
+
+- Prepare for dynamic build matrix.
+
+
 # dm 1.0.10.9006
 
 ## Documentation
