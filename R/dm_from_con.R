@@ -64,11 +64,22 @@ dm_from_con <- function(
 
   src <- src_from_src_or_con(con)
 
+  # Use smart default for `.names`, if it wasn't provided
+  dots <- list2(...)
+  if (!is.null(.names)) {
+    names_pattern <- .names
+  } else if (is.null(dots$schema) || length(dots$schema) == 1) {
+    names_pattern <- "{.table}"
+  } else {
+    names_pattern <- "{.schema}.{.table}"
+    cli::cli_inform('Using {.code .names = "{names_pattern}"}')
+  }
+
   if (is.null(learn_keys) || isTRUE(learn_keys)) {
     # FIXME: Try to make it work everywhere
     tryCatch(
       {
-        dm_learned <- dm_learn_from_db(con, ...)
+        dm_learned <- dm_learn_from_db(con, ..., names_pattern = names_pattern)
         if (is_null(learn_keys)) {
           inform(c(
             "Keys queried successfully.",
@@ -104,7 +115,7 @@ dm_from_con <- function(
   }
 
   if (is_null(table_names)) {
-    src_tbl_names <- get_src_tbl_names(src, ..., names = .names)
+    src_tbl_names <- get_src_tbl_names(src, ..., names_pattern = names_pattern)
   } else {
     src_tbl_names <- table_names
     if (is.null(names(src_tbl_names))) {
