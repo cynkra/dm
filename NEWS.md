@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.10.9009
+
+## Continuous integration
+
+- Fix on Windows, tweak lock workflow.
+
+
 # dm 1.0.10.9008
 
 ## Chore
