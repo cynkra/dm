@@ -86,7 +86,7 @@ and a \code{\link{dm}} object as its second argument.
 The latter is copied to the former.
 The default is to create temporary tables, set \code{temporary = FALSE} to create permanent tables.
 Unless \code{set_key_constraints} is \code{FALSE}, primary key constraints are set on all databases,
-and in addition foreign key constraints are set on MSSQL and Postgres databases.
+and in addition foreign key constraints are set on MSSQL and Postgres/Redshift databases.
 }
 \examples{
 \dontshow{if (rlang::is_installed(c("RSQLite", "nycflights13", "dbplyr"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
