@@ -30,7 +30,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.10.9008</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.10.9009</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,7 @@
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../articles/dm.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item dropdown">
+<li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-tutorials" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Tutorials</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-tutorials">
 <li><a class="dropdown-item" href="../articles/howto-dm-theory.html">Introduction to relational data models</a></li>
@@ -89,7 +89,7 @@
                         <h4 data-toc-skip class="author">Katharina
 Brunner</h4>
             
-            <h4 data-toc-skip class="date">2024-07-01</h4>
+            <h4 data-toc-skip class="date">2024-08-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/main/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-theory.Rmd</code></div>
@@ -262,9 +262,8 @@ building data models with multiple tables can save memory compared to
 storing data in single a data frame:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 476256 bytes</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; 476256 bytes</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">nycflights13_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 108020824 bytes</span></span></code></pre></div>
 <p>Further Reading: The {dm} methods for <a href="https://dm.cynkra.com/articles/tech-dm-draw.html">visualizing data
@@ -286,7 +285,7 @@ key, a simple key. The <code>weather</code> table has the combination of
 compound key.</p>
 <p>You can get all primary keys in a <code>dm</code> by calling
 <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
@@ -298,7 +297,7 @@ compound key.</p>
 <span><span class="co">#&gt; 4 weather  origin, time_hour FALSE</span></span></code></pre>
 <p><code><a href="../reference/dm_enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> checks suitability of each
 column to serve as a simple primary key:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span><span class="va">airports</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 8 × 3</span></span>
@@ -336,7 +335,7 @@ primary key of the <code>weather</code> table) are also present in the
 <p>You can find foreign key candidates for simple keys with the function
 <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>; they are marked with
 <code>TRUE</code> in the <code>candidate</code> column.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 19 × 3</span></span>
@@ -364,7 +363,7 @@ primary key of the <code>weather</code> table) are also present in the
 <p>Additionally, you can also extract a summary of all foreign key
 relations present in a <code>dm</code> object using
 <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 5 × 5</span></span>
@@ -398,7 +397,7 @@ value.</li>
 <p>In the example data model, for a substantial share of the flights,
 detailed information for the corresponding airplane is not
 available:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-message"><code><span><span class="co">#&gt; ! Unsatisfied constraints:</span></span></code></pre>
@@ -426,7 +425,7 @@ clean and simple as possible by avoiding redundant data entries.</p>
 <code>nycflights13</code> dataset, you will only need to update a single
 data value. This principle is sometimes called the <em>single point of
 truth</em>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#  Update in one single location...</span></span>
 <span><span class="va">airlines</span><span class="op">[</span><span class="va">airlines</span><span class="op">$</span><span class="va">carrier</span> <span class="op">==</span> <span class="st">"UA"</span>, <span class="st">"name"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"United broke my guitar"</span></span>
 <span></span>
@@ -436,7 +435,7 @@ truth</em>.</p>
 <span><span class="co">#&gt;   carrier name                  </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;                 </span></span>
 <span><span class="co">#&gt; 1 UA      United broke my guitar</span></span></code></pre>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># ...propagates to all related records</span></span>
 <span><span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -468,7 +467,7 @@ and creates a new key <code>model_id</code>, that links both tables.</p>
 <p>This results in a <code>parent_table</code> and a
 <code>child_table</code> that differ massively in the number of
 rows:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">planes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">model_id</span>, <span class="va">model</span>, <span class="va">manufacturer</span>, <span class="va">type</span>, <span class="va">engines</span>, <span class="va">seats</span>, <span class="va">speed</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; $child_table</span></span>
@@ -527,17 +526,15 @@ and works transparently with both in-memory data and with relational
 database systems.</p>
 <p>For example, let’s create a local SQLite database and copy the
 <code>dm</code> object to it:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">con_sqlite</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">con_sqlite</span></span>
 <span><span class="co">#&gt; &lt;SQLiteConnection&gt;</span></span>
 <span><span class="co">#&gt;   Path: </span></span>
-<span><span class="co">#&gt;   Extensions: TRUE</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html" class="external-link">dbListTables</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span>
-<span><span class="co">#&gt; character(0)</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;   Extensions: TRUE</span></span>
+<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html" class="external-link">dbListTables</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">con_sqlite</span>, <span class="va">dm</span><span class="op">)</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html" class="external-link">dbListTables</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "airlines_1_20200828_071303_12345" "airports_1_20200828_071303_12345"</span></span>
@@ -547,7 +544,7 @@ database systems.</p>
 data from a database. Unfortunately, keys currently can be learned only
 for Microsoft SQL Server and Postgres, but not for SQLite. Therefore,
 the <code>dm</code> contains the tables but not the keys:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-message"><code><span><span class="co">#&gt; ! unable to fetch autoincrement metadata for src 'src_SQLiteConnection'</span></span></code></pre>
 <pre><code><span><span class="co">#&gt; Keys could not be queried.</span></span></code></pre>
@@ -559,7 +556,7 @@ the <code>dm</code> contains the tables but not the keys:</p>
 <span><span class="co">#&gt; Primary keys: 0</span></span>
 <span><span class="co">#&gt; Foreign keys: 0</span></span></code></pre>
 <p>Remember to terminate the database connection:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">

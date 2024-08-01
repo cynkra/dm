@@ -30,7 +30,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.10.9008</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.10.9009</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,7 +52,7 @@
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../articles/cheatsheet.html">Cheatsheet</a></li>
-<li class="nav-item dropdown">
+<li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-technical-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Technical articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-technical-articles">
 <li><a class="dropdown-item" href="../articles/tech-dm-draw.html">Visualizing dm objects</a></li>
@@ -89,7 +89,7 @@
                         <h4 data-toc-skip class="author">Katharina
 Brunner</h4>
             
-            <h4 data-toc-skip class="date">2024-07-01</h4>
+            <h4 data-toc-skip class="date">2024-08-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/main/vignettes/tech-dm-join.Rmd" class="external-link"><code>vignettes/tech-dm-join.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-join.Rmd</code></div>
@@ -226,14 +226,12 @@ more column than the <code>flights</code> table. The difference is the
 <span><span class="co">#&gt;  [5] "sched_dep_time" "dep_delay"      "arr_time"       "sched_arr_time"</span></span>
 <span><span class="co">#&gt;  [9] "arr_delay"      "carrier"        "flight"         "tailnum"       </span></span>
 <span><span class="co">#&gt; [13] "origin"         "dest"           "air_time"       "distance"      </span></span>
-<span><span class="co">#&gt; [17] "hour"           "minute"         "time_hour"</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; [17] "hour"           "minute"         "time_hour"</span></span>
+<span></span>
 <span><span class="va">dm</span><span class="op">$</span><span class="va">airlines</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "carrier" "name"</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; [1] "carrier" "name"</span></span>
+<span></span>
 <span><span class="va">dm_joined</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "year"           "month"          "day"            "dep_time"      </span></span>
@@ -243,7 +241,7 @@ more column than the <code>flights</code> table. The difference is the
 <span><span class="co">#&gt; [17] "hour"           "minute"         "time_hour"      "name"</span></span></code></pre></div>
 <p>The result is not a <code>dm</code> object anymore, but a (tibble)
 data frame:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm_joined</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "tbl_df"     "tbl"        "data.frame"</span></span></code></pre></div>
@@ -253,7 +251,7 @@ names.</strong></p>
 <p>We expect the <code>flights</code> data from {nycflights13} package
 to be clean and well organized, so no flights should remain. You can
 check this with an <code>anti_join</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, .join <span class="op">=</span> <span class="va">anti_join</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 0 × 19</span></span>
@@ -266,7 +264,7 @@ check this with an <code>anti_join</code>:</p>
 <p><strong>Get all May 2013 flights from Delta Air Lines which didn’t
 depart from John F. Kennedy International Airport in - and join all the
 airports data into the <code>flights</code> table.</strong></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>subset <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span></span>
 <span>    airlines <span class="op">=</span> <span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Delta Air Lines Inc."</span><span class="op">)</span>,</span>
@@ -302,7 +300,7 @@ the <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a><
 in your <code>dm</code> object together into one wide table. All you
 have to do is to specify the starting table. The following joins are
 determined by the foreign key links.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">weather</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span>.start <span class="op">=</span> <span class="va">flights</span><span class="op">)</span></span>
@@ -343,7 +341,7 @@ changed,
 e.g. <code>dm_rename(airlines, airlines.name = name)</code>.</p>
 <p>If you want to merge all tables, but get a nested table in return,
 use <code><a href="../reference/dm_wrap_tbl.html">dm_wrap_tbl()</a></code> with <code><a href="../reference/pull_tbl.html">pull_tbl()</a></code> instead:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_wrap_tbl.html">dm_wrap_tbl</a></span><span class="op">(</span>root <span class="op">=</span> <span class="va">flights</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/pull_tbl.html">pull_tbl</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span></code></pre></div>
