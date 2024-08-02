@@ -23,7 +23,7 @@ for a more detailed introduction.'><meta property="og:image" content="https://dm
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.10.9009</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.10.9010</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -156,7 +156,7 @@ with a normal table.</p>
 only with the latter, the filter expression is added to the list of table filters stored in the dm.</p>
 <p>Furthermore, different <code>join()</code>-variants from <span class="pkg">dplyr</span> are also supported,
 e.g. <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join()</a></code>.
-(Support for <code>nest_join()</code> is planned.)
+(Support for <code><a href="https://dplyr.tidyverse.org/reference/nest_join.html" class="external-link">dplyr::nest_join()</a></code> is planned.)
 The join-methods for <code>dm_zoomed</code> infer the columns to join by from the primary and foreign keys,
 and have an extra argument <code>select</code> that allows choosing the columns of the RHS table.</p>
 <p>And – last but not least – also the <span class="pkg">tidyr</span>-functions <code><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite()</a></code> and <code><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">separate()</a></code> are supported for <code>dm_zoomed</code>.</p>
