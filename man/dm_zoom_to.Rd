@@ -91,7 +91,7 @@ only with the latter, the filter expression is added to the list of table filter
 
 Furthermore, different \code{join()}-variants from \pkg{dplyr} are also supported,
 e.g. \code{\link[=left_join]{left_join()}} and \code{\link[=semi_join]{semi_join()}}.
-(Support for \code{\link[=nest_join]{nest_join()}} is planned.)
+(Support for \code{\link[dplyr:nest_join]{dplyr::nest_join()}} is planned.)
 The join-methods for \code{dm_zoomed} infer the columns to join by from the primary and foreign keys,
 and have an extra argument \code{select} that allows choosing the columns of the RHS table.
 

@@ -55,7 +55,7 @@ default: active database.
 A \code{dm} object.
 }
 \description{
-\code{dm_from_con()} creates a \link{dm} from some or all tables in a \link{src}
+\code{dm_from_con()} creates a \link{dm} from some or all tables in a \link[dplyr:src]{dplyr::src}
 (a database or an environment) or which are accessible via a DBI-Connection.
 For Postgres and SQL Server databases, primary and foreign keys
 are imported from the database.

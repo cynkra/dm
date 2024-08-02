@@ -37,7 +37,7 @@ A tibble with the following columns:
 \description{
 This function returns a tibble with information about
 which key constraints are met (\code{is_key = TRUE}) or violated (\code{FALSE}).
-The printing for this object is special, use \code{\link[=as_tibble]{as_tibble()}}
+The printing for this object is special, use \code{\link[tibble:as_tibble]{tibble::as_tibble()}}
 to print as a regular tibble.
 }
 \details{
