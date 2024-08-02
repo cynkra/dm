@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.10.9010
+
+## Chore
+
+- Auto-update from GitHub Actions.
+
+  Run: https://github.com/cynkra/dm/actions/runs/10200118253
+
+## Continuous integration
+
+- Use dev roxygen2 and decor.
+
+
 # dm 1.0.10.9009
 
 ## Continuous integration
