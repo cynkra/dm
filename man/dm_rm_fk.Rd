@@ -39,7 +39,7 @@ An updated \code{dm} without the matching foreign key relation(s).
 An error is thrown if no matching foreign key is found.
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 dm_nycflights13(cycle = TRUE) \%>\%
   dm_rm_fk(flights, dest, airports) \%>\%
   dm_draw()

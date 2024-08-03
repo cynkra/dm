@@ -43,7 +43,7 @@ These are the standard colors also returned by \code{\link[grDevices:colors]{grD
 table color with the name "default".
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 dm_nycflights13(color = FALSE) \%>\%
   dm_set_colors(
     darkblue = starts_with("air"),

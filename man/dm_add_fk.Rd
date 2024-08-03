@@ -68,7 +68,7 @@ This can happen
 These columns are then a so-called "implicit unique key" of the referenced table and can be listed via \code{\link[=dm_get_all_uks]{dm_get_all_uks()}}.
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 nycflights_dm <- dm(
   planes = nycflights13::planes,
   flights = nycflights13::flights,

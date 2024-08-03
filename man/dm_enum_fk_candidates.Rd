@@ -61,7 +61,7 @@ most likely used interactively.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_enum_fk_candidates(flights, airports)
 

@@ -23,7 +23,7 @@ The data is downloaded once per session, subsequent calls return the same databa
 The \code{trans} table is excluded due to its size.
 }
 \examples{
-\dontshow{if (dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")) withAutoprint(\{ # examplesIf}
 dm_financial() \%>\%
   dm_draw()
 \dontshow{\}) # examplesIf}

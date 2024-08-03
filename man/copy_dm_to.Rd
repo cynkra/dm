@@ -89,7 +89,7 @@ Unless \code{set_key_constraints} is \code{FALSE}, primary key constraints are s
 and in addition foreign key constraints are set on MSSQL and Postgres databases.
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("RSQLite", "nycflights13", "dbplyr"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("RSQLite", "nycflights13", "dbplyr"))) withAutoprint(\{ # examplesIf}
 con <- DBI::dbConnect(RSQLite::SQLite())
 
 # Copy to temporary tables, unique table names by default:

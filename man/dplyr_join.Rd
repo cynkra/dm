@@ -70,7 +70,7 @@ the default, the name of \code{y} is used.}
 Use these methods without the '.dm_zoomed' suffix (see examples).
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 flights_dm <- dm_nycflights13()
 dm_zoom_to(flights_dm, flights) \%>\%
   left_join(airports, select = c(faa, name))

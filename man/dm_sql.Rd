@@ -47,7 +47,7 @@ over the process of copying a \code{dm} to a database.
 }
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("RSQLite", "dbplyr"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("RSQLite", "dbplyr"))) withAutoprint(\{ # examplesIf}
 con <- DBI::dbConnect(RSQLite::SQLite())
 dm <- dm_nycflights13()
 s <- dm_sql(dm, con)

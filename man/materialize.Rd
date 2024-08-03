@@ -38,7 +38,7 @@ To create permament tables, first create the database schema using \code{\link[=
 or \code{\link[=dm_sql]{dm_sql()}}, and then use \code{\link[=dm_rows_append]{dm_rows_append()}}.
 }
 \examples{
-\dontshow{if (dm:::dm_has_financial() && rlang::is_installed("RSQLite")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (dm:::dm_has_financial() && rlang::is_installed("RSQLite")) withAutoprint(\{ # examplesIf}
 financial <- dm_financial_sqlite()
 
 financial \%>\%

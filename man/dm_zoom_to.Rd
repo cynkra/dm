@@ -98,7 +98,7 @@ and have an extra argument \code{select} that allows choosing the columns of the
 And -- last but not least -- also the \pkg{tidyr}-functions \code{\link[=unite]{unite()}} and \code{\link[=separate]{separate()}} are supported for \code{dm_zoomed}.
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 flights_zoomed <- dm_zoom_to(dm_nycflights13(), flights)
 
 flights_zoomed
