@@ -12,7 +12,7 @@ db_schema_drop(con, schema, force = FALSE, ...)
 \item{schema}{Class \code{character} or \code{SQL} (cf. Details), name of the schema}
 
 \item{force}{Boolean, default \code{FALSE}. Set to \code{TRUE} to drop a schema and
-all objects it contains at once. Currently only supported for Postgres.}
+all objects it contains at once. Currently only supported for Postgres/Redshift.}
 
 \item{...}{Passed on to the individual methods.}
 }

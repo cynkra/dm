@@ -348,8 +348,8 @@ ddl_get_col_defs <- function(tables, con, table_names, pks) {
       # extract column name representing primary key
       pk_col_name <- pk_col$pk_col[[1]]
 
-      # Postgres:
-      if (is_postgres(con)) {
+      # Postgres/Redshift:
+      if (is_postgres(con) || is_redshift(con)) {
         types[pk_col_name] <- "SERIAL"
       }
 

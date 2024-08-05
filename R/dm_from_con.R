@@ -3,7 +3,7 @@
 #' @description
 #' `dm_from_con()` creates a [dm] from some or all tables in a [src]
 #' (a database or an environment) or which are accessible via a DBI-Connection.
-#' For Postgres and SQL Server databases, primary and foreign keys
+#' For Postgres/Redshift and SQL Server databases, primary and foreign keys
 #' are imported from the database.
 #'
 #' @param con A [`DBI::DBIConnection-class`] or a `Pool` object.
@@ -14,13 +14,13 @@
 #'
 #'   Set to `TRUE` to query the definition of primary and
 #'   foreign keys from the database.
-#'   Currently works only for Postgres and SQL Server databases.
+#'   Currently works only for Postgres/Redshift and SQL Server databases.
 #'   The default attempts to query and issues an informative message.
 #' @param .names
 #'   `r lifecycle::badge("experimental")`
 #'
 #'   A glue specification that describes how to name the tables
-#'   within the output, currently only for MSSQL, Postgres and MySQL/MariaDB.
+#'   within the output, currently only for MSSQL, Postgres/Redshift and MySQL/MariaDB.
 #'   This can use `{.table}` to stand for the table name, and
 #'   `{.schema}` to stand for the name of the schema which the table lives
 #'   within. The default (`NULL`) is equivalent to `"{.table}"` when a single
@@ -30,11 +30,11 @@
 #'
 #'   Additional parameters for the schema learning query.
 #'
-#'   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres (default: `"public"`), and MariaDB/MySQL
+#'   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres/Redshift (default: `"public"`), and MariaDB/MySQL
 #'     (default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).
 #'   - `dbname`: supported for MSSQL. Access different databases on the connected MSSQL-server;
 #'     default: active database.
-#'   - `table_type`: supported for Postgres (default: `"BASE TABLE"`). Specify the table type. Options are:
+#'   - `table_type`: supported for Postgres/Redshift (default: `"BASE TABLE"`). Specify the table type. Options are:
 #'     1. `"BASE TABLE"` for a persistent table (normal table type)
 #'     2. `"VIEW"` for a view
 #'     3. `"FOREIGN TABLE"` for a foreign table
