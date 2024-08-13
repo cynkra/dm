@@ -27,7 +27,7 @@ fin_db <- dbConnect(
   username = 'guest',
   password = 'relational',
   dbname = 'Financial_ijs',
-  host = 'relational.fit.cvut.cz'
+  host = 'relational.fel.cvut.cz'
 )
 ```
 
@@ -40,7 +40,7 @@ library(dm)
 fin_dm <- dm_from_con(fin_db)
 fin_dm
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> src:  mysql  [guest@relational.fel.cvut.cz:NA/Financial_ijs]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
 #> Columns: 57
@@ -62,7 +62,7 @@ names(fin_dm)
 #> [7] "orders"    "tkeys"     "trans"
 fin_dm$loans
 #> # Source:   table<`Financial_ijs`.`loans`> [?? x 7]
-#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> # Database: mysql [guest@relational.fel.cvut.cz:NA/Financial_ijs]
 #>       id account_id date       amount duration payments status
 #>    <int>      <int> <date>      <dbl>    <int>    <dbl> <chr> 
 #>  1  4959          2 1994-01-05  80952       24     3373 A     
@@ -78,7 +78,7 @@ fin_dm$loans
 #> # … with more rows
 dplyr::count(fin_dm$trans)
 #> # Source:   lazy query [?? x 1]
-#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> # Database: mysql [guest@relational.fel.cvut.cz:NA/Financial_ijs]
 #>         n
 #>   <int64>
 #> 1 1056320
@@ -148,7 +148,7 @@ fin_dm_keys %>%
 #> Renamed columns:
 #> * date -> loans.date, accounts.date
 #> # Source:   lazy query [?? x 25]
-#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> # Database: mysql [guest@relational.fel.cvut.cz:NA/Financial_ijs]
 #>       id account_id loans.date amount duration payments status district_id
 #>    <int>      <int> <date>      <dbl>    <int>    <dbl> <chr>        <int>
 #>  1  4959          2 1994-01-05  80952       24     3373 A                1
@@ -216,7 +216,7 @@ fin_dm_total <-
 
 fin_dm_total$total_loans
 #> # Source:   lazy query [?? x 2]
-#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> # Database: mysql [guest@relational.fel.cvut.cz:NA/Financial_ijs]
 #>    account_id total_amount
 #>         <int>        <dbl>
 #>  1          2        80952
