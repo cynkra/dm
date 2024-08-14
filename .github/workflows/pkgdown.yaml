@@ -47,6 +47,11 @@ jobs:
       - uses: ./.github/workflows/custom/after-install
         if: hashFiles('.github/workflows/custom/after-install/action.yml') != ''
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+
       - uses: ./.github/workflows/pkgdown-build
         if: github.event_name != 'push'
 
