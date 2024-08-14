@@ -39,9 +39,9 @@ library(DBI) # <<
 mydb <- dbConnect(
   RMariaDB::MariaDB(),
   user = "guest",
-  password = "relational",
+  password = "ctu-relational",
   dbname = "Financial_ijs",
-  host = "relational.fit.cvut.cz"
+  host = "relational.fel.cvut.cz"
 )
 
 
