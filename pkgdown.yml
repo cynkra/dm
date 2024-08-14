@@ -1,12 +1,12 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7.9000
-pkgdown_sha: 548a9493b72ff93d3ed8392d4ad30b77d8b15fa5
+pandoc: 3.1.11
+pkgdown: 2.1.0.9000
+pkgdown_sha: 1d40a80e6b3564a6d7da0ce467b0a4570aa5665e
 articles:
-  cheatsheet: cheatsheet.html
-  dm-insert: wip/dm-insert.html
-  dm-readme-old: wip/dm-readme-old.html
-  dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
-  dm-tips-and-tricks: wip/dm-tips-and-tricks.html
+  articles/cheatsheet: cheatsheet.html
+  wip/dm-insert: wip/dm-insert.html
+  wip/dm-readme-old: wip/dm-readme-old.html
+  wip/dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
+  wip/dm-tips-and-tricks: wip/dm-tips-and-tricks.html
   dm: dm.html
   howto-dm-copy: howto-dm-copy.html
   howto-dm-db: howto-dm-db.html
@@ -22,8 +22,7 @@ articles:
   tech-dm-low-level: tech-dm-low-level.html
   tech-dm-naming: tech-dm-naming.html
   tech-dm-zoom: tech-dm-zoom.html
-last_built: 2024-01-21T11:43Z
+last_built: 2024-08-14T07:08Z
 urls:
   reference: https://dm.cynkra.com/reference
   article: https://dm.cynkra.com/articles
-
