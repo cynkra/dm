@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.0
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   articles/cheatsheet: cheatsheet.html
@@ -22,7 +22,7 @@ articles:
   tech-dm-low-level: tech-dm-low-level.html
   tech-dm-naming: tech-dm-naming.html
   tech-dm-zoom: tech-dm-zoom.html
-last_built: 2024-09-17T09:27Z
+last_built: 2024-09-23T09:07Z
 urls:
   reference: https://dm.cynkra.com/reference
   article: https://dm.cynkra.com/articles
