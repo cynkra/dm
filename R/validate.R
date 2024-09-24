@@ -103,7 +103,7 @@ dm_validate <- function(x) {
 
 #' Validator
 #'
-#' `validate_dm()` has been replaced by `dm_validate()` for consistency.
+#' `validate_dm()` has been replaced by [dm_validate()] for consistency.
 #'
 #' @param x An object.
 #'

@@ -1,7 +1,7 @@
 #' Copy data model to data source
 #'
 #' @description
-#' `copy_dm_to()` takes a [dplyr::src_dbi] object or a [`DBI::DBIConnection-class`] object as its first argument
+#' `copy_dm_to()` takes a [`dplyr::src_dbi`] object or a [`DBI::DBIConnection-class`] object as its first argument
 #' and a [`dm`] object as its second argument.
 #' The latter is copied to the former.
 #' The default is to create temporary tables, set `temporary = FALSE` to create permanent tables.
@@ -24,7 +24,7 @@
 #'
 #'   Not all DBMS are supported.
 #' @param table_names Desired names for the tables on `dest`; the names within the `dm` remain unchanged.
-#'   Can be `NULL`, a named character vector, or a vector of [DBI::Id] objects.
+#'   Can be `NULL`, a named character vector, or a vector of [`DBI::Id`] objects.
 #'
 #'   If left `NULL` (default), the names will be determined automatically depending on the `temporary` argument:
 #'
