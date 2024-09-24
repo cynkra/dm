@@ -65,7 +65,7 @@ and in addition foreign key constraints are set on MSSQL and Postgres databases.
     </div>
 
     <div class="ref-description section level2">
-    <p><code>copy_dm_to()</code> takes a <a href="https://dplyr.tidyverse.org/reference/src_dbi.html" class="external-link">dplyr::src_dbi</a> object or a <code><a href="https://dbi.r-dbi.org/reference/DBIConnection-class.html" class="external-link">DBI::DBIConnection</a></code> object as its first argument
+    <p><code>copy_dm_to()</code> takes a <code><a href="https://dplyr.tidyverse.org/reference/src_dbi.html" class="external-link">dplyr::src_dbi</a></code> object or a <code><a href="https://dbi.r-dbi.org/reference/DBIConnection-class.html" class="external-link">DBI::DBIConnection</a></code> object as its first argument
 and a <code><a href="dm.html">dm</a></code> object as its second argument.
 The latter is copied to the former.
 The default is to create temporary tables, set <code>temporary = FALSE</code> to create permanent tables.
@@ -113,7 +113,7 @@ Set to <code>FALSE</code> if your data model currently does not satisfy primary 
 
 <dt id="arg-table-names">table_names<a class="anchor" aria-label="anchor" href="#arg-table-names"></a></dt>
 <dd><p>Desired names for the tables on <code>dest</code>; the names within the <code>dm</code> remain unchanged.
-Can be <code>NULL</code>, a named character vector, or a vector of <a href="https://dbi.r-dbi.org/reference/Id.html" class="external-link">DBI::Id</a> objects.</p>
+Can be <code>NULL</code>, a named character vector, or a vector of <code><a href="https://dbi.r-dbi.org/reference/Id.html" class="external-link">DBI::Id</a></code> objects.</p>
 <p>If left <code>NULL</code> (default), the names will be determined automatically depending on the <code>temporary</code> argument:</p><ol><li><p><code>temporary = TRUE</code> (default): unique table names based on the names of the tables in the <code>dm</code> are created.</p></li>
 <li><p><code>temporary = FALSE</code>: the table names in the <code>dm</code> are used as names for the tables on <code>dest</code>.</p></li>
 </ol><p>If a function or one-sided formula, <code>table_names</code> is converted to a function
