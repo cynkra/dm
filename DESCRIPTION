@@ -67,7 +67,6 @@ Suggests:
     brio,
     colourpicker,
     covr,
-    crayon,
     DBI (>= 1.2.0),
     dbplyr (>= 2.3.4),
     DiagrammeR,
@@ -83,7 +82,6 @@ Suggests:
     knitr,
     labelled (>= 2.12.0),
     magrittr,
-    mockr,
     nycflights13,
     odbc (>= 1.4.2),
     pillar,
@@ -99,7 +97,7 @@ Suggests:
     shiny,
     shinyAce,
     shinydashboard,
-    testthat (>= 3.1.2),
+    testthat (>= 3.2.0),
     waldo,
     withr
 Remotes: 
