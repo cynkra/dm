@@ -1,5 +1,60 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.10.9011
+
+## Chore
+
+  - Drop crayon and mockr dependencies (@olivroy, #2220).
+
+  - Auto-update from GitHub Actions (#2231).
+
+  - Auto-update from GitHub Actions.
+    
+    Run: https://github.com/cynkra/dm/actions/runs/10395389155
+
+  - Use dev RMariaDB.
+
+  - Auto-update from GitHub Actions.
+    
+    Run: https://github.com/cynkra/dm/actions/runs/10223713876
+
+  - Roxygenize.
+
+## Continuous integration
+
+  - Use pkgdown branch (#2237).
+
+  - Install via R CMD INSTALL ., not pak (#2230).
+    
+      - ci: Install via R CMD INSTALL ., not pak
+    
+      - ci: Bump version of upload-artifact action
+
+  - Install local package for pkgdown builds.
+
+  - Improve support for protected branches with fledge.
+
+  - Improve support for protected branches, without fledge.
+
+  - Sync with latest developments.
+
+  - Use v2 instead of master.
+
+  - Inline action.
+
+## Documentation
+
+  - Tweak formatting (@salim-b, #2232).
+
+  - Fix typo (@salim-b, #2218).
+
+## Uncategorized
+
+  - Merge branch 'docs'.
+
+  - Merge branch 'docs'.
+
+
 # dm 1.0.10.9010
 
 ## Chore
