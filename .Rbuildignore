@@ -34,4 +34,3 @@
 ^\.vscode$
 ^renovate\.json$
 ^tests/testthat/helper-sync\.R$
-^\.aviator/config\.yml$
