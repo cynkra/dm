@@ -67,7 +67,7 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
     map_chr(remote_name_qual)
 
   con <- dm_get_con(dm)
-  expect_equal(gsub("^.*\\.", "", unname(remote_names)), unclass(DBI::dbQuoteIdentifier(con, names(dm))))
+  expect_equal(gsub("^.*\\.", "", DBI::SQL(unname(remote_names))), DBI::dbQuoteIdentifier(con, names(dm)))
 })
 
 
