@@ -268,7 +268,7 @@ with a \code{dm_} prefix.
 \code{dm_get_referencing_tables()} is soft-deprecated, use the information
 returned from \code{\link[=dm_get_all_fks]{dm_get_all_fks()}} instead.
 
-\code{validate_dm()} has been replaced by \code{dm_validate()} for consistency.
+\code{validate_dm()} has been replaced by \code{\link[=dm_validate]{dm_validate()}} for consistency.
 
 \code{dm_add_tbl} is deprecated as of dm 1.0.0, because the same functionality
 is offered by \code{\link[=dm]{dm()}} with \code{.name_repair = "unique"}.
@@ -280,6 +280,7 @@ is offered by \code{\link[=dm]{dm()}}.
 is offered by \code{\link[=dm_flatten_to_tbl]{dm_flatten_to_tbl()}} with \code{recursive = TRUE}.
 
 \code{rows_truncate()} is deprecated as of dm 1.0.0, because it's a DDL operation
-and requires different permissions than the \verb{dplyr::rows_*()} functions.
+and requires different permissions than the
+\code{\link[dplyr:rows]{dplyr::rows_*()}} functions.
 }
 \keyword{internal}

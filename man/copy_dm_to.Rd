@@ -29,7 +29,7 @@ and create indexes for foreign key constraints.
 Set to \code{FALSE} if your data model currently does not satisfy primary or foreign key constraints.}
 
 \item{table_names}{Desired names for the tables on \code{dest}; the names within the \code{dm} remain unchanged.
-Can be \code{NULL}, a named character vector, or a vector of \link[DBI:Id]{DBI::Id} objects.
+Can be \code{NULL}, a named character vector, or a vector of \code{\link[DBI:Id]{DBI::Id}} objects.
 
 If left \code{NULL} (default), the names will be determined automatically depending on the \code{temporary} argument:
 \enumerate{
@@ -81,7 +81,7 @@ A \code{dm} object on the given \code{src} with the same table names
 as the input \code{dm}.
 }
 \description{
-\code{copy_dm_to()} takes a \link[dplyr:src_dbi]{dplyr::src_dbi} object or a \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object as its first argument
+\code{copy_dm_to()} takes a \code{\link[dplyr:src_dbi]{dplyr::src_dbi}} object or a \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object as its first argument
 and a \code{\link{dm}} object as its second argument.
 The latter is copied to the former.
 The default is to create temporary tables, set \code{temporary = FALSE} to create permanent tables.
