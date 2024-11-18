@@ -70,7 +70,6 @@ test_that("default table repair works", {
   expect_equal(calls, 0)
   repair_table_names_for_db(table_names, temporary = TRUE, con)
   expect_gt(calls, 0)
-
 })
 
 test_that("copy_dm_to() fails legibly if target schema missing for MSSQL & Postgres", {
