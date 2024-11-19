@@ -1,5 +1,26 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.10.9014
+
+## Continuous integration
+
+  - Configure token.
+
+  - Count rulesets to understand if branch protection is enabled.
+
+  - Remove Aviator.
+
+## Testing
+
+  - Fix compatibility with waldo \>= 0.6.0 (#2240).
+    
+      - test: Fix compatibility with waldo \>= 0.6.0
+    
+      - chore: Auto-update from GitHub Actions
+    
+    Run: https://github.com/cynkra/dm/actions/runs/11885168927
+
+
 # dm 1.0.10.9013
 
 ## Continuous integration
