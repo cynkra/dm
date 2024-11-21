@@ -1,5 +1,7 @@
 ---
-output: downlit::readme_document
+output:
+  github_document:
+    html_preview: false
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -25,7 +27,25 @@ knit_print.grViz <- function(x, ..., options) {
 }
 vctrs::s3_register("knitr::knit_print", "grViz")
 
+clean_output <- function(x, options) {
+  index <- x
+  index <- gsub("─", "-", index)
+  index <- strsplit(paste(index, collapse = "\n"), "\n---\n")[[1]][[2]]
+  writeLines(index, "index.md")
+
+  x <- fansi::strip_sgr(x)
+  x
+}
+
 options(cli.num_colors = 256)
+
+local({
+  hook_source <- knitr::knit_hooks$get("document")
+  knitr::knit_hooks$set(document = clean_output)
+})
+
+# For initial rendering, can be removed
+usethis::use_build_ignore("index.md")
 ```
 
 # [dm](https://dm.cynkra.com/)

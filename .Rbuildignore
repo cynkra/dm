@@ -34,3 +34,4 @@
 ^\.vscode$
 ^renovate\.json$
 ^tests/testthat/helper-sync\.R$
+^index\.md$
