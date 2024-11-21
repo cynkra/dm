@@ -1,241 +1,78 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.10.9016
+# dm 1.0.10.9900
 
 ## Chore
 
 - Ignore.
-
 - Fix creation of documentation in the RStudio IDE \[ci skip\].
-
-## Documentation
-
-- Use `index.md`.
-
-
-# dm 1.0.10.9015
-
-## Chore
-
 - Bump RMariaDB version (#2244).
+- Drop crayon and mockr dependencies (@olivroy, #2220).
+- Auto-update from GitHub Actions (#2231).
+- Auto-update from GitHub Actions.
+  Run: https://github.com/cynkra/dm/actions/runs/10395389155
+- Use dev RMariaDB.
+  Run: https://github.com/cynkra/dm/actions/runs/10223713876
+- Roxygenize.
+  Run: https://github.com/cynkra/dm/actions/runs/10200118253
+  Run: https://github.com/cynkra/dm/actions/runs/9727972354
+  Run: https://github.com/cynkra/dm/actions/runs/9692097886
+- Use CRAN dbplyr.
+- Update peter-evans/create-pull-request action to v6.
+- Update nick-fields/retry action to v3.
+- Update actions/cache action to v4 (#2186).
+
+- Use dev odbc and dbplyr to fix CI/CD (#2189).
+- Tweak Compose file.
+- Format NEWS.
 
 ## Continuous integration
 
 - Configure token.
-
 - Count rulesets to understand if branch protection is enabled.
-
 - Remove Aviator.
+- Use stable pak (#2239).
+- Trigger run (#2238).
+  - ci: Trigger run
+  - ci: Latest changes
+- Use pkgdown branch (#2237).
+- Install via R CMD INSTALL ., not pak (#2230).
+  - ci: Install via R CMD INSTALL ., not pak
+  - ci: Bump version of upload-artifact action
+- Install local package for pkgdown builds.
+- Improve support for protected branches with fledge.
+- Improve support for protected branches, without fledge.
+- Sync with latest developments.
+- Use v2 instead of master.
+- Inline action.
+- Use dev roxygen2 and decor.
+- Fix on Windows, tweak lock workflow.
+- Avoid checking bashisms on Windows.
+- Better commit message.
+- Harmonize workflows.
+- Use value after `source()`.
+- Bump versions, better default.
+- Recent updates.
+- Prepare for dynamic build matrix.
+
+## Documentation
+
+- Use `index.md`.
+- Tweak formatting (@salim-b, #2232).
+- Fix typo (@salim-b, #2218).
+- Set BS version explicitly for now.
+  https://github.com/cynkra/cynkratemplate/issues/53
 
 ## Testing
 
 - Fix compatibility with waldo \>= 0.6.0 (#2240).
-
-
-# dm 1.0.10.9014
-
-## Continuous integration
-
-  - Configure token.
-
-  - Count rulesets to understand if branch protection is enabled.
-
-  - Remove Aviator.
-
-## Testing
-
-  - Fix compatibility with waldo \>= 0.6.0 (#2240).
-    
-      - test: Fix compatibility with waldo \>= 0.6.0
-    
-      - chore: Auto-update from GitHub Actions
-    
-    Run: https://github.com/cynkra/dm/actions/runs/11885168927
-
-
-# dm 1.0.10.9013
-
-## Continuous integration
-
-  - Use stable pak (#2239).
-
-
-# dm 1.0.10.9012
-
-## Continuous integration
-
-  - Trigger run (#2238).
-    
-      - ci: Trigger run
-    
-      - ci: Latest changes
-
-
-# dm 1.0.10.9011
-
-## Chore
-
-  - Drop crayon and mockr dependencies (@olivroy, #2220).
-
-  - Auto-update from GitHub Actions (#2231).
-
-  - Auto-update from GitHub Actions.
-    
-    Run: https://github.com/cynkra/dm/actions/runs/10395389155
-
-  - Use dev RMariaDB.
-
-  - Auto-update from GitHub Actions.
-    
-    Run: https://github.com/cynkra/dm/actions/runs/10223713876
-
-  - Roxygenize.
-
-## Continuous integration
-
-  - Use pkgdown branch (#2237).
-
-  - Install via R CMD INSTALL ., not pak (#2230).
-    
-      - ci: Install via R CMD INSTALL ., not pak
-    
-      - ci: Bump version of upload-artifact action
-
-  - Install local package for pkgdown builds.
-
-  - Improve support for protected branches with fledge.
-
-  - Improve support for protected branches, without fledge.
-
-  - Sync with latest developments.
-
-  - Use v2 instead of master.
-
-  - Inline action.
-
-## Documentation
-
-  - Tweak formatting (@salim-b, #2232).
-
-  - Fix typo (@salim-b, #2218).
+  - test: Fix compatibility with waldo \>= 0.6.0
+  - chore: Auto-update from GitHub Actions
+  Run: https://github.com/cynkra/dm/actions/runs/11885168927
 
 ## Uncategorized
 
-  - Merge branch 'docs'.
-
-  - Merge branch 'docs'.
-
-
-# dm 1.0.10.9010
-
-## Chore
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10200118253
-
-## Continuous integration
-
-- Use dev roxygen2 and decor.
-
-
-# dm 1.0.10.9009
-
-## Continuous integration
-
-- Fix on Windows, tweak lock workflow.
-
-
-# dm 1.0.10.9008
-
-## Chore
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9727972354
-
-
-# dm 1.0.10.9007
-
-## Chore
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9692097886
-
-## Continuous integration
-
-- Avoid checking bashisms on Windows.
-
-- Better commit message.
-
-- Harmonize workflows.
-
-- Use value after `source()`.
-
-- Bump versions, better default.
-
-- Recent updates.
-
-- Prepare for dynamic build matrix.
-
-
-# dm 1.0.10.9006
-
-## Documentation
-
-- Set BS version explicitly for now.
-
-  https://github.com/cynkra/cynkratemplate/issues/53
-
-
-# dm 1.0.10.9005
-
-## Chore
-
-- Use CRAN dbplyr.
-
-
-# dm 1.0.10.9004
-
-## Chore
-
-### deps
-
-- Update peter-evans/create-pull-request action to v6.
-
-
-# dm 1.0.10.9003
-
-## Chore
-
-### deps
-
-- Update nick-fields/retry action to v3.
-
-### deps
-
-- Update actions/cache action to v4 (#2186).
-
-- Use dev odbc and dbplyr to fix CI/CD (#2189).
-
-
-# dm 1.0.10.9002
-
-## Chore
-
-- Tweak Compose file.
-
-
-# dm 1.0.10.9001
-
-## Chore
-
-- Format NEWS.
-
-
-# dm 1.0.10.9000
-
+- Merge branch 'docs'.
 - Merge branch 'cran-1.0.10'.
 
 
