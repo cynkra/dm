@@ -4,76 +4,19 @@
 
 ## Chore
 
-- Ignore.
-- Fix creation of documentation in the RStudio IDE \[ci skip\].
-- Bump RMariaDB version (#2244).
 - Drop crayon and mockr dependencies (@olivroy, #2220).
-- Auto-update from GitHub Actions (#2231).
-- Auto-update from GitHub Actions.
-  Run: https://github.com/cynkra/dm/actions/runs/10395389155
-- Use dev RMariaDB.
-  Run: https://github.com/cynkra/dm/actions/runs/10223713876
-- Roxygenize.
-  Run: https://github.com/cynkra/dm/actions/runs/10200118253
-  Run: https://github.com/cynkra/dm/actions/runs/9727972354
-  Run: https://github.com/cynkra/dm/actions/runs/9692097886
-- Use CRAN dbplyr.
-- Update peter-evans/create-pull-request action to v6.
-- Update nick-fields/retry action to v3.
-- Update actions/cache action to v4 (#2186).
-
-- Use dev odbc and dbplyr to fix CI/CD (#2189).
-- Tweak Compose file.
-- Format NEWS.
-
-## Continuous integration
-
-- Configure token.
-- Count rulesets to understand if branch protection is enabled.
-- Remove Aviator.
-- Use stable pak (#2239).
-- Trigger run (#2238).
-  - ci: Trigger run
-  - ci: Latest changes
-- Use pkgdown branch (#2237).
-- Install via R CMD INSTALL ., not pak (#2230).
-  - ci: Install via R CMD INSTALL ., not pak
-  - ci: Bump version of upload-artifact action
-- Install local package for pkgdown builds.
-- Improve support for protected branches with fledge.
-- Improve support for protected branches, without fledge.
-- Sync with latest developments.
-- Use v2 instead of master.
-- Inline action.
-- Use dev roxygen2 and decor.
-- Fix on Windows, tweak lock workflow.
-- Avoid checking bashisms on Windows.
-- Better commit message.
-- Harmonize workflows.
-- Use value after `source()`.
-- Bump versions, better default.
-- Recent updates.
-- Prepare for dynamic build matrix.
 
 ## Documentation
 
 - Use `index.md`.
+
 - Tweak formatting (@salim-b, #2232).
+
 - Fix typo (@salim-b, #2218).
-- Set BS version explicitly for now.
-  https://github.com/cynkra/cynkratemplate/issues/53
 
 ## Testing
 
 - Fix compatibility with waldo \>= 0.6.0 (#2240).
-  - test: Fix compatibility with waldo \>= 0.6.0
-  - chore: Auto-update from GitHub Actions
-  Run: https://github.com/cynkra/dm/actions/runs/11885168927
-
-## Uncategorized
-
-- Merge branch 'docs'.
-- Merge branch 'cran-1.0.10'.
 
 
 # dm 1.0.10
