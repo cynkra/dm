@@ -17,7 +17,7 @@ dm_paste(dm, select = NULL, ..., tab_width = 2, options = NULL, path = NULL)
 
 \item{options}{Formatting options. A character vector containing some of:
 \itemize{
-\item \code{"tables"}: \code{\link[=tibble]{tibble()}} calls for empty table definitions
+\item \code{"tables"}: \code{\link[tibble:tibble]{tibble::tibble()}} calls for empty table definitions
 derived from \code{\link[=dm_ptype]{dm_ptype()}}, overrides \code{"select"}.
 \item \code{"select"}: \code{\link[=dm_select]{dm_select()}} statements for columns that are part
 of the dm.

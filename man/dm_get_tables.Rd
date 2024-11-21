@@ -25,7 +25,7 @@ A named list with the tables (data frames or lazy tables)
 constituting the \code{dm}.
 }
 \description{
-\code{dm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
+\code{dm_get_tables()} returns a named list of \pkg{dplyr} \link[dplyr:tbl]{dplyr::tbl} objects
 of a \code{dm} object.
 }
 \examples{
