@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.10.9016
+
+## Chore
+
+- Ignore.
+
+- Fix creation of documentation in the RStudio IDE \[ci skip\].
+
+## Documentation
+
+- Use `index.md`.
+
+
 # dm 1.0.10.9015
 
 ## Chore
