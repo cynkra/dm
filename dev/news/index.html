@@ -57,73 +57,17 @@
 <h2 class="pkg-version" data-toc-text="1.0.10.9900" id="dm-10109900">dm 1.0.10.9900<a class="anchor" aria-label="anchor" href="#dm-10109900"></a></h2>
 <div class="section level3">
 <h3 id="chore-1-0-10-9900">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-10-9900"></a></h3>
-<ul><li><p>Ignore.</p></li>
-<li><p>Fix creation of documentation in the RStudio IDE [ci skip].</p></li>
-<li><p>Bump RMariaDB version (<a href="https://github.com/cynkra/dm/issues/2244" class="external-link">#2244</a>).</p></li>
-<li><p>Drop crayon and mockr dependencies (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2220" class="external-link">#2220</a>).</p></li>
-<li><p>Auto-update from GitHub Actions (<a href="https://github.com/cynkra/dm/issues/2231" class="external-link">#2231</a>).</p></li>
-<li><p>Auto-update from GitHub Actions. Run: <a href="https://github.com/cynkra/dm/actions/runs/10395389155" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10395389155</a></p></li>
-<li><p>Use dev RMariaDB. Run: <a href="https://github.com/cynkra/dm/actions/runs/10223713876" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10223713876</a></p></li>
-<li><p>Roxygenize. Run: <a href="https://github.com/cynkra/dm/actions/runs/10200118253" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10200118253</a> Run: <a href="https://github.com/cynkra/dm/actions/runs/9727972354" class="external-link uri">https://github.com/cynkra/dm/actions/runs/9727972354</a> Run: <a href="https://github.com/cynkra/dm/actions/runs/9692097886" class="external-link uri">https://github.com/cynkra/dm/actions/runs/9692097886</a></p></li>
-<li><p>Use CRAN dbplyr.</p></li>
-<li><p>Update peter-evans/create-pull-request action to v6.</p></li>
-<li><p>Update nick-fields/retry action to v3.</p></li>
-<li><p>Update actions/cache action to v4 (<a href="https://github.com/cynkra/dm/issues/2186" class="external-link">#2186</a>).</p></li>
-<li><p>Use dev odbc and dbplyr to fix CI/CD (<a href="https://github.com/cynkra/dm/issues/2189" class="external-link">#2189</a>).</p></li>
-<li><p>Tweak Compose file.</p></li>
-<li><p>Format NEWS.</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="continuous-integration-1-0-10-9900">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-10-9900"></a></h3>
-<ul><li>Configure token.</li>
-<li>Count rulesets to understand if branch protection is enabled.</li>
-<li>Remove Aviator.</li>
-<li>Use stable pak (<a href="https://github.com/cynkra/dm/issues/2239" class="external-link">#2239</a>).</li>
-<li>Trigger run (<a href="https://github.com/cynkra/dm/issues/2238" class="external-link">#2238</a>).
-<ul><li>ci: Trigger run</li>
-<li>ci: Latest changes</li>
-</ul></li>
-<li>Use pkgdown branch (<a href="https://github.com/cynkra/dm/issues/2237" class="external-link">#2237</a>).</li>
-<li>Install via R CMD INSTALL ., not pak (<a href="https://github.com/cynkra/dm/issues/2230" class="external-link">#2230</a>).
-<ul><li>ci: Install via R CMD INSTALL ., not pak</li>
-<li>ci: Bump version of upload-artifact action</li>
-</ul></li>
-<li>Install local package for pkgdown builds.</li>
-<li>Improve support for protected branches with fledge.</li>
-<li>Improve support for protected branches, without fledge.</li>
-<li>Sync with latest developments.</li>
-<li>Use v2 instead of master.</li>
-<li>Inline action.</li>
-<li>Use dev roxygen2 and decor.</li>
-<li>Fix on Windows, tweak lock workflow.</li>
-<li>Avoid checking bashisms on Windows.</li>
-<li>Better commit message.</li>
-<li>Harmonize workflows.</li>
-<li>Use value after <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code>.</li>
-<li>Bump versions, better default.</li>
-<li>Recent updates.</li>
-<li>Prepare for dynamic build matrix.</li>
+<ul><li>Drop crayon and mockr dependencies (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2220" class="external-link">#2220</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="documentation-1-0-10-9900">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-10-9900"></a></h3>
-<ul><li>Use <code>index.md</code>.</li>
-<li>Tweak formatting (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2232" class="external-link">#2232</a>).</li>
-<li>Fix typo (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2218" class="external-link">#2218</a>).</li>
-<li>Set BS version explicitly for now. <a href="https://github.com/cynkra/cynkratemplate/issues/53" class="external-link uri">https://github.com/cynkra/cynkratemplate/issues/53</a>
-</li>
+<ul><li><p>Use <code>index.md</code>.</p></li>
+<li><p>Tweak formatting (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2232" class="external-link">#2232</a>).</p></li>
+<li><p>Fix typo (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2218" class="external-link">#2218</a>).</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="testing-1-0-10-9900">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-10-9900"></a></h3>
-<ul><li>Fix compatibility with waldo &gt;= 0.6.0 (<a href="https://github.com/cynkra/dm/issues/2240" class="external-link">#2240</a>).
-<ul><li>test: Fix compatibility with waldo &gt;= 0.6.0</li>
-<li>chore: Auto-update from GitHub Actions Run: <a href="https://github.com/cynkra/dm/actions/runs/11885168927" class="external-link uri">https://github.com/cynkra/dm/actions/runs/11885168927</a>
-</li>
-</ul></li>
-</ul></div>
-<div class="section level3">
-<h3 id="uncategorized-1-0-10-9900">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-10-9900"></a></h3>
-<ul><li>Merge branch ‘docs’.</li>
-<li>Merge branch ‘cran-1.0.10’.</li>
+<ul><li>Fix compatibility with waldo &gt;= 0.6.0 (<a href="https://github.com/cynkra/dm/issues/2240" class="external-link">#2240</a>).</li>
 </ul></div>
 </div>
     <div class="section level2">
