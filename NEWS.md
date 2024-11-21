@@ -1,5 +1,24 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.10.9015
+
+## Chore
+
+- Bump RMariaDB version (#2244).
+
+## Continuous integration
+
+- Configure token.
+
+- Count rulesets to understand if branch protection is enabled.
+
+- Remove Aviator.
+
+## Testing
+
+- Fix compatibility with waldo \>= 0.6.0 (#2240).
+
+
 # dm 1.0.10.9014
 
 ## Continuous integration
