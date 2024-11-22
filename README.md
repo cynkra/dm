@@ -197,7 +197,7 @@ started](https://dm.cynkra.com/articles/dm.html) article.
 If you encounter a clear bug, please file an issue with a minimal
 reproducible example on [GitHub](https://github.com/cynkra/dm/issues).
 For questions and other discussion, please use
-[community.rstudio.com](https://community.rstudio.com/).
+[community.rstudio.com](https://forum.posit.co/).
 
 ------------------------------------------------------------------------
 
