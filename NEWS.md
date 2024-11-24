@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.10.9901
+
+## Features
+
+- Add support for Redshift connections (@owenjonesuob, #2215).
+
+
 # dm 1.0.10.9900
 
 ## Chore
