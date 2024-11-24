@@ -4,17 +4,19 @@
 
 ## Features
 
-- Add support for Redshift connections (@owenjonesuob, \#2215).
+- Add support for Redshift connections (@owenjonesuob, #2215).
 
 ## Chore
 
-- Drop crayon and mockr dependencies (@olivroy, \#2220).
+- Drop crayon and mockr dependencies (@olivroy, #2220).
 
 ## Documentation
 
 - Use `index.md`.
-- Tweak formatting (@salim-b, \#2232).
-- Fix typo (@salim-b, \#2218).
+
+- Tweak formatting (@salim-b, #2232).
+
+- Fix typo (@salim-b, #2218).
 
 ## Testing
 
