@@ -55,6 +55,12 @@ is_postgres <- function(dest) {
   ))
 }
 
+is_redshift <- function(dest) {
+  inherits_any(dest, c(
+    "src_RedshiftConnection", "RedshiftConnection"
+  ))
+}
+
 is_mariadb <- function(dest) {
   inherits_any(
     dest,
@@ -122,8 +128,8 @@ find_name_clashes <- function(old, new) {
 
 #' @autoglobal
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
-  if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
-    warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
+  if (!is_mssql(src) && !is_postgres(src) && !is_redshift(src) && !is_mariadb(src)) {
+    warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "Redshift", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
     tables <- src_tbls(src)
     out <- purrr::map(tables, ~ DBI::Id(table = .x))
@@ -148,6 +154,11 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
     schema <- schema_postgres(con, schema)
     dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
     names_table <- get_names_table_postgres(con)
+  }  else if (is_redshift(src)) {
+    # Redshift
+    schema <- schema_redshift(con, schema)
+    dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
+    names_table <- get_names_table_redshift(con)
   } else if (is_mariadb(src)) {
     # MariaDB
     schema <- schema_mariadb(con, schema)
@@ -224,6 +235,8 @@ schema_postgres <- function(con, schema) {
   schema
 }
 
+schema_redshift <- schema_postgres
+
 schema_mariadb <- function(con, schema) {
   if (is_null(schema)) {
     schema <- sql("database()")
@@ -261,5 +274,7 @@ get_names_table_postgres <- function(con) {
     sql("SELECT table_schema as schema_name, table_name as table_name from information_schema.tables")
   )
 }
+
+get_names_table_redshift <- get_names_table_postgres
 
 get_names_table_mariadb <- get_names_table_postgres

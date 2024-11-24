@@ -73,7 +73,7 @@ dm_meta_raw <- function(con, catalog) {
   if (is_mssql(src)) {
     columns <- columns %>%
       mutate(is_autoincrement = sql("CAST(COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity') AS BIT)"))
-  } else if (is_postgres(src)) {
+  } else if (is_postgres(src) || is_redshift(src)) {
     columns <- columns %>%
       mutate(is_autoincrement = sql("CASE WHEN column_default IS NULL THEN FALSE ELSE column_default SIMILAR TO '%nextval%' END"))
   } else if (is_mariadb(src)) {
@@ -134,6 +134,15 @@ dm_meta_raw <- function(con, catalog) {
         "constraint_catalog", "constraint_schema", "constraint_name",
         "ordinal_position"
       ))
+  } else if (is_redshift(src)) {
+    constraint_column_usage <-
+      tbl_lc(src, "information_schema.key_column_usage", vars = c(
+        "table_catalog",
+        "table_schema", "table_name", "column_name",
+        "constraint_catalog", "constraint_schema", "constraint_name",
+        "ordinal_position"
+      )) %>%
+      filter(!is.na(table_name))
   } else if (is_mssql(src)) {
     constraint_column_usage <- mssql_constraint_column_usage(src, table_constraints, catalog)
   } else {
