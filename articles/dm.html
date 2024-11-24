@@ -15,8 +15,8 @@
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Fira_Mono-0.4.9/font.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Getting started with dm">
 <script defer data-domain="dm.cynkra.com" src="https://plausible.io/js/plausible.js"></script>
@@ -29,7 +29,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.11</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,9 +86,9 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Getting started with dm</h1>
             
-            <h4 data-toc-skip class="date">2024-09-24</h4>
+            <h4 data-toc-skip class="date">2024-11-24</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/docs/vignettes/dm.Rmd" class="external-link"><code>vignettes/dm.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/cran-1.0.11/vignettes/dm.Rmd" class="external-link"><code>vignettes/dm.Rmd</code></a></small>
       <div class="d-none name"><code>dm.Rmd</code></div>
     </div>
 
@@ -126,16 +126,18 @@ argument.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dm.cynkra.com/">dm</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fin_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">fin_db</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Keys could not be queried.</span></span>
-<span><span class="va">fin_dm</span></span></code></pre></div>
+<span><span class="va">fin_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">fin_db</span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-message"><code><span><span class="co">#&gt; Keys queried successfully.</span></span>
+<span><span class="co">#&gt; ℹ Use `learn_keys = TRUE` to mute this message.</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fin_dm</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; src:  mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; Tables: `trans`, `districts`, `clients`, `orders`, `cards`, … (9 total)</span></span>
+<span><span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)</span></span>
 <span><span class="co">#&gt; Columns: 57</span></span>
-<span><span class="co">#&gt; Primary keys: 0</span></span>
-<span><span class="co">#&gt; Foreign keys: 0</span></span></code></pre>
+<span><span class="co">#&gt; Primary keys: 9</span></span>
+<span><span class="co">#&gt; Foreign keys: 8</span></span></code></pre>
 <p>The dm object interrogates the RDBMS for table and column
 information, and primary and foreign keys. Currently, primary and
 foreign keys are only available from SQL Server, Postgres and
@@ -145,10 +147,10 @@ MariaDB.</p>
 <h2 id="selecting-tables">Selecting tables<a class="anchor" aria-label="anchor" href="#selecting-tables"></a>
 </h2>
 <p>The dm object can be accessed like a named list of tables:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fin_dm</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "trans"     "districts" "clients"   "orders"    "cards"     "disps"    </span></span>
-<span><span class="co">#&gt; [7] "tkeys"     "accounts"  "loans"</span></span>
+<span><span class="co">#&gt; [1] "accounts"  "cards"     "clients"   "disps"     "districts" "loans"    </span></span>
+<span><span class="co">#&gt; [7] "orders"    "tkeys"     "trans"</span></span>
 <span><span class="va">fin_dm</span><span class="op">$</span><span class="va">loans</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   table&lt;`Financial_ijs`.`loans`&gt; [?? x 7]</span></span>
 <span><span class="co">#&gt; # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]</span></span>
@@ -165,7 +167,7 @@ MariaDB.</p>
 <span><span class="co">#&gt;  9  4989        105 1998-12-05 352704       48     7348 C     </span></span>
 <span><span class="co">#&gt; 10  4990        110 1997-09-08 162576       36     4516 C     </span></span>
 <span><span class="co">#&gt; # ℹ more rows</span></span></code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">fin_dm</span><span class="op">$</span><span class="va">trans</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   SQL [1 x 1]</span></span>
 <span><span class="co">#&gt; # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]</span></span>
@@ -178,7 +180,7 @@ evaluation</a>. We can use <code>[</code> or the
 <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> verb to derive a smaller dm with the
 <code>loans</code>, <code>accounts</code>, <code>districts</code> and
 <code>trans</code> tables:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fin_dm_small</span> <span class="op">&lt;-</span> <span class="va">fin_dm</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"loans"</span>, <span class="st">"accounts"</span>, <span class="st">"districts"</span>, <span class="st">"trans"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">fin_dm_small</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">fin_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -191,7 +193,7 @@ evaluation</a>. We can use <code>[</code> or the
 all keys set. If not, dm allows us to define primary and foreign keys
 ourselves. For this, we use <code>learn_keys = FALSE</code> to obtain a
 <code>dm</code> object with only the tables.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dm.cynkra.com/">dm</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fin_dm_small</span> <span class="op">&lt;-</span></span>
@@ -203,7 +205,7 @@ as a primary key. A primary key is defined with
 <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. Each loan is linked to one account via the
 <code>account_id</code> column in the <code>loans</code> table, the
 relationship is established with <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fin_dm_keys</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">fin_dm_small</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">accounts</span>, columns <span class="op">=</span> <span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -223,7 +225,7 @@ any time. The default is to display the table name, any defined keys,
 and their links to other tables.</p>
 <p>Visualizing the dm in its current state, we can see the keys we have
 created and how they link the tables together. Color guides the eye.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_set_colors.html">dm_set_colors</a></span><span class="op">(</span>darkgreen <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">loans</span>, <span class="va">accounts</span><span class="op">)</span>, darkblue <span class="op">=</span> <span class="va">trans</span>, grey <span class="op">=</span> <span class="va">districts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -249,7 +251,7 @@ with. With the argument <code>recursive = TRUE</code>,
 <code><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code> will automatically follow foreign keys
 across tables to gather all the available columns into a single
 table.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">loans</span>, .recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Renaming ambiguous columns: %&gt;%</span></span>
@@ -278,7 +280,7 @@ table.</p>
 database. Use <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> to reduce the number of columns
 fetched, and <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> to retrieve the entire result for
 local processing.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">loans_df</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="op">(</span><span class="va">loans</span>, .recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -313,7 +315,7 @@ tables.</p>
 <p>To work with a particular table we use <code><a href="../reference/dm_zoom_to.html">dm_zoom_to()</a></code> to
 set the context to our chosen table. Then we can perform any of the
 dplyr operations we want.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fin_dm_total</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">fin_dm_keys</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">loans</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -354,7 +356,7 @@ by adding tables or keys, it is even more important that the new model
 is validated.</p>
 <p><code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> checks all primary and foreign
 keys and reports if they violate their expected constraints.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fin_dm_total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-message"><code><span><span class="co">#&gt; ℹ All constraints satisfied.</span></span></code></pre>
