@@ -154,7 +154,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
     schema <- schema_postgres(con, schema)
     dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
     names_table <- get_names_table_postgres(con)
-  }  else if (is_redshift(src)) {
+  } else if (is_redshift(src)) {
     # Redshift
     schema <- schema_redshift(con, schema)
     dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")

@@ -1,4 +1,4 @@
-dm 1.0.10.9900
+dm 1.0.11
 
 ## Cran Repository Policy
 
