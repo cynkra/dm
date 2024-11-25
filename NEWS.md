@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.11.9000
+
+## Continuous integration
+
+- Need to install R on Ubuntu 24.04 (#2250).
+
+- Use Ubuntu 24.04 and styler PR (#2248).
+
+
 # dm 1.0.11
 
 ## Features
