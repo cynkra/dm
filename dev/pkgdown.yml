@@ -1,6 +1,6 @@
 pandoc: 3.1.11
 pkgdown: 2.1.1.9000
-pkgdown_sha: 7645a47b08827c8ff6029c8afd09d9b13674ade5
+pkgdown_sha: dd777ee8e3be5777a067d71940989b9a9982b2be
 articles:
   articles/cheatsheet: cheatsheet.html
   wip/dm-insert: wip/dm-insert.html
@@ -22,7 +22,7 @@ articles:
   tech-dm-low-level: tech-dm-low-level.html
   tech-dm-naming: tech-dm-naming.html
   tech-dm-zoom: tech-dm-zoom.html
-last_built: 2024-11-25T08:58Z
+last_built: 2024-11-26T19:19Z
 urls:
   reference: https://dm.cynkra.com/reference
   article: https://dm.cynkra.com/articles
