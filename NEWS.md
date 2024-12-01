@@ -1,5 +1,20 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.11.9006
+
+## Continuous integration
+
+- Ignore errors when removing pkg-config on macOS (#2257).
+
+- Explicit permissions (#2254).
+
+- Use styler from main branch (#2252).
+
+- Need to install R on Ubuntu 24.04 (#2250).
+
+- Use Ubuntu 24.04 and styler PR (#2248).
+
+
 # dm 1.0.11.9005
 
 ## Continuous integration
