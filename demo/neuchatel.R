@@ -18,7 +18,6 @@ library(magrittr)
 ##
 
 
-
 # Take home messages
 
 ## The dm package helps
