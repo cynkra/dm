@@ -7,7 +7,7 @@
     <a href="https://cynkra.com" class="external-link"><img src="https://cynkra.com/assets/img/logo_small.svg" id="cynkra-logo-nav" alt="cynkra"></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.11.9002</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.11.9011</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +53,565 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.11.9011" id="dm-10119011">dm 1.0.11.9011<a class="anchor" aria-label="anchor" href="#dm-10119011"></a></h2>
+<div class="section level3">
+<h3 id="features-1-0-11-9011">Features<a class="anchor" aria-label="anchor" href="#features-1-0-11-9011"></a></h3>
+<ul><li>Add support for Redshift connections (<a href="https://github.com/owenjonesuob" class="external-link">@owenjonesuob</a>, <a href="https://github.com/cynkra/dm/issues/2215" class="external-link">#2215</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-11-9011">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-11-9011"></a></h3>
+<ul><li><p>Ignore.</p></li>
+<li><p>Fix creation of documentation in the RStudio IDE [ci skip].</p></li>
+<li><p>Bump RMariaDB version (<a href="https://github.com/cynkra/dm/issues/2244" class="external-link">#2244</a>).</p></li>
+<li><p>Drop crayon and mockr dependencies (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2220" class="external-link">#2220</a>).</p></li>
+<li><p>Auto-update from GitHub Actions (<a href="https://github.com/cynkra/dm/issues/2231" class="external-link">#2231</a>).</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10395389155" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10395389155</a></p>
+</li>
+<li><p>Use dev RMariaDB.</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10223713876" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10223713876</a></p>
+</li>
+<li><p>Roxygenize.</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10200118253" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10200118253</a></p>
+</li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/9727972354" class="external-link uri">https://github.com/cynkra/dm/actions/runs/9727972354</a></p>
+</li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/9692097886" class="external-link uri">https://github.com/cynkra/dm/actions/runs/9692097886</a></p>
+</li>
+<li><p>Use CRAN dbplyr.</p></li>
+</ul><div class="section level4">
+<h4 id="deps-1-0-11-9011">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9011"></a></h4>
+<ul><li>Update peter-evans/create-pull-request action to v6.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="deps-1-0-11-9011-1">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9011-1"></a></h4>
+<ul><li>Update nick-fields/retry action to v3.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="deps-1-0-11-9011-2">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9011-2"></a></h4>
+<ul><li><p>Update actions/cache action to v4 (<a href="https://github.com/cynkra/dm/issues/2186" class="external-link">#2186</a>).</p></li>
+<li><p>Use dev odbc and dbplyr to fix CI/CD (<a href="https://github.com/cynkra/dm/issues/2189" class="external-link">#2189</a>).</p></li>
+<li><p>Tweak Compose file.</p></li>
+<li><p>Format NEWS.</p></li>
+</ul></div>
+</div>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-11-9011">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-11-9011"></a></h3>
+<ul><li><p>Ignore errors when removing pkg-config on macOS (<a href="https://github.com/cynkra/dm/issues/2257" class="external-link">#2257</a>).</p></li>
+<li><p>Explicit permissions (<a href="https://github.com/cynkra/dm/issues/2254" class="external-link">#2254</a>).</p></li>
+<li><p>Use styler from main branch (<a href="https://github.com/cynkra/dm/issues/2252" class="external-link">#2252</a>).</p></li>
+<li><p>Need to install R on Ubuntu 24.04 (<a href="https://github.com/cynkra/dm/issues/2250" class="external-link">#2250</a>).</p></li>
+<li><p>Use Ubuntu 24.04 and styler PR (<a href="https://github.com/cynkra/dm/issues/2248" class="external-link">#2248</a>).</p></li>
+<li><p>Configure token.</p></li>
+<li><p>Count rulesets to understand if branch protection is enabled.</p></li>
+<li><p>Remove Aviator.</p></li>
+<li><p>Use stable pak (<a href="https://github.com/cynkra/dm/issues/2239" class="external-link">#2239</a>).</p></li>
+<li><p>Trigger run (<a href="https://github.com/cynkra/dm/issues/2238" class="external-link">#2238</a>).</p></li>
+<li><p>Use pkgdown branch (<a href="https://github.com/cynkra/dm/issues/2237" class="external-link">#2237</a>).</p></li>
+<li><p>Install via R CMD INSTALL ., not pak (<a href="https://github.com/cynkra/dm/issues/2230" class="external-link">#2230</a>).</p></li>
+<li><p>Install local package for pkgdown builds.</p></li>
+<li><p>Improve support for protected branches with fledge.</p></li>
+<li><p>Improve support for protected branches, without fledge.</p></li>
+<li><p>Sync with latest developments.</p></li>
+<li><p>Use v2 instead of master.</p></li>
+<li><p>Inline action.</p></li>
+<li><p>Use dev roxygen2 and decor.</p></li>
+<li><p>Fix on Windows, tweak lock workflow.</p></li>
+<li><p>Avoid checking bashisms on Windows.</p></li>
+<li><p>Better commit message.</p></li>
+<li><p>Harmonize workflows.</p></li>
+<li><p>Use value after <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code>.</p></li>
+<li><p>Bump versions, better default.</p></li>
+<li><p>Recent updates.</p></li>
+<li><p>Prepare for dynamic build matrix.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-0-11-9011">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-11-9011"></a></h3>
+<ul><li><p>Use <code>index.md</code>.</p></li>
+<li><p>Tweak formatting (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2232" class="external-link">#2232</a>).</p></li>
+<li><p>Fix typo (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2218" class="external-link">#2218</a>).</p></li>
+<li>
+<p>Set BS version explicitly for now.</p>
+<p><a href="https://github.com/cynkra/cynkratemplate/issues/53" class="external-link uri">https://github.com/cynkra/cynkratemplate/issues/53</a></p>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing-1-0-11-9011">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-11-9011"></a></h3>
+<ul><li>Fix compatibility with waldo &gt;= 0.6.0 (<a href="https://github.com/cynkra/dm/issues/2240" class="external-link">#2240</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="uncategorized-1-0-11-9011">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-11-9011"></a></h3>
+<ul><li><p>Merge branch ‘docs’.</p></li>
+<li><p>Merge branch ‘docs’.</p></li>
+<li><p>Merge branch ‘cran-1.0.10’.</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.11.9010" id="dm-10119010">dm 1.0.11.9010<a class="anchor" aria-label="anchor" href="#dm-10119010"></a></h2>
+<div class="section level3">
+<h3 id="features-1-0-11-9010">Features<a class="anchor" aria-label="anchor" href="#features-1-0-11-9010"></a></h3>
+<ul><li>Add support for Redshift connections (<a href="https://github.com/owenjonesuob" class="external-link">@owenjonesuob</a>, <a href="https://github.com/cynkra/dm/issues/2215" class="external-link">#2215</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-11-9010">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-11-9010"></a></h3>
+<ul><li><p>Ignore.</p></li>
+<li><p>Fix creation of documentation in the RStudio IDE [ci skip].</p></li>
+<li><p>Bump RMariaDB version (<a href="https://github.com/cynkra/dm/issues/2244" class="external-link">#2244</a>).</p></li>
+<li><p>Drop crayon and mockr dependencies (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2220" class="external-link">#2220</a>).</p></li>
+<li><p>Auto-update from GitHub Actions (<a href="https://github.com/cynkra/dm/issues/2231" class="external-link">#2231</a>).</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10395389155" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10395389155</a></p>
+</li>
+<li><p>Use dev RMariaDB.</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10223713876" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10223713876</a></p>
+</li>
+<li><p>Roxygenize.</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10200118253" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10200118253</a></p>
+</li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/9727972354" class="external-link uri">https://github.com/cynkra/dm/actions/runs/9727972354</a></p>
+</li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/9692097886" class="external-link uri">https://github.com/cynkra/dm/actions/runs/9692097886</a></p>
+</li>
+<li><p>Use CRAN dbplyr.</p></li>
+</ul><div class="section level4">
+<h4 id="deps-1-0-11-9010">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9010"></a></h4>
+<ul><li>Update peter-evans/create-pull-request action to v6.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="deps-1-0-11-9010-1">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9010-1"></a></h4>
+<ul><li>Update nick-fields/retry action to v3.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="deps-1-0-11-9010-2">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9010-2"></a></h4>
+<ul><li><p>Update actions/cache action to v4 (<a href="https://github.com/cynkra/dm/issues/2186" class="external-link">#2186</a>).</p></li>
+<li><p>Use dev odbc and dbplyr to fix CI/CD (<a href="https://github.com/cynkra/dm/issues/2189" class="external-link">#2189</a>).</p></li>
+<li><p>Tweak Compose file.</p></li>
+<li><p>Format NEWS.</p></li>
+</ul></div>
+</div>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-11-9010">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-11-9010"></a></h3>
+<ul><li><p>Ignore errors when removing pkg-config on macOS (<a href="https://github.com/cynkra/dm/issues/2257" class="external-link">#2257</a>).</p></li>
+<li><p>Explicit permissions (<a href="https://github.com/cynkra/dm/issues/2254" class="external-link">#2254</a>).</p></li>
+<li><p>Use styler from main branch (<a href="https://github.com/cynkra/dm/issues/2252" class="external-link">#2252</a>).</p></li>
+<li><p>Need to install R on Ubuntu 24.04 (<a href="https://github.com/cynkra/dm/issues/2250" class="external-link">#2250</a>).</p></li>
+<li><p>Use Ubuntu 24.04 and styler PR (<a href="https://github.com/cynkra/dm/issues/2248" class="external-link">#2248</a>).</p></li>
+<li><p>Configure token.</p></li>
+<li><p>Count rulesets to understand if branch protection is enabled.</p></li>
+<li><p>Remove Aviator.</p></li>
+<li><p>Use stable pak (<a href="https://github.com/cynkra/dm/issues/2239" class="external-link">#2239</a>).</p></li>
+<li><p>Trigger run (<a href="https://github.com/cynkra/dm/issues/2238" class="external-link">#2238</a>).</p></li>
+<li><p>Use pkgdown branch (<a href="https://github.com/cynkra/dm/issues/2237" class="external-link">#2237</a>).</p></li>
+<li><p>Install via R CMD INSTALL ., not pak (<a href="https://github.com/cynkra/dm/issues/2230" class="external-link">#2230</a>).</p></li>
+<li><p>Install local package for pkgdown builds.</p></li>
+<li><p>Improve support for protected branches with fledge.</p></li>
+<li><p>Improve support for protected branches, without fledge.</p></li>
+<li><p>Sync with latest developments.</p></li>
+<li><p>Use v2 instead of master.</p></li>
+<li><p>Inline action.</p></li>
+<li><p>Use dev roxygen2 and decor.</p></li>
+<li><p>Fix on Windows, tweak lock workflow.</p></li>
+<li><p>Avoid checking bashisms on Windows.</p></li>
+<li><p>Better commit message.</p></li>
+<li><p>Harmonize workflows.</p></li>
+<li><p>Use value after <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code>.</p></li>
+<li><p>Bump versions, better default.</p></li>
+<li><p>Recent updates.</p></li>
+<li><p>Prepare for dynamic build matrix.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-0-11-9010">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-11-9010"></a></h3>
+<ul><li><p>Use <code>index.md</code>.</p></li>
+<li><p>Tweak formatting (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2232" class="external-link">#2232</a>).</p></li>
+<li><p>Fix typo (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2218" class="external-link">#2218</a>).</p></li>
+<li>
+<p>Set BS version explicitly for now.</p>
+<p><a href="https://github.com/cynkra/cynkratemplate/issues/53" class="external-link uri">https://github.com/cynkra/cynkratemplate/issues/53</a></p>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing-1-0-11-9010">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-11-9010"></a></h3>
+<ul><li>Fix compatibility with waldo &gt;= 0.6.0 (<a href="https://github.com/cynkra/dm/issues/2240" class="external-link">#2240</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="uncategorized-1-0-11-9010">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-11-9010"></a></h3>
+<ul><li><p>Merge branch ‘docs’.</p></li>
+<li><p>Merge branch ‘docs’.</p></li>
+<li><p>Merge branch ‘cran-1.0.10’.</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.11.9009" id="dm-10119009">dm 1.0.11.9009<a class="anchor" aria-label="anchor" href="#dm-10119009"></a></h2>
+<div class="section level3">
+<h3 id="features-1-0-11-9009">Features<a class="anchor" aria-label="anchor" href="#features-1-0-11-9009"></a></h3>
+<ul><li>Add support for Redshift connections (<a href="https://github.com/owenjonesuob" class="external-link">@owenjonesuob</a>, <a href="https://github.com/cynkra/dm/issues/2215" class="external-link">#2215</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-11-9009">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-11-9009"></a></h3>
+<ul><li><p>Ignore.</p></li>
+<li><p>Fix creation of documentation in the RStudio IDE [ci skip].</p></li>
+<li><p>Bump RMariaDB version (<a href="https://github.com/cynkra/dm/issues/2244" class="external-link">#2244</a>).</p></li>
+<li><p>Drop crayon and mockr dependencies (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2220" class="external-link">#2220</a>).</p></li>
+<li><p>Auto-update from GitHub Actions (<a href="https://github.com/cynkra/dm/issues/2231" class="external-link">#2231</a>).</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10395389155" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10395389155</a></p>
+</li>
+<li><p>Use dev RMariaDB.</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10223713876" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10223713876</a></p>
+</li>
+<li><p>Roxygenize.</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10200118253" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10200118253</a></p>
+</li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/9727972354" class="external-link uri">https://github.com/cynkra/dm/actions/runs/9727972354</a></p>
+</li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/9692097886" class="external-link uri">https://github.com/cynkra/dm/actions/runs/9692097886</a></p>
+</li>
+<li><p>Use CRAN dbplyr.</p></li>
+</ul><div class="section level4">
+<h4 id="deps-1-0-11-9009">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9009"></a></h4>
+<ul><li>Update peter-evans/create-pull-request action to v6.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="deps-1-0-11-9009-1">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9009-1"></a></h4>
+<ul><li>Update nick-fields/retry action to v3.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="deps-1-0-11-9009-2">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9009-2"></a></h4>
+<ul><li><p>Update actions/cache action to v4 (<a href="https://github.com/cynkra/dm/issues/2186" class="external-link">#2186</a>).</p></li>
+<li><p>Use dev odbc and dbplyr to fix CI/CD (<a href="https://github.com/cynkra/dm/issues/2189" class="external-link">#2189</a>).</p></li>
+<li><p>Tweak Compose file.</p></li>
+<li><p>Format NEWS.</p></li>
+</ul></div>
+</div>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-11-9009">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-11-9009"></a></h3>
+<ul><li><p>Ignore errors when removing pkg-config on macOS (<a href="https://github.com/cynkra/dm/issues/2257" class="external-link">#2257</a>).</p></li>
+<li><p>Explicit permissions (<a href="https://github.com/cynkra/dm/issues/2254" class="external-link">#2254</a>).</p></li>
+<li><p>Use styler from main branch (<a href="https://github.com/cynkra/dm/issues/2252" class="external-link">#2252</a>).</p></li>
+<li><p>Need to install R on Ubuntu 24.04 (<a href="https://github.com/cynkra/dm/issues/2250" class="external-link">#2250</a>).</p></li>
+<li><p>Use Ubuntu 24.04 and styler PR (<a href="https://github.com/cynkra/dm/issues/2248" class="external-link">#2248</a>).</p></li>
+<li><p>Configure token.</p></li>
+<li><p>Count rulesets to understand if branch protection is enabled.</p></li>
+<li><p>Remove Aviator.</p></li>
+<li><p>Use stable pak (<a href="https://github.com/cynkra/dm/issues/2239" class="external-link">#2239</a>).</p></li>
+<li><p>Trigger run (<a href="https://github.com/cynkra/dm/issues/2238" class="external-link">#2238</a>).</p></li>
+<li><p>Use pkgdown branch (<a href="https://github.com/cynkra/dm/issues/2237" class="external-link">#2237</a>).</p></li>
+<li><p>Install via R CMD INSTALL ., not pak (<a href="https://github.com/cynkra/dm/issues/2230" class="external-link">#2230</a>).</p></li>
+<li><p>Install local package for pkgdown builds.</p></li>
+<li><p>Improve support for protected branches with fledge.</p></li>
+<li><p>Improve support for protected branches, without fledge.</p></li>
+<li><p>Sync with latest developments.</p></li>
+<li><p>Use v2 instead of master.</p></li>
+<li><p>Inline action.</p></li>
+<li><p>Use dev roxygen2 and decor.</p></li>
+<li><p>Fix on Windows, tweak lock workflow.</p></li>
+<li><p>Avoid checking bashisms on Windows.</p></li>
+<li><p>Better commit message.</p></li>
+<li><p>Harmonize workflows.</p></li>
+<li><p>Use value after <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code>.</p></li>
+<li><p>Bump versions, better default.</p></li>
+<li><p>Recent updates.</p></li>
+<li><p>Prepare for dynamic build matrix.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-0-11-9009">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-11-9009"></a></h3>
+<ul><li><p>Use <code>index.md</code>.</p></li>
+<li><p>Tweak formatting (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2232" class="external-link">#2232</a>).</p></li>
+<li><p>Fix typo (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2218" class="external-link">#2218</a>).</p></li>
+<li>
+<p>Set BS version explicitly for now.</p>
+<p><a href="https://github.com/cynkra/cynkratemplate/issues/53" class="external-link uri">https://github.com/cynkra/cynkratemplate/issues/53</a></p>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing-1-0-11-9009">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-11-9009"></a></h3>
+<ul><li>Fix compatibility with waldo &gt;= 0.6.0 (<a href="https://github.com/cynkra/dm/issues/2240" class="external-link">#2240</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="uncategorized-1-0-11-9009">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-11-9009"></a></h3>
+<ul><li><p>Merge branch ‘docs’.</p></li>
+<li><p>Merge branch ‘docs’.</p></li>
+<li><p>Merge branch ‘cran-1.0.10’.</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.11.9008" id="dm-10119008">dm 1.0.11.9008<a class="anchor" aria-label="anchor" href="#dm-10119008"></a></h2>
+<div class="section level3">
+<h3 id="features-1-0-11-9008">Features<a class="anchor" aria-label="anchor" href="#features-1-0-11-9008"></a></h3>
+<ul><li>Add support for Redshift connections (<a href="https://github.com/owenjonesuob" class="external-link">@owenjonesuob</a>, <a href="https://github.com/cynkra/dm/issues/2215" class="external-link">#2215</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-11-9008">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-11-9008"></a></h3>
+<ul><li><p>Ignore.</p></li>
+<li><p>Fix creation of documentation in the RStudio IDE [ci skip].</p></li>
+<li><p>Bump RMariaDB version (<a href="https://github.com/cynkra/dm/issues/2244" class="external-link">#2244</a>).</p></li>
+<li><p>Drop crayon and mockr dependencies (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2220" class="external-link">#2220</a>).</p></li>
+<li><p>Auto-update from GitHub Actions (<a href="https://github.com/cynkra/dm/issues/2231" class="external-link">#2231</a>).</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10395389155" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10395389155</a></p>
+</li>
+<li><p>Use dev RMariaDB.</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10223713876" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10223713876</a></p>
+</li>
+<li><p>Roxygenize.</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10200118253" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10200118253</a></p>
+</li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/9727972354" class="external-link uri">https://github.com/cynkra/dm/actions/runs/9727972354</a></p>
+</li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/9692097886" class="external-link uri">https://github.com/cynkra/dm/actions/runs/9692097886</a></p>
+</li>
+<li><p>Use CRAN dbplyr.</p></li>
+</ul><div class="section level4">
+<h4 id="deps-1-0-11-9008">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9008"></a></h4>
+<ul><li>Update peter-evans/create-pull-request action to v6.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="deps-1-0-11-9008-1">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9008-1"></a></h4>
+<ul><li>Update nick-fields/retry action to v3.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="deps-1-0-11-9008-2">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9008-2"></a></h4>
+<ul><li><p>Update actions/cache action to v4 (<a href="https://github.com/cynkra/dm/issues/2186" class="external-link">#2186</a>).</p></li>
+<li><p>Use dev odbc and dbplyr to fix CI/CD (<a href="https://github.com/cynkra/dm/issues/2189" class="external-link">#2189</a>).</p></li>
+<li><p>Tweak Compose file.</p></li>
+<li><p>Format NEWS.</p></li>
+</ul></div>
+</div>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-11-9008">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-11-9008"></a></h3>
+<ul><li><p>Ignore errors when removing pkg-config on macOS (<a href="https://github.com/cynkra/dm/issues/2257" class="external-link">#2257</a>).</p></li>
+<li><p>Explicit permissions (<a href="https://github.com/cynkra/dm/issues/2254" class="external-link">#2254</a>).</p></li>
+<li><p>Use styler from main branch (<a href="https://github.com/cynkra/dm/issues/2252" class="external-link">#2252</a>).</p></li>
+<li><p>Need to install R on Ubuntu 24.04 (<a href="https://github.com/cynkra/dm/issues/2250" class="external-link">#2250</a>).</p></li>
+<li><p>Use Ubuntu 24.04 and styler PR (<a href="https://github.com/cynkra/dm/issues/2248" class="external-link">#2248</a>).</p></li>
+<li><p>Configure token.</p></li>
+<li><p>Count rulesets to understand if branch protection is enabled.</p></li>
+<li><p>Remove Aviator.</p></li>
+<li><p>Use stable pak (<a href="https://github.com/cynkra/dm/issues/2239" class="external-link">#2239</a>).</p></li>
+<li><p>Trigger run (<a href="https://github.com/cynkra/dm/issues/2238" class="external-link">#2238</a>).</p></li>
+<li><p>Use pkgdown branch (<a href="https://github.com/cynkra/dm/issues/2237" class="external-link">#2237</a>).</p></li>
+<li><p>Install via R CMD INSTALL ., not pak (<a href="https://github.com/cynkra/dm/issues/2230" class="external-link">#2230</a>).</p></li>
+<li><p>Install local package for pkgdown builds.</p></li>
+<li><p>Improve support for protected branches with fledge.</p></li>
+<li><p>Improve support for protected branches, without fledge.</p></li>
+<li><p>Sync with latest developments.</p></li>
+<li><p>Use v2 instead of master.</p></li>
+<li><p>Inline action.</p></li>
+<li><p>Use dev roxygen2 and decor.</p></li>
+<li><p>Fix on Windows, tweak lock workflow.</p></li>
+<li><p>Avoid checking bashisms on Windows.</p></li>
+<li><p>Better commit message.</p></li>
+<li><p>Harmonize workflows.</p></li>
+<li><p>Use value after <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code>.</p></li>
+<li><p>Bump versions, better default.</p></li>
+<li><p>Recent updates.</p></li>
+<li><p>Prepare for dynamic build matrix.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-0-11-9008">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-11-9008"></a></h3>
+<ul><li><p>Use <code>index.md</code>.</p></li>
+<li><p>Tweak formatting (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2232" class="external-link">#2232</a>).</p></li>
+<li><p>Fix typo (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2218" class="external-link">#2218</a>).</p></li>
+<li>
+<p>Set BS version explicitly for now.</p>
+<p><a href="https://github.com/cynkra/cynkratemplate/issues/53" class="external-link uri">https://github.com/cynkra/cynkratemplate/issues/53</a></p>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing-1-0-11-9008">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-11-9008"></a></h3>
+<ul><li>Fix compatibility with waldo &gt;= 0.6.0 (<a href="https://github.com/cynkra/dm/issues/2240" class="external-link">#2240</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="uncategorized-1-0-11-9008">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-11-9008"></a></h3>
+<ul><li><p>Merge branch ‘docs’.</p></li>
+<li><p>Merge branch ‘docs’.</p></li>
+<li><p>Merge branch ‘cran-1.0.10’.</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.11.9007" id="dm-10119007">dm 1.0.11.9007<a class="anchor" aria-label="anchor" href="#dm-10119007"></a></h2>
+<div class="section level3">
+<h3 id="features-1-0-11-9007">Features<a class="anchor" aria-label="anchor" href="#features-1-0-11-9007"></a></h3>
+<ul><li>Add support for Redshift connections (<a href="https://github.com/owenjonesuob" class="external-link">@owenjonesuob</a>, <a href="https://github.com/cynkra/dm/issues/2215" class="external-link">#2215</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-11-9007">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-11-9007"></a></h3>
+<ul><li><p>Ignore.</p></li>
+<li><p>Fix creation of documentation in the RStudio IDE [ci skip].</p></li>
+<li><p>Bump RMariaDB version (<a href="https://github.com/cynkra/dm/issues/2244" class="external-link">#2244</a>).</p></li>
+<li><p>Drop crayon and mockr dependencies (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2220" class="external-link">#2220</a>).</p></li>
+<li><p>Auto-update from GitHub Actions (<a href="https://github.com/cynkra/dm/issues/2231" class="external-link">#2231</a>).</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10395389155" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10395389155</a></p>
+</li>
+<li><p>Use dev RMariaDB.</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10223713876" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10223713876</a></p>
+</li>
+<li><p>Roxygenize.</p></li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/10200118253" class="external-link uri">https://github.com/cynkra/dm/actions/runs/10200118253</a></p>
+</li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/9727972354" class="external-link uri">https://github.com/cynkra/dm/actions/runs/9727972354</a></p>
+</li>
+<li>
+<p>Auto-update from GitHub Actions.</p>
+<p>Run: <a href="https://github.com/cynkra/dm/actions/runs/9692097886" class="external-link uri">https://github.com/cynkra/dm/actions/runs/9692097886</a></p>
+</li>
+<li><p>Use CRAN dbplyr.</p></li>
+</ul><div class="section level4">
+<h4 id="deps-1-0-11-9007">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9007"></a></h4>
+<ul><li>Update peter-evans/create-pull-request action to v6.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="deps-1-0-11-9007-1">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9007-1"></a></h4>
+<ul><li>Update nick-fields/retry action to v3.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="deps-1-0-11-9007-2">deps<a class="anchor" aria-label="anchor" href="#deps-1-0-11-9007-2"></a></h4>
+<ul><li><p>Update actions/cache action to v4 (<a href="https://github.com/cynkra/dm/issues/2186" class="external-link">#2186</a>).</p></li>
+<li><p>Use dev odbc and dbplyr to fix CI/CD (<a href="https://github.com/cynkra/dm/issues/2189" class="external-link">#2189</a>).</p></li>
+<li><p>Tweak Compose file.</p></li>
+<li><p>Format NEWS.</p></li>
+</ul></div>
+</div>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-11-9007">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-11-9007"></a></h3>
+<ul><li><p>Ignore errors when removing pkg-config on macOS (<a href="https://github.com/cynkra/dm/issues/2257" class="external-link">#2257</a>).</p></li>
+<li><p>Explicit permissions (<a href="https://github.com/cynkra/dm/issues/2254" class="external-link">#2254</a>).</p></li>
+<li><p>Use styler from main branch (<a href="https://github.com/cynkra/dm/issues/2252" class="external-link">#2252</a>).</p></li>
+<li><p>Need to install R on Ubuntu 24.04 (<a href="https://github.com/cynkra/dm/issues/2250" class="external-link">#2250</a>).</p></li>
+<li><p>Use Ubuntu 24.04 and styler PR (<a href="https://github.com/cynkra/dm/issues/2248" class="external-link">#2248</a>).</p></li>
+<li><p>Configure token.</p></li>
+<li><p>Count rulesets to understand if branch protection is enabled.</p></li>
+<li><p>Remove Aviator.</p></li>
+<li><p>Use stable pak (<a href="https://github.com/cynkra/dm/issues/2239" class="external-link">#2239</a>).</p></li>
+<li><p>Trigger run (<a href="https://github.com/cynkra/dm/issues/2238" class="external-link">#2238</a>).</p></li>
+<li><p>Use pkgdown branch (<a href="https://github.com/cynkra/dm/issues/2237" class="external-link">#2237</a>).</p></li>
+<li><p>Install via R CMD INSTALL ., not pak (<a href="https://github.com/cynkra/dm/issues/2230" class="external-link">#2230</a>).</p></li>
+<li><p>Install local package for pkgdown builds.</p></li>
+<li><p>Improve support for protected branches with fledge.</p></li>
+<li><p>Improve support for protected branches, without fledge.</p></li>
+<li><p>Sync with latest developments.</p></li>
+<li><p>Use v2 instead of master.</p></li>
+<li><p>Inline action.</p></li>
+<li><p>Use dev roxygen2 and decor.</p></li>
+<li><p>Fix on Windows, tweak lock workflow.</p></li>
+<li><p>Avoid checking bashisms on Windows.</p></li>
+<li><p>Better commit message.</p></li>
+<li><p>Harmonize workflows.</p></li>
+<li><p>Use value after <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code>.</p></li>
+<li><p>Bump versions, better default.</p></li>
+<li><p>Recent updates.</p></li>
+<li><p>Prepare for dynamic build matrix.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-0-11-9007">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-11-9007"></a></h3>
+<ul><li><p>Use <code>index.md</code>.</p></li>
+<li><p>Tweak formatting (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2232" class="external-link">#2232</a>).</p></li>
+<li><p>Fix typo (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2218" class="external-link">#2218</a>).</p></li>
+<li>
+<p>Set BS version explicitly for now.</p>
+<p><a href="https://github.com/cynkra/cynkratemplate/issues/53" class="external-link uri">https://github.com/cynkra/cynkratemplate/issues/53</a></p>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing-1-0-11-9007">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-11-9007"></a></h3>
+<ul><li>Fix compatibility with waldo &gt;= 0.6.0 (<a href="https://github.com/cynkra/dm/issues/2240" class="external-link">#2240</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="uncategorized-1-0-11-9007">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-11-9007"></a></h3>
+<ul><li><p>Merge branch ‘docs’.</p></li>
+<li><p>Merge branch ‘docs’.</p></li>
+<li><p>Merge branch ‘cran-1.0.10’.</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.11.9006" id="dm-10119006">dm 1.0.11.9006<a class="anchor" aria-label="anchor" href="#dm-10119006"></a></h2>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-11-9006">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-11-9006"></a></h3>
+<ul><li><p>Ignore errors when removing pkg-config on macOS (<a href="https://github.com/cynkra/dm/issues/2257" class="external-link">#2257</a>).</p></li>
+<li><p>Explicit permissions (<a href="https://github.com/cynkra/dm/issues/2254" class="external-link">#2254</a>).</p></li>
+<li><p>Use styler from main branch (<a href="https://github.com/cynkra/dm/issues/2252" class="external-link">#2252</a>).</p></li>
+<li><p>Need to install R on Ubuntu 24.04 (<a href="https://github.com/cynkra/dm/issues/2250" class="external-link">#2250</a>).</p></li>
+<li><p>Use Ubuntu 24.04 and styler PR (<a href="https://github.com/cynkra/dm/issues/2248" class="external-link">#2248</a>).</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.11.9005" id="dm-10119005">dm 1.0.11.9005<a class="anchor" aria-label="anchor" href="#dm-10119005"></a></h2>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-11-9005">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-11-9005"></a></h3>
+<ul><li><p>Ignore errors when removing pkg-config on macOS (<a href="https://github.com/cynkra/dm/issues/2257" class="external-link">#2257</a>).</p></li>
+<li><p>Explicit permissions (<a href="https://github.com/cynkra/dm/issues/2254" class="external-link">#2254</a>).</p></li>
+<li><p>Use styler from main branch (<a href="https://github.com/cynkra/dm/issues/2252" class="external-link">#2252</a>).</p></li>
+<li><p>Need to install R on Ubuntu 24.04 (<a href="https://github.com/cynkra/dm/issues/2250" class="external-link">#2250</a>).</p></li>
+<li><p>Use Ubuntu 24.04 and styler PR (<a href="https://github.com/cynkra/dm/issues/2248" class="external-link">#2248</a>).</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.11.9004" id="dm-10119004">dm 1.0.11.9004<a class="anchor" aria-label="anchor" href="#dm-10119004"></a></h2>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-11-9004">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-11-9004"></a></h3>
+<ul><li><p>Ignore errors when removing pkg-config on macOS (<a href="https://github.com/cynkra/dm/issues/2257" class="external-link">#2257</a>).</p></li>
+<li><p>Explicit permissions (<a href="https://github.com/cynkra/dm/issues/2254" class="external-link">#2254</a>).</p></li>
+<li><p>Use styler from main branch (<a href="https://github.com/cynkra/dm/issues/2252" class="external-link">#2252</a>).</p></li>
+<li><p>Need to install R on Ubuntu 24.04 (<a href="https://github.com/cynkra/dm/issues/2250" class="external-link">#2250</a>).</p></li>
+<li><p>Use Ubuntu 24.04 and styler PR (<a href="https://github.com/cynkra/dm/issues/2248" class="external-link">#2248</a>).</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.11.9003" id="dm-10119003">dm 1.0.11.9003<a class="anchor" aria-label="anchor" href="#dm-10119003"></a></h2>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-11-9003">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-11-9003"></a></h3>
+<ul><li><p>Ignore errors when removing pkg-config on macOS (<a href="https://github.com/cynkra/dm/issues/2257" class="external-link">#2257</a>).</p></li>
+<li><p>Explicit permissions (<a href="https://github.com/cynkra/dm/issues/2254" class="external-link">#2254</a>).</p></li>
+<li><p>Use styler from main branch (<a href="https://github.com/cynkra/dm/issues/2252" class="external-link">#2252</a>).</p></li>
+<li><p>Need to install R on Ubuntu 24.04 (<a href="https://github.com/cynkra/dm/issues/2250" class="external-link">#2250</a>).</p></li>
+<li><p>Use Ubuntu 24.04 and styler PR (<a href="https://github.com/cynkra/dm/issues/2248" class="external-link">#2248</a>).</p></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.11.9002" id="dm-10119002">dm 1.0.11.9002<a class="anchor" aria-label="anchor" href="#dm-10119002"></a></h2>
 <div class="section level3">
