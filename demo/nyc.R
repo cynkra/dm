@@ -33,8 +33,6 @@ library(magrittr)
 #       at the same time?
 
 
-
-
 ##
 ##
 ##
@@ -122,7 +120,6 @@ all(flights$dest %in% airports$faa)
 ##
 
 
-
 ##
 ##
 ##
@@ -197,15 +194,6 @@ dm_flights %>%
 ##
 ##
 ##
-
-
-
-
-
-
-
-
-
 
 
 ##
@@ -458,10 +446,6 @@ dm_flights %>%
 ##
 
 
-
-
-
-
 ##
 ##
 ##
@@ -546,8 +530,6 @@ nycflights13_base %>%
 ##
 ##
 ##
-
-
 
 
 ##
@@ -676,15 +658,6 @@ try({
 ##
 ##
 ##
-
-
-
-
-
-
-
-
-
 
 
 ##
