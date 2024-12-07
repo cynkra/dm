@@ -89,11 +89,6 @@ jobs:
           git push -f -u origin HEAD
         shell: bash
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        with:
-          limit-access-to-actor: true
-
       - name: Bump version
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
