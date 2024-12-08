@@ -53,7 +53,7 @@ dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE) {
     dm_add_pk(pixar_films, film) %>%
     dm_add_pk(academy, c(film, award_type)) %>%
     dm_add_pk(box_office, film) %>%
-    dm_add_pk(genres, c(film, genre)) %>%
+    dm_add_pk(genres, c(film, category, value)) %>%
     dm_add_pk(public_response, film)
 
 
