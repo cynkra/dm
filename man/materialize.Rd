@@ -13,7 +13,7 @@
 \arguments{
 \item{x}{A \code{dm} object.}
 
-\item{...}{Passed on to \code{\link[=compute]{compute()}}.}
+\item{...}{Passed on to \code{\link[dplyr:compute]{dplyr::compute()}}.}
 
 \item{temporary}{Must remain \code{TRUE}.}
 
@@ -28,7 +28,7 @@ A \code{dm} object of the same structure as the input.
 \code{compute()} materializes all tables in a \code{dm} to new temporary
 tables on the database.
 
-\code{collect()} downloads the tables in a \code{dm} object as local \link{tibble}s.
+\code{collect()} downloads the tables in a \code{dm} object as local \link[tibble:tibble]{tibble::tibble}s.
 }
 \details{
 Called on a \code{dm} object, these methods create a copy of all tables in the \code{dm}.
