@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.11.9013
+
+## Continuous integration
+
+- Debug fledge.
+
+- Fetch tags for fledge workflow to avoid unnecessary NEWS entries (#2270).
+
+## Documentation
+
+- Restore empty space removed by styler (#2269).
+
+
 # dm 1.0.11.9012
 
 ## Features
