@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 1.0.10.9010
-Date: 2024-08-02
+Version: 1.0.11.9014
+Date: 2024-12-09
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -67,7 +67,6 @@ Suggests:
     brio,
     colourpicker,
     covr,
-    crayon,
     DBI (>= 1.2.0),
     dbplyr (>= 2.3.4),
     DiagrammeR,
@@ -83,7 +82,6 @@ Suggests:
     knitr,
     labelled (>= 2.12.0),
     magrittr,
-    mockr,
     nycflights13,
     odbc (>= 1.4.2),
     pillar,
@@ -91,7 +89,7 @@ Suggests:
     pool,
     progress,
     reactable,
-    RMariaDB (>= 1.3.0),
+    RMariaDB (>= 1.3.3),
     rmarkdown,
     RPostgres,
     RSQLite (>= 2.2.8),
@@ -99,11 +97,9 @@ Suggests:
     shiny,
     shinyAce,
     shinydashboard,
-    testthat (>= 3.1.2),
+    testthat (>= 3.2.0),
     waldo,
     withr
-Remotes: 
-    r-dbi/RMariaDB
 Config/Needs/website:
     brio,
     bslib,

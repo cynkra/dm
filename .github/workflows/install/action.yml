@@ -56,6 +56,9 @@ runs:
         echo "_R_CHECK_UNDOC_USE_ALL_NAMES_=true" | tee -a $GITHUB_ENV
         echo "_R_CHECK_URLS_SHOW_301_STATUS_=true" | tee -a $GITHUB_ENV
         echo "_R_CXX_USE_NO_REMAP_=true" | tee -a $GITHUB_ENV
+        # There is no way to disable recency and frequency checks when the incoming checks are run
+        # echo "_R_CHECK_CRAN_INCOMING_=true" | tee -a $GITHUB_ENV
+        echo "_R_CHECK_CRAN_INCOMING_SKIP_LARGE_VERSION_=true" | tee -a $GITHUB_ENV
       shell: bash
 
     - name: Set environment variables (non-Windows only)
@@ -70,6 +73,12 @@ runs:
         sudo apt-get update
         sudo apt-get install -y aspell
         echo "_R_CHECK_CRAN_INCOMING_USE_ASPELL_=true" | tee -a $GITHUB_ENV
+      shell: bash
+
+    - name: Remove pkg-config@0.29.2
+      if: runner.os == 'macOS'
+      run: |
+        brew uninstall pkg-config@0.29.2 || true
       shell: bash
 
     - uses: r-lib/actions/setup-pandoc@v2
@@ -92,7 +101,7 @@ runs:
       env:
         GITHUB_PAT: ${{ inputs.token }}
       with:
-        pak-version: devel
+        pak-version: stable
         needs: ${{ inputs.needs }}
         packages: ${{ inputs.packages }}
         extra-packages: ${{ inputs.extra-packages }} ${{ ( matrix.config.covr && 'any::covr' ) || '' }} ${{ steps.get-extra.outputs.packages }}

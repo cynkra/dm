@@ -52,8 +52,6 @@ test_that("copy_dm_to() fails with duplicate table names", {
 })
 
 test_that("default table repair works", {
-  skip_if_not_installed("mockr")
-
   con <- con_from_src_or_con(my_db_test_src())
 
   table_names <- c("t1", "t2", "t3")
@@ -65,16 +63,13 @@ test_that("default table repair works", {
     glue::glue("{table_name}_2020_05_15_10_45_29_0")
   }
 
-  mockr::with_mock(
-    unique_db_table_name = my_unique_db_table_name,
-    {
-      repair_table_names_for_db(table_names, temporary = FALSE, con)
-      expect_equal(calls, 0)
-      repair_table_names_for_db(table_names, temporary = TRUE, con)
-      expect_gt(calls, 0)
-    },
-    .env = asNamespace("dm")
+  local_mocked_bindings(
+    unique_db_table_name = function(table_name) my_unique_db_table_name(table_name)
   )
+  repair_table_names_for_db(table_names, temporary = FALSE, con)
+  expect_equal(calls, 0)
+  repair_table_names_for_db(table_names, temporary = TRUE, con)
+  expect_gt(calls, 0)
 })
 
 test_that("copy_dm_to() fails legibly if target schema missing for MSSQL & Postgres", {

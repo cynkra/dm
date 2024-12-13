@@ -39,10 +39,11 @@
 #' s
 #' DBI::dbDisconnect(con)
 dm_sql <- function(
-    dm,
-    dest,
-    table_names = NULL,
-    temporary = TRUE) {
+  dm,
+  dest,
+  table_names = NULL,
+  temporary = TRUE
+) {
   #
   check_suggested("dbplyr", "dm_sql")
 
@@ -110,10 +111,11 @@ ddl_reorder_dm <- function(dm, con) {
 #' @export
 #' @autoglobal
 dm_ddl_pre <- function(
-    dm,
-    dest,
-    table_names = NULL,
-    temporary = TRUE) {
+  dm,
+  dest,
+  table_names = NULL,
+  temporary = TRUE
+) {
   #
   check_suggested("dbplyr", "dm_ddl_pre")
 
@@ -204,10 +206,11 @@ dm_ddl_pre <- function(
 #' @rdname dm_sql
 #' @export
 dm_dml_load <- function(
-    dm,
-    dest,
-    table_names = NULL,
-    temporary = TRUE) {
+  dm,
+  dest,
+  table_names = NULL,
+  temporary = TRUE
+) {
   #
   check_suggested("dbplyr", "dm_dml_load")
 
@@ -231,10 +234,11 @@ dm_dml_load <- function(
 #' @rdname dm_sql
 #' @export
 dm_ddl_post <- function(
-    dm,
-    dest,
-    table_names = NULL,
-    temporary = TRUE) {
+  dm,
+  dest,
+  table_names = NULL,
+  temporary = TRUE
+) {
   #
   check_suggested("dbplyr", "dm_ddl_post")
 
@@ -348,8 +352,8 @@ ddl_get_col_defs <- function(tables, con, table_names, pks) {
       # extract column name representing primary key
       pk_col_name <- pk_col$pk_col[[1]]
 
-      # Postgres:
-      if (is_postgres(con)) {
+      # Postgres/Redshift:
+      if (is_postgres(con) || is_redshift(con)) {
         types[pk_col_name] <- "SERIAL"
       }
 
