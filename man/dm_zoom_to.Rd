@@ -81,21 +81,21 @@ for a more detailed introduction.
 Whenever possible, the key relations of the original table are transferred to the resulting table
 when using \code{dm_insert_zoomed()} or \code{dm_update_zoomed()}.
 
-Functions from \code{dplyr} that are supported for a \code{dm_zoomed}: \code{\link[=group_by]{group_by()}}, \code{\link[=summarise]{summarise()}}, \code{\link[=mutate]{mutate()}},
-\code{\link[=transmute]{transmute()}}, \code{\link[=filter]{filter()}}, \code{\link[=select]{select()}}, \code{\link[=rename]{rename()}} and \code{\link[=ungroup]{ungroup()}}.
+Functions from \code{dplyr} that are supported for a \code{dm_zoomed}: \code{\link[dplyr:group_by]{dplyr::group_by()}}, \code{\link[dplyr:summarise]{dplyr::summarise()}}, \code{\link[dplyr:mutate]{dplyr::mutate()}},
+\code{\link[dplyr:transmute]{dplyr::transmute()}}, \code{\link[dplyr:filter]{dplyr::filter()}}, \code{\link[dplyr:select]{dplyr::select()}}, \code{\link[dplyr:rename]{dplyr::rename()}} and \code{\link[dplyr:group_by]{dplyr::ungroup()}}.
 You can use these functions just like you would
 with a normal table.
 
-Calling \code{\link[=filter]{filter()}} on a zoomed \code{dm} is different from calling \code{\link[=dm_filter]{dm_filter()}}:
+Calling \code{\link[dplyr:filter]{dplyr::filter()}} on a zoomed \code{dm} is different from calling \code{\link[=dm_filter]{dm_filter()}}:
 only with the latter, the filter expression is added to the list of table filters stored in the dm.
 
 Furthermore, different \code{join()}-variants from \pkg{dplyr} are also supported,
-e.g. \code{\link[=left_join]{left_join()}} and \code{\link[=semi_join]{semi_join()}}.
+e.g. \code{\link[dplyr:mutate-joins]{dplyr::left_join()}} and \code{\link[dplyr:filter-joins]{dplyr::semi_join()}}.
 (Support for \code{\link[dplyr:nest_join]{dplyr::nest_join()}} is planned.)
 The join-methods for \code{dm_zoomed} infer the columns to join by from the primary and foreign keys,
 and have an extra argument \code{select} that allows choosing the columns of the RHS table.
 
-And -- last but not least -- also the \pkg{tidyr}-functions \code{\link[=unite]{unite()}} and \code{\link[=separate]{separate()}} are supported for \code{dm_zoomed}.
+And -- last but not least -- also the \pkg{tidyr}-functions \code{\link[tidyr:unite]{tidyr::unite()}} and \code{\link[tidyr:separate]{tidyr::separate()}} are supported for \code{dm_zoomed}.
 }
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
