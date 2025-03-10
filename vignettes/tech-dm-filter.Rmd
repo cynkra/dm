@@ -216,4 +216,4 @@ dm %>%
   purrr::map(dbplyr::sql_render)
 ```
 
-Further reading: {dm}'s function for copying data [from and to databases](https://dm.cynkra.com/articles/dm.html).
+Further reading: {dm}'s function for copying data [from and to databases](https://dm.cynkra.com/articles/howto-dm-copy.html).
