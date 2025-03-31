@@ -2,43 +2,22 @@ Package: dm
 Title: Relational Data Models
 Version: 1.0.11.9015
 Date: 2025-01-03
-Authors@R: 
-    c(person(given = "Tobias",
-             family = "Schieferdecker",
-             role = "aut",
-             email = "tobias@cynkra.com"),
-      person(given = "Kirill",
-             family = "Müller",
-             role = c("aut", "cre"),
-             email = "kirill@cynkra.com",
-             comment = c(ORCID = "0000-0002-1416-3412")),
-      person(given = "Antoine",
-             family = "Fabri",
-             role = "ctb"),
-      person(given = "Darko",
-             family = "Bergant",
-             role = "aut",
-             email = "darko.bergant@gmail.com"),
-      person(given = "Katharina",
-             family = "Brunner",
-             role = "ctb"),
-      person(given = "James",
-             family = "Wondrasek",
-             role = "ctb"),
-      person(given = "Indrajeet",
-             family = "Patil",
-             comment = c(ORCID = "0000-0003-1995-6531"),
-             role = "ctb"),
-      person(given = "Maëlle",
-             family = "Salmon",
-             comment = c(ORCID = "0000-0002-2815-0399"),
-             role = "ctb"),
-      person(given = "energie360° AG",
-             role = "fnd",
-             email = "info@energie360.ch"),
-      person(given = "cynkra GmbH",
-             role = c("fnd", "cph"),
-             email = "mail@cynkra.com"))
+Authors@R: c(
+    person("Tobias", "Schieferdecker", , "tobias@cynkra.com", role = "aut"),
+    person("Kirill", "Müller", , "kirill@cynkra.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-1416-3412")),
+    person("Antoine", "Fabri", role = "ctb"),
+    person("Darko", "Bergant", , "darko.bergant@gmail.com", role = "aut"),
+    person("Katharina", "Brunner", role = "ctb"),
+    person("James", "Wondrasek", role = "ctb"),
+    person("Indrajeet", "Patil", role = "ctb",
+           comment = c(ORCID = "0000-0003-1995-6531")),
+    person("Maëlle", "Salmon", role = "ctb",
+           comment = c(ORCID = "0000-0002-2815-0399")),
+    person("energie360° AG", , , "info@energie360.ch", role = "fnd"),
+    person("cynkra GmbH", , , "mail@cynkra.com", role = c("fnd", "cph"),
+           comment = c(ROR = "0335t7e62"))
+  )
 Description: Provides tools for working with multiple related
     tables, stored as data frames or in a relational database.  Multiple
     tables (data and metadata) are stored in a compound object, which can
