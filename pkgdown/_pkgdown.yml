@@ -155,13 +155,13 @@ reference:
 navbar:
   structure:
     left:
+    right:
     - intro
     - reference
     - tutorials
     - cheatsheet
     - tech
     - news
-    right:
     - search
     - github
   components:

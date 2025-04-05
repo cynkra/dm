@@ -15,7 +15,7 @@ pre {
 /* NOTE: 'new' frutiger normal=400 */
 @font-face {
     font-family: "frutiger";
-    src: url("https://cynkra.com/assets/css/fonts/6135829/b05d44ef-6a78-4aa4-9388-3f0e05252a48.woff2") format("woff2");
+    src: url("https://www.cynkra.com/assets/fonts/frutiger-400.woff2") format("woff2");
     font-weight: normal;
     font-style: normal;
 }
@@ -23,7 +23,7 @@ pre {
 /* NOTE: 'new' frutiger light=300 */
 @font-face {
   font-family: "frutiger";
-  src: url("https://cynkra.com/assets/css/fonts/1449009/b3ca2df2-7bee-4fc0-84cb-b029b99c3b61.woff2") format("woff2");
+  src: url("https://www.cynkra.com/assets/fonts/frutiger-300.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
 }
@@ -31,7 +31,7 @@ pre {
 /* NOTE: 'new' frutiger bold=700 */
 @font-face {
   font-family: "frutiger";
-  src: url("https://cynkra.com/assets/css/fonts/1449025/c31af250-c28e-40ef-bed6-866e7ed6fedf.woff2") format("woff2");
+  src: url("https://www.cynkra.com/assets/fonts/frutiger-700.woff2") format("woff2");
   font-weight: bold;
   font-style: normal;
 }
