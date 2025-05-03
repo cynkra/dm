@@ -330,7 +330,6 @@ dm_flights_jfk_today_df <-
 dm_flights_jfk_today_df
 
 
-
 ##
 ##
 ##
@@ -533,10 +532,6 @@ nycflights13_base %>%
   dm_examine_constraints()
 
 
-
-
-
-
 ##
 ##
 ##
@@ -653,10 +648,6 @@ try({
   dm_flights_from_pq %>%
     dm_draw()
 })
-
-
-
-
 
 
 ##
