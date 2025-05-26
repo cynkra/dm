@@ -98,6 +98,7 @@ Suggests:
     shinyAce,
     shinydashboard,
     testthat (>= 3.2.0),
+    tidyverse,
     waldo,
     withr
 Config/Needs/website:
