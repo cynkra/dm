@@ -167,7 +167,6 @@ error_txt_tables_not_reachable_from_start <- function() {
 }
 
 
-
 # errors in table surgery -------------------------------------------------
 
 abort_dupl_new_id_col_name <- function(table_name) {

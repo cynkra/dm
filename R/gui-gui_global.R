@@ -49,8 +49,6 @@ data_column <- function(dm, table_name = "airports") {
 }
 
 
-
-
 # data <- tibble(
 #   name = c("col1", "col2"),
 #   type = c("numeric", "character"),
