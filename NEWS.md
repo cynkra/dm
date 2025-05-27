@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.11.9016
+
+## Chore
+
+- Suggest package used in demo.
+
+## Continuous integration
+
+- Sync (#2281).
+
+
 # dm 1.0.11.9015
 
 ## Chore
