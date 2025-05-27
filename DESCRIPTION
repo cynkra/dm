@@ -47,7 +47,8 @@ License: MIT + file LICENSE
 URL: https://dm.cynkra.com/, https://github.com/cynkra/dm
 BugReports: https://github.com/cynkra/dm/issues
 Depends: 
-    R (>= 3.3)
+    R (>= 3.3),
+    dplyr
 Imports:
     backports,
     cli (>= 2.2.0),
