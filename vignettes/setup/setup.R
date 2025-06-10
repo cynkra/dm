@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 if (rlang::is_installed("fansi")) {
   fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message"))
-} else if (default_eval && Sys.getenv("GITHUB_JOB") != "rcc-suggests") {
+} else if (default_eval() && Sys.getenv("GITHUB_JOB") != "rcc-suggests") {
   cli::cli_abort(
     "{.pkg fansi} required for rendering vignettes but not installed."
   )
