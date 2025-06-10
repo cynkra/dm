@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.11.9017
+
+## Chore
+
+- Remove fansi.
+
+## Continuous integration
+
+- Allow missing fansi on CI/CD.
+
+- Review environment variables.
+
+
 # dm 1.0.11.9016
 
 ## Chore
