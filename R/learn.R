@@ -33,7 +33,7 @@
 #'   iris_dm_learned <- dm_learn_from_db(src_sqlite)
 #' }
 #' @autoglobal
-dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{table}") {
+dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, names_pattern = "{.table}") {
   # assuming that we will not try to learn from (globally) temporary tables, which do not appear in sys.table
   con <- con_from_src_or_con(dest)
   src <- src_from_src_or_con(dest)
@@ -51,8 +51,8 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
 
   dm_name <-
     df_info$tables %>%
-    select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
-    mutate(name = glue(!!name_format)) %>%
+    select(catalog = table_catalog, .schema = table_schema, .table = table_name) %>%
+    mutate(name = glue(!!names_pattern)) %>%
     pull() %>%
     unclass() %>%
     vec_as_names(repair = "unique")
