@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 1.0.11.9015
-Date: 2025-01-03
+Version: 1.0.11.9018
+Date: 2025-06-11
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -99,6 +99,7 @@ Suggests:
     shinyAce,
     shinydashboard,
     testthat (>= 3.2.0),
+    tidyverse,
     waldo,
     withr
 Config/Needs/website:

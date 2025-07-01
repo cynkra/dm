@@ -242,7 +242,6 @@ try(
 )
 
 
-
 ##
 ##
 ##
@@ -355,7 +354,6 @@ dm_flights %>%
   dm_draw()
 
 
-
 ##
 ##
 ##
@@ -430,8 +428,6 @@ nycflights13_base <-
 
 nycflights13_base %>%
   dm_draw()
-
-
 
 
 ##
@@ -529,11 +525,6 @@ nycflights13_perfect %>%
   dm_draw()
 
 
-
-
-
-
-
 ##
 ##
 ##
@@ -596,9 +587,6 @@ dm_flights_sqlite %>%
   dbplyr::sql_render()
 
 
-
-
-
 ##
 ##
 ##
@@ -637,10 +625,6 @@ try({
   dm_flights_from_pq %>%
     dm_draw()
 })
-
-
-
-
 
 
 ##

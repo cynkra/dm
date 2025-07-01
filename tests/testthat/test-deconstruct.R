@@ -60,7 +60,6 @@ test_that("dm_get_keyed_tables_impl()", {
 })
 
 
-
 test_that("`new_keyed_tbl()` formatting", {
   local_options(
     pillar.min_title_chars = NULL,
