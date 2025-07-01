@@ -53,7 +53,7 @@ Imports:
     cli (>= 2.2.0),
     dplyr (>= 1.1.0),
     glue,
-    igraph,
+    igraph (>= 2.2.0),
     lifecycle (>= 1.0.3),
     memoise,
     methods,
