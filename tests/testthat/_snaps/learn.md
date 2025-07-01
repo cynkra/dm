@@ -395,10 +395,6 @@
 
 # dm_from_con() with mariaDB
 
-    
-
----
-
     Code
       dm::dm_get_all_fks(my_dm)
     Output
@@ -431,10 +427,6 @@
       7 orders    id     FALSE        
       8 tkeys     id     FALSE        
       9 trans     id     FALSE        
-
----
-
-    
 
 ---
 
