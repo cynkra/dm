@@ -385,7 +385,6 @@ dm_flights %>%
   dm_disambiguate_cols()
 
 
-
 ##
 ##
 ##
@@ -654,10 +653,6 @@ try({
   dm_flights_from_pq %>%
     dm_draw()
 })
-
-
-
-
 
 
 ##
