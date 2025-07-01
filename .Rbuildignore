@@ -35,3 +35,4 @@
 ^renovate\.json$
 ^tests/testthat/helper-sync\.R$
 ^index\.md$
+^CLAUDE\.md$
