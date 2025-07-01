@@ -45,7 +45,7 @@ Data in the tables is never included, see \code{\link[=dm_ptype]{dm_ptype()}} fo
 \examples{
 dm() \%>\%
   dm_paste()
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 
 dm_nycflights13() \%>\%
   dm_paste()

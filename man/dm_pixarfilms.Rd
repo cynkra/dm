@@ -26,7 +26,7 @@ Creates an example \code{\link{dm}} object from the tables in
 \pkg{pixarfilms}, along with the references.
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("pixarfilms", "DiagrammeR"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("pixarfilms", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 dm_pixarfilms()
 dm_pixarfilms() \%>\%
   dm_draw()

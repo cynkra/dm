@@ -31,7 +31,7 @@ If the selection criteria are ambiguous, a message with unambiguous replacement 
 Foreign keys are never removed.
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_rm_pk(airports) \%>\%
   dm_draw()

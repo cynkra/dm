@@ -23,7 +23,7 @@ and accessed through the same connection, because a large part
 of the package's functionality relies on efficient joins.
 }
 \examples{
-\dontshow{if (dm:::dm_has_financial()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (dm:::dm_has_financial()) withAutoprint(\{ # examplesIf}
 dm_financial() \%>\%
   dm_get_con()
 \dontshow{\}) # examplesIf}

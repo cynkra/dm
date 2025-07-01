@@ -10,8 +10,6 @@ actionButton2 <- function(inputId, label, icon = NULL, width = NULL, ...) {
 }
 
 
-
-
 # FIXME no need for custom HTML (I guess)
 html_logo <- function() {
   shiny::tags$span(class = "logo", shiny::span(style = "font-size: 100%; font-weight: bold; letter-spacing: .1rem;", "DM"), shiny::span(style = "font-size: 70%; letter-spacing: .1rem;", "R DATA MODELS"))
@@ -53,10 +51,6 @@ html_header <- function() {
     )
   )
 }
-
-
-
-
 
 
 gui_ui <- function(ns, select_tables = TRUE) {

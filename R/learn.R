@@ -3,7 +3,7 @@
 #' @description If there are any permament tables on a DB, a new [`dm`] object can be created that contains those tables,
 #' along with their primary and foreign key constraints.
 #'
-#' Currently this only works with MSSQL and Postgres databases.
+#' Currently this only works with MSSQL and Postgres/Redshift databases.
 #'
 #' The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema.
 #'
@@ -135,7 +135,8 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     dm_rename(key_column_usage, key_column_usage.table_name = table_name) %>%
     dm_rename(key_column_usage, key_column_usage.column_name = column_name) %>%
     dm_rename(key_column_usage, key_column_usage.dm_name = dm_name) %>%
-    dm_flatten_to_tbl(constraint_column_usage) %>%
+    # inner_join: Sometimes, constraint_schema is different, https://github.com/cynkra/dm/issues/2228
+    dm_flatten_to_tbl(constraint_column_usage, .join = inner_join) %>%
     select(
       constraint_catalog,
       constraint_schema,

@@ -40,7 +40,6 @@
 ---
 
     Code
-      rlang::local_interactive(TRUE)
       check_suggested(c("iurtnkjvmomweicopbt (>= 0.5)", "xxx", "cli"), "foo", use = NA)
     Message
       `foo()` is improved by the "iurtnkjvmomweicopbt (>= 0.5)" and "xxx" packages. Consider installing them.

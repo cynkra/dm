@@ -43,7 +43,7 @@ For \code{separate.dm_zoomed}: see \code{\link[tidyr:separate]{tidyr::separate()
 Use these methods without the '.dm_zoomed' suffix (see examples).
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 zoom_united <- dm_nycflights13() \%>\%
   dm_zoom_to(flights) \%>\%
   select(year, month, day) \%>\%

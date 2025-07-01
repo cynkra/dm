@@ -51,7 +51,9 @@ mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
     fkc %>%
     left_join(columns, by = c("catalog", "referenced_object_id" = "object_id", "referenced_column_id" = "column_id")) %>%
     left_join(tables, by = c("catalog", "referenced_object_id" = "object_id")) %>%
+    collapse() %>%
     left_join(schemas, by = c("catalog", "schema_id")) %>%
+    collapse() %>%
     left_join(objects, by = c("constraint_object_id" = "object_id")) %>%
     # table_schema is used twice
     transmute(constraint_catalog = catalog, constraint_schema = table_schema, constraint_name, table_schema, table_name, column_name, ordinal_position = constraint_column_id)

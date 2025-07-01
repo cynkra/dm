@@ -33,8 +33,8 @@ library(magrittr)
 #       at the same time?
 
 
-
-
+##
+##
 ##
 ##
 ##
@@ -122,7 +122,7 @@ all(flights$dest %in% airports$faa)
 ##
 
 
-
+##
 ##
 ##
 ##
@@ -199,15 +199,15 @@ dm_flights %>%
 ##
 
 
-
-
-
-
-
-
-
-
-
+##
+##
+##
+##
+##
+##
+##
+##
+##
 ##
 ##
 ##
@@ -328,7 +328,6 @@ dm_flights_jfk_today_df <-
   collect()
 
 dm_flights_jfk_today_df
-
 
 
 ##
@@ -458,10 +457,10 @@ dm_flights %>%
 ##
 
 
-
-
-
-
+##
+##
+##
+##
 ##
 ##
 ##
@@ -533,10 +532,6 @@ nycflights13_base %>%
   dm_examine_constraints()
 
 
-
-
-
-
 ##
 ##
 ##
@@ -548,8 +543,8 @@ nycflights13_base %>%
 ##
 
 
-
-
+##
+##
 ##
 ##
 ##
@@ -655,10 +650,6 @@ try({
 })
 
 
-
-
-
-
 ##
 ##
 ##
@@ -678,15 +669,15 @@ try({
 ##
 
 
-
-
-
-
-
-
-
-
-
+##
+##
+##
+##
+##
+##
+##
+##
+##
 ##
 ##
 ##

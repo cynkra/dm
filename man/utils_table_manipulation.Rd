@@ -37,7 +37,7 @@ The methods for regular \code{dm} objects extract the first or last tables.
 see manual for the corresponding functions in \pkg{utils}.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 zoomed <- dm_nycflights13() \%>\%
   dm_zoom_to(flights) \%>\%
   head(4)

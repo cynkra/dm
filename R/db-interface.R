@@ -1,7 +1,7 @@
 #' Copy data model to data source
 #'
 #' @description
-#' `copy_dm_to()` takes a [dplyr::src_dbi] object or a [`DBI::DBIConnection-class`] object as its first argument
+#' `copy_dm_to()` takes a [`dplyr::src_dbi`] object or a [`DBI::DBIConnection-class`] object as its first argument
 #' and a [`dm`] object as its second argument.
 #' The latter is copied to the former.
 #' The default is to create temporary tables, set `temporary = FALSE` to create permanent tables.
@@ -27,7 +27,7 @@
 #'
 #'   Not all DBMS are supported.
 #' @param table_names Desired names for the tables on `dest`; the names within the `dm` remain unchanged.
-#'   Can be `NULL`, a named character vector, or a vector of [DBI::Id] objects.
+#'   Can be `NULL`, a named character vector, or a vector of [`DBI::Id`] objects.
 #'
 #'   If left `NULL` (default), the names will be determined automatically depending on the `temporary` argument:
 #'
@@ -86,18 +86,17 @@
 #' DBI::dbDisconnect(con)
 #' @export
 copy_dm_to <- function(
-    dest,
-    dm,
-    ...,
-    set_key_constraints = TRUE,
-    table_names = NULL,
-    temporary = TRUE,
-    schema = NULL,
-    progress = NA,
-    unique_table_names = NULL,
-    copy_to = NULL) {
-  #
-
+  dest,
+  dm,
+  ...,
+  set_key_constraints = TRUE,
+  table_names = NULL,
+  temporary = TRUE,
+  schema = NULL,
+  progress = NA,
+  unique_table_names = NULL,
+  copy_to = NULL
+) {
   if (!is.null(unique_table_names)) {
     deprecate_stop(
       "0.1.4", "dm::copy_dm_to(unique_table_names = )",
@@ -278,7 +277,7 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
       }
       DBI::dbExecute(con, sql, immediate = TRUE)
     }))
-  } else if (is_postgres(con)) {
+  } else if (is_postgres(con) || is_redshift(con)) {
     # https://github.com/r-dbi/RPostgres/issues/384
     table <- as.data.frame(table)
     # https://github.com/r-dbi/RPostgres/issues/382

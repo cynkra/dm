@@ -39,7 +39,7 @@ test_that("DB helpers work for MSSQL", {
   DBI::dbExecute(con_mssql, "CREATE DATABASE db_helpers_db")
   DBI::dbWriteTable(
     con_mssql,
-    DBI::Id(db = "db_helpers_db", schema = "dbo", table = "test_db_helpers_3"),
+    DBI::Id(catalog = "db_helpers_db", schema = "dbo", table = "test_db_helpers_3"),
     value = tibble(a = 1)
   )
   # create table in a schema on another DB
@@ -49,7 +49,7 @@ test_that("DB helpers work for MSSQL", {
   DBI::dbExecute(con_mssql, paste0("USE ", original_dbname))
   DBI::dbWriteTable(
     con_mssql,
-    DBI::Id(db = "db_helpers_db", schema = "schema_db_helpers_2", table = "test_db_helpers_4"),
+    DBI::Id(catalog = "db_helpers_db", schema = "schema_db_helpers_2", table = "test_db_helpers_4"),
     value = tibble(a = 1)
   )
 

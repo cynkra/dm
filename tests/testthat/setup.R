@@ -9,3 +9,12 @@ local_options(
   pillar.bold = NULL,
   .frame = teardown_env()
 )
+
+if (rlang::is_installed("dbplyr")) {
+  local_mocked_bindings(
+    tbl_sum.tbl_sql = function(x, ...) c(),
+    tbl_format_header.tbl_sql = function(x, ...) invisible(),
+    .package = "dbplyr",
+    .env = teardown_env()
+  )
+}

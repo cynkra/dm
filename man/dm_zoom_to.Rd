@@ -91,14 +91,14 @@ only with the latter, the filter expression is added to the list of table filter
 
 Furthermore, different \code{join()}-variants from \pkg{dplyr} are also supported,
 e.g. \code{\link[=left_join]{left_join()}} and \code{\link[=semi_join]{semi_join()}}.
-(Support for \code{\link[=nest_join]{nest_join()}} is planned.)
+(Support for \code{\link[dplyr:nest_join]{dplyr::nest_join()}} is planned.)
 The join-methods for \code{dm_zoomed} infer the columns to join by from the primary and foreign keys,
 and have an extra argument \code{select} that allows choosing the columns of the RHS table.
 
 And -- last but not least -- also the \pkg{tidyr}-functions \code{\link[=unite]{unite()}} and \code{\link[=separate]{separate()}} are supported for \code{dm_zoomed}.
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 flights_zoomed <- dm_zoom_to(dm_nycflights13(), flights)
 
 flights_zoomed

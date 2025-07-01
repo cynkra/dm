@@ -181,8 +181,8 @@ dm_flights %>%
 # NB: [, $, [[ and names() also work
 
 
-
-
+##
+##
 ##
 ##
 ##
@@ -199,15 +199,15 @@ dm_flights %>%
 ##
 
 
-
-
-
-
-
-
-
-
-
+##
+##
+##
+##
+##
+##
+##
+##
+##
 ##
 ##
 ##
@@ -218,8 +218,8 @@ dm_flights %>%
 ##
 
 
-
-
+##
+##
 ##
 ##
 ##
@@ -240,7 +240,6 @@ try(
   dm_flights %>%
     dm_join_to_tbl(airports, airlines)
 )
-
 
 
 ##
@@ -355,7 +354,6 @@ dm_flights %>%
   dm_draw()
 
 
-
 ##
 ##
 ##
@@ -366,10 +364,10 @@ dm_flights %>%
 ##
 
 
-
-
-
-
+##
+##
+##
+##
 ##
 ##
 ##
@@ -430,8 +428,6 @@ nycflights13_base <-
 
 nycflights13_base %>%
   dm_draw()
-
-
 
 
 ##
@@ -529,11 +525,6 @@ nycflights13_perfect %>%
   dm_draw()
 
 
-
-
-
-
-
 ##
 ##
 ##
@@ -544,8 +535,8 @@ nycflights13_perfect %>%
 ##
 
 
-
-
+##
+##
 ##
 ##
 ##
@@ -596,9 +587,6 @@ dm_flights_sqlite %>%
   dbplyr::sql_render()
 
 
-
-
-
 ##
 ##
 ##
@@ -639,10 +627,6 @@ try({
 })
 
 
-
-
-
-
 ##
 ##
 ##
@@ -659,15 +643,15 @@ try({
 ##
 
 
-
-
-
-
-
-
-
-
-
+##
+##
+##
+##
+##
+##
+##
+##
+##
 ##
 ##
 ##

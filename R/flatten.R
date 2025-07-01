@@ -114,7 +114,8 @@ dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squa
   check_flatten_to_tbl(
     join_name,
     (nrow(dm_get_filters_impl(dm)) > 0) && !is_empty(list_of_pts),
-    anyNA(order_df$name),
+    # igraph 2.0.0
+    anyNA(order_df$name) || nrow(order_df) < igraph::vcount(g),
     g,
     auto_detect,
     nrow(order_df) > 2,

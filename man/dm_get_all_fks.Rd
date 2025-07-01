@@ -30,7 +30,7 @@ A tibble with the following columns:
 Get a summary of all foreign key relations in a \code{\link{dm}}.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_get_all_fks()
 \dontshow{\}) # examplesIf}

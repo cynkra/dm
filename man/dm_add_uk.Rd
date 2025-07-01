@@ -41,7 +41,7 @@ These implicit UKs are also listed by \code{\link[=dm_get_all_uks]{dm_get_all_uk
 }
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 
 nycflights_dm <- dm(
   planes = nycflights13::planes,
