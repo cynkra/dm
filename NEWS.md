@@ -1,5 +1,26 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.11.9019
+
+## Bug fixes
+
+- Improve detection of foreign-key relationships in Postgres (#1879, #2286).
+
+- Avoid including constraints from a different `constraint_schema` when learning from a database (#2228, #2275).
+
+## Chore
+
+- Adapt to current testthat.
+
+- Claude.
+
+## Documentation
+
+- Add cynkra ROR (#2282).
+
+- Fix intended links (@guspan-tanadi, #2278).
+
+
 # dm 1.0.11.9018
 
 ## Continuous integration
