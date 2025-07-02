@@ -34,6 +34,15 @@
   src: url(N0bX2SlFPv1weGeLZDtgJf7SodY.woff2) format('woff2');
   unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
 }
+/* symbols2 */
+@font-face {
+  font-family: 'Fira Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(N0bX2SlFPv1weGeLZDtgnN_3nO_Q.woff2) format('woff2');
+  unicode-range: U+2000-2001, U+2004-2008, U+200A, U+23B8-23BD, U+2500-259F;
+}
 /* latin-ext */
 @font-face {
   font-family: 'Fira Mono';
