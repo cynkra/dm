@@ -5,17 +5,20 @@
 #' and a [`dm`] object as its second argument.
 #' The latter is copied to the former.
 #' The default is to create temporary tables, set `temporary = FALSE` to create permanent tables.
-#' Unless `set_key_constraints` is `FALSE`, primary key constraints are set on all databases,
-#' and in addition foreign key constraints are set on MSSQL and Postgres/Redshift databases.
+#' Unless `set_key_constraints` is `FALSE`, primary key, foreign key, and unique constraints
+#' are set, and indexes for foreign keys are created, on all databases.
 #'
 #' @inheritParams dm_examine_constraints
 #'
 #' @param dest An object of class `"src"` or `"DBIConnection"`.
 #' @param dm A `dm` object.
 #' @inheritParams rlang::args_dots_empty
-#' @param set_key_constraints If `TRUE` will mirror `dm` primary and foreign key constraints on a database
-#'   and create indexes for foreign key constraints.
-#'   Set to `FALSE` if your data model currently does not satisfy primary or foreign key constraints.
+#' @param set_key_constraints If `TRUE` will mirror
+#'   the primary, foreign, and unique key constraints
+#'   and create indexes for foreign key constraints
+#'   for the primary and foreign keys in the `dm` object.
+#'   Set to `FALSE` if your data model currently does not satisfy
+#'   primary or foreign key constraints.
 #' @param temporary If `TRUE`, only temporary tables will be created.
 #'   These tables will vanish when disconnecting from the database.
 #' @param schema Name of schema to copy the `dm` to.
@@ -94,21 +97,11 @@ copy_dm_to <- function(
   unique_table_names = NULL,
   copy_to = NULL
 ) {
-  # for the time being, we will be focusing on MSSQL
-  # we want to
-  #   1. change `dm_get_src_impl(dm)` to `dest`
-  #   2. copy the tables to `dest`
-  #   3. implement the key situation within our `dm` on the DB
-
   if (!is.null(unique_table_names)) {
-    deprecate_warn(
+    deprecate_stop(
       "0.1.4", "dm::copy_dm_to(unique_table_names = )",
-      details = "Use `table_names = identity` to use unchanged names for temporary tables."
+      details = "Use `table_names = set_names(names(dm))` to use unchanged names for temporary tables."
     )
-
-    if (is.null(table_names) && temporary && !unique_table_names) {
-      table_names <- identity
-    }
   }
 
   if (!is.null(copy_to)) {
@@ -125,113 +118,116 @@ copy_dm_to <- function(
   check_suggested("dbplyr", "copy_dm_to")
 
   dest <- src_from_src_or_con(dest)
-  src_names <- src_tbls_impl(dm)
 
-  if (is_db(dest)) {
-    dest_con <- con_from_src_or_con(dest)
-
-    # in case `table_names` was chosen by the user, check if the input makes sense:
-    # 1. is there one name per dm-table?
-    # 2. are there any duplicated table names?
-    # 3. is it a named character or ident_q vector with the correct names?
-    if (is.null(table_names)) {
-      table_names_out <- repair_table_names_for_db(src_names, temporary, dest_con, schema)
-      # https://github.com/tidyverse/dbplyr/issues/487
-      if (is_mssql(dest)) {
-        temporary <- FALSE
-      }
-    } else {
-      if (!is.null(schema)) abort_one_of_schema_table_names()
-      if (is_function(table_names) || is_bare_formula(table_names)) {
-        table_name_fun <- as_function(table_names)
-        table_names_out <- set_names(table_name_fun(src_names), src_names)
-      } else {
-        table_names_out <- table_names
-      }
-      check_naming(names(table_names_out), src_names)
-
-      if (anyDuplicated(table_names_out)) {
-        problem <- table_names_out[duplicated(table_names_out)][[1]]
-        abort_copy_dm_to_table_names_duplicated(problem)
-      }
-
-      names(table_names_out) <- src_names
-    }
-  } else {
-    # FIXME: Other data sources than local and database possible
-    deprecate_warn(
-      "0.1.6", "dm::copy_dm_to(dest = 'must refer to a remote data source')",
+  if (!is_db(dest)) {
+    deprecate_stop(
+      "0.1.6", "dm::copy_dm_to(dest = 'must refer to a DBI connection')",
       "dm::collect.dm()"
     )
-    table_names_out <- set_names(src_names)
   }
 
-  # FIXME: if same_src(), can use compute() but need to set NOT NULL and other
-  # constraints
+  src_names <- src_tbls_impl(dm)
+  dest_con <- con_from_src_or_con(dest)
 
-  # Shortcut necessary to avoid copying into .GlobalEnv
-  if (!is_db(dest)) {
-    return(dm)
+  # in case `table_names` was chosen by the user, check if the input makes sense:
+  # 1. is there one name per dm-table?
+  # 2. are there any duplicated table names?
+  # 3. is it a named character or ident_q vector with the correct names?
+  if (is.null(table_names)) {
+    table_names_out <- repair_table_names_for_db(src_names, temporary, dest_con, schema)
+    # https://github.com/tidyverse/dbplyr/issues/487
+    if (is_mssql(dest)) {
+      temporary <- FALSE
+    }
+  } else {
+    if (!is.null(schema)) abort_one_of_schema_table_names()
+    if (is_function(table_names) || is_bare_formula(table_names)) {
+      table_name_fun <- as_function(table_names)
+      table_names_out <- set_names(table_name_fun(src_names), src_names)
+    } else {
+      table_names_out <- table_names
+    }
+    check_naming(names(table_names_out), src_names)
+
+    if (anyDuplicated(table_names_out)) {
+      problem <- table_names_out[duplicated(table_names_out)][[1]]
+      abort_copy_dm_to_table_names_duplicated(problem)
+    }
+
+    names(table_names_out) <- src_names
   }
 
   # Must be done here because table types may depend on string length, #2066
   dm <- collect(dm, progress = progress)
 
-  queries <- build_copy_queries(dest_con, dm, set_key_constraints, temporary, table_names_out)
+  if (isTRUE(set_key_constraints)) {
+    dm_for_sql <- dm
+  } else {
+    def_no_keys <- dm_get_def(dm)
+    # FIXME: Add test
+    def_no_keys$pks[] <- list(new_pk())
+    def_no_keys$uks[] <- list(new_uk())
+    def_no_keys$fks[] <- list(new_fk())
+    # Must keep primary keys
+    dm_for_sql <- dm_from_def(def_no_keys)
+  }
 
-  ticker_create <- new_ticker(
+  sql <- dm_sql(dm_for_sql, dest_con, table_names_out, temporary)
+
+  # FIXME: Extract function
+  # FIXME: Make descriptions part of the dm_sql() output
+
+  pre <- unlist(sql$pre)
+  load <- unlist(sql$load)
+  post <- unlist(sql$post)
+
+  ticker_pre <- new_ticker(
     "creating tables",
-    n = length(queries$sql_table),
+    n = length(pre),
     progress = progress,
     top_level_fun = "copy_dm_to"
   )
 
   # create tables
-  walk(queries$sql_table, ticker_create(~ {
+  walk(pre, ticker_pre(~ {
     DBI::dbExecute(dest_con, .x, immediate = TRUE)
   }))
 
-  ticker_populate <- new_ticker(
+  ticker_load <- new_ticker(
     "populating tables",
-    n = length(queries$name),
+    n = length(load),
     progress = progress,
     top_level_fun = "copy_dm_to"
   )
 
   # populate tables
-  pwalk(
-    queries[c("name", "remote_name")],
-    ticker_populate(~ db_append_table(
-      con = dest_con,
-      remote_table = .y,
-      table = dm[[.x]],
-      progress = progress,
-      autoinc = dm_get_all_pks(dm, table = !!.x)$autoincrement
-    ))
-  )
+  walk(load, ticker_load(~ {
+    DBI::dbExecute(dest_con, .x, immediate = TRUE)
+  }))
 
-  ticker_index <- new_ticker(
+  ticker_post <- new_ticker(
     "creating indexes",
-    n = sum(lengths(queries$sql_index)),
+    n = length(post),
     progress = progress,
     top_level_fun = "copy_dm_to"
   )
 
   # create indexes
-  walk(unlist(queries$sql_index), ticker_index(~ {
+  walk(post, ticker_post(~ {
     DBI::dbExecute(dest_con, .x, immediate = TRUE)
   }))
 
   # remote dm is same as source dm with replaced data
+  # FIXME: Extract function
   def <- dm_get_def(dm)
 
   remote_tables <- map2(
     table_names_out,
     map(def$data, colnames),
-    ~ tbl(dest_con, ..1, vars = ..2)
+    ~ tbl(dest_con, .x, vars = .y)
   )
 
-  def$data <- unname(remote_tables[names(dm)])
+  def$data <- unname(remote_tables)
   remote_dm <- dm_from_def(def)
 
   invisible(debug_dm_validate(remote_dm))
