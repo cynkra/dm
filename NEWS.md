@@ -14,8 +14,6 @@
 
 ## Chore
 
-- Build-ignore.
-
 - Remove fansi.
 
 - Suggest package used in demo.
