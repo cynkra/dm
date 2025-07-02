@@ -1,20 +1,6 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.11.9902
-
-## Chore
-
-- Build-ignore.
-
-
-# dm 1.0.11.9901
-
-## Testing
-
-- Stabilize learning tests (#2291).
-
-
-# dm 1.0.11.9900
+# dm 1.0.12
 
 ## Bug fixes
 
@@ -51,6 +37,8 @@
 - Fix typo (@salim-b, #2218).
 
 ## Testing
+
+- Stabilize learning tests (#2291).
 
 - Fix compatibility with waldo \>= 0.6.0 (#2240).
 
