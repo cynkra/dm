@@ -29,6 +29,9 @@ Tests should be executed within the devcontainer using:
 # Start devcontainer (if not already running)
 devcontainer up --workspace-folder .
 
+# Restart devcontainer after configuration changes
+devcontainer up --workspace-folder . --remove-existing-container
+
 # Execute R commands in devcontainer
 devcontainer exec --workspace-folder . R -e "testthat::test_local()"
 ```
@@ -54,6 +57,7 @@ testthat::test_local()
 - `df`
 - `postgres`
 - `maria` (MariaDB)
+- `mssql` (SQL Server)
 - `duckdb`
 
 ---

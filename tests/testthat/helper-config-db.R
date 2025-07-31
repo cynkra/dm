@@ -56,11 +56,16 @@ test_src_maria <- function(root = FALSE) {
 }
 
 test_src_mssql <- function(database = TRUE) {
-  if (Sys.getenv("DM_TEST_DOCKER_HOST") != "") {
+  # Check for SQL Server-specific host first, then fall back to general docker host
+  mssql_host <- Sys.getenv("DM_TEST_MSSQL_HOST")
+  docker_host <- Sys.getenv("DM_TEST_DOCKER_HOST")
+
+  if (mssql_host != "" || docker_host != "") {
+    host <- if (mssql_host != "") mssql_host else docker_host
     con <- DBI::dbConnect(
       odbc::odbc(),
       driver = "ODBC Driver 18 for SQL Server",
-      server = Sys.getenv("DM_TEST_DOCKER_HOST"),
+      server = host,
       database = if (database) "test",
       uid = "SA",
       pwd = "YourStrong!Passw0rd",

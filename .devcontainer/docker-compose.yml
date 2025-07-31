@@ -5,6 +5,8 @@ volumes:
     driver: local
   mariadb-data:
     driver: local
+  mssql-data:
+    driver: local
 
 networks:
   devcontainer-network:
@@ -67,6 +69,26 @@ services:
       retries: 5
       start_period: 30s
 
+  mssql:
+    container_name: devcontainer-mssql
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Express
+    volumes:
+      - mssql-data:/var/opt/mssql
+    ports:
+      - "1433:1433"
+    networks:
+      - devcontainer-network
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U SA -P 'YourStrong!Passw0rd' -Q 'IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = ''test'') CREATE DATABASE test; SELECT 1' -C -N"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
   app:
     container_name: devcontainer-dm
     image: ghcr.io/cynkra/docker-images/ubuntu24-rig-rrel-dc-dt-dm:latest
@@ -82,16 +104,25 @@ services:
       # Service-specific database hosts
       DM_TEST_POSTGRES_HOST: postgres
       DM_TEST_MARIA_HOST: mariadb
+      DM_TEST_MSSQL_HOST: mssql
       # MariaDB connection settings
       MYSQL_HOST: mariadb
       MYSQL_PORT: 3306
       MYSQL_USER: compose
       MYSQL_PASSWORD: "YourStrong!Passw0rd"
       MYSQL_DATABASE: test
+      # SQL Server connection settings
+      MSSQL_HOST: mssql
+      MSSQL_PORT: 1433
+      MSSQL_USER: SA
+      MSSQL_PASSWORD: "YourStrong!Passw0rd"
+      MSSQL_DATABASE: test
     depends_on:
       postgres:
         condition: service_healthy
       mariadb:
+        condition: service_healthy
+      mssql:
         condition: service_healthy
     networks:
       - devcontainer-network
