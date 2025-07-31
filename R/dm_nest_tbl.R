@@ -80,7 +80,12 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   parent_data <- def$data[def$table == parent_name][[1]]
-  nested_data <- nest_join(parent_data, table_data, by = set_names(child_fk, parent_fk), name = table_name)
+  nested_data <- nest_join(
+    parent_data,
+    table_data,
+    by = set_names(child_fk, parent_fk),
+    name = table_name
+  )
   class(nested_data[[table_name]]) <- c("nested", class(nested_data[[table_name]]))
 
   # update def and rebuild dm
@@ -150,7 +155,12 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   child_data <- def$data[def$table == child_name][[1]]
-  packed_data <- pack_join(child_data, table_data, by = set_names(parent_fk, child_fk), name = table_name)
+  packed_data <- pack_join(
+    child_data,
+    table_data,
+    by = set_names(parent_fk, child_fk),
+    name = table_name
+  )
   class(packed_data[[table_name]]) <- c("packed", class(packed_data[[table_name]]))
 
   # update def and rebuild dm

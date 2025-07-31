@@ -52,15 +52,14 @@ error_txt_not_unique_key <- function(table_name, column_names) {
 
 # error: is not subset of -------------------------------------------------
 
-abort_not_subset_of <- function(table_name_1, colname_1,
-                                table_name_2, colname_2) {
-  abort(error_txt_not_subset_of(table_name_1, colname_1, table_name_2, colname_2),
+abort_not_subset_of <- function(table_name_1, colname_1, table_name_2, colname_2) {
+  abort(
+    error_txt_not_subset_of(table_name_1, colname_1, table_name_2, colname_2),
     class = dm_error_full("not_subset_of")
   )
 }
 
-error_txt_not_subset_of <- function(table_name_1, colname_1,
-                                    table_name_2, colname_2) {
+error_txt_not_subset_of <- function(table_name_1, colname_1, table_name_2, colname_2) {
   # taking care of singular/plural of the word "columns" and the corresponding ending of the verb
   plural <- s_if_plural(colname_1)
   glue(
@@ -84,7 +83,8 @@ error_txt_sets_not_equal <- function(error_msgs) {
 # cardinality check errors ------------------------------------------------
 
 abort_not_bijective <- function(child_table_name, fk_col_name) {
-  abort(error_txt_not_bijective(child_table_name, fk_col_name),
+  abort(
+    error_txt_not_bijective(child_table_name, fk_col_name),
     class = dm_error_full("not_bijective")
   )
 }
@@ -99,7 +99,8 @@ error_txt_not_bijective <- function(child_table_name, fk_col_name) {
 }
 
 abort_not_injective <- function(child_table_name, fk_col_name) {
-  abort(error_txt_not_injective(child_table_name, fk_col_name),
+  abort(
+    error_txt_not_injective(child_table_name, fk_col_name),
     class = dm_error_full("not_injective")
   )
 }
@@ -116,9 +117,7 @@ error_txt_not_injective <- function(child_table_name, fk_col_name) {
 # errors in fk handling --------------------------------------------------
 
 abort_ref_tbl_has_no_pk <- function(ref_table_name) {
-  abort(error_txt_ref_tbl_has_no_pk(ref_table_name),
-    class = dm_error_full("ref_tbl_has_no_pk")
-  )
+  abort(error_txt_ref_tbl_has_no_pk(ref_table_name), class = dm_error_full("ref_tbl_has_no_pk"))
 }
 
 error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
@@ -152,14 +151,20 @@ abort_no_cycles <- function(g) {
 }
 
 error_txt_no_cycles <- function(shortest_cycle) {
-  c("Cycles in the relationship graph not yet supported.", i = glue::glue("Shortest cycle: {shortest_cycle}"))
+  c(
+    "Cycles in the relationship graph not yet supported.",
+    i = glue::glue("Shortest cycle: {shortest_cycle}")
+  )
 }
 
 
 # error in dm_flatten_to_tbl() ----------------------------------------------
 
 abort_tables_not_reachable_from_start <- function() {
-  abort(error_txt_tables_not_reachable_from_start(), class = dm_error_full("tables_not_reachable_from_start"))
+  abort(
+    error_txt_tables_not_reachable_from_start(),
+    class = dm_error_full("tables_not_reachable_from_start")
+  )
 }
 
 error_txt_tables_not_reachable_from_start <- function() {
@@ -197,17 +202,25 @@ error_txt_update_not_supported <- function() {
 # errors when filters are set but they shouldn't be ------------------------------
 
 abort_only_possible_wo_filters <- function(fun_name) {
-  abort(error_txt_only_possible_wo_filters(fun_name), class = dm_error_full("only_possible_wo_filters"))
+  abort(
+    error_txt_only_possible_wo_filters(fun_name),
+    class = dm_error_full("only_possible_wo_filters")
+  )
 }
 
 error_txt_only_possible_wo_filters <- function(fun_name) {
-  glue("You can't call `{fun_name}()` on a `dm` with filter conditions. Consider using `dm_apply_filters()` first.")
+  glue(
+    "You can't call `{fun_name}()` on a `dm` with filter conditions. Consider using `dm_apply_filters()` first."
+  )
 }
 
 # no foreign key relation -------------------------------------------------
 
 abort_tables_not_neighbors <- function(t1_name, t2_name) {
-  abort(error_txt_tables_not_neighbors(t1_name, t2_name), class = dm_error_full("tables_not_neighbors"))
+  abort(
+    error_txt_tables_not_neighbors(t1_name, t2_name),
+    class = dm_error_full("tables_not_neighbors")
+  )
 }
 
 error_txt_tables_not_neighbors <- function(t1_name, t2_name) {
@@ -229,7 +242,6 @@ error_txt_only_parents <- function() {
 }
 
 # not all tables have the same src ----------------------------------------
-
 
 abort_not_same_src <- function(dm_bind = FALSE) {
   abort(error_txt_not_same_src(dm_bind), class = dm_error_full("not_same_src"))
@@ -262,7 +274,10 @@ error_txt_squash_limited <- function() {
 }
 
 abort_apply_filters_first <- function(join_name) {
-  abort(error_txt_apply_filters_first(join_name), class = dm_error_txt_apply_filters_first(join_name))
+  abort(
+    error_txt_apply_filters_first(join_name),
+    class = dm_error_txt_apply_filters_first(join_name)
+  )
 }
 
 dm_error_txt_apply_filters_first <- function(join_name) {
@@ -334,11 +349,17 @@ error_txt_only_possible_w_zoom <- function(fun_name) {
 # errors for `copy_to.dm()` ----------------------------------------------
 
 abort_only_data_frames_supported <- function() {
-  abort("`copy_to.dm()` only supports class `data.frame` for argument `df`", class = dm_error_full("only_data_frames_supported"))
+  abort(
+    "`copy_to.dm()` only supports class `data.frame` for argument `df`",
+    class = dm_error_full("only_data_frames_supported")
+  )
 }
 
 abort_one_name_for_copy_to <- function(name) {
-  abort(glue("Argument `name` in `copy_to.dm()` needs to have length 1, but has length {length(name)} ({commas(tick(name))})"),
+  abort(
+    glue(
+      "Argument `name` in `copy_to.dm()` needs to have length 1, but has length {length(name)} ({commas(tick(name))})"
+    ),
     class = dm_error_full("one_name_for_copy_to")
   )
 }
@@ -346,7 +367,10 @@ abort_one_name_for_copy_to <- function(name) {
 # new table name needs to be unique ---------------------------------------
 
 abort_need_unique_names <- function(duplicate_names) {
-  abort(error_txt_need_unique_names(unique(duplicate_names)), class = dm_error_full("need_unique_names"))
+  abort(
+    error_txt_need_unique_names(unique(duplicate_names)),
+    class = dm_error_full("need_unique_names")
+  )
 }
 
 error_txt_need_unique_names <- function(duplicate_names) {
@@ -386,11 +410,16 @@ error_txt_pk_not_tracked <- function(orig_table, orig_pk) {
 # only for local src ------------------------------------------------------
 
 abort_only_for_local_src <- function(src_dm) {
-  abort(error_txt_only_for_local_src(format_classes(class(src_dm))), class = dm_error_full("only_for_local_src"))
+  abort(
+    error_txt_only_for_local_src(format_classes(class(src_dm))),
+    class = dm_error_full("only_for_local_src")
+  )
 }
 
 error_txt_only_for_local_src <- function(src_class) {
-  glue("`nest_join.dm_zoomed()` works only for a local `src`, not on a database with `src`-class: {src_class}.")
+  glue(
+    "`nest_join.dm_zoomed()` works only for a local `src`, not on a database with `src`-class: {src_class}."
+  )
 }
 
 # Errors for `pull_tbl.dm()` -----------------------------
@@ -404,7 +433,10 @@ error_txt_no_table_provided <- function() {
 }
 
 abort_table_not_zoomed <- function(table_name, zoomed_tables) {
-  abort(error_txt_table_not_zoomed(table_name, zoomed_tables), class = dm_error_full("table_not_zoomed"))
+  abort(
+    error_txt_table_not_zoomed(table_name, zoomed_tables),
+    class = dm_error_full("table_not_zoomed")
+  )
 }
 
 error_txt_table_not_zoomed <- function(table_name, zoomed_tables) {
@@ -415,7 +447,10 @@ error_txt_table_not_zoomed <- function(table_name, zoomed_tables) {
 }
 
 abort_not_pulling_multiple_zoomed <- function() {
-  abort(error_txt_not_pulling_multiple_zoomed(), class = dm_error_full("not_pulling_multiple_zoomed"))
+  abort(
+    error_txt_not_pulling_multiple_zoomed(),
+    class = dm_error_full("not_pulling_multiple_zoomed")
+  )
 }
 
 error_txt_not_pulling_multiple_zoomed <- function() {
@@ -487,11 +522,13 @@ error_txt_parameter_not_correct_length <- function(parameter, correct_length, pa
   )
 }
 
-warn_if_arg_not <- function(arg,
-                            only_on,
-                            arg_name = deparse(substitute(arg)),
-                            correct = NULL,
-                            additional_msg = "") {
+warn_if_arg_not <- function(
+  arg,
+  only_on,
+  arg_name = deparse(substitute(arg)),
+  correct = NULL,
+  additional_msg = ""
+) {
   if (!identical(arg, correct)) {
     only_on_string <- glue::glue_collapse(only_on, sep = ", ", last = " and ")
     dm_warn(

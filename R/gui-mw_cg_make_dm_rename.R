@@ -1,4 +1,10 @@
-mw_cg_make_dm_rename <- function(dm, ..., table_names = NULL, column_names = NULL, new_column_names = NULL) {
+mw_cg_make_dm_rename <- function(
+  dm,
+  ...,
+  table_names = NULL,
+  column_names = NULL,
+  new_column_names = NULL
+) {
   check_dots_empty()
 
   # Checks

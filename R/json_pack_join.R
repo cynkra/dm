@@ -21,7 +21,15 @@ json_pack_join <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, nam
 }
 
 #' @export
-json_pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
+json_pack_join.data.frame <- function(
+  x,
+  y,
+  by = NULL,
+  ...,
+  copy = FALSE,
+  keep = FALSE,
+  name = NULL
+) {
   check_suggested("jsonlite", "json_pack_join")
   check_dots_empty()
 

@@ -3,7 +3,16 @@
 #' Widget
 #'
 #' @noRd
-dmSVG <- function(dm, viewBox = TRUE, node_to_zoom = NULL, nodes_to_select = NULL, ..., width = NULL, height = NULL, elementId = NULL) {
+dmSVG <- function(
+  dm,
+  viewBox = TRUE,
+  node_to_zoom = NULL,
+  nodes_to_select = NULL,
+  ...,
+  width = NULL,
+  height = NULL,
+  elementId = NULL
+) {
   svg_text <- dm_to_svg(dm)
 
   # forward options using x

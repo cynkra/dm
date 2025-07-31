@@ -94,7 +94,8 @@ test_that("dm_add_tbl() snapshots", {
   })
 
   expect_snapshot({
-    dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(options = c("select", "keys"))
+    dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>%
+      dm_paste(options = c("select", "keys"))
   })
 })
 

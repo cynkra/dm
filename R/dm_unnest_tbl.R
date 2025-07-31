@@ -64,7 +64,13 @@ dm_unnest_tbl <- function(dm, parent_table, col, ptype) {
   dm <- dm(dm, !!new_child_table_name := new_table)
   dm <- dm_select(dm, !!parent_table_name, -all_of(new_child_table_name))
   if (length(parent_fk_names)) {
-    dm <- dm_add_fk(dm, !!new_child_table_name, !!child_fk_names, !!parent_table_name, !!parent_fk_names)
+    dm <- dm_add_fk(
+      dm,
+      !!new_child_table_name,
+      !!child_fk_names,
+      !!parent_table_name,
+      !!parent_fk_names
+    )
   }
   if (length(child_pk_names)) {
     dm <- dm_add_pk(dm, !!new_child_table_name, !!child_pk_names)

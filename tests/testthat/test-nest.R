@@ -44,7 +44,6 @@ test_that("'nest_join_dm_zoomed()' fails for DB-'dm'", {
   )
 })
 
-
 # tests for compound keys -------------------------------------------------
 
 # FIXME: COMPOUND:: `nest_join_dm_zoomed()` cannot deal with composite keys yet

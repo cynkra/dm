@@ -20,8 +20,15 @@ json_unnest <- function(data, cols, ..., names_sep = NULL, names_repair = "check
 }
 
 #' @export
-json_unnest.data.frame <- function(data, cols, ..., keep_empty = FALSE, ptype = NULL,
-                                   names_sep = NULL, names_repair = "check_unique") {
+json_unnest.data.frame <- function(
+  data,
+  cols,
+  ...,
+  keep_empty = FALSE,
+  ptype = NULL,
+  names_sep = NULL,
+  names_repair = "check_unique"
+) {
   if (missing(cols)) {
     abort("The `cols` argument must be provided")
   }

@@ -1,7 +1,9 @@
 MAX_COMMAS <- 6L
 
 commas <- function(x, max_commas = MAX_COMMAS, capped = FALSE, fun = identity) {
-  if (is_null(max_commas)) max_commas <- MAX_COMMAS
+  if (is_null(max_commas)) {
+    max_commas <- MAX_COMMAS
+  }
   fun <- as_function(fun)
 
   if (is_empty(x)) {

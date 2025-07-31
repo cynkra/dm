@@ -31,7 +31,9 @@ dm_validate <- function(x) {
   def <- dm_get_def(x)
 
   table_names <- def$table
-  if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
+  if (any(table_names == "")) {
+    abort_dm_invalid("Not all tables are named.")
+  }
 
   check_df_structure(def, boilerplate, "dm definition")
 
@@ -131,7 +133,9 @@ check_df_structure <- function(check, boilerplate, where) {
   force(where)
 
   if (!identical(names(check), names(boilerplate))) {
-    abort_dm_invalid(glue("Inconsistent column names in {where}: {commas(names(check), Inf)} vs. {commas(names(boilerplate), Inf)}."))
+    abort_dm_invalid(glue(
+      "Inconsistent column names in {where}: {commas(names(check), Inf)} vs. {commas(names(boilerplate), Inf)}."
+    ))
   }
 
   if (!identical(check[0, ], boilerplate[0, ])) {
@@ -154,7 +158,9 @@ check_colnames <- function(key_tibble, dm_col_names, which) {
   good <- map2_lgl(key_tibble$table, key_tibble$column, ~ ..2 %in% dm_col_names[[..1]])
   if (!all(good)) {
     bad_key <- key_tibble[which(!good)[[1]], ]
-    abort_dm_invalid(glue("{which} column name not in `dm` tables' column names: `{bad_key$table}`$`{bad_key$column}`"))
+    abort_dm_invalid(glue(
+      "{which} column name not in `dm` tables' column names: `{bad_key$table}`$`{bad_key$column}`"
+    ))
   }
 }
 

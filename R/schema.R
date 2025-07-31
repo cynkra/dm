@@ -34,7 +34,10 @@ db_schema_list <- function(con, include_default = TRUE, ...) {
 
   # If we check in the method, we need to specify the user_env argument
   if (inherits(con, "src_dbi")) {
-    deprecate_soft("0.2.5", 'dm::db_schema_list(con = "must be a DBI connection, not a dbplyr source,")', )
+    deprecate_soft(
+      "0.2.5",
+      'dm::db_schema_list(con = "must be a DBI connection, not a dbplyr source,")',
+    )
   }
 
   UseMethod("db_schema_list")
@@ -57,23 +60,33 @@ db_schema_list.src_dbi <- function(con, include_default = TRUE, ...) {
   default_if_true <- if_else(include_default, "", " AND NOT s.name = 'dbo'")
   # ignore built-in schemas for backward compatibility:
   # https://docs.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver15
-  DBI::dbGetQuery(con, glue::glue("SELECT s.name as schema_name
+  DBI::dbGetQuery(
+    con,
+    glue::glue(
+      "SELECT s.name as schema_name
     FROM {dbname_sql}sys.schemas s
     WHERE s.name NOT IN ('sys', 'guest', 'INFORMATION_SCHEMA', 'db_accessadmin',
           'db_backupoperator', 'db_datareader', 'db_datawriter', 'db_ddladmin',
           'db_denydatareader', 'db_denydatawriter', 'db_owner',
-          'db_securityadmin'){default_if_true}")) %>%
+          'db_securityadmin'){default_if_true}"
+    )
+  ) %>%
     as_tibble()
 }
 
 #' @export
 db_schema_list.PqConnection <- function(con, include_default = TRUE, ...) {
   default_if_true <- if_else(include_default, "", ", 'public'")
-  DBI::dbGetQuery(con, glue::glue("SELECT schema_name, schema_owner FROM information_schema.schemata WHERE
+  DBI::dbGetQuery(
+    con,
+    glue::glue(
+      "SELECT schema_name, schema_owner FROM information_schema.schemata WHERE
     schema_name NOT IN ('information_schema', 'pg_catalog'{default_if_true})
     AND schema_name NOT LIKE 'pg_toast%'
     AND schema_name NOT LIKE 'pg_temp_%'
-    ORDER BY schema_name")) %>%
+    ORDER BY schema_name"
+    )
+  ) %>%
     as_tibble()
 }
 
@@ -118,7 +131,10 @@ db_schema_exists <- function(con, schema, ...) {
 
   # If we check in the method, we need to specify the user_env argument
   if (inherits(con, "src_dbi")) {
-    deprecate_soft("0.2.5", 'dm::db_schema_exists(con = "must be a DBI connection, not a dbplyr source,")', )
+    deprecate_soft(
+      "0.2.5",
+      'dm::db_schema_exists(con = "must be a DBI connection, not a dbplyr source,")',
+    )
   }
 
   UseMethod("db_schema_exists")
@@ -181,7 +197,10 @@ db_schema_create <- function(con, schema, ...) {
 
   # If we check in the method, we need to specify the user_env argument
   if (inherits(con, "src_dbi")) {
-    deprecate_soft("0.2.5", 'dm::db_schema_create(con = "must be a DBI connection, not a dbplyr source,")', )
+    deprecate_soft(
+      "0.2.5",
+      'dm::db_schema_create(con = "must be a DBI connection, not a dbplyr source,")',
+    )
   }
 
   UseMethod("db_schema_create")
@@ -204,7 +223,10 @@ db_schema_create.PqConnection <- function(con, schema, ...) {
   if (!is_null(dbname)) {
     original_dbname <- attributes(con)$info$dbname
     DBI::dbExecute(con, glue::glue("USE {DBI::dbQuoteIdentifier(con, dbname)}"))
-    withr::defer(DBI::dbExecute(con, glue::glue("USE {DBI::dbQuoteIdentifier(con, original_dbname)}")))
+    withr::defer(DBI::dbExecute(
+      con,
+      glue::glue("USE {DBI::dbQuoteIdentifier(con, original_dbname)}")
+    ))
   }
   msg_suffix <- fix_msg(sql_to_character(con, dbname))
   DBI::dbExecute(con, glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(con, schema)}"))
@@ -325,7 +347,10 @@ db_schema_drop <- function(con, schema, force = FALSE, ...) {
 
   # If we check in the method, we need to specify the user_env argument
   if (inherits(con, "src_dbi")) {
-    deprecate_soft("0.2.5", 'dm::db_schema_drop(con = "must be a DBI connection, not a dbplyr source,")', )
+    deprecate_soft(
+      "0.2.5",
+      'dm::db_schema_drop(con = "must be a DBI connection, not a dbplyr source,")',
+    )
   }
 
   UseMethod("db_schema_drop")

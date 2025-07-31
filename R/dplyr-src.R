@@ -15,7 +15,11 @@
 #' @export
 #' @keywords internal
 dm_get_src <- function(x) {
-  deprecate_soft("0.2.0", "dm::dm_get_src()", details = "Use `dm_get_con(dm)` for databases, or `class(dm[[1]])` to get the class of a table.")
+  deprecate_soft(
+    "0.2.0",
+    "dm::dm_get_src()",
+    details = "Use `dm_get_con(dm)` for databases, or `class(dm[[1]])` to get the class of a table."
+  )
 
   check_not_zoomed(x)
   dm_get_src_impl(x)
@@ -30,7 +34,11 @@ dm_get_src <- function(x) {
 #' @rdname dplyr_src
 #' @keywords internal
 tbl.dm <- function(src, from, ...) {
-  deprecate_soft("0.2.0", "dm::tbl.dm()", details = "Use `dm[[table_name]]` instead to access a specific table.")
+  deprecate_soft(
+    "0.2.0",
+    "dm::tbl.dm()",
+    details = "Use `dm[[table_name]]` instead to access a specific table."
+  )
 
   check_not_zoomed(src)
 
@@ -65,14 +73,33 @@ src_tbls.dm <- function(x, ...) {
 #' @export
 #' @rdname dplyr_src
 #' @keywords internal
-copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
-  deprecate_soft("0.2.0", "dm::copy_to.dm()", details = "Use `copy_to(dm_get_con(dm), ...)` and `dm()`.")
+copy_to.dm <- function(
+  dest,
+  df,
+  name = deparse(substitute(df)),
+  overwrite = FALSE,
+  temporary = TRUE,
+  repair = "unique",
+  quiet = FALSE,
+  ...
+) {
+  deprecate_soft(
+    "0.2.0",
+    "dm::copy_to.dm()",
+    details = "Use `copy_to(dm_get_con(dm), ...)` and `dm()`."
+  )
 
   check_not_zoomed(dest)
 
-  if (!(inherits(df, "data.frame") || inherits(df, "tbl_dbi"))) abort_only_data_frames_supported()
-  if (overwrite) abort_no_overwrite()
-  if (length(name) != 1) abort_one_name_for_copy_to(name)
+  if (!(inherits(df, "data.frame") || inherits(df, "tbl_dbi"))) {
+    abort_only_data_frames_supported()
+  }
+  if (overwrite) {
+    abort_no_overwrite()
+  }
+  if (length(name) != 1) {
+    abort_one_name_for_copy_to(name)
+  }
   # src: if `df` on a different src:
   # if `df_list` is on DB and `dest` is local, collect `df_list`
   # if `df_list` is local and `dest` is on DB, copy `df_list` to respective DB

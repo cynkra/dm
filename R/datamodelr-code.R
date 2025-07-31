@@ -1,21 +1,25 @@
 # graph code directly from {datamodelr} -----------------------------------------
 
-bdm_create_graph <- function(data_model,
-                             rankdir = "BT",
-                             graph_name = "Data Model",
-                             graph_attrs = "",
-                             node_attrs = "",
-                             edge_attrs = "",
-                             view_type = "all",
-                             focus = NULL,
-                             col_attr = "column",
-                             columnArrows = FALSE,
-                             table_description = NULL,
-                             font_size) {
+bdm_create_graph <- function(
+  data_model,
+  rankdir = "BT",
+  graph_name = "Data Model",
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  view_type = "all",
+  focus = NULL,
+  col_attr = "column",
+  columnArrows = FALSE,
+  table_description = NULL,
+  font_size
+) {
   g_list <-
     bdm_create_graph_list(
-      data_model = data_model, view_type = view_type,
-      focus = focus, col_attr = col_attr,
+      data_model = data_model,
+      view_type = view_type,
+      focus = focus,
+      col_attr = col_attr,
       columnArrows = columnArrows,
       table_description = table_description,
       font_size = font_size
@@ -49,13 +53,15 @@ bdm_render_graph <- function(graph, width = NULL, height = NULL, top_level_fun =
   DiagrammeR::grViz(graph$dot_code, allow_subst = FALSE, width, height)
 }
 
-bdm_create_graph_list <- function(data_model,
-                                  view_type = "all",
-                                  focus = NULL,
-                                  col_attr = "column",
-                                  columnArrows = FALSE,
-                                  table_description = list(),
-                                  font_size) {
+bdm_create_graph_list <- function(
+  data_model,
+  view_type = "all",
+  focus = NULL,
+  col_attr = "column",
+  columnArrows = FALSE,
+  table_description = list(),
+  font_size
+) {
   # hidden tables
 
   if (!is.null(focus) && is.list(focus)) {
@@ -64,14 +70,17 @@ bdm_create_graph_list <- function(data_model,
       data_model$columns <- data_model$columns[data_model$columns$table %in% focus$tables, ]
       if (is.null(focus[["external_ref"]]) || !focus[["external_ref"]]) {
         data_model$references <- data_model$references[
-          data_model$references$table %in% focus$tables &
+          data_model$references$table %in%
+            focus$tables &
             data_model$references$ref %in% focus$tables,
         ]
       }
     }
   } else {
     # hide tables with display == "hide" attribute
-    if (is.null(data_model$tables$display)) data_model$tables$display <- NA
+    if (is.null(data_model$tables$display)) {
+      data_model$tables$display <- NA
+    }
     data_model$tables$display[is.na(data_model$tables$display)] <- "show"
     hidden_tables <- data_model$tables[data_model$tables$display == "hide", "table"]
     if (!is.null(hidden_tables)) {
@@ -90,7 +99,8 @@ bdm_create_graph_list <- function(data_model,
 
   tables <- split(data_model$columns, data_model$columns$table)
 
-  switch(view_type,
+  switch(
+    view_type,
     all = {},
     #
     keys_only = {
@@ -127,7 +137,6 @@ bdm_create_graph_list <- function(data_model,
       segment = data_model$tables[order(data_model$tables$table), "segment"],
       stringsAsFactors = FALSE
     )
-
 
   if (!is.null(data_model$references)) {
     edges <-
@@ -234,7 +243,9 @@ html_tag <- function(x, tag, ident = 0, nl = TRUE, atrs = NULL, collapse = "") {
   }
   space <- paste(rep("  ", ident), collapse = "")
   atrs <- paste(sprintf('%s="%s"', names(atrs), atrs), collapse = " ")
-  if (nchar(atrs) > 0) atrs <- paste0(" ", atrs)
+  if (nchar(atrs) > 0) {
+    atrs <- paste0(" ", atrs)
+  }
 
   htext <-
     if (nl) {
@@ -245,54 +256,71 @@ html_tag <- function(x, tag, ident = 0, nl = TRUE, atrs = NULL, collapse = "") {
   paste(htext, collapse = "")
 }
 
-to_html_table <- function(x,
-                          title = "Table",
-                          attr_table,
-                          attr_header,
-                          attr_font,
-                          attr_td = NULL,
-                          trans = NULL,
-                          cols = names(x),
-                          table_description = NULL,
-                          font_size,
-                          attr_desc) {
-  html_table(atrs = attr_table, c(
-    # header
-    html_tr(
-      html_td(
-        html_font(title, atrs = c(attr_font, "POINT-SIZE" = font_size[["header"]])),
-        atrs = attr_header,
-        collapse = NULL
-      )
-    ),
-    if (!is.null(table_description)) {
-      table_description <- strsplit(table_description, "\n")[[1]]
-      map_chr(table_description, function(desc) {
-        html_tr(
-          html_td(
-            html_font(repair_html(desc), atrs = c(attr_desc, "POINT-SIZE" = font_size[["table_description"]] %||% 8L)),
-            atrs = attr_desc,
-            collapse = NULL
-          )
+to_html_table <- function(
+  x,
+  title = "Table",
+  attr_table,
+  attr_header,
+  attr_font,
+  attr_td = NULL,
+  trans = NULL,
+  cols = names(x),
+  table_description = NULL,
+  font_size,
+  attr_desc
+) {
+  html_table(
+    atrs = attr_table,
+    c(
+      # header
+      html_tr(
+        html_td(
+          html_font(title, atrs = c(attr_font, "POINT-SIZE" = font_size[["header"]])),
+          atrs = attr_header,
+          collapse = NULL
         )
-      })
-    },
-    # rows
-    unique(sapply(seq_len(nrow(x)), function(r) {
-      html_tr(c(
-        # cells
-        sapply(cols, function(col_name) {
-          value <- x[r, col_name]
-          if (!is_null(trans)) value <- trans(col_name, x[r, ], value, font_size[["column"]])
-          html_td(value, if (is.null(attr_td)) NULL else attr_td(col_name, x[r, ], value))
+      ),
+      if (!is.null(table_description)) {
+        table_description <- strsplit(table_description, "\n")[[1]]
+        map_chr(table_description, function(desc) {
+          html_tr(
+            html_td(
+              html_font(
+                repair_html(desc),
+                atrs = c(attr_desc, "POINT-SIZE" = font_size[["table_description"]] %||% 8L)
+              ),
+              atrs = attr_desc,
+              collapse = NULL
+            )
+          )
         })
-      ))
-    }))
-  ))
+      },
+      # rows
+      unique(sapply(seq_len(nrow(x)), function(r) {
+        html_tr(c(
+          # cells
+          sapply(cols, function(col_name) {
+            value <- x[r, col_name]
+            if (!is_null(trans)) {
+              value <- trans(col_name, x[r, ], value, font_size[["column"]])
+            }
+            html_td(value, if (is.null(attr_td)) NULL else attr_td(col_name, x[r, ], value))
+          })
+        ))
+      }))
+    )
+  )
 }
 
-dot_html_label <- function(x, title, palette_id = "default", col_attr = c("column"),
-                           columnArrows = FALSE, table_description = NULL, font_size) {
+dot_html_label <- function(
+  x,
+  title,
+  palette_id = "default",
+  col_attr = c("column"),
+  columnArrows = FALSE,
+  table_description = NULL,
+  font_size
+) {
   cols <- c("ref", col_attr)
   if (is.null(palette_id) || palette_id == "show") {
     palette_id <- "default"
@@ -329,14 +357,19 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
   }
 
   attr_table <- list(
-    ALIGN = "LEFT", BORDER = border, CELLBORDER = 0, CELLSPACING = 0
+    ALIGN = "LEFT",
+    BORDER = border,
+    CELLBORDER = 0,
+    CELLSPACING = 0
   )
   # border color
   if (border) {
     attr_table[["COLOR"]] <- col[["line_color"]]
   }
   attr_header <- list(
-    COLSPAN = length(cols) - columnArrows, BGCOLOR = col[["header_bgcolor"]], BORDER = 0
+    COLSPAN = length(cols) - columnArrows,
+    BGCOLOR = col[["header_bgcolor"]],
+    BORDER = 0
   )
   attr_font <- list(COLOR = col[["header_font"]])
 
@@ -377,7 +410,8 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
     }
     return(value)
   }
-  ret <- to_html_table(x,
+  ret <- to_html_table(
+    x,
     title = title,
     attr_table = attr_table,
     attr_header = attr_header,
