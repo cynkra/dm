@@ -10,6 +10,12 @@ This project uses a devcontainer with the image `ghcr.io/cynkra/docker-images/ub
 
 **Important**: All R commands and package operations should be executed within the devcontainer. Claude Code is configured to automatically use the devcontainer for all execution.
 
+## Coding Guidelines
+
+- Format the code by running `air .` in the devcontainer.
+- **Important**: Always add tests when fixing bugs to prevent regression. Test both the fix and edge cases.
+- Prefer snapshot tests when testing console output.
+
 ## Testing Guidelines
 
 Tests should be executed within the devcontainer using:
@@ -35,8 +41,6 @@ testthat::test_local()
 ```
 
 **Important**: The `filter` argument filters by test file names, not individual test names within files.
-
-**Important**: Always add tests when fixing bugs to prevent regression. Test both the fix and edge cases.
 
 ---
 
