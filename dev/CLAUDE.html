@@ -58,6 +58,14 @@
 
 <p>This file contains important notes and best practices for working with the dm package codebase.</p>
 <div class="section level2">
+<h2 id="development-environment">Development Environment<a class="anchor" aria-label="anchor" href="#development-environment"></a></h2>
+<div class="section level3">
+<h3 id="devcontainer-setup">Devcontainer Setup<a class="anchor" aria-label="anchor" href="#devcontainer-setup"></a></h3>
+<p>This project uses a devcontainer with the image <code>ghcr.io/cynkra/docker-images/ubuntu24-rig-rrel-devtools-dm:latest</code>.</p>
+<p><strong>Important</strong>: All R commands and package operations should be executed within the devcontainer. Claude Code is configured to automatically use the devcontainer for all execution.</p>
+</div>
+</div>
+<div class="section level2">
 <h2 id="testing-guidelines">Testing Guidelines<a class="anchor" aria-label="anchor" href="#testing-guidelines"></a></h2>
 <div class="section level3">
 <h3 id="use-test_local-with-filter-argument-for-specific-test-files">Use test_local() with filter argument for specific test files<a class="anchor" aria-label="anchor" href="#use-test_local-with-filter-argument-for-specific-test-files"></a></h3>
