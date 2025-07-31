@@ -41,3 +41,4 @@
 ^\.venv$
 ^\.claude$
 ^\.devcontainer$
+^air\.toml$
