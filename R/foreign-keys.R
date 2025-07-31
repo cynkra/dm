@@ -406,7 +406,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
   } else if (!is.null(ref_cols)) {
     show_disambiguation <- FALSE
   } else {
-    # If we have a specific specification (table + cols + ref_table), 
+    # If we have a specific specification (table + cols + ref_table),
     # only show disambiguation if multiple FKs match
     total_fks_to_remove <- sum(lengths(idx_fk))
     show_disambiguation <- total_fks_to_remove > 1
