@@ -1,3 +1,39 @@
+# GENERATED FILE - DO NOT EDIT
+# This file was generated from template-db-tests.R
+# Edit the template and run generate-db-tests.sh to update
+
+# Set up database-specific testing environment
+local({
+  # Override my_test_src_name for this file
+  my_test_src_name <<- "maria"
+  
+  # Override my_test_src_fun for this file
+  my_test_src_fun <<- function() {
+    get0("test_src_maria", inherits = TRUE)
+  }
+  
+  # Override my_test_src_cache for this file
+  my_test_src_cache <<- function() {
+    tryCatch(
+      my_test_src_fun()(),
+      error = function(e) {
+        skip(paste0("Data source maria not accessible: ", conditionMessage(e)))
+      }
+    )
+  }
+  
+  # Override my_test_src for this file
+  my_test_src <<- function() {
+    testthat::skip_if_not_installed("dbplyr")
+    
+    fun <- my_test_src_fun()
+    if (is.null(fun)) {
+      skip(paste0("Data source not known: maria"))
+    }
+    my_test_src_cache()
+  }
+})
+
 test_that("dummy", {
   expect_snapshot({
     "dummy"
@@ -5,9 +41,6 @@ test_that("dummy", {
 })
 
 test_that("dm_sql()", {
-  # Need skip in every test block, unfortunately
-  skip_if_src_not("maria")
-
   # https://github.com/tidyverse/dbplyr/pull/1190
   skip_if(is(my_test_con(), "MySQLConnection"))
 
@@ -28,9 +61,6 @@ test_that("dm_sql()", {
 })
 
 test_that("long text columns with copy_dm_to()", {
-  # Need skip in every test block, unfortunately
-  skip_if_src_not("maria")
-
   dm <- dm(x = data.frame(a = strrep("x", 300)))
   dm_out <- copy_dm_to(my_test_con(), dm)
   expect_equal(collect(dm_out$x)$a, dm$x$a)

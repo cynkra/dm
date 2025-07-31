@@ -51,9 +51,9 @@ If you’ve found a bug, please file an issue that illustrates the bug with a mi
 will create a remote dm in a different database management system depending on context. 
 This allows tests that use those to be run on different setups through github actions. 
 Additionally `my_db_test_src()` will return the relevant database. 
-In order to test databases locally (typically to debug if CI tests fails and we can't debug from the online log)
-  we can set the environ variable "DM_TEST_SRC" to "postgres", "mariadb", "mssql", "duckdb" or "sqlite".
-  You might have to setup credentials in "helper-config-db.R" to do so.
+Database-specific test files (test-postgres.R, test-maria.R, etc.) are automatically generated 
+from a template and set up their own database connections. To regenerate these files after 
+editing the template, run `make generate-db-tests` or `./generate-db-tests.sh`.
 * Some useful expectations can be found in "helper-expectations.R".
 * In "helper-skip.R" are some helpers to skip tests in some contexts, these might be useful for instance if a feature is not supported on some databases.
 * When using `expect_snapshot()` on a DBMS dependent call (i.e a call that uses `dm_for_filter()` or copies to `my_db_test_src()`), 

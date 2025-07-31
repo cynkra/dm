@@ -4,10 +4,10 @@ runs:
   using: "composite"
   steps:
     - uses: ankane/setup-postgres@v1
-      if: env.DM_TEST_SRC == 'test-postgres'
+      if: env.DM_SETUP_DB == 'postgres'
 
     - name: Create database
-      if: env.DM_TEST_SRC == 'test-postgres'
+      if: env.DM_SETUP_DB == 'postgres'
       run: |
         createdb ${USER}
       shell: bash
@@ -15,34 +15,34 @@ runs:
     # Must happen after installing system dependencies,
     # https://github.com/ankane/setup-mariadb/issues/2
     - uses: ankane/setup-mariadb@v1
-      if: env.DM_TEST_SRC == 'test-maria'
+      if: env.DM_SETUP_DB == 'maria'
       with:
         mariadb-version: 10.11
 
     - uses: ankane/setup-mysql@v1
-      if: env.DM_TEST_SRC == 'test-mysql-maria'
+      if: env.DM_SETUP_DB == 'mysql-maria'
       with:
         mysql-version: "8.0"
 
     - name: Create database (MariaDB), set it to UTF-8, add time zone info
-      if: env.DM_TEST_SRC == 'test-maria' || env.DM_TEST_SRC == 'test-mysql-maria'
+      if: env.DM_SETUP_DB == 'maria' || env.DM_SETUP_DB == 'mysql-maria'
       run: |
         mysql -e "CREATE DATABASE IF NOT EXISTS test; ALTER DATABASE test CHARACTER SET 'utf8'; FLUSH PRIVILEGES;"
       shell: bash
 
     - uses: ankane/setup-sqlserver@v1
-      if: env.DM_TEST_SRC == 'test-mssql'
+      if: env.DM_SETUP_DB == 'mssql'
       with:
         accept-eula: true
 
     - name: Create database (SQL Server)
-      if: env.DM_TEST_SRC == 'test-mssql'
+      if: env.DM_SETUP_DB == 'mssql'
       run: |
         sqlcmd -U SA -P 'YourStrong!Passw0rd' -Q 'CREATE DATABASE test;'
       shell: bash
 
     - name: Set ODBCSYSINI (SQL Server)
-      if: env.DM_TEST_SRC == 'test-mssql'
+      if: env.DM_SETUP_DB == 'mssql'
       run: |
         ln -s /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.*.so.* /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.so
         echo "ODBCSYSINI=${{ github.workspace }}/.github/odbc" | tee -a $GITHUB_ENV

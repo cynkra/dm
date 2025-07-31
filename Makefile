@@ -1,7 +1,11 @@
 all: qtest
 
+# Generate database-specific test files from template
+generate-db-tests:
+	./generate-db-tests.sh
+
 # Quiet tests
-# Run with make -j $(nproc) -O
+# Run with make -j $(nproc) -O 
 # or with pmake
 qtest: qtest-df qtest-sqlite qtest-postgres qtest-mssql qtest-duckdb qtest-maria
 
@@ -17,20 +21,34 @@ stest: stest-df stest-sqlite stest-postgres stest-mssql stest-duckdb stest-maria
 # Connectivity tests
 connect: connect-sqlite connect-postgres connect-mssql connect-duckdb connect-maria
 
+# Default tests run in data frame mode
+qtest-df:
+	time R -q -e 'options("crayon.enabled" = TRUE); Sys.setenv(TESTTHAT_PARALLEL = FALSE); testthat::test_local(filter = "${DM_TEST_FILTER}")'
+
+test-df:
+	time R -q -e 'Sys.setenv(TESTTHAT_PARALLEL = TRUE); testthat::test_local(filter = "${DM_TEST_FILTER}")'
+
+stest-df:
+	time R -q -e 'options(testthat.progress.max_fails = 1); testthat::test_local(filter = "${DM_TEST_FILTER}", reporter = "silent")'
+
+ltest-df:
+	time R -q -e 'Sys.setenv(TESTTHAT_PARALLEL = TRUE); lazytest::lazytest_local()'
+
+# Database-specific tests run all tests but only database tests that match will work
 qtest-%:
-	DM_TEST_SRC=$@ time R -q -e 'options("crayon.enabled" = TRUE); Sys.setenv(TESTTHAT_PARALLEL = FALSE); testthat::test_local(filter = "${DM_TEST_FILTER}")'
+	time R -q -e 'options("crayon.enabled" = TRUE); Sys.setenv(TESTTHAT_PARALLEL = FALSE); testthat::test_local(filter = "${DM_TEST_FILTER}")'
 
 test-%:
-	DM_TEST_SRC=$@ time R -q -e 'Sys.setenv(TESTTHAT_PARALLEL = TRUE); testthat::test_local(filter = "${DM_TEST_FILTER}")'
+	time R -q -e 'Sys.setenv(TESTTHAT_PARALLEL = TRUE); testthat::test_local(filter = "${DM_TEST_FILTER}")'
 
 stest-%:
-	DM_TEST_SRC=$@ time R -q -e 'options(testthat.progress.max_fails = 1); testthat::test_local(filter = "${DM_TEST_FILTER}", reporter = "silent")'
+	time R -q -e 'options(testthat.progress.max_fails = 1); testthat::test_local(filter = "${DM_TEST_FILTER}", reporter = "silent")'
 
 ltest-%:
-	DM_TEST_SRC=$@ time R -q -e 'Sys.setenv(TESTTHAT_PARALLEL = TRUE); lazytest::lazytest_local()'
+	time R -q -e 'Sys.setenv(TESTTHAT_PARALLEL = TRUE); lazytest::lazytest_local()'
 
 connect-%:
-	DM_TEST_SRC=$@ R -q -e 'suppressMessages(pkgload::load_all()); my_test_con()'
+	R -q -e 'suppressMessages(pkgload::load_all()); tryCatch(get("test_src_$*")(), error = function(e) cat("Error connecting to $*:", e$$message, "\n"))'
 
 db-start:
 	docker-compose up -d --force-recreate
