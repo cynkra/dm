@@ -7,7 +7,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.11.9900</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.12.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,25 +55,32 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.11.9900" id="dm-10119900">dm 1.0.11.9900<a class="anchor" aria-label="anchor" href="#dm-10119900"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.12.9000" id="dm-10129000">dm 1.0.12.9000<a class="anchor" aria-label="anchor" href="#dm-10129000"></a></h2>
 <div class="section level3">
-<h3 id="bug-fixes-1-0-11-9900">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-11-9900"></a></h3>
+<h3 id="fledge-1-0-12-9000">fledge<a class="anchor" aria-label="anchor" href="#fledge-1-0-12-9000"></a></h3>
+<ul><li>CRAN release v1.0.12 (<a href="https://github.com/cynkra/dm/issues/2295" class="external-link">#2295</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12" id="dm-1012">dm 1.0.12<a class="anchor" aria-label="anchor" href="#dm-1012"></a></h2><p class="text-muted">CRAN release: 2025-07-02</p>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-12">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-12"></a></h3>
 <ul><li><p>Improve detection of foreign-key relationships in Postgres (<a href="https://github.com/cynkra/dm/issues/1879" class="external-link">#1879</a>, <a href="https://github.com/cynkra/dm/issues/2286" class="external-link">#2286</a>).</p></li>
 <li><p>Avoid including constraints from a different <code>constraint_schema</code> when learning from a database (<a href="https://github.com/cynkra/dm/issues/2228" class="external-link">#2228</a>, <a href="https://github.com/cynkra/dm/issues/2275" class="external-link">#2275</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="features-1-0-11-9900">Features<a class="anchor" aria-label="anchor" href="#features-1-0-11-9900"></a></h3>
+<h3 id="features-1-0-12">Features<a class="anchor" aria-label="anchor" href="#features-1-0-12"></a></h3>
 <ul><li>Add support for Redshift connections (<a href="https://github.com/owenjonesuob" class="external-link">@owenjonesuob</a>, <a href="https://github.com/cynkra/dm/issues/2215" class="external-link">#2215</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="chore-1-0-11-9900">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-11-9900"></a></h3>
+<h3 id="chore-1-0-12">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-12"></a></h3>
 <ul><li><p>Remove fansi.</p></li>
 <li><p>Suggest package used in demo.</p></li>
 <li><p>Bump RMariaDB version (<a href="https://github.com/cynkra/dm/issues/2244" class="external-link">#2244</a>).</p></li>
 <li><p>Drop crayon and mockr dependencies (<a href="https://github.com/olivroy" class="external-link">@olivroy</a>, <a href="https://github.com/cynkra/dm/issues/2220" class="external-link">#2220</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="documentation-1-0-11-9900">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-11-9900"></a></h3>
+<h3 id="documentation-1-0-12">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-12"></a></h3>
 <ul><li><p>Add cynkra ROR (<a href="https://github.com/cynkra/dm/issues/2282" class="external-link">#2282</a>).</p></li>
 <li><p>Fix intended links (<a href="https://github.com/guspan-tanadi" class="external-link">@guspan-tanadi</a>, <a href="https://github.com/cynkra/dm/issues/2278" class="external-link">#2278</a>).</p></li>
 <li><p>Restore empty space removed by styler (<a href="https://github.com/cynkra/dm/issues/2269" class="external-link">#2269</a>).</p></li>
@@ -82,8 +89,9 @@
 <li><p>Fix typo (<a href="https://github.com/salim-b" class="external-link">@salim-b</a>, <a href="https://github.com/cynkra/dm/issues/2218" class="external-link">#2218</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="testing-1-0-11-9900">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-11-9900"></a></h3>
-<ul><li>Fix compatibility with waldo &gt;= 0.6.0 (<a href="https://github.com/cynkra/dm/issues/2240" class="external-link">#2240</a>).</li>
+<h3 id="testing-1-0-12">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-12"></a></h3>
+<ul><li><p>Stabilize learning tests (<a href="https://github.com/cynkra/dm/issues/2291" class="external-link">#2291</a>).</p></li>
+<li><p>Fix compatibility with waldo &gt;= 0.6.0 (<a href="https://github.com/cynkra/dm/issues/2240" class="external-link">#2240</a>).</p></li>
 </ul></div>
 </div>
     <div class="section level2">
