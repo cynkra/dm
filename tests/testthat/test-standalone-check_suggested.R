@@ -20,7 +20,11 @@ test_that("`check_suggested()` works for error messages", {
   rlang::local_interactive(TRUE)
   expect_snapshot({
     # A message
-    check_suggested(c("iurtnkjvmomweicopbt (>= 0.5)", "xxx", "cli"), "foo", use = NA)
+    check_suggested(
+      c("iurtnkjvmomweicopbt (>= 0.5)", "xxx", "cli"),
+      "foo",
+      use = NA
+    )
   })
 })
 

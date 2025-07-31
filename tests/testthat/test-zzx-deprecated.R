@@ -26,7 +26,11 @@ test_that("cdm_copy_to() behaves correctly", {
   local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_dm(
-    cdm_copy_to(duckdb_test_src(), dm_for_filter_simple(), unique_table_names = TRUE),
+    cdm_copy_to(
+      duckdb_test_src(),
+      dm_for_filter_simple(),
+      unique_table_names = TRUE
+    ),
     dm_for_filter_simple()
   )
 })
@@ -59,12 +63,14 @@ test_that("cdm_filter() behaves correctly", {
   local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_tbl(
-    cdm_filter(dm_for_filter_simple(), tf_1, a > 4) %>% dm_apply_filters_to_tbl(tf_2),
+    cdm_filter(dm_for_filter_simple(), tf_1, a > 4) %>%
+      dm_apply_filters_to_tbl(tf_2),
     tf_2_simple() %>% filter(d > 4)
   )
 
   expect_equivalent_tbl(
-    dm_filter(dm_for_filter_simple(), tf_1, a > 4) %>% cdm_apply_filters_to_tbl(tf_2),
+    dm_filter(dm_for_filter_simple(), tf_1, a > 4) %>%
+      cdm_apply_filters_to_tbl(tf_2),
     tf_2_simple() %>% filter(d > 4)
   )
 
@@ -197,7 +203,10 @@ test_that("other FK functions work", {
   expect_identical(
     dm_for_filter_simple() %>%
       cdm_get_all_fks() %>%
-      mutate(child_fk_cols = new_keys(child_fk_cols), parent_key_cols = new_keys(parent_key_cols)),
+      mutate(
+        child_fk_cols = new_keys(child_fk_cols),
+        parent_key_cols = new_keys(parent_key_cols)
+      ),
     dm_get_all_fks(dm_for_filter_simple())
   )
 
@@ -241,7 +250,12 @@ test_that("cdm_learn_from_db() works from PG", {
 
   # create an object on the Postgres-DB that can be learned
   if (is_postgres_empty()) {
-    copy_dm_to(con_postgres, dm_for_filter_simple(), unique_table_names = TRUE, temporary = FALSE)
+    copy_dm_to(
+      con_postgres,
+      dm_for_filter_simple(),
+      unique_table_names = TRUE,
+      temporary = FALSE
+    )
   }
 
   expect_equivalent_dm(
@@ -327,8 +341,18 @@ test_that("dm_select_tbl() and dm_rename_tbl() work", {
   local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_dm(
-    cdm_select_tbl(dm_for_filter_simple(), tf_1_new = tf_1, tf_2, new_tf_6 = tf_6),
-    dm_select_tbl(dm_for_filter_simple(), tf_1_new = tf_1, tf_2, new_tf_6 = tf_6)
+    cdm_select_tbl(
+      dm_for_filter_simple(),
+      tf_1_new = tf_1,
+      tf_2,
+      new_tf_6 = tf_6
+    ),
+    dm_select_tbl(
+      dm_for_filter_simple(),
+      tf_1_new = tf_1,
+      tf_2,
+      new_tf_6 = tf_6
+    )
   )
 
   expect_equivalent_dm(
@@ -362,8 +386,10 @@ test_that("dm_zoom_to() and related functions work", {
   )
 
   expect_equivalent_dm(
-    dm_zoom_to(dm_for_filter_simple(), tf_1) %>% cdm_insert_zoomed_tbl("another_name"),
-    dm_zoom_to(dm_for_filter_simple(), tf_1) %>% dm_insert_zoomed("another_name")
+    dm_zoom_to(dm_for_filter_simple(), tf_1) %>%
+      cdm_insert_zoomed_tbl("another_name"),
+    dm_zoom_to(dm_for_filter_simple(), tf_1) %>%
+      dm_insert_zoomed("another_name")
   )
 
   expect_equivalent_dm(

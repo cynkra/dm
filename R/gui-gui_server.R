@@ -25,7 +25,6 @@ gui_server <- function(input, output, session) {
     r_ops()$dm
   })
 
-
   # Not every update in dm needs to reset the svg values
   # trigger by: r_reset_svg(r_reset_svg() + 1)
   r_reset_svg <- shiny::reactiveVal(0)
@@ -37,14 +36,16 @@ gui_server <- function(input, output, session) {
   })
 
   r_call <- shiny::reactive({
-    paste(utils::capture.output(print.dm_cg_code_block(r_ops()$cg)), collapse = "\n")
+    paste(
+      utils::capture.output(print.dm_cg_code_block(r_ops()$cg)),
+      collapse = "\n"
+    )
     # format(r_ops()$cg)
   })
 
   shiny::observe({
     shinyAce::updateAceEditor(session, "i_call", r_call())
   })
-
 
   # edge selector -----------------------------------------------------------
 
@@ -60,7 +61,6 @@ gui_server <- function(input, output, session) {
       filter(id %in% r_edge_names()) %>%
       select(-on_delete, -id)
   })
-
 
   # table selector -------------------------------------------------------------
 
@@ -79,7 +79,10 @@ gui_server <- function(input, output, session) {
 
   shiny::observe({
     table_names <- r_table_names_svg()
-    table_names <- c(intersect(g_table_names, table_names), setdiff(table_names, g_table_names))
+    table_names <- c(
+      intersect(g_table_names, table_names),
+      setdiff(table_names, g_table_names)
+    )
     g_table_names <<- table_names
     r_table_names_ordered(table_names)
   })
@@ -88,7 +91,6 @@ gui_server <- function(input, output, session) {
     g_table_names <<- table_names
     r_table_names_ordered(table_names)
   })
-
 
   # Is there a better solution for this? Seems like a standard problem:
   # Two input widgets that update each other.
@@ -108,7 +110,6 @@ gui_server <- function(input, output, session) {
     selected_tables
   })
 
-
   # On start, after new dm, remove choices
   shiny::observe({
     choices <- names(r_dm())
@@ -120,14 +121,14 @@ gui_server <- function(input, output, session) {
     )
   })
 
-  shiny::observeEvent(input$i_selected_tables,
+  shiny::observeEvent(
+    input$i_selected_tables,
     {
       selected_tables <- input$i_selected_tables
       r_table_names_ordered(selected_tables)
     },
     ignoreInit = TRUE
   )
-
 
   # Update select only if changed by svg or switch
   shiny::observe({
@@ -154,7 +155,6 @@ gui_server <- function(input, output, session) {
     )
   })
 
-
   # view modes -----------------------------------------------------------------
 
   # so we can use shiny::conditionalPanel() and avoid renderUI for now
@@ -166,18 +166,29 @@ gui_server <- function(input, output, session) {
   output$are_two_tables_selected <- shiny::reactive({
     length(r_table_names_ordered()) == 2
   })
-  shiny::outputOptions(output, "are_two_tables_selected", suspendWhenHidden = FALSE)
+  shiny::outputOptions(
+    output,
+    "are_two_tables_selected",
+    suspendWhenHidden = FALSE
+  )
 
   output$is_one_table_selected <- shiny::reactive({
     length(r_table_names_ordered()) == 1
   })
-  shiny::outputOptions(output, "is_one_table_selected", suspendWhenHidden = FALSE)
+  shiny::outputOptions(
+    output,
+    "is_one_table_selected",
+    suspendWhenHidden = FALSE
+  )
 
   output$is_one_or_two_table_selected <- shiny::reactive({
     length(r_table_names_ordered()) %in% 1:2
   })
-  shiny::outputOptions(output, "is_one_or_two_table_selected", suspendWhenHidden = FALSE)
-
+  shiny::outputOptions(
+    output,
+    "is_one_or_two_table_selected",
+    suspendWhenHidden = FALSE
+  )
 
   # table mode (1 table selected) ----------------------------------------------
 
@@ -216,7 +227,11 @@ gui_server <- function(input, output, session) {
   output$are_columns_selected <- shiny::reactive({
     length(r_column_names()) > 0
   })
-  shiny::outputOptions(output, "are_columns_selected", suspendWhenHidden = FALSE)
+  shiny::outputOptions(
+    output,
+    "are_columns_selected",
+    suspendWhenHidden = FALSE
+  )
 
   # 2 table mode (2 tables selected) -------------------------------------------
 
@@ -246,7 +261,6 @@ gui_server <- function(input, output, session) {
     reactable_column(data, table_name[1])
   })
 
-
   r_column_2_names <- shiny::reactive({
     n <- reactable::getReactableState("o_column_2", "selected")
     shiny::req(r_data_column_2())[n, ] %>% dplyr::pull(name)
@@ -256,8 +270,11 @@ gui_server <- function(input, output, session) {
   output$are_columns_2_selected <- shiny::reactive({
     length(r_column_2_names()) > 0
   })
-  shiny::outputOptions(output, "are_columns_2_selected", suspendWhenHidden = FALSE)
-
+  shiny::outputOptions(
+    output,
+    "are_columns_2_selected",
+    suspendWhenHidden = FALSE
+  )
 
   # calls to middleware --------------------------------------------------------
 
@@ -265,7 +282,8 @@ gui_server <- function(input, output, session) {
 
   shiny::observeEvent(input$i_rm_tbl, {
     ans <- mw_cg_run(
-      r_ops(), "dm_select_tbl",
+      r_ops(),
+      "dm_select_tbl",
       table_names = r_table_names_ordered(),
       rm = TRUE,
       abort_function = ~ showNotification(.x, type = "error")
@@ -276,7 +294,8 @@ gui_server <- function(input, output, session) {
 
   shiny::observeEvent(input$i_select_tbl, {
     ans <- mw_cg_run(
-      r_ops(), "dm_select_tbl",
+      r_ops(),
+      "dm_select_tbl",
       table_names = r_table_names_ordered(),
       abort_function = ~ showNotification(.x, type = "error")
     )
@@ -286,7 +305,8 @@ gui_server <- function(input, output, session) {
 
   shiny::observeEvent(input$i_add_pk, {
     ans <- mw_cg_run(
-      r_ops(), "dm_add_pk",
+      r_ops(),
+      "dm_add_pk",
       table_names = r_table_names_ordered(),
       column_names = r_column_names(),
       abort_function = ~ showNotification(.x, type = "error")
@@ -296,7 +316,8 @@ gui_server <- function(input, output, session) {
 
   shiny::observeEvent(input$i_add_fk, {
     ans <- mw_cg_run(
-      r_ops(), "dm_add_fk",
+      r_ops(),
+      "dm_add_fk",
       table_names = r_table_names_ordered(),
       column_names = r_column_names(),
       other_column_names = r_column_2_names(),
@@ -307,7 +328,8 @@ gui_server <- function(input, output, session) {
 
   shiny::observeEvent(input$i_rm_fk, {
     ans <- mw_cg_run(
-      r_ops(), "dm_rm_fk",
+      r_ops(),
+      "dm_rm_fk",
       edge_table = r_edge_table(),
       abort_function = ~ showNotification(.x, type = "error")
     )
@@ -317,7 +339,8 @@ gui_server <- function(input, output, session) {
 
   shiny::observeEvent(input$i_disentangle, {
     ans <- mw_cg_run(
-      r_ops(), "dm_disentangle",
+      r_ops(),
+      "dm_disentangle",
       table_names = r_table_names_ordered(),
       abort_function = ~ showNotification(.x, type = "error")
     )
@@ -325,10 +348,12 @@ gui_server <- function(input, output, session) {
     r_ops_stack(ops_stack_append(r_ops_stack(), ans))
   })
 
-  shiny::observeEvent(input$i_choose_color,
+  shiny::observeEvent(
+    input$i_choose_color,
     {
       ans <- mw_cg_run(
-        r_ops(), "dm_set_colors",
+        r_ops(),
+        "dm_set_colors",
         table_names = r_table_names_ordered(),
         color_name = input$i_choose_color,
         abort_function = ~ showNotification(.x, type = "error")
@@ -341,7 +366,8 @@ gui_server <- function(input, output, session) {
 
   shiny::observeEvent(input$i_rm_col, {
     ans <- mw_cg_run(
-      r_ops(), "dm_select",
+      r_ops(),
+      "dm_select",
       table_names = r_table_names_ordered(),
       column_names = r_column_names(),
       rm = TRUE,
@@ -365,7 +391,6 @@ gui_server <- function(input, output, session) {
     r_ops_stack(ops_stack_redo(r_ops_stack()))
   })
 
-
   # output ---------------------------------------------------------------------
 
   r_node_to_zoom <- shiny::reactiveVal(character())
@@ -375,6 +400,11 @@ gui_server <- function(input, output, session) {
 
   output$o_svg <- renderDmSVG({
     dm <- r_dm()
-    dmSVG(dm, viewBox = FALSE, node_to_zoom = r_node_to_zoom(), nodes_to_select = I(r_table_names_select()))
+    dmSVG(
+      dm,
+      viewBox = FALSE,
+      node_to_zoom = r_node_to_zoom(),
+      nodes_to_select = I(r_table_names_select())
+    )
   })
 }

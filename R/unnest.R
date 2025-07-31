@@ -33,7 +33,10 @@ unnest_list_of_df <- function(x, col) {
   col_data <- x[[col]]
   stopifnot(is_list_of(col_data))
 
-  out <- x[rep(seq_len(nrow(x)), map_int(col_data, vec_size)), setdiff(names(x), col)]
+  out <- x[
+    rep(seq_len(nrow(x)), map_int(col_data, vec_size)),
+    setdiff(names(x), col)
+  ]
   out <- vec_cbind(out, c_list_of(col_data))
   out
 }
@@ -41,7 +44,10 @@ unnest_list_of_df <- function(x, col) {
 unnest_df <- function(x, col, ptype) {
   col_data <- x[[col]]
 
-  out <- x[rep(seq_len(nrow(x)), map_int(col_data, vec_size)), setdiff(names(x), col)]
+  out <- x[
+    rep(seq_len(nrow(x)), map_int(col_data, vec_size)),
+    setdiff(names(x), col)
+  ]
 
   if (length(col_data) > 0) {
     col_data <- vec_rbind(!!!col_data)

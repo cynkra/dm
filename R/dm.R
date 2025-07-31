@@ -49,9 +49,11 @@
 #' dm_nycflights13()[["airports"]]
 #'
 #' dm_nycflights13() %>% names()
-dm <- function(...,
-               .name_repair = c("check_unique", "unique", "universal", "minimal"),
-               .quiet = FALSE) {
+dm <- function(
+  ...,
+  .name_repair = c("check_unique", "unique", "universal", "minimal"),
+  .quiet = FALSE
+) {
   quos <- enquos(...)
   names <- names2(quos)
 
@@ -79,7 +81,12 @@ dm <- function(...,
   stopifnot(names2(quos)[is_dm] == "")
 
   dm_tbl <- dm_impl(dots[!is_dm], names(quos_auto_name(quos[!is_dm])))
-  def <- dm_bind_impl(c(dots[is_dm], list(dm_tbl)), .name_repair, .quiet, repair_arg = "")
+  def <- dm_bind_impl(
+    c(dots[is_dm], list(dm_tbl)),
+    .name_repair,
+    .quiet,
+    repair_arg = ""
+  )
 
   # Validation occurs in CI/CD
   dm_from_def(def)
@@ -146,7 +153,12 @@ new_keyed_dm_def <- function(tables = list()) {
 }
 
 
-new_dm_def <- function(tables = list(), pks_df = NULL, uks_df = NULL, fks_df = NULL) {
+new_dm_def <- function(
+  tables = list(),
+  pks_df = NULL,
+  uks_df = NULL,
+  fks_df = NULL
+) {
   # Legacy
   data <- unname(tables)
   table <- names2(tables)
@@ -226,10 +238,12 @@ new_uk <- function(column = list()) {
   fast_tibble(column = column)
 }
 
-new_fk <- function(ref_column = list(),
-                   table = character(),
-                   column = list(),
-                   on_delete = character()) {
+new_fk <- function(
+  ref_column = list(),
+  table = character(),
+  column = list(),
+  on_delete = character()
+) {
   stopifnot(
     is.list(column),
     is.list(ref_column),
@@ -386,7 +400,11 @@ show_dm <- function(x) {
   filters <- dm_get_filters_impl(x)
   if (nrow(filters) > 0) {
     cat_rule("Filters", col = "orange")
-    walk2(filters$table, filters$filter, ~ cat_line(paste0(.x, ": ", as_label(.y))))
+    walk2(
+      filters$table,
+      filters$filter,
+      ~ cat_line(paste0(.x, ": ", as_label(.y)))
+    )
   }
 }
 
@@ -394,7 +412,9 @@ show_dm <- function(x) {
 format.dm <- function(x, ...) {
   # for both dm and dm_zoomed
   def <- dm_get_def(x)
-  glue("dm: {def_get_n_tables(def)} tables, {def_get_n_columns(def)} columns, {def_get_n_pks(def)} primary keys, {def_get_n_fks(def)} foreign keys")
+  glue(
+    "dm: {def_get_n_tables(def)} tables, {def_get_n_columns(def)} columns, {def_get_n_pks(def)} primary keys, {def_get_n_fks(def)} foreign keys"
+  )
 }
 
 #' @export
@@ -456,7 +476,13 @@ tbl_sum.dm_zoomed_df <- function(x, ...) {
 }
 
 #' @export
-format.dm_zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
+format.dm_zoomed_df <- function(
+  x,
+  ...,
+  n = NULL,
+  width = NULL,
+  n_extra = NULL
+) {
   NextMethod()
 }
 
@@ -483,7 +509,11 @@ format.dm_zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) 
   check_dots_empty()
 
   # for both dm and dm_zoomed
-  if (is.numeric(id)) id <- src_tbls_impl(x)[id] else id <- as_string(id)
+  if (is.numeric(id)) {
+    id <- src_tbls_impl(x)[id]
+  } else {
+    id <- as_string(id)
+  }
   tbl_impl(x, id, quiet = TRUE)
 }
 
@@ -499,7 +529,9 @@ format.dm_zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) 
 
 #' @export
 `[.dm` <- function(x, id) {
-  if (is.numeric(id)) id <- src_tbls_impl(x)[id]
+  if (is.numeric(id)) {
+    id <- src_tbls_impl(x)[id]
+  }
   id <- as.character(id)
   dm_select_tbl(x, !!!id)
 }
@@ -816,7 +848,9 @@ pull_tbl.dm <- function(dm, table, ..., keyed = FALSE) {
   # for both dm and dm_zoomed
   # FIXME: shall we issue a special error in case someone tries sth. like: `pull_tbl(dm_for_filter, c(t4, t3))`?
   table_name <- as_string(enexpr(table))
-  if (table_name == "") abort_no_table_provided()
+  if (table_name == "") {
+    abort_no_table_provided()
+  }
   tbl_impl(dm, table_name, keyed = keyed)
 }
 
@@ -921,7 +955,12 @@ print_glimpse_table_meta <- function(x, width) {
 
   cat_line(
     trim_width(
-      paste0("dm of ", length(table_list), " tables: ", toString(tick(names(table_list)))),
+      paste0(
+        "dm of ",
+        length(table_list),
+        " tables: ",
+        toString(tick(names(table_list)))
+      ),
       width
     )
   )
@@ -963,7 +1002,10 @@ print_glimpse_table <- function(x, table_name, width, ...) {
 #' @noRd
 print_glimpse_table_name <- function(x, table_name, width) {
   if (is_zoomed(x)) {
-    cat_line("\n", trim_width(paste0("Zoomed table: ", tick(table_name)), width))
+    cat_line(
+      "\n",
+      trim_width(paste0("Zoomed table: ", tick(table_name)), width)
+    )
   } else {
     cat_line("\n", trim_width(paste0("Table: ", tick(table_name)), width))
   }

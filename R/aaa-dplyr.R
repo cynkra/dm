@@ -17,7 +17,12 @@ register_if_dplyr_hasnt <- function(...) {
 
   # Register our method implementations only if dplyr doesn't provide them
   methods <- enquos(..., .named = TRUE)
-  dplyr_methods <- mget(names(methods), dplyr_ns, mode = "function", ifnotfound = list(NULL))
+  dplyr_methods <- mget(
+    names(methods),
+    dplyr_ns,
+    mode = "function",
+    ifnotfound = list(NULL)
+  )
   methods <- methods[map_lgl(dplyr_methods, is.null)]
 
   if (is_empty(methods)) {

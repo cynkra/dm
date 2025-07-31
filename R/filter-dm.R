@@ -53,38 +53,74 @@
 #' # only the three New York airports.
 #' @export
 dm_filter <- function(.dm, ...) {
-  dm_filter_api0({{ .dm }}, ..., target = dm_filter_impl0, apply_target = dm_apply_filters_impl)
+  dm_filter_api0(
+    {{ .dm }},
+    ...,
+    target = dm_filter_impl0,
+    apply_target = dm_apply_filters_impl
+  )
 }
 
-dm_filter_api0 <- function(..., dm = NULL,
-                           call = caller_env(), user_env = caller_env(2),
-                           target = make_dm_filter_api_call,
-                           apply_target = make_dm_apply_filters_call) {
+dm_filter_api0 <- function(
+  ...,
+  dm = NULL,
+  call = caller_env(),
+  user_env = caller_env(2),
+  target = make_dm_filter_api_call,
+  apply_target = make_dm_apply_filters_call
+) {
   if (!is.null(dm)) {
-    deprecate_soft("1.0.0", "dm_filter(dm = )", "dm_filter(.dm = )", user_env = user_env)
+    deprecate_soft(
+      "1.0.0",
+      "dm_filter(dm = )",
+      "dm_filter(.dm = )",
+      user_env = user_env
+    )
     dm_filter_api1(
-      dm, ...,
-      call = call, user_env = user_env, target = target, apply_target = apply_target
+      dm,
+      ...,
+      call = call,
+      user_env = user_env,
+      target = target,
+      apply_target = apply_target
     )
   } else {
     dm_filter_api1(
       ...,
-      call = call, user_env = user_env, target = target, apply_target = apply_target
+      call = call,
+      user_env = user_env,
+      target = target,
+      apply_target = apply_target
     )
   }
 }
 
-dm_filter_api1 <- function(.dm, ..., table = NULL,
-                           call, user_env, target, apply_target) {
+dm_filter_api1 <- function(
+  .dm,
+  ...,
+  table = NULL,
+  call,
+  user_env,
+  target,
+  apply_target
+) {
   quos <- enquos(...)
   table <- enquo(table)
 
   if (is_named2(quos)) {
     # New-style API: apply immediately
-    out <- reduce2(names(quos), quos, dm_filter_api, .init = .dm, target = target)
+    out <- reduce2(
+      names(quos),
+      quos,
+      dm_filter_api,
+      .init = .dm,
+      target = target
+    )
     apply_target(out)
   } else {
-    deprecate_soft("1.0.0", "dm_filter(table = )",
+    deprecate_soft(
+      "1.0.0",
+      "dm_filter(table = )",
       user_env = user_env,
       details = "`dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters."
     )
@@ -100,7 +136,13 @@ dm_filter_api1 <- function(.dm, ..., table = NULL,
 
     stopifnot(quo_is_symbol(table))
 
-    reduce(quos, dm_filter_api, table = as_name(table), .init = .dm, target = target)
+    reduce(
+      quos,
+      dm_filter_api,
+      table = as_name(table),
+      .init = .dm,
+      target = target
+    )
   }
 }
 
@@ -139,7 +181,11 @@ dm_filter_impl <- function(dm_zoomed, ..., set_filter) {
   if (set_filter) {
     dm_zoomed <-
       dm_zoomed %>%
-      set_filter_for_table(orig_name_zoomed(dm_zoomed), map(filter_quos, quo_get_expr), TRUE)
+      set_filter_for_table(
+        orig_name_zoomed(dm_zoomed),
+        map(filter_quos, quo_get_expr),
+        TRUE
+      )
   }
 
   replace_zoomed_tbl(dm_zoomed, filtered_tbl)
@@ -149,7 +195,10 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
   def <- dm_get_def(dm)
 
   i <- which(def$table == table)
-  def$filters[[i]] <- vec_rbind(def$filters[[i]], new_filter(filter_exprs, zoomed))
+  def$filters[[i]] <- vec_rbind(
+    def$filters[[i]],
+    new_filter(filter_exprs, zoomed)
+  )
   dm_from_def(def, zoomed = zoomed)
 }
 
@@ -161,7 +210,9 @@ dm_apply_filters <- function(dm) {
 
   filters <- dm_get_filters_impl(dm)
   if (nrow(filters) == 0) {
-    deprecate_soft("1.0.0", "dm_apply_filters()",
+    deprecate_soft(
+      "1.0.0",
+      "dm_apply_filters()",
       details = "Calling `dm_apply_filters()` after `dm_filter()` is no longer necessary."
     )
   }
@@ -184,7 +235,9 @@ dm_apply_filters_to_tbl <- function(dm, table) {
 
   filters <- dm_get_filters_impl(dm)
   if (nrow(filters) == 0) {
-    deprecate_soft("1.0.0", "dm_apply_filters_to_tbl()",
+    deprecate_soft(
+      "1.0.0",
+      "dm_apply_filters_to_tbl()",
       details = "Access tables directly after `dm_filter()`."
     )
   }
@@ -232,7 +285,8 @@ dm_get_filtered_table <- function(dm, from) {
       semi_joins <- pull(semi_joins)
       semi_joins_tbls <- list_of_tables[semi_joins]
       table <-
-        reduce2(semi_joins_tbls,
+        reduce2(
+          semi_joins_tbls,
           semi_joins,
           ~ semi_join(..1, ..2, by = get_by(dm, table_name, ..3)),
           .init = table
@@ -286,7 +340,9 @@ dm_get_filters <- function(dm) {
 
   filters <- dm_get_filters_impl(dm)
   if (nrow(filters) == 0) {
-    deprecate_soft("1.0.0", "dm_get_filters()",
+    deprecate_soft(
+      "1.0.0",
+      "dm_get_filters()",
       details = "Filter conditions are no longer stored with the dm object."
     )
   }
@@ -332,8 +388,15 @@ get_all_filtered_connected <- function(dm, table) {
   # 1. speed things up
   # 2. make it possible to easily test for a cycle (cycle if: N(E) >= N(V))
   graph <- igraph::induced_subgraph(graph, target_tables)
-  if (length(E(graph)) >= length(V(graph))) abort_no_cycles(graph)
-  paths <- igraph::shortest_paths(graph, table, target_tables, predecessors = TRUE)
+  if (length(E(graph)) >= length(V(graph))) {
+    abort_no_cycles(graph)
+  }
+  paths <- igraph::shortest_paths(
+    graph,
+    table,
+    target_tables,
+    predecessors = TRUE
+  )
 
   # All edges with finite distance as tidy data frame
   all_edges <-
@@ -346,7 +409,9 @@ get_all_filtered_connected <- function(dm, table) {
     )
 
   # igraph >= 2.0.0:
-  all_edges$parent[is.na(all_edges$parent)] <- all_edges$node[is.na(all_edges$parent)]
+  all_edges$parent[is.na(all_edges$parent)] <- all_edges$node[is.na(
+    all_edges$parent
+  )]
   stopifnot(!anyNA(all_edges$parent))
 
   # Edges of interest, will be grown until source node `table` is reachable
@@ -358,7 +423,9 @@ get_all_filtered_connected <- function(dm, table) {
   # Recursive join
   repeat {
     missing <- setdiff(edges$parent, edges$node)
-    if (is_empty(missing)) break
+    if (is_empty(missing)) {
+      break
+    }
 
     edges <- bind_rows(edges, filter(all_edges, node %in% !!missing))
   }

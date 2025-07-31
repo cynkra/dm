@@ -16,12 +16,28 @@
 #' df3 <- json_pack_join(df1, df2)
 #' df3
 #' df3$df2
-json_pack_join <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
+json_pack_join <- function(
+  x,
+  y,
+  by = NULL,
+  ...,
+  copy = FALSE,
+  keep = FALSE,
+  name = NULL
+) {
   UseMethod("json_pack_join")
 }
 
 #' @export
-json_pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
+json_pack_join.data.frame <- function(
+  x,
+  y,
+  by = NULL,
+  ...,
+  copy = FALSE,
+  keep = FALSE,
+  name = NULL
+) {
   check_suggested("jsonlite", "json_pack_join")
   check_dots_empty()
 

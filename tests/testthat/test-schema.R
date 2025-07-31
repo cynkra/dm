@@ -10,13 +10,22 @@ test_that("schema handling on MSSQL and Postgres works", {
   }
 
   expect_dm_error(db_schema_exists(con_db, 1), "parameter_not_correct_class")
-  expect_dm_error(db_schema_exists(con_db, letters[1:2]), "parameter_not_correct_length")
+  expect_dm_error(
+    db_schema_exists(con_db, letters[1:2]),
+    "parameter_not_correct_length"
+  )
   expect_dm_error(db_schema_exists(src_db, 1), "parameter_not_correct_class")
-  expect_dm_error(db_schema_exists(src_db, letters[1:2]), "parameter_not_correct_length")
+  expect_dm_error(
+    db_schema_exists(src_db, letters[1:2]),
+    "parameter_not_correct_length"
+  )
 
   withr::defer({
     try(DBI::dbExecute(con_db, "DROP TABLE test_schema_1"))
-    try(DBI::dbExecute(con_db, DBI::SQL('DROP TABLE "1-dm_schema_TEST"."test_schema_2"')))
+    try(DBI::dbExecute(
+      con_db,
+      DBI::SQL('DROP TABLE "1-dm_schema_TEST"."test_schema_2"')
+    ))
     try(DBI::dbExecute(con_db, DBI::SQL('DROP SCHEMA "1-dm_schema_TEST"')))
   })
 
@@ -38,14 +47,16 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_error(db_schema_drop(con_db, "1-dm_schema_TEST"))
   expect_false(db_schema_exists(con_db, "1-dm_schema_TEST"))
 
-  expect_deprecated(expect_message(db_schema_create(src_db, "1-dm_schema_TEST"), "created"))
+  expect_deprecated(expect_message(
+    db_schema_create(src_db, "1-dm_schema_TEST"),
+    "created"
+  ))
   expect_deprecated(expect_true(db_schema_exists(src_db, "1-dm_schema_TEST")))
   expect_message(db_schema_drop(con_db, "1-dm_schema_TEST"), "Dropped schema")
   expect_deprecated(expect_false(db_schema_exists(src_db, "1-dm_schema_TEST")))
 
   expect_false("test_schema_1" %in% sql_schema_table_list(con_db)$table_name)
   expect_false("test_schema_1" %in% sql_schema_table_list(src_db)$table_name)
-
 
   DBI::dbWriteTable(
     con_db,
@@ -66,7 +77,10 @@ test_that("schema handling on MSSQL and Postgres works", {
     tibble(a = 1:5)
   )
 
-  expect_message(expect_deprecated(db_schema_create(src_db, "1-dm_schema_TEST")), "created")
+  expect_message(
+    expect_deprecated(db_schema_create(src_db, "1-dm_schema_TEST")),
+    "created"
+  )
 
   DBI::dbWriteTable(
     con_db,
@@ -80,7 +94,10 @@ test_that("schema handling on MSSQL and Postgres works", {
     schema_list,
     tibble(
       table_name = "test_schema_2",
-      remote_name = list(DBI::Id(schema = "1-dm_schema_TEST", table = "test_schema_2"))
+      remote_name = list(DBI::Id(
+        schema = "1-dm_schema_TEST",
+        table = "test_schema_2"
+      ))
     )
   )
 
@@ -137,38 +154,70 @@ test_that("schema handling on MSSQL works for different DBs", {
 
   original_dbname <- attributes(con_db)$info$dbname
   DBI::dbExecute(con_db, "CREATE DATABASE test_db_for_schema_dm")
-  expect_false(db_schema_exists(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"))
+  expect_false(db_schema_exists(
+    con_db,
+    schema = "test_schema",
+    dbname = "test_db_for_schema_dm"
+  ))
 
   expect_message(
-    db_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    db_schema_create(
+      con_db,
+      schema = "test_schema",
+      dbname = "test_db_for_schema_dm"
+    ),
     "on database `test_db_for_schema_dm`"
   )
 
   expect_error(
-    db_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm")
+    db_schema_create(
+      con_db,
+      schema = "test_schema",
+      dbname = "test_db_for_schema_dm"
+    )
   )
 
   expect_identical(
     sort(
-      db_schema_list(con_db, include_default = TRUE, dbname = "test_db_for_schema_dm")$schema_name
+      db_schema_list(
+        con_db,
+        include_default = TRUE,
+        dbname = "test_db_for_schema_dm"
+      )$schema_name
     ),
     c("dbo", "test_schema")
   )
 
   expect_message(
-    db_schema_drop(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    db_schema_drop(
+      con_db,
+      schema = "test_schema",
+      dbname = "test_db_for_schema_dm"
+    ),
     "on database `test_db_for_schema_dm`"
   )
 
   expect_message(
-    db_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    db_schema_create(
+      con_db,
+      schema = "test_schema",
+      dbname = "test_db_for_schema_dm"
+    ),
     "on database `test_db_for_schema_dm`"
   )
 
-  expect_true(db_schema_exists(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"))
+  expect_true(db_schema_exists(
+    con_db,
+    schema = "test_schema",
+    dbname = "test_db_for_schema_dm"
+  ))
 
   expect_identical(
-    sql_schema_table_list_mssql(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    sql_schema_table_list_mssql(
+      con_db,
+      schema = "test_schema",
+      dbname = "test_db_for_schema_dm"
+    ),
     tibble(
       table_name = character(),
       remote_name = list()
@@ -177,22 +226,39 @@ test_that("schema handling on MSSQL works for different DBs", {
 
   DBI::dbWriteTable(
     con_db,
-    DBI::Id(catalog = "test_db_for_schema_dm", schema = "test_schema", table = "test_1"),
+    DBI::Id(
+      catalog = "test_db_for_schema_dm",
+      schema = "test_schema",
+      table = "test_1"
+    ),
     value = tibble(c = c(5L))
   )
 
   expect_error(
     expect_warning(
-      db_schema_drop(con_db, "test_schema", dbname = "test_db_for_schema_dm", force = TRUE),
+      db_schema_drop(
+        con_db,
+        "test_schema",
+        dbname = "test_db_for_schema_dm",
+        force = TRUE
+      ),
       "Argument `force` ignored:"
     )
   )
 
   expect_identical(
-    sql_schema_table_list_mssql(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    sql_schema_table_list_mssql(
+      con_db,
+      schema = "test_schema",
+      dbname = "test_db_for_schema_dm"
+    ),
     tibble(
       table_name = "test_1",
-      remote_name = list(DBI::Id(catalog = "test_db_for_schema_dm", schema = "test_schema", table = "test_1"))
+      remote_name = list(DBI::Id(
+        catalog = "test_db_for_schema_dm",
+        schema = "test_schema",
+        table = "test_1"
+      ))
     )
   )
 })

@@ -60,7 +60,9 @@ dm_wrap_tbl <- function(dm, root, strict = TRUE, progress = NA) {
   if (length(wrapped_dm) > 1) {
     if (strict) {
       # FIXME: Detect earlier
-      abort("The `dm` is not cycle free and can't be wrapped into a single tibble.")
+      abort(
+        "The `dm` is not cycle free and can't be wrapped into a single tibble."
+      )
     }
   }
 
@@ -81,14 +83,22 @@ dm_wrap_tbl_plan <- function(dm, root) {
     child_name <- names(positions)[positions == "terminal child"][1]
     has_terminal_child <- !is.na(child_name)
     if (has_terminal_child) {
-      wrap_plan <- add_row(wrap_plan, action = "dm_nest_tbl", table = child_name)
+      wrap_plan <- add_row(
+        wrap_plan,
+        action = "dm_nest_tbl",
+        table = child_name
+      )
       graph <- igraph::delete_vertices(graph, child_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }
     parent_name <- names(positions)[positions == "terminal parent"][1]
     has_terminal_parent <- !is.na(parent_name)
     if (has_terminal_parent) {
-      wrap_plan <- add_row(wrap_plan, action = "dm_pack_tbl", table = parent_name)
+      wrap_plan <- add_row(
+        wrap_plan,
+        action = "dm_pack_tbl",
+        table = parent_name
+      )
       graph <- igraph::delete_vertices(graph, parent_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }

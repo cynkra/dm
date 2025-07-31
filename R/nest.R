@@ -7,11 +7,15 @@ nest_join_dm_zoomed <- function(x, ...) {
 
   vars <- src_tbls_impl(dm_zoomed)
   selected <- eval_select_table(quo(c(...)), vars)
-  if (is_empty(selected)) selected <- vars
+  if (is_empty(selected)) {
+    selected <- vars
+  }
 
   orig_table <- orig_name_zoomed(dm_zoomed)
   if (!dm_has_pk_impl(dm_zoomed, orig_table)) {
-    message("The originally zoomed table didn't have a primary key, therefore `nest.dm_zoomed()` does nothing.")
+    message(
+      "The originally zoomed table didn't have a primary key, therefore `nest.dm_zoomed()` does nothing."
+    )
     return(dm_zoomed)
   }
 
@@ -39,7 +43,11 @@ nest_join_dm_zoomed <- function(x, ...) {
       name = child_tables$child_table[i]
     ) %>%
       # FIXME: why does `nest_join()` not produce a `list_of`?
-      mutate(!!child_tables$child_table[i] := as_list_of(!!sym(child_tables$child_table[i])))
+      mutate(
+        !!child_tables$child_table[i] := as_list_of(
+          !!sym(child_tables$child_table[i])
+        )
+      )
   }
   replace_zoomed_tbl(dm_zoomed, x)
 }

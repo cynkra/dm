@@ -22,7 +22,12 @@ register_if_dbplyr_hasnt <- function(...) {
     dbplyr_ns <- asNamespace("dbplyr")
 
     # Register our method implementations only if dbplyr doesn't provide them
-    dbplyr_methods <- mget(names(methods), dbplyr_ns, mode = "function", ifnotfound = list(NULL))
+    dbplyr_methods <- mget(
+      names(methods),
+      dbplyr_ns,
+      mode = "function",
+      ifnotfound = list(NULL)
+    )
 
     methods <- methods[map_lgl(dbplyr_methods, is.null)]
 
@@ -43,7 +48,12 @@ register_if_dbplyr_hasnt <- function(...) {
 remote_name_qual <- function(x) {
   dbplyr_ns <- asNamespace("dbplyr")
 
-  value <- mget("remote_table", dbplyr_ns, mode = "function", ifnotfound = list(NULL))[[1]]
+  value <- mget(
+    "remote_table",
+    dbplyr_ns,
+    mode = "function",
+    ifnotfound = list(NULL)
+  )[[1]]
   if (!is.null(value)) {
     table <- value(x)
     dbplyr::escape(table, con = dbplyr::remote_con(x))

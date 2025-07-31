@@ -31,11 +31,18 @@ dm_validate <- function(x) {
   def <- dm_get_def(x)
 
   table_names <- def$table
-  if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
+  if (any(table_names == "")) {
+    abort_dm_invalid("Not all tables are named.")
+  }
 
   check_df_structure(def, boilerplate, "dm definition")
 
-  if (!all(map_lgl(def$data, ~ inherits(., "data.frame") || inherits(., "tbl_sql")))) {
+  if (
+    !all(map_lgl(
+      def$data,
+      ~ inherits(., "data.frame") || inherits(., "tbl_sql")
+    ))
+  ) {
     abort_dm_invalid(
       "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `dm_get_tables()`."
     )
@@ -44,9 +51,21 @@ dm_validate <- function(x) {
     abort_dm_invalid(error_txt_not_same_src())
   }
 
-  check_df_structure(c_list_of(def$pks), c_list_of(boilerplate$pks), "`pks` column")
-  check_df_structure(c_list_of(def$fks), c_list_of(boilerplate$fks), "`fks` column")
-  check_df_structure(c_list_of(def$filters), c_list_of(boilerplate$filters), "`filters` column")
+  check_df_structure(
+    c_list_of(def$pks),
+    c_list_of(boilerplate$pks),
+    "`pks` column"
+  )
+  check_df_structure(
+    c_list_of(def$fks),
+    c_list_of(boilerplate$fks),
+    "`fks` column"
+  )
+  check_df_structure(
+    c_list_of(def$filters),
+    c_list_of(boilerplate$filters),
+    "`filters` column"
+  )
 
   dm_col_names <- set_names(map(def$data, colnames), table_names)
 
@@ -82,7 +101,12 @@ dm_validate <- function(x) {
     check_colnames(dm_col_names, "PK")
 
   check_one_zoom(def, is_zoomed(x))
-  if (!all(map_lgl(compact(def$zoom), ~ inherits(., "data.frame") || inherits(., "tbl_dbi")))) {
+  if (
+    !all(map_lgl(
+      compact(def$zoom),
+      ~ inherits(., "data.frame") || inherits(., "tbl_dbi")
+    ))
+  ) {
     abort_dm_invalid(
       "Not all entries in `def$zoom` are of class `data.frame`, `tbl_dbi` or `NULL`."
     )
@@ -131,7 +155,9 @@ check_df_structure <- function(check, boilerplate, where) {
   force(where)
 
   if (!identical(names(check), names(boilerplate))) {
-    abort_dm_invalid(glue("Inconsistent column names in {where}: {commas(names(check), Inf)} vs. {commas(names(boilerplate), Inf)}."))
+    abort_dm_invalid(glue(
+      "Inconsistent column names in {where}: {commas(names(check), Inf)} vs. {commas(names(boilerplate), Inf)}."
+    ))
   }
 
   if (!identical(check[0, ], boilerplate[0, ])) {
@@ -151,10 +177,16 @@ check_fk_child_tables <- function(child_tables, dm_tables) {
 }
 
 check_colnames <- function(key_tibble, dm_col_names, which) {
-  good <- map2_lgl(key_tibble$table, key_tibble$column, ~ ..2 %in% dm_col_names[[..1]])
+  good <- map2_lgl(
+    key_tibble$table,
+    key_tibble$column,
+    ~ ..2 %in% dm_col_names[[..1]]
+  )
   if (!all(good)) {
     bad_key <- key_tibble[which(!good)[[1]], ]
-    abort_dm_invalid(glue("{which} column name not in `dm` tables' column names: `{bad_key$table}`$`{bad_key$column}`"))
+    abort_dm_invalid(glue(
+      "{which} column name not in `dm` tables' column names: `{bad_key$table}`$`{bad_key$column}`"
+    ))
   }
 }
 
@@ -174,10 +206,14 @@ check_one_zoom <- function(def, zoomed) {
     }
   } else {
     if (sum(!map_lgl(def$zoom, is_null)) != 0) {
-      abort_dm_invalid("Zoomed table(s) available despite `dm` not a `dm_zoomed`.")
+      abort_dm_invalid(
+        "Zoomed table(s) available despite `dm` not a `dm_zoomed`."
+      )
     }
     if (sum(!map_lgl(def$col_tracker_zoom, is_null)) != 0) {
-      abort_dm_invalid("Key tracker for zoomed table activated despite `dm` not a `dm_zoomed`.")
+      abort_dm_invalid(
+        "Key tracker for zoomed table activated despite `dm` not a `dm_zoomed`."
+      )
     }
   }
 }

@@ -33,33 +33,57 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_cardinalities()
-dm_examine_cardinalities <- function(.dm, ..., .progress = NA,
-                                     dm = deprecated(), progress = deprecated()) {
+dm_examine_cardinalities <- function(
+  .dm,
+  ...,
+  .progress = NA,
+  dm = deprecated(),
+  progress = deprecated()
+) {
   check_dots_empty()
 
   if (!is_missing(dm)) {
-    deprecate_soft("1.0.0", "dm_examine_cardinalities(dm = )", "dm_examine_cardinalities(.dm = )")
+    deprecate_soft(
+      "1.0.0",
+      "dm_examine_cardinalities(dm = )",
+      "dm_examine_cardinalities(.dm = )"
+    )
   }
 
   if (is_missing(.dm)) {
-    return(dm_examine_cardinalities(dm, .progress = .progress, progress = progress))
+    return(dm_examine_cardinalities(
+      dm,
+      .progress = .progress,
+      progress = progress
+    ))
   }
 
   if (!is_missing(progress)) {
     if (is.na(progress)) {
       progress <- .progress
     }
-    deprecate_soft("1.0.0", "dm_examine_cardinalities(progress = )", "dm_examine_cardinalities(.progress = )")
+    deprecate_soft(
+      "1.0.0",
+      "dm_examine_cardinalities(progress = )",
+      "dm_examine_cardinalities(.progress = )"
+    )
   }
 
   check_not_zoomed(.dm)
   .dm %>%
-    dm_examine_cardinalities_impl(progress = .progress, top_level_fun = "dm_examine_cardinalities") %>%
+    dm_examine_cardinalities_impl(
+      progress = .progress,
+      top_level_fun = "dm_examine_cardinalities"
+    ) %>%
     new_dm_examine_cardinalities()
 }
 
 #' @autoglobal
-dm_examine_cardinalities_impl <- function(dm, progress = NA, top_level_fun = NULL) {
+dm_examine_cardinalities_impl <- function(
+  dm,
+  progress = NA,
+  top_level_fun = NULL
+) {
   fks <-
     dm_get_all_fks_impl(dm) %>%
     select(-on_delete)
@@ -97,24 +121,29 @@ print.dm_examine_cardinalities <- function(x, ...) {
   }
   x %>%
     mutate(
-      cardinalities =
-        pmap_chr(
-          x,
-          function(parent_table, parent_key_cols, child_table, child_fk_cols, cardinality) {
-            paste0(
-              "FK: ",
-              child_table,
-              "$(",
-              commas(tick(child_fk_cols)),
-              ") -> ",
-              parent_table,
-              "$(",
-              commas(tick(parent_key_cols)),
-              "): ",
-              cardinality
-            )
-          }
-        )
+      cardinalities = pmap_chr(
+        x,
+        function(
+          parent_table,
+          parent_key_cols,
+          child_table,
+          child_fk_cols,
+          cardinality
+        ) {
+          paste0(
+            "FK: ",
+            child_table,
+            "$(",
+            commas(tick(child_fk_cols)),
+            ") -> ",
+            parent_table,
+            "$(",
+            commas(tick(parent_key_cols)),
+            "): ",
+            cardinality
+          )
+        }
+      )
     ) %>%
     bullets_cardinalities()
 }
@@ -128,7 +157,9 @@ bullets_cardinalities <- function(x) {
     arrange(col)
   walk2(x$cardinalities, x$col, ~ cli::cat_bullet(.x, bullet_col = .y))
   if (sum(x$col == "red") > 0) {
-    cli::cli_alert_warning("Not all FK constraints satisfied, call `dm_examine_constraints()` for details.")
+    cli::cli_alert_warning(
+      "Not all FK constraints satisfied, call `dm_examine_constraints()` for details."
+    )
   }
   invisible(x)
 }

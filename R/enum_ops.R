@@ -1,5 +1,11 @@
 # FIXME: Implement choosing dm or connection object from .GlobalEnv
-enum_ops <- function(dm, ..., table_names = NULL, column_names = NULL, op_name = NULL) {
+enum_ops <- function(
+  dm,
+  ...,
+  table_names = NULL,
+  column_names = NULL,
+  op_name = NULL
+) {
   check_dots_empty()
   if (any_null(table_names, column_names, op_name)) {
     enum_ops_(op_name, dm, table_names, column_names)
@@ -61,9 +67,7 @@ add_multiple <- function(e, dm, tbls, cols) {
 
 # TODO: Add more operators
 enum <- function(op) {
-  switch(op,
-    dm_add_pk = enum_ops_dm_add_pk
-  )
+  switch(op, dm_add_pk = enum_ops_dm_add_pk)
 }
 
 enum_ops_dm_add_pk <- function(dm, tbls, cols) {

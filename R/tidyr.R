@@ -37,9 +37,23 @@ unite.dm <- function(data, ...) {
 
 #' @rdname tidyr_table_manipulation
 #' @export
-unite.dm_zoomed <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
+unite.dm_zoomed <- function(
+  data,
+  col,
+  ...,
+  sep = "_",
+  remove = TRUE,
+  na.rm = FALSE
+) {
   tbl <- tbl_zoomed(data)
-  united_tbl <- unite(tbl, col = !!col, ..., sep = sep, remove = remove, na.rm = na.rm)
+  united_tbl <- unite(
+    tbl,
+    col = !!col,
+    ...,
+    sep = sep,
+    remove = remove,
+    na.rm = na.rm
+  )
 
   # all columns that are not not removed count as "selected"; names of "selected" are identical to "selected"
   if (remove) {
@@ -47,7 +61,10 @@ unite.dm_zoomed <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FA
   } else {
     deselected <- eval_select_both(quo(c()), colnames(tbl))
   }
-  selected <- set_names(setdiff(names(col_tracker_zoomed(data)), deselected$names))
+  selected <- set_names(setdiff(
+    names(col_tracker_zoomed(data)),
+    deselected$names
+  ))
   new_tracked_cols_zoom <- new_tracked_cols(data, selected)
 
   replace_zoomed_tbl(data, united_tbl, new_tracked_cols_zoom)
@@ -68,10 +85,24 @@ separate.dm <- function(data, ...) {
 
 #' @rdname tidyr_table_manipulation
 #' @export
-separate.dm_zoomed <- function(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, ...) {
+separate.dm_zoomed <- function(
+  data,
+  col,
+  into,
+  sep = "[^[:alnum:]]+",
+  remove = TRUE,
+  ...
+) {
   tbl <- tbl_zoomed(data)
   col <- tidyselect::vars_pull(names(tbl), !!enquo(col))
-  separated_tbl <- separate(tbl, col = !!col, into = into, sep = sep, remove = remove, ...)
+  separated_tbl <- separate(
+    tbl,
+    col = !!col,
+    into = into,
+    sep = sep,
+    remove = remove,
+    ...
+  )
   # all columns that are not removed count as "selected"; names of "selected" are identical to "selected"
   deselected <- if (remove) col else character()
   selected <- set_names(setdiff(names(col_tracker_zoomed(data)), deselected))

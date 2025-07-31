@@ -118,7 +118,15 @@ NULL
 dm_rows_insert <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, "insert", top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
+  dm_rows(
+    x,
+    y,
+    "insert",
+    top_down = TRUE,
+    in_place,
+    require_keys = TRUE,
+    progress = progress
+  )
 }
 
 #' dm_rows_append
@@ -132,7 +140,15 @@ dm_rows_insert <- function(x, y, ..., in_place = NULL, progress = NA) {
 dm_rows_append <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, "append", top_down = TRUE, in_place, require_keys = FALSE, progress = progress)
+  dm_rows(
+    x,
+    y,
+    "append",
+    top_down = TRUE,
+    in_place,
+    require_keys = FALSE,
+    progress = progress
+  )
 }
 
 #' dm_rows_update
@@ -145,7 +161,15 @@ dm_rows_append <- function(x, y, ..., in_place = NULL, progress = NA) {
 dm_rows_update <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, "update", top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
+  dm_rows(
+    x,
+    y,
+    "update",
+    top_down = TRUE,
+    in_place,
+    require_keys = TRUE,
+    progress = progress
+  )
 }
 
 #' dm_rows_patch
@@ -159,7 +183,15 @@ dm_rows_update <- function(x, y, ..., in_place = NULL, progress = NA) {
 dm_rows_patch <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, "patch", top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
+  dm_rows(
+    x,
+    y,
+    "patch",
+    top_down = TRUE,
+    in_place,
+    require_keys = TRUE,
+    progress = progress
+  )
 }
 
 #' dm_rows_upsert
@@ -172,7 +204,15 @@ dm_rows_patch <- function(x, y, ..., in_place = NULL, progress = NA) {
 dm_rows_upsert <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, "upsert", top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
+  dm_rows(
+    x,
+    y,
+    "upsert",
+    top_down = TRUE,
+    in_place,
+    require_keys = TRUE,
+    progress = progress
+  )
 }
 
 #' dm_rows_delete
@@ -186,18 +226,44 @@ dm_rows_upsert <- function(x, y, ..., in_place = NULL, progress = NA) {
 dm_rows_delete <- function(x, y, ..., in_place = NULL, progress = NA) {
   check_dots_empty()
 
-  dm_rows(x, y, "delete", top_down = FALSE, in_place, require_keys = TRUE, progress = progress)
+  dm_rows(
+    x,
+    y,
+    "delete",
+    top_down = FALSE,
+    in_place,
+    require_keys = TRUE,
+    progress = progress
+  )
 }
 
-dm_rows <- function(x, y, operation_name, top_down, in_place, require_keys, progress = NA) {
+dm_rows <- function(
+  x,
+  y,
+  operation_name,
+  top_down,
+  in_place,
+  require_keys,
+  progress = NA
+) {
   dm_rows_check(x, y)
 
   if (is_null(in_place)) {
-    inform("Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.")
+    inform(
+      "Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables."
+    )
     in_place <- FALSE
   }
 
-  dm_rows_run(x, y, operation_name, top_down, in_place, require_keys, progress = progress)
+  dm_rows_run(
+    x,
+    y,
+    operation_name,
+    top_down,
+    in_place,
+    require_keys,
+    progress = progress
+  )
 }
 
 dm_rows_check <- function(x, y) {
@@ -237,13 +303,14 @@ check_keys_compatible <- function(x, y) {
 }
 
 get_dm_rows_op <- function(operation_name) {
-  switch(operation_name,
-    "insert"   = list(fun = do_rows_insert, pb_label = "inserting rows"),
-    "append"   = list(fun = do_rows_append, pb_label = "appending rows"),
-    "update"   = list(fun = do_rows_update, pb_label = "updating rows"),
-    "patch"    = list(fun = do_rows_patch, pb_label = "patching rows"),
-    "upsert"   = list(fun = do_rows_upsert, pb_label = "upserting rows"),
-    "delete"   = list(fun = do_rows_delete, pb_label = "deleting rows"),
+  switch(
+    operation_name,
+    "insert" = list(fun = do_rows_insert, pb_label = "inserting rows"),
+    "append" = list(fun = do_rows_append, pb_label = "appending rows"),
+    "update" = list(fun = do_rows_update, pb_label = "updating rows"),
+    "patch" = list(fun = do_rows_patch, pb_label = "patching rows"),
+    "upsert" = list(fun = do_rows_upsert, pb_label = "upserting rows"),
+    "delete" = list(fun = do_rows_delete, pb_label = "deleting rows"),
     "truncate" = list(fun = rows_truncate_, pb_label = "truncating rows")
   )
 }
@@ -253,7 +320,14 @@ do_rows_insert <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
   rows_insert(x, y, by = by, ..., conflict = "ignore")
 }
 
-do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col = NULL) {
+do_rows_append <- function(
+  x,
+  y,
+  by = NULL,
+  ...,
+  in_place = FALSE,
+  autoinc_col = NULL
+) {
   if (is.null(autoinc_col)) {
     return(rows_append(x, y, ..., in_place = in_place))
   } else if (inherits(x, "data.frame")) {
@@ -273,7 +347,11 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
     pull()
 
   if (anyDuplicated(key_values)) {
-    abort(paste0("Duplicate values for autoincrement primary key ", autoinc_col, "."))
+    abort(paste0(
+      "Duplicate values for autoincrement primary key ",
+      autoinc_col,
+      "."
+    ))
   }
 
   autoinc_col_new <- paste0(autoinc_col, "_new")
@@ -284,32 +362,49 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
     ))
   }
 
-  source_rows <- map(key_values, ~ select(filter(y, !!returning == !!.x), -!!returning))
+  source_rows <- map(
+    key_values,
+    ~ select(filter(y, !!returning == !!.x), -!!returning)
+  )
 
   con <- dbplyr::remote_con(x)
   # FIXME can be removed after depending on dbplyr >= 2.4.0
   append_args <- rlang::fn_fmls_names(dbplyr::sql_query_append)
-  old_interface <- identical(append_args, c("con", "x_name", "y", "...", "returning_cols"))
+  old_interface <- identical(
+    append_args,
+    c("con", "x_name", "y", "...", "returning_cols")
+  )
   if (old_interface) {
     target_name <- remote_name_qual(x)
-    insert_queries <- map(source_rows, ~ dbplyr::sql_query_append(
-      con,
-      target_name,
-      .x,
-      returning_cols = autoinc_col
-    ))
+    insert_queries <- map(
+      source_rows,
+      ~ dbplyr::sql_query_append(
+        con,
+        target_name,
+        .x,
+        returning_cols = autoinc_col
+      )
+    )
   } else {
     # FIXME: dbplyr::remote_table() private in dbplyr 2.3.3, public in dbplyr 2.4.0
     dbplyr_ns <- asNamespace("dbplyr")
-    remote_table <- mget("remote_table", dbplyr_ns, mode = "function", ifnotfound = list(NULL))[[1]]
+    remote_table <- mget(
+      "remote_table",
+      dbplyr_ns,
+      mode = "function",
+      ifnotfound = list(NULL)
+    )[[1]]
 
-    insert_queries <- map(source_rows, ~ dbplyr::sql_query_append(
-      con,
-      remote_table(x),
-      from = dbplyr::sql_render(.x, con),
-      insert_cols = colnames(.x),
-      returning_cols = autoinc_col
-    ))
+    insert_queries <- map(
+      source_rows,
+      ~ dbplyr::sql_query_append(
+        con,
+        remote_table(x),
+        from = dbplyr::sql_render(.x, con),
+        insert_cols = colnames(.x),
+        returning_cols = autoinc_col
+      )
+    )
   }
 
   autoinc_col_orig <- paste0(autoinc_col, "_orig")
@@ -349,7 +444,15 @@ do_rows_delete <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
   rows_delete(x, y, by = by, ..., unmatched = "ignore")
 }
 
-dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, progress = NA) {
+dm_rows_run <- function(
+  x,
+  y,
+  rows_op_name,
+  top_down,
+  in_place,
+  require_keys,
+  progress = NA
+) {
   # topologically sort tables
   graph <- create_graph_from_dm(x, directed = TRUE)
   topo <- igraph::topo_sort(graph, mode = if (top_down) "in" else "out")
@@ -362,7 +465,9 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   if (require_keys) {
     all_pks <- dm_get_all_pks(x)
     if (!(all(tables %in% all_pks$table))) {
-      abort(glue("`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys for all target tables."))
+      abort(glue(
+        "`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys for all target tables."
+      ))
     }
     keys <- all_pks$pk_col[match(tables, all_pks$table)]
   } else {
@@ -475,7 +580,6 @@ align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
   } else {
     align_tbl <- returning_rows
   }
-
 
   for (i in seq_along(fks_target$child_table)) {
     child_table <- fks_target$child_table[[i]]

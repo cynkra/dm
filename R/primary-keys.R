@@ -52,7 +52,15 @@
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
 #' )
 #' @export
-dm_add_pk <- function(dm, table, columns, ..., autoincrement = FALSE, check = FALSE, force = FALSE) {
+dm_add_pk <- function(
+  dm,
+  table,
+  columns,
+  ...,
+  autoincrement = FALSE,
+  check = FALSE,
+  force = FALSE
+) {
   check_dots_empty()
 
   check_not_zoomed(dm)
@@ -73,10 +81,12 @@ dm_add_pk <- function(dm, table, columns, ..., autoincrement = FALSE, check = FA
     )
   }
 
-
   if (check) {
     table_from_dm <- dm_get_filtered_table(dm, table_name)
-    eval_tidy(expr(check_key(!!sym(table_name), !!col_expr)), list2(!!table_name := table_from_dm))
+    eval_tidy(
+      expr(check_key(!!sym(table_name), !!col_expr)),
+      list2(!!table_name := table_from_dm)
+    )
   }
 
   dm_add_pk_impl(dm, table_name, col_name, autoincrement, force)
@@ -90,8 +100,10 @@ dm_add_pk_impl <- function(dm, table, column, autoincrement, force) {
   i <- which(def$table == table)
 
   if (!force && NROW(def$pks[[i]]) > 0) {
-    if (!dm_is_strict_keys(dm) &&
-      identical(def$pks[[i]]$column[[1]], column)) {
+    if (
+      !dm_is_strict_keys(dm) &&
+        identical(def$pks[[i]]$column[[1]], column)
+    ) {
       return(dm)
     }
 
@@ -187,7 +199,10 @@ dm_get_all_pks <- function(dm, table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
   table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
-  table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
+  table_names <- eval_select_table(
+    table_expr,
+    set_names(src_tbls_impl(dm, quiet = TRUE))
+  )
   dm_get_all_pks_impl(dm, table_names)
 }
 
@@ -285,15 +300,19 @@ dm_rm_pk_impl <- function(dm, table_name, columns) {
   }
 
   if (!quo_is_null(columns)) {
-    ii <- map2_lgl(def$data[i], def$pks[i], ~ tryCatch(
-      {
-        vars <- eval_select_indices(columns, colnames(.x))
-        identical(names(vars), .y$column[[1]])
-      },
-      error = function(e) {
-        FALSE
-      }
-    ))
+    ii <- map2_lgl(
+      def$data[i],
+      def$pks[i],
+      ~ tryCatch(
+        {
+          vars <- eval_select_indices(columns, colnames(.x))
+          identical(names(vars), .y$column[[1]])
+        },
+        error = function(e) {
+          FALSE
+        }
+      )
+    )
 
     i <- i[ii]
   }
@@ -305,7 +324,13 @@ dm_rm_pk_impl <- function(dm, table_name, columns) {
   # Talk about it
   if (is.null(table_name)) {
     message("Removing primary keys: %>%")
-    message("  ", glue_collapse(glue("dm_rm_pk({tick_if_needed(def$table[i])})"), " %>%\n  "))
+    message(
+      "  ",
+      glue_collapse(
+        glue("dm_rm_pk({tick_if_needed(def$table[i])})"),
+        " %>%\n  "
+      )
+    )
   }
 
   # Execute
@@ -386,7 +411,10 @@ dm_enum_pk_candidates <- function(dm, table, ...) {
 }
 
 #' @autoglobal
-enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table))) {
+enum_pk_candidates_impl <- function(
+  table,
+  columns = new_keys(colnames(table))
+) {
   tibble(column = new_keys(columns)) %>%
     mutate(why = map_chr(column, ~ check_pk(table, .x))) %>%
     mutate(candidate = (why == "")) %>%
@@ -440,15 +468,23 @@ error_txt_pk_not_defined <- function() {
 }
 
 abort_key_set_force_false <- function(table) {
-  abort(error_txt_key_set_force_false(table), class = dm_error_full("key_set_force_false"))
+  abort(
+    error_txt_key_set_force_false(table),
+    class = dm_error_full("key_set_force_false")
+  )
 }
 
 error_txt_key_set_force_false <- function(table) {
-  glue("Table {tick(table)} already has a primary key. Use `force = TRUE` to change the existing primary key.")
+  glue(
+    "Table {tick(table)} already has a primary key. Use `force = TRUE` to change the existing primary key."
+  )
 }
 
 abort_first_rm_fks <- function(table, fk_tables) {
-  abort(error_txt_first_rm_fks(table, fk_tables), class = dm_error_full("first_rm_fks"))
+  abort(
+    error_txt_first_rm_fks(table, fk_tables),
+    class = dm_error_full("first_rm_fks")
+  )
 }
 
 error_txt_first_rm_fks <- function(table, fk_tables) {

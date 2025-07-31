@@ -12,8 +12,14 @@ airlines <-
 
 airports <-
   nycflights13::airports %>%
-  left_join(flights %>% select(origin, origin_day = day), by = c("faa" = "origin")) %>%
-  left_join(flights %>% select(dest, dest_day = day), by = c("faa" = "dest")) %>%
+  left_join(
+    flights %>% select(origin, origin_day = day),
+    by = c("faa" = "origin")
+  ) %>%
+  left_join(
+    flights %>% select(dest, dest_day = day),
+    by = c("faa" = "dest")
+  ) %>%
   filter(!is.na(origin_day) | !is.na(dest_day)) %>%
   select(-origin_day, -dest_day) %>%
   distinct()
@@ -25,4 +31,9 @@ planes <-
 data <- tibble::lst(flights, weather, airlines, airports, planes)
 
 dir.create("inst/extdata", showWarnings = FALSE)
-saveRDS(data, "inst/extdata/nycflights13-small.rds", compress = "gzip", version = 2)
+saveRDS(
+  data,
+  "inst/extdata/nycflights13-small.rds",
+  compress = "gzip",
+  version = 2
+)

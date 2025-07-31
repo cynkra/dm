@@ -70,15 +70,18 @@ ddl_quote_table_names <- function(table_names, dm, dest) {
     stopifnot(names(dm) %in% names(table_names))
   }
 
-  map(table_names, ~ {
-    if (inherits(.x, "sql")) {
-      # no op, need this because sql is also a character
-    } else if (is.character(.x) || is(.x, "Id")) {
-      .x <- DBI::dbQuoteIdentifier(dest, .x)
-    }
+  map(
+    table_names,
+    ~ {
+      if (inherits(.x, "sql")) {
+        # no op, need this because sql is also a character
+      } else if (is.character(.x) || is(.x, "Id")) {
+        .x <- DBI::dbQuoteIdentifier(dest, .x)
+      }
 
-    dbplyr::escape(.x, con = dest)
-  })
+      dbplyr::escape(.x, con = dest)
+    }
+  )
 }
 
 ddl_reorder_dm <- function(dm, con) {
@@ -97,8 +100,12 @@ ddl_reorder_dm <- function(dm, con) {
     cli_warn(c(
       # FIXME: show cycle
       "Cycles in the relationship graph prevent creation of foreign key constraints.",
-      i = if (is_duckdb(dest)) "DuckDB does not support adding constraints after table creation.",
-      i = if (is_sqlite(dest)) "SQLite does not support adding constraints after table creation.",
+      i = if (is_duckdb(dest)) {
+        "DuckDB does not support adding constraints after table creation."
+      },
+      i = if (is_sqlite(dest)) {
+        "SQLite does not support adding constraints after table creation."
+      },
       NULL
     ))
     dm <- dm_rm_fk(dm)
@@ -196,11 +203,18 @@ dm_ddl_pre <- function(
       )
     ) %>%
     ungroup() %>%
-    transmute(name, remote_name, sql_table = DBI::SQL(glue(
-      "CREATE {if (temporary) 'TEMPORARY ' else ''}TABLE {remote_name} (\n  {all_defs}\n)"
-    )))
+    transmute(
+      name,
+      remote_name,
+      sql_table = DBI::SQL(glue(
+        "CREATE {if (temporary) 'TEMPORARY ' else ''}TABLE {remote_name} (\n  {all_defs}\n)"
+      ))
+    )
 
-  set_names(map(create_table_queries$sql_table, DBI::SQL), create_table_queries$name)
+  set_names(
+    map(create_table_queries$sql_table, DBI::SQL),
+    create_table_queries$name
+  )
 }
 
 #' @rdname dm_sql
@@ -270,10 +284,16 @@ dm_ddl_post <- function(
   uk_defs <-
     ddl_get_uk_defs(uks, con, table_names) %>%
     group_by(name) %>%
-    summarize(uk_defs = if (length(remote_name) == 0) list(NULL) else list(DBI::SQL(glue(
-      # FIXME: Designate temporary table if possible
-      "ALTER TABLE {remote_name[[1]]} ADD {uk_def}"
-    )))) %>%
+    summarize(
+      uk_defs = if (length(remote_name) == 0) {
+        list(NULL)
+      } else {
+        list(DBI::SQL(glue(
+          # FIXME: Designate temporary table if possible
+          "ALTER TABLE {remote_name[[1]]} ADD {uk_def}"
+        )))
+      }
+    ) %>%
     ungroup()
 
   # foreign key definitions and indexing queries
@@ -282,7 +302,9 @@ dm_ddl_post <- function(
     # No action
   } else if (is_mariadb(con) && temporary) {
     if (!is_testing()) {
-      warn("MySQL and MariaDB don't support foreign keys for temporary tables, these won't be set in the remote database but are preserved in the `dm`")
+      warn(
+        "MySQL and MariaDB don't support foreign keys for temporary tables, these won't be set in the remote database but are preserved in the `dm`"
+      )
     }
     fks <- vec_slice(fks, 0)
   } else if (ddl_need_early_constraints(dest)) {
@@ -292,10 +314,16 @@ dm_ddl_post <- function(
   fk_defs <-
     ddl_get_fk_defs(fks, con, table_names) %>%
     group_by(name) %>%
-    summarize(fk_defs = if (length(remote_name) == 0) list(NULL) else list(DBI::SQL(glue(
-      # FIXME: Designate temporary table if possible
-      "ALTER TABLE {remote_name[[1]]} ADD {fk_def}"
-    )))) %>%
+    summarize(
+      fk_defs = if (length(remote_name) == 0) {
+        list(NULL)
+      } else {
+        list(DBI::SQL(glue(
+          # FIXME: Designate temporary table if possible
+          "ALTER TABLE {remote_name[[1]]} ADD {fk_def}"
+        )))
+      }
+    ) %>%
     ungroup()
 
   queries <-
@@ -459,13 +487,17 @@ ddl_get_fk_defs <- function(fks, con, table_names) {
       inform(glue('`on_delete = "cascade"` not supported for duckdb'))
       ""
     } else {
-      map_chr(x, ~ {
-        switch(.x,
-          "no_action" = "",
-          "cascade" = " ON DELETE CASCADE",
-          abort(glue('`on_delete = "{.x}"` not supported'))
-        )
-      })
+      map_chr(
+        x,
+        ~ {
+          switch(
+            .x,
+            "no_action" = "",
+            "cascade" = " ON DELETE CASCADE",
+            abort(glue('`on_delete = "{.x}"` not supported'))
+          )
+        }
+      )
     }
   }
 
@@ -497,7 +529,8 @@ dml_tbl_load <- function(tbl_name, dm, table_names, pks, dest) {
   }
 
   # pks is NULL if not mssql
-  mssql_autoinc <- !is.null(pks) && isTRUE(pks$autoincrement[tbl_name == pks$table])
+  mssql_autoinc <- !is.null(pks) &&
+    isTRUE(pks$autoincrement[tbl_name == pks$table])
 
   remote_name <- table_names[[tbl_name]]
   selectvals <- dbplyr::sql_render(dbplyr::copy_inline(dest, tbl))
@@ -510,7 +543,11 @@ dml_tbl_load <- function(tbl_name, dm, table_names, pks, dest) {
     # https://github.com/tidyverse/dbplyr/pull/1195
     selectvals[idx] <- gsub(" AS NUMERIC", " AS DOUBLE", selectvals[idx])
     # https://github.com/tidyverse/dbplyr/pull/1375
-    selectvals[idx] <- gsub("CAST[(]`[^`]*(?:``[^`]*)*` AS INTEGER[)] AS ", "", selectvals[idx])
+    selectvals[idx] <- gsub(
+      "CAST[(]`[^`]*(?:``[^`]*)*` AS INTEGER[)] AS ",
+      "",
+      selectvals[idx]
+    )
     selectvals <- paste(selectvals, collapse = "\n")
   }
 
@@ -547,8 +584,14 @@ ddl_get_index_defs <- function(fks, con, table_names) {
       name = child_table,
       index_name = map_chr(child_fk_cols, paste, collapse = "_"),
       remote_name = table_names[name],
-      remote_name_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)), ~ .x@name[[length(.x@name)]]),
-      index_name = make.unique(paste0(remote_name_unquoted, "__", index_name), sep = "__")
+      remote_name_unquoted = map_chr(
+        DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)),
+        ~ .x@name[[length(.x@name)]]
+      ),
+      index_name = make.unique(
+        paste0(remote_name_unquoted, "__", index_name),
+        sep = "__"
+      )
     ) %>%
     group_by(name) %>%
     summarize(

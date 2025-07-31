@@ -13,20 +13,36 @@
 #' @examples
 #' tibble(a = 1, b = '[{ "c": 2 }, { "c": 3 }]') %>%
 #'   json_unnest(b)
-json_unnest <- function(data, cols, ..., names_sep = NULL, names_repair = "check_unique") {
+json_unnest <- function(
+  data,
+  cols,
+  ...,
+  names_sep = NULL,
+  names_repair = "check_unique"
+) {
   check_dots_used()
 
   UseMethod("json_unnest")
 }
 
 #' @export
-json_unnest.data.frame <- function(data, cols, ..., keep_empty = FALSE, ptype = NULL,
-                                   names_sep = NULL, names_repair = "check_unique") {
+json_unnest.data.frame <- function(
+  data,
+  cols,
+  ...,
+  keep_empty = FALSE,
+  ptype = NULL,
+  names_sep = NULL,
+  names_repair = "check_unique"
+) {
   if (missing(cols)) {
     abort("The `cols` argument must be provided")
   }
   data %>%
-    mutate(across({{ cols }}, ~ map(., ~ jsonlite::fromJSON(.) %>% as_tibble()))) %>%
+    mutate(across(
+      {{ cols }},
+      ~ map(., ~ jsonlite::fromJSON(.) %>% as_tibble())
+    )) %>%
     unnest(
       {{ cols }},
       keep_empty = keep_empty,

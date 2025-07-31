@@ -95,7 +95,10 @@ test_that("dm_rows_update()", {
     dm_select(tf_4, i, everything()) %>%
     dm_select(tf_5, l, m, everything())
 
-  dm_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_filter_rearranged))
+  dm_copy <- suppressMessages(copy_dm_to(
+    my_db_test_src(),
+    dm_filter_rearranged
+  ))
 
   dm_update_local <- dm(
     tf_1 = tibble(
@@ -112,7 +115,10 @@ test_that("dm_rows_update()", {
     ),
   )
 
-  dm_update_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_update_local))
+  dm_update_copy <- suppressMessages(copy_dm_to(
+    my_db_test_src(),
+    dm_update_local
+  ))
 
   expect_snapshot({
     dm_copy %>%
@@ -162,7 +168,10 @@ test_that("dm_rows_truncate()", {
     ),
   )
 
-  dm_truncate_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_truncate_local))
+  dm_truncate_copy <- suppressMessages(copy_dm_to(
+    my_db_test_src(),
+    dm_truncate_local
+  ))
 
   expect_snapshot({
     dm_copy %>%
@@ -204,7 +213,8 @@ test_that("output for compound keys", {
   local_options(lifecycle_verbosity = "warning")
 
   expect_snapshot({
-    target_dm <- dm_filter(nyc_comp(), weather, pressure > 1010) %>% dm_apply_filters()
+    target_dm <- dm_filter(nyc_comp(), weather, pressure > 1010) %>%
+      dm_apply_filters()
     insert_dm <-
       dm_filter(nyc_comp(), weather, pressure <= 1010) %>%
       dm_apply_filters() %>%

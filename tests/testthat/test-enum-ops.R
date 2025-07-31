@@ -21,8 +21,18 @@ test_that("snapshot of code_generation_middleware.R is unchanged", {
     enum_ops(dm, op_name = "dm_add_pk")
     enum_ops(dm, op_name = "dm_add_pk", table_names = "parent")
 
-    enum_ops(dm, op_name = "dm_add_pk", table_names = "parent", column_names = "a")$call
-    enum_ops(dm, op_name = "dm_add_pk", table_names = "parent", column_names = c("a", "b"))$call
+    enum_ops(
+      dm,
+      op_name = "dm_add_pk",
+      table_names = "parent",
+      column_names = "a"
+    )$call
+    enum_ops(
+      dm,
+      op_name = "dm_add_pk",
+      table_names = "parent",
+      column_names = c("a", "b")
+    )$call
   })
 })
 

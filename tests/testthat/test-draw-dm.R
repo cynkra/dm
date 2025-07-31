@@ -28,11 +28,18 @@ test_that("`dm_set_colors()` works", {
   colset <- c(blue = "flights", green = "airports")
 
   # test splicing
-  expect_snapshot(variant = if (packageVersion("testthat") > "3.1.0") "testthat-new" else "testthat-legacy", {
-    dm_nycflights_small() %>%
-      dm_set_colors(!!!colset) %>%
-      dm_get_colors()
-  })
+  expect_snapshot(
+    variant = if (packageVersion("testthat") > "3.1.0") {
+      "testthat-new"
+    } else {
+      "testthat-legacy"
+    },
+    {
+      dm_nycflights_small() %>%
+        dm_set_colors(!!!colset) %>%
+        dm_get_colors()
+    }
+  )
 })
 
 test_that("`dm_set_colors()` errors if old syntax used", {
@@ -63,7 +70,7 @@ test_that("last", {
     color_quos_to_display(
       flights = "blue",
       airlines =
-      ),
+    ),
     class = "last_col_missing"
   )
 })
@@ -149,7 +156,10 @@ test_that("output", {
 })
 
 test_that("table_description works", {
-  expect_error(dm_set_table_description(dm_nycflights_small(), "flight" = "Flüge"))
+  expect_error(dm_set_table_description(
+    dm_nycflights_small(),
+    "flight" = "Flüge"
+  ))
   expect_snapshot_diagram(
     dm_nycflights_small() %>%
       dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
@@ -167,13 +177,17 @@ test_that("table_description works", {
   expect_snapshot_diagram(
     dm_nycflights_small() %>%
       dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
-      dm_draw(font_size = c(table_description = 6L, header = 19L, column = 14L)),
+      dm_draw(
+        font_size = c(table_description = 6L, header = 19L, column = 14L)
+      ),
     "table-desc-3-dm.svg"
   )
 
   expect_snapshot_diagram(
     dm_nycflights13(table_description = TRUE) %>%
-      dm_draw(font_size = c(table_description = 6L, header = 19L, column = 14L)),
+      dm_draw(
+        font_size = c(table_description = 6L, header = 19L, column = 14L)
+      ),
     "table-desc-4-dm.svg"
   )
 })

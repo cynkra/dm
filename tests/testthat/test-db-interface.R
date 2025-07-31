@@ -64,7 +64,9 @@ test_that("default table repair works", {
   }
 
   local_mocked_bindings(
-    unique_db_table_name = function(table_name) my_unique_db_table_name(table_name)
+    unique_db_table_name = function(table_name) {
+      my_unique_db_table_name(table_name)
+    }
   )
   repair_table_names_for_db(table_names, temporary = FALSE, con)
   expect_equal(calls, 0)
@@ -81,7 +83,12 @@ test_that("copy_dm_to() fails legibly if target schema missing for MSSQL & Postg
   expect_deprecated(expect_false(db_schema_exists(src_db, "copy_dm_to_schema")))
 
   expect_error(
-    copy_dm_to(src_db, local_dm, schema = "copy_dm_to_schema", temporary = FALSE)
+    copy_dm_to(
+      src_db,
+      local_dm,
+      schema = "copy_dm_to_schema",
+      temporary = FALSE
+    )
   )
 })
 
@@ -130,7 +137,10 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
     order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
     walk(
       dm_get_tables_impl(remote_dm)[order_of_deletion],
-      ~ try(DBI::dbExecute(src_db$con, paste0("DROP TABLE ", remote_name_qual(.x))))
+      ~ try(DBI::dbExecute(
+        src_db$con,
+        paste0("DROP TABLE ", remote_name_qual(.x))
+      ))
     )
     try(DBI::dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
   })
@@ -154,7 +164,10 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
   # compare names and remote names
   expect_identical(
     table_tibble %>% arrange(table_name) %>% deframe(),
-    purrr::map(set_names(tbl_names), ~ DBI::Id(schema = "copy_dm_to_schema", table = .x))
+    purrr::map(
+      set_names(tbl_names),
+      ~ DBI::Id(schema = "copy_dm_to_schema", table = .x)
+    )
   )
 })
 
@@ -193,7 +206,10 @@ test_that("copy_dm_to() works with autoincrement PKs and FKS on selected DBs", {
     order_of_deletion <- c("xt4", "xt2", "xt3", "xt1")
     walk(
       dm_get_tables_impl(remote_dm)[order_of_deletion],
-      ~ try(DBI::dbExecute(con_db, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
+      ~ try(DBI::dbExecute(
+        con_db,
+        paste0("DROP TABLE ", dbplyr::remote_name(.x))
+      ))
     )
   })
 

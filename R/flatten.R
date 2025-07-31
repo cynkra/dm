@@ -60,21 +60,48 @@
 #'   dm_flatten_to_tbl(.start = cards, .recursive = TRUE)
 #'
 #' @export
-dm_flatten_to_tbl <- function(dm, .start, ..., .recursive = FALSE, .join = left_join) {
+dm_flatten_to_tbl <- function(
+  dm,
+  .start,
+  ...,
+  .recursive = FALSE,
+  .join = left_join
+) {
   check_not_zoomed(dm)
   join_name <- as_label(enexpr(.join))
-  if (.recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
+  if (
+    .recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))
+  ) {
+    abort_squash_limited()
+  }
 
   start <- dm_tbl_name(dm, {{ .start }})
 
   vars <- setdiff(src_tbls_impl(dm), start)
   list_of_pts <- eval_select_table(quo(c(...)), vars)
 
-  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = .join, join_name = join_name, squash = .recursive)
+  dm_flatten_to_tbl_impl(
+    dm,
+    start,
+    list_of_pts,
+    join = .join,
+    join_name = join_name,
+    squash = .recursive
+  )
 }
 
-dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squash, .position = "suffix") {
-  if (join_name == "nest_join") abort_no_flatten_with_nest_join()
+dm_flatten_to_tbl_impl <- function(
+  dm,
+  start,
+  list_of_pts,
+  join,
+  join_name,
+  squash,
+  .position = "suffix"
+) {
+  if (join_name == "nest_join") {
+    abort_no_flatten_with_nest_join()
+  }
 
   force(join)
   stopifnot(is_function(join))
@@ -124,7 +151,12 @@ dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squa
   )
 
   # rename dm and replace table `.start` by its filtered, renamed version
-  prep_dm <- prepare_dm_for_flatten(dm, order_df$name, gotta_rename, position = .position)
+  prep_dm <- prepare_dm_for_flatten(
+    dm,
+    order_df$name,
+    gotta_rename,
+    position = .position
+  )
 
   # Drop the first table in the list of join partners. (We have at least one table, `.start`.)
   # (Working with `reduce2()` here and the `.init`-argument is the first table)
@@ -132,14 +164,23 @@ dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squa
   order_df <- order_df[-1, ]
   # the order given in the ellipsis determines the join-list; if empty ellipsis, this is a no-op.
   # `unname()` to avoid warning (tibble version ‘2.99.99.9012’ retains names in column vectors)
-  order_df <- left_join(tibble(name = unname(list_of_pts)), order_df, by = "name")
+  order_df <- left_join(
+    tibble(name = unname(list_of_pts)),
+    order_df,
+    by = "name"
+  )
 
   # list of join partners
   ordered_table_list <- dm_get_tables(prep_dm)[order_df$name]
   by <- map2(order_df$pred, order_df$name, ~ get_by(prep_dm, .x, .y))
 
   # perform the joins according to the list, starting with table `initial_LHS`
-  reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = tbl_impl(prep_dm, start))
+  reduce2(
+    ordered_table_list,
+    by,
+    ~ join(..1, ..2, by = ..3),
+    .init = tbl_impl(prep_dm, start)
+  )
 }
 
 #' Join two tables
@@ -168,7 +209,15 @@ dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  dm_flatten_to_tbl_impl(dm, start, other, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
+  dm_flatten_to_tbl_impl(
+    dm,
+    start,
+    other,
+    join = join,
+    join_name = join_name,
+    squash = FALSE,
+    .position = "prefix"
+  )
 }
 
 parent_child_table <- function(dm, table_1, table_2) {
@@ -193,14 +242,16 @@ parent_child_table <- function(dm, table_1, table_2) {
   rel
 }
 
-check_flatten_to_tbl <- function(join_name,
-                                 part_cond_abort_filters,
-                                 any_not_reachable,
-                                 g,
-                                 auto_detect,
-                                 more_than_1_pt,
-                                 has_grandparent,
-                                 squash) {
+check_flatten_to_tbl <- function(
+  join_name,
+  part_cond_abort_filters,
+  any_not_reachable,
+  g,
+  auto_detect,
+  more_than_1_pt,
+  has_grandparent,
+  squash
+) {
   # argument checking, or filter and recompute induced subgraph
   # for subsequent check
   if (any_not_reachable) {
@@ -211,11 +262,14 @@ check_flatten_to_tbl <- function(join_name,
   if (length(V(g)) - 1 != length(E(g))) {
     abort_no_cycles(g)
   }
-  if (join_name == "nest_join") abort_no_flatten_with_nest_join()
-  if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) abort_apply_filters_first(join_name)
+  if (join_name == "nest_join") {
+    abort_no_flatten_with_nest_join()
+  }
+  if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) {
+    abort_apply_filters_first(join_name)
+  }
   # the result for `right_join()` depends on the order of the dim-tables in the `dm`
   # if 2 or more of them are joined to the fact table and ellipsis is empty.
-
 
   # If called by `dm_join_to_tbl()` or `dm_flatten_to_tbl()`, the argument `squash = FALSE`.
   # Then only one level of hierarchy is allowed (direct neighbors to table `.start`).
@@ -233,7 +287,12 @@ check_flatten_to_tbl <- function(join_name,
   }
 }
 
-prepare_dm_for_flatten <- function(dm, tables, gotta_rename, position = "suffix") {
+prepare_dm_for_flatten <- function(
+  dm,
+  tables,
+  gotta_rename,
+  position = "suffix"
+) {
   start <- tables[1]
   # filters need to be empty, for the disambiguation to work
   # renaming will be minimized if we reduce the `dm` to the necessary tables here
@@ -246,7 +305,11 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename, position = "suffix"
 
   if (gotta_rename) {
     table_colnames <- get_table_colnames(red_dm)
-    recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".", position = position)
+    recipe <- compute_disambiguate_cols_recipe(
+      table_colnames,
+      sep = ".",
+      position = position
+    )
     explain_col_rename(recipe)
     # prepare `dm` by disambiguating columns (on a reduced dm)
     clean_dm <-

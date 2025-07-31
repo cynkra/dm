@@ -28,22 +28,41 @@
 #' dm_nycflights13() %>%
 #'   dm_disambiguate_cols()
 #' @export
-dm_disambiguate_cols <- function(dm, .sep = ".", ..., .quiet = FALSE,
-                                 .position = c("suffix", "prefix")) {
+dm_disambiguate_cols <- function(
+  dm,
+  .sep = ".",
+  ...,
+  .quiet = FALSE,
+  .position = c("suffix", "prefix")
+) {
   check_not_zoomed(dm)
   check_dots_empty()
   .position <- arg_match(.position)
   dm_disambiguate_cols_impl(
     dm,
-    tables = NULL, sep = .sep, quiet = .quiet,
+    tables = NULL,
+    sep = .sep,
+    quiet = .quiet,
     position = .position
   )
 }
 
-dm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE, position = "suffix") {
+dm_disambiguate_cols_impl <- function(
+  dm,
+  tables,
+  sep = ".",
+  quiet = FALSE,
+  position = "suffix"
+) {
   table_colnames <- get_table_colnames(dm, tables, exclude_pk = FALSE)
-  recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = sep, position = position)
-  if (!quiet) explain_col_rename(recipe)
+  recipe <- compute_disambiguate_cols_recipe(
+    table_colnames,
+    sep = sep,
+    position = position
+  )
+  if (!quiet) {
+    explain_col_rename(recipe)
+  }
   col_rename(dm, recipe)
 }
 
@@ -88,14 +107,26 @@ get_table_colnames <- function(dm, tables = NULL, exclude_pk = TRUE) {
 #' @param sep separator used to create new names for dupe cols
 #' @noRd
 #' @autoglobal
-compute_disambiguate_cols_recipe <- function(table_colnames, sep, position = "suffix") {
+compute_disambiguate_cols_recipe <- function(
+  table_colnames,
+  sep,
+  position = "suffix"
+) {
   dupes <- vec_duplicate_detect(table_colnames$column)
   dup_colnames <- table_colnames[dupes, ]
 
   if (position == "prefix") {
-    dup_colnames$new_name <- paste0(dup_colnames$table, sep, dup_colnames$column)
+    dup_colnames$new_name <- paste0(
+      dup_colnames$table,
+      sep,
+      dup_colnames$column
+    )
   } else {
-    dup_colnames$new_name <- paste0(dup_colnames$column, sep, dup_colnames$table)
+    dup_colnames$new_name <- paste0(
+      dup_colnames$column,
+      sep,
+      dup_colnames$table
+    )
   }
 
   dup_data <- dup_colnames[c("new_name", "column")]
@@ -124,14 +155,22 @@ explain_col_rename <- function(recipe) {
   disambiguation <-
     recipe %>%
     unnest(names) %>%
-    mutate(text = glue("dm_rename({tick_if_needed(table)}, {tick_if_needed(new_name)} = {tick_if_needed(column)})")) %>%
+    mutate(
+      text = glue(
+        "dm_rename({tick_if_needed(table)}, {tick_if_needed(new_name)} = {tick_if_needed(column)})"
+      )
+    ) %>%
     pull(text)
 
-  message("Renaming ambiguous columns: %>%\n  ", glue_collapse(disambiguation, " %>%\n  "))
+  message(
+    "Renaming ambiguous columns: %>%\n  ",
+    glue_collapse(disambiguation, " %>%\n  ")
+  )
 }
 
 col_rename <- function(dm, recipe) {
-  reduce2(recipe$table,
+  reduce2(
+    recipe$table,
     recipe$renames,
     ~ dm_rename(..1, !!..2, !!!..3),
     .init = dm

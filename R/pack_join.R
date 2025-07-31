@@ -14,7 +14,15 @@
 #' df1 <- tibble::tibble(x = 1:3)
 #' df2 <- tibble::tibble(x = c(1, 1, 2), y = c("first", "second", "third"))
 #' pack_join(df1, df2)
-pack_join <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
+pack_join <- function(
+  x,
+  y,
+  by = NULL,
+  ...,
+  copy = FALSE,
+  keep = FALSE,
+  name = NULL
+) {
   UseMethod("pack_join")
 }
 
@@ -25,7 +33,15 @@ pack_join.dm <- function(x, ...) {
 
 #' @rdname pack_join
 #' @export
-pack_join.dm_zoomed <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
+pack_join.dm_zoomed <- function(
+  x,
+  y,
+  by = NULL,
+  ...,
+  copy = FALSE,
+  keep = FALSE,
+  name = NULL
+) {
   check_dots_empty()
 
   y_name <- dm_tbl_name(x, {{ y }})
@@ -33,16 +49,34 @@ pack_join.dm_zoomed <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE
   x_tbl <- zoomed$zoom[[1]]
   y_tbl <- dm_get_tables_impl(x)[[y_name]]
 
-  joined_tbl <- pack_join(x_tbl, y_tbl, by, ..., copy = copy, keep = keep, name = name)
+  joined_tbl <- pack_join(
+    x_tbl,
+    y_tbl,
+    by,
+    ...,
+    copy = copy,
+    keep = keep,
+    name = name
+  )
   replace_zoomed_tbl(x, joined_tbl)
 }
 
 #' @export
-pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
+pack_join.data.frame <- function(
+  x,
+  y,
+  by = NULL,
+  ...,
+  copy = FALSE,
+  keep = FALSE,
+  name = NULL
+) {
   check_dots_empty()
   name_var <- name %||% as_label(enexpr(y))
   if (!copy && inherits(y, "tbl_lazy")) {
-    abort("`x` and `y` must share the same src, set `copy` = TRUE (may be slow)")
+    abort(
+      "`x` and `y` must share the same src, set `copy` = TRUE (may be slow)"
+    )
   }
   y_local <- collect(y)
   x_nms <- colnames(x)
@@ -54,7 +88,14 @@ pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALS
     # sort packed cols in original order
     y_packed[[name_var_unique]] <- y_packed[[name_var_unique]][(names(y_local))]
   }
-  joined <- left_join(x, y_packed, by = by, copy = copy, keep = FALSE, multiple = "all")
+  joined <- left_join(
+    x,
+    y_packed,
+    by = by,
+    copy = copy,
+    keep = FALSE,
+    multiple = "all"
+  )
   # overwrite existing column silently in x if collision, not very safe but consistent with dplyr::nest_join
   if (name_var %in% x_nms) {
     joined[[name_var]] <- NULL

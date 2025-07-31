@@ -30,11 +30,18 @@ col_to_hex <- function(x) {
 }
 
 hex_from_rgb <- function(col_rgb) {
-  rgb(col_rgb[1, ], col_rgb[2, ], col_rgb[3, ], col_rgb[4, ], maxColorValue = 255)
+  rgb(
+    col_rgb[1, ],
+    col_rgb[2, ],
+    col_rgb[3, ],
+    col_rgb[4, ],
+    maxColorValue = 255
+  )
 }
 
 calc_bodycol_rgb <- function(header_bgcol_rgb, ratio = 0.8) {
   # alpha channel remains the same for the body color
-  header_bgcol_rgb[1:3, ] <- header_bgcol_rgb[1:3, ] + (255 - header_bgcol_rgb[1:3, ]) * ratio
+  header_bgcol_rgb[1:3, ] <- header_bgcol_rgb[1:3, ] +
+    (255 - header_bgcol_rgb[1:3, ]) * ratio
   header_bgcol_rgb
 }

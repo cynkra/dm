@@ -21,7 +21,11 @@ test_that("dm_add_tbl() works", {
 
   # use special names with :=
   expect_identical(
-    names(dm_add_tbl(dm_for_filter(), dm := data_card_1(), repair := data_card_2())),
+    names(dm_add_tbl(
+      dm_for_filter(),
+      dm := data_card_1(),
+      repair := data_card_2()
+    )),
     c(names(dm_for_filter()), "dm", "repair")
   )
 
@@ -34,7 +38,9 @@ test_that("dm_add_tbl() works", {
   # do I avoid the warning when piping the table but setting the name?
   expect_silent(
     expect_equivalent_tbl(
-      dm_for_filter() %>% dm_add_tbl(new_name = data_card_1()) %>% pull_tbl(new_name),
+      dm_for_filter() %>%
+        dm_add_tbl(new_name = data_card_1()) %>%
+        pull_tbl(new_name),
       data_card_1()
     )
   )
@@ -42,7 +48,11 @@ test_that("dm_add_tbl() works", {
   # adding more than 1 table:
   # 1. Is the resulting number of tables correct?
   expect_identical(
-    length(dm_get_tables(dm_add_tbl(dm_for_filter(), data_card_1(), data_card_2()))),
+    length(dm_get_tables(dm_add_tbl(
+      dm_for_filter(),
+      data_card_1(),
+      data_card_2()
+    ))),
     8L
   )
 
@@ -54,7 +64,8 @@ test_that("dm_add_tbl() works", {
 
   # are in the default case (`repair = 'unique'`) the tables renamed (old table AND new table) according to "unique" default setting
   expect_identical(
-    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), quiet = TRUE) %>% src_tbls_impl(),
+    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), quiet = TRUE) %>%
+      src_tbls_impl(),
     c("tf_1...1", "tf_2", "tf_3", "tf_4", "tf_5", "tf_6", "tf_1...7")
   )
 
@@ -69,7 +80,8 @@ test_that("dm_add_tbl() works", {
 
   # can I use dm_select_tbl(), selecting among others the new table?
   expect_silent(
-    dm_add_tbl(dm_for_filter(), tf_7_new = tf_7()) %>% dm_select_tbl(tf_1, tf_7_new, everything())
+    dm_add_tbl(dm_for_filter(), tf_7_new = tf_7()) %>%
+      dm_select_tbl(tf_1, tf_7_new, everything())
   )
 
   # error in case table srcs don't match
@@ -94,7 +106,8 @@ test_that("dm_add_tbl() snapshots", {
   })
 
   expect_snapshot({
-    dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(options = c("select", "keys"))
+    dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>%
+      dm_paste(options = c("select", "keys"))
   })
 })
 
@@ -135,8 +148,10 @@ test_that("dm_rm_tbl() works", {
 test_that("dm_rm_tbl() snapshot", {
   local_options(lifecycle_verbosity = "warning")
   expect_snapshot({
-    dm_rm_tbl(dm_for_flatten(), dim_1) %>% dm_paste(options = c("select", "keys"))
-    dm_rm_tbl(dm_for_flatten(), fact) %>% dm_paste(options = c("select", "keys"))
+    dm_rm_tbl(dm_for_flatten(), dim_1) %>%
+      dm_paste(options = c("select", "keys"))
+    dm_rm_tbl(dm_for_flatten(), fact) %>%
+      dm_paste(options = c("select", "keys"))
   })
 })
 
