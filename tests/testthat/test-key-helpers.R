@@ -73,6 +73,23 @@ test_that("check_key() checks primary key properly?", {
   )
 })
 
+test_that("check_key() returns data frame when key is valid", {
+  # Test from issue #2221: check_key() should return the data frame when columns are a valid key
+  dat <- tibble(a = c(1, 2, 3), b = c(5, 5, 6), c = c(7, 8, 9))
+
+  # Should return the original data frame, not NULL
+  result <- check_key(dat, a)
+  expect_identical(result, dat)
+
+  # Also test with multiple columns as key
+  result2 <- check_key(dat, a, c)
+  expect_identical(result2, dat)
+
+  # Also test with data_mcard examples
+  result3 <- check_key(data_mcard(), c1, c3)
+  expect_identical(result3, data_mcard())
+})
+
 test_that("check_api() new interface", {
   local_options(lifecycle_verbosity = "quiet")
 

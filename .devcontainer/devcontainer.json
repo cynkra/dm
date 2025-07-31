@@ -1,6 +1,7 @@
 {
   "name": "dm R Development",
-  "image": "ghcr.io/cynkra/docker-images/ubuntu24-rig-rrel-dc-dt-dm:latest",
+  "dockerComposeFile": "./docker-compose.yml",
+  "service": "app",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}
   },
@@ -13,6 +14,5 @@
     }
   },
   "remoteUser": "ubuntu",
-  "workspaceFolder": "/home/ubuntu/workspace",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/workspace,type=bind,consistency=cached"
+  "workspaceFolder": "/home/ubuntu/workspace"
 }

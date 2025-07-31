@@ -1,4 +1,8 @@
 {
+  "permissions": {
+    "allow": ["Edit(*)", "Write(*)"],
+    "defaultMode": "acceptEdits"
+  },
   "tools": {
     "bash": {
       "allowedCommands": [
