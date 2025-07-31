@@ -100,3 +100,54 @@ test_that("output 2", {
       dm_paste(options = "tables")
   })
 })
+
+test_that("dm_paste() handles very long pipe chains without C stack error", {
+  # Test for issue #400: dm_paste() generates pipes that are too long
+  # This test verifies that the issue has been resolved or demonstrates the scale of the problem
+  
+  # Create many small tables with relationships to create a very long pipe chain
+  tables <- map(1:150, ~ tibble(
+    id = 1:3,
+    parent_id = if (.x > 1) rep(1:3, length.out = 3) else NA_integer_,
+    value = paste0("table_", .x, "_row_", 1:3)
+  ))
+  names(tables) <- paste0("table_", 1:150)
+  
+  # Create the dm with all tables
+  large_dm <- do.call(dm, tables)
+  
+  # Add primary keys to all tables (this will create many dm_add_pk() statements)
+  for (i in 1:150) {
+    large_dm <- dm_add_pk(large_dm, !!sym(paste0("table_", i)), id)
+  }
+  
+  # Add foreign keys from each table to the previous one (creates many dm_add_fk() statements)
+  for (i in 2:150) {
+    large_dm <- dm_add_fk(
+      large_dm, 
+      !!sym(paste0("table_", i)), 
+      parent_id, 
+      !!sym(paste0("table_", i - 1))
+    )
+  }
+  
+  # This generates a very long pipe chain with 150 + 149 = 299 pipe operations
+  # In the past this would have caused "Error: C stack usage ... is too close to the limit"
+  # Now it should succeed, which indicates the issue has been resolved
+  expect_no_error({
+    dm_paste(large_dm)
+  })
+  
+  # To verify the scale of the pipe chain, capture the output to a file and count pipes
+  temp_file <- tempfile()
+  dm_paste(large_dm, path = temp_file)
+  result_code <- readLines(temp_file)
+  result_string <- paste(result_code, collapse = "\n")
+  pipe_count <- stringr::str_count(result_string, "%>%")
+  
+  # Should have around 299 pipes (150 PKs + 149 FKs, minus 1 for the base dm() call)
+  expect_gt(pipe_count, 250)
+  
+  # Clean up
+  unlink(temp_file)
+})
