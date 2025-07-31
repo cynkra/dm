@@ -82,8 +82,7 @@ mw_cg_run <- function(
 mw_cg_make <- function(dm, op_name, ...) {
   # FIXME: Add more operations, call e.g. use_cg_make("dm_select_tbl")
   # to create templates
-  switch(
-    op_name,
+  switch(op_name,
     "dm_select_tbl" = mw_cg_make_dm_select_tbl(dm, ...),
     "dm_add_pk" = mw_cg_make_dm_add_pk(dm, ...),
     "dm_add_fk" = mw_cg_make_dm_add_fk(dm, ...),

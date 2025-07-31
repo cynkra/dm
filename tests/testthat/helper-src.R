@@ -73,16 +73,14 @@ is_db_test_src <- function() {
   my_test_src_name != "df"
 }
 
-my_test_src_fun %<--%
-  {
-    fun <- paste0("test_src_", my_test_src_name)
-    get0(fun, inherits = TRUE)
-  }
+my_test_src_fun %<--% {
+  fun <- paste0("test_src_", my_test_src_name)
+  get0(fun, inherits = TRUE)
+}
 
-my_test_src_cache %<--%
-  {
-    my_test_src_fun()()
-  }
+my_test_src_cache %<--% {
+  my_test_src_fun()()
+}
 
 my_test_src <- function() {
   testthat::skip_if_not_installed("dbplyr")
@@ -109,14 +107,13 @@ my_test_con <- function() {
   con_from_src_or_con(my_test_src())
 }
 
-duckdb_test_src %<--%
-  {
-    if (getRversion() < "4.0") {
-      testthat::skip("duckdb failing for R < 4.0")
-    }
-    testthat::skip_if_not_installed("duckdb")
-    dbplyr::src_dbi(DBI::dbConnect(duckdb::duckdb()), auto_disconnect = TRUE)
+duckdb_test_src %<--% {
+  if (getRversion() < "4.0") {
+    testthat::skip("duckdb failing for R < 4.0")
   }
+  testthat::skip_if_not_installed("duckdb")
+  dbplyr::src_dbi(DBI::dbConnect(duckdb::duckdb()), auto_disconnect = TRUE)
+}
 
 my_db_test_src <- function() {
   testthat::skip_if_not_installed("dbplyr")
@@ -223,23 +220,22 @@ data_card_11 %<-% tibble::tibble(a = 1:4, b = letters[1:4])
 data_card_12 %<-% tibble::tibble(a = c(1:5, 5L), b = letters[c(1:5, 5L)])
 data_card_13 %<-% tibble::tibble(a = 1:6, b = letters[1:6])
 
-dm_for_card %<--%
-  {
-    dm(
-      dc_1 = data_card_1(),
-      dc_2 = data_card_11(),
-      dc_3 = data_card_12(),
-      dc_4 = data_card_13(),
-      dc_5 = suppress_mssql_message(compute(data_card_1())),
-      dc_6 = data_card_7()
-    ) %>%
-      dm_add_fk(dc_2, c(a, b), dc_1, c(a, b)) %>%
-      dm_add_fk(dc_3, c(a, b), dc_1, c(a, b)) %>%
-      dm_add_fk(dc_3, c(b, a), dc_4, c(b, a)) %>%
-      dm_add_fk(dc_4, c(b, a), dc_3, c(b, a)) %>%
-      dm_add_fk(dc_5, c(b, a), dc_1, c(b, a)) %>%
-      dm_add_fk(dc_6, c, dc_1, a)
-  }
+dm_for_card %<--% {
+  dm(
+    dc_1 = data_card_1(),
+    dc_2 = data_card_11(),
+    dc_3 = data_card_12(),
+    dc_4 = data_card_13(),
+    dc_5 = suppress_mssql_message(compute(data_card_1())),
+    dc_6 = data_card_7()
+  ) %>%
+    dm_add_fk(dc_2, c(a, b), dc_1, c(a, b)) %>%
+    dm_add_fk(dc_3, c(a, b), dc_1, c(a, b)) %>%
+    dm_add_fk(dc_3, c(b, a), dc_4, c(b, a)) %>%
+    dm_add_fk(dc_4, c(b, a), dc_3, c(b, a)) %>%
+    dm_add_fk(dc_5, c(b, a), dc_1, c(b, a)) %>%
+    dm_add_fk(dc_6, c, dc_1, a)
+}
 
 # for check_key() ---------------------------------------------------------
 
@@ -377,116 +373,109 @@ tf_7 %<-%
     q = c("elephant", "lion", "seal", "worm", "dog", "cat")
   )
 
-dm_for_filter_w_cycle %<-%
-  {
-    dm(
-      tf_1 = tf_1(),
-      tf_2 = tf_2(),
-      tf_3 = tf_3(),
-      tf_4 = tf_4(),
-      tf_5 = tf_5(),
-      tf_6 = tf_6(),
-      tf_7 = tf_7()
-    ) %>%
-      dm_add_pk(tf_1, a, autoincrement = TRUE) %>%
-      #
-      dm_add_pk(tf_3, c(f, f1)) %>%
-      dm_add_uk(tf_3, g) %>%
-      #
-      dm_add_pk(tf_2, c) %>%
-      dm_add_fk(tf_2, d, tf_1) %>%
-      dm_add_fk(tf_2, c(e, e1), tf_3) %>%
-      #
-      dm_add_pk(tf_4, h) %>%
-      dm_add_fk(tf_4, c(j, j1), tf_3) %>%
-      #
-      dm_add_pk(tf_7, p) %>%
-      dm_add_fk(tf_7, q, tf_2) %>%
-      #
-      dm_add_pk(tf_6, o) %>%
-      dm_add_fk(tf_6, o, tf_7) %>%
-      #
-      dm_add_pk(tf_5, k) %>%
-      dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
-      dm_add_fk(tf_5, m, tf_6, n)
-  }
+dm_for_filter_w_cycle %<-% {
+  dm(
+    tf_1 = tf_1(),
+    tf_2 = tf_2(),
+    tf_3 = tf_3(),
+    tf_4 = tf_4(),
+    tf_5 = tf_5(),
+    tf_6 = tf_6(),
+    tf_7 = tf_7()
+  ) %>%
+    dm_add_pk(tf_1, a, autoincrement = TRUE) %>%
+    #
+    dm_add_pk(tf_3, c(f, f1)) %>%
+    dm_add_uk(tf_3, g) %>%
+    #
+    dm_add_pk(tf_2, c) %>%
+    dm_add_fk(tf_2, d, tf_1) %>%
+    dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+    #
+    dm_add_pk(tf_4, h) %>%
+    dm_add_fk(tf_4, c(j, j1), tf_3) %>%
+    #
+    dm_add_pk(tf_7, p) %>%
+    dm_add_fk(tf_7, q, tf_2) %>%
+    #
+    dm_add_pk(tf_6, o) %>%
+    dm_add_fk(tf_6, o, tf_7) %>%
+    #
+    dm_add_pk(tf_5, k) %>%
+    dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
+    dm_add_fk(tf_5, m, tf_6, n)
+}
 
-dm_for_filter %<-%
-  {
-    dm_for_filter_w_cycle() %>%
-      dm_select_tbl(-tf_7)
-  }
+dm_for_filter %<-% {
+  dm_for_filter_w_cycle() %>%
+    dm_select_tbl(-tf_7)
+}
 
-dm_for_filter_db %<--%
-  {
-    copy_dm_to(my_db_test_src(), dm_for_filter())
-  }
+dm_for_filter_db %<--% {
+  copy_dm_to(my_db_test_src(), dm_for_filter())
+}
 
-dm_for_filter_df %<--%
-  {
-    # FIXME: Do it the other way round, data frame first, then copy to db
-    dm_for_filter() %>%
-      collect() %>%
-      dm_zoom_to(tf_1) %>%
-      arrange(pick(everything())) %>%
-      dm_update_zoomed() %>%
-      dm_zoom_to(tf_2) %>%
-      arrange(pick(everything())) %>%
-      dm_update_zoomed() %>%
-      dm_zoom_to(tf_3) %>%
-      arrange(pick(everything())) %>%
-      dm_update_zoomed() %>%
-      dm_zoom_to(tf_4) %>%
-      arrange(pick(everything())) %>%
-      dm_update_zoomed() %>%
-      dm_zoom_to(tf_5) %>%
-      arrange(pick(everything())) %>%
-      dm_update_zoomed() %>%
-      dm_zoom_to(tf_6) %>%
-      arrange(pick(everything())) %>%
-      dm_update_zoomed()
-  }
+dm_for_filter_df %<--% {
+  # FIXME: Do it the other way round, data frame first, then copy to db
+  dm_for_filter() %>%
+    collect() %>%
+    dm_zoom_to(tf_1) %>%
+    arrange(pick(everything())) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(tf_2) %>%
+    arrange(pick(everything())) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(tf_3) %>%
+    arrange(pick(everything())) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(tf_4) %>%
+    arrange(pick(everything())) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(tf_5) %>%
+    arrange(pick(everything())) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(tf_6) %>%
+    arrange(pick(everything())) %>%
+    dm_update_zoomed()
+}
 
 dm_for_filter_duckdb %<--% copy_dm_to(duckdb_test_src(), dm_for_filter())
 
-dm_for_filter_rev %<-%
-  {
-    def_dm_for_filter <- dm_get_def(dm_for_filter())
-    dm_from_def(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])
-  }
+dm_for_filter_rev %<-% {
+  def_dm_for_filter <- dm_get_def(dm_for_filter())
+  dm_from_def(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])
+}
 
 # Deprecated tests
-dm_for_filter_simple %<-%
-  {
-    dm(
-      tf_1 = tf_1(),
-      tf_2 = tf_2_simple(),
-      tf_3 = tf_3_simple(),
-      tf_4 = tf_4(),
-      tf_5 = tf_5(),
-      tf_6 = tf_6()
-    ) %>%
-      dm_add_pk(tf_1, a) %>%
-      dm_add_pk(tf_3, f) %>%
-      #
-      dm_add_pk(tf_2, c) %>%
-      dm_add_fk(tf_2, d, tf_1) %>%
-      dm_add_fk(tf_2, e, tf_3) %>%
-      #
-      dm_add_pk(tf_4, h) %>%
-      dm_add_fk(tf_4, j, tf_3) %>%
-      #
-      dm_add_pk(tf_6, n) %>%
-      #
-      dm_add_pk(tf_5, k) %>%
-      dm_add_fk(tf_5, l, tf_4) %>%
-      dm_add_fk(tf_5, m, tf_6)
-  }
+dm_for_filter_simple %<-% {
+  dm(
+    tf_1 = tf_1(),
+    tf_2 = tf_2_simple(),
+    tf_3 = tf_3_simple(),
+    tf_4 = tf_4(),
+    tf_5 = tf_5(),
+    tf_6 = tf_6()
+  ) %>%
+    dm_add_pk(tf_1, a) %>%
+    dm_add_pk(tf_3, f) %>%
+    #
+    dm_add_pk(tf_2, c) %>%
+    dm_add_fk(tf_2, d, tf_1) %>%
+    dm_add_fk(tf_2, e, tf_3) %>%
+    #
+    dm_add_pk(tf_4, h) %>%
+    dm_add_fk(tf_4, j, tf_3) %>%
+    #
+    dm_add_pk(tf_6, n) %>%
+    #
+    dm_add_pk(tf_5, k) %>%
+    dm_add_fk(tf_5, l, tf_4) %>%
+    dm_add_fk(tf_5, m, tf_6)
+}
 
-dm_for_filter_simple_db %<--%
-  {
-    copy_dm_to(my_db_test_src(), dm_for_filter_simple())
-  }
+dm_for_filter_simple_db %<--% {
+  copy_dm_to(my_db_test_src(), dm_for_filter_simple())
+}
 
 # for tests on `dm` objects: dm_add_pk(), dm_add_fk() ------------------------
 
@@ -514,103 +503,94 @@ rows_dm_obj <- 36L
 
 # Complicated `dm` --------------------------------------------------------
 
-dm_more_complex_part %<-%
-  {
-    dm(
-      tf_6_2 = tibble(
-        p = letters[1:6],
-        f = LETTERS[6:11],
-        f1 = c(6:7, 7L, 7L, 10:11)
-      ),
-      tf_4_2 = tibble(
-        r = letters[2:6],
-        s = c("three", "five", "six", "seven", "eight"),
-        t = c(LETTERS[4:7], LETTERS[5])
-      ),
-      a = tibble(a_1 = letters[10:18], a_2 = 5:13),
-      b = tibble(b_1 = LETTERS[12:15], b_2 = letters[12:15], b_3 = 9:6),
-      c = tibble(c_1 = 4:10),
-      d = tibble(d_1 = 1:6, b_1 = LETTERS[c(12:14, 13:15)]),
-      e = tibble(e_1 = 1:2, b_1 = LETTERS[c(12:13)])
-    )
-  }
+dm_more_complex_part %<-% {
+  dm(
+    tf_6_2 = tibble(
+      p = letters[1:6],
+      f = LETTERS[6:11],
+      f1 = c(6:7, 7L, 7L, 10:11)
+    ),
+    tf_4_2 = tibble(
+      r = letters[2:6],
+      s = c("three", "five", "six", "seven", "eight"),
+      t = c(LETTERS[4:7], LETTERS[5])
+    ),
+    a = tibble(a_1 = letters[10:18], a_2 = 5:13),
+    b = tibble(b_1 = LETTERS[12:15], b_2 = letters[12:15], b_3 = 9:6),
+    c = tibble(c_1 = 4:10),
+    d = tibble(d_1 = 1:6, b_1 = LETTERS[c(12:14, 13:15)]),
+    e = tibble(e_1 = 1:2, b_1 = LETTERS[c(12:13)])
+  )
+}
 
-dm_more_complex %<-%
-  {
-    dm(
-      !!!dm_get_tables(dm_for_filter_w_cycle()),
-      !!!dm_get_tables(dm_more_complex_part())
-    ) %>%
-      dm_add_pk(tf_1, a) %>%
-      dm_add_pk(tf_2, c) %>%
-      dm_add_pk(tf_3, c(f, f1)) %>%
-      dm_add_pk(tf_4, h) %>%
-      dm_add_pk(tf_4_2, r) %>%
-      dm_add_pk(tf_5, k) %>%
-      dm_add_pk(tf_6, n) %>%
-      dm_add_pk(tf_6_2, p) %>%
-      dm_add_pk(a, a_1) %>%
-      dm_add_pk(b, b_1) %>%
-      dm_add_pk(c, c_1) %>%
-      dm_add_pk(d, d_1) %>%
-      dm_add_pk(e, e_1) %>%
-      dm_add_fk(tf_2, d, tf_1) %>%
-      dm_add_fk(tf_2, c(e, e1), tf_3) %>%
-      dm_add_fk(tf_4, c(j, j1), tf_3) %>%
-      dm_add_fk(tf_5, l, tf_4) %>%
-      dm_add_fk(tf_5, l, tf_4_2) %>%
-      dm_add_fk(tf_5, m, tf_6) %>%
-      dm_add_fk(tf_6_2, c(f, f1), tf_3) %>%
-      dm_add_fk(b, b_2, a) %>%
-      dm_add_fk(b, b_3, c) %>%
-      dm_add_fk(d, b_1, b) %>%
-      dm_add_fk(e, b_1, b)
-  }
+dm_more_complex %<-% {
+  dm(
+    !!!dm_get_tables(dm_for_filter_w_cycle()),
+    !!!dm_get_tables(dm_more_complex_part())
+  ) %>%
+    dm_add_pk(tf_1, a) %>%
+    dm_add_pk(tf_2, c) %>%
+    dm_add_pk(tf_3, c(f, f1)) %>%
+    dm_add_pk(tf_4, h) %>%
+    dm_add_pk(tf_4_2, r) %>%
+    dm_add_pk(tf_5, k) %>%
+    dm_add_pk(tf_6, n) %>%
+    dm_add_pk(tf_6_2, p) %>%
+    dm_add_pk(a, a_1) %>%
+    dm_add_pk(b, b_1) %>%
+    dm_add_pk(c, c_1) %>%
+    dm_add_pk(d, d_1) %>%
+    dm_add_pk(e, e_1) %>%
+    dm_add_fk(tf_2, d, tf_1) %>%
+    dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+    dm_add_fk(tf_4, c(j, j1), tf_3) %>%
+    dm_add_fk(tf_5, l, tf_4) %>%
+    dm_add_fk(tf_5, l, tf_4_2) %>%
+    dm_add_fk(tf_5, m, tf_6) %>%
+    dm_add_fk(tf_6_2, c(f, f1), tf_3) %>%
+    dm_add_fk(b, b_2, a) %>%
+    dm_add_fk(b, b_3, c) %>%
+    dm_add_fk(d, b_1, b) %>%
+    dm_add_fk(e, b_1, b)
+}
 
 # for testing `dm_disambiguate_cols()` ----------------------------------------
 
-iris_1 %<-%
-  {
-    datasets::iris %>%
-      as_tibble() %>%
-      mutate(Species = as.character(Species)) %>%
-      mutate(key = row_number()) %>%
-      select(key, everything())
-  }
-iris_2 %<-%
-  {
-    iris_1() %>%
-      mutate(other_col = 1L)
-  }
-iris_3 %<-%
-  {
-    iris_2() %>%
-      mutate(one_more_col = 1)
-  }
+iris_1 %<-% {
+  datasets::iris %>%
+    as_tibble() %>%
+    mutate(Species = as.character(Species)) %>%
+    mutate(key = row_number()) %>%
+    select(key, everything())
+}
+iris_2 %<-% {
+  iris_1() %>%
+    mutate(other_col = 1L)
+}
+iris_3 %<-% {
+  iris_2() %>%
+    mutate(one_more_col = 1)
+}
 
-iris_1_dis %<-%
-  {
-    iris_1() %>%
-      rename_at(2:6, ~ sub("^", "iris_1.", .))
-  }
-iris_2_dis %<-%
-  {
-    iris_2() %>%
-      rename_at(1:7, ~ sub("^", "iris_2.", .))
-  }
-iris_3_dis %<-%
-  {
-    iris_3() %>%
-      rename_at(1:7, ~ sub("^", "iris_3.", .))
-  }
+iris_1_dis %<-% {
+  iris_1() %>%
+    rename_at(2:6, ~ sub("^", "iris_1.", .))
+}
+iris_2_dis %<-% {
+  iris_2() %>%
+    rename_at(1:7, ~ sub("^", "iris_2.", .))
+}
+iris_3_dis %<-% {
+  iris_3() %>%
+    rename_at(1:7, ~ sub("^", "iris_3.", .))
+}
 
-dm_for_disambiguate %<-%
-  {
-    list(iris_1 = iris_1(), iris_2 = iris_2(), iris_3 = iris_3()) %>%
-      as_dm() %>%
-      dm_add_pk(iris_1, key) %>%
-      dm_add_fk(iris_2, key, iris_1)
-  }
+dm_for_disambiguate %<-% {
+  list(iris_1 = iris_1(), iris_2 = iris_2(), iris_3 = iris_3()) %>%
+    as_dm() %>%
+    dm_add_pk(iris_1, key) %>%
+    dm_add_fk(iris_2, key, iris_1)
+}
 
 # star schema data model for testing `dm_flatten_to_tbl()` ------
 
@@ -636,21 +616,19 @@ fact %<-%
     something = 1:10
   )
 
-fact_clean %<-%
-  {
-    fact() %>%
-      rename(
-        fact.something = something
-      )
-  }
+fact_clean %<-% {
+  fact() %>%
+    rename(
+      fact.something = something
+    )
+}
 
-fact_clean_new %<-%
-  {
-    fact() %>%
-      rename(
-        something.fact = something
-      )
-  }
+fact_clean_new %<-% {
+  fact() %>%
+    rename(
+      something.fact = something
+    )
+}
 
 dim_1 %<-%
   tibble(
@@ -658,166 +636,153 @@ dim_1 %<-%
     dim_1_pk_2 = LETTERS[1:20],
     something = letters[3:22]
   )
-dim_1_clean %<-%
-  {
-    dim_1() %>%
-      rename(dim_1.something = something)
-  }
-dim_1_clean_new %<-%
-  {
-    dim_1() %>%
-      rename(something.dim_1 = something)
-  }
+dim_1_clean %<-% {
+  dim_1() %>%
+    rename(dim_1.something = something)
+}
+dim_1_clean_new %<-% {
+  dim_1() %>%
+    rename(something.dim_1 = something)
+}
 
 dim_2 %<-%
   tibble(
     dim_2_pk = letters[1:20],
     something = LETTERS[5:24]
   )
-dim_2_clean %<-%
-  {
-    dim_2() %>%
-      rename(dim_2.something = something)
-  }
-dim_2_clean_new %<-%
-  {
-    dim_2() %>%
-      rename(something.dim_2 = something)
-  }
+dim_2_clean %<-% {
+  dim_2() %>%
+    rename(dim_2.something = something)
+}
+dim_2_clean_new %<-% {
+  dim_2() %>%
+    rename(something.dim_2 = something)
+}
 
 dim_3 %<-%
   tibble(
     dim_3_pk = LETTERS[5:24],
     something = 3:22
   )
-dim_3_clean %<-%
-  {
-    dim_3() %>%
-      rename(dim_3.something = something)
-  }
-dim_3_clean_new %<-%
-  {
-    dim_3() %>%
-      rename(something.dim_3 = something)
-  }
+dim_3_clean %<-% {
+  dim_3() %>%
+    rename(dim_3.something = something)
+}
+dim_3_clean_new %<-% {
+  dim_3() %>%
+    rename(something.dim_3 = something)
+}
 
 dim_4 %<-%
   tibble(
     dim_4_pk = 19:7,
     something = 19:31
   )
-dim_4_clean %<-%
-  {
-    dim_4() %>%
-      rename(dim_4.something = something)
-  }
-dim_4_clean_new %<-%
-  {
-    dim_4() %>%
-      rename(something.dim_4 = something)
-  }
+dim_4_clean %<-% {
+  dim_4() %>%
+    rename(dim_4.something = something)
+}
+dim_4_clean_new %<-% {
+  dim_4() %>%
+    rename(something.dim_4 = something)
+}
 
 # dm for testing dm_disentangle() -----------------------------------------
 
-entangled_dm %<-%
-  {
-    dm(
-      a = tf_5() %>% rename(a = k),
-      b = tf_5() %>% rename(b = k),
-      c = tf_5() %>% rename(c = k),
-      d = tf_5() %>% rename(d = k),
-      e = tf_5() %>% rename(e = k),
-      f = tf_5() %>% rename(f = k),
-      g = tf_5() %>% rename(g = k),
-      h = tf_5() %>% rename(h = k)
-    ) %>%
-      dm_add_pk(b, b) %>%
-      dm_add_pk(c, c) %>%
-      dm_add_pk(d, d) %>%
-      dm_add_pk(e, e) %>%
-      dm_add_pk(f, f) %>%
-      dm_add_pk(g, g) %>%
-      dm_add_pk(h, h) %>%
-      dm_add_fk(a, a, b) %>%
-      dm_add_fk(a, a, c) %>%
-      dm_add_fk(b, b, d) %>%
-      dm_add_fk(c, c, d) %>%
-      dm_add_fk(d, d, e) %>%
-      dm_add_fk(d, d, f) %>%
-      dm_add_fk(e, e, g) %>%
-      dm_add_fk(f, f, g) %>%
-      dm_add_fk(g, g, h)
-  }
+entangled_dm %<-% {
+  dm(
+    a = tf_5() %>% rename(a = k),
+    b = tf_5() %>% rename(b = k),
+    c = tf_5() %>% rename(c = k),
+    d = tf_5() %>% rename(d = k),
+    e = tf_5() %>% rename(e = k),
+    f = tf_5() %>% rename(f = k),
+    g = tf_5() %>% rename(g = k),
+    h = tf_5() %>% rename(h = k)
+  ) %>%
+    dm_add_pk(b, b) %>%
+    dm_add_pk(c, c) %>%
+    dm_add_pk(d, d) %>%
+    dm_add_pk(e, e) %>%
+    dm_add_pk(f, f) %>%
+    dm_add_pk(g, g) %>%
+    dm_add_pk(h, h) %>%
+    dm_add_fk(a, a, b) %>%
+    dm_add_fk(a, a, c) %>%
+    dm_add_fk(b, b, d) %>%
+    dm_add_fk(c, c, d) %>%
+    dm_add_fk(d, d, e) %>%
+    dm_add_fk(d, d, f) %>%
+    dm_add_fk(e, e, g) %>%
+    dm_add_fk(f, f, g) %>%
+    dm_add_fk(g, g, h)
+}
 
-entangled_dm_2 %<-%
-  {
-    dm(
-      a = tf_5() %>% rename(a = k),
-      b = tf_5() %>% rename(b = k),
-      c = tf_5() %>% rename(c = k),
-      d = tf_5() %>% rename(d = k),
-      e = tf_5() %>% rename(e = k),
-      f = tf_5() %>% rename(f = k),
-      g = tf_5() %>% rename(g = k)
-    ) %>%
-      dm_add_pk(b, b) %>%
-      dm_add_pk(c, c) %>%
-      dm_add_pk(d, d) %>%
-      dm_add_pk(e, e) %>%
-      dm_add_pk(f, f) %>%
-      dm_add_pk(g, g) %>%
-      dm_add_fk(a, a, d) %>%
-      dm_add_fk(b, b, d) %>%
-      dm_add_fk(c, c, d) %>%
-      dm_add_fk(a, a, e) %>%
-      dm_add_fk(d, d, e) %>%
-      dm_add_fk(f, f, g)
-  }
+entangled_dm_2 %<-% {
+  dm(
+    a = tf_5() %>% rename(a = k),
+    b = tf_5() %>% rename(b = k),
+    c = tf_5() %>% rename(c = k),
+    d = tf_5() %>% rename(d = k),
+    e = tf_5() %>% rename(e = k),
+    f = tf_5() %>% rename(f = k),
+    g = tf_5() %>% rename(g = k)
+  ) %>%
+    dm_add_pk(b, b) %>%
+    dm_add_pk(c, c) %>%
+    dm_add_pk(d, d) %>%
+    dm_add_pk(e, e) %>%
+    dm_add_pk(f, f) %>%
+    dm_add_pk(g, g) %>%
+    dm_add_fk(a, a, d) %>%
+    dm_add_fk(b, b, d) %>%
+    dm_add_fk(c, c, d) %>%
+    dm_add_fk(a, a, e) %>%
+    dm_add_fk(d, d, e) %>%
+    dm_add_fk(f, f, g)
+}
 
 # dm_flatten() ------------------------------------------------------------
 
-dm_for_flatten %<-%
-  {
-    as_dm(list(
-      fact = fact(),
-      dim_1 = dim_1(),
-      dim_2 = dim_2(),
-      dim_3 = dim_3(),
-      dim_4 = dim_4()
-    )) %>%
-      dm_add_pk(dim_1, c(dim_1_pk_1, dim_1_pk_2)) %>%
-      dm_add_pk(dim_2, dim_2_pk) %>%
-      dm_add_pk(dim_3, dim_3_pk) %>%
-      dm_add_pk(dim_4, dim_4_pk) %>%
-      dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1) %>%
-      dm_add_fk(fact, dim_2_key, dim_2) %>%
-      dm_add_fk(fact, dim_3_key, dim_3) %>%
-      dm_add_fk(fact, dim_4_key, dim_4)
-  }
+dm_for_flatten %<-% {
+  as_dm(list(
+    fact = fact(),
+    dim_1 = dim_1(),
+    dim_2 = dim_2(),
+    dim_3 = dim_3(),
+    dim_4 = dim_4()
+  )) %>%
+    dm_add_pk(dim_1, c(dim_1_pk_1, dim_1_pk_2)) %>%
+    dm_add_pk(dim_2, dim_2_pk) %>%
+    dm_add_pk(dim_3, dim_3_pk) %>%
+    dm_add_pk(dim_4, dim_4_pk) %>%
+    dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1) %>%
+    dm_add_fk(fact, dim_2_key, dim_2) %>%
+    dm_add_fk(fact, dim_3_key, dim_3) %>%
+    dm_add_fk(fact, dim_4_key, dim_4)
+}
 
-result_from_flatten %<-%
-  {
-    fact_clean() %>%
-      left_join(
-        dim_1_clean(),
-        by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
-      ) %>%
-      left_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) %>%
-      left_join(dim_3_clean(), by = c("dim_3_key" = "dim_3_pk")) %>%
-      left_join(dim_4_clean(), by = c("dim_4_key" = "dim_4_pk"))
-  }
+result_from_flatten %<-% {
+  fact_clean() %>%
+    left_join(
+      dim_1_clean(),
+      by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+    ) %>%
+    left_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) %>%
+    left_join(dim_3_clean(), by = c("dim_3_key" = "dim_3_pk")) %>%
+    left_join(dim_4_clean(), by = c("dim_4_key" = "dim_4_pk"))
+}
 
-result_from_flatten_new %<-%
-  {
-    fact_clean_new() %>%
-      left_join(
-        dim_1_clean_new(),
-        by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
-      ) %>%
-      left_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk")) %>%
-      left_join(dim_3_clean_new(), by = c("dim_3_key" = "dim_3_pk")) %>%
-      left_join(dim_4_clean_new(), by = c("dim_4_key" = "dim_4_pk"))
-  }
+result_from_flatten_new %<-% {
+  fact_clean_new() %>%
+    left_join(
+      dim_1_clean_new(),
+      by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+    ) %>%
+    left_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk")) %>%
+    left_join(dim_3_clean_new(), by = c("dim_3_key" = "dim_3_pk")) %>%
+    left_join(dim_4_clean_new(), by = c("dim_4_key" = "dim_4_pk"))
+}
 
 # 'bad' dm (no ref. integrity) for testing dm_flatten_to_tbl() --------
 
@@ -825,73 +790,66 @@ tbl_1 %<-% tibble(a = as.integer(c(1, 2, 4, 5, NA)), x = LETTERS[3:7], b = a)
 tbl_2 %<-% tibble(id = c(1:3, 3), x = LETTERS[c(3:5, 5)], c = letters[1:4])
 tbl_3 %<-% tibble(id = c(2:4, 4), d = letters[2:5])
 
-bad_dm_base %<-%
-  {
-    as_dm(list(tbl_1 = tbl_1(), tbl_2 = tbl_2(), tbl_3 = tbl_3()))
-  }
+bad_dm_base %<-% {
+  as_dm(list(tbl_1 = tbl_1(), tbl_2 = tbl_2(), tbl_3 = tbl_3()))
+}
 
 # avoid copying constraints for invalid dm
-bad_dm %<--%
-  {
-    bad_dm_base() %>%
-      dm_add_pk(tbl_2, c(id, x)) %>%
-      dm_add_pk(tbl_3, id) %>%
-      dm_add_fk(tbl_1, c(a, x), tbl_2) %>%
-      dm_add_fk(tbl_1, b, tbl_3)
-  }
+bad_dm %<--% {
+  bad_dm_base() %>%
+    dm_add_pk(tbl_2, c(id, x)) %>%
+    dm_add_pk(tbl_3, id) %>%
+    dm_add_fk(tbl_1, c(a, x), tbl_2) %>%
+    dm_add_fk(tbl_1, b, tbl_3)
+}
 
-dm_nycflights_small_base %<-%
-  {
-    tables <- dm_get_tables(dm_nycflights13())
-    # https://github.com/tidyverse/dbplyr/pull/1195
-    tables$flights <- mutate(
-      tables$flights,
-      time_hour = as.character(time_hour)
-    )
-    tables$weather <- mutate(
-      tables$weather,
-      time_hour = as.character(time_hour)
-    )
-    dm(!!!tables)
-  }
+dm_nycflights_small_base %<-% {
+  tables <- dm_get_tables(dm_nycflights13())
+  # https://github.com/tidyverse/dbplyr/pull/1195
+  tables$flights <- mutate(
+    tables$flights,
+    time_hour = as.character(time_hour)
+  )
+  tables$weather <- mutate(
+    tables$weather,
+    time_hour = as.character(time_hour)
+  )
+  dm(!!!tables)
+}
 
 # Do not add PK and FK constraints to the database
-dm_nycflights_small %<--%
-  {
-    dm_nycflights_small_base() %>%
-      dm_add_pk(planes, tailnum) %>%
-      dm_add_pk(airlines, carrier) %>%
-      dm_add_pk(airports, faa) %>%
-      dm_add_fk(flights, tailnum, planes) %>%
-      dm_add_fk(flights, carrier, airlines) %>%
-      dm_add_fk(flights, dest, airports)
-  }
+dm_nycflights_small %<--% {
+  dm_nycflights_small_base() %>%
+    dm_add_pk(planes, tailnum) %>%
+    dm_add_pk(airlines, carrier) %>%
+    dm_add_pk(airports, faa) %>%
+    dm_add_fk(flights, tailnum, planes) %>%
+    dm_add_fk(flights, carrier, airlines) %>%
+    dm_add_fk(flights, dest, airports)
+}
 
-dm_nycflights_small_cycle %<--%
-  {
-    dm_nycflights_small() %>%
-      dm_add_fk(flights, origin, airports)
-  }
+dm_nycflights_small_cycle %<--% {
+  dm_nycflights_small() %>%
+    dm_add_fk(flights, origin, airports)
+}
 
-nyc_comp %<--%
-  {
-    dm_nycflights_small() %>%
-      dm_add_pk(weather, c(origin, time_hour)) %>%
-      dm_add_fk(flights, c(origin, time_hour), weather)
-  }
+nyc_comp %<--% {
+  dm_nycflights_small() %>%
+    dm_add_pk(weather, c(origin, time_hour)) %>%
+    dm_add_fk(flights, c(origin, time_hour), weather)
+}
 
 dm_zoomed <- function() dm_zoom_to(dm_for_filter(), tf_2)
 dm_zoomed_2 <- function() dm_zoom_to(dm_for_filter(), tf_3)
 
-dm_for_autoinc_1 %<-%
-  {
-    dm(
-      t1 = tibble(a = 5:7, o = letters[1:3]),
-      t2 = tibble(c = 10:8, d = 7:5, o = letters[3:1]),
-      t3 = tibble(e = c(6L, 5L, 7L), o = letters[c(2, 1, 3)]),
-      t4 = tibble(g = 1:3, h = 8:10, o = letters[1:3])
-    )
-  }
+dm_for_autoinc_1 %<-% {
+  dm(
+    t1 = tibble(a = 5:7, o = letters[1:3]),
+    t2 = tibble(c = 10:8, d = 7:5, o = letters[3:1]),
+    t3 = tibble(e = c(6L, 5L, 7L), o = letters[c(2, 1, 3)]),
+    t4 = tibble(g = 1:3, h = 8:10, o = letters[1:3])
+  )
+}
 
 # FIXME: regarding PR #313: everything below this line needs to be at least reconsidered if not just dumped.
 

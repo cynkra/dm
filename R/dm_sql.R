@@ -490,8 +490,7 @@ ddl_get_fk_defs <- function(fks, con, table_names) {
       map_chr(
         x,
         ~ {
-          switch(
-            .x,
+          switch(.x,
             "no_action" = "",
             "cascade" = " ON DELETE CASCADE",
             abort(glue('`on_delete = "{.x}"` not supported'))

@@ -123,13 +123,11 @@ print.dm_examine_cardinalities <- function(x, ...) {
     mutate(
       cardinalities = pmap_chr(
         x,
-        function(
-          parent_table,
-          parent_key_cols,
-          child_table,
-          child_fk_cols,
-          cardinality
-        ) {
+        function(parent_table,
+                 parent_key_cols,
+                 child_table,
+                 child_fk_cols,
+                 cardinality) {
           paste0(
             "FK: ",
             child_table,

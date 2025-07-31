@@ -120,8 +120,7 @@ bdm_create_graph_list <- function(
 
   tables <- split(data_model$columns, data_model$columns$table)
 
-  switch(
-    view_type,
+  switch(view_type,
     all = {},
     #
     keys_only = {

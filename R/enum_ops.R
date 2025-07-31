@@ -67,7 +67,9 @@ add_multiple <- function(e, dm, tbls, cols) {
 
 # TODO: Add more operators
 enum <- function(op) {
-  switch(op, dm_add_pk = enum_ops_dm_add_pk)
+  switch(op,
+    dm_add_pk = enum_ops_dm_add_pk
+  )
 }
 
 enum_ops_dm_add_pk <- function(dm, tbls, cols) {

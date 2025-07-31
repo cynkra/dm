@@ -303,8 +303,7 @@ check_keys_compatible <- function(x, y) {
 }
 
 get_dm_rows_op <- function(operation_name) {
-  switch(
-    operation_name,
+  switch(operation_name,
     "insert" = list(fun = do_rows_insert, pb_label = "inserting rows"),
     "append" = list(fun = do_rows_append, pb_label = "appending rows"),
     "update" = list(fun = do_rows_update, pb_label = "updating rows"),
