@@ -6,7 +6,11 @@ This file contains important notes and best practices for working with the dm pa
 
 ### Devcontainer Setup
 
-This project uses a devcontainer with the image `ghcr.io/cynkra/docker-images/ubuntu24-rig-rrel-devtools-dm:latest`.
+This project uses a devcontainer configuration with:
+
+- **R Environment**: `ghcr.io/cynkra/docker-images/ubuntu24-rig-rrel-dc-dt-dm:latest`
+- **PostgreSQL Database**: Latest PostgreSQL with socket connection support
+- **Docker Compose**: `.devcontainer/docker-compose.yml` defines the complete environment
 
 **Important**: All R commands and package operations should be executed within the devcontainer. Claude Code is configured to automatically use the devcontainer for all execution.
 
@@ -41,6 +45,14 @@ testthat::test_local()
 ```
 
 **Important**: The `filter` argument filters by test file names, not individual test names within files.
+
+### Different Backends
+
+**Important**: Set the `DM_TEST_SRC` environment variable to test against various backends. Always test all backends. Supported values include:
+
+- `df`
+- `postgres`
+- `duckdb`
 
 ---
 
