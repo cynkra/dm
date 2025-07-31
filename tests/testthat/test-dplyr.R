@@ -1,6 +1,5 @@
 # basic tests -------------------------------------------------------------
 
-
 test_that("basic test: 'group_by()'-methods work", {
   expect_equivalent_tbl(
     group_by(dm_zoomed(), e) %>% tbl_zoomed(),
@@ -248,7 +247,6 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
     inner_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
-
   expect_equivalent_tbl(
     semi_join(dm_zoomed(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     semi_join(tf_2(), tf_1(), by = c("d" = "a"))
@@ -309,31 +307,41 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
 
     # explicitly select and rename columns from RHS using argument `select`
     expect_equivalent_tbl(
-      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
+      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1)) %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_3"),
       left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"))
     )
   } else {
     if (utils::packageVersion("dplyr") >= "1.1.0.9000") {
       expect_equivalent_tbl(
-        left_join(dm_zoomed(), tf_4, by = c("e" = "j"), relationship = "many-to-many") %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+        left_join(dm_zoomed(), tf_4, by = c("e" = "j"), relationship = "many-to-many") %>%
+          dm_update_zoomed() %>%
+          tbl_impl("tf_2"),
         left_join(tf_2(), tf_4(), by = c("e" = "j"), relationship = "many-to-many")
       )
 
       expect_equivalent_tbl(
-        left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1"), relationship = "many-to-many") %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+        left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1"), relationship = "many-to-many") %>%
+          dm_update_zoomed() %>%
+          tbl_impl("tf_2"),
         left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"), relationship = "many-to-many")
       )
     }
 
     # explicitly select columns from RHS using argument `select`
     expect_equivalent_tbl(
-      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1), multiple = "all") %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
+      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1), multiple = "all") %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_3"),
       left_join(tf_3(), select(tf_2(), c, e, e1), by = c("f" = "e", "f1" = "e1"), multiple = "all")
     )
 
     # explicitly select and rename columns from RHS using argument `select`
     expect_equivalent_tbl(
-      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1), multiple = "all") %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
+      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1), multiple = "all") %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_3"),
       left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"), multiple = "all")
     )
   }
@@ -371,7 +379,9 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
   expect_equivalent_tbl(
     out,
     left_join(
-      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0(., ".iris_2.x")) %>% rename(Sepal.Width = Sepal.Width.iris_2.x),
+      iris_2() %>%
+        rename_at(vars(matches("^[PS]")), ~ paste0(., ".iris_2.x")) %>%
+        rename(Sepal.Width = Sepal.Width.iris_2.x),
       iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0(., ".iris_2.y")),
       by = c("key", "Sepal.Width" = "Sepal.Width.iris_2.y", "other_col")
     )
@@ -422,7 +432,6 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
     inner_join(dm_for_filter()),
     "only_possible_w_zoom"
   )
-
 
   expect_dm_error(
     semi_join(dm_for_filter()),
@@ -715,12 +724,21 @@ test_that("key tracking works for distinct() and arrange()", {
 
 test_that("key tracking works for slice()", {
   skip_if_remote_src()
-  expect_identical(slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% col_tracker_zoomed(), set_names(c("d", "e", "e1")))
+  expect_identical(
+    slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% col_tracker_zoomed(),
+    set_names(c("d", "e", "e1"))
+  )
   expect_message(
-    expect_identical(slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2)) %>% col_tracker_zoomed(), set_names(c("c", "d", "e", "e1"))),
+    expect_identical(
+      slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2)) %>% col_tracker_zoomed(),
+      set_names(c("c", "d", "e", "e1"))
+    ),
     "Keeping PK"
   )
-  expect_identical(slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% col_tracker_zoomed(), set_names(c("c", "d", "e", "e1")))
+  expect_identical(
+    slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% col_tracker_zoomed(),
+    set_names(c("c", "d", "e", "e1"))
+  )
 })
 
 

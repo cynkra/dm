@@ -2,7 +2,17 @@ expect_identical_graph <- function(g1, g2) {
   expect_true(igraph::identical_graphs(g1, g2))
 }
 
-expect_equivalent_dm <- function(object, expected, sort = FALSE, ..., sort_tables = sort, sort_columns = sort, sort_keys = sort, ignore_on_delete = FALSE, ignore_autoincrement = FALSE) {
+expect_equivalent_dm <- function(
+  object,
+  expected,
+  sort = FALSE,
+  ...,
+  sort_tables = sort,
+  sort_columns = sort,
+  sort_keys = sort,
+  ignore_on_delete = FALSE,
+  ignore_autoincrement = FALSE
+) {
   tables1 <- dm_get_tables_impl(object) %>% map(collect)
   tables2 <- dm_get_tables_impl(expected) %>% map(collect)
 
@@ -10,7 +20,10 @@ expect_equivalent_dm <- function(object, expected, sort = FALSE, ..., sort_table
 
   if (sort_keys) {
     if (ignore_autoincrement) {
-      expect_equivalent_tbl(dm_get_all_pks_impl(object) %>% select(-autoincrement), dm_get_all_pks_impl(expected) %>% select(-autoincrement))
+      expect_equivalent_tbl(
+        dm_get_all_pks_impl(object) %>% select(-autoincrement),
+        dm_get_all_pks_impl(expected) %>% select(-autoincrement)
+      )
     } else {
       expect_equivalent_tbl(dm_get_all_pks_impl(object), dm_get_all_pks_impl(expected))
     }
@@ -20,7 +33,10 @@ expect_equivalent_dm <- function(object, expected, sort = FALSE, ..., sort_table
     )
   } else {
     if (ignore_autoincrement) {
-      expect_equivalent_tbl(dm_get_all_pks_impl(object) %>% select(-autoincrement), dm_get_all_pks_impl(expected) %>% select(-autoincrement))
+      expect_equivalent_tbl(
+        dm_get_all_pks_impl(object) %>% select(-autoincrement),
+        dm_get_all_pks_impl(expected) %>% select(-autoincrement)
+      )
     } else {
       expect_equivalent_tbl(dm_get_all_pks_impl(object), dm_get_all_pks_impl(expected))
     }

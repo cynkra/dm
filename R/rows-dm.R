@@ -193,7 +193,9 @@ dm_rows <- function(x, y, operation_name, top_down, in_place, require_keys, prog
   dm_rows_check(x, y)
 
   if (is_null(in_place)) {
-    inform("Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.")
+    inform(
+      "Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables."
+    )
     in_place <- FALSE
   }
 
@@ -237,13 +239,14 @@ check_keys_compatible <- function(x, y) {
 }
 
 get_dm_rows_op <- function(operation_name) {
-  switch(operation_name,
-    "insert"   = list(fun = do_rows_insert, pb_label = "inserting rows"),
-    "append"   = list(fun = do_rows_append, pb_label = "appending rows"),
-    "update"   = list(fun = do_rows_update, pb_label = "updating rows"),
-    "patch"    = list(fun = do_rows_patch, pb_label = "patching rows"),
-    "upsert"   = list(fun = do_rows_upsert, pb_label = "upserting rows"),
-    "delete"   = list(fun = do_rows_delete, pb_label = "deleting rows"),
+  switch(
+    operation_name,
+    "insert" = list(fun = do_rows_insert, pb_label = "inserting rows"),
+    "append" = list(fun = do_rows_append, pb_label = "appending rows"),
+    "update" = list(fun = do_rows_update, pb_label = "updating rows"),
+    "patch" = list(fun = do_rows_patch, pb_label = "patching rows"),
+    "upsert" = list(fun = do_rows_upsert, pb_label = "upserting rows"),
+    "delete" = list(fun = do_rows_delete, pb_label = "deleting rows"),
     "truncate" = list(fun = rows_truncate_, pb_label = "truncating rows")
   )
 }
@@ -292,24 +295,30 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
   old_interface <- identical(append_args, c("con", "x_name", "y", "...", "returning_cols"))
   if (old_interface) {
     target_name <- remote_name_qual(x)
-    insert_queries <- map(source_rows, ~ dbplyr::sql_query_append(
-      con,
-      target_name,
-      .x,
-      returning_cols = autoinc_col
-    ))
+    insert_queries <- map(
+      source_rows,
+      ~ dbplyr::sql_query_append(
+        con,
+        target_name,
+        .x,
+        returning_cols = autoinc_col
+      )
+    )
   } else {
     # FIXME: dbplyr::remote_table() private in dbplyr 2.3.3, public in dbplyr 2.4.0
     dbplyr_ns <- asNamespace("dbplyr")
     remote_table <- mget("remote_table", dbplyr_ns, mode = "function", ifnotfound = list(NULL))[[1]]
 
-    insert_queries <- map(source_rows, ~ dbplyr::sql_query_append(
-      con,
-      remote_table(x),
-      from = dbplyr::sql_render(.x, con),
-      insert_cols = colnames(.x),
-      returning_cols = autoinc_col
-    ))
+    insert_queries <- map(
+      source_rows,
+      ~ dbplyr::sql_query_append(
+        con,
+        remote_table(x),
+        from = dbplyr::sql_render(.x, con),
+        insert_cols = colnames(.x),
+        returning_cols = autoinc_col
+      )
+    )
   }
 
   autoinc_col_orig <- paste0(autoinc_col, "_orig")
@@ -475,7 +484,6 @@ align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
   } else {
     align_tbl <- returning_rows
   }
-
 
   for (i in seq_along(fks_target$child_table)) {
     child_table <- fks_target$child_table[[i]]

@@ -41,13 +41,7 @@ new_fks_out <- function(child_fk_cols = NULL, parent_uuid = NULL, parent_key_col
   )
 }
 
-new_keyed_tbl <- function(x,
-                          ...,
-                          pk = NULL,
-                          uks = NULL,
-                          fks_in = NULL,
-                          fks_out = NULL,
-                          uuid = NULL) {
+new_keyed_tbl <- function(x, ..., pk = NULL, uks = NULL, fks_in = NULL, fks_out = NULL, uuid = NULL) {
   check_dots_empty()
 
   pk <- vec_cast(pk, character())

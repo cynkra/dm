@@ -39,8 +39,7 @@
 #'
 #' dm_nycflights13() %>%
 #'   dm_paste(options = "select")
-dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
-                     options = NULL, path = NULL) {
+dm_paste <- function(dm, select = NULL, ..., tab_width = 2, options = NULL, path = NULL) {
   check_dots_empty(action = warn)
 
   options <- check_paste_options(options, select, caller_env())
@@ -203,7 +202,10 @@ dm_paste_fks <- function(dm) {
 
   need_non_default <- !map2_lgl(fpks$parent_key_cols, fpks$parent_default_pk_cols, identical)
   fpks$non_default_parent_key_cols <- ""
-  fpks$non_default_parent_key_cols[need_non_default] <- paste0(", ", deparse_keys(fpks$parent_key_cols[need_non_default]))
+  fpks$non_default_parent_key_cols[need_non_default] <- paste0(
+    ", ",
+    deparse_keys(fpks$parent_key_cols[need_non_default])
+  )
 
   on_delete <- if_else(
     fpks$on_delete != "no_action",
@@ -211,7 +213,9 @@ dm_paste_fks <- function(dm) {
     ""
   )
 
-  glue("dm::dm_add_fk({tick_if_needed(fpks$child_table)}, {deparse_keys(fpks$child_fk_cols)}, {tick_if_needed(fpks$parent_table)}{fpks$non_default_parent_key_cols}{on_delete})")
+  glue(
+    "dm::dm_add_fk({tick_if_needed(fpks$child_table)}, {deparse_keys(fpks$child_fk_cols)}, {tick_if_needed(fpks$parent_table)}{fpks$non_default_parent_key_cols}{on_delete})"
+  )
 }
 
 dm_paste_color <- function(dm) {

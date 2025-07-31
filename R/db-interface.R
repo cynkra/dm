@@ -102,7 +102,8 @@ copy_dm_to <- function(
 
   if (!is.null(unique_table_names)) {
     deprecate_warn(
-      "0.1.4", "dm::copy_dm_to(unique_table_names = )",
+      "0.1.4",
+      "dm::copy_dm_to(unique_table_names = )",
       details = "Use `table_names = identity` to use unchanged names for temporary tables."
     )
 
@@ -113,7 +114,8 @@ copy_dm_to <- function(
 
   if (!is.null(copy_to)) {
     deprecate_stop(
-      "1.0.0", "dm::copy_dm_to(copy_to = )",
+      "1.0.0",
+      "dm::copy_dm_to(copy_to = )",
       details = "Use `dm_sql()` for more control over the schema creation process."
     )
   }
@@ -141,7 +143,9 @@ copy_dm_to <- function(
         temporary <- FALSE
       }
     } else {
-      if (!is.null(schema)) abort_one_of_schema_table_names()
+      if (!is.null(schema)) {
+        abort_one_of_schema_table_names()
+      }
       if (is_function(table_names) || is_bare_formula(table_names)) {
         table_name_fun <- as_function(table_names)
         table_names_out <- set_names(table_name_fun(src_names), src_names)
@@ -160,7 +164,8 @@ copy_dm_to <- function(
   } else {
     # FIXME: Other data sources than local and database possible
     deprecate_warn(
-      "0.1.6", "dm::copy_dm_to(dest = 'must refer to a remote data source')",
+      "0.1.6",
+      "dm::copy_dm_to(dest = 'must refer to a remote data source')",
       "dm::collect.dm()"
     )
     table_names_out <- set_names(src_names)
@@ -187,9 +192,14 @@ copy_dm_to <- function(
   )
 
   # create tables
-  walk(queries$sql_table, ticker_create(~ {
-    DBI::dbExecute(dest_con, .x, immediate = TRUE)
-  }))
+  walk(
+    queries$sql_table,
+    ticker_create(
+      ~ {
+        DBI::dbExecute(dest_con, .x, immediate = TRUE)
+      }
+    )
+  )
 
   ticker_populate <- new_ticker(
     "populating tables",
@@ -201,13 +211,15 @@ copy_dm_to <- function(
   # populate tables
   pwalk(
     queries[c("name", "remote_name")],
-    ticker_populate(~ db_append_table(
-      con = dest_con,
-      remote_table = .y,
-      table = dm[[.x]],
-      progress = progress,
-      autoinc = dm_get_all_pks(dm, table = !!.x)$autoincrement
-    ))
+    ticker_populate(
+      ~ db_append_table(
+        con = dest_con,
+        remote_table = .y,
+        table = dm[[.x]],
+        progress = progress,
+        autoinc = dm_get_all_pks(dm, table = !!.x)$autoincrement
+      )
+    )
   )
 
   ticker_index <- new_ticker(
@@ -218,9 +230,14 @@ copy_dm_to <- function(
   )
 
   # create indexes
-  walk(unlist(queries$sql_index), ticker_index(~ {
-    DBI::dbExecute(dest_con, .x, immediate = TRUE)
-  }))
+  walk(
+    unlist(queries$sql_index),
+    ticker_index(
+      ~ {
+        DBI::dbExecute(dest_con, .x, immediate = TRUE)
+      }
+    )
+  )
 
   # remote dm is same as source dm with replaced data
   def <- dm_get_def(dm)
@@ -265,22 +282,34 @@ db_append_table <- function(con, remote_table, table, progress, top_level_fun = 
       top_level_fun = top_level_fun
     )
 
-    walk(seq_len(n_chunks), ticker(~ {
-      end <- .x * chunk_size
-      idx <- seq2(end - (chunk_size - 1), min(end, nrow(table)))
-      values <- map(table[idx, , drop = FALSE], mssql_escape, con = con)
-      # Can't use dbAppendTable(): https://github.com/r-dbi/odbc/issues/480
-      sql <- DBI::sqlAppendTable(con, remote_table_id, values, row.names = FALSE)
-      if (length(autoinc) > 1L) abort("more than one autoincrement key in one table")
-      if (!is_empty(autoinc) && autoinc) {
-        sql <- DBI::SQL(paste0(
-          "SET IDENTITY_INSERT ", remote_table_name, " ON\n",
-          sql, "\n",
-          "SET IDENTITY_INSERT ", remote_table_name, " OFF"
-        ))
-      }
-      DBI::dbExecute(con, sql, immediate = TRUE)
-    }))
+    walk(
+      seq_len(n_chunks),
+      ticker(
+        ~ {
+          end <- .x * chunk_size
+          idx <- seq2(end - (chunk_size - 1), min(end, nrow(table)))
+          values <- map(table[idx, , drop = FALSE], mssql_escape, con = con)
+          # Can't use dbAppendTable(): https://github.com/r-dbi/odbc/issues/480
+          sql <- DBI::sqlAppendTable(con, remote_table_id, values, row.names = FALSE)
+          if (length(autoinc) > 1L) {
+            abort("more than one autoincrement key in one table")
+          }
+          if (!is_empty(autoinc) && autoinc) {
+            sql <- DBI::SQL(paste0(
+              "SET IDENTITY_INSERT ",
+              remote_table_name,
+              " ON\n",
+              sql,
+              "\n",
+              "SET IDENTITY_INSERT ",
+              remote_table_name,
+              " OFF"
+            ))
+          }
+          DBI::dbExecute(con, sql, immediate = TRUE)
+        }
+      )
+    )
   } else if (is_postgres(con) || is_redshift(con)) {
     # https://github.com/r-dbi/RPostgres/issues/384
     table <- as.data.frame(table)
@@ -305,7 +334,10 @@ error_txt_copy_dm_to_table_names <- function() {
 }
 
 abort_copy_dm_to_table_names_duplicated <- function(problem) {
-  abort(error_txt_copy_dm_to_table_names_duplicated(problem), class = dm_error_full("copy_dm_to_table_names_duplicated"))
+  abort(
+    error_txt_copy_dm_to_table_names_duplicated(problem),
+    class = dm_error_full("copy_dm_to_table_names_duplicated")
+  )
 }
 
 error_txt_copy_dm_to_table_names_duplicated <- function(problem) {

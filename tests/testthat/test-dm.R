@@ -523,7 +523,6 @@ test_that("output", {
 
 # Compound tests ----------------------------------------------------------
 
-
 test_that("output for compound keys", {
   # FIXME: COMPOUND: Need proper test
   skip_if_remote_src()

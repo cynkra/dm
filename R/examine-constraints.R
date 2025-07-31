@@ -32,8 +32,7 @@
 #' dm_nycflights13() %>%
 #'   dm_examine_constraints()
 #' @autoglobal
-dm_examine_constraints <- function(.dm, ..., .progress = NA,
-                                   dm = deprecated(), progress = deprecated()) {
+dm_examine_constraints <- function(.dm, ..., .progress = NA, dm = deprecated(), progress = deprecated()) {
   check_dots_empty()
 
   if (!is_missing(dm)) {
@@ -96,13 +95,19 @@ print.dm_examine_constraints <- function(x, ...) {
         into = if_else(kind == "FK", paste0(" into table ", tick(ref_table)), "")
       ) %>%
       # FIXME: Use cli styles
-      mutate(text = paste0(
-        "Table ", tick(table), ": ",
-        kind_to_long(kind), " ",
-        format(map(problem_df$columns, tick), justify = "none"),
-        into,
-        ": ", problem
-      )) %>%
+      mutate(
+        text = paste0(
+          "Table ",
+          tick(table),
+          ": ",
+          kind_to_long(kind),
+          " ",
+          format(map(problem_df$columns, tick), justify = "none"),
+          into,
+          ": ",
+          problem
+        )
+      ) %>%
       pull(text) %>%
       cli::cat_bullet(bullet_col = "red")
   }
@@ -147,10 +152,16 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
     top_level_fun = top_level_fun
   )
 
-  candidates <- map2(set_names(table_names), columns, ticker(~ {
-    tbl <- tbl_impl(dm, .x)
-    enum_pk_candidates_impl(tbl, list(.y))
-  }))
+  candidates <- map2(
+    set_names(table_names),
+    columns,
+    ticker(
+      ~ {
+        tbl <- tbl_impl(dm, .x)
+        enum_pk_candidates_impl(tbl, list(.y))
+      }
+    )
+  )
 
   tbl_is_pk <-
     tibble(table = table_names, candidate = candidates) %>%

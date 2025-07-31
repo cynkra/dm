@@ -97,7 +97,6 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
     get_all_filtered_connected("a")
   expect_identical(fc$node, "a")
 
-
   fc <-
     dm_more_complex() %>%
     dm_filter(tf_5, TRUE) %>%

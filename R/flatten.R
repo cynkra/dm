@@ -63,7 +63,9 @@
 dm_flatten_to_tbl <- function(dm, .start, ..., .recursive = FALSE, .join = left_join) {
   check_not_zoomed(dm)
   join_name <- as_label(enexpr(.join))
-  if (.recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
+  if (.recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))) {
+    abort_squash_limited()
+  }
 
   start <- dm_tbl_name(dm, {{ .start }})
 
@@ -74,7 +76,9 @@ dm_flatten_to_tbl <- function(dm, .start, ..., .recursive = FALSE, .join = left_
 }
 
 dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squash, .position = "suffix") {
-  if (join_name == "nest_join") abort_no_flatten_with_nest_join()
+  if (join_name == "nest_join") {
+    abort_no_flatten_with_nest_join()
+  }
 
   force(join)
   stopifnot(is_function(join))
@@ -193,14 +197,16 @@ parent_child_table <- function(dm, table_1, table_2) {
   rel
 }
 
-check_flatten_to_tbl <- function(join_name,
-                                 part_cond_abort_filters,
-                                 any_not_reachable,
-                                 g,
-                                 auto_detect,
-                                 more_than_1_pt,
-                                 has_grandparent,
-                                 squash) {
+check_flatten_to_tbl <- function(
+  join_name,
+  part_cond_abort_filters,
+  any_not_reachable,
+  g,
+  auto_detect,
+  more_than_1_pt,
+  has_grandparent,
+  squash
+) {
   # argument checking, or filter and recompute induced subgraph
   # for subsequent check
   if (any_not_reachable) {
@@ -211,11 +217,14 @@ check_flatten_to_tbl <- function(join_name,
   if (length(V(g)) - 1 != length(E(g))) {
     abort_no_cycles(g)
   }
-  if (join_name == "nest_join") abort_no_flatten_with_nest_join()
-  if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) abort_apply_filters_first(join_name)
+  if (join_name == "nest_join") {
+    abort_no_flatten_with_nest_join()
+  }
+  if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) {
+    abort_apply_filters_first(join_name)
+  }
   # the result for `right_join()` depends on the order of the dim-tables in the `dm`
   # if 2 or more of them are joined to the fact table and ellipsis is empty.
-
 
   # If called by `dm_join_to_tbl()` or `dm_flatten_to_tbl()`, the argument `squash = FALSE`.
   # Then only one level of hierarchy is allowed (direct neighbors to table `.start`).

@@ -57,23 +57,33 @@ db_schema_list.src_dbi <- function(con, include_default = TRUE, ...) {
   default_if_true <- if_else(include_default, "", " AND NOT s.name = 'dbo'")
   # ignore built-in schemas for backward compatibility:
   # https://docs.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver15
-  DBI::dbGetQuery(con, glue::glue("SELECT s.name as schema_name
+  DBI::dbGetQuery(
+    con,
+    glue::glue(
+      "SELECT s.name as schema_name
     FROM {dbname_sql}sys.schemas s
     WHERE s.name NOT IN ('sys', 'guest', 'INFORMATION_SCHEMA', 'db_accessadmin',
           'db_backupoperator', 'db_datareader', 'db_datawriter', 'db_ddladmin',
           'db_denydatareader', 'db_denydatawriter', 'db_owner',
-          'db_securityadmin'){default_if_true}")) %>%
+          'db_securityadmin'){default_if_true}"
+    )
+  ) %>%
     as_tibble()
 }
 
 #' @export
 db_schema_list.PqConnection <- function(con, include_default = TRUE, ...) {
   default_if_true <- if_else(include_default, "", ", 'public'")
-  DBI::dbGetQuery(con, glue::glue("SELECT schema_name, schema_owner FROM information_schema.schemata WHERE
+  DBI::dbGetQuery(
+    con,
+    glue::glue(
+      "SELECT schema_name, schema_owner FROM information_schema.schemata WHERE
     schema_name NOT IN ('information_schema', 'pg_catalog'{default_if_true})
     AND schema_name NOT LIKE 'pg_toast%'
     AND schema_name NOT LIKE 'pg_temp_%'
-    ORDER BY schema_name")) %>%
+    ORDER BY schema_name"
+    )
+  ) %>%
     as_tibble()
 }
 

@@ -317,8 +317,7 @@ count.dm <- function(x, ...) {
 #' @rdname dplyr_table_manipulation
 #' @inheritParams dplyr::count
 #' @export
-count.dm_zoomed <- function(x, ..., wt = NULL, sort = FALSE, name = NULL,
-                            .drop = group_by_drop_default(x)) {
+count.dm_zoomed <- function(x, ..., wt = NULL, sort = FALSE, name = NULL, .drop = group_by_drop_default(x)) {
   tbl <- tbl_zoomed(x)
 
   if (!missing(...)) {
@@ -431,7 +430,9 @@ left_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, 
 
   join_spec <- keyed_build_join_spec(x, y, by, suffix)
   joined_tbl <- left_join(
-    join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
+    join_spec$x_tbl,
+    join_spec$y_tbl,
+    deframe(join_spec$by),
     copy = copy,
     suffix = join_spec$suffix,
     keep = keep,
@@ -470,7 +471,9 @@ inner_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL,
 
   join_spec <- keyed_build_join_spec(x, y, by, suffix)
   joined_tbl <- inner_join(
-    join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
+    join_spec$x_tbl,
+    join_spec$y_tbl,
+    deframe(join_spec$by),
     copy = copy,
     suffix = join_spec$suffix,
     keep = keep,
@@ -509,7 +512,9 @@ full_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, 
 
   join_spec <- keyed_build_join_spec(x, y, by, suffix)
   joined_tbl <- full_join(
-    join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
+    join_spec$x_tbl,
+    join_spec$y_tbl,
+    deframe(join_spec$by),
     copy = copy,
     suffix = join_spec$suffix,
     keep = keep,
@@ -548,7 +553,9 @@ right_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL,
 
   join_spec <- keyed_build_join_spec(x, y, by, suffix)
   joined_tbl <- right_join(
-    join_spec$x_tbl, join_spec$y_tbl, deframe(join_spec$by),
+    join_spec$x_tbl,
+    join_spec$y_tbl,
+    deframe(join_spec$by),
     copy = copy,
     suffix = join_spec$suffix,
     keep = keep,
@@ -590,7 +597,9 @@ semi_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, ...) {
   }
 
   joined_tbl <- semi_join(
-    unclass_keyed_tbl(x), unclass_keyed_tbl(y), by,
+    unclass_keyed_tbl(x),
+    unclass_keyed_tbl(y),
+    by,
     copy = copy,
     ...
   )
@@ -624,7 +633,9 @@ anti_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, ...) {
   }
 
   joined_tbl <- anti_join(
-    unclass_keyed_tbl(x), unclass_keyed_tbl(y), by,
+    unclass_keyed_tbl(x),
+    unclass_keyed_tbl(y),
+    by,
     copy = copy,
     ...
   )
@@ -653,8 +664,12 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   y_name <- dm_tbl_name(x, {{ y }})
   select_quo <- enquo(selected)
 
-  if (!is_null(suffix)) message("Column names are disambiguated if necessary, `suffix` ignored.")
-  if (!is_null(copy)) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
+  if (!is_null(suffix)) {
+    message("Column names are disambiguated if necessary, `suffix` ignored.")
+  }
+  if (!is_null(copy)) {
+    message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
+  }
 
   zoomed <- dm_get_zoom(x, c("table", "zoom", "col_tracker_zoom"))
 

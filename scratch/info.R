@@ -118,7 +118,14 @@ info_local_named <-
 
   dm_zoom_to(table_constraints) %>%
   left_join(tables, select = fq_table_name) %>%
-  mutate(fq_constraint_name = quote_fq_table(!!con, quote_fq_schema(!!con, constraint_catalog, constraint_schema), constraint_name), .before = constraint_catalog) %>%
+  mutate(
+    fq_constraint_name = quote_fq_table(
+      !!con,
+      quote_fq_schema(!!con, constraint_catalog, constraint_schema),
+      constraint_name
+    ),
+    .before = constraint_catalog
+  ) %>%
   select(fq_constraint_name, fq_table_name, everything()) %>%
   dm_update_zoomed() %>%
 
@@ -173,7 +180,12 @@ info_simple <-
   dm_select(key_column_usage, -c(constraint_catalog, constraint_schema, constraint_name)) %>%
   dm_select(constraint_column_usage, -c(table_catalog, table_schema, table_name)) %>%
   dm_select(constraint_column_usage, -c(constraint_catalog, constraint_schema, constraint_name)) %>%
-  dm_set_colors(brown = c(tables, columns), blue = schemata, green4 = ends_with("_constraints"), orange = ends_with("_usage"))
+  dm_set_colors(
+    brown = c(tables, columns),
+    blue = schemata,
+    green4 = ends_with("_constraints"),
+    orange = ends_with("_usage")
+  )
 
 info_simple %>%
   dm_draw()
