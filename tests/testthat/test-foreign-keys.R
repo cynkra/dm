@@ -313,30 +313,30 @@ test_that("dm_rm_fk() does not show bogus disambiguation message for FK to PK wh
   # This test reproduces the issue where dm_rm_fk() shows unnecessary
   # disambiguation messages when removing a FK that points to a PK,
   # just because other FKs in the system point to non-PKs
-  
+
   # Create test data similar to the original issue
   p <- tibble(p_id = 1:3, p2_id = 4:6, data = letters[1:3])
   c1 <- tibble(p_id = c(1, 2, 3), value = c("a", "b", "c"))
   c2 <- tibble(p2_id = c(4, 5, 6), value = c("x", "y", "z"))
-  
-  my_dm <- dm(p, c1, c2) %>% 
-    dm_add_pk(p, p_id) %>% 
-    dm_add_fk(c1, p_id, p) %>%           # FK to PK
-    dm_add_fk(c2, p2_id, p, p2_id)      # FK to non-PK
-  
+
+  my_dm <- dm(p, c1, c2) %>%
+    dm_add_pk(p, p_id) %>%
+    dm_add_fk(c1, p_id, p) %>% # FK to PK
+    dm_add_fk(c2, p2_id, p, p2_id) # FK to non-PK
+
   # Removing the FK from c1 to p should NOT show disambiguation message
   # because it's unambiguous (points to PK)
   expect_silent(
     my_dm %>% dm_rm_fk(c1, p_id, p)
   )
-  
-  # But removing the FK from c2 to p SHOULD show disambiguation 
+
+  # But removing the FK from c2 to p SHOULD show disambiguation
   # because it points to non-PK column
   expect_message(
     my_dm %>% dm_rm_fk(c2, p2_id, p),
     "Removing foreign keys"
   )
-  
+
   # Also test removing both FKs at once - should show disambiguation
   # because one of them points to non-PK
   expect_message(
