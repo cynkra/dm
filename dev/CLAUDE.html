@@ -68,6 +68,8 @@
 <li>
 <strong>PostgreSQL Database</strong>: Latest PostgreSQL with socket connection support</li>
 <li>
+<strong>MariaDB Database</strong>: Latest MariaDB for testing database compatibility</li>
+<li>
 <strong>Docker Compose</strong>: <code>.devcontainer/docker-compose.yml</code> defines the complete environment</li>
 </ul><p><strong>Important</strong>: All R commands and package operations should be executed within the devcontainer. Claude Code is configured to automatically use the devcontainer for all execution.</p>
 </div>
@@ -103,6 +105,8 @@
 <p><strong>Important</strong>: Set the <code>DM_TEST_SRC</code> environment variable to test against various backends. Always test all backends. Supported values include:</p>
 <ul><li><code>df</code></li>
 <li><code>postgres</code></li>
+<li>
+<code>maria</code> (MariaDB)</li>
 <li><code>duckdb</code></li>
 </ul><hr><p><em>This file should be updated as new patterns are discovered.</em></p>
 </div>
