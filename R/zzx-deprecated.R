@@ -734,7 +734,7 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
 #'
 #' @export
 dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
-  deprecate_soft("1.0.0", "dm_squash_to_tbl()", details = "Please use `recursive = TRUE` in `dm_flatten_to_tbl()` instead.")
+  deprecate_soft("1.0.0", "dm_squash_to_tbl()", details = "Please use `.recursive = TRUE` in `dm_flatten_to_tbl()` instead.")
 
   check_not_zoomed(dm)
   join_name <- as_label(enexpr(join))
