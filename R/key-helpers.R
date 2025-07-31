@@ -26,7 +26,7 @@
 check_key <- function(x, ..., .data = deprecated()) {
   if (!is_missing(.data)) {
     deprecate_soft("1.0.0", "check_key(.data = )", "check_key(x = )")
-    # For backward compatibility: check_key(cols, .data = data_frame) 
+    # For backward compatibility: check_key(cols, .data = data_frame)
     return(check_key_impl({{ .data }}, {{ x }}, ...))
   }
 

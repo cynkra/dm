@@ -11,21 +11,23 @@ test_that("check_key() API", {
 test_that("check_key() returns data frame for valid keys", {
   # Test the specific issue from #2221: check_key should return the data frame, not NULL
   dat <- tibble(a = c(1, 2, 3), b = c(5, 5, 6), c = c(7, 8, 9))
-  
+
   # Single column key
   result <- check_key(dat, a)
   expect_identical(result, dat)
-  
-  # Multiple column key  
+
+  # Multiple column key
   result2 <- check_key(dat, a, c)
   expect_identical(result2, dat)
-  
+
   # All columns key
   result3 <- check_key(dat)
   expect_identical(result3, dat)
-  
+
   # Test that it can be used in piping
-  piped_result <- dat %>% check_key(a) %>% select(a)
+  piped_result <- dat %>%
+    check_key(a) %>%
+    select(a)
   expect_equal(piped_result, select(dat, a))
 })
 
