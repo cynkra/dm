@@ -122,7 +122,7 @@ you have tables:</p>
 function:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_key.html">check_key</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_unique_key()` at dm/R/key-helpers.R:64:5:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_unique_key()` at dm/R/key-helpers.R:66:5:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> (`a`) not a unique key of `data_1`.</span></span></code></pre></div>
 <p>Mind the error message when a test is not passed.</p>
 <p>For <code>data_2</code>, column <code>a</code> is a key:</p>
@@ -141,7 +141,7 @@ key to some other table. What about the inverse relation?</p>
 <span><span class="co">#&gt;       a</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1     3</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_subset_of()` at dm/R/key-helpers.R:240:3:</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_subset_of()` at dm/R/key-helpers.R:242:3:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></span></code></pre>
 <p>It should be kept in mind that <code><a href="../reference/check_subset.html">check_subset()</a></code> does not
 test if column <code>c2</code> is a unique key of table <code>t2</code>.
@@ -162,7 +162,7 @@ values of <code>c_1</code> in <code>t_1</code> are the same as those of
 <span><span class="co">#&gt;       a</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1     3</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_sets_not_equal()` at dm/R/key-helpers.R:190:5:</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_sets_not_equal()` at dm/R/key-helpers.R:192:5:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></span></code></pre>
 <p>Introducing one more table enables us to show how it looks when the
 test is passed:</p>
@@ -245,7 +245,7 @@ be used:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This does not pass, `c` is not unique key of d2:</span></span>
 <span><span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_n</a></span><span class="op">(</span><span class="va">d2</span>, <span class="va">c</span>, <span class="va">d1</span>, <span class="va">a</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_unique_key()` at dm/R/key-helpers.R:64:5:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_unique_key()` at dm/R/key-helpers.R:66:5:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> (`c`) not a unique key of `d2`.</span></span>
 <span></span>
 <span><span class="co"># This passes, multiple values in d2$c are allowed:</span></span>
