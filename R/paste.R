@@ -115,17 +115,24 @@ dm_paste_impl <- function(dm, options, tab_width) {
   # adding code for color
   code_color <- if ("color" %in% options) dm_paste_color(dm)
 
-  # combine dm and paste code
-  code_dm <- glue_collapse(
-    c(
-      code_construct,
-      code_select,
-      code_pks,
-      code_uks,
-      code_fks,
-      code_color
-    ),
-    sep = glue(" %>%\n{tab}", .trim = FALSE)
+  # collect all operations (excluding the initial dm construction)
+  all_operations <- c(
+    code_select,
+    code_pks,
+    code_uks,
+    code_fks,
+    code_color
+  )
+  
+  # remove any NULL/empty elements
+  all_operations <- all_operations[lengths(all_operations) > 0]
+  
+  # combine dm and paste code with chunking if needed
+  code_dm <- dm_paste_chunk_operations(
+    code_construct,
+    all_operations,
+    tab,
+    chunk_size = 100
   )
 
   paste0(code_tables, code_dm)
@@ -229,6 +236,76 @@ df_paste <- function(x, tab) {
   }
 
   paste0("tibble::tibble(\n", cols, ")")
+}
+
+dm_paste_chunk_operations <- function(code_construct, all_operations, tab, chunk_size = 100) {
+  # If we have no operations or few operations, use the original approach
+  if (length(all_operations) <= chunk_size) {
+    return(glue_collapse(
+      c(code_construct, all_operations),
+      sep = glue(" %>%\n{tab}", .trim = FALSE)
+    ))
+  }
+  
+  # Split operations into chunks
+  chunks <- split(all_operations, ceiling(seq_along(all_operations) / chunk_size))
+  
+  # Generate code for each chunk
+  chunk_codes <- vector("character", length(chunks))
+  
+  for (i in seq_along(chunks)) {
+    if (i == 1) {
+      # First chunk includes the dm construction
+      chunk_codes[i] <- glue_collapse(
+        c(code_construct, chunks[[i]]),
+        sep = glue(" %>%\n{tab}", .trim = FALSE)
+      )
+    } else {
+      # Subsequent chunks start with the previous variable
+      chunk_codes[i] <- glue_collapse(
+        chunks[[i]],
+        sep = glue(" %>%\n{tab}", .trim = FALSE)
+      )
+    }
+  }
+  
+  # If only one chunk, return it directly
+  if (length(chunks) == 1) {
+    return(chunk_codes[1])
+  }
+  
+  # Generate intermediate variable assignments and final result
+  result_lines <- character()
+  
+  for (i in seq_along(chunk_codes)) {
+    var_name <- if (i == length(chunk_codes)) {
+      # Last chunk - no assignment, just the expression
+      NULL
+    } else {
+      paste0("dm_step_", i)
+    }
+    
+    if (i == 1) {
+      # First chunk
+      if (!is.null(var_name)) {
+        result_lines <- c(result_lines, paste0(var_name, " <- ", chunk_codes[i]))
+      } else {
+        result_lines <- c(result_lines, chunk_codes[i])
+      }
+    } else {
+      # Subsequent chunks
+      prev_var_name <- paste0("dm_step_", i - 1)
+      chunk_with_var <- paste0(prev_var_name, " %>%\n", tab, chunk_codes[i])
+      
+      if (!is.null(var_name)) {
+        result_lines <- c(result_lines, paste0(var_name, " <- ", chunk_with_var))
+      } else {
+        result_lines <- c(result_lines, chunk_with_var)
+      }
+    }
+  }
+  
+  paste(result_lines, collapse = "\n\n")
 }
 
 deparse_line <- function(x) {
