@@ -406,8 +406,12 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
   } else if (!is.null(ref_cols)) {
     show_disambiguation <- FALSE
   } else {
-    # Check if all FKs point to the primary key
-    show_disambiguation <- !all(map2_lgl(def$fks[idx], def$pks[idx], ~ {
+    # Check if all FKs being removed point to the primary key
+    # Only the FKs that are actually being removed matter for disambiguation
+    fks_to_remove <- map2(def$fks[idx], idx_fk, vec_slice)
+    pks_for_removal <- def$pks[idx]
+    
+    show_disambiguation <- !all(map2_lgl(fks_to_remove, pks_for_removal, ~ {
       all(map_lgl(.x$ref_column, identical, .y$column[[1]]))
     }))
   }
