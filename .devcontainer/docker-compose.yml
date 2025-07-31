@@ -3,6 +3,8 @@ volumes:
     driver: local
   postgres-data:
     driver: local
+  mariadb-data:
+    driver: local
 
 networks:
   devcontainer-network:
@@ -44,6 +46,27 @@ services:
       retries: 5
       start_period: 30s
 
+  mariadb:
+    container_name: devcontainer-mariadb
+    image: mariadb:latest
+    environment:
+      MARIADB_ROOT_PASSWORD: "YourStrong!Passw0rd"
+      MARIADB_USER: compose
+      MARIADB_PASSWORD: "YourStrong!Passw0rd"
+      MARIADB_DATABASE: test
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - devcontainer-network
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h localhost -u compose -p'YourStrong!Passw0rd' --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
   app:
     container_name: devcontainer-dm
     image: ghcr.io/cynkra/docker-images/ubuntu24-rig-rrel-dc-dt-dm:latest
@@ -58,8 +81,16 @@ services:
       PGSOCKET: /var/run/postgresql
       # Environment variable for test configuration
       DM_TEST_DOCKER_HOST: postgres
+      # MariaDB connection settings
+      MYSQL_HOST: mariadb
+      MYSQL_PORT: 3306
+      MYSQL_USER: compose
+      MYSQL_PASSWORD: "YourStrong!Passw0rd"
+      MYSQL_DATABASE: test
     depends_on:
       postgres:
+        condition: service_healthy
+      mariadb:
         condition: service_healthy
     networks:
       - devcontainer-network
