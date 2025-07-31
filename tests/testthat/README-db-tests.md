@@ -49,3 +49,4 @@ make generate-db-tests
 - **Always regenerate after editing the template** - files can get out of sync otherwise
 - **The template uses `{{DATABASE}}` placeholders** - these get replaced during generation
 - **Each test file is self-contained** - no global environment dependencies
+- **Other tests may still use skip_if_src_not()** - these will run in default 'df' mode and skip database-specific functionality. Consider moving database-specific tests to the template if they need variants across all databases.
