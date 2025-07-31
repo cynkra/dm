@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(touch:*)",
+      "Bash(devcontainer up:*)",
+      "Bash(devcontainer exec:*)",
+      "Bash(devcontainer build:*)",
+      "Bash(devcontainer --version:*)"
+    ],
+    "deny": []
+  }
+}
