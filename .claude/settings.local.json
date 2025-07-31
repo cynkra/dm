@@ -7,7 +7,7 @@
       "Bash(devcontainer build:*)",
       "Bash(devcontainer --version:*)",
       "WebFetch(domain:docs.anthropic.com)",
-      "Bash(devcontainer down:*)"
+      "Bash(rm:*)"
     ],
     "deny": []
   }

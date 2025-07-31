@@ -29,20 +29,24 @@ Tests should be executed within the devcontainer using:
 # Start devcontainer (if not already running)
 devcontainer up --workspace-folder .
 
+# Restart devcontainer after configuration changes
+devcontainer up --workspace-folder . --remove-existing-container
+
 # Execute R commands in devcontainer
-devcontainer exec --workspace-folder . R -e "testthat::test_local()"
+devcontainer exec --workspace-folder . R -e 'testthat::test_local(reporter = "summary")'
 ```
 
-### Use test_local() with filter argument for specific test files
+### Use test_local()
 
+Always use `reporter = "summary"` when running tests to get a concise output.
 Always use the `filter` argument when running specific test files to avoid running all tests:
 
 ```r
 # Run specific test files
-testthat::test_local(filter = "flatten")     # Example: Runs test-flatten.R
+testthat::test_local(filter = "flatten", reporter = "summary")     # Example: Runs test-flatten.R
 
 # Run all tests (always before finishing work)
-testthat::test_local()
+testthat::test_local(reporter = "summary")
 ```
 
 **Important**: The `filter` argument filters by test file names, not individual test names within files.
@@ -54,6 +58,7 @@ testthat::test_local()
 - `df`
 - `postgres`
 - `maria` (MariaDB)
+- `mssql` (SQL Server)
 - `duckdb`
 
 ---

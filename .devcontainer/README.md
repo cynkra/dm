@@ -28,10 +28,19 @@ This directory contains the devcontainer configuration for the dm package develo
 - **User**: compose
 - **Password**: YourStrong!Passw0rd
 
+### SQL Server Database
+
+- **Image**: `mcr.microsoft.com/mssql/server:2022-latest` (SQL Server 2022 Express)
+- **Container**: `devcontainer-mssql`
+- **Port**: 1433
+- **Database**: test (created automatically)
+- **User**: SA
+- **Password**: YourStrong!Passw0rd
+
 ### Features
 
 - Socket connections enabled via shared volume (`/var/run/postgresql`)
-- Network connections available on standard ports (5432 for PostgreSQL, 3306 for MariaDB)
+- Network connections available on standard ports (5432 for PostgreSQL, 3306 for MariaDB, 1433 for SQL Server)
 - Environment variables pre-configured for easy R connections
 - Health checks ensure databases are ready before starting dev environment
 - Service-specific host environment variables for targeted testing
@@ -40,7 +49,7 @@ This directory contains the devcontainer configuration for the dm package develo
 
 1. Open the project in VS Code
 2. When prompted, reopen in devcontainer (or use Command Palette > "Dev Containers: Reopen in Container")
-3. Both PostgreSQL and MariaDB databases will start automatically
+3. All database services (PostgreSQL, MariaDB, SQL Server) will start automatically
 4. Test connectivity by running: `Rscript .devcontainer/test-postgres.R`
 
 ### Running Tests with Different Backends
@@ -51,6 +60,9 @@ DM_TEST_SRC=postgres R -e 'testthat::test_local()'
 
 # Test with MariaDB
 DM_TEST_SRC=maria R -e 'testthat::test_local()'
+
+# Test with SQL Server (requires ODBC drivers)
+DM_TEST_SRC=mssql R -e 'testthat::test_local()'
 
 # Test with data frames (no database)
 DM_TEST_SRC=df R -e 'testthat::test_local()'
@@ -99,6 +111,22 @@ con <- DBI::dbConnect(
 )
 ```
 
+### SQL Server
+
+```r
+# Using explicit parameters (requires ODBC drivers)
+con <- DBI::dbConnect(
+  odbc::odbc(),
+  driver = "ODBC Driver 18 for SQL Server",
+  server = "mssql",
+  database = "test",
+  uid = "SA",
+  pwd = "YourStrong!Passw0rd",
+  port = 1433,
+  TrustServerCertificate = "yes"
+)
+```
+
 ## Environment Variables
 
 The following environment variables are set in the devcontainer:
@@ -120,10 +148,19 @@ The following environment variables are set in the devcontainer:
 - `MYSQL_PASSWORD=YourStrong!Passw0rd`
 - `MYSQL_DATABASE=test`
 
+### SQL Server
+
+- `MSSQL_HOST=mssql`
+- `MSSQL_PORT=1433`
+- `MSSQL_USER=SA`
+- `MSSQL_PASSWORD=YourStrong!Passw0rd`
+- `MSSQL_DATABASE=test`
+
 ### Testing
 
 - `DM_TEST_POSTGRES_HOST=postgres` (service-specific, takes precedence)
 - `DM_TEST_MARIA_HOST=mariadb` (service-specific, takes precedence)
+- `DM_TEST_MSSQL_HOST=mssql` (service-specific, takes precedence)
 
 ## Troubleshooting
 
