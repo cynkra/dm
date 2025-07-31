@@ -28,7 +28,13 @@
 #' dm_nycflights13() %>%
 #'   dm_disambiguate_cols()
 #' @export
-dm_disambiguate_cols <- function(dm, .sep = ".", ..., .quiet = FALSE, .position = c("suffix", "prefix")) {
+dm_disambiguate_cols <- function(
+  dm,
+  .sep = ".",
+  ...,
+  .quiet = FALSE,
+  .position = c("suffix", "prefix")
+) {
   check_not_zoomed(dm)
   check_dots_empty()
   .position <- arg_match(.position)
@@ -127,7 +133,11 @@ explain_col_rename <- function(recipe) {
   disambiguation <-
     recipe %>%
     unnest(names) %>%
-    mutate(text = glue("dm_rename({tick_if_needed(table)}, {tick_if_needed(new_name)} = {tick_if_needed(column)})")) %>%
+    mutate(
+      text = glue(
+        "dm_rename({tick_if_needed(table)}, {tick_if_needed(new_name)} = {tick_if_needed(column)})"
+      )
+    ) %>%
     pull(text)
 
   message("Renaming ambiguous columns: %>%\n  ", glue_collapse(disambiguation, " %>%\n  "))

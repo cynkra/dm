@@ -13,7 +13,9 @@ nest_join_dm_zoomed <- function(x, ...) {
 
   orig_table <- orig_name_zoomed(dm_zoomed)
   if (!dm_has_pk_impl(dm_zoomed, orig_table)) {
-    message("The originally zoomed table didn't have a primary key, therefore `nest.dm_zoomed()` does nothing.")
+    message(
+      "The originally zoomed table didn't have a primary key, therefore `nest.dm_zoomed()` does nothing."
+    )
     return(dm_zoomed)
   }
 

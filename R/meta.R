@@ -133,9 +133,17 @@ dm_meta_raw <- function(con, catalog) {
         "constraint_type"
       )
     ) %>%
-      mutate(table_catalog = constraint_catalog, table_schema = constraint_schema, .before = table_name) %>%
       mutate(
-        constraint_name = if_else(constraint_type == "PRIMARY KEY", paste0("pk_", table_name), constraint_name)
+        table_catalog = constraint_catalog,
+        table_schema = constraint_schema,
+        .before = table_name
+      ) %>%
+      mutate(
+        constraint_name = if_else(
+          constraint_type == "PRIMARY KEY",
+          paste0("pk_", table_name),
+          constraint_name
+        )
       ) %>%
       left_join(
         tbl_lc(
@@ -261,7 +269,11 @@ dm_meta_raw <- function(con, catalog) {
         )
       ) %>%
       mutate(
-        constraint_name = if_else(constraint_type == "PRIMARY KEY", paste0("pk_", table_name), constraint_name)
+        constraint_name = if_else(
+          constraint_type == "PRIMARY KEY",
+          paste0("pk_", table_name),
+          constraint_name
+        )
       ) %>%
       select(-constraint_type)
 
@@ -305,14 +317,36 @@ dm_meta_add_keys <- function(dm_meta) {
     # dm_add_fk(referential_constraints, c(constraint_schema, table_name), tables) %>%
     # dm_add_fk(referential_constraints, c(constraint_schema, referenced_table_name), tables) %>%
 
-    dm_add_pk(key_column_usage, c(constraint_catalog, constraint_schema, constraint_name, ordinal_position)) %>%
-    dm_add_fk(key_column_usage, c(table_catalog, table_schema, table_name, column_name), columns) %>%
-    dm_add_fk(key_column_usage, c(constraint_catalog, constraint_schema, constraint_name), table_constraints) %>%
+    dm_add_pk(
+      key_column_usage,
+      c(constraint_catalog, constraint_schema, constraint_name, ordinal_position)
+    ) %>%
+    dm_add_fk(
+      key_column_usage,
+      c(table_catalog, table_schema, table_name, column_name),
+      columns
+    ) %>%
+    dm_add_fk(
+      key_column_usage,
+      c(constraint_catalog, constraint_schema, constraint_name),
+      table_constraints
+    ) %>%
     #
     # not on mariadb;
-    dm_add_pk(constraint_column_usage, c(constraint_catalog, constraint_schema, constraint_name, ordinal_position)) %>%
-    dm_add_fk(constraint_column_usage, c(table_catalog, table_schema, table_name, column_name), columns) %>%
-    dm_add_fk(constraint_column_usage, c(constraint_catalog, constraint_schema, constraint_name), table_constraints) %>%
+    dm_add_pk(
+      constraint_column_usage,
+      c(constraint_catalog, constraint_schema, constraint_name, ordinal_position)
+    ) %>%
+    dm_add_fk(
+      constraint_column_usage,
+      c(table_catalog, table_schema, table_name, column_name),
+      columns
+    ) %>%
+    dm_add_fk(
+      constraint_column_usage,
+      c(constraint_catalog, constraint_schema, constraint_name),
+      table_constraints
+    ) %>%
     dm_add_fk(
       constraint_column_usage,
       c(constraint_catalog, constraint_schema, constraint_name, ordinal_position),
@@ -488,9 +522,11 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
     schemata <- schemata %>% filter(schema_name == DATABASE() | is.na(DATABASE()))
     tables <- tables %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
     columns <- columns %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
-    table_constraints <- table_constraints %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+    table_constraints <- table_constraints %>%
+      filter(table_schema == DATABASE() | is.na(DATABASE()))
     key_column_usage <- key_column_usage %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
-    constraint_column_usage <- constraint_column_usage %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+    constraint_column_usage <- constraint_column_usage %>%
+      filter(table_schema == DATABASE() | is.na(DATABASE()))
   }
 
   dm(

@@ -52,7 +52,15 @@
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
 #' )
 #' @export
-dm_add_pk <- function(dm, table, columns, ..., autoincrement = FALSE, check = FALSE, force = FALSE) {
+dm_add_pk <- function(
+  dm,
+  table,
+  columns,
+  ...,
+  autoincrement = FALSE,
+  check = FALSE,
+  force = FALSE
+) {
   check_dots_empty()
 
   check_not_zoomed(dm)
@@ -449,7 +457,9 @@ abort_key_set_force_false <- function(table) {
 }
 
 error_txt_key_set_force_false <- function(table) {
-  glue("Table {tick(table)} already has a primary key. Use `force = TRUE` to change the existing primary key.")
+  glue(
+    "Table {tick(table)} already has a primary key. Use `force = TRUE` to change the existing primary key."
+  )
 }
 
 abort_first_rm_fks <- function(table, fk_tables) {

@@ -194,7 +194,9 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
   }
 
   names_table <- names_table %>%
-    filter(schema_name %in% !!(if (inherits(schema, "sql")) glue_sql_collapse(schema) else schema)) %>%
+    filter(
+      schema_name %in% !!(if (inherits(schema, "sql")) glue_sql_collapse(schema) else schema)
+    ) %>%
     collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
     mutate(
@@ -290,7 +292,9 @@ get_names_table_mssql <- function(con, dbname_sql) {
 get_names_table_postgres <- function(con) {
   tbl(
     con,
-    sql("SELECT table_schema as schema_name, table_name as table_name from information_schema.tables")
+    sql(
+      "SELECT table_schema as schema_name, table_name as table_name from information_schema.tables"
+    )
   )
 }
 

@@ -260,7 +260,14 @@ check_naming <- function(table_names, dm_table_names) {
   }
 }
 
-db_append_table <- function(con, remote_table, table, progress, top_level_fun = "copy_dm_to", autoinc = logical(0)) {
+db_append_table <- function(
+  con,
+  remote_table,
+  table,
+  progress,
+  top_level_fun = "copy_dm_to",
+  autoinc = logical(0)
+) {
   stopifnot(is.data.frame(table))
   if (nrow(table) == 0 || ncol(table) == 0) {
     return(invisible())

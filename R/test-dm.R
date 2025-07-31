@@ -55,7 +55,8 @@ is_this_a_test <- function() {
     map_chr(as_label)
 
   is_test_call <- any(
-    calls %in% c("devtools::test", "testthat::test_check", "testthat::test_file", "testthis:::test_this")
+    calls %in%
+      c("devtools::test", "testthat::test_check", "testthat::test_file", "testthis:::test_this")
   )
 
   is_testing <- rlang::is_installed("testthat") && testthat::is_testing()
@@ -66,7 +67,11 @@ is_this_a_test <- function() {
 
 # more general 'check'-type functions -------------------------------------
 
-check_param_class <- function(param_value, correct_class, param_name = deparse(substitute(param_value))) {
+check_param_class <- function(
+  param_value,
+  correct_class,
+  param_name = deparse(substitute(param_value))
+) {
   if (!inherits(param_value, correct_class)) {
     abort_parameter_not_correct_class(
       parameter = param_name,
@@ -76,7 +81,11 @@ check_param_class <- function(param_value, correct_class, param_name = deparse(s
   }
 }
 
-check_param_length <- function(param_value, correct_length = 1, param_name = deparse(substitute(param_value))) {
+check_param_length <- function(
+  param_value,
+  correct_length = 1,
+  param_name = deparse(substitute(param_value))
+) {
   if (length(param_value) != correct_length) {
     abort_parameter_not_correct_length(
       parameter = param_name,
@@ -101,5 +110,7 @@ abort_table_not_in_dm <- function(table_name, dm_tables) {
 }
 
 error_txt_table_not_in_dm <- function(table_name, dm_tables) {
-  glue("Table {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}.")
+  glue(
+    "Table {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}."
+  )
 }

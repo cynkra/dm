@@ -108,7 +108,8 @@ test_that("output", {
     dm_bind()
     dm_bind(empty_dm())
     dm_bind(dm_for_filter()) %>% collect()
-    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique", quiet = TRUE) %>% collect()
+    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique", quiet = TRUE) %>%
+      collect()
     writeLines(conditionMessage(expect_error(
       dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter())
     )))
@@ -128,6 +129,7 @@ test_that("output for compound keys", {
   })
 
   expect_snapshot({
-    dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>% dm_paste(options = c("select", "keys"))
+    dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>%
+      dm_paste(options = c("select", "keys"))
   })
 })

@@ -70,7 +70,9 @@ bdm_create_graph_list <- function(
       data_model$columns <- data_model$columns[data_model$columns$table %in% focus$tables, ]
       if (is.null(focus[["external_ref"]]) || !focus[["external_ref"]]) {
         data_model$references <- data_model$references[
-          data_model$references$table %in% focus$tables & data_model$references$ref %in% focus$tables,
+          data_model$references$table %in%
+            focus$tables &
+            data_model$references$ref %in% focus$tables,
         ]
       }
     }

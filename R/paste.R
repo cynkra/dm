@@ -70,7 +70,12 @@ check_paste_options <- function(options, select, env) {
   }
 
   if (!is.null(select)) {
-    deprecate_soft("0.1.2", "dm::dm_paste(select = )", "dm::dm_paste(options = 'select')", env = env)
+    deprecate_soft(
+      "0.1.2",
+      "dm::dm_paste(select = )",
+      "dm::dm_paste(options = 'select')",
+      env = env
+    )
     if (isTRUE(select)) {
       options <- c(options, "select")
     }
@@ -172,7 +177,9 @@ dm_paste_pks <- function(dm) {
     mutate(
       code = if_else(
         !is.na(autoincrement) & autoincrement,
-        glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)}, autoincrement = TRUE)"),
+        glue(
+          "dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)}, autoincrement = TRUE)"
+        ),
         glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")
       )
     ) %>%
@@ -269,5 +276,7 @@ abort_unknown_option <- function(options, all_options) {
 
 error_txt_unknown_option <- function(options, all_options) {
   bad_options <- setdiff(options, all_options)
-  glue("Option unknown: {commas(dquote(bad_options))}. Must be one of {commas(dquote(all_options))}.")
+  glue(
+    "Option unknown: {commas(dquote(bad_options))}. Must be one of {commas(dquote(all_options))}."
+  )
 }

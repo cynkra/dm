@@ -295,13 +295,17 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
     )
 
     expect_equivalent_tbl(
-      left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+      left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1")) %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_2"),
       left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"))
     )
 
     # explicitly select columns from RHS using argument `select`
     expect_equivalent_tbl(
-      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
+      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1)) %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_3"),
       left_join(tf_3(), select(tf_2(), c, e, e1), by = c("f" = "e", "f1" = "e1"))
     )
 
@@ -322,7 +326,12 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
       )
 
       expect_equivalent_tbl(
-        left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1"), relationship = "many-to-many") %>%
+        left_join(
+          dm_zoomed(),
+          tf_4,
+          by = c("e" = "j", "e1" = "j1"),
+          relationship = "many-to-many"
+        ) %>%
           dm_update_zoomed() %>%
           tbl_impl("tf_2"),
         left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"), relationship = "many-to-many")
@@ -339,10 +348,20 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
 
     # explicitly select and rename columns from RHS using argument `select`
     expect_equivalent_tbl(
-      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1), multiple = "all") %>%
+      left_join(
+        dm_zoomed_2(),
+        tf_2,
+        select = c(starts_with("c"), d_new = d, e, e1),
+        multiple = "all"
+      ) %>%
         dm_update_zoomed() %>%
         tbl_impl("tf_3"),
-      left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"), multiple = "all")
+      left_join(
+        tf_3(),
+        select(tf_2(), c, d_new = d, e, e1),
+        by = c("f" = "e", "f1" = "e1"),
+        multiple = "all"
+      )
     )
   }
 
@@ -681,7 +700,8 @@ test_that("key tracking works for distinct() and arrange()", {
       dm_zoom_to(weather) %>%
       summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
       tbl_zoomed(),
-    tbl_impl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
+    tbl_impl(dm_nycflights_small(), "weather") %>%
+      summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
@@ -697,7 +717,8 @@ test_that("key tracking works for distinct() and arrange()", {
       dm_zoom_to(weather) %>%
       summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
       tbl_zoomed(),
-    tbl_impl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
+    tbl_impl(dm_nycflights_small(), "weather") %>%
+      summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
@@ -717,7 +738,8 @@ test_that("key tracking works for distinct() and arrange()", {
       dm_zoom_to(weather) %>%
       mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
       tbl_zoomed(),
-    tbl_impl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
+    tbl_impl(dm_nycflights_small(), "weather") %>%
+      mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
   )
 })
 

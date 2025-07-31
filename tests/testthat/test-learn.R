@@ -233,7 +233,10 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
     value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
   # set PK
-  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_1] ALTER COLUMN [b] INTEGER NOT NULL")
+  DBI::dbExecute(
+    con_db,
+    "ALTER TABLE [test_database_dm].[dbo].[test_1] ALTER COLUMN [b] INTEGER NOT NULL"
+  )
   DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_1] ADD PRIMARY KEY ([b])")
   # set FK relation
   DBI::dbExecute(
@@ -316,7 +319,10 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
   # set PK
-  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dm_test].[test_1] ALTER COLUMN [b] INTEGER NOT NULL")
+  DBI::dbExecute(
+    con_db,
+    "ALTER TABLE [test_database_dm].[dm_test].[test_1] ALTER COLUMN [b] INTEGER NOT NULL"
+  )
   DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dm_test].[test_1] ADD PRIMARY KEY ([b])")
   # set FK relation
   DBI::dbExecute(
@@ -401,7 +407,12 @@ test_that("dm_meta() contents", {
     try(DBI::dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q)))
   })
 
-  dm_for_filter_copied <- copy_dm_to(con_db, dm_for_filter(), temporary = FALSE, schema = schema_name)
+  dm_for_filter_copied <- copy_dm_to(
+    con_db,
+    dm_for_filter(),
+    temporary = FALSE,
+    schema = schema_name
+  )
   order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
 
   meta <- dm_meta(con_db, schema = schema_name)

@@ -16,7 +16,12 @@ expect_equivalent_dm <- function(
   tables1 <- dm_get_tables_impl(object) %>% map(collect)
   tables2 <- dm_get_tables_impl(expected) %>% map(collect)
 
-  expect_equivalent_tbl_lists(tables1, tables2, sort_tables = sort_tables, sort_columns = sort_columns)
+  expect_equivalent_tbl_lists(
+    tables1,
+    tables2,
+    sort_tables = sort_tables,
+    sort_columns = sort_columns
+  )
 
   if (sort_keys) {
     if (ignore_autoincrement) {
@@ -90,7 +95,14 @@ harmonize_tbl <- function(tbl, ...) {
 }
 
 # are two tables identical minus the `src`
-expect_equivalent_tbl <- function(tbl_1, tbl_2, ..., .label = NULL, .expected_label = NULL, .sort_columns = FALSE) {
+expect_equivalent_tbl <- function(
+  tbl_1,
+  tbl_2,
+  ...,
+  .label = NULL,
+  .expected_label = NULL,
+  .sort_columns = FALSE
+) {
   if (.sort_columns) {
     tbl_1 <- select(tbl_1, !!!sort(names(tbl_1)))
     tbl_2 <- select(tbl_2, !!!sort(names(tbl_2)))
@@ -101,7 +113,12 @@ expect_equivalent_tbl <- function(tbl_1, tbl_2, ..., .label = NULL, .expected_la
 }
 
 # are two lists of tables identical minus the `src`
-expect_equivalent_tbl_lists <- function(object, expected, sort_tables = FALSE, sort_columns = FALSE) {
+expect_equivalent_tbl_lists <- function(
+  object,
+  expected,
+  sort_tables = FALSE,
+  sort_columns = FALSE
+) {
   expect_equal(length(object), length(expected))
   if (length(object) == length(expected)) {
     if (sort_tables) {

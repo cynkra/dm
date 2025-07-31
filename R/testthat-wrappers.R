@@ -11,7 +11,14 @@ expect_error_obj <- function(object, regexp = NULL, class = NULL, ..., info = NU
   invisible(obj)
 }
 
-expect_warning_obj <- function(object, regexp = NULL, class = NULL, ..., info = NULL, label = NULL) {
+expect_warning_obj <- function(
+  object,
+  regexp = NULL,
+  class = NULL,
+  ...,
+  info = NULL,
+  label = NULL
+) {
   testthat::expect_warning(
     obj <- rlang::eval_tidy({{ object }}),
     regexp = regexp,
@@ -23,7 +30,14 @@ expect_warning_obj <- function(object, regexp = NULL, class = NULL, ..., info = 
   invisible(obj)
 }
 
-expect_message_obj <- function(object, regexp = NULL, class = NULL, ..., info = NULL, label = NULL) {
+expect_message_obj <- function(
+  object,
+  regexp = NULL,
+  class = NULL,
+  ...,
+  info = NULL,
+  label = NULL
+) {
   testthat::expect_message(
     obj <- rlang::eval_tidy({{ object }}),
     regexp = regexp,
@@ -35,7 +49,14 @@ expect_message_obj <- function(object, regexp = NULL, class = NULL, ..., info = 
   invisible(obj)
 }
 
-expect_condition_obj <- function(object, regexp = NULL, class = NULL, ..., info = NULL, label = NULL) {
+expect_condition_obj <- function(
+  object,
+  regexp = NULL,
+  class = NULL,
+  ...,
+  info = NULL,
+  label = NULL
+) {
   testthat::expect_condition(
     obj <- rlang::eval_tidy({{ object }}),
     regexp = regexp,

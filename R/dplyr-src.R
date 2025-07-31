@@ -34,7 +34,11 @@ dm_get_src <- function(x) {
 #' @rdname dplyr_src
 #' @keywords internal
 tbl.dm <- function(src, from, ...) {
-  deprecate_soft("0.2.0", "dm::tbl.dm()", details = "Use `dm[[table_name]]` instead to access a specific table.")
+  deprecate_soft(
+    "0.2.0",
+    "dm::tbl.dm()",
+    details = "Use `dm[[table_name]]` instead to access a specific table."
+  )
 
   check_not_zoomed(src)
 
@@ -79,7 +83,11 @@ copy_to.dm <- function(
   quiet = FALSE,
   ...
 ) {
-  deprecate_soft("0.2.0", "dm::copy_to.dm()", details = "Use `copy_to(dm_get_con(dm), ...)` and `dm()`.")
+  deprecate_soft(
+    "0.2.0",
+    "dm::copy_to.dm()",
+    details = "Use `copy_to(dm_get_con(dm), ...)` and `dm()`."
+  )
 
   check_not_zoomed(dest)
 

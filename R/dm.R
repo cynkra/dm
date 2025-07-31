@@ -49,7 +49,11 @@
 #' dm_nycflights13()[["airports"]]
 #'
 #' dm_nycflights13() %>% names()
-dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "minimal"), .quiet = FALSE) {
+dm <- function(
+  ...,
+  .name_repair = c("check_unique", "unique", "universal", "minimal"),
+  .quiet = FALSE
+) {
   quos <- enquos(...)
   names <- names2(quos)
 
@@ -224,7 +228,12 @@ new_uk <- function(column = list()) {
   fast_tibble(column = column)
 }
 
-new_fk <- function(ref_column = list(), table = character(), column = list(), on_delete = character()) {
+new_fk <- function(
+  ref_column = list(),
+  table = character(),
+  column = list(),
+  on_delete = character()
+) {
   stopifnot(
     is.list(column),
     is.list(ref_column),
