@@ -61,10 +61,24 @@
 <h2 id="development-environment">Development Environment<a class="anchor" aria-label="anchor" href="#development-environment"></a></h2>
 <div class="section level3">
 <h3 id="devcontainer-setup">Devcontainer Setup<a class="anchor" aria-label="anchor" href="#devcontainer-setup"></a></h3>
-<p>This project uses a devcontainer with the image <code>ghcr.io/cynkra/docker-images/ubuntu24-rig-rrel-devtools-dm:latest</code>.</p>
-<p><strong>Important</strong>: All R commands and package operations should be executed within the devcontainer. Claude Code is configured to automatically use the devcontainer for all execution.</p>
+<p>This project uses a devcontainer configuration with:</p>
+<ul><li>
+<strong>R Environment</strong>: <code>ghcr.io/cynkra/docker-images/ubuntu24-rig-rrel-dc-dt-dm:latest</code>
+</li>
+<li>
+<strong>PostgreSQL Database</strong>: Latest PostgreSQL with socket connection support</li>
+<li>
+<strong>Docker Compose</strong>: <code>.devcontainer/docker-compose.yml</code> defines the complete environment</li>
+</ul><p><strong>Important</strong>: All R commands and package operations should be executed within the devcontainer. Claude Code is configured to automatically use the devcontainer for all execution.</p>
 </div>
 </div>
+<div class="section level2">
+<h2 id="coding-guidelines">Coding Guidelines<a class="anchor" aria-label="anchor" href="#coding-guidelines"></a></h2>
+<ul><li>Format the code by running <code>air .</code> in the devcontainer.</li>
+<li>
+<strong>Important</strong>: Always add tests when fixing bugs to prevent regression. Test both the fix and edge cases.</li>
+<li>Prefer snapshot tests when testing console output.</li>
+</ul></div>
 <div class="section level2">
 <h2 id="testing-guidelines">Testing Guidelines<a class="anchor" aria-label="anchor" href="#testing-guidelines"></a></h2>
 <p>Tests should be executed within the devcontainer using:</p>
@@ -83,8 +97,14 @@
 <span><span class="co"># Run all tests (always before finishing work)</span></span>
 <span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_package.html" class="external-link">test_local</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Important</strong>: The <code>filter</code> argument filters by test file names, not individual test names within files.</p>
-<p><strong>Important</strong>: Always add tests when fixing bugs to prevent regression. Test both the fix and edge cases.</p>
-<hr><p><em>This file should be updated as new patterns are discovered.</em></p>
+</div>
+<div class="section level3">
+<h3 id="different-backends">Different Backends<a class="anchor" aria-label="anchor" href="#different-backends"></a></h3>
+<p><strong>Important</strong>: Set the <code>DM_TEST_SRC</code> environment variable to test against various backends. Always test all backends. Supported values include:</p>
+<ul><li><code>df</code></li>
+<li><code>postgres</code></li>
+<li><code>duckdb</code></li>
+</ul><hr><p><em>This file should be updated as new patterns are discovered.</em></p>
 </div>
 </div>
 </div>
