@@ -79,8 +79,9 @@ services:
       PGDATABASE: test
       # Also support socket connections
       PGSOCKET: /var/run/postgresql
-      # Environment variable for test configuration
-      DM_TEST_DOCKER_HOST: postgres
+      # Service-specific database hosts
+      DM_TEST_POSTGRES_HOST: postgres
+      DM_TEST_MARIA_HOST: mariadb
       # MariaDB connection settings
       MYSQL_HOST: mariadb
       MYSQL_PORT: 3306

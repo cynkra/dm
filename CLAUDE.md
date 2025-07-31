@@ -10,6 +10,7 @@ This project uses a devcontainer configuration with:
 
 - **R Environment**: `ghcr.io/cynkra/docker-images/ubuntu24-rig-rrel-dc-dt-dm:latest`
 - **PostgreSQL Database**: Latest PostgreSQL with socket connection support
+- **MariaDB Database**: Latest MariaDB for testing database compatibility
 - **Docker Compose**: `.devcontainer/docker-compose.yml` defines the complete environment
 
 **Important**: All R commands and package operations should be executed within the devcontainer. Claude Code is configured to automatically use the devcontainer for all execution.
@@ -52,6 +53,7 @@ testthat::test_local()
 
 - `df`
 - `postgres`
+- `maria` (MariaDB)
 - `duckdb`
 
 ---
