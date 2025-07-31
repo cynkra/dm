@@ -17,10 +17,15 @@ test_src_duckdb <- function() {
 }
 
 test_src_postgres <- function() {
-  if (Sys.getenv("DM_TEST_DOCKER_HOST") != "") {
+  # Check for PostgreSQL-specific host first, then fall back to general docker host
+  postgres_host <- Sys.getenv("DM_TEST_POSTGRES_HOST")
+  docker_host <- Sys.getenv("DM_TEST_DOCKER_HOST")
+
+  if (postgres_host != "" || docker_host != "") {
+    host <- if (postgres_host != "") postgres_host else docker_host
     con <- DBI::dbConnect(
       RPostgres::Postgres(),
-      host = Sys.getenv("DM_TEST_DOCKER_HOST"),
+      host = host,
       user = "compose",
       password = "YourStrong!Passw0rd"
     )
@@ -31,10 +36,15 @@ test_src_postgres <- function() {
 }
 
 test_src_maria <- function(root = FALSE) {
-  if (Sys.getenv("DM_TEST_DOCKER_HOST") != "") {
+  # Check for MariaDB-specific host first, then fall back to general docker host
+  maria_host <- Sys.getenv("DM_TEST_MARIA_HOST")
+  docker_host <- Sys.getenv("DM_TEST_DOCKER_HOST")
+
+  if (maria_host != "" || docker_host != "") {
+    host <- if (maria_host != "") maria_host else docker_host
     con <- DBI::dbConnect(
       RMariaDB::MariaDB(),
-      host = Sys.getenv("DM_TEST_DOCKER_HOST"),
+      host = host,
       username = if (root) "root" else "compose",
       password = "YourStrong!Passw0rd",
       dbname = "test"

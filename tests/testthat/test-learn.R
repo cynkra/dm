@@ -332,7 +332,12 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
 
-  expect_message(dm_db_learned <- dm_from_con(con_db, schema = "dm_test", dbname = "test_database_dm"))
+  dm_db_learned <- dm_from_con(
+    con_db,
+    schema = "dm_test",
+    dbname = "test_database_dm",
+    learn_keys = TRUE
+  )
   dm_learned <- dm_db_learned %>% collect()
   expect_equivalent_dm(
     dm_learned[c("test_1", "test_2")],
@@ -452,12 +457,16 @@ test_that("dm_from_con() with mariaDB", {
     dbname = "Financial_ijs",
     host = "relational.fel.cvut.cz"
   )
-  expect_snapshot_output(my_dm <- dm_from_con(my_db))
+  my_dm <- dm_from_con(my_db, learn_keys = TRUE)
   expect_snapshot(dm::dm_get_all_fks(my_dm))
   expect_snapshot(dm::dm_get_all_pks(my_dm))
 
   # multiple schemata work
-  expect_snapshot_output(my_dm <- dm_from_con(my_db, schema = c("Accidents", "Ad", "Financial_std")))
+  my_dm <- dm_from_con(
+    my_db,
+    schema = c("Accidents", "Ad", "Financial_std"),
+    learn_keys = TRUE
+  )
   expect_snapshot(dm::dm_get_all_fks(my_dm))
   expect_snapshot(dm::dm_get_all_pks(my_dm))
 })

@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(touch:*)",
+      "Bash(devcontainer up:*)",
+      "Bash(devcontainer exec:*)",
+      "Bash(devcontainer build:*)",
+      "Bash(devcontainer --version:*)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(devcontainer down:*)"
+    ],
+    "deny": []
+  }
+}

@@ -35,7 +35,7 @@ Other contributors:
   \item Indrajeet Patil (\href{https://orcid.org/0000-0003-1995-6531}{ORCID}) [contributor]
   \item Maëlle Salmon (\href{https://orcid.org/0000-0002-2815-0399}{ORCID}) [contributor]
   \item energie360° AG \email{info@energie360.ch} [funder]
-  \item cynkra GmbH \email{mail@cynkra.com} [funder, copyright holder]
+  \item cynkra GmbH \email{mail@cynkra.com} (\href{https://ror.org/0335t7e62}{ROR}) [funder, copyright holder]
 }
 
 }

@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": ["Edit(*)", "Write(*)"],
+    "defaultMode": "acceptEdits"
+  },
+  "tools": {
+    "bash": {
+      "allowedCommands": [
+        "devcontainer up --workspace-folder .",
+        "devcontainer exec --workspace-folder . *",
+        "devcontainer build --workspace-folder .",
+        "devcontainer --version",
+        "touch *"
+      ],
+      "requireConfirmation": false
+    }
+  },
+  "hooks": {
+    "bash": {
+      "pre": "devcontainer exec --workspace-folder . bash -c"
+    }
+  }
+}
