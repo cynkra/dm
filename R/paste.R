@@ -39,8 +39,14 @@
 #'
 #' dm_nycflights13() %>%
 #'   dm_paste(options = "select")
-dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
-                     options = NULL, path = NULL) {
+dm_paste <- function(
+  dm,
+  select = NULL,
+  ...,
+  tab_width = 2,
+  options = NULL,
+  path = NULL
+) {
   check_dots_empty(action = warn)
 
   options <- check_paste_options(options, select, caller_env())
@@ -71,7 +77,12 @@ check_paste_options <- function(options, select, env) {
   }
 
   if (!is.null(select)) {
-    deprecate_soft("0.1.2", "dm::dm_paste(select = )", "dm::dm_paste(options = 'select')", env = env)
+    deprecate_soft(
+      "0.1.2",
+      "dm::dm_paste(select = )",
+      "dm::dm_paste(options = 'select')",
+      env = env
+    )
     if (isTRUE(select)) {
       options <- c(options, "select")
     }
@@ -162,7 +173,9 @@ dm_paste_select <- function(dm) {
     dm %>%
     dm_get_def() %>%
     mutate(cols = map(data, colnames)) %>%
-    mutate(cols = map_chr(cols, ~ glue_collapse1(glue(", {tick_if_needed(.x)}")))) %>%
+    mutate(
+      cols = map_chr(cols, ~ glue_collapse1(glue(", {tick_if_needed(.x)}")))
+    ) %>%
     mutate(code = glue("dm::dm_select({tick_if_needed(table)}{cols})")) %>%
     pull()
 }
@@ -173,7 +186,9 @@ dm_paste_pks <- function(dm) {
     mutate(
       code = if_else(
         !is.na(autoincrement) & autoincrement,
-        glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)}, autoincrement = TRUE)"),
+        glue(
+          "dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)}, autoincrement = TRUE)"
+        ),
         glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")
       )
     ) %>%
@@ -184,7 +199,11 @@ dm_paste_uks <- function(dm) {
   dm %>%
     dm_get_def() %>%
     dm_get_all_uks_def_impl() %>%
-    mutate(code = glue("dm::dm_add_uk({tick_if_needed(table)}, {deparse_keys(uk_col)})")) %>%
+    mutate(
+      code = glue(
+        "dm::dm_add_uk({tick_if_needed(table)}, {deparse_keys(uk_col)})"
+      )
+    ) %>%
     pull()
 }
 
@@ -201,9 +220,16 @@ dm_paste_fks <- function(dm) {
   fpks <-
     left_join(fks, pks, by = "parent_table")
 
-  need_non_default <- !map2_lgl(fpks$parent_key_cols, fpks$parent_default_pk_cols, identical)
+  need_non_default <- !map2_lgl(
+    fpks$parent_key_cols,
+    fpks$parent_default_pk_cols,
+    identical
+  )
   fpks$non_default_parent_key_cols <- ""
-  fpks$non_default_parent_key_cols[need_non_default] <- paste0(", ", deparse_keys(fpks$parent_key_cols[need_non_default]))
+  fpks$non_default_parent_key_cols[need_non_default] <- paste0(
+    ", ",
+    deparse_keys(fpks$parent_key_cols[need_non_default])
+  )
 
   on_delete <- if_else(
     fpks$on_delete != "no_action",
@@ -211,13 +237,17 @@ dm_paste_fks <- function(dm) {
     ""
   )
 
-  glue("dm::dm_add_fk({tick_if_needed(fpks$child_table)}, {deparse_keys(fpks$child_fk_cols)}, {tick_if_needed(fpks$parent_table)}{fpks$non_default_parent_key_cols}{on_delete})")
+  glue(
+    "dm::dm_add_fk({tick_if_needed(fpks$child_table)}, {deparse_keys(fpks$child_fk_cols)}, {tick_if_needed(fpks$parent_table)}{fpks$non_default_parent_key_cols}{on_delete})"
+  )
 }
 
 dm_paste_color <- function(dm) {
   colors <- dm_get_colors(dm)
   colors <- colors[names(colors) != "default"]
-  glue("dm::dm_set_colors({tick_if_needed(names(colors))} = {tick_if_needed(colors)})")
+  glue(
+    "dm::dm_set_colors({tick_if_needed(names(colors))} = {tick_if_needed(colors)})"
+  )
 }
 
 df_paste <- function(x, tab) {
@@ -225,7 +255,14 @@ df_paste <- function(x, tab) {
   if (is_empty(x)) {
     cols <- character()
   } else {
-    cols <- paste0(tab, tick_if_needed(names(cols)), " = ", cols, ",\n", collapse = "")
+    cols <- paste0(
+      tab,
+      tick_if_needed(names(cols)),
+      " = ",
+      cols,
+      ",\n",
+      collapse = ""
+    )
   }
 
   paste0("tibble::tibble(\n", cols, ")")
@@ -260,10 +297,15 @@ dquote <- function(x) {
 # Errors ------------------------------------------------------------------
 
 abort_unknown_option <- function(options, all_options) {
-  abort(error_txt_unknown_option(options, all_options), class = dm_error_full("unknown_option"))
+  abort(
+    error_txt_unknown_option(options, all_options),
+    class = dm_error_full("unknown_option")
+  )
 }
 
 error_txt_unknown_option <- function(options, all_options) {
   bad_options <- setdiff(options, all_options)
-  glue("Option unknown: {commas(dquote(bad_options))}. Must be one of {commas(dquote(all_options))}.")
+  glue(
+    "Option unknown: {commas(dquote(bad_options))}. Must be one of {commas(dquote(all_options))}."
+  )
 }

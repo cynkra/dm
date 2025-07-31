@@ -218,8 +218,10 @@ dm_flights %>%
 dm_flights_sqlite <-
   dm_flights %>%
   copy_dm_to(
-    dbplyr::src_memdb(), .,
-    unique_table_names = TRUE, set_key_constraints = FALSE
+    dbplyr::src_memdb(),
+    .,
+    unique_table_names = TRUE,
+    set_key_constraints = FALSE
   )
 
 dm_flights_sqlite
@@ -395,7 +397,10 @@ dm_get_available_colors()
 
 nycflights13_fk %>%
   dm_set_colors(
-    airlines = , planes = , weather = , airports = "blue"
+    airlines = ,
+    planes = ,
+    weather = ,
+    airports = "blue"
   ) %>%
   dm_draw()
 

@@ -39,7 +39,13 @@ test_that("dm_select() keeps pks up to date", {
     dm_for_filter() %>%
       dm_get_all_pks_impl() %>%
       # https://github.com/r-lib/vctrs/issues/1371
-      mutate(pk_col = new_keys(if_else(table == "tf_3", list(c("new_f", "f1")), unclass(pk_col))))
+      mutate(
+        pk_col = new_keys(if_else(
+          table == "tf_3",
+          list(c("new_f", "f1")),
+          unclass(pk_col)
+        ))
+      )
   )
 })
 
@@ -68,7 +74,9 @@ test_that("dm_select() removes fks if not in selection", {
     dm_for_filter() %>%
       dm_get_all_fks_impl() %>%
       filter(child_table != "tf_2" | parent_table != "tf_1") %>%
-      mutate(child_fk_cols = new_keys(map(child_fk_cols, ~ gsub("e1", "ex", .x))))
+      mutate(
+        child_fk_cols = new_keys(map(child_fk_cols, ~ gsub("e1", "ex", .x)))
+      )
   )
 
   expect_equal(
@@ -86,9 +94,13 @@ test_that("dm_select() removes fks if not in selection", {
 
 test_that("output for compound keys", {
   expect_snapshot({
-    dm_select(dm_for_flatten(), fact, dim_1_key_1, dim_1_key_2) %>% dm_paste(options = c("select", "keys"))
-    dm_select(dm_for_flatten(), dim_1, dim_1_pk_1, dim_1_pk_2) %>% dm_paste(options = c("select", "keys"))
-    dm_select(dm_for_flatten(), fact, -dim_1_key_1) %>% dm_paste(options = c("select", "keys"))
-    dm_select(dm_for_flatten(), dim_1, -dim_1_pk_1) %>% dm_paste(options = c("select", "keys"))
+    dm_select(dm_for_flatten(), fact, dim_1_key_1, dim_1_key_2) %>%
+      dm_paste(options = c("select", "keys"))
+    dm_select(dm_for_flatten(), dim_1, dim_1_pk_1, dim_1_pk_2) %>%
+      dm_paste(options = c("select", "keys"))
+    dm_select(dm_for_flatten(), fact, -dim_1_key_1) %>%
+      dm_paste(options = c("select", "keys"))
+    dm_select(dm_for_flatten(), dim_1, -dim_1_pk_1) %>%
+      dm_paste(options = c("select", "keys"))
   })
 })

@@ -140,8 +140,12 @@ dm_from_con <- function(
 #'
 #' @export
 #' @keywords internal
-dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
-                        ...) {
+dm_from_src <- function(
+  src = NULL,
+  table_names = NULL,
+  learn_keys = NULL,
+  ...
+) {
   if (is_null(src)) {
     return(empty_dm())
   }
@@ -158,14 +162,22 @@ quote_ids <- function(x, con, schema = NULL) {
   if (is_null(schema)) {
     map_if(x, ~ !inherits(.x, "Id"), ~ DBI::Id(table = .x))
   } else {
-    map_if(x, ~ !inherits(.x, "Id"), ~ schema_if(rep(schema, length(.x)), .x, con)[[1]])
+    map_if(
+      x,
+      ~ !inherits(.x, "Id"),
+      ~ schema_if(rep(schema, length(.x)), .x, con)[[1]]
+    )
   }
 }
 
 # Errors ------------------------------------------------------------------
 
 abort_learn_keys <- function(parent) {
-  abort(error_txt_learn_keys(), class = dm_error_full("learn_keys"), parent = parent)
+  abort(
+    error_txt_learn_keys(),
+    class = dm_error_full("learn_keys"),
+    parent = parent
+  )
 }
 
 error_txt_learn_keys <- function() {

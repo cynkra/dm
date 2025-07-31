@@ -97,7 +97,6 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
     get_all_filtered_connected("a")
   expect_identical(fc$node, "a")
 
-
   fc <-
     dm_more_complex() %>%
     dm_filter(tf_5, TRUE) %>%
@@ -129,7 +128,9 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
 
   # fails when cycle is present
   expect_dm_error(
-    dm_for_filter_w_cycle() %>% dm_filter(tf_1, a > 3) %>% dm_get_filtered_table("tf_3"),
+    dm_for_filter_w_cycle() %>%
+      dm_filter(tf_1, a > 3) %>%
+      dm_get_filtered_table("tf_3"),
     "no_cycles"
   )
 

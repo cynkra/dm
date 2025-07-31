@@ -15,7 +15,12 @@ test_that("`pack_join()` works with remote table", {
   dm_remote <- dm_for_filter_duckdb()
   expect_snapshot_error(pack_join(df1, dm_remote$tf_1, by = c(col1 = "a")))
   # unless copy = TRUE
-  expect_snapshot(pack_join(df1, dm_remote$tf_1, by = c(col1 = "a"), copy = TRUE))
+  expect_snapshot(pack_join(
+    df1,
+    dm_remote$tf_1,
+    by = c(col1 = "a"),
+    copy = TRUE
+  ))
 
   # when we have conflicting columns, the column in x is overwritten silently
   # consistent with dplyr::nest_join
@@ -43,14 +48,20 @@ test_that("`pack_join()` works with dm_zoomed", {
   expect_equal(get_all_keys(dm_nyc), get_all_keys(dm_nyc_new))
 
   # the new table should have only one additional (packed) column
-  expect_equal(colnames(dm_nyc_new$airlines), c(colnames(dm_nyc$airlines), name_packed_df))
+  expect_equal(
+    colnames(dm_nyc_new$airlines),
+    c(colnames(dm_nyc$airlines), name_packed_df)
+  )
 
   # the packed table should have the same number of rows as the unpacked one
   expect_equal(nrow(dm_nyc_new$airlines$packed_flights), nrow(dm_nyc$flights))
 
   # but it should have fewer columns
   expect_equal(
-    setdiff(colnames(dm_nyc$flights), colnames(dm_nyc_new$airlines$packed_flights)),
+    setdiff(
+      colnames(dm_nyc$flights),
+      colnames(dm_nyc_new$airlines$packed_flights)
+    ),
     by_column
   )
 })

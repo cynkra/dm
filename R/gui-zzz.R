@@ -1,6 +1,10 @@
 rlang::on_load({
   if (rlang::is_installed("shiny")) {
-    shiny::registerInputHandler("dm_nodes_edges", force = TRUE, shiny_input_dm_nodes_edges)
+    shiny::registerInputHandler(
+      "dm_nodes_edges",
+      force = TRUE,
+      shiny_input_dm_nodes_edges
+    )
   }
 })
 

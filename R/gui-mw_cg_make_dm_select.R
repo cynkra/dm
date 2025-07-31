@@ -1,5 +1,11 @@
 # FIXME: Adapt argument list as provided/required by the Shiny app
-mw_cg_make_dm_select <- function(dm, ..., table_names = NULL, column_names = NULL, rm = FALSE) {
+mw_cg_make_dm_select <- function(
+  dm,
+  ...,
+  table_names = NULL,
+  column_names = NULL,
+  rm = FALSE
+) {
   check_dots_empty()
 
   # Checks

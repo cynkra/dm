@@ -1,4 +1,10 @@
-dm_bind_impl <- function(dms, repair, quiet, repair_arg = "", caller = caller_env()) {
+dm_bind_impl <- function(
+  dms,
+  repair,
+  quiet,
+  repair_arg = "",
+  caller = caller_env()
+) {
   if (length(dms) == 0) {
     return(new_dm_def())
   }

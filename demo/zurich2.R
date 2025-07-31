@@ -220,8 +220,10 @@ dm_flights %>%
 dm_flights_sqlite <-
   dm_flights %>%
   copy_dm_to(
-    dbplyr::src_memdb(), .,
-    unique_table_names = TRUE, set_key_constraints = FALSE
+    dbplyr::src_memdb(),
+    .,
+    unique_table_names = TRUE,
+    set_key_constraints = FALSE
   )
 
 dm_flights_sqlite
@@ -310,7 +312,6 @@ delta_non_jfk_january %>%
 ##
 ##
 
-
 # Use `dm()` with a syntax similar to `tibble()`:
 nycflights13_tbl <- dm(airlines, airports, flights, planes, weather)
 nycflights13_tbl
@@ -353,7 +354,10 @@ dm_get_available_colors()
 nycflights13_base <-
   nycflights13_fk %>%
   dm_set_colors(
-    airlines = , planes = , weather = , airports = "blue"
+    airlines = ,
+    planes = ,
+    weather = ,
+    airports = "blue"
   )
 
 nycflights13_base %>%
@@ -369,12 +373,10 @@ nycflights13_base %>%
 ##
 ##
 
-
 # A single table of a `dm` can be activated (or zoomed to),
 # and subsequently be manipulated by many {dplyr}-verbs.
 # Eventually, either the original table can be updated
 # or the manipulated table can be inserted as a new table.
-
 
 # Determine key candidates
 zoomed_weather <- dm_zoom_to(nycflights13_base, weather)

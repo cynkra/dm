@@ -17,7 +17,7 @@ This project uses a devcontainer configuration with:
 
 ## Coding Guidelines
 
-- Format the code by running `air .` in the devcontainer.
+- Format the code by running `air format .` in the devcontainer.
 - **Important**: Always add tests when fixing bugs to prevent regression. Test both the fix and edge cases.
 - Prefer snapshot tests when testing console output.
 

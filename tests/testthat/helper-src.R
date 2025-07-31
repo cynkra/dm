@@ -48,7 +48,10 @@ copy_to_my_test_src <- function(rhs, lhs) {
     suppressMessages(copy_dm_to(src, rhs))
   } else if (inherits(rhs, "list")) {
     suppressMessages(
-      map(rhs, ~ copy_to(src, .x, name = unique_db_table_name(name), temporary = TRUE))
+      map(
+        rhs,
+        ~ copy_to(src, .x, name = unique_db_table_name(name), temporary = TRUE)
+      )
     )
   } else {
     suppressMessages(copy_to(src, rhs, name = name, temporary = TRUE))
@@ -89,7 +92,12 @@ my_test_src <- function() {
   tryCatch(
     my_test_src_cache(),
     error = function(e) {
-      abort(paste0("Data source ", my_test_src_name, " not accessible: ", conditionMessage(e)))
+      abort(paste0(
+        "Data source ",
+        my_test_src_name,
+        " not accessible: ",
+        conditionMessage(e)
+      ))
     }
   )
 }
@@ -121,7 +129,12 @@ my_db_test_con <- function() {
   con_from_src_or_con(my_db_test_src())
 }
 
-test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(), .unique_indexes = NULL) {
+test_src_frame <- function(
+  ...,
+  .temporary = TRUE,
+  .env = parent.frame(),
+  .unique_indexes = NULL
+) {
   src <- my_test_src()
 
   df <- tibble(...)
@@ -140,14 +153,29 @@ test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(), .uniqu
     temporary <- TRUE
   }
 
-  out <- copy_to(src, df, name = name, temporary = temporary, unique_indexes = .unique_indexes)
+  out <- copy_to(
+    src,
+    df,
+    name = name,
+    temporary = temporary,
+    unique_indexes = .unique_indexes
+  )
   out
 }
 
-test_db_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(),
-                              .unique_indexes = NULL) {
+test_db_src_frame <- function(
+  ...,
+  .temporary = TRUE,
+  .env = parent.frame(),
+  .unique_indexes = NULL
+) {
   if (is_db_test_src()) {
-    return(test_src_frame(..., .temporary = .temporary, .env = .env, .unique_indexes = .unique_indexes))
+    return(test_src_frame(
+      ...,
+      .temporary = .temporary,
+      .env = .env,
+      .unique_indexes = .unique_indexes
+    ))
   }
 
   src <- my_db_test_src()
@@ -156,10 +184,19 @@ test_db_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(),
 
   name <- unique_db_table_name("test_frame")
 
-  out <- copy_to(src, df, name = name, temporary = .temporary, unique_indexes = .unique_indexes)
+  out <- copy_to(
+    src,
+    df,
+    name = name,
+    temporary = .temporary,
+    unique_indexes = .unique_indexes
+  )
 
   if (!.temporary) {
-    withr::defer(DBI::dbRemoveTable(con_from_src_or_con(src), name), envir = .env)
+    withr::defer(
+      DBI::dbRemoveTable(con_from_src_or_con(src), name),
+      envir = .env
+    )
   }
 
   out
@@ -216,94 +253,135 @@ data_mcard_3 %<-% tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 
 # for table-surgery functions ---------------------------------------------
 
-data_ts %<-% tibble(
-  a = as.integer(c(1, 2, 1)),
-  b = c(1.1, 4.2, 1.1),
-  c = as.integer(c(5, 6, 7)),
-  d = c("a", "b", "c"),
-  e = c("c", "b", "c"),
-  f = c(TRUE, FALSE, TRUE)
-)
+data_ts %<-%
+  tibble(
+    a = as.integer(c(1, 2, 1)),
+    b = c(1.1, 4.2, 1.1),
+    c = as.integer(c(5, 6, 7)),
+    d = c("a", "b", "c"),
+    e = c("c", "b", "c"),
+    f = c(TRUE, FALSE, TRUE)
+  )
 
-data_ts_child %<-% tibble(
-  b = c(1.1, 4.2, 1.1),
-  c = as.integer(c(5, 6, 7)),
-  d = c("a", "b", "c"),
-  aef_id = as.integer(c(1, 2, 1)),
-)
+data_ts_child %<-%
+  tibble(
+    b = c(1.1, 4.2, 1.1),
+    c = as.integer(c(5, 6, 7)),
+    d = c("a", "b", "c"),
+    aef_id = as.integer(c(1, 2, 1)),
+  )
 
-data_ts_parent %<-% tibble(
-  aef_id = as.integer(c(1, 2)),
-  a = as.integer(c(1, 2)),
-  e = c("c", "b"),
-  f = c(TRUE, FALSE)
-)
+data_ts_parent %<-%
+  tibble(
+    aef_id = as.integer(c(1, 2)),
+    a = as.integer(c(1, 2)),
+    e = c("c", "b"),
+    f = c(TRUE, FALSE)
+  )
 
-list_of_data_ts_parent_and_child %<--% list(
-  child_table = data_ts_child(),
-  parent_table = data_ts_parent()
-)
+list_of_data_ts_parent_and_child %<--%
+  list(
+    child_table = data_ts_child(),
+    parent_table = data_ts_parent()
+  )
 
 # for testing filter and semi_join ---------------------------------------------
 
 # the following is for testing the filtering functionality:
-tf_1 %<-% tibble(
-  a = 1:10,
-  b = LETTERS[1:10]
-)
+tf_1 %<-%
+  tibble(
+    a = 1:10,
+    b = LETTERS[1:10]
+  )
 
-tf_2_simple %<-% tibble(
-  c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
-  d = 2:7,
-  e = c(LETTERS[4:7], LETTERS[5:6])
-)
+tf_2_simple %<-%
+  tibble(
+    c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
+    d = 2:7,
+    e = c(LETTERS[4:7], LETTERS[5:6])
+  )
 
-tf_2 %<-% tibble(
-  c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
-  d = 2:7,
-  e = c(LETTERS[4:7], LETTERS[5:6]),
-  e1 = c(4:7, 5:6),
-)
+tf_2 %<-%
+  tibble(
+    c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
+    d = 2:7,
+    e = c(LETTERS[4:7], LETTERS[5:6]),
+    e1 = c(4:7, 5:6),
+  )
 
-tf_3_simple %<-% tibble(
-  f = LETTERS[2:11],
-  g = c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
-)
+tf_3_simple %<-%
+  tibble(
+    f = LETTERS[2:11],
+    g = c(
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten"
+    )
+  )
 
-tf_3 %<-% tibble(
-  f = LETTERS[c(3, 3:11)],
-  f1 = c(2:7, 7L, 7L, 10:11),
-  g = c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
-)
+tf_3 %<-%
+  tibble(
+    f = LETTERS[c(3, 3:11)],
+    f1 = c(2:7, 7L, 7L, 10:11),
+    g = c(
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten"
+    )
+  )
 
-tf_4 %<-% tibble(
-  h = letters[1:5],
-  i = c("three", "four", "five", "six", "seven"),
-  j = c(LETTERS[3:6], LETTERS[6]),
-  j1 = c(3:6, 6L),
-)
+tf_4 %<-%
+  tibble(
+    h = letters[1:5],
+    i = c("three", "four", "five", "six", "seven"),
+    j = c(LETTERS[3:6], LETTERS[6]),
+    j1 = c(3:6, 6L),
+  )
 
-tf_5 %<-% tibble(
-  ww = 2L,
-  k = 1:4,
-  l = letters[2:5],
-  m = c("house", "tree", "streetlamp", "streetlamp")
-)
+tf_5 %<-%
+  tibble(
+    ww = 2L,
+    k = 1:4,
+    l = letters[2:5],
+    m = c("house", "tree", "streetlamp", "streetlamp")
+  )
 
-tf_6 %<-% tibble(
-  zz = 1L,
-  n = c("house", "tree", "hill", "streetlamp", "garden"),
-  o = letters[5:9]
-)
+tf_6 %<-%
+  tibble(
+    zz = 1L,
+    n = c("house", "tree", "hill", "streetlamp", "garden"),
+    o = letters[5:9]
+  )
 
-tf_7 %<-% tibble(
-  p = letters[4:9],
-  q = c("elephant", "lion", "seal", "worm", "dog", "cat")
-)
+tf_7 %<-%
+  tibble(
+    p = letters[4:9],
+    q = c("elephant", "lion", "seal", "worm", "dog", "cat")
+  )
 
 dm_for_filter_w_cycle %<-% {
   dm(
-    tf_1 = tf_1(), tf_2 = tf_2(), tf_3 = tf_3(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6(), tf_7 = tf_7()
+    tf_1 = tf_1(),
+    tf_2 = tf_2(),
+    tf_3 = tf_3(),
+    tf_4 = tf_4(),
+    tf_5 = tf_5(),
+    tf_6 = tf_6(),
+    tf_7 = tf_7()
   ) %>%
     dm_add_pk(tf_1, a, autoincrement = TRUE) %>%
     #
@@ -371,7 +449,12 @@ dm_for_filter_rev %<-% {
 # Deprecated tests
 dm_for_filter_simple %<-% {
   dm(
-    tf_1 = tf_1(), tf_2 = tf_2_simple(), tf_3 = tf_3_simple(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6()
+    tf_1 = tf_1(),
+    tf_2 = tf_2_simple(),
+    tf_3 = tf_3_simple(),
+    tf_4 = tf_4(),
+    tf_5 = tf_5(),
+    tf_6 = tf_6()
   ) %>%
     dm_add_pk(tf_1, a) %>%
     dm_add_pk(tf_3, f) %>%
@@ -396,21 +479,23 @@ dm_for_filter_simple_db %<--% {
 
 # for tests on `dm` objects: dm_add_pk(), dm_add_fk() ------------------------
 
-dm_test_obj %<-% as_dm(list(
-  dm_table_1 = data_card_2(),
-  dm_table_2 = data_card_4(),
-  dm_table_3 = data_card_7(),
-  dm_table_4 = data_card_8(),
-  dm_table_5 = data_card_9(),
-  dm_table_6 = data_card_10()
-))
+dm_test_obj %<-%
+  as_dm(list(
+    dm_table_1 = data_card_2(),
+    dm_table_2 = data_card_4(),
+    dm_table_3 = data_card_7(),
+    dm_table_4 = data_card_8(),
+    dm_table_5 = data_card_9(),
+    dm_table_6 = data_card_10()
+  ))
 
-dm_test_obj_2 %<-% as_dm(list(
-  dm_table_1 = data_card_4(),
-  dm_table_2 = data_card_7(),
-  dm_table_3 = data_card_8(),
-  dm_table_4 = data_card_6()
-))
+dm_test_obj_2 %<-%
+  as_dm(list(
+    dm_table_1 = data_card_4(),
+    dm_table_2 = data_card_7(),
+    dm_table_3 = data_card_8(),
+    dm_table_4 = data_card_6()
+  ))
 
 # for `dm_nrow()` ---------------------------------------------------------
 
@@ -420,7 +505,11 @@ rows_dm_obj <- 36L
 
 dm_more_complex_part %<-% {
   dm(
-    tf_6_2 = tibble(p = letters[1:6], f = LETTERS[6:11], f1 = c(6:7, 7L, 7L, 10:11)),
+    tf_6_2 = tibble(
+      p = letters[1:6],
+      f = LETTERS[6:11],
+      f1 = c(6:7, 7L, 7L, 10:11)
+    ),
     tf_4_2 = tibble(
       r = letters[2:6],
       s = c("three", "five", "six", "seven", "eight"),
@@ -505,26 +594,27 @@ dm_for_disambiguate %<-% {
 
 # star schema data model for testing `dm_flatten_to_tbl()` ------
 
-fact %<-% tibble(
-  fact = c(
-    "acorn",
-    "blubber",
-    "cinderella",
-    "depth",
-    "elysium",
-    "fantasy",
-    "gorgeous",
-    "halo",
-    "ill-advised",
-    "jitter"
-  ),
-  dim_1_key_1 = 14:5,
-  dim_1_key_2 = LETTERS[14:5],
-  dim_2_key = letters[3:12],
-  dim_3_key = LETTERS[24:15],
-  dim_4_key = 7:16,
-  something = 1:10
-)
+fact %<-%
+  tibble(
+    fact = c(
+      "acorn",
+      "blubber",
+      "cinderella",
+      "depth",
+      "elysium",
+      "fantasy",
+      "gorgeous",
+      "halo",
+      "ill-advised",
+      "jitter"
+    ),
+    dim_1_key_1 = 14:5,
+    dim_1_key_2 = LETTERS[14:5],
+    dim_2_key = letters[3:12],
+    dim_3_key = LETTERS[24:15],
+    dim_4_key = 7:16,
+    something = 1:10
+  )
 
 fact_clean %<-% {
   fact() %>%
@@ -540,11 +630,12 @@ fact_clean_new %<-% {
     )
 }
 
-dim_1 %<-% tibble(
-  dim_1_pk_1 = 1:20,
-  dim_1_pk_2 = LETTERS[1:20],
-  something = letters[3:22]
-)
+dim_1 %<-%
+  tibble(
+    dim_1_pk_1 = 1:20,
+    dim_1_pk_2 = LETTERS[1:20],
+    something = letters[3:22]
+  )
 dim_1_clean %<-% {
   dim_1() %>%
     rename(dim_1.something = something)
@@ -554,10 +645,11 @@ dim_1_clean_new %<-% {
     rename(something.dim_1 = something)
 }
 
-dim_2 %<-% tibble(
-  dim_2_pk = letters[1:20],
-  something = LETTERS[5:24]
-)
+dim_2 %<-%
+  tibble(
+    dim_2_pk = letters[1:20],
+    something = LETTERS[5:24]
+  )
 dim_2_clean %<-% {
   dim_2() %>%
     rename(dim_2.something = something)
@@ -567,10 +659,11 @@ dim_2_clean_new %<-% {
     rename(something.dim_2 = something)
 }
 
-dim_3 %<-% tibble(
-  dim_3_pk = LETTERS[5:24],
-  something = 3:22
-)
+dim_3 %<-%
+  tibble(
+    dim_3_pk = LETTERS[5:24],
+    something = 3:22
+  )
 dim_3_clean %<-% {
   dim_3() %>%
     rename(dim_3.something = something)
@@ -580,10 +673,11 @@ dim_3_clean_new %<-% {
     rename(something.dim_3 = something)
 }
 
-dim_4 %<-% tibble(
-  dim_4_pk = 19:7,
-  something = 19:31
-)
+dim_4 %<-%
+  tibble(
+    dim_4_pk = 19:7,
+    something = 19:31
+  )
 dim_4_clean %<-% {
   dim_4() %>%
     rename(dim_4.something = something)
@@ -670,7 +764,10 @@ dm_for_flatten %<-% {
 
 result_from_flatten %<-% {
   fact_clean() %>%
-    left_join(dim_1_clean(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
+    left_join(
+      dim_1_clean(),
+      by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+    ) %>%
     left_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) %>%
     left_join(dim_3_clean(), by = c("dim_3_key" = "dim_3_pk")) %>%
     left_join(dim_4_clean(), by = c("dim_4_key" = "dim_4_pk"))
@@ -678,7 +775,10 @@ result_from_flatten %<-% {
 
 result_from_flatten_new %<-% {
   fact_clean_new() %>%
-    left_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
+    left_join(
+      dim_1_clean_new(),
+      by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+    ) %>%
     left_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk")) %>%
     left_join(dim_3_clean_new(), by = c("dim_3_key" = "dim_3_pk")) %>%
     left_join(dim_4_clean_new(), by = c("dim_4_key" = "dim_4_pk"))
@@ -706,8 +806,14 @@ bad_dm %<--% {
 dm_nycflights_small_base %<-% {
   tables <- dm_get_tables(dm_nycflights13())
   # https://github.com/tidyverse/dbplyr/pull/1195
-  tables$flights <- mutate(tables$flights, time_hour = as.character(time_hour))
-  tables$weather <- mutate(tables$weather, time_hour = as.character(time_hour))
+  tables$flights <- mutate(
+    tables$flights,
+    time_hour = as.character(time_hour)
+  )
+  tables$weather <- mutate(
+    tables$weather,
+    time_hour = as.character(time_hour)
+  )
   dm(!!!tables)
 }
 
@@ -755,9 +861,14 @@ get_test_tables_from_postgres <- function() {
   con_postgres <- src_postgres$con
 
   con_postgres %>%
-    DBI::dbGetQuery("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
+    DBI::dbGetQuery(
+      "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'"
+    ) %>%
     as_tibble() %>%
-    filter(grepl("^tf_[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+", table_name))
+    filter(grepl(
+      "^tf_[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+",
+      table_name
+    ))
 }
 
 is_postgres_empty <- function() {

@@ -17,7 +17,11 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
 
   expect_snapshot(
     {
-      prepare_dm_for_flatten(dm_for_flatten(), tables = c("fact", "dim_1", "dim_2", "dim_3", "dim_4"), gotta_rename = TRUE) %>%
+      prepare_dm_for_flatten(
+        dm_for_flatten(),
+        tables = c("fact", "dim_1", "dim_2", "dim_3", "dim_4"),
+        gotta_rename = TRUE
+      ) %>%
         dm_get_tables()
       dm_flatten_to_tbl(dm_for_flatten(), fact)
       result_from_flatten_new()
@@ -35,7 +39,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
 
   # explicitly choose parent tables
   out <- expect_message_obj(dm_flatten_to_tbl(
-    dm_for_flatten(), fact, dim_1, dim_2
+    dm_for_flatten(),
+    fact,
+    dim_1,
+    dim_2
   ))
   expect_equivalent_tbl(
     out,
@@ -49,15 +56,22 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
 
   # change order of parent tables
   out <- expect_message_obj(dm_flatten_to_tbl(
-    dm_for_flatten(), fact, dim_2, dim_1
+    dm_for_flatten(),
+    fact,
+    dim_2,
+    dim_1
   ))
   expect_equivalent_tbl(
     out,
     left_join(
-      fact_clean_new(), dim_2_clean_new(),
+      fact_clean_new(),
+      dim_2_clean_new(),
       by = c("dim_2_key" = "dim_2_pk")
     ) %>%
-      left_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2"))
+      left_join(
+        dim_1_clean_new(),
+        by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+      )
   )
 
   # with grandparent table
@@ -108,13 +122,17 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
   skip_if_src("sqlite")
   skip_if_src("maria")
   out <- expect_message_obj(dm_flatten_to_tbl(
-    dm_for_flatten(), fact,
+    dm_for_flatten(),
+    fact,
     .join = full_join
   ))
   expect_equivalent_tbl(
     out,
     fact_clean_new() %>%
-      full_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
+      full_join(
+        dim_1_clean_new(),
+        by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+      ) %>%
       full_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk")) %>%
       full_join(dim_3_clean_new(), by = c("dim_3_key" = "dim_3_pk")) %>%
       full_join(dim_4_clean_new(), by = c("dim_4_key" = "dim_4_pk"))
@@ -151,7 +169,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
       "right_join"
     )),
     fact_clean_new() %>%
-      right_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
+      right_join(
+        dim_1_clean_new(),
+        by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+      ) %>%
       right_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk")) %>%
       right_join(dim_3_clean_new(), by = c("dim_3_key" = "dim_3_pk")) %>%
       right_join(dim_4_clean_new(), by = c("dim_4_key" = "dim_4_pk"))
@@ -159,7 +180,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
 
   # change order of parent tables
   out <- expect_message_obj(dm_flatten_to_tbl(
-    dm_for_flatten(), fact, dim_2, dim_1,
+    dm_for_flatten(),
+    fact,
+    dim_2,
+    dim_1,
     .join = right_join
   ))
   expect_equivalent_tbl(
@@ -169,7 +193,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
       dim_2_clean_new(),
       by = c("dim_2_key" = "dim_2_pk")
     ) %>%
-      right_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2"))
+      right_join(
+        dim_1_clean_new(),
+        by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+      )
   )
 })
 
@@ -203,16 +230,29 @@ test_that("`dm_flatten_to_tbl(.recursive = TRUE)` does the right things", {
     12L
   )
 
-
   # semi_join:
   expect_dm_error(
-    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, .join = semi_join, .recursive = TRUE),
+    dm_flatten_to_tbl(
+      dm_more_complex(),
+      tf_5,
+      tf_4,
+      tf_3,
+      .join = semi_join,
+      .recursive = TRUE
+    ),
     class = "squash_limited"
   )
 
   # anti_join:
   expect_dm_error(
-    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, .join = anti_join, .recursive = TRUE),
+    dm_flatten_to_tbl(
+      dm_more_complex(),
+      tf_5,
+      tf_4,
+      tf_3,
+      .join = anti_join,
+      .recursive = TRUE
+    ),
     class = "squash_limited"
   )
 
@@ -227,7 +267,14 @@ test_that("`dm_flatten_to_tbl(.recursive = TRUE)` does the right things", {
 
   # full_join:
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, .join = full_join, .recursive = TRUE),
+    dm_flatten_to_tbl(
+      dm_more_complex(),
+      tf_5,
+      tf_4,
+      tf_3,
+      .join = full_join,
+      .recursive = TRUE
+    ),
     tf_5() %>%
       full_join(tf_4(), by = c("l" = "h")) %>%
       full_join(tf_3(), by = c("j" = "f", "j1" = "f1"))
@@ -237,7 +284,14 @@ test_that("`dm_flatten_to_tbl(.recursive = TRUE)` does the right things", {
 
   # right_join:
   expect_dm_error(
-    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, .join = right_join, .recursive = TRUE),
+    dm_flatten_to_tbl(
+      dm_more_complex(),
+      tf_5,
+      tf_4,
+      tf_3,
+      .join = right_join,
+      .recursive = TRUE
+    ),
     class = "squash_limited"
   )
 })
@@ -251,12 +305,17 @@ test_that("prepare_dm_for_flatten() works", {
   ))
   expect_equivalent_dm(
     out,
-    dm_select_tbl(dm_for_flatten(), fact, dim_1, dim_3) %>% dm_disambiguate_cols(.quiet = TRUE)
+    dm_select_tbl(dm_for_flatten(), fact, dim_1, dim_3) %>%
+      dm_disambiguate_cols(.quiet = TRUE)
   )
 
   # without rename
   expect_equivalent_dm(
-    prepare_dm_for_flatten(dm_for_flatten(), c("fact", "dim_1", "dim_3"), gotta_rename = FALSE),
+    prepare_dm_for_flatten(
+      dm_for_flatten(),
+      c("fact", "dim_1", "dim_3"),
+      gotta_rename = FALSE
+    ),
     dm_select_tbl(dm_for_flatten(), fact, dim_1, dim_3)
   )
 })
@@ -264,13 +323,25 @@ test_that("prepare_dm_for_flatten() works", {
 test_that("tidyselect works for flatten", {
   # test if deselecting works
   expect_equivalent_tbl(
-    expect_message_obj(dm_flatten_to_tbl(dm_for_flatten(), fact, -dim_2, dim_3, -dim_4, dim_1)),
+    expect_message_obj(dm_flatten_to_tbl(
+      dm_for_flatten(),
+      fact,
+      -dim_2,
+      dim_3,
+      -dim_4,
+      dim_1
+    )),
     expect_message_obj(dm_flatten_to_tbl(dm_for_flatten(), fact, dim_1, dim_3))
   )
 
   # test if select helpers work
   expect_equivalent_tbl(
-    expect_message_obj(dm_flatten_to_tbl(dm_for_flatten(), fact, ends_with("3"), ends_with("1"))),
+    expect_message_obj(dm_flatten_to_tbl(
+      dm_for_flatten(),
+      fact,
+      ends_with("3"),
+      ends_with("1")
+    )),
     expect_message_obj(dm_flatten_to_tbl(dm_for_flatten(), fact, dim_3, dim_1))
   )
 
@@ -296,7 +367,10 @@ test_that("tidyselect works for flatten", {
 test_that("`dm_join_to_tbl()` works", {
   expect_deprecated(
     expect_equivalent_tbl(
-      expect_message_obj(dm_join_to_tbl(dm_for_flatten(), fact, dim_3), "Renaming"),
+      expect_message_obj(
+        dm_join_to_tbl(dm_for_flatten(), fact, dim_3),
+        "Renaming"
+      ),
       left_join(
         fact_clean(),
         dim_3_clean(),
@@ -319,7 +393,6 @@ test_that("tests with 'bad_dm' work", {
   # duckdb doesn't work before R 4.0
   skip_if(getRversion() < "4.0")
 
-
   # flatten bad_dm() (no referential integrity)
   if (is_db(my_test_src()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
     expect_equivalent_tbl(
@@ -330,7 +403,6 @@ test_that("tests with 'bad_dm' work", {
     )
   }
 
-
   skip_if_src("maria")
 
   # filtered `dm`
@@ -340,7 +412,6 @@ test_that("tests with 'bad_dm' work", {
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1),
     bad_filtered_dm %>% dm_flatten_to_tbl(tbl_1)
   )
-
 
   # filtered `dm`
   expect_equivalent_tbl(
@@ -401,7 +472,6 @@ test_that("tests with 'bad_dm' work (3)", {
         right_join(tbl_3(), by = c("b" = "id"))
     )
   }
-
 
   # flatten bad_dm() (no referential integrity); different order
   if (is_db(my_test_src()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {

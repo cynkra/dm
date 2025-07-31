@@ -13,7 +13,12 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     ))
   )
 
-  dm_for_filter_copied <- copy_dm_to(con_db, dm_for_filter(), temporary = FALSE, table_names = ~ unique_db_table_name(.x))
+  dm_for_filter_copied <- copy_dm_to(
+    con_db,
+    dm_for_filter(),
+    temporary = FALSE,
+    table_names = ~ unique_db_table_name(.x)
+  )
   order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
 
   remote_tbl_names <-
@@ -25,7 +30,10 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     DBI::dbUnquoteIdentifier(conn = con_db) %>%
     map_chr(~ .x@name[[length(.x@name)]])
 
-  remote_tbl_map <- set_names(remote_tbl_names, gsub("^(tf_.).*$", "\\1", remote_tbl_names))
+  remote_tbl_map <- set_names(
+    remote_tbl_names,
+    gsub("^(tf_.).*$", "\\1", remote_tbl_names)
+  )
 
   expect_silent(dm_db_learned_all <- dm_from_con(con_db, learn_keys = TRUE))
 
@@ -42,7 +50,9 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   )
 
   # learning without keys:
-  expect_silent(dm_db_learned_no_keys <- dm_from_con(con_db, learn_keys = FALSE))
+  expect_silent(
+    dm_db_learned_no_keys <- dm_from_con(con_db, learn_keys = FALSE)
+  )
 
   # for learning from DB without learning the key relations
   dm_for_filter_no_keys <-
@@ -74,7 +84,10 @@ test_that("Learning from specific schema works?", {
   random_schema <- function() {
     reservoir <- c(letters)
     how_long <- 10
-    paste0(reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)], collapse = "")
+    paste0(
+      reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)],
+      collapse = ""
+    )
   }
 
   schema_name <- random_schema()
@@ -93,7 +106,11 @@ test_that("Learning from specific schema works?", {
   )
   order_of_deletion <- c("iris_3", "iris_2", "iris_1")
   remote_tbl_names <- set_names(
-    paste0(schema_name_q, ".", DBI::dbQuoteIdentifier(con_db, order_of_deletion)),
+    paste0(
+      schema_name_q,
+      ".",
+      DBI::dbQuoteIdentifier(con_db, order_of_deletion)
+    ),
     order_of_deletion
   )
 
@@ -133,7 +150,11 @@ test_that("Learning from specific schema works?", {
 
   # learning without keys:
   dm_db_learned_no_keys <-
-    expect_silent(dm_from_con(con_db, schema = schema_name, learn_keys = FALSE)) %>%
+    expect_silent(dm_from_con(
+      con_db,
+      schema = schema_name,
+      learn_keys = FALSE
+    )) %>%
     dm_select_tbl(!!!order_of_deletion)
 
   dm_for_disambiguate_no_keys <-
@@ -192,7 +213,12 @@ test_that("'schema_if()' works", {
   )
 
   # dbname and table set
-  expect_error(schema_if(schema = NA, con = con_db, table = "table", dbname = "db"))
+  expect_error(schema_if(
+    schema = NA,
+    con = con_db,
+    table = "table",
+    dbname = "db"
+  ))
 
   # only table set
   expect_equal(
@@ -228,18 +254,34 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
     value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
   # set PK
-  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_1] ALTER COLUMN [b] INTEGER NOT NULL")
-  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_1] ADD PRIMARY KEY ([b])")
+  DBI::dbExecute(
+    con_db,
+    "ALTER TABLE [test_database_dm].[dbo].[test_1] ALTER COLUMN [b] INTEGER NOT NULL"
+  )
+  DBI::dbExecute(
+    con_db,
+    "ALTER TABLE [test_database_dm].[dbo].[test_1] ADD PRIMARY KEY ([b])"
+  )
   # set FK relation
-  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dbo].[test_1] ([b]) ON DELETE NO ACTION ON UPDATE NO ACTION")
-
+  DBI::dbExecute(
+    con_db,
+    "ALTER TABLE [test_database_dm].[dbo].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dbo].[test_1] ([b]) ON DELETE NO ACTION ON UPDATE NO ACTION"
+  )
 
   # test 'get_src_tbl_names()'
   expect_identical(
     get_src_tbl_names(con_db, dbname = "test_database_dm"),
     list(
-      test_1 = DBI::Id(catalog = "test_database_dm", schema = "dbo", table = "test_1"),
-      test_2 = DBI::Id(catalog = "test_database_dm", schema = "dbo", table = "test_2")
+      test_1 = DBI::Id(
+        catalog = "test_database_dm",
+        schema = "dbo",
+        table = "test_1"
+      ),
+      test_2 = DBI::Id(
+        catalog = "test_database_dm",
+        schema = "dbo",
+        table = "test_2"
+      )
     )
   )
 
@@ -309,21 +351,34 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
   # set PK
-  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dm_test].[test_1] ALTER COLUMN [b] INTEGER NOT NULL")
-  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dm_test].[test_1] ADD PRIMARY KEY ([b])")
+  DBI::dbExecute(
+    con_db,
+    "ALTER TABLE [test_database_dm].[dm_test].[test_1] ALTER COLUMN [b] INTEGER NOT NULL"
+  )
+  DBI::dbExecute(
+    con_db,
+    "ALTER TABLE [test_database_dm].[dm_test].[test_1] ADD PRIMARY KEY ([b])"
+  )
   # set FK relation
   DBI::dbExecute(
     con_db,
     "ALTER TABLE [test_database_dm].[dm_test].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dm_test].[test_1] ([b]) ON DELETE NO ACTION ON UPDATE NO ACTION"
   )
 
-
   # test 'get_src_tbl_names()'
   expect_identical(
     get_src_tbl_names(con_db, schema = "dm_test", dbname = "test_database_dm"),
     list(
-      test_1 = DBI::Id(catalog = "test_database_dm", schema = "dm_test", table = "test_1"),
-      test_2 = DBI::Id(catalog = "test_database_dm", schema = "dm_test", table = "test_2")
+      test_1 = DBI::Id(
+        catalog = "test_database_dm",
+        schema = "dm_test",
+        table = "test_1"
+      ),
+      test_2 = DBI::Id(
+        catalog = "test_database_dm",
+        schema = "dm_test",
+        table = "test_2"
+      )
     )
   )
 
@@ -374,7 +429,10 @@ test_that("dm_meta() contents", {
   random_schema <- function() {
     reservoir <- c(letters)
     how_long <- 10
-    paste0(reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)], collapse = "")
+    paste0(
+      reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)],
+      collapse = ""
+    )
   }
 
   schema_name <- random_schema()
@@ -390,12 +448,20 @@ test_that("dm_meta() contents", {
   withr::defer({
     try(walk(
       order_of_deletion,
-      ~ try(DBI::dbExecute(con_db, paste0("DROP TABLE ", schema_name_q, ".", .x, " CASCADE")))
+      ~ try(DBI::dbExecute(
+        con_db,
+        paste0("DROP TABLE ", schema_name_q, ".", .x, " CASCADE")
+      ))
     ))
     try(DBI::dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q)))
   })
 
-  dm_for_filter_copied <- copy_dm_to(con_db, dm_for_filter(), temporary = FALSE, schema = schema_name)
+  dm_for_filter_copied <- copy_dm_to(
+    con_db,
+    dm_for_filter(),
+    temporary = FALSE,
+    schema = schema_name
+  )
   order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
 
   meta <- dm_meta(con_db, schema = schema_name)
@@ -416,28 +482,51 @@ test_that("dm_meta() contents", {
       filter(constraint_type %in% c("PRIMARY KEY", "FOREIGN KEY")) %>%
       dm_update_zoomed() %>%
       dm_get_tables() %>%
-      map(select, -any_of("column_default"), -contains("catalog"), -contains("schema")) %>%
+      map(
+        select,
+        -any_of("column_default"),
+        -contains("catalog"),
+        -contains("schema")
+      ) %>%
       map(collect) %>%
       map(arrange_all_but_constraint_name) %>%
-      map(~ if ("constraint_name" %in% colnames(.x)) {
-        .x %>% mutate(constraint_name = as.integer(forcats::fct_inorder(constraint_name)))
-      } else {
-        .x
-      }) %>%
-      imap(~ if (is_mariadb(con_db) && .y == "columns") {
-        # mariadb output on autoincrement column is integer
-        # transform this to boolean
-        mutate(.x, is_autoincrement = as.logical(is_autoincrement))
-      } else {
-        .x
-      }) %>%
-      imap(~ if (is_mariadb(con_db) && .y == "table_constraints") {
-        # mariadb default action for delete_rule is RESTRICT (synonym for NO ACTION)
-        # https://mariadb.com/kb/en/foreign-keys/#constraints
-        mutate(.x, delete_rule = if_else(delete_rule == "RESTRICT", "NO ACTION", delete_rule))
-      } else {
-        .x
-      }) %>%
+      map(
+        ~ if ("constraint_name" %in% colnames(.x)) {
+          .x %>%
+            mutate(
+              constraint_name = as.integer(forcats::fct_inorder(
+                constraint_name
+              ))
+            )
+        } else {
+          .x
+        }
+      ) %>%
+      imap(
+        ~ if (is_mariadb(con_db) && .y == "columns") {
+          # mariadb output on autoincrement column is integer
+          # transform this to boolean
+          mutate(.x, is_autoincrement = as.logical(is_autoincrement))
+        } else {
+          .x
+        }
+      ) %>%
+      imap(
+        ~ if (is_mariadb(con_db) && .y == "table_constraints") {
+          # mariadb default action for delete_rule is RESTRICT (synonym for NO ACTION)
+          # https://mariadb.com/kb/en/foreign-keys/#constraints
+          mutate(
+            .x,
+            delete_rule = if_else(
+              delete_rule == "RESTRICT",
+              "NO ACTION",
+              delete_rule
+            )
+          )
+        } else {
+          .x
+        }
+      ) %>%
       map(arrange_all) %>%
       jsonlite::toJSON(pretty = TRUE) %>%
       gsub(schema_name, "schema_name", .) %>%

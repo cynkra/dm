@@ -21,7 +21,8 @@ test_that("`json_pack()` works remotely", {
     # For stable POSTGRES tests
     gsub("test_frame_[_0-9]+", "test_frame_...", query)
     json_pack(remote, a = starts_with("a"))
-    query <- json_pack(remote, a = starts_with("a"), .names_sep = "_") %>% dbplyr::sql_render()
+    query <- json_pack(remote, a = starts_with("a"), .names_sep = "_") %>%
+      dbplyr::sql_render()
     # For stable POSTGRES tests
     gsub("test_frame_[_0-9]+", "test_frame_...", query)
     json_pack(remote, a = starts_with("a"), .names_sep = "_")

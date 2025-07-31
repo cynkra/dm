@@ -73,7 +73,13 @@ test_that("dm() works for adding tables", {
 
   # are in the default case (`repair = 'unique'`) the tables renamed (old table AND new table) according to "unique" default setting
   expect_identical(
-    dm(dm_for_filter(), tf_1 = data_card_1(), .name_repair = "unique", .quiet = TRUE) %>% src_tbls_impl(),
+    dm(
+      dm_for_filter(),
+      tf_1 = data_card_1(),
+      .name_repair = "unique",
+      .quiet = TRUE
+    ) %>%
+      src_tbls_impl(),
     c("tf_1...1", "tf_2", "tf_3", "tf_4", "tf_5", "tf_6", "tf_1...7")
   )
 
@@ -88,7 +94,8 @@ test_that("dm() works for adding tables", {
 
   # can I use dm_select_tbl(), selecting among others the new table?
   expect_silent(
-    dm(dm_for_filter(), tf_7_new = tf_7()) %>% dm_select_tbl(tf_1, tf_7_new, everything())
+    dm(dm_for_filter(), tf_7_new = tf_7()) %>%
+      dm_select_tbl(tf_1, tf_7_new, everything())
   )
 
   # error in case table srcs don't match
@@ -106,7 +113,8 @@ test_that("dm() works for adding tables", {
 
 test_that("dm() for adding tables with compound keys", {
   expect_snapshot({
-    dm(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(options = c("select", "keys"))
+    dm(dm_for_flatten(), res_flat = result_from_flatten()) %>%
+      dm_paste(options = c("select", "keys"))
   })
 })
 
@@ -155,7 +163,12 @@ test_that("errors: duplicate table names, src mismatches", {
 test_that("auto-renaming works", {
   expect_equivalent_dm(
     expect_name_repair_message(
-      dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique")
+      dm(
+        dm_for_filter(),
+        dm_for_flatten(),
+        dm_for_filter(),
+        .name_repair = "unique"
+      )
     ),
     bind_rows(
       dm_get_def(
@@ -184,7 +197,13 @@ test_that("auto-renaming works", {
   )
 
   expect_silent(
-    dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique", .quiet = TRUE)
+    dm(
+      dm_for_filter(),
+      dm_for_flatten(),
+      dm_for_filter(),
+      .name_repair = "unique",
+      .quiet = TRUE
+    )
   )
 })
 
@@ -203,7 +222,14 @@ test_that("output for dm() with dm", {
     dm()
     dm(empty_dm())
     dm(dm_for_filter()) %>% collect()
-    dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique", .quiet = TRUE) %>% collect()
+    dm(
+      dm_for_filter(),
+      dm_for_flatten(),
+      dm_for_filter(),
+      .name_repair = "unique",
+      .quiet = TRUE
+    ) %>%
+      collect()
   })
 })
 
@@ -215,18 +241,27 @@ test_that("output for dm() with dm (2)", {
 
 test_that("output for dm() with dm (3)", {
   expect_snapshot({
-    dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique") %>% collect()
+    dm(
+      dm_for_filter(),
+      dm_for_flatten(),
+      dm_for_filter(),
+      .name_repair = "unique"
+    ) %>%
+      collect()
   })
 })
 
 test_that("output dm() for dm for compound keys", {
   expect_snapshot({
-    dm(dm_for_filter(), dm_for_flatten()) %>% dm_paste(options = c("select", "keys"))
-    dm(dm_for_flatten(), dm_for_filter()) %>% dm_paste(options = c("select", "keys"))
+    dm(dm_for_filter(), dm_for_flatten()) %>%
+      dm_paste(options = c("select", "keys"))
+    dm(dm_for_flatten(), dm_for_filter()) %>%
+      dm_paste(options = c("select", "keys"))
   })
 
   expect_snapshot({
-    dm(dm_for_flatten(), dm_for_flatten(), .name_repair = "unique") %>% dm_paste(options = c("select", "keys"))
+    dm(dm_for_flatten(), dm_for_flatten(), .name_repair = "unique") %>%
+      dm_paste(options = c("select", "keys"))
   })
 })
 
@@ -522,7 +557,6 @@ test_that("output", {
 
 
 # Compound tests ----------------------------------------------------------
-
 
 test_that("output for compound keys", {
   # FIXME: COMPOUND: Need proper test

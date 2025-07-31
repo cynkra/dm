@@ -3,7 +3,16 @@
 #' Widget
 #'
 #' @noRd
-dmSVG <- function(dm, viewBox = TRUE, node_to_zoom = NULL, nodes_to_select = NULL, ..., width = NULL, height = NULL, elementId = NULL) {
+dmSVG <- function(
+  dm,
+  viewBox = TRUE,
+  node_to_zoom = NULL,
+  nodes_to_select = NULL,
+  ...,
+  width = NULL,
+  height = NULL,
+  elementId = NULL
+) {
   svg_text <- dm_to_svg(dm)
 
   # forward options using x
@@ -48,7 +57,13 @@ dmSVG <- function(dm, viewBox = TRUE, node_to_zoom = NULL, nodes_to_select = NUL
 #'
 #' @noRd
 dmSVGOutput <- function(outputId, width = "100%", height = "400px") {
-  htmlwidgets::shinyWidgetOutput(outputId, "dmSVG", width, height, package = "dm")
+  htmlwidgets::shinyWidgetOutput(
+    outputId,
+    "dmSVG",
+    width,
+    height,
+    package = "dm"
+  )
 }
 
 #' @rdname dmSVG-shiny

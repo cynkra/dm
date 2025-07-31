@@ -8,7 +8,11 @@ test_that("error message for non-dm object", {
 test_that("can upgrade from v1", {
   if (FALSE) {
     saveRDS(dm_for_filter(), "tests/testthat/dm/v1.rds", version = 2)
-    saveRDS(dm_for_filter() %>% dm_zoom_to(tf_2), "tests/testthat/dm/v1_zoomed.rds", version = 2)
+    saveRDS(
+      dm_for_filter() %>% dm_zoom_to(tf_2),
+      "tests/testthat/dm/v1_zoomed.rds",
+      version = 2
+    )
   }
 
   dm_v1 <- readRDS(test_path("dm/v1.rds"))
@@ -35,7 +39,11 @@ test_that("can upgrade zoomed from v1", {
 test_that("can upgrade from v2", {
   if (FALSE) {
     saveRDS(dm_for_filter(), "tests/testthat/dm/v2.rds", version = 2)
-    saveRDS(dm_for_filter() %>% dm_zoom_to(tf_2), "tests/testthat/dm/v2_zoomed.rds", version = 2)
+    saveRDS(
+      dm_for_filter() %>% dm_zoom_to(tf_2),
+      "tests/testthat/dm/v2_zoomed.rds",
+      version = 2
+    )
   }
 
   dm_v2 <- readRDS(test_path("dm/v2.rds"))
@@ -65,7 +73,11 @@ test_that("can upgrade from v3", {
     # - Run this code with a version of dm before the format change
     # - Search for attr(x, "version") and change
     saveRDS(dm_for_filter(), "tests/testthat/dm/v3.rds", version = 2)
-    saveRDS(dm_for_filter() %>% dm_zoom_to(tf_2), "tests/testthat/dm/v3_zoomed.rds", version = 2)
+    saveRDS(
+      dm_for_filter() %>% dm_zoom_to(tf_2),
+      "tests/testthat/dm/v3_zoomed.rds",
+      version = 2
+    )
   }
 
   dm_v3 <- readRDS(test_path("dm/v3.rds"))
@@ -95,7 +107,11 @@ test_that("can upgrade zoomed from v3", {
 test_that("can upgrade to v4", {
   if (FALSE) {
     saveRDS(dm_for_filter(), "tests/testthat/dm/v4.rds", version = 2)
-    saveRDS(dm_for_filter() %>% dm_zoom_to(tf_2), "tests/testthat/dm/v4_zoomed.rds", version = 2)
+    saveRDS(
+      dm_for_filter() %>% dm_zoom_to(tf_2),
+      "tests/testthat/dm/v4_zoomed.rds",
+      version = 2
+    )
   }
 
   dm_v4 <- readRDS(test_path("dm/v4.rds"))

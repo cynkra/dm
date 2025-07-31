@@ -33,9 +33,13 @@ new_mw_cg <- function(dm) {
 #'   must abort the operation.
 #'   Processed with [rlang::as_function()].
 #' @noRd
-mw_cg_run <- function(mw_cg, op_name, ...,
-                      confirmation_function = abort_function,
-                      abort_function = abort) {
+mw_cg_run <- function(
+  mw_cg,
+  op_name,
+  ...,
+  confirmation_function = abort_function,
+  abort_function = abort
+) {
   confirmation_function <- as_function(confirmation_function)
   abort_function <- as_function(abort_function)
 
@@ -53,7 +57,9 @@ mw_cg_run <- function(mw_cg, op_name, ...,
   if (!is.null(recipe$confirmation_message)) {
     out <- confirmation_function(recipe$confirmation_message)
     if (!is_scalar_logical(out)) {
-      abort_function(paste0("Internal error in `mw_cg_run()`: `confirmation_function()` doesn't return a scalar logical."))
+      abort_function(paste0(
+        "Internal error in `mw_cg_run()`: `confirmation_function()` doesn't return a scalar logical."
+      ))
     }
     if (!isTRUE(out)) {
       return(mw_cg)
@@ -64,7 +70,10 @@ mw_cg_run <- function(mw_cg, op_name, ...,
   tryCatch(
     mw_cg$dm <- cg_eval_block(mw_cg$cg),
     error = function(e) {
-      abort_function(paste0("Unexpected error in `mw_cg_run()`: ", conditionMessage(e)))
+      abort_function(paste0(
+        "Unexpected error in `mw_cg_run()`: ",
+        conditionMessage(e)
+      ))
     }
   )
   mw_cg

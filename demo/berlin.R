@@ -371,7 +371,13 @@ flights_link <-
   unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
 
 # one option to create a `dm` is to use `as_dm()`:
-nycflights13_dm <- as_dm(list(airlines = airlines, airports = airports, flights = flights_link, planes = planes, weather = weather_link))
+nycflights13_dm <- as_dm(list(
+  airlines = airlines,
+  airports = airports,
+  flights = flights_link,
+  planes = planes,
+  weather = weather_link
+))
 
 # Copy to this environment
 airlines_global <- airlines

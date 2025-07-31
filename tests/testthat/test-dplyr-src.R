@@ -1,7 +1,10 @@
 test_that("can access tables", {
   local_options(lifecycle_verbosity = "quiet")
 
-  expect_identical(tbl(dm_nycflights13(), "airlines"), nycflights_subset()$airlines)
+  expect_identical(
+    tbl(dm_nycflights13(), "airlines"),
+    nycflights_subset()$airlines
+  )
   expect_dm_error(
     tbl_impl(dm_nycflights13(), "x"),
     class = "table_not_in_dm"
@@ -84,7 +87,11 @@ test_that("'copy_to.dm()' works (2)", {
 
   # copying sqlite() `tibble` to `dm` on src of choice
   expect_equivalent_dm(
-    suppress_mssql_message(copy_to(dm_for_filter(), data_card_1_duckdb(), "test_table_1")),
+    suppress_mssql_message(copy_to(
+      dm_for_filter(),
+      data_card_1_duckdb(),
+      "test_table_1"
+    )),
     dm(dm_for_filter(), test_table_1 = data_card_1())
   )
 })

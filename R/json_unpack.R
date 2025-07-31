@@ -13,19 +13,34 @@
 #' @examples
 #' tibble(a = 1, b = '{ "c": 2, "d": 3 }') %>%
 #'   json_unpack(b)
-json_unpack <- function(data, cols, ..., names_sep = NULL, names_repair = "check_unique") {
+json_unpack <- function(
+  data,
+  cols,
+  ...,
+  names_sep = NULL,
+  names_repair = "check_unique"
+) {
   check_dots_used()
 
   UseMethod("json_unpack")
 }
 
 #' @export
-json_unpack.data.frame <- function(data, cols, ..., names_sep = NULL, names_repair = "check_unique") {
+json_unpack.data.frame <- function(
+  data,
+  cols,
+  ...,
+  names_sep = NULL,
+  names_repair = "check_unique"
+) {
   if (missing(cols)) {
     abort("The `cols` argument must be provided")
   }
   data %>%
-    mutate(across({{ cols }}, ~ map_dfr(., ~ jsonlite::fromJSON(.) %>% as_tibble()))) %>%
+    mutate(across(
+      {{ cols }},
+      ~ map_dfr(., ~ jsonlite::fromJSON(.) %>% as_tibble())
+    )) %>%
     unpack(
       {{ cols }},
       names_sep = names_sep,

@@ -49,14 +49,20 @@ dm_unnest_tbl <- function(dm, parent_table, col, ptype) {
     unlist()
   fk <-
     dm_get_all_fks(ptype) %>%
-    filter(child_table == new_child_table_name, parent_table == parent_table_name)
+    filter(
+      child_table == new_child_table_name,
+      parent_table == parent_table_name
+    )
   parent_fk_names <- unlist(fk$parent_key_cols)
   child_fk_names <- unlist(fk$child_fk_cols)
 
   # extract nested table
   new_table <-
     table %>%
-    select(!!!set_names(parent_fk_names, child_fk_names), !!new_child_table_name) %>%
+    select(
+      !!!set_names(parent_fk_names, child_fk_names),
+      !!new_child_table_name
+    ) %>%
     unnest(!!new_child_table_name) %>%
     distinct()
 
@@ -64,7 +70,13 @@ dm_unnest_tbl <- function(dm, parent_table, col, ptype) {
   dm <- dm(dm, !!new_child_table_name := new_table)
   dm <- dm_select(dm, !!parent_table_name, -all_of(new_child_table_name))
   if (length(parent_fk_names)) {
-    dm <- dm_add_fk(dm, !!new_child_table_name, !!child_fk_names, !!parent_table_name, !!parent_fk_names)
+    dm <- dm_add_fk(
+      dm,
+      !!new_child_table_name,
+      !!child_fk_names,
+      !!parent_table_name,
+      !!parent_fk_names
+    )
   }
   if (length(child_pk_names)) {
     dm <- dm_add_pk(dm, !!new_child_table_name, !!child_pk_names)
@@ -122,14 +134,20 @@ dm_unpack_tbl <- function(dm, child_table, col, ptype) {
     pull(pk_col) %>%
     unlist()
   fk <- dm_get_all_fks(ptype) %>%
-    filter(child_table == child_table_name, parent_table == new_parent_table_name)
+    filter(
+      child_table == child_table_name,
+      parent_table == new_parent_table_name
+    )
   child_fk_names <- unlist(fk$child_fk_cols)
   parent_fk_names <- unlist(fk$parent_key_cols)
 
   # extract packed table
   new_table <-
     table %>%
-    select(!!!set_names(child_fk_names, parent_fk_names), !!new_parent_table_name) %>%
+    select(
+      !!!set_names(child_fk_names, parent_fk_names),
+      !!new_parent_table_name
+    ) %>%
     unpack(!!new_parent_table_name) %>%
     distinct()
 

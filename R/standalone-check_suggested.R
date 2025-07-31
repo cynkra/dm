@@ -59,7 +59,9 @@ check_suggested <- function(packages, top_level_fun, use = TRUE) {
   # And say which package was not installed.
   if (identical(Sys.getenv("TESTTHAT"), "true")) {
     pkgs_not_installed <- packages[!installed]
-    message <- cli::format_inline("{.fn {top_level_fun}} needs the {.pkg {.val {pkgs_not_installed}}} package{?s}.")
+    message <- cli::format_inline(
+      "{.fn {top_level_fun}} needs the {.pkg {.val {pkgs_not_installed}}} package{?s}."
+    )
     testthat::skip(message)
   }
 

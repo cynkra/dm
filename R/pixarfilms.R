@@ -29,7 +29,9 @@ dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE) {
 
   # Extract data objects
   pixar_films <- pixarfilms::pixar_films
-  if (consistent) pixar_films <- filter(pixar_films, !is.na(film))
+  if (consistent) {
+    pixar_films <- filter(pixar_films, !is.na(film))
+  }
 
   pixar_people <- pixarfilms::pixar_people
   academy <- pixarfilms::academy
@@ -56,7 +58,6 @@ dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE) {
     dm_add_pk(genres, c(film, genre)) %>%
     dm_add_pk(public_response, film)
 
-
   # Add foreign keys between tables
   dm <-
     dm %>%
@@ -65,7 +66,6 @@ dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE) {
     dm_add_fk(box_office, film, pixar_films) %>%
     dm_add_fk(genres, film, pixar_films) %>%
     dm_add_fk(public_response, film, pixar_films)
-
 
   # Set colors for relationship diagram
   if (color) {

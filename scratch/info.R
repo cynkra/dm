@@ -82,7 +82,9 @@ fq_r_table_if_needed <- function(catalog, schema, table) {
     group_by(table) %>%
     mutate(n = n()) %>%
     ungroup() %>%
-    mutate(fq_table = if_else(n > 1, fq_r_table(catalog, schema, table), table)) %>%
+    mutate(
+      fq_table = if_else(n > 1, fq_r_table(catalog, schema, table), table)
+    ) %>%
     pull()
 }
 
@@ -107,18 +109,33 @@ info_local_named <-
 
   # FIXME: Simplify with rekey, https://github.com/cynkra/dm/issues/519
   dm_zoom_to(schemata) %>%
-  mutate(fq_schema_name = quote_fq_schema(!!con, catalog_name, schema_name), .before = catalog_name) %>%
+  mutate(
+    fq_schema_name = quote_fq_schema(!!con, catalog_name, schema_name),
+    .before = catalog_name
+  ) %>%
   dm_update_zoomed() %>%
 
   dm_zoom_to(tables) %>%
   left_join(schemata, select = fq_schema_name) %>%
-  mutate(fq_table_name = quote_fq_table(!!con, fq_schema_name, table_name), .before = table_catalog) %>%
-  mutate(r_table_name = fq_r_table_if_needed(table_catalog, table_schema, table_name)) %>%
+  mutate(
+    fq_table_name = quote_fq_table(!!con, fq_schema_name, table_name),
+    .before = table_catalog
+  ) %>%
+  mutate(
+    r_table_name = fq_r_table_if_needed(table_catalog, table_schema, table_name)
+  ) %>%
   dm_update_zoomed() %>%
 
   dm_zoom_to(table_constraints) %>%
   left_join(tables, select = fq_table_name) %>%
-  mutate(fq_constraint_name = quote_fq_table(!!con, quote_fq_schema(!!con, constraint_catalog, constraint_schema), constraint_name), .before = constraint_catalog) %>%
+  mutate(
+    fq_constraint_name = quote_fq_table(
+      !!con,
+      quote_fq_schema(!!con, constraint_catalog, constraint_schema),
+      constraint_name
+    ),
+    .before = constraint_catalog
+  ) %>%
   select(fq_constraint_name, fq_table_name, everything()) %>%
   dm_update_zoomed() %>%
 
@@ -162,18 +179,39 @@ info_simple <-
   dm_add_fk(key_column_usage, fq_constraint_name, table_constraints) %>%
 
   # not on mariadb;
-  dm_add_pk(constraint_column_usage, c(fq_constraint_name, ordinal_position)) %>%
+  dm_add_pk(
+    constraint_column_usage,
+    c(fq_constraint_name, ordinal_position)
+  ) %>%
   dm_add_fk(constraint_column_usage, c(fq_table_name, column_name), columns) %>%
   dm_add_fk(constraint_column_usage, fq_constraint_name, table_constraints) %>%
-  dm_add_fk(constraint_column_usage, c(fq_constraint_name, ordinal_position), key_column_usage) %>%
+  dm_add_fk(
+    constraint_column_usage,
+    c(fq_constraint_name, ordinal_position),
+    key_column_usage
+  ) %>%
 
   dm_select(columns, -c(table_catalog, table_schema, table_name)) %>%
   dm_select(table_constraints, -c(table_catalog, table_schema, table_name)) %>%
   dm_select(key_column_usage, -c(table_catalog, table_schema, table_name)) %>%
-  dm_select(key_column_usage, -c(constraint_catalog, constraint_schema, constraint_name)) %>%
-  dm_select(constraint_column_usage, -c(table_catalog, table_schema, table_name)) %>%
-  dm_select(constraint_column_usage, -c(constraint_catalog, constraint_schema, constraint_name)) %>%
-  dm_set_colors(brown = c(tables, columns), blue = schemata, green4 = ends_with("_constraints"), orange = ends_with("_usage"))
+  dm_select(
+    key_column_usage,
+    -c(constraint_catalog, constraint_schema, constraint_name)
+  ) %>%
+  dm_select(
+    constraint_column_usage,
+    -c(table_catalog, table_schema, table_name)
+  ) %>%
+  dm_select(
+    constraint_column_usage,
+    -c(constraint_catalog, constraint_schema, constraint_name)
+  ) %>%
+  dm_set_colors(
+    brown = c(tables, columns),
+    blue = schemata,
+    green4 = ends_with("_constraints"),
+    orange = ends_with("_usage")
+  )
 
 info_simple %>%
   dm_draw()

@@ -25,7 +25,9 @@ test_that("'nest_join_dm_zoomed()'-method for `dm_zoomed` works", {
 
   expect_message(
     expect_equivalent_dm(
-      dm_rm_pk(dm_for_filter(), tf_3, TRUE) %>% dm_zoom_to(tf_3) %>% nest_join_dm_zoomed(),
+      dm_rm_pk(dm_for_filter(), tf_3, TRUE) %>%
+        dm_zoom_to(tf_3) %>%
+        nest_join_dm_zoomed(),
       dm_rm_pk(dm_for_filter(), tf_3, TRUE) %>% dm_zoom_to(tf_3)
     ),
     "didn't have a primary key"
@@ -43,7 +45,6 @@ test_that("'nest_join_dm_zoomed()' fails for DB-'dm'", {
     "only_for_local_src"
   )
 })
-
 
 # tests for compound keys -------------------------------------------------
 

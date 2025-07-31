@@ -72,7 +72,8 @@ test_that("reunite_parent_child() reunites parent and child nicely on chosen sou
 
 test_that("reunite_parent_child_from_list() reunites parent and child nicely on chosen source", {
   out <- reunite_parent_child_from_list(
-    list_of_data_ts_parent_and_child(), aef_id
+    list_of_data_ts_parent_and_child(),
+    aef_id
   )
   ref <-
     left_join(

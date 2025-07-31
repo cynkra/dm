@@ -53,12 +53,18 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
   # make sure we have a terminal child
   if (length(children) || !length(parent_name) || length(parent_name) > 1) {
     if (length(parent_name)) {
-      parent_msg <- paste0("\nparents: ", toString(paste0("`", parent_name, "`")))
+      parent_msg <- paste0(
+        "\nparents: ",
+        toString(paste0("`", parent_name, "`"))
+      )
     } else {
       parent_msg <- ""
     }
     if (length(children)) {
-      children_msg <- paste0("\nchildren: ", toString(paste0("`", children, "`")))
+      children_msg <- paste0(
+        "\nchildren: ",
+        toString(paste0("`", children, "`"))
+      )
     } else {
       children_msg <- ""
     }
@@ -80,8 +86,16 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   parent_data <- def$data[def$table == parent_name][[1]]
-  nested_data <- nest_join(parent_data, table_data, by = set_names(child_fk, parent_fk), name = table_name)
-  class(nested_data[[table_name]]) <- c("nested", class(nested_data[[table_name]]))
+  nested_data <- nest_join(
+    parent_data,
+    table_data,
+    by = set_names(child_fk, parent_fk),
+    name = table_name
+  )
+  class(nested_data[[table_name]]) <- c(
+    "nested",
+    class(nested_data[[table_name]])
+  )
 
   # update def and rebuild dm
   def$data[def$table == parent_name] <- list(nested_data)
@@ -150,8 +164,16 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   child_data <- def$data[def$table == child_name][[1]]
-  packed_data <- pack_join(child_data, table_data, by = set_names(parent_fk, child_fk), name = table_name)
-  class(packed_data[[table_name]]) <- c("packed", class(packed_data[[table_name]]))
+  packed_data <- pack_join(
+    child_data,
+    table_data,
+    by = set_names(parent_fk, child_fk),
+    name = table_name
+  )
+  class(packed_data[[table_name]]) <- c(
+    "packed",
+    class(packed_data[[table_name]])
+  )
 
   # update def and rebuild dm
   def$data[def$table == child_name] <- list(packed_data)
@@ -178,7 +200,10 @@ check_table_can_be_packed <- function(table_name, children_names, fks) {
     }
     table_has_children <- length(children_names) > 0
     if (table_has_children) {
-      children_msg <- paste0("\nchildren: ", toString(paste0("`", children_names, "`")))
+      children_msg <- paste0(
+        "\nchildren: ",
+        toString(paste0("`", children_names, "`"))
+      )
     } else {
       children_msg <- ""
     }
@@ -193,8 +218,14 @@ check_table_can_be_packed <- function(table_name, children_names, fks) {
 # FIXME: can we be more efficient ?
 node_type_from_graph <- function(graph, drop = NULL) {
   vertices <- igraph::V(graph)
-  n_children <- map_dbl(vertices, ~ length(igraph::neighbors(graph, .x, mode = "in")))
-  n_parents <- map_dbl(vertices, ~ length(igraph::neighbors(graph, .x, mode = "out")))
+  n_children <- map_dbl(
+    vertices,
+    ~ length(igraph::neighbors(graph, .x, mode = "in"))
+  )
+  n_parents <- map_dbl(
+    vertices,
+    ~ length(igraph::neighbors(graph, .x, mode = "out"))
+  )
   node_types <- set_names(rep_along(vertices, "intermediate"), names(vertices))
   node_types[n_parents == 0 & n_children == 1] <- "terminal parent"
   node_types[n_children == 0 & n_parents == 1] <- "terminal child"

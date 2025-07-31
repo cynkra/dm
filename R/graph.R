@@ -24,7 +24,11 @@ dm_is_referenced <- function(dm, table) {
 #'
 #' @export
 dm_get_referencing_tables <- function(dm, table) {
-  deprecate_soft("0.3.0", "dm::dm_get_referencing_tables()", "dm::dm_get_all_fks()")
+  deprecate_soft(
+    "0.3.0",
+    "dm::dm_get_referencing_tables()",
+    "dm::dm_get_all_fks()"
+  )
 
   check_not_zoomed(dm)
   table <- dm_tbl_name(dm, {{ table }})
@@ -51,6 +55,7 @@ get_names_of_connected <- function(g, start, squash) {
     setdiff(names(dfs[["order"]]), start) %>% discard(is.na)
   } else {
     # FIXME: Enumerate outgoing edges
-    setdiff(names(dfs[["order"]]), c(start, names(dfs$dist[dfs$dist > 1]))) %>% discard(is.na)
+    setdiff(names(dfs[["order"]]), c(start, names(dfs$dist[dfs$dist > 1]))) %>%
+      discard(is.na)
   }
 }

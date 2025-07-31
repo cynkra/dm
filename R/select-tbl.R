@@ -62,7 +62,8 @@ filter_recode_table_fks <- function(def, selected) {
   def$fks <-
     # as_list_of() is needed so that `fks` doesn't become a normal list
     as_list_of(map(
-      def$fks, filter_recode_fks_of_table,
+      def$fks,
+      filter_recode_fks_of_table,
       selected = selected
     ))
   def

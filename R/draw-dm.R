@@ -59,31 +59,40 @@
 #'
 #' dm_nycflights13() %>%
 #'   dm_get_colors()
-dm_draw <- function(dm,
-                    rankdir = "LR",
-                    ...,
-                    col_attr = NULL,
-                    view_type = c("keys_only", "all", "title_only"),
-                    columnArrows = TRUE,
-                    graph_attrs = "",
-                    node_attrs = "",
-                    edge_attrs = "",
-                    focus = NULL,
-                    graph_name = "Data Model",
-                    column_types = NULL,
-                    backend = "DiagrammeR",
-                    font_size = NULL) {
+dm_draw <- function(
+  dm,
+  rankdir = "LR",
+  ...,
+  col_attr = NULL,
+  view_type = c("keys_only", "all", "title_only"),
+  columnArrows = TRUE,
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  focus = NULL,
+  graph_name = "Data Model",
+  column_types = NULL,
+  backend = "DiagrammeR",
+  font_size = NULL
+) {
   check_not_zoomed(dm)
   check_dots_empty()
 
   tbl_names <- src_tbls_impl(dm, quiet = TRUE)
-  table_description <- dm_get_table_description_impl(dm, set_names(seq_along(tbl_names), tbl_names)) %>%
+  table_description <- dm_get_table_description_impl(
+    dm,
+    set_names(seq_along(tbl_names), tbl_names)
+  ) %>%
     prep_recode()
 
   view_type <- arg_match(view_type)
 
   if (!is.null(col_attr)) {
-    deprecate_soft("0.1.13", "dm::dm_draw(col_attr = )", "dm::dm_draw(column_types = )")
+    deprecate_soft(
+      "0.1.13",
+      "dm::dm_draw(col_attr = )",
+      "dm::dm_draw(column_types = )"
+    )
     if (is.null(column_types) && "type" %in% col_attr) {
       column_types <- TRUE
     }
@@ -136,7 +145,10 @@ dm_get_data_model <- function(x, column_types = FALSE) {
 
   all_uks <- dm_get_all_uks_impl(x)
   references_for_columns <- dm_get_all_fks_impl(x, id = TRUE) %>%
-    left_join(all_uks, by = c("parent_table" = "table", "parent_key_cols" = "uk_col")) %>%
+    left_join(
+      all_uks,
+      by = c("parent_table" = "table", "parent_key_cols" = "uk_col")
+    ) %>%
     rename(uk_col = kind) %>%
     transmute(
       table = child_table,
@@ -180,7 +192,11 @@ dm_get_data_model <- function(x, column_types = FALSE) {
     # When using a dplyr version >= 1.1.0, we get a warning in that case, thus
     # we need `multiple = "all"`.
     # FIXME: is there another way? like this we need a min dplyr version 1.1.0.
-    full_join(references_for_columns, by = c("table", "column"), multiple = "all") %>%
+    full_join(
+      references_for_columns,
+      by = c("table", "column"),
+      multiple = "all"
+    ) %>%
     # Order matters: key == 2 if foreign key points to non-default primary key
     mutate(key = coalesce(key, key_fk, 0L)) %>%
     select(-key_fk) %>%
@@ -217,7 +233,10 @@ dm_get_all_column_types <- function(x) {
       )
     ) %>%
     enframe("table") %>%
-    unnest_df("value", tibble(column = character(), value = list(), id = integer())) %>%
+    unnest_df(
+      "value",
+      tibble(column = character(), value = list(), id = integer())
+    ) %>%
     mutate(type = map_chr(value, vec_ptype_abbr), .keep = "unused")
 }
 
@@ -257,15 +276,23 @@ dm_get_all_column_types <- function(x) {
 #' @autoglobal
 dm_set_colors <- function(dm, ...) {
   quos <- enquos(...)
-  if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")
+  if (any(names(quos) == "")) {
+    abort_only_named_args("dm_set_colors", "the colors")
+  }
   cols <- names(quos)
-  if (!all(cols[!is_hex_color(cols)] %in% dm_get_available_colors()) &&
-    all(cols %in% src_tbls_impl(dm))) {
+  if (
+    !all(cols[!is_hex_color(cols)] %in% dm_get_available_colors()) &&
+      all(cols %in% src_tbls_impl(dm))
+  ) {
     abort_wrong_syntax_set_cols()
   }
 
   # get table names for each color (name_spec argument is not needed)
-  selected_tables <- eval_select_table(quo(c(...)), src_tbls_impl(dm), unique = FALSE)
+  selected_tables <- eval_select_table(
+    quo(c(...)),
+    src_tbls_impl(dm),
+    unique = FALSE
+  )
 
   # convert color names to hex color codes (if already hex code this is a no-op)
   # avoid error from mutate()
@@ -287,7 +314,12 @@ dm_set_colors <- function(dm, ...) {
 }
 
 color_quos_to_display <- function(...) {
-  quos <- enquos(..., .named = TRUE, .ignore_empty = "none", .homonyms = "error")
+  quos <- enquos(
+    ...,
+    .named = TRUE,
+    .ignore_empty = "none",
+    .homonyms = "error"
+  )
   missing <- map_lgl(quos, quo_is_missing)
   if (has_length(missing) && missing[[length(missing)]]) {
     abort_last_col_missing()

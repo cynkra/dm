@@ -10,7 +10,9 @@ dm_disentangle <- function(dm, start, quiet = FALSE) {
       changed %>%
       group_by(table) %>%
       summarize(
-        msg = glue::glue("Replaced table {tick(unique(table))} with {commas(tick(new_table))}.")
+        msg = glue::glue(
+          "Replaced table {tick(unique(table))} with {commas(tick(new_table))}."
+        )
       ) %>%
       ungroup()
 

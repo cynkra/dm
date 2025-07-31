@@ -64,9 +64,12 @@ test_that("build_copy_queries avoids duplicate indexes", {
     build_copy_queries(
       src_db,
       ambiguous_dm,
-      table_names =
-        names(ambiguous_dm) %>%
-          repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL)
+      table_names = names(ambiguous_dm) %>%
+        repair_table_names_for_db(
+          temporary = FALSE,
+          con = src_db,
+          schema = NULL
+        )
     )
 
   expect_equal(anyDuplicated(unlist(queries$index_name)), 0)

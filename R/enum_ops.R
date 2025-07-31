@@ -1,5 +1,11 @@
 # FIXME: Implement choosing dm or connection object from .GlobalEnv
-enum_ops <- function(dm, ..., table_names = NULL, column_names = NULL, op_name = NULL) {
+enum_ops <- function(
+  dm,
+  ...,
+  table_names = NULL,
+  column_names = NULL,
+  op_name = NULL
+) {
   check_dots_empty()
   if (any_null(table_names, column_names, op_name)) {
     enum_ops_(op_name, dm, table_names, column_names)

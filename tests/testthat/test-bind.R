@@ -48,7 +48,10 @@ test_that("errors: src mismatches", {
   local_options(lifecycle_verbosity = "quiet")
 
   skip_if_not(getRversion() >= "4.0")
-  expect_dm_error(dm_bind(dm_for_flatten(), dm_for_filter_duckdb()), "not_same_src")
+  expect_dm_error(
+    dm_bind(dm_for_flatten(), dm_for_filter_duckdb()),
+    "not_same_src"
+  )
 })
 
 test_that("auto-renaming works", {
@@ -56,7 +59,12 @@ test_that("auto-renaming works", {
 
   expect_equivalent_dm(
     expect_name_repair_message(
-      dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique")
+      dm_bind(
+        dm_for_filter(),
+        dm_for_flatten(),
+        dm_for_filter(),
+        repair = "unique"
+      )
     ),
     bind_rows(
       dm_get_def(
@@ -85,7 +93,13 @@ test_that("auto-renaming works", {
   )
 
   expect_silent(
-    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique", quiet = TRUE)
+    dm_bind(
+      dm_for_filter(),
+      dm_for_flatten(),
+      dm_for_filter(),
+      repair = "unique",
+      quiet = TRUE
+    )
   )
 })
 
@@ -108,14 +122,27 @@ test_that("output", {
     dm_bind()
     dm_bind(empty_dm())
     dm_bind(dm_for_filter()) %>% collect()
-    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique", quiet = TRUE) %>% collect()
+    dm_bind(
+      dm_for_filter(),
+      dm_for_flatten(),
+      dm_for_filter(),
+      repair = "unique",
+      quiet = TRUE
+    ) %>%
+      collect()
     writeLines(conditionMessage(expect_error(
       dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter())
     )))
   })
 
   expect_snapshot({
-    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique") %>% collect()
+    dm_bind(
+      dm_for_filter(),
+      dm_for_flatten(),
+      dm_for_filter(),
+      repair = "unique"
+    ) %>%
+      collect()
   })
 })
 
@@ -123,11 +150,14 @@ test_that("output for compound keys", {
   local_options(lifecycle_verbosity = "warning")
 
   expect_snapshot({
-    dm_bind(dm_for_filter(), dm_for_flatten()) %>% dm_paste(options = c("select", "keys"))
-    dm_bind(dm_for_flatten(), dm_for_filter()) %>% dm_paste(options = c("select", "keys"))
+    dm_bind(dm_for_filter(), dm_for_flatten()) %>%
+      dm_paste(options = c("select", "keys"))
+    dm_bind(dm_for_flatten(), dm_for_filter()) %>%
+      dm_paste(options = c("select", "keys"))
   })
 
   expect_snapshot({
-    dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>% dm_paste(options = c("select", "keys"))
+    dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>%
+      dm_paste(options = c("select", "keys"))
   })
 })

@@ -4,12 +4,21 @@
 
   if (getRversion() >= "3.4") {
     dm_financial <<- memoise::memoise(dm_financial, cache = cache_attach())
-    dm_financial_sqlite <<- memoise::memoise(dm_financial_sqlite, cache = cache_attach())
+    dm_financial_sqlite <<- memoise::memoise(
+      dm_financial_sqlite,
+      cache = cache_attach()
+    )
   }
 
-  nycflights_subset <<- memoise::memoise(nycflights_subset, cache = cache_attach())
+  nycflights_subset <<- memoise::memoise(
+    nycflights_subset,
+    cache = cache_attach()
+  )
 
-  dm_has_financial <<- memoise::memoise(dm_has_financial, cache = cache_attach())
+  dm_has_financial <<- memoise::memoise(
+    dm_has_financial,
+    cache = cache_attach()
+  )
 
   check_suggested <<- memoise::memoise(check_suggested)
 
@@ -18,8 +27,16 @@
   check_version_on_load
   vctrs::s3_register("waldo::compare_proxy", "dm")
 
-  check_version_on_load("RSQLite", "2.2.8", "to use the {.code returning} argument in {.code rows_*()}.")
-  check_version_on_load("dbplyr", "2.2.0", "to use the {.code rows_*()} functions.")
+  check_version_on_load(
+    "RSQLite",
+    "2.2.8",
+    "to use the {.code returning} argument in {.code rows_*()}."
+  )
+  check_version_on_load(
+    "dbplyr",
+    "2.2.0",
+    "to use the {.code rows_*()} functions."
+  )
 
   # rigg(enum_pk_candidates_impl)
   # rigg(build_copy_data)

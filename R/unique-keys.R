@@ -57,7 +57,10 @@ dm_add_uk <- function(dm, table, columns, ..., check = FALSE) {
 
   if (check) {
     table_from_dm <- dm_get_filtered_table(dm, table_name)
-    eval_tidy(expr(check_key(!!sym(table_name), !!col_expr)), list2(!!table_name := table_from_dm))
+    eval_tidy(
+      expr(check_key(!!sym(table_name), !!col_expr)),
+      list2(!!table_name := table_from_dm)
+    )
   }
 
   dm_add_uk_impl(dm, table_name, col_name)
@@ -70,7 +73,10 @@ dm_add_uk_impl <- function(dm, table, column) {
   def <- dm_get_def(dm)
   i <- which(def$table == table)
 
-  if (!is_empty(def$pks[[i]]$column) && identical(def$pks[[i]]$column[[1]], column)) {
+  if (
+    !is_empty(def$pks[[i]]$column) &&
+      identical(def$pks[[i]]$column[[1]], column)
+  ) {
     abort_no_uk_if_pk(table, column)
   }
   if (any(map_lgl(def$uks[[i]]$column, identical, column))) {
@@ -119,7 +125,10 @@ dm_get_all_uks <- function(dm, table = NULL, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
   table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
-  table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
+  table_names <- eval_select_table(
+    table_expr,
+    set_names(src_tbls_impl(dm, quiet = TRUE))
+  )
   dm_get_all_uks_impl(dm, table_names)
 }
 
@@ -220,15 +229,19 @@ dm_rm_uk_impl <- function(dm, table_name, columns) {
   }
 
   ii <- if (!quo_is_null(columns)) {
-    ii_col <- map2(def$data[i], def$uks[i], ~ tryCatch(
-      {
-        vars <- eval_select_indices(columns, colnames(.x))
-        map_lgl(.y$column, ~ identical(names(vars), .x))
-      },
-      error = function(e) {
-        FALSE
-      }
-    ))
+    ii_col <- map2(
+      def$data[i],
+      def$uks[i],
+      ~ tryCatch(
+        {
+          vars <- eval_select_indices(columns, colnames(.x))
+          map_lgl(.y$column, ~ identical(names(vars), .x))
+        },
+        error = function(e) {
+          FALSE
+        }
+      )
+    )
 
     # if `columns` is not NULL, it refers to only one UK, therefore we can choose
     # the first element of the list created by `map2()`
@@ -248,11 +261,15 @@ dm_rm_uk_impl <- function(dm, table_name, columns) {
   if (is.null(table_name) || quo_is_null(columns)) {
     n_uk_per_table <- map_int(i, ~ nrow(def$uks[[.x]]))
     message("Removing unique keys: %>%")
-    message("  ", glue_collapse(
-      glue(
-        "dm_rm_uk({tick_if_needed(rep(def$table[i], n_uk_per_table))}, {list_c(map(i, ~ deparse_keys(def$uks[[.x]]$column)))})"
-      ), " %>%\n  "
-    ))
+    message(
+      "  ",
+      glue_collapse(
+        glue(
+          "dm_rm_uk({tick_if_needed(rep(def$table[i], n_uk_per_table))}, {list_c(map(i, ~ deparse_keys(def$uks[[.x]]$column)))})"
+        ),
+        " %>%\n  "
+      )
+    )
   }
   # Execute
   # in case `length(i) > 1`: all tables have all their UKs removed, respectively
@@ -276,6 +293,8 @@ error_txt_uk_not_defined <- function() {
 }
 
 abort_no_uk_if_pk <- function(table, column, type = "PK") {
-  error_txt <- glue("A {type} ({commas(tick(column))}) for table `{table}` already exists, not adding UK.")
+  error_txt <- glue(
+    "A {type} ({commas(tick(column))}) for table `{table}` already exists, not adding UK."
+  )
   abort(error_txt, class = dm_error_full("no_uk_if_pk"))
 }

@@ -1,6 +1,5 @@
 # basic tests -------------------------------------------------------------
 
-
 test_that("basic test: 'group_by()'-methods work", {
   expect_equivalent_tbl(
     group_by(dm_zoomed(), e) %>% tbl_zoomed(),
@@ -170,7 +169,9 @@ test_that("basic test: 'filter()'-methods work (2)", {
 
 test_that("basic test: 'distinct()'-methods work", {
   expect_equivalent_tbl(
-    distinct(dm_zoomed(), d_new = d) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+    distinct(dm_zoomed(), d_new = d) %>%
+      dm_update_zoomed() %>%
+      tbl_impl("tf_2"),
     distinct(tf_2(), d_new = d)
   )
 
@@ -189,7 +190,9 @@ test_that("basic test: 'arrange()'-methods work", {
 
   # arrange within groups
   expect_equivalent_tbl(
-    group_by(dm_zoomed(), e) %>% arrange(desc(d), .by_group = TRUE) %>% tbl_zoomed(),
+    group_by(dm_zoomed(), e) %>%
+      arrange(desc(d), .by_group = TRUE) %>%
+      tbl_zoomed(),
     arrange(group_by(tf_2(), e), desc(d), .by_group = TRUE)
   )
 
@@ -202,7 +205,10 @@ test_that("basic test: 'arrange()'-methods work", {
 test_that("basic test: 'slice()'-methods work", {
   skip_if_remote_src()
   expect_message(
-    expect_equivalent_tbl(slice(dm_zoomed(), 3:6) %>% tbl_zoomed(), slice(tf_2(), 3:6)),
+    expect_equivalent_tbl(
+      slice(dm_zoomed(), 3:6) %>% tbl_zoomed(),
+      slice(tf_2(), 3:6)
+    ),
     "`slice.dm_zoomed\\(\\)` can potentially"
   )
 
@@ -226,7 +232,8 @@ test_that("basic test: 'slice()'-methods work", {
 
   expect_silent(
     expect_equivalent_tbl(
-      slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% tbl_zoomed(),
+      slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>%
+        tbl_zoomed(),
       slice(tf_2(), if_else(d < 5, 1:6, 7:2))
     )
   )
@@ -247,7 +254,6 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
     inner_join(dm_zoomed(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     inner_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
-
 
   expect_equivalent_tbl(
     semi_join(dm_zoomed(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
@@ -292,49 +298,117 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
   # works, if by is given
   if (is_db(my_test_src())) {
     expect_equivalent_tbl(
-      left_join(dm_zoomed(), tf_4, by = c("e" = "j")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+      left_join(dm_zoomed(), tf_4, by = c("e" = "j")) %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_2"),
       left_join(tf_2(), tf_4(), by = c("e" = "j"))
     )
 
     expect_equivalent_tbl(
-      left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+      left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1")) %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_2"),
       left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"))
     )
 
     # explicitly select columns from RHS using argument `select`
     expect_equivalent_tbl(
-      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
-      left_join(tf_3(), select(tf_2(), c, e, e1), by = c("f" = "e", "f1" = "e1"))
+      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1)) %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_3"),
+      left_join(
+        tf_3(),
+        select(tf_2(), c, e, e1),
+        by = c("f" = "e", "f1" = "e1")
+      )
     )
 
     # explicitly select and rename columns from RHS using argument `select`
     expect_equivalent_tbl(
-      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
-      left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"))
+      left_join(
+        dm_zoomed_2(),
+        tf_2,
+        select = c(starts_with("c"), d_new = d, e, e1)
+      ) %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_3"),
+      left_join(
+        tf_3(),
+        select(tf_2(), c, d_new = d, e, e1),
+        by = c("f" = "e", "f1" = "e1")
+      )
     )
   } else {
     if (utils::packageVersion("dplyr") >= "1.1.0.9000") {
       expect_equivalent_tbl(
-        left_join(dm_zoomed(), tf_4, by = c("e" = "j"), relationship = "many-to-many") %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
-        left_join(tf_2(), tf_4(), by = c("e" = "j"), relationship = "many-to-many")
+        left_join(
+          dm_zoomed(),
+          tf_4,
+          by = c("e" = "j"),
+          relationship = "many-to-many"
+        ) %>%
+          dm_update_zoomed() %>%
+          tbl_impl("tf_2"),
+        left_join(
+          tf_2(),
+          tf_4(),
+          by = c("e" = "j"),
+          relationship = "many-to-many"
+        )
       )
 
       expect_equivalent_tbl(
-        left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1"), relationship = "many-to-many") %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
-        left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"), relationship = "many-to-many")
+        left_join(
+          dm_zoomed(),
+          tf_4,
+          by = c("e" = "j", "e1" = "j1"),
+          relationship = "many-to-many"
+        ) %>%
+          dm_update_zoomed() %>%
+          tbl_impl("tf_2"),
+        left_join(
+          tf_2(),
+          tf_4(),
+          by = c("e" = "j", "e1" = "j1"),
+          relationship = "many-to-many"
+        )
       )
     }
 
     # explicitly select columns from RHS using argument `select`
     expect_equivalent_tbl(
-      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1), multiple = "all") %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
-      left_join(tf_3(), select(tf_2(), c, e, e1), by = c("f" = "e", "f1" = "e1"), multiple = "all")
+      left_join(
+        dm_zoomed_2(),
+        tf_2,
+        select = c(starts_with("c"), e, e1),
+        multiple = "all"
+      ) %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_3"),
+      left_join(
+        tf_3(),
+        select(tf_2(), c, e, e1),
+        by = c("f" = "e", "f1" = "e1"),
+        multiple = "all"
+      )
     )
 
     # explicitly select and rename columns from RHS using argument `select`
     expect_equivalent_tbl(
-      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1), multiple = "all") %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
-      left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"), multiple = "all")
+      left_join(
+        dm_zoomed_2(),
+        tf_2,
+        select = c(starts_with("c"), d_new = d, e, e1),
+        multiple = "all"
+      ) %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_3"),
+      left_join(
+        tf_3(),
+        select(tf_2(), c, d_new = d, e, e1),
+        by = c("f" = "e", "f1" = "e1"),
+        multiple = "all"
+      )
     )
   }
 
@@ -371,7 +445,9 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
   expect_equivalent_tbl(
     out,
     left_join(
-      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0(., ".iris_2.x")) %>% rename(Sepal.Width = Sepal.Width.iris_2.x),
+      iris_2() %>%
+        rename_at(vars(matches("^[PS]")), ~ paste0(., ".iris_2.x")) %>%
+        rename(Sepal.Width = Sepal.Width.iris_2.x),
       iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0(., ".iris_2.y")),
       by = c("key", "Sepal.Width" = "Sepal.Width.iris_2.y", "other_col")
     )
@@ -422,7 +498,6 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
     inner_join(dm_for_filter()),
     "only_possible_w_zoom"
   )
-
 
   expect_dm_error(
     semi_join(dm_for_filter()),
@@ -497,7 +572,8 @@ test_that("basic test: 'across' works properly", {
 # test key tracking for all methods ---------------------------------------
 
 # dm_for_filter(), zoomed to tf_2; PK: c; 2 outgoing FKs: d, e; no incoming FKS
-zoomed_grouped_out_dm <- dm_zoom_to(dm_for_filter(), tf_2) %>% group_by(c, e, e1)
+zoomed_grouped_out_dm <- dm_zoom_to(dm_for_filter(), tf_2) %>%
+  group_by(c, e, e1)
 
 # dm_for_filter(), zoomed to tf_3; PK: f; 2 incoming FKs: tf_4$j, tf_2$e; no outgoing FKS:
 zoomed_grouped_in_dm <- dm_zoom_to(dm_for_filter(), tf_3) %>% group_by(g)
@@ -672,7 +748,8 @@ test_that("key tracking works for distinct() and arrange()", {
       dm_zoom_to(weather) %>%
       summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
       tbl_zoomed(),
-    tbl_impl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
+    tbl_impl(dm_nycflights_small(), "weather") %>%
+      summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
@@ -680,7 +757,8 @@ test_that("key tracking works for distinct() and arrange()", {
       dm_zoom_to(weather) %>%
       transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
       tbl_zoomed(),
-    tbl_impl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
+    tbl_impl(dm_nycflights_small(), "weather") %>%
+      transmute(celsius_temp = (temp - 32) * 5 / 9)
   )
 
   expect_equivalent_tbl(
@@ -688,7 +766,8 @@ test_that("key tracking works for distinct() and arrange()", {
       dm_zoom_to(weather) %>%
       summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
       tbl_zoomed(),
-    tbl_impl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
+    tbl_impl(dm_nycflights_small(), "weather") %>%
+      summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
@@ -696,7 +775,8 @@ test_that("key tracking works for distinct() and arrange()", {
       dm_zoom_to(weather) %>%
       transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
       tbl_zoomed(),
-    tbl_impl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
+    tbl_impl(dm_nycflights_small(), "weather") %>%
+      transmute(celsius_temp = (temp - 32) * 5 / 9)
   )
 
   # slice() doesn't work on DB and reformatting a datetime on a DB is
@@ -708,19 +788,31 @@ test_that("key tracking works for distinct() and arrange()", {
       dm_zoom_to(weather) %>%
       mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
       tbl_zoomed(),
-    tbl_impl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
+    tbl_impl(dm_nycflights_small(), "weather") %>%
+      mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
   )
 })
 
 
 test_that("key tracking works for slice()", {
   skip_if_remote_src()
-  expect_identical(slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% col_tracker_zoomed(), set_names(c("d", "e", "e1")))
+  expect_identical(
+    slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>%
+      col_tracker_zoomed(),
+    set_names(c("d", "e", "e1"))
+  )
   expect_message(
-    expect_identical(slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2)) %>% col_tracker_zoomed(), set_names(c("c", "d", "e", "e1"))),
+    expect_identical(
+      slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2)) %>% col_tracker_zoomed(),
+      set_names(c("c", "d", "e", "e1"))
+    ),
     "Keeping PK"
   )
-  expect_identical(slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% col_tracker_zoomed(), set_names(c("c", "d", "e", "e1")))
+  expect_identical(
+    slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>%
+      col_tracker_zoomed(),
+    set_names(c("c", "d", "e", "e1"))
+  )
 })
 
 
@@ -746,11 +838,19 @@ test_that("'summarize_at()' etc. work", {
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
-      summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max), na.rm = TRUE) %>%
+      summarize_at(
+        vars(lat, lon),
+        list(mean = mean, min = min, max = max),
+        na.rm = TRUE
+      ) %>%
       tbl_zoomed(),
     dm_nycflights_small() %>%
       pull_tbl(airports) %>%
-      summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max), na.rm = TRUE)
+      summarize_at(
+        vars(lat, lon),
+        list(mean = mean, min = min, max = max),
+        na.rm = TRUE
+      )
   )
 
   expect_equivalent_tbl(

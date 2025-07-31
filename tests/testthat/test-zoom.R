@@ -18,7 +18,9 @@ test_that("dm_zoom_to() works", {
 
 test_that("dm_discard_zoomed() works", {
   # no zoom in zoomed out from zoomed `dm`
-  expect_false(is_zoomed(dm_for_filter() %>% dm_zoom_to(tf_1) %>% dm_discard_zoomed()))
+  expect_false(is_zoomed(
+    dm_for_filter() %>% dm_zoom_to(tf_1) %>% dm_discard_zoomed()
+  ))
 
   expect_s3_class(
     dm_for_filter() %>% dm_zoom_to(tf_3) %>% dm_discard_zoomed(),
@@ -75,7 +77,8 @@ test_that("dm_insert_zoomed() works", {
 
   # test that an error is thrown if 'repair = check_unique' and duplicate table names
   expect_dm_error(
-    dm_zoom_to(dm_for_filter(), tf_4) %>% dm_insert_zoomed("tf_4", repair = "check_unique"),
+    dm_zoom_to(dm_for_filter(), tf_4) %>%
+      dm_insert_zoomed("tf_4", repair = "check_unique"),
     "need_unique_names"
   )
 
@@ -100,7 +103,11 @@ test_that("dm_update_tbl() works", {
     dm_get_def(dm_for_filter()) %>%
     mutate(
       zoom = if_else(table == "tf_6", list(tf_7()), list(NULL)),
-      col_tracker_zoom = if_else(table == "tf_6", list(character()), list(NULL)),
+      col_tracker_zoom = if_else(
+        table == "tf_6",
+        list(character()),
+        list(NULL)
+      ),
     ) %>%
     dm_from_def(zoomed = TRUE)
 

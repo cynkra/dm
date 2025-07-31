@@ -16,12 +16,28 @@
 #' df3 <- json_nest_join(df1, df2)
 #' df3
 #' df3$df2
-json_nest_join <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
+json_nest_join <- function(
+  x,
+  y,
+  by = NULL,
+  ...,
+  copy = FALSE,
+  keep = FALSE,
+  name = NULL
+) {
   UseMethod("json_nest_join")
 }
 
 #' @export
-json_nest_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
+json_nest_join.data.frame <- function(
+  x,
+  y,
+  by = NULL,
+  ...,
+  copy = FALSE,
+  keep = FALSE,
+  name = NULL
+) {
   check_suggested("jsonlite", "json_nest_join")
   check_dots_empty()
 
