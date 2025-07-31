@@ -35,7 +35,7 @@ check_key <- function(x, ..., .data = deprecated()) {
 check_key_impl <- function(.data, ...) {
   data_q <- enquo(.data)
   original_data <- eval_tidy(data_q)
-  
+
   selected_data <- original_data
   if (dots_n(...) > 0) {
     selected_data <- selected_data %>% select(...)
