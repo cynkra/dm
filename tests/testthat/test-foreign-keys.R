@@ -265,6 +265,33 @@ test_that("bogus arguments are rejected", {
   })
 })
 
+test_that("dm_rm_fk() doesn't show bogus message for specific FK removal", {
+  # Issue #1270: dm_rm_fk() should not show disambiguation message
+  # when removing a specific, unambiguous foreign key
+  
+  p <- tibble(p_id = 1, p2_id = 1)
+  c1 <- tibble(p_id = 1)
+  c2 <- tibble(p2_id = 1)
+
+  my_dm <-
+    dm(p, c1, c2) %>% 
+    dm_add_pk(p, p_id) %>% 
+    dm_add_fk(c1, p_id, p) %>% 
+    dm_add_fk(c2, p2_id, p, p2_id)
+
+  # Should not produce a disambiguation message
+  expect_silent(
+    my_dm %>% 
+      dm_rm_fk(c1, p_id, p)
+  )
+  
+  # Should also not produce a disambiguation message for non-PK FK
+  expect_silent(
+    my_dm %>% 
+      dm_rm_fk(c2, p2_id, p, p2_id)
+  )
+})
+
 
 # all foreign keys --------------------------------------------------------------------
 

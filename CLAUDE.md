@@ -26,6 +26,17 @@ testthat::test_local()
 
 **Important**: The `filter` argument filters by test file names, not individual test names within files.
 
+### Where to Add Tests
+
+When adding new tests, follow these guidelines:
+
+- **Foreign key functionality**: Add tests to `tests/testthat/test-foreign-keys.R`
+- **Primary key functionality**: Add tests to `tests/testthat/test-primary-keys.R` 
+- **General dm operations**: Look for existing test files that match the functionality (e.g., `test-dm.R`, `test-filter.R`)
+- **New functionality**: Create new test files following the naming pattern `test-[functionality].R`
+
+Always add tests when fixing bugs to prevent regression. Test both the fix and edge cases.
+
 ---
 
 *This file should be updated as new patterns are discovered.*
