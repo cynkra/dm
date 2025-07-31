@@ -87,17 +87,20 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Start devcontainer (if not already running)</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">devcontainer</span> up <span class="at">--workspace-folder</span> .</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># Execute R commands in devcontainer</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="ex">devcontainer</span> exec <span class="at">--workspace-folder</span> . R <span class="at">-e</span> <span class="st">"testthat::test_local()"</span></span></code></pre></div>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># Restart devcontainer after configuration changes</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="ex">devcontainer</span> up <span class="at">--workspace-folder</span> . <span class="at">--remove-existing-container</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co"># Execute R commands in devcontainer</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="ex">devcontainer</span> exec <span class="at">--workspace-folder</span> . R <span class="at">-e</span> <span class="st">'testthat::test_local(reporter = "summary")'</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="use-test_local-with-filter-argument-for-specific-test-files">Use test_local() with filter argument for specific test files<a class="anchor" aria-label="anchor" href="#use-test_local-with-filter-argument-for-specific-test-files"></a></h3>
-<p>Always use the <code>filter</code> argument when running specific test files to avoid running all tests:</p>
+<h3 id="use-test_local">Use test_local()<a class="anchor" aria-label="anchor" href="#use-test_local"></a></h3>
+<p>Always use <code>reporter = "summary"</code> when running tests to get a concise output. Always use the <code>filter</code> argument when running specific test files to avoid running all tests:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Run specific test files</span></span>
-<span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_package.html" class="external-link">test_local</a></span><span class="op">(</span>filter <span class="op">=</span> <span class="st">"flatten"</span><span class="op">)</span>     <span class="co"># Example: Runs test-flatten.R</span></span>
+<span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_package.html" class="external-link">test_local</a></span><span class="op">(</span>filter <span class="op">=</span> <span class="st">"flatten"</span>, reporter <span class="op">=</span> <span class="st">"summary"</span><span class="op">)</span>     <span class="co"># Example: Runs test-flatten.R</span></span>
 <span></span>
 <span><span class="co"># Run all tests (always before finishing work)</span></span>
-<span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_package.html" class="external-link">test_local</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_package.html" class="external-link">test_local</a></span><span class="op">(</span>reporter <span class="op">=</span> <span class="st">"summary"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Important</strong>: The <code>filter</code> argument filters by test file names, not individual test names within files.</p>
 </div>
 <div class="section level3">
@@ -107,6 +110,8 @@
 <li><code>postgres</code></li>
 <li>
 <code>maria</code> (MariaDB)</li>
+<li>
+<code>mssql</code> (SQL Server)</li>
 <li><code>duckdb</code></li>
 </ul><hr><p><em>This file should be updated as new patterns are discovered.</em></p>
 </div>
