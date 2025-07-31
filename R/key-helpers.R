@@ -34,13 +34,16 @@ check_key <- function(x, ..., .data = deprecated()) {
 
 check_key_impl <- function(.data, ...) {
   data_q <- enquo(.data)
-  .data <- eval_tidy(data_q)
+  original_data <- eval_tidy(data_q)
 
   if (dots_n(...) > 0) {
-    .data <- .data %>% select(...)
+    selected_data <- original_data %>% select(...)
+  } else {
+    selected_data <- original_data
   }
 
-  check_key_impl0(.data, as_label(data_q))
+  check_key_impl0(selected_data, as_label(data_q))
+  invisible(original_data)
 }
 
 check_key_impl0 <- function(x, x_label) {
