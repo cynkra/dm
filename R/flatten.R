@@ -144,14 +144,6 @@ dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squa
     # cases where columns serve as both PK and FK
     result <- tbl_impl(prep_dm, start)
     
-    # Debug: print join sequence for troubleshooting
-    # cat("Recursive flatten join sequence:\n")
-    # cat("Starting with table:", start, "\n")
-    # for (i in seq_along(order_df$name)) {
-    #   cat("Join", i, ":", order_df$pred[[i]], "->", order_df$name[[i]], 
-    #       "by", paste(names(by[[i]]), "=", by[[i]], collapse = ", "), "\n")
-    # }
-    
     for (i in seq_along(order_df$name)) {
       table_to_join <- ordered_table_list[[i]]
       join_by <- by[[i]]
@@ -176,8 +168,10 @@ dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squa
           pattern_matches <- result_cols[grepl(paste0("^", missing_col, "\\."), result_cols)]
           if (length(pattern_matches) > 0) {
             # Replace the missing column name with the disambiguated version
+            # Use the first match if multiple exist
             names(mapped_join_by)[names(mapped_join_by) == missing_col] <- pattern_matches[1]
           }
+          # If no pattern matches found, keep the original name and let the join fail with a clear error
         }
         join_by <- mapped_join_by
       }
