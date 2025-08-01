@@ -138,8 +138,52 @@ dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squa
   ordered_table_list <- dm_get_tables(prep_dm)[order_df$name]
   by <- map2(order_df$pred, order_df$name, ~ get_by(prep_dm, .x, .y))
 
-  # perform the joins according to the list, starting with table `initial_LHS`
-  reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = tbl_impl(prep_dm, start))
+  # Track column name changes for recursive joins
+  # When a column serves as both PK and FK, it gets merged during joins
+  # and we need to update subsequent join specifications
+  join_column_tracker <- list()
+  
+  # Helper function to update by specification based on column tracking
+  update_by_for_joined_columns <- function(by_spec, tracker) {
+    if (length(tracker) == 0) return(by_spec)
+    
+    # Update the left side column names based on previous joins
+    updated_names <- names(by_spec)
+    for (old_col in names(tracker)) {
+      updated_names[updated_names == old_col] <- tracker[[old_col]]
+    }
+    names(by_spec) <- updated_names
+    by_spec
+  }
+
+  # Perform joins with column tracking
+  result <- tbl_impl(prep_dm, start)
+  
+  # If there are no joins to perform, return the start table
+  if (length(ordered_table_list) == 0) {
+    return(result)
+  }
+  
+  for (i in seq_along(ordered_table_list)) {
+    # Update the by specification for this join
+    updated_by <- update_by_for_joined_columns(by[[i]], join_column_tracker)
+    
+    # Perform the join
+    result <- join(result, ordered_table_list[[i]], by = updated_by)
+    
+    # Track column name changes: when a column from the right table matches
+    # a column name used as a join key, it disappears and should be tracked
+    # as being represented by the left side column
+    left_col <- names(updated_by)
+    right_col <- unname(updated_by)
+    
+    # Handle both single-column and multi-column joins
+    for (j in seq_along(right_col)) {
+      join_column_tracker[[right_col[j]]] <- left_col[j]
+    }
+  }
+  
+  result
 }
 
 #' Join two tables
