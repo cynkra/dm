@@ -1,5 +1,48 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.12.9001
+
+## Bug fixes
+
+- `check_key()` returns input data frame when key is valid (#2221, #2303).
+
+- Correct deprecation warning message for `dm_squash_to_tbl()` (#1364, #2302).
+
+## Chore
+
+- Use summary reporter.
+
+- Support SQL Server, needs image update.
+
+- Fully support MariaDB.
+
+- Support new `DM_TEST_*_HOST` env vars.
+
+- Add MariaDB, do not connect yet.
+
+- Add Postgres to devcontainer.
+
+- Claude settings.
+
+- Claude and Copilot settings.
+
+- Add devcontainer.
+
+- Add Claude Code GitHub Workflow.
+
+## Continuous integration
+
+- Format with air, check detritus, better handling of `extra-packages` (#2308).
+
+## Testing
+
+- Add snapshot test for `dm_squash_to_tbl()` (#1364, #2299).
+
+## Uncategorized
+
+- Feat!: `copy_dm_to()` uses `dm_sql()`. Unique keys and autoincrement primary keys (#1725) are created on the database. Data models with cyclic references are supported on databases that allow adding constraints in `ALTER TABLE` statements (at this time, all except DuckDB and SQLite, #664) (#2022) (@krlmlr, @41898282+github-actions\[bot\], #1887).
+
+
 # dm 1.0.12.9000
 
 ## fledge
