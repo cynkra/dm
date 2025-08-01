@@ -7,7 +7,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.12.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.12.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,6 +54,39 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9001" id="dm-10129001">dm 1.0.12.9001<a class="anchor" aria-label="anchor" href="#dm-10129001"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-12-9001">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-12-9001"></a></h3>
+<ul><li><p><code><a href="../reference/check_key.html">check_key()</a></code> returns input data frame when key is valid (<a href="https://github.com/cynkra/dm/issues/2221" class="external-link">#2221</a>, <a href="https://github.com/cynkra/dm/issues/2303" class="external-link">#2303</a>).</p></li>
+<li><p>Correct deprecation warning message for <code><a href="../reference/deprecated.html">dm_squash_to_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/1364" class="external-link">#1364</a>, <a href="https://github.com/cynkra/dm/issues/2302" class="external-link">#2302</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-12-9001">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-12-9001"></a></h3>
+<ul><li><p>Use summary reporter.</p></li>
+<li><p>Support SQL Server, needs image update.</p></li>
+<li><p>Fully support MariaDB.</p></li>
+<li><p>Support new <code>DM_TEST_*_HOST</code> env vars.</p></li>
+<li><p>Add MariaDB, do not connect yet.</p></li>
+<li><p>Add Postgres to devcontainer.</p></li>
+<li><p>Claude settings.</p></li>
+<li><p>Claude and Copilot settings.</p></li>
+<li><p>Add devcontainer.</p></li>
+<li><p>Add Claude Code GitHub Workflow.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-12-9001">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9001"></a></h3>
+<ul><li>Format with air, check detritus, better handling of <code>extra-packages</code> (<a href="https://github.com/cynkra/dm/issues/2308" class="external-link">#2308</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing-1-0-12-9001">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-12-9001"></a></h3>
+<ul><li>Add snapshot test for <code><a href="../reference/deprecated.html">dm_squash_to_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/1364" class="external-link">#1364</a>, <a href="https://github.com/cynkra/dm/issues/2299" class="external-link">#2299</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="uncategorized-1-0-12-9001">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-12-9001"></a></h3>
+<ul><li>Feat!: <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> uses <code><a href="../reference/dm_sql.html">dm_sql()</a></code>. Unique keys and autoincrement primary keys (<a href="https://github.com/cynkra/dm/issues/1725" class="external-link">#1725</a>) are created on the database. Data models with cyclic references are supported on databases that allow adding constraints in <code>ALTER TABLE</code> statements (at this time, all except DuckDB and SQLite, <a href="https://github.com/cynkra/dm/issues/664" class="external-link">#664</a>) (<a href="https://github.com/cynkra/dm/issues/2022" class="external-link">#2022</a>) (<a href="https://github.com/krlmlr" class="external-link">@krlmlr</a>, <a href="https://github.com/41898282" class="external-link">@41898282</a>+github-actions[bot], <a href="https://github.com/cynkra/dm/issues/1887" class="external-link">#1887</a>).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.12.9000" id="dm-10129000">dm 1.0.12.9000<a class="anchor" aria-label="anchor" href="#dm-10129000"></a></h2>
 <div class="section level3">
