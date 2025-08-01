@@ -139,7 +139,57 @@ dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squa
   by <- map2(order_df$pred, order_df$name, ~ get_by(prep_dm, .x, .y))
 
   # perform the joins according to the list, starting with table `initial_LHS`
-  reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = tbl_impl(prep_dm, start))
+  if (squash && length(order_df$name) > 0) {
+    # For recursive flattening, use an iterative approach to handle 
+    # cases where columns serve as both PK and FK
+    result <- tbl_impl(prep_dm, start)
+    
+    # Debug: print join sequence for troubleshooting
+    # cat("Recursive flatten join sequence:\n")
+    # cat("Starting with table:", start, "\n")
+    # for (i in seq_along(order_df$name)) {
+    #   cat("Join", i, ":", order_df$pred[[i]], "->", order_df$name[[i]], 
+    #       "by", paste(names(by[[i]]), "=", by[[i]], collapse = ", "), "\n")
+    # }
+    
+    for (i in seq_along(order_df$name)) {
+      table_to_join <- ordered_table_list[[i]]
+      join_by <- by[[i]]
+      
+      # Additional safety check: verify join columns exist
+      result_cols <- colnames(result)
+      left_cols <- names(join_by)
+      right_cols <- colnames(table_to_join)
+      join_right_cols <- unname(join_by)
+      
+      # Check if all required columns exist
+      missing_left <- setdiff(left_cols, result_cols)
+      missing_right <- setdiff(join_right_cols, right_cols)
+      
+      if (length(missing_left) > 0) {
+        # This is where the error likely occurs
+        # For recursive joins, we might need to handle column name mapping
+        # Look for disambiguated versions of missing columns
+        mapped_join_by <- join_by
+        for (missing_col in missing_left) {
+          # Look for pattern like "original_name.table_suffix"
+          pattern_matches <- result_cols[grepl(paste0("^", missing_col, "\\."), result_cols)]
+          if (length(pattern_matches) > 0) {
+            # Replace the missing column name with the disambiguated version
+            names(mapped_join_by)[names(mapped_join_by) == missing_col] <- pattern_matches[1]
+          }
+        }
+        join_by <- mapped_join_by
+      }
+      
+      result <- join(result, table_to_join, by = join_by)
+    }
+    
+    result
+  } else {
+    # For non-recursive flattening, use the original approach
+    reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = tbl_impl(prep_dm, start))
+  }
 }
 
 #' Join two tables
