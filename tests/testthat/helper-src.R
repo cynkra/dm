@@ -55,16 +55,23 @@ copy_to_my_test_src <- function(rhs, lhs) {
   }
 }
 
-my_test_src_name <- {
-  src <- Sys.getenv("DM_TEST_SRC")
-  # Allow set but empty DM_TEST_SRC environment variable
-  if (src == "") {
-    src <- "df"
+# Backend detection function for backward compatibility
+# This is replaced by backend-specific test files
+detect_backend_from_env <- function() {
+  # Check for legacy DM_TEST_SRC (for backward compatibility during transition)
+  legacy_src <- Sys.getenv("DM_TEST_SRC", "")
+  if (legacy_src != "") {
+    name <- gsub("^.*-", "", legacy_src)
+    cli::cli_inform(cli::col_green("Testing on {name} (legacy mode)"))
+    return(name)
   }
-  name <- gsub("^.*-", "", src)
-  cli::cli_inform(cli::col_green("Testing on {name}"))
-  name
+  
+  # Default to df for fallback
+  cli::cli_inform(cli::col_green("Testing on df (default)"))
+  "df"
 }
+
+my_test_src_name <- detect_backend_from_env()
 
 is_db_test_src <- function() {
   my_test_src_name != "df"
@@ -99,7 +106,12 @@ my_test_con <- function() {
   con_from_src_or_con(my_test_src())
 }
 
-duckdb_test_src %<--% {
+# Individual backend test source functions
+test_src_df <- function() {
+  NULL  # Data frame mode, no source needed
+}
+
+test_src_duckdb %<--% {
   if (getRversion() < "4.0") {
     testthat::skip("duckdb failing for R < 4.0")
   }
@@ -107,13 +119,67 @@ duckdb_test_src %<--% {
   dbplyr::src_dbi(DBI::dbConnect(duckdb::duckdb()), auto_disconnect = TRUE)
 }
 
+test_src_postgres %<--% {
+  testthat::skip_if_not_installed("RPostgres")
+  dbplyr::src_dbi(
+    DBI::dbConnect(
+      RPostgres::Postgres(),
+      host = Sys.getenv("PGHOST", "localhost"),
+      port = Sys.getenv("PGPORT", "5432"),
+      dbname = Sys.getenv("PGDATABASE", "postgres"),
+      user = Sys.getenv("PGUSER", "postgres"),
+      password = Sys.getenv("PGPASSWORD", "")
+    ),
+    auto_disconnect = TRUE
+  )
+}
+
+test_src_maria %<--% {
+  testthat::skip_if_not_installed("RMariaDB")
+  dbplyr::src_dbi(
+    DBI::dbConnect(
+      RMariaDB::MariaDB(),
+      host = Sys.getenv("MYSQL_HOST", "localhost"),
+      port = as.integer(Sys.getenv("MYSQL_PORT", "3306")),
+      dbname = Sys.getenv("MYSQL_DATABASE", "test"),
+      username = Sys.getenv("MYSQL_USER", "root"),
+      password = Sys.getenv("MYSQL_PASSWORD", "")
+    ),
+    auto_disconnect = TRUE
+  )
+}
+
+test_src_mssql %<--% {
+  testthat::skip_if_not_installed("odbc")
+  dbplyr::src_dbi(
+    DBI::dbConnect(
+      odbc::odbc(),
+      driver = "ODBC Driver 17 for SQL Server",
+      server = Sys.getenv("MSSQL_HOST", "localhost"),
+      port = Sys.getenv("MSSQL_PORT", "1433"),
+      database = Sys.getenv("MSSQL_DATABASE", "test"),
+      uid = Sys.getenv("MSSQL_USER", "SA"),
+      pwd = Sys.getenv("MSSQL_PASSWORD", "YourStrong!Passw0rd")
+    ),
+    auto_disconnect = TRUE
+  )
+}
+
+test_src_sqlite %<--% {
+  testthat::skip_if_not_installed("RSQLite")
+  dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
+}
+
+# Legacy function name for backward compatibility
+duckdb_test_src <- test_src_duckdb
+
 my_db_test_src <- function() {
   testthat::skip_if_not_installed("dbplyr")
 
   if (is_db_test_src()) {
     my_test_src()
   } else {
-    duckdb_test_src()
+    test_src_duckdb()
   }
 }
 

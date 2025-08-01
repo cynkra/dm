@@ -1,3 +1,7 @@
+# This file is generated automatically by tools/generate-backend-tests.R
+# Do not edit manually - edit the template and regenerate
+
+# Backend-specific tests for PostgreSQL
 test_that("dummy", {
   # To avoid deletion of file
   expect_snapshot({
@@ -9,7 +13,7 @@ test_that("dm_meta() data model", {
   skip_if_schema_not_supported()
 
   expect_snapshot({
-    dm_meta(my_test_src()) %>%
+    dm_meta(test_src_postgres()) %>%
       dm_paste(options = c("select", "keys", "color"))
   })
 })
@@ -19,7 +23,7 @@ test_that("dm_meta(simple = TRUE) columns", {
   skip("Dependent on database version, find better way to record this info")
 
   columns <- tryCatch(
-    my_db_test_src() %>%
+    test_src_postgres() %>%
       dm_meta(simple = TRUE) %>%
       .$columns %>%
       filter(tolower(table_schema) == "information_schema") %>%
@@ -34,5 +38,5 @@ test_that("dm_meta(simple = TRUE) columns", {
   path <- withr::local_tempfile(fileext = ".csv")
   write.csv(columns, path, na = "")
 
-  expect_snapshot_file(path, name = "columns.csv", variant = my_test_src_name)
+  expect_snapshot_file(path, name = "columns.csv", variant = "postgres")
 })

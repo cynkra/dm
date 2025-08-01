@@ -1,3 +1,7 @@
+# This file is generated automatically by tools/generate-backend-tests.R
+# Do not edit manually - edit the template and regenerate
+
+# Backend-specific tests for SQLite
 test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   skip_if_src_not(c("df", "duckdb"))
 
@@ -22,7 +26,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
       dm_flatten_to_tbl(dm_for_flatten(), fact)
       result_from_flatten_new()
     },
-    variant = my_test_src_name
+    variant = "sqlite"
   )
 
   # a one-table-dm
@@ -100,7 +104,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
     {
       out
     },
-    variant = my_test_src_name
+    variant = "sqlite"
   )
 })
 
@@ -321,7 +325,7 @@ test_that("tests with 'bad_dm' work", {
 
 
   # flatten bad_dm() (no referential integrity)
-  if (is_db(my_test_src()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
+  if (is_db(test_src_sqlite()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
     expect_equivalent_tbl(
       dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3),
       tbl_1() %>%
@@ -370,7 +374,7 @@ test_that("tests with 'bad_dm' work (2)", {
   bad_filtered_dm <- dm_filter(bad_dm(), tbl_1 = (a != 4))
 
   # flatten bad_dm() (no referential integrity)
-  if (is_db(my_test_src()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
+  if (is_db(test_src_sqlite()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
     expect_equivalent_tbl(
       dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = full_join),
       tbl_1() %>%
@@ -393,7 +397,7 @@ test_that("tests with 'bad_dm' work (3)", {
   bad_filtered_dm <- dm_filter(bad_dm(), tbl_1 = (a != 4))
 
   # flatten bad_dm() (no referential integrity)
-  if (is_db(my_test_src()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
+  if (is_db(test_src_sqlite()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
     expect_equivalent_tbl(
       dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, .join = right_join),
       tbl_1() %>%
@@ -404,7 +408,7 @@ test_that("tests with 'bad_dm' work (3)", {
 
 
   # flatten bad_dm() (no referential integrity); different order
-  if (is_db(my_test_src()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
+  if (is_db(test_src_sqlite()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
     expect_equivalent_tbl(
       dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_3, tbl_2, .join = right_join),
       tbl_1() %>%

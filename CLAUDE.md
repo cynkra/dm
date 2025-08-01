@@ -53,13 +53,41 @@ testthat::test_local(reporter = "summary")
 
 ### Different Backends
 
-**Important**: Set the `DM_TEST_SRC` environment variable to test against various backends. Always test all backends. Supported values include:
+The testing infrastructure has been simplified to use backend-specific test files instead of the `DM_TEST_SRC` environment variable. Each backend now has its own dedicated test files generated from templates.
 
-- `df`
-- `postgres`
-- `maria` (MariaDB)
-- `mssql` (SQL Server)
-- `duckdb`
+**Supported backends:**
+- `df` - Data frames (no database)
+- `postgres` - PostgreSQL  
+- `maria` - MariaDB
+- `mssql` - SQL Server
+- `duckdb` - DuckDB
+- `sqlite` - SQLite
+
+**Backend-specific test files:**
+Tests that require specific backends are automatically generated as separate files:
+- `test-*-df.R` - Data frame tests
+- `test-*-postgres.R` - PostgreSQL tests
+- `test-*-maria.R` - MariaDB tests
+- `test-*-mssql.R` - SQL Server tests
+- `test-*-duckdb.R` - DuckDB tests  
+- `test-*-sqlite.R` - SQLite tests
+
+**Regenerating backend tests:**
+If you modify a template test file, regenerate the backend-specific versions:
+```bash
+devcontainer exec --workspace-folder . Rscript tools/generate-backend-tests.R
+```
+
+**Testing specific backends:**
+Use the Makefile targets to test specific backends:
+```bash
+make test-df          # Test data frame backend
+make test-postgres    # Test PostgreSQL backend
+make test-maria       # Test MariaDB backend
+make test-mssql       # Test SQL Server backend
+make test-duckdb      # Test DuckDB backend
+make test-sqlite      # Test SQLite backend
+```
 
 ---
 
