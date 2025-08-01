@@ -39,11 +39,10 @@
 #' s
 #' DBI::dbDisconnect(con)
 dm_sql <- function(
-  dm,
-  dest,
-  table_names = NULL,
-  temporary = TRUE
-) {
+    dm,
+    dest,
+    table_names = NULL,
+    temporary = TRUE) {
   #
   check_suggested("dbplyr", "dm_sql")
 
@@ -111,11 +110,10 @@ ddl_reorder_dm <- function(dm, con) {
 #' @export
 #' @autoglobal
 dm_ddl_pre <- function(
-  dm,
-  dest,
-  table_names = NULL,
-  temporary = TRUE
-) {
+    dm,
+    dest,
+    table_names = NULL,
+    temporary = TRUE) {
   #
   check_suggested("dbplyr", "dm_ddl_pre")
 
@@ -206,11 +204,10 @@ dm_ddl_pre <- function(
 #' @rdname dm_sql
 #' @export
 dm_dml_load <- function(
-  dm,
-  dest,
-  table_names = NULL,
-  temporary = TRUE
-) {
+    dm,
+    dest,
+    table_names = NULL,
+    temporary = TRUE) {
   #
   check_suggested("dbplyr", "dm_dml_load")
 
@@ -234,11 +231,10 @@ dm_dml_load <- function(
 #' @rdname dm_sql
 #' @export
 dm_ddl_post <- function(
-  dm,
-  dest,
-  table_names = NULL,
-  temporary = TRUE
-) {
+    dm,
+    dest,
+    table_names = NULL,
+    temporary = TRUE) {
   #
   check_suggested("dbplyr", "dm_ddl_post")
 
@@ -270,10 +266,14 @@ dm_ddl_post <- function(
   uk_defs <-
     ddl_get_uk_defs(uks, con, table_names) %>%
     group_by(name) %>%
-    summarize(uk_defs = if (length(remote_name) == 0) list(NULL) else list(DBI::SQL(glue(
-      # FIXME: Designate temporary table if possible
-      "ALTER TABLE {remote_name[[1]]} ADD {uk_def}"
-    )))) %>%
+    summarize(uk_defs = if (length(remote_name) == 0) {
+      list(NULL)
+    } else {
+      list(DBI::SQL(glue(
+        # FIXME: Designate temporary table if possible
+        "ALTER TABLE {remote_name[[1]]} ADD {uk_def}"
+      )))
+    }) %>%
     ungroup()
 
   # foreign key definitions and indexing queries
@@ -292,10 +292,14 @@ dm_ddl_post <- function(
   fk_defs <-
     ddl_get_fk_defs(fks, con, table_names) %>%
     group_by(name) %>%
-    summarize(fk_defs = if (length(remote_name) == 0) list(NULL) else list(DBI::SQL(glue(
-      # FIXME: Designate temporary table if possible
-      "ALTER TABLE {remote_name[[1]]} ADD {fk_def}"
-    )))) %>%
+    summarize(fk_defs = if (length(remote_name) == 0) {
+      list(NULL)
+    } else {
+      list(DBI::SQL(glue(
+        # FIXME: Designate temporary table if possible
+        "ALTER TABLE {remote_name[[1]]} ADD {fk_def}"
+      )))
+    }) %>%
     ungroup()
 
   queries <-

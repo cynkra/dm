@@ -86,17 +86,16 @@
 #' DBI::dbDisconnect(con)
 #' @export
 copy_dm_to <- function(
-  dest,
-  dm,
-  ...,
-  set_key_constraints = TRUE,
-  table_names = NULL,
-  temporary = TRUE,
-  schema = NULL,
-  progress = NA,
-  unique_table_names = NULL,
-  copy_to = NULL
-) {
+    dest,
+    dm,
+    ...,
+    set_key_constraints = TRUE,
+    table_names = NULL,
+    temporary = TRUE,
+    schema = NULL,
+    progress = NA,
+    unique_table_names = NULL,
+    copy_to = NULL) {
   if (!is.null(unique_table_names)) {
     deprecate_stop(
       "0.1.4", "dm::copy_dm_to(unique_table_names = )",

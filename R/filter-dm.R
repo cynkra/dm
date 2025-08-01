@@ -172,9 +172,66 @@ dm_apply_filters <- function(dm) {
 dm_apply_filters_impl <- function(dm) {
   def <- dm_get_def(dm)
 
-  def$data <- map(def$table, ~ dm_get_filtered_table(dm, .))
+  # Shortcut: if no filters, just reset them
+  filters <- dm_get_filters_impl(dm)
+  if (nrow(filters) == 0) {
+    return(dm_reset_all_filters(dm))
+  }
+
+  # Use reduce instead of map to avoid redundant work
+  # Process tables in dependency order (tables that others depend on first)
+  table_order <- get_filter_processing_order(dm)
+
+  # Build filtered tables using reduce for efficiency
+  list_of_filtered_tables <- reduce(table_order,
+    ~ dm_get_filtered_table_with_cache(.x, .y, dm),
+    .init = list()
+  )
+
+  # Update the definition with filtered tables
+  def$data <- list_of_filtered_tables[def$table]
 
   dm_reset_all_filters(dm_from_def(def))
+}
+
+# Get processing order: tables with filters first, then by dependency distance
+get_filter_processing_order <- function(dm) {
+  def <- dm_get_def(dm)
+  all_tables <- def$table
+
+  filtered_tables <- unique(dm_get_filters_impl(dm)$table)
+  if (is_empty(filtered_tables)) {
+    return(all_tables)
+  }
+
+  # Order filtered tables first, then remaining tables
+  # This ensures that tables with direct filters are processed before
+  # tables that only need semi-joins from filtered tables
+  c(filtered_tables, setdiff(all_tables, filtered_tables))
+}
+
+# Get filtered table with caching - uses previously computed tables when possible
+dm_get_filtered_table_with_cache <- function(filtered_tables, table_name, original_dm) {
+  # Create a temporary dm that includes both original and already-filtered tables
+  # This allows dm_get_filtered_table to reuse previously computed filtered tables
+  current_tables <- dm_get_tables(original_dm)
+
+  # Override with already-filtered tables where available
+  for (name in names(filtered_tables)) {
+    current_tables[[name]] <- filtered_tables[[name]]
+  }
+
+  # Create temporary dm with current state
+  temp_def <- dm_get_def(original_dm)
+  temp_def$data <- current_tables[temp_def$table]
+  temp_dm <- dm_from_def(temp_def)
+
+  # Get filtered table (can now reuse already-filtered dependencies)
+  filtered_table <- dm_get_filtered_table(temp_dm, table_name)
+
+  # Add to cache
+  filtered_tables[[table_name]] <- filtered_table
+  filtered_tables
 }
 
 #' @rdname deprecated
