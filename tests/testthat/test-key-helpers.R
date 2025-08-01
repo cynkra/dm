@@ -8,6 +8,29 @@ test_that("check_key() API", {
   })
 })
 
+test_that("check_key() returns data frame for valid keys", {
+  # Test the specific issue from #2221: check_key should return the data frame, not NULL
+  dat <- tibble(a = c(1, 2, 3), b = c(5, 5, 6), c = c(7, 8, 9))
+
+  # Single column key
+  result <- check_key(dat, a)
+  expect_identical(result, dat)
+
+  # Multiple column key
+  result2 <- check_key(dat, a, c)
+  expect_identical(result2, dat)
+
+  # All columns key
+  result3 <- check_key(dat)
+  expect_identical(result3, dat)
+
+  # Test that it can be used in piping
+  piped_result <- dat %>%
+    check_key(a) %>%
+    select(a)
+  expect_equal(piped_result, select(dat, a))
+})
+
 test_that("check_key() checks primary key properly?", {
   expect_dm_error(
     check_key(data_mcard(), c1, c2),
@@ -48,6 +71,23 @@ test_that("check_key() checks primary key properly?", {
       dm_zoom_to(airlines) %>%
       check_key(carrier)
   )
+})
+
+test_that("check_key() returns data frame when key is valid", {
+  # Test from issue #2221: check_key() should return the data frame when columns are a valid key
+  dat <- tibble(a = c(1, 2, 3), b = c(5, 5, 6), c = c(7, 8, 9))
+
+  # Should return the original data frame, not NULL
+  result <- check_key(dat, a)
+  expect_identical(result, dat)
+
+  # Also test with multiple columns as key
+  result2 <- check_key(dat, a, c)
+  expect_identical(result2, dat)
+
+  # Also test with data_mcard examples
+  result3 <- check_key(data_mcard(), c1, c3)
+  expect_identical(result3, data_mcard())
 })
 
 test_that("check_api() new interface", {
