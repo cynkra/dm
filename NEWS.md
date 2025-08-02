@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.12.9002
+
+## Testing
+
+- Add tests for `check_key()` (#2298).
+
+
 # dm 1.0.12.9001
 
 ## Bug fixes
