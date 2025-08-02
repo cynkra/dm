@@ -101,13 +101,13 @@ dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squa
 
   # each next table needs to be accessible from the former table (note: directed relations)
   # we achieve this with a depth-first-search (DFS) with param `unreachable = FALSE`
-  dfs <- igraph::dfs(g, start, unreachable = FALSE, father = TRUE, dist = TRUE)
+  dfs <- igraph::dfs(g, start, unreachable = FALSE, parent = TRUE, dist = TRUE)
 
   # compute all table names
   order_df <-
     tibble(
       name = names(dfs[["order"]]),
-      pred = names(V(g))[unclass(dfs[["father"]])[name]]
+      pred = names(V(g))[unclass(dfs[["parent"]])[name]]
     )
 
   # function to detect any reason for abort()
