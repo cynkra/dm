@@ -55,17 +55,16 @@ This directory contains the devcontainer configuration for the dm package develo
 ### Running Tests with Different Backends
 
 ```bash
-# Test with PostgreSQL (default)
-DM_TEST_SRC=postgres R -e 'testthat::test_local()'
+# Run all tests (includes database-specific tests that will auto-configure)
+R -e 'testthat::test_local()'
 
-# Test with MariaDB
-DM_TEST_SRC=maria R -e 'testthat::test_local()'
+# Run specific database tests
+R -e 'testthat::test_local(filter = "postgres")'
+R -e 'testthat::test_local(filter = "maria")'
+R -e 'testthat::test_local(filter = "mssql")'
 
-# Test with SQL Server (requires ODBC drivers)
-DM_TEST_SRC=mssql R -e 'testthat::test_local()'
-
-# Test with data frames (no database)
-DM_TEST_SRC=df R -e 'testthat::test_local()'
+# Generate database test files from template
+make generate-db-tests
 ```
 
 ## Database Connection in R

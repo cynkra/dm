@@ -1,15 +1,11 @@
-# GENERATED FILE - DO NOT EDIT
-# This file was generated from template-db-tests.R
-# Edit the template and run generate-db-tests.sh to update
-
 # Set up database-specific testing environment
 local({
   # Override my_test_src_name for this file
-  my_test_src_name <<- "duckdb"
+  my_test_src_name <<- "{{DATABASE}}"
   
   # Override my_test_src_fun for this file
   my_test_src_fun <<- function() {
-    get0("test_src_duckdb", inherits = TRUE)
+    get0("test_src_{{DATABASE}}", inherits = TRUE)
   }
   
   # Override my_test_src_cache for this file
@@ -17,7 +13,7 @@ local({
     tryCatch(
       my_test_src_fun()(),
       error = function(e) {
-        skip(paste0("Data source duckdb not accessible: ", conditionMessage(e)))
+        skip(paste0("Data source {{DATABASE}} not accessible: ", conditionMessage(e)))
       }
     )
   }
@@ -28,7 +24,7 @@ local({
     
     fun <- my_test_src_fun()
     if (is.null(fun)) {
-      skip(paste0("Data source not known: duckdb"))
+      skip(paste0("Data source not known: {{DATABASE}}"))
     }
     my_test_src_cache()
   }
