@@ -413,3 +413,122 @@ test_that("tests with 'bad_dm' work (3)", {
     )
   }
 })
+
+test_that("recursive flattening with combined primary and foreign key (#2234)", {
+  # Test case 1: Original issue - columns serving as both PK and FK
+  mydm <- dm(
+    x = tibble(a = 1, b = 2),
+    y = tibble(c = 2, d = 3),
+    z = tibble(e = 2, f = 4)
+  ) %>%
+    dm_add_pk(x, a) %>%
+    dm_add_pk(y, c) %>%
+    dm_add_pk(z, e) %>%
+    dm_add_fk(x, b, y) %>%
+    dm_add_fk(y, c, z)
+
+  result <- mydm %>%
+    dm_flatten_to_tbl(x, .recursive = TRUE)
+
+  expect_equal(
+    result,
+    tibble(a = 1, b = 2, d = 3, f = 4)
+  )
+
+  # Test case 2: More complex naming scenario
+  table1 <- tibble(
+    id = 1L,
+    shared_col.table1 = 2L
+  )
+
+  table2 <- tibble(
+    shared_col = 2L,
+    name = "middle"
+  )
+
+  table3 <- tibble(
+    id = 3L,
+    shared_col.table3 = 2L
+  )
+
+  dm_complex <- dm(table1, table2, table3) %>%
+    dm_add_pk(table1, id) %>%
+    dm_add_pk(table2, shared_col) %>%
+    dm_add_pk(table3, id) %>%
+    dm_add_fk(table1, shared_col.table1, table2, shared_col) %>%
+    dm_add_fk(table2, shared_col, table3, shared_col.table3)
+
+  result_complex <- dm_complex %>%
+    dm_flatten_to_tbl(table1, .recursive = TRUE)
+
+  expect_equal(ncol(result_complex), 4)
+  expect_true("name" %in% colnames(result_complex))
+
+  # Test case 3: Chain of three tables with intermediate PK/FK
+  dm_chain <- dm(
+    start = tibble(id = 1, key1 = 10),
+    middle = tibble(key1 = 10, key2 = 20, value = "test"),
+    end = tibble(key2 = 20, final = "result")
+  ) %>%
+    dm_add_pk(start, id) %>%
+    dm_add_pk(middle, key1) %>%
+    dm_add_pk(end, key2) %>%
+    dm_add_fk(start, key1, middle) %>%
+    dm_add_fk(middle, key2, end)
+
+  result_chain <- dm_chain %>%
+    dm_flatten_to_tbl(start, .recursive = TRUE)
+
+  expect_equal(
+    result_chain,
+    tibble(id = 1, key1 = 10, value = "test", final = "result")
+  )
+
+  # Test case 4: Multiple branches - ensure non-linear structures work
+  dm_branch <- dm(
+    root = tibble(id = 1, branch_a = 10, branch_b = 20),
+    leaf_a = tibble(branch_a = 10, data_a = "A"),
+    leaf_b = tibble(branch_b = 20, data_b = "B")
+  ) %>%
+    dm_add_pk(root, id) %>%
+    dm_add_pk(leaf_a, branch_a) %>%
+    dm_add_pk(leaf_b, branch_b) %>%
+    dm_add_fk(root, branch_a, leaf_a) %>%
+    dm_add_fk(root, branch_b, leaf_b)
+
+  result_branch <- dm_branch %>%
+    dm_flatten_to_tbl(root, .recursive = TRUE)
+
+  expect_equal(ncol(result_branch), 5)
+  expect_true(all(c("data_a", "data_b") %in% colnames(result_branch)))
+})
+
+test_that("recursive flattening edge cases with combined PK/FK", {
+  # Edge case 1: Single table (no joins needed)
+  single_dm <- dm(
+    only = tibble(a = 1, b = 2)
+  ) %>% dm_add_pk(only, a)
+
+  result_single <- single_dm %>%
+    dm_flatten_to_tbl(only, .recursive = TRUE)
+
+  expect_equal(result_single, tibble(a = 1, b = 2))
+
+  # Edge case 2: Empty tables
+  empty_dm <- dm(
+    x = tibble(a = integer(0), b = integer(0)),
+    y = tibble(c = integer(0), d = integer(0)),
+    z = tibble(e = integer(0), f = integer(0))
+  ) %>%
+    dm_add_pk(x, a) %>%
+    dm_add_pk(y, c) %>%
+    dm_add_pk(z, e) %>%
+    dm_add_fk(x, b, y) %>%
+    dm_add_fk(y, c, z)
+
+  result_empty <- empty_dm %>%
+    dm_flatten_to_tbl(x, .recursive = TRUE)
+
+  expect_equal(nrow(result_empty), 0)
+  expect_equal(ncol(result_empty), 4)
+})
