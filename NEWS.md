@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.12.9003
+
+## Continuous integration
+
+- Cleanup and fix macOS (#2317).
+
+
 # dm 1.0.12.9002
 
 ## Testing
