@@ -242,6 +242,38 @@ test_that("`dm_flatten_to_tbl(.recursive = TRUE)` does the right things", {
   )
 })
 
+test_that("`dm_flatten_to_tbl(.recursive = TRUE)` works with combined primary and foreign key", {
+  # Test for issue where a column serves as both PK and FK
+  skip_if_src_not("df")  # Only test on data frame source for now
+  
+  # Create test data as described in the issue
+  x <- tibble(a = 1L, b = 2L)
+  y <- tibble(c = 2L, d = 3L)  
+  z <- tibble(e = 2L, f = 4L)
+
+  # Create dm with the problematic structure:
+  # - y.c is both a primary key and a foreign key pointing to z.e
+  mydm <- dm(x, y, z) %>%
+    dm_add_pk(x, a) %>%
+    dm_add_pk(y, c) %>%
+    dm_add_pk(z, e) %>%
+    dm_add_fk(x, b, y) %>%
+    dm_add_fk(y, c, z)  # This makes y.c both PK and FK
+
+  # This should work without throwing "Join columns in `x` must be present in the data. Problem with `c`."
+  result <- mydm %>% dm_flatten_to_tbl(x, .recursive = TRUE)
+  
+  # Expected result should have all columns from x, y, and z
+  expected <- tibble(
+    a = 1L,
+    b = 2L, 
+    d = 3L,
+    f = 4L
+  )
+  
+  expect_equivalent_tbl(result, expected)
+})
+
 test_that("prepare_dm_for_flatten() works", {
   # with rename
   out <- expect_message_obj(prepare_dm_for_flatten(
