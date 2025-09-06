@@ -56,7 +56,9 @@ copy_to_my_test_src <- function(rhs, lhs) {
 }
 
 my_test_src_name <- {
-  src <- Sys.getenv("DM_TEST_SRC")
+  # Default to data frame testing when no specific source is requested
+  # Database-specific test files override this value locally
+  src <- Sys.getenv("DM_TEST_SRC", "df")
   # Allow set but empty DM_TEST_SRC environment variable
   if (src == "") {
     src <- "df"
