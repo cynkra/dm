@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.12.9005
+
+## Continuous integration
+
+- Use reviewdog for external PRs (#2323).
+
+
 # dm 1.0.12.9004
 
 ## Chore
