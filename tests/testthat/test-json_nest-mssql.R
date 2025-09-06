@@ -1,3 +1,7 @@
+# This file is generated automatically by tools/generate-backend-tests.R
+# Do not edit manually - edit the template and regenerate
+
+# Backend-specific tests for SQL Server
 test_that("`json_nest()` and `json_unnest()` work", {
   expect_snapshot({
     df <- tibble::tibble(x = c(1, 1, 1, 2, 2, 3), y = 1:6, z = 6:1)
@@ -12,12 +16,12 @@ test_that("`json_nest()` and `json_unnest()` work", {
 
 test_that("`json_nest()` works remotely", {
   skip_if_src_not("postgres", "mssql")
-  con <- my_test_src()$con
+  con <- test_src_mssql()$con
 
   local <- tibble(grp = c(1, 1, 2, 2), a_i = letters[1:4], a_j = LETTERS[1:4])
   remote <- test_db_src_frame(!!!local)
 
-  expect_snapshot(variant = my_test_src_name, {
+  expect_snapshot(variant = "mssql", {
     query <- remote %>%
       json_nest(a = starts_with("a")) %>%
       arrange(grp) %>%
