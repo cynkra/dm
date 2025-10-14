@@ -121,6 +121,10 @@
       
     Code
       dm_flatten_to_tbl(dm_for_flatten(), fact)
+    Condition
+      Warning:
+      The `father` argument of `dfs()` is deprecated as of igraph 2.2.0.
+      i Please use the `parent` argument instead.
     Message
       Renaming ambiguous columns: %>%
         dm_rename(fact, something.fact = something) %>%
