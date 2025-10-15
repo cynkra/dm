@@ -62,6 +62,9 @@
       Warning:
       `dm_squash_to_tbl()` was deprecated in dm 1.0.0.
       i Please use `.recursive = TRUE` in `dm_flatten_to_tbl()` instead.
+      Warning:
+      The `father` argument of `dfs()` is deprecated as of igraph 2.2.0.
+      i Please use the `parent` argument instead.
     Message
       Renaming ambiguous columns: %>%
         dm_rename(fact, fact.something = something) %>%
