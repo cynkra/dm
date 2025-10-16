@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 1.0.11.9018
-Date: 2025-06-11
+Version: 1.0.12.9005
+Date: 2025-09-06
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -38,7 +38,9 @@ Authors@R:
              email = "info@energie360.ch"),
       person(given = "cynkra GmbH",
              role = c("fnd", "cph"),
-             email = "mail@cynkra.com"))
+             email = "mail@cynkra.com",
+             comment = c(ROR = "0335t7e62"))
+    )
 Description: Provides tools for working with multiple related
     tables, stored as data frames or in a relational database.  Multiple
     tables (data and metadata) are stored in a compound object, which can
@@ -117,7 +119,7 @@ VignetteBuilder:
 Config/autostyle/scope: line_breaks
 Config/autostyle/strict: true
 Config/testthat/edition: 3
-Config/testthat/parallel: true
+Config/testthat/parallel: false
 Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm,
     draw-dm, bind, rows-dm, learn
 Encoding: UTF-8
@@ -125,4 +127,4 @@ Roxygen: list(
       markdown = TRUE,
       roclets = c("collate", "namespace", "rd", "roxyglobals::global_roclet")
     )
-RoxygenNote: 7.3.2.9000
+RoxygenNote: 7.3.3.9000

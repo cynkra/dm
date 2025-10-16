@@ -1,1014 +1,124 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.11.9018
+# dm 1.0.12.9005
 
 ## Continuous integration
 
-- Fix.
+- Use reviewdog for external PRs (#2323).
 
 
-# dm 1.0.11.9017
+# dm 1.0.12.9004
+
+## Chore
+
+- Auto-update from GitHub Actions (#2321).
+
+
+# dm 1.0.12.9003
+
+## Continuous integration
+
+- Cleanup and fix macOS (#2317).
+
+
+# dm 1.0.12.9002
+
+## Testing
+
+- Add tests for `check_key()` (#2298).
+
+
+# dm 1.0.12.9001
+
+## Bug fixes
+
+- `check_key()` returns input data frame when key is valid (#2221, #2303).
+
+- Correct deprecation warning message for `dm_squash_to_tbl()` (#1364, #2302).
+
+## Chore
+
+- Use summary reporter.
+
+- Support SQL Server, needs image update.
+
+- Fully support MariaDB.
+
+- Support new `DM_TEST_*_HOST` env vars.
+
+- Add MariaDB, do not connect yet.
+
+- Add Postgres to devcontainer.
+
+- Claude settings.
+
+- Claude and Copilot settings.
+
+- Add devcontainer.
+
+- Add Claude Code GitHub Workflow.
+
+## Continuous integration
+
+- Format with air, check detritus, better handling of `extra-packages` (#2308).
+
+## Testing
+
+- Add snapshot test for `dm_squash_to_tbl()` (#1364, #2299).
+
+## Uncategorized
+
+- Feat!: `copy_dm_to()` uses `dm_sql()`. Unique keys and autoincrement primary keys (#1725) are created on the database. Data models with cyclic references are supported on databases that allow adding constraints in `ALTER TABLE` statements (at this time, all except DuckDB and SQLite, #664) (#2022) (@krlmlr, @41898282+github-actions\[bot\], #1887).
+
+
+# dm 1.0.12.9000
+
+## fledge
+
+- CRAN release v1.0.12 (#2295).
+
+
+# dm 1.0.12
+
+## Bug fixes
+
+- Improve detection of foreign-key relationships in Postgres (#1879, #2286).
+
+- Avoid including constraints from a different `constraint_schema` when learning from a database (#2228, #2275).
+
+## Features
+
+- Add support for Redshift connections (@owenjonesuob, #2215).
 
 ## Chore
 
 - Remove fansi.
 
-## Continuous integration
-
-- Allow missing fansi on CI/CD.
-
-- Review environment variables.
-
-
-# dm 1.0.11.9016
-
-## Chore
-
 - Suggest package used in demo.
 
-## Continuous integration
+- Bump RMariaDB version (#2244).
 
-- Sync (#2281).
-
-
-# dm 1.0.11.9015
-
-## Chore
-
-- IDE.
-
-
-# dm 1.0.11.9014
-
-## Continuous integration
-
-- Avoid failure in fledge workflow if no changes (#2273).
-
-
-# dm 1.0.11.9013
-
-## Continuous integration
-
-- Debug fledge.
-
-- Fetch tags for fledge workflow to avoid unnecessary NEWS entries (#2270).
+- Drop crayon and mockr dependencies (@olivroy, #2220).
 
 ## Documentation
+
+- Add cynkra ROR (#2282).
+
+- Fix intended links (@guspan-tanadi, #2278).
 
 - Restore empty space removed by styler (#2269).
 
-
-# dm 1.0.11.9012
-
-## Features
-
-- Add support for Redshift connections (@owenjonesuob, #2215).
-
-## Chore
-
-- Ignore.
-
-- Fix creation of documentation in the RStudio IDE \[ci skip\].
-
-- Bump RMariaDB version (#2244).
-
-- Drop crayon and mockr dependencies (@olivroy, #2220).
-
-- Auto-update from GitHub Actions (#2231).
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10395389155
-
-- Use dev RMariaDB.
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10223713876
-
-- Roxygenize.
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10200118253
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9727972354
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9692097886
-
-- Use CRAN dbplyr.
-
-### deps
-
-- Update peter-evans/create-pull-request action to v6.
-
-### deps
-
-- Update nick-fields/retry action to v3.
-
-### deps
-
-- Update actions/cache action to v4 (#2186).
-
-- Use dev odbc and dbplyr to fix CI/CD (#2189).
-
-- Tweak Compose file.
-
-- Format NEWS.
-
-## Continuous integration
-
-- Use larger retry count for lock-threads workflow (#2267).
-
-- Ignore errors when removing pkg-config on macOS (#2257).
-
-- Explicit permissions (#2254).
-
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
-
-- Configure token.
-
-- Count rulesets to understand if branch protection is enabled.
-
-- Remove Aviator.
-
-- Use stable pak (#2239).
-
-- Trigger run (#2238).
-
-- Use pkgdown branch (#2237).
-
-- Install via R CMD INSTALL ., not pak (#2230).
-
-- Install local package for pkgdown builds.
-
-- Improve support for protected branches with fledge.
-
-- Improve support for protected branches, without fledge.
-
-- Sync with latest developments.
-
-- Use v2 instead of master.
-
-- Inline action.
-
-- Use dev roxygen2 and decor.
-
-- Fix on Windows, tweak lock workflow.
-
-- Avoid checking bashisms on Windows.
-
-- Better commit message.
-
-- Harmonize workflows.
-
-- Use value after `source()`.
-
-- Bump versions, better default.
-
-- Recent updates.
-
-- Prepare for dynamic build matrix.
-
-## Documentation
-
 - Use `index.md`.
 
 - Tweak formatting (@salim-b, #2232).
 
 - Fix typo (@salim-b, #2218).
 
-- Set BS version explicitly for now.
-
-  https://github.com/cynkra/cynkratemplate/issues/53
-
 ## Testing
 
-- Fix compatibility with waldo \>= 0.6.0 (#2240).
-
-## Uncategorized
-
-- Merge branch 'docs'.
-
-- Merge branch 'docs'.
-
-- Merge branch 'cran-1.0.10'.
-
-
-# dm 1.0.11.9011
-
-## Features
-
-- Add support for Redshift connections (@owenjonesuob, #2215).
-
-## Chore
-
-- Ignore.
-
-- Fix creation of documentation in the RStudio IDE \[ci skip\].
-
-- Bump RMariaDB version (#2244).
-
-- Drop crayon and mockr dependencies (@olivroy, #2220).
-
-- Auto-update from GitHub Actions (#2231).
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10395389155
-
-- Use dev RMariaDB.
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10223713876
-
-- Roxygenize.
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10200118253
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9727972354
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9692097886
-
-- Use CRAN dbplyr.
-
-### deps
-
-- Update peter-evans/create-pull-request action to v6.
-
-### deps
-
-- Update nick-fields/retry action to v3.
-
-### deps
-
-- Update actions/cache action to v4 (#2186).
-
-- Use dev odbc and dbplyr to fix CI/CD (#2189).
-
-- Tweak Compose file.
-
-- Format NEWS.
-
-## Continuous integration
-
-- Ignore errors when removing pkg-config on macOS (#2257).
-
-- Explicit permissions (#2254).
-
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
-
-- Configure token.
-
-- Count rulesets to understand if branch protection is enabled.
-
-- Remove Aviator.
-
-- Use stable pak (#2239).
-
-- Trigger run (#2238).
-
-- Use pkgdown branch (#2237).
-
-- Install via R CMD INSTALL ., not pak (#2230).
-
-- Install local package for pkgdown builds.
-
-- Improve support for protected branches with fledge.
-
-- Improve support for protected branches, without fledge.
-
-- Sync with latest developments.
-
-- Use v2 instead of master.
-
-- Inline action.
-
-- Use dev roxygen2 and decor.
-
-- Fix on Windows, tweak lock workflow.
-
-- Avoid checking bashisms on Windows.
-
-- Better commit message.
-
-- Harmonize workflows.
-
-- Use value after `source()`.
-
-- Bump versions, better default.
-
-- Recent updates.
-
-- Prepare for dynamic build matrix.
-
-## Documentation
-
-- Use `index.md`.
-
-- Tweak formatting (@salim-b, #2232).
-
-- Fix typo (@salim-b, #2218).
-
-- Set BS version explicitly for now.
-
-  https://github.com/cynkra/cynkratemplate/issues/53
-
-## Testing
+- Stabilize learning tests (#2291).
 
 - Fix compatibility with waldo \>= 0.6.0 (#2240).
-
-## Uncategorized
-
-- Merge branch 'docs'.
-
-- Merge branch 'docs'.
-
-- Merge branch 'cran-1.0.10'.
-
-
-# dm 1.0.11.9010
-
-## Features
-
-- Add support for Redshift connections (@owenjonesuob, #2215).
-
-## Chore
-
-- Ignore.
-
-- Fix creation of documentation in the RStudio IDE \[ci skip\].
-
-- Bump RMariaDB version (#2244).
-
-- Drop crayon and mockr dependencies (@olivroy, #2220).
-
-- Auto-update from GitHub Actions (#2231).
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10395389155
-
-- Use dev RMariaDB.
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10223713876
-
-- Roxygenize.
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10200118253
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9727972354
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9692097886
-
-- Use CRAN dbplyr.
-
-### deps
-
-- Update peter-evans/create-pull-request action to v6.
-
-### deps
-
-- Update nick-fields/retry action to v3.
-
-### deps
-
-- Update actions/cache action to v4 (#2186).
-
-- Use dev odbc and dbplyr to fix CI/CD (#2189).
-
-- Tweak Compose file.
-
-- Format NEWS.
-
-## Continuous integration
-
-- Ignore errors when removing pkg-config on macOS (#2257).
-
-- Explicit permissions (#2254).
-
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
-
-- Configure token.
-
-- Count rulesets to understand if branch protection is enabled.
-
-- Remove Aviator.
-
-- Use stable pak (#2239).
-
-- Trigger run (#2238).
-
-- Use pkgdown branch (#2237).
-
-- Install via R CMD INSTALL ., not pak (#2230).
-
-- Install local package for pkgdown builds.
-
-- Improve support for protected branches with fledge.
-
-- Improve support for protected branches, without fledge.
-
-- Sync with latest developments.
-
-- Use v2 instead of master.
-
-- Inline action.
-
-- Use dev roxygen2 and decor.
-
-- Fix on Windows, tweak lock workflow.
-
-- Avoid checking bashisms on Windows.
-
-- Better commit message.
-
-- Harmonize workflows.
-
-- Use value after `source()`.
-
-- Bump versions, better default.
-
-- Recent updates.
-
-- Prepare for dynamic build matrix.
-
-## Documentation
-
-- Use `index.md`.
-
-- Tweak formatting (@salim-b, #2232).
-
-- Fix typo (@salim-b, #2218).
-
-- Set BS version explicitly for now.
-
-  https://github.com/cynkra/cynkratemplate/issues/53
-
-## Testing
-
-- Fix compatibility with waldo \>= 0.6.0 (#2240).
-
-## Uncategorized
-
-- Merge branch 'docs'.
-
-- Merge branch 'docs'.
-
-- Merge branch 'cran-1.0.10'.
-
-
-# dm 1.0.11.9009
-
-## Features
-
-- Add support for Redshift connections (@owenjonesuob, #2215).
-
-## Chore
-
-- Ignore.
-
-- Fix creation of documentation in the RStudio IDE \[ci skip\].
-
-- Bump RMariaDB version (#2244).
-
-- Drop crayon and mockr dependencies (@olivroy, #2220).
-
-- Auto-update from GitHub Actions (#2231).
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10395389155
-
-- Use dev RMariaDB.
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10223713876
-
-- Roxygenize.
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10200118253
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9727972354
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9692097886
-
-- Use CRAN dbplyr.
-
-### deps
-
-- Update peter-evans/create-pull-request action to v6.
-
-### deps
-
-- Update nick-fields/retry action to v3.
-
-### deps
-
-- Update actions/cache action to v4 (#2186).
-
-- Use dev odbc and dbplyr to fix CI/CD (#2189).
-
-- Tweak Compose file.
-
-- Format NEWS.
-
-## Continuous integration
-
-- Ignore errors when removing pkg-config on macOS (#2257).
-
-- Explicit permissions (#2254).
-
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
-
-- Configure token.
-
-- Count rulesets to understand if branch protection is enabled.
-
-- Remove Aviator.
-
-- Use stable pak (#2239).
-
-- Trigger run (#2238).
-
-- Use pkgdown branch (#2237).
-
-- Install via R CMD INSTALL ., not pak (#2230).
-
-- Install local package for pkgdown builds.
-
-- Improve support for protected branches with fledge.
-
-- Improve support for protected branches, without fledge.
-
-- Sync with latest developments.
-
-- Use v2 instead of master.
-
-- Inline action.
-
-- Use dev roxygen2 and decor.
-
-- Fix on Windows, tweak lock workflow.
-
-- Avoid checking bashisms on Windows.
-
-- Better commit message.
-
-- Harmonize workflows.
-
-- Use value after `source()`.
-
-- Bump versions, better default.
-
-- Recent updates.
-
-- Prepare for dynamic build matrix.
-
-## Documentation
-
-- Use `index.md`.
-
-- Tweak formatting (@salim-b, #2232).
-
-- Fix typo (@salim-b, #2218).
-
-- Set BS version explicitly for now.
-
-  https://github.com/cynkra/cynkratemplate/issues/53
-
-## Testing
-
-- Fix compatibility with waldo \>= 0.6.0 (#2240).
-
-## Uncategorized
-
-- Merge branch 'docs'.
-
-- Merge branch 'docs'.
-
-- Merge branch 'cran-1.0.10'.
-
-
-# dm 1.0.11.9008
-
-## Features
-
-- Add support for Redshift connections (@owenjonesuob, #2215).
-
-## Chore
-
-- Ignore.
-
-- Fix creation of documentation in the RStudio IDE \[ci skip\].
-
-- Bump RMariaDB version (#2244).
-
-- Drop crayon and mockr dependencies (@olivroy, #2220).
-
-- Auto-update from GitHub Actions (#2231).
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10395389155
-
-- Use dev RMariaDB.
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10223713876
-
-- Roxygenize.
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10200118253
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9727972354
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9692097886
-
-- Use CRAN dbplyr.
-
-### deps
-
-- Update peter-evans/create-pull-request action to v6.
-
-### deps
-
-- Update nick-fields/retry action to v3.
-
-### deps
-
-- Update actions/cache action to v4 (#2186).
-
-- Use dev odbc and dbplyr to fix CI/CD (#2189).
-
-- Tweak Compose file.
-
-- Format NEWS.
-
-## Continuous integration
-
-- Ignore errors when removing pkg-config on macOS (#2257).
-
-- Explicit permissions (#2254).
-
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
-
-- Configure token.
-
-- Count rulesets to understand if branch protection is enabled.
-
-- Remove Aviator.
-
-- Use stable pak (#2239).
-
-- Trigger run (#2238).
-
-- Use pkgdown branch (#2237).
-
-- Install via R CMD INSTALL ., not pak (#2230).
-
-- Install local package for pkgdown builds.
-
-- Improve support for protected branches with fledge.
-
-- Improve support for protected branches, without fledge.
-
-- Sync with latest developments.
-
-- Use v2 instead of master.
-
-- Inline action.
-
-- Use dev roxygen2 and decor.
-
-- Fix on Windows, tweak lock workflow.
-
-- Avoid checking bashisms on Windows.
-
-- Better commit message.
-
-- Harmonize workflows.
-
-- Use value after `source()`.
-
-- Bump versions, better default.
-
-- Recent updates.
-
-- Prepare for dynamic build matrix.
-
-## Documentation
-
-- Use `index.md`.
-
-- Tweak formatting (@salim-b, #2232).
-
-- Fix typo (@salim-b, #2218).
-
-- Set BS version explicitly for now.
-
-  https://github.com/cynkra/cynkratemplate/issues/53
-
-## Testing
-
-- Fix compatibility with waldo \>= 0.6.0 (#2240).
-
-## Uncategorized
-
-- Merge branch 'docs'.
-
-- Merge branch 'docs'.
-
-- Merge branch 'cran-1.0.10'.
-
-
-# dm 1.0.11.9007
-
-## Features
-
-- Add support for Redshift connections (@owenjonesuob, #2215).
-
-## Chore
-
-- Ignore.
-
-- Fix creation of documentation in the RStudio IDE \[ci skip\].
-
-- Bump RMariaDB version (#2244).
-
-- Drop crayon and mockr dependencies (@olivroy, #2220).
-
-- Auto-update from GitHub Actions (#2231).
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10395389155
-
-- Use dev RMariaDB.
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10223713876
-
-- Roxygenize.
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10200118253
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9727972354
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9692097886
-
-- Use CRAN dbplyr.
-
-### deps
-
-- Update peter-evans/create-pull-request action to v6.
-
-### deps
-
-- Update nick-fields/retry action to v3.
-
-### deps
-
-- Update actions/cache action to v4 (#2186).
-
-- Use dev odbc and dbplyr to fix CI/CD (#2189).
-
-- Tweak Compose file.
-
-- Format NEWS.
-
-## Continuous integration
-
-- Ignore errors when removing pkg-config on macOS (#2257).
-
-- Explicit permissions (#2254).
-
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
-
-- Configure token.
-
-- Count rulesets to understand if branch protection is enabled.
-
-- Remove Aviator.
-
-- Use stable pak (#2239).
-
-- Trigger run (#2238).
-
-- Use pkgdown branch (#2237).
-
-- Install via R CMD INSTALL ., not pak (#2230).
-
-- Install local package for pkgdown builds.
-
-- Improve support for protected branches with fledge.
-
-- Improve support for protected branches, without fledge.
-
-- Sync with latest developments.
-
-- Use v2 instead of master.
-
-- Inline action.
-
-- Use dev roxygen2 and decor.
-
-- Fix on Windows, tweak lock workflow.
-
-- Avoid checking bashisms on Windows.
-
-- Better commit message.
-
-- Harmonize workflows.
-
-- Use value after `source()`.
-
-- Bump versions, better default.
-
-- Recent updates.
-
-- Prepare for dynamic build matrix.
-
-## Documentation
-
-- Use `index.md`.
-
-- Tweak formatting (@salim-b, #2232).
-
-- Fix typo (@salim-b, #2218).
-
-- Set BS version explicitly for now.
-
-  https://github.com/cynkra/cynkratemplate/issues/53
-
-## Testing
-
-- Fix compatibility with waldo \>= 0.6.0 (#2240).
-
-## Uncategorized
-
-- Merge branch 'docs'.
-
-- Merge branch 'docs'.
-
-- Merge branch 'cran-1.0.10'.
-
-
-# dm 1.0.11.9006
-
-## Continuous integration
-
-- Ignore errors when removing pkg-config on macOS (#2257).
-
-- Explicit permissions (#2254).
-
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
-
-
-# dm 1.0.11.9005
-
-## Continuous integration
-
-- Ignore errors when removing pkg-config on macOS (#2257).
-
-- Explicit permissions (#2254).
-
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
-
-
-# dm 1.0.11.9004
-
-## Continuous integration
-
-- Ignore errors when removing pkg-config on macOS (#2257).
-
-- Explicit permissions (#2254).
-
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
-
-
-# dm 1.0.11.9003
-
-## Continuous integration
-
-- Ignore errors when removing pkg-config on macOS (#2257).
-
-- Explicit permissions (#2254).
-
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
-
-
-# dm 1.0.11.9002
-
-## Continuous integration
-
-- Explicit permissions (#2254).
-
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
-
-
-# dm 1.0.11.9001
-
-## Continuous integration
-
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
-
-
-# dm 1.0.11.9000
-
-## Continuous integration
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
 
 
 # dm 1.0.11

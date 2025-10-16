@@ -24,9 +24,12 @@ copy_dm_to(
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{set_key_constraints}{If \code{TRUE} will mirror \code{dm} primary and foreign key constraints on a database
-and create indexes for foreign key constraints.
-Set to \code{FALSE} if your data model currently does not satisfy primary or foreign key constraints.}
+\item{set_key_constraints}{If \code{TRUE} will mirror
+the primary, foreign, and unique key constraints
+and create indexes for foreign key constraints
+for the primary and foreign keys in the \code{dm} object.
+Set to \code{FALSE} if your data model currently does not satisfy
+primary or foreign key constraints.}
 
 \item{table_names}{Desired names for the tables on \code{dest}; the names within the \code{dm} remain unchanged.
 Can be \code{NULL}, a named character vector, or a vector of \code{\link[DBI:Id]{DBI::Id}} objects.
@@ -85,8 +88,8 @@ as the input \code{dm}.
 and a \code{\link{dm}} object as its second argument.
 The latter is copied to the former.
 The default is to create temporary tables, set \code{temporary = FALSE} to create permanent tables.
-Unless \code{set_key_constraints} is \code{FALSE}, primary key constraints are set on all databases,
-and in addition foreign key constraints are set on MSSQL and Postgres/Redshift databases.
+Unless \code{set_key_constraints} is \code{FALSE}, primary key, foreign key, and unique constraints
+are set, and indexes for foreign keys are created, on all databases.
 }
 \examples{
 \dontshow{if (rlang::is_installed(c("RSQLite", "nycflights13", "dbplyr"))) withAutoprint(\{ # examplesIf}
