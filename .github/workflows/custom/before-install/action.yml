@@ -8,9 +8,9 @@ runs:
         echo '_R_CHECK_PKG_SIZES_THRESHOLD_=10' | tee -a $GITHUB_ENV
       shell: bash
 
-    - name: Define DM_TEST_SRC
+    - name: Define DM_SETUP_DB
       run: |
-        echo "DM_TEST_SRC=${{ matrix.config.test-src }}" | tee -a $GITHUB_ENV
+        echo "DM_SETUP_DB=${{ matrix.config.setup-db }}" | tee -a $GITHUB_ENV
       shell: bash
 
     - name: Clean up broken mysql apt

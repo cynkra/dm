@@ -53,13 +53,21 @@ testthat::test_local(reporter = "summary")
 
 ### Different Backends
 
-**Important**: Set the `DM_TEST_SRC` environment variable to test against various backends. Always test all backends. Supported values include:
+**Important**: Database-specific tests are now self-contained. Each database test file (test-postgres.R, test-maria.R, etc.) sets up its own connection and runs independently. Supported backends include:
 
-- `df`
+- `df` (data frames - default)
 - `postgres`
 - `maria` (MariaDB)
 - `mssql` (SQL Server)
 - `duckdb`
+- `sqlite`
+
+To regenerate database test files from the template:
+```bash
+make generate-db-tests
+# or directly:
+./generate-db-tests.sh
+```
 
 ---
 
