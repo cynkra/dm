@@ -1,3 +1,7 @@
+# This file is generated automatically by tools/generate-backend-tests.R
+# Do not edit manually - edit the template and regenerate
+
+# Backend-specific tests for PostgreSQL
 test_that("dumma", {
   expect_snapshot({
     "dummy"
@@ -95,7 +99,7 @@ test_that("dm_rows_update()", {
     dm_select(tf_4, i, everything()) %>%
     dm_select(tf_5, l, m, everything())
 
-  dm_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_filter_rearranged))
+  dm_copy <- suppressMessages(copy_dm_to(test_src_postgres(), dm_filter_rearranged))
 
   dm_update_local <- dm(
     tf_1 = tibble(
@@ -112,7 +116,7 @@ test_that("dm_rows_update()", {
     ),
   )
 
-  dm_update_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_update_local))
+  dm_update_copy <- suppressMessages(copy_dm_to(test_src_postgres(), dm_update_local))
 
   expect_snapshot({
     dm_copy %>%
@@ -149,7 +153,7 @@ test_that("dm_rows_update()", {
 test_that("dm_rows_truncate()", {
   local_options(lifecycle_verbosity = "warning")
 
-  suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_for_filter()))
+  suppressMessages(dm_copy <- copy_dm_to(test_src_postgres(), dm_for_filter()))
 
   dm_truncate_local <- dm(
     tf_2 = tibble(
@@ -162,7 +166,7 @@ test_that("dm_rows_truncate()", {
     ),
   )
 
-  dm_truncate_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_truncate_local))
+  dm_truncate_copy <- suppressMessages(copy_dm_to(test_src_postgres(), dm_truncate_local))
 
   expect_snapshot({
     dm_copy %>%
@@ -289,7 +293,7 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
   )
 
   expect_snapshot(
-    variant = my_test_src_name,
+    variant = "postgres",
     {
       local_dm$t1
       local_dm$t2
@@ -388,7 +392,7 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS locally", {
   )
 
   expect_snapshot(
-    variant = my_test_src_name,
+    variant = "postgres",
     {
       local_dm$t1
       local_dm$t2

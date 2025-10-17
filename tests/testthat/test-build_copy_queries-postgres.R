@@ -1,5 +1,9 @@
+# This file is generated automatically by tools/generate-backend-tests.R
+# Do not edit manually - edit the template and regenerate
+
+# Backend-specific tests for PostgreSQL
 test_that("build_copy_queries snapshot test for pixarfilms", {
-  src_db <- my_db_test_src()
+  src_db <- test_src_postgres()
 
   # build regular dm from `dm_pixarfilms()`
   pixar_dm <-
@@ -12,7 +16,7 @@ test_that("build_copy_queries snapshot test for pixarfilms", {
   skip_if_not_installed("testthat", "3.1.1")
 
   expect_snapshot(
-    variant = my_test_src_name,
+    variant = "postgres",
     {
       pixar_dm %>%
         build_copy_queries(
@@ -26,12 +30,12 @@ test_that("build_copy_queries snapshot test for pixarfilms", {
 
 
 test_that("build_copy_queries snapshot test for dm_for_filter()", {
-  src_db <- my_db_test_src()
+  src_db <- test_src_postgres()
 
   skip_if_not_installed("testthat", "3.1.1")
 
   expect_snapshot(
-    variant = my_test_src_name,
+    variant = "postgres",
     {
       dm_for_filter() %>%
         collect() %>%
@@ -46,7 +50,7 @@ test_that("build_copy_queries snapshot test for dm_for_filter()", {
 
 
 test_that("build_copy_queries avoids duplicate indexes", {
-  src_db <- my_db_test_src()
+  src_db <- test_src_postgres()
 
   # build a dm whose index might be duplicated if naively build (child__a__key)
   ambiguous_dm <- dm(
@@ -74,7 +78,7 @@ test_that("build_copy_queries avoids duplicate indexes", {
   skip_if_not_installed("testthat", "3.1.1")
 
   expect_snapshot(
-    variant = my_test_src_name,
+    variant = "postgres",
     {
       as.list(queries)
     }
