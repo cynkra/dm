@@ -155,12 +155,11 @@ is_unique_key_se <- function(.data, colname) {
 #' check_set_equality(data_1, data_3, x_select = a, y_select = a)
 #' # this is still failing:
 #' try(check_set_equality(data_2, data_3))
-check_set_equality <- function(x, y,
-                               ...,
-                               x_select = NULL, y_select = NULL,
-                               by_position = NULL) {
+check_set_equality <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
   check_api(
-    {{ x }}, {{ y }}, ...,
+    {{ x }},
+    {{ y }},
+    ...,
     x_select = {{ x_select }},
     y_select = {{ y_select }},
     by_position = by_position,
@@ -214,12 +213,11 @@ check_set_equality_impl0 <- function(x, y, x_label, y_label) {
 #'
 #' # this is failing:
 #' try(check_subset(data_2, data_1))
-check_subset <- function(x, y,
-                         ...,
-                         x_select = NULL, y_select = NULL,
-                         by_position = NULL) {
+check_subset <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
   check_api(
-    {{ x }}, {{ y }}, ...,
+    {{ x }},
+    {{ y }},
+    ...,
     x_select = {{ x_select }},
     y_select = {{ y_select }},
     by_position = by_position,
@@ -258,15 +256,22 @@ is_subset_se <- function(x, y) {
   pull(count(head(res, 1))) == 0
 }
 
-check_api <- function(x, y,
-                      ...,
-                      x_select = NULL, y_select = NULL,
-                      by_position = NULL,
-                      call = caller_env(),
-                      target = list) {
+check_api <- function(
+  x,
+  y,
+  ...,
+  x_select = NULL,
+  y_select = NULL,
+  by_position = NULL,
+  call = caller_env(),
+  target = list
+) {
   if (dots_n(...) >= 2) {
     name <- as.character(frame_call(call)[[1]] %||% "check_api")
-    deprecate_soft("1.0.0", paste0(name, "(c1 = )"), paste0(name, "(x_select = )"),
+    deprecate_soft(
+      "1.0.0",
+      paste0(name, "(c1 = )"),
+      paste0(name, "(x_select = )"),
       details = c(
         "Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`.",
         "Using `by_position = TRUE` for compatibility."
@@ -274,14 +279,19 @@ check_api <- function(x, y,
     )
     stopifnot(is.null(by_position))
     check_api_impl(
-      {{ x }}, {{ y }}, ...,
+      {{ x }},
+      {{ y }},
+      ...,
       by_position = TRUE,
       target = target
     )
   } else {
     check_dots_empty(call = call)
     check_api_impl(
-      {{ x }}, {{ x_select }}, {{ y }}, {{ y_select }},
+      {{ x }},
+      {{ x_select }},
+      {{ y }},
+      {{ y_select }},
       by_position = by_position %||% FALSE,
       target = target
     )
@@ -306,7 +316,9 @@ check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target) {
   if (!isTRUE(by_position)) {
     y_idx <- match(colnames(t1), colnames(t2))
     if (anyNA(y_idx)) {
-      abort("`by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`.")
+      abort(
+        "`by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`."
+      )
     }
 
     t2 <-

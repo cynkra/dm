@@ -1,4 +1,8 @@
-cache_attach <- function(algo = "sha512", base_attach = attach, name = paste0(utils::packageName(), "_cache")) {
+cache_attach <- function(
+  algo = "sha512",
+  base_attach = attach,
+  name = paste0(utils::packageName(), "_cache")
+) {
   force(algo)
 
   if (!rlang::is_attached(name)) {

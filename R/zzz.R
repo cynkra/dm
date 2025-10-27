@@ -18,7 +18,11 @@
   check_version_on_load
   vctrs::s3_register("waldo::compare_proxy", "dm")
 
-  check_version_on_load("RSQLite", "2.2.8", "to use the {.code returning} argument in {.code rows_*()}.")
+  check_version_on_load(
+    "RSQLite",
+    "2.2.8",
+    "to use the {.code returning} argument in {.code rows_*()}."
+  )
   check_version_on_load("dbplyr", "2.2.0", "to use the {.code rows_*()} functions.")
 
   # rigg(enum_pk_candidates_impl)

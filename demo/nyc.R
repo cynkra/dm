@@ -32,7 +32,6 @@ library(magrittr)
 # Poll: Who uses more than one table/data frame
 #       at the same time?
 
-
 ##
 ##
 ##
@@ -121,7 +120,6 @@ all(flights$dest %in% airports$faa)
 ##
 ##
 
-
 ##
 ##
 ##
@@ -179,8 +177,6 @@ dm_flights %>%
   dm_draw()
 
 
-
-
 ##
 ##
 ##
@@ -197,7 +193,6 @@ dm_flights %>%
 ##
 ##
 ##
-
 
 ##
 ##
@@ -239,8 +234,14 @@ dm_flights %>%
   dm_select_tbl(-weather) %>%
   dm_select(
     flights,
-    origin, dest, carrier, tailnum,
-    year, month, day, dep_time
+    origin,
+    dest,
+    carrier,
+    tailnum,
+    year,
+    month,
+    day,
+    dep_time
   )
 
 # !!! Connect to a database !!!
@@ -259,8 +260,14 @@ dm_flights %>%
   dm_select_tbl(-weather) %>%
   dm_select(
     flights,
-    origin, dest, carrier, tailnum,
-    year, month, day, dep_time
+    origin,
+    dest,
+    carrier,
+    tailnum,
+    year,
+    month,
+    day,
+    dep_time
   ) %>%
   dm_select(planes, tailnum, year) %>%
   dm_select(airports, faa, lat, lon)
@@ -270,8 +277,14 @@ dm_flights %>%
   dm_select_tbl(-weather) %>%
   dm_select(
     flights,
-    origin, dest, carrier, tailnum,
-    year, month, day, dep_time
+    origin,
+    dest,
+    carrier,
+    tailnum,
+    year,
+    month,
+    day,
+    dep_time
   ) %>%
   dm_select(planes, tailnum, year) %>%
   dm_select(airports, faa, lat, lon) %>%
@@ -282,8 +295,14 @@ dm_flights %>%
   dm_select_tbl(-weather) %>%
   dm_select(
     flights,
-    origin, dest, carrier, tailnum,
-    year, month, day, dep_time
+    origin,
+    dest,
+    carrier,
+    tailnum,
+    year,
+    month,
+    day,
+    dep_time
   ) %>%
   dm_select(planes, tailnum, year) %>%
   dm_select(airports, faa, name, lat, lon) %>%
@@ -297,8 +316,14 @@ dm_flights_jfk_today <-
   dm_select_tbl(-weather) %>%
   dm_select(
     flights,
-    origin, dest, carrier, tailnum,
-    year, month, day, dep_time
+    origin,
+    dest,
+    carrier,
+    tailnum,
+    year,
+    month,
+    day,
+    dep_time
   ) %>%
   dm_select(planes, tailnum, year) %>%
   dm_select(airports, faa, name, lat, lon) %>%
@@ -358,7 +383,6 @@ try(
 )
 
 
-
 ##
 ##
 ##
@@ -393,12 +417,10 @@ dm_flights %>%
 ##
 ##
 
-
 # A single table of a `dm` can be activated (or zoomed to),
 # and subsequently be manipulated by many {dplyr}-verbs.
 # Eventually, either the original table can be updated
 # or the manipulated table can be inserted as a new table.
-
 
 # The print output for a `dm_zoomed` looks very much
 # like that from a normal `tibble`.
@@ -446,7 +468,6 @@ dm_flights %>%
   dm_draw()
 
 
-
 ##
 ##
 ##
@@ -455,7 +476,6 @@ dm_flights %>%
 ##
 ##
 ##
-
 
 ##
 ##
@@ -469,7 +489,6 @@ dm_flights %>%
 ##
 ##
 ##
-
 
 # Use `dm()` with a syntax similar to `tibble()`:
 nycflights13_tbl <-
@@ -542,7 +561,6 @@ nycflights13_base %>%
 ##
 ##
 
-
 ##
 ##
 ##
@@ -559,8 +577,10 @@ nycflights13_base %>%
 dm_flights_sqlite <-
   dm_flights %>%
   copy_dm_to(
-    dbplyr::src_memdb(), .,
-    unique_table_names = TRUE, set_key_constraints = FALSE
+    dbplyr::src_memdb(),
+    .,
+    unique_table_names = TRUE,
+    set_key_constraints = FALSE
   )
 
 dm_flights_sqlite
@@ -612,8 +632,7 @@ try({
     dm_zoom_to(flights) %>%
     left_join(planes, select = c(tailnum, type)) %>%
     mutate(
-      tailnum =
-        ifelse(is.na(type), NA_character_, tailnum)
+      tailnum = ifelse(is.na(type), NA_character_, tailnum)
     ) %>%
     dm_update_zoomed() %>%
     dm_add_fk(flights, tailnum, planes) %>%
@@ -631,13 +650,15 @@ try({
   qualified_names <-
     rlang::set_names(names(dm_flights_ref))
   qualified_names[] <- paste0(
-    "nycflights13.", qualified_names
+    "nycflights13.",
+    qualified_names
   )
 
   dm_flights_pq <-
     dm_flights_ref %>%
     copy_dm_to(
-      con_pq, .,
+      con_pq,
+      .,
       temporary = FALSE,
       table_names = qualified_names
     )
@@ -667,7 +688,6 @@ try({
 ##
 ##
 ##
-
 
 ##
 ##
@@ -728,8 +748,14 @@ planes
 flights_base <-
   flights %>%
   select(
-    carrier, tailnum, origin, dest,
-    year, month, day, time_hour
+    carrier,
+    tailnum,
+    origin,
+    dest,
+    year,
+    month,
+    day,
+    time_hour
   )
 
 flights_base %>%
@@ -847,7 +873,6 @@ airports %>%
 rm(t1, t2)
 
 
-
 ##
 ##
 ##
@@ -857,7 +882,6 @@ rm(t1, t2)
 ##
 ##
 ##
-
 
 # Determine key candidates
 zoomed_weather <- dm_zoom_to(nycflights13_base, weather)
@@ -873,7 +897,12 @@ enum_pk_candidates(zoomed_weather) %>%
 # It's tricky:
 zoomed_weather %>%
   unite(
-    "slot_id", origin, year, month, day, hour,
+    "slot_id",
+    origin,
+    year,
+    month,
+    day,
+    hour,
     remove = FALSE
   ) %>%
   count(slot_id) %>%
@@ -917,9 +946,7 @@ nycflights13_weather_flights_link <-
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   # for flights we need to keep the column `origin`,
   # since it is a FK pointing to `airports`
-  unite("origin_slot_id", origin, time_hour_fmt,
-    remove = FALSE
-  ) %>%
+  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE) %>%
   select(origin_slot_id, everything(), -time_hour_fmt) %>%
   dm_update_zoomed()
 
@@ -927,7 +954,8 @@ nycflights13_weather_flights_link <-
 # about potential FK columns from one table to another
 dm_enum_fk_candidates(
   nycflights13_weather_flights_link,
-  flights, weather
+  flights,
+  weather
 )
 
 # well, it's almost perfect, let's add the FK anyway...
