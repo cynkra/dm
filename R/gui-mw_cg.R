@@ -33,9 +33,7 @@ new_mw_cg <- function(dm) {
 #'   must abort the operation.
 #'   Processed with [rlang::as_function()].
 #' @noRd
-mw_cg_run <- function(mw_cg, op_name, ...,
-                      confirmation_function = abort_function,
-                      abort_function = abort) {
+mw_cg_run <- function(mw_cg, op_name, ..., confirmation_function = abort_function, abort_function = abort) {
   confirmation_function <- as_function(confirmation_function)
   abort_function <- as_function(abort_function)
 
@@ -53,7 +51,9 @@ mw_cg_run <- function(mw_cg, op_name, ...,
   if (!is.null(recipe$confirmation_message)) {
     out <- confirmation_function(recipe$confirmation_message)
     if (!is_scalar_logical(out)) {
-      abort_function(paste0("Internal error in `mw_cg_run()`: `confirmation_function()` doesn't return a scalar logical."))
+      abort_function(paste0(
+        "Internal error in `mw_cg_run()`: `confirmation_function()` doesn't return a scalar logical."
+      ))
     }
     if (!isTRUE(out)) {
       return(mw_cg)
@@ -73,7 +73,8 @@ mw_cg_run <- function(mw_cg, op_name, ...,
 mw_cg_make <- function(dm, op_name, ...) {
   # FIXME: Add more operations, call e.g. use_cg_make("dm_select_tbl")
   # to create templates
-  switch(op_name,
+  switch(
+    op_name,
     "dm_select_tbl" = mw_cg_make_dm_select_tbl(dm, ...),
     "dm_add_pk" = mw_cg_make_dm_add_pk(dm, ...),
     "dm_add_fk" = mw_cg_make_dm_add_fk(dm, ...),

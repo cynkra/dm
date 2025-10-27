@@ -22,10 +22,12 @@ test_that("table identifiers are quoted", {
 
   dm <-
     suppress_mssql_warning(dm_from_con(con_db, learn_keys = FALSE)) %>%
-    dm_select_tbl(!!!map(
-      DBI::dbUnquoteIdentifier(con_db, DBI::SQL(remote_tbl_names_copied)),
-      ~ .x@name[[length(.x@name)]]
-    ))
+    dm_select_tbl(
+      !!!map(
+        DBI::dbUnquoteIdentifier(con_db, DBI::SQL(remote_tbl_names_copied)),
+        ~ .x@name[[length(.x@name)]]
+      )
+    )
 
   remote_tbl_names_learned <-
     dm %>%
@@ -33,7 +35,10 @@ test_that("table identifiers are quoted", {
     map_chr(remote_name_qual)
 
   # `gsub()`, cause schema names are part of the remote_names (also standard schemas "dbo" for MSSQL and "public" for Postgres).
-  expect_setequal(gsub("^.*\\.", "", unname(remote_tbl_names_learned)), unclass(DBI::dbQuoteIdentifier(con_db, names(dm))))
+  expect_setequal(
+    gsub("^.*\\.", "", unname(remote_tbl_names_learned)),
+    unclass(DBI::dbQuoteIdentifier(con_db, names(dm)))
+  )
 })
 
 test_that("table identifiers are quoted with learn_keys = FALSE", {

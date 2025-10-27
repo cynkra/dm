@@ -73,7 +73,6 @@ dm_add_pk <- function(dm, table, columns, ..., autoincrement = FALSE, check = FA
     )
   }
 
-
   if (check) {
     table_from_dm <- dm_get_filtered_table(dm, table_name)
     eval_tidy(expr(check_key(!!sym(table_name), !!col_expr)), list2(!!table_name := table_from_dm))
@@ -90,8 +89,10 @@ dm_add_pk_impl <- function(dm, table, column, autoincrement, force) {
   i <- which(def$table == table)
 
   if (!force && NROW(def$pks[[i]]) > 0) {
-    if (!dm_is_strict_keys(dm) &&
-      identical(def$pks[[i]]$column[[1]], column)) {
+    if (
+      !dm_is_strict_keys(dm) &&
+        identical(def$pks[[i]]$column[[1]], column)
+    ) {
       return(dm)
     }
 
@@ -285,15 +286,19 @@ dm_rm_pk_impl <- function(dm, table_name, columns) {
   }
 
   if (!quo_is_null(columns)) {
-    ii <- map2_lgl(def$data[i], def$pks[i], ~ tryCatch(
-      {
-        vars <- eval_select_indices(columns, colnames(.x))
-        identical(names(vars), .y$column[[1]])
-      },
-      error = function(e) {
-        FALSE
-      }
-    ))
+    ii <- map2_lgl(
+      def$data[i],
+      def$pks[i],
+      ~ tryCatch(
+        {
+          vars <- eval_select_indices(columns, colnames(.x))
+          identical(names(vars), .y$column[[1]])
+        },
+        error = function(e) {
+          FALSE
+        }
+      )
+    )
 
     i <- i[ii]
   }

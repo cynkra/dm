@@ -52,15 +52,14 @@ error_txt_not_unique_key <- function(table_name, column_names) {
 
 # error: is not subset of -------------------------------------------------
 
-abort_not_subset_of <- function(table_name_1, colname_1,
-                                table_name_2, colname_2) {
-  abort(error_txt_not_subset_of(table_name_1, colname_1, table_name_2, colname_2),
+abort_not_subset_of <- function(table_name_1, colname_1, table_name_2, colname_2) {
+  abort(
+    error_txt_not_subset_of(table_name_1, colname_1, table_name_2, colname_2),
     class = dm_error_full("not_subset_of")
   )
 }
 
-error_txt_not_subset_of <- function(table_name_1, colname_1,
-                                    table_name_2, colname_2) {
+error_txt_not_subset_of <- function(table_name_1, colname_1, table_name_2, colname_2) {
   # taking care of singular/plural of the word "columns" and the corresponding ending of the verb
   plural <- s_if_plural(colname_1)
   glue(
@@ -84,9 +83,7 @@ error_txt_sets_not_equal <- function(error_msgs) {
 # cardinality check errors ------------------------------------------------
 
 abort_not_bijective <- function(child_table_name, fk_col_name) {
-  abort(error_txt_not_bijective(child_table_name, fk_col_name),
-    class = dm_error_full("not_bijective")
-  )
+  abort(error_txt_not_bijective(child_table_name, fk_col_name), class = dm_error_full("not_bijective"))
 }
 
 error_txt_not_bijective <- function(child_table_name, fk_col_name) {
@@ -99,9 +96,7 @@ error_txt_not_bijective <- function(child_table_name, fk_col_name) {
 }
 
 abort_not_injective <- function(child_table_name, fk_col_name) {
-  abort(error_txt_not_injective(child_table_name, fk_col_name),
-    class = dm_error_full("not_injective")
-  )
+  abort(error_txt_not_injective(child_table_name, fk_col_name), class = dm_error_full("not_injective"))
 }
 
 error_txt_not_injective <- function(child_table_name, fk_col_name) {
@@ -116,9 +111,7 @@ error_txt_not_injective <- function(child_table_name, fk_col_name) {
 # errors in fk handling --------------------------------------------------
 
 abort_ref_tbl_has_no_pk <- function(ref_table_name) {
-  abort(error_txt_ref_tbl_has_no_pk(ref_table_name),
-    class = dm_error_full("ref_tbl_has_no_pk")
-  )
+  abort(error_txt_ref_tbl_has_no_pk(ref_table_name), class = dm_error_full("ref_tbl_has_no_pk"))
 }
 
 error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
@@ -230,7 +223,6 @@ error_txt_only_parents <- function() {
 
 # not all tables have the same src ----------------------------------------
 
-
 abort_not_same_src <- function(dm_bind = FALSE) {
   abort(error_txt_not_same_src(dm_bind), class = dm_error_full("not_same_src"))
 }
@@ -334,11 +326,17 @@ error_txt_only_possible_w_zoom <- function(fun_name) {
 # errors for `copy_to.dm()` ----------------------------------------------
 
 abort_only_data_frames_supported <- function() {
-  abort("`copy_to.dm()` only supports class `data.frame` for argument `df`", class = dm_error_full("only_data_frames_supported"))
+  abort(
+    "`copy_to.dm()` only supports class `data.frame` for argument `df`",
+    class = dm_error_full("only_data_frames_supported")
+  )
 }
 
 abort_one_name_for_copy_to <- function(name) {
-  abort(glue("Argument `name` in `copy_to.dm()` needs to have length 1, but has length {length(name)} ({commas(tick(name))})"),
+  abort(
+    glue(
+      "Argument `name` in `copy_to.dm()` needs to have length 1, but has length {length(name)} ({commas(tick(name))})"
+    ),
     class = dm_error_full("one_name_for_copy_to")
   )
 }
@@ -487,11 +485,7 @@ error_txt_parameter_not_correct_length <- function(parameter, correct_length, pa
   )
 }
 
-warn_if_arg_not <- function(arg,
-                            only_on,
-                            arg_name = deparse(substitute(arg)),
-                            correct = NULL,
-                            additional_msg = "") {
+warn_if_arg_not <- function(arg, only_on, arg_name = deparse(substitute(arg)), correct = NULL, additional_msg = "") {
   if (!identical(arg, correct)) {
     only_on_string <- glue::glue_collapse(only_on, sep = ", ", last = " and ")
     dm_warn(

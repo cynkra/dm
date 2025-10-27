@@ -59,20 +59,22 @@
 #'
 #' dm_nycflights13() %>%
 #'   dm_get_colors()
-dm_draw <- function(dm,
-                    rankdir = "LR",
-                    ...,
-                    col_attr = NULL,
-                    view_type = c("keys_only", "all", "title_only"),
-                    columnArrows = TRUE,
-                    graph_attrs = "",
-                    node_attrs = "",
-                    edge_attrs = "",
-                    focus = NULL,
-                    graph_name = "Data Model",
-                    column_types = NULL,
-                    backend = "DiagrammeR",
-                    font_size = NULL) {
+dm_draw <- function(
+  dm,
+  rankdir = "LR",
+  ...,
+  col_attr = NULL,
+  view_type = c("keys_only", "all", "title_only"),
+  columnArrows = TRUE,
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  focus = NULL,
+  graph_name = "Data Model",
+  column_types = NULL,
+  backend = "DiagrammeR",
+  font_size = NULL
+) {
   check_not_zoomed(dm)
   check_dots_empty()
 
@@ -257,10 +259,14 @@ dm_get_all_column_types <- function(x) {
 #' @autoglobal
 dm_set_colors <- function(dm, ...) {
   quos <- enquos(...)
-  if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")
+  if (any(names(quos) == "")) {
+    abort_only_named_args("dm_set_colors", "the colors")
+  }
   cols <- names(quos)
-  if (!all(cols[!is_hex_color(cols)] %in% dm_get_available_colors()) &&
-    all(cols %in% src_tbls_impl(dm))) {
+  if (
+    !all(cols[!is_hex_color(cols)] %in% dm_get_available_colors()) &&
+      all(cols %in% src_tbls_impl(dm))
+  ) {
     abort_wrong_syntax_set_cols()
   }
 

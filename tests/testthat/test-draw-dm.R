@@ -63,7 +63,7 @@ test_that("last", {
     color_quos_to_display(
       flights = "blue",
       airlines =
-      ),
+    ),
     class = "last_col_missing"
   )
 })

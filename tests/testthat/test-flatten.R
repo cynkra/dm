@@ -17,7 +17,11 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
 
   expect_snapshot(
     {
-      prepare_dm_for_flatten(dm_for_flatten(), tables = c("fact", "dim_1", "dim_2", "dim_3", "dim_4"), gotta_rename = TRUE) %>%
+      prepare_dm_for_flatten(
+        dm_for_flatten(),
+        tables = c("fact", "dim_1", "dim_2", "dim_3", "dim_4"),
+        gotta_rename = TRUE
+      ) %>%
         dm_get_tables()
       dm_flatten_to_tbl(dm_for_flatten(), fact)
       result_from_flatten_new()
@@ -35,7 +39,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
 
   # explicitly choose parent tables
   out <- expect_message_obj(dm_flatten_to_tbl(
-    dm_for_flatten(), fact, dim_1, dim_2
+    dm_for_flatten(),
+    fact,
+    dim_1,
+    dim_2
   ))
   expect_equivalent_tbl(
     out,
@@ -49,12 +56,16 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
 
   # change order of parent tables
   out <- expect_message_obj(dm_flatten_to_tbl(
-    dm_for_flatten(), fact, dim_2, dim_1
+    dm_for_flatten(),
+    fact,
+    dim_2,
+    dim_1
   ))
   expect_equivalent_tbl(
     out,
     left_join(
-      fact_clean_new(), dim_2_clean_new(),
+      fact_clean_new(),
+      dim_2_clean_new(),
       by = c("dim_2_key" = "dim_2_pk")
     ) %>%
       left_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2"))
@@ -108,7 +119,8 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
   skip_if_src("sqlite")
   skip_if_src("maria")
   out <- expect_message_obj(dm_flatten_to_tbl(
-    dm_for_flatten(), fact,
+    dm_for_flatten(),
+    fact,
     .join = full_join
   ))
   expect_equivalent_tbl(
@@ -159,7 +171,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
 
   # change order of parent tables
   out <- expect_message_obj(dm_flatten_to_tbl(
-    dm_for_flatten(), fact, dim_2, dim_1,
+    dm_for_flatten(),
+    fact,
+    dim_2,
+    dim_1,
     .join = right_join
   ))
   expect_equivalent_tbl(
@@ -202,7 +217,6 @@ test_that("`dm_flatten_to_tbl(.recursive = TRUE)` does the right things", {
     ncol(dm_flatten_to_tbl(dm_more_complex(), tf_5, .recursive = TRUE)),
     12L
   )
-
 
   # semi_join:
   expect_dm_error(
@@ -319,7 +333,6 @@ test_that("tests with 'bad_dm' work", {
   # duckdb doesn't work before R 4.0
   skip_if(getRversion() < "4.0")
 
-
   # flatten bad_dm() (no referential integrity)
   if (is_db(my_test_src()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {
     expect_equivalent_tbl(
@@ -330,7 +343,6 @@ test_that("tests with 'bad_dm' work", {
     )
   }
 
-
   skip_if_src("maria")
 
   # filtered `dm`
@@ -340,7 +352,6 @@ test_that("tests with 'bad_dm' work", {
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1),
     bad_filtered_dm %>% dm_flatten_to_tbl(tbl_1)
   )
-
 
   # filtered `dm`
   expect_equivalent_tbl(
@@ -401,7 +412,6 @@ test_that("tests with 'bad_dm' work (3)", {
         right_join(tbl_3(), by = c("b" = "id"))
     )
   }
-
 
   # flatten bad_dm() (no referential integrity); different order
   if (is_db(my_test_src()) || utils::packageVersion("dplyr") >= "1.1.0.9000") {

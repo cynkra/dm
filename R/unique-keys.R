@@ -220,15 +220,19 @@ dm_rm_uk_impl <- function(dm, table_name, columns) {
   }
 
   ii <- if (!quo_is_null(columns)) {
-    ii_col <- map2(def$data[i], def$uks[i], ~ tryCatch(
-      {
-        vars <- eval_select_indices(columns, colnames(.x))
-        map_lgl(.y$column, ~ identical(names(vars), .x))
-      },
-      error = function(e) {
-        FALSE
-      }
-    ))
+    ii_col <- map2(
+      def$data[i],
+      def$uks[i],
+      ~ tryCatch(
+        {
+          vars <- eval_select_indices(columns, colnames(.x))
+          map_lgl(.y$column, ~ identical(names(vars), .x))
+        },
+        error = function(e) {
+          FALSE
+        }
+      )
+    )
 
     # if `columns` is not NULL, it refers to only one UK, therefore we can choose
     # the first element of the list created by `map2()`
@@ -248,11 +252,15 @@ dm_rm_uk_impl <- function(dm, table_name, columns) {
   if (is.null(table_name) || quo_is_null(columns)) {
     n_uk_per_table <- map_int(i, ~ nrow(def$uks[[.x]]))
     message("Removing unique keys: %>%")
-    message("  ", glue_collapse(
-      glue(
-        "dm_rm_uk({tick_if_needed(rep(def$table[i], n_uk_per_table))}, {list_c(map(i, ~ deparse_keys(def$uks[[.x]]$column)))})"
-      ), " %>%\n  "
-    ))
+    message(
+      "  ",
+      glue_collapse(
+        glue(
+          "dm_rm_uk({tick_if_needed(rep(def$table[i], n_uk_per_table))}, {list_c(map(i, ~ deparse_keys(def$uks[[.x]]$column)))})"
+        ),
+        " %>%\n  "
+      )
+    )
   }
   # Execute
   # in case `length(i) > 1`: all tables have all their UKs removed, respectively

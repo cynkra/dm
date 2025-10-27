@@ -31,7 +31,9 @@ dm_validate <- function(x) {
   def <- dm_get_def(x)
 
   table_names <- def$table
-  if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
+  if (any(table_names == "")) {
+    abort_dm_invalid("Not all tables are named.")
+  }
 
   check_df_structure(def, boilerplate, "dm definition")
 
@@ -131,7 +133,9 @@ check_df_structure <- function(check, boilerplate, where) {
   force(where)
 
   if (!identical(names(check), names(boilerplate))) {
-    abort_dm_invalid(glue("Inconsistent column names in {where}: {commas(names(check), Inf)} vs. {commas(names(boilerplate), Inf)}."))
+    abort_dm_invalid(glue(
+      "Inconsistent column names in {where}: {commas(names(check), Inf)} vs. {commas(names(boilerplate), Inf)}."
+    ))
   }
 
   if (!identical(check[0, ], boilerplate[0, ])) {

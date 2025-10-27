@@ -44,21 +44,38 @@ is_sqlite <- function(dest) {
 }
 
 is_mssql <- function(dest) {
-  inherits(dest, c(
-    "Microsoft SQL Server", "src_Microsoft SQL Server", "dblogConnection-Microsoft SQL Server", "src_dblogConnection-Microsoft SQL Server"
-  ))
+  inherits(
+    dest,
+    c(
+      "Microsoft SQL Server",
+      "src_Microsoft SQL Server",
+      "dblogConnection-Microsoft SQL Server",
+      "src_dblogConnection-Microsoft SQL Server"
+    )
+  )
 }
 
 is_postgres <- function(dest) {
-  inherits_any(dest, c(
-    "src_PostgreSQLConnection", "src_PqConnection", "PostgreSQLConnection", "PqConnection", "src_PostgreSQL"
-  ))
+  inherits_any(
+    dest,
+    c(
+      "src_PostgreSQLConnection",
+      "src_PqConnection",
+      "PostgreSQLConnection",
+      "PqConnection",
+      "src_PostgreSQL"
+    )
+  )
 }
 
 is_redshift <- function(dest) {
-  inherits_any(dest, c(
-    "src_RedshiftConnection", "RedshiftConnection"
-  ))
+  inherits_any(
+    dest,
+    c(
+      "src_RedshiftConnection",
+      "RedshiftConnection"
+    )
+  )
 }
 
 is_mariadb <- function(dest) {
@@ -77,10 +94,10 @@ is_mariadb <- function(dest) {
 
 schema_supported_dbs <- function() {
   tibble::tribble(
-    ~db_name, ~id_function, ~test_shortcut,
-    "SQL Server", "is_mssql", "mssql",
-    "Postgres", "is_postgres", "postgres",
-    "MariaDB", "is_mariadb", "maria",
+    ~db_name     , ~id_function  , ~test_shortcut ,
+    "SQL Server" , "is_mssql"    , "mssql"        ,
+    "Postgres"   , "is_postgres" , "postgres"     ,
+    "MariaDB"    , "is_mariadb"  , "maria"        ,
   )
 }
 
@@ -259,12 +276,14 @@ dbname_mssql <- function(con, dbname) {
 get_names_table_mssql <- function(con, dbname_sql) {
   tbl(
     con,
-    sql(glue::glue("
+    sql(glue::glue(
+      "
       SELECT tabs.name AS table_name, schemas.name AS schema_name
       FROM {dbname_sql}sys.tables tabs
       INNER JOIN {dbname_sql}sys.schemas schemas ON
       tabs.schema_id = schemas.schema_id
-    "))
+    "
+    ))
   )
 }
 

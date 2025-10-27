@@ -33,8 +33,7 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_cardinalities()
-dm_examine_cardinalities <- function(.dm, ..., .progress = NA,
-                                     dm = deprecated(), progress = deprecated()) {
+dm_examine_cardinalities <- function(.dm, ..., .progress = NA, dm = deprecated(), progress = deprecated()) {
   check_dots_empty()
 
   if (!is_missing(dm)) {
@@ -97,24 +96,23 @@ print.dm_examine_cardinalities <- function(x, ...) {
   }
   x %>%
     mutate(
-      cardinalities =
-        pmap_chr(
-          x,
-          function(parent_table, parent_key_cols, child_table, child_fk_cols, cardinality) {
-            paste0(
-              "FK: ",
-              child_table,
-              "$(",
-              commas(tick(child_fk_cols)),
-              ") -> ",
-              parent_table,
-              "$(",
-              commas(tick(parent_key_cols)),
-              "): ",
-              cardinality
-            )
-          }
-        )
+      cardinalities = pmap_chr(
+        x,
+        function(parent_table, parent_key_cols, child_table, child_fk_cols, cardinality) {
+          paste0(
+            "FK: ",
+            child_table,
+            "$(",
+            commas(tick(child_fk_cols)),
+            ") -> ",
+            parent_table,
+            "$(",
+            commas(tick(parent_key_cols)),
+            "): ",
+            cardinality
+          )
+        }
+      )
     ) %>%
     bullets_cardinalities()
 }

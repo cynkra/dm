@@ -13,7 +13,12 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     ))
   )
 
-  dm_for_filter_copied <- copy_dm_to(con_db, dm_for_filter(), temporary = FALSE, table_names = ~ unique_db_table_name(.x))
+  dm_for_filter_copied <- copy_dm_to(
+    con_db,
+    dm_for_filter(),
+    temporary = FALSE,
+    table_names = ~ unique_db_table_name(.x)
+  )
   order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
 
   remote_tbl_names <-
@@ -231,8 +236,10 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
   DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_1] ALTER COLUMN [b] INTEGER NOT NULL")
   DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_1] ADD PRIMARY KEY ([b])")
   # set FK relation
-  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dbo].[test_1] ([b]) ON DELETE NO ACTION ON UPDATE NO ACTION")
-
+  DBI::dbExecute(
+    con_db,
+    "ALTER TABLE [test_database_dm].[dbo].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dbo].[test_1] ([b]) ON DELETE NO ACTION ON UPDATE NO ACTION"
+  )
 
   # test 'get_src_tbl_names()'
   expect_identical(
@@ -316,7 +323,6 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     con_db,
     "ALTER TABLE [test_database_dm].[dm_test].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dm_test].[test_1] ([b]) ON DELETE NO ACTION ON UPDATE NO ACTION"
   )
-
 
   # test 'get_src_tbl_names()'
   expect_identical(
@@ -419,25 +425,31 @@ test_that("dm_meta() contents", {
       map(select, -any_of("column_default"), -contains("catalog"), -contains("schema")) %>%
       map(collect) %>%
       map(arrange_all_but_constraint_name) %>%
-      map(~ if ("constraint_name" %in% colnames(.x)) {
-        .x %>% mutate(constraint_name = as.integer(forcats::fct_inorder(constraint_name)))
-      } else {
-        .x
-      }) %>%
-      imap(~ if (is_mariadb(con_db) && .y == "columns") {
-        # mariadb output on autoincrement column is integer
-        # transform this to boolean
-        mutate(.x, is_autoincrement = as.logical(is_autoincrement))
-      } else {
-        .x
-      }) %>%
-      imap(~ if (is_mariadb(con_db) && .y == "table_constraints") {
-        # mariadb default action for delete_rule is RESTRICT (synonym for NO ACTION)
-        # https://mariadb.com/kb/en/foreign-keys/#constraints
-        mutate(.x, delete_rule = if_else(delete_rule == "RESTRICT", "NO ACTION", delete_rule))
-      } else {
-        .x
-      }) %>%
+      map(
+        ~ if ("constraint_name" %in% colnames(.x)) {
+          .x %>% mutate(constraint_name = as.integer(forcats::fct_inorder(constraint_name)))
+        } else {
+          .x
+        }
+      ) %>%
+      imap(
+        ~ if (is_mariadb(con_db) && .y == "columns") {
+          # mariadb output on autoincrement column is integer
+          # transform this to boolean
+          mutate(.x, is_autoincrement = as.logical(is_autoincrement))
+        } else {
+          .x
+        }
+      ) %>%
+      imap(
+        ~ if (is_mariadb(con_db) && .y == "table_constraints") {
+          # mariadb default action for delete_rule is RESTRICT (synonym for NO ACTION)
+          # https://mariadb.com/kb/en/foreign-keys/#constraints
+          mutate(.x, delete_rule = if_else(delete_rule == "RESTRICT", "NO ACTION", delete_rule))
+        } else {
+          .x
+        }
+      ) %>%
       map(arrange_all) %>%
       jsonlite::toJSON(pretty = TRUE) %>%
       gsub(schema_name, "schema_name", .) %>%

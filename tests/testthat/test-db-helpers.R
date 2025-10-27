@@ -78,28 +78,36 @@ test_that("DB helpers work for MSSQL", {
     DBI::Id(schema = "schema_db_helpers", table = "test_db_helpers_2")
   )
   expect_warning(
-    out <- get_src_tbl_names(my_test_src(), schema = c("dbo", "schema_db_helpers"), names = "{.table}")["test_db_helpers_2"],
+    out <- get_src_tbl_names(my_test_src(), schema = c("dbo", "schema_db_helpers"), names = "{.table}")[
+      "test_db_helpers_2"
+    ],
     'Local name test_db_helpers_2 will refer to <"dbo"."test_db_helpers_2">, rather than to <"schema_db_helpers"."test_db_helpers_2">',
     fixed = TRUE
   )
   expect_identical(
     out,
-    list(test_db_helpers_2 = DBI::Id(
-      schema = "dbo",
-      table = "test_db_helpers_2"
-    ))
+    list(
+      test_db_helpers_2 = DBI::Id(
+        schema = "dbo",
+        table = "test_db_helpers_2"
+      )
+    )
   )
   expect_warning(
-    out <- get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers", "dbo"), names = "{.table}")["test_db_helpers_2"],
+    out <- get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers", "dbo"), names = "{.table}")[
+      "test_db_helpers_2"
+    ],
     'Local name test_db_helpers_2 will refer to <"schema_db_helpers"."test_db_helpers_2">, rather than to <"dbo"."test_db_helpers_2">',
     fixed = TRUE
   )
   expect_identical(
     out,
-    list(test_db_helpers_2 = DBI::Id(
-      schema = "schema_db_helpers",
-      table = "test_db_helpers_2"
-    ))
+    list(
+      test_db_helpers_2 = DBI::Id(
+        schema = "schema_db_helpers",
+        table = "test_db_helpers_2"
+      )
+    )
   )
 })
 
@@ -149,32 +157,42 @@ test_that("DB helpers work for Postgres", {
     DBI::Id(schema = "public", table = "test_db_helpers_2")
   )
   expect_identical(
-    get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"))["schema_db_helpers.test_db_helpers_2"][[1]],
+    get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"))["schema_db_helpers.test_db_helpers_2"][[
+      1
+    ]],
     DBI::Id(schema = "schema_db_helpers", table = "test_db_helpers_2")
   )
   expect_warning(
-    out <- get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"), names = "{.table}")["test_db_helpers_2"],
+    out <- get_src_tbl_names(my_test_src(), schema = c("public", "schema_db_helpers"), names = "{.table}")[
+      "test_db_helpers_2"
+    ],
     'Local name test_db_helpers_2 will refer to <"public"."test_db_helpers_2">, rather than to <"schema_db_helpers"."test_db_helpers_2">',
     fixed = TRUE
   )
   expect_identical(
     out,
-    list(test_db_helpers_2 = DBI::Id(
-      schema = "public",
-      table = "test_db_helpers_2"
-    ))
+    list(
+      test_db_helpers_2 = DBI::Id(
+        schema = "public",
+        table = "test_db_helpers_2"
+      )
+    )
   )
   expect_warning(
-    out <- get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers", "public"), names = "{.table}")["test_db_helpers_2"],
+    out <- get_src_tbl_names(my_test_src(), schema = c("schema_db_helpers", "public"), names = "{.table}")[
+      "test_db_helpers_2"
+    ],
     'Local name test_db_helpers_2 will refer to <"schema_db_helpers"."test_db_helpers_2">, rather than to <"public"."test_db_helpers_2">',
     fixed = TRUE
   )
   expect_identical(
     out,
-    list(test_db_helpers_2 = DBI::Id(
-      schema = "schema_db_helpers",
-      table = "test_db_helpers_2"
-    ))
+    list(
+      test_db_helpers_2 = DBI::Id(
+        schema = "schema_db_helpers",
+        table = "test_db_helpers_2"
+      )
+    )
   )
 })
 
@@ -198,7 +216,9 @@ test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
   # test for 2 warnings and if the output contains the new table
   expect_dm_warning(
     expect_dm_warning(
-      expect_true("test_db_helpers" %in% names(get_src_tbl_names(my_db_test_src(), schema = "schema", dbname = "dbname"))),
+      expect_true(
+        "test_db_helpers" %in% names(get_src_tbl_names(my_db_test_src(), schema = "schema", dbname = "dbname"))
+      ),
       class = "arg_not"
     ),
     class = "arg_not"
@@ -221,7 +241,6 @@ test_that("find name clashes", {
   )
   # ... we shouldn't get anything
   expect_length(res, 0)
-
 
   # If multiple old names change to the same new name...
   res <- find_name_clashes(
